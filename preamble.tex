@@ -1,0 +1,207 @@
+\usepackage{
+	amsmath,amssymb,graphicx,booktabs,array,siunitx,
+	physics,mathtools,caption,subcaption,float,
+	fancyhdr,lastpage,adjustbox,longtable,bm,diagbox,
+	makecell,multirow,braket,chngcntr,import,
+	tcolorbox,placeins,needspace,etoolbox,environ
+}
+\tcbuselibrary{breakable,skins,theorems}
+
+\usepackage[top=1.7cm,bottom=1.5cm,left=1.5cm,right=1.8cm]{geometry}
+\usepackage[unicode]{hyperref}
+\usepackage{bookmark}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	filecolor=magenta,
+	urlcolor=blue,
+	hidelinks=true
+}
+
+% ===== 编号与目录 =====
+\counterwithout{section}{chapter}
+\renewcommand{\thechapter}{\chinese{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% ===== 页面与排版 =====
+\raggedbottom
+\allowdisplaybreaks[3]
+\emergencystretch=2em
+\setlength{\headheight}{13pt}
+\setlength{\parindent}{2em}
+
+% ===== 章节标题页 =====
+\makeatletter
+\def\@makechapterhead#1{%
+	\thispagestyle{fancy}%
+	\vspace*{\fill}%
+	{\centering\Huge\bfseries 第\thechapter 章\par\vspace{1.0em}#1\par}%
+	\vspace*{\fill}%
+	\clearpage
+}
+\def\@makeschapterhead#1{%
+	\thispagestyle{fancy}%
+	\vspace*{\fill}%
+	{\centering\Huge\bfseries #1\par}%
+	\vspace*{\fill}%
+	\clearpage
+}
+\makeatother
+
+% ===== 页眉页脚 =====
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage/\pageref{LastPage}}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\renewcommand{\chaptermark}[1]{\markboth{第\thechapter 章\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyhead[LE,RO]{\thepage/\pageref{LastPage}}
+	\fancyhead[RE]{\nouppercase{\leftmark}}
+	\fancyhead[LO]{\nouppercase{\rightmark}}
+	\renewcommand{\headrulewidth}{0.4pt}
+}
+
+% ===== 浮动体 =====
+\floatplacement{figure}{htbp}
+\floatplacement{table}{htbp}
+
+\captionsetup[figure]{labelfont=bf}
+\captionsetup[table]{labelfont=bf}
+
+\setcounter{topnumber}{5}
+\setcounter{bottomnumber}{3}
+\setcounter{totalnumber}{8}
+
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.82}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.78}
+
+\setlength{\textfloatsep}{10pt plus 2pt minus 3pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+
+\interdisplaylinepenalty=100
+\predisplaypenalty=0
+\postdisplaypenalty=0
+
+\pretocmd{\section}{\FloatBarrier\Needspace{10\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{7\baselineskip}}{}{}
+
+% ===== equation* 自动加 split =====
+\makeatletter
+\expandafter\let\expandafter\orig@equationstar\csname equation*\endcsname
+\expandafter\let\expandafter\orig@endequationstar\csname endequation*\endcsname
+\RenewEnviron{equation*}{%
+	\orig@equationstar
+	\begin{split}
+		\BODY
+	\end{split}
+	\orig@endequationstar
+}
+\makeatother
+
+% ===== tcolorbox 通用样式 =====
+\tcbset{
+	mybox/.style={
+		enhanced,
+		breakable,
+		sharp corners,
+		boxrule=0.1pt,
+		width=\linewidth,
+		enlarge left by=14pt,
+		enlarge right by=14pt,
+		boxsep=0pt,
+		left=12pt,right=12pt,
+		top=10pt,bottom=8pt,
+		before skip=8pt,
+		after skip=8pt,
+		detach title,
+		fonttitle=\bfseries,
+		boxed title style={
+			sharp corners,
+			boxrule=0.35pt,
+			left=8pt,right=8pt,
+			top=2.5pt,bottom=2.5pt
+		},
+		attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2},
+		before upper={
+			\setlength{\parindent}{2em}%
+			\setlength{\parskip}{0pt}%
+			\indent\ignorespaces
+		}
+	}
+}
+
+\newtcolorbox[auto counter,number within=section]{example}[1][]{%
+	mybox,
+	colback=green!3,
+	colframe=green!45!black,
+	title={例\ \thetcbcounter},
+	boxed title style={colback=green!60!black,colframe=green!60!black},
+	#1
+}
+
+\newtcolorbox[auto counter,number within=section]{notes}[1][]{%
+	mybox,
+	colback=blue!3,
+	colframe=blue!45!black,
+	title={注\ \thetcbcounter},
+	boxed title style={colback=blue!60!black,colframe=blue!60!black},
+	#1
+}
+
+% ===== 数学命令 =====
+\ExplSyntaxOn
+\cs_if_exist:NTF \vb
+	{\RenewDocumentCommand{\vb}{m}{\bm{#1}}}
+	{\NewDocumentCommand{\vb}{m}{\bm{#1}}}
+
+\cs_if_exist:NTF \uv
+	{\RenewDocumentCommand{\uv}{m}{\hat{\bm{#1}}}}
+	{\NewDocumentCommand{\uv}{m}{\hat{\bm{#1}}}}
+
+\cs_if_exist:NTF \d
+	{\RenewDocumentCommand{\d}{}{\mathop{}\!\mathrm{d}}}
+	{\NewDocumentCommand{\d}{}{\mathop{}\!\mathrm{d}}}
+\ExplSyntaxOff
+
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator{\arcsinh}{arsinh}
+\DeclareMathOperator{\arcosh}{arcosh}
+\DeclareMathOperator{\artanh}{artanh}
+\DeclareMathOperator{\sn}{sn}
+\DeclareMathOperator{\cn}{cn}
+\DeclareMathOperator{\dn}{dn}
+
+\newcommand{\crossdot}{%
+	\mathbin{\vcenter{\offinterlineskip
+		\hbox to 6pt{\hss$\times$\hss}
+		\hbox to 6pt{\hss$\cdot$\hss}}}
+}
+\newcommand{\dotdotdot}{%
+	\mathbin{\vcenter{\offinterlineskip
+		\hbox to 4pt{\hss$\cdot$\hss}
+		\hbox to 4pt{\hss$\cdot$\hss}
+		\hbox to 4pt{\hss$\cdot$\hss}}}
+}

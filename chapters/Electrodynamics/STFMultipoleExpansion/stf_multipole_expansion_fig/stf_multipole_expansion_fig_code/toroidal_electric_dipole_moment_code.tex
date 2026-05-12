@@ -1,0 +1,22 @@
+\tdplotsetmaincoords{72}{115}
+\begin{LegendTDPlot}[scale=2.0]
+  \def\Rone{2.6}\def\Rtwo{0.6}\def\Td{72}\def\Pd{115}
+  \draw[->, thick] (0,0,0) -- (0,0,3.0) node[left] {$z$};
+  \foreach \p in {0,8,...,352}{
+    \pgfmathsetmacro{\K}{sin(\Td)*sin(\Pd-\p)}
+    \pgfmathsetmacro{\tZero}{atan2(cos(\Td),\K)}
+    \pgfmathsetmacro{\tA}{\tZero-90}
+    \pgfmathsetmacro{\tB}{\tZero+90}
+    \draw[gray!35, line width=0.35pt, opacity=0.30]
+      plot[smooth, variable=\t, domain=\tB:\tA+360, samples=45]
+      ({(\Rone+\Rtwo*cos(\t))*cos(\p)},{(\Rone+\Rtwo*cos(\t))*sin(\p)},{\Rtwo*sin(\t)});
+    \draw[gray!90, line width=0.45pt, opacity=0.7]
+      plot[smooth, variable=\t, domain=\tA:\tB, samples=45]
+      ({(\Rone+\Rtwo*cos(\t))*cos(\p)},{(\Rone+\Rtwo*cos(\t))*sin(\p)},{\Rtwo*sin(\t)});
+  }
+  \foreach \tt in {90,270}{
+    \draw[gray!55, line width=0.5pt, opacity=0.3]
+      plot[smooth, variable=\p, domain=0:360, samples=90]
+      ({(\Rone+\Rtwo*cos(\tt))*cos(\p)},{(\Rone+\Rtwo*cos(\tt))*sin(\p)},{\Rtwo*sin(\tt)});
+  }
+\end{LegendTDPlot}
