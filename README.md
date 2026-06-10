@@ -12,8 +12,7 @@ The notes cover five main fields: mechanics, electrodynamics, statistics, optics
 YHWNotes/
 ├── main.tex                     # Main entry point of the book
 ├── preamble.tex                 # Shared packages, page style, counters, boxes, and math commands
-├── script.tex                   # Temporary / auxiliary LaTeX scratch file
-├── update_main.ps1              # Regenerates main.tex from the chapters directory
+├── compile.ps1                  # Regenerates main.tex from the chapters directory
 ├── chapters/
 │   ├── Mechanics/
 │   ├── Electrodynamics/
@@ -32,7 +31,7 @@ YHWNotes/
 ├── fig/
 │   ├── fig_config.tex            # Shared TikZ / circuitikz configuration for figure source files
 │   ├── fig_draw.tex              # Standalone figure-compilation entry point
-│   ├── update_fig_draw.ps1       # Regenerates fig_draw.tex from *_code.tex files
+│   ├── compile_fig.ps1           # Regenerates fig_draw.tex from *_code.tex files
 │   └── draw_platform_mmacode.txt # Auxiliary drawing / plotting code notes
 ├── build/                        # Compiled main PDF and LaTeX auxiliary files
 └── LICENSE

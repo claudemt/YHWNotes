@@ -1,0 +1,62 @@
+\begin{LegendTikZFigure}[every node/.style={font=\Large}, >={Stealth[length=3mm,width=2mm]}]
+  \def\xL{-4.5}\def\xR{4.5}
+  \def\yBot{0.9}\def\yint{2.4}
+  \def\yI{\yBot+1.8*\yint}\def\yII{\yBot+\yint}
+
+  \coordinate (dots) at (0,\yII);
+  \def\dotR{0.03}\def\dotGap{0.2}
+  \foreach \k in {1,2,3}{
+    \fill ($(dots)+(0,\k*\dotGap)$) circle (\dotR);
+    \fill ($(dots)-(0,\k*\dotGap)$) circle (\dotR);
+  }
+
+  \draw[thick] (\xL,\yI)--(\xR,\yI);
+  \draw[thick] (\xL,\yII)--(\xR,\yII);
+  \draw[thick] (\xL,\yBot)--(\xR,\yBot);
+
+  \node[anchor=west] at (\xR-0.3,\yI+0.4) {$a$};
+  \node[anchor=west] at (\xR-0.3,\yI-0.4) {$1$};
+  \node[anchor=west] at (\xR-0.3,\yBot+0.4) {$N$};
+  \node[anchor=west] at (\xR-0.3,\yBot-0.4) {$g$};
+
+  \coordinate (Ocs) at (\xL+1.2,\yI-0.35);
+  \draw[thick] (Ocs) circle (0.16);
+  \fill (Ocs) circle (0.05);
+  \node[anchor=east] at ($(Ocs)+(-0.35,0)$) {$\bm{\hat{s}}$};
+  \draw[thick,->] (Ocs)--++(1.4,0) node[anchor=west] {$\bm{\hat{\tau}}$};
+  \draw[thick,->] (Ocs)--++(0,-1.2) node[anchor=east] at ($(Ocs)+(-0.25,-1)$) {$\bm{\hat{n}}$};
+
+  \def\arrowx{3.2}\def\xspan{0.3}\def\dyspan{0.7}\def\yspan{0.6}
+  \coordinate (rayLstart) at (-\xspan-\arrowx,\yBot+\yspan+\dyspan);
+  \coordinate (rayLend)   at (-\xspan,\yBot+\yspan);
+  \draw[thick,->] (rayLstart)--(rayLend);
+  \coordinate (rayRstart) at (\xspan,\yBot+\yspan);
+  \coordinate (rayRend)   at (\arrowx+\xspan,\yBot+\yspan+\dyspan);
+  \draw[thick,->] (rayRstart)--(rayRend);
+
+  \def\pHalf{0.45}\def\pArr{0.25}
+
+  \coordinate (Lmid) at ($(rayLstart)!0.45!(rayLend)$);
+  \path let \p1=(rayLstart),\p2=(rayLend),
+    \n1={veclen(\x2-\x1,\y2-\y1)},
+    \n2={-(\y2-\y1)/\n1},\n3={(\x2-\x1)/\n1}
+  in
+    coordinate (LpA) at ($(Lmid)+({\n2*\pHalf cm},{\n3*\pHalf cm})$)
+    coordinate (LpB) at ($(Lmid)-({\n2*\pHalf cm},{\n3*\pHalf cm})$)
+    coordinate (LpArrS) at ($(LpA)-({\n2*\pArr cm},{\n3*\pArr cm})$);
+  \draw[thick] (LpB)--(LpA);
+  \draw[thick,->] (LpArrS)--(LpA);
+  \node[anchor=south east] at ($(Lmid)+(0,0.25)$) {$p$};
+
+  \coordinate (Rmid) at ($(rayRstart)!0.45!(rayRend)$);
+  \path let \p1=(rayRstart),\p2=(rayRend),
+    \n1={veclen(\x2-\x1,\y2-\y1)},
+    \n2={-(\y2-\y1)/\n1},\n3={(\x2-\x1)/\n1}
+  in
+    coordinate (RpA) at ($(Rmid)+({\n2*\pHalf cm},{\n3*\pHalf cm})$)
+    coordinate (RpB) at ($(Rmid)-({\n2*\pHalf cm},{\n3*\pHalf cm})$)
+    coordinate (RpArrS) at ($(RpA)-({\n2*\pArr cm},{\n3*\pArr cm})$);
+  \draw[thick] (RpB)--(RpA);
+  \draw[thick,->] (RpArrS)--(RpA);
+  \node[anchor=south east] at ($(Rmid)+(-0.15,0.25)$) {$p$};
+\end{LegendTikZFigure}

@@ -1,0 +1,647 @@
+\section{Green 函数}
+\subsection{Laplace 型边值问题}
+
+在区域 \(\Omega\) 中求解 Laplace 型边值问题，其边界为 \(\partial\Omega\)，满足
+\begin{equation*}
+	&\nabla_{\vb{x}}^2u(\vb{x}) = f(\vb{x}),\quad \vb{x}\in\Omega,\\
+	&\alpha(\vb{x})u(\vb{x})+\beta(\vb{x})\frac{\partial u(\vb{x})}{\partial n_{\vb{x}}}=s(\vb{x}),\quad \vb{x}\in\partial\Omega.
+\end{equation*}
+其中 \(n_{\vb{x}}\) 表示边界外法线方向.取 Green 函数满足
+\begin{equation*}
+	&\nabla_{\vb{\xi}}^2G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad \vb{x},\vb{\xi}\in\Omega,\\
+	&\alpha(\vb{\xi})G(\vb{x},\vb{\xi})+\beta(\vb{\xi})\frac{\partial G(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}=0,
+	\quad \vb{\xi}\in\partial\Omega.
+\end{equation*}
+
+由 Green 第二恒等式
+\begin{equation*}
+	\int_\Omega\left(\phi\nabla_{\vb{\xi}}^2\psi-\psi\nabla_{\vb{\xi}}^2\phi\right)\d\vb{\xi}
+	=\int_{\partial\Omega}\left(\phi\frac{\partial\psi}{\partial n_{\vb{\xi}}}-\psi\frac{\partial\phi}{\partial n_{\vb{\xi}}}\right)\d S_{\vb{\xi}}.
+\end{equation*}
+一方面，在同一自伴 Robin 边界条件下，且不存在零模或已经固定规范时，令 \(\phi=G(\vb{\xi},\vb{x}),\ \psi=G(\vb{x},\vb{\xi})\)，有
+\begin{equation*}
+	G(\vb{x},\vb{\xi})=G(\vb{\xi},\vb{x}).
+\end{equation*}
+另一方面，令 \(\phi=u(\vb{\xi}),\ \psi=G(\vb{x},\vb{\xi})\)，得到
+\begin{equation*}
+	u(\vb{x})
+	=\int_\Omega G(\vb{x},\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	+\int_{\partial\Omega}\left(u(\vb{\xi})\frac{\partial G(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}-G(\vb{x},\vb{\xi})\frac{\partial u(\vb{\xi})}{\partial n_{\vb{\xi}}}\right)\d S_{\vb{\xi}}.
+\end{equation*}
+利用 \(u\) 和 \(G\) 满足的 Robin 边界条件，若 \(\beta\neq0\)，则
+\begin{equation*}
+	u(\vb{x})
+	=\int_\Omega G(\vb{x},\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	-\int_{\partial\Omega}G(\vb{x},\vb{\xi})\frac{s(\vb{\xi})}{\beta(\vb{\xi})}\d S_{\vb{\xi}}.
+\end{equation*}
+若 \(\alpha\neq0\)，则等价地可以写作
+\begin{equation*}
+	u(\vb{x})
+	=\int_\Omega G(\vb{x},\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	+\int_{\partial\Omega}\frac{\partial G(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}\frac{s(\vb{\xi})}{\alpha(\vb{\xi})}\d S_{\vb{\xi}}.
+\end{equation*}
+
+考虑 Dirichlet 条件，也即\(\beta(\vb{x})\equiv0\)，则对后一种表达形式取极限即可。
+
+考虑 Neumann 条件，也即\(\alpha(\vb{x})\equiv0\)，注意到对于原先的 Green 函数总有
+\begin{equation*}
+	1=\int_\Omega\nabla_{\vb{x}}^2G(\vb{x},\vb{\xi})\d\vb{x}
+	=\int_{\partial\Omega}\frac{\partial G(\vb{x},\vb{\xi})}{\partial n_{\vb{x}}}\d S_{\vb{x}}
+	=-\int_{\partial\Omega}\frac{\alpha(\vb{x})}{\beta(\vb{x})}G(\vb{x},\vb{\xi})\d S_{\vb{x}}.
+\end{equation*}
+因此当 \(\alpha(\vb{x})\equiv0\) 时，原先的 Green 函数发散，需要对 Green 方程重整化为
+\begin{equation*}
+	&\nabla_{\vb{\xi}}^2G_N(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad \vb{x},\vb{\xi}\in\Omega,\\
+	&\frac{\partial G_N(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}=\frac{1}{\left|\partial\Omega\right|},
+	\quad \vb{\xi}\in\partial\Omega.
+\end{equation*}
+式中 \(\left|\partial\Omega\right|\) 是边界的面积.同时，原先的非齐次项应当与边界条件相适应，即
+\begin{equation*}
+	\int_\Omega f(\vb{x})\d\vb{x}
+	=\int_{\partial\Omega}\frac{\partial u(\vb{x})}{\partial n_{\vb{x}}}\d S_{\vb{x}}
+	=\int_{\partial\Omega}\frac{s(\vb{x})-\alpha(\vb{x})u(\vb{x})}{\beta(\vb{x})}\d S_{\vb{x}}
+	=\int_{\partial\Omega}\frac{s(\vb{x})}{\beta(\vb{x})}\d S_{\vb{x}}.
+\end{equation*}
+进而可以给出
+\begin{equation*}
+	u(\vb{x})
+	=\frac{1}{\left|\partial\Omega\right|}\int_{\partial\Omega}u(\vb{\xi})\d S_{\vb{\xi}}
+	+\int_\Omega G_N(\vb{x},\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	-\int_{\partial\Omega}G_N(\vb{x},\vb{\xi})\frac{s(\vb{\xi})}{\beta(\vb{\xi})}\d S_{\vb{\xi}}.
+\end{equation*}
+注意到，给 \(G_N\) 增减任何仅关于 \(\vb{x}\) 的函数不影响 \(u\)，即 \(G_N\) 具有一个冗余自由度，故不妨选取规范条件
+\begin{equation*}
+	\int_{\partial\Omega}G_N(\vb{x},\vb{\xi})\d S_{\vb{\xi}}=0.
+\end{equation*}
+特别地，若 \(\alpha(\vb{x})/\beta(\vb{x})\) 为常数，满足该规范条件的 Neumann 型函数可以由 Robin 型函数取极限给出
+\begin{equation*}
+	G_N=\left.\left(G+\frac{\beta}{\alpha}\frac{1}{\left|\partial\Omega\right|}\right)\right|_{\alpha/\beta\to0}.
+\end{equation*}
+
+考虑无界空间，Green 函数必然是球对称的，以上结论可化简为
+\begin{equation*}
+	G(\vb{x},\vb{\xi})=
+	\begin{cases}
+		\dfrac{1}{2}\left|x-\xi\right|, & d=1,\\[6pt]
+		\dfrac{1}{2\pi}\ln\left|\vb{x}-\vb{\xi}\right|, & d=2,\\[6pt]
+		-\dfrac{1}{(d-2)\Omega_d}\left|\vb{x}-\vb{\xi}\right|^{2-d}, & d\geq3.
+	\end{cases}
+\end{equation*}
+式中 \(d\) 是空间维数，\(\Omega_d\) 是 \(d\) 维空间单位半径球面的面积，即
+\begin{equation*}
+	\Omega_d=\frac{2\pi^{d/2}}{\Gamma(d/2)}.
+\end{equation*}
+
+\begin{example}
+	一维有限区域，\(\Omega=\{x\in\mathbb{R}:x\in[0,L]\}\).
+	
+	采用 Robin 条件，记 \(\alpha/\beta=\kappa/L=\mathrm{const}\)，则Green 函数满足方程
+	\begin{equation*}
+		\frac{\partial^2G(x,\xi)}{\partial\xi^2}=\delta(x-\xi),\quad x,\xi\in[0,L],
+	\end{equation*}
+	\begin{equation*}
+		\left.\left(\frac{\kappa}{L}G+\frac{\partial G}{\partial\xi}\right)\right|_{\xi=L}=0,
+		\quad
+		\left.\left(\frac{\kappa}{L}G-\frac{\partial G}{\partial\xi}\right)\right|_{\xi=0}=0.
+	\end{equation*}
+	解得
+	\begin{equation*}
+		G(x,\xi)=\frac{(L+\kappa x_<)(\kappa x_>-L(\kappa+1))}{\kappa(\kappa+2)L}.
+	\end{equation*}
+	式中 \(x_>=\max\{x,\xi\},\ x_<=\min\{x,\xi\}\).对于 \(\kappa\to\infty\) 的 Dirichlet 条件，取极限得到
+	\begin{equation*}
+		G_D(x,\xi)=\frac{x_<(x_>-L)}{L}.
+	\end{equation*}
+	而对于 \(\kappa=0\) 的 Neumann 条件，重整化后的方程为
+	\begin{equation*}
+		\frac{\partial^2G_N(x,\xi)}{\partial\xi^2}=\delta(x-\xi),\quad x,\xi\in[0,L],
+	\end{equation*}
+	\begin{equation*}
+		\left.\frac{\partial G_N}{\partial\xi}\right|_{\xi=L}
+		=-\left.\frac{\partial G_N}{\partial\xi}\right|_{\xi=0}
+		=\frac{1}{2},\quad
+		\left.G_N\right|_{\xi=L}+\left.G_N\right|_{\xi=0}=0.
+	\end{equation*}
+	兼容性条件给出
+	\begin{equation*}
+		\int_0^L f(\xi)\d\xi=\frac{s(L)}{\beta(L)}+\frac{s(0)}{\beta(0)}.
+	\end{equation*}
+	解得
+	\begin{equation*}
+		G_N(x,\xi)=\frac{1}{2}\left|x-\xi\right|-\frac{L}{4}.
+	\end{equation*}
+	亦可以根据 \(\alpha/\beta=\kappa/L=\mathrm{const}\) 直接给出
+	\begin{equation*}
+		G_N=\left.\left(G+\frac{L}{2\kappa}\right)\right|_{\kappa\to0}.
+	\end{equation*}
+\end{example}
+
+\begin{example}
+	二维圆盘内部，\(\Omega=\{\vb{x}\in\mathbb{R}^2:\left|\vb{x}\right|\leq a\}\).
+	
+	采用 Robin 条件，记 \(\alpha/\beta=\kappa/a=\mathrm{const}\)，则Green 函数满足方程
+	\begin{equation*}
+		\nabla_{\vb{\xi}}^2G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad
+		\left|\vb{x}\right|,\left|\vb{\xi}\right|\leq a,
+	\end{equation*}
+	\begin{equation*}
+		\left.\left(\frac{\kappa}{a}G+\frac{\partial G}{\partial r'}\right)\right|_{r'=\left|\vb{\xi}\right|=a}=0.
+	\end{equation*}
+	记 \(\cos\gamma=\uv{x}\cdot\uv{\xi}\)，解得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})
+		=\frac{1}{2\pi}\ln\frac{\left|\vb{x}-\vb{\xi}\right|}{a}-\frac{1}{2\pi\kappa}
+		+\frac{1}{2\pi}\sum_{n=1}^\infty\frac{\kappa-n}{n(\kappa+n)}\left(\frac{\left|\vb{x}\right|\left|\vb{\xi}\right|}{a^2}\right)^n\cos(n\gamma).
+	\end{equation*}
+	对于 \(\kappa\to\infty\) 的 Dirichlet 条件，取极限得到
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})
+		=\frac{1}{2\pi}\ln\frac{a\left|\vb{x}-\vb{\xi}\right|}{\left|\vb{\xi}\right|\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}.
+	\end{equation*}
+	而对于 \(\kappa=0\) 的 Neumann 条件，重整化后的方程为
+	\begin{equation*}
+		\nabla_{\vb{\xi}}^2G_N(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad
+		\left|\vb{x}\right|,\left|\vb{\xi}\right|\leq a,
+	\end{equation*}
+	\begin{equation*}
+		\left.\frac{\partial G_N}{\partial r'}\right|_{r'=\left|\vb{\xi}\right|=a}=\frac{1}{2\pi a},\quad
+		\int_{\left|\vb{\xi}\right|=a}G_N(\vb{x},\vb{\xi})\d S_{\vb{\xi}}=0.
+	\end{equation*}
+	兼容性条件给出
+	\begin{equation*}
+		\int_{\left|\vb{x}\right|\leq a}f(\vb{x})\d\vb{x}
+		=\int_{\left|\vb{x}\right|=a}\frac{s(\vb{x})}{\beta(\vb{x})}\d S_{\vb{x}}.
+	\end{equation*}
+	解得
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})
+		=\frac{1}{2\pi}\ln\frac{\left|\vb{x}-\vb{\xi}\right|}{a}
+		-\frac{1}{2\pi}\sum_{n=1}^\infty\frac{1}{n}\left(\frac{\left|\vb{x}\right|\left|\vb{\xi}\right|}{a^2}\right)^n\cos(n\gamma)
+	\end{equation*}
+	\begin{equation*}
+		=\frac{1}{2\pi}\ln\frac{\left|\vb{\xi}\right|\left|\vb{x}-\vb{\xi}\right|\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}{a^3}.
+	\end{equation*}
+	亦可以根据 \(\alpha/\beta=\kappa/a=\mathrm{const}\) 直接给出
+	\begin{equation*}
+		G_N=\left.\left(G+\frac{1}{2\pi\kappa}\right)\right|_{\kappa\to0}.
+	\end{equation*}
+\end{example}
+
+\begin{example}
+	二维圆盘外部，\(\Omega=\{\vb{x}\in\mathbb{R}^2:\left|\vb{x}\right|\geq a\}\).
+	
+	采用 Robin 条件，记 \(\alpha/\beta=\kappa/a=\mathrm{const}\)，则Green 函数满足方程
+	\begin{equation*}
+		\nabla_{\vb{\xi}}^2G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad
+		\left|\vb{x}\right|,\left|\vb{\xi}\right|\geq a,
+	\end{equation*}
+	\begin{equation*}
+		\left.\left(\frac{\kappa}{a}G-\frac{\partial G}{\partial r'}\right)\right|_{r'=\left|\vb{\xi}\right|=a}=0,
+		\quad
+		\left.G\right|_{\left|\vb{\xi}\right|\to\infty}\sim\frac{1}{2\pi}\ln\left|\vb{\xi}\right|.
+	\end{equation*}
+	记 \(\cos\gamma=\uv{x}\cdot\uv{\xi}\)，解得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})
+		=\frac{1}{2\pi}\ln\frac{\left|\vb{x}-\vb{\xi}\right|}{\left|\vb{x}\right|}
+		+\frac{1}{2\pi}\sum_{n=1}^\infty\frac{\kappa-n}{n(\kappa+n)}\left(\frac{a^2}{\left|\vb{x}\right|\left|\vb{\xi}\right|}\right)^n\cos(n\gamma).
+	\end{equation*}
+	对于 \(\kappa\to\infty\) 的 Dirichlet 条件，取极限得到
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})
+		=\frac{1}{2\pi}\ln\frac{\left|\vb{x}-\vb{\xi}\right|}{\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}.
+	\end{equation*}
+	对于 \(\kappa=0\) 的 Neumann 条件，由于附加了无穷远点源对数增长条件，发散项被排除，所以不需要重整化，直接取极限得到
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})
+		=\frac{1}{2\pi}\ln\frac{\left|\vb{x}-\vb{\xi}\right|\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}{\left|\vb{x}\right|^2}.
+	\end{equation*}
+	兼容性条件给出
+	\begin{equation*}
+		\int_{\left|\vb{x}\right|\geq a}f(\vb{x})\d\vb{x}
+		=Q_\infty+\int_{\left|\vb{x}\right|=a}\frac{s(\vb{x})}{\beta(\vb{x})}\d S_{\vb{x}}.
+	\end{equation*}
+	等式右侧的 \(Q_\infty\) 为无穷远处对数型场的通量.
+\end{example}
+
+\begin{example}
+	三维球域内部，\(\Omega=\{\vb{x}\in\mathbb{R}^3:\left|\vb{x}\right|\leq a\}\).
+	
+	采用 Robin 条件，记 \(\alpha/\beta=\kappa/a=\mathrm{const}\)，则Green 函数满足方程
+	\begin{equation*}
+		\nabla_{\vb{\xi}}^2G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad
+		\left|\vb{x}\right|,\left|\vb{\xi}\right|\leq a,
+	\end{equation*}
+	\begin{equation*}
+		\left.\left(\frac{\kappa}{a}G+\frac{\partial G}{\partial r'}\right)\right|_{r'=\left|\vb{\xi}\right|=a}=0.
+	\end{equation*}
+	解得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})
+		=-\frac{1}{4\pi\left|\vb{x}-\vb{\xi}\right|}
+		+\sum_{l=0}^\infty\sum_{m=-l}^l\frac{1}{2l+1}\frac{\left|\vb{x}\right|^l\left|\vb{\xi}\right|^l}{a^{2l+1}}\frac{\kappa-l-1}{\kappa+l}Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	对于 \(\kappa\to\infty\) 的 Dirichlet 条件，取极限得到
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})
+		=-\frac{1}{4\pi\left|\vb{x}-\vb{\xi}\right|}
+		+\frac{a}{4\pi\left|\vb{\xi}\right|}\frac{1}{\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}.
+	\end{equation*}
+	而对于 \(\kappa=0\) 的 Neumann 条件，重整化后的方程为
+	\begin{equation*}
+		\nabla_{\vb{\xi}}^2G_N(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad
+		\left|\vb{x}\right|,\left|\vb{\xi}\right|\leq a,
+	\end{equation*}
+	\begin{equation*}
+		\left.\frac{\partial G_N}{\partial r'}\right|_{r'=\left|\vb{\xi}\right|=a}=\frac{1}{4\pi a^2},\quad
+		\int_{\left|\vb{\xi}\right|=a}G_N(\vb{x},\vb{\xi})\d S_{\vb{\xi}}=0.
+	\end{equation*}
+	兼容性条件给出
+	\begin{equation*}
+		\int_{\left|\vb{x}\right|\leq a}f(\vb{x})\d\vb{x}
+		=\int_{\left|\vb{x}\right|=a}\frac{s(\vb{x})}{\beta(\vb{x})}\d S_{\vb{x}}.
+	\end{equation*}
+	解得
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})
+		=-\frac{1}{4\pi\left|\vb{x}-\vb{\xi}\right|}
+		+\frac{1}{4\pi a}\left(2-\frac{a^2}{\left|\vb{\xi}\right|\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}
+		+\ln\frac{a^2-\vb{x}\cdot\vb{\xi}+\left|\vb{\xi}\right|\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}{2a^2}\right).
+	\end{equation*}
+	亦可以根据 \(\alpha/\beta=\kappa/a=\mathrm{const}\) 直接给出
+	\begin{equation*}
+		G_N=\left.\left(G+\frac{1}{4\pi\kappa a}\right)\right|_{\kappa\to0}.
+	\end{equation*}
+\end{example}
+
+\begin{example}
+	三维球域外部，\(\Omega=\{\vb{x}\in\mathbb{R}^3:\left|\vb{x}\right|\geq a\}\).
+	
+	采用 Robin 条件，记 \(\alpha/\beta=\kappa/a=\mathrm{const}\)，则Green 函数满足方程
+	\begin{equation*}
+		\nabla_{\vb{\xi}}^2G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad
+		\left|\vb{x}\right|,\left|\vb{\xi}\right|\geq a,
+	\end{equation*}
+	\begin{equation*}
+		\left.\left(\frac{\kappa}{a}G-\frac{\partial G}{\partial r'}\right)\right|_{r'=\left|\vb{\xi}\right|=a}=0,
+		\quad
+		\left.G\right|_{\left|\vb{\xi}\right|\to\infty}\to0.
+	\end{equation*}
+	解得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})
+		=-\frac{1}{4\pi\left|\vb{x}-\vb{\xi}\right|}
+		+\sum_{l=0}^\infty\sum_{m=-l}^l\frac{1}{2l+1}\frac{a^{2l+1}}{\left|\vb{x}\right|^{l+1}\left|\vb{\xi}\right|^{l+1}}\frac{\kappa-l}{\kappa+l+1}Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	对于 \(\kappa\to\infty\) 的 Dirichlet 条件，取极限得到
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})
+		=-\frac{1}{4\pi\left|\vb{x}-\vb{\xi}\right|}
+		+\frac{a}{4\pi\left|\vb{\xi}\right|}\frac{1}{\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}.
+	\end{equation*}
+	对于 \(\kappa=0\) 的 Neumann 条件，由于附加了无穷远衰减条件，常数零模被排除，所以不需要重整化，直接取极限得到
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})
+		=-\frac{1}{4\pi\left|\vb{x}-\vb{\xi}\right|}
+		+\frac{1}{4\pi a}\left(-\frac{a^2}{\left|\vb{\xi}\right|\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}
+		+\ln\frac{a^2-\vb{x}\cdot\vb{\xi}+\left|\vb{\xi}\right|\left|\vb{x}-\dfrac{a^2}{\left|\vb{\xi}\right|^2}\vb{\xi}\right|}{\left|\vb{x}\right|\left|\vb{\xi}\right|-\vb{x}\cdot\vb{\xi}}\right).
+	\end{equation*}
+	兼容性条件给出
+	\begin{equation*}
+		\int_{\left|\vb{x}\right|\geq a}f(\vb{x})\d\vb{x}
+		=Q_\infty+\int_{\left|\vb{x}\right|=a}\frac{s(\vb{x})}{\beta(\vb{x})}\d S_{\vb{x}}.
+	\end{equation*}
+	等式右侧的 \(Q_\infty\) 为无穷远处一次反比型场的通量.
+\end{example}
+
+\begin{notes}
+	以上计算中用到了如下数学公式：
+	\begin{equation*}
+		&\sum_{l=0}^\infty t^lP_l(\mu)=\frac{1}{\sqrt{1-2\mu t+t^2}},\quad |t|<1,\\
+		&\sum_{l=1}^\infty\frac{t^l}{l}P_l(\mu)
+		=\ln\frac{2}{1-\mu t+\sqrt{1-2\mu t+t^2}},\quad |t|<1,\\
+		&\sum_{l=1}^\infty\frac{t^{l+1}}{l}P_l(\mu)
+		=\ln\frac{t-\mu+\sqrt{1-2\mu t+t^2}}{1-\mu},\quad |t|<1.
+	\end{equation*}
+\end{notes}
+
+\subsection{Helmholtz 型边值问题}
+
+在区域 \(\Omega\) 中考虑含源 Helmholtz 型边值问题
+\begin{equation*}
+	&(\nabla_{\vb{x}}^2+k^2)u(\vb{x})=f(\vb{x}),\quad \vb{x}\in\Omega,\\
+	&\alpha(\vb{x})u(\vb{x})+\beta(\vb{x})\frac{\partial u(\vb{x})}{\partial n_{\vb{x}}}=s(\vb{x}),\quad \vb{x}\in\partial\Omega.
+\end{equation*}
+取 Green 函数满足同一齐次边界条件
+\begin{equation*}
+	&(\nabla_{\vb{\xi}}^2+k^2)G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),\quad \vb{x},\vb{\xi}\in\Omega,\\
+	&\alpha(\vb{\xi})G(\vb{x},\vb{\xi})+\beta(\vb{\xi})\frac{\partial G(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}=0,
+	\quad \vb{\xi}\in\partial\Omega.
+\end{equation*}
+由于 Green 第二恒等式中 \(k^2uG-k^2Gu\) 正好抵消，故表示公式与 Laplace 型方程具有同一结构：
+\begin{equation*}
+	u(\vb{x})
+	=\int_\Omega G(\vb{x},\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	+\int_{\partial\Omega}\left(u(\vb{\xi})\frac{\partial G(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}-G(\vb{x},\vb{\xi})\frac{\partial u(\vb{\xi})}{\partial n_{\vb{\xi}}}\right)\d S_{\vb{\xi}}.
+\end{equation*}
+若 \(\beta\neq0\)，利用 Robin 条件化简为
+\begin{equation*}
+	u(\vb{x})
+	=\int_\Omega G(\vb{x},\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	-\int_{\partial\Omega}G(\vb{x},\vb{\xi})\frac{s(\vb{\xi})}{\beta(\vb{\xi})}\d S_{\vb{\xi}}.
+\end{equation*}
+若 \(\alpha\neq0\)，也可等价写为
+\begin{equation*}
+	u(\vb{x})
+	=\int_\Omega G(\vb{x},\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	+\int_{\partial\Omega}\frac{\partial G(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}\frac{s(\vb{\xi})}{\alpha(\vb{\xi})}\d S_{\vb{\xi}}.
+\end{equation*}
+Dirichlet 边界是 \(\beta\equiv0\) 的极限，此时相应 Green 函数记作 \(G_D\). Neumann 边界是 \(\alpha\equiv0\) 的极限，非共振时相应 Green 函数记作 \(G_N\)，并直接满足齐次 Neumann 条件；当 \(k=0\) 或更一般地 \(k^2\) 落在 Neumann 谱上时，需要改用下文的共振处理。
+
+若先取一个只负责源点奇性的基本解 \(\Phi_k(\vb{x},\vb{\xi})\)，即
+\begin{equation*}
+	(\nabla_{\vb{\xi}}^2+k^2)\Phi_k(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),
+\end{equation*}
+则有界区域中的 Green 函数可写为
+\begin{equation*}
+	G(\vb{x},\vb{\xi})=\Phi_k(\vb{x},\vb{\xi})+H_k(\vb{x},\vb{\xi}),
+\end{equation*}
+其中 \(H_k\) 对 \(\vb{\xi}\) 满足齐次 Helmholtz 方程，并由边界条件确定为
+\begin{equation*}
+	&(\nabla_{\vb{\xi}}^2+k^2)H_k(\vb{x},\vb{\xi})=0,\quad \vb{\xi}\in\Omega,\\
+	&\alpha(\vb{\xi})H_k(\vb{x},\vb{\xi})+\beta(\vb{\xi})\frac{\partial H_k(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}
+	=-\alpha(\vb{\xi})\Phi_k(\vb{x},\vb{\xi})-\beta(\vb{\xi})\frac{\partial \Phi_k(\vb{x},\vb{\xi})}{\partial n_{\vb{\xi}}}.
+\end{equation*}
+这样做只是把局域奇性和边界修正分开；若非齐次齐次问题只有零解，则所得 \(G\) 与上面的表示公式完全等价。
+
+在自伴 Robin 条件下，设
+\begin{equation*}
+	-\nabla^2\phi_n=\lambda_n\phi_n,
+	\quad
+	\alpha\phi_n+\beta\frac{\partial\phi_n}{\partial n}=0,
+	\quad
+	\int_\Omega \phi_m^*(\vb{x})\phi_n(\vb{x})\d\vb{x}=\delta_{mn}.
+\end{equation*}
+当 \(k^2\neq\lambda_n\) 对所有 \(n\) 成立时，Green 函数也可写成本征谱展开
+\begin{equation*}
+	G(\vb{x},\vb{\xi})=\sum_n\frac{\phi_n(\vb{x})\phi_n^*(\vb{\xi})}{k^2-\lambda_n}.
+\end{equation*}
+这只是前述 Green 函数的一种构造方式：对 \(\vb{\xi}\) 作用 \(\nabla^2+k^2\) 后，由完备性立刻得到 \(\delta(\vb{x}-\vb{\xi})\)，边界条件则逐项继承自 \(\phi_n\). 代回表示公式，在 \(\beta\neq0\) 的写法下，解的系数为
+\begin{equation*}
+	u(\vb{x})=\sum_n\frac{\phi_n(\vb{x})}{k^2-\lambda_n}
+	\left[\int_\Omega \phi_n^*(\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	-\int_{\partial\Omega}\phi_n^*(\vb{\xi})\frac{s(\vb{\xi})}{\beta(\vb{\xi})}\d S_{\vb{\xi}}\right].
+\end{equation*}
+若取 Dirichlet 极限，则应改用 \(\alpha\neq0\) 的表示公式，把方括号中的边界项等价替换为
+\begin{equation*}
+	\int_{\partial\Omega}\frac{\partial\phi_n^*(\vb{\xi})}{\partial n_{\vb{\xi}}}\frac{s(\vb{\xi})}{\alpha(\vb{\xi})}\d S_{\vb{\xi}}.
+\end{equation*}
+若 \(k^2\) 等于某些本征值 \(\lambda_j\)，则普通 Green 函数出现极点. 此时可解的充要条件是每个共振模都满足 Fredholm 兼容性条件
+\begin{equation*}
+	\int_\Omega \phi_j^*(\vb{\xi})f(\vb{\xi})\d\vb{\xi}
+	=\int_{\partial\Omega}\phi_j^*(\vb{\xi})\frac{s(\vb{\xi})}{\beta(\vb{\xi})}\d S_{\vb{\xi}},
+	\quad \lambda_j=k^2.
+\end{equation*}
+若兼容性成立，解还可任意叠加共振本征函数；若要求解与共振子空间正交，则可使用去掉极点的约化 Green 函数
+\begin{equation*}
+	G^\perp(\vb{x},\vb{\xi})=
+	\sum_{\lambda_n\neq k^2}\frac{\phi_n(\vb{x})\phi_n^*(\vb{\xi})}{k^2-\lambda_n}.
+\end{equation*}
+
+自由空间情形是上述结果在边界移到无穷远后的特例. 设 \(R=\left|\vb{x}-\vb{\xi}\right|\)，向外传播的基本解为
+\begin{equation*}
+	G(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}\left(\frac{k}{2\pi R}\right)^{d/2-1}H_{d/2-1}^{(1)}(kR),
+\end{equation*}
+该基本解可由 Fourier 积分表示导出。对 Helmholtz 方程作 Fourier 变换，得
+\begin{equation*}
+	G(\vb{x},\vb{\xi})
+	=\frac{1}{(2\pi)^d}\int_{\mathbb{R}^d}\frac{e^{\mathrm{i}\vb{p}\cdot(\vb{x}-\vb{\xi})}}{k^2-p^2}\d^d\vb{p}.
+\end{equation*}
+利用高维球坐标将角度积分化为 Bessel 函数，
+\begin{equation*}
+	G(R)
+	=(2\pi)^{-d/2}R^{-d/2+1}\int_0^\infty\frac{p^{d/2}J_{d/2-1}(pR)}{k^2-p^2}\d p.
+\end{equation*}
+选取向外传播的围道（即 \(k\) 取正小虚部 \(k+\mathrm{i}0^+\)），利用 Sommerfeld 积分公式
+\begin{equation*}
+	\int_0^\infty\frac{p^{\nu+1}J_\nu(pR)}{k^2-p^2}\d p
+	=-\frac{\mathrm{i}\pi}{2}k^\nu H_\nu^{(1)}(kR),\quad
+	\nu>-\frac{1}{2},\ R>0,
+\end{equation*}
+代入即得上述 Hankel 函数表达式。
+
+它满足无穷远处的 Sommerfeld 条件. 若令 \(k\) 从上半平面趋近实轴，可得到向外传播解；若作 \(k\mapsto\mathrm{i}\mu\) 的延拓，则得到衰减型基本解
+\begin{equation*}
+	(\nabla^2-\mu^2)G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),
+	\quad
+	G(\vb{x},\vb{\xi})=-\frac{1}{2\pi}\left(\frac{\mu}{2\pi R}\right)^{d/2-1}K_{d/2-1}(\mu R).
+\end{equation*}
+源点附近的主奇性不依赖于 \(k\)，因此
+\begin{equation*}
+	G(\vb{x},\vb{\xi})\big|_{R\to0}=\begin{cases}
+		\dfrac{1}{2\mathrm{i}k}+\dfrac{R}{2}+\mathcal{O}(R^2), & d=1,\\[6pt]
+		\dfrac{1}{2\pi}\ln R+\dfrac{1}{2\pi}\left(\ln\dfrac{k}{2}+\gamma_E\right)-\dfrac{\mathrm{i}}{4}+\mathcal{O}(R^2\ln R), & d=2,\\[8pt]
+		-\dfrac{1}{4\pi R}+\mathcal{O}(1), & d=3,\\[8pt]
+		-\dfrac{1}{4\pi^2R^2}+\mathcal{O}(\ln R), & d=4,\\[8pt]
+		-\dfrac{1}{(d-2)\Omega_d}R^{2-d}+\mathcal{O}(R^{4-d}), & d>4.
+	\end{cases}
+\end{equation*}
+而在 \(kR\gg1\) 时，向外传播解具有
+\begin{equation*}
+	G(\vb{x},\vb{\xi})
+	\sim -\frac{\mathrm{i}}{4}\left(\frac{k}{2\pi R}\right)^{d/2-1}
+	\sqrt{\frac{2}{\pi kR}}\exp\left[\mathrm{i}\left(kR-\frac{(d-2)\pi}{4}-\frac{\pi}{4}\right)\right],
+\end{equation*}
+即幅度按 \(R^{-(d-1)/2}\) 衰减. 特别地，
+\begin{equation*}
+	G(x,\xi)=\frac{e^{\mathrm{i}k|x-\xi|}}{2\mathrm{i}k},\quad
+	G(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}H_0^{(1)}(kR),\quad
+	G(\vb{x},\vb{\xi})=-\frac{e^{\mathrm{i}kR}}{4\pi R}
+\end{equation*}
+分别对应 \(d=1,2,3\) 的自由空间.
+
+\begin{example}
+	一维有限区域，\(\Omega=\{x\in\mathbb{R}:0\leq x\leq L\}\).
+	
+	Green 函数满足
+	\begin{equation*}
+		\frac{\partial^2G(x,\xi)}{\partial\xi^2}+k^2G(x,\xi)=\delta(x-\xi),\quad x,\xi\in[0,L],
+	\end{equation*}
+	\begin{equation*}
+		\left.\left(\frac{\kappa}{L}G+\frac{\partial G}{\partial\xi}\right)\right|_{\xi=L}=0,
+		\quad
+		\left.\left(\frac{\kappa}{L}G-\frac{\partial G}{\partial\xi}\right)\right|_{\xi=0}=0.
+	\end{equation*}
+	取
+	\begin{equation*}
+		u_<(\xi)=\cos k\xi+\frac{\kappa}{kL}\sin k\xi,
+		\quad
+		u_>(\xi)=\cos k(L-\xi)+\frac{\kappa}{kL}\sin k(L-\xi),
+	\end{equation*}
+	则
+	\begin{equation*}
+		G(x,\xi)=\frac{u_<(x_<)u_>(x_>)}{W},
+		\quad
+		W=k\sin kL\left(1-\frac{\kappa^2}{k^2L^2}\right)-\frac{2\kappa}{L}\cos kL.
+	\end{equation*}
+	式中 \(x_<=\min\{x,\xi\},\ x_>=\max\{x,\xi\}\). 分母 \(W=0\) 时存在满足齐次 Robin 条件的本征模，因此 Green 函数出现极点；此时只有源项与边界项满足对应的一维兼容性条件时，非齐次问题才可解。
+	
+	Dirichlet 极限为
+	\begin{equation*}
+		G_D(x,\xi)=-\frac{\sin(kx_<)\sin(k(L-x_>))}{k\sin kL}.
+	\end{equation*}
+	Neumann 极限为
+	\begin{equation*}
+		G_N(x,\xi)=\frac{\cos(kx_<)\cos(k(L-x_>))}{k\sin kL}.
+	\end{equation*}
+	当 \(kL=n\pi\) 时，上述极限分别对应 Dirichlet 或 Neumann 共振. 特别地，\(G_N\) 在 \(k\to0\) 时含有常数零模极点
+	\begin{equation*}
+		G_N(x,\xi)=\frac{1}{k^2L}+\frac{x+\xi+|x-\xi|}{2}-\frac{x^2+\xi^2}{2L}-\frac{L}{3}+\mathcal{O}(k^2),
+	\end{equation*}
+	去掉 \(1/(k^2L)\) 并重新选取 Neumann 规范后，回到 Laplace 型 Neumann Green 函数.
+\end{example}
+
+\begin{example}
+	二维圆盘内部，\(\Omega=\{\vb{x}\in\mathbb{R}^2:|\vb{x}|\leq a\}\).
+	
+	记 \(r=|\vb{x}|,\ r'=|\vb{\xi}|,\ \theta-\theta'=\gamma,\ z=ka\). Green 函数满足
+	\begin{equation*}
+		(\nabla_{\vb{\xi}}^2+k^2)G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),
+		\quad
+		\left.\left(\frac{\kappa}{a}G+\frac{\partial G}{\partial r'}\right)\right|_{r'=a}=0.
+	\end{equation*}
+	分解为自由空间基本解 \(\Phi_k=-\mathrm{i}H_0^{(1)}(kR)/4\) 与正则部分 \(H_k\) 之和。
+	对于 \(r<r'\)，Graf 加法公式给出
+	\begin{equation*}
+		H_0^{(1)}(k|\vb{x}-\vb{\xi}|)=\sum_{n=-\infty}^{\infty}J_n(kr)H_n^{(1)}(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	设 \(H_k=\sum_{n}A_nJ_n(kr)J_n(kr')e^{\mathrm{i}n\gamma}\)，代入 Robin 边界条件逐项定出系数，得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}H_0^{(1)}(k|\vb{x}-\vb{\xi}|)
+		+\frac{\mathrm{i}}{4}\sum_{n=-\infty}^{\infty}
+		\frac{\kappa H_n^{(1)}(z)+z{H_n^{(1)}}'(z)}{\kappa J_n(z)+zJ_n'(z)}
+		J_n(kr)J_n(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	这里撇号表示对整个自变量求导. 分母 \(\kappa J_n(z)+zJ_n'(z)\) 的零点给出圆盘内 Robin 本征频率；在这些频率上 Green 函数有极点，需要使用谱展开中的兼容性条件。
+	
+	Dirichlet 极限为
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}H_0^{(1)}(k|\vb{x}-\vb{\xi}|)
+		+\frac{\mathrm{i}}{4}\sum_{n=-\infty}^{\infty}
+		\frac{H_n^{(1)}(z)}{J_n(z)}J_n(kr)J_n(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	Neumann 极限为
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}H_0^{(1)}(k|\vb{x}-\vb{\xi}|)
+		+\frac{\mathrm{i}}{4}\sum_{n=-\infty}^{\infty}
+		\frac{{H_n^{(1)}}'(z)}{J_n'(z)}J_n(kr)J_n(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	当 \(k\to0\) 且 \(\kappa\neq0\) 时，展开式回到二维 Laplace 圆盘 Robin Green 函数；若再取 Neumann 极限，则 \(n=0\) 模产生零模极点，必须先去掉常数模再比较 Laplace 极限. 源点附近仍有
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})=\frac{1}{2\pi}\ln|\vb{x}-\vb{\xi}|+\mathcal{O}(1),
+	\end{equation*}
+	边界只改变正则部分.
+\end{example}
+
+\begin{example}
+	二维圆盘外部，\(\Omega=\{\vb{x}\in\mathbb{R}^2:|\vb{x}|\geq a\}\).
+	
+	仍记 \(r=|\vb{x}|,\ r'=|\vb{\xi}|,\ \theta-\theta'=\gamma,\ z=ka\). 外边界的外法线在 \(r'=a\) 处指向圆心，故 Robin 条件写为
+	\begin{equation*}
+		(\nabla_{\vb{\xi}}^2+k^2)G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),
+		\quad
+		\left.\left(\frac{\kappa}{a}G-\frac{\partial G}{\partial r'}\right)\right|_{r'=a}=0,
+	\end{equation*}
+	分解为自由空间基本解与正则部分之和。
+	对于 \(r>r'\)，Graf 加法公式给出
+	\begin{equation*}
+		H_0^{(1)}(k|\vb{x}-\vb{\xi}|)=\sum_{n=-\infty}^{\infty}H_n^{(1)}(kr)J_n(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	设正则部分展开为 \(\sum_{n}B_nH_n^{(1)}(kr)H_n^{(1)}(kr')e^{\mathrm{i}n\gamma}\)，代入 Robin 边界条件逐项定出系数，得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}H_0^{(1)}(k|\vb{x}-\vb{\xi}|)
+		+\frac{\mathrm{i}}{4}\sum_{n=-\infty}^{\infty}
+		\frac{\kappa J_n(z)-zJ_n'(z)}{\kappa H_n^{(1)}(z)-z{H_n^{(1)}}'(z)}
+		H_n^{(1)}(kr)H_n^{(1)}(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	Dirichlet 极限为
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}H_0^{(1)}(k|\vb{x}-\vb{\xi}|)
+		+\frac{\mathrm{i}}{4}\sum_{n=-\infty}^{\infty}
+		\frac{J_n(z)}{H_n^{(1)}(z)}H_n^{(1)}(kr)H_n^{(1)}(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	Neumann 极限为
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})=-\frac{\mathrm{i}}{4}H_0^{(1)}(k|\vb{x}-\vb{\xi}|)
+		+\frac{\mathrm{i}}{4}\sum_{n=-\infty}^{\infty}
+		\frac{J_n'(z)}{{H_n^{(1)}}'(z)}H_n^{(1)}(kr)H_n^{(1)}(kr')e^{\mathrm{i}n\gamma}.
+	\end{equation*}
+	与内部问题不同，外部向外传播条件通常保证实频唯一性；分母在复 \(k\) 平面中的零点对应散射共振. 低频 \(k\to0\) 时二维外问题会出现 \(\ln k\) 型项，因此先取 \(k\to0\) 与先规定无穷远处对数增长常数一般不交换.
+\end{example}
+
+\begin{example}
+	三维球域内部，\(\Omega=\{\vb{x}\in\mathbb{R}^3:|\vb{x}|\leq a\}\).
+	
+	记 \(r=|\vb{x}|,\ r'=|\vb{\xi}|,\ z=ka\). Green 函数满足
+	\begin{equation*}
+		(\nabla_{\vb{\xi}}^2+k^2)G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),
+		\quad
+		\left.\left(\frac{\kappa}{a}G+\frac{\partial G}{\partial r'}\right)\right|_{r'=a}=0.
+	\end{equation*}
+	分解为自由空间基本解 \(\Phi_k=-e^{\mathrm{i}kR}/(4\pi R)\) 与正则部分 \(H_k\) 之和。
+	球面波加法公式给出
+	\begin{equation*}
+		\frac{e^{\mathrm{i}k|\vb{x}-\vb{\xi}|}}{4\pi|\vb{x}-\vb{\xi}|}=\mathrm{i}k\sum_{l=0}^{\infty}j_l(kr_<)h_l^{(1)}(kr_>)\sum_{m=-l}^{l}Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	设 \(H_k=\sum_{lm}B_{lm}j_l(kr)j_l(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi})\)，代入 Robin 边界条件逐项定出系数，得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})=-\frac{e^{\mathrm{i}k|\vb{x}-\vb{\xi}|}}{4\pi|\vb{x}-\vb{\xi}|}
+		+\mathrm{i}k\sum_{l=0}^{\infty}\sum_{m=-l}^{l}
+		\frac{\kappa h_l^{(1)}(z)+z{h_l^{(1)}}'(z)}{\kappa j_l(z)+zj_l'(z)}
+		j_l(kr)j_l(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	分母 \(\kappa j_l(z)+zj_l'(z)\) 的零点是球内 Robin 本征频率. Dirichlet 极限为
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})=-\frac{e^{\mathrm{i}k|\vb{x}-\vb{\xi}|}}{4\pi|\vb{x}-\vb{\xi}|}
+		+\mathrm{i}k\sum_{l=0}^{\infty}\sum_{m=-l}^{l}
+		\frac{h_l^{(1)}(z)}{j_l(z)}j_l(kr)j_l(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	Neumann 极限为
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})=-\frac{e^{\mathrm{i}k|\vb{x}-\vb{\xi}|}}{4\pi|\vb{x}-\vb{\xi}|}
+		+\mathrm{i}k\sum_{l=0}^{\infty}\sum_{m=-l}^{l}
+		\frac{{h_l^{(1)}}'(z)}{j_l'(z)}j_l(kr)j_l(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	源点附近的奇性为 \(-1/(4\pi|\vb{x}-\vb{\xi}|)\)，其余各项正则. 当 \(k\to0\) 且 \(\kappa\neq0\) 时，上式逐项回到三维球内 Laplace Robin Green 函数；Neumann 极限中 \(l=0\) 模给出常数零模极点，去极点后才得到 Laplace 型 \(G_N\).
+\end{example}
+
+\begin{example}
+	三维球域外部，\(\Omega=\{\vb{x}\in\mathbb{R}^3:|\vb{x}|\geq a\}\).
+	
+	外法线在 \(r'=a\) 处指向圆心，故
+	\begin{equation*}
+		(\nabla_{\vb{\xi}}^2+k^2)G(\vb{x},\vb{\xi})=\delta(\vb{x}-\vb{\xi}),
+		\quad
+		\left.\left(\frac{\kappa}{a}G-\frac{\partial G}{\partial r'}\right)\right|_{r'=a}=0,
+	\end{equation*}
+	类似地分解，设正则部分展开为 \(\sum_{lm}C_{lm}h_l^{(1)}(kr)h_l^{(1)}(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi})\)，代入 Robin 边界条件逐项定出系数，得
+	\begin{equation*}
+		G(\vb{x},\vb{\xi})=-\frac{e^{\mathrm{i}k|\vb{x}-\vb{\xi}|}}{4\pi|\vb{x}-\vb{\xi}|}
+		+\mathrm{i}k\sum_{l=0}^{\infty}\sum_{m=-l}^{l}
+		\frac{\kappa j_l(z)-zj_l'(z)}{\kappa h_l^{(1)}(z)-z{h_l^{(1)}}'(z)}
+		h_l^{(1)}(kr)h_l^{(1)}(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	Dirichlet 极限为
+	\begin{equation*}
+		G_D(\vb{x},\vb{\xi})=-\frac{e^{\mathrm{i}k|\vb{x}-\vb{\xi}|}}{4\pi|\vb{x}-\vb{\xi}|}
+		+\mathrm{i}k\sum_{l=0}^{\infty}\sum_{m=-l}^{l}
+		\frac{j_l(z)}{h_l^{(1)}(z)}h_l^{(1)}(kr)h_l^{(1)}(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	Neumann 极限为
+	\begin{equation*}
+		G_N(\vb{x},\vb{\xi})=-\frac{e^{\mathrm{i}k|\vb{x}-\vb{\xi}|}}{4\pi|\vb{x}-\vb{\xi}|}
+		+\mathrm{i}k\sum_{l=0}^{\infty}\sum_{m=-l}^{l}
+		\frac{j_l'(z)}{{h_l^{(1)}}'(z)}h_l^{(1)}(kr)h_l^{(1)}(kr')Y_{lm}(\uv{x})Y_{lm}^*(\uv{\xi}).
+	\end{equation*}
+	外部三维问题的特殊性在于无穷远处的辐射条件会排除齐次入射波，但允许复频散射共振. 当 \(k\to0\) 时，向外传播条件退化为衰减条件；此时三维情形没有二维的 \(\ln k\) 异常，Dirichlet 与一般 Robin 情形可较直接地回到静态外球问题. 若 \(\kappa=0\)，最低角动量通道决定 Neumann 低频散射的主导项，因而应先固定无穷远衰减规范，再和 Laplace 型外问题比较.
+\end{example}

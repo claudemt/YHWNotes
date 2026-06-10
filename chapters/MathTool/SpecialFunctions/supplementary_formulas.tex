@@ -1,0 +1,205 @@
+\section{补充公式}
+\subsection{傅里叶变换约定}
+做傅里叶变换时，采用 \((2\pi)^{-1/2}\) 的对称因子，变换对 \(\vb{r} \leftrightarrow \vb{k}\), \(t \leftrightarrow \omega\) 约定为
+\begin{equation*}
+	F(\vb{r}, t) &= \frac{1}{(2\pi)^{2}} \int \d \vb{k} \int \d \omega \, F(\vb{k}, \omega) \, e^{i(\vb{k} \cdot \vb{r} - \omega t)}. \\
+	F(\vb{k}, \omega) &= \frac{1}{(2\pi)^{2}} \int \d \vb{r} \int \d t \, F(\vb{r}, t) \, e^{-i(\vb{k} \cdot \vb{r} - \omega t)}. \\
+\end{equation*}
+
+下文考虑的 \(F(\vb{r}, t)\) 总是实的，\(\omega\) 的取值总是正的，因此
+\begin{equation*}
+	F(\vb{k}, -\omega) = F^{*}(\vb{k}, \omega), \quad
+	\frac{1}{\sqrt{2\pi}} \int \d \omega \, e^{-i\omega t} = \frac{1}{\sqrt{2\pi}} \int_{0}^{\infty} \d \omega \, 2 \, \mathrm{Re} \, e^{-i\omega t}.
+\end{equation*}
+
+同时，与能量有关的积分，转换到频域取\(\omega > 0\) 部分，结果须乘2
+\begin{equation*}
+	\int F(\vb{r}, t) G(\vb{r}, t) \, \d t = 2 \int_{0}^{\infty} F(\vb{r}, \omega) G^{*}(\vb{r}, \omega) \, \d \omega.
+\end{equation*}
+
+在此列出文中常用的变换对
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\toprule
+		\(f(\omega)\)                                    & \(f(\tau)\)                                             & \(f(\omega)\)                                  & \(f(\tau)\)                                                    \\
+		\midrule
+		\(\sqrt{2/\pi} \, K_{0}(a \omega)\)              & \(\dfrac{1}{\sqrt{\tau^{2} + a^{2}}}\)                  & \(\sqrt{\pi/2}H_{0}^{(1)}(a \omega)\)          & \(\dfrac{2 \Theta(\tau - a)}{\sqrt{\tau^{2} - a^{2}}}\)        \\[8pt]
+		\(\sqrt{2/\pi} \, \omega K_{1}(a \omega)\)       & \(\dfrac{a}{(\tau^{2} + a^{2})^{3/2}}\)                 & \(\sqrt{\pi/2}\omega H_{0}^{(1)}(a \omega)\)   & \(-\dfrac{2 \tau \Theta(\tau - a)}{(\tau^{2} - a^{2})^{3/2}}\) \\[8pt]
+		\(\sqrt{2/\pi} \, \omega^{2} K_{1}'(a \omega)\)  & \(\dfrac{\tau^{2} - 2a^{2}}{(\tau^{2} + a^{2})^{5/2}}\) & \(i \sqrt{\pi/2}\omega H_{1}^{(1)}(a \omega)\) & \(\dfrac{2 a \Theta(\tau - a)}{(\tau^{2} - a^{2})^{3/2}}\)     \\[8pt]
+		\(i \sqrt{2/\pi} \, \omega^{2} K_{1}(a \omega)\) & \(\dfrac{3 a \tau}{(\tau^{2} + a^{2})^{5/2}}\)          &                                                &                                                                \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\subsection{多对数函数}
+
+在玻色费米气体统计中，将玻色费米积分函数的定义为
+\begin{equation*}
+	g_{\nu}(z) &= \mathrm{Li}_{\nu}(z) = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} \dfrac{x^{\nu-1}}{z^{-1} e^{x} - 1} \, \d x = -\dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} x^{\nu-2} \ln(1 - z e^{-x}) \, \d x. \\
+	f_{\nu}(z) &= -\mathrm{Li}_{\nu}(-z) = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} \dfrac{x^{\nu-1}}{z^{-1} e^{x} + 1} \, \d x = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} x^{\nu-2} \ln(1 + z e^{-x}) \, \d x. \\
+\end{equation*}
+其中\(\mathrm{Li}_{\nu}(z) \)是多对数函数，满足
+\begin{equation*}
+	\mathrm{Li}_{\nu}(z) = \sum_{k=1}^{\infty} \dfrac{z^{k}}{k^{\nu}},\quad \dfrac{\d  \mathrm{Li}_{\nu}(z)}{\d  z} = \dfrac{\mathrm{Li}_{\nu-1}(z)}{z}
+\end{equation*}
+
+根据多对数函数的性质，玻色/费米积分函数在特殊值下的展开为
+\begin{equation*}
+	&g_{\nu}(z) \big|_{z \to 1^{-}} =
+	\begin{cases}
+		\zeta(\nu) - \zeta(\nu-1) (1 - z) + \mathcal{O}((1-z)^{2}),              & \nu > 2.             \\[4pt]
+		\zeta(2) + (1 - z) (\ln(1 - z) - 1) + \mathcal{O}((1-z)^{2} \ln(1 - z)), & \nu = 2.             \\[4pt]
+		\zeta(\nu) + \Gamma(1-\nu) (1 - z)^{\nu-1} + \mathcal{O}(1 - z),         & \nu < 2, \nu \neq 1. \\[4pt]
+		-\ln(1 - z),                                                             & \nu = 1.
+	\end{cases}\\
+	&f_{\nu}(z) \big|_{z \gg 1} = \dfrac{(\ln z)^{\nu}}{\Gamma(\nu+1)} + \dfrac{\pi^{2}}{6} \dfrac{(\ln z)^{\nu-2}}{\Gamma(\nu-1)} + \dfrac{7\pi^{4}}{360} \dfrac{(\ln z)^{\nu-4}}{\Gamma(\nu-3)} + \cdots.
+\end{equation*}
+
+
+\subsection{高维空间的球}
+
+\(d\)维空间的立体角元为
+\begin{equation*}
+	\d \Omega_{d} = \prod_{i=1}^{d-1} (\sin\theta_{i})^{d-1-i} \, \d \theta_{i}, \quad 0 \le \theta_{j} \le \pi \ (j = 1, 2, \ldots, d-2), \quad 0 \le \theta_{d-1} \le 2\pi.
+\end{equation*}
+积分得总立体角以及沿某一方向的投影因子为
+\begin{equation*}
+	\Omega_{d} =\int\d\Omega_d \dfrac{2\pi^{d/2}}{\Gamma(d/2)},\quad \mathcal{P}_d=\frac{1}{\Omega_d}\int_{\theta_1\leq\pi/2}\cos\theta_1\d\Omega_d=\frac{\Omega_{d-1}}{(d-1)\Omega_d}.
+\end{equation*}
+式中用到
+\begin{equation*}
+	\int_{0}^{\pi} \sin^{n}\theta \, \d \theta = \sqrt{\pi} \dfrac{\Gamma\left( \dfrac{n+1}{2} \right)}{\Gamma\left( \dfrac{n+2}{2} \right)}
+\end{equation*}
+进而\(d\)维空间单位半径球的表面积为\(\Omega_d\)，体积为\(V_d=\Omega_d/d\)。
+
+各向同性函数向波矢空间的傅里叶变换为
+\begin{equation*}
+	\int_{\mathbb{R}^{d}} f(r) e^{i \vb{k} \cdot \vb{r}} \, \d \vb{r} = (2\pi)^{d/2} k^{1-d/2} \int_{0}^{\infty} f(r) r^{d/2} J_{d/2-1}(kr) \, \d r.
+\end{equation*}
+
+运用该公式，得到\(d\)维自由空间的Helmholtz方程的格林函数解为
+\begin{equation*}
+	&(\nabla^{2} + k^{2}) G(\vb{R}) = \delta^{(d)}(\vb{R}), \quad \vb{R} = \vb{r} - \vb{r}'.\\
+	&\implies\quad G(\vb{R}) = \int_{\mathbb{R}^{d}} \dfrac{\d \vb{q}}{(2\pi)^{d}} \dfrac{e^{i \vb{q} \cdot \vb{R}}}{q^{2} + k^{2}} = \dfrac{1}{2\pi} \left( \dfrac{k}{2\pi R} \right)^{d/2 - 1} K_{d/2 - 1}(kR).
+\end{equation*}
+
+根据第二类修正贝塞尔函数的展开式 (\(\mathcal{O}\) 指对应\(\nu\)范围下，下一个展开项的最大可能阶数)
+\begin{equation*}
+	K_{\nu}(x) \big|_{x \gg 1} = \sqrt{\dfrac{\pi}{2x}} e^{-x} \left( 1 + \dfrac{4\nu^{2} - 1}{8x} + \mathcal{O}(x^{-2}) \right), \quad K_{\nu}(x) \big|_{x \ll 1} =
+	\begin{cases}
+		\dfrac{1}{2} \Gamma(|\nu|) \left( \dfrac{x}{2} \right)^{-|\nu|} + \mathcal{O}(x^{2-|\nu|} \ln x), & \nu \neq 0. \\[6pt]
+		-\ln \dfrac{x}{2} - \gamma_{E} + \mathcal{O}(x^{2}),                                              & \nu = 0.
+	\end{cases}
+\end{equation*}
+
+得到
+\begin{equation*}
+	&G(\vb{R}) \big|_{kR \gg 1} = \dfrac{1}{\sqrt{8\pi k R}} \left( \dfrac{k}{2\pi R} \right)^{d/2 - 1} e^{-kR} \left( 1 + \dfrac{4\nu^{2} - 1}{8 k R} + \mathcal{O}((kR)^{-2}) \right).\\[6pt]
+	&G(\vb{R}) \big|_{kR \ll 1} =
+	\begin{cases}
+		\displaystyle \dfrac{\Gamma\left(d/2 - 1 \right)}{4\pi^{d/2} R^{d-2}} + \mathcal{O}\left( (kR)^{4-d} \ln(kR) \right),     & d > 2. \\[10pt]
+		\displaystyle \dfrac{1}{2\pi} \left( -\ln \dfrac{kR}{2} - \gamma_{E} \right) + \mathcal{O}\left( (kR)^{2} \right),        & d = 2. \\[10pt]
+		\displaystyle \dfrac{\Gamma\left( 1 - d/2 \right)}{2^{d} \pi^{d/2}} k^{d-2} + \mathcal{O}\left( (kR)^{2} \ln(kR) \right), & d < 2.
+	\end{cases}
+\end{equation*}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{minipage}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{special_functions_fig/polylogarithm_function.png}
+		\caption{多对数函数}
+		\label{多对数函数}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{special_functions_fig/high_dimensional_helmholtz_equation_green_function.png}
+		\caption{高维空间Helmholtz方程的格林函数}
+		\label{高维空间Helmholtz方程的格林函数}
+	\end{minipage}
+\end{figure}
+
+\subsection{数学公式}
+与修正Hankel变换有关的积分恒等式
+\begin{equation*}
+	&\int_{0}^{\infty} \rho J_{0}(a\rho) K_{0}(\lambda\rho) \, \d \rho = \frac{1}{a^{2} + \lambda^{2}}, \quad
+	\int_{0}^{\infty} \rho J_{1}(a\rho) K_{1}(\lambda\rho) \, \d \rho = \frac{a}{\lambda (a^{2} + \lambda^{2})}, \\
+	&\int_{0}^{\infty} \left[ \frac{K_{1}(\lambda\rho)}{\lambda\rho} \left( J_{0}(a\rho) + J_{2}(a\rho) \right) + K_{1}'(\lambda\rho) \left( J_{0}(a\rho) - J_{2}(a\rho) \right) \right] \rho \, \d \rho = \frac{a^{2} - \lambda^{2}}{\lambda^{2} (a^{2} + \lambda^{2})}\\
+	&\int_{0}^{\infty} \left[ \frac{K_{1}(\lambda\rho)}{\lambda\rho} \left( J_{0}(a\rho) - J_{2}(a\rho) \right) + K_{1}'(\lambda\rho) \left( J_{0}(a\rho) + J_{2}(a\rho) \right) \right] \rho \, \d \rho = -\frac{1}{\lambda^{2}}
+\end{equation*}
+
+与Bessel函数有关的积分与级数恒等式
+\begin{equation*}
+	&\sum_{m=1}^{\infty} m^{2} \left[ \left( J_{m}'(m \beta \cos\theta) \right)^{2} + m^{2} \sin^{2}\theta \left( \frac{J_{m}(m \beta \cos\theta)}{m \beta \cos\theta} \right)^{2} \right] =  \frac{4(1 + \sin^{2}\theta) - \beta^{2} \cos^{4}\theta (1 + 3\beta^{2})}{16 (1 - \beta^{2} \cos^{2}\theta)^{7/2}}. \\
+	&\int_{0}^{\pi} \sin\theta \, \tan^{2}\theta \left[ \sum_{m=1}^{\infty} m^{2} \left( J_{m}(m \alpha \cos\theta) \right)^{2} \right] \, \d \theta = \frac{\alpha^{2} (4 - 3\alpha^{2})}{12 (1 - \alpha^{2})^{3/2}}. \\
+	&\frac{1}{U^2} \int_0^1 \left( \frac{m^2}{U^2 \xi^2} \left( \frac{J_m(\xi U)}{J_m(U)} \right)^2 + \left( \frac{J_m'(\xi U)}{J_m(U)} \right)^2 \right) \xi \, d\xi = \frac{1}{U^2} \int_0^1 \left( \frac{J_m(\xi U)}{J_m(U)} \right)^2 \xi \, \d \xi + \frac{1}{U^2} f_m(U) = - \frac{f_m'(U)}{2U}.\\
+	&\frac{1}{W^2} \int_1^\infty \left( \frac{m^2}{W^2 \xi^2} \left( \frac{K_m(\xi W)}{K_m(W)} \right)^2 + \left( \frac{K_m'(\xi W)}{K_m(W)} \right)^2 \right) \xi \, d\xi = -\frac{1}{W^2} \int_1^\infty \left( \frac{K_m(\xi W)}{K_m(W)} \right)^2 \xi \, \d \xi - \frac{1}{W^2} g_m(W) = \frac{g_m'(W)}{2W}.
+\end{equation*}
+以及
+\begin{equation*}
+	\sum_{m,n=-\infty}^{\infty} J_{m}(\xi) J_{n}(\xi) e^{-i n \Omega \tau} \frac{1}{2 \pi} \int_{0}^{2 \pi} e^{i(m-n) \phi} f(\phi) \d  \phi = \sum_{n=-\infty}^{\infty} e^{-i n \Omega \tau} g(\xi).
+\end{equation*}
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\toprule
+		\(f(\phi)\)                       & \(g(\xi)\)                    & \(f(\phi)\)                       & \(g(\xi)\)                \\
+		\midrule
+		\(\cos\phi\cos(\Omega\tau+\phi)\) & \(\left( nJ_n/\xi \right)^2\) & \(\sin\phi\cos(\Omega\tau+\phi)\) & \(-inJ_nJ_n'/\xi\)        \\
+		\(\cos\phi\sin(\Omega\tau+\phi)\) & \(inJ_nJ_n'/\xi\)             & \(\sin\phi\sin(\Omega\tau+\phi)\) & \(\left( J_n' \right)^2\) \\
+		\(\cos\phi\)                      & \(nJ_n^2/\xi\)                & \(\sin\phi\)                      & \(-iJ_nJ_n'\)             \\
+		\(\cos(\Omega\tau+\phi)\)         & \(nJ_n^2/\xi\)                & \(1\)                             & \(J_n^2\)                 \\
+		\(\sin(\Omega\tau+\phi)\)         & \(iJ_nJ_n'\)                  &                                   &                           \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+与平面周期运动有关的积分恒等式
+\begin{equation*}
+	&\int_{0}^{2\pi} e^{i m (\xi - \alpha \cos\xi)} \sin\xi \, \d \xi = -2\pi \, i^{m} J_{m}(m \alpha), \quad
+	\int_{0}^{2\pi} e^{i m (\xi - \alpha \cos\xi)} \cos\xi \, \d \xi = 2\pi \, i^{m-1} J_{m}'(m \alpha). \\
+	&\frac{1}{4\pi} \int_{0}^{2\pi} \frac{1 - \sin^{2}\varphi \cos^{2}\theta + \beta^{2} \cos^{2}\theta - 2 \beta \cos\varphi \cos\theta}{(1 - \beta \cos\theta \cos\varphi)^{5}} \, \d \varphi= \frac{4(1 + \sin^{2}\theta) - \beta^{2} \cos^{4}\theta (1 + 3\beta^{2})}{4 (1 - \beta^{2} \cos^{2}\theta)^{7/2}}\pi\\
+	&\int_{-\pi/2}^{\pi/2} \frac{4(1 + \sin^{2}\theta) - \beta^{2} \cos^{4}\theta (1 + 3\beta^{2})}{16 (1 - \beta^{2} \cos^{2}\theta)^{7/2}} \cos\theta \, \d \theta = \frac{2}{3(1 - \beta^{2})^{2}}. \\
+	&\int_{0}^{2\pi} \frac{\cos^{2}\varphi}{(1 + \alpha \sin\varphi)^{5}} \, \d \varphi = \frac{\pi (4 + \alpha^{2})}{4(1 - \alpha^{2})^{7/2}},\quad\int_{0}^{\infty} \frac{\xi^{4}}{(\xi^{2} + a^{2})^{2} (\xi^{2} + b^{2})^{2}} \, \d \xi= \frac{\pi}{4(a + b)^{3}}. \\
+	&\int_{0}^{\pi} \frac{4 + \alpha^{2} \cos^{2}\theta}{(1 - \alpha^{2} \cos^{2}\theta)^{7/2}} \sin^{3}\theta \, \d \theta = \frac{4(4 - 3\alpha^{2})}{3(1 - \alpha^{2})^{3/2}}.
+\end{equation*}
+
+与Airy型函数有关的恒等式和渐进式
+\begin{equation*}
+	&\int_{0}^{\infty} \xi^{2} \left( K_{2/3}(\xi) \right)^{2} \, \d \xi = \frac{7\pi^{2}}{144}, \quad
+	\int_{0}^{\infty} \xi^{2} \left( K_{1/3}(\xi) \right)^{2} \, \d \xi = \frac{5\pi^{2}}{144}.\\
+	&K_{\nu}(-i x) = \frac{\pi i}{2} e^{i\nu\pi/2} H_{\nu}^{(1)}(x) \overset{x \gg 1}{\sim} \sqrt{\frac{\pi}{2x}} e^{i(x + \pi/4)}.\\
+	&J_{m}(m(1 - \eta)) \simeq \frac{\sqrt{2\eta}}{\pi \sqrt{3}} K_{1/3}(\xi), \quad
+	J_{m}'(m(1 - \eta)) \simeq \frac{2\eta}{\pi \sqrt{3}} K_{2/3}(\xi), \quad
+	\xi = \frac{m}{3} (2\eta)^{3/2}, \quad
+	m \gg 1, \quad \eta \to 0. \\
+	&\sum_{m=1}^{\infty} m^{2} \left[ \left( J_{m}'(m(1 - \eta)) \right)^{2} + m^{2} \theta^{2} \left( \frac{J_{m}(m(1 - \eta))}{m(1 - \eta)} \right)^{2} \right] \simeq \frac{7}{16} (2\eta)^{-5/2} \left( 1 + \frac{5}{7} \frac{\theta^{2}}{2\eta} \right), \quad
+	\eta \to 0.
+\end{equation*}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.49\textwidth]{special_functions_fig/airy_type_function_asymptotic_comparison.png}
+	\caption{Airy型函数渐近式比较}
+	\label{Airy型函数渐近式比较}
+\end{figure}
+
+与立方电阻网有关的公式\(|m| \leq l,\,m \in \mathbb{Z}\)
+\begin{equation*}
+	&\dfrac{1}{l} \sum_{k=0}^{l-1} \dfrac{\sin\left( \dfrac{2\pi k m}{l} \right)}{A - \cos\left( \dfrac{2\pi k}{l} \right)} = 0,\quad \dfrac{1}{l} \sum_{k=0}^{l-1} \dfrac{1 - \cos\left( \dfrac{2\pi k m}{l} \right)}{1 - \cos\left( \dfrac{2\pi k}{l} \right)} = |m|.\\
+	&\dfrac{1}{l} \sum_{k=0}^{l-1} \dfrac{\cos\left( \dfrac{2\pi k m}{l} \right)}{A - \cos\left( \dfrac{2\pi k}{l} \right)} = \dfrac{1}{\sqrt{A^2 - 1}} \cdot \dfrac{(A - \sqrt{A^2 - 1})^{|m|} - (A - \sqrt{A^2 - 1})^{l - |m|}}{1 - (A - \sqrt{A^2 - 1})^l}.
+\end{equation*}
+
+与柱对称混合边界条件有关的方程解
+\begin{equation*}
+&\int_0^\infty y f(y) J_\nu(yx) \,\mathrm{d}y = x^\nu, \quad x < 1. \qquad
+\int_0^\infty f(y) J_\nu(yx) \,\mathrm{d}y = 0, \quad x \ge 1.\\
+&\implies\quad f(y) = \frac{\Gamma(\nu+1)}{\sqrt{\pi}\,\Gamma\left(\nu+\dfrac{3}{2}\right)} j_{\nu+1}(y) = \frac{\Gamma(\nu+1)}{\sqrt{2y}\,\Gamma\left(\nu+\dfrac{3}{2}\right)} J_{\nu+\frac{3}{2}}(y).\\
+\\
+&\int_0^\infty g(y) J_\nu(yx) \,\mathrm{d}y = x^\nu, \quad x < 1. \qquad
+\int_0^\infty y g(y) J_\nu(yx) \,\mathrm{d}y = 0, \quad x \ge 1.\\
+&\implies\quad g(y) = \frac{2\Gamma(\nu+1)}{\sqrt{\pi}\,\Gamma\left(\nu+\dfrac{1}{2}\right)} j_{\nu}(y) = \frac{\Gamma(\nu+1)}{\Gamma\left(\nu+\dfrac{1}{2}\right)}\sqrt{\frac{2}{y}}\,J_{\nu+\frac{1}{2}}(y).
+\end{equation*}
+
+\end{document}

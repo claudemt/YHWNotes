@@ -1,0 +1,691 @@
+\section{解谱法}
+
+\subsection{有限维线性解谱问题}
+
+设真实直方图为
+\begin{equation*}
+	\vb{\mu}=(\mu_1,\mu_2,\ldots,\mu_M)^T,
+\end{equation*}
+观测直方图为
+\begin{equation*}
+	\vb{n}=(n_1,n_2,\ldots,n_N)^T.
+\end{equation*}
+响应矩阵 \(R\in\mathbb{R}^{N\times M}\) 定义为
+\begin{equation*}
+	\nu_i=\sum_{j=1}^{M}R_{ij}\mu_j+b_i,
+	\quad i=1,2,\ldots,N,
+\end{equation*}
+也即
+\begin{equation*}
+	\vb{\nu}=R\vb{\mu}+\vb{b}.
+\end{equation*}
+若本底 \(\vb{b}\) 已知，记
+\begin{equation*}
+	\vb{y}=\vb{n}-\vb{b}.
+\end{equation*}
+以下只讨论能写出闭式解的二次型情形.设
+\begin{equation*}
+	E(\vb{y})=R\vb{\mu}_0,\quad
+	\operatorname{cov}(\vb{y})=V,
+\end{equation*}
+其中 \(V\) 对称正定.记
+\begin{equation*}
+	W=V^{-1}.
+\end{equation*}
+加权二次型为
+\begin{equation*}
+	\chi^2(\vb{\mu})
+	=(\vb{y}-R\vb{\mu})^TW(\vb{y}-R\vb{\mu}).
+\end{equation*}
+考虑最一般的二次正则化闭式问题
+\begin{equation*}
+	Q(\vb{\mu})
+	=\frac{\alpha}{2}(\vb{y}-R\vb{\mu})^TW(\vb{y}-R\vb{\mu})
+	+\vb{\mu}^TG\vb{\mu},
+\end{equation*}
+其中 \(\alpha>0\)，且 \(G=G^T\geq0\).若 \(Q\) 需要在若干线性约束下取极小值，写作
+\begin{equation*}
+	C^T\vb{\mu}=\vb{d},
+\end{equation*}
+其中 \(C\in\mathbb{R}^{M\times p}\)，且 \(C\) 的 \(p\) 列线性无关.
+
+\subsection{无约束情形的闭式解}
+
+先不考虑约束.将 \(Q\) 展开为
+\begin{equation*}
+	Q(\vb{\mu})
+	=\frac{\alpha}{2}\vb{y}^TW\vb{y}
+	-\alpha\vb{\mu}^TR^TW\vb{y}
+	+\frac{1}{2}\vb{\mu}^T\alpha R^TWR\vb{\mu}
+	+\vb{\mu}^TG\vb{\mu}.
+\end{equation*}
+对 \(\vb{\mu}\) 作变分，有
+\begin{equation*}
+	\delta Q
+	=-\alpha\delta\vb{\mu}^TR^TW\vb{y}
+	+\alpha\delta\vb{\mu}^TR^TWR\vb{\mu}
+	+2\delta\vb{\mu}^TG\vb{\mu}.
+\end{equation*}
+因此驻点方程为
+\begin{equation*}
+	\left(\alpha R^TWR+2G\right)\hat{\vb{\mu}}
+	=\alpha R^TW\vb{y}.
+\end{equation*}
+记
+\begin{equation*}
+	M=\alpha R^TWR+2G.
+\end{equation*}
+若 \(M\) 非奇异，则无约束闭式解为
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=M^{-1}\alpha R^TW\vb{y}.
+\end{equation*}
+由于
+\begin{equation*}
+	\delta^2Q
+	=\delta\vb{\mu}^TM\delta\vb{\mu},
+\end{equation*}
+若 \(M\) 正定，则该驻点是唯一极小值.
+
+\begin{notes}
+	若 \(G=0\)，则唯一性要求 \(R^TWR\) 正定，也即 \(R\) 的列满秩.若 \(R\) 不列满秩，则数据中不存在的信息不能由无正则化二次型唯一确定.
+\end{notes}
+
+令
+\begin{equation*}
+	A=M^{-1}\alpha R^TW,
+\end{equation*}
+则
+\begin{equation*}
+	\hat{\vb{\mu}}=A\vb{y}.
+\end{equation*}
+由 \(E(\vb{y})=R\vb{\mu}_0\)，有
+\begin{equation*}
+	E(\hat{\vb{\mu}})
+	=AR\vb{\mu}_0.
+\end{equation*}
+故偏差为
+\begin{equation*}
+	\vb{b}_{\rm bias}
+	=E(\hat{\vb{\mu}})-\vb{\mu}_0
+	=(AR-I)\vb{\mu}_0.
+\end{equation*}
+利用
+\begin{equation*}
+	AR-I
+	=M^{-1}\alpha R^TWR-I
+	=M^{-1}\left(\alpha R^TWR-M\right)
+	=-2M^{-1}G,
+\end{equation*}
+得到
+\begin{equation*}
+	\vb{b}_{\rm bias}
+	=-2M^{-1}G\vb{\mu}_0.
+\end{equation*}
+协方差为
+\begin{equation*}
+	U
+	=\operatorname{cov}(\hat{\vb{\mu}})
+	=A\operatorname{cov}(\vb{y})A^T
+	=AVA^T.
+\end{equation*}
+由于 \(W=V^{-1}\) 且 \(M=M^T\)，可化简为
+\begin{equation*}
+	U
+	=\alpha^2M^{-1}R^TWVWRM^{-1}
+	=\alpha^2M^{-1}R^TWRM^{-1}.
+\end{equation*}
+
+\subsection{线性约束下的闭式解}
+
+现在考虑约束
+\begin{equation*}
+	C^T\vb{\mu}=\vb{d}.
+\end{equation*}
+引入 Lagrange 乘子 \(\vb{\lambda}\in\mathbb{R}^p\)，令
+\begin{equation*}
+	\mathcal{L}(\vb{\mu},\vb{\lambda})
+	=Q(\vb{\mu})+\vb{\lambda}^T(C^T\vb{\mu}-\vb{d}).
+\end{equation*}
+驻点方程为
+\begin{equation*}
+	M\hat{\vb{\mu}}+C\hat{\vb{\lambda}}
+	=\alpha R^TW\vb{y},
+	\quad
+	C^T\hat{\vb{\mu}}=\vb{d}.
+\end{equation*}
+这等价于分块线性方程
+\begin{equation*}
+	\begin{pmatrix}
+		M & C\\
+		C^T & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+		\hat{\vb{\mu}}\\
+		\hat{\vb{\lambda}}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\alpha R^TW\vb{y}\\
+		\vb{d}
+	\end{pmatrix}.
+\end{equation*}
+先记无约束解
+\begin{equation*}
+	\vb{\mu}_*=
+	M^{-1}\alpha R^TW\vb{y}.
+\end{equation*}
+由第一行得
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=\vb{\mu}_*-M^{-1}C\hat{\vb{\lambda}}.
+\end{equation*}
+代入约束条件，得到
+\begin{equation*}
+	C^T\vb{\mu}_*-C^TM^{-1}C\hat{\vb{\lambda}}=\vb{d}.
+\end{equation*}
+若
+\begin{equation*}
+	H_C=C^TM^{-1}C
+\end{equation*}
+非奇异，则
+\begin{equation*}
+	\hat{\vb{\lambda}}
+	=H_C^{-1}(C^T\vb{\mu}_*-\vb{d}).
+\end{equation*}
+于是线性约束下的闭式解为
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=\vb{\mu}_*
+	+M^{-1}C(C^TM^{-1}C)^{-1}
+	(\vb{d}-C^T\vb{\mu}_*).
+\end{equation*}
+这说明约束解等于无约束解加上一个修正项，该修正项属于 \(M^{-1}C\) 张成的子空间，并且恰好使 \(C^T\hat{\vb{\mu}}=\vb{d}\).
+
+\begin{notes}
+	若 \(M\) 正定且 \(C\) 列满秩，则 \(C^TM^{-1}C\) 正定.证明为：对任意非零 \(\vb{a}\in\mathbb{R}^p\)，有 \(C\vb{a}\neq0\)，因此
+	\begin{equation*}
+		\vb{a}^TC^TM^{-1}C\vb{a}
+		=(C\vb{a})^TM^{-1}(C\vb{a})>0.
+	\end{equation*}
+\end{notes}
+
+若约束右端也是数据的线性函数，即
+\begin{equation*}
+	\vb{d}=D\vb{y},
+\end{equation*}
+其中 \(D\in\mathbb{R}^{p\times N}\)，则估计量仍是 \(\vb{y}\) 的线性函数.令
+\begin{equation*}
+	A=M^{-1}\alpha R^TW,
+\end{equation*}
+则
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=
+	A\vb{y}
+	+M^{-1}C(C^TM^{-1}C)^{-1}(D-C^TA)\vb{y}.
+\end{equation*}
+记
+\begin{equation*}
+	B
+	=A
+	+M^{-1}C(C^TM^{-1}C)^{-1}(D-C^TA),
+\end{equation*}
+则
+\begin{equation*}
+	\hat{\vb{\mu}}=B\vb{y},\quad
+	U=BVB^T,\quad
+	\vb{b}_{\rm bias}=(BR-I)\vb{\mu}_0.
+\end{equation*}
+
+\subsection{总数约束}
+
+常见的总数约束为
+\begin{equation*}
+	\sum_{i=1}^{N}\nu_i=\sum_{i=1}^{N}n_i.
+\end{equation*}
+在本底已扣除的记号下，即
+\begin{equation*}
+	\vb{1}_N^TR\vb{\mu}=\vb{1}_N^T\vb{y}.
+\end{equation*}
+令
+\begin{equation*}
+	\vb{c}=R^T\vb{1}_N.
+\end{equation*}
+则总数约束为
+\begin{equation*}
+	\vb{c}^T\vb{\mu}=\vb{1}_N^T\vb{y}.
+\end{equation*}
+这是上一节公式的特例：
+\begin{equation*}
+	C=\vb{c},\quad D=\vb{1}_N^T.
+\end{equation*}
+因此
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=
+	\vb{\mu}_*
+	+M^{-1}\vb{c}\,
+	\frac{\vb{1}_N^T\vb{y}-\vb{c}^T\vb{\mu}_*}
+	{\vb{c}^TM^{-1}\vb{c}},
+\end{equation*}
+其中
+\begin{equation*}
+	\vb{\mu}_*=M^{-1}\alpha R^TW\vb{y}.
+\end{equation*}
+把它写成 \(\hat{\vb{\mu}}=B\vb{y}\)，则
+\begin{equation*}
+	B
+	=M^{-1}\alpha R^TW
+	+M^{-1}\vb{c}\,
+	\frac{\vb{1}_N^T-\vb{c}^TM^{-1}\alpha R^TW}
+	{\vb{c}^TM^{-1}\vb{c}}.
+\end{equation*}
+因此
+\begin{equation*}
+	U_{\rm constr}=BVB^T.
+\end{equation*}
+
+\subsection{白化变换与无正则化最小二乘}
+
+现在详细推导线性代数结构.由于 \(V\) 对称正定，可以取唯一的对称正定平方根
+\begin{equation*}
+	V^{1/2}V^{1/2}=V.
+\end{equation*}
+记
+\begin{equation*}
+	\tilde{R}=V^{-1/2}R,\quad
+	\tilde{\vb{y}}=V^{-1/2}\vb{y}.
+\end{equation*}
+则
+\begin{equation*}
+	(\vb{y}-R\vb{\mu})^TW(\vb{y}-R\vb{\mu})
+	=\left\|\tilde{\vb{y}}-\tilde{R}\vb{\mu}\right\|^2.
+\end{equation*}
+因此无正则化加权最小二乘问题等价于
+\begin{equation*}
+	\min_{\vb{\mu}}\left\|\tilde{\vb{y}}-\tilde{R}\vb{\mu}\right\|^2.
+\end{equation*}
+对 \(\tilde{R}\) 作奇异值分解.设
+\begin{equation*}
+	r=\operatorname{rank}\tilde{R},
+\end{equation*}
+则存在正交矩阵
+\begin{equation*}
+	U=(\vb{u}_1,\ldots,\vb{u}_N),\quad
+	Q=(\vb{q}_1,\ldots,\vb{q}_M),
+\end{equation*}
+使得
+\begin{equation*}
+	\tilde{R}\vb{q}_a=s_a\vb{u}_a,\quad
+	\tilde{R}^T\vb{u}_a=s_a\vb{q}_a,\quad
+	a=1,\ldots,r,
+\end{equation*}
+其中
+\begin{equation*}
+	s_1\geq s_2\geq\cdots\geq s_r>0.
+\end{equation*}
+把未知量和数据投影到奇异向量基底中：
+\begin{equation*}
+	\vb{z}=Q^T\vb{\mu},\quad
+	\vb{d}=U^T\tilde{\vb{y}}.
+\end{equation*}
+由于 \(U,Q\) 正交，范数不变，于是
+\begin{equation*}
+	\left\|\tilde{\vb{y}}-\tilde{R}\vb{\mu}\right\|^2
+	=\left\|U^T\tilde{\vb{y}}-U^T\tilde{R}Q\vb{z}\right\|^2.
+\end{equation*}
+而
+\begin{equation*}
+	U^T\tilde{R}Q
+	=
+	\begin{pmatrix}
+		s_1 & 0 & \cdots & 0\\
+		0 & s_2 & \cdots & 0\\
+		\vdots & \vdots & \ddots & \vdots\\
+		0 & 0 & \cdots & s_r\\
+		0 & 0 & \cdots & 0
+	\end{pmatrix}.
+\end{equation*}
+因此目标函数化为
+\begin{equation*}
+	\left\|\tilde{\vb{y}}-\tilde{R}\vb{\mu}\right\|^2
+	=\sum_{a=1}^{r}(d_a-s_az_a)^2
+	+\sum_{a=r+1}^{N}d_a^2,
+\end{equation*}
+其中当 \(a>r\) 时，若 \(a>M\) 则没有对应的 \(z_a\).
+
+对 \(a=1,\ldots,r\)，极小条件给出
+\begin{equation*}
+	z_a=\frac{d_a}{s_a}.
+\end{equation*}
+若 \(r=M\)，则解唯一，且
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=\sum_{a=1}^{M}\frac{d_a}{s_a}\vb{q}_a.
+\end{equation*}
+若 \(r<M\)，则 \(z_{r+1},\ldots,z_M\) 不被目标函数决定.最小范数解取
+\begin{equation*}
+	z_{r+1}=\cdots=z_M=0,
+\end{equation*}
+从而
+\begin{equation*}
+	\hat{\vb{\mu}}_{\rm min}
+	=\sum_{a=1}^{r}\frac{d_a}{s_a}\vb{q}_a.
+\end{equation*}
+这就是 Moore--Penrose 伪逆给出的解：
+\begin{equation*}
+	\hat{\vb{\mu}}_{\rm min}
+	=\tilde{R}^{+}\tilde{\vb{y}}.
+\end{equation*}
+
+\subsection{SVD 基底中的方差放大}
+
+设真实参数在右奇异向量基底中的坐标为
+\begin{equation*}
+	\vb{\mu}_0=\sum_{a=1}^{M}z_{0a}\vb{q}_a.
+\end{equation*}
+又令
+\begin{equation*}
+	\tilde{\vb{y}}=\tilde{R}\vb{\mu}_0+\vb{\epsilon},
+	\quad
+	E(\vb{\epsilon})=0,\quad
+	\operatorname{cov}(\vb{\epsilon})=I_N.
+\end{equation*}
+投影到 \(\vb{u}_a\) 上，得到
+\begin{equation*}
+	d_a=\vb{u}_a^T\tilde{\vb{y}}
+	=s_az_{0a}+\epsilon_a,
+	\quad
+	\epsilon_a=\vb{u}_a^T\vb{\epsilon}.
+\end{equation*}
+由于 \(U\) 正交，
+\begin{equation*}
+	\operatorname{cov}(\epsilon_a,\epsilon_b)=\delta_{ab}.
+\end{equation*}
+无正则化反演中
+\begin{equation*}
+	\hat{z}_a=\frac{d_a}{s_a}
+	=z_{0a}+\frac{\epsilon_a}{s_a}.
+\end{equation*}
+因此
+\begin{equation*}
+	E(\hat{z}_a)=z_{0a},\quad
+	\operatorname{var}(\hat{z}_a)=\frac{1}{s_a^2}.
+\end{equation*}
+这不是定性结论，而是由正交分解直接给出的方差公式.小奇异值方向上的误差必然按 \(1/s_a^2\) 放大.
+
+\subsection{零阶 Tikhonov 的谱闭式解}
+
+考虑
+\begin{equation*}
+	Q_\lambda(\vb{\mu})
+	=\frac{\alpha}{2}\left\|\tilde{\vb{y}}-\tilde{R}\vb{\mu}\right\|^2
+	+\frac{\lambda}{2}\left\|\vb{\mu}\right\|^2,
+	\quad \lambda>0.
+\end{equation*}
+这对应于
+\begin{equation*}
+	2G=\lambda I_M.
+\end{equation*}
+仍令 \(\vb{z}=Q^T\vb{\mu}\)，\(\vb{d}=U^T\tilde{\vb{y}}\).由于 \(Q\) 正交，有
+\begin{equation*}
+	\left\|\vb{\mu}\right\|^2
+	=\left\|\vb{z}\right\|^2.
+\end{equation*}
+于是
+\begin{equation*}
+	Q_\lambda
+	=\frac{\alpha}{2}\sum_{a=1}^{r}(d_a-s_az_a)^2
+	+\frac{\alpha}{2}\sum_{a=r+1}^{N}d_a^2
+	+\frac{\lambda}{2}\sum_{a=1}^{M}z_a^2.
+\end{equation*}
+对 \(z_a\) 求偏导.当 \(a\leq r\) 时，
+\begin{equation*}
+	\frac{\partial Q_\lambda}{\partial z_a}
+	=-\alpha s_a(d_a-s_az_a)+\lambda z_a.
+\end{equation*}
+令其为零，得到
+\begin{equation*}
+	(\alpha s_a^2+\lambda)\hat{z}_a
+	=\alpha s_ad_a.
+\end{equation*}
+因此
+\begin{equation*}
+	\hat{z}_a
+	=\frac{\alpha s_a}{\alpha s_a^2+\lambda}d_a,
+	\quad a=1,\ldots,r.
+\end{equation*}
+当 \(a>r\) 时，目标函数中只含 \(\lambda z_a^2/2\)，故
+\begin{equation*}
+	\hat{z}_a=0.
+\end{equation*}
+于是零阶 Tikhonov 的闭式解为
+\begin{equation*}
+	\hat{\vb{\mu}}_\lambda
+	=\sum_{a=1}^{r}
+	\frac{\alpha s_a}{\alpha s_a^2+\lambda}
+	d_a\vb{q}_a.
+\end{equation*}
+
+将
+\begin{equation*}
+	d_a=s_az_{0a}+\epsilon_a
+\end{equation*}
+代入，得
+\begin{equation*}
+	\hat{z}_a
+	=\frac{\alpha s_a^2}{\alpha s_a^2+\lambda}z_{0a}
+	+\frac{\alpha s_a}{\alpha s_a^2+\lambda}\epsilon_a.
+\end{equation*}
+故
+\begin{equation*}
+	E(\hat{z}_a)-z_{0a}
+	=-\frac{\lambda}{\alpha s_a^2+\lambda}z_{0a},
+	\quad a\leq r,
+\end{equation*}
+且
+\begin{equation*}
+	\operatorname{var}(\hat{z}_a)
+	=\left(\frac{\alpha s_a}{\alpha s_a^2+\lambda}\right)^2.
+\end{equation*}
+若 \(a>r\)，则
+\begin{equation*}
+	E(\hat{z}_a)-z_{0a}=-z_{0a},\quad
+	\operatorname{var}(\hat{z}_a)=0.
+\end{equation*}
+这些公式完整给出了正则化带来的偏差与方差.
+
+\subsection{一般二次惩罚的广义谱分解}
+
+令
+\begin{equation*}
+	H=R^TWR.
+\end{equation*}
+考虑
+\begin{equation*}
+	Q_\lambda(\vb{\mu})
+	=\frac{\alpha}{2}(\vb{y}-R\vb{\mu})^TW(\vb{y}-R\vb{\mu})
+	+\frac{\lambda}{2}\vb{\mu}^TK\vb{\mu},
+\end{equation*}
+其中 \(K=K^T>0\).该式对应
+\begin{equation*}
+	2G=\lambda K.
+\end{equation*}
+取广义本征值问题
+\begin{equation*}
+	H\vb{q}_a=\rho_aK\vb{q}_a,
+	\quad
+	\vb{q}_a^TK\vb{q}_b=\delta_{ab}.
+\end{equation*}
+由于 \(K\) 正定，可以令
+\begin{equation*}
+	K^{1/2}\vb{q}_a=\vb{p}_a.
+\end{equation*}
+代入广义本征方程，得到普通对称本征值问题
+\begin{equation*}
+	K^{-1/2}HK^{-1/2}\vb{p}_a
+	=\rho_a\vb{p}_a.
+\end{equation*}
+因此可以选取一组 \(K\)-正交归一的 \(\vb{q}_a\).把
+\begin{equation*}
+	\vb{\mu}=\sum_{a=1}^{M}z_a\vb{q}_a
+\end{equation*}
+代入目标函数.与 \(\vb{\mu}\) 有关的部分为
+\begin{equation*}
+	\frac{1}{2}\vb{\mu}^T(\alpha H+\lambda K)\vb{\mu}
+	-\alpha\vb{\mu}^TR^TW\vb{y}.
+\end{equation*}
+利用
+\begin{equation*}
+	\vb{q}_a^TH\vb{q}_b
+	=\rho_b\vb{q}_a^TK\vb{q}_b
+	=\rho_b\delta_{ab},
+\end{equation*}
+得到
+\begin{equation*}
+	Q_\lambda
+	=\frac{1}{2}\sum_{a=1}^{M}(\alpha\rho_a+\lambda)z_a^2
+	-\alpha\sum_{a=1}^{M}z_a\vb{q}_a^TR^TW\vb{y}
+	+\text{与 }\vb{\mu}\text{ 无关的项}.
+\end{equation*}
+因此
+\begin{equation*}
+	(\alpha\rho_a+\lambda)\hat{z}_a
+	=\alpha\vb{q}_a^TR^TW\vb{y},
+\end{equation*}
+即
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=\sum_{a=1}^{M}
+	\frac{\alpha\vb{q}_a^TR^TW\vb{y}}
+	{\alpha\rho_a+\lambda}\vb{q}_a.
+\end{equation*}
+这就是一般正定二次惩罚下的广义谱闭式解.
+
+\begin{notes}
+	若 \(K\) 半正定而非正定，则上面的广义谱推导不能直接使用 \(K^{-1/2}\).此时仍可回到矩阵闭式解
+	\begin{equation*}
+		\hat{\vb{\mu}}
+		=(\alpha H+\lambda K)^{-1}\alpha R^TW\vb{y},
+	\end{equation*}
+	但必须单独检查 \(\alpha H+\lambda K\) 是否非奇异.对于一阶差分惩罚，常数向量属于 \(K\) 的零空间，因此只要 \(H\) 在该零空间上非零，闭式解仍然唯一.
+\end{notes}
+
+\subsection{可逆、过定、欠定与秩亏的特殊情形}
+
+若 \(N=M\)，且 \(R\) 可逆，同时不加正则化，则
+\begin{equation*}
+	\hat{\vb{\mu}}=R^{-1}\vb{y}.
+\end{equation*}
+协方差为
+\begin{equation*}
+	U=R^{-1}V(R^{-1})^T.
+\end{equation*}
+若 \(N\geq M\)，且 \(R\) 列满秩，则无正则化加权最小二乘解为
+\begin{equation*}
+	\hat{\vb{\mu}}
+	=(R^TWR)^{-1}R^TW\vb{y}.
+\end{equation*}
+其协方差为
+\begin{equation*}
+	U=(R^TWR)^{-1}.
+\end{equation*}
+证明如下：
+\begin{equation*}
+	U
+	=(R^TWR)^{-1}R^TWVWR(R^TWR)^{-1}
+	=(R^TWR)^{-1}.
+\end{equation*}
+
+若 \(R\) 不列满秩，则 \(R^TWR\) 奇异.令 \(\tilde{R}=V^{-1/2}R\)，使用上一节的 SVD，所有最小二乘解具有形式
+\begin{equation*}
+	\vb{\mu}
+	=\sum_{a=1}^{r}\frac{d_a}{s_a}\vb{q}_a
+	+\sum_{a=r+1}^{M}z_a\vb{q}_a,
+\end{equation*}
+其中 \(z_{r+1},\ldots,z_M\) 任意.最小范数解取这些任意系数为零.
+
+若 \(N<M\)，则即使 \(R\) 行满秩，仍有非平凡零空间
+\begin{equation*}
+	\ker R=\{\vb{h}:R\vb{h}=0\}.
+\end{equation*}
+对任意 \(\vb{h}\in\ker R\)，有
+\begin{equation*}
+	R(\vb{\mu}+\vb{h})=R\vb{\mu},
+\end{equation*}
+所以数据不能区分 \(\vb{\mu}\) 与 \(\vb{\mu}+\vb{h}\).若加入使 \(M=\alpha R^TWR+2G\) 正定的二次项，则闭式解重新唯一.
+
+\begin{example}
+	两区间分辨率模型.
+
+	考虑
+	\begin{equation*}
+		R=\frac{1}{2}
+		\begin{pmatrix}
+			1+\varepsilon & 1-\varepsilon\\
+			1-\varepsilon & 1+\varepsilon
+		\end{pmatrix},
+		\quad 0<\varepsilon<1.
+	\end{equation*}
+	取 \(V=I\).令
+	\begin{equation*}
+		\vb{q}_+=\frac{1}{\sqrt{2}}\binom{1}{1},
+		\quad
+		\vb{q}_-=\frac{1}{\sqrt{2}}\binom{1}{-1}.
+	\end{equation*}
+	直接计算得
+	\begin{equation*}
+		R\vb{q}_+=\vb{q}_+,\quad R\vb{q}_-=\varepsilon\vb{q}_-.
+	\end{equation*}
+	因此奇异值为
+	\begin{equation*}
+		s_+=1,\quad s_-=\varepsilon.
+	\end{equation*}
+	若 \(\vb{d}=Q^T\vb{y}\)，则无正则化解为
+	\begin{equation*}
+		\hat{\vb{\mu}}
+		=d_+\vb{q}_++\frac{d_-}{\varepsilon}\vb{q}_-.
+	\end{equation*}
+	若 \(E(\vb{y})=R\vb{\mu}_0\) 且 \(\operatorname{cov}(\vb{y})=I\)，则
+	\begin{equation*}
+		\operatorname{var}(\hat{z}_+)=1,\quad
+		\operatorname{var}(\hat{z}_-)=\frac{1}{\varepsilon^2}.
+	\end{equation*}
+\end{example}
+
+\begin{example}
+	一阶差分正则化矩阵.
+
+	设
+	\begin{equation*}
+		S(\vb{\mu})=-\sum_{i=1}^{M-1}(\mu_i-\mu_{i+1})^2.
+	\end{equation*}
+	要求
+	\begin{equation*}
+		S(\vb{\mu})=-\vb{\mu}^TG\vb{\mu}.
+	\end{equation*}
+	展开得
+	\begin{equation*}
+		\sum_{i=1}^{M-1}(\mu_i-\mu_{i+1})^2
+		=\mu_1^2+\mu_M^2
+		+2\sum_{i=2}^{M-1}\mu_i^2
+		-2\sum_{i=1}^{M-1}\mu_i\mu_{i+1}.
+	\end{equation*}
+	所以
+	\begin{equation*}
+		G=
+		\begin{pmatrix}
+			1 & -1 & 0 & \cdots & 0\\
+			-1 & 2 & -1 & \ddots & \vdots\\
+			0 & -1 & 2 & \ddots & 0\\
+			\vdots & \ddots & \ddots & 2 & -1\\
+			0 & \cdots & 0 & -1 & 1
+		\end{pmatrix}.
+	\end{equation*}
+	对常数向量 \(\vb{e}=(1,1,\ldots,1)^T\)，有
+	\begin{equation*}
+		G\vb{e}=0.
+	\end{equation*}
+	因此一阶差分正则化不惩罚整体常数方向.若 \(R^TWR\) 在该方向上非零，则 \(M=\alpha R^TWR+2G\) 仍可正定.
+\end{example}
