@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from fig_style_python import figure_style, polish_axes, save_figure, add_legend, COLORS, LIGHT_BLUE
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[5] / "fig"))
+from fig_style_python import figure_style, polish_axes, save_figure, COLORS, LIGHT_BLUE, Line2D
 
 def f_region(s,A,eps,zeta):
     return eps**2*A**4-(16/9)*(s*s-1)*eps*A*A+(16/27)*((s*s-1)**2+4*zeta*zeta*s*s)

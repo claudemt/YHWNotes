@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[5] / "fig"))
 from fig_style_python import figure_style, polish_axes, save_figure, add_legend, COLORS
 
 PARAMS=[(3.8,1.5),(0.48,0.95),(0.30,1.10),(1.10,0.85)]

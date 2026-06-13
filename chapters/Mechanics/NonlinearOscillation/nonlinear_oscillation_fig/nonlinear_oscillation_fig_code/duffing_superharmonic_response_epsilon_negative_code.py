@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from fig_style_python import figure_style, polish_axes, save_figure, COLORS
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[5] / "fig"))
+from fig_style_python import figure_style, polish_axes, save_figure, COLORS, Line2D
 
 def response(F, s, a, zeta, eps=0.025):
     with np.errstate(divide="ignore", invalid="ignore"):

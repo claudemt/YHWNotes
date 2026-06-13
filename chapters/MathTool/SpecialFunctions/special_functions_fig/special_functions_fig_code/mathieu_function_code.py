@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 from scipy.integrate import solve_ivp, trapezoid
 from scipy.linalg import eigh_tridiagonal
 
-from fig_style_python import COLORS, add_legend, figure_style, polish_axes, save_figure
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[5] / "fig"))
+from fig_style_python import COLORS, figure_style, polish_axes, save_figure, Line2D, add_dual_legend
 
 Q = 0.2
 X_MAX = 4.0 * np.pi
@@ -127,15 +127,11 @@ def main() -> None:
             Line2D([0], [0], color="black", lw=2.7, ls="-", label=r"$\mathrm{ce}_m$"),
             Line2D([0], [0], color="black", lw=2.7, ls="--", label=r"$\mathrm{se}_m$"),
         ]
-        family_legend = ax.legend(
-            handles=style_handles,
-            loc="center left",
-            bbox_to_anchor=(1.02, 0.72),
-            frameon=True,
-            framealpha=0.94,
-        )
-        ax.add_artist(family_legend)
-        ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.42), title=r"mode")
+        add_dual_legend(ax,
+            handles1=style_handles,
+            handles2=[Line2D([0], [0], color=COLORS[o], lw=2.7, ls="-", label=rf"$m={o}$")
+                      for o in range(4)],
+            kw2=dict(loc="center left", bbox_to_anchor=(1.02, 0.42), title=r"mode"))
 
         ax.set_xlabel(r"$x$")
         ax.set_ylabel(r"normalized amplitude")

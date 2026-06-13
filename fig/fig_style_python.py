@@ -1,8 +1,12 @@
+import inspect
+import os
+import shutil
 from contextlib import contextmanager
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.lines import Line2D
 from matplotlib.ticker import FuncFormatter
 
 try:
@@ -14,22 +18,6 @@ except Exception:
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "build"
 OUTPUT_DIR.mkdir(exist_ok=True)
-
-plt.rcParams.update({
-    "font.family": "DejaVu Serif",
-    "font.size": 24,
-    "axes.labelsize": 30,
-    "axes.titlesize": 30,
-    "xtick.labelsize": 26,
-    "ytick.labelsize": 26,
-    "legend.fontsize": 24,
-    "legend.title_fontsize": 24,
-    "axes.unicode_minus": False,
-    "lines.linewidth": 2.8,
-    "figure.dpi": 180,
-    "savefig.dpi": 500,
-    "savefig.bbox": "tight",
-})
 
 FONT_OVERRIDES = {
     "font.family": "DejaVu Serif",
@@ -46,6 +34,8 @@ FONT_OVERRIDES = {
     "savefig.dpi": 500,
     "savefig.bbox": "tight",
 }
+
+plt.rcParams.update(FONT_OVERRIDES)
 
 PLT_STYLE = _STYLE + [FONT_OVERRIDES]
 
@@ -130,6 +120,45 @@ def add_legend(ax, *, outside=True, **kwargs):
     return ax.legend(**kw)
 
 
+def add_dual_legend(ax, handles1, handles2, *, kw1=None, kw2=None):
+    """
+    Add two independent legends on the same axes.
+
+    The first legend (handles1) is added via ``add_artist`` so the second
+    legend (handles2) does not overwrite it.  Typical use: one legend
+    for linestyle (TE/TM, Bethe/B--W) and another for data series (m=0,1,2).
+
+    Parameters
+    ----------
+    ax : Axes
+    handles1 : list of Line2D
+        First legend ("style/type").  Rendered with ``frameon=False``
+        by default.
+    handles2 : list of Line2D
+        Second legend ("data").  Rendered with ``frameon=True,
+        framealpha=0.94`` by default.
+    kw1 : dict, optional
+        Extra kwargs forwarded to ``ax.legend()`` for the first legend.
+    kw2 : dict, optional
+        Extra kwargs forwarded to ``ax.legend()`` for the second legend.
+
+    Returns
+    -------
+    (Legend, Legend)
+    """
+    _kw1 = dict(frameon=False)
+    _kw2 = dict(frameon=True, framealpha=0.94)
+    if kw1:
+        _kw1.update(kw1)
+    if kw2:
+        _kw2.update(kw2)
+
+    legend1 = ax.legend(handles=handles1, **_kw1)
+    ax.add_artist(legend1)
+    legend2 = ax.legend(handles=handles2, **_kw2)
+    return legend1, legend2
+
+
 def _is_zero(value):
     return abs(float(value)) <= 1.0e-10
 
@@ -171,6 +200,23 @@ def _hide_lower_left_duplicate_zero(fig):
                 tick.label2.set_visible(False)
 
 
+def _maybe_sync_to_source(filename):
+    """If running directly (not via compile_fig.ps1), ask to sync to chapter's fig dir."""
+    # compile_fig.ps1 sets PYTHONPATH to include fig/; direct runs don't.
+    if "fig" in os.environ.get("PYTHONPATH", ""):
+        return
+    try:
+        caller = Path(inspect.stack()[2].filename).resolve()
+        # Walk up: .../{section}_fig/{section}_fig_code/{name}_code.py
+        if caller.parent.name.endswith("_fig_code"):
+            target = caller.parent.parent / filename
+            reply = input("  Sync project images? [y/n, Enter=y]: ").strip().lower()
+            if reply in ("", "y", "yes"):
+                shutil.copy2(OUTPUT_DIR / filename, target)
+    except Exception:
+        pass
+
+
 def save_fig(fig, filename):
     path = OUTPUT_DIR / filename
     _hide_lower_left_duplicate_zero(fig)
@@ -186,6 +232,7 @@ def save_figure(fig, filename, *, dpi=None, close=True):
         kwargs["dpi"] = dpi
     _hide_lower_left_duplicate_zero(fig)
     fig.savefig(path, **kwargs)
+    _maybe_sync_to_source(filename)
     if close:
         plt.close(fig)
     return path

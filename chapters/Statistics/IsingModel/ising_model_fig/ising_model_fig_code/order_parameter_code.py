@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import brentq
-from fig_style_python import figure_style, polish_axes, save_figure, add_legend, COLORS
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[5] / "fig"))
+from fig_style_python import figure_style, polish_axes, save_figure, COLORS, Line2D, add_dual_legend
 
 def gamma_c(q): return 0.5*np.log(q/(q-2))
 def a_order(g,q):
@@ -42,8 +43,11 @@ def main():
             mb=np.array([finite_or_zero(abs(bethe_values(max(t,5e-2),q)[3])) for t in T])
             mw=np.array([finite_or_zero(abs(bw_values(max(t,5e-2),q)[0])) for t in T])
             ax.plot(T,mb,color=COLORS[i],ls="-",label=rf"$q={q}$"); ax.plot(T,mw,color=COLORS[i],ls="--")
-        from matplotlib.lines import Line2D
-        l1=ax.legend(handles=[Line2D([0],[0],color="black",ls="-",label="Bethe"),Line2D([0],[0],color="black",ls="--",label="B--W")],loc="upper right"); ax.add_artist(l1)
-        add_legend(ax, outside=False, loc="lower left"); ax.set(xlabel=r"$kT/J$",ylabel=r"$m$",xlim=(0,5.5),ylim=(0,1.03)); polish_axes(ax)
+        add_dual_legend(ax,
+            handles1=[Line2D([0],[0],color="black",ls="-",label="Bethe"),
+                      Line2D([0],[0],color="black",ls="--",label="B--W")],
+            handles2=[Line2D([0],[0],color=COLORS[i],ls="-",label=rf"$q={q}$") for i,q in enumerate((3,4,5))],
+            kw1=dict(loc="upper right"), kw2=dict(loc="lower left"))
+        ax.set(xlabel=r"$kT/J$",ylabel=r"$m$",xlim=(0,5.5),ylim=(0,1.03)); polish_axes(ax)
         save_figure(fig,"order_parameter.png")
 if __name__=="__main__": main()

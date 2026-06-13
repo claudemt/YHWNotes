@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from fig_style_python import figure_style, polish_axes, save_figure, add_legend, COLORS
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[5] / "fig"))
+from fig_style_python import figure_style, polish_axes, save_figure, COLORS, Line2D, add_dual_legend
 
 N1, N2 = 2.5, 1.5
 THETA_MAX = np.arccos(N2/N1)
@@ -34,17 +34,16 @@ def displacement_te(m, theta):
 
 
 def add_waveguide_legends(ax, *, loc):
-    mode_handles = [
-        Line2D([0], [0], color=COLORS[i], lw=2.8, label=rf"$m={m}$")
-        for i, m in enumerate((0, 1, 2))
-    ]
     style_handles = [
         Line2D([0], [0], color="black", lw=2.8, ls="-", label=r"$\mathrm{TE}$"),
         Line2D([0], [0], color="black", lw=2.8, ls="--", label=r"$\mathrm{TM}$"),
     ]
-    style_legend = ax.legend(handles=style_handles, loc="upper left", frameon=False)
-    ax.add_artist(style_legend)
-    return ax.legend(handles=mode_handles, loc="upper left", bbox_to_anchor=(0.0, 0.73), frameon=True, framealpha=0.94)
+    mode_handles = [
+        Line2D([0], [0], color=COLORS[i], lw=2.8, label=rf"$m={m}$")
+        for i, m in enumerate((0, 1, 2))
+    ]
+    return add_dual_legend(ax, style_handles, mode_handles,
+                           kw1=dict(loc="upper left"), kw2=dict(loc="upper left", bbox_to_anchor=(0.0, 0.73)))
 
 
 def main():

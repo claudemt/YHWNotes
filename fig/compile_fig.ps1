@@ -1,15 +1,12 @@
 $FIG_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ROOT_DIR = Split-Path $FIG_DIR
 Set-Location $FIG_DIR
-
 $texCmd = (Get-Command "xelatex").Source
 $ppmCmd = (Get-Command "pdftoppm").Source
 $pythonCmd = (Get-Command "python" -ErrorAction SilentlyContinue).Source
 if (-not $pythonCmd) { $pythonCmd = (Get-Command "python3" -ErrorAction SilentlyContinue).Source }
-
 $buildDir = Join-Path $FIG_DIR "build"
 New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
-
 function Remove-PythonCache {
     param([string]$Path)
     if (-not (Test-Path $Path)) { return }
@@ -18,15 +15,12 @@ function Remove-PythonCache {
     Get-ChildItem -Path $Path -Recurse -File -Include "*.pyc", "*.pyo" -ErrorAction SilentlyContinue |
         Remove-Item -Force -ErrorAction SilentlyContinue
 }
-
 function Remove-LatexPdfIntermediates {
     Get-ChildItem -Path $buildDir -File -Filter "*.pdf" -ErrorAction SilentlyContinue |
         Remove-Item -Force -ErrorAction SilentlyContinue
     Get-ChildItem -Path $FIG_DIR -File -Filter "tmp-pdfcrop-*" -ErrorAction SilentlyContinue |
         Remove-Item -Force -ErrorAction SilentlyContinue
 }
-
-# ── Chapter / section display titles ───────────────────────────────────
 $chapterTitle = @{
     "Mechanics"       = "力学"
     "Electrodynamics" = "电学"
@@ -35,49 +29,15 @@ $chapterTitle = @{
     "MathTool"        = "数学工具"
 }
 $chapterOrder = @("Mechanics", "Electrodynamics", "Statistics", "Optics", "MathTool")
-
-# Python file → chapter/section mapping (base name → {chapter, section})
-$pyMapping = @{
-    "angular_frequency_relation"                          = [PSCustomObject]@{ Chapter = "Electrodynamics"; Section = "Waveguide" }
-    "group_velocity_relation"                              = [PSCustomObject]@{ Chapter = "Electrodynamics"; Section = "Waveguide" }
-    "characteristic_displacement_relation"                 = [PSCustomObject]@{ Chapter = "Electrodynamics"; Section = "Waveguide" }
-    "circular_motion_radiation_angular_distribution"       = [PSCustomObject]@{ Chapter = "Electrodynamics"; Section = "Radiation" }
-    "harmonic_motion_radiation_angular_distribution"       = [PSCustomObject]@{ Chapter = "Electrodynamics"; Section = "Radiation" }
-    "magnetic_field_diffusion_from_sphere_center_schematic_diagram" = [PSCustomObject]@{ Chapter = "Electrodynamics"; Section = "Electrostatics" }
-    "one_dimensional_magnetic_field_diffusion_schematic_diagram"     = [PSCustomObject]@{ Chapter = "Electrodynamics"; Section = "Electrostatics" }
-    "mathieu_function"                                    = [PSCustomObject]@{ Chapter = "MathTool"; Section = "SpecialFunctions" }
-    "eigenvalue_curve_shaded_region_stable"               = [PSCustomObject]@{ Chapter = "MathTool"; Section = "SpecialFunctions" }
-    "polylogarithm_function"                              = [PSCustomObject]@{ Chapter = "MathTool"; Section = "SpecialFunctions" }
-    "high_dimensional_helmholtz_equation_green_function"   = [PSCustomObject]@{ Chapter = "MathTool"; Section = "SpecialFunctions" }
-    "airy_type_function_asymptotic_comparison"             = [PSCustomObject]@{ Chapter = "MathTool"; Section = "SpecialFunctions" }
-    "attractive_orbit_radius_vs_azimuth_examples"          = [PSCustomObject]@{ Chapter = "Mechanics"; Section = "InverseSquareMotion" }
-    "attractive_orbit_time_vs_radius_examples"             = [PSCustomObject]@{ Chapter = "Mechanics"; Section = "InverseSquareMotion" }
-    "duffing_near_resonance_phase_portrait_epsilon_positive"  = [PSCustomObject]@{ Chapter = "Mechanics"; Section = "NonlinearOscillation" }
-    "duffing_near_resonance_phase_portrait_epsilon_negative"  = [PSCustomObject]@{ Chapter = "Mechanics"; Section = "NonlinearOscillation" }
-    "duffing_superharmonic_response_epsilon_positive"         = [PSCustomObject]@{ Chapter = "Mechanics"; Section = "NonlinearOscillation" }
-    "duffing_superharmonic_response_epsilon_negative"         = [PSCustomObject]@{ Chapter = "Mechanics"; Section = "NonlinearOscillation" }
-    "duffing_system_subharmonic_resonance_response_plot"      = [PSCustomObject]@{ Chapter = "Mechanics"; Section = "NonlinearOscillation" }
-    "state_probability"                                   = [PSCustomObject]@{ Chapter = "Statistics"; Section = "IsingModel" }
-    "magnetic_susceptibility"                              = [PSCustomObject]@{ Chapter = "Statistics"; Section = "IsingModel" }
-    "order_parameter"                                      = [PSCustomObject]@{ Chapter = "Statistics"; Section = "IsingModel" }
-    "heat_capacity"                                        = [PSCustomObject]@{ Chapter = "Statistics"; Section = "IsingModel" }
-}
-
-# ── Section name → display name ───────────────────────────────────────
 function Get-SectionDisplay {
     param([string]$Name)
     $d = $Name -creplace '(?<=[a-z])(?=[A-Z])', ' '
     $d = $d -creplace '(?<=[A-Z])(?=[A-Z][a-z])', ' '
-    # Handle "Word4F" → "Word 4F" (not "Word 4 F")
     $d = $d -creplace '([a-zA-Z])(\d+)', '$1 $2'
     return $d.Trim()
 }
-
-# ── Discover all figures ──────────────────────────────────────────────
-$allFigs = @()  # each: { Name, Type, Source, Chapter, Section, Images[] }
-$figMap = @{}   # Name → fig entry (dedup)
-
-# 1. TeX figures
+$allFigs = @()
+$figMap = @{}
 $texFiles = Get-ChildItem $ROOT_DIR\chapters -Recurse -Filter "*_code.tex" -File |
     Where-Object { $_.FullName -notmatch "\\build\\" }
 foreach ($f in $texFiles) {
@@ -93,44 +53,37 @@ foreach ($f in $texFiles) {
         $figMap[$baseName] = $entry
     }
 }
-
-# 2. Python figures: find _code.py files in chapters/
 $pyFiles = Get-ChildItem $ROOT_DIR\chapters -Recurse -Filter "*_code.py" -File |
     Where-Object { $_.FullName -notmatch "\\build\\" } | Sort-Object FullName
 foreach ($f in $pyFiles) {
     $baseName = [IO.Path]::GetFileNameWithoutExtension($f.Name)
     if ($baseName.EndsWith("_code")) { $baseName = $baseName.Substring(0, $baseName.Length - 5) }
-    if (-not $pyMapping.ContainsKey($baseName)) { continue }
-    $m = $pyMapping[$baseName]
+    $relDir = $f.Directory.FullName.Substring((Join-Path $ROOT_DIR "chapters").Length + 1)
+    $parts = $relDir -split '\\'
+    $chapter = $parts[0]
+    $section = $parts[1]
     $content = Get-Content $f.FullName -Raw -ErrorAction SilentlyContinue
     $imgMatches = [regex]::Matches($content, '(?i)save_figure\s*\(\s*fig\s*,\s*"([^"]+)"')
     $images = @()
     foreach ($match in $imgMatches) { $images += $match.Groups[1].Value }
     if ($images.Count -eq 0) { continue }
     if (-not $figMap.ContainsKey($baseName)) {
-        $entry = [PSCustomObject]@{ Name = $baseName; Type = "python"; Source = $f.FullName; Chapter = $m.Chapter; Section = $m.Section; Images = $images }
+        $entry = [PSCustomObject]@{ Name = $baseName; Type = "python"; Source = $f.FullName; Chapter = $chapter; Section = $section; Images = $images }
         $allFigs += $entry
         $figMap[$baseName] = $entry
     }
 }
-
-# ── Group by chapter → section ────────────────────────────────────────
-$sectionList = @()  # flat list for selection: { ChIdx, SecIdx, Chapter, Section, Disp, Figs[] }
+$sectionList = @()
 $chIdx = 0
-
 Write-Host ""; Write-Host "Figures"; Write-Host ""
-
 foreach ($ch in $chapterOrder) {
     $chFigs = $allFigs | Where-Object { $_.Chapter -eq $ch } | Sort-Object Section, Name
     if ($chFigs.Count -eq 0) { continue }
-
-    # Group by section
     $secGroups = @{}
     foreach ($f in $chFigs) {
         if (-not $secGroups.ContainsKey($f.Section)) { $secGroups[$f.Section] = @() }
         $secGroups[$f.Section] += $f
     }
-
     Write-Host ("  $($chIdx+1). $($chapterTitle[$ch])") -ForegroundColor White
     $secIdx = 0
     foreach ($sec in ($secGroups.Keys | Sort-Object)) {
@@ -146,11 +99,9 @@ foreach ($ch in $chapterOrder) {
     }
     $chIdx++
 }
-
-# ── Build flat lookup: "ch.sec.fig" → figure ──────────────────────────
-$figLookup = @{}       # "5.1.3" → figure object
-$secLookup = @{}       # "5.1"   → section object
-$chLookup = @{}        # "5"     → array of section objects
+$figLookup = @{}
+$secLookup = @{}
+$chLookup = @{}
 foreach ($sl in $sectionList) {
     $chId = "$($sl.ChIdx + 1)"
     $secId = "$($sl.SecIdx + 1)"
@@ -161,8 +112,6 @@ foreach ($sl in $sectionList) {
         $figLookup["$chId.$secId.$($k+1)"] = $sl.Figs[$k]
     }
 }
-
-# ── Selection ─────────────────────────────────────────────────────────
 while ($true) {
     $selection = Read-Host "`nFigure IDs (e.g. 1, 2.1.2, 2.1,3.2.1; Enter=all)"
     $selectedFigs = @()
@@ -187,16 +136,12 @@ while ($true) {
     if ($selectedFigs.Count -gt 0) { break }
     Write-Host "Invalid input, try again." -ForegroundColor Yellow
 }
-
-# ── Override prompt ───────────────────────────────────────────────────
-$overrideInput = Read-Host "`nOverride project images? (Y/n, default=Y)"
+$overrideInput = Read-Host "`nSync project images? [y/n, Enter=y]"
 if ([string]::IsNullOrWhiteSpace($overrideInput)) { $overrideInput = "y" }
 $overrideInput = $overrideInput.ToLower()
 if ($overrideInput -eq "y" -or $overrideInput -eq "yes") { $override = $true }
 else { $override = $false }
 Write-Host ""
-
-# ── Override helper ───────────────────────────────────────────────────
 function Invoke-Override {
     param([string]$BaseName, [string]$PngSource)
     if (-not $override) { return }
@@ -208,19 +153,14 @@ function Invoke-Override {
         Write-Host "  -> Overrode ...$rel"
     }
 }
-
-# ── Compile ───────────────────────────────────────────────────────────
 $figDraw = Join-Path $FIG_DIR "fig_draw.tex"
 Set-Content -Path $figDraw -Value "\documentclass[tikz,border=5pt]{standalone}" -Encoding UTF8
 Add-Content -Path $figDraw -Value "\input{fig_config.tex}" -Encoding UTF8
 Add-Content -Path $figDraw -Value "\begin{document}" -Encoding UTF8
 Add-Content -Path $figDraw -Value "" -Encoding UTF8
-
 $successCount = 0; $failCount = 0
-
 foreach ($fig in $selectedFigs) {
     $baseName = $fig.Name
-
     if ($fig.Type -eq "python") {
         Write-Host "[$($fig.Chapter)] $baseName ... " -NoNewline
         $env:PYTHONPATH = "$FIG_DIR;$env:PYTHONPATH"
@@ -251,7 +191,6 @@ foreach ($fig in $selectedFigs) {
         }
         if ($ok) { Write-Host "OK" -ForegroundColor Green; $successCount++ }
         else { Write-Host "No output" -ForegroundColor Yellow; $failCount++ }
-
     } else {
         Write-Host "[$($fig.Chapter)] $baseName ... " -NoNewline
         $codeFile = $fig.Source
@@ -259,7 +198,6 @@ foreach ($fig in $selectedFigs) {
         $baseUri = [Uri](($FIG_DIR.TrimEnd('\')) + '\')
         $targetUri = [Uri]($codeFile)
         $relPath = [Uri]::UnescapeDataString($baseUri.MakeRelativeUri($targetUri).ToString()) -replace '\\', '/'
-
         $wrapper = @"
 \documentclass[tikz,border=5pt]{standalone}
 \input{fig_config.tex}
@@ -271,7 +209,6 @@ foreach ($fig in $selectedFigs) {
         & $texCmd -interaction=nonstopmode -output-directory="$buildDir" $tempTex *>$null 2>&1
         & $texCmd -interaction=nonstopmode -output-directory="$buildDir" $tempTex *>$null 2>&1
         Remove-Item $tempTex -Force -ErrorAction SilentlyContinue
-
         $tempPdf = Join-Path $buildDir "__fig_temp.pdf"
         if (Test-Path $tempPdf) {
             & pdfcrop $tempPdf $tempPdf *>$null 2>&1
@@ -299,12 +236,12 @@ foreach ($fig in $selectedFigs) {
         }
     }
 }
-
 Add-Content -Path $figDraw -Value "\end{document}" -Encoding UTF8
-
 Remove-PythonCache -Path $buildDir
 Remove-LatexPdfIntermediates
-
+Get-ChildItem -Path $buildDir -File -ErrorAction SilentlyContinue |
+    Where-Object { $_.Extension -ne ".png" } |
+    Remove-Item -Force -ErrorAction SilentlyContinue
 Write-Host ""
 Write-Host "Done: $successCount succeeded, $failCount failed" -ForegroundColor $(if ($failCount -eq 0) { "Green" } else { "Yellow" })
 Write-Host "Output: $buildDir"

@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.linalg import eigh_tridiagonal
+import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[5] / "fig"))
 from fig_style_python import figure_style, polish_axes, save_figure
 
 LAM_MIN, LAM_MAX = -2.0, 34.0
