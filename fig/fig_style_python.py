@@ -6,6 +6,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import font_manager as _font_manager
 from matplotlib.lines import Line2D
 from matplotlib.ticker import FuncFormatter
 
@@ -19,8 +20,44 @@ BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "build"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
+_LM_FACES = (
+    "lmroman10-regular.otf",
+    "lmroman10-bold.otf",
+    "lmroman10-italic.otf",
+    "lmroman10-bolditalic.otf",
+)
+
+
+def _register_latin_modern() -> bool:
+    """Register TeX Live's Latin Modern Roman fonts with matplotlib.
+
+    Uses ``kpsewhich`` to locate the OTF files, so any TeX Live
+    installation is found; returns True if at least one face loaded.
+    """
+    import subprocess
+
+    found = 0
+    for face in _LM_FACES:
+        try:
+            path = subprocess.run(
+                ["kpsewhich", face], capture_output=True, text=True, check=False
+            ).stdout.strip()
+            if path and os.path.exists(path):
+                _font_manager.fontManager.addfont(path)
+                found += 1
+        except Exception:
+            continue
+    return found > 0
+
+
+_USE_LATIN_MODERN = _register_latin_modern()
+
 FONT_OVERRIDES = {
-    "font.family": "DejaVu Serif",
+    "font.family": (
+        ["Latin Modern Roman", "DejaVu Serif"] if _USE_LATIN_MODERN
+        else ["DejaVu Serif"]
+    ),
+    "mathtext.fontset": "cm",
     "font.size": 24,
     "axes.labelsize": 30,
     "axes.titlesize": 30,

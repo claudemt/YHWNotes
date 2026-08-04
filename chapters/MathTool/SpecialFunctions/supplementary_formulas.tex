@@ -36,8 +36,8 @@
 
 在玻色费米气体统计中，将玻色费米积分函数的定义为
 \begin{equation*}
-	g_{\nu}(z) &= \mathrm{Li}_{\nu}(z) = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} \dfrac{x^{\nu-1}}{z^{-1} e^{x} - 1} \, \d x = -\dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} x^{\nu-2} \ln(1 - z e^{-x}) \, \d x. \\
-	f_{\nu}(z) &= -\mathrm{Li}_{\nu}(-z) = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} \dfrac{x^{\nu-1}}{z^{-1} e^{x} + 1} \, \d x = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} x^{\nu-2} \ln(1 + z e^{-x}) \, \d x. \\
+	g_{\nu}(z) &= \mathrm{Li}_{\nu}(z) = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} \dfrac{x^{\nu-1}}{z^{-1} e^{x} - 1} \, \d x = -\dfrac{1}{\Gamma(\nu-1)} \int_{0}^{\infty} x^{\nu-2} \ln(1 - z e^{-x}) \, \d x. \\
+	f_{\nu}(z) &= -\mathrm{Li}_{\nu}(-z) = \dfrac{1}{\Gamma(\nu)} \int_{0}^{\infty} \dfrac{x^{\nu-1}}{z^{-1} e^{x} + 1} \, \d x = \dfrac{1}{\Gamma(\nu-1)} \int_{0}^{\infty} x^{\nu-2} \ln(1 + z e^{-x}) \, \d x. \\
 \end{equation*}
 其中\(\mathrm{Li}_{\nu}(z) \)是多对数函数，满足
 \begin{equation*}
@@ -80,7 +80,7 @@
 
 运用该公式，得到\(d\)维自由空间的Helmholtz方程的格林函数解为
 \begin{equation*}
-	&(\nabla^{2} + k^{2}) G(\vb{R}) = \delta^{(d)}(\vb{R}), \quad \vb{R} = \vb{r} - \vb{r}'.\\
+	&(k^{2} - \nabla^{2}) G(\vb{R}) = \delta^{(d)}(\vb{R}), \quad \vb{R} = \vb{r} - \vb{r}'.\\
 	&\implies\quad G(\vb{R}) = \int_{\mathbb{R}^{d}} \dfrac{\d \vb{q}}{(2\pi)^{d}} \dfrac{e^{i \vb{q} \cdot \vb{R}}}{q^{2} + k^{2}} = \dfrac{1}{2\pi} \left( \dfrac{k}{2\pi R} \right)^{d/2 - 1} K_{d/2 - 1}(kR).
 \end{equation*}
 
@@ -137,6 +137,10 @@
 	&\frac{1}{U^2} \int_0^1 \left( \frac{m^2}{U^2 \xi^2} \left( \frac{J_m(\xi U)}{J_m(U)} \right)^2 + \left( \frac{J_m'(\xi U)}{J_m(U)} \right)^2 \right) \xi \, d\xi = \frac{1}{U^2} \int_0^1 \left( \frac{J_m(\xi U)}{J_m(U)} \right)^2 \xi \, \d \xi + \frac{1}{U^2} f_m(U) = - \frac{f_m'(U)}{2U}.\\
 	&\frac{1}{W^2} \int_1^\infty \left( \frac{m^2}{W^2 \xi^2} \left( \frac{K_m(\xi W)}{K_m(W)} \right)^2 + \left( \frac{K_m'(\xi W)}{K_m(W)} \right)^2 \right) \xi \, d\xi = -\frac{1}{W^2} \int_1^\infty \left( \frac{K_m(\xi W)}{K_m(W)} \right)^2 \xi \, \d \xi - \frac{1}{W^2} g_m(W) = \frac{g_m'(W)}{2W}.
 \end{equation*}
+其中 \(J_m'\)、\(K_m'\) 表示对函数宗量求导，且
+\begin{equation*}
+	f_m(U)=\frac{J_m'(U)}{U J_m(U)},\qquad g_m(W)=\frac{K_m'(W)}{W K_m(W)}.
+\end{equation*}
 以及
 \begin{equation*}
 	\sum_{m,n=-\infty}^{\infty} J_{m}(\xi) J_{n}(\xi) e^{-i n \Omega \tau} \frac{1}{2 \pi} \int_{0}^{2 \pi} e^{i(m-n) \phi} f(\phi) \d  \phi = \sum_{n=-\infty}^{\infty} e^{-i n \Omega \tau} g(\xi).
@@ -158,9 +162,9 @@
 
 与平面周期运动有关的积分恒等式
 \begin{equation*}
-	&\int_{0}^{2\pi} e^{i m (\xi - \alpha \cos\xi)} \sin\xi \, \d \xi = -2\pi \, i^{m} J_{m}(m \alpha), \quad
-	\int_{0}^{2\pi} e^{i m (\xi - \alpha \cos\xi)} \cos\xi \, \d \xi = 2\pi \, i^{m-1} J_{m}'(m \alpha). \\
-	&\frac{1}{4\pi} \int_{0}^{2\pi} \frac{1 - \sin^{2}\varphi \cos^{2}\theta + \beta^{2} \cos^{2}\theta - 2 \beta \cos\varphi \cos\theta}{(1 - \beta \cos\theta \cos\varphi)^{5}} \, \d \varphi= \frac{4(1 + \sin^{2}\theta) - \beta^{2} \cos^{4}\theta (1 + 3\beta^{2})}{4 (1 - \beta^{2} \cos^{2}\theta)^{7/2}}\pi\\
+	&\int_{0}^{2\pi} e^{i m (\xi - \alpha \cos\xi)} \sin\xi \, \d \xi = -\frac{2\pi}{\alpha} \, (-i)^{m} J_{m}(m \alpha), \quad
+	\int_{0}^{2\pi} e^{i m (\xi - \alpha \cos\xi)} \cos\xi \, \d \xi = 2\pi \, (-i)^{m-1} J_{m}'(m \alpha). \\
+	&\frac{1}{4\pi} \int_{0}^{2\pi} \frac{1 - \sin^{2}\varphi \cos^{2}\theta + \beta^{2} \cos^{2}\theta - 2 \beta \cos\varphi \cos\theta}{(1 - \beta \cos\theta \cos\varphi)^{5}} \, \d \varphi= \frac{4(1 + \sin^{2}\theta) - \beta^{2} \cos^{4}\theta (1 + 3\beta^{2})}{16 (1 - \beta^{2} \cos^{2}\theta)^{7/2}}\\
 	&\int_{-\pi/2}^{\pi/2} \frac{4(1 + \sin^{2}\theta) - \beta^{2} \cos^{4}\theta (1 + 3\beta^{2})}{16 (1 - \beta^{2} \cos^{2}\theta)^{7/2}} \cos\theta \, \d \theta = \frac{2}{3(1 - \beta^{2})^{2}}. \\
 	&\int_{0}^{2\pi} \frac{\cos^{2}\varphi}{(1 + \alpha \sin\varphi)^{5}} \, \d \varphi = \frac{\pi (4 + \alpha^{2})}{4(1 - \alpha^{2})^{7/2}},\quad\int_{0}^{\infty} \frac{\xi^{4}}{(\xi^{2} + a^{2})^{2} (\xi^{2} + b^{2})^{2}} \, \d \xi= \frac{\pi}{4(a + b)^{3}}. \\
 	&\int_{0}^{\pi} \frac{4 + \alpha^{2} \cos^{2}\theta}{(1 - \alpha^{2} \cos^{2}\theta)^{7/2}} \sin^{3}\theta \, \d \theta = \frac{4(4 - 3\alpha^{2})}{3(1 - \alpha^{2})^{3/2}}.
@@ -188,7 +192,7 @@
 与立方电阻网有关的公式\(|m| \leq l,\,m \in \mathbb{Z}\)
 \begin{equation*}
 	&\dfrac{1}{l} \sum_{k=0}^{l-1} \dfrac{\sin\left( \dfrac{2\pi k m}{l} \right)}{A - \cos\left( \dfrac{2\pi k}{l} \right)} = 0,\quad \dfrac{1}{l} \sum_{k=0}^{l-1} \dfrac{1 - \cos\left( \dfrac{2\pi k m}{l} \right)}{1 - \cos\left( \dfrac{2\pi k}{l} \right)} = |m|.\\
-	&\dfrac{1}{l} \sum_{k=0}^{l-1} \dfrac{\cos\left( \dfrac{2\pi k m}{l} \right)}{A - \cos\left( \dfrac{2\pi k}{l} \right)} = \dfrac{1}{\sqrt{A^2 - 1}} \cdot \dfrac{(A - \sqrt{A^2 - 1})^{|m|} - (A - \sqrt{A^2 - 1})^{l - |m|}}{1 - (A - \sqrt{A^2 - 1})^l}.
+	&\dfrac{1}{l} \sum_{k=0}^{l-1} \dfrac{\cos\left( \dfrac{2\pi k m}{l} \right)}{A - \cos\left( \dfrac{2\pi k}{l} \right)} = \dfrac{1}{\sqrt{A^2 - 1}} \cdot \dfrac{(A - \sqrt{A^2 - 1})^{|m|} + (A - \sqrt{A^2 - 1})^{l - |m|}}{1 - (A - \sqrt{A^2 - 1})^l}.
 \end{equation*}
 
 与柱对称混合边界条件有关的方程解
