@@ -1,5 +1,6 @@
 
 \section{弱相互作用玻色费米气体}
+
 \subsection{硬球赝势的引入}
 
 对于二体碰撞，取相对坐标 \(\vb{r} = \vb{r}_{i} - \vb{r}_{j}\)，记折合质量为\(M\)，硬球势参量为\(a\)，则波函数满足
@@ -10,6 +11,8 @@
 		0,       & r > a.
 	\end{cases}
 \end{equation*}
+
+这里 \(a\) 是硬球半径；在最低阶 \(s\) 波近似中，它同时充当散射长度。零程近似要求相对动量满足 \(ka\ll1\)，多体热力学中还要满足 \(a/\lambda\ll1\)。
 
 显然，在硬球内部 (\(r < a\))，\(\psi(\vb{r}) = 0\)，在硬球外部 (\(r > a\))，解为
 \begin{equation*}
@@ -49,8 +52,9 @@
 \end{equation*}
 其中 \(\mathcal{P}_{l}\) 是投影算符
 \begin{equation*}
-	\mathcal{P}_{l}(\uv{r}) = \sum_{m=-l}^{l} Y_{lm}(\uv{r}) \int \psi(\vb{r}') Y_{lm}(\uv{r}') \, \d \Omega'.
+	\mathcal{P}_{l}(\uv{r}) = \sum_{m=-l}^{l} Y_{lm}(\uv{r}) \int \psi(\vb{r}') Y_{lm}^{*}(\uv{r}') \, \d \Omega'.
 \end{equation*}
+这里采用复球谐函数的通常归一化，投影系数必须含 \(Y_{lm}^{*}\)；若改用实球谐基，则复共轭退化为相同的实函数.
 
 对于低能量散射 (\(ka \ll 1\))
 \begin{equation*}
@@ -66,14 +70,262 @@
 	V_{\mathrm{ps}} = \frac{4\pi \hbar^{2} a}{m} \delta^3(\vb{r}) \left( \frac{\partial}{\partial r} r \right).
 \end{equation*}
 
+下面多体计算只保留 \(l=0\) 接触项，适用条件仍为 \(a/\lambda\ll1\)。
+
 进而哈密顿量修正为
 \begin{equation*}
-	\mathcal{H} = \mathcal{H}_{0} + \mathcal{H}_{1}, \quad \mathcal{H}_{0} = -\frac{\hbar^{2}}{2m} \sum_{i} \nabla_{i}^{2}, \quad \mathcal{H}_{1} = \frac{4\pi a \hbar^{2}}{m} \sum_{i<j} \delta(\vb{r}_{i} - \vb{r}_{j}) \left( \frac{\partial}{\partial r_{ij}} r_{ij} \right) = \frac{2\pi a \hbar^{2}}{m} \sum_{i,j} \delta(\vb{r}_{i} - \vb{r}_{j}) \left( \frac{\partial}{\partial r_{ij}} r_{ij} \right).
+	\mathcal{H} = \mathcal{H}_{0} + \mathcal{H}_{1}, \quad \mathcal{H}_{0} = -\frac{\hbar^{2}}{2m} \sum_{i} \nabla_{i}^{2}, \quad \mathcal{H}_{1} = \frac{4\pi a \hbar^{2}}{m} \sum_{i<j} \delta(\vb{r}_{i} - \vb{r}_{j}) \left( \frac{\partial}{\partial r_{ij}} r_{ij} \right) = \frac{2\pi a \hbar^{2}}{m} \sum_{i\ne j} \delta(\vb{r}_{i} - \vb{r}_{j}) \left( \frac{\partial}{\partial r_{ij}} r_{ij} \right).
 \end{equation*}
-其中\(i, j\)为粒子编号， \(r_{ij} = |\vb{r}_{i} - \vb{r}_{j}|\), \(\nabla_{i}^{2}\)以 \(\vb{r}_{i}\) 为微分坐标.
+其中\(i, j\)为粒子编号， \(r_{ij} = |\vb{r}_{i} - \vb{r}_{j}|\), \(\nabla_{i}^{2}\)以 \(\vb{r}_{i}\) 为微分坐标. 第二种写法是把无序粒子对改写成有序但互异的粒子对，因此必须排除 \(i=j\) 的自相互作用.
+
+\subsection{理想玻色费米气体：统计函数与低温基准}
+
+先暂时令 \(\mathcal{H}_{1}=0\)，建立后文所有相互作用修正都要用到的理想气体基准。玻色子和费米子的差异在这里集中表现为占据数的取值范围以及相应的统计函数；自旋简并度则作为态密度的乘子保留。为了同时覆盖非相对论、相对论和一般幂律色散，以下先使用累计态数 \(\Sigma(\varepsilon)\) 的一般形式.
+
+\subsubsection{巨配分函数与统一统计函数}
+
+理想玻色费米气体的巨配分函数为
+\begin{equation*}
+	\Xi = \sum_{N=0}^{\infty} z^{N} \sum_{r} e^{-\beta E_{r}} = \prod_{\alpha} \sum_{n_{\alpha}} \left( z e^{-\beta \varepsilon_{\alpha}} \right)^{n_{\alpha}}.
+\end{equation*}
+其中，\(r\) 代表 \(\{n_{\alpha}\}\) 分布的序号数，粒子数满足约束 \(N = \sum_{\alpha} n_{\alpha}\)，能量可表示为 \(E = \sum_{\alpha} n_{\alpha} \varepsilon_{\alpha}\).
+
+对于玻色子，\(n_{\alpha}\) 可以取一切自然数，对于费米子，\(n_{\alpha} = 0, 1\)，故
+\begin{equation*}
+	\Xi =
+	\begin{cases}
+		\prod_{\alpha} \left( 1 - z e^{-\beta \varepsilon_{\alpha}} \right)^{-1}, & \text{B.E.} \\
+		\prod_{\alpha} \left( 1 + z e^{-\beta \varepsilon_{\alpha}} \right),      & \text{F.D.}
+	\end{cases}
+	\quad
+	\ln \Xi =
+	\begin{cases}
+		-\sum_{\alpha} \ln \left( 1 - z e^{-\beta \varepsilon_{\alpha}} \right), & \text{B.E.} \\
+		\sum_{\alpha} \ln \left( 1 + z e^{-\beta \varepsilon_{\alpha}} \right),  & \text{F.D.}
+	\end{cases}
+\end{equation*}
+
+在热力学极限下，可以将\(d\)维空间的求和连续化为\(2d\)维相空间的积分
+\begin{equation*}
+	\varepsilon_{\alpha} \to \varepsilon, \quad \sum_{\alpha} \to \frac{1}{h^{d}} \int \prod_{i=1}^{d} \d q_{i} \, \d p_{i}.
+\end{equation*}
+
+\subsubsection{一般态密度与热力学闭式公式}
+
+对于自由粒子系统，以上对位置空间的积分得到体积\(V\)，对动量空间的积分可以转换至能量空间，如上积分总可以写作
+\begin{equation*}
+	\frac{1}{h^{d}} \int \prod_{i=1}^{d} \d q_{i} \, \d p_{i} = \int \frac{\d \Sigma(\varepsilon)}{\d \varepsilon} \, \d \varepsilon.
+\end{equation*}
+
+不妨假设 \(\Sigma(\varepsilon) = B V \varepsilon^{s}, s \ge 1\)，\(B\) 是与体积无关的常数，进而
+\begin{equation*}
+	\sum_{\alpha} \to B V \int \d \varepsilon^{s} = B V \int_{0}^{\infty} s \varepsilon^{s-1} \, \d \varepsilon.
+\end{equation*}
+
+\begin{notes}
+	比如，对于\(d\)维空间中能谱形如 \(\varepsilon = \kappa p^{a}\) 且内禀简并度为\(g\)的粒子
+	\begin{equation*}
+		\Sigma(\varepsilon) = \frac{g V}{h^{d}} \frac{\Omega_{d}}{d} p^{d} = g \frac{\Omega_{d}}{d} \frac{V}{h^{d}} \left( \frac{\varepsilon}{\kappa} \right)^{d/a}, \quad \Omega_{d} = \frac{2\pi^{d/2}}{\Gamma(d/2)}.
+	\end{equation*}
+	给出
+	\begin{equation*}
+		B=\frac{g}{d}\frac{\Omega_d}{h^d}\kappa^{-d/a},\quad s=\frac{d}{a}
+	\end{equation*}
+	质量为\(m\)的经典粒子对应 \(a = 2, \kappa = (2m)^{-1}\)，极端相对论型粒子对应 \(a = 1, \kappa = c\)。在一些复杂结构中，\(\kappa, \alpha\) 会有更为特殊的取值。
+\end{notes}
+
+为统一表示玻色和费米统计，记
+\[
+\Phi_{\nu}(z)=
+\begin{cases}
+g_{\nu}(z), & \text{B.E.},\\
+f_{\nu}(z), & \text{F.D.}
+\end{cases}
+\]
+其中 \(g_{\nu}\) 和 \(f_{\nu}\) 的定义域分别由玻色逸度 \(0\le z\le1\) 与费米逸度 \(z>0\) 决定。代入巨配分函数，转换求和为积分得到
+\begin{equation*}
+	\ln \Xi &= B V \Gamma(s+1) (kT)^{s} \Phi_{s+1}(z). \quad
+	N = z \frac{\partial \ln \Xi}{\partial z} = B V \Gamma(s+1) (kT)^{s} \Phi_{s}(z). \\
+	E &= -\frac{\partial \ln \Xi}{\partial \beta} = s N k T \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}. \quad
+	P V = k T \ln \Xi = N k T \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}. \\
+	S &= k \left( \ln \Xi - \beta \frac{\partial \ln \Xi}{\partial \beta} - z \ln z \frac{\partial \ln \Xi}{\partial z} \right) = N k \left( -\ln z + (s+1) \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} \right).
+\end{equation*}
+
+沿着等体积线
+\begin{equation*}
+	&\left( \frac{\partial z}{\partial T} \right)_{V} = -\frac{s z}{T} \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)}. \quad C_{V} = T \left( \frac{\partial S}{\partial T} \right)_{V} = s N k \left( (s+1) \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} - s \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)} \right). \\
+	&\left( \frac{\partial C_{V}}{\partial T} \right)_{V} = \frac{s^{2} N k}{T} \left( (s+1) \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} - \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)} - s \frac{\Phi_{s}^{2}(z) \Phi_{s-2}(z)}{\Phi_{s-1}^{3}(z)} \right).
+\end{equation*}
+
+沿着等压线
+\begin{equation*}
+	\left( \frac{\partial z}{\partial T} \right)_{P} = -\frac{(s+1) z}{T} \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}. \quad C_{P} = T \left( \frac{\partial S}{\partial T} \right)_{P} = (s+1) N k \left( (s+1) \frac{\Phi_{s-1}(z) \Phi_{s+1}^{2}(z)}{\Phi_{s}^{3}(z)} - s \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} \right).
+\end{equation*}
+
+沿着等温线
+\begin{equation*}
+	\left( \frac{\partial z}{\partial V} \right)_{T} = -\frac{z}{V} \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)}. \quad
+	\kappa_{T} = -\frac{1}{V} \left( \frac{\partial V}{\partial P} \right)_{T} = \frac{V}{N k T} \frac{\Phi_{s-1}(z)}{\Phi_{s}(z)}.
+\end{equation*}
+
+沿着绝热线
+\begin{equation*}
+	&S, \; z, \; P T^{-s-1}, \; V T^{s}, \; P V^{\frac{s+1}{s}} = \text{const}.\\
+	&\kappa_{S} = -\frac{1}{V} \left( \frac{\partial V}{\partial P} \right)_{S} = \frac{s}{s+1} \frac{V}{N k T} \frac{\Phi_{s}(z)}{\Phi_{s+1}(z)}. \quad
+	c_{s}^{2} = \left( \frac{\partial P}{\partial \rho} \right)_{S} = \frac{V}{m \kappa_{S}} = \frac{s+1}{s} \frac{k T}{m} \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}.
+\end{equation*}
+
+不难给出
+\begin{equation*}
+	\gamma = \frac{C_{P}}{C_{V}} = \frac{\kappa_{T}}{\kappa_{S}} = \frac{s+1}{s} \frac{\Phi_{s+1}(z) \Phi_{s-1}(z)}{\Phi_{s}^{2}(z)}.
+\end{equation*}
+
+\subsubsection{玻色凝聚与费米低温展开}
+
+【对于玻色子】
+
+由于 \(s > 1\) 时 \(g_{s}(z) \le \zeta(s)\)，等号在 \(z = 1\) 取得，因此如上求出的激发态所能容纳的粒子数有限，当温度低于临界值 \(T_{c}\) 时，部分粒子将凝聚到基态，使基态有宏观多的粒子数 \(N_{0}\)，其中
+\begin{equation*}
+	T_{c} = \frac{1}{k} \left( \frac{N}{B V \Gamma(s+1) \zeta(s)} \right)^{1/s}, \quad N_{0} = N \left( 1 - \left( \frac{T}{T_{c}} \right)^{s} \right).
+\end{equation*}
+
+当 \(T < T_{c}\) 时，降温不再改变化学势 （始终为零，对应 \(z = 1\)），而仅仅改变激发态的粒子数量
+\begin{equation*}
+	S &= (s+1) N k \left( \frac{T}{T_{c}} \right)^{s} \frac{\zeta(s+1)}{\zeta(s)}. \quad
+	P = \frac{N k T}{V} \frac{\zeta(s+1)}{\zeta(s)} \left( \frac{T}{T_{c}} \right)^{s}. \\
+	C_{V} &= T \left( \frac{\partial S}{\partial T} \right)_{V} = s (s+1) N k \left( \frac{T}{T_{c}} \right)^{s} \frac{\zeta(s+1)}{\zeta(s)}. \quad
+	\left( \frac{\partial C_{V}}{\partial T} \right)_{V} = s^{2} (s+1) \frac{N k}{T_{c}} \left( \frac{T}{T_{c}} \right)^{s-1} \frac{\zeta(s+1)}{\zeta(s)}.
+\end{equation*}
+
+在相变点 \(T = T_{c}\) 附近
+\begin{equation*}
+	&S = (s+1) N k \frac{\zeta(s+1)}{\zeta(s)},\quad C_{V}\big|_{T_{c}^{-}} = s (s+1) N k \frac{\zeta(s+1)}{\zeta(s)},\quad \left( \frac{\partial C_{V}}{\partial T} \right)_{V} = s^{2} (s+1) \frac{\zeta(s+1)}{\zeta(s)} \frac{N k}{T_{c}}.\\
+	&\Delta C_{V} = C_{V} \big|_{T_{c}^{-}}^{T_{c}^{+}} =
+	\begin{cases}
+		-s^{2} N k \dfrac{\zeta(s)}{\zeta(s-1)}, & s > 2.   \\
+		0,                                       & s \le 2.
+	\end{cases}\\
+	&\Delta \left.\left( \frac{\partial C_{V}}{\partial T} \right)\right|_{V} = \left( \frac{\partial C_{V}}{\partial T} \right)_{V} \big|_{T_{c}^{-}}^{T_{c}^{+}} =
+	\begin{cases}
+		\displaystyle -s^{2} \frac{N k}{T_{c}} \left( \frac{\zeta(s)}{\zeta(s-1)} + s \frac{\zeta^{2}(s) \zeta(s-2)}{\zeta^{3}(s-1)} \right), & s \ge \dfrac{3}{2}. \\
+		0,                                                                                                                                    & s < \dfrac{3}{2}.
+	\end{cases}
+\end{equation*}
+
+可见，\(S\)总是连续的，\(C_{V}\) 通常是突变的 （除非 \(s \le 2\)），\(\left(\partial C_{V}/\partial T\right)_{V}\) 也通常是突变的 （除非 \(s < 3/2\)）.
+
+【对于费米子】
+
+温度很低时，粒子主要分布在\(\varepsilon \le \varepsilon_{F}\) 的费米球内，其中
+\begin{equation*}
+	\varepsilon_{F} = \left( \frac{N}{B V} \right)^{1/s}.
+\end{equation*}
+
+各热学量为
+\begin{equation*}
+	\mu &\simeq \varepsilon_{F} \left( 1 - \frac{s-1}{6} \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{2} - \frac{s-1}{360} (57 - 35 s + 2 s^{2}) \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{4} \right). \\
+	P &\simeq \frac{1}{s+1} \frac{N}{V} \varepsilon_{F} \left( 1 + \frac{1}{6} (s+1) \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{2} + \frac{(s+1)(57 - 53 s + 6 s^{2})}{360} \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{4} \right). \\
+	E &\simeq \frac{s}{s+1} N \varepsilon_{F} \left( 1 + \frac{1}{6} (s+1) \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{2} + \frac{(s+1)(57 - 53 s + 6 s^{2})}{360} \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{4} \right). \\
+	C_{V} &\simeq S \simeq \frac{s \pi^{2}}{3} N k \frac{k T}{\varepsilon_{F}} \left( 1 + \frac{57 - 53 s + 6 s^{2}}{30} \pi^{2} \left( \frac{k T}{\varepsilon_{F}} \right)^{2} \right).
+\end{equation*}
+
+\begin{example}
+	简并度为\(g\)的\(d\)维非相对论粒子
+	\begin{equation*}
+		\varepsilon = \frac{p^{2}}{2m}, \quad \Sigma(\varepsilon) = g \frac{2 \pi^{d/2} V}{d\; \Gamma(d/2) h^{d}} (2m \varepsilon)^{d/2}, \quad B = g \left( \frac{2 \pi m}{h^{2}} \right)^{d/2} \frac{1}{\Gamma(d/2+1)}, \quad s = \frac{d}{2}.
+	\end{equation*}
+
+	若是玻色子，给出凝聚温度
+	\begin{equation*}
+		T_c=\frac{h^2}{2\pi m k}\left(\frac{N}{gV\zeta(d/2)}\right)^{2/d}.
+	\end{equation*}
+
+	若是给出费米能级、费米波矢、零温简并压为
+	\begin{equation*}
+    \varepsilon_{F} &= \frac{h^{2}}{2\pi m} \left( \frac{N \Gamma(d/2+1)}{V g} \right)^{2/d},\quad
+    k_{F} = \left( \frac{2^{d} \Gamma(d/2+1) \pi^{d/2}}{g} \frac{N}{V} \right)^{1/d},\\
+    P_0 &= \frac{h^{2}}{m} \frac{1}{\pi (d+2)} \left( \frac{\Gamma(d/2+1)}{g} \right)^{2/d} \left( \frac{N}{V} \right)^{2/d + 1}.
+	\end{equation*}
+\end{example}
+
+\subsection{占据数统计：弱相互作用计算的统计预备}
+
+理想气体的热力学量已经给出基准解，但相互作用修正还需要更高阶的占据数矩和涨落。把这一部分单独列出，可以避免在后面的二阶微扰计算中反复插入统计恒等式，也能明确区分“理想气体统计”与“相互作用矩阵元”.
+
+对于任意关于状态 \(\alpha\) (不含自旋，自旋简并度单独记为\(g\)) 的物理量
+\begin{equation*}
+	\langle X_{\alpha} \rangle =
+	\begin{cases}
+		\displaystyle \frac{ \sum_{n=0}^{\infty} X[n] z^{n} e^{-n \beta \varepsilon_{\alpha}}}{ \sum_{n=0}^{\infty} z^{n} e^{-n \beta \varepsilon_{\alpha}}} = \sum_{n=0}^{\infty} X[n] z^{n} e^{-n \beta \varepsilon_{\alpha}} \bigl( 1 - z e^{-\beta \varepsilon_{\alpha}} \bigr), & \text{B.E.} \\[12pt]
+		\displaystyle \frac{X[0] + z e^{-\beta \varepsilon_{\alpha}} X[1]}{1 + z e^{-\beta \varepsilon_{\alpha}}},                                                                                                                                                                   & \text{F.D.}
+	\end{cases}
+\end{equation*}
+
+比如
+\begin{equation*}
+	&\langle n_{\alpha} \rangle =
+	\begin{cases}
+		\dfrac{1}{z^{-1} e^{\beta \varepsilon_{\alpha}} - 1}, & \text{B.E.} \\[8pt]
+		\dfrac{1}{z^{-1} e^{\beta \varepsilon_{\alpha}} + 1}, & \text{F.D.}
+	\end{cases}\quad\mathrm{Var}(n_{\alpha}) = \langle n_{\alpha}^{2} \rangle - \langle n_{\alpha} \rangle^{2} =
+	\begin{cases}
+		\langle n_{\alpha} \rangle (1 + \langle n_{\alpha} \rangle), & \text{B.E.} \\
+		\langle n_{\alpha} \rangle (1 - \langle n_{\alpha} \rangle), & \text{F.D.}
+	\end{cases}\\
+	&\mathrm{Var}(n_{\alpha}^{2}) = \langle n_{\alpha}^{4} \rangle - \langle n_{\alpha}^{2} \rangle^{2} =
+	\begin{cases}
+		\langle n_{\alpha} \rangle \left( 1 + 13 \langle n_{\alpha} \rangle + 32 \langle n_{\alpha} \rangle^{2} + 20 \langle n_{\alpha} \rangle^{3} \right), & \text{B.E.} \\
+		\langle n_{\alpha} \rangle (1 - \langle n_{\alpha} \rangle),                                                                                         & \text{F.D.}
+	\end{cases}\\
+	&\mathrm{Cov}(n_{\alpha}, n_{\alpha}^{2}) = \langle n_{\alpha}^{3} \rangle - \langle n_{\alpha} \rangle \langle n_{\alpha}^{2} \rangle =
+	\begin{cases}
+		\langle n_{\alpha} \rangle (1 + \langle n_{\alpha} \rangle) (1 + 4 \langle n_{\alpha} \rangle), & \text{B.E.} \\
+		\langle n_{\alpha} \rangle (1 - \langle n_{\alpha} \rangle),                                    & \text{F.D.}
+	\end{cases}
+\end{equation*}
+
+为避免重复计入自旋简并度，本小节先按单一自旋分量的动量态求和，记
+\begin{equation*}
+	\mathcal{N} = \sum_{\alpha} \langle n_{\alpha} \rangle, \quad \delta \mathcal{N} = \sum_{\alpha} \left( n_{\alpha} - \langle n_{\alpha} \rangle \right).
+\end{equation*}
+
+若单自旋态密度写作 \(\Sigma_0(\varepsilon)=B_0V\varepsilon^s\)，而上一节的总态密度系数为 \(B=gB_0\)，则求和连续化为
+\begin{equation*}
+	&\mathcal{N} = \sum_{\alpha} \frac{1}{z^{-1} e^{\beta \varepsilon_{\alpha}} \mp 1} = \int_{0}^{\infty} \frac{s B_0 V \varepsilon^{s-1}}{z^{-1} e^{\beta \varepsilon} \mp 1} \, \d \varepsilon = B_0 V \Gamma(s+1) (kT)^{s} \Phi_{s}(z).\\
+	&\langle (\delta \mathcal{N})^{2} \rangle = B_0 V \Gamma(s+1) (kT)^{s} \Phi_{s-1}(z).\quad
+	\langle (\delta \mathcal{N})^{3} \rangle = B_0 V \Gamma(s+1) (kT)^{s} \Phi_{s-2}(z).\\
+	&\langle (\delta \mathcal{N})^{4} \rangle - 3 \langle (\delta \mathcal{N})^{2} \rangle^{2} = B_0 V \Gamma(s+1) (kT)^{s} \Phi_{s-3}(z).
+\end{equation*}
+总粒子数为 \(N=g\mathcal{N}\)，等价地可继续使用已经吸收简并度的 \(B\)；后面的弱相互作用矩阵元把自旋组合因子显式抽出，所以动量求和中不再额外乘 \(g\).
+
+根据统计数学的定义，不难给出
+\begin{equation*}
+	\left\langle 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right\rangle
+	&= \langle \mathcal{N} \rangle^{2} - \langle \mathcal{N} \rangle + \left\langle (\delta \mathcal{N})^{2} \right\rangle. \\
+	\mathrm{Var}\!\left( 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right)
+	&= 4 (\langle \mathcal{N} \rangle^2 - \langle \mathcal{N} \rangle) \left\langle (\delta \mathcal{N})^{2} \right\rangle
+	+ \left\langle (\delta \mathcal{N})^{4} \right\rangle+(4 \langle \mathcal{N} \rangle - 2) \left\langle (\delta \mathcal{N})^{3} \right\rangle
+	\\&\qquad- \left\langle (\delta \mathcal{N})^{2} \right\rangle \left( \left\langle (\delta \mathcal{N})^{2} \right\rangle - 1 \right).
+\end{equation*}
+
+在热力学极限下，保留到体积的最大幂次，得到
+\begin{equation*}
+	&\left\langle 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right\rangle \simeq \left( \sum_{\alpha} \langle n_{\alpha} \rangle \right)^{2}.\\
+	&\mathrm{Var}\left( 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right) \simeq 4 \left( \sum_{\alpha} \langle n_{\alpha} \rangle \right)^{2} \sum_{\alpha} \left( \langle n_{\alpha}^{2} \rangle - \langle n_{\alpha} \rangle^{2} \right).
+\end{equation*}
+
+特别地，对于费米子
+\begin{equation*}
+	2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) = 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta}.
+\end{equation*}
+
+\subsection{弱相互作用修正：巨配分函数的二阶展开}
+
+在本节中，\(\mathcal{H}_{1}\) 由前面的低能接触赝势给出。修正按 \(a/\lambda\) 的幂次组织。下述展开只在非凝聚态和热力学极限的指定阶次上使用；玻色凝聚态不应直接代入这一微扰级数.
+
+\subsubsection{正则配分函数与巨配分函数的形式展开}
 
 \(N\) 粒子配分函数为
-
 \begin{equation*}
 	Q_{N} = \mathrm{Tr} \, e^{-\beta \mathcal{H}} = \mathrm{Tr} \, e^{-\beta (\mathcal{H}_{0} + \mathcal{H}_{1})}.
 \end{equation*}
@@ -109,8 +361,8 @@
 \end{equation*}
 式中 \(\mathrm{Var}\) 指取系综方差.
 
+\subsubsection{二次量子化、自旋简并与动量守恒}
 
-\subsection{二阶巨配分函数的求解}
 在此列出玻色子、费米子的产生湮灭算符满足的关系式，以备后文适用
 \begin{equation*}
 	&[a_{\alpha}, a_{\beta}^{\dagger}] = \delta_{\alpha\beta}, \quad [a_{\alpha}, a_{\beta}] = [a_{\alpha}^{\dagger}, a_{\beta}^{\dagger}] = 0, \quad \text{B.E.} \\
@@ -150,7 +402,7 @@
 
 再考虑动量部分，以下 \(\alpha, \beta\) 只代表动量 \(\vb{p}\) 态.
 
-【对于玻色子】
+\subsubsection{玻色子贡献}
 
 在粒子数表象下，哈密顿量的对角元给出
 \begin{equation*}
@@ -193,6 +445,7 @@
 \begin{equation*}
 	G(z) = \sum_{j=1}^{\infty} \sum_{k=1}^{\infty} \sum_{l=1}^{\infty} \frac{z^{j+k+l}}{(k+l)(j+l) \sqrt{jkl}}.
 \end{equation*}
+这个三重级数在玻色气体的物理区间 \(0\le z\le1\) 绝对收敛；接近凝聚点时只能从 \(z<1\) 取极限，不能把它和凝聚态本身的微扰展开混同.
 并用到公式
 \begin{equation*}
 	\int_{0}^{\infty} \int_{0}^{\infty} \frac{\sinh(u p q)}{q^{2} - p^{2}} p q e^{-v q^{2} - w p^{2}} \, \d p \, \d q = \frac{\pi}{4} \frac{u (w - v)}{((w+v)^{2} - u^{2}) \sqrt{4wv - u^{2}}}.
@@ -203,7 +456,7 @@
 	\ln \Xi = \frac{(2J+1) V}{\lambda^{3}} \left( g_{5/2}(z) - \frac{2(J+1) a}{\lambda} (g_{3/2}(z))^{2} + \frac{8(J+1)^{2} a^{2}}{\lambda^{2}} g_{1/2}(z) (g_{3/2}(z))^{2} + \frac{8(J+1) a^{2}}{\lambda^{2}} G(z) \right).
 \end{equation*}
 
-【对于费米子】
+\subsubsection{费米子贡献}
 
 由于同一个态只能占据一个粒子 (\(n_{\alpha} = 0, 1\))，因此在粒子数表象下，哈密顿量的对角元给出
 \begin{equation*}
@@ -243,11 +496,14 @@
 \begin{equation*}
 	F(z) = \sum_{j=1}^{\infty} \sum_{k=1}^{\infty} \sum_{l=1}^{\infty} \frac{(-1)^{j+k+l-1} z^{j+k+l}}{(k+l)(j+l) \sqrt{jkl}} = -G(-z).
 \end{equation*}
+这里的三重级数只是 \(|z|\le1\) 内的高温展开；费米强简并区 \(z>1\) 应把 \(F(z)=-G(-z)\) 理解为解析延拓后的定义，后续对 \(\ln z\) 的求导也按这一延拓函数进行.
 
 综合以上各项知
 \begin{equation*}
 	\ln \Xi = \frac{(2J+1) V}{\lambda^{3}} \left( f_{5/2}(z) - \frac{2J a}{\lambda} (f_{3/2}(z))^{2} + \frac{8J^{2} a^{2}}{\lambda^{2}} f_{1/2}(z) (f_{3/2}(z))^{2} - \frac{8J a^{2}}{\lambda^{2}} F(z) \right).
 \end{equation*}
+
+\subsubsection{二阶结果、定粒子数展开与低温费米极限}
 
 【精确到二阶的巨配分函数】
 
@@ -295,243 +551,17 @@
 其中用到
 \begin{equation*}
 	&k_{F} = \left( \frac{6\pi^{2} n}{2J+1} \right)^{1/3}, \quad \varepsilon_{F} = \frac{\hbar^{2} k_{F}^{2}}{2m}, \quad \lambda = \hbar \sqrt{\frac{2\pi}{m k T}}, \quad \beta = \frac{1}{kT}.\\
-	&F(z) \big|_{\ln z \gg 1} = \frac{16}{105} \frac{11 - 2\ln 2}{\pi^{3/2}} (\ln z)^{7/2} \left( 1 - \frac{35}{8} \frac{2\ln 2 - 1}{11 - 2\ln 2} \frac{\pi^{2}}{(\ln z)^{2}} \right) + \mathcal{O}\left( (\ln z)^{5/4} \right).
+	&F(z) \big|_{\ln z \gg 1} = \frac{16}{105} \frac{11 - 2\ln 2}{\pi^{3/2}} (\ln z)^{7/2} \left( 1 - \frac{35}{8} \frac{2\ln 2 - 1}{11 - 2\ln 2} \frac{\pi^{2}}{(\ln z)^{2}} + \mathcal{O}\left((\ln z)^{-4}\right) \right).
 \end{equation*}
+这里的强简并展开按 Sommerfeld 型的偶次幂 \( (\ln z)^{-2}\) 组织，因此余项写在括号内.
 
 而由于如上配分函数展开方式不适用于凝聚态，因此无法给出玻色气体在凝聚态的性质.
 
-\subsection{理想玻色费米气体}
-以下补充理想玻色费米气体的一些结论.
+\subsection{外磁场响应与谱边界诱导的非解析性}
 
-\subsubsection{巨配分函数的形式}
+外磁场同时引入 Landau 量子化和 Zeeman 分裂，使得单粒子能级在零温下逐个穿越化学势。高温弱场极限恢复解析的磁化率，而零温有限场则产生由占据边界决定的非解析项.
 
-理想玻色费米气体的巨配分函数为
-\begin{equation*}
-	\Xi = \sum_{N=0}^{\infty} z^{N} \sum_{r} e^{-\beta E_{r}} = \prod_{\alpha} \sum_{n_{\alpha}} \left( z e^{-\beta \varepsilon_{\alpha}} \right)^{n_{\alpha}}.
-\end{equation*}
-其中，\(r\) 代表 \(\{n_{\alpha}\}\) 分布的序号数，粒子数满足约束 \(N = \sum_{\alpha} n_{\alpha}\)，能量可表示为 \(E = \sum_{\alpha} n_{\alpha} \varepsilon_{\alpha}\).
-
-对于玻色子，\(n_{\alpha}\) 可以取一切自然数，对于费米子，\(n_{\alpha} = 0, 1\)，故
-\begin{equation*}
-	\Xi =
-	\begin{cases}
-		\prod_{\alpha} \left( 1 - z e^{-\beta \varepsilon_{\alpha}} \right)^{-1}, & \text{B.E.} \\
-		\prod_{\alpha} \left( 1 + z e^{-\beta \varepsilon_{\alpha}} \right),      & \text{F.D.}
-	\end{cases}
-	\quad
-	\ln \Xi =
-	\begin{cases}
-		-\sum_{\alpha} \ln \left( 1 - z e^{-\beta \varepsilon_{\alpha}} \right), & \text{B.E.} \\
-		\sum_{\alpha} \ln \left( 1 + z e^{-\beta \varepsilon_{\alpha}} \right),  & \text{F.D.}
-	\end{cases}
-\end{equation*}
-
-在热力学极限下，可以将\(d\)维空间的求和连续化为\(2d\)维相空间的积分
-\begin{equation*}
-	\varepsilon_{\alpha} \to \varepsilon, \quad \sum_{\alpha} \to \frac{1}{h^{d}} \int \prod_{i=1}^{d} \d q_{i} \, \d p_{i}.
-\end{equation*}
-
-\subsubsection{自由粒子系统}
-
-对于自由粒子系统，以上对位置空间的积分得到体积\(V\)，对动量空间的积分可以转换至能量空间，如上积分总可以写作
-\begin{equation*}
-	\frac{1}{h^{d}} \int \prod_{i=1}^{d} \d q_{i} \, \d p_{i} = \int \frac{\d \Sigma(\varepsilon)}{\d \varepsilon} \, \d \varepsilon.
-\end{equation*}
-
-不妨假设 \(\Sigma(\varepsilon) = B V \varepsilon^{s}, s \ge 1\)，\(B\) 是与体积无关的常数，进而
-\begin{equation*}
-	\sum_{\alpha} \to B V \int \d \varepsilon^{s} = B V \int_{0}^{\infty} s \varepsilon^{s-1} \, \d \varepsilon.
-\end{equation*}
-
-\begin{notes}
-	比如，对于\(d\)维空间中能谱形如 \(\varepsilon = \kappa p^{a}\) 且内禀简并度为 \(g\) 的粒子
-	\begin{equation*}
-		\Sigma(\varepsilon) = \frac{g V}{h^{d}} \frac{\Omega_{d}}{d} p^{d} = g \frac{\Omega_{d}}{d} \frac{V}{h^{d}} \left( \frac{\varepsilon}{\kappa} \right)^{d/a}, \quad \Omega_{d} = \frac{2\pi^{d/2}}{\Gamma(d/2)}.
-	\end{equation*}
-	给出
-	\begin{equation*}
-		B=\frac{g}{d}\frac{\Omega_d}{h^d}\kappa^{-d/a},\quad s=\frac{d}{a}
-	\end{equation*}
-	质量为\(m\)的经典粒子对应 \(a = 2, \kappa = (2m)^{-1}\)，极端相对论型粒子对应 \(a = 1, \kappa = c\)。在一些复杂结构中，\(\kappa, \alpha\) 会有更为特殊的取值。
-\end{notes}
-
-代入巨配分函数，转换求和为积分得到
-\begin{equation*}
-	\ln \Xi &= B V \Gamma(s+1) (kT)^{s} \Phi_{s+1}(z). \quad
-	N = z \frac{\partial \ln \Xi}{\partial z} = B V \Gamma(s+1) (kT)^{s} \Phi_{s}(z). \\
-	E &= -\frac{\partial \ln \Xi}{\partial \beta} = s N k T \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}. \quad
-	P V = k T \ln \Xi = N k T \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}. \\
-	S &= k \left( \ln \Xi - \beta \frac{\partial \ln \Xi}{\partial \beta} - z \ln z \frac{\partial \ln \Xi}{\partial z} \right) = N k \left( -\ln z + (s+1) \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} \right).
-\end{equation*}
-
-沿着等体积线
-\begin{equation*}
-	&\left( \frac{\partial z}{\partial T} \right)_{V} = -\frac{s z}{T} \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)}. \quad C_{V} = T \left( \frac{\partial S}{\partial T} \right)_{V} = s N k \left( (s+1) \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} - s \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)} \right). \\
-	&\left( \frac{\partial C_{V}}{\partial T} \right)_{V} = \frac{s^{2} N k}{T} \left( (s+1) \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} - \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)} - s \frac{\Phi_{s}^{2}(z) \Phi_{s-2}(z)}{\Phi_{s-1}^{3}(z)} \right).
-\end{equation*}
-
-沿着等压线
-\begin{equation*}
-	\left( \frac{\partial z}{\partial T} \right)_{P} = -\frac{(s+1) z}{T} \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}. \quad C_{P} = T \left( \frac{\partial S}{\partial T} \right)_{P} = (s+1) N k \left( (s+1) \frac{\Phi_{s-1}(z) \Phi_{s+1}^{2}(z)}{\Phi_{s}^{3}(z)} - s \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)} \right).
-\end{equation*}
-
-沿着等温线
-\begin{equation*}
-	\left( \frac{\partial z}{\partial V} \right)_{T} = -\frac{z}{V} \frac{\Phi_{s}(z)}{\Phi_{s-1}(z)}. \quad
-	\kappa_{T} = -\frac{1}{V} \left( \frac{\partial V}{\partial P} \right)_{T} = \frac{V}{N k T} \frac{\Phi_{s-1}(z)}{\Phi_{s}(z)}.
-\end{equation*}
-
-沿着绝热线
-\begin{equation*}
-	&S, \; z, \; P T^{-s-1}, \; V T^{s}, \; P V^{\frac{s+1}{s}} = \text{const}.\\
-	&\kappa_{S} = -\frac{1}{V} \left( \frac{\partial V}{\partial P} \right)_{S} = \frac{s}{s+1} \frac{V}{N k T} \frac{\Phi_{s}(z)}{\Phi_{s+1}(z)}. \quad
-	c_{s}^{2} = \left( \frac{\partial P}{\partial \rho} \right)_{S} = \frac{V}{m \kappa_{S}} = \frac{s+1}{s} \frac{k T}{m} \frac{\Phi_{s+1}(z)}{\Phi_{s}(z)}.
-\end{equation*}
-
-不难给出
-\begin{equation*}
-	\gamma = \frac{C_{P}}{C_{V}} = \frac{\kappa_{T}}{\kappa_{S}} = \frac{s+1}{s} \frac{\Phi_{s+1}(z) \Phi_{s-1}(z)}{\Phi_{s}^{2}(z)}.
-\end{equation*}
-
-【对于玻色子】
-
-由于 \(s > 1\) 时 \(g_{s}(z) \le \zeta(s)\)，等号在 \(z = 1\) 取得，因此如上求出的激发态所能容纳的粒子数有限，当温度低于临界值 \(T_{c}\) 时，部分粒子将凝聚到基态，使基态有宏观多的粒子数 \(N_{0}\)，其中
-\begin{equation*}
-	T_{c} = \frac{1}{k} \left( \frac{N}{B V \Gamma(s+1) \zeta(s)} \right)^{1/s}, \quad N_{0} = N \left( 1 - \left( \frac{T}{T_{c}} \right)^{s} \right).
-\end{equation*}
-
-当 \(T < T_{c}\) 时，降温不再改变化学势 （始终为零，对应 \(z = 1\)），而仅仅改变激发态的粒子数量
-\begin{equation*}
-	S &= (s+1) N k \left( \frac{T}{T_{c}} \right)^{s} \frac{\zeta(s+1)}{\zeta(s)}. \quad
-	P = \frac{N k T}{V} \frac{\zeta(s+1)}{\zeta(s)} \left( \frac{T}{T_{c}} \right)^{s}. \\
-	C_{V} &= T \left( \frac{\partial S}{\partial T} \right)_{V} = s (s+1) N k \left( \frac{T}{T_{c}} \right)^{s} \frac{\zeta(s+1)}{\zeta(s)}. \quad
-	\left( \frac{\partial C_{V}}{\partial T} \right)_{V} = s^{2} (s+1) \frac{N k}{T_{c}} \left( \frac{T}{T_{c}} \right)^{s-1} \frac{\zeta(s+1)}{\zeta(s)}.
-\end{equation*}
-
-在相变点 \(T = T_{c}\) 附近
-\begin{equation*}
-	&S = (s+1) N k \frac{\zeta(s+1)}{\zeta(s)},\quad C_{V}\big|_{T_{c}^{-}} = s (s+1) N k \frac{\zeta(s+1)}{\zeta(s)},\quad \left( \frac{\partial C_{V}}{\partial T} \right)_{V} = s^{2} (s+1) \frac{\zeta(s+1)}{\zeta(s)} \frac{N k}{T_{c}}.\\
-	&\Delta C_{V} = C_{V} \big|_{T_{c}^{-}}^{T_{c}^{+}} =
-	\begin{cases}
-		-s^{2} N k \dfrac{\zeta(s)}{\zeta(s-1)}, & s > 2.   \\
-		0,                                       & s \le 2.
-	\end{cases}\\
-	&\Delta \left.\left( \frac{\partial C_{V}}{\partial T} \right)\right|_{V} = \left( \frac{\partial C_{V}}{\partial T} \right)_{V} \big|_{T_{c}^{-}}^{T_{c}^{+}} =
-	\begin{cases}
-		\displaystyle -s^{2} \frac{N k}{T_{c}} \left( \frac{\zeta(s)}{\zeta(s-1)} + s \frac{\zeta^{2}(s) \zeta(s-2)}{\zeta^{3}(s-1)} \right), & s \ge \dfrac{3}{2}. \\
-		0,                                                                                                                                    & s < \dfrac{3}{2}.
-	\end{cases}
-\end{equation*}
-
-可见，\(S\)总是连续的，\(C_{V}\) 通常是突变的 （除非 \(s \le 2\)），\(\left(\partial C_{V}/\partial T\right)_{V}\) 也通常是突变的 （除非 \(s < 3/2\)）.
-
-【对于费米子】
-
-温度很低时，粒子主要分布在 \(\varepsilon \le \varepsilon_{F}\) 的费米球内，其中
-\begin{equation*}
-	\varepsilon_{F} = \left( \frac{N}{B V} \right)^{1/s}.
-\end{equation*}
-
-各热学量为
-\begin{equation*}
-	\mu &\simeq \varepsilon_{F} \left( 1 - \frac{s-1}{6} \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{2} - \frac{s-1}{360} (57 - 35 s + 2 s^{2}) \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{4} \right). \\
-	P &\simeq \frac{1}{s+1} \frac{N}{V} \varepsilon_{F} \left( 1 + \frac{1}{6} (s+1) \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{2} + \frac{(s+1)(57 - 53 s + 6 s^{2})}{360} \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{4} \right). \\
-	E &\simeq \frac{s}{s+1} N \varepsilon_{F} \left( 1 + \frac{1}{6} (s+1) \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{2} + \frac{(s+1)(57 - 53 s + 6 s^{2})}{360} \left( \frac{\pi k T}{\varepsilon_{F}} \right)^{4} \right). \\
-	C_{V} &\simeq S \simeq \frac{s \pi^{2}}{3} N k \frac{k T}{\varepsilon_{F}} \left( 1 + \frac{57 - 53 s + 6 s^{2}}{30} \pi^{2} \left( \frac{k T}{\varepsilon_{F}} \right)^{2} \right).
-\end{equation*}
-
-\begin{example}
-	简并度为\(g\)的\(d\)维非相对论粒子
-	\begin{equation*}
-		\varepsilon = \frac{p^{2}}{2m}, \quad \Sigma(\varepsilon) = g \frac{2 \pi^{d/2} V}{d\; \Gamma(d/2) h^{d}} (2m \varepsilon)^{d/2}, \quad B = g \left( \frac{2 \pi m}{h^{2}} \right)^{d/2} \frac{1}{\Gamma(d/2+1)}, \quad s = \frac{d}{2}.
-	\end{equation*}
-
-	若是玻色子，给出凝聚温度
-	\begin{equation*}
-		T_c=\frac{h^2}{2\pi m k}\left(\frac{N}{gV\zeta(d/2)}\right)^{2/d}.
-	\end{equation*}
-
-	若是给出费米能级、费米波矢、零温简并压为
-	\begin{equation*}
-    \varepsilon_{F} &= \frac{h^{2}}{2\pi m} \left( \frac{N \Gamma(d/2+1)}{V g} \right)^{2/d},\quad
-    k_{F} = \left( \frac{2^{d} \Gamma(d/2+1) \pi^{d/2}}{g} \frac{N}{V} \right)^{1/d},\\
-    P_0 &= \frac{h^{2}}{m} \frac{1}{\pi (d+2)} \left( \frac{\Gamma(d/2+1)}{g} \right)^{2/d} \left( \frac{N}{V} \right)^{2/d + 1}.
-	\end{equation*}
-\end{example}
-
-\subsubsection{占据数平均值的计算}
-
-在求解硬球势对巨配分函数的修正时，经常要求解占据数的各种幂次的平均值，在此一并求解.
-
-对于任意关于状态 \(\alpha\) (不含自旋，自旋简并度单独记为\(g\)) 的物理量
-
-\begin{equation*}
-	\langle X_{\alpha} \rangle =
-	\begin{cases}
-		\displaystyle \frac{ \sum_{n=0}^{\infty} X[n] z^{n} e^{-n \beta \varepsilon_{\alpha}}}{ \sum_{n=0}^{\infty} z^{n} e^{-n \beta \varepsilon_{\alpha}}} = \sum_{n=0}^{\infty} X[n] z^{n} e^{-n \beta \varepsilon_{\alpha}} \bigl( 1 - z e^{-\beta \varepsilon_{\alpha}} \bigr), & \text{B.E.} \\[12pt]
-		\displaystyle \frac{X[0] + z e^{-\beta \varepsilon_{\alpha}} X[1]}{1 + z e^{-\beta \varepsilon_{\alpha}}},                                                                                                                                                                   & \text{F.D.}
-	\end{cases}
-\end{equation*}
-
-比如
-\begin{equation*}
-	&\langle n_{\alpha} \rangle =
-	\begin{cases}
-		\dfrac{1}{z^{-1} e^{\beta \varepsilon_{\alpha}} - 1}, & \text{B.E.} \\[8pt]
-		\dfrac{1}{z^{-1} e^{\beta \varepsilon_{\alpha}} + 1}, & \text{F.D.}
-	\end{cases}\quad\mathrm{Var}(n_{\alpha}) = \langle n_{\alpha}^{2} \rangle - \langle n_{\alpha} \rangle^{2} =
-	\begin{cases}
-		\langle n_{\alpha} \rangle (1 + \langle n_{\alpha} \rangle), & \text{B.E.} \\
-		\langle n_{\alpha} \rangle (1 - \langle n_{\alpha} \rangle), & \text{F.D.}
-	\end{cases}\\
-	&\mathrm{Var}(n_{\alpha}^{2}) = \langle n_{\alpha}^{4} \rangle - \langle n_{\alpha}^{2} \rangle^{2} =
-	\begin{cases}
-		\langle n_{\alpha} \rangle \left( 1 + 13 \langle n_{\alpha} \rangle + 32 \langle n_{\alpha} \rangle^{2} + 20 \langle n_{\alpha} \rangle^{3} \right), & \text{B.E.} \\
-		\langle n_{\alpha} \rangle (1 - \langle n_{\alpha} \rangle),                                                                                         & \text{F.D.}
-	\end{cases}\\
-	&\mathrm{Cov}(n_{\alpha}, n_{\alpha}^{2}) = \langle n_{\alpha}^{3} \rangle - \langle n_{\alpha} \rangle \langle n_{\alpha}^{2} \rangle =
-	\begin{cases}
-		\langle n_{\alpha} \rangle (1 + \langle n_{\alpha} \rangle) (1 + 4 \langle n_{\alpha} \rangle), & \text{B.E.} \\
-		\langle n_{\alpha} \rangle (1 - \langle n_{\alpha} \rangle),                                    & \text{F.D.}
-	\end{cases}
-\end{equation*}
-
-记总粒子数、粒子数偏差为
-\begin{equation*}
-	N = g \sum_{\alpha} \langle n_{\alpha} \rangle, \quad \delta N = \sum_{\alpha} \left( n_{\alpha} - \langle n_{\alpha} \rangle \right).
-\end{equation*}
-
-求和连续化为积分得
-\begin{equation*}
-	&N = g \sum_{\alpha} \frac{1}{z^{-1} e^{\beta \varepsilon_{\alpha}} \mp 1} = g \int_{0}^{\infty} \frac{s B V \varepsilon^{s-1}}{z^{-1} e^{\beta \varepsilon} \mp 1} \, \d \varepsilon = B V \Gamma(s+1) (kT)^{s} \Phi_{s}(z).\\
-	&\langle (\delta N)^{2} \rangle = B V \Gamma(s+1) (kT)^{s} \Phi_{s-1}(z).\quad
-	\langle (\delta N)^{3} \rangle = B V \Gamma(s+1) (kT)^{s} \Phi_{s-2}(z).\\
-	&\langle (\delta N)^{4} \rangle - 3 \langle (\delta N)^{2} \rangle^{2} = B V \Gamma(s+1) (kT)^{s} \Phi_{s-3}(z).
-\end{equation*}
-
-根据统计数学的定义，不难给出
-\begin{equation*}
-	\left\langle 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right\rangle
-	&= \langle N \rangle^{2} - \langle N \rangle + \left\langle (\delta N)^{2} \right\rangle. \\
-	\mathrm{Var}\!\left( 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right)
-	&= 4 (\langle N \rangle^2 - \langle N \rangle) \left\langle (\delta N)^{2} \right\rangle
-	+ \left\langle (\delta N)^{4} \right\rangle+(4 \langle N \rangle - 2) \left\langle (\delta N)^{3} \right\rangle
-	\\&\qquad- \left\langle (\delta N)^{2} \right\rangle \left( \left\langle (\delta N)^{2} \right\rangle - 1 \right).
-\end{equation*}
-
-在热力学极限下，保留到体积的最大幂次，得到
-\begin{equation*}
-	&\left\langle 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right\rangle \simeq \left( \sum_{\alpha} \langle n_{\alpha} \rangle \right)^{2}.\\
-	&\mathrm{Var}\left( 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) \right) \simeq 4 \left( \sum_{\alpha} \langle n_{\alpha} \rangle \right)^{2} \sum_{\alpha} \left( \langle n_{\alpha}^{2} \rangle - \langle n_{\alpha} \rangle^{2} \right).
-\end{equation*}
-
-特别地，对于费米子
-\begin{equation*}
-	2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta} + \sum_{\alpha} n_{\alpha} (n_{\alpha} - 1) = 2 \sum_{\alpha \neq \beta} n_{\alpha} n_{\beta}.
-\end{equation*}
-
-
-\subsubsection{外磁场响应}
+\subsubsection{一般温度与高温弱场响应}
 
 在外磁场作用下，电荷量为\(q\)、质量为\(m\)的有自旋\(J\)的粒子满足薛定谔方程
 \begin{equation*}
@@ -583,9 +613,9 @@
 	\frac{z^{s}\sigma^{s-1}}{s^{1+d/2}}
 	\frac{s\beta\mu_{q}B}{\sinh(s\beta\mu_{q}B)}
 	\frac{
-	\sinh\!\left(s\beta g_{J}\mu_{q}B(J+1/2)\right)
+		\sinh\!\left(s\beta g_{J}\mu_{q}B(J+1/2)\right)
 	}{
-	\sinh\!\left(s\beta g_{J}\mu_{q}B/2\right)
+		\sinh\!\left(s\beta g_{J}\mu_{q}B/2\right)
 	}.
 \end{equation*}
 
@@ -595,13 +625,13 @@
 	=
 	-\frac{2J+1}{\beta\lambda^{d}}
 	\left[
-	\Phi_{1+d/2}(z)
-	+
-	\frac{1}{6}
-	\left(J(J+1)g_{J}^{2}-1\right)
-	\beta^{2}\mu_{q}^{2}B^{2}
-	\Phi_{d/2-1}(z)
-	+\mathcal{O}(B^{4})
+		\Phi_{1+d/2}(z)
+		+
+		\frac{1}{6}
+		\left(J(J+1)g_{J}^{2}-1\right)
+		\beta^{2}\mu_{q}^{2}B^{2}
+		\Phi_{d/2-1}(z)
+		+\mathcal{O}(B^{4})
 	\right].
 \end{equation*}
 于是磁化强度为
@@ -627,6 +657,8 @@
 \end{equation*}
 式中，\(J(J+1)g_{J}^{2}\)来自 Zeeman 顺磁项，而\(-1\)来自 Landau 轨道抗磁项. 例如电子满足\(J=1/2,g_{J}=2\)，于是顺磁项为抗磁项的3倍.
 
+\subsubsection{零温费米气体与离散占据阈值}
+
 当温度很低时，\(\beta\mu_{q}B\ll1\)不再成立，需要单独求解. 特别考虑零温极限下的费米子，重新积分巨势密度得
 \begin{equation*}
 	\omega
@@ -635,18 +667,18 @@
 	\sum_{j,m_{J}}
 	\int_{\mathbb{R}^{d-2}}
 	\ln\left[
-	1+\exp\left(\beta\left(
-	\mu-\frac{p_{\parallel}^{2}}{2m}
-	-\mu_{q}B(2j+1-g_{J}m_{J})\right)
-	\right)
-	\right]\d\vb{p}_{\parallel}\\
+		1+\exp\left(\beta\left(
+		\mu-\frac{p_{\parallel}^{2}}{2m}
+		-\mu_{q}B(2j+1-g_{J}m_{J})\right)
+		\right)
+		\right]\d\vb{p}_{\parallel}\\
 	&=
 	-\frac{|q|B}{h^{d-1}}
 	\sum_{j,m_{J}}
 	\int_{\mathbb{R}^{d-2}}
 	\left(
-	\mu-\frac{p_{\parallel}^{2}}{2m}
-	-\mu_{q}B(2j+1-g_{J}m_{J})
+		\mu-\frac{p_{\parallel}^{2}}{2m}
+		-\mu_{q}B(2j+1-g_{J}m_{J})
 	\right)_{+}
 	\d\vb{p}_{\parallel}\\
 	&=
@@ -654,7 +686,7 @@
 	\left(\frac{2\pi m}{h^{2}}\right)^{d/2}
 	\sum_{j,m_{J}}
 	\left(
-	\mu-\mu_{q}B(2j+1-g_{J}m_{J})
+		\mu-\mu_{q}B(2j+1-g_{J}m_{J})
 	\right)_{+}^{d/2}.
 \end{equation*}
 式中\(x_{+}=\max\{x,0\}=x\Theta(x)\). 用\(l\)表示有序对\((j,m_{J})\)，并记
@@ -709,7 +741,7 @@
 	B_{c}
 	=
 	\left[
-	\frac{n}{\gamma\sum_{l\in\mathcal{R}}(a_{0}-a_{l})^{\nu}}
+		\frac{n}{\gamma\sum_{l\in\mathcal{R}}(a_{0}-a_{l})^{\nu}}
 	\right]^{1/(\nu+1)}.
 \end{equation*}
 
@@ -782,7 +814,9 @@
 		&\nu>1.
 	\end{cases}
 \end{equation*}
-可见，当\(t<0\)，即\(B>B_{c}\)时，\(\eta<0\)；当\(t>0\)，即\(B<B_{c}\)时，\(\eta>0\). 这说明，当磁场由大到小跨过\(B_{c}\)时，\(0\)号态由未占据变成被占据，系统热力学函数不解析，出现相变. 
+可见，当\(t<0\)，即\(B>B_{c}\)时，\(\eta<0\)；当\(t>0\)，即\(B<B_{c}\)时，\(\eta>0\). 这说明，当磁场由大到小跨过\(B_{c}\)时，\(0\)号态由未占据变成被占据，系统热力学函数不解析，出现相变.
+
+\subsubsection{自由能的奇异项与磁化率}
 
 具体从自由能密度角度分析. 系统自由能密度为
 \begin{equation*}
@@ -826,9 +860,9 @@
 	\simeq
 	-\frac{\gamma B_{c}}{2\nu}
 	\left(
-	\frac{\eta_{+}^{2\nu}}{S_{\nu-1}}
-	+
-	\frac{2\nu}{\nu+1}\eta_{+}^{\nu+1}
+		\frac{\eta_{+}^{2\nu}}{S_{\nu-1}}
+		+
+		\frac{2\nu}{\nu+1}\eta_{+}^{\nu+1}
 	\right).\\
 	&\simeq
 	-\frac{\gamma B_{c}}{2}
@@ -882,4 +916,3 @@
 \end{equation*}
 
 因此，当\(0<\nu\le1\)，即\(2<d\le4\)时，磁化率出现有限跃变；当\(\nu>1\)，即\(d>4\)时，磁化率连续，非解析性出现在更高阶导数，且可能出现发散项.
-
