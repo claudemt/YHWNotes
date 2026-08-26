@@ -5,12 +5,12 @@ YHWNotes is a collection of LaTeX-based academic notes on physics.
 The repository serves as a personal knowledge base for advanced theoretical concepts, research references, and study materials.
 
 The unified narrative and physics-exposition standard is documented in
-[LECTURE_STYLE.md](LECTURE_STYLE.md). It defines the common chapter structure,
+[docs/refactory.md](docs/refactory.md). It defines the common chapter structure,
 approximation bookkeeping, derivation rhythm, example design, and
 cross-disciplinary writing conventions.
 
 The full advanced-content roadmap and chapter-by-chapter restructuring plan is
-documented in [supplement.md](supplement.md).
+also documented in [docs/refactory.md](docs/refactory.md).
 
 ## Repository Layout
 
