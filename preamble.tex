@@ -28,13 +28,12 @@
     \expandafter\endinput
   \fi
 }
-\newcommand{\BookLectureMetadata}[4]{\BookMetadata{#1}{#2}{#3}{#4}}
 
 \usepackage{
   amsmath,amssymb,amsthm,mathrsfs,graphicx,booktabs,array,siunitx,slashed,
   physics,mathtools,caption,subcaption,float,
   fancyhdr,lastpage,adjustbox,longtable,bm,diagbox,
-  makecell,multirow,braket,chngcntr,import,
+  makecell,multirow,braket,import,
   tcolorbox,placeins,needspace,etoolbox,environ,tikz
 }
 \tcbuselibrary{breakable,skins,theorems}
@@ -91,18 +90,13 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\chaptermark}[1]{\markboth{第\thechapter 章\ #1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
-\fancypagestyle{plain}{%
-  \fancyhf{}
-  \fancyhead[LE,RO]{\thepage/\pageref{LastPage}}
-  \fancyhead[RE]{\nouppercase{\leftmark}}
-  \fancyhead[LO]{\nouppercase{\rightmark}}
-  \renewcommand{\headrulewidth}{0.4pt}}
+% Chapter-opening and other "plain" pages reuse the running style verbatim.
+\fancypagestyle{plain}[fancy]{}
 
 % ===== Floats =====
 \floatplacement{figure}{htbp}
 \floatplacement{table}{htbp}
-\captionsetup[figure]{labelfont=bf}
-\captionsetup[table]{labelfont=bf}
+\captionsetup{labelfont=bf}
 \setcounter{topnumber}{5}
 \setcounter{bottomnumber}{3}
 \setcounter{totalnumber}{8}
@@ -142,34 +136,38 @@
 \newtcolorbox{note}[1][]{enhanced,breakable,colback=yellow!3,colframe=yellow!45!black,fonttitle=\bfseries,title={\SpecialBoxTitle{注}{#1}},before skip=8pt,after skip=8pt}
 
 % ===== References =====
-\usepackage{tabularx,enumitem,csquotes}
+\usepackage{tabularx,enumitem}
 \usepackage[backend=biber,style=numeric,sorting=none,maxnames=6]{biblatex}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\crefname{equation}{式}{式}
-\Crefname{equation}{式}{式}
-\crefname{figure}{图}{图}
-\Crefname{figure}{图}{图}
-\crefname{table}{表}{表}
-\Crefname{table}{表}{表}
-\crefname{chapter}{章}{章}
-\Crefname{chapter}{章}{章}
-\crefname{section}{节}{节}
-\Crefname{section}{节}{节}
+% Chinese has no case distinction, so one name per counter serves both the
+% lowercase \cref and the sentence-initial \Cref.
+\newcommand{\crefnamecn}[2]{\crefname{#1}{#2}{#2}\Crefname{#1}{#2}{#2}}
+\crefnamecn{equation}{式}
+\crefnamecn{figure}{图}
+\crefnamecn{table}{表}
+\crefnamecn{chapter}{章}
+\crefnamecn{section}{节}
+% \eqnrefs and \eqnrange mix linked numbers with unlinked punctuation
+% ("式", "--"), so they carry their own colour; they intentionally keep it
+% instead of inheriting linkcolor the way the single-target macros above do.
 \ExplSyntaxOn
 \NewDocumentCommand{\eqnrefs}{m}
  {\group_begin:\color{blue}式~\clist_map_inline:nn {#1} { \hyperref[##1]{(\ref*{##1})} }\group_end:}
 \NewDocumentCommand{\eqnrange}{m m}
  {\textcolor{blue}{式~\hyperref[#1]{(\ref*{#1})}--\hyperref[#2]{(\ref*{#2})}}}
+% The label word lives inside \hyperref so that the whole "图 3.1" is one
+% clickable link; its blue comes from \hypersetup{linkcolor}, not from a
+% hard-coded \textcolor, so restyling links restyles every reference at once.
 \NewDocumentCommand{\figref}{m}
- {\textcolor{blue}{图~\hyperref[#1]{\ref*{#1}}}}
+ {\hyperref[#1]{图~\ref*{#1}}}
 \NewDocumentCommand{\tabref}{m}
- {\textcolor{blue}{表~\hyperref[#1]{\ref*{#1}}}}
+ {\hyperref[#1]{表~\ref*{#1}}}
 \NewDocumentCommand{\secref}{m}
- {\textcolor{blue}{第~\hyperref[#1]{\ref*{#1}}~节}}
+ {\hyperref[#1]{第~\ref*{#1}~节}}
 \NewDocumentCommand{\chapref}{m}
-  {\textcolor{blue}{第~\hyperref[#1]{\ref*{#1}}~章}}
+ {\hyperref[#1]{第~\ref*{#1}~章}}
 \NewDocumentCommand{\appref}{m}
-  {\textcolor{blue}{附录~\hyperref[#1]{\ref*{#1}}}}
+ {\hyperref[#1]{附录~\ref*{#1}}}
 \ExplSyntaxOff
 \sisetup{per-mode=symbol,range-phrase=--,separate-uncertainty=true}
 \DeclareSIUnit{\fm}{fm}
@@ -274,50 +272,30 @@
 % visually distinct across all books.  The palette is owned by the root
 % preamble so that every book compiled through main.tex inherits the same
 % appearance without book-local overrides.
-\tcolorboxenvironment{definition}{
-  enhanced,breakable,colback=blue!2.5,colframe=blue!55!black,
-  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-  before skip=7pt,after skip=7pt}
-\tcolorboxenvironment{theorem}{
-  enhanced,breakable,colback=red!2.2,colframe=red!58!black,
-  boxrule=0.65pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-  before skip=7pt,after skip=7pt}
-\tcolorboxenvironment{proposition}{
-  enhanced,breakable,colback=orange!3,colframe=orange!65!black,
-  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-  before skip=7pt,after skip=7pt}
-\tcolorboxenvironment{lemma}{
-  enhanced,breakable,colback=violet!2.5,colframe=violet!60!black,
-  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-  before skip=7pt,after skip=7pt}
-\tcolorboxenvironment{corollary}{
-  enhanced,breakable,colback=teal!2.5,colframe=teal!58!black,
-  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-  before skip=7pt,after skip=7pt}
-\tcolorboxenvironment{example}{
-  enhanced,breakable,colback=green!3,colframe=green!48!black,
-  boxrule=0.50pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-  before skip=7pt,after skip=7pt}
-\tcolorboxenvironment{remark}{
-  enhanced,breakable,colback=gray!4,colframe=gray!55!black,
-  boxrule=0.50pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-  before skip=7pt,after skip=7pt}
-\crefname{theorem}{定理}{定理}
-\Crefname{theorem}{定理}{定理}
-\crefname{proposition}{命题}{命题}
-\Crefname{proposition}{命题}{命题}
-\crefname{lemma}{引理}{引理}
-\Crefname{lemma}{引理}{引理}
-\crefname{corollary}{推论}{推论}
-\Crefname{corollary}{推论}{推论}
-\crefname{definition}{定义}{定义}
-\Crefname{definition}{定义}{定义}
-\crefname{example}{例}{例}
-\Crefname{example}{例}{例}
-\crefname{remark}{注}{注}
-\Crefname{remark}{注}{注}
+% The box keys are stated once, so the palette below is data: adding a
+% theorem-like environment costs one line, not another copied block.
+\newcommand{\theoremcolor}[4]{%
+  \tcolorboxenvironment{#1}{%
+    enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
+    arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+    before skip=7pt,after skip=7pt}}
+%                   environment    background     frame             rule
+\theoremcolor{definition} {blue!2.5}   {blue!55!black}    {0.55pt}
+\theoremcolor{theorem}    {red!2.2}    {red!58!black}     {0.65pt}
+\theoremcolor{proposition}{orange!3}   {orange!65!black}  {0.55pt}
+\theoremcolor{lemma}      {violet!2.5} {violet!60!black}  {0.55pt}
+\theoremcolor{corollary}  {teal!2.5}   {teal!58!black}    {0.55pt}
+\theoremcolor{example}    {green!3}    {green!48!black}   {0.50pt}
+\theoremcolor{remark}     {gray!4}     {gray!55!black}    {0.50pt}
 
-% ===== Shared compatibility notation =====
+\crefnamecn{theorem}{定理}
+\crefnamecn{proposition}{命题}
+\crefnamecn{lemma}{引理}
+\crefnamecn{corollary}{推论}
+\crefnamecn{definition}{定义}
+\crefnamecn{example}{例}
+\crefnamecn{remark}{注}
+
 % ===== Shared symbol registry =====
 % Every symbol that is used by more than one book lives here so that a
 % derivation copied between books keeps its meaning.  A book may only add
