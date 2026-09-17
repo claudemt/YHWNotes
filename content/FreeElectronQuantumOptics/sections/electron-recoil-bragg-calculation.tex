@@ -1,0 +1,85 @@
+\subsection{从完整反冲格计算一次 Bragg 转移}
+\label{sec:electron-recoil-bragg-calculation}
+
+前面给出了从完整反冲格选出两个共振态的条件。现在计算一次脉冲中的转移概率，并将两态解与完整格的演化比较。我们仍限制自旋保持、单一纵向动量步长和二阶色散，先写出所有电子通道的方程：
+\begin{equation}
+ \ii\dot d_\ell=\delta_\ell d_\ell
+ +\frac{\Omega}{2}d_{\ell-1}+\frac{\Omega^*}{2}d_{\ell+1},\qquad
+ \delta_\ell=\ell\Delta_{\rm lin}+\ell^2\omega_{\rm r}.
+ \label{eq:electron-bragg-full-lattice}
+\end{equation}
+$d_\ell$ 为通道振幅，$\delta_\ell$ 为旋转表象中相对中心格点的\emph{在位角频率}，$\Omega$ 为相邻格点的复 Rabi 频率；它们的单位分别为一和 $\mathrm{s^{-1}}$。相邻跃迁的失谐始终写为 $\Delta_\ell=\delta_{\ell+1}-\delta_\ell$。这个区别允许读者直接判断：矩阵对角元使用 $\delta_\ell$，哪一条边共振则由 $\Delta_\ell=0$ 决定。
+
+将 $0\leftrightarrow1$ 调到共振需要 $\Delta_{\rm lin}=-\omega_{\rm r}$，即驱动角频率为 $\omega=v_0\kappa_z+\omega_{\rm r}$。此时 $\delta_\ell=\omega_{\rm r}\ell(\ell-1)$，$|0\rangle,|1\rangle$ 的在位频率相等，而最近的 $|-1\rangle,|2\rangle$ 各偏离 $2\omega_{\rm r}$。未作截断时，常脉冲的解是
+\begin{equation*}
+ \mathbf d(T)=\exp[-\ii\mathsf H_{\rm lat}T]\mathbf d(0),
+ \quad (\mathsf H_{\rm lat})_{\ell m}
+ =\delta_\ell\delta_{\ell m}
+ +\tfrac12\Omega\delta_{\ell,m+1}
+ +\tfrac12\Omega^*\delta_{\ell,m-1}.
+\end{equation*}
+这里 $\mathsf H_{\rm lat}=H_{\rm lat}/\hbar$ 的单位为角频率。数值上先保留有限范围，再增加范围直到所需概率收敛；只检查总概率为一不够，因为一个过小但厄米的截断矩阵同样保持归一化。
+
+当 $|\Omega|/(2\omega_{\rm r})\ll1$，并且脉冲频谱不显著覆盖外部通道时，才能投影到 $P=|0\rangle\langle0|+|1\rangle\langle1|$。最低阶两态模型给
+\begin{equation}
+ P_{1}^{\rm(two)}(T)=\sin^2\!\left(\frac{|\Omega|T}{2}\right),\qquad
+ T_\pi=\frac{\pi}{|\Omega|}.
+ \label{eq:electron-bragg-pi-pulse}
+\end{equation}
+$T_\pi$ 称为 $\pi$ 脉冲时间，指两态 Bloch 球转角为 $\pi$，并非光学载波经过半个周期。完整格点中还需计算泄漏概率
+$P_{\rm leak}=1-|d_0|^2-|d_1|^2$。它衡量概率是否跑进未保留的通道，不能由两态模型自身计算出来。
+
+\begin{exbox}[有失谐的两态转移及其容差]
+在外部通道已被受控消去的前提下，设两保留态仍有残余失谐 $\Delta_B$。去掉公共在位能后，按 $|0\rangle,|1\rangle$ 排列的 Hamiltonian 为
+\begin{equation*}
+ H_2=\frac\hbar2
+ \begin{pmatrix}-\Delta_B&\Omega^*\\\Omega&\Delta_B\end{pmatrix}.
+\end{equation*}
+求从 $|0\rangle$ 出发的转移概率，以及达到 $1-\eta$ 最大转移率所允许的失谐。
+
+不必先求本征矢。直接平方得 $H_2^2=\hbar^2\Omega_B^2I/4$，其中
+$\Omega_B=\sqrt{|\Omega|^2+\Delta_B^2}$。指数的偶数幂与奇数幂分别求和，得到
+\begin{equation*}
+ U_2(T)=I\cos\frac{\Omega_BT}{2}
+ -\frac{2\ii H_2}{\hbar\Omega_B}\sin\frac{\Omega_BT}{2},\qquad
+ P_1(T)=\frac{|\Omega|^2}{|\Omega|^2+\Delta_B^2}
+ \sin^2\frac{\Omega_BT}{2}.
+\end{equation*}
+首个极大值位于 $T=\pi/\Omega_B$，但其高度一般小于一：
+\begin{equation*}
+ P_{1,\max}=\frac1{1+(\Delta_B/|\Omega|)^2},\qquad
+ P_{1,\max}\ge1-\eta
+ \ \Longleftrightarrow\ 
+ \frac{|\Delta_B|}{|\Omega|}\le\sqrt{\frac{\eta}{1-\eta}}.
+\end{equation*}
+当 $\Delta_B=0$ 时恢复 $\pi$ 脉冲公式；当失谐远大于耦合时，转移上限按 $|\Omega/\Delta_B|^2$ 衰减。增加耦合能提高容差，却同时破坏外部反冲通道的谱隔离，所以还必须保留 $|\Omega|/(2\omega_{\rm r})\ll1$。两态解析解本身不能检验后一条件，完整格点的 TDSE 演化用于做这项检验。
+\end{exbox}
+
+用于检验近似的 TDSE 计算采用相同的初态 $d_\ell(0)=\delta_{\ell0}$ 和名义脉冲面积 $|\Omega|T=\pi$，以 $r_\Omega=|\Omega|/\omega_{\rm r}$ 为唯一驱动参数。完整格点在 $r_\Omega=0.20,1,5$ 时分别给出 $P_1\simeq0.9951,0.9076,0.1167$，对应泄漏约为 $0.00490,0.0741,0.7715$；两态模型在三种情况下都预测完全转移。这里的数值是对解析约化的误差检查，求解的是\eqnrefs{eq:electron-bragg-full-lattice} 的含时 Schrödinger 方程（TDSE），常脉冲时可直接用矩阵指数传播。
+
+\figref{fig:electron-bragg-convergence} 对比两态振荡和完整格点，并显示增加驱动后产生的泄漏。
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.92\linewidth]{electron_bragg_convergence.pdf}
+ \caption{矩形脉冲下的反冲格转移。左图固定不同 $r_\Omega$，比较 $0\to1$ 概率随脉冲面积的变化；右图在名义 $\pi$ 脉冲处同时检查目标概率与外部泄漏。计算保留双侧格点，并以扩大截断范围验证收敛。}
+ \label{fig:electron-bragg-convergence}
+\end{figure}
+
+\begin{derivation}[消去最近外部通道产生什么修正]
+取 $\Omega$ 为实数以简化记号，能量相位已由基矢重定义吸收。对角能量分别为 $0,0,2\hbar\omega_{\rm r},2\hbar\omega_{\rm r}$ 的 $|0\rangle,|1\rangle,|-1\rangle,|2\rangle$，二阶 Schur 自能在中心能量处给
+\begin{align*}
+ (\delta H_P)_{00}&=\frac{|\hbar\Omega/2|^2}{-2\hbar\omega_{\rm r}}
+ =-\frac{\hbar|\Omega|^2}{8\omega_{\rm r}},\\
+ (\delta H_P)_{11}&=-\frac{\hbar|\Omega|^2}{8\omega_{\rm r}},\qquad
+ (\delta H_P)_{01}=0.
+\end{align*}
+最近邻链中没有经过一个外部态连接 $0$ 与 $1$ 的两步路径，所以二阶非对角修正为零。两个相同的能移只给公共相位，并不在这一对称模型中改变共振条件；更高阶仍会改变振荡频率。
+
+若外部态初始未占据，并仅保留通向最近外部态的首阶跃迁，忽略更远的 $|-2\rangle$ 对它的反馈，则
+\begin{equation*}
+ d_{-1}(t)\simeq-\frac{\ii\Omega^*}{2}\int_0^t
+ \ee^{-2\ii\omega_{\rm r}(t-t')}d_0(t')\dd t'.
+\end{equation*}
+慢变 $d_0$ 的分部积分主项为
+$-\Omega^*[d_0(t)-\ee^{-2\ii\omega_{\rm r}t}d_0(0)]/(4\omega_{\rm r})$，余项含 $\dot d_0$。因此外部振幅是 $O(|\Omega|/\omega_{\rm r})$，概率是其平方；方脉冲还带有开关产生的快速瞬态。这个积分同时解释了为什么仅把外部能级的能移加进两态模型，仍不能代替对实际泄漏的计算。
+\end{derivation}

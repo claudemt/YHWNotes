@@ -1,0 +1,324 @@
+% Process-oriented TikZ figures for QFT and free-electron quantum optics.
+% Each figure is tied to a specific derivation in chapters 2--3.
+% Labels attached to paths use an opaque backing so arrows/propagators never
+% pass through glyphs.  Keep this local style distinct from chapter TikZ styles.
+\tikzset{process line label/.style={fill=white,fill opacity=.97,text opacity=1,inner sep=1.25pt}}
+
+\newcommand{\QFTWickContractionFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[font=\small\bfseries] at (-4.3,2.0) {operator product};
+\node[draw,rounded corners,minimum width=4.6cm,minimum height=1.1cm,align=center] at (-4.3,0.7)
+{$\mathcal T\!\left[\bar\psi(x_1)\gamma^{\mu}A_{\mu}(x_1)\psi(x_1)\;\bar\psi(x_2)\gamma^{\nu}A_{\nu}(x_2)\psi(x_2)\right]$};
+\draw[-{Stealth[length=2.4mm]}] (-1.7,0.7)--(-0.3,0.7);
+\node[font=\small,align=center] at (-1.0,1.62) {Wick\ contractions};
+\node[font=\small\bfseries] at (3.2,2.0) {internal-line bookkeeping};
+\coordinate (v1) at (2.25,0.7); \coordinate (v2) at (4.15,0.7);
+\draw[fermion] (0.8,0.7)--(v1); \draw[fermion] (v1)--(v2); \draw[fermion] (v2)--(5.6,0.7);
+\draw[photon] (v1) to[bend left=58] (v2);
+\node[fvertex] at (v1) {}; \node[fvertex] at (v2) {};
+\node[momentumlabel,below] at (3.2,0.55) {$S_F$};
+\node[momentumlabel,above] at (3.2,1.55) {$D_F$};
+\node[align=center,font=\small] at (3.2,-0.25) {each contraction $\leftrightarrow$ one propagator\\each interaction factor $\leftrightarrow$ one vertex};
+\end{tikzpicture}
+\caption{Dyson--Wick 展开到 Feynman 图的最小字典。图并不是附加假设，而是把时间有序算符乘积中的允许收缩压缩为顶点和内部传播子；费米置换符号与闭合费米环的额外负号仍由 Wick 代数决定。}
+\label{fig:qft_wick_contraction_dictionary}
+\end{figure}}
+
+\newcommand{\QFTVirtualPhotonExchangeFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\coordinate (a) at (-1.1,0.5); \coordinate (b) at (1.1,0.5);
+\coordinate (c) at (-1.1,2.3); \coordinate (d) at (1.1,2.3);
+\draw[fermion] (-3.2,0.1)--(a)--(3.2,0.9);
+\draw[fermion] (-3.2,2.7)--(c)--(3.2,1.9);
+\draw[photon] (a)--(c);
+\node[fvertex] at (a) {}; \node[fvertex] at (c) {};
+\node[momentumlabel,below left] at (-2.45,0.25) {$p_1$};
+\node[momentumlabel,below right] at (2.45,0.75) {$p_1'$};
+\node[momentumlabel,above left] at (-2.45,2.55) {$p_2$};
+\node[momentumlabel,above right] at (2.45,2.05) {$p_2'$};
+\node[momentumlabel,right] at (-1.0,1.4) {$q=p_1-p_1'$};
+\node[align=left,font=\small] at (5.2,1.45) {generally $q^2\neq0$\\internal photon is off shell\\current conservation：$q_\mu J^\mu=0$};
+\end{tikzpicture}
+\caption{两个费米电流之间的单虚光子交换。内部光子不满足真实光子的 $q^2=0$ 壳条件；静态 Coulomb 相互作用、相对论性流--流相互作用与许多低能有效势都由同一内部传播子在不同运动学极限下得到。}
+\label{fig:qft_virtual_photon_exchange}
+\end{figure}}
+
+\newcommand{\QFTCrossingChannelsFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+% annihilation
+\node[font=\small\bfseries] at (-4.8,2.35) {$e^-e^+\to\gamma\gamma$};
+\coordinate (a) at (-5.45,1.25); \coordinate (b) at (-4.15,1.25);
+\draw[fermion] (-6.8,2.0)--(a); \draw[antifermion] (-6.8,0.5)--(a);
+\draw[fermion] (a)--(b);
+\draw[photon] (b)--(-2.9,2.0); \draw[photon] (b)--(-2.9,0.5);
+\node[fvertex] at (a) {}; \node[fvertex] at (b) {};
+% pair production
+\node[font=\small\bfseries] at (0,2.35) {$\gamma\gamma\to e^-e^+$};
+\coordinate (c) at (-0.65,1.25); \coordinate (d) at (0.65,1.25);
+\draw[photon] (-2.0,2.0)--(c); \draw[photon] (-2.0,0.5)--(c);
+\draw[fermion] (c)--(d);
+\draw[fermion] (d)--(2.0,2.0); \draw[antifermion] (d)--(2.0,0.5);
+\node[fvertex] at (c) {}; \node[fvertex] at (d) {};
+% bremsstrahlung on external source
+\node[font=\small\bfseries] at (5.0,3.15) {external-field bremsstrahlung};
+\coordinate (e) at (4.35,1.15); \coordinate (f) at (5.65,1.45);
+\draw[fermion] (2.8,0.75)--(e)--(f)--(7.0,1.85);
+\draw[photon] (f)--(6.95,2.85);
+\draw[dashed,line width=0.7pt] (e)--(4.35,-0.05);
+\node[below,font=\small] at (4.35,-0.05) {external scatterer};
+\node[fvertex] at (e) {}; \node[fvertex] at (f) {};
+\end{tikzpicture}
+\caption{同一 QED 顶点通过交叉关系和不同外态选择生成的典型过程。左、中两图展示湮灭与 Breit--Wheeler 对产生的交叉关系；右图展示电子在外部散射源上偏转并辐射真实光子。真实对产生要求满足相应阈值，不能由正能单电子投影理论自行产生。}
+\label{fig:qft_crossing_pair_bremsstrahlung}
+\end{figure}}
+
+\newcommand{\QFTTwoPhotonExchangeFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[font=\small\bfseries] at (-3.2,2.55) {box};
+\coordinate (a1) at (-4.0,0.7); \coordinate (a2) at (-2.4,0.7);
+\coordinate (a3) at (-4.0,2.0); \coordinate (a4) at (-2.4,2.0);
+\draw[fermion] (-5.5,0.7)--(a1)--(a2)--(-0.9,0.7);
+\draw[fermion] (-5.5,2.0)--(a3)--(a4)--(-0.9,2.0);
+\draw[photon] (a1)--(a3); \draw[photon] (a2)--(a4);
+\foreach \v in {a1,a2,a3,a4}{\node[fvertex] at (\v) {};}
+\node[font=\small\bfseries] at (3.2,2.55) {crossed box};
+\coordinate (b1) at (2.4,0.7); \coordinate (b2) at (4.0,0.7);
+\coordinate (b3) at (2.4,2.0); \coordinate (b4) at (4.0,2.0);
+\draw[fermion] (0.9,0.7)--(b1)--(b2)--(5.5,0.7);
+\draw[fermion] (0.9,2.0)--(b3)--(b4)--(5.5,2.0);
+\draw[photon] (b1)--(b4); \draw[photon] (b2)--(b3);
+\foreach \v in {b1,b2,b3,b4}{\node[fvertex] at (\v) {};}
+\end{tikzpicture}
+\caption{双光子交换的两种基本拓扑。到了这一阶，不能只保留某一个 ``看起来主要'' 的时间排序；盒图与交叉盒图属于同一微扰阶，完整振幅需要按给定外态和对称性把同阶连通图一起求和。}
+\label{fig:qft_two_photon_exchange_box}
+\end{figure}}
+
+\newcommand{\QFTEulerHeisenbergFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\coordinate (L) at (-1.5,0); \coordinate (T) at (0,1.5); \coordinate (R) at (1.5,0); \coordinate (B) at (0,-1.5);
+\draw[fermion] (L) to[bend left=28] (T);
+\draw[fermion] (T) to[bend left=28] (R);
+\draw[fermion] (R) to[bend left=28] (B);
+\draw[fermion] (B) to[bend left=28] (L);
+\draw[photon] (-3.4,0)--(L); \draw[photon] (0,3.2)--(T); \draw[photon] (R)--(3.4,0); \draw[photon] (B)--(0,-3.2);
+\foreach \v in {L,T,R,B}{\node[fvertex] at (\v) {};}
+\node[align=left,font=\small] at (5.0,0.15) {virtual $e^-e^+$ loop\\low-energy expansion\\$\Rightarrow F^4$ operator\\$\Rightarrow$ light--light scattering};
+\end{tikzpicture}
+\caption{Euler--Heisenberg 低能非线性的图像来源：四个外部光子通过一个虚电子--正电子环耦合。只有当所有外部动量远低于真实对产生阈值并且场变化足够缓慢时，完整非局域环振幅才能展开为局域 $F^4$ 有效算符。}
+\label{fig:qft_euler_heisenberg_four_photon_loop}
+\end{figure}}
+
+\newcommand{\QFTKeldyshContourFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+\draw[->,line width=0.8pt] (-5.2,0.7)--(4.8,0.7) node[right,font=\small] {$t$};
+\draw[->,line width=1.0pt] (-4.5,1.45)--(3.8,1.45) node[process line label,midway,above,font=\small] {$C_+$: forward branch};
+\draw[->,line width=1.0pt] (3.8,-0.05)--(-4.5,-0.05) node[process line label,midway,below,font=\small] {$C_-$: backward branch};
+\draw[dashed] (-4.5,-0.4)--(-4.5,1.85); \draw[dashed] (3.8,-0.4)--(3.8,1.85);
+\node[font=\small] at (-4.5,2.1) {$t_0$}; \node[font=\small] at (3.8,2.1) {$t_{\max}$};
+\fill (-1.0,1.45) circle (1.5pt); \fill (1.6,-0.05) circle (1.5pt);
+\node[above,font=\small] at (-1.0,1.45) {$1_+$}; \node[below,font=\small] at (1.6,-0.05) {$2_-$};
+\draw[decorate,decoration={brace,amplitude=5pt}] (5.0,-0.05)--(5.0,1.45) node[process line label,midway,right=7pt,align=left,font=\small]{same initial density matrix\\closed real-time contour};
+\end{tikzpicture}
+\caption{Schwinger--Keldysh 闭合实时间轮廓。系统从同一初始密度矩阵沿 $C_+$ 正向演化，再沿 $C_-$ 反向返回；$G^{++},G^{+-},G^{-+},G^{--}$ 只是把两个时空点放在不同轮廓支上的四种组合。}
+\label{fig:qft_schwinger_keldysh_contour}
+\end{figure}}
+
+\newcommand{\QFTFeshbachProjectionFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+\node[draw,rounded corners,text width=4.2cm,minimum height=2.35cm,align=center] (P) at (-3.7,0)
+{$P$: resolved subspace\\positive-energy electron\\selected low-energy modes};
+\node[draw,rounded corners,text width=4.2cm,minimum height=2.35cm,align=center] (Q) at (3.7,0)
+{$Q=1-P$: eliminated subspace\\pair / radiation sectors\\high-energy modes and bath continuum};
+\draw[->,line width=0.9pt] (P.north east) to[bend left=22] node[process line label,midway,above=4pt,font=\small] {$QHP$} (Q.north west);
+\draw[->,line width=0.9pt] (Q.south west) to[bend left=22] node[process line label,midway,below=3pt,font=\small] {$PHQ$} (P.south east);
+\node[align=center,font=\small] at (0,-2.95)
+{$P\to Q\to P$: virtual excursion\\$\Sigma_P(E)=PHQ(E-QHQ+\ii0^+)^{-1}QHP$};
+\end{tikzpicture}
+\caption{Feshbach--Schur 投影的物理图像。低能工作空间并不是简单删掉 $Q$：所有进入被消去空间再返回的虚过程都通过能量依赖自能 $\Sigma_P(E)$ 留在 $P$ 中；只有在受控谱隙和弱能量依赖条件下才能进一步近似为静态低维哈密顿量。}
+\label{fig:qft_feshbach_virtual_excursion}
+\end{figure}}
+
+\newcommand{\MacroQEDGreenFlowFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+\node[draw,rounded corners,text width=2.8cm,minimum height=1.25cm,align=center] (J) at (-5.3,1.25)
+{transition current\\$\mathbf j(\mathbf r,\omega)$};
+\node[draw,rounded corners,text width=2.8cm,minimum height=1.25cm,align=center] (M) at (-5.3,-1.25)
+{material + geometry\\Maxwell operator};
+\node[draw,rounded corners,text width=3.0cm,minimum height=1.25cm,align=center] (G) at (-1.2,-1.25)
+{retarded resolvent\\$\mathbf G^R(\mathbf r,\mathbf r';\omega)$};
+\node[draw,rounded corners,text width=2.7cm,minimum height=1.15cm,align=center] (E) at (2.4,1.25)
+{coherent field\\$\widetilde{\mathbf E}=\ii\mu_0\omega\,\mathbf G^R\!\ast\mathbf j$};
+\node[draw,rounded corners,text width=2.7cm,minimum height=1.15cm,align=center] (R) at (2.4,-1.25)
+{environment spectrum\\$\operatorname{Im}\mathbf G^R$};
+\node[draw,rounded corners,text width=3.1cm,minimum height=1.45cm,align=center] (O) at (6.1,0)
+{observables\\EELS / emission / LDOS\\Lamb shift / mode coupling};
+\draw[->] (M.east)--(G.west) node[process line label,midway,below=3pt,font=\small] {invert};
+\draw[->] (G.north east)--(E.south west);
+\draw[->] (J.east)--(E.west) node[process line label,midway,above=3pt,font=\small] {source};
+\draw[->] (G.east)--(R.west);
+\draw[->] (E.east)--(O.north west);
+\draw[->] (R.east)--(O.south west);
+\end{tikzpicture}
+\caption{宏观 QED 中从微观跃迁电流到可观测量的统一流程。几何、边界和材料色散首先进入 Maxwell Green 张量；其复传播部分给相干响应，$\operatorname{Im}\mathbf G^R$ 则控制环境涨落、局域态密度和不可逆通道。}
+\label{fig:macroscopic_qed_green_flow}
+\end{figure}}
+
+\newcommand{\GeneralInteractionRecoilFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
+process box/.style={draw,rounded corners,text width=3.15cm,minimum height=1.35cm,align=center,font=\small}]
+\node[process box] (QED) at (-4.2,1.55)
+{QED / microscopic theory\\positive-energy projection};
+\node[process box] (CONT) at (0,1.55)
+{continuous electron $\times$ environment\\$|\mathbf p,s\rangle\otimes|\mu\rangle$};
+\node[process box] (SEL) at (4.2,1.55)
+{finite-time spectral selection\\matrix elements + detuning};
+
+\node[process box] (REC) at (4.2,-1.2)
+{exact recoil channels\\$E(\mathbf p_\ell)$ retained};
+\node[process box] (UNI) at (0,-1.2)
+{uniform energy ladder\\controlled low-recoil limit};
+
+\draw[->] (QED.east)--(CONT.west);
+\draw[->] (CONT.east)--(SEL.west);
+\draw[->] (SEL.south)--(REC.north);
+\draw[->] (REC.west)--(UNI.east);
+\end{tikzpicture}
+\caption{从连续电子态到离散交换通道。QED 或材料响应给出电子与环境的耦合；有限作用时间和能量匹配决定哪些通道有效参与交换。保留各通道的真实能量 $E(\mathbf p_\ell)$，得到反冲格；当各条边的失谐和耦合差别都可忽略时，才得到均匀能量梯。}
+\label{fig:general_interaction_continuum_to_recoil_ladder}
+\end{figure}}
+
+\newcommand{\QFTCutkoskyFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+% left full bubble
+\node[font=\small\bfseries] at (-3.4,2.3) {full forward graph};
+\coordinate (l1) at (-4.2,0.8); \coordinate (r1) at (-2.6,0.8);
+\draw[photon] (-5.6,0.8)--(l1);
+\draw[photon] (r1)--(-1.2,0.8);
+\draw[fermion] (l1) to[bend left=58] (r1);
+\draw[fermion] (r1) to[bend left=58] (l1);
+\node[fvertex] at (l1) {}; \node[fvertex] at (r1) {};
+\node[font=\small] at (-3.4,-0.35) {$2\,\mathrm{Im}\,\mathcal M_{ii}$};
+% arrow
+\draw[-{Stealth[length=2.5mm]}] (-0.4,0.8)--(1.1,0.8) node[process line label,midway,above=3pt,font=\small]{Cutkosky cut};
+% right cut bubble
+\node[font=\small\bfseries] at (4.2,2.3) {real intermediate state above threshold};
+\coordinate (l2) at (3.4,0.8); \coordinate (r2) at (5.0,0.8);
+\draw[photon] (2.0,0.8)--(l2);
+\draw[photon] (r2)--(6.4,0.8);
+\draw[fermion] (l2) to[bend left=58] (r2);
+\draw[fermion] (r2) to[bend left=58] (l2);
+\draw[dashed,line width=0.9pt] (4.2,-0.8)--(4.2,2.0);
+\node[fvertex] at (l2) {}; \node[fvertex] at (r2) {};
+\node[font=\small] at (4.2,-0.35) {$\sum_n \int \!\d\Phi_n\,\mathcal M_{in}\mathcal M_{in}^*$};
+\end{tikzpicture}
+\caption{光学定理与 Cutkosky 规则的图像化关系。当前向振幅的外部不变量跨过某个多粒子阈值时，环图的分支割线与一组真实中间态的相空间积分一一对应；“切开内部线”只是这一解析不连续性的图形记账。}
+\label{fig:qft_cutkosky_optical_theorem}
+\end{figure}}
+
+\newcommand{\QFTForestSubgraphFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+\node[font=\small\bfseries] at (-3.2,2.5) {two-loop graph with subdivergence $G$};
+\coordinate (a) at (-4.2,0.8); \coordinate (b) at (-2.6,0.8); \coordinate (c) at (-1.0,0.8);
+\draw[fermion] (-5.6,0.8)--(a)--(b)--(c)--(0.6,0.8);
+\draw[photon] (a) to[bend left=62] (b);
+\draw[photon] (b) to[bend left=62] (c);
+\node[fvertex] at (a) {}; \node[fvertex] at (b) {}; \node[fvertex] at (c) {};
+\draw[rounded corners,densely dashed] (-4.8,-0.15) rectangle (-2.0,2.0);
+\node[font=\small] at (-3.4,-0.45) {subgraph $\gamma$};
+\draw[-{Stealth[length=2.5mm]}] (1.3,0.8)--(3.0,0.8) node[process line label,midway,above=3pt,font=\small]{apply $T_\gamma$ first};
+\node[font=\small\bfseries] at (6.0,2.5) {reduced graph $G/\gamma$};
+\coordinate (d) at (5.0,0.8); \coordinate (e) at (6.7,0.8);
+\draw[fermion] (3.9,0.8)--(d)--(e)--(8.1,0.8);
+\node[fvertex] at (d) {}; \node[fvertex] at (e) {};
+\node[draw,rounded corners,align=center,font=\small] (ct) at (5.85,1.65) {local\\counterterm};
+\draw[-] (ct.south)--(5.85,0.86);
+\end{tikzpicture}
+\caption{BPHZ 森林公式的最小图像。整体两环图 $G$ 的紫外处理必须先识别并减去子图 $\gamma$ 的局域发散，再处理收缩后的剩余图；因此重整化并不是对“整张图一次性减一个无穷大”，而是对子图森林做递归减法。}
+\label{fig:qft_forest_formula_subgraph}
+\end{figure}}
+
+\newcommand{\QFTSoftInclusiveFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+% hard process central blob label left real
+\node[font=\small\bfseries] at (-4.0,2.25) {virtual correction};
+\coordinate (v1) at (-4.3,0.8); \coordinate (v2) at (-2.7,0.8);
+\draw[fermion] (-5.8,0.8)--(v1)--(v2)--(-1.2,0.8);
+\draw[photon] (v1) to[bend left=60] (v2);
+\node[fvertex] at (v1) {}; \node[fvertex] at (v2) {};
+\node[draw,circle,minimum size=0.55cm,fill=gray!10] at (-4.0,0.8) {};
+\node[font=\small] at (-4.0,0.18) {hard kernel};
+\node[font=\small] at (-4.0,-0.55) {$\sigma_{\rm virt}(m_\gamma)$};
+% plus
+\node[font=\Large] at (0.1,0.8) {$+$};
+% real emission
+\node[font=\small\bfseries] at (4.1,2.25) {unresolved real emission};
+\coordinate (u1) at (3.3,0.8); \coordinate (u2) at (4.9,0.8);
+\draw[fermion] (1.8,0.8)--(u1)--(u2)--(6.4,0.8);
+\draw[photon] (u2)--(5.8,2.0);
+\node[fvertex] at (u1) {}; \node[fvertex] at (u2) {};
+\node[draw,circle,minimum size=0.55cm,fill=gray!10] at (4.1,0.8) {};
+\node[font=\small] at (4.1,0.18) {hard kernel};
+\node[font=\small] at (4.1,-0.55) {$\sigma_{\rm real}(m_\gamma,E_{\rm res})$};
+% both contributions enter the same inclusive observable
+\node[draw,rounded corners,minimum width=2.4cm,minimum height=1.0cm,align=center] (incl) at (9.4,0.8)
+{inclusive observable\\$\sigma_{\rm incl}(E_{\rm res})$\\IR finite};
+\draw[-{Stealth[length=2.5mm]},densely dashed] (-2.0,-0.65) .. controls (0.0,-2.0) and (6.2,-2.0) .. (incl.south west)
+node[process line label,pos=.40,below=2pt,font=\small]{sum virtual + unresolved real};
+\draw[-{Stealth[length=2.5mm]}] (6.55,0.8)--(incl.west);
+\end{tikzpicture}
+\caption{Bloch--Nordsieck/KLN 思想的图像化表达。单独的虚修正或软实发射都带有同一个红外奇异结构；只有把实验分辨率以下的实光子与虚修正一起并入同一个包容可观测量，$m_\gamma$ 依赖才相互抵消。}
+\label{fig:qft_soft_inclusive_cancellation}
+\end{figure}}
+
+\newcommand{\QFTComptonTreeFigure}{%
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+% s channel diagram
+\node[font=\small\bfseries] at (-3.4,2.35) {$s$ ordering};
+\coordinate (a1) at (-4.4,0.7); \coordinate (a2) at (-2.8,0.7);
+\draw[fermion] (-5.9,0.7)--(a1)--(a2)--(-1.3,0.7);
+\draw[photon] (-4.9,2.0)--(a1);
+\draw[photon] (a2)--(-2.0,2.0);
+\node[fvertex] at (a1) {}; \node[fvertex] at (a2) {};
+\node[momentumlabel,below] at (-3.6,0.5) {$p+p_{\gamma i}$};
+\node[momentumlabel,left] at (-5.0,1.6) {$p_{\gamma i}$};
+\node[momentumlabel,right] at (-1.95,1.6) {$p_{\gamma f}$};
+% u channel diagram
+\node[font=\small\bfseries] at (3.4,2.35) {$u$ ordering};
+\coordinate (b1) at (2.4,0.7); \coordinate (b2) at (4.0,0.7);
+\draw[fermion] (0.9,0.7)--(b1)--(b2)--(5.5,0.7);
+\draw[photon] (b1)--(1.9,2.0);
+\draw[photon] (4.9,2.0)--(b2);
+\node[fvertex] at (b1) {}; \node[fvertex] at (b2) {};
+\node[momentumlabel,below] at (3.2,0.5) {$p-p_{\gamma f}$};
+\node[momentumlabel,left] at (2.0,1.6) {$p_{\gamma f}$};
+\node[momentumlabel,right] at (4.85,1.6) {$p_{\gamma i}$};
+\end{tikzpicture}
+\caption{Compton 散射的两张同阶树图。规范不变性、低能 Thomson 极限与未偏振 Klein--Nishina 公式都来自这两种时间排序的完整和，不能只保留其中之一。}
+\label{fig:qft_compton_tree_pair}
+\end{figure}}

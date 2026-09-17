@@ -1,0 +1,388 @@
+\section{非阿贝尔规范联络与 QCD 的颜色实现}\label{sec:qcd-group-gauge-dp10}
+
+QED 中局域相位变换 $\psi(x)\to \ee^{\ii\alpha(x)}\psi(x)$ 使 $\partial_\mu\psi$ 多出 $\partial_\mu\alpha$，协变导数用一个四势恰好补偿这项。现在唯一改变的是：夸克的内部态不再是一维复相位，而是 $N_c$ 维颜色向量，局域基变换 $U(x)$ 是矩阵。因此在引入规范场之前，必须先把三个对象区分清楚：颜色向量属于哪个表示、无穷小基变换由哪些生成元产生、平方振幅里会出现哪些基底无关的群不变量。
+
+这些对象一旦定义，局域化步骤与 QED 完全平行：先要求 $D_\mu'\psi'=UD_\mu\psi$ 来确定矩阵值联络的变换律，再用 $[D_\mu,D_\nu]$ 定义曲率，最后用曲率平方构造规范场动能。非阿贝尔新物理只出现在一个地方——生成元不对易——但它会连续传递到场强、顶角、颜色因子和一圈运行中。全过程先保持一般 $SU(N_c)$，物理 QCD 的 $N_c=3$ 只在一般结果建立以后代入。
+
+\subsection{颜色表示与 $SU(N_c)$ 群不变量}
+
+把一个夸克的颜色分量记为列向量 $q^i$，$i=1,\ldots,N_c$。颜色空间本身是一个带厄米内积的复向量空间 $V_F\cong\mathbb C^{N_c}$；选择一组基底以后，基变换写成 $q\mapsto Uq$。保持内积要求 $U^\dagger U=I$，再去掉整体行列式相位后得到
+\begin{equation}
+ \boxed{
+ SU(N_c)=\{U\in\mathbb C^{N_c\times N_c}\mid U^\dagger U=I_{N_c},\ \det U=1\}.}
+ \label{eq:SUN-definition-dp10}
+\end{equation}
+这个 $N_c$ 维作用空间称为\emph{基本表示} $F$。物理 QCD 的夸克属于 $F$，但群论推导暂时不取 $N_c=3$。
+
+生成元最好直接由群曲线在恒等元处的切向量定义。对第 $a$ 个一参数子群
+\begin{equation*}
+ U_a(\tau)=\exp(\ii\tau T^a),
+ \qquad U_a(0)=I,
+ \qquad
+ \left.\frac{\dd U_a}{\dd\tau}\right|_{\tau=0}=\ii T^a .
+\end{equation*}
+对恒等式 $U_a^\dagger U_a=I$ 在 $\tau=0$ 求导，得到
+\begin{equation*}
+ -\ii T^{a\dagger}+\ii T^a=0,
+ \qquad\Longrightarrow\qquad T^{a\dagger}=T^a.
+\end{equation*}
+再用 Jacobi 行列式公式
+\begin{equation*}
+ \left.\frac{\dd}{\dd\tau}\det U_a(\tau)\right|_{0}
+ =\det U_a(0)\,
+ \Tr\!\left[U_a^{-1}(0)\left.\frac{\dd U_a}{\dd\tau}\right|_0\right]
+ =\ii\Tr T^a,
+\end{equation*}
+而 $\det U_a(\tau)=1$ 对所有 $\tau$ 恒成立，所以 $\Tr T^a=0$。厄米 $N_c\times N_c$ 矩阵有 $N_c^2$ 个实参数，去掉迹方向后得到 $N_c^2-1$ 个独立生成方向；物理 $SU(3)$ 因而有八个伴随颜色方向，量子化相应规范联络后得到八个胶子场分量。
+
+平方振幅不会依赖某一套显式生成元矩阵，而只会出现诸如 $\Tr(T^aT^b)$、$\sum_aT^aT^a$ 和 $f^{acd}f^{bcd}$ 这样的基底无关组合。为此先固定生成元归一化，再定义后面颜色求和真正需要的三个群不变量 $T_F,C_F,C_A$。
+
+在基本表示中取厄米无迹生成元 $T^a$，$a=1,\ldots,N_c^2-1$。第一章已经说明，生成元整体归一化必须先作为约定固定；粒子物理采用
+\begin{equation}
+ \boxed{
+ \Tr_F(T^aT^b)=T_F\delta^{ab},
+ \qquad T_F\equiv T(F)=\frac12.}
+ \label{eq:SUN-generator-normalization-dp10}
+\end{equation}
+在这一约定下，Lie 括号写成
+\begin{equation}
+ \boxed{
+ [T^a,T^b]=\ii f^{abc}T^c,}
+ \label{eq:SUN-commutator-dp10}
+\end{equation}
+其中 $f^{abc}$ 为实的完全反对称结构常数。非零 $f^{abc}$ 固定了后面三胶子、四胶子相互作用的代数系数；相应 Feynman 顶角随后由 Yang--Mills 作用量展开得到。
+
+生成元不仅可以作用在夸克的基本表示空间上，也可以作用在 Lie 代数自身。把一个 Lie 代数元素写成 $X=X^bT^b$，无穷小群变换给出
+\begin{equation*}
+ \delta X=\ii\theta^a[T^a,X]
+ =-\theta^af^{abc}X^bT^c.
+\end{equation*}
+因此 Lie 代数分量 $X^b$ 本身构成一个 $N_c^2-1$ 维表示，其生成元可取
+\begin{equation*}
+ (T_{\rm Adj}^a)_{cb}=-\ii f^{abc}.
+\end{equation*}
+这个表示称为\emph{伴随表示}。胶子场 $\mathscr C_\mu^a$ 的颜色指标 $a$ 正是伴随表示指标；所以物理 $SU(3)$ 中有 $3^2-1=8$ 个胶子颜色方向。
+
+在进入 Casimir 以前，还需要固定另一个常见群论系数。对表示 $R$ 的生成元定义迹归一化
+\begin{equation*}
+ \Tr_R(T_R^aT_R^b)\equiv T(R)\delta^{ab}.
+\end{equation*}
+这里的 $T(R)$ 称为表示 $R$ 的 Dynkin 指标（更准确地说是生成元的迹归一化指数）：它衡量在该表示中两个生成元做迹以后留下的统一系数。取基本表示归一化 $T(F)=1/2$。它与随后定义的二次 Casimir 是两个相关但不同的数：$T(R)$ 来自“两个生成元的迹”，$C_2(R)$ 来自“全部生成元平方之和”。
+
+这里首次出现的\emph{二次 Casimir} 是表示本身的一个基底无关数字。对任意不可约表示 $R$，把该表示中的全部生成元平方求和，定义
+\begin{equation*}
+ \mathcal C_2(R)\equiv\sum_a T_R^aT_R^a.
+\end{equation*}
+由 Lie 代数对易关系可验证 $[\mathcal C_2(R),T_R^b]=0$；Schur 引理于是给出 $\mathcal C_2(R)=C_2(R)I_R$。也就是说，$C_2(R)$ 只取决于“粒子处在哪个群表示”，不取决于我们怎样选颜色基。基本表示上的数记为 $C_F$，伴随表示上的数记为 $C_A$；后者就是胶子颜色求和反复出现的群论系数。
+
+基本表示与伴随表示的 Casimir 要分别从各自的表示数据得到。对基本表示，一般恒等式\eqnrefs{eq:casimir-dynkin-relation-dp11}
+\[
+ d_R C_2(R)=d_G T(R)
+\]
+与
+\[
+ d_F=N_c,\qquad d_G=N_c^2-1,\qquad T(F)=\frac12
+\]
+直接给出
+\begin{equation}
+ \sum_aT^aT^a=C_FI_{N_c},
+ \qquad
+ C_F=\frac{N_c^2-1}{2N_c}.
+ \label{eq:CF-definition-dp10}
+\end{equation}
+
+胶子处在伴随表示，因而不能把上面的基本表示维数代入再次使用。伴随表示生成元为
+\[
+ (F^a)_{bc}=-\ii f^{abc},
+\]
+而第一章已经由 $SU(N_c)$ 的伴随表示结构得到
+$C_2(\mathrm{Adj})=N_c$，即正文\eqnrefs{eq:ca-general-math-dp11}。于是伴随表示的 Casimir 定义
+\[
+ \sum_c(F^cF^c)_{ab}=C_A\delta_{ab}
+\]
+左端逐个写开为
+\begin{align*}
+ \sum_{c,d}(F^c)_{ad}(F^c)_{db}
+ &=-\sum_{c,d}f^{cad}f^{cdb}\\
+ &=\sum_{c,d}f^{acd}f^{bcd},
+\end{align*}
+其中第二行只用了结构常数的全反对称性和哑指标重命名。因此
+\begin{equation}
+ f^{acd}f^{bcd}=C_A\delta^{ab},
+ \qquad C_A=N_c.
+ \label{eq:CA-definition-dp10}
+\end{equation}
+因此
+\begin{equation}
+ \boxed{
+ C_F=\frac{N_c^2-1}{2N_c},
+ \qquad C_A=N_c.}
+ \label{eq:SUN-CF-CA-dp32}
+\end{equation}
+同样，第一章已经证明的 $SU(N_c)$ 基本表示完备关系在颜色指标上写成
+\begin{equation}
+ \boxed{
+ \sum_{a=1}^{N_c^2-1}(T^a)_{ij}(T^a)_{kl}
+ =T_F\left(\delta_{il}\delta_{jk}-\frac1{N_c}\delta_{ij}\delta_{kl}\right).}
+ \label{eq:SUN-fierz-dp10}
+\end{equation}
+这些式子构成后面颜色求和的全部基础；QCD 再取 $N_c=3$，最后才得到
+\[
+T_F=\frac12,\qquad C_F=\frac43,\qquad C_A=3.
+\]
+$T_F$ 控制基本表示闭合夸克线的迹归一化，$C_F$ 控制单条夸克线的二次颜色荷，而 $C_A$ 控制伴随表示胶子的非阿贝尔颜色荷。
+
+颜色因子还决定两体颜色通道的短程相互作用。对夸克--反夸克系统，
+\begin{equation*}
+ F\otimes\bar F=\mathbf1\oplus\mathrm{Adj},
+\end{equation*}
+总生成元 $\mathbf T=\mathbf T_1+\mathbf T_2$ 给出
+\begin{equation}
+ \mathbf T_1\!\cdot\!\mathbf T_2
+ =\frac12\bigl[C_2(R)-2C_F\bigr].
+ \label{eq:qcd-two-body-color-casimir-dp73}
+\end{equation}
+因此单胶子交换的短程静态势可写成
+\begin{equation*}
+ V_R(r)=\frac{\alpha_s\hbar c}{r}\,
+ \mathbf T_1\!\cdot\!\mathbf T_2.
+\end{equation*}
+取 $SU(3)$ 后，颜色单态有 $\mathbf T_1\!\cdot\!\mathbf T_2=-4/3$，八重态有 $+1/6$。这个 Coulomb 型势只属于 $r\ll\lambda_{\rm QCD}=\hbar/\Lambda_{\rm QCD}$ 的微扰短程区；当运行耦合不再提供小参数时，必须转向 Wilson 环等非微扰规范不变量。
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=.76\linewidth]{content/FreeElectronQuantumOptics/figures/generated/qcd_color_factors_dp18.png}
+ \caption{先保留 $SU(N_c)$ 的一般颜色不变量，再在末端取 $N_c=3$。在固定 $T_F=1/2$ 的归一化下，$C_A=N_c$，而 $C_F=(N_c^2-1)/(2N_c)$。}
+ \label{fig:qcd-color-factors-dp18}
+\end{figure}
+
+\figref{fig:qcd-color-factors-dp18} 把一般 $SU(N_c)$ 的两个 Casimir 随 $N_c$ 的变化画在同一坐标中。读图时应先看 $C_A=N_c$ 的线性增长，再比较 $C_F=(N_c^2-1)/(2N_c)$；$N_c=3$ 对应两条一般曲线上的物理 QCD 取值点。
+
+\begin{note}[显式 $SU(3)$ 基底]
+若需要显式矩阵，可以取 $T^a=\lambda^a/2$，其中 $\lambda^a$ 是 $SU(3)$ 基本表示的一组标准厄米无迹基矩阵，通常称为 Gell--Mann 矩阵。实际散射计算优先使用 \eqnrefs{eq:SUN-generator-normalization-dp10,eq:SUN-fierz-dp10,eq:SUN-CF-CA-dp32} 的基底无关恒等式，而不是逐个矩阵相乘。
+\end{note}
+
+\begin{exbox}[三种颜色与 $\Delta^{++}$ 的 Pauli 约束]
+在最简单的夸克模型中，$\Delta^{++}$ 的三个价夸克都是 $u$。基态空间波函数对交换对称，自旋 $3/2$ 态的自旋波函数也对称，味部分同样对称。三个相同费米子的总态必须反对称，因此还需要一个反对称内部因子。物理 QCD 取 $N_c=3$ 时，颜色空间存在完全反对称单态
+\begin{equation*}
+ |1\rangle_{\rm color}
+ =\frac1{\sqrt{3!}}\epsilon_{ijk}|i\rangle|j\rangle|k\rangle,
+ \qquad i,j,k=1,2,3.
+\end{equation*}
+它与对称的空间、味和自旋部分相乘后使总费米子态满足 Pauli 原理。这个例子说明为什么三维颜色空间与强子谱相容；真正的 QCD 动力学还需要进一步把颜色基变换提升为局域 $SU(3)$ 对称，从而得到规范联络和胶子。
+\end{exbox}
+
+\subsection{局域颜色对称}
+
+取味指标为 $f$ 的 Dirac 夸克场 \(\psi_f(x)\)，它同时携带 Dirac 旋量指标和颜色指标。由于全文已经用 \(q^\mu\) 表示四动量转移，夸克场统一记作 \(\psi_f\)。自由动能项为
+\begin{equation}
+ \Lag_{f,0}=\bar\psi_f(\ii\hbar c\gamma^\mu\partial_\mu-m_fc^2)\psi_f.
+ \label{eq:free-quark-lagrangian-dp10}
+\end{equation}
+对常数 \(U\in SU(N_c)\)，变换 \(\psi_f\to U\psi_f\) 满足 \(\partial_\mu U=0\)，因而自由动能项保持不变。若颜色旋转依赖时空位置，即 \(U=U(x)\)，则
+\begin{equation*}
+ \partial_\mu \psi_f'
+ =(\partial_\mu U)\psi_f+U\partial_\mu \psi_f,
+\end{equation*}
+第一项破坏局域协变性。与 QED 相同，需要引入规范联络；这里的联络是颜色矩阵：
+\begin{equation*}
+ \mathscr C_\mu(x)
+ \equiv\mathscr C_\mu^a(x)T^a,
+ \qquad
+ D_\mu\equiv\partial_\mu+\ii g_s\mathscr C_\mu.
+\end{equation*}
+其中 \(g_s\) 是无量纲强规范耦合，
+\begin{equation}
+ \alpha_s\equiv\frac{g_s^2}{4\pi}.
+ \label{eq:alpha-s-definition-dp10}
+\end{equation}
+为保持全文 SI 量纲显式，规范联络采用几何归一化
+\begin{equation*}
+ [\mathscr C_\mu]=\mathrm{m^{-1}},
+ \qquad [D_\mu]=\mathrm{m^{-1}}.
+\end{equation*}
+这与电磁四势 \(A_\mu\) 的 \(\mathrm{V\,s\,m^{-1}}\) 归一化不同，因此使用花体 \(\mathscr C_\mu^a\) 避免混淆。
+
+要求
+\begin{equation}
+ D_\mu'\psi_f'=U D_\mu\psi_f
+ \label{eq:qcd-covariance-requirement-dp10}
+\end{equation}
+并代入 \(\psi_f'=U\psi_f\)：
+\begin{align*}
+ (\partial_\mu+\ii g_s\mathscr C_\mu')U\psi_f
+ &=(\partial_\mu U)\psi_f+U\partial_\mu\psi_f
+ +\ii g_s\mathscr C_\mu'U\psi_f,\\
+ U(\partial_\mu+\ii g_s\mathscr C_\mu)\psi_f
+ &=U\partial_\mu\psi_f+\ii g_sU\mathscr C_\mu\psi_f.
+\end{align*}
+逐项比较并右乘 \(U^{-1}\)，得到
+\begin{equation}
+ \boxed{
+ \mathscr C_\mu'
+ =U\mathscr C_\mu U^{-1}
+ +\frac{\ii}{g_s}(\partial_\mu U)U^{-1}.}
+ \label{eq:qcd-gauge-field-transformation-dp10}
+\end{equation}
+与阿贝尔情形相比，第一项不再等于原来的 $\mathscr C_\mu$，因为一般有 $[U,\mathscr C_\mu]\neq0$。这说明规范联络本身也携带颜色结构。
+
+局域颜色空间在不同的时空点并没有天然的统一基底。比较 $y$ 点与 $x$ 点的颜色方向需要沿一条路径 $C:y\to x$ 做平行移动。一般联络的 Wilson 线由\eqnrefs{eq:wilson-line-general-dp11} 定义；在 QCD 基本表示中取联络 $g_s\mathscr C_\mu^aT^a$，于是端点变换律为
+\begin{equation*}
+ \mathcal W_C(x,y)\longrightarrow
+ U(x)\mathcal W_C(x,y)U^{-1}(y).
+\end{equation*}
+因此两点夸克算符
+\begin{equation*}
+ \bar\psi(x)\,\mathcal W_C(x,y)\,\psi(y)
+\end{equation*}
+可以构成局域规范不变量。规范联络沿有限路径的平行输运定义 Wilson 线；它是局域颜色协变性的积分形式。后面讨论强子的非局域双点算符、软辐射和高能散射时都会再次遇到同一个对象；相应的“部分子分布”等专门名称到实际定义这些可观测结构时再引入。
+
+\subsection{场强与 QCD 作用量}
+
+协变导数解决了“相邻时空点的颜色向量怎样比较”的问题；沿两个无穷小方向依次平行移动时，次序差则测量联络的曲率。QED 的一维内部相位使联络彼此对易，而 $SU(N_c)$ 联络为矩阵，因此同一个曲率定义会多出联络对易子。这个对易子随后进入曲率平方，自动生成胶子自相互作用。
+
+QCD 场强由非阿贝尔协变导数的曲率定义。基本表示中的协变导数写成
+\begin{equation}
+\boxed{
+D_\mu=\partial_\mu+i g_s\mathscr C_\mu,
+\qquad
+\mathscr C_\mu=\mathscr C_\mu^aT^a.}
+\label{eq:qcd-covariant-derivative-dp68}
+\end{equation}
+两次协变微分的次序差定义曲率，约定
+\begin{equation}
+\boxed{
+[D_\mu,D_\nu]=i g_s\mathcal F_{\mu\nu}.}
+\label{eq:qcd-curvature-definition-dp68}
+\end{equation}
+把\eqnrefs{eq:qcd-covariant-derivative-dp68} 展开到\eqnrefs{eq:qcd-curvature-definition-dp68}，得到
+\begin{equation}
+\boxed{
+\mathcal F_{\mu\nu}
+=\partial_\mu\mathscr C_\nu-\partial_\nu\mathscr C_\mu
++i g_s[\mathscr C_\mu,\mathscr C_\nu],}
+\label{eq:qcd-field-strength-matrix-dp10}
+\end{equation}
+或分量形式
+\begin{equation*}
+\mathcal F_{\mu\nu}^a
+=\partial_\mu\mathscr C_\nu^a-\partial_\nu\mathscr C_\mu^a
+-g_sf^{abc}\mathscr C_\mu^b\mathscr C_\nu^c.
+\end{equation*}
+最后一项由李代数生成元不对易直接产生；把它代入曲率平方后便得到胶子的三点与四点自相互作用。
+
+在局域规范变换下 $D'_\mu=UD_\mu U^{-1}$，因此曲率按 $\mathcal F'_{\mu\nu}=U\mathcal F_{\mu\nu}U^{-1}$ 协变变换。矩阵值场强本身不是规范不变量，但迹的循环性质保证 $\operatorname{Tr}(\mathcal F_{\mu\nu}\mathcal F^{\mu\nu})$ 不变。对 $n_f$ 个夸克味，满足局域性、Lorentz 不变性与可重整化性的最小 QCD 拉格朗日量在 SI 约定下为
+\begin{equation}
+\boxed{
+\mathcal L_{\rm QCD}
+=\sum_{f=1}^{n_f}\bar\psi_f(\ii\hbar c\gamma^\mu D_\mu-m_fc^2)\psi_f
+-\frac{\hbar c}{4}\mathcal F_{\mu\nu}^a\mathcal F^{a\mu\nu}.}
+\label{eq:qcd-lagrangian-si-dp10}
+\end{equation}
+第一项描述夸克在颜色联络中的传播；第二项是规范曲率构成的最低阶 Lorentz 标量动能项。
+
+展开夸克协变导数得到
+\begin{equation}
+\mathcal L_{qg}
+=-\hbar c\,g_s\bar\psi_f\gamma^\mu T^a\psi_f\,\mathscr C_\mu^a,
+\label{eq:qcd-quark-gluon-interaction-dp10}
+\end{equation}
+所以夸克--胶子顶角等于阿贝尔矢量流顶角乘上颜色生成元。另一方面，\eqnrefs{eq:qcd-field-strength-matrix-dp10} 的非线性部分使纯规范场动能自动包含 $\mathscr C$ 的三次与四次项：
+\begin{align}
+-\frac{\hbar c}{4}\mathcal F^2
+={}&-\frac{\hbar c}{4}\mathcal F_{\mu\nu}^{a(0)}\mathcal F^{a(0)\mu\nu}
++\frac{\hbar c g_s}{2}f^{abc}\mathcal F_{\mu\nu}^{a(0)}\mathscr C^{b\mu}\mathscr C^{c\nu}\notag\\
+&-\frac{\hbar c g_s^2}{4}f^{abc}f^{ade}
+\mathscr C_\mu^b\mathscr C_\nu^c\mathscr C^{d\mu}\mathscr C^{e\nu},
+\label{eq:yang-mills-expanded-3-4-gluon-dp10}
+\end{align}
+其中 $\mathcal F_{\mu\nu}^{a(0)}=\partial_\mu\mathscr C_\nu^a-\partial_\nu\mathscr C_\mu^a$。三胶子与四胶子顶角因此是局域非阿贝尔对称性的直接后果。
+
+\input{sections/04b-qcd-fieldstrength-detail-dp21}
+
+\subsection{鬼场与规范固定}
+
+路径积分若直接遍历所有 $\mathscr C_\mu^a$，会把彼此只差一次局域颜色旋转的场构型重复计数；这些构型代表同一个物理状态。要得到可逆的二次核和正确的微扰展开，必须从每条规范轨道中选一个代表。以协变条件
+\begin{equation*}
+ G^a[\mathscr C]\equiv\partial^\mu\mathscr C_\mu^a=0
+\end{equation*}
+为例，关键问题是：一次无穷小规范变换会让 $G^a$ 改变多少？这个变化率决定从“沿规范轨道积分”换成“在规范切片上积分”时的 Jacobian。
+
+把这一 Jacobian 写成
+\begin{equation*}
+ 1=\Delta_{\rm FP}[\mathscr C]
+ \int\mathcal D\theta\,
+ \delta\!\left(G[\mathscr C^\theta]\right)
+\end{equation*}
+就是 Faddeev--Popov 恒等式；$\Delta_{\rm FP}$ 是上述规范轨道变量变换的泛函 Jacobian。为直接从无穷小轨道切向读取该 Jacobian，取一参数规范轨道
+\begin{equation*}
+ U_\tau(x)=\exp[-\ii\tau\theta^a(x)T^a],
+ \qquad \mathscr C_\mu(\tau)=\mathscr C_\mu^{U_\tau}.
+\end{equation*}
+由有限变换律\eqnrefs{eq:qcd-gauge-field-transformation-dp10} 对 $\tau$ 在零点求导，定义轨道切向量
+\begin{equation*}
+ \left.\frac{\dd\mathscr C_\mu^a(\tau)}{\dd\tau}\right|_0
+ =-\frac1{g_s}(D_\mu\theta)^a,
+ \qquad
+ (D_\mu\theta)^a
+ =\partial_\mu\theta^a-g_sf^{abc}\mathscr C_\mu^b\theta^c.
+\end{equation*}
+于是规范条件沿轨道的 Fr\'echet 导数为
+\begin{equation*}
+ \left.\frac{\dd G^a[\mathscr C(\tau)](x)}{\dd\tau}\right|_0
+ =-\frac1{g_s}\partial^\mu D_\mu^{ab}\theta^b(x).
+\end{equation*}
+把与规范场无关的常数 $1/g_s$ 从行列式归一化中提出，定义 Faddeev--Popov 算符
+\begin{equation}
+ \boxed{
+ \mathcal M_{\rm FP}^{ab}(x,y)
+ \equiv
+ g_s\frac{\delta G^a(x)}{\delta\theta^b(y)}
+ =-\partial_x^\mu D_\mu^{ab}(x)\,\delta^{(4)}(x-y).}
+ \label{eq:qcd-fp-operator-dp10}
+\end{equation}
+在 QED 中，这个 Jacobian 与电磁场本身无关，通常可以并入整体归一化；这里的 $D_\mu^{ab}$ 却含有 $\mathscr C_\mu$，所以行列式会随规范场改变，不能丢掉。这个场依赖行列式可由 Grassmann 高斯积分表示为局域指数。引入一对反对易标量场 $c^a,\bar c^a$。Grassmann Gaussian 恒等式给出同一算符行列式；为消除与 $\mathscr C$ 无关的泛函测度常数，采用相对于零背景的归一化：
+\begin{equation*}
+ \boxed{
+ \frac{\Delta_{\rm FP}[\mathscr C]}{\Delta_{\rm FP}[0]}
+ =
+ \frac{
+ \displaystyle\int\mathcal D\bar c\,\mathcal Dc\,
+ \exp\!\left[
+ \ii\int\dd^4x\,\bar c^a(-\partial^\mu D_\mu^{ab})c^b
+ \right]}
+ {
+ \displaystyle\int\mathcal D\bar c\,\mathcal Dc\,
+ \exp\!\left[
+ \ii\int\dd^4x\,\bar c^a(-\partial^2\delta^{ab})c^b
+ \right]}.}
+\end{equation*}
+所以规范固定后的拉格朗日量包含
+\begin{equation}
+ \Lag_{\rm gf+gh}
+ =-\frac{\hbar c}{2\xi}(\partial^\mu\mathscr C_\mu^a)^2
+ +\hbar c\,\bar c^a(-\partial^\mu D_\mu^{ab})c^b.
+ \label{eq:qcd-gauge-fixing-ghost-lagrangian-dp10}
+\end{equation}
+把伴随协变导数展开并对相互作用项分部积分，可把鬼场部分写成
+\begin{equation}
+\boxed{
+\mathcal L_{\rm gh}
+=-\hbar c\,\bar c^a\partial^2c^a
+-\hbar c\,g_sf^{abc}(\partial^\mu\bar c^a)\mathscr C_\mu^b c^c.}
+\label{eq:qcd-ghost-expanded-dp68}
+\end{equation}
+这两个场称为 Faddeev--Popov 鬼场。它们在 Lorentz 变换下是标量，却采用 Grassmann 反对易变量；这种“标量但反对易”的组合并不是新增一种可制备粒子，而是为了让 Grassmann 高斯积分精确产生规范轨道 Jacobian 的行列式。因而鬼场没有物理渐近外态，只能作为内部传播自由度进入微扰展开。\eqnrefs{eq:qcd-ghost-expanded-dp68} 的第二项给出鬼--反鬼--胶子耦合；在圈图中，它与协变量子化引入的非物理胶子偏振共同组成满足 Slavnov--Taylor 恒等式的规范不变组合。
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.94\textwidth}{!}{\input{figures/tikz/qcd-elementary-vertices-dp10}}
+\caption{QCD 的基本微扰顶角。夸克--胶子、三胶子与四胶子顶角来自\eqnrefs{eq:qcd-lagrangian-si-dp10}；鬼场--胶子顶角来自规范固定的 Faddeev--Popov 行列式。}
+\label{fig:qcd-elementary-vertices-dp10}
+\end{figure}
+
+
+局域 $SU(N_c)$ 对称性同时固定了三类微扰结构：$T^a$ 使夸克流携带颜色矩阵，$f^{abc}\neq0$ 使场强非线性并产生三胶子与四胶子顶角，而同一个非阿贝尔协变导数使 Faddeev--Popov 行列式依赖规范场并产生相互作用鬼场。由这些结构读出的传播子与顶角规则共同决定后续 QCD 散射振幅。
+
+
+\input{sections/04b-qcd-ghost-detail-dp21}

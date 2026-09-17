@@ -1,0 +1,105 @@
+\subsection{四个参考相位如何重建一个电子相干元}
+\label{sec:electron-reference-tomography-worked}
+
+上一节说明可以在能谱测量前加入参考操作，将相干信息变为概率变化。现在具体计算：未知电子态只占据两个通道时，扫描四个参考相位能确定哪些矩阵元。先保留一般的参考幺正算符 $U_R(\varphi_R)$，其中 $\varphi_R$ 是可控相位；将探测结果 $m$ 的效应算符记为 $E_m^{\rm det}$。测得概率为
+\begin{equation}
+ P_m(\varphi_R)=\operatorname{Tr}[\rho_e U_R^\dagger(\varphi_R)
+ E_m^{\rm det}U_R(\varphi_R)].
+ \label{eq:electron-reference-effect-rotation}
+\end{equation}
+$U_R$ 在实验中实际作用于电子；把它移到测量算符两侧，是同一过程的 Heisenberg 表述。\emph{层析}的任务是利用一组这样的已知效应算符，从概率反推出初始 $\rho_e$。自由电子的光学参考层析已有实验实现\cite{Priebe2017NatPhoton}；下面用一个有限支持模型算清最少需要读哪些数。
+
+假设已独立验证未知态只占据 $|0\rangle,|1\rangle$，写
+\begin{equation*}
+ \rho_e=\begin{pmatrix}p&c_{01}\\c_{01}^*&1-p\end{pmatrix},\qquad
+ 0\le p\le1,\qquad |c_{01}|^2\le p(1-p).
+\end{equation*}
+按 $|0\rangle,|1\rangle$ 的顺序排列基矢，$p$ 是通道 $0$ 的占据概率，可以直接测得。厄米性要求两个非对角元互为共轭，所以只剩 $c_{01}=x_{01}+\ii y_{01}$ 的实部和虚部未知。由 $\det\rho_e=p(1-p)-|c_{01}|^2\ge0$，它们必须位于半径为 $\sqrt{p(1-p)}$ 的圆盘内；这个条件保证重建结果仍是合法量子态。
+
+令参考为经典 PINEM 脉冲，幅度 $b_R=|\beta_R|$ 已知、相位 $\varphi_R$ 可扫描。在\emph{完整双边格}上有
+\begin{equation*}
+ \langle m|U_R|\ell\rangle
+ =J_{m-\ell}(2b_R)\ee^{\ii(m-\ell)\varphi_R}.
+\end{equation*}
+未知态的两通道支持并不意味着参考操作也只有两通道：参考会把电子送到其他 $m$，不能把其 $2\times2$ 子块当作幺正算符。以下只统计末态 $m=0$ 的概率，同时把所有其他输出视为互补结果。
+
+取 $u_0=J_0(2b_R)$、$u_1=J_1(2b_R)$，利用 $J_{-1}=-J_1$，由\eqnrefs{eq:electron_tomography_linear} 得
+\begin{equation}
+ \begin{aligned}
+ P_0(\varphi_R)&=A_R-2u_0u_1\Re[c_{01}\ee^{\ii\varphi_R}],\\
+ A_R&=u_0^2p+u_1^2(1-p).
+ \end{aligned}
+ \label{eq:electron-reference-two-channel-fringe}
+\end{equation}
+相位扫描将 $x_{01}$ 乘在余弦上、$y_{01}$ 乘在正弦上。四个相位 $0,\pi/2,\pi,3\pi/2$ 给出
+\begin{equation}
+ x_{01}=\frac{P_0(\pi)-P_0(0)}{4u_0u_1},\qquad
+ y_{01}=\frac{P_0(\pi/2)-P_0(3\pi/2)}{4u_0u_1}.
+ \label{eq:electron-reference-four-phase-inversion}
+\end{equation}
+这些式子要求 $u_0u_1\neq0$。若参考强度恰落在相关 Bessel 零点，即使计数无限多也无法用这个输出通道确定相干；接近零点时误差按 $1/|u_0u_1|$ 放大。这就是设计矩阵的小奇异值在一个具体实验中的含义。
+
+\begin{exbox}[四相位数据的解析重建与正性检查]
+将四相位测得概率记为 $p_0,p_{\pi/2},p_\pi,p_{3\pi/2}$，已知输入占据 $p$ 和参考系数 $u_0,u_1$。求相干，并给出无需对角化的物理一致性条件。
+
+先把条纹写成三个实系数：
+\begin{equation*}
+ P_0(\varphi_R)=A_R-C_R\cos\varphi_R+S_R\sin\varphi_R,
+ \quad C_R=2u_0u_1x_{01},\quad S_R=2u_0u_1y_{01}.
+\end{equation*}
+四个设置依次读出 $A_R-C_R,A_R+S_R,A_R+C_R,A_R-S_R$。两两作差与作和即可解出
+\begin{equation*}
+ C_R=\frac{p_\pi-p_0}{2},\qquad
+ S_R=\frac{p_{\pi/2}-p_{3\pi/2}}2,\qquad
+ c_{01}=\frac{C_R+\ii S_R}{2u_0u_1}.
+\end{equation*}
+同一模型还要求
+\begin{equation*}
+ p_0+p_\pi=p_{\pi/2}+p_{3\pi/2}=2A_R,
+ \qquad A_R=u_0^2p+u_1^2(1-p).
+\end{equation*}
+这是独立于未知相干的背景检查。正半定条件 $\det\rho_e\ge0$ 进一步给
+\begin{equation*}
+ C_R^2+S_R^2\le4u_0^2u_1^2p(1-p).
+\end{equation*}
+最后，由矩阵平方直接得到纯度
+\begin{equation*}
+ \operatorname{Tr}\rho_e^2=p^2+(1-p)^2
+ +\frac{C_R^2+S_R^2}{2u_0^2u_1^2}.
+\end{equation*}
+等号边界对应纯态；$C_R=S_R=0$ 对应具有同样普通能谱的非相干混合。有限计数会使一致性关系近似成立，统计检验必须结合下述计数误差，不能把一次偏离直接当成模型失效。
+\end{exbox}
+
+有限计数时，设每个相位使用 $N$ 个独立电子，$\widehat P_0=N_0/N$。在理想完整记录条件下，$N_0$ 为二项计数，其方差为 $NP_0(1-P_0)$。四组电子独立，故
+\begin{equation}
+ \operatorname{Var}\widehat x_{01}
+ =\frac{P_0(\pi)[1-P_0(\pi)]+P_0(0)[1-P_0(0)]}
+ {16u_0^2u_1^2N},
+ \label{eq:electron-reference-counting-uncertainty}
+\end{equation}
+$\widehat y_{01}$ 的式子把两相位换成 $\pi/2,3\pi/2$。用例题中的条纹系数，上式分子还可写成 $2A_R(1-A_R)-2C_R^2$；虚部分子把 $C_R$ 换成 $S_R$。若要求两个分量的标准差均不超过 $\varepsilon_c$，充分的每相位计数为
+\begin{equation*}
+ N\ge\frac{\max\{2A_R(1-A_R)-2C_R^2,\,
+ 2A_R(1-A_R)-2S_R^2\}}{16u_0^2u_1^2\varepsilon_c^2}.
+\end{equation*}
+总剂量为四组共 $4N$，另需用于确定 $p$ 和标定参考的计数。实际设计时可用 $P(1-P)\le1/4$ 给出与未知态无关的保守上界。
+
+若存在能量误分配或漏检，应把 $E_m^{\rm det}$ 换成标定的效应算符重新构造设计矩阵。把只落在某个窗口内的计数重新归一化会引入依赖未知态的分母，一般不再服从上述线性公式。噪声导致线性反演略越出正性圆盘时，应在同一前向概率模型中作正半定约束的似然拟合，而不是把负本征值无说明地删掉。
+
+\figref{fig:electron-reference-tomography} 显示同样的能谱如何对应不同参考条纹。
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.76\linewidth]{electron_reference_tomography.pdf}
+ \caption{两通道电子态的参考读出。数值图取 $p=0.65$、$b_R=0.40$；实线使用 $c_{01}=0.20+0.15\ii$，虚线使用具有相同占据的非相干混合；四个标记点是解析反演所需的相位。误差棒表示每相位 $10^4$ 个电子的二项计数标准差，并非模拟测量数据。}
+ \label{fig:electron-reference-tomography}
+\end{figure}
+
+\begin{derivation}[参考场如何让两条路径相遇]
+末态 $m=0$ 可以由初态 $0$ 不交换到达，振幅为 $u_0$；也可以由初态 $1$ 损失一阶到达，振幅为 $-u_1\ee^{-\ii\varphi_R}$。两条路径进入同一个末态，故交叉项是
+\begin{equation*}
+ u_0(-u_1\ee^{-\ii\varphi_R})^*\rho_{01}
+ +(-u_1\ee^{-\ii\varphi_R})u_0\rho_{10}
+ =-2u_0u_1\Re[c_{01}\ee^{\ii\varphi_R}].
+\end{equation*}
+加上各路径的对角概率得到\eqnrefs{eq:electron-reference-two-channel-fringe}。相差 $\pi$ 的两次读出具有相同背景 $A_R$、相反交叉项，作差后便分别留下 $x_{01}$ 和 $y_{01}$。二项方差通过同一个线性作差公式传播，给出\eqnrefs{eq:electron-reference-counting-uncertainty}。
+\end{derivation}

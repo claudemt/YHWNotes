@@ -1,0 +1,127 @@
+% 多圈重整化、复合算符混合、算符乘积展开与有限温度边界条件
+单圈原始发散图通常只有一个整体紫外发散，需要相应的局域反项吸收。进入多圈以后，同一图内部还会出现嵌套或重叠的发散真子图。若等整张图积分完成后再一次性减去极点，子图发散会被带入更高阶图中，无法由局域参数重定义逐阶吸收。局域性因此要求一种递归减除：先对所有真子图完成重整化，再处理缩约图剩余的整体发散。
+
+对一张单粒子不可约图 $\Gamma$，记维数正则化后的裸振幅为 $I_\Gamma$。令线性算符 $K$ 只抽取所选减除方案中的局域紫外发散部分；例如在修正的最小减除方案（$\overline{\rm MS}$）中，$K$ 抽取所有 $1/\bar\epsilon^n$ 极点。对没有发散真子图的原始发散图，反项定义为
+\begin{equation*}
+ C(\Gamma)=-K I_\Gamma.
+\end{equation*}
+存在发散真子图时，先把所有真子图的局域反项插回原图，定义不完全 $R$ 运算
+\begin{equation}
+ \boxed{
+ \bar R I_\Gamma
+ =I_\Gamma
+ +\sum_{\{\gamma_i\}}
+ \left[\prod_i C(\gamma_i)\right]
+ I_{\Gamma/\{\gamma_i\}}.}
+ \label{eq:rbar-operation-dp68}
+\end{equation}
+其中求和遍历两两不重叠的紫外发散真子图集合，$\Gamma/\{\gamma_i\}$ 表示把每个 $\gamma_i$ 缩成一个局域顶角。完整 $R$ 运算由
+\begin{equation}
+ \boxed{
+ C(\Gamma)=-K\bar RI_\Gamma,
+ \qquad
+ RI_\Gamma=(1-K)\bar RI_\Gamma}
+ \label{eq:r-operation-dp11}
+\end{equation}
+给出。第一式只抽取已经消除子图发散后剩余的整体局域极点；第二式留下有限的重整化图。
+
+嵌套与重叠子图可以用 Zimmermann 森林公式统一组织。森林 $F$ 是一组彼此不重叠或互相包含的发散真子图，$T_\gamma$ 表示对子图 $\gamma$ 作局域减除。Zimmermann 定理把递归过程写成
+\begin{equation}
+ \boxed{
+ RI_\Gamma
+ =\sum_{F\in\operatorname{Forests}(\Gamma)}
+ \left(\prod_{\gamma\in F}(-T_\gamma)\right)I_\Gamma.}
+ \label{eq:zimmermann-forest-dp11}
+\end{equation}
+空森林给出原图；含一个子图的森林给一次减除；嵌套森林自动按从内到外的顺序作用。定理的关键假设是紫外发散部分在外动量和轻质量上可作局域 Taylor 展开，因此 $T_\gamma$ 抽取的是有限阶局域多项式。这一局域性正是多圈反项仍能写回原拉格朗日量允许算符的原因。
+
+重整化局域算符还需要处理重合点奇异性，因此场与耦合的重整化之后必须进一步引入复合算符混合。
+
+分离时空点的 Green 函数完成重整化后，局域复合算符仍会产生额外的重合点奇异性。若一组算符 $\mathcal O_i$ 具有相同守恒量子数，重整化一般不是逐个乘一个常数，而是矩阵混合：
+\begin{equation}
+ \boxed{\mathcal O_{i,B}=Z_{ij}^{\mathcal O}\mathcal O_{j,R}.}
+ \label{eq:composite-operator-mixing-dp11}
+\end{equation}
+定义反常维数矩阵
+\begin{equation*}
+ \gamma^{\mathcal O}
+ \equiv (Z^{\mathcal O})^{-1}\mu\frac{\dd Z^{\mathcal O}}{\dd\mu},
+\end{equation*}
+即可得到
+\begin{equation*}
+ \mu\frac{\dd}{\dd\mu}\mathcal O_{i,R}
+ =-\gamma_{ij}^{\mathcal O}\mathcal O_{j,R}.
+\end{equation*}
+若有效拉格朗日量含 $C_i(\mu)\mathcal O_i(\mu)$，物理作用量不能依赖任意重整化尺度，因此 Wilson 系数沿相反方向演化：
+\begin{equation}
+ \boxed{
+ \mu\frac{\dd C_i}{\dd\mu}
+ =C_j\gamma_{ji}^{\mathcal O}.}
+ \label{eq:wilson-rg-dp11}
+\end{equation}
+多个局域算符之间的尺度演化都具有这一矩阵结构；具体物理系统只改变算符基与反常维数矩阵。
+
+复合算符的尺度演化确定以后，短距离乘积可以继续按同一局域算符基展开，从而把短程系数与长程矩阵元分离。
+
+当两个重整化局域算符的类空间隔 $x$ 远小于强子、介质或外态的长程尺度时，局域性允许把短距离乘积按局域算符基作渐近展开。算符乘积展开（OPE）的结构为
+\begin{equation}
+ \boxed{
+ \mathcal O_A(x)\mathcal O_B(0)
+ \sim\sum_i C_{AB}^{\ \ i}(x,\mu)\mathcal O_i(0,\mu),
+ \qquad x\to0.}
+ \label{eq:ope-general-dp11}
+\end{equation}
+Wilson 系数 $C_{AB}^{\ i}$ 编码距离尺度 $|x|$ 附近的短程物理，在硬尺度足够高时可用微扰理论计算。外态矩阵元 $\langle H|\mathcal O_i|H\rangle$ 则承载长程动力学。
+
+OPE 按算符维数与对称性排序。截断误差由下一批被省略算符相对于保留项的幂次决定，而不能只看某一个 Wilson 系数是否数值很小。
+
+\eqnrefs{eq:ope-general-dp11} 的两边必须具有相同的重整化尺度依赖。复合算符的混合因此强制 Wilson 系数满足耦合的矩阵重整化群方程；选择 $\mu$ 接近短距离硬尺度可以把大对数从固定阶系数中转移到尺度演化中。具体的短程--长程分离问题只需把相应算符基和外态代入这一一般结构。
+
+自由场给出一个最直接的检查。Wick 定理给
+\begin{equation*}
+ \varphi(x)\varphi(0)
+ =\wickD(x)+:\!\varphi(x)\varphi(0)\!:.
+\end{equation*}
+对正规序部分在 $x=0$ 附近作 Taylor 展开，
+\begin{equation*}
+ :\!\varphi(x)\varphi(0)\!:
+ =:\!\varphi^2(0)\!:
+ +x^\mu:\!(\partial_\mu\varphi)\varphi\!:(0)+\cdots.
+\end{equation*}
+单位算符的 Wilson 系数就是短距离奇异的传播子 $\wickD(x)$，而 $:\!\varphi^2\!:$ 等局域算符承载较软的场信息。相互作用理论中的 OPE 保留这一职责分离，但系数和算符都必须经过重整化并允许混合。
+
+零温连续频率积分在热平衡态中还会因虚时间边界条件离散化。热密度算符由
+\begin{equation*}
+ \hat\rho_{\beta_T}=\frac{\ee^{-\beta_T\hat H}}{Z(\beta_T)},
+ \qquad Z(\beta_T)=\Tr \ee^{-\beta_T\hat H},
+ \qquad \beta_T=(k_BT)^{-1}
+\end{equation*}
+定义。把实时间解析延拓到虚时间 $t=-\ii\tau$ 后，迹的循环性给出 Kubo--Martin--Schwinger 边界条件：玻色场在 $\tau\to\tau+\beta_T\hbar$ 下周期，费米场反周期，
+\begin{align}
+ \phi(\tau+\beta_T\hbar)&=+\phi(\tau),\\
+ \psi(\tau+\beta_T\hbar)&=-\psi(\tau).
+ \label{eq:matsubara-boundary-dp11}
+\end{align}
+因此虚时 Fourier 模式只能取离散的 Matsubara 频率
+\begin{equation}
+ \boxed{
+ \begin{aligned}
+ \omega_n^{(B)}&=\frac{2\pi n}{\beta_T\hbar},\\
+ \omega_n^{(F)}&=\frac{(2n+1)\pi}{\beta_T\hbar}.
+ \end{aligned}}
+ \label{eq:matsubara-frequencies-dp11}
+\end{equation}
+零温圈积分中的连续频率测度相应替换为
+\begin{equation}
+ \boxed{
+ \int\frac{\dd\omega}{2\pi}
+ \longrightarrow
+ \frac1{\beta_T\hbar}\sum_n.}
+ \label{eq:matsubara-loop-replacement-dp11}
+\end{equation}
+例如自由玻色子的虚时传播子分母为 $(\omega_n^{(B)})^2+\omega_{\mathbf k}^2$。完成频率求和后出现 Bose--Einstein 分布；统计因子由热边界条件与传播子谱极点共同决定。
+
+
+
+多圈 $R$ 运算要求紫外反项保持局域；复合算符重整化把重合点奇异性组织成混合矩阵；算符乘积展开再把短距离奇异性编码进 Wilson 系数。三者描述的是同一局域量子场论在不同尺度组织方式下的同一个紫外结构。
+

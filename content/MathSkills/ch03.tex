@@ -1,0 +1,1411 @@
+\chapter{Hilbert 空间、闭算子与紧算子}\label{ch:ms-hilbert-operators}\label{chap:hilbert-space}
+
+有限维线性代数中，内积、正交投影、Hermitian 矩阵和本征展开往往被同时使用；进入微分算子、Fourier 分析和量子力学以后，这些概念必须先被拆开，再在无限维条件下重新组合。本章建立后续谱理论所需的共同语言：完备内积空间、连续线性泛函、有界与无界算子、闭性和伴随、二次型、紧性以及 rigged Hilbert space。除非特别说明，复 Hilbert 空间内积统一采用
+\[
+\boxed{\langle \alpha x+\beta y,z\rangle
+=\alpha\langle x,z\rangle+\beta\langle y,z\rangle},
+\qquad
+\langle x,\alpha y+\beta z\rangle
+=\alpha^*\langle x,y\rangle+\beta^*\langle x,z\rangle,
+\]
+即对第一变量线性、对第二变量共轭线性。这与后续自伴谱理论的约定一致。
+
+\section{完备性、投影与 Riesz 表示}
+
+接下来考察从赋范空间到 Hilbert 空间。
+
+设 $V$ 是复线性空间。内积是映射 $\langle\cdot,\cdot\rangle:V\times V\to\CC$，满足线性、共轭对称性
+\[
+\langle x,y\rangle=\langle y,x\rangle^*,
+\]
+以及正定性
+\[
+\langle x,x\rangle\ge0,
+\qquad
+\langle x,x\rangle=0\iff x=0.
+\]
+由此定义
+\[
+\|x\|:=\sqrt{\langle x,x\rangle}.
+\]
+
+Cauchy--Schwarz 不等式不是额外公理，而由正定性推出。若 $y\neq0$，令
+\[
+\lambda=\frac{\langle x,y\rangle}{\|y\|^2}.
+\]
+则
+\[
+0\le \|x-\lambda y\|^2
+=\|x\|^2-\frac{|\langle x,y\rangle|^2}{\|y\|^2},
+\]
+所以
+\[
+\boxed{|\langle x,y\rangle|\le \|x\|\,\|y\|}.
+\]
+三角不等式随即由
+\[
+\|x+y\|^2
+=\|x\|^2+\|y\|^2+2\operatorname{Re}\langle x,y\rangle
+\]
+得到。
+
+赋范空间若对其范数下的每个 Cauchy 序列完备，就称为 Banach 空间；若该范数来自内积，则称为 Hilbert 空间。典型例子是
+\[
+L^2(\Omega)=\left\{f:\int_\Omega |f(x)|^2\,\dd x<\infty\right\}/\text{a.e.},
+\]
+其中
+\[
+\boxed{\langle f,g\rangle_{L^2}
+=\int_\Omega f(x)g(x)^*\,\dd x}.
+\]
+这里的几乎处处等价不是技术细节：不先取商空间，$\|f\|_2=0$ 并不能推出点态 $f=0$。
+
+接下来考察闭子空间与正交投影。
+
+令 $M\subset\mathcal H$ 是非空闭凸集。对任意 $x\in\mathcal H$，存在唯一 $m_0\in M$ 使
+\[
+\|x-m_0\|=\inf_{m\in M}\|x-m\|.
+\]
+若 $M$ 还是闭线性子空间，则最小化条件等价于
+\[
+\boxed{x-m_0\perp M}.
+\]
+因此每个 $x$ 唯一分解为
+\[
+x=P_Mx+(I-P_M)x,
+\qquad
+P_Mx\in M,
+\quad
+(I-P_M)x\in M^\perp,
+\]
+并且
+\[
+P_M^2=P_M,
+\qquad
+P_M^*=P_M,
+\qquad
+\|P_M\|\le1.
+\]
+
+若 $\{e_n\}$ 是正交归一系，则有限维投影为
+\[
+P_Nx=\sum_{n=1}^N \langle x,e_n\rangle e_n.
+\]
+由 Pythagoras 恒等式
+\[
+\|x\|^2
+=\|x-P_Nx\|^2+
+\sum_{n=1}^N|\langle x,e_n\rangle|^2
+\]
+得到 Bessel 不等式
+\[
+\sum_{n=1}^\infty|\langle x,e_n\rangle|^2\le\|x\|^2.
+\]
+当 $\overline{\operatorname{span}\{e_n\}}=\mathcal H$ 时，$P_Nx\to x$，故
+\[
+\boxed{x=\sum_{n=1}^\infty\langle x,e_n\rangle e_n},
+\qquad
+\boxed{\|x\|^2=\sum_{n=1}^\infty|\langle x,e_n\rangle|^2}.
+\]
+
+\begin{derivation}[从最短距离推出正交分解]
+设 $M$ 为 Hilbert 空间 $\mathcal H$ 的闭线性子空间，$m_0\in M$ 是 $x$ 到 $M$ 的最近点，即
+\begin{equation*}
+\|x-m_0\|=\inf_{m\in M}\|x-m\|.
+\end{equation*}
+对任意 $h\in M$ 与实数 $t$，由 $M$ 是线性子空间知 $m_0+th\in M$，因此由最近性
+\begin{equation*}
+\|x-m_0\|^2\le\|x-m_0-th\|^2.
+\end{equation*}
+展开右端。令 $v=x-m_0$，由 Hilbert 空间范数与内积的关系
+\begin{align*}
+\|v-th\|^2
+&=\langle v-th,v-th\rangle\\
+&=\langle v,v\rangle-t\langle v,h\rangle-t\langle h,v\rangle+t^2\langle h,h\rangle\\
+&=\|v\|^2-t\langle v,h\rangle-t\overline{\langle v,h\rangle}+t^2\|h\|^2\\
+&=\|v\|^2-2t\operatorname{Re}\langle v,h\rangle+t^2\|h\|^2.
+\end{align*}
+此处第三行用到共轭对称性 $\langle h,v\rangle=\overline{\langle v,h\rangle}$，第四行用到 $z+\bar z=2\operatorname{Re}z$。代回 $v=x-m_0$ 并移项，
+\begin{equation*}
+0\le\|x-m_0-th\|^2-\|x-m_0\|^2
+=t^2\|h\|^2-2t\operatorname{Re}\langle x-m_0,h\rangle.
+\end{equation*}
+该不等式对任意 $t\in\RR$ 成立。若 $\operatorname{Re}\langle x-m_0,h\rangle\ne0$，取 $t=\operatorname{Re}\langle x-m_0,h\rangle/\|h\|^2$（$h\ne0$ 时）使右端为
+\[
+\frac{(\operatorname{Re}\langle x-m_0,h\rangle)^2}{\|h\|^4}\|h\|^2-2\frac{(\operatorname{Re}\langle x-m_0,h\rangle)^2}{\|h\|^2}
+=-\frac{(\operatorname{Re}\langle x-m_0,h\rangle)^2}{\|h\|^2}<0,
+\]
+矛盾。故一次项必须为零：
+\begin{equation*}
+\operatorname{Re}\langle x-m_0,h\rangle=0.
+\end{equation*}
+由 $M$ 是线性子空间，$\ii h\in M$，把上式中 $h$ 换成 $\ii h$，
+\begin{equation*}
+0=\operatorname{Re}\langle x-m_0,\ii h\rangle
+=\operatorname{Re}\bigl(-\ii\langle x-m_0,h\rangle\bigr)
+=\operatorname{Im}\langle x-m_0,h\rangle.
+\end{equation*}
+此处用到 $\langle x,-\ii h\rangle=-\ii\langle x,h\rangle$（内积对第二变量共轭线性）与 $\operatorname{Re}(-iz)=\operatorname{Im}z$。实部与虚部同时为零，于是
+\begin{equation*}
+\langle x-m_0,h\rangle=0,
+\qquad \forall h\in M.
+\end{equation*}
+由正交补定义即 $x-m_0\in M^\perp$，从而 $x=m_0+(x-m_0)$ 给出正交分解。若存在两个最近点 $m_0,m_1\in M$，由上述正交性 $x-m_0\in M^\perp$ 且 $x-m_1\in M^\perp$，两式相减得 $m_1-m_0\in M^\perp$；又由 $M$ 是线性子空间 $m_1-m_0\in M$。故 $m_1-m_0\in M\cap M^\perp=\{0\}$，即 $m_0=m_1$，最近点唯一。
+
+\emph{举例：$\ell^2$ 中的正交投影。}取 $\mathcal H=\ell^2(\NN)$，$M=\operatorname{span}\{e_1,e_2\}$（前两个坐标张成的平面）。对 $x=(x_1,x_2,x_3,\ldots)$，最近点为 $m_0=(x_1,x_2,0,\ldots)$，正交分解 $x=m_0+(0,0,x_3,\ldots)$，残差 $(0,0,x_3,\ldots)\in M^\perp$。
+
+\emph{举例：$L^2[0,1]$ 中的 Fourier 投影。}取 $\mathcal H=L^2[0,1]$，$M=\operatorname{span}\{1,\cos 2\pi x,\sin 2\pi x\}$（前三 Fourier 模）。对 $f\in L^2$，最近点为其三阶 Fourier 截断
+\[
+m_0(x)=\langle f,1\rangle+2\langle f,\cos 2\pi x\rangle\cos 2\pi x+2\langle f,\sin 2\pi x\rangle\sin 2\pi x,
+\]
+残差 $f-m_0$ 与 $M$ 中所有函数正交，即前三个 Fourier 系数为零。
+
+\emph{物理应用：量子测量与投影假设。}在量子力学中，Hilbert 空间 $\mathcal H$ 上闭子空间 $M$ 对应一个是/否测量（如“粒子在区域 $\Omega$ 内”）。正交分解 $\psi=m_0+\psi_\perp$（$m_0=P_M\psi$、$\psi_\perp=(I-P_M)\psi$）给出测量后态坍缩：测得“是”后态为 $m_0/\|m_0\|$，概率 $\|m_0\|^2=\|P_M\psi\|^2$。Born 法则的几何母结构即此正交分解。
+
+\emph{推广方向。}对一般 Banach 空间，最近点存在性要求 $M$ 闭且空间自反（局部一致凸给出唯一性），但正交分解失效（无内积）。Hilbert 空间的正交分解是其区别于一般 Banach 空间的核心结构。在 von Neumann 代数框架下，投影 $P_M$ 推广为投影算子（$P^2=P=P^*$），正交分解升级为谱投影分解，是谱定理的几何基础。
+\end{derivation}
+
+接下来考察连续对偶与 Riesz 表示。
+
+线性泛函 $F:\mathcal H\to\CC$ 连续当且仅当存在 $C$ 使
+\[
+|F(x)|\le C\|x\|.
+\]
+其范数定义为
+\[
+\|F\|=\sup_{\|x\|=1}|F(x)|.
+\]
+Hilbert 空间的关键性质是它的连续对偶可以由空间本身表示：对每个连续线性泛函 $F$，存在唯一 $f_F\in\mathcal H$ 使
+\[
+\boxed{F(x)=\langle x,f_F\rangle},
+\qquad
+\|F\|=\|f_F\|.
+\]
+注意第一变量线性的 convention 决定了代表向量位于内积的第二槽；若采用相反 convention，公式位置也必须相反。
+
+\begin{derivation}[Riesz 表示定理]
+需证存在性与唯一性。
+
+\emph{存在性。}若 $F=0$，取 $f_F=0$ 即可。设 $F\neq0$，则 $M=\ker F$ 是闭超子空间（$F$ 连续故核闭，$F\neq0$ 故余维数 $1$）。取 $x_0$ 使 $F(x_0)=1$，按正交分解 $\mathcal H=M\oplus M^\perp$ 写
+\begin{equation*}
+ x_0=m+z,
+ \qquad m\in M,\quad z\in M^\perp.
+\end{equation*}
+由 $F(m)=0$（$m\in\ker F$），有 $F(z)=F(x_0)-F(m)=1$，故 $z\neq0$ 且 $M^\perp=\operatorname{span}\{z\}$（一维）。
+
+任取 $x\in\mathcal H$，构造 $x-F(x)z$。由 $F$ 的线性，
+\begin{equation*}
+ F\bigl(x-F(x)z\bigr)=F(x)-F(x)F(z)=F(x)-F(x)=0,
+\end{equation*}
+故 $x-F(x)z\in M$，与 $z\in M^\perp$ 正交。于是
+\begin{equation*}
+ 0=\langle x-F(x)z,\,z\rangle
+ =\langle x,z\rangle-F(x)\|z\|^2,
+\end{equation*}
+解出
+\begin{equation*}
+ F(x)=\frac{\langle x,z\rangle}{\|z\|^2}
+ =\left\langle x,\,\frac{z}{\|z\|^2}\right\rangle.
+\end{equation*}
+取 $f_F=z/\|z\|^2$ 即得 $F(x)=\langle x,f_F\rangle$。
+
+\emph{唯一性。}若同时有 $F(x)=\langle x,f\rangle=\langle x,g\rangle$ 对所有 $x$ 成立，取 $x=f-g$：
+\begin{equation*}
+ 0=\langle f-g,\,f-g\rangle=\|f-g\|^2,
+\end{equation*}
+故 $f=g$。
+
+\emph{等距性。}由 Cauchy--Schwarz，$|F(x)|=|\langle x,f_F\rangle|\le\|x\|\,\|f_F\|$，故 $\|F\|\le\|f_F\|$。取 $x=f_F/\|f_F\|$（$\|x\|=1$），则 $F(x)=\|f_F\|$，故 $\|F\|\ge\|f_F\|$。因此 $\|F\|=\|f_F\|$，Riesz 映射 $F\mapsto f_F$ 是等距的共轭线性同构。
+
+\emph{举例：$L^2[0,1]$ 上的积分泛函。}取 $F(f)=\int_0^1 f(x)g(x)^*\,\dd x$（$g\in L^2[0,1]$ 固定）。由 Cauchy--Schwarz $F$ 连续，$\|F\|=\|g\|_{L^2}$。Riesz 表示即 $f_F=g$，因为 $F(f)=\langle f,g\rangle_{L^2}$。这把“积分算子的核”与“Hilbert 空间代表向量”严格对应。
+
+\emph{举例：$\ell^2$ 上的求和泛函。}取 $F(x)=\sum_{n=1}^\infty a_n x_n$（$a=(a_n)\in\ell^2$ 固定）。由 Cauchy--Schwarz $|F(x)|\le\|a\|_{\ell^2}\|x\|_{\ell^2}$，$\|F\|=\|a\|_{\ell^2}$。Riesz 表示为 $f_F=(a_n^*)$（按内积约定取共轭），即 $F(x)=\langle x,f_F\rangle=\sum x_n a_n^*{}^*=\sum x_n a_n$。
+
+\emph{举例：Sobolev 空间 $H^1_0$ 上的泛函。}取 $\mathcal H=H^1_0[0,1]$（内积 $\langle u,v\rangle_{H^1}=\int u'v'^*\,\dd x$），$F(v)=\int f(x)v(x)^*\,\dd x$（$f\in L^2$）。由 Poincaré 不等式 $F$ 连续。Riesz 表示 $u\in H^1_0$ 满足
+\[
+\int_0^1 u'(x)v'(x)^*\,\dd x=\int_0^1 f(x)v(x)^*\,\dd x,\qquad\forall v\in H^1_0,
+\]
+即 $-u''=f$ 弱解。Riesz 定理直接给出 Poisson 方程弱解的存在性。
+
+\emph{物理应用：量子态与可观测量的对偶。}在量子力学中，Hilbert 空间 $\mathcal H$ 上每个连续线性泛函 $F$ 对应一个“ bras” $\langle\phi|$，Riesz 表示给出 $|\phi\rangle\in\mathcal H$ 使 $F(|\psi\rangle)=\langle\phi|\psi\rangle$。物理记号 $\langle\phi|$ 与数学记号 $f_F$ 通过 Riesz 映射对应。可观测量 $A$ 的期望值 $\langle\psi|A|\psi\rangle$ 是 $|\psi\rangle$ 处由 $A|\psi\rangle$ 定义的连续泛函，Riesz 表示即 $A^\dagger|\psi\rangle$，自伴性 $A=A^\dagger$ 保证期望值实。
+
+\emph{推广方向。}对一般 Banach 空间 $X$，连续对偶 $X^*$ 通常不能由 $X$ 自身表示（如 $L^p$ 的对偶是 $L^q$，$1/p+1/q=1$，仅 $p=2$ 自对偶）。Hilbert 空间的自对偶性是其特殊结构。对 rigged Hilbert space $\Phi\subset\mathcal H\subset\Phi'$，Riesz 表示仅给出 $\mathcal H^*\cong\mathcal H$，而 $\Phi^*$ 严格大于 $\mathcal H$，广义本征向量属于 $\Phi'\setminus\mathcal H$。在算子代数中，Riesz 表示推广为 GNS 构造，把正泛函表示为向量态，是 $C^*$--代数表示论的基础。
+
+\emph{数学联系：与 Lax--Milgram 定理。}对 coercive 双线性型 $a(u,v)$（存在 $c>0$ 使 $|a(u,u)|\ge c\|u\|^2$），Lax--Milgram 定理给出：对任意连续线性泛函 $F$，存在唯一 $u$ 使 $a(u,v)=F(v)$ 对所有 $v$。当 $a(u,v)=\langle u,v\rangle$ 时即 Riesz 表示。Lax--Milgram 是椭圆 PDE 弱解存在性的标准工具，可视为 Riesz 表示在一般 coercive 形式下的推广。
+\end{derivation}
+
+\section{有界算子与泛函分析基本定理}
+
+接下来考察算子范数、酉算子与投影。
+
+有界线性算子 $A:X\to Y$ 的算子范数为
+\[
+\|A\|=\sup_{\|x\|=1}\|Ax\|.
+\]
+有界性等价于连续性。若 $\mathcal H$ 是 Hilbert 空间，则每个有界 $A$ 存在唯一有界伴随 $A^*$ 使
+\[
+\boxed{\langle Ax,y\rangle=\langle x,A^*y\rangle},
+\qquad \forall x,y\in\mathcal H.
+\]
+由 Riesz 定理，固定 $y$ 后映射 $x\mapsto\langle Ax,y\rangle$ 是连续线性泛函，因此存在唯一 $A^*y$；并且
+\[
+\|A^*\|=\|A\|,
+\qquad
+(AB)^*=B^*A^*.
+\]
+
+若 $U^*U=UU^*=I$，则 $U$ 为酉算子，保持内积与范数。正交投影恰是满足
+\[
+P^2=P=P^*
+\]
+的有界算子。一般 idempotent $P^2=P$ 若不满足 $P=P^*$，只是斜投影。
+
+接下来考察一致有界、开映射与闭图像。
+
+Banach 空间上的三个基本定理把“逐点信息”提升成“统一控制”。
+
+\textbf{一致有界原理：} 若 $\{T_\alpha\}\subset\mathcal B(X,Y)$ 满足对每个固定 $x\in X$，
+\[
+\sup_\alpha\|T_\alpha x\|<\infty,
+\]
+则
+\[
+\boxed{\sup_\alpha\|T_\alpha\|<\infty}.
+\]
+
+\textbf{开映射定理：} 若有界线性算子 $T:X\to Y$ 在 Banach 空间之间满射，则它把开集映为开集。特别地，若 $T$ 双射，则 $T^{-1}$ 自动有界。
+
+\textbf{闭图像定理：} 若 $T:X\to Y$ 处处定义且其图
+\[
+\Gamma(T)=\{(x,Tx):x\in X\}
+\]
+在 $X\times Y$ 中闭，则 $T$ 自动有界。
+
+这三条定理解释了为什么无限维分析中“极限存在”还不够：还必须控制算子族在整个空间上的稳定性。
+
+\begin{derivation}[闭图像定理如何归约为开映射定理]
+设 $X,Y$ 为 Banach 空间，$T:X\to Y$ 处处定义的线性算子，其图
+\begin{equation*}
+\Gamma(T)=\{(x,Tx):x\in X\}
+\end{equation*}
+在 $X\times Y$ 中闭。由 $X\times Y$ 是 Banach 空间且 $\Gamma(T)$ 是其闭子空间，$\Gamma(T)$ 自身也是 Banach 空间（闭子空间继承完备性）。定义投影
+\begin{equation*}
+\pi_X:\Gamma(T)\to X,
+\qquad
+\pi_X(x,Tx)=x.
+\end{equation*}
+由 $\pi_X\bigl(\lambda(x_1,Tx_1)+(x_2,Tx_2)\bigr)=\lambda x_1+x_2=\lambda\pi_X(x_1,Tx_1)+\pi_X(x_2,Tx_2)$ 知 $\pi_X$ 线性。由
+\begin{equation*}
+\|\pi_X(x,Tx)\|_X=\|x\|_X\le\|(x,Tx)\|_{X\times Y}
+\end{equation*}
+知 $\pi_X$ 有界且 $\|\pi_X\|\le1$。由 $T$ 处处定义，对任意 $x\in X$ 存在 $(x,Tx)\in\Gamma(T)$ 使 $\pi_X(x,Tx)=x$，故 $\pi_X$ 满射；由 $\pi_X(x,Tx)=0$ 蕴含 $x=0$ 从而 $(x,Tx)=(0,0)$，故 $\pi_X$ 单射。因此 $\pi_X$ 是有界线性双射。由开映射定理，逆映射 $\pi_X^{-1}:X\to\Gamma(T)$ 自动有界，即存在 $C>0$ 使
+\begin{equation*}
+\|\pi_X^{-1}x\|_{\Gamma(T)}
+=\|(x,Tx)\|_{X\times Y}
+\le C\|x\|_X.
+\end{equation*}
+取积空间等价范数 $\|(x,y)\|_{X\times Y}=\|x\|_X+\|y\|_Y$，代入
+\begin{equation*}
+\|x\|_X+\|Tx\|_Y\le C\|x\|_X.
+\end{equation*}
+移项得
+\begin{equation*}
+\|Tx\|_Y\le C\|x\|_X-\|x\|_X=(C-1)\|x\|_X.
+\end{equation*}
+由 $T$ 线性且满足 $\|Tx\|_Y\le(C-1)\|x\|_X$ 对所有 $x\in X$ 成立，$T$ 有界。
+
+\emph{举例：微分算子的闭图像。}取 $X=Y=L^2(\RR)$，$T=\frac{\dd}{\dd x}$ 定义域 $H^1(\RR)$。若 $f_n\to f$ 在 $L^2$ 且 $f_n'\to g$ 在 $L^2$，由分布导数的连续性 $g=f'$，故 $f\in H^1$ 且 $Tf=g$，图闭。但 $T$ 无界（取 $f_n(x)=\sin(nx)\phi(x)$，$\|f_n\|\sim\|\phi\|$ 而 $\|f_n'\|\sim n\|\phi\|$）。闭图像定理不矛盾因 $T$ 非处处定义（仅 $H^1\subsetneq L^2$）。
+
+\emph{举例：乘法算子的闭图像。}取 $X=Y=L^2(\RR)$，$(M_\phi f)(x)=\phi(x)f(x)$，$\Dom(M_\phi)=\{f:\phi f\in L^2\}$。若 $f_n\to f$ 且 $\phi f_n\to g$ 在 $L^2$，子列 a.e. 收敛，故 $\phi f=g$ a.e.，$f\in\Dom(M_\phi)$ 且 $M_\phi f=g$，图闭。若 $\phi$ 本性无界，$M_\phi$ 无界但闭。
+
+\emph{物理应用：可观测量的自伴性检验。}量子可观测量需自伴，自伴算子必闭（因 $A\subset A^*$ 而 $A^*$ 闭）。闭图像定理推出：若 $A$ 处处定义且对称，则 $A$ 自动有界。这给出 Wintner 定理：Hilbert 空间上处处定义的对称算子必有界，故无界可观测量（位置、动量、Hamiltonian）必须限制定义域。物理上“波函数需满足边界/正则条件”正是此定理的体现。
+
+\emph{推广方向。}对 Fréchet 空间（局部凸完备度量线性空间），开映射与闭图像定理仍成立，但一致有界原理需用桶空间（barreled）假设。对 Banach 流形上算子，闭图像定理推广为 Nash--Moser 隐函数定理，需额外 tame 估计。在非交换几何中，闭算子谱理论在 $C^*$--模上推广为 Kasparov 的 KK--理论，是指标定理的算子代数框架。
+
+\emph{数学联系：与 Hellinger--Toeplitz 定理。}对称算子 $A$（$\langle Ax,y\rangle=\langle x,Ay\rangle$）若处处定义，由闭图像定理自动有界（因对称推出图闭：$x_n\to x$、$Ax_n\to y$ 则 $\langle y,z\rangle=\lim\langle Ax_n,z\rangle=\lim\langle x_n,Az\rangle=\langle x,Az\rangle=\langle Ax,z\rangle$，故 $y=Ax$）。这是 Hellinger--Toeplitz 定理，说明无界对称算子必须限制定义域。量子力学中动量、位置算子无界正是此定理的体现。
+
+\emph{物理应用：Kato--Rellich 定理。}在量子力学中，Hamiltonian $H=H_0+V$（$H_0$ 自伴、$V$ 对称且 $K$--有界于 $H_0$）的自伴性由 Kato--Rellich 定理给出。此定理的证明依赖闭图像定理：$V$ 相对有界推出 $H$ 闭，对称且闭推出自伴。这是处理原子分子 Hamiltonian（动能 + Coulomb 势）自伴性的标准工具。
+
+\emph{举例：Sobolev 嵌入的闭图像。}取 $X=H^1(\RR^n)$、$Y=L^2(\RR^n)$，嵌入 $\iota:H^1\hookrightarrow L^2$。$\iota$ 处处定义且有界（$\|f\|_{L^2}\le\|f\|_{H^1}$），图闭自动。但反向嵌入 $L^2\hookrightarrow H^1$ 不处处定义（$L^2$ 函数未必有 $H^1$ 导数），闭图像定理不适用。这说明定理的“处处定义”假设不可省略。
+
+\emph{数学联系：与开映射定理的等价性。}闭图像定理、开映射定理与一致有界原理在 Banach 空间框架下相互等价，构成泛函分析三大基本定理。本推导展示的归约方向（闭图像 $\Rightarrow$ 开映射）可逆：开映射也可归约为闭图像。三者共同体现“完备性把逐点信息提升为一致控制”的核心思想。在 Hilbert 空间中，这些定理还可通过正交投影与 Riesz 表示给出更直接的证明，但 Banach 空间框架下的归约更具普适性，且不依赖内积结构。在 Fréchet 空间或更一般的局部凸空间中，完备性加上桶性（barreledness）即可替代 Banach 条件，使三大定理在分布论与偏微分方程理论中广泛适用。在算子代数中，闭图像定理推广为 Banach 代数上闭算子的谱理论，是 Kato 扰动理论与自伴扩张理论的基石。
+
+\emph{总结。}闭图像定理把“图闭”这一几何条件转化为“算子有界”这一分析结论，是泛函分析中几何与分析对话的典范。其物理意义在于：无界可观测量必须限制定义域，闭性是自伴性的必要条件，量子力学中边界条件与定义域的选择由此获得严格的泛函分析框架。在数值分析中，离散算子的闭性保证数值格式稳定，是有限差分与有限元方法收敛性的理论基础。在量子场论中，重整化群流保持算子闭性，是 Wilson 重整化与有效场论框架的泛函分析前提。
+
+\emph{尾声。}闭图像定理是泛函分析三大定理中归约关系最清晰的一个，其证明把图空间的完备性与投影的双射性精确结合，是 Banach 空间理论中“完备性替代紧性”策略的典范。
+\end{derivation}
+
+接下来考察弱收敛与一致强收敛的区别。
+
+序列 $x_n\in\mathcal H$ 弱收敛到 $x$，记作 $x_n\rightharpoonup x$，若
+\[
+\langle x_n,y\rangle\to\langle x,y\rangle,
+\qquad \forall y\in\mathcal H.
+\]
+强收敛 $\|x_n-x\|\to0$ 蕴含弱收敛，反之一般不成立。例如正交归一序列 $e_n$ 满足 $e_n\rightharpoonup0$，但 $\|e_n\|=1$。
+
+算子列也有不同拓扑：
+\[
+\|T_n-T\|\to0
+\quad\Longrightarrow\quad
+T_nx\to Tx\ \forall x
+\quad\Longrightarrow\quad
+\langle T_nx,y\rangle\to\langle Tx,y\rangle.
+\]
+分别称为范数、强、弱算子收敛。后续 resolvent 收敛与谱稳定性必须明确使用哪一种拓扑。
+
+弱拓扑真正有用的原因是：它牺牲了范数收敛，却恢复了无限维闭球的紧性机制。设 \(X\) 为 Banach 空间，\(X^*\) 为其连续对偶。最弱的、使每个 \(f\in X^*\) 都连续的拓扑称为 weak topology；而 \(X^*\) 上由所有 evaluation maps
+\[
+f\longmapsto f(x),
+\qquad x\in X,
+\]
+生成的最弱拓扑称为 weak-* topology，记作 \(\sigma(X^*,X)\)。因此
+\[
+f_\alpha\overset{*}{\rightharpoonup}f
+\iff
+f_\alpha(x)\to f(x)
+\quad\forall x\in X.
+\]
+
+\begin{theorem}[Banach--Alaoglu 定理]
+任意赋范空间 \(X\) 的对偶单位球
+\[
+B_{X^*}=\{f\in X^*:\|f\|\le1\}
+\]
+在 weak-* 拓扑下紧。
+\end{theorem}
+
+这个定理是变分法和 PDE 极限过程的基本紧性来源之一。注意它说的是 weak-* compact，而不是 norm compact；无限维对偶单位球在范数拓扑下通常绝不紧。
+
+\begin{derivation}[Banach--Alaoglu 如何归约为乘积紧性]
+对每个 \(x\in X\)，若 \(f\in B_{X^*}\) 即 \(\|f\|\le1\)，则由算子范数定义
+\[
+|f(x)|\le\|f\|\,\|x\|\le\|x\|.
+\]
+因此每个 \(x\) 对应的坐标被约束在闭圆盘
+\[
+D_x:=\{z\in\mathbb F:|z|\le\|x\|\}
+\]
+中。把 \(B_{X^*}\) 嵌入乘积空间
+\[
+K:=\prod_{x\in X}D_x
+\]
+中，映射为
+\[
+J:B_{X^*}\to K,
+\qquad
+J(f)=(f(x))_{x\in X}.
+\]
+先验证 \(J\) 单射。若 \(J(f)=J(g)\)，则对所有 \(x\in X\) 有 \(f(x)=g(x)\)，即 \(f=g\)。每个因子 \(D_x\) 是 \(\mathbb F\) 中有界闭圆盘，由 Heine--Borel 紧；由 Tychonoff 定理，\(K\) 在乘积拓扑下紧。
+
+再确认拓扑。乘积拓扑是逐坐标收敛拓扑，即 \(K\) 中 net \(z^\alpha\to z\) 当且仅当 \(z_x^\alpha\to z_x\) 对每个 \(x\)。而 weak-* 拓扑由 evaluation maps \(f\mapsto f(x)\) 生成，故
+\[
+f_i\overset{*}{\rightharpoonup}f
+\iff
+f_i(x)\to f(x)\ \forall x
+\iff
+J(f_i)\to J(f),
+\]
+因此 weak-* 拓扑恰是 \(J\) 从 \(K\) 的乘积拓扑诱导出的拓扑。
+
+剩下只需证明 \(J(B_{X^*})\) 在 \(K\) 中闭。设 \((z_x)_{x\in X}\in K\) 是 \(J(B_{X^*})\) 中 net \(\{J(f_i)\}_{i\in I}\) 的乘积极限，即对每个 \(x\in X\) 有
+\[
+f_i(x)\to z_x.
+\]
+对任意 \(a,b\in\mathbb F\) 与 \(x,y\in X\)，由每个 \(f_i\) 线性，
+\[
+f_i(ax+by)=af_i(x)+bf_i(y).
+\]
+对两边取 \(i\to\infty\) 极限，由逐坐标收敛，
+\[
+z_{ax+by}=az_x+bz_y.
+\]
+又由 \(|f_i(x)|\le\|x\|\) 对所有 \(i\) 成立，取极限得
+\[
+|z_x|\le\|x\|.
+\]
+于是定义 \(f_0:X\to\mathbb F\) 为 \(f_0(x):=z_x\)。由上式 \(f_0\) 线性且被 \(\|x\|\) 控制，从而连续且 \(\|f_0\|\le1\)，即 \(f_0\in B_{X^*}\)。由构造 \(J(f_0)=(z_x)_{x\in X}\)，故 \((z_x)_{x\in X}\in J(B_{X^*})\)，因此 \(J(B_{X^*})\) 闭。紧空间中的闭子集紧，故 \(J(B_{X^*})\) 在 \(K\) 中紧，从而 \(B_{X^*}\) weak-* 紧。
+\end{derivation}
+
+若 canonical embedding
+\[
+J_X:X\to X^{**},
+\qquad
+(J_Xx)(f)=f(x)
+\]
+是满射，则称 \(X\) 为反身 Banach 空间。Hilbert 空间经 Riesz 表示自然反身；更一般地，\(L^p\) 与 \(W^{k,p}\) 在 \(1<p<\infty\) 时反身。反身性的核心等价刻画是
+\begin{equation}
+X\ \text{反身}
+\quad\Longleftrightarrow\quad
+B_X\ \text{在 weak topology 下紧}.
+\label{eq:reflexive-weak-compactness}
+\end{equation}
+因此在反身空间中，任何有界序列至少在 subnet 意义下有弱收敛子列；Eberlein--\v Smulian 定理进一步保证 Banach 空间中的 weak compactness 与 weak sequential compactness 等价，于是实际计算时可直接抽取弱收敛子列。
+
+弱收敛还与凸性天然兼容。范数是 weak lower semicontinuous：若
+\[
+x_n\rightharpoonup x,
+\]
+则
+\begin{equation}
+\|x\|\le\liminf_{n\to\infty}\|x_n\|.
+\label{eq:weak-lsc-norm}
+\end{equation}
+在 Hilbert 空间中，这可以从
+\[
+\|x_n\|^2
+=\|x\|^2+\|x_n-x\|^2
++2\operatorname{Re}\langle x,x_n-x\rangle
+\]
+直接看出。更一般地，连续凸泛函在适当条件下也是 weak lower semicontinuous。于是变分法中常见的存在性模板为
+\[
+\text{coercivity}
+\Rightarrow
+\text{有界极小化列}
+\Rightarrow
+\text{弱紧性}
+\Rightarrow
+\text{抽取弱极限}
+\Rightarrow
+\text{weak l.s.c.}
+\Rightarrow
+\text{极小元存在}.
+\]
+这条链会在 Sobolev 空间、椭圆 PDE 与统计中的凸风险最小化反复出现。
+
+还有一个经常被忽略的细节：弱极限并不自动保留非线性量。例如 \(x_n\rightharpoonup x\) 一般不能推出 \(F(x_n)\to F(x)\)。因此后续非线性 PDE 中需要 compact embedding、monotonicity、compensated compactness 等额外机制，把弱收敛增强到足以通过非线性项的收敛。
+
+
+接下来考察Hahn--Banach、商空间与闭值域。
+
+Riesz 表示只适用于 Hilbert 空间，而许多存在性问题首先发生在一般赋范空间中。这里需要一个更基础的延拓原则。设 $X$ 是实或复赋范空间，$M\subset X$ 是线性子空间，$f:M\to\mathbb C$ 为有界线性泛函。Hahn--Banach 定理断言：存在 $F\in X^*$，使
+\[
+F|_M=f,
+\qquad
+\|F\|_{X^*}=\|f\|_{M^*}.
+\]
+它的几何意义是：连续线性泛函足以分离点与闭凸集。特别地，若 $M\subset X$ 是闭线性子空间且 $x_0\notin M$，则存在 $F\in X^*$ 满足
+\[
+F|_M=0,
+\qquad
+F(x_0)=\operatorname{dist}(x_0,M),
+\qquad
+\|F\|=1.
+\]
+因此商空间范数
+\[
+\|x+M\|_{X/M}:=\inf_{m\in M}\|x-m\|_X
+\]
+可以完全由湮灭子
+\[
+M^\perp:=\{F\in X^*:F(m)=0\ \forall m\in M\}
+\]
+恢复：
+\[
+\boxed{
+\|x+M\|_{X/M}
+=
+\sup_{\substack{F\in M^\perp\\ \|F\|\le1}}|F(x)|
+}.
+\]
+这个公式说明，``到子空间的距离''与``所有能分辨该商类的观测''是同一件事的 primal/dual 两种表述。
+
+在 Hilbert 空间中，对偶由 Riesz 表示识别为空间本身，于是 Hahn--Banach 的分离结构转化成正交结构。对有界算子 $T:\mathcal H_1\to\mathcal H_2$，总有
+\[
+\overline{\operatorname{Ran}T}
+=(\ker T^*)^\perp,
+\qquad
+\overline{\operatorname{Ran}T^*}
+=(\ker T)^\perp.
+\]
+证明第一式只需注意
+\[
+y\perp\operatorname{Ran}T
+\iff
+\langle Tx,y\rangle=0\quad\forall x
+\iff
+T^*y=0.
+\]
+取两次正交补即得结论。真正更强的是闭值域定理：
+
+\begin{theorem}[闭值域定理]
+设 $T:\mathcal H_1\to\mathcal H_2$ 有界。以下条件等价：
+\[
+\operatorname{Ran}T\ \text{闭},
+\qquad
+\operatorname{Ran}T^*\ \text{闭},
+\]
+并且这时
+\[
+\operatorname{Ran}T=(\ker T^*)^\perp,
+\qquad
+\operatorname{Ran}T^*=(\ker T)^\perp.
+\]
+进一步，$\operatorname{Ran}T$ 闭当且仅当存在 $c>0$ 使
+\[
+\boxed{
+\|Tx\|\ge c\|x\|,
+\qquad x\in(\ker T)^\perp
+}.
+\]
+\end{theorem}
+
+最后一个估计是后续 Fredholm 理论、椭圆估计和稳定反演的共同原型：只要把真正不可逆的核空间方向剔除，算子在剩余方向上若有统一下界，其像空间就不会在极限中``漏掉''点。
+
+\begin{derivation}[闭值域与 coercive 下界的等价性]
+需证两个方向。
+
+\emph{方向一：$\operatorname{Ran}T$ 闭 $\Rightarrow$ coercive 下界。}把 $T$ 限制到
+\begin{equation*}
+ T_0:(\ker T)^\perp\longrightarrow\operatorname{Ran}T.
+\end{equation*}
+由 $(\ker T)^\perp$ 是闭子空间，它是 Hilbert 空间。$T_0$ 是单射（核已剔除）且满射（到像空间）。若 $\operatorname{Ran}T$ 闭，则它也是 Hilbert 空间。由开映射定理（Banach--Schauder），有界双射 $T_0$ 的逆 $T_0^{-1}$ 有界，故存在 $C>0$ 使
+\begin{equation*}
+ \|x\|\le C\|T_0x\|,
+ \qquad \forall\,x\in(\ker T)^\perp.
+\end{equation*}
+即 $\|Tx\|\ge C^{-1}\|x\|$，取 $c=C^{-1}$ 得下界。
+
+\emph{方向二：coercive 下界 $\Rightarrow$ $\operatorname{Ran}T$ 闭。}设 $\|Tx\|\ge c\|x\|$ 对 $x\in(\ker T)^\perp$ 成立。取像空间中的收敛序列 $y_n=Tx_n\to y\in\mathcal H$。将 $x_n$ 正交投影到 $(\ker T)^\perp$（投影不改变 $Tx_n$，因为核方向被 $T$ 零化），故可设 $x_n\in(\ker T)^\perp$。由 coercive 下界，
+\begin{equation*}
+ \|x_n-x_m\|
+ \le c^{-1}\|T(x_n-x_m)\|
+ =c^{-1}\|y_n-y_m\|.
+\end{equation*}
+因 $\{y_n\}$ 收敛故 Cauchy，上式推出 $\{x_n\}$ 也 Cauchy。$(\ker T)^\perp$ 完备，故 $x_n\to x\in(\ker T)^\perp$。由 $T$ 连续，
+\begin{equation*}
+ Tx=\lim_n Tx_n=y,
+\end{equation*}
+故 $y\in\operatorname{Ran}T$。像空间对极限封闭，因此 $\operatorname{Ran}T$ 闭。
+
+\emph{意义。}coercive 下界是"在核的正交补上，算子不会把有界序列映到趋零序列"的定量表述。没有这个下界时，可以构造 $x_n\in(\ker T)^\perp$、$\|x_n\|=1$ 但 $Tx_n\to0$，极限 $0$ 的原像包含 $\ker T$ 但不含 $\{x_n\}$ 的极限点，像空间便"漏掉"了点。这正是 Fredholm 理论和椭圆估计中"剔除核方向后得到稳定反演"的原型。
+
+\emph{举例：紧算子的非闭值域。}取 $K:\ell^2\to\ell^2$，$(Kx)_n=x_n/n$（对角紧算子）。$\ker K=\{0\}$，但 $\|Ke_n\|=1/n\to0$ 而 $\|e_n\|=1$，无 coercive 下界。像空间
+\[
+\operatorname{Ran}K=\{y:\sum n^2|y_n|^2<\infty\}
+\]
+不闭（含 $e_n/n$ 但极限 $0\in\operatorname{Ran}K$，且 $e_n/n\to0$；更严格地，$y^{(N)}_n=\delta_{nN}/N\in\operatorname{Ran}K$ 但 $y^{(N)}\to0$，且存在 $z^{(N)}\in\ell^2$ 使 $z^{(N)}\to z\notin\operatorname{Ran}K$）。这是第一类 Fredholm 方程 $Kx=y$ 不适定的谱论根源。
+
+\emph{举例：椭圆算子的闭值域。}取 $T=-\Delta+1$ 在 $H^2(\RR^n)\subset L^2(\RR^n)$ 上。由 Fourier 变换 $\widehat{Tf}(\xi)=(|\xi|^2+1)\hat f(\xi)$，$\|Tf\|_{L^2}\ge\|f\|_{L^2}$（coercive 下界 $c=1$）。值域 $L^2$ 闭（实际满射），第二类椭圆方程 $-\Delta u+u=f$ 对任意 $f\in L^2$ 有唯一解 $u\in H^2$。
+
+\emph{物理应用：Green 函数与稳定反演。}在静电学中，Poisson 方程 $-\Delta\phi=\rho$ 的反演 $\phi=G*\rho$（$G$ 为 Green 函数）稳定性由 $\operatorname{Ran}(-\Delta)$ 闭与 coercive 估计 $\|\Delta\phi\|\ge c\|\phi\|_{H^2}$ 保证。在逆散射问题中，远场算子的奇异值分布决定反演稳定性：奇异值衰减慢则反演稳定，快则不适定。Tikhonov 正则化通过修改奇异值倒数 $\sigma_n^{-1}\mapsto\sigma_n/(\sigma_n^2+\alpha)$ 控制不适定性，其理论基础即此闭值域刻画。
+
+\emph{推广方向。}对闭稠定算子，闭值域定理仍成立，但需用图范数处理定义域。对 Fredholm 算子（$T$ 闭、$\ker T$ 与 $\operatorname{coker}T$ 有限维、$\operatorname{Ran}T$ 闭），指标 $\operatorname{ind}T=\dim\ker T-\dim\operatorname{coker}T$ 是同伦不变量，是 Atiyah--Singer 指标定理的算子代数母结构。在椭圆复形中，各阶算子的闭值域相容性给出 Euler 特征与指标的复形版本。
+
+\emph{数学联系：与 Fredholm 二择一。}对 $T=I-K$（$K$ 紧），闭值域定理结合紧性给出 Fredholm 二择一：要么 $Tx=y$ 对所有 $y$ 有唯一解，要么齐次方程 $Tx=0$ 有非平凡解。这是第二类积分方程 $f(x)-\int k(x,y)f(y)\dd y=g(x)$ 的经典理论，coercive 下界在非齐次情形保证解的稳定性。Fredholm 算子的指标 $\operatorname{ind}T=\dim\ker T-\dim\operatorname{coker}T$ 在紧扰动下不变，是拓扑不变量。此不变性是 Atiyah--Singer 指标定理把解析指标（$\dim\ker-\dim\operatorname{coker}$）与拓扑指标（由符号类计算）等同的局部体现。
+
+\emph{物理应用：椭圆算子与 Green 函数。}对椭圆算子 $L$（如 Laplace--Beltrami 算子 $\Delta$），coercive 估计 $\|u\|_{H^2}\le C(\|Lu\|_{L^2}+\|u\|_{L^2})$ 结合闭值域给出 Green 函数 $G=L^{-1}$ 在 $(\ker L)^\perp$ 上的有界性。这是静电学、弹性力学与量子散射中 Green 函数方法严格化的谱论基础。在量子场论中，传播子即 Green 函数，其极点位置（谱）与留数（投影到本征态）由闭值域与 coercive 估计共同控制。在逆散射问题中，远场算子的闭值域性决定反演稳定性：闭值域给出连续依赖，否则需 Tikhonov 正则化或截断 SVD 控制不适定性，正则化参数选择即在此 coercive 与噪声放大间权衡。
+
+\emph{总结。}闭值域与 coercive 下界的等价性把“像空间拓扑封闭”这一几何条件转化为“核的正交补上有统一下界”这一分析估计，是 Fredholm 理论、椭圆 PDE 与逆问题稳定性的共同谱论基础。在物理中，此等价性保证 Green 函数方法、扰动理论与散射反演在核方向剔除后严格有效，是数学物理中“剔除零模式后稳定反演”策略的泛函分析母结构。在数值 PDE 中，coercive 下界给出离散格式的 inf-sup 条件（Babu\v{s}ka--Brezzi 理论），是混合有限元方法稳定性的判据。在量子信息中，密度算子的闭值域性保证 POVM 测量的可逆性与量子态层析的稳定性，奇异值衰减率决定重构精度。在统计学习理论中，coercive 下界给出回归问题的 identifiability 条件，是经验风险最小化一致性的泛函分析基础。在信号处理中，压缩感知的 restricted isometry property（RIP）即此 coercive 下界在稀疏子空间上的离散化版本。
+
+\emph{尾声。}闭值域定理是 Fredholm 理论与椭圆估计的谱论基础，coercive 下界把“像空间闭”转化为可计算的算子估计，是数学物理中“剔除核方向后稳定反演”策略的泛函分析母结构。此等价性在 PDE、逆问题与量子信息中反复出现，是连接拓扑闭性与定量估计的关键桥梁。在椭圆 PDE 中，此等价性把“解存在唯一”转化为“先验估计 \(\|u\|\le C\|Lu\|\)”，是 Schauder 估计与 De Giorgi--Nash--Moser 理论的泛函分析前提。在规范理论中，椭圆复形的闭值域相容性给出 BRST 上同调有限维性，是 Faddeev--Popov 行列式与规范固定严格化的基础。
+
+\emph{后记。}闭值域定理在 Fredholm 理论中把“解的存在性”转化为“核的正交补上 coercive 估计”，是第二类积分方程与椭圆边值问题稳定反演的谱论母结构。
+\end{derivation}
+
+\section{无界算子、伴随与二次型}
+
+接下来考察定义域、闭性与可闭性。
+
+微分算子通常无界，因此算子不再只是一个公式，而是二元数据
+\[
+\boxed{A=(\Dom(A),A\psi)}.
+\]
+其图定义为
+\[
+\Gamma(A)=\{(\psi,A\psi):\psi\in\Dom(A)\}\subset\mathcal H\oplus\mathcal H.
+\]
+若图闭，则称 $A$ 为闭算子。等价地，若
+\[
+\psi_n\to\psi,
+\qquad
+A\psi_n\to\eta,
+\]
+则必有 $\psi\in\Dom(A)$ 且 $A\psi=\eta$。
+
+若 $A$ 的图闭包仍是一张单值算子的图，则称 $A$ 可闭，并记最小闭扩张为 $\overline A$。稠密定义算子可闭当且仅当 $\Dom(A^*)$ 稠密，而且
+\[
+\boxed{\overline A=A^{**}}.
+\]
+
+接下来考察无界伴随与自伴性。
+
+设 $A$ 稠密定义。对 $y\in\mathcal H$，若存在 $z\in\mathcal H$ 使
+\[
+\langle Ax,y\rangle=\langle x,z\rangle,
+\qquad \forall x\in\Dom(A),
+\]
+则定义 $y\in\Dom(A^*)$ 且 $A^*y=z$。由 $\Dom(A)$ 稠密，$z$ 唯一。
+
+若
+\[
+\langle Ax,y\rangle=\langle x,Ay\rangle,
+\qquad x,y\in\Dom(A),
+\]
+则 $A$ 对称，即 $A\subset A^*$。只有进一步满足
+\[
+\boxed{\Dom(A)=\Dom(A^*),\qquad A=A^*}
+\]
+时才是自伴算子。对微分表达式而言，边界条件决定定义域，因此“形式 Hermitian”不能代替自伴性。
+
+\begin{derivation}[区间动量算子的边界型]
+取
+\[
+P=-\ii\hbar\frac{\dd}{\dd x},
+\qquad 0<x<L.
+\]
+对足够正则的 $\psi,\phi$，展开内积并分部积分，
+\begin{align*}
+\langle P\psi,\phi\rangle
+&=\int_0^L\bigl(-\ii\hbar\psi'(x)\bigr)\phi(x)^*\,\dd x\\
+&=-\ii\hbar\int_0^L\psi'(x)\phi(x)^*\,\dd x\\
+&=-\ii\hbar\Bigl[\psi(x)\phi(x)^*\Bigr]_0^L
++\ii\hbar\int_0^L\psi(x)\phi'(x)^*\,\dd x\\
+&=-\ii\hbar\Bigl[\psi(x)\phi(x)^*\Bigr]_0^L
++\int_0^L\psi(x)\bigl(-\ii\hbar\phi'(x)\bigr)^*\,\dd x\\
+&=\langle\psi,P\phi\rangle
+-\ii\hbar\Bigl[\psi(x)\phi(x)^*\Bigr]_{0}^{L}.
+\end{align*}
+最后一项称为边界型。因此 $P$ 对称当且仅当定义域 $\mathcal D$ 上边界型恒为零：
+\[
+\psi(L)\phi(L)^*-\psi(0)\phi(0)^*=0,
+\qquad\forall\psi,\phi\in\mathcal D.
+\]
+周期型条件
+\[
+\psi(L)=\ee^{\ii\theta}\psi(0)
+\]
+满足此要求，因代入得
+\begin{align*}
+\psi(L)\phi(L)^*-\psi(0)\phi(0)^*
+&=\ee^{\ii\theta}\psi(0)\ee^{-\ii\theta}\phi(0)^*-\psi(0)\phi(0)^*\\
+&=\psi(0)\phi(0)^*-\psi(0)\phi(0)^*\\
+&=0.
+\end{align*}
+此时 $P$ 的伴随定义域与 $\mathcal D$ 重合：若 $\phi\in\Dom(P^*)$，由
+\[
+\langle P\psi,\phi\rangle=\langle\psi,P^*\phi\rangle
+\]
+对所有 $\psi\in\mathcal D$ 成立，分部积分表明 $P^*\phi=-\ii\hbar\phi'$ 且 $\phi$ 满足同一周期条件，故 $\phi\in\mathcal D$，即 $P^*\subset P$。结合 $P\subset P^*$ 得 $P=P^*$，故 $P$ 自伴。不同 $\theta\in[0,2\pi)$ 给出互不酉等价的自伴实现，本征函数为
+\[
+\psi_n(x)=\ee^{\ii(2\pi n+\theta)x/L},
+\]
+本征值为 \(\hbar(2\pi n+\theta)/L\)。因此只写微分表达式 $-\ii\hbar\dd/\dd x$ 并不能唯一确定量子可观测量，边界条件是自伴扩张的参数。
+\end{derivation}
+
+接下来考察闭二次型与 Friedrichs 实现。
+
+许多二阶算子更自然地先由二次型定义。设 $q$ 在稠密子空间 $\mathcal Q\subset\mathcal H$ 上满足
+\[
+q[u,v]=q[v,u]^*.
+\]
+若存在 $m\in\RR$ 使
+\[
+q[u,u]\ge m\|u\|^2,
+\]
+称其下半有界。取任意 $\alpha>-m$，定义 form norm
+\[
+\|u\|_{q,\alpha}^2
+=q[u,u]+\alpha\|u\|^2.
+\]
+若 $\mathcal Q$ 对此范数完备，则 $q$ 闭。
+
+闭、稠密、下半有界二次型对应唯一自伴下半有界算子 $A$，使
+\[
+q[u,v]=\langle Au,v\rangle,
+\qquad u\in\Dom(A),\ v\in\mathcal Q.
+\]
+这使 Dirichlet Laplacian、Schrödinger 算子等对象可以先从能量泛函建立，再恢复精确算子定义域。
+
+
+接下来考察图范数、相对有界性与闭算子扰动。
+
+对无界算子，定义域本身必须携带与算子相容的拓扑。若 $A$ 闭，定义图范数
+\[
+\boxed{
+\|u\|_A
+:=
+\bigl(\|u\|^2+\|Au\|^2\bigr)^{1/2},
+\qquad u\in\Dom(A)
+}.
+\]
+则 $A$ 闭当且仅当 $(\Dom(A),\|\cdot\|_A)$ 完备。于是无界算子可以被重新理解为一个有界映射
+\[
+A:(\Dom(A),\|\cdot\|_A)\to\mathcal H,
+\qquad
+\|Au\|\le\|u\|_A.
+\]
+这一步非常重要：许多``无界''困难并不是因为线性代数失效，而是因为选错了定义域拓扑。
+
+设 $A$ 稠密定义，$B$ 至少定义在 $\Dom(A)$ 上。若存在 $a,b\ge0$ 使
+\[
+\|Bu\|
+\le a\|Au\|+b\|u\|,
+\qquad u\in\Dom(A),
+\]
+称 $B$ 对 $A$ 相对有界；允许的最小 $a$ 称为相对界。若相对界严格小于 $1$，则 $B$ 在 $A$ 的高能方向上始终只是受控扰动。
+
+一个基本闭性结论是：若 $A$ 闭且
+\[
+\|Bu\|\le a\|Au\|+b\|u\|,
+\qquad a<1,
+\]
+则 $A+B$ 在同一定义域 $\Dom(A)$ 上仍闭。事实上
+\[
+\|(A+B)u\|
+\ge (1-a)\|Au\|-b\|u\|,
+\]
+而反方向有
+\[
+\|(A+B)u\|
+\le (1+a)\|Au\|+b\|u\|.
+\]
+因此 $\|\cdot\|_{A+B}$ 与 $\|\cdot\|_A$ 在 $\Dom(A)$ 上等价，闭性随完备性一起保留。
+
+对自伴算子，闭性还不是全部；需要保持自伴性。Kato--Rellich 定理给出经典充分条件：若 $A$ 自伴，$B$ 对称且 $A$-相对界小于 $1$，则
+\[
+\boxed{
+A+B\ \text{在}\ \Dom(A)\ \text{上自伴}
+}.
+\]
+这条定理是 Schrödinger 算子中``动能加势能''严格化的基本工具。其结构意义比具体势函数更重要：先由一个已知自伴的母算子控制定义域，再证明扰动在图范数意义下足够小，就能保持谱理论所需的自伴性。
+
+还有一种常用的是二次型层面的相对有界性。若 $q_A$ 是闭下半有界二次型，而 $q_B$ 满足
+\[
+|q_B[u,u]|
+\le a\,q_A[u,u]+b\|u\|^2,
+\qquad a<1,
+\]
+则 $q_A+q_B$ 仍闭且下半有界。这一 form 方法通常比直接处理 $B$ 的算子定义域更灵活，因为奇异势可能在算子意义下并不容易控制，却可以在能量意义下由 Sobolev 不等式压住。
+
+\begin{exbox}[Coulomb 型奇异势为何应优先从二次型进入]
+在三维空间中考虑
+\[
+A=-\Delta,
+\qquad
+q_A[u]=\int_{\RR^3}|\nabla u|^2\,\dd^3x.
+\]
+对 Coulomb 型势 $V(x)=-\gamma/|x|$，Hardy 不等式给出
+\[
+\int_{\RR^3}\frac{|u(x)|^2}{|x|^2}\,\dd^3x
+\le 4\int_{\RR^3}|\nabla u(x)|^2\,\dd^3x.
+\]
+再由 Cauchy--Schwarz 与任意 $\varepsilon>0$ 的 Young 不等式，可把
+\[
+\int\frac{|u|^2}{|x|}
+\]
+估计成 $\varepsilon q_A[u]+C_\varepsilon\|u\|^2$。因此 Coulomb 势对 Laplacian 在 form 意义下是无穷小相对有界的，Hamiltonian 可先由闭二次型唯一实现，而不必从一开始猜测其自伴定义域。
+\end{exbox}
+
+\section{紧算子、SVD 与 rigged Hilbert space}
+
+接下来考察紧性与有限维近似。
+
+有界算子 $K:X\to Y$ 称为紧算子，若它把单位球映为相对紧集；等价地，对每个有界序列 $x_n$，序列 $Kx_n$ 都有收敛子列。有限秩算子必紧；无限维恒等算子不紧。
+
+在 Hilbert 空间上，若 $K_n$ 是有限秩且
+\[
+\|K-K_n\|\to0,
+\]
+则 $K$ 紧。反过来，在 Hilbert 空间中每个紧算子都可由有限秩算子作算子范数逼近。
+
+紧自伴算子具有最接近有限维 Hermitian 矩阵的谱结构：除 $0$ 外的谱点都是有限重本征值，唯一可能的非零谱聚点不存在；本征向量可以取成正交归一，并在 $\overline{\operatorname{Ran}K}$ 上完备。因此
+\[
+\boxed{Kx=\sum_n\lambda_n\langle x,e_n\rangle e_n},
+\qquad \lambda_n\to0.
+\]
+
+
+紧算子还有一个与弱收敛极其重要的等价使用方式：若 \(X\) 为反身 Banach 空间、\(K:X\to Y\) 紧，而
+\[
+x_n\rightharpoonup x,
+\]
+则
+\begin{equation}
+Kx_n\to Kx
+\quad\text{in norm}.
+\label{eq:compact-weak-to-strong}
+\end{equation}
+证明很短但非常关键。序列 \(x_n\) 有界，故 \(Kx_n\) 相对紧；任取一个收敛子列 \(Kx_{n_j}\to y\)。另一方面有界线性算子保持弱收敛，所以
+\[
+Kx_{n_j}\rightharpoonup Kx.
+\]
+强极限必等于弱极限，故 \(y=Kx\)。于是每个收敛子列都只能收敛到 \(Kx\)，从而整个序列强收敛。这个性质正是“紧性补偿弱收敛不足”的最基本形式。
+
+无限维单位球为何不紧，可以由 Riesz lemma 看得很清楚：若 \(M\subsetneq X\) 是闭真子空间，任给 \(0<\alpha<1\)，存在单位向量 \(x\) 使
+\[
+\operatorname{dist}(x,M)>\alpha.
+\]
+递归取有限维子空间
+\[
+M_n=\operatorname{span}\{x_1,\ldots,x_n\}
+\]
+即可构造单位向量列满足
+\[
+\|x_n-x_m\|>\alpha,
+\qquad n\neq m.
+\]
+因此单位球没有任何 Cauchy 子列，说明有限维 Heine--Borel 性质在无限维彻底失效。紧算子之所以特殊，正是因为它把这样的无限维有界集合压回“有限维式”的相对紧结构。
+
+对 Hilbert 空间上的紧算子，还可以用 approximation numbers 量化“离有限秩还有多远”：
+\[
+a_n(K)
+:=
+\inf_{\operatorname{rank}F<n}\|K-F\|.
+\]
+若 \(K\) 紧，则 \(a_n(K)\to0\)；在 Hilbert 空间中，\(a_n(K)\) 恰等于按降序排列的奇异值 \(\sigma_n(K)\)。因此 SVD 不只是一个展开公式，它事实上给出最佳低秩逼近：
+\begin{equation}
+\inf_{\operatorname{rank}F<n}\|K-F\|
+=\sigma_n(K).
+\label{eq:eckart-young-operator}
+\end{equation}
+这就是无限维 Eckart--Young 原理，也是低秩近似、PCA 与逆问题截断的共同数学核心。
+
+接下来考察奇异值分解与逆问题。
+
+一般紧算子 $K:\mathcal H_1\to\mathcal H_2$ 不必自伴。考虑正算子
+\[
+K^*K\ge0.
+\]
+若其非零本征值为 $\sigma_n^2$，取
+\[
+K^*Ku_n=\sigma_n^2u_n,
+\qquad
+v_n=\sigma_n^{-1}Ku_n,
+\]
+则
+\[
+Ku_n=\sigma_nv_n,
+\qquad
+K^*v_n=\sigma_nu_n,
+\]
+从而得到
+\[
+\boxed{Kx=\sum_n\sigma_n\langle x,u_n\rangle v_n}.
+\]
+若 $K$ 紧，则 $\sigma_n\to0$。这正是第一类积分方程不适定的谱论根源：形式逆
+\[
+K^{-1}y\sim\sum_n\frac{\langle y,v_n\rangle}{\sigma_n}u_n
+\]
+会放大高阶小奇异值方向上的噪声。后续 Tikhonov 与截断 SVD 都是在控制这些发散因子。
+
+\begin{derivation}[紧算子 SVD 的正交结构]
+设 $K:\mathcal H_1\to\mathcal H_2$ 紧。由 $K^*K$ 自伴、正且紧，紧自伴算子的谱定理给出正本征值 $\{\sigma_n^2\}$ 与正交归一本征向量 $\{u_n\}$，
+\begin{equation*}
+K^*Ku_n=\sigma_n^2u_n,
+\qquad
+\sigma_n>0,
+\qquad
+\langle u_m,u_n\rangle=\delta_{mn}.
+\end{equation*}
+由 $K^*K$ 正，$\|Ku_n\|^2=\langle Ku_n,Ku_n\rangle=\langle K^*Ku_n,u_n\rangle=\sigma_n^2\|u_n\|^2=\sigma_n^2$，故 $\|Ku_n\|=\sigma_n$，可定义
+\begin{equation*}
+v_n:=\frac{Ku_n}{\sigma_n}.
+\end{equation*}
+验证 $\{v_n\}$ 正交归一。由定义
+\begin{align*}
+\langle v_m,v_n\rangle
+&=\Bigl\langle\frac{Ku_m}{\sigma_m},\frac{Ku_n}{\sigma_n}\Bigr\rangle\\
+&=\frac{1}{\sigma_m\sigma_n}\langle Ku_m,Ku_n\rangle\\
+&=\frac{1}{\sigma_m\sigma_n}\langle K^*Ku_m,u_n\rangle\\
+&=\frac{1}{\sigma_m\sigma_n}\langle\sigma_m^2u_m,u_n\rangle\\
+&=\frac{\sigma_m}{\sigma_n}\langle u_m,u_n\rangle\\
+&=\delta_{mn}.
+\end{align*}
+第三行用到伴随的定义 $\langle Ku_m,Ku_n\rangle=\langle K^*Ku_m,u_n\rangle$，第四行用到本征方程，最后一行在 $m=n$ 时 $\sigma_m/\sigma_n=1$。验证伴随作用。由 $K^*Ku_n=\sigma_n^2u_n$，
+\begin{align*}
+K^*v_n
+&=K^*\frac{Ku_n}{\sigma_n}
+=\frac{1}{\sigma_n}K^*Ku_n
+=\frac{1}{\sigma_n}\sigma_n^2u_n
+=\sigma_nu_n.
+\end{align*}
+最后证 $\{u_n\}$ 与 $\ker K$ 给出定义域中相关子空间的正交分解。若 $x$ 与所有 $u_n$ 及 $\ker K$ 正交，由 $\ker K=\ker K^*K$（因 $\|Kx\|^2=\langle K^*Kx,x\rangle$，$Kx=0$ 当且仅当 $K^*Kx=0$），$x$ 落在 $K^*K$ 零空间中，故 $K^*Kx=0$，从而
+\begin{equation*}
+\|Kx\|^2=\langle K^*Kx,x\rangle=0,
+\end{equation*}
+即 $Kx=0$，于是 $x\in\ker K$。但 $x$ 已与 $\ker K$ 正交，故 $x=0$。因此 $\{u_n\}\cup\ker K$ 是 $\mathcal H_1$ 中相关子空间的正交基，SVD 由此成立。
+
+\emph{举例：积分算子的 SVD。}取 $K:L^2[0,\pi]\to L^2[0,\pi]$，$(Kf)(x)=\int_0^\pi \min(x,y)f(y)\,\dd y$（Green 函数 of $-\dd^2/\dd x^2$ with Dirichlet BC）。$K^*K$ 的本征函数 $u_n(x)=\sqrt{2/\pi}\sin(nx)$，本征值 $\sigma_n^2=1/n^4$，故 $\sigma_n=1/n^2$。$v_n=Ku_n/\sigma_n=\sqrt{2/\pi}\sin(nx)=u_n$（自伴情形）。SVD 即
+\[
+(Kf)(x)=\sum_{n=1}^\infty\frac{1}{n^2}\langle f,u_n\rangle u_n(x).
+\]
+奇异值衰减 $\sigma_n\to0$ 反映 $K$ 的紧性，逆 $K^{-1}$ 在高频发散是 Poisson 方程反演不稳定性的谱论根源。
+
+\emph{举例：有限维矩阵的 SVD。}取 $K:\CC^m\to\CC^n$ 为 $n\times m$ 矩阵。$K^*K$ 为 $m\times m$ Hermitian 正定，本征值 $\sigma_n^2\ge0$，本征向量 $u_n\in\CC^m$。$v_n=Ku_n/\sigma_n\in\CC^n$。SVD 即 $K=V\Sigma U^\dagger$，其中 $U=[u_1\cdots u_m]$、$V=[v_1\cdots v_r]$（$r$ 为秩），$\Sigma=\operatorname{diag}(\sigma_1,\ldots,\sigma_r)$。这是数值线性代数中 SVD 分解的 Hilbert 空间推广。
+
+\emph{物理应用：量子信息与 POVM。}在量子信息中，紧算子的 SVD 用于处理量子信道（CPTP map）的 Kraus 表示：任意信道 $\mathcal E(\rho)=\sum_n K_n\rho K_n^\dagger$，Kraus 算子 $K_n$ 的奇异值决定信道噪声强度。Schmidt 分解（下一节）即 SVD 在二体量子态上的应用，奇异值平方为约化密度算子本征值，即纠缠谱。在量子测量中，POVM 元 $E_n=K_n^\dagger K_n$ 的本征值分布由 SVD 控制。
+
+\emph{推广方向。}对 Hilbert--Schmidt 算子（$\sum\sigma_n^2<\infty$），SVD 与积分核 $k(x,y)=\sum\sigma_n u_n(x)v_n(y)^*$ 在 $L^2$ 中收敛。对 trace class（$\sum\sigma_n<\infty$），迹 $\operatorname{tr}K=\sum\sigma_n\langle v_n,u_n\rangle$ 绝对收敛。对一般有界算子，SVD 不存在（奇异值可能不离散），需用谱测度与极分解的连续版本。在 von Neumann 代数中，紧算子推广为有限迹投影生成的理想，SVD 升级为 Borel 函数对极分解的函数演算。
+
+\emph{数学联系：与 Moore--Penrose 伪逆。}SVD 直接给出伪逆 $K^+=\sum_n\sigma_n^{-1}|u_n\rangle\langle v_n|$（$\sigma_n>0$ 时），满足 $KK^+K=K$、$K^+KK^+=K^+$、$(KK^+)^*=KK^+$、$(K^+K)^*=K^+K$。闭值域时 $K^+$ 有界，否则无界。这是数值线性代数与逆问题正则化的谱论基础。
+
+\emph{举例：Hilbert--Schmidt 积分算子。}取 $K:L^2[0,1]\to L^2[0,1]$，核 $k(x,y)=\sum_n\sigma_n u_n(x)v_n(y)^*$，$\sum\sigma_n^2<\infty$。SVD 即核展开，$\|K\|_{\mathrm{HS}}^2=\int|k|^2=\sum\sigma_n^2$。若 $k$ 连续且对称正定，$\sigma_n$ 即本征值，Mercer 定理给出 $k(x,y)=\sum\sigma_n u_n(x)u_n(y)$ 绝对一致收敛。
+
+\emph{物理应用：密度算子与量子态。}密度算子 $\rho$ 正、自伴、trace class、$\operatorname{tr}\rho=1$。SVD 给出 $\rho=\sum_n p_n|\psi_n\rangle\langle\psi_n|$（$p_n\ge0$、$\sum p_n=1$），即量子态的谱分解。$p_n$ 为处于纯态 $|\psi_n\rangle$ 的概率，$\{|\psi_n\rangle\}$ 为正交态集。纯态 $p_0=1$、混合态 $p_n$ 非平凡。von Neumann 熵 $S=-\operatorname{tr}\rho\log\rho=-\sum p_n\log p_n$ 量化混合度，是量子统计与量子信息的核心量。在开放量子系统中，Lindblad 方程的稳态密度算子通过 SVD 给出系统的热力学平衡态，衰减率由 Lindblad 算子的奇异值决定。
+\end{derivation}
+
+SVD 背后更一般的结构是 polar decomposition。对任意有界算子 \(T:\mathcal H_1\to\mathcal H_2\)，定义
+\[
+|T|=(T^*T)^{1/2}.
+\]
+则存在唯一 partial isometry \(U\)，其初始空间为 \(\overline{\operatorname{Ran}|T|}\)、终止空间为 \(\overline{\operatorname{Ran}T}\)，满足
+\begin{equation}
+T=U|T|,
+\qquad
+\ker U=\ker T.
+\label{eq:operator-polar-decomposition}
+\end{equation}
+若 \(T\) 可逆，则 \(U\) 是酉算子；若 \(T\) 紧，则 \(|T|\) 是紧正算子，其本征值正是奇异值，SVD 因而是“先对 \(|T|\) 作谱分解，再乘上 partial isometry \(U\)”的结果。
+
+\begin{derivation}[polar decomposition 从哪里来]
+先在 \(\operatorname{Ran}|T|\) 上定义
+\[
+U_0(|T|x):=Tx.
+\]
+需验证此定义良定。若 \(|T|x=0\)，则由 \(|T|^2=T^*T\)，
+\begin{align*}
+\|Tx\|^2
+&=\langle Tx,Tx\rangle
+=\langle T^*Tx,x\rangle
+=\langle |T|^2x,x\rangle\\
+&=\langle |T|x,|T|x\rangle
+=\||T|x\|^2=0,
+\end{align*}
+故 \(Tx=0\)。因此若 \(|T|x_1=|T|x_2\)，则
+\[
+|T|(x_1-x_2)=0,
+\]
+由上式 \(T(x_1-x_2)=0\)，即 \(Tx_1=Tx_2\)，故定义与代表元无关。
+
+再验证等距性。在 \(\operatorname{Ran}|T|\) 上，
+\begin{align*}
+\|U_0(|T|x)\|
+&=\|Tx\|\\
+&=\sqrt{\langle Tx,Tx\rangle}\\
+&=\sqrt{\langle T^*Tx,x\rangle}\\
+&=\sqrt{\langle |T|^2x,x\rangle}\\
+&=\sqrt{\langle |T|x,|T|x\rangle}\\
+&=\||T|x\|,
+\end{align*}
+故 \(U_0\) 是等距映射。由 \(\operatorname{Ran}|T|\) 在其闭包 \(\overline{\operatorname{Ran}|T|}\) 中稠密，等距映射 \(U_0\) 唯一延拓为 \(\overline{\operatorname{Ran}|T|}\) 上的等距映射 \(\widetilde U\)。再在正交补
+\[
+(\overline{\operatorname{Ran}|T|})^\perp=\ker|T|=\ker T
+\]
+上定义为零，得到全空间上的 partial isometry \(U\)，其初始空间为 \(\overline{\operatorname{Ran}|T|}\)、终止空间为 \(\overline{\operatorname{Ran}T}\)。于是对所有 \(x\)，
+\[
+U|T|x=Tx,
+\]
+即 \(T=U|T|\)，得到\eqnrefs{eq:operator-polar-decomposition}。
+
+最后证唯一性。设 \(T=U'|T|\) 是另一极分解，则对任意 \(x\)，
+\[
+U'|T|x=Tx=U|T|x,
+\]
+故 \(U'\) 与 \(U\) 在 \(\operatorname{Ran}|T|\) 上一致，由连续性在 \(\overline{\operatorname{Ran}|T|}\) 上一致。在 \(\ker T\) 上两者皆为零，故 \(U'=U\)。
+\end{derivation}
+
+polar decomposition 还直接导出 Moore--Penrose pseudoinverse 的结构。若 \(T\) 有闭值域，则在
+\[
+\mathcal H_1=(\ker T)^\perp\oplus\ker T
+\]
+上，\(|T|\) 对第一项有正下界，因此可定义
+\[
+T^+=|T|^{-1}U^*
+\]
+并令其在 \((\operatorname{Ran}T)^\perp\) 上为零。于是
+\[
+TT^+=P_{\overline{\operatorname{Ran}T}},
+\qquad
+T^+T=P_{(\ker T)^\perp}.
+\]
+紧算子的像若无限维通常不闭，正因为 \(\sigma_n\to0\) 使 \(|T|^{-1}\) 无界；这把“闭值域定理”和“逆问题不适定性”精确接到同一个奇异值图像上。
+
+在 SVD 之上还可以进一步量化紧算子的``紧程度''。若奇异值序列满足
+\[
+\sum_n \sigma_n^p<\infty,
+\]
+则称 $K$ 属于 Schatten 类 $\mathcal S_p$。其中
+\[
+\mathcal S_2=\{\text{Hilbert--Schmidt 算子}\},
+\qquad
+\mathcal S_1=\{\text{trace-class 算子}\}.
+\]
+Hilbert--Schmidt 范数与 trace norm 分别为
+\[
+\|K\|_{\mathcal S_2}^2
+=\sum_n\sigma_n^2,
+\qquad
+\|K\|_{\mathcal S_1}
+=\sum_n\sigma_n.
+\]
+若 $K\in\mathcal S_1$，则对任意正交归一基 $\{e_n\}$，迹
+\[
+\boxed{
+\operatorname{tr}K
+:=\sum_n\langle Ke_n,e_n\rangle
+}
+\]
+绝对收敛且与基无关。更一般地，若 $A\in\mathcal B(\mathcal H)$、$K\in\mathcal S_1$，则 $AK,KA\in\mathcal S_1$ 且
+\[
+\operatorname{tr}(AK)=\operatorname{tr}(KA).
+\]
+这正是无限维中合法使用``迹的循环性''所需的条件；若算子并非 trace class，直接交换无穷和与基展开可能得到错误结果。
+
+更一般地，Schatten 类满足非交换版 H\"older 不等式。若
+\[
+A\in\mathcal S_p,
+\qquad
+B\in\mathcal S_q,
+\qquad
+\frac1r\le\frac1p+\frac1q,
+\]
+则在标准可积指数范围内
+\[
+AB\in\mathcal S_r,
+\qquad
+\|AB\|_{\mathcal S_r}
+\le
+\|A\|_{\mathcal S_p}\|B\|_{\mathcal S_q}.
+\]
+特别地，两个 Hilbert--Schmidt 算子的乘积是 trace class：
+\[
+A,B\in\mathcal S_2
+\Longrightarrow
+A^*B\in\mathcal S_1,
+\]
+并且
+\[
+|\operatorname{tr}(A^*B)|
+\le
+\|A\|_{\mathcal S_2}\|B\|_{\mathcal S_2}.
+\]
+所以 \(\mathcal S_2\) 本身是 Hilbert 空间，其内积为
+\begin{equation}
+\langle A,B\rangle_{\mathrm{HS}}
+=\operatorname{tr}(A^*B).
+\label{eq:hilbert-schmidt-inner-product}
+\end{equation}
+这就是为什么“把二体波函数识别为 Hilbert--Schmidt 算子”在下一小节严格成立。
+
+trace class 还与有界算子形成自然对偶配对：
+\[
+\mathcal S_1\times\mathcal B(\mathcal H)	o\CC,
+\qquad
+(K,A)\mapsto\operatorname{tr}(KA),
+\]
+满足
+\[
+|\operatorname{tr}(KA)|
+\le\|K\|_{\mathcal S_1}\|A\|.
+\]
+在可分 Hilbert 空间上，\(\mathcal S_1\) 是 compact operators \(\mathcal K(\mathcal H)\) 的 Banach 对偶，而 \(\mathcal B(\mathcal H)\) 则可视为 \(\mathcal S_1\) 的对偶。这条 duality 是密度算子、normal state 与弱算子拓扑之间的泛函分析基础。
+
+Schatten 理想也给出紧算子与积分核之间的直接桥梁。若
+\[
+(Kf)(x)=\int_\Omega k(x,y)f(y)\,\dd y,
+\qquad
+k\in L^2(\Omega\times\Omega),
+\]
+则 $K$ 是 Hilbert--Schmidt 算子，并且
+\[
+\|K\|_{\mathcal S_2}^2
+=\int_{\Omega\times\Omega}|k(x,y)|^2\,\dd x\,\dd y.
+\]
+因此后续 Fredholm 积分方程中``平方可积核 $\Rightarrow$ 紧性''并不是孤立技巧，而是 Schatten 类理论的一个直接推论。
+
+接下来考察Hilbert 张量积与 Schmidt 结构。
+
+若 \(\mathcal H_1,\mathcal H_2\) 是复 Hilbert 空间，先在代数张量积 \(\mathcal H_1\odot\mathcal H_2\) 上规定
+\[
+\langle u_1\otimes v_1,u_2\otimes v_2\rangle
+=
+\langle u_1,u_2\rangle_{\mathcal H_1}
+\langle v_1,v_2\rangle_{\mathcal H_2},
+\]
+并按 sesquilinearity 延拓。商去零范数向量后完备化得到 Hilbert 张量积
+\[
+\mathcal H_1\widehat\otimes\mathcal H_2.
+\]
+若 \(\{e_i\}\)、\(\{f_j\}\) 分别是两空间的正交归一基，则 \(\{e_i\otimes f_j\}\) 是张量积空间的正交归一基。因此任意 \(\Psi\in\mathcal H_1\widehat\otimes\mathcal H_2\) 可写成
+\[
+\Psi=\sum_{i,j}c_{ij}e_i\otimes f_j,
+\qquad
+\sum_{i,j}|c_{ij}|^2<\infty.
+\]
+
+把系数 \(c_{ij}\) 看成 Hilbert--Schmidt 算子的矩阵元，就可用上一小节的 SVD 得到 Schmidt 分解
+\begin{equation}
+\Psi=\sum_n s_n u_n\otimes v_n,
+\qquad
+s_n\ge0,
+\qquad
+\sum_n s_n^2=\|\Psi\|^2.
+\label{eq:hilbert-schmidt-schmidt}
+\end{equation}
+这里 \(\{u_n\}\)、\(\{v_n\}\) 分别在两个 Hilbert 空间中正交归一。因而 Schmidt 分解并不是额外的量子力学技巧，而是 Hilbert--Schmidt 算子 SVD 在张量积上的同一结构。
+
+\begin{derivation}[Schmidt 分解如何由紧算子 SVD 得到，即\eqnrefs{eq:hilbert-schmidt-schmidt}]
+\emph{第一步：将向量识别为算子。}固定正交归一基并写
+\begin{equation*}
+ \Psi=\sum_{i,j}c_{ij}\,e_i\otimes f_j.
+\end{equation*}
+定义 Hilbert--Schmidt 算子 $C:\mathcal H_2\to\mathcal H_1$，其矩阵元为 $c_{ij}=\langle e_i,Cf_j\rangle$。这是一个反线性识别（或通过 Riesz 表示实现的线性识别），将双指标系数 $c_{ij}$ 重排为算子矩阵。具体地，$Cf_j=\sum_i c_{ij}e_i$，线性延拓到整个 $\mathcal H_2$。
+
+\emph{第二步：验证 $C$ 是 Hilbert--Schmidt 算子。}由定义，
+\begin{equation*}
+ \|C\|_{\mathrm{HS}}^2
+ =\sum_{i,j}|c_{ij}|^2
+ =\|\Psi\|^2<\infty,
+\end{equation*}
+第一个等式是 Hilbert--Schmidt 范数的基展开定义，第二个等式是张量积范数的基展开。故 $C$ 是 Hilbert--Schmidt 算子，因此紧（Hilbert--Schmidt 算子是紧算子的子类：因 $\sum|c_{ij}|^2<\infty$ 给出有限秩逼近 $C_N f=\sum_{i,j\le N}c_{ij}\langle f,f_j\rangle e_i$，$\|C-C_N\|_{\mathrm{HS}}\to0$）。
+
+\emph{第三步：对 $C$ 作 SVD。}紧算子的谱定理给出奇异值分解
+\begin{equation*}
+ C=\sum_n s_n\,|u_n\rangle\langle v_n|,
+ \qquad s_n\ge0,
+\end{equation*}
+其中 $\{u_n\}\subset\mathcal H_1$、$\{v_n\}\subset\mathcal H_2$ 是正交归一集，$s_n$ 是 $C^*C$ 的本征值的平方根（奇异值）。具体地，$C^*Cu_n=s_n^2u_n$，$v_n=Cu_n/s_n$（$s_n>0$ 时），$Cv_n^*=s_nu_n$（此处 $v_n^*$ 视为 $\mathcal H_2$ 中向量）。
+
+\emph{第四步：将 rank-one 算子重新识别为张量。}每个 rank-one 算子 $|u_n\rangle\langle v_n|$ 对应于简单张量 $u_n\otimes v_n$（通过第一步识别的逆映射）。逐项转换，
+\begin{equation*}
+ \Psi=\sum_n s_n\,u_n\otimes v_n.
+\end{equation*}
+严格地说，识别映射 $\sum c_{ij}e_i\otimes f_j\leftrightarrow\sum c_{ij}|e_i\rangle\langle f_j|$ 是 Hilbert 空间同构 $\mathcal H_1\widehat\otimes\mathcal H_2\cong\mathcal S_2(\mathcal H_2,\mathcal H_1)$，SVD 在算子侧给出 $C=\sum s_n|u_n\rangle\langle v_n|$，对应张量侧即 $\Psi=\sum s_n u_n\otimes v_n$。
+
+\emph{第五步：验证范数。}由 Hilbert--Schmidt 范数的 Parseval 恒等式（奇异值平方和等于 HS 范数平方），
+\begin{equation*}
+ \sum_n s_n^2
+ =\|C\|_{\mathrm{HS}}^2
+ =\|\Psi\|^2,
+\end{equation*}
+从而得到\eqnrefs{eq:hilbert-schmidt-schmidt}。
+
+\emph{意义。}Schmidt 分解并不是额外的量子力学技巧，而是 Hilbert--Schmidt 算子 SVD 在张量积上的同一结构。奇异值 $s_n$ 是纠缠的定量度量：$s_0=1$（纯积态）对应零纠缠，$s_n$ 越均匀分布纠缠越大。
+
+\emph{举例：Bell 态。}取 $\mathcal H_1=\mathcal H_2=\CC^2$，Bell 态
+\[
+|\Phi^+\rangle=\frac{|00\rangle+|11\rangle}{\sqrt2}.
+\]
+对应算子 $C=\frac12\begin{pmatrix}1&0\\0&1\end{pmatrix}$（在标准基下）。SVD：$s_1=s_2=1/\sqrt2$，$u_1=v_1=|0\rangle$、$u_2=v_2=|1\rangle$。Schmidt 分解即原式，Schmidt 秩为 $2$，奇异值均匀分布对应最大纠缠。
+
+\emph{举例：可分态。}取 $|\Psi\rangle=|0\rangle\otimes\frac{|0\rangle+|1\rangle}{\sqrt2}$。对应算子 $C=\frac12\begin{pmatrix}1&0\\0&0\end{pmatrix}$，SVD：$s_1=1$，$u_1=|0\rangle$、$v_1=\frac{|0\rangle+|1\rangle}{\sqrt2}$，Schmidt 秩为 $1$，单一奇异值 $s_1=1$ 对应零纠缠。
+
+\emph{物理应用：二体纠缠量化。}Schmidt 分解给出二体纠缠的完整刻画：(1) Schmidt 秩（非零 $s_n$ 个数）为 $1$ 当且仅当可分；(2) 纠缠熵 $S=-\sum_n s_n^2\log s_n^2$ 为约化密度算子的 von Neumann 熵，是 LOCC 不变量；(3) Schmidt 系数 $\{s_n\}$ 在 LOCC 下单调递减（Nielsen 定理），给出 LOCC 等价的完整判定。对多体态，Schmidt 分解可逐对应用，但一般无简洁形式，张量网络（PEPS、MERA）是其数值推广。
+
+\emph{推广方向。}对无限维系统，Schmidt 分解仍成立但 Schmidt 秩可无限（如量子场论中双模 Gaussian 态）。对混合态，纠缠量化需用纠缠熵、negativity、concurrence 等更复杂不变量，无简单 SVD 结构。在算子代数与 Connes 嵌入问题中，Schmidt 分解与张量积结构的关系是 II$_1$ 因子理论的中心。在量子信息中，Schmidt 分解是量子纠错码、纠缠蒸馏与量子通信容量的数学基础。
+\end{derivation}
+
+接下来考察Gelfand 三联与广义本征向量。
+
+连续谱中的“本征态”通常不属于 Hilbert 空间。例如动量本征函数 $\ee^{\ii px/\hbar}$ 不在 $L^2(\RR)$。为严格容纳这类对象，引入稠密连续嵌入
+\[
+\boxed{\Phi\subset\mathcal H\subset\Phi'},
+\]
+其中 $\Phi$ 取比 Hilbert 拓扑更强的测试函数拓扑，$\Phi'$ 是连续对偶。例如
+\[
+\mathcal S(\RR^n)
+\subset L^2(\RR^n)
+\subset\mathcal S'(\RR^n).
+\]
+广义本征向量属于 $\Phi'$，其作用由对测试函数的配对定义，而不是假装它具有有限 Hilbert 范数。下一章的分布和 Fourier 变换正是在这一三联中自然工作。
+
+本章与下一章的分工因此明确：这里建立空间、定义域、闭性、伴随和紧性；下一章进一步处理真正的自伴扩张、谱测度、resolvent、Green 函数以及传播算子。
+
+接下来考察Rayleigh 商、闭二次型与 min--max 原理。
+
+对自伴算符，谱可以从本征方程求，也可以从二次型的变分结构识别。这里先把一般层次写清楚，再代入具体微分算符。设 $A$ 是 Hilbert 空间 $\mathcal H$ 上下半有界的自伴算符，即存在 $c\in\mathbb R$ 使
+\[
+\langle u|Au\rangle\ge c\|u\|^2,
+\qquad u\in D(A).
+\]
+与 $A$ 对应的闭二次型记为 $q_A[u]$，其定义域 $Q(A)$ 一般比算符定义域 $D(A)$ 大。对 $u\in D(A)$ 有
+\[
+q_A[u]=\langle u|Au\rangle,
+\]
+而在微分算符问题中，真正适合做变分的往往正是 $Q(A)$ 而不是 $D(A)$。
+
+若进一步假设 $A$ 具有紧预解，即对某个（等价地，对任意）$z\in\rho(A)$，$(A-zI)^{-1}$ 为紧算符，那么 $A$ 的下部谱由离散本征值组成，可以按重数排列为
+\[
+\lambda_1\le\lambda_2\le\cdots,
+\qquad \lambda_k\to+\infty.
+\]
+在 $Q(A)\setminus\{0\}$ 上定义 Rayleigh 商
+\[
+R_A[u]=\frac{q_A[u]}{\|u\|^2}.
+\]
+第一本征值满足
+\begin{equation}
+\boxed{
+\lambda_1=\inf_{u\in Q(A),\,u\ne0}R_A[u]
+}.
+\label{eq:rayleigh-ritz-first}
+\end{equation}
+更一般的 Courant--Fischer min--max 形式为
+\begin{equation}
+\boxed{
+\lambda_k=
+\inf_{\substack{S\subset Q(A)\\ \dim S=k}}
+\ \sup_{u\in S\setminus\{0\}}R_A[u]
+}.
+\label{eq:courant-fischer-form}
+\end{equation}
+若前 $k-1$ 个归一本征函数 $e_1,\ldots,e_{k-1}$ 已知，也可写成
+\[
+\lambda_k=
+\inf_{\substack{u\in Q(A)\setminus\{0\}\\u\perp e_1,\ldots,e_{k-1}}}
+R_A[u].
+\]
+有限维 Hermitian 矩阵的 Rayleigh--Ritz 原理只是这个结论的特例；无界微分算符还必须同时控制算符域、二次型域以及紧性条件，不能把有限维证明逐字照搬。
+
+现在代入最简单的 Sturm--Liouville 特例。取
+\[
+A=-\frac{\dd^2}{\dd x^2},
+\qquad
+D(A)=H^2(0,L)\cap H_0^1(0,L).
+\]
+它的二次型域是
+\[
+Q(A)=H_0^1(0,L),
+\]
+而不是 $H^2(0,L)$。对 $u\in H_0^1(0,L)$，分部积分给出
+\[
+q_A[u]=\int_0^L|u'(x)|^2\,\dd x.
+\]
+嵌入 $H_0^1(0,L)\hookrightarrow L^2(0,L)$ 是紧的，因此该 Dirichlet Laplacian 具有紧预解，\cref{eq:rayleigh-ritz-first} 具体化为
+\begin{equation}
+\boxed{
+\lambda_1=
+\min_{u\in H_0^1(0,L),\,u\ne0}
+\frac{\int_0^L|u'|^2\,\dd x}{\int_0^L|u|^2\,\dd x}
+}.
+\label{eq:dirichlet-rayleigh}
+\end{equation}
+精确本征值是 $\lambda_1=\pi^2/L^2$。若暂时不知道精确本征函数，可以选满足边界条件的试探函数
+\[
+u_{\rm tr}(x)=x(L-x).
+\]
+逐项代入：
+\[
+\int_0^L|u_{\rm tr}'|^2\,\dd x
+=\int_0^L(L-2x)^2\,\dd x
+=\frac{L^3}{3},
+\]
+\[
+\int_0^L|u_{\rm tr}|^2\,\dd x
+=\int_0^Lx^2(L-x)^2\,\dd x
+=\frac{L^5}{30}.
+\]
+所以
+\begin{equation}
+\boxed{
+\lambda_1\le R_A[u_{\rm tr}]=\frac{10}{L^2}
+}.
+\label{eq:dirichlet-trial-upper-bound}
+\end{equation}
+而 $\pi^2/L^2\simeq9.8696/L^2$，这个一次试探已经给出不到 $1.4\%$ 的上界误差。
+
+这也说明所谓“变分近似”究竟受什么控制：不是把微分方程随意简化，而是在精确 min--max 公式中把无限维允许空间 $Q(A)$ 限制到有限维试探子空间 $V_N$。由\cref{eq:courant-fischer-form}得到的 Ritz 本征值满足
+\[
+\lambda_k\le\lambda_k^{(N)},
+\qquad k\le N,
+\]
+而扩大试探空间只会把这些上界向下压紧。近似发生在试探空间截断，不发生在算符本身的定义上。
+
+接下来考察谱投影与测量概率的数学结构。
+
+谱定理
+\[
+A=\int\lambda\,\dd E_A(\lambda)
+\]
+中的 \(E_A\) 不是普通函数，而是投影值测度。对 Borel 集 \(\Delta\subset\mathbb R\)，
+\[
+E_A(\Delta)
+\]
+是一个正交投影，并满足
+\[
+E_A(\varnothing)=0,
+\qquad
+E_A(\mathbb R)=I,
+\]
+\[
+E_A(\Delta_1\cap\Delta_2)
+=E_A(\Delta_1)E_A(\Delta_2).
+\]
+若 \(\Delta_i\) 两两不交，则在强算符意义下
+\[
+E_A\left(\bigcup_i\Delta_i\right)
+=\sum_iE_A(\Delta_i).
+\]
+
+给定归一化态 \(\psi\)，定义标量测度
+\[
+\mu_\psi(\Delta)
+=\langle\psi|E_A(\Delta)\psi\rangle.
+\]
+因为 \(E_A(\Delta)\) 是投影，
+\[
+0\le\mu_\psi(\Delta)\le1,
+\qquad
+\mu_\psi(\mathbb R)=1.
+\]
+所以 \(\mu_\psi\) 是概率测度。算符函数的期望值可以写成
+\begin{equation}
+\boxed{
+\langle\psi|f(A)\psi\rangle
+=\int_{\sigma(A)}f(\lambda)\,\dd\mu_\psi(\lambda)
+}.
+\label{eq:spectral-expectation}
+\end{equation}
+若谱离散，这退化为
+\[
+\sum_n f(\lambda_n)|\langle e_n|\psi\rangle|^2.
+\]
+若谱连续，则同一公式自动变成积分。这样“离散求和”和“连续谱积分”不是两套公设，而是同一个投影值测度公式的两种情况。
+
+接下来考察Rigged Hilbert space：把广义本征态放在哪里。
+
+连续谱中的 \(|x\rangle\)、\(|p\rangle\) 不能作为普通向量放在 \(L^2\) 中。一个常用做法是选择一个比 Hilbert 空间更小、拓扑更强的测试空间 \(\Phi\)，构造 Gelfand 三重
+\begin{equation}
+\boxed{
+\Phi\subset\mathcal H\subset\Phi'
+}.
+\label{eq:rigged-hilbert-triple}
+\end{equation}
+其中 \(\Phi'\) 是 \(\Phi\) 的连续对偶或反对偶，具体取决于线性约定。
+
+对位置--动量问题，最自然的选择之一是
+\[
+\mathcal S(\mathbb R)
+\subset L^2(\mathbb R)
+\subset\mathcal S'(\mathbb R).
+\]
+Schwartz 函数足够光滑、衰减足够快，使位置和动量算符的反复作用仍有良好意义；而缓增分布空间又足够大，能够容纳
+\[
+\delta(x-x_0),
+\qquad
+\ee^{\ii px},
+\]
+这些不属于 \(L^2\) 的广义本征态。
+
+例如位置算符
+\[
+(Q\psi)(x)=x\psi(x)
+\]
+的形式广义本征态 \(|x_0\rangle\) 对测试函数的作用就是
+\[
+\langle x_0|\phi\rangle=\phi(x_0),
+\]
+也就是 \(\delta(x-x_0)\)。动量广义本征态则为
+\[
+\langle x|p\rangle
+=\frac1{\sqrt{2\pi}}\ee^{\ii px}.
+\]
+它对 \(\phi\in\mathcal S\) 的作用
+\[
+\int\frac{\ee^{-\ii px}}{\sqrt{2\pi}}\phi(x)\,\dd x
+\]
+正是 Fourier 变换。
+
+因此第三章并不是另起炉灶研究“奇怪函数”，而是在给第二章连续谱中已经出现的广义态建立严格的对偶空间。
+

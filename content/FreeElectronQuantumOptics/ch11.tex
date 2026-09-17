@@ -1,0 +1,3660 @@
+\chapter{介质响应、辐射通道与实验反演}\label{chap:media-radiation}
+
+前面求电子动力学时，曾把模式场和耦合矩阵元作为已知量。在具体实验中，这些量还需要由材料性质和装置几何求出。例如，同一个入射电子掠过金属表面或穿过介质时，会激发不同的场；即使总能量损失相同，能够传播到远处并被探测器收集的光也可能不同。本章从 Maxwell 方程求环境的响应，再把它代回电子的跃迁与探测公式。
+
+先回忆线性方程的 Green 函数方法。求出点源产生的响应以后，任意分布源产生的场就等于各点响应的加权叠加。电流和电场都是矢量，源沿一个方向振荡时，产生的场可以沿另一个方向，因此这里需要一个带两个分量指标的 Green 张量。对各向同性、空间局域的非磁性介质，推迟 Green 张量 $\mathbf G^R$ 满足
+\begin{equation}
+\boxed{
+\left[\nabla\times\nabla\times
+-\frac{\omega^2}{c^2}\varepsilon(\mathbf r,\omega)\right]
+\mathbf G^R(\mathbf r,\mathbf r';\omega)
+=\mathbf I\,\delta^{(3)}(\mathbf r-\mathbf r').}
+\label{eq:retarded_green_tensor_beginner_definition_dp123}
+\end{equation}
+其中 $\varepsilon$ 是相对介电函数，$\mathbf I$ 是三维单位张量。$\mathbf r'$ 是源点，$\mathbf r$ 是观察点，微分只作用于 $\mathbf r$。分量 $G^R_{ij}$ 记录沿 $j$ 方向的点源对 $i$ 方向电场的贡献。上标 $R$ 表示推迟边界条件：时域中的响应不能早于源，开放空间中的波向外传播。
+
+取时间依赖为 $\ee^{-\ii\omega t}$ 的单频电流复振幅 $\mathbf J(\mathbf r,\omega)$，相应电场复振幅为
+\begin{equation}
+\boxed{
+\mathbf E(\mathbf r,\omega)
+=\ii\mu_0\omega\int\dd^3r'\,
+\mathbf G^R(\mathbf r,\mathbf r';\omega)\cdot
+\mathbf J(\mathbf r',\omega).}
+\label{eq:green_tensor_source_to_field_dp123}
+\end{equation}
+点号对源的方向指标求和，积分对所有源位置求和。这里 $[\mathbf G^R]={\rm m^{-1}}$；与 $\mu_0\omega$、电流密度和体积元相乘后，右边具有电场单位。对于一般时间信号，同一关系作用于逐频 Fourier 分量。改变材料或边界时，需要重求 $\mathbf G^R$；改变入射电子态时，需要重求作为源的电流。
+
+电子源由量子态决定。若要分辨电子的初态 $|i\rangle$ 和末态 $|f\rangle$，使用电流算符在两态之间的矩阵元
+\[
+j^\mu_{fi}(x)=\langle f|\hat j^\mu(x)|i\rangle.
+\]
+这个跃迁电流保留电子反冲、自旋和波包相干。若电子波包足够窄、反冲不显著改变轨迹，并且所测量的量不分辨相关电子末态，才可以进一步使用沿给定轨迹运动的经典电流。第七章已经建立这一步近似；本章将在相应条件下用它求电子能量损失和辐射。\cite{GarciaDeAbajo2010RMP,GarciaDeAbajoDiGiulio2021,RoquesCarmes2023APR}
+
+求出场以后，还要区分留在材料中的能量与进入远场的辐射，再考虑探测器实际接收的方向、频率和偏振。最后一节将把这些结果写成给定实验参数时的结果概率 $p(x|\vartheta)$，其中 $x$ 是探测结果，$\vartheta$ 表示待求的材料、近场或几何参数。由参数计算概率称为前向计算；利用测得的概率反过来估计参数，就是实验反演。
+
+\section{辐射与介质响应}
+
+电子在介质附近运动时，损失的能量可以转化为远场光，也可以留在材料的激发中。我们先从一般源电流求出远场辐射条件，再通过介电函数计算材料怎样响应。这样就能分别讨论加速、界面以及周期结构怎样使电子与可传播的光耦合，并在需要时保留电子反冲。
+
+
+\subsection{加速与界面辐射}
+
+匀速自由电子不能在真空中单独发射一个真实光子，因为初末电子和光子无法同时满足能量、动量守恒。外力可以向电子提供额外动量，界面或周期结构也可以参与交换，于是出现允许的辐射过程。为了统一计算这些情况，先写出任意守恒电流产生的远场，再分别代入相应的电子轨迹或诱导电流。
+
+在进入点电荷轨迹以前，先保留任意守恒源。对正频率分量 $\mathbf J(\mathbf r,\omega)$，真空远区场由推迟 Green 张量的辐射渐近式给出
+\begin{equation}
+\boxed{
+\mathbf E(\mathbf r,\omega)
+=
+\ii\mu_0\omega\frac{\ee^{\ii k r}}{4\pi r}
+\bigl(\mathbf I-\mathbf n\mathbf n^{\mathsf T}\bigr)
+\cdot\widetilde{\mathbf J}(k\mathbf n,\omega)
++O(r^{-2}),
+\qquad k=\omega/c.}
+\label{eq:general_current_far_field_radiation}
+\end{equation}
+其中 $\mathbf n=\mathbf r/r$ 是观察方向，$\widetilde{\mathbf J}$ 是电流对空间坐标的 Fourier 变换。矩阵 $\mathbf I-\mathbf n\mathbf n^{\mathsf T}$ 去掉沿观察方向的分量，只留下横向电流；自变量 $k\mathbf n$ 则选出满足真空波色散 $k=\omega/c$ 的部分。因此，求某个过程的辐射，就是先求该过程的电流，再取它在传播波矢处的横向分量。对远场振幅取模平方并使用 Parseval 恒等式，即可求每单位频率和立体角的辐射能量。
+
+点电荷轨迹提供这一一般源公式的第一个具体实现。对轨迹 $\mathbf r_e(t)$，四流由
+\begin{equation*}
+\rho(\mathbf r,t)=\qe\delta^{(3)}[\mathbf r-\mathbf r_e(t)],
+\qquad
+\mathbf J(\mathbf r,t)=\qe\mathbf v(t)\delta^{(3)}[\mathbf r-\mathbf r_e(t)]
+\end{equation*}
+定义。观察点 $\mathbf r$ 与推迟时间$t_{\rm r}$ 由
+\begin{equation*}
+t-t_{\rm r}=\frac{R(t_{\rm r})}{c},
+\qquad
+\mathbf R=\mathbf r-\mathbf r_e(t_{\rm r}),
+\qquad
+\mathbf n=\frac{\mathbf R}{R}
+\end{equation*}
+联系。相对论前向聚束可用下列无量纲量表示：
+\begin{equation*}
+\boldsymbol\beta_{\rm rel}=\frac{\mathbf v}{c},
+\qquad
+\gamma_{\rm L}=(1-\beta_{\rm rel}^2)^{-1/2},
+\qquad
+\mathfrak d_{\rm ret}=1-\mathbf n\cdot\boldsymbol\beta_{\rm rel}.
+\end{equation*}
+$\mathfrak d_{\rm ret}$ 是推迟时间的雅可比因子，也是相对论前向聚束的核心分母。由点电荷推迟势求得的远区 $R^{-1}$ 加速度场是点电荷因果电磁场的辐射部分；这一完整点电荷推迟场通常称为 Liénard--Wiechert 场。其远区项为
+\begin{equation}
+\boxed{
+\mathbf E_{\rm rad}
+=\frac{\qe}{4\pi\varepsilon_0cR}
+\frac{\mathbf n\times[(\mathbf n-\boldsymbol\beta_{\rm rel})\times\dot{\boldsymbol\beta}_{\rm rel}]}
+{(1-\mathbf n\cdot\boldsymbol\beta_{\rm rel})^3}.}
+\label{eq:lienard_wiechert_radiation_field}
+\end{equation}
+把这一场代入远区 Poynting 通量，并按源的推迟时间计量能流，得到角功率
+\begin{equation}
+\boxed{
+\frac{\dd P_{\rm emit}}{\dd\Omega}
+=
+\frac{\qe^2}{16\pi^2\varepsilon_0c}
+\frac{
+\left|
+\mathbf n\times[(\mathbf n-\boldsymbol\beta_{\rm rel})
+\times\dot{\boldsymbol\beta}_{\rm rel}]
+\right|^2}
+{(1-\mathbf n\cdot\boldsymbol\beta_{\rm rel})^5}.}
+\label{eq:lienard_angular_emission_power}
+\end{equation}
+其中 $\dot{\boldsymbol\beta}_{\rm rel}=\mathbf a/c$。平行加速时角核正比于
+\begin{equation*}
+\frac{\sin^2\theta}{(1-\beta_{\rm rel}\cos\theta)^5},
+\end{equation*}
+因此 $\gamma_{\rm L}$ 增大时辐射逐渐压缩到前向角域。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.74\linewidth]{lienard_angular_kernel.png}
+\caption{Liénard 角功率在平行加速度下的归一化角核。曲线对应 $\beta_{\rm rel}=0.30,0.70,0.95$；相对论极限中的窄前向主瓣来自 $1-\mathbf n\cdot\boldsymbol\beta_{\rm rel}$的推迟时间的雅可比因子。}
+\label{fig:lienard_angular_kernel}
+\end{figure}
+对全立体角积分后得到总辐射功率
+\begin{equation}
+\boxed{
+P_{\rm rad}
+=\frac{\qe^2\gamma_{\rm L}^6}{6\pi\varepsilon_0c^3}
+\left[a^2-|\boldsymbol\beta_{\rm rel}\times\mathbf a|^2\right].}
+\label{eq:lienard_total_power_from_angular_flux}
+\end{equation}
+这给出了制动辐射的经典极限：外力首先改变电子四流，电子加速度的傅里叶分量随后耦合到真空传播模。量子论中“散射前发射”和“散射后发射”的振幅之和在软光子极限必须回到这一结果。
+
+界面辐射的机制不同：电子可以保持近似匀速，但界面要求其 Coulomb/极化场在两侧重新满足 Maxwell 边界条件。为了分离这个几何机制，考虑速度在时间窗 $\Delta t$ 内由 $\boldsymbol\beta_i$ 变为 $\boldsymbol\beta_f$ 的有效端点，并定义
+\begin{equation*}
+\mathbf T(\boldsymbol\beta_{\rm rel})
+\equiv
+\frac{\mathbf n\times(\mathbf n\times\boldsymbol\beta_{\rm rel})}
+{1-\mathbf n\cdot\boldsymbol\beta_{\rm rel}}.
+\end{equation*}
+当观测频率不能分辨跳变内部结构，即
+\begin{equation*}
+\omega(1-\mathbf n\cdot\boldsymbol\beta_{\rm rel})\Delta t\ll1,
+\end{equation*}
+每个有效端点只贡献 $\Delta\mathbf T$。多个相干端点在线性振幅层面相加，因此频谱角能量为
+\begin{equation}
+\boxed{
+\frac{\dd^2 W}{\dd\omega\,\dd\Omega}
+=\frac{1}{16\pi^3\varepsilon_0c}
+\left|
+\sum_jq_j
+[\mathbf T(\boldsymbol\beta_{f,j})-\mathbf T(\boldsymbol\beta_{i,j})]
+\ee^{\ii\varphi_j}
+\right|^2.}
+\label{eq:abrupt_velocity_change_spectrum}
+\end{equation}
+\begin{exbox}[理想导体渡越辐射]
+理想导体正入射可以用真实电荷和镜像电荷两个相干端点实现边界条件。此时得到理想导体正入射的经典跃迁辐射极限；这一结果通常称为 Ginzburg--Frank 公式：
+\begin{equation}
+\boxed{
+\frac{\dd^2 W_{\rm TR}}{\dd\omega\,\dd\Omega}
+=\frac{\qe^2}{4\pi^3\varepsilon_0c}
+\frac{\beta_{\rm rel}^2\sin^2\theta}
+{(1-\beta_{\rm rel}^2\cos^2\theta)^2}.}
+\label{eq:ginzburg_frank_perfect_conductor}
+\end{equation}
+这个理想化结果没有材料高频截止；真实高频抑制来自材料色散、有限界面厚度/几何和最终不可忽略的量子反冲，而不是单独由“形成长度”自动产生。
+
+
+\medskip
+
+理想导体正入射时，真空侧边界条件可由真实电荷与镜像电荷的两个相干端点实现。令真实电荷以 $+\beta_{\rm rel}\mathbf e_z$ 入射，镜像电荷 $-\qe$ 以 $-\beta_{\rm rel}\mathbf e_z$ 镜像运动，并定义
+\begin{equation*}
+\mathbf N=\mathbf n\times(\mathbf n\times\mathbf e_z),
+\qquad |\mathbf N|^2=\sin^2\theta.
+\end{equation*}
+代入\eqnrefs{eq:abrupt_velocity_change_spectrum} 的端点振幅核，两个贡献相加为
+\begin{align*}
+\mathcal A_{\rm TR}
+&=-\qe\frac{\beta_{\rm rel}\mathbf N}{1-\beta_{\rm rel}\cos\theta}
+-\qe\frac{\beta_{\rm rel}\mathbf N}{1+\beta_{\rm rel}\cos\theta}\\
+&=-\frac{2\qe\beta_{\rm rel}\mathbf N}{1-\beta_{\rm rel}^2\cos^2\theta}.
+\end{align*}
+取模平方并代回一般表达式，即得到\eqnrefs{eq:ginzburg_frank_perfect_conductor}。
+\end{exbox}
+
+上面的端点公式描述了局域辐射振幅，但有限长度结构还需要回答另一个问题：轨迹上相隔多远的两个发射位置仍会相干相加。为此定义\emph{形成长度}（formation length）为纵向相位失配累积到给定量级所需的距离。取纵向失配相位累积到 $1\,\mathrm{rad}$ 的距离定义形成长度。它衡量相干积累距离，与材料中的真实衰减长度是不同的物理尺度。若某一频率分量沿轨迹的相位为
+\begin{equation*}
+\varphi_{\rm acc}(z)=\frac{\omega z}{v}-\kappa_zz,
+\end{equation*}
+则定义纵向失配 $\Delta \kappa_z=\omega/v-\kappa_z$，并以积累 $1\,\mathrm{rad}$ 相位为约定定义
+\begin{equation}
+\boxed{
+L_f(\omega)\equiv\frac1{|\Delta \kappa_z|}
+=\frac1{|\omega/v-\kappa_z|}.}
+\label{eq:formation_length_general_mismatch}
+\end{equation}
+在真空远场 $\kappa_z=(\omega/c)\cos\theta$，因此精确形成长度为
+\begin{equation*}
+L_f
+=\frac{c}{\omega\,[\beta_{\rm rel}^{-1}-\cos\theta]}
+\qquad (0\le\theta<\pi,\ \beta_{\rm rel}<1).
+\end{equation*}
+为控制超相对论小角展开，定义
+\begin{equation*}
+ x\equiv\gamma_{\rm L}^{-2},
+ \qquad y\equiv\theta^2,
+\end{equation*}
+以及两个精确余项
+\begin{align*}
+ r_\beta(x)
+ &\equiv(1-x)^{-1/2}-1-\frac{x}{2},\\
+ r_\theta(\theta)
+ &\equiv1-\cos\theta-\frac{\theta^2}{2}.
+\end{align*}
+于是
+\begin{equation*}
+\beta_{\rm rel}^{-1}-\cos\theta
+=\frac{x+y}{2}+r_\beta+r_\theta.
+\end{equation*}
+把
+\begin{equation*}
+\delta_f\equiv\frac{2(r_\beta+r_\theta)}{x+y}
+\end{equation*}
+定义为分母的相对修正，便得到精确关系
+\begin{equation}
+\boxed{
+L_f
+=\frac{2c}{\omega(x+y)}\frac{1}{1+\delta_f},
+\qquad
+x=\gamma_{\rm L}^{-2},\ y=\theta^2.}
+\label{eq:formation_length_ultrarelativistic}
+\end{equation}
+节末推导给出显式上界 $|\delta_f|\le\epsilon_f$。当 $\epsilon_f<1$ 时，领先小角式
+$L_f^{(0)}=2c/[\omega(\gamma_{\rm L}^{-2}+\theta^2)]$
+满足
+\begin{equation*}
+\left|\frac{L_f-L_f^{(0)}}{L_f^{(0)}}\right|
+\le\frac{\epsilon_f}{1-\epsilon_f}.
+\end{equation*}
+因此是否可以使用常见的小角形成长度，不再由“Lorentz 因子很大、$\theta$ 很小”的定性判断决定，而由这个显式误差界决定。
+周期性或可分辨反冲会改变纵向相位匹配，此时精确失配写成
+\begin{equation*}
+\Delta \kappa_z
+=\frac{p_{i,z}-p_{f,z}}{\hbar}-\kappa_z-G_z.
+\end{equation*}
+电子真实初末动量、辐射波矢和倒格矢因此共同进入形成长度；界面辐射、周期辐射与有限长度同步都可据此归结为纵向相位在何种距离上失去相干。
+
+对有损或开放纳米结构，还必须区分“电子失去的总能量”和“真正跑到远场探测器的辐射能量”。EELS 读取前者；阴极发光（cathodoluminescence, CL）或远场光子计数读取后者中被光学系统实际收集的部分。二者的通道分解直接来自同一个频域 Poynting 定理。采用全文的 $\ee^{-\ii\omega t}$ convention，对给定经典频域电流 $\widetilde{\mathbf J}$，Green 张量给
+\[
+\widetilde{\mathbf E}(\mathbf r,\omega)
+=\ii\mu_0\omega\int\dd^3r'\,
+\mathbf G^R(\mathbf r,\mathbf r';\omega)\cdot
+\widetilde{\mathbf J}(\mathbf r',\omega).
+\]
+源在该频率上损失给电磁环境的平均功率定义为
+\begin{equation}
+\boxed{
+P_{\rm loss}(\omega)
+\equiv
+-\frac12\Re\int\dd^3r\,
+\widetilde{\mathbf J}^{*}\cdot\widetilde{\mathbf E}
+=\frac{\mu_0\omega}{2}
+\iint\dd^3r\,\dd^3r'\,
+\widetilde{\mathbf J}^{*}(\mathbf r)\cdot
+\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r';\omega)
+\cdot\widetilde{\mathbf J}(\mathbf r').}
+\label{eq:source_total_loss_green_power}
+\end{equation}
+对于空间局域、非磁被动介质，这个总功率严格分成材料吸收与无穷远辐射通量：
+\begin{equation}
+\boxed{
+P_{\rm loss}=P_{\rm abs}+P_{\rm rad},
+\qquad
+P_{\rm abs}
+=\frac{\omega\varepsilon_0}{2}
+\int_V\dd^3r\,
+\widetilde{\mathbf E}^{*}\cdot
+\boldsymbol\varepsilon_I\cdot
+\widetilde{\mathbf E},
+\qquad
+P_{\rm rad}
+=\frac12\Re\oint_{\partial V}\dd\mathbf A\cdot
+(\widetilde{\mathbf E}\times\widetilde{\mathbf H}^{*}).}
+\label{eq:loss_absorption_radiation_decomposition}
+\end{equation}
+$V$ 取到包围全部材料并延伸到辐射远区。若还存在磁损耗，应在 $P_{\rm abs}$ 中增加
+$(\omega\mu_0/2)\int \mathbf H^*\cdot\boldsymbol\mu_I\cdot\mathbf H$。因此 $\operatorname{Im}G^R$ 本身包含所有开放通道：材料耗散和远场辐射只有在作 Poynting 分解后才被区分。
+
+这给出自由电子实验中一个非常实用的层级关系。经典 EELS 测得的是电子的总能量损失，原则上对应 $P_{\rm loss}$；阴极发光或远场光子计数只读取 $P_{\rm rad}$ 中进一步被数值孔径、偏振和频带选中的部分。因此可以定义
+\begin{equation}
+\boxed{
+\mathcal B_{\rm rad}(\omega)
+\equiv\frac{P_{\rm rad}(\omega)}{P_{\rm loss}(\omega)},
+\qquad 0\le\mathcal B_{\rm rad}\le1,}
+\label{eq:radiative_branching_efficiency_green}
+\end{equation}
+但 $\mathcal B_{\rm rad}$ 是环境通道分支比，不是电子--环境微观耦合常数。量子跃迁流 $\mathbf j_{fi}$ 的一量子过程也具有完全相同的通道分解：先由 $\operatorname{Im}G^R$ 给总环境谱权重，再由远场投影或材料吸收算符选择具体观测通道。
+
+
+\begin{derivation}[从\eqnrefs{eq:lienard_wiechert_radiation_field}到\eqnrefs{eq:lienard_total_power_from_angular_flux}]
+
+从远区辐射场
+\[
+\mathbf E_{\rm rad}
+=
+\frac{\qe}{4\pi\varepsilon_0cR}
+\frac{
+\mathbf n\times[
+(\mathbf n-\boldsymbol\beta_{\rm rel})
+\times\dot{\boldsymbol\beta}_{\rm rel}]
+}
+{\mathfrak d_{\rm ret}^{\,3}},
+\qquad
+\mathfrak d_{\rm ret}
+=
+1-\mathbf n\cdot\boldsymbol\beta_{\rm rel}
+\]
+出发。远区场横向于传播方向，因此
+\[
+\mathbf n\cdot\mathbf E_{\rm rad}=0,
+\qquad
+\mathbf B_{\rm rad}
+=
+\frac1c\mathbf n\times\mathbf E_{\rm rad}.
+\]
+Poynting 向量的径向分量于是为
+\[
+\mathbf n\cdot\mathbf S_{\rm rad}
+=
+\frac1{\mu_0}
+\mathbf n\cdot
+(\mathbf E_{\rm rad}\times\mathbf B_{\rm rad})
+=
+\varepsilon_0c|\mathbf E_{\rm rad}|^2.
+\]
+乘球面元 \(R^2\dd\Omega\)，按\emph{观察时间} \(t\) 计的角能流为
+\[
+\frac{\dd P_{\rm obs}}{\dd\Omega}
+=
+\frac{\qe^2}{16\pi^2\varepsilon_0c}
+\frac{
+\left|
+\mathbf n\times[
+(\mathbf n-\boldsymbol\beta_{\rm rel})
+\times\dot{\boldsymbol\beta}_{\rm rel}]
+\right|^2
+}
+{\mathfrak d_{\rm ret}^{\,6}}.
+\]
+
+这里还不能直接把它称为“源在单位时间内发射的功率”，因为不同观察方向对应的推迟时间间隔不同。由
+\[
+t-t_{\rm r}
+=
+\frac{R(t_{\rm r})}{c}
+\]
+求导，并用
+\[
+\frac{\dd R}{\dd t_{\rm r}}
+=
+-\mathbf n\cdot\mathbf v
+\]
+得到
+\[
+\frac{\dd t}{\dd t_{\rm r}}
+=
+1-\mathbf n\cdot\boldsymbol\beta_{\rm rel}
+=
+\mathfrak d_{\rm ret}.
+\]
+因此同一辐射能量满足
+\[
+\frac{\dd E}{\dd t_{\rm r}\dd\Omega}
+=
+\frac{\dd E}{\dd t\dd\Omega}
+\frac{\dd t}{\dd t_{\rm r}},
+\]
+从而
+\[
+\boxed{
+\frac{\dd P_{\rm emit}}{\dd\Omega}
+=
+\frac{\qe^2}{16\pi^2\varepsilon_0c}
+\frac{
+\left|
+\mathbf n\times[
+(\mathbf n-\boldsymbol\beta_{\rm rel})
+\times\dot{\boldsymbol\beta}_{\rm rel}]
+\right|^2
+}
+{(1-\mathbf n\cdot\boldsymbol\beta_{\rm rel})^5}.
+}
+\]
+这就是正文\eqnrefs{eq:lienard_angular_emission_power}。分母从六次幂降到五次幂，正是推迟时间 Jacobian 的结果。
+
+总辐射功率可由这个角分布直接积分得到。由于总功率只依赖 \(\boldsymbol\beta_{\rm rel}\) 与 \(\dot{\boldsymbol\beta}_{\rm rel}\) 的相对方向，可取
+\[
+\boldsymbol\beta_{\rm rel}
+=
+\beta_{\rm rel}\mathbf e_z,
+\qquad
+\dot{\boldsymbol\beta}_{\rm rel}
+=
+\dot\beta_\perp\mathbf e_x
++
+\dot\beta_\parallel\mathbf e_z,
+\]
+并写
+\[
+u=\cos\theta,
+\qquad
+\dd\Omega=\dd\varphi\,\dd u.
+\]
+对方位角先积分。直接展开双重叉积并使用
+\[
+\int_0^{2\pi}\cos\varphi\,\dd\varphi=0,
+\qquad
+\int_0^{2\pi}\cos^2\varphi\,\dd\varphi=\pi
+\]
+可得
+\begin{align*}
+&\int_0^{2\pi}\dd\varphi\,
+\left|
+\mathbf n\times[
+(\mathbf n-\boldsymbol\beta_{\rm rel})
+\times\dot{\boldsymbol\beta}_{\rm rel}]
+\right|^2\\
+&\qquad=
+\pi\Bigl[
+2\dot\beta_\parallel^2(1-u^2)
++
+\dot\beta_\perp^2
+\bigl((1+\beta_{\rm rel}^2)(1+u^2)-4\beta_{\rm rel}u\bigr)
+\Bigr].
+\end{align*}
+平行、垂直两部分因此分别需要两个一维积分：
+\[
+I_\parallel
+=
+2\pi
+\int_{-1}^{1}
+\frac{1-u^2}{(1-\beta_{\rm rel}u)^5}\,\dd u,
+\]
+\[
+I_\perp
+=
+\pi
+\int_{-1}^{1}
+\frac{
+(1+\beta_{\rm rel}^2)(1+u^2)-4\beta_{\rm rel}u
+}
+{(1-\beta_{\rm rel}u)^5}\,\dd u.
+\]
+这些是有理函数积分。令
+\[
+w=1-\beta_{\rm rel}u,
+\qquad
+u=\frac{1-w}{\beta_{\rm rel}},
+\qquad
+\dd u=-\frac{\dd w}{\beta_{\rm rel}},
+\]
+上下限变为 \(w=1+\beta_{\rm rel}\) 与
+\(w=1-\beta_{\rm rel}\)。逐项积分 \(w^{-3},w^{-4},w^{-5}\) 后得到
+\[
+I_\parallel
+=
+\frac{8\pi}{3}
+\frac1{(1-\beta_{\rm rel}^2)^3}
+=
+\frac{8\pi}{3}\gamma_{\rm L}^6,
+\]
+以及
+\[
+I_\perp
+=
+\frac{8\pi}{3}
+\frac1{(1-\beta_{\rm rel}^2)^2}
+=
+\frac{8\pi}{3}\gamma_{\rm L}^4.
+\]
+代回角功率，
+\begin{align*}
+P_{\rm rad}
+&=
+\frac{\qe^2}{16\pi^2\varepsilon_0c}
+\left(
+I_\parallel\dot\beta_\parallel^2
++
+I_\perp\dot\beta_\perp^2
+\right)\\
+&=
+\frac{\qe^2}{6\pi\varepsilon_0c}
+\left(
+\gamma_{\rm L}^6\dot\beta_\parallel^2
++
+\gamma_{\rm L}^4\dot\beta_\perp^2
+\right).
+\end{align*}
+由于
+\[
+\dot{\boldsymbol\beta}_{\rm rel}
+=
+\frac{\mathbf a}{c},
+\qquad
+|\boldsymbol\beta_{\rm rel}\times\mathbf a|^2
+=
+\beta_{\rm rel}^2a_\perp^2,
+\]
+并且
+\[
+\gamma_{\rm L}^6
+\left[
+a^2-
+|\boldsymbol\beta_{\rm rel}\times\mathbf a|^2
+\right]
+=
+\gamma_{\rm L}^6a_\parallel^2
++
+\gamma_{\rm L}^4a_\perp^2,
+\]
+最终得到
+\[
+\boxed{
+P_{\rm rad}
+=
+\frac{\qe^2\gamma_{\rm L}^6}
+{6\pi\varepsilon_0c^3}
+\left[
+a^2-
+|\boldsymbol\beta_{\rm rel}\times\mathbf a|^2
+\right],
+}
+\]
+即正文\eqnrefs{eq:lienard_total_power_from_angular_flux}。非相对论极限
+\(\beta_{\rm rel}\to0\) 自动退化为 Larmor 功率
+\[
+P_{\rm rad}
+\longrightarrow
+\frac{\qe^2a^2}{6\pi\varepsilon_0c^3}.
+\]
+\end{derivation}
+
+
+\begin{derivation}[从\eqnrefs{eq:formation_length_general_mismatch}到\eqnrefs{eq:formation_length_ultrarelativistic}]
+真空远场中 $\kappa_z=(\omega/c)\cos\theta$，而 $v=\beta_{\rm rel}c$。因此正文\eqnrefs{eq:formation_length_general_mismatch} 精确给出
+\begin{equation*}
+L_f
+=\frac{c}{\omega\,[\beta_{\rm rel}^{-1}-\cos\theta]}.
+\end{equation*}
+令 $x=\gamma_{\rm L}^{-2}$，则
+$\beta_{\rm rel}^{-1}=(1-x)^{-1/2}$。对函数
+$f(x)=(1-x)^{-1/2}$ 在 $x=0$ 处作一阶 Taylor 展开。由于
+\begin{equation*}
+f''(u)=\frac{3}{4}(1-u)^{-5/2},
+\end{equation*}
+Lagrange 余项给出某个 $\xi\in(0,x)$ 使
+\begin{equation*}
+r_\beta(x)
+=f(x)-1-\frac{x}{2}
+=\frac{f''(\xi)}{2}x^2.
+\end{equation*}
+因 $f''(u)$ 在 $0\le u<x<1$ 上单调递增，
+\begin{equation*}
+0\le r_\beta(x)
+\le\frac{3x^2}{8(1-x)^{5/2}}.
+\end{equation*}
+
+角度部分使用四阶 Taylor 公式。存在介于 $0$ 与 $\theta$ 之间的中间角 $\theta_*$，使
+\begin{equation*}
+\cos\theta
+=1-\frac{\theta^2}{2}
++\frac{\theta^4}{24}\cos\theta_*.
+\end{equation*}
+所以
+\begin{equation*}
+r_\theta(\theta)
+=1-\cos\theta-\frac{\theta^2}{2}
+=-\frac{\theta^4}{24}\cos\theta_*,
+\qquad
+|r_\theta|\le\frac{\theta^4}{24}.
+\end{equation*}
+由此
+\begin{align*}
+\beta_{\rm rel}^{-1}-\cos\theta
+&=\frac{x+\theta^2}{2}+r_\beta+r_\theta\\
+&=\frac{x+\theta^2}{2}(1+\delta_f),
+\end{align*}
+其中
+\begin{equation*}
+\delta_f
+=\frac{2(r_\beta+r_\theta)}{x+\theta^2}.
+\end{equation*}
+三角不等式给出
+\begin{equation*}
+|\delta_f|
+\le
+\boxed{
+\epsilon_f
+\equiv
+\frac{
+\dfrac{3x^2}{4(1-x)^{5/2}}
++\dfrac{\theta^4}{12}
+}{x+\theta^2}}.
+\end{equation*}
+代回形成长度即得到正文\eqnrefs{eq:formation_length_ultrarelativistic}。若 $\epsilon_f<1$，则
+\begin{align*}
+\left|\frac{L_f-L_f^{(0)}}{L_f^{(0)}}\right|
+&=\left|\frac1{1+\delta_f}-1\right|\\
+&=\frac{|\delta_f|}{|1+\delta_f|}\\
+&\le\frac{\epsilon_f}{1-\epsilon_f},
+\end{align*}
+其中
+$L_f^{(0)}=2c/[\omega(x+\theta^2)]$。这给出了常用超相对论小角形成长度的定量适用条件。
+\end{derivation}
+
+
+\begin{derivation}[从\eqnrefs{eq:source_total_loss_green_power}到\eqnrefs{eq:loss_absorption_radiation_decomposition}]
+先证明 Green 表达式。对 $\ee^{-\ii\omega t}$ convention，频域 Maxwell 方程给
+\[
+\widetilde{\mathbf E}
+=\ii\mu_0\omega\,\mathbf G^R\widetilde{\mathbf J}.
+\]
+定义复数
+\[
+Z_J
+\equiv
+\iint\dd^3r\,\dd^3r'\,
+\widetilde{\mathbf J}^{*}(\mathbf r)\cdot
+\mathbf G^R(\mathbf r,\mathbf r';\omega)
+\cdot\widetilde{\mathbf J}(\mathbf r').
+\]
+则
+\[
+\int\dd^3r\,\widetilde{\mathbf J}^{*}\cdot\widetilde{\mathbf E}
+=\ii\mu_0\omega Z_J.
+\]
+电子或外部源损失给场的平均功率取负的机械做功率，
+\begin{align*}
+P_{\rm loss}
+&=-\frac12\Re(\ii\mu_0\omega Z_J)\\
+&=\frac{\mu_0\omega}{2}\Im Z_J.
+\end{align*}
+而
+\[
+\Im Z_J
+=\iint\dd^3r\,\dd^3r'\,
+\widetilde{\mathbf J}^{*}(\mathbf r)\cdot
+\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r';\omega)
+\cdot\widetilde{\mathbf J}(\mathbf r'),
+\]
+得到正文\eqnrefs{eq:source_total_loss_green_power}。
+
+局域能量守恒进一步把总损耗分解为材料吸收和辐射。取非磁介质
+$\mathbf B=\mu_0\mathbf H$、
+$\mathbf D=\varepsilon_0\boldsymbol\varepsilon_r\mathbf E$。频域 Maxwell 方程为
+\[
+\nabla\times\mathbf E=\ii\omega\mu_0\mathbf H,
+\qquad
+\nabla\times\mathbf H=\mathbf J-\ii\omega\varepsilon_0
+\boldsymbol\varepsilon_r\mathbf E.
+\]
+第二式取复共轭：
+\[
+\nabla\times\mathbf H^*
+=\mathbf J^*+\ii\omega\varepsilon_0
+\boldsymbol\varepsilon_r^\dagger\mathbf E^*.
+\]
+使用向量恒等式
+\[
+\nabla\cdot(\mathbf E\times\mathbf H^*)
+=\mathbf H^*\cdot(\nabla\times\mathbf E)
+-\mathbf E\cdot(\nabla\times\mathbf H^*)
+\]
+得到
+\begin{align*}
+\nabla\cdot(\mathbf E\times\mathbf H^*)
+&=\ii\omega\mu_0|\mathbf H|^2
+-\mathbf E\cdot\mathbf J^*\\
+&\quad
+-\ii\omega\varepsilon_0
+\mathbf E\cdot\boldsymbol\varepsilon_r^\dagger\mathbf E^*.
+\end{align*}
+对体积 $V$ 积分并取实部。第一项纯虚，不贡献平均能流；利用
+\[
+\Re\!\left[-\ii\,
+\mathbf E\cdot\boldsymbol\varepsilon_r^\dagger\mathbf E^*\right]
+=-\mathbf E^*\cdot\boldsymbol\varepsilon_I\cdot\mathbf E,
+\]
+以及散度定理，得到
+\begin{align*}
+\frac12\Re\oint_{\partial V}\dd\mathbf A\cdot
+(\mathbf E\times\mathbf H^*)
+&=-\frac12\Re\int_V\dd^3r\,\mathbf J^*\cdot\mathbf E\\
+&\quad
+-\frac{\omega\varepsilon_0}{2}
+\int_V\dd^3r\,
+\mathbf E^*\cdot\boldsymbol\varepsilon_I\cdot\mathbf E.
+\end{align*}
+识别
+\[
+P_{\rm rad}
+=\frac12\Re\oint\dd\mathbf A\cdot(\mathbf E\times\mathbf H^*),
+\qquad
+P_{\rm abs}
+=\frac{\omega\varepsilon_0}{2}\int\dd^3r\,
+\mathbf E^*\cdot\boldsymbol\varepsilon_I\cdot\mathbf E,
+\]
+以及
+$P_{\rm loss}=-(1/2)\Re\int\mathbf J^*\cdot\mathbf E$，就得到
+\[
+\boxed{P_{\rm loss}=P_{\rm abs}+P_{\rm rad}.}
+\]
+对被动介质 $\boldsymbol\varepsilon_I\succeq0$，故 $P_{\rm abs}\ge0$；采用出射边界条件时 $P_{\rm rad}\ge0$。
+\end{derivation}
+
+\subsection{材料响应参数化}
+
+Green 张量回答“已知材料响应后，给定源产生什么场”，但材料为什么极化仍需由本构动力学给出。在线性范围内，外电场驱动带电自由度；惯性、回复力、阻尼以及空间压力决定它们的位移，位移再组成宏观极化 $\mathbf P$。解掉这些线性运动方程便得到 $\mathbf P$ 对 $\mathbf E$ 的响应核，等价地得到介电函数 $\boldsymbol\varepsilon_r(\boldsymbol\kappa,\omega)$。
+
+因此 Lorentz、Drude 与流体模型并不是三条互不相关的经验公式：Lorentz 振子保留回复力，Drude 模型取回复力为零，流体模型再加入空间梯度压力而产生 $\boldsymbol\kappa$ 依赖。材料模型改变的是 Maxwell 算符中的本构核；电子跃迁流与 Green 张量耦合的结构不变。介电函数的极点和零点控制材料共振，虚部编码耗散，显式波矢依赖则量化空间色散。
+
+\begin{exbox}[Lorentz、Drude 与非局域响应]
+先考虑空间局域的束缚电荷 Lorentz 振子。令
+\begin{equation*}
+n_{\rm osc}\ [{\rm m^{-3}}],
+\quad
+m_{\rm osc}\ [{\rm kg}],
+\quad
+q_{\rm osc}\ [{\rm C}],
+\quad
+\omega_0,\Gamma_{\rm mat}\ [{\rm s^{-1}}]
+\end{equation*}
+分别表示振子数密度、单振子质量、电荷、本征角频率和阻尼率；位移 $x(t)$ 的单位为米。线性运动方程为
+\begin{equation*}
+m_{\rm osc}\ddot x
++m_{\rm osc}\Gamma_{\rm mat}\dot x
++m_{\rm osc}\omega_0^2x
+=q_{\rm osc}E.
+\end{equation*}
+定义振子强度频率
+\begin{equation*}
+\Omega_{\rm osc}^2
+\equiv
+\frac{n_{\rm osc}q_{\rm osc}^2}
+{\varepsilon_0m_{\rm osc}},
+\qquad
+[\Omega_{\rm osc}]={\rm s^{-1}},
+\end{equation*}
+则频域极化率为
+\begin{equation*}
+\chi_{\rm L}(\omega)
+=\frac{\Omega_{\rm osc}^2}
+{\omega_0^2-\omega^2-\ii\Gamma_{\rm mat}\omega}.
+\end{equation*}
+分子与分母都具有 ${\rm s^{-2}}$，所以 $\chi_{\rm L}$ 无量纲。
+
+自由载流子对应 $\omega_0=0$。对电子气体令平衡数密度为 $n_0$，定义等离子体角频率
+\begin{equation*}
+\omega_p^2
+\equiv\frac{n_0e^2}{\varepsilon_0\me},
+\qquad
+[\omega_p]={\rm s^{-1}}.
+\end{equation*}
+若高频束缚电子背景用无量纲常数 $\varepsilon_\infty$ 表示，则局域 Drude 介电函数为
+\begin{equation*}
+\varepsilon_D(\omega)
+=\varepsilon_\infty
+-\frac{\omega_p^2}
+{\omega(\omega+\ii\Gamma_{\rm mat})}.
+\end{equation*}
+$\Gamma_{\rm mat}^{-1}$ 是动量弛豫时间尺度；在被动约定 $\ee^{-\ii\omega t}$ 下，$\Gamma_{\rm mat}>0$ 把极点推入复频率下半平面。
+
+局域 Drude 模型忽略电子流体的压缩能，因此材料响应只依赖 $\omega$。当空间变化尺度接近电子气体内部压缩长度时，纵向压力梯度必须进入电子流体的运动方程。令 $\delta n(\mathbf r,t)$ 为相对 $n_0$ 的数密度涨落，单位 ${\rm m^{-3}}$；$\mathbf u(\mathbf r,t)$ 为流体速度，单位 ${\rm m\,s^{-1}}$；$v_H$ 为表征压缩刚度的速度尺度，单位 ${\rm m\,s^{-1}}$。线性化连续性方程和动量方程为
+\begin{equation*}
+\partial_t\delta n+n_0\nabla\cdot\mathbf u=0,
+\end{equation*}
+\begin{equation*}
+(\partial_t+\Gamma_{\rm mat})\mathbf u
+=\frac{\qe}{\me}\mathbf E
+-\frac{v_H^2}{n_0}\nabla\delta n.
+\end{equation*}
+对纵向模取
+\[
+\delta n(\mathbf r,t)=\delta n_0\ee^{\ii\boldsymbol\kappa\cdot\mathbf r-\ii\omega t},\qquad
+\mathbf u(\mathbf r,t)=u_0\hat{\boldsymbol\kappa}\ee^{\ii\boldsymbol\kappa\cdot\mathbf r-\ii\omega t},
+\]
+其中 $\kappa=|\boldsymbol\kappa|$ 的单位为 ${\rm m^{-1}}$。消去 $\delta n_0$ 和 $u_0$ 后得到纵向非局域介电函数
+\begin{equation*}
+\varepsilon_L(\kappa,\omega)
+=\varepsilon_\infty
+-\frac{\omega_p^2}
+{\omega(\omega+\ii\Gamma_{\rm mat})-v_H^2\kappa^2}.
+\end{equation*}
+这里空间色散由无量纲比值
+\begin{equation}
+\boxed{
+\epsilon_{\rm nl}(\kappa,\omega)
+\equiv
+\frac{v_H^2\kappa^2}
+{|\omega(\omega+\ii\Gamma_{\rm mat})|}}
+\label{eq:hydrodynamic_nonlocal_control}
+\end{equation}
+控制。$\epsilon_{\rm nl}\ll1$ 时，压力梯度相对局域惯性项较小；当 $\epsilon_{\rm nl}$ 达到一阶量级时，$\kappa$ 依赖不能再从本构关系中删去。
+
+无外部自由电荷的纵向体模满足 $D_L=0$，即 $\varepsilon_L(\kappa,\omega)=0$。在 $\Gamma_{\rm mat}=0$ 时，正频支为
+\begin{equation}
+\boxed{
+\omega_L^2(\kappa)
+=\frac{\omega_p^2}{\varepsilon_\infty}
++v_H^2\kappa^2.}
+\label{eq:hydrodynamic_bulk_longitudinal_dispersion}
+\end{equation}
+第一项是局域体等离子体频率，第二项是压缩性造成的空间色散。
+
+色散介质的能量密度也由同一显式材料自由度决定。对无损 Lorentz 振子，周期平均机械能与电场耦合能消去振子坐标后，可把电场与物质部分写成
+\begin{equation*}
+\bar u_{E+{\rm mat}}
+=\frac{\varepsilon_0}{4}
+\frac{\partial[\omega\varepsilon(\omega)]}{\partial\omega}
+|E|^2.
+\end{equation*}
+$\partial_\omega[\omega\varepsilon]$ 无量纲，因此该式单位为 ${\rm J\,m^{-3}}$。完整周期平均能量还包含磁场项 $\mu_0|H|^2/4$。这个频率导数记录的是被消去材料振子的储能贡献，因此在强色散区必须与 Maxwell 场能一起归一化。
+
+
+\medskip
+
+\eqnrefs{eq:hydrodynamic_nonlocal_control} 已把压强梯度引入电子流体，从而使纵向响应依赖波数。将连续性方程和纵向动量方程联立，消去密度涨落与流速，并要求无外部自由电荷时存在非零纵向电场，就得到\eqnrefs{eq:hydrodynamic_bulk_longitudinal_dispersion}。对流体动力学模型取纵向平面波。连续性方程变成
+\[
+-\ii\omega\delta n
++\ii n_0\kappa u_L=0,
+\]
+因此
+\[
+\delta n=\frac{n_0\kappa}{\omega}u_L.
+\]
+纵向动量方程为
+\[
+(-\ii\omega+\Gamma_{\rm mat})u_L
+=\frac{\qe}{\me}E_L
+-\ii\frac{v_H^2\kappa}{n_0}\delta n.
+\]
+代入 $\delta n$：
+\[
+(-\ii\omega+\Gamma_{\rm mat})u_L
+=\frac{\qe}{\me}E_L
+-\ii\frac{v_H^2\kappa^2}{\omega}u_L.
+\]
+两边乘 $\ii\omega$：
+\[
+[\omega(\omega+\ii\Gamma_{\rm mat})-v_H^2\kappa^2]u_L
+=\ii\omega\frac{\qe}{\me}E_L.
+\]
+因此
+\[
+u_L
+=\frac{\ii\omega \qe/\me}
+{\omega(\omega+\ii\Gamma_{\rm mat})-v_H^2\kappa^2}E_L.
+\]
+自由电子电流为 $J_L=\qe n_0u_L$，而极化电流满足 $J_L=-\ii\omega P_L$，所以
+\begin{align*}
+P_L
+&=\frac{\ii}{\omega}\qe n_0u_L\\
+&=-\varepsilon_0
+\frac{\omega_p^2}
+{\omega(\omega+\ii\Gamma_{\rm mat})-v_H^2\kappa^2}E_L.
+\end{align*}
+总纵向位移场
+\[
+D_L=\varepsilon_0\varepsilon_\infty E_L+P_L
+\]
+因此
+\[
+\varepsilon_L(\kappa,\omega)
+=\varepsilon_\infty-
+\frac{\omega_p^2}
+{\omega(\omega+\ii\Gamma_{\rm mat})-v_H^2\kappa^2}.
+\]
+无外部自由电荷时 $D_L=0$；非零 $E_L$ 要求 $\varepsilon_L=0$。取 $\Gamma_{\rm mat}=0$：
+\begin{align*}
+0
+&=\varepsilon_\infty-
+\frac{\omega_p^2}{\omega^2-v_H^2\kappa^2},\\
+\varepsilon_\infty(\omega^2-v_H^2\kappa^2)
+&=\omega_p^2,\\
+\omega^2
+&=\frac{\omega_p^2}{\varepsilon_\infty}+v_H^2\kappa^2,
+\end{align*}
+得到\eqnrefs{eq:hydrodynamic_bulk_longitudinal_dispersion}。
+\end{exbox}
+
+
+均匀各向同性但具有空间色散的介质还可以做一个非常重要的结构分解。对给定非零波矢 $\boldsymbol\kappa$，定义纵向与横向投影算符
+\begin{equation}
+\boxed{
+\mathsf P_L(\boldsymbol\kappa)
+=\hat{\boldsymbol\kappa}\hat{\boldsymbol\kappa}^{\mathsf T},
+\qquad
+\mathsf P_T(\boldsymbol\kappa)
+=\mathsf I-\mathsf P_L(\boldsymbol\kappa).}
+\label{eq:nonlocal_LT_projectors}
+\end{equation}
+它们满足
+$\mathsf P_{L,T}^2=\mathsf P_{L,T}$、
+$\mathsf P_L\mathsf P_T=0$、
+$\mathsf P_L+\mathsf P_T=I$。旋转不变性要求任意二阶响应张量只能在这两个不变子空间上取标量值，因此最一般的均匀各向同性非局域介电张量不是一个标量 $\varepsilon(\kappa,\omega)$，而是
+\begin{equation}
+\boxed{
+\boldsymbol\varepsilon(\boldsymbol\kappa,\omega)
+=\varepsilon_T(\kappa,\omega)\mathsf P_T
++\varepsilon_L(\kappa,\omega)\mathsf P_L.}
+\label{eq:isotropic_nonlocal_dielectric_LT_decomposition}
+\end{equation}
+$\varepsilon_T$ 控制横向电磁/极化激元分支，$\varepsilon_L$ 控制电荷密度和纵向等离激元分支；空间局域各向同性介质才进一步满足
+$\varepsilon_T=\varepsilon_L=\varepsilon(\omega)$。
+
+把这个分解代入频域 Maxwell 算符。由于
+\[
+\ii\boldsymbol\kappa\times
+(\ii\boldsymbol\kappa\times\mathbf E)
+=\kappa^2\mathsf P_T\mathbf E,
+\]
+有
+\begin{equation*}
+\mathsf L(\boldsymbol\kappa,\omega)
+=\left[\kappa^2-\frac{\omega^2}{c^2}\varepsilon_T\right]\mathsf P_T
+-\frac{\omega^2}{c^2}\varepsilon_L\mathsf P_L.
+\end{equation*}
+两个投影子空间彼此正交，所以逆算符可逐块求逆：
+\begin{equation}
+\boxed{
+\mathbf G^R(\boldsymbol\kappa,\omega)
+=\frac{\mathsf P_T}
+{\kappa^2-(\omega^2/c^2)\varepsilon_T(\kappa,\omega)}
+-\frac{c^2}{\omega^2}
+\frac{\mathsf P_L}{\varepsilon_L(\kappa,\omega)}.}
+\label{eq:isotropic_nonlocal_green_LT_decomposition}
+\end{equation}
+因此环境谱的两类极点来源不同：横向传播模满足
+\begin{equation*}
+\kappa^2=\frac{\omega^2}{c^2}\varepsilon_T(\kappa,\omega),
+\end{equation*}
+而无外部自由电荷的纵向体模满足
+\begin{equation*}
+\varepsilon_L(\kappa,\omega)=0.
+\end{equation*}
+这正是前面流体模型的体等离激元色散出现于 $\varepsilon_L=0$、而普通光学折射主要读取 $\varepsilon_T$ 的原因。
+
+自由电子的电流同样可分成
+\[
+\mathbf J=\mathbf J_T+\mathbf J_L,
+\qquad
+\mathbf J_{T,L}=\mathsf P_{T,L}\mathbf J.
+\]
+由于两个投影正交，均匀介质中的 Green 能损核严格分裂为
+\begin{equation}
+\boxed{
+\begin{aligned}
+\mathbf J^*\!\cdot\operatorname{Im}\mathbf G^R\!\cdot\mathbf J
+={}&|\mathbf J_T|_{\operatorname{Im}G_T}^2
++|\mathbf J_L|_{\operatorname{Im}G_L}^2,
+\end{aligned}}
+\label{eq:electron_loss_LT_split}
+\end{equation}
+其中
+\[
+G_T=\frac1{\kappa^2-(\omega^2/c^2)\varepsilon_T},
+\qquad
+G_L=-\frac{c^2}{\omega^2\varepsilon_L},
+\]
+并约定
+\[
+|\mathbf J_T|_{\operatorname{Im}G_T}^2
+\equiv
+\mathbf J_T^*\!\cdot\operatorname{Im}(G_T\mathsf P_T)\cdot\mathbf J_T,
+\qquad
+|\mathbf J_L|_{\operatorname{Im}G_L}^2
+\equiv
+\mathbf J_L^*\!\cdot\operatorname{Im}(G_L\mathsf P_L)\cdot\mathbf J_L.
+\]
+第一项对应电子耦合到横向辐射/极化激元通道，第二项对应纵向电荷密度通道。真空中 $\varepsilon_L=1$ 且 $G_L$ 没有耗散极点，所以匀速电子不能把能量不可逆地送入“纵向真空光子”；材料中的 $\varepsilon_L=0$ 极点则允许真正的体等离激元损失。
+
+纵横分解也说明了为什么强非局域体系不能只用一个折射率 $n(\omega)$ 描述。折射率编码的是横向传播质量壳；自由电子近场却可以携带远大于 $\omega/c$ 的波矢，因此 EELS 能直接采样大 $\kappa$ 的纵向响应。二维电子气、金属纳米结构和电子液体中的空间色散往往先在这种近场通道中显现。
+
+式~\eqnrefs{eq:isotropic_nonlocal_green_LT_decomposition} 依赖“均匀 + 各向同性”这两个条件。界面、非均匀或各向异性结构不再由全局的 $\mathsf P_L/\mathsf P_T$ 同时对角化，此时应退回双点 Green 算符或相应表面响应核，再由具体对称性做进一步分解。
+
+
+
+
+
+
+
+
+
+
+三维介电核仍不是低维材料最自然的描述。对原子级薄膜、二维电子气或表面导电层，若层厚远小于电子所采样的法向场变化尺度，把它硬塞进一个厚度依赖的体介电常数会引入人为参数；更普适的对象是定义在二维界面上的表面电导核。设界面位于 $z=0$，面内坐标记为 $\boldsymbol\rho$，则最一般线性表面响应写成
+\begin{equation}
+\boxed{
+K_a(\boldsymbol\rho,\omega)
+=
+\sum_{b=x,y}
+\int\dd^2\rho'\,
+\sigma_{ab}(\boldsymbol\rho,\boldsymbol\rho';\omega)
+E_{\parallel,b}(\boldsymbol\rho',0,\omega),}
+\label{eq:general_2d_conductivity_kernel}
+\end{equation}
+其中 $\mathbf K$ 是表面电流密度，单位 ${\rm A\,m^{-1}}$；$\sigma_{ab}$ 是二维非局域电导核。只有面内平移不变时才可以 Fourier 对角化为
+\[
+\mathbf K(\mathbf q,\omega)
+=
+\boldsymbol\sigma(\mathbf q,\omega)
+\mathbf E_\parallel(\mathbf q,0,\omega).
+\]
+因此常写的标量 sheet conductivity $\sigma(\omega)$ 已经同时使用了“局域 + 各向同性 + 均匀”的三重特例。
+
+零厚度表面层并不改变 Maxwell 方程在两侧体介质中的形式，而是改变边界条件。取法向单位矢量 $\hat{\mathbf n}$ 从介质 $1$ 指向介质 $2$，则
+\begin{equation}
+\boxed{
+\hat{\mathbf n}\times(\mathbf E_2-\mathbf E_1)=0,
+\qquad
+\hat{\mathbf n}\times(\mathbf H_2-\mathbf H_1)=\mathbf K.}
+\label{eq:conductive_sheet_maxwell_jump}
+\end{equation}
+第一式保证切向电场连续，第二式说明表面电流就是切向磁场的跳跃。若周围两侧都是均匀各向同性体介质，固定面内波矢 $\mathbf q$ 后可用 TE/TM 基底。定义法向波数
+\[
+k_{zj}
+=
+\sqrt{\varepsilon_j(\omega)\frac{\omega^2}{c^2}-q^2},
+\qquad
+\operatorname{Im}k_{zj}\ge0,
+\]
+以及切向波导纳
+\begin{equation*}
+Y_{p,j}
+\equiv
+\frac{\varepsilon_0\varepsilon_j\omega}{k_{zj}},
+\qquad
+Y_{s,j}
+\equiv
+\frac{k_{zj}}{\mu_0\omega}.
+\end{equation*}
+对面内各向同性但允许空间色散的二维层，电导同样分解成
+\begin{equation}
+\boxed{
+\boldsymbol\sigma(\mathbf q,\omega)
+=
+\sigma_L(q,\omega)\mathsf P_L^\parallel
++
+\sigma_T(q,\omega)\mathsf P_T^\parallel,}
+\label{eq:2d_conductivity_LT_decomposition}
+\end{equation}
+其中
+$\mathsf P_L^\parallel=\hat{\mathbf q}\hat{\mathbf q}^{\mathsf T}$，
+$\mathsf P_T^\parallel=I_\parallel-\mathsf P_L^\parallel$。TM 场的切向电场平行于 $\mathbf q$，因此只读取 $\sigma_L$；TE 场的切向电场垂直于 $\mathbf q$，因此只读取 $\sigma_T$。
+
+无外部入射场的表面本征模要求边界线性方程存在非零解。于是两个极化的极点条件分别为
+\begin{equation}
+\boxed{
+D_p(q,\omega)
+\equiv
+Y_{p,1}+Y_{p,2}+\sigma_L(q,\omega)=0,
+\qquad
+D_s(q,\omega)
+\equiv
+Y_{s,1}+Y_{s,2}+\sigma_T(q,\omega)=0.}
+\label{eq:2d_sheet_surface_mode_conditions}
+\end{equation}
+符号取决于全文的法向与 Fourier 约定，但零点条件本身与同一套边界约定自洽。对真正各向异性或 Hall 型二维层，TE/TM 不再独立；把两种切向偏振组成二维列向量以后，本征条件提升为
+\begin{equation}
+\boxed{
+\det\!\left[
+\mathbf Y_1(\mathbf q,\omega)
++\mathbf Y_2(\mathbf q,\omega)
++\boldsymbol\sigma(\mathbf q,\omega)
+\right]=0.}
+\label{eq:2d_sheet_anisotropic_pole_determinant}
+\end{equation}
+这比给每一种二维材料单独写色散关系更一般：材料全部进入 $\boldsymbol\sigma$，几何与外部介质进入两侧导纳。
+
+对自由电子而言，二维层的 EELS 不需要另造一套跃迁理论：仍从一般 Green 损失核出发，只把材料响应换成二维边界条件。平面平移对称性允许对 $\boldsymbol\rho-\boldsymbol\rho'$ 作 Fourier 变换，于是每个面内动量 $\mathbf q$ 独立散射；反射 Green 张量的极点与连续谱分别由\eqnrefs{eq:2d_sheet_surface_mode_conditions,eq:2d_sheet_anisotropic_pole_determinant} 控制。电子倏逝近场可以提供 $q\gg\omega/c$ 的大面内动量，而远场光子受光锥限制，因此 EELS 对 $\sigma_L(q,\omega)$ 的空间色散和纵向集体模尤其敏感\cite{Simonaitis2025EELS2D}。实验谱峰的位置主要读取边界 resolvent 的极点，峰强和线形还包含电子轨迹投影、极点留数与耗散连续谱；这些因素在下一步显式 Green 张量中同时出现。
+
+为求界面反射产生的电场，接下来把反射系数代入 Green 张量。对源点和观察点都位于介质 $1$ 的情形，固定 $(\mathbf q,\omega)$ 后的散射 Green 张量具有 Weyl 形式
+\begin{equation}
+\boxed{
+\mathbf G_{\rm sc}^R(\mathbf q;z,z';\omega)
+=\frac{\ii}{2k_{z1}}\ee^{\ii k_{z1}(z+z')}
+\left[r_s\,\mathbf e_s^+\mathbf e_s^-+r_p\,\mathbf e_p^+\mathbf e_p^-\right].}
+\label{eq:2d_sheet_reflected_green_weyl}
+\end{equation}
+采用标准 Fresnel 的 $p$ 极化振幅约定，各向同性非局域二维层的反射系数为
+\begin{align}
+\boxed{r_s
+=\frac{Y_{s,1}-Y_{s,2}-\sigma_T}
+{Y_{s,1}+Y_{s,2}+\sigma_T},}
+\label{eq:2d_sheet_rs_conductivity}\\
+\boxed{r_p
+=\frac{Y_{p,2}-Y_{p,1}+\sigma_L}
+{Y_{p,1}+Y_{p,2}+\sigma_L}.}
+\label{eq:2d_sheet_rp_conductivity}
+\end{align}
+两个分母正好就是\eqnrefs{eq:2d_sheet_surface_mode_conditions} 的 $D_s,D_p$，所以 EELS 谱峰、表面本征模和 Green 张量极点是同一个边界 resolvent 的不同读取方式。若改用切向电场本身而不是标准 $p$ 极化基矢定义反射振幅，$r_p$ 的整体符号会随基底约定变化；物理 Green 张量在同一约定下不变。
+
+对平行界面的电子轨迹 $\mathbf r_e(t)=(vt,0,b)$，时间 Fourier 变换自动给
+\[
+q_x=\frac{\omega}{v}.
+\]
+把\eqnrefs{eq:2d_sheet_reflected_green_weyl} 代入一般 Green 损失核后，只剩横向面内动量 $q_y$ 的积分。倏逝区 $q>\sqrt{\varepsilon_1}\omega/c$ 中写 $k_{z1}=\ii\kappa_1$，则反射项在同一高度 $z=z'=b$ 取样时都带
+\begin{equation}
+\boxed{\ee^{-2\kappa_1b}.}
+\label{eq:2d_eels_evanscent_impact_parameter_factor}
+\end{equation}
+所以冲击参数 $b$ 直接决定电子能够访问多大的面内波矢。小 $b$ 不只是“耦合更强”，而是扩大了对高 $q$ 非局域纵向响应 $\sigma_L(q,\omega)$ 的采样窗口。
+
+
+\begin{exbox}[Mie 与 Rayleigh 极限]
+\eqnrange{eq:maxwell-t-operator-def-r16}{eq:maxwell_scattered_field_t_operator} 已经把任意线性结构的散射写成 Maxwell $T$ 算符。现在把几何专门化为半径 $a$ 的均匀各向同性球：球内相对介电率为 $\varepsilon_s(\omega)$，外部宿主为无损、非磁均匀介质 $\varepsilon_h>0$。宿主波数和尺寸参数定义为
+\begin{equation*}
+\kappa_h\equiv \sqrt{\varepsilon_h}\,\frac{\omega}{c},
+\qquad
+x\equiv \kappa_h a,
+\qquad
+m\equiv\sqrt{\frac{\varepsilon_s}{\varepsilon_h}}.
+\end{equation*}
+$\kappa_h$ 的单位为 ${\rm m^{-1}}$，而 $x$ 与 $m$ 无量纲。被动材料取使场在无穷远满足出射条件的平方根分支。
+
+球面对任意空间转动不变，因此 $\mathsf T_{\rm EM}$ 与总角动量对易。选择矢量球面波作为基以后，不同角动量 $\ell$、磁量子数与 TE/TM 偏振不再相互混合；求解问题退化为每个 $\ell$ 通道在 $r=a$ 处匹配切向 $\mathbf E$ 与 $\mathbf H$。定义 Riccati--Bessel 函数
+\begin{equation*}
+\psi_\ell(z)\equiv z j_\ell(z),
+\qquad
+\xi_\ell(z)\equiv z h_\ell^{(1)}(z),
+\end{equation*}
+并用撇号表示对完整自变量求导。对非磁球，两个无量纲 Mie 通道系数为
+\begin{align}
+ a_\ell
+ &=
+ \frac{m\psi_\ell(mx)\psi_\ell'(x)
+ -\psi_\ell(x)\psi_\ell'(mx)}
+ {m\psi_\ell(mx)\xi_\ell'(x)
+ -\xi_\ell(x)\psi_\ell'(mx)},
+ \label{eq:mie-electric-coefficient-dp75}\\
+ b_\ell
+ &=
+ \frac{\psi_\ell(mx)\psi_\ell'(x)
+ -m\psi_\ell(x)\psi_\ell'(mx)}
+ {\psi_\ell(mx)\xi_\ell'(x)
+ -m\xi_\ell(x)\psi_\ell'(mx)}.
+ \label{eq:mie-magnetic-coefficient-dp75}
+\end{align}
+$a_\ell$ 是电型多极通道，$b_\ell$ 是磁型多极通道；二者正是同一 Maxwell $T$ 算符在球对称多极基中的对角矩阵元。
+
+对平面波入射，正交多极通道的总散射截面和消光截面分别为
+\begin{align}
+ \boxed{
+ C_{\rm sca}
+ =\frac{2\pi}{\kappa_h^2}
+ \sum_{\ell=1}^{\infty}(2\ell+1)
+ \left(|a_\ell|^2+|b_\ell|^2\right),}
+ \label{eq:mie-scattering-cross-section-dp75}\\
+ \boxed{
+ C_{\rm ext}
+ =\frac{2\pi}{\kappa_h^2}
+ \sum_{\ell=1}^{\infty}(2\ell+1)
+ \operatorname{Re}(a_\ell+b_\ell),}
+ \label{eq:mie-extinction-cross-section-dp75}
+\end{align}
+并由能量守恒定义
+\begin{equation*}
+C_{\rm abs}\equiv C_{\rm ext}-C_{\rm sca}\ge0
+\end{equation*}
+用于被动球。三个截面单位均为 ${\rm m^2}$。\eqnrefs{eq:mie-extinction-cross-section-dp75} 是球几何中的光学定理；当材料无损时 $C_{\rm abs}=0$，因此消光恰等于散射。
+
+只有在外部尺寸参数和球内相位延迟都小，
+\begin{equation}
+\boxed{x\ll1,\qquad |m|x\ll1,}
+\label{eq:rayleigh-control-dp75}
+\end{equation}
+才可以进一步进入 Rayleigh 长波极限。采用全文 $\ee^{-\ii\omega t}$ 约定，$\ell=1$ 通道的小参数展开为
+\begin{align*}
+\psi_1(z)&=\frac{z^2}{3}+O(z^4),
+&\psi_1'(z)&=\frac{2z}{3}+O(z^3),\\
+\xi_1(z)&=-\frac{\ii}{z}+O(z),
+&\xi_1'(z)&=\frac{\ii}{z^2}+O(1).
+\end{align*}
+代入\eqnrefs{eq:mie-electric-coefficient-dp75} 得
+\begin{align*}
+\text{分子}
+&=\frac{2m(m^2-1)}{9}x^3+O(x^5),\\
+\text{分母}
+&=\frac{\ii m(m^2+2)}{3}+O(x^2),
+\end{align*}
+所以
+\begin{equation}
+\boxed{
+ a_1
+ =-\frac{2\ii}{3}
+ \frac{\varepsilon_s-\varepsilon_h}
+ {\varepsilon_s+2\varepsilon_h}
+ x^3+O(x^5),
+ \qquad
+ b_1=O(x^5).}
+\label{eq:rayleigh-mie-a1-dp75}
+\end{equation}
+更高电型多极满足 $a_\ell=O(x^{2\ell+1})$，因此电偶极是最低阶非零辐射通道。把\eqnrefs{eq:rayleigh-mie-a1-dp75} 代入\eqnrefs{eq:mie-scattering-cross-section-dp75}，得到
+\begin{equation}
+\boxed{
+ C_{\rm sca}^{\rm Rayleigh}
+ =\frac{8\pi}{3}\kappa_h^4a^6
+ \left|
+ \frac{\varepsilon_s-\varepsilon_h}
+ {\varepsilon_s+2\varepsilon_h}
+ \right|^2
+ \left[1+O(x^2)\right].}
+\label{eq:rayleigh-scattering-cross-section-dp75}
+\end{equation}
+若宿主在该频段近似无色散，$\kappa_h=\sqrt{\varepsilon_h}\,\omega/c$，于是\eqnrefs{eq:rayleigh-scattering-cross-section-dp75} 的最低阶项严格含 $\omega^4a^6$；Rayleigh 的蓝光强散射标度由 $a_1$ 的 $x^3$ 长波展开直接产生。
+
+同一结果可以从准静态边值问题核对。令外加均匀场沿 $z$ 方向，球外和球内电势分别写成
+\begin{equation*}
+\Phi_{\rm out}
+=-E_0r\cos\theta+\frac{A\cos\theta}{r^2},
+\qquad
+\Phi_{\rm in}=-BE_0r\cos\theta.
+\end{equation*}
+在 $r=a$ 连续匹配 $\Phi$ 与法向位移 $\varepsilon_0\varepsilon\,\partial_r\Phi$，两条线性方程给
+\begin{equation*}
+A=a^3E_0
+\frac{\varepsilon_s-\varepsilon_h}
+{\varepsilon_s+2\varepsilon_h}.
+\end{equation*}
+球外偶极电势为 $p\cos\theta/(4\pi\varepsilon_0\varepsilon_h r^2)$，故电偶极极化率
+\begin{equation}
+\boxed{
+\alpha_E^{(0)}
+=4\pi\varepsilon_0\varepsilon_h a^3
+\frac{\varepsilon_s-\varepsilon_h}
+{\varepsilon_s+2\varepsilon_h},
+\qquad
+\mathbf p=\alpha_E^{(0)}\mathbf E_0.}
+\label{eq:rayleigh-static-polarizability-dp75}
+\end{equation}
+于是\eqnrefs{eq:rayleigh-scattering-cross-section-dp75} 也可写成
+\begin{equation*}
+C_{\rm sca}^{\rm Rayleigh}
+=\frac{\kappa_h^4}
+{6\pi\varepsilon_0^2\varepsilon_h^2}
+\left|\alpha_E^{(0)}\right|^2
+\left[1+O(x^2)\right].
+\end{equation*}
+对有吸收的球，$\operatorname{Im}\varepsilon_s>0$ 还产生材料吸收。若要在无损球中同时保持光学定理，不能只把静态 $\alpha_E^{(0)}$ 代入消光公式，因为辐射反作用在 $O(x^3)$ 修正极化率的虚部；等价地，应保留 Mie 系数的更高阶项或使用满足
+\begin{equation*}
+\operatorname{Im}\!\left[(\alpha_E)^{-1}\right]
+=-\frac{\kappa_h^3}{6\pi\varepsilon_0\varepsilon_h}
+\end{equation*}
+的辐射修正极化率。若 $x$ 或 $|m|x$ 不再小，则电偶极近似失效，应回到完整 Mie 级数；若几何不再是球体，则应回到\eqnrange{eq:maxwell-lippmann-schwinger-dp68}{eq:maxwell_scattered_field_t_operator} 的一般 Maxwell 散射问题。
+\end{exbox}
+
+冲击参数依赖的指数因子表明，大波矢近场分量会被电子轨迹到界面的距离直接空间滤波。
+
+\begin{derivation}[从\eqnrefs{eq:nonlocal_LT_projectors}到\eqnrefs{eq:electron_loss_LT_split}]
+固定 $\boldsymbol\kappa\neq0$。旋转不变性把响应分成纵向一维与横向二维两个互不混合的子空间，故
+\[
+\varepsilon
+=\varepsilon_L\mathsf P_L+\varepsilon_T\mathsf P_T,
+\]
+得到正文\eqnrefs{eq:isotropic_nonlocal_dielectric_LT_decomposition}。
+
+频域 Maxwell 方程采用全文 $\ee^{-\ii\omega t}$ 约定：
+\[
+\left[
+\nabla\times\nabla\times
+-\frac{\omega^2}{c^2}\boldsymbol\varepsilon
+\right]\mathbf E
+=\ii\mu_0\omega\mathbf J.
+\]
+对平面波 Fourier 分量 $\nabla\to\ii\boldsymbol\kappa$，有
+\begin{align*}
+\nabla\times\nabla\times\mathbf E
+&=-\boldsymbol\kappa\times
+(\boldsymbol\kappa\times\mathbf E)\\
+&=\kappa^2\mathbf E
+-\boldsymbol\kappa(\boldsymbol\kappa\cdot\mathbf E)\\
+&=\kappa^2\mathsf P_T\mathbf E.
+\end{align*}
+因此
+\[
+\mathsf L
+=\left(\kappa^2-k_0^2\varepsilon_T\right)\mathsf P_T
+-k_0^2\varepsilon_L\mathsf P_L,
+\qquad k_0=\omega/c.
+\]
+设逆核为 $G_T\mathsf P_T+G_L\mathsf P_L$。利用投影代数
+$\mathsf P_T\mathsf P_L=0$，要求 $\mathsf L\mathbf G=I$ 给
+\[
+(\kappa^2-k_0^2\varepsilon_T)G_T=1,
+\qquad
+(-k_0^2\varepsilon_L)G_L=1,
+\]
+于是
+\[
+G_T=\frac1{\kappa^2-k_0^2\varepsilon_T},
+\qquad
+G_L=-\frac1{k_0^2\varepsilon_L},
+\]
+即正文\eqnrefs{eq:isotropic_nonlocal_green_LT_decomposition}。
+
+最后把任意电流写成
+$\mathbf J=\mathbf J_T+\mathbf J_L$。由于
+$\mathbf J_T^*\mathsf P_L\mathbf J=0$、
+$\mathbf J_L^*\mathsf P_T\mathbf J=0$，有
+\begin{align*}
+\mathbf J^*\cdot\operatorname{Im}\mathbf G\cdot\mathbf J
+&=\mathbf J_T^*\cdot
+\operatorname{Im}(G_T\mathsf P_T)\cdot\mathbf J_T\\
+&\quad+\mathbf J_L^*\cdot
+\operatorname{Im}(G_L\mathsf P_L)\cdot\mathbf J_L,
+\end{align*}
+没有纵横交叉项，从而得到\eqnrefs{eq:electron_loss_LT_split}。这个正交分解只依赖均匀各向同性结构；在界面处波矢法向分量不再是全局好量子数，必须重新求边值 Green 张量。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:general_2d_conductivity_kernel}到\eqnrefs{eq:2d_sheet_anisotropic_pole_determinant}]
+先从面内平移不变情形开始。令
+\[
+\sigma_{ab}(\boldsymbol\rho,\boldsymbol\rho';\omega)
+=
+\sigma_{ab}(\boldsymbol\rho-\boldsymbol\rho';\omega).
+\]
+采用二维 Fourier 变换
+\[
+f(\boldsymbol\rho)
+=
+\int\frac{\dd^2q}{(2\pi)^2}
+f(\mathbf q)\ee^{+\ii\mathbf q\cdot\boldsymbol\rho},
+\]
+卷积定理把正文\eqnrefs{eq:general_2d_conductivity_kernel} 化成
+\[
+K_a(\mathbf q,\omega)
+=
+\sum_b
+\sigma_{ab}(\mathbf q,\omega)
+E_{\parallel,b}(\mathbf q,0,\omega).
+\]
+
+对固定 $\mathbf q$，两侧体介质中的平面波都满足无源 Maxwell 方程。先看 TM 极化。取 $\mathbf q=q\hat{\mathbf x}$，切向电场为 $E_x$、磁场为 $H_y$。由
+\[
+\mathbf H
+=
+\frac1{\mu_0\omega}\mathbf k\times\mathbf E
+\]
+和
+$\mathbf k\cdot\varepsilon_j\mathbf E=0$，对沿 $\pm z$ 传播的 TM 波得到
+\[
+H_y^{(\pm)}
+=
+\pm
+\frac{\varepsilon_0\varepsilon_j\omega}{k_{zj}}
+E_x^{(\pm)}
+=
+\pm Y_{p,j}E_x^{(\pm)}.
+\]
+TE 极化同理给
+\[
+H_x^{(\pm)}
+=
+\mp
+\frac{k_{zj}}{\mu_0\omega}
+E_y^{(\pm)}
+=
+\mp Y_{s,j}E_y^{(\pm)}.
+\]
+所以 $Y_{p,j}$、$Y_{s,j}$ 正是把切向电场映射到切向磁场的波导纳。
+
+现在寻找无外部入射的束缚/共振表面模。取两侧都从界面向外衰减或满足出射条件的解，并令共同切向场幅为 $E_\parallel$。切向电场连续性已经满足。磁场跳跃条件
+\[
+\hat{\mathbf z}\times(\mathbf H_2-\mathbf H_1)
+=
+\mathbf K
+=
+\boldsymbol\sigma\mathbf E_\parallel
+\]
+则给出一个齐次线性方程。对各向同性二维层，TM 与 TE 不混合，因此分别得到
+\[
+\bigl(Y_{p,1}+Y_{p,2}+\sigma_L\bigr)E_p=0,
+\]
+\[
+\bigl(Y_{s,1}+Y_{s,2}+\sigma_T\bigr)E_s=0.
+\]
+存在非零 $E_p$ 或 $E_s$ 的条件正是正文\eqnrefs{eq:2d_sheet_surface_mode_conditions}。
+
+若
+\[
+\boldsymbol\sigma
+=
+\begin{pmatrix}
+\sigma_{pp}&\sigma_{ps}\\
+\sigma_{sp}&\sigma_{ss}
+\end{pmatrix}
+\]
+在 TE/TM 基底中含非对角元，边界方程变成
+\[
+\left[
+\begin{pmatrix}
+Y_{p,1}+Y_{p,2}&0\\
+0&Y_{s,1}+Y_{s,2}
+\end{pmatrix}
++
+\boldsymbol\sigma
+\right]
+\begin{pmatrix}E_p\\E_s\end{pmatrix}
+=0.
+\]
+非零解存在当且仅当系数矩阵行列式为零，即正文\eqnrefs{eq:2d_sheet_anisotropic_pole_determinant}。
+
+最后说明为什么二维空间色散对电子特别重要。电子在距界面有限冲击参数处的 Fourier 电流包含连续 $q$，且近场部分在
+$q>\omega/c$ 时对应倏逝真空波。远场光只在接近光锥的横向通道取样，而 EELS 的 Green 核积分会覆盖这些大 $q$ 倏逝分量；它们通过上述边界矩阵直接读取 $\sigma_L(q,\omega)$、$\sigma_T(q,\omega)$ 的非局域结构。因此二维表面电导是三维双点介电核在严格零厚度极限下的自然接口，而不是人为引入的有效参数。
+
+最后从同一边界方程求反射振幅。对 TE 波，切向电场连续给 $t_s=1+r_s$；磁场跳跃条件给
+\[
+Y_{s,1}(1-r_s)-Y_{s,2}t_s=\sigma_Tt_s.
+\]
+消去 $t_s$ 得
+\[
+r_s=\frac{Y_{s,1}-Y_{s,2}-\sigma_T}{Y_{s,1}+Y_{s,2}+\sigma_T}.
+\]
+对 TM 波，用标准 $p$ 极化单位矢量定义入射和反射幅；反射时基矢的切向分量随传播方向约定改变，边界代数给
+\[
+r_p=\frac{Y_{p,2}-Y_{p,1}+\sigma_L}{Y_{p,1}+Y_{p,2}+\sigma_L}.
+\]
+令 $\sigma_{L,T}\to0$，两式退化为普通 Fresnel 系数；令分母为零，则恢复正文表面本征模条件。
+
+平面平移对称使散射 Green 张量对面内坐标差作二维 Fourier 对角化。源到界面再反射回观察点的法向传播相位是
+\[
+\ee^{\ii k_{z1}z'}\ee^{\ii k_{z1}z}=\ee^{\ii k_{z1}(z+z')}.
+\]
+自由一维 Helmholtz resolvent 给 $\ii/(2k_{z1})$，再按 TE/TM 完备分解便得到正文\eqnrefs{eq:2d_sheet_reflected_green_weyl}。
+
+对匀速平行电子，
+\[
+\int_{-\infty}^{\infty}\dd t\,\ee^{\ii\omega t-\ii q_xvt}
+=2\pi\delta(\omega-q_xv),
+\]
+所以 $q_x=\omega/v$。若 $k_{z1}=\ii\kappa_1$ 且 $z=z'=b$，则
+\[
+\left|\ee^{\ii k_{z1}(z+z')}\right|=\ee^{-2\kappa_1b},
+\]
+得到正文\eqnrefs{eq:2d_eels_evanscent_impact_parameter_factor}。
+\end{derivation}
+
+
+\subsection{均匀介质的精确发射运动学与经典极限}
+
+均匀透明介质给出检验一般相位匹配与 Green 张量辐射公式的最简单基准。先不忽略电子反冲。设介质模式色散为 $\kappa=n(\omega)\omega/c$，初态电子能量、动量为 $E_i,\mathbf p_i$，发射一个能量为 $\hbar\omega$、波矢为 $\boldsymbol\kappa$ 的模式量子后，末态满足
+\begin{equation}
+\boxed{
+E_f=E_i-\hbar\omega,
+\qquad
+\mathbf p_f=\mathbf p_i-\hbar\boldsymbol\kappa,
+\qquad
+E_j^2=\me^2c^4+c^2p_j^2.}
+\label{eq:cherenkov_exact_mass_shell}
+\end{equation}
+这三个条件分别表达能量守恒、均匀介质中的平移动量守恒以及电子初末态的精确相对论质量壳；它们正是\chapref{chap:classical-fields}统一交换恒等式~\eqnrefs{eq:exact-recoil-four} 在发射支 $\sigma=-1$ 上的具体化。代入
+\begin{equation*}
+K^\mu=\left(\frac{\omega}{c},\boldsymbol\kappa\right),
+\qquad
+P_i^\mu=\left(\frac{E_i}{c},\mathbf p_i\right),
+\end{equation*}
+便有
+\begin{align*}
+0
+&=-2P_i\!\cdot K+\hbar K^2\\
+&=-2\left(\frac{E_\ii\omega}{c^2}-p_\ii\kappa\cos\theta\right)
++\hbar\left(\frac{\omega^2}{c^2}-\kappa^2\right).
+\end{align*}
+再使用介质传播支的色散 $\kappa=n(\omega)\omega/c$ 与 $p_ic^2=E_iv_i$，得到
+\begin{equation}
+\boxed{
+\cos\theta
+=\frac{c}{n(\omega)v_i}
+\left[1+\frac{\hbar\omega}{2E_i}(n^2(\omega)-1)\right].}
+\label{eq:cherenkov_exact_recoil_angle}
+\end{equation}
+因此这里真正新增的物理输入只有介质模式色散 $\kappa=n\omega/c$；电子反冲代数已经由一般质量壳一般表达式一次性解决。实传播通道要求右端绝对值不超过 1，所以有限反冲不仅改变发射角，也可能关闭某一频率的传播解。
+
+\begin{exbox}[Cherenkov 辐射]
+只有在
+\begin{equation*}
+\epsilon_{\rm rec}^{(C)}\equiv
+\left|\frac{\hbar\omega}{2E_i}(n^2-1)\right|\ll1
+\end{equation*}
+时，才可忽略括号中的反冲修正。此时
+\begin{equation}
+\boxed{
+\cos\theta_C=\frac1{\beta_{\rm rel}n(\omega)},}
+\label{eq:classical_cherenkov_angle}
+\end{equation}
+并且只有 $\beta_{\rm rel}n>1$ 才有实传播角。这个零反冲的均匀介质发射现象通常称为 Cherenkov 辐射，$\theta_C$ 是其经典发射角。下图用 $x=\hbar\omega/E_i$ 比较精确结果与这一极限。
+\begin{center}
+\includegraphics[width=0.74\linewidth]{cherenkov_recoil_angle.png}\\[-2pt]
+{\small 固定 $\beta_{\rm rel}=0.95$ 时由精确质量壳得到的发射角；实线采用\eqnrefs{eq:cherenkov_exact_recoil_angle}，虚线为 $x\to0$ 的经典 Cherenkov 极限。}
+\end{center}
+
+辐射强度由给定电流对 $\operatorname{Im}G^R$ 的投影确定。无损、各向同性、非磁介质中，傅里叶空间 Green 张量的横向在壳部分是
+\[
+\operatorname{Im}\mathbf G^R(\boldsymbol\kappa,\omega)
+=\pi(\mathbb I-\hat{\boldsymbol\kappa}\hat{\boldsymbol\kappa})
+\delta(\kappa^2-n^2\omega^2/c^2).
+\]
+把它代入\eqnrefs{eq:homogeneous_green_loss_general}，再分别完成径向积分与角向 $\delta$ 函数积分，即得到 Frank--Tamm 谱。相关归一化与材料响应可对照~\cite{FrankTamm1937,RiveraKaminer2020Quasiparticles}。
+\begin{equation}
+\boxed{
+\frac{\dd^2 W}{\dd L\,\dd\omega}
+=\frac{e^2}{4\pi\varepsilon_0c^2}\,
+\omega\left(1-\frac1{\beta_{\rm rel}^2n^2(\omega)}\right)
+\Theta[\beta_{\rm rel}n(\omega)-1].}
+\label{eq:frank_tamm_spectrum}
+\end{equation}
+经典谱因此由同一个在壳条件同时决定阈值与横向极化因子。有限反冲的量子谱不能通过在\eqnrefs{eq:frank_tamm_spectrum} 上经验替换角度获得，而必须回到精确跃迁电流或 $S$ 矩阵表达。
+
+
+\medskip
+
+单光子反冲可以在 $\hbar\omega/E_i\to0$ 时忽略；若介质同时均匀、透明且电子在所考察区间内保持恒速，量子跃迁电流退化为经典匀速电流。此时辐射阈值只取决于该电流的同步 Fourier 分量能否与介质传播质量壳相交。对沿 $z$ 方向运动的给定电流，时间与纵向坐标积分产生同步 $\delta$ 函数
+\begin{equation*}
+2\pi\delta(\omega-v\kappa_z)
+=2\pi\delta(\omega-v\kappa\cos\theta).
+\end{equation*}
+均匀、无损、非磁介质的推迟 Green 张量在傅里叶空间的横向虚部为
+\begin{equation*}
+\operatorname{Im}G_{ij}(\boldsymbol\kappa,\omega)
+=\pi\left(\delta_{ij}-\widehat{\boldsymbol\kappa}_i\widehat{\boldsymbol\kappa}_j\right)
+\delta(\kappa^2-\kappa_m^2),
+\qquad
+\kappa_m=\frac{n(\omega)\omega}{c}.
+\end{equation*}
+电流方向是 $\hat z$，所以横向投影算符收缩给
+\begin{equation*}
+\hat z_i(\delta_{ij}-\widehat{\boldsymbol\kappa}_i\widehat{\boldsymbol\kappa}_j)\hat z_j
+=1-\cos^2\theta.
+\end{equation*}
+于是一般 Green 张量损耗积分中需要计算的几何部分是
+\begin{equation*}
+\int_0^\infty \kappa^2\dd\kappa\int\dd\Omega\,
+(1-\cos^2\theta)
+\delta(\kappa^2-\kappa_m^2)
+\delta(\omega-v\kappa\cos\theta).
+\end{equation*}
+径向 $\delta$ 函数先给
+\begin{equation*}
+\int_0^\infty \kappa^2\dd\kappa\,\delta(\kappa^2-\kappa_m^2)
+=\frac{\kappa_m}{2}.
+\end{equation*}
+再令 $u=\cos\theta$，完成方位角积分：
+\begin{align*}
+2\pi\int_{-1}^{1}\dd u\,(1-u^2)
+\delta(\omega-v\kappa_m u)
+&=\frac{2\pi}{v\kappa_m}
+\left(1-\frac{\omega^2}{v^2\kappa_m^2}\right)
+\Theta(v\kappa_m-\omega).
+\end{align*}
+阶跃函数来自 $\delta$ 函数根
+$u_*=\omega/(v\kappa_m)$ 必须位于 $[-1,1]$，这正是 $\beta_{\rm rel}n>1$ 的阈值。把两个积分结果先相乘，几何积分本身为
+\begin{equation*}
+\frac{\kappa_m}{2}\,
+\frac{2\pi}{v\kappa_m}
+\left(1-\frac{\omega^2}{v^2\kappa_m^2}\right)
+\Theta(v\kappa_m-\omega)
+=\frac{\pi}{v}
+\left(1-\frac1{\beta_{\rm rel}^2n^2}\right)
+\Theta(\beta_{\rm rel}n-1).
+\end{equation*}
+\eqnrefs{eq:homogeneous_green_loss_general} 还带有
+$2\mu_0e^2v^2/(\hbar v)$ 与傅里叶积分测度的 $(2\pi)^{-3}$，而
+而上面横向 Green 张量虚部中的整体谱前因子还提供一个 $\pi$。因此
+\begin{align*}
+\frac{\dd^2 P}{\dd L\,\dd\omega}
+&=\frac{2\mu_0e^2}{\hbar v}
+\frac{v^2\pi}{(2\pi)^3}
+\frac{\pi}{v}
+\left(1-\frac1{\beta_{\rm rel}^2n^2}\right)
+\Theta(\beta_{\rm rel}n-1),\\
+&=\frac{\mu_0e^2}{4\pi\hbar}
+\left(1-\frac1{\beta_{\rm rel}^2n^2}\right)
+\Theta(\beta_{\rm rel}n-1).
+\end{align*}
+最后乘以单量子能量 $\hbar\omega$，并用
+$\mu_0=1/(\varepsilon_0c^2)$，便得到\eqnrefs{eq:frank_tamm_spectrum}。因此 Cherenkov 阈值和 $1-1/(\beta_{\rm rel}^2n^2)$ 权重同时由同一个横向在壳谱投影算符给出：前者决定传播支路是否存在，后者是该支路的横向投影权重。
+\end{exbox}
+
+
+极性晶格、周期材料与混合准粒子都对应于同一因果材料算符加入新的内部自由度或空间周期性；其微观顶点由晶格正常模与电子耦合的共同基本对象构造。
+
+
+
+\subsection{周期介质顶点}
+在周期材料中，电子既可能与电磁场作用，也可能激发晶格振动。第七章已说明怎样量子化正常模；现在把模式坐标具体写成各原子或各原胞的位移。单个原胞内部的振动决定模式频率与耦合大小，各原胞之间的相位关系则决定能够交换的动量。把两部分相乘并对晶格求和，就能得到周期介质中的跃迁矩阵元。
+
+声子并不是先验加入材料模型的新粒子，而是晶格小振动的正常模量子。经典起点仍是各离子偏离平衡位置的位移 $\mathbf u_{l\iota}$：把势能在平衡构型附近展开到二阶，Hessian 给出不同离子位移之间的线性回复力；周期性再允许用 Bloch 波矢把不同晶胞的振动解耦；对每个 Bloch 波矢对角化剩余的晶胞内部矩阵，得到的每一个独立谐振子量子化以后才称为一个声子模。因而“动力学矩阵 $\to$ 正常模 $\to$ 谐振子 $\to$ 声子产生湮灭算符”是一条连续的经典到量子链。
+
+对三维周期谐性晶格，质量矩阵与力常数的 Bloch 变换把\chapref{chap:general-interaction}的一般二次本征问题具体化为动力学矩阵问题。以 $\boldsymbol\kappa$ 标记第一 Brillouin 区内的波矢，以 $\nu$ 标记正常模分支，以 $\iota$ 标记晶胞内部自由度；$\mathbf e_{\iota\nu}(\boldsymbol\kappa)$ 是质量加权动力学算符的归一化本征矢。经典线性晶格首先由质量加权动力学矩阵确定正常模：
+\begin{equation}
+\boxed{
+\sum_{\iota'}\mathsf D_{\iota\iota'}(\boldsymbol\kappa)
+\,\mathbf e_{\iota'\nu}(\boldsymbol\kappa)
+=\omega_{\boldsymbol\kappa\nu}^2
+\mathbf e_{\iota\nu}(\boldsymbol\kappa).}
+\label{eq:phonon_normal_mode_eigenproblem}
+\end{equation}
+对每个本征对 $(\boldsymbol\kappa,\nu)$，把沿本征矢的质量加权位移幅记为经典正常坐标 $Q_{\boldsymbol\kappa\nu}$，其正则共轭动量记为 $P_{\boldsymbol\kappa\nu}$。选择本征矢的标准归一化后，二次晶格 Hamiltonian 被对角化为
+\begin{equation*}
+H_{\rm ph}^{(2)}
+=\frac12\sum_{\boldsymbol\kappa\nu}
+\left(|P_{\boldsymbol\kappa\nu}|^2
++\omega_{\boldsymbol\kappa\nu}^2|Q_{\boldsymbol\kappa\nu}|^2\right).
+\end{equation*}
+因此每个 $(\boldsymbol\kappa,\nu)$ 都是一个独立谐振子；量子化以后
+\begin{equation*}
+\hat Q_{\boldsymbol\kappa\nu}
+=\sqrt{\frac{\hbar}{2\omega_{\boldsymbol\kappa\nu}}}
+\left(\hat a_{\boldsymbol\kappa\nu}
++\hat a_{-\boldsymbol\kappa\nu}^{\dagger}\right).
+\end{equation*}
+把这个正常坐标沿质量加权本征矢变回各离子的实际位移，就得到
+
+\begin{equation}
+\boxed{
+\hat{\mathbf u}_{l\iota}
+=\frac1{\sqrt N}\sum_{\boldsymbol\kappa\nu}
+\sqrt{\frac{\hbar}{2M_\iota\omega_{\boldsymbol\kappa\nu}}}
+\left[
+\mathbf e_{\iota\nu}(\boldsymbol\kappa)\hat a_{\boldsymbol\kappa\nu}\ee^{\ii\boldsymbol\kappa\cdot\mathbf R_l}
++\mathbf e_{\iota\nu}^{*}(\boldsymbol\kappa)\hat a_{\boldsymbol\kappa\nu}^{\dagger}\ee^{-\ii\boldsymbol\kappa\cdot\mathbf R_l}
+\right].}
+\label{eq:phonon_displacement_quantization}
+\end{equation}
+其中 $N$ 是晶胞数，$\mathbf R_l$ 是第 $l$ 个晶胞位置，$\omega_{\boldsymbol\kappa\nu}$ 是正常模频率。复共轭项保证位移算符厄米；对应自由声子哈密顿量是一组独立谐振子。\eqnrefs{eq:phonon_displacement_quantization} 因而只是把\chapref{chap:general-interaction}的一般模式坐标代入周期晶格的质量、本征矢与 Bloch 相位；它给出这一材料类中的单量子位移幅，而不改变前面已经建立的玻色对易关系和联合动力学。
+
+每个晶胞含两个离子的一维最近邻链可作为这个一般本征问题的二维内部空间实例；其两条本征支分别在长波极限表现为声学支和有限频率光学支。一般声子量子化仍由\eqnrefs{eq:phonon_displacement_quantization} 给出；最近邻链的力常数与质量具体指定动力学矩阵。
+
+若给定的微观单电子哈密顿量 $\hat h[\{\mathbf u_{l\iota}\}]$ 随离子位置变化，则在平衡构型附近作 Taylor 展开，其一阶项包含该模型内全部线性位移耦合
+\begin{equation*}
+\delta\hat h
+=\sum_{l\iota}\hat{\mathbf u}_{l\iota}\cdot
+\left.\frac{\partial\hat h}{\partial\mathbf u_{l\iota}}\right|_0
+=\sum_{\boldsymbol\kappa\nu}
+\left(\hat V_{\boldsymbol\kappa\nu}\hat a_{\boldsymbol\kappa\nu}
++\hat V_{\boldsymbol\kappa\nu}^{\dagger}\hat a_{\boldsymbol\kappa\nu}^{\dagger}\right).
+\end{equation*}
+因此，在这一类由离子坐标参数化的单电子模型中，线性微观耦合的基本对象是 $\partial\hat h/\partial\mathbf u_{l\iota}$。形变势、Fr\"ohlich 耦合或外部自由电子对振动极化场的耦合，都是在不同电子 Hilbert 空间和不同长波近似下对这个耦合算符取矩阵元。
+
+极性晶体中的光学声子还会产生宏观电极化。先区分两个关键的长波模：TO（transverse optical，横向光学）模的离子相对位移在 $\boldsymbol\kappa\to0$ 时垂直于传播方向，LO（longitudinal optical，纵向光学）模的位移则平行于传播方向。极性晶体中的纵向位移会建立宏观 Coulomb 电场，因此长波 LO 与 TO 频率一般分裂；$\omega_{\rm TO}$ 是介电函数的共振极点，而无阻尼的 $\omega_{\rm LO}$ 对应纵向介电响应的零点。
+
+令 $u$ 是一个红外活性 TO 正常坐标，$M_r$ 是该模的约化质量。宏观极化对离子相对位移的一阶导数定义 Born 有效电荷；在当前单模标量记号中写为 $Z^*e$，即单位位移产生的极化系数由 $Z^*e$ 给出。$n_{\rm ion}$ 是单位体积振子数，$\Gamma_{\rm ph}$ 是阻尼率。在线性响应中
+\begin{equation}
+\boxed{
+M_r(\ddot u+\Gamma_{\rm ph}\dot u+\omega_{\rm TO}^2u)=Z^*eE,
+\qquad
+P_{\rm ion}=n_{\rm ion}Z^*eu.}
+\label{eq:polar-optical-oscillator-eom-dp76}
+\end{equation}
+配合 $\mathbf D=\varepsilon_0\varepsilon_\infty\mathbf E+\mathbf P_{\rm ion}$ 得到单振子介电函数
+\begin{equation}
+\boxed{
+\varepsilon(\omega)
+=\varepsilon_\infty
+\frac{\omega_{\rm LO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega}
+{\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega},
+\qquad
+\omega_{\rm LO}^2
+=\omega_{\rm TO}^2+
+\frac{n_{\rm ion}Z^{*2}e^2}{\varepsilon_0\varepsilon_\infty M_r}.}
+\label{eq:polar_optical_dielectric_response}
+\end{equation}
+于是无阻尼静态极限给出 Lyddane--Sachs--Teller 关系
+\begin{equation}
+\boxed{
+\frac{\varepsilon_s}{\varepsilon_\infty}
+=\frac{\omega_{\rm LO}^2}{\omega_{\rm TO}^2}.}
+\label{eq:lattice_lst_relation}
+\end{equation}
+它只描述材料响应的极点与零点；外部电子真正看到的耦合强度还要由模式场或 Green 张量与电子跃迁电流的投影决定。
+
+\begin{exbox}[热声子吸收与发射]
+把\chapref{chap:general-interaction}\eqnrefs{eq:universal_boson_finite_time_emission} 的模式标签取为 $\lambda=(\boldsymbol\kappa,\nu)$，并在长时间弱耗尽极限取 Fermi 黄金律。令
+\begin{equation*}
+ \mathcal M_{fi}^{(\boldsymbol\kappa\nu)}
+ \equiv\langle f|\hat{\mathcal V}_{\boldsymbol\kappa\nu}|i\rangle
+\end{equation*}
+为去掉玻色升降矩阵元后的电子--模式耦合。热平衡平均占据数为 $N_{\boldsymbol\kappa\nu}$ 时，单个已指定电子末态的吸收与发射速率密度分别为
+\begin{align*}
+\Gamma_{\rm abs}^{i\to f}
+&=\frac{2\pi}{\hbar}
+\left|\mathcal M_{fi}^{(\boldsymbol\kappa\nu)}\right|^2
+N_{\boldsymbol\kappa\nu}\,
+\delta(E_f-E_i-\hbar\omega_{\boldsymbol\kappa\nu}),\\
+\Gamma_{\rm em}^{i\to f}
+&=\frac{2\pi}{\hbar}
+\left|\mathcal M_{fi}^{(\boldsymbol\kappa\nu)}\right|^2
+(N_{\boldsymbol\kappa\nu}+1)\,
+\delta(E_f-E_i+\hbar\omega_{\boldsymbol\kappa\nu}).
+\end{align*}
+热平衡玻色占据数为
+\begin{equation*}
+N_{\boldsymbol\kappa\nu}
+=\frac{1}{\exp(\beta\hbar\omega_{\boldsymbol\kappa\nu})-1},
+\qquad \beta=(k_BT)^{-1}.
+\end{equation*}
+对同一模式、互为反过程的一对能量壳通道，除去共同电子矩阵元和态密度以后，发射与吸收的比值为
+\begin{align*}
+\frac{\Gamma_{\rm em}}{\Gamma_{\rm abs}}
+&=\frac{N_{\boldsymbol\kappa\nu}+1}{N_{\boldsymbol\kappa\nu}}\\
+&=\frac{\ee^{\beta\hbar\omega}/(\ee^{\beta\hbar\omega}-1)}{1/(\ee^{\beta\hbar\omega}-1)}\\
+&=\ee^{\beta\hbar\omega_{\boldsymbol\kappa\nu}}.
+\end{align*}
+因此低温 $k_BT\ll\hbar\omega$ 时吸收被 Boltzmann 因子强烈压低，而自发发射仍保留 $+1$；高温 $k_BT\gg\hbar\omega$ 时 $N\gg1$，两者趋近相等。这里的 $+1$ 正是通用产生算符矩阵元 $|\langle N+1|a^\dagger|N\rangle|^2=N+1$ 的声子实例。有限作用时间、强耗尽或不可分辨连续谱时，应回到\chapref{chap:general-interaction}的有限时间多模振幅层级。
+\end{exbox}
+
+周期性还改变动量选择。对沿 $z$ 的一维周期 $\Lambda$，倒格矢为 $G_m=2\pi m/\Lambda$。这里必须区分周期方向与被结构破坏的横向平移对称性：离散 $z$ 平移只固定纵向 Bloch 准动量模倒格矢守恒，并不能单独固定电子末态的全部三维动量。若发射一个真空光子
+$\boldsymbol\kappa=(\omega/c)\hat{\mathbf n}$，一般的能量壳与纵向准动量约束为
+\begin{equation}
+\boxed{
+E_f=E_i-\hbar\omega,
+\qquad
+p_{f,z}=p_i-\hbar G_m-\hbar\kappa_z,
+\qquad
+E_f^2=\me^2c^4+c^2\!\left(p_{f,z}^2+p_{f,\perp}^2\right).}
+\label{eq:periodic_photon_exact_conservation}
+\end{equation}
+结构若在某个横向方向不具连续平移对称性，就可以吸收该方向的连续动量，因此 $p_{f,\perp}$ 必须由具体边界条件、Green 张量或末态通道另行决定。仅由\eqnrefs{eq:periodic_photon_exact_conservation} 一般不存在唯一的有限反冲 $\omega(\theta)$ 闭式。
+
+为了说明一个可封闭求解的特例，再考虑理想化通道：除周期方向的 $\hbar G_m$ 外，结构不交换横向动量，于是
+\begin{equation*}
+\mathbf p_{f,\perp}=-\hbar\boldsymbol\kappa_\perp .
+\end{equation*}
+在这个附加通道条件下，三维末态可写成
+\begin{equation*}
+\mathbf p_f=(p_i-\hbar G_m)\hat{\mathbf z}-\hbar\boldsymbol\kappa.
+\end{equation*}
+把传播光子和倒格动量合成该指定通道中的有效正频交换四矢量
+\begin{equation*}
+\mathcal K_m^\mu
+\equiv
+\left(
+\frac{\omega}{c},
+\boldsymbol\kappa+G_m\hat{\mathbf z}
+\right),
+\qquad
+P_f=P_i-\hbar\mathcal K_m .
+\end{equation*}
+其中 $\mathcal K_m^\mu$ 表示该指定通道中的总四动量交换；它的空间部分同时含传播光子的动量与晶格提供的倒格动量。由发射支的统一质量壳恒等式
+$-2P_i\!\cdot\mathcal K_m+\hbar\mathcal K_m^2=0$，并代入
+$\boldsymbol\kappa=(\omega/c)\hat{\mathbf n}$、
+$\hat{\mathbf z}\!\cdot\hat{\mathbf n}=\cos\theta$，逐项得到
+\begin{align*}
+0
+&=-2\left[
+\frac{E_\ii\omega}{c^2}
+-p_i\left(G_m+\frac{\omega}{c}\cos\theta\right)
+\right]\\
+&\quad
++\hbar\left[
+-G_m^2-2G_m\frac{\omega}{c}\cos\theta
+\right],
+\end{align*}
+其中真空光子的 $\omega^2/c^2-\kappa^2$ 已精确相消。整理为
+\begin{equation*}
+\omega\left[E_i-c(p_i-\hbar G_m)\cos\theta\right]
+=c^2G_m\left(p_i-\frac{\hbar G_m}{2}\right),
+\end{equation*}
+所以
+\begin{equation}
+\boxed{
+\omega
+=\frac{c^2G_m\left(p_i-\hbar G_m/2\right)}
+{E_i-c\left(p_i-\hbar G_m\right)\cos\theta}.}
+\label{eq:smith_purcell_exact_recoil_dispersion}
+\end{equation}
+这里 $\theta$ 是光子方向与电子初始运动方向的夹角。与均匀介质相比，周期结构新增的物理输入不是另一套质量壳代数，而是离散平移对称性允许的 $G_m$ 以及指定横向通道条件。\eqnrefs{eq:smith_purcell_exact_recoil_dispersion} 因而只属于这个可封闭特例，不是任意表面光栅几何的普适有限反冲色散。
+
+\begin{exbox}[Smith--Purcell 色散]
+真正具有更广适用性的 Smith--Purcell 主关系来自小反冲下的纵向同步。若显著末态满足
+\begin{equation*}
+\epsilon_{\rm rec}\equiv
+\frac{\max\{\hbar|G_m|,\,\hbar\omega/c,\,|p_{f,\perp}|\}}{p_i}\ll1,
+\end{equation*}
+则电子能量差的一阶展开只保留初始速度方向的动量变化：
+\begin{align*}
+E_i-E_f
+&=v_i(p_i-p_{f,z})+\order(\epsilon_{\rm rec}^2E_i),\\
+&=\hbar v_i(G_m+\kappa_z)+\order(\epsilon_{\rm rec}^2E_i).
+\end{align*}
+与 $E_i-E_f=\hbar\omega$ 以及 $\kappa_z=(\omega/c)\cos\theta$ 联立，得到
+\begin{equation*}
+\omega\simeq\frac{v_iG_m}{1-\beta_{\rm rel}\cos\theta}.
+\end{equation*}
+再用 $G_m=2\pi m/\Lambda$ 与 $\lambda_{\rm rad}=2\pi c/\omega$，
+\begin{equation}
+\boxed{
+\lambda_{\rm rad}
+=\frac{\Lambda}{m}
+\left(\frac1{\beta_{\rm rel}}-\cos\theta\right).}
+\label{eq:smith_purcell_wavelength}
+\end{equation}
+这一无反冲周期辐射关系通常称为 Smith--Purcell 色散。它由能量守恒与周期方向的 Bloch 准动量匹配共同确定：电子同步线被倒格矢平移后与真空光锥相交。这里 $G_m$ 表示晶格离散平移对称性允许的准动量差；传播光子的四动量仍由 $(\hbar\omega/c,\hbar\boldsymbol\kappa)$ 给出。
+\end{exbox}
+
+有限周期数 $N$ 不改变中心色散，却决定相干线形。若相邻周期的相位失配为
+\begin{equation*}
+\Delta\varphi_{\rm cell}=\Lambda\left(\frac{\omega}{v}-\kappa_z-G_m\right),
+\end{equation*}
+则阵列因子为
+\begin{equation*}
+\left|\sum_{n=0}^{N-1}\ee^{\ii n\Delta\varphi_{\rm cell}}\right|^2
+=\left[\frac{\sin(N\Delta\varphi_{\rm cell}/2)}{\sin(\Delta\varphi_{\rm cell}/2)}\right]^2.
+\end{equation*}
+理想相干极限中峰值按 $N^2$ 增长、主峰宽度按 $1/N$ 缩窄；位置无序、损耗或周期路径可分辨信息会压低不同周期之间的交叉项。
+
+最后必须区分同一声子模面对两类电子时的矩阵元。材料内部 Bloch 电子可以在长波近似下用形变势或 Fr\"ohlich 顶点参数化，例如各向同性声学形变势给出
+\begin{equation*}
+M_{\boldsymbol\kappa}=D\sqrt{\frac{\hbar|\boldsymbol\kappa|}{2\rho_MVs}},
+\end{equation*}
+而极性 LO 模的长程 Coulomb 顶点满足
+\begin{equation*}
+|M_{\boldsymbol\kappa}^{\rm F}|^2
+=\frac{e^2\hbar\omega_{\rm LO}}{2\varepsilon_0V|\boldsymbol\kappa|^2}
+\left(\frac1{\varepsilon_\infty}-\frac1{\varepsilon_s}\right).
+\end{equation*}
+这些参数描述的是晶体能带态。样品外的自由电子则必须使用真空侧模式势或 Green 张量与自由电子波函数的矩阵元，典型的一量子模式顶点为
+\begin{equation*}
+\hbar\mathcal G_{\mathbf p's',\mathbf ps}^{(\lambda)}
+=\int \dd^3 r\,\psi_{\mathbf p's'}^\dagger
+\left[e\phi_\lambda^{\rm out}-ec\,\boldsymbol\alpha\cdot\mathbf A_\lambda^{\rm out}\right]
+\psi_{\mathbf ps},
+\end{equation*}
+必要时再加入非电磁短程势。两类问题共享同一晶格正常模，但不共享同一个电子矩阵元。
+
+
+
+
+有限阵列的普适振幅首先是各单元实际局域贡献的相干和，
+\begin{equation*}
+\mathscr A_N^{\rm arr}
+=\sum_{n=0}^{N-1}\mathscr A_n^{\rm loc}.
+\end{equation*}
+只有当端点不会显著重塑局域模式、各周期单元的局域耦合可视为相同，并且有限截断的主要作用只是增加逐单元传播相位时，才可因子化为
+\begin{equation}
+\boxed{
+\mathscr A_N^{\rm arr}
+=\mathscr A_1^{\rm cell}\sum_{n=0}^{N-1}\ee^{\ii n\varphi_{\rm cell}}.}
+\label{eq:finite-periodic-array-amplitude-dp68}
+\end{equation}
+在这一受控的等价单元近似下，有限长度把无限结构的严格相位匹配条件展宽成有限阵列因子
+\begin{equation}
+\boxed{
+\mathscr D_N(\varphi_{\rm cell})
+=\frac{\sin^2(N\varphi_{\rm cell}/2)}
+{\sin^2(\varphi_{\rm cell}/2)}.}
+\label{eq:finite-periodic-array-factor-dp68}
+\end{equation}
+其相位匹配极限为 $\mathscr D_N(2\pi m)=N^2$，第一零点距离主峰 $O(1/N)$。若端点改变局域场、单元间存在不可忽略的多重散射，或每个单元的耦合幅度明显不同，就不能使用单一 $\mathscr A_1^{\rm cell}$；此时应回到逐单元振幅和，或直接求有限结构的 Maxwell Green 张量。\eqnrefs{eq:finite-periodic-array-factor-dp68} 因而是等价单元因子化后的几何结果，而不是任意有限周期结构的普适动力学定理。
+\input{sections/07-periodic-array-detail-dp22}
+\begin{derivation}[从\eqnrefs{eq:phonon_normal_mode_eigenproblem}到\eqnrefs{eq:phonon_displacement_quantization}]
+从平衡晶格的小振动开始。第 $l$ 个晶胞中第 $\iota$ 个离子的位移记为 $\mathbf u_{l\iota}$，质量为 $M_\iota$。谐性近似下的经典 Hamiltonian 为
+\[
+H^{(2)}
+=\frac12\sum_{l\iota}M_\iota|\dot{\mathbf u}_{l\iota}|^2
++\frac12\sum_{l\iota,l'\iota'}
+\mathbf u_{l\iota}\cdot
+\boldsymbol\Phi_{l\iota,l'\iota'}\mathbf u_{l'\iota'},
+\]
+其中 $\boldsymbol\Phi$ 是平衡位置处势能 Hessian。周期性使力常数只依赖晶胞差，因此可以作 Bloch 变换。定义质量加权 Fourier 坐标
+\[
+\mathbf q_\iota(\boldsymbol\kappa)
+=\sqrt{\frac{M_\iota}{N}}
+\sum_l\mathbf u_{l\iota}\ee^{-\ii\boldsymbol\kappa\cdot\mathbf R_l}.
+\]
+逆变换为
+\[
+\mathbf u_{l\iota}
+=\frac1{\sqrt{NM_\iota}}
+\sum_{\boldsymbol\kappa}
+\mathbf q_\iota(\boldsymbol\kappa)
+\ee^{\ii\boldsymbol\kappa\cdot\mathbf R_l}.
+\]
+对固定 $\boldsymbol\kappa$，动力学矩阵本征问题
+\[
+\sum_{\iota'}\mathsf D_{\iota\iota'}(\boldsymbol\kappa)
+\mathbf e_{\iota'\nu}(\boldsymbol\kappa)
+=\omega_{\boldsymbol\kappa\nu}^2
+\mathbf e_{\iota\nu}(\boldsymbol\kappa)
+\]
+给出一组正交本征矢。采用
+\[
+\sum_\iota
+\mathbf e_{\iota\nu}^*(\boldsymbol\kappa)\cdot
+\mathbf e_{\iota\nu'}(\boldsymbol\kappa)
+=\delta_{\nu\nu'}
+\]
+的归一化，把质量加权位移展开为
+\[
+\mathbf q_\iota(\boldsymbol\kappa)
+=\sum_\nu\mathbf e_{\iota\nu}(\boldsymbol\kappa)
+Q_{\boldsymbol\kappa\nu}.
+\]
+代回逆 Bloch 变换：
+\[
+\mathbf u_{l\iota}
+=\frac1{\sqrt{NM_\iota}}
+\sum_{\boldsymbol\kappa\nu}
+\mathbf e_{\iota\nu}(\boldsymbol\kappa)
+Q_{\boldsymbol\kappa\nu}
+\ee^{\ii\boldsymbol\kappa\cdot\mathbf R_l}.
+\]
+由于真实空间位移是实变量，$Q_{-\boldsymbol\kappa,\nu}=Q_{\boldsymbol\kappa\nu}^*$。对实力常数有 $\mathsf D(-\boldsymbol\kappa)=\mathsf D^*(\boldsymbol\kappa)$；在相容的本征矢规范下可取
+\[
+\mathbf e_{\iota\nu}(-\boldsymbol\kappa)
+=\mathbf e_{\iota\nu}^*(\boldsymbol\kappa).
+\]
+
+利用本征矢正交性，二次 Hamiltonian 对角化为独立正常坐标：
+\[
+H^{(2)}
+=\frac12\sum_{\boldsymbol\kappa\nu}
+\left(P_{\boldsymbol\kappa\nu}P_{-\boldsymbol\kappa\nu}
++\omega_{\boldsymbol\kappa\nu}^2
+Q_{\boldsymbol\kappa\nu}Q_{-\boldsymbol\kappa\nu}\right).
+\]
+量子化时令
+\[
+[\hat Q_{\boldsymbol\kappa\nu},
+\hat P_{\boldsymbol\kappa'\nu'}]
+=\ii\hbar\delta_{\nu\nu'}
+\delta_{\boldsymbol\kappa,-\boldsymbol\kappa'},
+\]
+并定义
+\begin{align*}
+\hat Q_{\boldsymbol\kappa\nu}
+&=\sqrt{\frac{\hbar}{2\omega_{\boldsymbol\kappa\nu}}}
+\left(\hat a_{\boldsymbol\kappa\nu}
++\hat a_{-\boldsymbol\kappa\nu}^\dagger\right),\\
+\hat P_{\boldsymbol\kappa\nu}
+&=-\ii\sqrt{\frac{\hbar\omega_{\boldsymbol\kappa\nu}}2}
+\left(\hat a_{\boldsymbol\kappa\nu}
+-\hat a_{-\boldsymbol\kappa\nu}^\dagger\right).
+\end{align*}
+由 $[a_{\boldsymbol\kappa\nu},a_{\boldsymbol\kappa'\nu'}^\dagger]
+=\delta_{\boldsymbol\kappa\boldsymbol\kappa'}\delta_{\nu\nu'}$ 可直接验证上面的正则对易关系，并得到
+\[
+\hat H_{\rm ph}
+=\sum_{\boldsymbol\kappa\nu}
+\hbar\omega_{\boldsymbol\kappa\nu}
+\left(\hat a_{\boldsymbol\kappa\nu}^\dagger
+\hat a_{\boldsymbol\kappa\nu}+\frac12\right).
+\]
+
+最后把 $\hat Q$ 代回真实位移。第一部分为
+\[
+\frac1{\sqrt N}\sum_{\boldsymbol\kappa\nu}
+\sqrt{\frac{\hbar}{2M_\iota\omega_{\boldsymbol\kappa\nu}}}
+\mathbf e_{\iota\nu}(\boldsymbol\kappa)
+\hat a_{\boldsymbol\kappa\nu}
+\ee^{\ii\boldsymbol\kappa\cdot\mathbf R_l}.
+\]
+第二部分对求和变量作 $\boldsymbol\kappa\mapsto-\boldsymbol\kappa$，并使用
+$\omega_{-\boldsymbol\kappa\nu}=\omega_{\boldsymbol\kappa\nu}$ 与本征矢共轭关系，得到
+\[
+\frac1{\sqrt N}\sum_{\boldsymbol\kappa\nu}
+\sqrt{\frac{\hbar}{2M_\iota\omega_{\boldsymbol\kappa\nu}}}
+\mathbf e_{\iota\nu}^*(\boldsymbol\kappa)
+\hat a_{\boldsymbol\kappa\nu}^\dagger
+\ee^{-\ii\boldsymbol\kappa\cdot\mathbf R_l}.
+\]
+两部分相加即为正文\eqnrefs{eq:phonon_displacement_quantization}。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:polar-optical-oscillator-eom-dp76}到\eqnrefs{eq:lattice_lst_relation}]
+从正文\eqnrefs{eq:polar-optical-oscillator-eom-dp76} 的受驱极性光学模式开始：
+\[
+M_r(\ddot u+\Gamma_{\rm ph}\dot u+\omega_{\rm TO}^2u)=Z^*eE,
+\qquad
+P_{\rm ion}=n_{\rm ion}Z^*eu.
+\]
+采用全文的 $\ee^{-\ii\omega t}$ 约定，时间导数映射为
+\[
+\dot u\mapsto-\ii\omega u(\omega),
+\qquad
+\ddot u\mapsto-\omega^2u(\omega).
+\]
+因此运动方程变成代数方程
+\[
+M_r\left(\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega\right)u(\omega)
+=Z^*eE(\omega),
+\]
+解得
+\[
+u(\omega)
+=\frac{Z^*e/M_r}
+{\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega}E(\omega).
+\]
+离子极化于是为
+\begin{align*}
+P_{\rm ion}(\omega)
+&=n_{\rm ion}Z^*eu(\omega)\\
+&=\frac{n_{\rm ion}Z^{*2}e^2/M_r}
+{\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega}E(\omega).
+\end{align*}
+
+高频电子极化已经吸收到背景介电常数 $\varepsilon_\infty$ 中，所以位移场为
+\[
+D(\omega)=\varepsilon_0\varepsilon_\infty E(\omega)+P_{\rm ion}(\omega)
+=\varepsilon_0\varepsilon(\omega)E(\omega).
+\]
+除以 $\varepsilon_0E$：
+\[
+\varepsilon(\omega)
+=\varepsilon_\infty
++\frac{n_{\rm ion}Z^{*2}e^2/(\varepsilon_0M_r)}
+{\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega}.
+\]
+通分后
+\begin{align*}
+\varepsilon(\omega)
+=\varepsilon_\infty
+\frac{\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega
++n_{\rm ion}Z^{*2}e^2/(\varepsilon_0\varepsilon_\infty M_r)}
+{\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega}.
+\end{align*}
+定义长波纵向光学频率
+\[
+\omega_{\rm LO}^2
+\equiv\omega_{\rm TO}^2
++\frac{n_{\rm ion}Z^{*2}e^2}
+{\varepsilon_0\varepsilon_\infty M_r},
+\]
+分子立即化为
+$\omega_{\rm LO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega$，所以
+\[
+\varepsilon(\omega)
+=\varepsilon_\infty
+\frac{\omega_{\rm LO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega}
+{\omega_{\rm TO}^2-\omega^2-\ii\Gamma_{\rm ph}\omega},
+\]
+即正文\eqnrefs{eq:polar_optical_dielectric_response}。
+
+无阻尼时，$\omega=\omega_{\rm TO}$ 使分母为零，对应横向光学共振；$\omega=\omega_{\rm LO}$ 使 $\varepsilon(\omega)=0$，对应无外加自由电荷时纵向条件
+$D=\varepsilon_0\varepsilon E=0$ 的非零电场解。静态极限再取 $\omega=0$、$\Gamma_{\rm ph}=0$：
+\[
+\varepsilon_s\equiv\varepsilon(0)
+=\varepsilon_\infty
+\frac{\omega_{\rm LO}^2}{\omega_{\rm TO}^2}.
+\]
+整理得到
+\[
+\frac{\varepsilon_s}{\varepsilon_\infty}
+=\frac{\omega_{\rm LO}^2}{\omega_{\rm TO}^2},
+\]
+即正文\eqnrefs{eq:lattice_lst_relation}。
+\end{derivation}
+
+
+\section{混合模式与散射接口}
+
+材料的极化会产生电磁场，电磁场又驱动材料，两者共同形成新的正常振动。如果某个频率范围主要由少数共振贡献，可以通过这些模式的频率、成分和线宽理解电子谱峰。本节先求光与材料的混合模式，再将已建立的散射和响应公式用于光子--电子碰撞以及整形电子对靶的驱动。
+
+\subsection{混合与界面模}
+
+前面的介质响应把材料看成一个频率依赖的 Maxwell 算符，但很多实验还需要回答更具体的问题：当一个电磁共振与一个材料共振频率接近时，系统真正的本征振动还会不会分别是“纯光”和“纯物质”？先固定三个术语。把光--物质耦合人为设为零时各自独立的本征模称为\emph{裸模}（bare modes）；恢复耦合以后重新对角化完整二次 Hamiltonian 得到的本征模称为\emph{混合模}。若调节两个裸频率使它们经过彼此，本来会相交的两条裸频率因为非零耦合而在共振处保持有限最小间距，这种谱线排斥称为\emph{反交叉}（avoided crossing）。因此只要两个自由度之间存在非零线性耦合，裸模就不再分别守恒，真正的正常模必须从耦合后的二次 Hamiltonian 重新对角化。本征矢同时含有光与物质成分时，这类混合本征模通常称为\emph{极化激元}（polariton）。
+
+界面束缚模看起来是另一类问题，但数学结构相同。有限维的两个振子通过矩阵行列式寻找极点；连续电磁场则通过满足边界条件的 Maxwell Green 张量寻找极点。先从两个耦合振子求出本征频率与本征矢，就能直接看到反交叉怎样产生；随后再把“求极点”的同一方法用于平面 Maxwell 边值问题：此时极点由 Fresnel 分母或等价的推迟 Green 张量给出。有限维矩阵与连续界面虽然计算形式不同，决定谱峰的对象都是预解算符的极点。
+
+\begin{exbox}[Hopfield 二模模型]
+\chapref{chap:general-interaction}的一般二次环境允许在谱上孤立出少数材料自由度。这里取一个类光子模和一个类物质模，作为该联合动力学结构的两模参数化；完整二次模型先保留反旋转项与自极化项，RWA 只在相应无量纲控制量足够小时再施加。
+
+先取一个类光子模 $\hat a_c$ 与一个类物质模 $\hat a_m$，裸频率分别为 $\omega_c,\omega_m>0$，线性耦合为 $g_{\rm cm}$。在不预先丢弃反旋转项时，规范一致的二次模型可写成
+\begin{equation}
+\boxed{
+\frac{\hat H_{\rm Hop}}{\hbar}
+=\omega_c \hat a_c^\dagger\hat a_c+\omega_m \hat a_m^\dagger\hat a_m
++|g_{\rm cm}|(\hat a_c+\hat a_c^\dagger)(\hat a_m+\hat a_m^\dagger)
++D(\hat a_c+\hat a_c^\dagger)^2 .}
+\label{eq:hopfield-full-hamiltonian-dp68}
+\end{equation}
+这里已通过物质模的相位重定义令 $g_{\rm cm}$ 为非负实数。$D$ 是与光子正则坐标平方相乘的抗磁/自极化频率系数，$[D]={\rm s^{-1}}$；它的数值必须由所采用的微观规范模型确定，不能在强耦合区独立删去。这样的光--物质二次混合模型通常称为 Hopfield 模型。
+
+定义
+\begin{equation*}
+\Omega_c^2\equiv\omega_c(\omega_c+4D).
+\end{equation*}
+把二次 Hamiltonian 写成两个耦合正则坐标的运动方程，正频正常模满足
+\begin{equation}
+\boxed{
+\omega_\pm^2
+=\frac{\Omega_c^2+\omega_m^2}{2}
+\pm\frac12\sqrt{(\Omega_c^2-\omega_m^2)^2
++16|g_{\rm cm}|^2\omega_c\omega_m}.}
+\label{eq:hopfield_full_quadratic_frequencies}
+\end{equation}
+这两个频率是完整二次模型的极点。稳定性要求二次型正定，特别要求两个 $\omega_\pm^2$ 均为正；量子正常模算符则需用保持玻色辛对易结构的线性正则变换构造。
+
+完整二次光--物质 Hamiltonian 同时包含共振与反旋转项。数守恒模型只有在反旋转支路的能量失配远大于耦合时才成立，其控制量可取
+\begin{equation*}
+\epsilon_{\rm cr}\equiv\frac{|g_{\rm cm}|}{\omega_c+\omega_m}\ll1,
+\qquad
+\epsilon_{\rm sp}\equiv\frac{|D|}{\omega_c}\ll1.
+\end{equation*}
+但旋波近似不能把整个自极化项一起删除，因为
+\begin{equation*}
+D(\hat a_c+\hat a_c^\dagger)^2
+=D\hat a_c^2+D\hat a_c^{\dagger2}
++2D\hat a_c^\dagger\hat a_c+D.
+\end{equation*}
+其中 $\hat a_c^2$ 与 $\hat a_c^{\dagger2}$ 是快速反旋转项，$2D\hat a_c^\dagger\hat a_c$ 却保持激发数，并在一阶就重整化类光子频率。去掉与动力学无关的常数 $D$，定义
+\begin{equation}
+\boxed{\bar\omega_c\equiv\omega_c+2D,}
+\label{eq:hopfield-rwa-renormalized-photon-dp75}
+\end{equation}
+则数守恒 RWA Hamiltonian 为
+\begin{equation}
+\boxed{
+\frac{\hat H_{\rm RWA}}{\hbar}
+=\bar\omega_c \hat a_c^\dagger\hat a_c+\omega_m \hat a_m^\dagger\hat a_m
++g_{\rm cm}\hat a_c^\dagger\hat a_m+g_{\rm cm}^*\hat a_m^\dagger\hat a_c.}
+\label{eq:hopfield-rwa-hamiltonian-dp68}
+\end{equation}
+在单激发子空间中，对应的 $2\times2$ 厄米矩阵直接给出
+\begin{equation}
+\boxed{
+\omega_\pm^{({\rm RWA})}
+=\frac{\bar\omega_c+\omega_m}{2}
+\pm\sqrt{\frac{(\bar\omega_c-\omega_m)^2}{4}+|g_{\rm cm}|^2}.}
+\label{eq:hopfield_rwa_polariton_frequencies}
+\end{equation}
+在重整化共振条件 $\bar\omega_c=\omega_m$ 处，RWA 劈裂为 $2|g_{\rm cm}|$；远离共振时两支分别恢复重整化的类光子模与裸物质模。混合角满足
+$\tan2\theta=2|g_{\rm cm}|/(\bar\omega_c-\omega_m)$。只有在额外近似 $|D|/\omega_c\to0$ 下，才可进一步把 $\bar\omega_c$ 换回 $\omega_c$。下图展示的是保留这一数守恒频移后的 RWA 反交叉；若 $\epsilon_{\rm cr}$ 或 $\epsilon_{\rm sp}$ 不小，应回到\eqnrefs{eq:hopfield_full_quadratic_frequencies}。
+\begin{center}
+\includegraphics[width=.76\linewidth]{hopfield_avoided_crossing.png}\\[-2pt]
+{\small \eqnrefs{eq:hopfield_rwa_polariton_frequencies} 的无量纲 RWA 反交叉：虚线表示未耦合的重整化类光子频率 $\bar\omega_c=\omega_c+2D$ 与物质频率，实线表示数守恒近似下的两个混合本征频率；$\bar\omega_c=\omega_m$ 时最小劈裂为 $2|g_{\rm cm}|$。}
+\end{center}
+
+
+\medskip
+
+取二次哈密顿量，并通过相位重定义令 $g\equiv|g_{\rm cm}|$ 为实数。定义正则正交分量
+\begin{equation*}
+ \hat q_j=\frac{\hat a_j+\hat a_j^\dagger}{\sqrt2},
+ \qquad
+ \hat p_j=\frac{\hat a_j-\hat a_j^\dagger}{\ii\sqrt2},
+ \qquad [\hat q_j,\hat p_k]=\ii\delta_{jk}.
+\end{equation*}
+利用
+\begin{equation*}
+ \hat a_j^\dagger\hat a_j=\frac12(\hat q_j^2+\hat p_j^2-1),
+ \qquad
+ \hat a_j+\hat a_j^\dagger=\sqrt2\,\hat q_j,
+\end{equation*}
+忽略与动力学无关的常数后，哈密顿量化为
+\begin{equation*}
+ \frac{\hat H}{\hbar}
+ =\frac{\omega_c}{2}(\hat p_c^2+\hat q_c^2)
+ +\frac{\omega_m}{2}(\hat p_m^2+\hat q_m^2)
+ +2g\hat q_c\hat q_m+2D\hat q_c^2.
+\end{equation*}
+Heisenberg 方程逐项给
+\begin{align*}
+ \dot{\hat q}_c&=\omega_c \hat p_c,&
+ \dot{\hat p}_c&=-(\omega_c+4D)\hat q_c-2g\hat q_m,\\
+ \dot{\hat q}_m&=\omega_m \hat p_m,&
+ \dot{\hat p}_m&=-\omega_m \hat q_m-2g\hat q_c.
+\end{align*}
+再求一次时间导数并消去 $\hat p_c,\hat p_m$：
+\begin{align*}
+ \ddot{\hat q}_c
+ &=-\omega_c(\omega_c+4D)\hat q_c-2g\omega_c \hat q_m,\\
+ \ddot{\hat q}_m
+ &=-\omega_m^2\hat q_m-2g\omega_m \hat q_c.
+\end{align*}
+定义
+\begin{equation*}
+ \Omega_c^2\equiv\omega_c(\omega_c+4D)
+\end{equation*}
+并试取正常模拟设 $\hat q_j(t)=Q_j \ee^{-\ii\omega t}$。得到线性方程
+\begin{equation*}
+ \begin{pmatrix}
+ \Omega_c^2-\omega^2 & 2g\omega_c\\
+ 2g\omega_m & \omega_m^2-\omega^2
+ \end{pmatrix}
+ \binom{Q_c}{Q_m}=0.
+\end{equation*}
+非平凡解要求行列式为零：
+\begin{align*}
+ 0
+ &=(\Omega_c^2-\omega^2)(\omega_m^2-\omega^2)
+ -4g^2\omega_c\omega_m.
+\end{align*}
+令 $x=\omega^2$，得到普通二次方程
+\begin{equation*}
+ x^2-(\Omega_c^2+\omega_m^2)x
+ +\Omega_c^2\omega_m^2-4g^2\omega_c\omega_m=0.
+\end{equation*}
+求根并整理 discriminant：
+\begin{align*}
+ x_\pm
+ &=\frac{\Omega_c^2+\omega_m^2}{2}
+ \pm\frac12\sqrt{(\Omega_c^2+\omega_m^2)^2
+ -4\Omega_c^2\omega_m^2+16g^2\omega_c\omega_m},\\
+ &=\frac{\Omega_c^2+\omega_m^2}{2}
+ \pm\frac12\sqrt{(\Omega_c^2-\omega_m^2)^2
+ +16g^2\omega_c\omega_m}.
+\end{align*}
+于是 $x_\pm=\omega_\pm^2$，恢复式。稳定性至少要求两个 $x_\pm>0$；等价地，除迹为正外还需
+\begin{equation*}
+ \Omega_c^2\omega_m^2-4g^2\omega_c\omega_m>0.
+\end{equation*}
+抗磁/自极化项不仅改变正常模频率，也参与保证二次 Hamiltonian 的稳定性。真正的量子正常模算符还需由保持玻色辛对易关系的 Bogoliubov 变换构造；普通酉 $2\times2$ 旋转只适用于 RWA 的数守恒子空间。
+\end{exbox}
+
+界面问题的逻辑相同，但极点现在来自 Maxwell 边值问题而不是有限维矩阵。考虑 $z=0$ 的两个局域、各向同性、非磁介质 $\varepsilon_1(\omega),\varepsilon_2(\omega)$。对沿界面传播、法向衰减的 TM 场，定义
+\begin{equation*}
+\alpha_j^2=\kappa_\parallel^2-\varepsilon_j\frac{\omega^2}{c^2},
+\qquad
+\operatorname{Re}\alpha_j>0.
+\end{equation*}
+切向 $E$ 与法向 $D$ 的连续性要求
+\begin{equation}
+\boxed{
+\frac{\varepsilon_1}{\alpha_1}+\frac{\varepsilon_2}{\alpha_2}=0.}
+\label{eq:tm_surface_mode_condition}
+\end{equation}
+这是应直接求解的表面模方程。无损真空--介质界面中它给出 $\varepsilon_2<-1$ 的束缚 TM 支；准静态极限退化为 $\varepsilon_1+\varepsilon_2=0$。有损体系中 $\kappa_\parallel$ 一般为复数，物理解由推迟/出射支决定。
+
+表面极点与电子耦合同时包含在平面内 Weyl 表示中。对源点与观测点都在介质 1 的情况
+\begin{equation}
+\mathbf G_{\rm sc}^R(\mathbf r,\mathbf r';\omega)
+=\int\frac{\dd^2 \kappa_\parallel}{(2\pi)^2}
+ \ee^{-\ii\boldsymbol\kappa_\parallel\cdot(\mathbf R-\mathbf R')}
+\mathbf G_{{\rm sc},W}^R(\boldsymbol\kappa_\parallel;z,z';\omega).
+\label{eq:planar_green_weyl_definition}
+\end{equation}
+令 $\kappa_j^{(0)}=\sqrt{\varepsilon_j}\,\omega/c$、$\kappa_{zj}=\sqrt{(\kappa_j^{(0)})^2-\kappa_\parallel^2}$，并选 $\operatorname{Im}\kappa_{zj}\ge0$ 的推迟支。TE/TM 分解后，散射并矢为
+\begin{equation}
+\boxed{
+\mathbf G_{{\rm sc},W}^R
+(\boldsymbol\kappa_\parallel;z,z';\omega)
+=\frac{\ii}{2\kappa_{z1}}\ee^{\ii\kappa_{z1}(z+z')}
+\left[r_s\,\hat{\mathbf s}\otimes\hat{\mathbf s}
++r_p\,\hat{\mathbf p}_1^+\otimes\hat{\mathbf p}_1^-\right].}
+\label{eq:planar_scattering_green_dyadic}
+\end{equation}
+其中 TM 反射振幅最稳妥地写成复法向波数形式
+\begin{equation}
+r_p(\kappa_\parallel,\omega)
+=\frac{\varepsilon_2\kappa_{z1}-\varepsilon_1\kappa_{z2}}
+{\varepsilon_2\kappa_{z1}+\varepsilon_1\kappa_{z2}}
+\equiv\frac{N_p}{D_p}.
+\label{eq:rp_complex_kz_form}
+\end{equation}
+因此\eqnrefs{eq:tm_surface_mode_condition} 正是 $D_p=0$ 的极点条件。若 $\kappa_{\rm sp}(\omega)$ 是 $D_p$ 的简单零点，即
+\begin{equation*}
+ D_p(\kappa_{\rm sp},\omega)=0,
+ \qquad
+ \partial_{\kappa_\parallel}D_p(\kappa_{\rm sp},\omega)\neq0,
+\end{equation*}
+则 $r_p=N_p/D_p$ 在该点具有 Laurent 分解
+\begin{equation*}
+ r_p(\kappa_\parallel,\omega)
+ =\frac{\mathcal R_p(\omega)}
+ {\kappa_\parallel-\kappa_{\rm sp}(\omega)}
+ +r_{p,{\rm reg}}(\kappa_\parallel,\omega),
+\end{equation*}
+其中
+\begin{equation*}
+ \mathcal R_p(\omega)
+ =\frac{N_p(\kappa_{\rm sp},\omega)}
+ {\partial_{\kappa_\parallel}D_p(\kappa_{\rm sp},\omega)},
+\end{equation*}
+而 $r_{p,{\rm reg}}$ 在极点附近解析。传播长度由 $\operatorname{Im}\kappa_{\rm sp}$ 控制，色散由 $\operatorname{Re}\kappa_{\rm sp}$ 控制，谱权重则由留数 $\mathcal R_p$ 控制；三者是同一个复极点的不同信息。
+
+将 Green 张量投影到电子轨迹后，源的平移动力学直接固定可访问的平行动量。电子以恒速 $v$ 沿 $x$ 方向、在高度 $b$ 处平行界面运动，$\mathbf r_e(t)=(vt,0,b)$。有限时间轨迹先给 $\sinc^2[(\omega-\kappa_xv)T/2]$；只有在 $T\to\infty$ 后才收缩成 $2\pi T\delta(\omega-\kappa_xv)$。因此同步条件在有限作用长度下不是一条无限窄直线，而具有由飞行时间本身决定的 Fourier 宽度。令 $\Delta\equiv\omega-\kappa_xv$。再定义 $x_{1/2}$ 为区间 $(0,\pi)$ 内方程
+\begin{equation*}
+ \sinc^2x_{1/2}=\frac12
+\end{equation*}
+的唯一根；数值上 $x_{1/2}=1.391557\ldots$。于是归一化线形及其两个常用宽度严格写成
+\begin{equation}
+\boxed{
+\mathcal L_T(\Delta)=\sinc^2\!\left(\frac{\Delta T}{2}\right),
+\qquad
+\Delta\omega_{\rm zero}=\frac{2\pi}{T},
+\qquad
+\Delta\omega_{\rm FWHM}=\frac{4x_{1/2}}{T}.}
+\label{eq:finite-trajectory-sync-linewidth-dp83}
+\end{equation}
+这里 $\Delta\omega_{\rm zero}$ 是中心到第一零点的角频率间隔，$\Delta\omega_{\rm FWHM}$ 是主峰全高半宽，数值上 $4x_{1/2}=5.56623\ldots$；用 $L=vT$ 可写成 $\Delta\kappa_{x,{\rm FWHM}}=4x_{1/2}/L$。这给出一个直接实验判据：若两个材料或几何共振在电子同步投影后的角频率间距小于这一 Fourier 宽度，仅靠增加本征模式品质因子并不能使它们在有限轨迹测量中被分辨。长轨迹极限再把该线形收缩为 Dirac $\delta$。因此单位长度的散射电子能量损失数谱为
+\begin{equation}
+\boxed{
+\frac1L\frac{\dd P_{\rm sc}}{\dd\omega}
+=\frac{\mu_0e^2}{2\pi^2\hbar}
+\int_{-\infty}^{\infty}\dd\kappa_y\,
+\hat{\mathbf x}\cdot\operatorname{Im}\mathbf G_{{\rm sc},W}^R
+\left(\kappa_x=\frac{\omega}{v},\kappa_y;b,b;\omega\right)
+\cdot\hat{\mathbf x}.}
+\label{eq:planar_eels_mixed_green_per_length}
+\end{equation}
+该式把源运动学与材料响应分解为两个独立因子：$\kappa_x=\omega/v$ 来自长直轨迹，$\kappa_y$ 仍需积分，而所有结构信息都在 $\mathbf G^R$ 中。
+
+在真空侧的倏逝扇区，$\kappa_{z1}=\ii\alpha_1$，TM 被积函数含有
+\begin{equation}
+\boxed{r_p(\kappa_\parallel,\omega)\ee^{-2\alpha_1b}.}
+\label{eq:surface_pole_distance_kernel}
+\end{equation}
+于是表面谱峰的色散来自 $D_p=0$，权重来自极点留数，碰撞参数依赖来自 $\ee^{-2\alpha_1b}$。三者分别由同一个复极点的位置、留数与真空侧倏逝因子确定。
+
+理想无限长、亚光速的平行轨迹还有一个重要的光锥结论：
+\begin{equation}
+|\kappa_x|=\frac{\omega}{v}>\frac{\omega}{c},
+\qquad \kappa_\parallel\ge |\kappa_x|>\frac{\omega}{c}.
+\label{eq:parallel_electron_outside_light_cone}
+\end{equation}
+因此均匀平面界面上同步的傅里叶支撑全部位于真空光锥外，可以激发倏逝表面响应，却不能仅凭这条无限平移不变轨迹直接产生真空远场光子。有限轨迹、加速和周期结构都会打破这个限制；特别是光栅提供 $G_m$ 后同步条件变为
+\begin{equation}
+\kappa_x=\frac{\omega}{v}-G_m,
+\label{eq:grating_light_cone_momentum_shift}
+\end{equation}
+从而可以把源谱搬入光锥。这也是 EELS 与 CL 可以共享同一结构极点、却具有不同强度和选择规则的原因。
+
+\input{sections/07-eels-cl-ldos-normalization}
+\input{sections/07-planar-drude-eels-example}
+
+对单振子极性材料，体声子极化激元与表面声子极化激元只是同一 $\varepsilon(\omega)$ 在不同 Maxwell 边界条件下的极点。无阻尼时
+\begin{equation*}
+\varepsilon(\omega)=\varepsilon_\infty
+\frac{\omega_{\rm LO}^2-\omega^2}{\omega_{\rm TO}^2-\omega^2}.
+\end{equation*}
+体横向模由 $c^2\kappa^2=\varepsilon(\omega)\omega^2$ 决定，得到两条极化激元支；真空界面的 TM 表面支则由\eqnrefs{eq:tm_surface_mode_condition} 决定，在准静态极限满足 $\varepsilon(\omega_s)=-1$，因此
+\begin{equation*}
+\omega_s^2
+=\frac{\varepsilon_\infty\omega_{\rm LO}^2+\omega_{\rm TO}^2}
+{\varepsilon_\infty+1}.
+\end{equation*}
+这说明体模反交叉、表面极点与电子近场损失最终都可追溯到同一个因果材料响应及其不同的边界/源投影。
+
+\input{sections/07-eels-cl-ldos-normalization-derivations-dp43}
+
+\begin{derivation}[从\eqnrefs{eq:planar_green_weyl_definition}到\eqnrefs{eq:planar_eels_mixed_green_per_length}]
+先从固定平行动量 $\boldsymbol\kappa_\parallel=(\kappa_x,\kappa_y)$ 的 $z$ 向标量 Green 核开始。介质 1 中它满足
+\begin{equation*}
+ (\partial_z^2+\kappa_{z1}^2)\mathscr G_z(z,z')
+ =-\delta(z-z').
+\end{equation*}
+在 $z\neq z'$ 的区域，齐次解由推迟边界条件 $\operatorname{Im}\kappa_{z1}\ge0$ 选成
+\begin{equation*}
+ \mathscr G_z(z,z')
+ =A\,\ee^{\ii\kappa_{z1}|z-z'|}.
+\end{equation*}
+为了确定 $A$，在 $z'\pm\epsilon$ 间积分微分方程：
+\begin{align*}
+ \int_{z'-\epsilon}^{z'+\epsilon}\dd z\,
+ \partial_z^2\mathscr G_z
+ +\kappa_{z1}^2
+ \int_{z'-\epsilon}^{z'+\epsilon}\dd z\,\mathscr G_z
+ &=-1.
+\end{align*}
+当 $\epsilon\to0$，第二项按 $O(\epsilon)$ 消失，所以
+\begin{equation*}
+ \partial_z\mathscr G_z\big|_{z'+0}
+ -\partial_z\mathscr G_z\big|_{z'-0}=-1.
+\end{equation*}
+由
+\begin{align*}
+ \partial_z \ee^{\ii\kappa|z-z'|}
+ &=\ii\kappa\,\operatorname{sgn}(z-z')
+ \ee^{\ii\kappa|z-z'|}
+\end{align*}
+可得跳跃
+\begin{equation*}
+ 2\ii\kappa_{z1}A=-1,
+ \qquad
+ A=\frac{\ii}{2\kappa_{z1}}.
+\end{equation*}
+这就是 Weyl 表示中每个平行动量通道的标量传播因子。
+
+界面反射路径从源点 $z'$ 到界面再回到观察点 $z$，因此自由空间相位 $\ee^{\ii\kappa_{z1}|z-z'|}$ 变成
+\begin{equation*}
+ \ee^{\ii\kappa_{z1}(z+z')}.
+\end{equation*}
+对 TE、TM 两个物理偏振分别乘 Fresnel 反射系数 $r_s,r_p$，并插入对应的偏振二张量，就得到正文\eqnrefs{eq:planar_scattering_green_dyadic}。电子轨迹投影随后决定同步条件与有限长度线宽。
+
+电子轨迹为
+\begin{equation*}
+ \mathbf r_e(t)=(vt,0,b),
+ \qquad -\frac T2\le t\le\frac T2.
+\end{equation*}
+Weyl 相位含
+\begin{equation*}
+ \ee^{\ii\boldsymbol\kappa_\parallel\cdot
+ [\mathbf R_e(t)-\mathbf R_e(t')]}
+ =\ee^{\ii\kappa_xv(t-t')}.
+\end{equation*}
+频域 Green 泛函还含 $\ee^{\ii\omega(t'-t)}$，因此双时间积分的全部纵向相位组合成
+\begin{equation*}
+ \ee^{-\ii\Delta(t-t')},
+ \qquad
+ \Delta\equiv\omega-\kappa_xv.
+\end{equation*}
+双积分可先因子化：
+\begin{align*}
+ I_T(\Delta)
+ &\equiv
+ \int_{-T/2}^{T/2}\dd t\,
+ \ee^{-\ii\Delta t}\\
+ &=\left.
+ \frac{\ee^{-\ii\Delta t}}{-\ii\Delta}
+ \right|_{-T/2}^{T/2}\\
+ &=\frac{2\sin(\Delta T/2)}{\Delta}\\
+ &=T\,\sinc\!\left(\frac{\Delta T}{2}\right).
+\end{align*}
+于是
+\begin{align*}
+ &\int_{-T/2}^{T/2}\dd t
+ \int_{-T/2}^{T/2}\dd t'\,
+ \ee^{-\ii\Delta(t-t')}\\
+ &\qquad=I_T(\Delta)I_T^*(\Delta)\\
+ &\qquad=T^2\sinc^2\!\left(\frac{\Delta T}{2}\right).
+\end{align*}
+因此有限轨迹的同步线形不是 $\delta$ 函数，而是正文\eqnrefs{eq:finite-trajectory-sync-linewidth-dp83} 的 $\sinc^2$ 主峰。
+
+第一零点来自
+\begin{equation*}
+ \sin\frac{\Delta T}{2}=0,
+ \qquad
+ \frac{|\Delta|T}{2}=\pi,
+\end{equation*}
+所以从中心到第一零点的角频率间隔是
+\begin{equation*}
+ \Delta\omega_{\rm zero}=\frac{2\pi}{T}.
+\end{equation*}
+半高点令
+\begin{equation*}
+ \sinc^2x=\frac12,
+ \qquad x>0.
+\end{equation*}
+即求方程
+\begin{equation*}
+ \sin x=\frac{x}{\sqrt2}.
+\end{equation*}
+主峰内唯一正根为
+\begin{equation*}
+ x_{1/2}=1.391557\ldots.
+\end{equation*}
+左右半高点满足
+\begin{equation*}
+ \Delta_\pm=\pm\frac{2x_{1/2}}{T},
+\end{equation*}
+所以全高半宽
+\begin{align*}
+ \Delta\omega_{\rm FWHM}
+ &=\Delta_+-\Delta_-\\
+ &=\frac{4x_{1/2}}{T}\\
+ &=\frac{5.56623\ldots}{T},
+\end{align*}
+即正文\eqnrefs{eq:finite-trajectory-sync-linewidth-dp83}。
+
+再严格验证长时间极限。对任意在 $\Delta=0$ 附近连续且可积的测试函数 $f(\Delta)$，考虑
+\begin{align*}
+ J_T
+ &\equiv\int_{-\infty}^{\infty}\dd\Delta\,
+ f(\Delta)
+ T\sinc^2\!\left(\frac{\Delta T}{2}\right).
+\end{align*}
+令 $x=\Delta T/2$，则 $\dd\Delta=2\dd x/T$：
+\begin{align*}
+ J_T
+ &=2\int_{-\infty}^{\infty}\dd x\,
+ f\!\left(\frac{2x}{T}\right)
+ \sinc^2x.
+\end{align*}
+当 $T\to\infty$，对固定 $x$ 有 $f(2x/T)\to f(0)$，且
+\begin{equation*}
+ \int_{-\infty}^{\infty}\dd x\,\sinc^2x=\pi.
+\end{equation*}
+因此
+\begin{equation*}
+ \lim_{T\to\infty}J_T
+ =2\pi f(0),
+\end{equation*}
+也就是分布恒等式
+\begin{equation*}
+ T\sinc^2\!\left(\frac{\Delta T}{2}\right)
+ \xrightarrow[T\to\infty]{\mathcal D'}
+ 2\pi\delta(\Delta).
+\end{equation*}
+
+现在回到 Weyl 动量积分。长轨迹极限把
+\begin{equation*}
+ \delta(\omega-v\kappa_x)
+\end{equation*}
+插入 $\kappa_x$ 积分。由 $g(\kappa_x)=\omega-v\kappa_x$、$|g'|=v$，
+\begin{equation*}
+ \delta(\omega-v\kappa_x)
+ =\frac1v
+ \delta\!\left(\kappa_x-\frac\omega v\right).
+\end{equation*}
+因此
+\begin{align*}
+ \int_{-\infty}^{\infty}\frac{\dd\kappa_x}{2\pi}
+ F(\kappa_x,\kappa_y)
+ 2\pi\delta(\omega-v\kappa_x)
+ &=\frac1v
+ F\!\left(\frac\omega v,\kappa_y\right).
+\end{align*}
+双时间积分提供的总因子是 $T$，而概率除以轨迹长度 $L=vT$；再乘上上式 Jacobian $1/v$ 与电流中的两个速度因子 $v^2$，有
+\begin{equation*}
+ \frac{T}{L}\times\frac1v\times v^2
+ =1.
+\end{equation*}
+所以单位长度谱中不再残留额外的 $T$ 或 $v$ 前因子，$\kappa_x$ 被固定在同步值 $\omega/v$，只剩 $\kappa_y$ 积分。这正得到正文\eqnrefs{eq:planar_eels_mixed_green_per_length}。
+\end{derivation}
+\input{sections/07-hopfield-diagonalization-detail-dp22}
+\subsection{Compton 前向模型}
+
+前面在 QED 中求得的 Klein--Nishina 微分截面，给出指定入射光子和电子的一次碰撞概率。实验光束却具有频率和方向分布，探测器也只接收有限范围的出射光。要预言实际计数，需要先对入射分布平均，再对探测范围积分。本节写出这两个步骤，使截面与实验记录直接对应。
+
+先固定单电子实验室系运动学。初始电子静止，入射光子角频率为 $\omega$，散射光子角频率为 $\omega'$，入射与散射方向的夹角为 $\theta\in[0,\pi]$。定义无量纲反冲参数
+\begin{equation*}
+x\equiv\frac{\hbar\omega}{\me c^2}.
+\end{equation*}
+$x$ 比较入射单光子能量与电子静能。质量壳守恒给
+\begin{equation*}
+\frac{\omega'}{\omega}
+=\frac{1}{1+x(1-\cos\theta)}.
+\end{equation*}
+因此 $x\ll1$ 时单次散射引起的相对能移至多为 $O(x)$；若希望在全角域采用 Thomson 弹性近似，可取控制量
+\begin{equation*}
+\epsilon_{\rm Th}\equiv2x\ll1,
+\end{equation*}
+因为 $0\le1-\cos\theta\le2$。当 $\epsilon_{\rm Th}$ 不小时，必须保留完整 Compton 反冲。
+
+QED 微观输入是\eqnrefs{eq:klein-nishina-SI} 的 Klein--Nishina 微分截面
+\begin{equation*}
+\frac{\dd\sigma_{\rm KN}}{\dd\Omega_f},
+\qquad
+\left[\frac{\dd\sigma_{\rm KN}}{\dd\Omega_f}\right]
+={\rm m^2\,sr^{-1}}.
+\end{equation*}
+$\Omega_f$ 是散射光子的末态立体角。该截面已经包含电子自旋和光子偏振的指定平均/求和约定、二体相空间以及由能量守恒消去 $\omega'$ 产生的雅可比因子。
+
+对非相干入射光束，定义谱角光子通量
+\begin{equation*}
+\mathscr F_\gamma(\omega,\Omega_i)
+\equiv
+\frac{\dd^4 N_\gamma}
+{\dd t\,\dd A_\perp\,\dd\omega\,\dd\Omega_i}.
+\end{equation*}
+这里 $A_\perp$ 是垂直于局域入射方向的面积，$\Omega_i$ 是入射方向立体角。因为 $[\dd t]={\rm s}$ 而 $[\dd\omega]={\rm s^{-1}}$，二者在谱通量密度的单位中相消，所以
+\begin{equation*}
+[\mathscr F_\gamma]={\rm m^{-2}\,sr^{-1}}.
+\end{equation*}
+它的操作意义是：
+\[
+\mathscr F_\gamma\,\dd t\,\dd A_\perp\,\dd\omega\,\dd\Omega_i
+\]
+给出该时空和模式微元内的平均入射光子数。
+
+把探测器的量子效率、几何接受度和已知选择规则合并为无量纲响应
+\begin{equation*}
+\mathcal Q_{\gamma}^{\rm det}(\omega',\Omega_f),
+\qquad
+0\le\mathcal Q_{\gamma}^{\rm det}\le1.
+\end{equation*}
+对一个局域静止电子，探测到的总事件率为
+\begin{equation}
+\boxed{
+\Gamma_{\rm det}
+=\int\dd\omega\,\dd\Omega_i\,\dd\Omega_f\,
+\mathscr F_\gamma(\omega,\Omega_i)
+\mathcal Q_{\gamma}^{\rm det}[\omega'(\omega,\theta),\Omega_f]
+\frac{\dd\sigma_{\rm KN}}{\dd\Omega_f}.}
+\label{eq:compton_detector_forward_rate}
+\end{equation}
+$[\Gamma_{\rm det}]={\rm s^{-1}}$。这个式子的事件计数结构可以直接在正文中读出。对一个微小模式与立体角单元，
+\begin{align*}
+\dd N_{\rm det}
+={}&\underbrace{\mathscr F_\gamma\,
+\dd t\,\dd A_\perp\,\dd\omega\,\dd\Omega_i}_{\text{穿过靶面的入射光子数}}
+\underbrace{\frac{1}{\dd A_\perp}
+\frac{\dd\sigma_{\rm KN}}{\dd\Omega_f}\dd\Omega_f}_{\text{单电子散射概率}}
+\underbrace{\mathcal Q_\gamma^{\rm det}(\omega',\Omega_f)}_{\text{探测条件概率}}.
+\end{align*}
+面积元 $\dd A_\perp$ 在前两因子之间精确抵消；再除以 $\dd t$ 并对所有入射和末态模式积分，就得到\eqnrefs{eq:compton_detector_forward_rate}。因此入射带宽和角分布只通过 $\mathscr F_\gamma$ 进入，散射后的能量依赖效率只通过 $\mathcal Q_{\gamma}^{\rm det}$ 进入，而微观碰撞只通过 $\dd\sigma_{\rm KN}/\dd\Omega_f$ 进入。
+
+若薄靶包含电子面密度
+\begin{equation*}
+n_\ee^{(2)}(\mathbf R),
+\qquad
+[n_\ee^{(2)}]={\rm m^{-2}},
+\end{equation*}
+其中 $\mathbf R$ 是靶面坐标，则独立单次散射率按 $n_\ee^{(2)}\dd^2 R$ 线性相加。定义典型总 Compton 截面 $\sigma_{\rm C}$，薄靶条件由无量纲光学厚度
+\begin{equation*}
+\tau_{\rm C}
+\equiv n_{e,{\rm char}}^{(2)}\sigma_{\rm C}
+\ll1
+\end{equation*}
+控制。$\tau_{\rm C}$ 达到一阶量级时，光子在离开靶前有不可忽略的再次散射概率，需要用辐射输运或多次散射模型代替线性单碰撞叠加。
+
+\eqnrefs{eq:compton_detector_forward_rate} 假定入射模式构成非相干统计混合。若单光子初态是保持模式间相位的归一化波包
+\begin{equation*}
+|1_f\rangle
+=\sum_\lambda f_\lambda|1_\lambda\rangle,
+\qquad
+\sum_\lambda|f_\lambda|^2=1,
+\end{equation*}
+则 $f_\lambda$ 是无量纲复振幅。若不同入射模式 $\lambda$ 可以到达同一个不可区分末态 $f$，总散射振幅必须先相加：
+\begin{equation*}
+\mathcal A_f^{\rm wp}
+=\sum_\lambda f_\lambda\mathcal M_f^{(\lambda)},
+\qquad
+P_f=|\mathcal A_f^{\rm wp}|^2.
+\end{equation*}
+交叉项 $f_\lambda f_{\lambda'}^*\mathcal M_\lambda\mathcal M_{\lambda'}^*$ 保留入射波包相位。只有初态密度矩阵在这些模式上已经对角，或实验读出把模式相干完全平均掉时，才能把各模式按 $|f_\lambda|^2$ 在概率层混合。
+
+Thomson 极限由同一微观截面的 $x\to0$ 展开得到。此时 $\omega'/\omega=1+O(x)$，微分截面退化为弹性 Thomson 角分布，\eqnrefs{eq:compton_detector_forward_rate} 相应成为入射光子通量与 Thomson 截面的卷积。高能区 $x\gtrsim1$ 时，$\omega'$ 对 $\theta$ 的强依赖必须继续传入 $\mathcal Q_{\gamma}^{\rm det}(\omega',\Omega_f)$，因为探测器阈值和效率会随散射能量改变。
+
+\subsection{整形电子驱动}\label{subsec:shaped-electron-drive-dp19}
+
+电子还可以充当驱动一个束缚靶的探针。单次碰撞的跃迁由电子产生的场和靶的矩阵元决定；若电子本身是多个动量分量的相干叠加，通向同一靶末态的振幅还可能干涉。让一列电子依次通过时，则要继续比较不同次碰撞的相位。下面先求单电子作用，再求波包相干与电子列同步对靶动力学的影响。
+
+考虑一个 $\Lambda$ 型三能级靶。能量本征态记为 $|1\rangle,|2\rangle,|3\rangle$，本征能量为 $E_1,E_2,E_3$。定义上能级到两个下能级的跃迁角频率
+\begin{equation*}
+\omega_{3i}\equiv\frac{E_3-E_i}{\hbar}>0,
+\qquad i=1,2,
+\qquad [\omega_{3i}]={\rm s^{-1}},
+\end{equation*}
+以及电偶极矩
+\begin{equation*}
+\mathbf d_{3i}\equiv\langle3|\hat{\mathbf d}|i\rangle,
+\qquad
+[\mathbf d_{3i}]={\rm C\,m}.
+\end{equation*}
+
+单电子沿 $z$ 方向以中心速度 $v_0$ 掠过靶，Lorentz 因子为 $\gamma_0$，横向碰撞参数为
+\begin{equation*}
+\mathbf b=b\hat{\mathbf e}_\perp,
+\qquad [b]={\rm m}.
+\end{equation*}
+当束缚体系空间尺度 $a_t$ 满足 $a_t/b\ll1$ 时，电子场在靶区域内可按空间坐标展开，第一非零跃迁项是电偶极耦合 $-\hat{\mathbf d}\cdot\mathbf E_e$。
+
+先采用长度为 $L$ 的纵向周期盒归一化。这里 $L$ 的单位为米。用波数 $\kappa$ 而不是物理动量标记电子纵向平面波：
+\begin{equation*}
+p_z=\hbar \kappa,
+\qquad [\kappa]={\rm m^{-1}}.
+\end{equation*}
+定义电子在一次跃迁中的纵向波数损失
+\begin{equation*}
+\Delta\kappa\equiv \kappa_{\rm in}-\kappa_{\rm out},
+\qquad [\Delta\kappa]={\rm m^{-1}}.
+\end{equation*}
+匀速电子在靶附近的实验室系电场可写成
+\begin{equation}
+\boxed{
+\mathbf E_{e,\perp}(\mathbf b,z)
+=-\frac{e\gamma_0}{4\pi\varepsilon_0}
+\frac{\mathbf b}{(b^2+\gamma_0^2z^2)^{3/2}},
+\qquad
+E_{e,z}(\mathbf b,z)
+=-\frac{e\gamma_0}{4\pi\varepsilon_0}
+\frac{z}{(b^2+\gamma_0^2z^2)^{3/2}}.}
+\label{eq:uniform_electron_boosted_coulomb_field}
+\end{equation}
+盒归一化的偶极相互作用矩阵元定义为
+\begin{equation}
+\boxed{
+ V_{ij}^{(L)}(\Delta\kappa)
+=\frac{e}{2\pi\varepsilon_0L\gamma_0}
+\left[
+|\Delta\kappa|K_1\!\left(\frac{|\Delta\kappa|b}{\gamma_0}\right)
+\hat{\mathbf e}_\perp
++\frac{\ii\Delta\kappa}{\gamma_0}
+K_0\!\left(\frac{|\Delta\kappa|b}{\gamma_0}\right)
+\hat{\mathbf e}_z
+\right]\cdot\mathbf d_{ij}.}
+\label{eq:feberi_bessel_coulomb_matrix_element}
+\end{equation}
+$K_0,K_1$ 是无量纲修正 Bessel 函数。方括号内单位为 ${\rm m^{-1}}$，与偶极矩 ${\rm C\,m}$ 收缩后给库仑；前因子 $e/(\varepsilon_0L)$ 单位为伏特，因此
+\begin{equation*}
+[V_{ij}^{(L)}]={\rm J}.
+\end{equation*}
+横向 $K_1$ 项和纵向 $K_0$ 项分别来自匀速相对论电子场的横向、纵向 Fourier 分量。
+
+实际散射理论通常使用连续波数归一化
+\begin{equation*}
+\langle \kappa|\kappa'\rangle=\delta(\kappa-\kappa').
+\end{equation*}
+因为 $[\delta(\kappa-\kappa')]={\rm m}$，连续态与盒态关系取
+\begin{equation*}
+|\kappa_n\rangle_L
+=\sqrt{\frac{2\pi}{L}}\,|\kappa_n\rangle.
+\end{equation*}
+于是连续归一化矩阵核 $V_{ij}^{({\rm cont})}(\kappa',\kappa)$ 的单位为 ${\rm J\,m}$，使盒矩阵元恢复焦耳。对近线性色散 $E(\kappa)-E(\kappa-\Delta\kappa)\simeq\hbar v_0\Delta\kappa$，共振波数转移为
+\begin{equation*}
+u_{ij}\equiv\frac{\omega_{ij}}{v_0},
+\qquad [u_{ij}]={\rm m^{-1}}.
+\end{equation*}
+定义无量纲单碰撞脉冲面积
+\begin{equation*}
+G_{ij}
+\equiv
+\frac{2\pi}{\hbar v_0}
+ V_{ij}^{({\rm cont})}(u_{ij})
+=\frac{L}{\hbar v_0}
+ V_{ij}^{(L)}(u_{ij}).
+\end{equation*}
+$|G_{ij}|$ 比较单次共振碰撞矩阵元与电子飞越产生的作用量尺度；一阶单碰撞展开要求
+\begin{equation*}
+\epsilon_{G,ij}\equiv|G_{ij}|\ll1.
+\end{equation*}
+若还要消去靶的其它中间态，则对应耦合与能隙之比还需独立满足 Feshbach/Schrieffer--Wolff 谱隔离条件。
+
+单次碰撞的空间矩阵元只给出“某个波数转移能有多强”；电子纵向态决定不同波数通道能否相干。设连续波数波函数满足
+\begin{equation*}
+\int\dd \kappa\,|\psi_e(\kappa)|^2=1.
+\end{equation*}
+因为 $[\dd \kappa]={\rm m^{-1}}$，有
+\begin{equation*}
+[\psi_e(\kappa)]={\rm m^{1/2}}.
+\end{equation*}
+定义无量纲纵向波数空间自相关函数
+\begin{equation*}
+I_e(u)
+\equiv\int\dd \kappa\,
+\psi_e(\kappa+u)\psi_e^*(\kappa),
+\qquad
+[I_e]=1.
+\end{equation*}
+$u$ 是两个电子波数通道的间隔，单位 ${\rm m^{-1}}$。由 Cauchy--Schwarz 不等式有 $|I_e(u)|\le1$。目标跃迁 $i\to3$ 只读取 $u=u_{3i}=\omega_{3i}/v_0$ 处的相干，所以 $I_e(u_{3i})$ 同时给出该波数间隔的相干可见度和相位。
+
+PINEM 相位调制配合自由漂移可以可控地塑造 $I_e(u)$。设调制角频率为 $\omega_{\rm mod}$，定义同步波数
+\begin{equation*}
+\kappa_{\rm mod}\equiv\frac{\omega_{\rm mod}}{v_0},
+\qquad [\kappa_{\rm mod}]={\rm m^{-1}}.
+\end{equation*}
+调制强度写为无量纲复数
+\begin{equation*}
+\beta_{\rm mod}=|\beta_{\rm mod}|\ee^{\ii\varphi_{\rm mod}},
+\end{equation*}
+其中 $\varphi_{\rm mod}$ 是无量纲光学相位。设电子在调制前、后分别自由漂移 $L_s,L_p$，二者单位均为米。在中心波数附近把自由色散保留到二阶：
+\begin{equation*}
+E(\kappa)
+=E_0+\hbar v_0\kappa
++\frac{\hbar^2\kappa^2}{2m_\parallel}.
+\end{equation*}
+定义二次漂移相位系数
+\begin{equation*}
+a_s\equiv\frac{\hbar L_s}{2m_\parallel v_0},
+\qquad
+a_p\equiv\frac{\hbar L_p}{2m_\parallel v_0},
+\qquad
+[a_s]=[a_p]={\rm m^2}.
+\end{equation*}
+于是 $a_{s,p}\kappa^2$ 无量纲。最终纵向波函数为
+\begin{equation}
+\boxed{
+\begin{aligned}
+\psi_e(\kappa)={}&
+\ee^{-\ii(\kappa L_p+a_p\kappa^2)}
+\sum_{n\in\mathbb Z}
+J_n(2|\beta_{\rm mod}|)\ee^{\ii n\varphi_{\rm mod}}\\
+&\times
+\ee^{-\ii[(\kappa-n\kappa_{\rm mod})L_s
++a_s(\kappa-n\kappa_{\rm mod})^2]}
+\psi_0(\kappa-n\kappa_{\rm mod}).
+\end{aligned}}
+\label{eq:shaped_electron_pinem_drift_wavefunction}
+\end{equation}
+PINEM 先生成间隔 $\kappa_{\rm mod}$ 的离散波数副本，漂移二次相位再改变这些副本之间的相对相位。四个控制量
+\[
+ L_s,\qquad L_p,\qquad |\beta_{\rm mod}|,\qquad \varphi_{\rm mod}
+\]
+分别调节自由传播相位、调制强度与参考相位，从而共同控制 $I_e(u)$ 的幅度和相位。
+
+
+$\beta_{\rm mod}$ 采用经典 PINEM 的同一无量纲耦合定义，下标 ``mod'' 只标记它属于电子整形过程。波数自相关 $I_e(u)$ 与纵向密度调制也不是两个独立对象：采用
+\begin{equation*}
+ \langle z|\kappa\rangle=\frac{1}{\sqrt{2\pi}}\ee^{\ii \kappa z},
+ \qquad
+ \int\dd z\,|\psi_e(z)|^2=1,
+\end{equation*}
+直接由 Fourier 变换得到
+\begin{equation}
+\boxed{
+ I_e(u)=\int\dd z\,|\psi_e(z)|^2\ee^{-\ii uz}.}
+\label{eq:electron_coherence_density_fourier_dp46}
+\end{equation}
+这里必须区分有限波包的归一化线密度与平均值为一的相对周期密度。将后者写成
+$\mathfrak n_e(z)=\sum_dB_d\ee^{\ii d\kappa_{\rm mod}z}$，
+其中 $B_0=1$。若非负慢包络 $\eta_e(z)$ 满足 $\int\eta_e\dd z=1$，则物理线密度应写为
+\begin{equation*}
+ |\psi_e(z)|^2=\frac{\eta_e(z)\mathfrak n_e(z)}{Z_e},\qquad
+ Z_e=\int\eta_e(z)\mathfrak n_e(z)\dd z.
+\end{equation*}
+定义 $\widetilde\eta_e(u)=\int\eta_e(z)\ee^{-\ii uz}\dd z$，代入前式得到有限包络下的结果
+\begin{equation*}
+ I_e(u)=\frac1{Z_e}\sum_d B_d\widetilde\eta_e(u-d\kappa_{\rm mod}).
+\end{equation*}
+因此只有在包络 Fourier 宽度远小于 $\kappa_{\rm mod}$、不同谐波的包络尾可忽略时，才有 $Z_e\simeq1$，并在整数谐波处得到
+\begin{equation}
+\boxed{
+ I_e(\Delta\ell\,\kappa_{\rm mod})\simeq B_{\Delta\ell}.}
+\label{eq:electron_coherence_equals_bunching_dp46}
+\end{equation}
+在长度为整数个调制周期的均匀盒归一化中，不同谐波严格正交，上式成为等式；有限短波包则应使用保留 $\widetilde\eta_e$ 的求和。这里的 $\eta_e$ 具有 $\mathrm{m^{-1}}$ 量纲，$\mathfrak n_e$、$Z_e$ 与 $I_e$ 均无量纲。
+给定 $\beta_{\rm mod}$ 和漂移距离以后，\eqnrefs{eq:pinem_bunching_exact_series_dp46} 决定密度谐波 $B_{\Delta\ell}$，而\eqnrefs{eq:electron_coherence_equals_bunching_dp46} 把同一谐波识别为目标跃迁可读取的电子相干。如果目标频率满足
+\begin{equation*}
+ \omega_{3i}=\Delta\ell_i\omega_{\rm mod},
+ \qquad \Delta\ell_i\in\mathbb Z,
+\end{equation*}
+则 $u_{3i}=\Delta\ell_i \kappa_{\rm mod}$，\eqnrefs{eq:wu2026_effective_electron_rabi_frequency} 可直接写成
+\begin{equation}
+\boxed{
+ \Omega_{3i}^{(e)}
+ \simeq\frac{2G_{3i}}{T}B_{\Delta\ell_i}.}
+\label{eq:electron_rabi_from_bunching_dp46}
+\end{equation}
+于是
+\begin{equation*}
+ \beta_{\rm mod}
+ \longrightarrow B_{\Delta\ell_i}(L_s,L_p)
+ \longrightarrow\Omega_{3i}^{(e)}
+\end{equation*}
+构成从 PINEM 调制到靶 Rabi 频率的定量前向链，因此靶 Rabi 频率由上游 PINEM 调制、自由传播和靶矩阵元共同决定。
+
+
+
+再把单次碰撞放入周期电子列。令相邻电子到达靶的时间间隔为
+\begin{equation*}
+T>0,
+\qquad [T]={\rm s}.
+\end{equation*}
+第 $i$ 条跃迁的单碰撞无量纲相干冲量为 $G_{3i}I_e(u_{3i})$。若电子列与跃迁相位同步，平均到每个周期的相干驱动哈密顿量为
+\begin{equation}
+\boxed{
+H_\ee^{(1)}
+=\frac{\hbar}{T}
+\left[
+G_{31}I_e(u_{31})|3\rangle\langle1|
++G_{32}I_e(u_{32})|3\rangle\langle2|
++\mathrm{H.c.}
+\right].}
+\label{eq:electron_train_average_hamiltonian_dp68}
+\end{equation}
+采用 Rabi 频率约定
+\begin{equation*}
+H_\ee^{(1)}
+=\frac{\hbar}{2}
+\sum_{i=1,2}
+[\Omega_{3i}^{(e)}|3\rangle\langle i|+\mathrm{H.c.}],
+\end{equation*}
+得到
+\begin{equation}
+\boxed{
+\Omega_{3i}^{(e)}
+=\frac{2G_{3i}I_e(u_{3i})}{T},
+\qquad
+[\Omega_{3i}^{(e)}]={\rm s^{-1}}.}
+\label{eq:wu2026_effective_electron_rabi_frequency}
+\end{equation}
+$G_{3i}$ 由电子轨迹与偶极取向决定，$I_e$ 由电子纵向相干决定，$1/T$ 则把每次碰撞的无量纲冲量转换成连续时间驱动率；系数 $2$ 来自两种 Rabi Hamiltonian 约定的直接比较。
+
+有限电子列只有有限的频率选择性。对第 $i$ 条跃迁，取最接近 $\omega_{3i}T/(2\pi)$ 的整数 $m_i$，定义角频率失谐和每周期相位失配
+\begin{equation*}
+\Delta_i^{({\rm tr})}
+\equiv\omega_{3i}-\frac{2\pi m_i}{T},
+\qquad
+[\Delta_i^{({\rm tr})}]={\rm s^{-1}},
+\end{equation*}
+\begin{equation*}
+\delta_i\equiv\Delta_i^{({\rm tr})}T
+=\omega_{3i}T-2\pi m_i.
+\end{equation*}
+$\delta_i$ 无量纲。若连续 $N$ 个电子具有相同单次复振幅 $\mathscr A_1^{\rm cell}$，第 $n$ 次事件只多出相位 $n\delta_i$，因此
+\begin{equation}
+\boxed{
+\mathscr A_N^{\rm arr}
+=\mathscr A_1^{\rm cell}\sum_{n=0}^{N-1}\ee^{\ii n\delta_i}
+\equiv\mathscr A_1^{\rm cell} S_N(\delta_i).}
+\label{eq:electron_train_phase_sum_dp68}
+\end{equation}
+把有限几何级数求和后，得到相干因子的闭式
+\begin{equation}
+\boxed{
+S_N(\delta_i)
+=\sum_{n=0}^{N-1}\ee^{\ii n\delta_i}
+=\ee^{\ii(N-1)\delta_i/2}
+\frac{\sin(N\delta_i/2)}{\sin(\delta_i/2)}.}
+\label{eq:electron-train-coherence-factor-dp32}
+\end{equation}
+$S_N$ 无量纲。严格同步时 $|S_N|=N$；第一零点满足 $|\delta_i|=2\pi/N$，对应角频率宽度
+\begin{equation*}
+|\Delta_i^{({\rm tr})}|
+\sim\frac{2\pi}{NT}.
+\end{equation*}
+因此列长 $NT$ 决定傅里叶限制的同步带宽。
+
+若电子到达时间存在均方根抖动 $\sigma_t$，第 $i$ 条跃迁的单次相位噪声尺度是 $\omega_{3i}\sigma_t$；若靶的相干时间为 $T_2$，则有效相干电子数不能超过 $T_2/T$。所以 $N^2$ 概率增强要求同时满足
+\begin{equation*}
+N|\delta_i|\lesssim1,
+\qquad
+\omega_{3i}\sigma_t\ll1,
+\qquad
+NT\lesssim T_2.
+\end{equation*}
+
+在两条驱动均近共振时，$H_\ee^{(1)}$ 只耦合下能级空间中的一个亮态。定义总 Rabi 尺度
+\begin{equation*}
+\Omega_B
+\equiv\sqrt{|\Omega_{31}^{(e)}|^2+|\Omega_{32}^{(e)}|^2},
+\end{equation*}
+则与 $|3\rangle$ 正交解耦的归一化暗态为
+\begin{equation*}
+|D_e\rangle
+=\frac{\Omega_{32}^{(e)}|1\rangle
+-\Omega_{31}^{(e)}|2\rangle}{\Omega_B}.
+\end{equation*}
+它满足 $\langle3|H_\ee^{(1)}|D_e\rangle=0$。真实长期稳态还由两次电子碰撞之间的自由开放动力学决定。令 $\mathcal L_0$ 为靶的 Liouville 生成元，单位 ${\rm s^{-1}}$，$\mathscr E_e$ 为一次电子碰撞诱导的无量纲 CPTP 映射，则一个周期的频闪映射是
+\begin{equation*}
+\mathscr T_{\rm cyc}
+\equiv\mathscr E_0\circ\mathscr E_e,\qquad\mathscr E_0\equiv\ee^{T\mathcal L_0}.
+\end{equation*}
+稳态密度矩阵满足
+\begin{equation*}
+\mathscr T_{\rm cyc}[\rho_{\rm ss}]=\rho_{\rm ss}.
+\end{equation*}
+若在迹零扰动子空间上 $\mathscr T_{\rm cyc}$ 的最大本征值模严格小于一，则所有初态扰动都随周期数衰减，固定点唯一。
+
+
+\begin{derivation}[从\eqnrefs{eq:electron_train_phase_sum_dp68}到\eqnrefs{eq:electron-train-coherence-factor-dp32}]
+把一次电子事件对目标跃迁产生的有效驱动包络记为 $f_1(t)$。等间隔 $T$ 的有限 $N$ 电子列为
+\[
+f_N(t)=\sum_{n=0}^{N-1}f_1(t-nT).
+\]
+Fourier 变换的平移定理给出严格因子化
+\begin{align*}
+\widetilde f_N(\omega)
+&=\widetilde f_1(\omega)
+\sum_{n=0}^{N-1}\ee^{+\ii\omega nT}.
+\end{align*}
+对最接近的同步谐波写 $\omega T=2\pi m+\delta$，整数相位 $\ee^{\ii2\pi mn}=1$，所以列因子正是正文的
+\[
+S_N(\delta)=\sum_{n=0}^{N-1}\ee^{\ii n\delta}.
+\]
+乘以 $1-\ee^{\ii\delta}$ 后，中间项逐项消去：
+\[
+(1-\ee^{\ii\delta})S_N(\delta)=1-\ee^{\ii N\delta}.
+\]
+再用
+\[
+1-\ee^{\ii x}=-2\ii \ee^{\ii x/2}\sin\frac{x}{2}
+\]
+分别处理分子、分母，得到
+\[
+S_N(\delta)
+=\ee^{\ii(N-1)\delta/2}
+\frac{\sin(N\delta/2)}{\sin(\delta/2)}.
+\]
+连续延拓到 $\delta=0$ 给 $S_N(0)=N$。因此归一化相干增强为
+\[
+\mathcal C_N(\delta)
+\equiv\frac{|S_N(\delta)|^2}{N^2}
+=\frac1{N^2}
+\frac{\sin^2(N\delta/2)}{\sin^2(\delta/2)},
+\]
+且离同步点最近的零点严格位于 $|\delta|=2\pi/N$，对应
+$|\Delta^{({\rm tr})}|=2\pi/(NT)$。
+
+时间抖动也可以直接放进这个和式，而不只写成定性条件。若第 $n$ 个电子的到达误差 $\tau_n$ 独立服从零均值高斯分布，方差为 $\sigma_t^2$，则
+\[
+S_N^{\rm jit}
+=\sum_{n=0}^{N-1}
+ \ee^{\ii n\delta}\ee^{\ii\omega\tau_n}.
+\]
+对强度取系综平均。对 $n\neq m$，独立高斯特征函数给
+\[
+\left\langle
+ \ee^{\ii\omega(\tau_n-\tau_m)}
+\right\rangle
+=\ee^{-\omega^2\sigma_t^2},
+\]
+而 $n=m$ 项恒为一，因此
+\[
+\boxed{
+\left\langle|S_N^{\rm jit}|^2\right\rangle
+=N+\ee^{-\omega^2\sigma_t^2}
+\left(|S_N(\delta)|^2-N\right).}
+\]
+\end{derivation}
+有限列长改变 Dirichlet 核本身，而到达时间抖动只压低不同电子事件之间的交叉项；两种展宽机制在公式中可直接分开。
+
+
+
+
+\begin{derivation}[从\eqnrefs{eq:uniform_electron_boosted_coulomb_field}到\eqnrefs{eq:feberi_bessel_coulomb_matrix_element}]
+先取给定冲击参数下的直线匀速电子轨迹，并在这一计算层级忽略环境反作用对轨迹的改变。以靶中心为原点，轨迹写成 $(\mathbf b,z)$；相应实验室系 Liénard--Wiechert 电场为
+
+\begin{align*}
+\mathbf E_{e,\perp}(\mathbf b,z)
+&=-\frac{e\gamma_0}{4\pi\varepsilon_0}
+\frac{\mathbf b}{(b^2+\gamma_0^2z^2)^{3/2}},\\
+E_{e,z}(\mathbf b,z)
+&=-\frac{e\gamma_0}{4\pi\varepsilon_0}
+\frac{z}{(b^2+\gamma_0^2z^2)^{3/2}}.
+\end{align*}
+电偶极相互作用为 $V(z)=-\mathbf d\cdot\mathbf E_e(z)$。盒平面波矩阵元含 Fourier 因子
+\[
+\frac1L\int_{-\infty}^{\infty}\dd z\,
+\ee^{\ii\Delta\kappa z}V(z).
+\]
+令 $x=\gamma_0z$，则 $\dd z=\dd x/\gamma_0$，指数变成
+\[
+\ee^{\ii(\Delta\kappa/\gamma_0)x}.
+\]
+先以 $\kappa_x$ 表示一维傅里叶波数参数，单位 ${\rm m^{-1}}$。从基本积分
+\[
+\int_{-\infty}^{\infty}\frac{\ee^{\ii\kappa_x x}}{\sqrt{x^2+b^2}}\dd x
+=2K_0(|\kappa_x|b)
+\]
+出发。对 $b$ 求导：
+\begin{align*}
+\frac{\partial}{\partial b}
+\frac1{\sqrt{x^2+b^2}}
+&=-\frac{b}{(x^2+b^2)^{3/2}},\\
+\frac{\partial}{\partial b}2K_0(|\kappa_x|b)
+&=-2|\kappa_x|K_1(|\kappa_x|b),
+\end{align*}
+所以
+\[
+\int\dd x\,
+\frac{b\ee^{\ii\kappa_x x}}{(x^2+b^2)^{3/2}}
+=2|\kappa_x|K_1(|\kappa_x|b).
+\]
+纵向积分利用
+\[
+\frac{x}{(x^2+b^2)^{3/2}}
+=-\frac{\partial}{\partial x}
+\frac1{\sqrt{x^2+b^2}}.
+\]
+分部积分，边界项在 $|x|\to\infty$ 消失：
+\begin{align*}
+\int\dd x\,
+\frac{x\ee^{\ii\kappa_x x}}{(x^2+b^2)^{3/2}}
+&=-\int\dd x\,\ee^{\ii\kappa_x x}
+\frac{\partial}{\partial x}
+\frac1{\sqrt{x^2+b^2}}\\
+&=\ii\kappa_x\int\dd x\,
+\frac{\ee^{\ii\kappa_x x}}{\sqrt{x^2+b^2}}\\
+&=2\ii\kappa_xK_0(|\kappa_x|b).
+\end{align*}
+在积分恒等式中取参数 $|\Delta\kappa|/\gamma_0$，再分别乘回横向和纵向偶极分量以及盒归一化 $1/L$，即得\eqnrefs{eq:feberi_bessel_coulomb_matrix_element}。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:pinem_fourier_expansion}到\eqnrefs{eq:shaped_electron_pinem_drift_wavefunction}]
+令初始纵向波数波函数为 $\psi_0(\kappa)$，并采用
+\[
+\int\dd\kappa\,|\psi_0(\kappa)|^2=1.
+\]
+单频 PINEM 相位调制的 Fourier 展开给出离散波数平移
+\[
+\psi(\kappa)
+\longmapsto
+\sum_{n\in\mathbb Z}
+J_n(2|\beta_{\rm mod}|)
+\ee^{\ii n\varphi_{\rm mod}}
+\psi(\kappa-n\kappa_{\rm mod}).
+\]
+这里 $n$ 标记净交换的光学量子数，$\kappa_{\rm mod}$ 是对应的纵向波数步长。
+
+自由漂移对每个波数分量只乘一个色散相位。若中心群速度为 $v_0$，长度 $L$ 对应中心飞行时间
+$t=L/v_0$。在中心波数附近把能量展开为
+\[
+E(\kappa)
+=E_0+\hbar v_0\kappa
++\frac{\hbar^2\kappa^2}{2m_\parallel}+R_3(\kappa),
+\]
+其中 $\kappa$ 已取为相对于中心波数的偏移。忽略由相应余项控制量约束的 $R_3$ 后，传播相位为
+\begin{align*}
+\exp\!\left[-\frac{\ii E(\kappa)L}{\hbar v_0}\right]
+={}&\exp\!\left[-\frac{\ii E_0L}{\hbar v_0}\right]
+\exp(-\ii\kappa L)
+\exp\!\left[-\ii\frac{\hbar L}{2m_\parallel v_0}\kappa^2\right].
+\end{align*}
+定义
+\[
+a(L)\equiv\frac{\hbar L}{2m_\parallel v_0}.
+\]
+第一因子是所有波数分量共有的整体相位，可以从纯态波函数中约去；后两个因子分别表示平移和二次色散。
+
+先让输入波包漂移长度 $L_s$。忽略整体相位后
+\[
+\psi_s(\kappa)
+=\ee^{-\ii[\kappa L_s+a(L_s)\kappa^2]}\psi_0(\kappa).
+\]
+再施加 PINEM：
+\begin{align*}
+\psi_{\rm mod}(\kappa)
+=\sum_nJ_n(2|\beta_{\rm mod}|)
+\ee^{\ii n\varphi_{\rm mod}}
+\psi_s(\kappa-n\kappa_{\rm mod}).
+\end{align*}
+把 $\psi_s$ 的显式形式代入：
+\begin{align*}
+\psi_{\rm mod}(\kappa)
+=\sum_nJ_n(2|\beta_{\rm mod}|)
+\ee^{\ii n\varphi_{\rm mod}}
+&\exp\!\left\{-\ii[(\kappa-n\kappa_{\rm mod})L_s
++a(L_s)(\kappa-n\kappa_{\rm mod})^2]\right\}\\
+&\times\psi_0(\kappa-n\kappa_{\rm mod}).
+\end{align*}
+最后再漂移 $L_p$，所以末态每个波数分量还要乘
+\[
+\ee^{-\ii[\kappa L_p+a(L_p)\kappa^2]}.
+\]
+记 $a_s=a(L_s)$、$a_p=a(L_p)$，按“先漂移 $L_s$、再 PINEM 平移、最后漂移 $L_p$”的时间顺序相乘，得到
+\[
+\begin{aligned}
+\psi_e(\kappa)={}&
+\ee^{-\ii(\kappa L_p+a_p\kappa^2)}
+\sum_{n\in\mathbb Z}
+J_n(2|\beta_{\rm mod}|)\ee^{\ii n\varphi_{\rm mod}}\\
+&\times
+\ee^{-\ii[(\kappa-n\kappa_{\rm mod})L_s
++a_s(\kappa-n\kappa_{\rm mod})^2]}
+\psi_0(\kappa-n\kappa_{\rm mod}),
+\end{aligned}
+\]
+即正文\eqnrefs{eq:shaped_electron_pinem_drift_wavefunction}。
+\end{derivation}
+
+
+
+\section{成像、反演与收集通道}
+
+前向理论给出的场或末态分布还不是实验数据。实验真正记录的是像素、能量 bin、到达时间或计数事件，因此理论必须再经过收集光学和探测器。把一组物理参数 $\boldsymbol\vartheta$ 映射到数据概率分布 $p(y|\boldsymbol\vartheta)$ 的计算链称为\emph{前向模型}；给定实际数据 $y$，反过来约束或估计 $\boldsymbol\vartheta$ 的问题称为\emph{反演}。反演是否唯一取决于不同参数是否会在前向模型中留下可区分的数据变化，而不只取决于方程能否数值拟合。
+
+有限数值孔径只收集部分辐射通道，谱仪把真实能量与仪器响应卷积，计数噪声再把连续概率分布变成随机样本。若探测器具有空间成像功能，同一思想中的空间条件响应通常称为点扩散函数（point-spread function, PSF）：理想点源经过有限孔径和像差后在探测面形成的归一化强度核；在空间平移不变的近似下，实物像就是理想像与 PSF 的卷积。能谱仪的 $r_E(E_d|E_f)$ 是完全类似的“能量轴 PSF”。因此成像与参数反演必须把“电子源—材料响应—传播—探测”串成同一个概率模型，才能把真实物理响应与仪器模糊区分开。
+
+\subsection{近场能谱成像}\label{subsec:nearfield-spectrum-imaging-dp19}
+
+扫描式 PINEM 在每个横向位置记录一条电子能谱。用 $(x,y)$ 表示扫描坐标，$E_d$ 表示仪器读出的能量，整组记录便写为 $I(x,y,E_d)$。求这组数据时，先给定入射能量分布，再计算该位置的光学近场如何调制电子，最后加入谱仪对能量的响应。这样便可判断观测到的谱宽来自入射源、近场作用还是仪器分辨率。
+
+扫描坐标记为
+\begin{equation*}
+\mathbf R=(x,y),
+\qquad [\mathbf R]={\rm m}.
+\end{equation*}
+对中心速度 $v_0$ 的电子和单频近场，定义位置依赖的无量纲 PINEM 耦合
+\begin{equation}
+\boxed{
+\beta(\mathbf R)
+=\frac{\qe}{\hbar\omega}
+\int_{-\infty}^{\infty}\dd z\,
+E_{\omega,z}(\mathbf R,z)
+\ee^{-\ii\omega z/v_0}.}
+\label{eq:pinem-spatial-beta-dp19}
+\end{equation}
+这里 $E_{\omega,z}$ 是同步纵向复电场幅度，单位 ${\rm V\,m^{-1}}$。积分中的 $\qe E_{\omega,z}\dd z$ 是焦耳，除以单光子能量 $\hbar\omega$ 后 $\beta$ 无量纲。指数因子只保留与电子飞行相位 $\omega z/v_0$ 同步的纵向 Fourier 分量，因此 $\beta(\mathbf R)$ 同时携带局域场幅度和相位信息。
+
+在低反冲、双边能量平移模型中，固定 $\mathbf R$ 时的理想边带条件概率为
+\begin{equation*}
+P(\ell|\mathbf R)
+=J_\ell^2(2|\beta(\mathbf R)|),
+\qquad
+\sum_{\ell\in\mathbb Z}P(\ell|\mathbf R)=1.
+\end{equation*}
+$\ell\in\mathbb Z$ 是净交换光量子数；真实末态能量相对入射能量移动 $\ell\hbar\omega$。
+
+电子源具有有限初始能散。定义归一化入射能量概率密度
+\begin{equation*}
+F_0(E)\ge0,
+\qquad
+\int\dd E\,F_0(E)=1,
+\qquad
+[F_0]={\rm J^{-1}}.
+\end{equation*}
+谱仪对真实末态能量 $E_f$ 的读出分成两个物理问题：电子是否被记录，以及被记录后读成哪个能量。前者由探测效率控制，后者由条件线形控制。令
+\begin{equation*}
+r_E(E_d|E_f)\ge0,
+\qquad
+\int\dd E_d\,r_E(E_d|E_f)=1,
+\qquad
+[r_E]={\rm J^{-1}},
+\end{equation*}
+以及无量纲效率
+\begin{equation*}
+0\le\mathcal Q_E^{\rm det}(E_f)\le1.
+\end{equation*}
+于是有量纲点击响应密度为
+\begin{equation*}
+R_E(E_d|E_f)
+\equiv\mathcal Q_E^{\rm det}(E_f)r_E(E_d|E_f),
+\qquad
+\int\dd E_d\,R_E(E_d|E_f)=\mathcal Q_E^{\rm det}(E_f).
+\end{equation*}
+
+在入射电子可由经典能量混合 $F_0(E)$ 描述时，扫描位置 $\mathbf R$ 处的\emph{点击能谱密度}为
+\begin{equation}
+\boxed{
+ p_{\rm click}(E_d|\mathbf R)
+ =\sum_{\ell\in\mathbb Z}\int\dd E\,
+ R_E(E_d|E+\ell\hbar\omega)
+ J_\ell^2\!\left(2|\beta(\mathbf R)|\right)
+ F_0(E).}
+\label{eq:pinem-spatial-detector-forward-dp19}
+\end{equation}
+$[p_{\rm click}]={\rm J^{-1}}$。这个卷积可以直接按条件概率读取：固定真实入射能量 $E$ 与扫描位置 $\mathbf R$ 时，边带量子数和探测读出的联合密度为
+\begin{equation*}
+p_{\rm click}(E_d,\ell|E,\mathbf R)
+=R_E(E_d|E+\ell\hbar\omega)
+J_\ell^2\!\left(2|\beta(\mathbf R)|\right).
+\end{equation*}
+对互斥边带 $\ell$ 求和、再按源分布 $F_0(E)$ 平均，正好得到\eqnrefs{eq:pinem-spatial-detector-forward-dp19}；这一步就是条件概率的边缘化。其积分
+\begin{equation*}
+P_{\rm click}(\mathbf R)
+\equiv\int\dd E_d\,p_{\rm click}(E_d|\mathbf R)
+\le1
+\end{equation*}
+是该扫描点一次电子被记录的总概率。若实验数据已经条件在“发生点击”这一事件上，则用于形状拟合的归一化谱为
+\begin{equation*}
+p(E_d|\mathbf R,{\rm click})
+=\frac{p_{\rm click}(E_d|\mathbf R)}{P_{\rm click}(\mathbf R)}.
+\end{equation*}
+
+\eqnrefs{eq:pinem-spatial-detector-forward-dp19} 把三个实验层次分离：$F_0$ 属于电子源，$\beta(\mathbf R)$ 属于相互作用区，$R_E$ 属于探测器。若入射电子保留能量相干，则 $F_0(E)$ 只给出密度矩阵对角元，不能描述完整初态；此时必须使用量子仪器\eqnrefs{eq:general_indirect_measurement_instrument}，让不同能量路径在振幅层进入同一个探测结果。
+
+若结构还提供可分辨横向动量转移，末态应标记为 $(\ell,\mathbf p_\perp)$。定义联合条件概率密度
+\begin{equation*}
+P_\ell(\mathbf p_\perp|\mathbf R)
+=|\mathcal A_\ell(\mathbf p_\perp;\mathbf R)|^2,
+\end{equation*}
+其中
+$[P_\ell(\mathbf p_\perp|\mathbf R)]={\rm momentum^{-2}}$，所以 $P_\ell\dd^2 p_\perp$ 无量纲。能量轴读取净交换量子数；横向动量轴读取结构承担的平行动量差。二维谱因而同时解析局域同步 Fourier 分量以及横向平移对称性破缺所产生的动量转移。\cite{Vanacore2018Attosecond}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.68\linewidth]{pinem_experiment_geometry.png}
+\caption{PINEM 的基本实验几何。扫描电子在纳米结构附近采样位置依赖的同步纵向近场，产生离散能量平移；入射能散和谱仪响应随后把理想边带映射成\eqnrefs{eq:pinem-spatial-detector-forward-dp19} 的点击能谱。}
+\label{fig:pinem-experiment-interface-dp19}
+\end{figure}
+
+
+\subsection{实验尺度与反演}\label{subsec:experimental-scales-inversion-dp19}
+
+拟合得到一组参数，并不一定说明数据能够唯一确定它们。例如，源能宽增大与仪器分辨率变差都可能使谱线展宽；如果它们对所有读数的作用完全相同，就无法仅凭这组数据区分二者。将各预测读数对参数求偏导，组成前向模型的 Jacobian 矩阵；不同参数对应的列是否独立，可以判断局部上能否区分这些参数。若还把各读数的计数波动计入，就得到第十章定义的 Fisher 信息，用来估计可辨识参数的统计精度。
+
+模型选择由不同物理层的无量纲尺度共同决定。电子运动学决定中心速度和 de Broglie 波长；有限长度相位失配决定相互作用能否相干积累；反冲非谐性决定等间隔能量格是否可用；探测器分辨率决定相邻边带能否区分。把这些尺度分开可以避免用单一的“电子能量高”或“耦合强”替代真正的近似条件。
+
+设电子中心动能为
+\begin{equation*}
+K_0=E_0-\me c^2,
+\qquad [K_0]={\rm J}.
+\end{equation*}
+由质量壳关系
+\begin{equation*}
+\gamma_0=1+\frac{K_0}{\me c^2},
+\qquad
+v_0=c\sqrt{1-\gamma_0^{-2}},
+\qquad
+p_0=\gamma_0\me v_0
+\end{equation*}
+得到 de Broglie 波长
+\begin{equation*}
+\lambda_{\rm dB}=\frac{2\pi\hbar}{p_0}.
+\end{equation*}
+\tabref{tab:electron_kinematic_scales} 列出常见动能对应的运动学尺度。
+
+电子源的能量标准差记为 $\sigma_{E,{\rm in}}$，单位焦耳。为了比较能量带宽与时间尺度，先定义由带宽构造的特征时间
+\begin{equation*}
+\tau_E\equiv\frac{\hbar}{\sigma_{E,{\rm in}}}.
+\end{equation*}
+$\tau_E$ 本身只是一个严格定义的带宽时间尺度；具体的一阶相干时间还取决于谱线形与所采用的相干宽度定义。例如变换极限高斯波包满足相应的高斯时频宽度乘积，不能把任意谱形的相干时间一律等同于 $\tau_E$。
+逐发电子--光到达时间抖动记为 $\sigma_t$，单位秒；它产生光学相位噪声尺度 $\omega\sigma_t$。$\sigma_{E,{\rm in}}$ 描述单电子或电子系综的谱宽，而 $\sigma_t$ 描述不同实验重复之间的参考时钟不确定性，两者进入密度矩阵的方式不同。
+
+\begin{table}[H]
+\centering
+\caption{若干常用电子动能对应的相对论运动学尺度。}
+\label{tab:electron_kinematic_scales}
+\begin{tabular}{rrrr}
+\toprule
+$K_0$ (keV) & $\gamma_0$ & $v_0/c$ & $\lambda_{\mathrm dB}$ (pm)\\
+\midrule
+10 & 1.0196 & 0.1950 & 12.20\\
+30 & 1.0587 & 0.3284 & 6.98\\
+100 & 1.1957 & 0.5482 & 3.70\\
+200 & 1.3914 & 0.6953 & 2.51\\
+300 & 1.5871 & 0.7765 & 1.97\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+对有限长度 $L$ 的相互作用区，设纵向相位失配为 $\Delta\kappa$，单位 ${\rm m^{-1}}$；定义
+\begin{equation*}
+\epsilon_{\rm sync}\equiv|\Delta\kappa|L.
+\end{equation*}
+$\epsilon_{\rm sync}\ll1$ 时整个长度内相位基本同向积累，$\epsilon_{\rm sync}\gtrsim1$ 时不同位置贡献开始相消。
+
+对本节纵向 PINEM 交换，反冲频率是 $\omega_{\rm r}=\hbar\kappa_z^2/(2m_\parallel)$；驻波横向衍射另用其几何对应的 $\omega_{\rm KD}$，不能直接替换。若相互作用持续时间为 $T$，相邻交换边的反冲非谐性可用
+\begin{equation*}
+\epsilon_{\rm rec}\equiv2\omega_{\rm r}T
+\end{equation*}
+衡量；当该相位达到一阶量级时，平移对称等间隔格不能再忽略相邻边的不同失谐。
+
+定义源能散和仪器分辨率合成后的有效能量宽度 $\sigma_E^{({\rm eff})}$，单位焦耳。相邻 PINEM 边带间隔为 $\hbar\omega$，因此谱分辨判据为
+\begin{equation*}
+\epsilon_{\rm det}
+\equiv\frac{\sigma_E^{({\rm eff})}}{\hbar\omega}.
+\end{equation*}
+$\epsilon_{\rm det}\ll1$ 表示相邻边带在能量轴上可分辨；$\epsilon_{\rm det}\gtrsim1$ 时单个边带结构被卷积成连续展宽，但完整前向模型仍然可以包含这些未分辨贡献。
+
+若只使用总能谱二阶矩估计 $|\beta|$，还需要更强的统计假设。设入射能量、PINEM 边带阶数和谱仪加性读出噪声彼此独立，谱仪噪声零均值；定义它们的标准差分别为 $\sigma_{E,{\rm in}}$、$\sqrt{\operatorname{Var}(\ell)}\hbar\omega$ 与 $\sigma_{E,{\rm inst}}$。在纯相位低反冲 PINEM 中
+\begin{equation*}
+\operatorname{Var}(\ell)=2|\beta|^2,
+\end{equation*}
+因此
+\begin{equation}
+\boxed{
+\sigma_{E,{\rm meas}}^2
+=\sigma_{E,{\rm in}}^2
++\sigma_{E,{\rm inst}}^2
++2(\hbar\omega)^2|\beta|^2.}
+\label{eq:pinem_energy_variance_addition}
+\end{equation}
+反解得到
+\begin{equation}
+\boxed{
+|\beta|
+=
+\frac{\sqrt{
+\sigma_{E,{\rm meas}}^2
+-\sigma_{E,{\rm in}}^2
+-\sigma_{E,{\rm inst}}^2}}
+{\sqrt2\,\hbar\omega}.}
+\label{eq:beta_from_variance_experiment}
+\end{equation}
+根号内必须非负；若实验估计因有限样本出现负值，说明二阶矩误差已大于可辨识 PINEM 展宽，不能把该样本代入实数 $|\beta|$ 公式。
+
+方差估计只使用一个统计量，因而会丢失完整边带线形。定量反演应使用\eqnrefs{eq:pinem-spatial-detector-forward-dp19} 或一般实验前向模型~\eqnrefs{eq:general_experimental_forward_model}。若 Fisher 信息矩阵在某参数方向上有零模，重复同一设置不会增加该方向的信息；改变扫描位置、参考相位、传播距离或耦合强度才会改变前向模型的导数空间。
+
+
+\input{sections/electron-detector-inversion-worked}
+
+\subsection{相位读出与收集通道}\label{subsec:phase-collection-dp19}
+
+前面利用参考调制读取近场的复相位。另一种常见装置让两条电子路径重新相遇，从路径干涉中读取相位。对于辐射光，还需要计算有限孔径实际收集了多少。这两种读出都可以用前章的测量算符处理：先求干涉端口的概率，再求光子进入收集模式的概率。
+
+先考虑最小电子路径干涉仪。路径 Hilbert 空间由正交基 $|0\rangle_p,|1\rangle_p$ 张成。参考臂对应归一化环境态 $|\xi_0\rangle$，作用臂经过样品后对应 $|\xi_1(\varphi)\rangle$，其中 $\varphi$ 是待估复近场参数所产生的相位。联合态取
+\begin{equation}
+\boxed{
+|\Psi\rangle
+=\frac{|0\rangle_p|\xi_0\rangle
++|1\rangle_p|\xi_1(\varphi)\rangle}{\sqrt2}.}
+\label{eq:path_environment_joint_state_dp68}
+\end{equation}
+在
+\[
+|\pm\rangle_p
+=\frac{|0\rangle_p\pm|1\rangle_p}{\sqrt2}
+\]
+基底读出，得到
+\begin{equation}
+\boxed{
+P_\pm
+=\frac12\left[
+1\pm\operatorname{Re}
+\langle\xi_0|\xi_1(\varphi)\rangle
+\right].}
+\label{eq:path-phase-readout-dp19}
+\end{equation}
+重叠
+\[
+\mathcal V\ee^{\ii\varphi_{01}}
+\equiv\langle\xi_0|\xi_1\rangle,
+\qquad 0\le\mathcal V\le1,
+\]
+该干涉项同时编码可见度 $\mathcal V$ 与相对相位 $\varphi_{01}$。若参考臂再扫描已知相位 $\varphi_R$，令作用臂相对于参考臂额外获得因子 $\ee^{\ii\varphi_R}$，则干涉项严格变为
+\[
+\operatorname{Re}\!\left[\ee^{\ii\varphi_R}\langle\xi_0|\xi_1\rangle\right]
+=\mathcal V\cos(\varphi_{01}+\varphi_R).
+\]
+因此，取相差 $\pi/2$ 的两个参考相位即可分别读取复重叠的两个正交象限。
+
+再考虑电子后选择预示的单光子是否进入实际光路。设后选择后的归一化总单激发态为 $|\psi_1\rangle$。定义由收集数值孔径、偏振选择、频率滤波和空间模式匹配共同确定的正交投影算符
+\begin{equation*}
+\Pi_{\rm col},
+\qquad
+\Pi_{\rm col}^2=\Pi_{\rm col}=\Pi_{\rm col}^\dagger.
+\end{equation*}
+收集效率定义为
+\begin{equation}
+\boxed{
+\mathcal Q_{\rm col}
+\equiv\langle\psi_1|\Pi_{\rm col}|\psi_1\rangle,
+\qquad
+0\le\mathcal Q_{\rm col}\le1.}
+\label{eq:collection-heralding-efficiency-dp19}
+\end{equation}
+这是一个无量纲概率，表示总单激发有多少投影到被收集模式子空间。
+
+即使 $\Pi_{\rm col}$ 所张成的收集子空间含有很多正交光学模式，对一个\emph{固定的纯单激发态} $|\psi_1\rangle$ 而言，被收集的分量 $\Pi_{\rm col}|\psi_1\rangle$ 仍只指向这个子空间中的一个确定方向。把这一归一化方向定义成亮模 $c$，再把与它正交的全部方向并入未收集/暗子空间 $u$，便可写
+\[
+|\psi_1\rangle
+=\frac{\mathcal A_{\rm col}^*|1_c,0_u\rangle
++\mathcal A_{\rm unc}^*|0_c,1_u\rangle}
+{\sqrt{|\mathcal A_{\rm col}|^2+|\mathcal A_{\rm unc}|^2}},
+\]
+其中 $\mathcal A_{\rm col},\mathcal A_{\rm unc}$ 是同一条件单激发态在两组正交子空间中的复振幅，只有其比值影响归一化态。此时
+\[
+\mathcal Q_{\rm col}
+=\frac{|\mathcal A_{\rm col}|^2}
+{|\mathcal A_{\rm col}|^2+|\mathcal A_{\rm unc}|^2}.
+\]
+对未收集模式取偏迹后，亮模状态为
+\begin{equation}
+\boxed{
+\rho_c
+=\mathcal Q_{\rm col}|1\rangle\langle1|
++(1-\mathcal Q_{\rm col})|0\rangle\langle0|.}
+\label{eq:collected_bright_mode_state_dp68}
+\end{equation}
+因此电子后选择可以在总光学 Hilbert 空间中预示一个单激发，而特定实验光路中的单光子概率还由 $\Pi_{\rm col}$ 的模式投影决定。
+
+对于均匀折射率 $n_{\rm out}$ 的远场介质，常用数值孔径
+\begin{equation*}
+{\rm NA}\equiv n_{\rm out}\sin\theta_{\max}
+\end{equation*}
+无量纲，只规定角度接受锥；真实 $\Pi_{\rm col}$ 还必须包含偏振、频率滤波和空间模式重叠。因此相同 NA 不一定对应相同 $\mathcal Q_{\rm col}$。
+
+
+参考臂把 $\rho_{01}$ 的复相位旋转到测量基底的实轴，因此近场相位进入电子计数差；环境可区分性则通过减小 $|\rho_{01}|$ 降低可见度。
+
+\begin{derivation}[从\eqnrefs{eq:collection-heralding-efficiency-dp19}到\eqnrefs{eq:collected_bright_mode_state_dp68}]
+令 $\Pi_{\rm col}$ 为收集子空间的正交投影，$|\psi_1\rangle$ 为归一化总单激发态，并记
+\[
+\mathcal Q_{\rm col}
+=\langle\psi_1|\Pi_{\rm col}|\psi_1\rangle.
+\]
+在 $0<\mathcal Q_{\rm col}<1$ 时，分别定义归一化的收集与未收集分量
+\[
+|1_c\rangle
+\equiv
+\frac{\Pi_{\rm col}|\psi_1\rangle}{\sqrt{\mathcal Q_{\rm col}}},
+\qquad
+|1_u\rangle
+\equiv
+\frac{(\mathbb I-\Pi_{\rm col})|\psi_1\rangle}
+{\sqrt{1-\mathcal Q_{\rm col}}}.
+\]
+由 $\Pi_{\rm col}^2=\Pi_{\rm col}$ 与
+$\Pi_{\rm col}(\mathbb I-\Pi_{\rm col})=0$，立刻有
+\[
+\langle1_c|1_c\rangle
+=\langle1_u|1_u\rangle=1,
+\qquad
+\langle1_c|1_u\rangle=0.
+\]
+因此原态具有精确正交分解
+\[
+|\psi_1\rangle
+=\sqrt{\mathcal Q_{\rm col}}\,|1_c\rangle
++\sqrt{1-\mathcal Q_{\rm col}}\,|1_u\rangle.
+\]
+
+为了看清“唯一亮模”并不要求收集空间本身是一维，在收集子空间任选一组正交单光子基
+$\{|1_\mu\rangle\}$，写
+\begin{equation*}
+\Pi_{\rm col}|\psi_1\rangle
+=\sum_\mu c_\mu|1_\mu\rangle,
+\qquad
+\sum_\mu|c_\mu|^2=\mathcal Q_{\rm col}.
+\end{equation*}
+若 $a_\mu^\dagger|0\rangle=|1_\mu\rangle$，定义与该条件源匹配的亮模产生算符
+\begin{equation*}
+ c^\dagger
+ \equiv
+ \frac{1}{\sqrt{\mathcal Q_{\rm col}}}
+ \sum_\mu c_\mu a_\mu^\dagger,
+ \qquad
+ [c,c^\dagger]=1.
+\end{equation*}
+于是
+\begin{equation*}
+|1_c\rangle=c^\dagger|0\rangle
+=\frac{1}{\sqrt{\mathcal Q_{\rm col}}}
+\sum_\mu c_\mu|1_\mu\rangle.
+\end{equation*}
+再把收集子空间中的其余正交线性组合补成完备模式基，它们对应的产生算符 $d_\nu^\dagger$ 都满足
+$\langle0|d_\nu|\psi_1\rangle=0$。因此，多模收集空间对这个\emph{给定纯单激发态}只含一个被占据的源匹配方向；“亮模”是由态和投影共同确定的，而不是假定光路只有一个物理模式。
+
+把 Hilbert 空间写成亮模 $c$ 与其余正交通道 $u$ 的 Fock 乘积后，上一式等价于
+\[
+|\psi_1\rangle
+=\sqrt{\mathcal Q_{\rm col}}\,|1_c,0_u\rangle
++\ee^{\ii\varphi}
+\sqrt{1-\mathcal Q_{\rm col}}\,|0_c,1_u\rangle,
+\]
+其中相对相位 $\varphi$ 对随后忽略 $u$ 的探测无影响。形成总密度算符并对 $u$ 偏迹，交叉项包含
+$\operatorname{Tr}_u(|0_u\rangle\langle1_u|)=0$，故
+\begin{align*}
+\rho_c
+&=\operatorname{Tr}_u|\psi_1\rangle\langle\psi_1|\\
+&=\mathcal Q_{\rm col}|1_c\rangle\langle1_c|
++(1-\mathcal Q_{\rm col})|0_c\rangle\langle0_c|,
+\end{align*}
+即正文\eqnrefs{eq:collected_bright_mode_state_dp68}。$\mathcal Q_{\rm col}=0$ 或 $1$ 时由连续极限得到同一结果。
+\end{derivation}
+约化态中的真空权重来自未收集正交模式被偏迹，而不是另行加入的探测器损耗项。
+
+
+\begin{derivation}[从\eqnrefs{eq:path_environment_joint_state_dp68}到\eqnrefs{eq:path-phase-readout-dp19}]
+
+先不假定两条路径等幅，也不假定环境末态是纯态。二路径自由度的最一般约化密度矩阵可写成
+\[
+\hat\rho_p
+=
+\begin{pmatrix}
+p_0 & \rho_{01}\\
+\rho_{01}^* & p_1
+\end{pmatrix},
+\qquad
+p_0,p_1\ge0,
+\qquad
+p_0+p_1=1,
+\qquad
+|\rho_{01}|^2\le p_0p_1.
+\]
+其中非对角元 $\rho_{01}$ 同时包含路径间的初始相干以及环境对两条路径的可区分性。若联合态来自
+\[
+|\Psi\rangle
+=
+c_0|0\rangle|\xi_0\rangle
++
+c_1|1\rangle|\xi_1\rangle,
+\]
+对环境取偏迹得到
+\[
+p_0=|c_0|^2,
+\qquad
+p_1=|c_1|^2,
+\qquad
+\rho_{01}
+=
+c_0c_1^*
+\langle\xi_1|\xi_0\rangle.
+\]
+因此环境态越可区分，$|\langle\xi_1|\xi_0\rangle|$ 越小，路径相干就越弱。
+
+在读出前，给路径 $|1\rangle$ 加一个可控参考相位 $\varphi_R$，
+\[
+\hat U_R
+=
+|0\rangle\langle0|
++
+\ee^{+\ii\varphi_R}|1\rangle\langle1|.
+\]
+相位扫描后的密度矩阵为
+\[
+\hat\rho_p(\varphi_R)
+=
+\hat U_R\hat\rho_p\hat U_R^\dagger
+=
+\begin{pmatrix}
+p_0 & \rho_{01}\ee^{-\ii\varphi_R}\\
+\rho_{01}^*\ee^{+\ii\varphi_R} & p_1
+\end{pmatrix}.
+\]
+
+再通过一个一般无损二端口。若读出态写成
+\[
+|+\rangle
+=
+\cos\frac\theta2\,|0\rangle
++
+\ee^{+\ii\chi}
+\sin\frac\theta2\,|1\rangle,
+\]
+\[
+|-\rangle
+=
+-\ee^{-\ii\chi}
+\sin\frac\theta2\,|0\rangle
++
+\cos\frac\theta2\,|1\rangle,
+\]
+则 Born 概率为
+\begin{align*}
+P_+
+&=
+\langle+|\hat\rho_p(\varphi_R)|+\rangle\\
+&=
+p_0\cos^2\frac\theta2
++
+p_1\sin^2\frac\theta2
++
+\sin\theta\,
+\operatorname{Re}
+\!\left[
+\rho_{01}
+\ee^{-\ii(\varphi_R+\chi)}
+\right],
+\end{align*}
+以及
+\[
+P_-=1-P_+.
+\]
+这个式子已经显示出三个不同实验效应：路径人口不平衡由 $p_0-p_1$ 控制，分束比由 $\theta$ 控制，相干干涉则只由复数 $\rho_{01}$ 决定。
+
+正文采用的是对称输入和 $50{:}50$ 读出，
+\[
+c_0=c_1=\frac1{\sqrt2},
+\qquad
+\theta=\frac\pi2,
+\qquad
+\chi=0.
+\]
+此时
+\[
+\rho_{01}
+=
+\frac12\langle\xi_1|\xi_0\rangle,
+\]
+从而
+\[
+P_\pm
+=
+\frac12
+\left[
+1
+\pm
+\operatorname{Re}
+\!\left(
+\ee^{-\ii\varphi_R}
+\langle\xi_0|\xi_1\rangle
+\right)
+\right].
+\]
+若暂时取 $\varphi_R=0$，便得到正文
+\[
+\boxed{
+P_\pm
+=
+\frac12
+\left[
+1\pm
+\operatorname{Re}
+\langle\xi_0|\xi_1\rangle
+\right].
+}
+\]
+进一步写
+\[
+\langle\xi_0|\xi_1\rangle
+=
+\mathcal V\ee^{+\ii\varphi_{01}},
+\qquad
+0\le\mathcal V\le1,
+\]
+则扫描参考相位给
+\[
+P_+-P_-
+=
+\mathcal V
+\cos(\varphi_{01}-\varphi_R).
+\]
+\end{derivation}
+
+\input{sections/07-green-forward-closure-dp47}

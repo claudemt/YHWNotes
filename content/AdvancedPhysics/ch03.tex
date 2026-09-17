@@ -1,0 +1,356 @@
+\chapter{图、边界算子与 cycle space}
+\label{chap:phys-sm-ising-mathematical-foundations}
+
+Lee--Yang 理论研究外场变量中的零点；下面转向零外场 Ising 配分函数本身的组合结构。核心对象不是“方格上的闭多边形”，而是任意有限图上的偶子图。最自然的语言是 \(\F_2\) 上的链空间：边是否被选中只记录奇偶，因此边集的对称差正好就是向量加法。这个一般结构建立以后，平面轮廓、环面同调和高温展开都只是进一步加入几何后的特殊化。
+
+\section{有限图与模二链空间}
+
+设 \(G=(\mathsf V,\mathsf E)\) 为有限无向多重图，可以含多个连通分支、平行边和自环，但此处不要求平面嵌入。允许自环是必要的：后续平面对偶中，原图的桥会变成对偶自环。用 \(\F_2=\{0,1\}\) 作为系数域，并定义
+\begin{equation}
+ C_0(G)=\F_2^{\mathsf V},
+ \qquad
+ C_1(G)=\F_2^{\mathsf E}.
+ \label{eq:phys-sm-chain-spaces}
+\end{equation}
+一个 \(1\)-链 \(a\in C_1\) 可以等价看成边子集 \(\mathscr A\subseteq\mathsf E\)：边 \(e\) 的系数 \(a_e=1\) 表示 \(e\in\mathscr A\)。链加法对应边集对称差
+\[
+ \mathscr A+\mathscr B=\mathscr A\SymDiff\mathscr B.
+\]
+
+固定每条边的任意方向只用于写矩阵；由于系数域是 \(\F_2\)，最终结果与这个方向选择无关。边界算子
+\begin{equation}
+ \partial_1:C_1(G)\longrightarrow C_0(G)
+ \label{eq:phys-sm-boundary-operator-1}
+\end{equation}
+对连接不同端点的边 \(e=\{x,y\}\) 定义 \(\partial_1e=x+y\)，对自环 \(e\) 定义 \(\partial_1e=0\)，再线性延拓。于是对边集 \(\mathscr A\)，\(\partial_1\mathscr A\) 恰好由 \(\mathscr A\) 中非自环边贡献的奇度顶点组成；自环在模二边界中天然闭合。
+
+\begin{equation}
+ Z_1(G):=\kerop\partial_1
+ =\{\mathscr A\subseteq\mathsf E:\deg_{\mathscr A}(x)\equiv0\pmod2\ \forall x\in\mathsf V\}
+ \label{eq:phys-sm-cycle-space-definition}
+\end{equation}
+称为图的 cycle space。这里的“cycle”是线性空间意义的闭链；一个元素可以是多个简单回路的模二叠加，也可以有四价、六价顶点，不应把它预先等同于单条简单闭曲线。
+
+\section{cycle space 的维数与基}
+\label{sec:phys-sm-cycle-space}
+
+取图的模二关联矩阵 \(\mathsf I_G\)，行对应顶点、列对应边。对非自环边，两个端点所在行取 \(1\)，其余为 \(0\)；对自环，整列定义为 \(0\)，与 \(\partial_1e=0\) 保持一致。于是
+\begin{equation}
+ \partial_1 a=\mathsf I_G a,
+ \qquad
+ Z_1(G)=\ker\mathsf I_G.
+ \label{eq:phys-sm-incidence-kernel}
+\end{equation}
+若图有 \(c(G)\) 个连通分支，则
+\begin{equation}
+ \rank_{\F_2}\mathsf I_G=|\mathsf V|-c(G),
+ \label{eq:phys-sm-incidence-rank}
+\end{equation}
+从秩--零化度公式立刻得到
+\begin{equation}
+ \boxed{
+ \dim_{\F_2}Z_1(G)=|\mathsf E|-|\mathsf V|+c(G).
+ }
+ \label{eq:phys-sm-cycle-rank}
+\end{equation}
+
+\begin{derivation}[关联矩阵秩与 cycle rank]
+分两步证明\eqnrefs{eq:phys-sm-incidence-rank}，再由秩--零化度得到\eqnrefs{eq:phys-sm-cycle-rank}。
+
+\emph{第一步：行和为零给出上界。}先对每个连通分支分别处理。设 \(G\) 连通，顶点集 \(\{v_1,\ldots,v_n\}\)，关联矩阵 \(\mathsf I_G\) 的第 \(i\) 行记为 \(\mathbf r_i\)。对任意边 \(e=(v_j,v_k)\)，其在 \(\mathbf r_j\) 和 \(\mathbf r_k\) 中各出现一次（模二），其余行为零。因此
+\[
+ \sum_{i=1}^n\mathbf r_i=\mathbf 0\pmod{2},
+\]
+即所有行向量线性相关，\(\rank\mathsf I_G\le n-1=|\mathsf V|-1\)。对 \(c(G)\) 个连通分支，每个分支独立贡献上界 \(|V_i|-1\)，求和得 \(\rank\mathsf I_G\le|\mathsf V|-c(G)\)。
+
+\emph{第二步：生成树消元给出下界。}取一棵生成树 \(T\)，删去任意一个顶点行（设为 \(v_n\)）后得到 \((n-1)\times|\mathsf E|\) 子矩阵 \(\tilde{\mathsf I}\)。只保留 \(T\) 对应的 \(n-1\) 列，得到 \((n-1)\times(n-1)\) 方阵 \(\tilde{\mathsf I}_T\)。对 \(T\) 的树叶递归消元：取一个叶顶点 \(v_\ell\)，它在 \(T\) 中只与一条树边 \(e_\ell\) 关联，故 \(\tilde{\mathsf I}_T\) 中 \(v_\ell\) 行仅在 \(e_\ell\) 列为 \(1\)，其余树边列为 \(0\)。按 \(v_\ell\) 行消去 \(e_\ell\) 列后，剩余子矩阵恰好是删去 \(v_\ell\) 和 \(e_\ell\) 后更小生成树的关联矩阵。归纳到单顶点基例，每步的 pivot 均为 \(1\in\F_2\)，因此 \(\det_{\F_2}\tilde{\mathsf I}_T=1\)，\(\tilde{\mathsf I}_T\) 满秩。故 \(\rank\mathsf I_G\ge n-1\)。结合第一步，\(\rank\mathsf I_G=|\mathsf V|-1\)。对 \(c(G)\) 个分支求和得\eqnrefs{eq:phys-sm-incidence-rank}。
+
+\emph{第三步：秩--零化度。}由线性代数恒等式
+\[
+ \dim_{\F_2}\ker\mathsf I_G
+ =|\mathsf E|-\rank_{\F_2}\mathsf I_G
+ =|\mathsf E|-\bigl(|\mathsf V|-c(G)\bigr)
+ =|\mathsf E|-|\mathsf V|+c(G),
+\]
+即\eqnrefs{eq:phys-sm-cycle-rank}。
+
+\emph{消元算法的具体执行。}以四顶点方格 \(C_4\) 为例：\(|\mathsf V|=4\)，\(|\mathsf E|=4\)，\(c(G)=1\)，cycle rank \(=4-4+1=1\)。生成树 \(T\) 取三条边，删去一个顶点行后 \(\tilde{\mathsf I}_T\) 为 \(3\times3\) 下三角矩阵，对角元全 \(1\)，\(\det=1\)。剩余一条非树边对应唯一回路 \(C_4\) 本身，cycle space 一维。对二维 \(L\times L\) 方格（开边界）：\(|\mathsf V|=L^2\)，\(|\mathsf E|=2L(L-1)\)，\(c=1\)，cycle rank \(=2L(L-1)-L^2+1=L^2-2L+1=(L-1)^2\)，与独立 plaquette 数一致。环面周期边界下 \(|\mathsf E|=2L^2\)，cycle rank \(=L^2+1\)，多出的两个同调类对应环面基本 cycle。
+
+\emph{基域的选取。}上述证明在 \(\F_2\) 上完成，结论对任意域 \(\mathbb K\)（特征非二）的关联矩阵秩同样成立：行和为零给出 \(\rank\le|\mathsf V|-c(G)\)，生成树消元给出下界，故 \(\rank_{\mathbb K}\mathsf I_G=|\mathsf V|-c(G)\)。但 cycle space 物理意义在 \(\F_2\) 上最自然——边"出现/不出现"的模二结构直接对应 Ising 高温展开中的偶子图条件。在 \(\mathbb R\) 上同一矩阵的核维数相同，但元素不再是边子集而是有向链，物理应用中需另行处理符号。
+
+\emph{与高温展开的联系。}\eqnrefs{eq:phys-sm-cycle-rank} 直接控制高温展开\eqnrefs{eq:phys-sm-high-temp-z} 中 \(\mathcal Z_G\) 的项数：均匀耦合 \(x_e=x\) 时 \(\mathcal Z_G=\sum_{k=0}^{\dim Z_1}a_k x^k\)，其中 \(a_k\) 是 \(k\)-边偶子图数。cycle rank 给出多项式次数上界 \(\dim Z_1\)，从而确定 \(\mathcal Z_G\) 的解析结构。二维方格 \(\dim Z_1\sim L^2\) 使 \(\mathcal Z_G\) 在 \(L\to\infty\) 时成为指数级多项式，其零点分布承载相变信息。
+
+\emph{生成树基的显式构造。}对 \(L\times L\) 方格（开边界），生成树 \(T\) 取所有水平边加一列垂直边（梳状图），\(|T|=L^2-1\)。非树边为剩余 \(L-1\) 列垂直边，每条对应一个 plaquette cycle。这组 \((L-1)^2\) 个独立 plaquette cycle 构成 cycle space 基，任意偶子图可唯一表示为这些 plaquette 的对称差。环面周期边界下额外两条非平凡 cycle（沿 \(x\) 和 \(y\) 方向的绕行），cycle rank 增加 2，与 \(\dim\mathrm H_1(T^2;\F_2)=2\) 一致。
+
+\emph{cut space 与正交分解。}由\eqnrefs{eq:phys-sm-cycle-cut-orthogonality}，\(C_1(G)=Z_1(G)\oplus\mathcal C^*(G)\)（模二正交直和），维数 \(\dim\mathcal C^*=|\mathsf V|-c(G)\)。任一边集 \(\mathscr A\subseteq\mathsf E\) 唯一分解为闭链部分 \(\mathscr A_{\rm cyc}\in Z_1\) 与 cut 部分 \(\mathscr A_{\rm cut}\in\mathcal C^*\)。物理上，闭链部分对应 Ising 偶子图涨落（保持自旋翻转偶性），cut 部分对应自旋翻转边界（改变局部磁化）。这一分解在高温展开中自然出现：无源求和只遍历 \(Z_1\)，带源求和遍历 \(\mathscr P_{ab}+Z_1\) 的仿射陪集。
+
+\emph{与同调群的层级关系。}cycle space \(Z_1(G)\) 对任意有限图定义，不依赖嵌入。引入胞腔嵌入后，面边界空间 \(B_1=\imop\partial_2\subseteq Z_1\) 给出"局部可消去"的闭链。商空间 \(\mathrm H_1=Z_1/B_1\) 是拓扑不变量：球面 \(\mathrm H_1=0\)（所有闭链都是面边界），环面 \(\mathrm H_1\cong\F_2^2\)（两个全局绕行 cycle）。这一层级结构——边集 → 闭链 → 面边界 → 同调类——是后续平面对偶、Kramers--Wannier 对偶与环面 spin structure 的代数基础。
+
+\emph{关联矩阵的谱性质。}\(\mathsf I_G\mathsf I_G^{\mathsf T}\) 是 \(|\mathsf V|\times|\mathsf V|\) 矩阵，称为图 Laplacian \(\mathsf L_G\)（模二）。对无自环图，
+\begin{equation*}
+ (\mathsf L_G)_{xy}=
+ \begin{cases}
+ \deg(x)\pmod2,&x=y,\\
+ 1,&\{x,y\}\in\mathsf E,\\
+ 0,&\text{否则}.
+ \end{cases}
+\end{equation*}
+\(\mathsf L_G\) 的零空间维数等于 \(c(G)\)（每个连通分支一个零本征向量），非零本征值控制图上的随机游走混合时间与扩散过程。在 Ising 模型中，\(\mathsf L_G\) 的谱与关联函数的长程行为相关：谱隙 \(\lambda_2>0\)（代数连通度）保证指数衰减关联，\(\lambda_2=0\)（不连通）给出断开关联。
+
+\emph{具体图例的 cycle rank 汇总。}
+\begin{itemize}
+ \item 路径图 \(P_n\)（\(n\) 顶点 \(n-1\) 边）：\(\dim Z_1=0\)，无闭链。
+ \item 圈图 \(C_n\)（\(n\) 顶点 \(n\) 边）：\(\dim Z_1=1\)，唯一回路。
+ \item 完全图 \(K_n\)（\(n\) 顶点 \(n(n-1)/2\) 边）：\(\dim Z_1=(n-1)(n-2)/2\)。
+ \item 完全二部图 \(K_{m,n}\)：\(\dim Z_1=(m-1)(n-1)\)。
+ \item \(d\)-维超立方体 \(Q_d\)（\(2^d\) 顶点 \(d\,2^{d-1}\) 边）：\(\dim Z_1=(d-1)2^{d-1}+1\)。
+ \item 方格 \(L^d\)（开边界）：\(\dim Z_1\sim(d-1)L^d\)，独立 plaquette 数主导。
+\end{itemize}
+这些公式在对应 Ising 模型的高温展开中直接给出 \(\mathcal Z_G\) 的多项式次数，控制解析结构与相变可能性。
+\end{derivation}
+
+生成树还给出一个具体的 cycle basis。设 \(G\) 连通，固定生成树 \(T\)。对每条非树边 \(e\in\mathsf E\setminus T\)，在树中存在唯一连接 \(e\) 两端点的路径；该路径与 \(e\) 合成唯一简单回路 \(C_e\)。所有 \(C_e\) 构成 \(Z_1(G)\) 的一组基，因为其数目正好是 \(|\mathsf E|-|\mathsf V|+1\)，并且每个 \(C_e\) 含有自己唯一的非树边 \(e\)，所以线性无关。
+
+\begin{theorem}[偶子图的回路分解]
+\label{thm:phys-sm-even-subgraph-cycles}
+任意 \(\mathscr A\in Z_1(G)\) 都能表示为有限个 edge-simple cycles 的对称差。这里允许长度一的自环，以及由两条平行边组成的长度二回路。
+\end{theorem}
+
+\begin{derivation}[从偶度到简单回路分解]
+对边数 \(|\mathscr A|\) 归纳。基例 \(|\mathscr A|=0\)：\(\mathscr A=\varnothing\) 是空分解，结论成立。
+
+\emph{归纳步骤。}设 \(|\mathscr A|>0\)。分两种情形。
+
+\emph{情形一：\(\mathscr A\) 含自环 \(e_0\)。}自环本身是长度一的 edge-simple cycle \(C_0=\{e_0\}\)，满足 \(\partial_1C_0=0\)。令
+\[
+ \mathscr A'=\mathscr A\SymDiff C_0=\mathscr A\setminus\{e_0\},
+\]
+则 \(|\mathscr A'|=|\mathscr A|-1<|\mathscr A|\)，且
+\[
+ \partial_1\mathscr A'=\partial_1\mathscr A+\partial_1C_0=0+0=0,
+\]
+故 \(\mathscr A'\in Z_1(G)\)。由归纳假设 \(\mathscr A'\) 可分解为 edge-simple cycles，加上 \(C_0\) 即得 \(\mathscr A\) 的分解。
+
+\emph{情形二：\(\mathscr A\) 不含自环。}从任一边 \(e_1=(v_0,v_1)\in\mathscr A\) 出发，沿 \(\mathscr A\) 中边行走构造序列 \(v_0,e_1,v_1,e_2,v_2,\ldots\)：在顶点 \(v_k\) 处，沿尚未使用的边 \(e_{k+1}\) 离开。因为 \(\partial_1\mathscr A=0\)，每个顶点在 \(\mathscr A\) 中的模二度数为零，所以已使用边在 \(v_k\) 处贡献模二 \(1\)（进入），剩余未配对边数仍为奇数，至少有一条可离开。由于顶点数有限，序列必在某顶点 \(v_j\) 处重复。取第一次重复：设 \(v_j=v_i\)（\(i<j\)）是首次出现的重复顶点，则边段
+\[
+ C=e_{i+1},v_{i+1},e_{i+2},\ldots,e_j,v_j
+\]
+构成一个 edge-simple cycle：各边互异（行走中未重复使用），各中间顶点互异（第一次重复），且 \(v_j=v_i\) 闭合。
+
+令 \(\mathscr A'=\mathscr A\SymDiff C\)。因为 \(\partial_1C=0\)，
+\[
+ \partial_1\mathscr A'=\partial_1\mathscr A+\partial_1C=0+0=0,
+\]
+且 \(|\mathscr A'|=|\mathscr A|-|C|<|\mathscr A|\)（对称差去掉 \(C\) 的所有边）。由归纳假设 \(\mathscr A'\) 分解为 edge-simple cycles \(C_1,\ldots,C_m\)，则
+\[
+ \mathscr A=C\SymDiff C_1\SymDiff\cdots\SymDiff C_m
+\]
+即所求分解。
+
+\emph{分解的唯一性与否。}上述构造依赖出发边 \(e_1\) 与每次离开时的边选择，故分解一般不唯一。以 \(\theta\)-图（两顶点间三条平行边）为例：\(\mathscr A\) 取全部三条边时，可分解为 \(\{e_1,e_2\}\SymDiff\{e_3\}\) 或 \(\{e_1,e_3\}\SymDiff\{e_2\}\) 等多种方式。但所有分解的对称差总和在 \(\F_2\) 上恒等于 \(\mathscr A\)，故 cycle space 元素本身良定，分解非唯一性不影响线性结构。
+
+\emph{具体图例：方格与六角格。}对 \(2\times2\) 方格（4 顶点 4 边 1 面），cycle space 维数为 \(4-4+1=1\)，唯一非空偶子图是外圈四边 \(C_4\)。对 \(3\times3\) 方格（9 顶点 12 边 4 面），cycle rank \(=12-9+1=4\)，4 个独立 plaquette cycle 的对称差组合出 \(2^4=16\) 个偶子图，包括 4 个单 plaquette、6 个双 plaquette 横/竖条、4 个三 plaquette L 形、1 个全图外圈、1 个空集。六角格 \(L\times L\)（\(L\) 个六边形）：顶点数 \(2L^2+2L\)，边数 \(3L^2+3L\)，cycle rank \(=L^2+L\)，独立 cycle 取每个六边形的边界。
+
+\emph{物理意义。}分解定理保证 Ising 高温展开\eqnrefs{eq:phys-sm-high-temp-z} 中每个偶子图 \(\mathscr A\in Z_1(G)\) 都可视为若干"局部回路"的叠加，从而 \(\mathcal Z_G=\sum_{\mathscr A\in Z_1}\prod_{e\in\mathscr A}x_e\) 既能写成 cycle space 整体求和，也能按简单回路逐项展开。后者在平面图中进一步对应面边界分解，连接到 Kramers--Wannier 对偶与低温畴壁描述。
+
+\emph{算法复杂度。}行走构造每步选择一条未使用边，最坏情况下遍历 \(\mathscr A\) 所有边，复杂度 \(O(|\mathscr A|)\)。完整分解需重复行走至所有边用尽，总复杂度 \(O(|\mathscr A|^2)\)。对 \(L\times L\) 方格的典型偶子图（如全图所有 plaquette），\(|\mathscr A|\sim L^2\)，分解复杂度 \(O(L^4)\)。实际计算 cycle space 基通常用生成树法（每条非树边对应一个基 cycle），复杂度 \(O(|\mathsf E|+|\mathsf V|)\) 更优。
+
+\emph{与最小权 cycle 基的联系。}若边带权 \(w_e>0\)，可定义 cycle 权 \(w(C)=\sum_{e\in C}w_e\)。Horton 算法在生成树基中选取最短 \(|\mathsf E|-|\mathsf V|+1\) 个 cycle 构成最小权基，复杂度 \(O(|\mathsf E|^3)\)。这在 Ising 高温展开中有应用：均匀耦合时所有 cycle 等权，退化到任意基；非均匀耦合时最小权基使 \(\mathcal Z_G\) 的展开项数最少，数值计算更高效。
+
+\emph{推广到有向图与 \(\mathbb Z\)-链。}上述结论在 \(\F_2\) 上成立，对应无向 Ising。对有向图与 \(\mathbb Z\)-系数链复形，cycle space 定义类似但元素为有向闭链，维数公式仍为 \(|\mathsf E|-|\mathsf V|+c(G)\)。物理应用包括：六角格 Ising（边有方向性影响 Kac--Ward 转角）、晶格规范理论（\(\mathbb Z_q\) 链对应 \(q\)-态 Potts）、拓扑绝缘体（\(\mathbb Z_2\) 同调给出不变量分类）。每种推广需相应调整边界算子与同调定义，但 cycle rank 公式的代数结构保持不变。
+
+\emph{分解的最小回路数。}给定 \(\mathscr A\in Z_1(G)\)，其最小 edge-simple cycle 分解数 \(\nu(\mathscr A)\) 满足
+\begin{equation*}
+ \nu(\mathscr A)\le|\mathscr A|/3,
+ \qquad
+ \nu(\mathscr A)\ge\dim\langle\text{支集回路}\rangle,
+\end{equation*}
+下界来自线性无关性（每个回路至少 3 边），上界来自逐边行走构造。对平面图中的面边界分解，\(\nu(\mathscr A)\) 等于 \(\mathscr A\) 包含的独立 plaquette 数，由\eqnrefs{eq:phys-sm-cycle-rank} 控制。这一计数在 Ising 高温展开中决定 \(\mathcal Z_G\) 的展开效率：最小分解使每项对应最少回路，数值计算收敛最快。
+
+\emph{与生成树基的关系。}固定生成树 \(T\)，每个非树边 \(e\in\mathsf E\setminus T\) 对应基本回路 \(C_e=T\text{-路径}(e)+e\)。\(\{C_e:e\in\mathsf E\setminus T\}\) 构成 cycle space 基，任意 \(\mathscr A\in Z_1\) 唯一表示为 \(\mathscr A=\sum_{e\in\mathscr A\setminus T}C_e\)（模二）。这给出分解的标准化方式：分解回路数等于 \(\mathscr A\) 中非树边数 \(|\mathscr A\setminus T|\)，与行走构造的分解可能不同但总对称差相同。生成树基分解在算法上更稳定（无需行走选择），在理论分析中更清晰（基固定）。
+\end{derivation}
+
+\section{cut space 与 cycle space 的正交性}
+
+顶点函数空间 \(C_0(G)\) 的转置关联映射
+\begin{equation}
+ \mathsf I_G^{\mathsf T}:C_0(G)\longrightarrow C_1(G)
+ \label{eq:phys-sm-cut-map}
+\end{equation}
+把一个顶点集合送到跨越该集合与补集的 cut。定义 cut space
+\begin{equation}
+ \mathcal C^*(G)=\imop \mathsf I_G^{\mathsf T}.
+ \label{eq:phys-sm-cut-space}
+\end{equation}
+在 \(C_1(G)\) 上取标准模二内积
+\[
+ \langle a,b\rangle=\sum_{e\in\mathsf E}a_eb_e\pmod2.
+\]
+对任意 \(a\in Z_1(G)\) 与 \(u\in C_0(G)\)，
+\[
+ \langle a,\mathsf I_G^{\mathsf T}u\rangle
+ =\langle\mathsf I_Ga,u\rangle=0.
+\]
+因此
+\begin{equation}
+ Z_1(G)=\mathcal C^*(G)^\perp.
+ \label{eq:phys-sm-cycle-cut-orthogonality}
+\end{equation}
+维数计数说明这里不是只有包含关系，而是恰好等号。物理上，这一正交性表示闭链穿过任意 cut 的边数必为偶数。
+
+\begin{derivation}[正交分解定理与图 Laplacian 谱]
+\emph{策略。}把 cycle space \(Z_1\) 与 cut space \(\mathcal C^*\) 的正交关系展开为完整的维数论证和直和分解，然后引入图 Laplacian \(\mathsf L_G=\mathsf I_G\mathsf I_G^{\mathsf T}\) 并建立其谱与图拓扑的精确联系。
+
+\emph{第一步：维数计数与直和。}由\eqnrefs{eq:phys-sm-incidence-rank}，\(\dim\mathcal C^*=\rank\mathsf I_G^{\mathsf T}=\rank\mathsf I_G=|\mathsf V|-c(G)\)。由\eqnrefs{eq:phys-sm-cycle-rank}，\(\dim Z_1=|\mathsf E|-|\mathsf V|+c(G)\)。两者之和
+\begin{equation*}
+ \dim Z_1+\dim\mathcal C^*=(|\mathsf E|-|\mathsf V|+c(G))+(|\mathsf V|-c(G))=|\mathsf E|=\dim C_1.
+\end{equation*}
+由 \(Z_1\subseteq\mathcal C^{*\perp}\) 和 \(\dim Z_1+\dim\mathcal C^*=\dim C_1\)，得 \(Z_1=\mathcal C^{*\perp}\)。同理 \(\mathcal C^*=Z_1^\perp\)。因此
+\begin{equation}
+ C_1(G)=Z_1(G)\oplus\mathcal C^*(G)
+ \label{eq:phys-sm-edge-space-decomposition}
+\end{equation}
+是模二正交直和分解。任意边集 \(\mathscr A\) 唯一分解为闭链部分 \(\mathscr A_{\rm cyc}\in Z_1\) 和 cut 部分 \(\mathscr A_{\rm cut}\in\mathcal C^*\)。
+
+\emph{第二步：投影算子的显式。}分解\eqnrefs{eq:phys-sm-edge-space-decomposition} 给出两个投影算子。取生成树 \(T\)，非树边集 \(N=\mathsf E\setminus T\)。对边集 \(\mathscr A\)：
+\begin{itemize}
+ \item 闭链投影：\(\mathscr A_{\rm cyc}=\sum_{e\in\mathscr A\cap N}C_e\)，其中 \(C_e\) 是非树边 \(e\) 对应的基本回路；
+ \item cut 投影：\(\mathscr A_{\rm cut}=\mathscr A+\mathscr A_{\rm cyc}\)（对称差）。
+\end{itemize}
+验证：\(\partial_1\mathscr A_{\rm cyc}=\sum_{e\in\mathscr A\cap N}\partial_1C_e=0\)（每个 \(C_e\) 是闭链），\(\partial_1\mathscr A_{\rm cut}=\partial_1\mathscr A+\partial_1\mathscr A_{\rm cyc}=\partial_1\mathscr A\)（cut 部分保持原边界）。
+
+\emph{第三步：图 Laplacian 的定义与基本性质。}定义 \(\mathsf L_G=\mathsf I_G\mathsf I_G^{\mathsf T}\)，这是 \(|\mathsf V|\times|\mathsf V|\) 对称矩阵。对无自环图，显式为
+\begin{equation}
+ (\mathsf L_G)_{xy}=
+ \begin{cases}
+ \deg(x),&x=y,\\
+ -1,&\{x,y\}\in\mathsf E\text{ 且 }x\ne y,\\
+ 0,&\text{否则}
+ \end{cases}
+ \label{eq:phys-sm-graph-laplacian}
+\end{equation}
+（此处取 \(\mathbb R\) 系数以讨论谱；模二版本将 \(-1\) 改为 \(1\)）。基本性质：
+\begin{itemize}
+ \item \(\mathsf L_G\) 半正定：\(\mathbf f^{\mathsf T}\mathsf L_G\mathbf f=\sum_{\{x,y\}\in\mathsf E}(f_x-f_y)^2\ge0\)；
+ \item 零空间：\(\mathsf L_G\mathbf f=0\iff f_x=f_y\) 对每条边 \(\{x,y\}\)，即 \(\mathbf f\) 在每个连通分支上常数，\(\dim\ker\mathsf L_G=c(G)\)；
+ \item 迹：\(\Tr\mathsf L_G=\sum_x\deg(x)=2|\mathsf E|\)。
+\end{itemize}
+
+\emph{第四步：谱与图拓扑的联系。}对连通图（\(c(G)=1\)），\(\mathsf L_G\) 有 \(|\mathsf V|-1\) 个正本征值 \(0<\lambda_1\le\lambda_2\le\cdots\le\lambda_{|\mathsf V|-1}\)。
+\begin{itemize}
+ \item \emph{代数连通度 \(\lambda_1\)}：控制随机游走混合时间 \(t_{\rm mix}\sim\lambda_1^{-1}\log|\mathsf V|\) 和热核衰减 \(p_t(x,y)\sim e^{-\lambda_1 t}\)。\(\lambda_1>0\) 当且仅当 \(G\) 连通。
+ \item \emph{Cheeger 不等式}：\(\lambda_1/2\le h(G)\le\sqrt{2\lambda_1}\)，其中 \(h(G)=\min_{S\subset V}\frac{|\partial S|}{\min(|S|,|V\setminus S|)}\) 是 Cheeger 常数（最小边割比）。这把谱隙与图的"瓶颈"几何直接联系。
+ \item \emph{谱与生成树数}：\(\det\tilde{\mathsf L}_G=\tau(G)\)（Matrix--Tree 定理），其中 \(\tilde{\mathsf L}_G\) 是删去任一行任一列的余子式，\(\tau(G)\) 是生成树数。全体本征值给出 \(\tau(G)=\frac{1}{|\mathsf V|}\prod_{i=1}^{|\mathsf V|-1}\lambda_i\)。
+\end{itemize}
+
+\emph{第五步：Laplacian 谱与 Ising 关联。}高温展开中，两点关联函数 \(\langle\sigma_x\sigma_y\rangle\) 可用 Laplacian 的 Green 函数表示。定义 \(\mathsf G=\mathsf L_G^+\)（Moore--Penrose 伪逆），则
+\begin{equation*}
+ \langle\sigma_x\sigma_y\rangle_{\rm high\text{-}T}\approx\exp\!\left(-\sum_e K_e\,(\mathsf G_{xx}+\mathsf G_{yy}-2\mathsf G_{xy})\right),
+\end{equation*}
+关联长度 \(\xi\sim1/\sqrt{\lambda_1}\)（谱隙越小，关联越长）。临界点对应 \(\lambda_1\to0\)（热力学极限中谱隙闭合），这与 transfer matrix 次主本征值逼近主本征值\eqnrefs{eq:phys-sm-transfer-gap} 的机制一致。
+
+\emph{第六步：推广到加权图与有向图。}对加权图（边权 \(w_{xy}\)），Laplacian 推广为 \((\mathsf L_w)_{xy}=\delta_{xy}\sum_z w_{xz}-w_{xy}\)，谱性质类似但本征值含权。对有向图，定义非对称 Laplacian \(\mathsf L_{\rm dir}=\mathsf D_{\rm out}-\mathsf A\)（出度减邻接），本征值可复，实部控制收敛速率。这些推广在加权 Ising 模型（非均匀耦合）和马尔可夫链 Monte Carlo（转移率的谱分析）中有直接应用。
+
+\emph{物理意义。}正交分解\eqnrefs{eq:phys-sm-edge-space-decomposition} 的物理含义是"边集涨落分解为拓扑闭链与边界 cut"：闭链部分对应 Ising 偶子图（保持自旋翻转 \(\mathbb Z_2\) 对称性），cut 部分对应自旋翻转边界（改变局部磁化）。高温展开只遍历 \(Z_1\)（无源），关联函数遍历 \(\mathscr P_{xy}+Z_1\)（带源仿射空间）。图 Laplacian 谱把这一代数结构与关联长度联系起来：谱隙 \(\lambda_1\) 是关联长度的平方倒数，\(\lambda_1\to0\) 对应相变。Matrix--Tree 定理把生成树数（组合量）与 Laplacian 行列式（谱量）等同，是图论中"组合 = 谱"对偶性的基本实例，在统计力学中用于计算高温展开系数和格点规范理论的 Wilson 圈期望值。
+\end{derivation}
+
+\section{带源边界与仿射 cycle space}
+
+闭链条件 \(\partial_1\mathscr A=0\) 可以推广为给定源 \(j\in C_0(G)\) 的边界方程
+\begin{equation}
+ \partial_1\mathscr A=j.
+ \label{eq:phys-sm-general-source-boundary}
+\end{equation}
+由于每条非自环边在同一连通分支内产生两个端点，自环产生零边界，任意边界都满足：在每个连通分支上，\(j\) 的顶点系数总和为零。反过来，在每个连通分支上只要这一偶性条件成立，就可以把所有系数为 \(1\) 的源顶点两两配对，并用图中路径连接每一对，因此该条件也是可解的充分条件。
+
+若 \(\mathscr A_0\) 是\eqnrefs{eq:phys-sm-general-source-boundary} 的一个特解，则全部解恰好组成 affine space
+\begin{equation}
+ \boxed{
+ \{\mathscr A:\partial_1\mathscr A=j\}
+ =\mathscr A_0+Z_1(G).
+ }
+ \label{eq:phys-sm-affine-source-space}
+\end{equation}
+确实，若 \(\mathscr A_1,\mathscr A_2\) 都满足同一源，则
+\[
+ \partial_1(\mathscr A_1+\mathscr A_2)=j+j=0,
+\]
+所以两解之差属于 \(Z_1(G)\)；反过来，对任意 \(z\in Z_1(G)\)，
+\[
+ \partial_1(\mathscr A_0+z)=j.
+\]
+因此带源问题与无源 cycle space 具有完全相同的齐次涨落，只是整体平移了一个特解。
+
+最常用的两点源取 \(j=x+y\)。只要 \(x,y\) 位于同一连通分支，任选一条连接它们的参考路径 \(\mathscr P_{xy}\)，便有
+\begin{equation}
+ \{\mathscr A:\partial_1\mathscr A=x+y\}
+ =\mathscr P_{xy}+Z_1(G).
+ \label{eq:phys-sm-affine-cycle-coset}
+\end{equation}
+因此以后在 Ising 二点函数中出现的“开线”不是新的组合空间，而是 cycle space 的仿射陪集；改变参考路径只会加上一个闭链。
+
+\begin{note}[一般图与平面图的分界]
+\(Z_1(G)\) 的定义、维数公式、生成树基以及带源仿射空间\eqnrefs{eq:phys-sm-affine-source-space} 对任意有限多重图成立。只有当 \(G\) 被胞腔嵌入二维曲面并引入面链 \(C_2\) 后，才有第二边界算子 \(\partial_2\) 和同调商空间 \(\mathrm H_1=\kerop\partial_1/\imop\partial_2\)。把"闭链"直接说成"若干面的边界"会在环面或更高亏格曲面上失效。
+\end{note}
+
+\emph{[生成树的 Matrix--Tree 定理与 Laplacian 余子式]}
+Matrix--Tree 定理把生成树计数化为图 Laplacian 的余子式，是代数图论的核心结果。分四步建立完整证明。
+
+\emph{第一步：图 Laplacian 的定义。}对加权图 \(G=(V,E,w)\)，Laplacian 矩阵 \(\mathbf L\) 定义为
+\begin{equation*}
+  L_{ij}=\begin{cases}\sum_{k\ne i}w_{ik},&i=j,\\-w_{ij},&i\ne j,\;i\sim j,\\0,&\text{otherwise},\end{cases}
+\end{equation*}
+其中 \(w_{ij}\) 是边 \(\{i,j\}\) 的权重。\(\mathbf L=\mathbf D-\mathbf A\)（度矩阵减邻接矩阵），是半正定矩阵：\(\vb x^T\mathbf L\vb x=\sum_{i<j}w_{ij}(x_i-x_j)^2\ge0\)。零空间由全 \(1\) 向量张成（连通图），故 \(\operatorname{rank}\mathbf L=|V|-1\)。
+
+\emph{第二步：Matrix--Tree 定理。}\textbf{定理}：连通加权图 \(G\) 的加权生成树数（每棵树 \(T\) 贡献 \(\prod_{e\in T}w_e\)）等于 \(\mathbf L\) 的任意 \((|V|-1)\times(|V|-1)\) 余子式：
+\begin{equation*}
+  \tau(G)=\det\mathbf L^{(i)},\qquad\text{任意 }i,
+\end{equation*}
+其中 \(\mathbf L^{(i)}\) 是删去第 \(i\) 行第 \(i\) 列的子矩阵。
+
+\emph{第三步：证明。}用 Cauchy--Binet 公式。关联矩阵 \(\mathbf B\)（定向任意，\(|V|\times|E|\)）满足 \(\mathbf L=\mathbf B\mathbf B^T\)。删去第 \(i\) 行后 \(\tilde{\mathbf B}\)（\((|V|-1)\times|E|\)），\(\mathbf L^{(i)}=\tilde{\mathbf B}\tilde{\mathbf B}^T\)。由 Cauchy--Binet，
+\begin{equation*}
+  \det\mathbf L^{(i)}=\sum_{S\subseteq E,\,|S|=|V|-1}(\det\tilde{\mathbf B}_S)^2,
+\end{equation*}
+求和遍历 \(|V|-1\) 条边的子集 \(S\)。\(\tilde{\mathbf B}_S\) 是 \(\tilde{\mathbf B}\) 限制到 \(S\) 列的方阵。关键引理：\((\det\tilde{\mathbf B}_S)^2=\prod_{e\in S}w_e\) 若 \(S\) 构成生成树，否则为 \(0\)。证明：若 \(S\) 含环，则 \(\tilde{\mathbf B}_S\) 的列线性相关（环上定向边在关联矩阵中线性依赖），行列式为零；若 \(S\) 是树，\(\tilde{\mathbf B}_S\) 可逆（删去一行后关联矩阵满秩），行列式平方恰为 \(\prod w_e\)。因此 \(\det\mathbf L^{(i)}=\sum_{T\text{ 生成树}}\prod_{e\in T}w_e=\tau(G)\)。
+
+\emph{第四步：推广与物理应用。}(i) 有向图 Matrix--Tree 定理（Markov 链）：有向生成树（以 \(i\) 为根的 in-arborescence）数等于转移矩阵 Laplacian 的余子式，给出 Markov 链稳态分布的显式公式。(ii) 高阶 Matrix--Tree 定理（Bernardi--Klivans）：\(k\)-维生成复形计数由高阶 Laplacian 余子式给出。(iii) 物理应用：Ising 模型高温展开中，生成树对应最简偶子图，\(\tau(G)\) 给出零场高温展开首项；电阻网络等效电阻 \(R_{ij}=(\mathbf L^{(i)})^{-1}_{ii}+(\mathbf L^{(j)})^{-1}_{jj}-2(\mathbf L^{(i)})^{-1}_{ij}\) 由 Laplacian 伪逆给出；随机游走覆盖时间上界由 \(\tau(G)\) 控制。这些应用把生成树计数从纯组合推广到概率、统计力学和电路理论。
+
+
+
+
+
+
+
+
+
+
+
+\emph{[cycle space 的对偶：cut space 与正交分解]}
+cycle space \(Z_1(G)\) 有自然对偶——cut space（或 cocycle space），两者在 \(\F_2\) 上正交分解边空间。分三步建立。
+
+\emph{第一步：cut space 的定义。}对顶点子集 \(S\subseteq V\)，cut \(\delta(S)=\{e=\{u,v\}:u\in S,\,v\notin S\}\) 是跨越 \(S\) 与 \(V\setminus S\) 的边集。cut space \(B_1^*(G)=\{\delta(S):S\subseteq V\}\) 是所有 cut 的 \(\F_2\)-线性组合。由 \(\delta(S)=\partial_1^*(\mathbb{1}_S)\)（关联矩阵的转置作用于顶点指示向量），\(B_1^*=\imop\partial_1^*=\kerop\partial_1\) 的正交补。
+
+\emph{第二步：正交分解。}对 \(\mathscr A\in Z_1(G)\)（闭链）和 \(\delta(S)\in B_1^*(G)\)（cut），交数
+\begin{equation*}
+  I(\mathscr A,\delta(S))=\sum_{e\in\mathscr A\cap\delta(S)}1\pmod2.
+\end{equation*}
+闭链 \(\mathscr A\) 进入 \(S\) 的次数等于离开次数（闭性），故穿越 cut 的总次数为偶，\(I=0\pmod2\)。因此 \(Z_1\perp B_1^*\)。由维数计数 \(\dim Z_1=|E|-|V|+c(G)\)（cycle rank），\(\dim B_1^*=|V|-c(G)\)（cut rank），\(\dim Z_1+\dim B_1^*=|E|\)，故
+\begin{equation*}
+  C_1(G)=Z_1(G)\oplus B_1^*(G)\qquad(\text{正交直和}).
+\end{equation*}
+
+\emph{第三步：物理意义。}正交分解把边空间分为"环状涨落"（cycle）和"树状分割"（cut）。Ising 高温展开中，cycle space 元素是偶子图（每个顶点度为偶），对应自旋求和后的存活项；cut space 元素是畴壁（分隔两个自旋区域），对应低温展开的界面。Kramers--Wannier 对偶交换 cycle 和 cut：原图的 cycle space 对应对偶图的 cut space，反之亦然。这一交换是 KW 对偶 \(K\leftrightarrow K^*\) 的代数基础。在电网络理论中，cycle 对应 Kirchhoff 电压定律（回路电压和为零），cut 对应 Kirchhoff 电流定律（割集电流和为零），正交分解是两个定律独立的代数表述。
+
+
+
+
+
+
+
+
+
+
+
+
+

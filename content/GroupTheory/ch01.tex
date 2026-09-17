@@ -1,0 +1,3154 @@
+\chapter{群的基本概念}
+\label{chap:group-basics}
+
+群论研究的并不是某一种特定的对象，而是“可逆操作如何复合”的共同结构。对物理学而言，旋转、反射、晶格平移、粒子置换与量子态上的酉变换看起来十分不同，但只要它们的复合满足相同的代数规律，就可以在同一套语言中讨论。本章只建立后续表示论真正依赖的基础：群与子群、陪集与商群、共轭与正规性、同态与同构、群作用，以及直积与半直积。具体点群和矩阵表示将在后续章节中作为这些抽象结构的实现出现。
+
+本章采用乘法记号表示一般群运算。只有在加法群中才改用“$+$”、零元“$0$”和加法逆元“$-g$”。若 $A,B\subseteq G$，记
+\[
+AB\equiv\{ab\mid a\in A,\ b\in B\}.
+\]
+有限集合 $X$ 的元素个数记为 $\lvert X\rvert$。
+
+\section{群、群元与循环结构}
+\label{sec:group-axioms}
+
+接下来考察二元运算与群公理。
+
+群的结构从一个二元运算开始。这个词第一次听起来很抽象，但它说的事情非常朴素：我们有一个集合，从中取两个对象，按照某条固定规则把它们合成第三个对象。例如两个整数可以相加，两个矩阵可以相乘，两个几何变换可以先后执行，两个置换也可以先做一个再做另一个。这些“合成规则”在数学上都属于二元运算。
+
+这里最需要改变的一个直觉是：以后写 $ab$ 时，$a$ 与 $b$ 不一定是数，$ab$ 也不一定是普通乘法。它只表示“把 $a$ 与 $b$ 按当前规定的群运算复合”。如果群元是空间变换，我们约定 $ab$ 表示先做 $b$、再做 $a$；如果群元是矩阵，这正好与矩阵乘法作用在列向量上的顺序一致。因此，群论中的“乘法”更接近“操作复合”而不是初等算术中的乘法。
+
+还有一个记号需要在这里读懂。写
+\[
+\mu:G\times G\longrightarrow G
+\]
+时，$G\times G$ 是所有有序对 $(a,b)$ 的集合；箭头表示 $\mu$ 是一个函数，它把每一对输入 $(a,b)$ 指派给唯一的输出。所谓“二元”，就是输入有两个位置；所谓“在 $G$ 上”，就是输入和输出都来自同一个集合。
+
+\begin{definition}[二元运算]
+设 $G$ 为非空集合。一个二元运算是映射
+\[
+\mu:G\times G\longrightarrow G,
+\qquad
+(a,b)\longmapsto \mu(a,b).
+\]
+若记 $\mu(a,b)=ab$，则映射值 $ab$ 必须仍属于 $G$；这就是运算的封闭性。
+\label{def:binary-operation}
+\end{definition}
+
+\begin{definition}[群]
+一个群是有序对 $(G,\cdot)$，其中 $G$ 为非空集合，$\cdot$ 为 $G$ 上的二元运算，并满足：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+  \item \textbf{结合律：}对任意 $a,b,c\in G$，
+  \[
+  (ab)c=a(bc).
+  \]
+  \item \textbf{单位元存在：}存在 $e\in G$，使任意 $g\in G$ 满足
+  \[
+  eg=ge=g.
+  \]
+  \item \textbf{逆元存在：}对任意 $g\in G$，存在 $h\in G$，使
+  \[
+  gh=hg=e.
+  \]
+\end{enumerate}
+若另外对任意 $a,b\in G$ 都有 $ab=ba$，则称 $G$ 为\textbf{交换群}或 \textbf{Abel 群}。
+\label{def:group}
+\end{definition}
+
+封闭性已经包含在“二元运算 $G\times G\to G$”的定义中，因此不必把它与后面三条重复计数。单位元与逆元的唯一性也不应写入公理，因为它们可以由公理推出。
+
+这三条公理各自解决一个不同问题。结合律保证连续做三个以上操作时不必记录括号，例如 $(ab)c=a(bc)$ 允许我们直接写成 $abc$；单位元 $e$ 描述“什么也不做”的操作；逆元 $g^{-1}$ 则描述“把 $g$ 的作用完全撤销”。群论之所以适合描述对称操作，正是因为物理上的可逆对称变换天然具有这三种性质。注意公理中\emph{没有}要求 $ab=ba$。绕不同轴的空间转动、一般矩阵以及置换通常都不交换，而非交换性正是后面许多结构出现的来源。
+
+初学时可以把群公理理解为一个最小的“可逆操作系统”：任意两个允许的操作复合后仍然允许；复合顺序的括号无关；存在不改变任何东西的操作；每个操作都能被另一个操作撤销。只要这四层意思成立，我们就不再关心群元究竟是数字、矩阵、函数还是几何变换。
+
+\begin{proposition}[单位元与逆元的唯一性]
+群 $G$ 的单位元唯一；对每个 $g\in G$，其逆元唯一，记为 $g^{-1}$。
+\label{prop:identity-inverse-unique}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $e$ 与 $e'$ 都是单位元，则
+\[
+e=e e'=e'.
+\]
+故单位元唯一。若 $h,k$ 都是 $g$ 的逆元，则
+\[
+h=h e=h(gk)=(hg)k=e k=k.
+\]
+故逆元唯一。
+\hfill$\square$
+\end{proposition}
+
+\begin{proposition}[消去律与逆元公式]
+对任意 $a,b,c\in G$，有
+\[
+ab=ac\Longrightarrow b=c,
+\qquad
+ba=ca\Longrightarrow b=c.
+\]
+并且
+\[
+(ab)^{-1}=b^{-1}a^{-1},
+\qquad
+(g^{-1})^{-1}=g.
+\]
+\label{prop:cancellation-inverse}
+
+\par\smallskip\noindent\textbf{证明.}
+由 $ab=ac$ 左乘 $a^{-1}$，利用结合律得到
+\[
+a^{-1}(ab)=a^{-1}(ac)
+\Longrightarrow
+(a^{-1}a)b=(a^{-1}a)c
+\Longrightarrow b=c.
+\]
+右消去律同理。另一方面，
+\[
+(ab)(b^{-1}a^{-1})
+=a(bb^{-1})a^{-1}=e,
+\]
+且
+\[
+(b^{-1}a^{-1})(ab)
+=b^{-1}(a^{-1}a)b=e,
+\]
+故由逆元唯一性得到 $(ab)^{-1}=b^{-1}a^{-1}$。
+\hfill$\square$
+\end{proposition}
+
+\begin{definition}[群的阶]
+若 $G$ 为有限集，则称 $\lvert G\rvert$ 为群 $G$ 的\textbf{阶}。若 $G$ 含无限多个元素，则称 $G$ 为无限群。
+\label{def:group-order}
+\end{definition}
+
+\begin{example}[三个基本例子]
+整数集 $\ZZ$ 在加法下构成 Abel 群，单位元为 $0$，$n$ 的逆元为 $-n$。非零实数集 $\RR^{\times}=\RR\setminus\{0\}$ 在通常乘法下构成 Abel 群。$n\times n$ 可逆复矩阵在矩阵乘法下构成一般线性群 $\GL(n,\CC)$；当 $n\ge 2$ 时它一般不是 Abel 群。
+\end{example}
+
+\begin{example}[置换群]
+设 $X=\{1,2,\dots,n\}$。所有双射 $\sigma:X\to X$ 在映射复合下构成群，记为对称群 $S_n=\Sym(X)$。其阶为
+\[
+\lvert S_n\rvert=n!.
+\]
+乘法约定为函数复合：$(\sigma\tau)(x)=\sigma(\tau(x))$，即右边的置换先作用。
+\end{example}
+
+在继续引入新定义之前，可以先把群公理真正用于一次计算。考虑三个元素的集合
+\[
+C_3=\{e,a,a^2\},\qquad a^3=e.
+\]
+这里 $a$ 可以想成正三角形绕中心逆时针转 $120^\circ$。于是 $a^2$ 是转 $240^\circ$，再做一次 $a$ 就回到单位操作。它的乘法完全由指数相加决定：
+\[
+a\,a=a^2,\qquad a\,a^2=a^3=e,\qquad a^2a^2=a^4=a.
+\]
+若把结果排成乘法表，
+\[
+\begin{array}{c|ccc}
+\cdot&e&a&a^2\\\hline
+e&e&a&a^2\\
+a&a&a^2&e\\
+a^2&a^2&e&a
+\end{array}
+\]
+每一行、每一列都恰好出现全部三个元素一次。这不是额外公理，而是消去律的结果：若同一行里 $ax=ay$，左消去就迫使 $x=y$。这个很小的例子把单位元、逆元、结合律和消去律都放到了同一张表里。
+
+有了群公理，下一步自然是问：如果不断重复同一个操作 $g$，会产生哪些不同结果？例如把正三角形每次转 $120^\circ$，第三次就回到原位；而在整数加法群中不断加 $1$，永远不会回到 $0$。这两种行为分别对应“有限阶”和“无限阶”，也是循环子群概念的来源。
+
+对 $g\in G$，定义
+\[
+g^0=e,
+\qquad
+g^n=\underbrace{gg\cdots g}_{n\text{ 个}},\quad n>0,
+\qquad
+g^{-n}=(g^{-1})^n.
+\]
+结合律保证了幂的括号位置无关，并有熟悉的指数律
+\[
+g^m g^n=g^{m+n},
+\qquad
+(g^m)^n=g^{mn},
+\qquad m,n\in\ZZ.
+\]
+注意一般不能把 $(gh)^n$ 写成 $g^nh^n$；这需要 $gh=hg$。
+
+\begin{definition}[生成子群与循环群]
+由元素 $g\in G$ 生成的循环子群定义为
+\[
+\cyclic{g}=\{g^n\mid n\in\ZZ\}.
+\]
+若存在 $g\in G$ 使 $G=\cyclic{g}$，则称 $G$ 为循环群，$g$ 为 $G$ 的一个生成元。
+\label{def:cyclic-group}
+\end{definition}
+
+\begin{proposition}[循环群必为 Abel 群]
+若 $G=\cyclic{g}$，则 $G$ 为 Abel 群。
+
+\par\smallskip\noindent\textbf{证明.}
+任取 $g^m,g^n\in G$，有
+\[
+g^m g^n=g^{m+n}=g^{n+m}=g^n g^m.
+\]
+\hfill$\square$
+\end{proposition}
+
+\begin{definition}[群元的阶]
+对 $g\in G$，若存在最小正整数 $n$ 使 $g^n=e$，则称 $n$ 为 $g$ 的阶，记为
+\[
+\ord(g)=n.
+\]
+若不存在这样的正整数，则记 $\ord(g)=\infty$。
+\label{def:element-order}
+\end{definition}
+
+\begin{proposition}[群元的阶与循环子群]
+对任意 $g\in G$，
+\[
+\ord(g)=\lvert\cyclic{g}\rvert,
+\]
+其中等式允许两边同时为无穷。
+\label{prop:element-order-cyclic}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $\ord(g)=n<\infty$，则 $e,g,\dots,g^{n-1}$ 两两不同；否则 $g^r=g^s$（$0\le r<s<n$）会给出 $g^{s-r}=e$，与 $n$ 的最小性矛盾。又因 $g^n=e$，任意 $g^k$ 都可按 $k=qn+r$ 化为 $g^r$，故
+\[
+\cyclic{g}=\{e,g,\dots,g^{n-1}\}.
+\]
+若 $\ord(g)=\infty$，则所有整数次幂两两不同。
+\hfill$\square$
+\end{proposition}
+
+\begin{example}[$S_3$ 的基本结构]
+采用循环记号，
+\[
+S_3=\{e,(12),(13),(23),(123),(132)\}.
+\]
+三个换位的阶均为 $2$，两个三循环的阶均为 $3$。正三角形的全部平面对称（或在三维中保持三角形集合不变的六个适当刚体操作）给出一个与 $S_3$ 同构的六阶群；物理教材中常记作 $D_3$。本讲义在抽象计算中优先使用 $S_3$，以避免不同文献对 $D_n$ 阶数约定的歧义。
+\end{example}
+
+$D_3$ 是阶最小的非 Abel 群，也是物理上最常见的点群之一（$C_{3v}$ 与它同构）。正因为它足够小，每一个后续概念——子群、共轭类、正规子群、商群、不可约表示——都可以在 $D_3$ 上完整算一遍；又因为它非交换，$D_3$ 已经能展示 Abel 群看不到的结构。下面先用几何语言把它的六个元素和乘法表固定下来，以后各节只需对这张表做不同的读法。
+
+令 $r$ 为绕正三角形中心逆时针转 $120^\circ$，$s$ 为过顶点 $1$ 与对边中点所在直线的反射。则 $r$ 生成三阶循环子群 $\cyclic{r}=\{e,r,r^2\}$，$s$ 是二阶元。反射与旋转不交换：先转 $120^\circ$ 再反射，与先反射再转 $120^\circ$，把顶点送到不同位置。把这一非交换关系写成代数，就是
+\begin{equation}
+srs=r^{-1}=r^2,
+\label{eq:d3-srs-relation}
+\end{equation}
+它也等价于 $sr=r^2s$ 与 $rs=sr^2$。于是全部六个元素可以统一写成
+\[
+D_3=\{e,\ r,\ r^2,\ s,\ sr,\ sr^2\},
+\]
+其中 $\{e,r,r^2\}$ 是纯转动，$\{s,sr,sr^2\}$ 是反射。\figref{fig:d3-symmetry} 把 $r$ 与 $s$ 的几何作用画在同一张图上：$r$ 是顶点 $1\to2\to3\to1$ 的循环置换，$s$ 固定顶点 $1$ 而交换 $2\leftrightarrow3$。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[line width=0.75pt,>=Stealth,every node/.style={font=\small}]
+\coordinate (A1) at (90:1.6);
+\coordinate (B1) at (210:1.6);
+\coordinate (C1) at (330:1.6);
+\draw (A1) -- (B1) -- (C1) -- cycle;
+\foreach \p/\l in {A1/1,B1/2,C1/3} \fill (\p) circle (1.6pt) node[above right=1pt] {\l};
+\draw[lecturearrow,blue] (A1) to[bend left=28] (B1);
+\draw[lecturearrow,blue] (B1) to[bend left=28] (C1);
+\draw[lecturearrow,blue] (C1) to[bend left=28] (A1);
+\node[blue] at (0,-0.35) {$r$};
+\node at (0,-2.3) {rotation $r$};
+\begin{scope}[xshift=4.6cm]
+\coordinate (A2) at (90:1.6);
+\coordinate (B2) at (210:1.6);
+\coordinate (C2) at (330:1.6);
+\draw (A2) -- (B2) -- (C2) -- cycle;
+\foreach \p/\l in {A2/1,B2/2,C2/3} \fill (\p) circle (1.6pt) node[above right=1pt] {\l};
+\draw[dashed,red] (A2) -- (0,-1.9);
+\draw[lecturearrow,red] (B2) to[bend right=30] (C2);
+\draw[lecturearrow,red] (C2) to[bend right=30] (B2);
+\node[red] at (0.7,0.3) {$s$};
+\node at (0,-2.3) {reflection $s$};
+\end{scope}
+\end{tikzpicture}
+\caption{正三角形的两个生成元：$r$ 为逆时针转 $120^\circ$，$s$ 为过顶点 $1$ 的反射。蓝箭头表示 $r$ 把每个顶点送到下一个，红色虚线为 $s$ 的反射轴。}
+\label{fig:d3-symmetry}
+\end{figure}
+
+有了元素和关系 $r^3=s^2=e$、$sr=r^2s$，乘法表可以逐格算出而不依赖几何。例如 $r\cdot s=rs=sr^2$，$(sr)\cdot(sr)=s(rs)r=s(sr^2)r=r^3=e$，最后一式说明每个反射的阶都是 $2$。完整乘法表（行元素在左、列元素在右，乘积 $ab$ 表示先做 $b$ 再做 $a$）为
+\begin{equation}
+\begin{array}{c|cccccc}
+D_3 & e & r & r^2 & s & sr & sr^2 \\ \hline
+e     & e & r & r^2 & s & sr & sr^2 \\
+r     & r & r^2 & e & sr^2 & s & sr \\
+r^2   & r^2 & e & r & sr & sr^2 & s \\
+s     & s & sr & sr^2 & e & r & r^2 \\
+sr    & sr & sr^2 & s & r^2 & e & r \\
+sr^2  & sr^2 & s & sr & r & r^2 & e
+\end{array}
+\label{eq:d3-multiplication-table}
+\end{equation}
+表中左上 $3\times3$ 块是 $\cyclic{r}\cong C_3$ 的乘法表，右下 $3\times3$ 块同样回到 $\cyclic{r}$，而两个非对角块把反射与转动互相转换——这正是非交换性的直接面貌。$D_3$ 可以由 $r,s$ 和三条关系完全生成：
+\[
+D_3=\bigl\langle r,\,s\,\bigm|\, r^3=s^2=e,\ srs=r^{-1}\bigr\rangle,
+\]
+这是群的\emph{生成元与关系}（presentation）写法。后面遇到 $D_n$、点群和空间群时，都优先用生成元与关系来描述，而不必列出全部元素。
+
+\begin{derivation}[从生成元关系逐格算出乘法表]
+乘法表中每一格都是行元素乘列元素，只需反复使用 $r^3=e$、$s^2=e$ 和关键关系 $sr=r^2s$（等价地 $rs=sr^2$）把乘积化回 $\{e,r,r^2,s,sr,sr^2\}$ 之一。
+
+\textbf{转动块.}\enspace
+$r\cdot r=r^2$，$r\cdot r^2=r^3=e$，$r^2\cdot r^2=r^4=r$，这些只用 $r^3=e$。
+
+\textbf{转动乘反射.}\enspace
+$r\cdot s=rs=sr^2$（直接用 $rs=sr^2$）。
+$r\cdot sr=(rs)r=(sr^2)r=sr^3=s$。
+$r\cdot sr^2=(rs)r^2=(sr^2)r^2=sr^4=sr$。
+$r^2\cdot s=r(rs)=r(sr^2)=(rs)r^2=(sr^2)r^2=sr$。
+$r^2\cdot sr=(r^2s)r=(sr)r=sr^2$。
+$r^2\cdot sr^2=(r^2s)r^2=(sr)r^2=sr^3=s$。
+
+\textbf{反射乘转动.}\enspace
+$s\cdot r=sr$，$s\cdot r^2=sr^2$，按定义。
+$sr\cdot r=sr^2$，$sr\cdot r^2=sr^3=s$。
+$sr^2\cdot r=sr^3=s$，$sr^2\cdot r^2=sr^4=sr$。
+
+\textbf{反射乘反射.}\enspace
+$s\cdot s=s^2=e$。
+$s\cdot sr=s^2r=r$，$s\cdot sr^2=s^2r^2=r^2$。
+$sr\cdot s=s(rs)=s(sr^2)=s^2r^2=r^2$。
+$sr\cdot sr=s(rs)r=s(sr^2)r=s^2r^3=e$，故 $(sr)^2=e$，即 $sr$ 是二阶元。
+$sr\cdot sr^2=s(rs)r^2=s(sr^2)r^2=s^2r^4=r$。
+$sr^2\cdot s=s(r^2s)=s(sr)=s^2r=r$（其中 $r^2s=sr$ 已在上面得到）。
+$sr^2\cdot sr=s(r^2s)r=s(sr)r=s^2r^2=r^2$。
+$sr^2\cdot sr^2=s(r^2s)r^2=s(sr)r^2=s^2r^3=e$，故 $(sr^2)^2=e$。
+
+每个反射的平方都是 $e$，这与几何一致：反射做两次回到原位。非对角块中转动与反射的互相转换，则来自 $sr=r^2s$ 这一条非交换关系。
+
+\emph{半直积结构.}$D_3$ 的乘法表可用半直积 $D_3=C_3\rtimes C_2$ 简洁编码：正规子群 $C_3=\langle r\rangle=\{e,r,r^2\}$ 与子群 $C_2=\langle s\rangle=\{e,s\}$ 满足 $C_3\cap C_2=\{e\}$ 且 $C_3 C_2=D_3$。$C_2$ 在 $C_3$ 上的共轭作用由 $s r s^{-1}=r^{-1}=r^2$ 给出，这一单一关系决定了整个半直积结构。于是任一元素唯一写成 $r^i s^j$（$i\in\{0,1,2\}$，$j\in\{0,1\}$），乘法由
+\begin{equation*}
+(r^i s^j)(r^{i'} s^{j'})=r^{i+(-1)^j i'}s^{j+j'}
+\end{equation*}
+给出，其中 $(-1)^j$ 正是共轭作用 $s^j r^{i'} s^{-j}=r^{(-1)^j i'}$ 的体现。乘法表因此完全由半直积的同态 $C_2\to\operatorname{Aut}(C_3)$ 决定，这正是"转动与反射不交换"（$sr=r^2s\ne rs$）的代数根源。
+
+\emph{置换表示.}$D_3$ 作为正三角形三个顶点的置换群与 $S_3$ 同构：$r\mapsto(1\,2\,3)$（三循环）、$s\mapsto(2\,3)$（对换）。五个反射 $s,sr,sr^2$ 分别对应三个对换 $(1\,2),(2\,3),(1\,3)$ 的重排，因为共轭关系 $s r s^{-1}=r^{-1}$ 保证了它们恰好遍历全部对换。这一同构说明 $D_3$ 是 $S_3$ 的几何实现，也解释了 $D_3$ 的阶 $6=3!$ 等于三个顶点的全排列数。
+
+\emph{群的展示.}$D_3$ 的乘法表蕴含它的展示（presentation）：
+\begin{equation*}
+D_3=\langle r,s\mid r^3=e,\ s^2=e,\ srs^{-1}=r^{-1}\rangle .
+\end{equation*}
+前两个关系来自 $r$ 和 $s$ 的阶，第三个关系（等价于 $sr=r^2s$）来自共轭作用。这三个关系足以确定整个乘法表——任何由 $r,s$ 生成的六元素群只要满足这三个关系，其乘法表就与 $D_3$ 相同。展示理论（字问题、\/van Kampen 图）正是从这类有限关系出发研究群结构的系统方法，$D_3$ 是最小的非交换展示群。
+
+\emph{几何实现与忠实性.}$D_3$ 在 $\RR^2$ 上的二维几何作用（$r$ 旋转 $120^\circ$、$s$ 关于 $x$ 轴反射）是忠实的：不同群元给出不同线性变换。乘法表中每个群元对应唯一的 $2\times2$ 正交矩阵，构成 $\mathrm O(2)$ 的有限子群。这一实现把抽象的乘法表转化为具体的矩阵乘法，是"抽象群"与"对称变换群"之间对应关系的最小非平凡实例，也是后续所有表示论的出发点。
+\end{derivation}
+
+\figref{fig:d3-cayley-graph} 是 $D_3$ 的 Cayley 图：每个节点是一个群元，蓝色有向边表示右乘 $r$，红色无向边表示右乘 $s$（因 $s^2=e$ 故无方向）。Cayley 图把乘法表压缩成一张可读的图：从任一节点出发，沿蓝边走三步回到原处（$r^3=e$），沿红边走两步回到原处（$s^2=e$），而"蓝—红"与"红—蓝"到达的节点不同（$sr\neq rs$）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[line width=0.75pt,>=Stealth,every node/.style={font=\small}]
+\foreach \i/\lbl in {0/e, 1/r, 2/{r^2}, 3/{sr^2}, 4/{sr}, 5/s} {
+  \node[circle,draw,fill=white,inner sep=2pt,minimum size=11mm] (n\i) at ({90+60*\i}:2.2) {$\lbl$};
+}
+\draw[lecturearrow,blue] (n0) -- (n1);
+\draw[lecturearrow,blue] (n1) -- (n2);
+\draw[lecturearrow,blue] (n2) to[bend left=35] (n0);
+\draw[lecturearrow,blue] (n3) -- (n4);
+\draw[lecturearrow,blue] (n4) -- (n5);
+\draw[lecturearrow,blue] (n5) to[bend right=35] (n3);
+\draw[red,line width=0.75pt,dashed] (n0) -- (n5);
+\draw[red,line width=0.75pt,dashed] (n1) -- (n4);
+\draw[red,line width=0.75pt,dashed] (n2) -- (n3);
+\node[blue] at (0,1.5) {$r$};
+\node[red] at (1.6,0) {$s$};
+\end{tikzpicture}
+\caption{$D_3$ 的 Cayley 图。蓝色有向边为右乘 $r$（转动），红色虚边为右乘 $s$（反射）。内三角为 $\cyclic{r}$，外三角为三个反射。}
+\label{fig:d3-cayley-graph}
+\end{figure}
+
+\section{子群与陪集}
+\label{sec:subgroups-cosets}
+
+知道一个大群以后，我们通常不会立刻研究它的全部元素，而会先寻找其中能够独立闭合的一部分操作。例如三维转动群中“只绕 $z$ 轴转动”的操作本身就能组成一个群；晶体空间群中所有纯平移也构成一个群。这些嵌在大群内部、自己仍然满足群公理的集合就是子群。
+
+子群不是任意子集。一个子集如果只“挑中了一些群元”，但两个被挑中的群元相乘后跑到了集合外面，它就无法作为独立的群来运算。后面的正规子群、商群和表示限制都建立在子群之上，因此先把“什么时候一个子集真的是子群”弄清楚非常重要。
+
+接下来考察子群判据。
+
+\begin{definition}[子群]
+设 $G$ 为群，$H\subseteq G$。若 $H$ 在 $G$ 的同一运算下本身构成群，则称 $H$ 为 $G$ 的子群，记作
+\[
+H\subgroup G.
+\]
+若 $H\neq\{e\}$ 且 $H\neq G$，则称 $H$ 为真非平凡子群。
+\label{def:subgroup}
+\end{definition}
+
+由于结合律自动从 $G$ 继承，实际检验子群不必重新验证全部群公理。
+
+\begin{theorem}[一步子群判据]
+非空子集 $H\subseteq G$ 是子群，当且仅当
+\[
+\forall a,b\in H,
+\qquad
+ab^{-1}\in H.
+\]
+\label{thm:one-step-subgroup-test}
+
+\par\smallskip\noindent\textbf{证明.}
+必要性由子群的封闭性与逆元存在性立即得到。反之，取 $a\in H$，令 $b=a$，则
+\[
+aa^{-1}=e\in H.
+\]
+再令 $a=e$，可得对任意 $b\in H$，
+\[
+eb^{-1}=b^{-1}\in H.
+\]
+最后对任意 $a,b\in H$，因为 $b^{-1}\in H$，把判据中的第二个元素取为 $b^{-1}$，得到
+\[
+a(b^{-1})^{-1}=ab\in H.
+\]
+因此 $H$ 含单位元、对逆封闭且对乘法封闭，所以 $H\subgroup G$。
+\hfill$\square$
+\end{theorem}
+
+这个判据值得逐句翻译。我们想证明 $H$ 自己是群，本来需要检查单位元、逆元和乘法封闭。条件 $ab^{-1}\in H$ 把这三件事压缩成了一个式子：令 $a=b$ 得到 $e=aa^{-1}\in H$；知道 $e\in H$ 后，再令 $a=e$ 得到 $b^{-1}\in H$；最后既然 $b^{-1}\in H$，把判据中的 $b$ 换成 $b^{-1}$，就得到 $a(b^{-1})^{-1}=ab\in H$。所以它不是一个神奇技巧，而是把三条需要验证的性质按正确顺序串在一起。
+
+以后看到一个候选子集，最实用的思路往往不是重新抄群公理，而是问：任取其中两个元素 $a,b$，$ab^{-1}$ 是否仍然留在集合中？例如整数加法群 $(\ZZ,+)$ 中，$2\ZZ$ 是子群，因为两个偶数之差仍是偶数；这里乘法记号下的 $ab^{-1}$ 在加法群里正对应 $a-b$。
+
+
+\begin{corollary}[有限集合的封闭判据]
+若非空有限子集 $H\subseteq G$ 对乘法封闭，则 $H\subgroup G$。
+\label{cor:finite-closed-subgroup}
+
+\par\smallskip\noindent\textbf{证明.}
+固定 $h\in H$。序列 $h,h^2,h^3,\dots$ 全在有限集 $H$ 中，因此存在 $r<s$ 使 $h^r=h^s$。消去 $h^r$ 得 $h^{s-r}=e\in H$，进而 $h^{-1}=h^{s-r-1}\in H$。故满足子群条件。
+\hfill$\square$
+\end{corollary}
+
+\begin{proposition}[子群的交]
+任意一族子群 $\{H_i\}_{i\in I}$ 的交集仍为子群：
+\[
+\bigcap_{i\in I}H_i\subgroup G.
+\]
+\label{prop:subgroup-intersection}
+
+\par\smallskip\noindent\textbf{证明.}
+单位元属于每个 $H_i$，故交集非空。若 $a,b$ 属于交集，则对每个 $i$ 都有 $a,b\in H_i$，从而 $ab^{-1}\in H_i$。于是 $ab^{-1}$ 属于交集，由\cref{thm:one-step-subgroup-test} 得证。
+\hfill$\square$
+\end{proposition}
+
+\begin{example}[$D_3$ 的全部子群]
+由 Lagrange 定理，$D_3$ 的子群阶只能整除 $6$，即 $1,2,3,6$。一阶与六阶分别给出 $\{e\}$ 与 $D_3$ 本身。二阶子群由二阶元生成，$D_3$ 恰有三个二阶元 $s,sr,sr^2$，故
+\[
+\cyclic{s}=\{e,s\},\qquad \cyclic{sr}=\{e,sr\},\qquad \cyclic{sr^2}=\{e,sr^2\}
+\]
+是三个不同的 $C_2$ 子群。三阶子群只能由三阶元 $r$ 或 $r^2$ 生成，二者给出同一个子群
+\[
+\cyclic{r}=\{e,r,r^2\}\cong C_3.
+\]
+因此 $D_3$ 恰有六个子群。它们按包含关系组织成\figref{fig:d3-subgroup-lattice} 的子群格：$\cyclic{r}$ 与三个 $C_2$ 之间没有包含关系，它们的交集都是 $\{e\}$。后面会看到，$\cyclic{r}$ 还是 $D_3$ 唯一的非平凡正规子群，而三个 $C_2$ 都不正规——这一区别直接决定哪些子群能做商群。
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[line width=0.75pt,>=Stealth,every node/.style={font=\small}]
+\node (top) at (0,3) {$D_3$};
+\node (r)   at (0,1.6) {$\cyclic{r}\cong C_3$};
+\node (s0)  at (-3,0) {$\cyclic{s}$};
+\node (s1)  at (-1,0) {$\cyclic{sr}$};
+\node (s2)  at (1,0) {$\cyclic{sr^2}$};
+\node (bot) at (0,-1.4) {$\{e\}$};
+\foreach \a in {r,s0,s1,s2} \draw (top) -- (\a);
+\foreach \a in {r,s0,s1,s2} \draw (\a) -- (bot);
+\end{tikzpicture}
+\caption{$D_3$ 的子群格。顶部 $D_3$ 包含四个非平凡子群：一个 $C_3$（正规）与三个 $C_2$（不正规）。四个非平凡子群的交集为 $\{e\}$。}
+\label{fig:d3-subgroup-lattice}
+\end{figure}
+
+子群 $H$ 找到以后，下一个问题是：$H$ 在整个 $G$ 中占据什么位置？最直接的做法是把 $H$ 整体左乘一个群元 $g$，得到所谓的左陪集
+\[
+gH=\{gh\mid h\in H\}.
+\]
+这不是在生成一个新子群，而是在把 $H$ 作为一个整体“平移”到群中的另一个位置。这样的集合叫左陪集。它最重要的性质不是自身闭合，而是不同陪集会把整个群无重叠地切成大小完全相同的块。Lagrange 定理正是从这个分块结构出来的，而不是一个凭空出现的整除公式。
+
+先看为什么左乘不会改变元素个数。映射
+\[
+L_g:H\longrightarrow gH,\qquad h\longmapsto gh
+\]
+是一一映射：若 $gh_1=gh_2$，左乘 $g^{-1}$ 得 $h_1=h_2$；而 $gH$ 中每个元素按定义都长成 $gh$，因此它也是满射。所以每个陪集与 $H$ 含有同样多的元素。真正需要证明的只剩下一件事：两个陪集要么完全相同，要么完全不相交。
+
+\begin{definition}[左陪集与右陪集]
+设 $H\subgroup G$，$g\in G$。定义
+\[
+gH=\{gh\mid h\in H\},
+\qquad
+Hg=\{hg\mid h\in H\}.
+\]
+它们分别称为 $H$ 关于 $g$ 的左陪集与右陪集。
+\label{def:cosets}
+\end{definition}
+
+陪集不是“近似的子群”。除 $H$ 自身外，一般陪集不含单位元，因此通常不是子群。陪集的关键作用在于它们把整个群分成大小相同且互不重叠的块。
+
+\begin{lemma}[陪集相等判据]
+对 $a,b\in G$，下列条件等价：
+\[
+aH=bH,
+\qquad
+b^{-1}a\in H,
+\qquad
+a^{-1}b\in H.
+\]
+\label{lem:coset-equality}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $aH=bH$，则 $a\in bH$，故存在 $h\in H$ 使 $a=bh$，即 $b^{-1}a=h\in H$。反之若 $b^{-1}a=h_0\in H$，则 $a=bh_0$，于是
+\[
+aH=bh_0H=bH,
+\]
+因为 $h_0H=H$。最后两个条件互为取逆。
+\hfill$\square$
+\end{lemma}
+
+\begin{theorem}[陪集分割定理]
+设 $H\subgroup G$。任意两个左陪集要么相等，要么不相交；并且每个 $g\in G$ 恰属于一个左陪集。因此所有左陪集构成 $G$ 的一个分割。右陪集亦然。
+\label{thm:coset-partition}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $aH\cap bH\neq\varnothing$，取 $x\in aH\cap bH$，则存在 $h_1,h_2\in H$ 使
+\[
+x=ah_1=bh_2.
+\]
+于是
+\[
+b^{-1}a=h_2h_1^{-1}\in H,
+\]
+由\cref{lem:coset-equality} 得 $aH=bH$。又对任意 $g\in G$，有 $g=ge\in gH$，故所有陪集覆盖 $G$。
+\hfill$\square$
+\end{theorem}
+
+“陪集分割”这个结论以后会不断出现，所以最好把逻辑图像记牢。每个 $g\in G$ 一定属于自己的陪集 $gH$，因为 $g=ge$ 且 $e\in H$；因此所有左陪集的并覆盖整个 $G$。如果两个陪集有一个公共元素，设
+\[
+x=g_1h_1=g_2h_2,
+\]
+那么
+\[
+g_2^{-1}g_1=h_2h_1^{-1}\in H,
+\]
+于是 $g_1H=g_2H$。所以“不相交”与“完全相同”之间没有第三种情况。
+
+这正是等价关系分块的结构。事实上可以定义
+\[
+g_1\sim g_2\iff g_2^{-1}g_1\in H,
+\]
+它是一个等价关系，而每个等价类就是一个左陪集。因此陪集并不是某种特殊的群论技巧，而是“由子群定义等价关系后得到的等价类”。
+
+
+\begin{definition}[指数]
+$H$ 在 $G$ 中不同左陪集的个数称为 $H$ 在 $G$ 中的指数，记为
+\[
+[G:H].
+\]
+\label{def:index}
+\end{definition}
+
+\begin{theorem}[Lagrange 定理]
+若 $G$ 为有限群，$H\subgroup G$，则
+\[
+\lvert G\rvert=[G:H]\,\lvert H\rvert.
+\label{eq:lagrange}
+\]
+因此 $\lvert H\rvert$ 整除 $\lvert G\rvert$。
+\label{thm:lagrange}
+
+\par\smallskip\noindent\textbf{证明.}
+映射 $H\to gH$，$h\mapsto gh$ 是双射，因此每个左陪集都有 $\lvert H\rvert$ 个元素。由\cref{thm:coset-partition}，$G$ 是 $[G:H]$ 个互不相交左陪集的并，故得到\eqnrefs{eq:lagrange}。
+\hfill$\square$
+\end{theorem}
+
+Lagrange 定理最重要的地方不是最后的整除符号，而是它说明了为什么会整除。设不同左陪集共有 $[G:H]$ 个。因为它们彼此不交、并起来是整个群，而且每个陪集都与 $H$ 一一对应，所以每块都有 $|H|$ 个元素。于是总元素数只能是
+\[
+|G|=\underbrace{|H|+|H|+\cdots+|H|}_{[G:H]\text{ 块}}=[G:H]|H|.
+\]
+因此 $|H|$ 整除 $|G|$ 只是这个几何式分块计数的代数写法。
+
+反过来要特别小心：$d\mid |G|$ 并不意味着一定存在 $d$ 阶子群。Lagrange 定理给的是必要条件，不是一般的存在定理。初学时把“若 $H$ 是子群，则 $|H|\mid|G|$”错误读成反方向，是很常见的逻辑错误。
+
+
+\begin{corollary}[群元的阶整除群阶]
+若 $G$ 为有限群，则对任意 $g\in G$，
+\[
+\ord(g)\mid \lvert G\rvert.
+\]
+\label{cor:element-order-divides-group}
+
+\par\smallskip\noindent\textbf{证明.}
+将 Lagrange 定理应用于循环子群 $\cyclic{g}$，再用\cref{prop:element-order-cyclic}。
+\hfill$\square$
+\end{corollary}
+
+\begin{corollary}[素数阶群必循环]
+若 $\lvert G\rvert=p$ 为素数，则任意 $g\neq e$ 都生成 $G$，因而
+\[
+G\cong C_p.
+\]
+\label{cor:prime-order-cyclic}
+
+\par\smallskip\noindent\textbf{证明.}
+$\ord(g)>1$ 且 $\ord(g)\mid p$，故只能有 $\ord(g)=p$。
+\hfill$\square$
+\end{corollary}
+
+需要特别区分的是，$\lvert H\rvert\mid\lvert G\rvert$ 是“$H$ 是子群”的必要条件，不是充分条件。一个整数 $d$ 即使整除 $\lvert G\rvert$，$G$ 也未必存在 $d$ 阶子群。后续 Sylow 定理会给出更精细的存在性信息。
+
+陪集与 Lagrange 定理可以在 $S_3$ 上完整看一遍。取子群
+\[
+H=\{e,(12)\}.
+\]
+它有两个元素，因此每个左陪集也有两个元素。选 $(13)$，得到
+\[
+(13)H=\{(13),(13)(12)\}=\{(13),(123)\}.
+\]
+再选尚未出现的 $(23)$，得到
+\[
+(23)H=\{(23),(23)(12)\}=\{(23),(132)\}.
+\]
+所以
+\[
+S_3=H\sqcup(13)H\sqcup(23)H,
+\]
+其中符号 $\sqcup$ 强调三个集合两两不交。于是
+\[
+|S_3|=3|H|=6.
+\]
+注意这些陪集本身通常不是子群，例如 $(13)H$ 不含单位元。陪集的角色是“分块”，而不是“更小的群”。
+
+\section{共轭、类与正规子群}
+\label{sec:conjugacy-normal}
+
+群论里一个看似奇怪、但物理意义非常直接的组合是
+\[
+xgx^{-1}.
+\]
+如果 $g$ 是某个操作，而 $x$ 表示“改变观察坐标或重新标记对象”，那么先用 $x^{-1}$ 把问题搬到旧标记下，做 $g$，再用 $x$ 搬回来，得到的正是同一个几何或代数结构在新标记下的表达。因此 $g$ 与 $xgx^{-1}$ 应被视为同一种操作的不同位置或不同坐标表达。这个关系叫共轭。
+
+例如在正方形对称群中，绕一条对角线反射和绕另一条对角线反射可以通过整体转动 $90^\circ$ 相互变换，所以它们属于同一个共轭类。后面特征标为什么在一整个共轭类上取同一个值，本质上就是因为表示矩阵在共轭下只发生相似变换，而迹不随相似变换改变。
+
+接下来考察共轭关系、中心化子与共轭类。
+
+\begin{definition}[共轭]
+若 $x,y\in G$，并且存在 $g\in G$ 使
+\[
+y=gxg^{-1},
+\]
+则称 $x$ 与 $y$ 共轭，记为 $x\sim y$。
+\label{def:conjugacy}
+\end{definition}
+
+\begin{proposition}[共轭是等价关系]
+群上的共轭关系满足自反性、对称性和传递性，因此把 $G$ 分割成若干互不相交的共轭类。
+\label{prop:conjugacy-equivalence}
+
+\par\smallskip\noindent\textbf{证明.}
+自反性来自 $x=exe^{-1}$。若 $y=gxg^{-1}$，则
+\[
+x=g^{-1}yg,
+\]
+故有对称性。若 $y=gxg^{-1}$ 且 $z=hyh^{-1}$，则
+\[
+z=(hg)x(hg)^{-1},
+\]
+故有传递性。
+\hfill$\square$
+\end{proposition}
+
+\begin{definition}[共轭类、中心与中心化子]
+元素 $x\in G$ 的共轭类为
+\[
+\classof{x}=\{gxg^{-1}\mid g\in G\}.
+\]
+$G$ 的中心定义为
+\[
+Z(G)=\{z\in G\mid zg=gz,\ \forall g\in G\}.
+\]
+$x$ 的中心化子定义为
+\[
+C_G(x)=\{g\in G\mid gx=xg\}.
+\]
+\label{def:center-centralizer}
+\end{definition}
+
+\begin{proposition}[中心化子是子群]
+对任意 $x\in G$，$C_G(x)\subgroup G$；并且
+\[
+x\in Z(G)
+\quad\Longleftrightarrow\quad
+C_G(x)=G
+\quad\Longleftrightarrow\quad
+\classof{x}=\{x\}.
+\]
+\label{prop:centralizer-subgroup}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $a,b\in C_G(x)$，则 $ax=xa$、$bx=xb$，从而
+\[
+(ab^{-1})x=a(b^{-1}x)=a(xb^{-1})=(ax)b^{-1}=x(ab^{-1}).
+\]
+故 $ab^{-1}\in C_G(x)$，由一步子群判据得到 $C_G(x)\subgroup G$。其余等价关系直接由定义得到。
+\hfill$\square$
+\end{proposition}
+
+\begin{theorem}[共轭类大小公式]
+若 $G$ 为有限群，则
+\[
+\lvert\classof{x}\rvert=[G:C_G(x)]
+=\frac{\lvert G\rvert}{\lvert C_G(x)\rvert}.
+\label{eq:class-size}
+\]
+特别地，每个共轭类的大小都整除 $\lvert G\rvert$。
+\label{thm:class-size}
+
+\par\smallskip\noindent\textbf{证明.}
+定义从左陪集集合到共轭类的映射
+\[
+\Phi:\{gC_G(x)\mid g\in G\}\longrightarrow \classof{x},
+\qquad
+\Phi(gC_G(x))=gxg^{-1}.
+\]
+这里故意没有把 $G/C_G(x)$ 当成商群来使用。中心化子 $C_G(x)$ 一般并不正规，因此此处需要的只是它的\emph{左陪集集合}。即使很多文献仍把这个集合简写为 $G/C_G(x)$，也不应误以为它自动带有商群乘法。
+先证良定义。若 $gC_G(x)=hC_G(x)$，则 $h^{-1}g\in C_G(x)$，所以
+\[
+(h^{-1}g)x=x(h^{-1}g).
+\]
+左右适当乘以 $h$ 与 $g^{-1}$ 得
+\[
+gxg^{-1}=hxh^{-1}.
+\]
+因此同一陪集给出同一共轭元。任意 $y\in\classof{x}$ 都按定义可写为 $y=gxg^{-1}$，故映射满射。若
+\[
+gxg^{-1}=hxh^{-1},
+\]
+则 $h^{-1}g\in C_G(x)$，故 $gC_G(x)=hC_G(x)$，所以 $\Phi$ 单射。于是共轭类与左陪集一一对应，结合 Lagrange 定理即得\eqnrefs{eq:class-size}。
+\hfill$\square$
+\end{theorem}
+
+这个公式其实就是轨道--稳定子定理的一个特例。让 $G$ 作用在自己上，作用定义为
+\[
+x\cdot g=xgx^{-1}.
+\]
+那么 $g$ 的轨道正是共轭类 $\classof g$；使 $g$ 不动的那些 $x$ 满足 $xgx^{-1}=g$，等价于 $xg=gx$，所以稳定子正是中心化子 $C_G(g)$。于是
+\[
+|\classof g|=\frac{|G|}{|C_G(g)|}.
+\]
+
+这给出一个非常有用的物理直觉：一个操作与“越多”的群元交换，它的中心化子越大，它的共轭类就越小；反之，一个操作越特殊、越少有别的操作与它兼容，它在群作用下会产生越大的等价轨道。
+
+在分子对称性中，这条公式的直接读法是：共轭类大小恰好等于“与某类对称操作等价的操作的个数”。以 $D_3$（即 $C_{3v}$ 分子，如 $\mathrm{NH_3}$）为例，三个反射 $\sigma_v$ 在群作用下彼此等价（旋转把一条镜面转到另一条），共轭类大小为 $3$；而两个旋转 $C_3,C_3^2$ 也彼此等价（反射把逆时针转成顺时针），共轭类大小为 $2$。后续用特征标投影算符构造对称适配线性组合（SALC）时，每个共轭类贡献一个独立的投影通道，因此共轭类的个数等于不可约表示的个数——这正是为什么本章必须把共轭类结构算清楚：它直接决定了下一章特征标表的行数和列数。
+
+\begin{corollary}[类方程]
+设 $G$ 为有限群，从每个非平凡共轭类中取一个代表元 $x_1,\dots,x_r$，则
+\[
+\lvert G\rvert
+=
+\lvert Z(G)\rvert
++
+\sum_{i=1}^{r}[G:C_G(x_i)].
+\label{eq:class-equation}
+\]
+\label{cor:class-equation}
+
+\par\smallskip\noindent\textbf{证明.}
+共轭关系把 $G$ 分割成互不相交的共轭类。中心中的每个元素 $z\in Z(G)$ 都满足 $gzg^{-1}=z$，所以其共轭类只有一个元素；反过来，若某元素的共轭类只有一个元素，则它与所有 $g\in G$ 交换，因此属于 $Z(G)$。于是所有单元素共轭类恰好组成 $Z(G)$。其余共轭类取代表 $x_i$，由类大小定理
+\[
+|\classof{x_i}|=[G:C_G(x_i)].
+\]
+把所有互不相交共轭类的大小相加，便得到
+\[
+|G|=|Z(G)|+\sum_{i=1}^r[G:C_G(x_i)].
+\]
+\hfill$\square$
+\end{corollary}
+
+类方程把整个群拆成"中心"与"非中心共轭类"两部分，是分析有限群结构最基本的计数工具。它的一个直接推论是：若 $|G|$ 是素数幂 $p^n$（$n\ge1$），则 $Z(G)$ 非平凡。理由是每个非中心共轭类的大小 $[G:C_G(x_i)]$ 既整除 $|G|=p^n$ 又大于 $1$，故都是 $p$ 的倍数；于是类方程右端除 $|Z(G)|$ 外各项都被 $p$ 整除，而左端 $p^n$ 也被 $p$ 整除，因此 $|Z(G)|$ 必须被 $p$ 整除，特别 $|Z(G)|\ge p>1$。这一结论是 $p$ 群结构定理的起点，也是后续证明有限 $p$ 群必有非平凡正规子群的基石。对 $D_3$ 而言，类方程 $6=1+2+3$ 中 $|Z(D_3)|=1$ 不被任何素数整除，这与 $6$ 不是素数幂一致。
+
+\begin{example}[$D_3$ 共轭类的几何解读]
+在 $D_3$ 中，共轭的几何含义是"换一个观察角度后，同一个操作长什么样"。用生成元 $r,s$ 可以把三个共轭类完全读出来，而不必依赖置换的循环型。
+
+\textbf{旋转类 $\{r,r^2\}$.}\enspace
+关系 $srs^{-1}=r^2$（即\eqnrefs{eq:d3-srs-relation}）直接说明 $r$ 与 $r^2$ 共轭。几何上，先反射、再转 $120^\circ$、再反射回去，等于转 $240^\circ$：反射把逆时针转角翻成了顺时针转角。因此 $r$ 与 $r^2$ 是同一种操作（"转 $120^\circ$"）在镜像观察下的两种写法，必须归入同一共轭类。中心化子 $C_{D_3}(r)=\cyclic{r}$（只有旋转与旋转交换），故由\cref{thm:class-size}
+\[
+\lvert\classof{r}\rvert=\frac{6}{3}=2,
+\]
+恰好容纳 $r$ 与 $r^2$。
+
+\textbf{反射类 $\{s,sr,sr^2\}$.}\enspace
+三个反射分别对应三条反射轴（过顶点 $1$、过顶点 $2$、过顶点 $3$ 的中线）。旋转 $r$ 把一条轴转到下一条，因此用 $r$ 做共轭就在三个反射之间循环：
+\[
+rsr^{-1}=r s r^2=(r s)r^2=(sr^2)r^2=sr^4=sr.
+\]
+于是 $s$ 与 $sr$ 共轭；再共轭一次得 $sr$ 与 $sr^2$ 共轭，三个反射同属一类。中心化子 $C_{D_3}(s)=\cyclic{s}$（只有 $e$ 和 $s$ 本身与 $s$ 交换），故
+\[
+\lvert\classof{s}\rvert=\frac{6}{2}=3,
+\]
+恰好容纳三个反射。
+
+\textbf{单位元类 $\{e\}$.}\enspace
+$e$ 与所有群元交换，故 $geg^{-1}=e$，自成一类。
+
+于是 $D_3$ 的三个共轭类为 $\{e\}$、$\{r,r^2\}$、$\{s,sr,sr^2\}$，大小 $1,2,3$，中心 $Z(D_3)=\{e\}$。类方程验证：
+\[
+6=1+2+3.
+\]
+这个例子揭示了一条贯穿全书的物理直觉：\emph{同一共轭类中的操作在物理上不可区分}——换一个对称操作作为观察基准，一个旋转就变成它的逆，一条反射轴就变成另一条。后面特征标之所以在整类上取同一个值，正是因为特征标度量的是"操作的物理痕迹"，而物理痕迹不依赖观察角度。
+\end{example}
+
+陪集已经把群切成若干块，于是一个很自然的想法是：能不能把"每一个陪集"当成一个新的群元，并定义
+\[
+(gH)(kH)=(gk)H?
+\]
+如果这件事可行，我们就把原群中属于同一个陪集的细节全部压缩掉，得到一个更小的群。这就是商群思想。
+
+难点在于，一个陪集可以用很多不同代表元来写。例如 $gH=g'H$、$kH=k'H$ 时，我们希望无论选 $g,k$ 还是 $g',k'$，乘积陪集都一样；否则上式不是一个真正的二元运算。恰恰在这里，普通子群不够，必须要求 $H$ 在所有共轭下保持自己，也就是正规性。换句话说，“正规子群”不是为了多记一种子群，而是为了让陪集乘法良定义。
+
+\begin{definition}[正规子群]
+若 $N\subgroup G$ 且对任意 $g\in G$ 都有
+\[
+gNg^{-1}=N,
+\]
+则称 $N$ 为 $G$ 的正规子群，记作
+\[
+N\normal G.
+\]
+\label{def:normal-subgroup}
+\end{definition}
+
+“正规”并不是额外的闭合条件，而是说子群在整个群的共轭作用下保持不变。因此正规子群恰好是能够被压缩成“商群中的一个单位元”的子群。
+
+\begin{theorem}[正规性的等价刻画]
+设 $N\subgroup G$。下列条件等价：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+  \item $N\normal G$；
+  \item 对任意 $g\in G$，$gN=Ng$；
+  \item 对任意 $g\in G$，$gNg^{-1}\subseteq N$。
+\end{enumerate}
+\label{thm:normal-equivalences}
+
+\par\smallskip\noindent\textbf{证明.}
+$(\mathrm{i})\Rightarrow(\mathrm{ii})$：由 $gNg^{-1}=N$ 右乘 $g$ 得 $gN=Ng$。
+
+$(\mathrm{ii})\Rightarrow(\mathrm{iii})$：由 $gN=Ng$ 右乘 $g^{-1}$ 得 $gNg^{-1}=N$，因而当然包含于 $N$。
+
+$(\mathrm{iii})\Rightarrow(\mathrm{i})$：把条件用于 $g^{-1}$ 得
+\[
+g^{-1}Ng\subseteq N.
+\]
+左右分别乘以 $g$ 与 $g^{-1}$，得到
+\[
+N\subseteq gNg^{-1}.
+\]
+与原包含关系合并即为相等。
+\hfill$\square$
+\end{theorem}
+
+\begin{proposition}[两个基本正规子群]
+对任意群 $G$，有
+\[
+\{e\}\normal G,
+\qquad
+G\normal G,
+\qquad
+Z(G)\normal G.
+\]
+若 $G$ 为 Abel 群，则每个子群都正规。
+\label{prop:basic-normal-subgroups}
+
+\par\smallskip\noindent\textbf{证明.}
+对子群 $\{e\}$，任意 $g\in G$ 都有
+\[
+g\{e\}g^{-1}=\{geg^{-1}\}=\{e\},
+\]
+故其正规。对 $G$ 本身，共轭映射 $x\mapsto gxg^{-1}$ 是 $G$ 到自身的双射，所以 $gGg^{-1}=G$。若 $z\in Z(G)$，则 $gzg^{-1}=z\in Z(G)$，因此
+\[
+gZ(G)g^{-1}\subseteq Z(G).
+\]
+把同一论证用于 $g^{-1}$ 得反向包含，故 $Z(G)\normal G$。
+
+若 $G$ 为 Abel 群，任取子群 $H\subgroup G$ 与 $g\in G$，对每个 $h\in H$ 有
+\[
+ghg^{-1}=hgg^{-1}=h,
+\]
+所以 $gHg^{-1}=H$。因此每个子群都正规。
+\hfill$\square$
+\end{proposition}
+
+\begin{definition}[商群]
+设 $N\normal G$。所有陪集组成的集合
+\[
+G/N=\{gN\mid g\in G\}
+\]
+在乘法
+\[
+(gN)(hN)=(gh)N
+\label{eq:quotient-product}
+\]
+下构成群，称为 $G$ 对 $N$ 的商群。
+\label{def:quotient-group}
+\end{definition}
+
+上式最需要证明的并不是结合律，而是\textbf{良定义性}：同一陪集可以选不同代表元，结果必须与代表元的选择无关。
+
+\begin{theorem}[商群乘法的良定义性]
+若 $N\normal G$，且
+\[
+gN=g'N,
+\qquad
+hN=h'N,
+\]
+则
+\[
+(gh)N=(g'h')N.
+\]
+因此\eqnrefs{eq:quotient-product} 不依赖代表元的选择。
+\label{thm:quotient-well-defined}
+
+\par\smallskip\noindent\textbf{证明.}
+由陪集相等判据，存在 $n_1,n_2\in N$ 使
+\[
+g'=gn_1,
+\qquad
+h'=hn_2.
+\]
+于是
+\begin{align*}
+g'h'
+&=gn_1hn_2\\
+&=gh\,(h^{-1}n_1h)n_2.
+\end{align*}
+因 $N\normal G$，有 $h^{-1}n_1h\in N$，从而
+\[
+(h^{-1}n_1h)n_2\in N.
+\]
+故 $g'h'\in ghN$，即 $(g'h')N=(gh)N$。
+\hfill$\square$
+\end{theorem}
+
+这里“良定义”三个字必须真正理解。一个陪集不是一个单独元素，而是一整组代表元。例如 $gN=gnN$ 对任意 $n\in N$ 都成立。如果我们写
+\[
+(gN)(hN)=ghN,
+\]
+就必须保证把 $g$ 换成同一陪集里的 $gn_1$、把 $h$ 换成 $hn_2$ 后，结果仍是同一个陪集。计算
+\[
+(gn_1)(hn_2)=gh\,(h^{-1}n_1h)n_2.
+\]
+若 $N\normal G$，则 $h^{-1}n_1h\in N$，于是括号中的两个因子都在 $N$，它们的乘积也在 $N$，最终仍得到 $ghN$。正规性正是在这一步被使用的。
+
+如果 $N$ 不是正规子群，这一步可能失败：不同代表元会给出不同“乘积陪集”，那么所谓商群乘法根本不是函数。由此可以看到，正规子群的定义并不是形式上的附加条件，而是商结构能够存在的必要机制。
+
+
+\begin{corollary}[有限商群的阶]
+若 $G$ 有限且 $N\normal G$，则
+\[
+\lvert G/N\rvert=[G:N]=\frac{\lvert G\rvert}{\lvert N\rvert}.
+\]
+\label{cor:quotient-order}
+
+\par\smallskip\noindent\textbf{证明.}
+商群 $G/N$ 的元素就是 $N$ 在 $G$ 中的左陪集，因此其元素个数按定义等于指数 $[G:N]$。Lagrange 定理给出
+\[
+|G|=[G:N]|N|,
+\]
+两边除以 $|N|$ 即得
+\[
+|G/N|=[G:N]=\frac{|G|}{|N|}.
+\]
+\hfill$\square$
+\end{corollary}
+
+\begin{example}[$D_3$ 的正规子群与商群：旋转子群为何特殊]
+\label{ex:d3-normal-subgroup-geometry}
+$D_3$ 的旋转子群 $\cyclic{r}=\{e,r,r^2\}$ 是正规的，而三个反射子群 $\cyclic{s},\cyclic{sr},\cyclic{sr^2}$ 都不正规。这两件事的几何原因都可以从共轭直接读出。
+
+\textbf{$\cyclic{r}$ 正规.}\enspace 反射共轭旋转给出其逆：$srs^{-1}=r^2\in\cyclic{r}$，$sr^2s^{-1}=r\in\cyclic{r}$。几何上，"先反射、转 $120^\circ$、再反射回去"等于反向转 $120^\circ$，仍是旋转。旋转共轭旋转当然仍是旋转。因此 $\cyclic{r}$ 在所有共轭下保持自身，$g\cyclic{r}g^{-1}=\cyclic{r}$。
+
+\textbf{$\cyclic{s}$ 不正规.}\enspace 旋转共轭反射给出另一个反射：$rsr^{-1}=sr\neq s$，而 $sr\notin\cyclic{s}=\{e,s\}$。几何上，旋转把过顶点 $1$ 的反射轴转到过顶点 $2$ 的反射轴，因此共轭把 $\cyclic{s}$ 里的反射 $s$ 送到属于另一个子群 $\cyclic{sr}$ 的反射 $sr$。于是 $r\cyclic{s}r^{-1}=\cyclic{sr}\neq\cyclic{s}$。
+
+因为 $\cyclic{r}\normal D_3$，可以构造商群。两个陪集为
+\[
+\cyclic{r}=\{e,r,r^2\},
+\qquad
+s\cyclic{r}=\{s,sr,sr^2\},
+\]
+分别代表"纯旋转"与"含反射"。商群乘法
+\[
+(s\cyclic{r})^2=s^2\cyclic{r}=\cyclic{r}
+\]
+说明两个反射合成一个旋转，因此
+\[
+D_3/\cyclic{r}\cong C_2.
+\]
+物理上，这个商群把 $C_{3v}$ 的六操作压缩成"真转动"与"含镜面反射"两类，恰好对应行列式 $\det R=\pm1$ 的区分。在分子光谱中，这种"偶/奇"分类决定了某些跃迁选择定则的符号：真转动保持手性，含反射的操作翻转手性。
+\end{example}
+
+
+正规子群与商群也最好通过一个具体计算消化。$S_3$ 中的偶置换组成
+\[
+A_3=\{e,(123),(132)\}.
+\]
+它是指数为 $2$ 的子群，因此自动正规。商群只有两个陪集：
+\[
+A_3,\qquad (12)A_3=\{(12),(13),(23)\}.
+\]
+把第二个陪集记作 $xA_3$，则
+\[
+(xA_3)^2=x^2A_3=A_3,
+\]
+因为任意换位 $x$ 都满足 $x^2=e$。所以 $S_3/A_3$ 只有单位元和一个二阶元素，因而
+\[
+S_3/A_3\cong C_2.
+\]
+物理上可以把这个商群理解为：如果我们完全忽略“具体是哪一个偶置换”的区别，只保留“偶/奇”两类信息，$S_3$ 就被压缩成了 $C_2$。
+
+\section{同态、同构与自同构}
+\label{sec:homomorphism-isomorphism}
+
+前面一直在同一个群内部研究子群、陪集和共轭。现在要比较两个不同的群。比较群不能只比较“元素长什么样”，因为同一个抽象结构可能用完全不同的对象实现：正三角形的六个几何对称与三个对象的六个置换就是典型例子。真正应该保留的是乘法规律。
+
+因此我们研究映射
+\[
+\varphi:G\longrightarrow H
+\]
+时，最基本的要求不是它把某个特定元素送到哪里，而是它必须满足
+\[
+\varphi(g_1g_2)=\varphi(g_1)\varphi(g_2).
+\]
+左边是“先在 $G$ 中相乘再映射”，右边是“先分别映射到 $H$ 再相乘”。二者一致意味着映射没有破坏群结构，这就是同态。若映射还一一且满，就说明两个群只是元素名字不同，结构完全相同，这就是同构。
+
+接下来考察同态及其核与像。
+
+\begin{definition}[群同态]
+设 $G,H$ 为群。映射
+\[
+\varphi:G\longrightarrow H
+\]
+若满足
+\[
+\varphi(g_1g_2)=\varphi(g_1)\varphi(g_2),
+\qquad
+\forall g_1,g_2\in G,
+\label{eq:homomorphism}
+\]
+则称 $\varphi$ 为群同态。
+\label{def:homomorphism}
+\end{definition}
+
+同态的定义\textbf{不要求}单射或满射。满射同态称为满同态；双射同态才是同构。这样定义的好处是核、像与商群之间的结构关系可以在最一般的情形下统一表述。
+
+\begin{proposition}[同态保持单位元、逆元与整数次幂]
+若 $\varphi:G\to H$ 为同态，则
+\[
+\varphi(e_G)=e_H,
+\qquad
+\varphi(g^{-1})=\varphi(g)^{-1},
+\qquad
+\varphi(g^n)=\varphi(g)^n,
+\quad n\in\ZZ.
+\]
+\label{prop:homomorphism-basic}
+
+\par\smallskip\noindent\textbf{证明.}
+由
+\[
+\varphi(e_G)=\varphi(e_Ge_G)=\varphi(e_G)^2
+\]
+在 $H$ 中左消去 $\varphi(e_G)$，得 $\varphi(e_G)=e_H$。再由
+\[
+e_H=\varphi(e_G)=\varphi(gg^{-1})=\varphi(g)\varphi(g^{-1})
+\]
+得到 $\varphi(g^{-1})=\varphi(g)^{-1}$。幂公式随后由归纳法及逆元公式得到。
+\hfill$\square$
+\end{proposition}
+
+\begin{definition}[核与像]
+对群同态 $\varphi:G\to H$，定义
+\[
+\Ker\varphi
+=\{g\in G\mid \varphi(g)=e_H\},
+\]
+\[
+\Img\varphi
+=\{\varphi(g)\mid g\in G\}\subseteq H.
+\]
+\label{def:kernel-image}
+\end{definition}
+
+\begin{theorem}[核与像的结构]
+若 $\varphi:G\to H$ 为群同态，则
+\[
+\Ker\varphi\normal G,
+\qquad
+\Img\varphi\subgroup H.
+\]
+并且
+\[
+\varphi\text{ 为单射}
+\quad\Longleftrightarrow\quad
+\Ker\varphi=\{e_G\}.
+\]
+\label{thm:kernel-image}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $a,b\in\Ker\varphi$，则
+\[
+\varphi(ab^{-1})
+=\varphi(a)\varphi(b)^{-1}
+=e_H,
+\]
+故 $ab^{-1}\in\Ker\varphi$，所以核为子群。进一步，对 $g\in G$、$k\in\Ker\varphi$，
+\[
+\varphi(gkg^{-1})
+=\varphi(g)e_H\varphi(g)^{-1}
+=e_H,
+\]
+故 $gkg^{-1}\in\Ker\varphi$，核正规。
+
+若 $x=\varphi(a)$、$y=\varphi(b)$ 属于像，则
+\[
+xy^{-1}
+=\varphi(a)\varphi(b)^{-1}
+=\varphi(ab^{-1})\in\Img\varphi,
+\]
+故像为子群。
+
+若 $\Ker\varphi=\{e_G\}$ 且 $\varphi(a)=\varphi(b)$，则
+\[
+\varphi(b^{-1}a)=e_H,
+\]
+于是 $b^{-1}a=e_G$，即 $a=b$，故 $\varphi$ 单射。反之，若 $\varphi$ 单射且 $k\in\Ker\varphi$，则 $\varphi(k)=e_H=\varphi(e_G)$，从而 $k=e_G$，故核平凡。
+\hfill$\square$
+\end{theorem}
+
+\begin{theorem}[第一同构定理]
+对任意群同态 $\varphi:G\to H$，存在自然同构
+\[
+G/\Ker\varphi
+\cong
+\Img\varphi.
+\label{eq:first-isomorphism}
+\]
+若 $\varphi$ 满射，则特别有
+\[
+G/\Ker\varphi\cong H.
+\]
+\label{thm:first-isomorphism}
+
+\par\smallskip\noindent\textbf{证明.}
+令 $K=\Ker\varphi$。定义
+\[
+\overline{\varphi}:G/K\longrightarrow\Img\varphi,
+\qquad
+\overline{\varphi}(gK)=\varphi(g).
+\]
+若 $gK=g'K$，则 $g'^{-1}g\in K$，于是
+\[
+\varphi(g'^{-1}g)=e_H
+\Longrightarrow
+\varphi(g')^{-1}\varphi(g)=e_H
+\Longrightarrow
+\varphi(g)=\varphi(g'),
+\]
+故 $\overline{\varphi}$ 良定义。它保持乘法：
+\[
+\overline{\varphi}((gK)(hK))
+=\varphi(gh)
+=\varphi(g)\varphi(h).
+\]
+它按像的定义满射。若 $\overline{\varphi}(gK)=e_H$，则 $g\in K$，所以 $gK=K$，从而核平凡，故 $\overline{\varphi}$ 单射。于是得到\eqnrefs{eq:first-isomorphism}。
+\hfill$\square$
+\end{theorem}
+
+第一同构定理可以用“压缩信息”的图像理解。同态 $\varphi:G\to H$ 会把若干不同的 $G$ 中元素映到同一个像。哪些元素被识别在一起？如果 $\varphi(g_1)=\varphi(g_2)$，则
+\[
+\varphi(g_2^{-1}g_1)=e_H,
+\]
+所以 $g_2^{-1}g_1\in\Ker\varphi$，也就是 $g_1$ 与 $g_2$ 位于同一个核陪集。换言之，同态丢失的信息恰好由核描述。
+
+因此先把 $G$ 按核的陪集压缩成 $G/\Ker\varphi$，就已经把所有会被 $\varphi$ 识别的元素合并了；压缩后不再有额外信息损失，于是得到的群与实际像 $\Img\varphi$ 同构：
+\[
+G/\Ker\varphi\cong\Img\varphi.
+\]
+这条定理以后会反复解释“为什么某个群除掉一个冗余子群后变成另一个群”，例如 $SU(2)/\{\pm I\}\cong SO(3)$。
+
+第一同构定理有两个同样重要的同伴——第二和第三同构定理，它们描述商群的"约化"和"嵌入"规则，在分析群结构时与第一同构定理配合使用。
+
+\begin{theorem}[第二同构定理]
+\label{thm:second-isomorphism}
+设 $H\le G$，$N\normal G$。则 $HN\le G$，$H\cap N\normal H$，且
+\begin{equation}
+HN/N\cong H/(H\cap N).
+\label{eq:second-isomorphism}
+\end{equation}
+
+\par\smallskip\noindent\textbf{证明.}
+\emph{第一步：$HN$ 是子群.}\enspace 对 $h_1n_1,h_2n_2\in HN$，因 $N\normal G$，有 $n_1h_2=h_2 n'$（$n'=h_2^{-1}n_1h_2\in N$），故
+\[
+(h_1n_1)(h_2n_2)=h_1h_2 n'n_2\in HN.
+\]
+逆元 $(hn)^{-1}=n^{-1}h^{-1}=h^{-1}(h n^{-1}h^{-1})\in HN$（因 $h n^{-1}h^{-1}\in N$）。故 $HN\le G$。
+
+\emph{第二步：构造同态.}\enspace 定义
+\[
+\varphi:H\to HN/N,\qquad\varphi(h)=hN.
+\]
+这是包含映射 $H\hookrightarrow HN$ 后取商的复合，故是同态。它满射：对 $hnN\in HN/N$，因 $n\in N$ 故 $hnN=hN=\varphi(h)$。
+
+\emph{第三步：求核.}\enspace
+\[
+\Ker\varphi=\{h\in H\mid hN=N\}=\{h\in H\mid h\in N\}=H\cap N.
+\]
+$H\cap N\normal H$ 因 $N\normal G$ 限制到 $H$ 上仍正规。
+
+\emph{第四步：应用第一同构定理.}\enspace 由第一同构定理 $H/\Ker\varphi\cong\Img\varphi$，即 $H/(H\cap N)\cong HN/N$。
+\hfill$\square$
+\end{theorem}
+
+\begin{theorem}[第三同构定理]
+\label{thm:third-isomorphism}
+设 $N\normal G$，$K\normal G$，且 $N\le K$。则 $K/N\normal G/N$，且
+\begin{equation}
+(G/N)/(K/N)\cong G/K.
+\label{eq:third-isomorphism}
+\end{equation}
+
+\par\smallskip\noindent\textbf{证明.}
+\emph{第一步：$K/N\normal G/N$.}\enspace 对 $gN\in G/N$，$kN\in K/N$，
+\[
+(gN)(kN)(gN)^{-1}=gkg^{-1}N\in K/N,
+\]
+因 $gkg^{-1}\in K$（$K\normal G$）。
+
+\emph{第二步：构造同态.}\enspace 定义
+\[
+\varphi:G/N\to G/K,\qquad\varphi(gN)=gK.
+\]
+良定义：若 $gN=g'N$ 则 $g'^{-1}g\in N\le K$，故 $gK=g'K$。同态：$\varphi(gN\cdot hN)=\varphi(ghN)=ghK=(gK)(hK)=\varphi(gN)\varphi(hN)$。满射显然。
+
+\emph{第三步：求核.}\enspace
+\[
+\Ker\varphi=\{gN\mid gK=K\}=\{gN\mid g\in K\}=K/N.
+\]
+
+\emph{第四步：应用第一同构定理.}\enspace $(G/N)/\Ker\varphi\cong\Img\varphi$，即 $(G/N)/(K/N)\cong G/K$。
+\hfill$\square$
+\end{theorem}
+
+\begin{theorem}[对应定理（子群对应）]
+\label{thm:correspondence}
+设 $N\normal G$，$\pi:G\to G/N$ 为自然投影。则映射
+\[
+\Phi:\{H\mid N\le H\le G\}\longrightarrow\{H'\mid H'\le G/N\},
+\qquad
+\Phi(H)=H/N=\pi(H)
+\]
+是子群格之间的保序双射，且保持正规性和商群结构：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $H_1\le H_2\iff\Phi(H_1)\le\Phi(H_2)$；
+\item $H\normal G\iff\Phi(H)\normal G/N$，此时 $(G/N)/\Phi(H)\cong G/H$；
+\item $[G:H]=[G/N:\Phi(H)]$（有限指数）。
+\end{enumerate}
+
+\par\smallskip\noindent\textbf{证明.}
+\emph{第一步：构造逆映射.}\enspace 定义
+\[
+\Psi:\{H'\le G/N\}\to\{H\mid N\le H\le G\},
+\qquad
+\Psi(H')=\pi^{-1}(H').
+\]
+需验证 $\pi^{-1}(H')$ 含 $N$：因 $N=\Ker\pi$，$e_{G/N}\in H'$，故 $N=\pi^{-1}(e_{G/N})\subseteq\pi^{-1}(H')$。
+
+\emph{第二步：$\Phi$ 与 $\Psi$ 互逆.}\enspace
+\[
+\Psi(\Phi(H))=\pi^{-1}(H/N)=\{g\in G\mid gN\in H/N\}=H,
+\]
+因 $gN=hN$（某 $h\in H$）等价于 $g\in hN\subseteq H$（因 $N\le H$）。
+\[
+\Phi(\Psi(H'))=\pi(\pi^{-1}(H'))=H',
+\]
+因 $\pi$ 满射。
+
+\emph{第三步：保序和保正规性.}\enspace $H_1\le H_2\Rightarrow H_1/N\le H_2/N$ 显然。反过来 $H_1/N\le H_2/N\Rightarrow\Psi(H_1/N)\le\Psi(H_2/N)\Rightarrow H_1\le H_2$。
+
+$H\normal G\Rightarrow H/N\normal G/N$：对 $gN\in G/N$，$(gN)(H/N)(gN)^{-1}=gHg^{-1}/N=H/N$。反过来用 $\Psi$ 拉回。
+
+商群同构 $(G/N)/(H/N)\cong G/H$ 是第三同构定理。指数公式由 $[G:H]=|G/H|=|(G/N)/(H/N)|=[G/N:H/N]$ 得到。
+\hfill$\square$
+\end{theorem}
+
+\begin{example}[对应定理的应用：$D_4$ 的子群格]
+$D_4=\langle r,s\mid r^4=s^2=e,\,srs=r^{-1}\rangle$，$|D_4|=8$。取 $N=\langle r^2\rangle=\{e,r^2\}\normal D_4$（$r^2$ 与所有元素交换），则 $D_4/N\cong V_4$（Klein 四群，因 $D_4/N$ 是 $4$ 阶 Abel 群且非循环）。
+
+$V_4$ 有 $5$ 个子群：$\{e\}$、三个 $C_2$、$V_4$ 本身。由对应定理，$D_4$ 中含 $N$ 的子群恰好 $5$ 个：$N$ 本身、三个 $4$ 阶子群 $\langle r\rangle$、$\langle r^2,s\rangle$、$\langle r^2,rs\rangle$、以及 $D_4$。$D_4$ 的其余子群（不含 $N$ 的）有 $\{e\}$、$\langle s\rangle$、$\langle rs\rangle$、$\langle r^2s\rangle$、$\langle r^3s\rangle$，共 $4$ 个。故 $D_4$ 共有 $9$ 个子群。
+
+对应定理还给出正规性信息：$V_4$ 的三个 $C_2$ 子群都正规（因 $V_4$ 是 Abel 群），故 $D_4$ 中对应的三个 $4$ 阶子群都正规。这与 $D_4$ 的几何一致：$\langle r\rangle$（纯转动）、$\langle r^2,s\rangle$（含水平反射）、$\langle r^2,rs\rangle$（含对角反射）都是正规子群。
+\end{example}
+
+
+当同态 $\varphi:G\to H$ 为双射时，称 $\varphi$ 为\emph{同构}，记作 $G\cong H$。同构的两个群在代数上完全相同，只是元素名称不同。
+
+\begin{definition}[同构]
+若群同态 $\varphi:G\to H$ 为双射，则称 $\varphi$ 为同构，并称 $G$ 与 $H$ 同构，记作
+\[
+G\cong H.
+\]
+\label{def:isomorphism}
+\end{definition}
+
+同构表示两个群具有相同的群论结构，只是群元的“具体实现”不同。群的阶、交换性、群元阶的分布、子群格结构以及共轭类结构等均在同构下保持。
+
+\begin{proposition}[共轭子群同构]
+若 $K=gHg^{-1}$，则映射
+\[
+c_g:H\to K,
+\qquad
+c_g(h)=ghg^{-1}
+\]
+是同构。
+\label{prop:conjugate-subgroups-isomorphic}
+
+\par\smallskip\noindent\textbf{证明.}
+对 $h_1,h_2\in H$，有
+\[
+c_g(h_1h_2)=gh_1h_2g^{-1}
+=(gh_1g^{-1})(gh_2g^{-1})
+=c_g(h_1)c_g(h_2),
+\]
+所以 $c_g$ 是同态。它按 $K=gHg^{-1}$ 的定义满射。若 $c_g(h_1)=c_g(h_2)$，左右分别乘以 $g^{-1}$ 与 $g$ 得 $h_1=h_2$，所以单射。等价地，其逆映射就是
+\[
+c_{g^{-1}}:K\to H,
+\qquad k\mapsto g^{-1}kg.
+\]
+故 $c_g$ 是同构。
+\hfill$\square$
+\end{proposition}
+
+\begin{definition}[自同构与内自同构]
+群 $G$ 到自身的同构称为自同构。所有自同构在映射复合下构成群
+\[
+\Aut(G).
+\]
+对固定 $g\in G$，映射
+\[
+c_g:G\to G,
+\qquad
+c_g(x)=gxg^{-1}
+\]
+称为由 $g$ 诱导的内自同构。所有内自同构构成 $\Aut(G)$ 的子群，记为 $\Inn(G)$。
+\label{def:automorphism-inner}
+\end{definition}
+
+\begin{theorem}[内自同构群的结构]
+映射
+\[
+\Psi:G\longrightarrow\Inn(G),
+\qquad
+\Psi(g)=c_g
+\]
+是满同态，且
+\[
+\Ker\Psi=Z(G).
+\]
+因此由第一同构定理，
+\[
+\Inn(G)\cong G/Z(G).
+\label{eq:inner-aut-quotient}
+\]
+\label{thm:inner-aut-quotient}
+
+\par\smallskip\noindent\textbf{证明.}
+由
+\[
+c_g\circ c_h(x)
+=g(hxh^{-1})g^{-1}
+=(gh)x(gh)^{-1}
+=c_{gh}(x)
+\]
+知 $\Psi(gh)=\Psi(g)\Psi(h)$，所以 $\Psi$ 为同态；其像按定义就是 $\Inn(G)$，故满射。又
+\[
+c_g=\id_G
+\quad\Longleftrightarrow\quad
+gxg^{-1}=x,\ \forall x\in G
+\quad\Longleftrightarrow\quad
+g\in Z(G).
+\]
+故核为 $Z(G)$，再用第一同构定理得\eqnrefs{eq:inner-aut-quotient}。
+\hfill$\square$
+\end{theorem}
+
+第一同构定理也可以立刻用整数群看懂。定义
+\[
+\varphi:\ZZ\to C_n,\qquad \varphi(k)=a^k,
+\]
+其中 $C_n=\langle a\mid a^n=e\rangle$。这是同态，因为
+\[
+\varphi(k+\ell)=a^{k+\ell}=a^ka^\ell=\varphi(k)\varphi(\ell).
+\]
+哪些整数被映到单位元？恰好是 $n$ 的整数倍：
+\[
+\Ker\varphi=n\ZZ.
+\]
+而像就是整个 $C_n$。第一同构定理因此给出
+\[
+\ZZ/n\ZZ\cong C_n.
+\]
+这里左边的商群把所有相差 $n$ 的整数视为同一个剩余类；右边则把这些剩余类写成 $e,a,\dots,a^{n-1}$。这正是模 $n$ 算术与循环群之间的结构等价。
+
+接下来考察自同构群的进一步结构。
+
+\cref{thm:inner-aut-quotient} 告诉我们 $\Inn(G)\cong G/Z(G)$，但 $\Aut(G)$ 通常比 $\Inn(G)$ 大。商群 $\Aut(G)/\Inn(G)$ 称为\textbf{外自同构群} $\Out(G)$，它衡量 $G$ 有多少"非内"的对称性。
+
+\begin{proposition}[$\Inn(G)\normal\Aut(G)$]
+内自同构群 $\Inn(G)$ 是 $\Aut(G)$ 的正规子群。
+\end{proposition}
+
+\begin{proof}
+对任意 $\varphi\in\Aut(G)$ 和内自同构 $c_g\in\Inn(G)$，需证 $\varphi\circ c_g\circ\varphi^{-1}\in\Inn(G)$。对任意 $x\in G$：
+\[
+(\varphi\circ c_g\circ\varphi^{-1})(x)=\varphi(g\varphi^{-1}(x)g^{-1})=\varphi(g)\,x\,\varphi(g)^{-1}=c_{\varphi(g)}(x).
+\]
+故 $\varphi\circ c_g\circ\varphi^{-1}=c_{\varphi(g)}\in\Inn(G)$。
+\end{proof}
+
+\begin{theorem}[循环群的自同构群]
+\label{thm:cyclic-aut}
+设 $C_n=\langle a\rangle$ 是 $n$ 阶循环群。则
+\[
+\Aut(C_n)\cong(\ZZ/n\ZZ)^\times,
+\]
+其中 $(\ZZ/n\ZZ)^\times$ 是模 $n$ 的乘法可逆元群（Euler $\varphi$ 函数给出其阶 $|\Aut(C_n)|=\varphi(n)$）。具体地，每个自同构形如 $\sigma_k:a\mapsto a^k$，其中 $\gcd(k,n)=1$。
+\end{theorem}
+
+\begin{proof}
+\textbf{第一步：自同构的形式.}\enspace 设 $\sigma\in\Aut(C_n)$。因 $a$ 生成 $C_n$，$\sigma$ 由 $\sigma(a)$ 完全确定。设 $\sigma(a)=a^k$（$0\le k<n$），则 $\sigma(a^m)=a^{km}$。
+
+\textbf{第二步：满射条件.}\enspace $\sigma$ 是自同构当且仅当 $a^k$ 也生成 $C_n$，即 $\langle a^k\rangle=C_n$。这等价于 $\gcd(k,n)=1$：若 $\gcd(k,n)=d>1$，则 $a^k$ 的阶为 $n/d<n$，不能生成 $C_n$；若 $\gcd(k,n)=1$，由 Bézout 等式存在 $u,v$ 使 $uk+vn=1$，故 $a=(a^k)^u\cdot(a^n)^v=(a^k)^u\in\langle a^k\rangle$。
+
+\textbf{第三步：群结构.}\enspace $\sigma_k\circ\sigma_l(a)=\sigma_k(a^l)=(a^k)^l=a^{kl}=\sigma_{kl}(a)$，故 $\sigma_k\circ\sigma_l=\sigma_{kl}$。映射 $k\mapsto\sigma_k$ 是 $(\ZZ/n\ZZ)^\times$ 到 $\Aut(C_n)$ 的同构。
+\end{proof}
+
+\begin{example}[小阶循环群的自同构]
+\begin{itemize}
+\item $n=2$：$(\ZZ/2\ZZ)^\times=\{1\}$，$\Aut(C_2)$ 平凡（$C_2$ 只有唯一的非单位元，必须映到自身）。
+\item $n=3$：$(\ZZ/3\ZZ)^\times=\{1,2\}\cong C_2$，$\Aut(C_3)\cong C_2$（唯一非平凡自同构 $a\mapsto a^2=a^{-1}$）。
+\item $n=4$：$(\ZZ/4\ZZ)^\times=\{1,3\}\cong C_2$，$\Aut(C_4)\cong C_2$。
+\item $n=5$：$(\ZZ/5\ZZ)^\times=\{1,2,3,4\}\cong C_4$（$2$ 是模 $5$ 的原根）。
+\item $n=8$：$(\ZZ/8\ZZ)^\times=\{1,3,5,7\}\cong C_2\times C_2$（Klein 四元群），因 $3^2\equiv5^2\equiv7^2\equiv1\pmod{8}$。
+\end{itemize}
+\end{example}
+
+\begin{definition}[特征子群]
+子群 $H\leqslant G$ 称为\textbf{特征子群}（记 $H\operatorname{char}G$），若对所有 $\varphi\in\Aut(G)$ 都有 $\varphi(H)=H$。
+\end{definition}
+
+特征子群比正规子群更强：正规子群只对内自同构不变，特征子群对所有自同构不变。
+
+\begin{proposition}[特征子群的性质]
+\label{prop:characteristic-subgroup}
+\begin{enumerate}
+\item 若 $H\operatorname{char}G$，则 $H\normal G$。
+\item 若 $H\operatorname{char}K$ 且 $K\operatorname{char}G$，则 $H\operatorname{char}G$（传递性）。
+\item 若 $H\operatorname{char}K$ 且 $K\normal G$，则 $H\normal G$。
+\item $Z(G)\operatorname{char}G$，$G'\operatorname{char}G$（导群是特征子群）。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)}\enspace 内自同构是自同构的特例，故 $\varphi(H)=H$ 对所有 $\varphi\in\Aut(G)$ 成立蕴含 $c_g(H)=H$ 对所有 $g\in G$ 成立，即 $gHg^{-1}=H$，故 $H\normal G$。
+
+\textbf{(2)}\enspace 对任意 $\varphi\in\Aut(G)$，$\varphi|_K\in\Aut(K)$（因 $K\operatorname{char}G$ 保证 $\varphi(K)=K$），故 $\varphi(H)=\varphi|_K(H)=H$（因 $H\operatorname{char}K$）。
+
+\textbf{(3)}\enspace 对任意 $g\in G$，$c_g\in\Inn(G)\subseteq\Aut(G)$，$c_g(K)=K$（因 $K\normal G$），故 $c_g|_K\in\Aut(K)$，$c_g(H)=c_g|_K(H)=H$（因 $H\operatorname{char}K$）。
+
+\textbf{(4)}\enspace 对任意 $\varphi\in\Aut(G)$ 和 $z\in Z(G)$：$\varphi(z)x\varphi(z)^{-1}=\varphi(z\varphi^{-1}(x)z^{-1})=\varphi(\varphi^{-1}(x))=x$，故 $\varphi(z)\in Z(G)$，即 $\varphi(Z(G))\subseteq Z(G)$；同理论 $\varphi^{-1}$ 得反向包含。导群 $G'=[G,G]$ 由换位子生成，$\varphi([x,y])=[\varphi(x),\varphi(y)]$，故 $\varphi(G')=G'$。
+\end{proof}
+
+\begin{theorem}[$N/C$ 定理]
+\label{thm:nc-theorem}
+设 $H\leqslant G$，则 $N_G(H)/C_G(H)$ 同构于 $\Aut(H)$ 的一个子群：
+\[
+N_G(H)/C_G(H)\hookrightarrow\Aut(H),
+\]
+其中 $N_G(H)=\{g\in G\mid gHg^{-1}=H\}$ 是正规化子，$C_G(H)=\{g\in G\mid gh=hg,\forall h\in H\}$ 是中心化子。特别地，$|N_G(H)/C_G(H)|\bigm||\Aut(H)|$。
+\end{theorem}
+
+\begin{proof}
+定义映射 $\Phi:N_G(H)\to\Aut(H)$，$\Phi(g)=c_g|_H$（$h\mapsto ghg^{-1}$）。对 $g\in N_G(H)$，$c_g(H)=gHg^{-1}=H$，故 $c_g|_H$ 是 $H$ 到自身的同构，即 $\Phi(g)\in\Aut(H)$。
+
+\textbf{同态性.}\enspace $\Phi(gh)(x)=ghxh^{-1}g^{-1}=g(hxh^{-1})g^{-1}=\Phi(g)\circ\Phi(h)(x)$。
+
+\textbf{核.}\enspace $\Phi(g)=\id_H$ 当且仅当 $ghg^{-1}=h$ 对所有 $h\in H$，即 $g\in C_G(H)$。故 $\Ker\Phi=C_G(H)$。
+
+由第一同构定理，$N_G(H)/C_G(H)\cong\Img\Phi\leqslant\Aut(H)$。
+\end{proof}
+
+$N/C$ 定理在有限群论中极为有用：它把正规化子/中心化子的商群嵌入 $\Aut(H)$，给出了群结构的强约束。例如，若 $H$ 的自同构群很小（如 $H$ 是循环群且 $\varphi(|H|)$ 小），则 $N_G(H)/C_G(H)$ 也很小，这限制了 $H$ 在 $G$ 中的"非中心"部分。
+
+\begin{example}[$N/C$ 定理应用于 Sylow 子群]
+设 $P$ 是 $G$ 的 Sylow $p$-子群。由 Sylow 定理，$N_G(P)$ 控制 $P$ 的共轭类。$N/C$ 定理给出 $N_G(P)/C_G(P)\hookrightarrow\Aut(P)$。若 $P\cong C_p$（$p$ 阶循环群），则 $|\Aut(P)|=p-1$，故 $|N_G(P)/C_G(P)|\bigm|(p-1)$。又 $P\leqslant C_G(P)$（$P$ 是 Abel 群时 $P$ 中心化自身），故 $|N_G(P)/P|\bigm|(p-1)$。这限制了 Sylow $p$-子群的正规化子的大小。
+
+特别地，若 $p$ 是 $|G|$ 的最高次幂且 $p\nmid(p-1)$（总是如此），则 $N_G(P)/C_G(P)$ 的阶既整除 $p-1$ 又是 $p$ 的幂（因 $N_G(P)/P$ 的阶整除 $|G|/|P|$ 与 $p$ 互质），故 $N_G(P)=C_G(P)$，即 Sylow $p$-子群在自身正规化子中是中心的——这就是 Burnside 正规 $p$-补定理的一个关键推论。
+\end{example}
+
+\begin{theorem}[Frattini 论证]
+\label{thm:frattini-argument}
+设 $G$ 是有限群，$N\normal G$，$P$ 是 $N$ 的 Sylow $p$-子群。则
+\[
+G=N\cdot N_G(P)=\{ng\mid n\in N,\,g\in N_G(P)\}.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 $g\in G$，$gPg^{-1}\leqslant gNg^{-1}=N$（因 $N\normal G$），且 $|gPg^{-1}|=|P|$，故 $gPg^{-1}$ 也是 $N$ 的 Sylow $p$-子群。由 Sylow 定理（在 $N$ 中应用），存在 $n\in N$ 使 $n(gPg^{-1})n^{-1}=P$，即 $(ng)P(ng)^{-1}=P$，故 $ng\in N_G(P)$，即 $g=n^{-1}\cdot ng\in N\cdot N_G(P)$。
+\end{proof}
+
+Frattini 论证看似简单，但它是有限群论中最常用的技巧之一。它的典型用法是：若 $N\normal G$ 且 $N$ 的 Sylow 子群 $P$ 的正规化子 $N_G(P)$ 已知（例如 $P$ 是 $N$ 的特征子群，则 $N_G(P)\geqslant N$），则可以分解 $G$ 并推导结构信息。
+
+\begin{example}[Frattini 论证的应用：$p$-群的作用]
+设 $P$ 是 $G$ 的正规 Sylow $p$-子群（即 $P\normal G$）。在 Frattini 论证中取 $N=P$，$P$ 自身是 $P$ 的唯一 Sylow $p$-子群，故 $N_G(P)=G$。论证给出 $G=P\cdot G$（平凡），但更有趣的是取 $N=P$ 的某个正规子群 $K\normal G$，$K\leqslant P$：$G=K\cdot N_G(Q)$，其中 $Q$ 是 $K$ 的 Sylow $p$-子群。若 $K$ 是 $p$-群，$Q=K$，$N_G(Q)\geqslant N_G(K)=G$，故 $G=K\cdot G$（仍平凡）。真正的力量体现在 $K$ 不是 $p$-群时：Frattini 论证把 $G$ 分解为 $K$ 和一个可能更小的群 $N_G(Q)$，可以用于归纳证明。
+\end{example}
+
+\begin{proposition}[中心化子的正规化子性质]
+\label{prop:centralizer-normalizer}
+设 $H\leqslant G$。则：
+\begin{enumerate}
+\item $C_G(H)\normal N_G(H)$。
+\item 若 $H$ 是 Abel 群，则 $H\leqslant C_G(H)$，且 $H\normal N_G(H)$。
+\item 若 $H\normal G$ 且 $H$ 是 Abel 群，则 $H\leqslant Z(G)$ 当且仅当 $C_G(H)=G$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)}\enspace 对 $n\in N_G(H)$ 和 $c\in C_G(H)$，需证 $ncn^{-1}\in C_G(H)$。对任意 $h\in H$：
+\[
+ncn^{-1}h(ncn^{-1})^{-1}=nc(n^{-1}hn)c^{-1}n^{-1}.
+\]
+因 $n\in N_G(H)$，$n^{-1}hn\in H$，而 $c\in C_G(H)$ 与 $H$ 的所有元素交换，故 $c(n^{-1}hn)c^{-1}=n^{-1}hn$。于是上式 $=n(n^{-1}hn)n^{-1}=h$。
+
+\textbf{(2)}\enspace $H$ Abel 蕴含 $H$ 的元素彼此交换，故 $H\leqslant C_G(H)$。由 (1) $C_G(H)\normal N_G(H)$，故 $H\leqslant C_G(H)\normal N_G(H)$，特别 $H\normal N_G(H)$（子群的正规子群不一定正规于更大的群，但这里 $H\leqslant C_G(H)\normal N_G(H)$ 且 $H\normal C_G(H)$（因 $C_G(H)$ 中 $H$ 是中心的），由正规性的传递性不成立的一般警告，需直接验证：对 $n\in N_G(H)$，$nHn^{-1}=H$，这正是 $N_G(H)$ 的定义）。
+
+\textbf{(3)}\enspace $H\leqslant Z(G)$ 当且仅当 $G$ 的每个元素与 $H$ 的每个元素交换，即 $G\leqslant C_G(H)$，即 $C_G(H)=G$。
+\end{proof}
+
+\begin{theorem}[对称群的自同构群]
+\label{thm:symmetric-aut}
+对 $n\geqslant7$，$n\neq6$，
+\[
+\Aut(S_n)=\Inn(S_n)\cong S_n,
+\]
+即 $S_n$ 的所有自同构都是内自同构（$\Out(S_n)=1$）。唯一的例外是 $n=6$：$\Out(S_6)\cong C_2$，$S_6$ 有外自同构。
+\end{theorem}
+
+这个定理的证明较长（关键是证明每个自同构把对换映到对换，然后利用对换生成 $S_n$），但结论极为重要：$S_n$（$n\neq6$）的对称性"全部来自自身"——没有外部对称。$n=6$ 的外自同构是有限群论中最著名的例外之一，它与 $S_6$ 的特殊结构有关（$S_6$ 有 12 个 Sylow $5$-子群而非"通常"的 6 个，导致额外的对称性）。
+
+\begin{example}[$S_6$ 的外自同构]
+$S_6$ 的外自同构 $\sigma\in\Aut(S_6)\setminus\Inn(S_6)$ 把对换（2-循环）映到\emph{三对对换的乘积}（即 $(ab)\mapsto(a'b')(c'd')(e'f')$，将 6 个字母分成三对）。这种映射不来自 $S_6$ 的任何共轭，但保持了 $S_6$ 的乘法结构。$S_6$ 的外自同构与数学中许多"偶然例外"现象相关，如 Cremona 变换、正二十面体的特殊对称等。
+\end{example}
+
+\section{变换群与群作用}
+\label{sec:group-actions}
+
+到这里为止，群似乎一直是一个“自己和自己运算”的对象。但物理上我们真正关心的通常不是群元本身，而是它对别的对象做了什么：转动怎样移动空间中的点，点群怎样变换原子轨道，置换怎样交换粒子标签。把“群对另一个集合的作用”抽象出来，就得到群作用。
+
+群作用最关键的两条规则与表示的同态条件非常相似：单位元必须什么都不改变，复合群元 $gh$ 的作用必须等于先做 $h$ 再做 $g$。区别在于，这里的被作用对象 $X$ 暂时只要求是集合，不必有向量加法。下一章把 $X$ 换成线性空间并要求作用是线性的，就会得到群表示。
+
+“变换群”的核心可以用群作用统一表达。这样做的好处是：变换对象不必是几何点，也可以是晶格、波函数、子空间、哈密顿量或一组基矢；同一套轨道--稳定子语言都适用。
+
+\begin{definition}[群作用]
+设 $G$ 为群，$X$ 为非空集合。$G$ 在 $X$ 上的一个左作用是映射
+\[
+G\times X\longrightarrow X,
+\qquad
+(g,x)\longmapsto g\cdot x,
+\]
+满足
+\[
+e\cdot x=x,
+\qquad
+(g_1g_2)\cdot x=g_1\cdot(g_2\cdot x).
+\label{eq:group-action}
+\]
+等价地，一个群作用就是一个同态
+\[
+\rho:G\longrightarrow\Sym(X).
+\]
+\label{def:group-action}
+\end{definition}
+
+\begin{definition}[忠实作用]
+若作用对应的同态 $\rho:G\to\Sym(X)$ 为单射，则称该作用为忠实作用。等价地，只有单位元在 $X$ 上处处作用为恒等变换。
+\label{def:faithful-action}
+\end{definition}
+
+\begin{definition}[轨道与稳定子]
+给定 $x\in X$，其轨道定义为
+\[
+\Orb_G(x)=\{g\cdot x\mid g\in G\}.
+\]
+其稳定子（亦称迷向子群）定义为
+\[
+\Stab_G(x)=\{g\in G\mid g\cdot x=x\}.
+\]
+\label{def:orbit-stabilizer}
+\end{definition}
+
+\begin{proposition}[稳定子是子群]
+对任意 $x\in X$，
+\[
+\Stab_G(x)\subgroup G.
+\]
+\label{prop:stabilizer-subgroup}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $a,b\in\Stab_G(x)$，则
+\[
+(ab^{-1})\cdot x
+=a\cdot(b^{-1}\cdot x).
+\]
+由 $b\cdot x=x$，两边作用 $b^{-1}$ 得 $b^{-1}\cdot x=x$，于是
+\[
+(ab^{-1})\cdot x=a\cdot x=x.
+\]
+故 $ab^{-1}\in\Stab_G(x)$。
+\hfill$\square$
+\end{proposition}
+
+\begin{theorem}[轨道--稳定子定理]
+对任意群作用与 $x\in X$，存在自然双射
+\[
+\{g\Stab_G(x)\mid g\in G\}
+\longleftrightarrow
+\Orb_G(x),
+\qquad
+g\Stab_G(x)\longmapsto g\cdot x.
+\label{eq:orbit-stabilizer-bijection}
+\]
+左边只是稳定子的左陪集集合。稳定子未必是正规子群，所以这里不需要、也通常不存在商群结构。
+若 $G$ 有限，则
+\[
+\lvert\Orb_G(x)\rvert
+=[G:\Stab_G(x)]
+=\frac{\lvert G\rvert}{\lvert\Stab_G(x)\rvert}.
+\label{eq:orbit-stabilizer}
+\]
+\label{thm:orbit-stabilizer}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $g\Stab_G(x)=h\Stab_G(x)$，则 $h^{-1}g\in\Stab_G(x)$，故
+\[
+h^{-1}g\cdot x=x
+\Longrightarrow
+g\cdot x=h\cdot x,
+\]
+所以映射良定义。任意轨道元素按定义形如 $g\cdot x$，故满射。反之若 $g\cdot x=h\cdot x$，则
+\[
+h^{-1}g\cdot x=x,
+\]
+即 $h^{-1}g\in\Stab_G(x)$，因此两陪集相同，故单射。有限情形再取集合基数即得\eqnrefs{eq:orbit-stabilizer}。
+\hfill$\square$
+\end{theorem}
+
+证明中的关键映射是
+\[
+\{g\Stab_G(x)\mid g\in G\}\longrightarrow \Orb_G(x),
+\qquad g\Stab_G(x)\longmapsto g\cdot x.
+\]
+这里再强调一次：斜线记号若偶尔写成 $G/\Stab_G(x)$，只应读作“稳定子的左陪集集合”，除非已经额外证明 $\Stab_G(x)\normal G$，否则不能把它当作商群。
+为什么要用陪集而不是单独的 $g$？因为不同群元可能把 $x$ 送到同一点。若 $g_1\cdot x=g_2\cdot x$，则
+\[
+g_2^{-1}g_1\cdot x=x,
+\]
+所以 $g_2^{-1}g_1\in\Stab_G(x)$，恰好说明 $g_1$ 与 $g_2$ 在同一个左陪集里。也就是说，“所有把 $x$ 送到同一位置的群元”自动聚成一个稳定子陪集。
+
+有限群情形于是得到最常用的计数式
+\[
+|G|=|\Orb_G(x)|\,|\Stab_G(x)|.
+\]
+以后点群分类中的极点计数、共轭类大小以及晶体等价位置数，都是这一个公式的不同外观。
+
+
+\begin{example}[$D_3$ 作用在正三角形顶点上：轨道与等价原子]
+\label{ex:d3-action-triangle-vertices}
+令 $D_3$ 作用在正三角形顶点集 $X=\{1,2,3\}$ 上：$r$ 把 $1\to2\to3\to1$，$s$ 固定顶点 $1$ 而交换 $2\leftrightarrow3$。取顶点 $1$，其稳定子是所有保持 $1$ 不动的操作：
+\[
+\Stab_{D_3}(1)=\{e,s\}\cong C_2,
+\]
+几何上就是"过顶点 $1$ 的镜面反射加上恒等"，恰好是 $D_3$ 的一个 $C_2$ 子群。轨道是所有能从 $1$ 到达的顶点：
+\[
+\Orb_{D_3}(1)=\{1,\,r\cdot1=2,\,r^2\cdot1=3\}=\{1,2,3\}.
+\]
+轨道--稳定子定理给出
+\[
+\lvert\Orb_{D_3}(1)\rvert=\frac{|D_3|}{|\Stab_{D_3}(1)|}=\frac{6}{2}=3,
+\]
+即三个顶点。这里稳定子的陪集 $\{e\Stab,\,r\Stab,\,r^2\Stab\}$ 与三个顶点一一对应：陪集 $r\Stab$ 里的两个元素 $r$ 和 $rs=sr^2$ 都把顶点 $1$ 送到顶点 $2$，只是沿途经过的反射不同。
+
+这个计数在分子物理中直接读作"等价原子个数"。$\mathrm{NH_3}$ 的三个 H 原子在 $C_{3v}\cong D_3$ 作用下彼此等价：旋转 $C_3$ 把一个 H 送到另一个，反射 $\sigma_v$ 交换两个 H。取任一 H 原子，其稳定子是过该原子的镜面反射（$C_s$，阶 $2$），轨道是全部三个 H（阶 $3$）。轨道--稳定子定理 $3=6/2$ 说明：三个 H 原子之所以等价，不是偶然的几何巧合，而是群作用把一个原子"复制"到了 $[G:\Stab]=3$ 个位置。后续用投影算符构造 SALC 时，每个等价原子轨道贡献一个基矢，等价原子个数因此直接进入对称适配线性组合的构造。
+\end{example}
+
+\begin{theorem}[Cayley 定理]
+任意群 $G$ 都同构于某个置换群的子群。更具体地，$G$ 同构于 $\Sym(G)$ 的一个子群。
+\label{thm:cayley}
+
+\par\smallskip\noindent\textbf{证明.}
+让 $G$ 作用在自身上：
+\[
+L_g(x)=gx.
+\]
+由消去律，$L_g:G\to G$ 为双射，因此 $L_g\in\Sym(G)$。定义
+\[
+L:G\to\Sym(G),
+\qquad
+g\mapsto L_g.
+\]
+因为
+\[
+L_{gh}(x)=(gh)x=g(hx)=(L_g\circ L_h)(x),
+\]
+所以 $L$ 为同态。若 $L_g=\id_G$，则特别有 $g=L_g(e)=e$，故 $\Ker L=\{e\}$，所以 $L$ 单射。于是
+\[
+G\cong L(G)\subgroup\Sym(G).
+\]
+\hfill$\square$
+\end{theorem}
+
+群表示本质上也是群作用，只是作用对象从一般集合 $X$ 换成了线性空间 $V$，并要求每个群元作用为可逆线性变换：
+\[
+\rho:G\to\GL(V).
+\]
+因此本节的核、忠实性、轨道与稳定子思想将在表示论和对称性物理中反复出现。
+
+\begin{definition}[群作用的分类]
+\label{def:action-types}
+设 $G$ 作用在 $X$ 上。
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{传递作用}：$X$ 只有一个轨道，即对任意 $x,y\in X$ 存在 $g\in G$ 使 $g\cdot x=y$。
+\item \textbf{自由作用}：每个稳定子平凡，即 $\Stab_G(x)=\{e\}$ 对所有 $x\in X$。等价地，只有 $e$ 有不动点。
+\item \textbf{正则作用}：同时传递且自由。此时 $|X|=|G|$，且 $X$ 与 $G$ 自身作为 $G$-集等价。
+\item \textbf{半正则作用}：所有稳定子相同（必为某个正规子群）。自由作用是半正则作用的特例。
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[传递作用的等价刻画]
+\label{prop:transitive-action}
+$G$ 在 $X$ 上传递作用，当且仅当 $X$ 作为 $G$-集同构于 $G/H$（左陪集空间），其中 $H$ 是某点的稳定子。具体地，取 $x_0\in X$，$H=\Stab_G(x_0)$，则
+\[
+X\cong G/H,\qquad g\cdot x_0\longmapsto gH.
+\]
+所有传递 $G$-集都由这种形式给出，且 $G/H_1\cong G/H_2$ 当且仅当 $H_1$ 与 $H_2$ 共轭。
+
+\par\smallskip\noindent\textbf{证明.}
+轨道--稳定子定理已给出双射 $G/H\to\Orb(x_0)=X$（传递性使轨道等于全空间）。它是 $G$-等变的：$g'\cdot(gH\mapsto g\cdot x_0)=(g'gH\mapsto g'g\cdot x_0)$。
+
+等价性：若 $\varphi:G/H_1\to G/H_2$ 是 $G$-等变双射，设 $\varphi(eH_1)=g_0H_2$。则对任意 $g$，
+\[
+\varphi(gH_1)=\varphi(g\cdot eH_1)=g\cdot\varphi(eH_1)=g g_0 H_2.
+\]
+$\varphi$ 良定义要求 $gH_1=eH_1\Rightarrow gg_0H_2=g_0H_2$，即 $H_1\subseteq g_0H_2g_0^{-1}$。由 $\varphi^{-1}$ 同理得反向包含，故 $H_1=g_0H_2g_0^{-1}$。
+\end{proposition}
+
+\begin{theorem}[$p$-群作用的不动点定理]
+\label{thm:pgroup-fixed-point}
+设 $p$ 为素数，$P$ 为 $p$-群（$|P|=p^a$），$P$ 作用在有限集 $X$ 上。则不动点集
+\[
+X^P=\{x\in X\mid g\cdot x=x,\ \forall g\in P\}
+\]
+满足
+\begin{equation}
+|X^P|\equiv|X|\pmod{p}.
+\label{eq:pgroup-fixed-point}
+\end{equation}
+特别地，若 $p\mid|X|$，则 $X^P\neq\varnothing$。
+
+\par\smallskip\noindent\textbf{证明.}
+$X$ 分解为不相交的轨道之并。不动点恰是大小为 $1$ 的轨道。对非不动点 $x$，$|\Orb(x)|=[P:\Stab(x)]$ 整除 $|P|=p^a$ 且大于 $1$，故 $p\mid|\Orb(x)|$。因此
+\[
+|X|=\sum_{\text{不动点}}1+\sum_{\text{非不动点}}|\Orb(x_i)|\equiv|X^P|\pmod{p}.
+\]
+\end{theorem}
+
+\begin{corollary}[$p$-群有非平凡中心]
+\label{cor:pgroup-center}
+有限 $p$-群 $P$ 的中心 $Z(P)$ 非平凡，即 $|Z(P)|>1$。
+
+\par\smallskip\noindent\textbf{证明.}
+$P$ 以共轭作用在自身上。不动点集恰是中心：
+\[
+P^P=\{x\in P\mid gxg^{-1}=x,\ \forall g\in P\}=Z(P).
+\]
+由 \cref{thm:pgroup-fixed-point}，$|Z(P)|\equiv|P|\equiv0\pmod{p}$。又 $e\in Z(P)$ 故 $|Z(P)|\ge1$，结合 $p\mid|Z(P)|$ 得 $|Z(P)|\ge p>1$。
+\end{corollary}
+
+\begin{corollary}[$p^2$ 阶群是 Abel 群]
+\label{cor:p2-abelian}
+$|G|=p^2$ 的群是 Abel 群，因而同构于 $C_{p^2}$ 或 $C_p\times C_p$。
+
+\par\smallskip\noindent\textbf{证明.}
+由 \cref{cor:pgroup-center}，$p\mid|Z(G)|$，故 $|Z(G)|\in\{p,p^2\}$。
+
+若 $|Z(G)|=p^2$，则 $G=Z(G)$ 是 Abel 群。
+
+若 $|Z(G)|=p$，则 $G/Z(G)$ 的阶为 $p$，故 $G/Z(G)\cong C_p$ 是循环群。设 $G/Z(G)=\langle gZ(G)\rangle$，则 $G$ 的每个元素形如 $g^k z$（$z\in Z(G)$）。对 $g^k z, g^\ell z'\in G$：
+\[
+(g^k z)(g^\ell z')=g^{k+\ell}zz'=(g^\ell z')(g^k z),
+\]
+因 $z,z'\in Z(G)$ 与一切元素交换。故 $G$ Abel，矛盾于 $|Z(G)|=p<p^2$。因此 $|Z(G)|=p$ 不可能，$G$ 必 Abel。
+
+Abel $p^2$ 阶群的结构：取 $G$ 中最大阶元素 $g$。若 $\ord(g)=p^2$，则 $G\cong C_{p^2}$。若 $\ord(g)=p$，取与 $g$ 线性无关（在 $G$ 作为 $\mathbb F_p$-向量空间的意义下）的 $h$，则 $G\cong\langle g\rangle\times\langle h\rangle\cong C_p\times C_p$。
+\end{corollary}
+
+\begin{example}[不动点定理的物理应用：晶场中的对称不动点]
+\label{ex:fixed-point-crystal}
+在晶场理论中，晶格的对称群 $P$（一个 $p$-群的子群）作用在原子轨道集合 $X$ 上。不动点 $X^P$ 恰是在 $P$ 下不变的轨道——它们承载 $P$ 的平凡表示。
+
+例如，$C_3$（$3$ 阶循环群）作用在 $p$ 轨道 $\{p_x,p_y,p_z\}$ 上（绕 $z$ 轴转 $120^\circ$）。$|X|=3$，$p=3\mid 3$，故不动点非空。事实上 $p_z$ 在 $C_3$ 下不变（$X^{C_3}=\{p_z\}$），而 $\{p_x,p_y\}$ 构成 $C_3$ 的二维轨道。不动点定理保证了 $p_z$ 的存在性，而不需要显式计算转动矩阵。
+
+更一般地，在分子振动分析中，$p$-群不动点定理保证了某些振动模式在对称操作下必然不变——这些模式在光谱中表现为非简并的完全对称振动，是红外和 Raman 光谱中最容易识别的信号。
+\end{example}
+
+群作用也可以在正三角形上完整算一次。令 $G=S_3$ 作用在顶点集合 $X=\{1,2,3\}$ 上。取顶点 $1$。它的轨道是全部三个顶点，
+\[
+\Orb_G(1)=\{1,2,3\},
+\]
+因为总能找到置换把 $1$ 送到任意顶点。稳定子则是所有保持 $1$ 不动的置换：
+\[
+\Stab_G(1)=\{e,(23)\},
+\]
+所以 $|\Stab_G(1)|=2$。轨道--稳定子定理给出
+\[
+|S_3|=|\Orb_G(1)|\,|\Stab_G(1)|=3\times2=6.
+\]
+如果换到共轭作用，完全相同的计数思想会把“顶点轨道”替换成“共轭类”，把“固定顶点的群元”替换成“与某群元交换的中心化子”。
+
+接下来考察Burnside 引理：计数不等价构型。
+
+群作用不仅能算单个轨道的大小，还能一次性算出\emph{轨道的总数}。这在物理和化学中极为常用：分子的不等价构型、晶格的不等价位点、配分函数中的对称因子，都可以用同一条公式处理。
+
+\begin{theorem}[Burnside 引理]
+设有限群 $G$ 作用在有限集 $X$ 上。轨道总数为
+\[
+\lvert X/G\rvert=\frac1{\lvert G\rvert}\sum_{g\in G}\lvert X^g\rvert,
+\]
+其中 $X^g=\{x\in X\mid g\cdot x=x\}$ 是 $g$ 的不动点集。
+\label{thm:burnside}
+\end{theorem}
+
+这条公式的含义是：\emph{不等价构型数等于"平均不动点数"。} 每个群元各自数一下它保持不动的元素有多少个，再对所有群元取平均。
+
+\begin{derivation}[Burnside 引理的证明：双重计数]
+\textbf{第一步：构造二元组集合.}\enspace 对每个 $x\in X$，设 $r_x$ 为使 $x$ 不动的群元个数，即 $r_x=\lvert\Stab_G(x)\rvert$。考虑二元组集合
+\[
+\mathcal P=\{(g,x)\mid g\in G,\ x\in X,\ g\cdot x=x\}.
+\]
+这是所有"群元固定某元素"的配对。
+
+\textbf{第二步：按 $g$ 计数.}\enspace 固定 $g\in G$，满足 $g\cdot x=x$ 的 $x$ 恰有 $\lvert X^g\rvert$ 个（$g$ 的不动点集大小）。对 $g$ 求和：
+\[
+\lvert\mathcal P\rvert=\sum_{g\in G}\lvert X^g\rvert.
+\]
+
+\textbf{第三步：按 $x$ 计数.}\enspace 固定 $x\in X$，使 $x$ 不动的 $g$ 恰有 $r_x=\lvert\Stab_G(x)\rvert$ 个（$x$ 的稳定子大小）。对 $x$ 求和：
+\[
+\lvert\mathcal P\rvert=\sum_{x\in X}r_x=\sum_{x\in X}\lvert\Stab_G(x)\rvert.
+\]
+因此
+\[
+\sum_{g\in G}\lvert X^g\rvert=\sum_{x\in X}\lvert\Stab_G(x)\rvert.
+\]
+
+\textbf{第四步：按轨道分组.}\enspace 对同一轨道中的元素，稳定子大小相同：若 $y=h\cdot x$，则 $\Stab(y)=h\Stab(x)h^{-1}$（共轭子群，同阶）。对轨道 $\Orb(x)$ 中每个元素，由轨道--稳定子定理
+\[
+\lvert\Stab_G(x)\rvert=\frac{\lvert G\rvert}{\lvert\Orb_G(x)\rvert}.
+\]
+故该轨道中所有元素的 $r_x$ 之和为
+\[
+\lvert\Orb_G(x)\rvert\cdot\frac{\lvert G\rvert}{\lvert\Orb_G(x)\rvert}=\lvert G\rvert.
+\]
+关键观察：轨道大小与稳定子大小恰好互消，每个轨道贡献恰好 $\lvert G\rvert$。
+
+\textbf{第五步：汇总.}\enspace 设轨道总数为 $\lvert X/G\rvert$，每个轨道贡献 $\lvert G\rvert$，所以
+\[
+\sum_{g\in G}\lvert X^g\rvert=\lvert G\rvert\cdot\lvert X/G\rvert.
+\]
+两边除以 $\lvert G\rvert$ 即得 Burnside 公式。
+
+\emph{Pólya 计数定理.}Burnside 引理是 Pólya 计数定理的"无色"特例。设每个位置可染 $c$ 种颜色，$G$ 作用在 $n$ 个位置上。对每个 $g\in G$，将其写成不相交循环的乘积，记 $c_i(g)$ 为 $g$ 中长为 $i$ 的循环个数（$\sum_i i c_i(g)=n$）。则 $g$ 的不动染色数是 $c^{\sum_i c_i(g)}$（每个循环上的颜色须一致）。Pólya 定理给出生成函数
+\begin{equation*}
+\frac{1}{|G|}\sum_{g\in G}\prod_{i}\left(x_1^i+x_2^i+\cdots+x_c^i\right)^{c_i(g)},
+\end{equation*}
+其中 $x_j$ 是第 $j$ 种颜色的计数变量。展开后 $x_1^{m_1}\cdots x_c^{m_c}$ 的系数就是"恰有 $m_j$ 个位置染第 $j$ 色"的不等价方案数。取所有 $x_j=1$ 退化为 Burnside 引理。这一加权版在分子异构体计数（Pólya 的原始动机）和项链问题中直接使用。
+
+\emph{循环指标多项式.}上式的核心是循环指标（cycle index）
+\begin{equation*}
+Z_G(t_1,\dots,t_n)=\frac{1}{|G|}\sum_{g\in G}t_1^{c_1(g)}t_2^{c_2(g)}\cdots t_n^{c_n(g)},
+\end{equation*}
+它只依赖群 $G$ 的循环结构，与"染什么颜色"无关。一旦算出 $Z_G$，任意染色问题都由 $Z_G(x_1+\cdots+x_c,\ x_1^2+\cdots+x_c^2,\ \dots)$ 直接读出。例如 $D_4$ 作用于正方形四顶点的循环指标为 $Z_{D_4}=\frac18(t_1^4+2t_1^2t_2+3t_2^2+2t_4)$，代入 $t_i=2$ 立即得到前面算出的 $6$ 种两色不等价方案。循环指标把计数问题彻底化为对群循环结构的一次求和。
+
+\emph{与特征标理论的关系.}Burnside 引理可改写为 $|X/G|=\frac{1}{|G|}\sum_{g\in G}\chi_{\mathrm{perm}}(g)$，其中 $\chi_{\mathrm{perm}}(g)=|X^g|$ 正是 $G$ 在 $X$ 上的置换表示特征标。于是"轨道数 = 置换表示中平凡表示的重数"：
+\begin{equation*}
+|X/G|=\langle\chi_{\mathrm{perm}},\chi_{\mathrm{triv}}\rangle=\frac{1}{|G|}\sum_g\chi_{\mathrm{perm}}(g)。
+\end{equation*}
+这一观点把 Burnside 引理纳入特征标正交性的框架：$X$ 上的函数空间 $\CC^X$ 分解为不可约表示的直和，平凡表示的重数恰好是不动点（常值函数）个数，即轨道数。这为把计数问题提升为轨道空间上的调和分析提供了入口。
+\end{derivation}
+
+\begin{example}[用 Burnside 引理数正方形染色]
+正方形四个顶点用两种颜色着色，在 $D_4$ 的对称操作下有多少种不等价方案？
+
+不加群作用时共有 $2^4=16$ 种着色。$D_4$ 有 $8$ 个元素，逐个数不动点：
+\begin{itemize}
+\item $e$：全部 $16$ 种都不动。
+\item $r$（转 $90^\circ$）和 $r^3$（转 $270^\circ$）：四顶点必须同色，只有 $2$ 种。
+\item $r^2$（转 $180^\circ$）：对角顶点同色，有 $2^2=4$ 种。
+\item 两个关于对角线的反射：对角线上两点各自独立，另两点必须同色，有 $2^3=8$ 种。
+\item 两个关于对边中点的反射：两对顶点各自同色，有 $2^2=4$ 种。
+\end{itemize}
+Burnside 引理给出
+\[
+\lvert X/G\rvert=\frac18(16+2+4+2+8+8+4+4)=\frac{48}{8}=6.
+\]
+
+\emph{物理应用.} 这条公式在统计物理中直接用于配分函数的对称因子计算：若 $N$ 个粒子占据 $M$ 个格点，在某个对称群 $G$ 下不等价构型数为 Burnside 公式给出。在分子光谱中，同位素取代产生的不等价位置也用同一方法计数。
+\end{example}
+
+\section{Cauchy 定理与 Sylow 定理}
+\label{sec:cauchy-sylow}
+
+Lagrange 定理告诉我们子群阶必须整除群阶，但\emph{反过来}不成立：$d\mid\lvert G\rvert$ 不保证存在 $d$ 阶子群。然而对素数幂阶子群，情况特别好——Sylow 定理保证了它们的存在性，并给出了共轭性和个数约束。这些结论是有限群结构理论的基石，也是后续分析分子对称群、晶体点群中"哪些子群必然存在"的工具。
+
+接下来考察Cauchy 定理。
+
+Cauchy 定理是 Sylow 定理的最简单情形：只要素数 $p$ 整除群阶，群中就一定有 $p$ 阶元。它的证明是群作用计数技巧的典范。
+
+\begin{theorem}[Cauchy 定理]
+设 $G$ 为有限群，$p$ 为素数。若 $p\mid\lvert G\rvert$，则 $G$ 中存在阶为 $p$ 的元素，因而存在 $p$ 阶循环子群 $C_p\subgroup G$。
+\label{thm:cauchy}
+\end{theorem}
+
+\begin{derivation}[Cauchy 定理的证明：用 $p$ 元组上的 $\ZZ_p$ 作用]
+\textbf{第一步：构造 $p$ 元组集合.}\enspace 考虑
+\[
+S=\{(g_1,g_2,\dots,g_p)\mid g_1g_2\cdots g_p=e\}.
+\]
+自由选取 $g_1,\dots,g_{p-1}\in G$（共 $\lvert G\rvert^{p-1}$ 种选择），则 $g_p=(g_1\cdots g_{p-1})^{-1}$ 唯一确定且满足乘积条件。故 $\lvert S\rvert=\lvert G\rvert^{p-1}$。
+
+\textbf{第二步：$\ZZ_p$ 在 $S$ 上的循环移位作用.}\enspace 定义循环移位
+\[
+\tau\cdot(g_1,g_2,\dots,g_p)=(g_2,g_3,\dots,g_p,g_1).
+\]
+\emph{关键验证}：若 $g_1g_2\cdots g_p=e$，则移位后
+\[
+g_2g_3\cdots g_p g_1=g_1^{-1}(g_1g_2\cdots g_p)g_1=g_1^{-1}\,e\,g_1=e,
+\]
+故移位后仍在 $S$ 中。显然 $\tau^p=\id$，因此 $\ZZ_p=\langle\tau\rangle$ 作用在 $S$ 上。
+
+\textbf{第三步：轨道分析.}\enspace $\ZZ_p$ 是素数阶群，其轨道大小（即 $\ZZ_p$ 的子群指数）只能是 $1$ 或 $p$。
+\begin{itemize}
+\item \emph{大小为 $1$ 的轨道}：循环移位不变的元组，即 $g_1=g_2=\cdots=g_p=g$，条件 $g^p=e$。设这样的元组共 $N$ 个（含 $g=e$ 给出的全 $e$ 元组）。
+\item \emph{大小为 $p$ 的轨道}：其余元组，每个轨道含 $p$ 个不同元组。
+\end{itemize}
+故
+\[
+\lvert S\rvert = N + p\cdot(\text{非平凡轨道数}).
+\]
+因此 $N\equiv\lvert S\rvert\pmod{p}$。又 $\lvert S\rvert=\lvert G\rvert^{p-1}$ 且 $p\mid\lvert G\rvert$，故 $p\mid\lvert S\rvert$，从而 $p\mid N$。
+
+\textbf{第四步：结论.}\enspace $N$ 是满足 $g^p=e$ 的 $g\in G$ 的个数。$g=e$ 总是满足，故 $N\ge1$。又 $p\mid N$ 且 $N\ge1$，故 $N\ge p$，即至少有 $p-1$ 个非单位元满足 $g^p=e$。这些非单位元的阶只能是 $p$（因 $p$ 是素数，$g^p=e$ 且 $g\ne e$ 蕴含 $\mathrm{ord}(g)=p$），故存在 $p$ 阶元，其生成的循环群即为 $C_p$ 子群。
+
+\emph{推广到 $p^k$ 阶子群.}Cauchy 定理可推广为：若 $p^k\mid|G|$，则 $G$ 有 $p^k$ 阶子群（Sylow 第一定理的特例）。证明用归纳法：对 $p$-群 $G$，中心 $Z(G)$ 非平凡（类方程），取 $Z(G)$ 中 $p$ 阶元 $z$，商群 $G/\langle z\rangle$ 有 $p^{k-1}$ 阶子群（归纳假设），其原像给出 $p^k$ 阶子群。这把 Cauchy 定理从单元素存在提升为子群存在，是 Sylow 理论的起点。
+
+\emph{与 Sylow 定理的联系.}Cauchy 定理是 Sylow 第三定理（Sylow $p$-子群个数 $n_p\equiv1\pmod p$）的 $k=1$ 特例。Sylow $p$-子群的共轭作用给出 $n_p$ 的模 $p$ 约束，与 Cauchy 定理中 $\ZZ_p$ 作用给出 $N\equiv0\pmod p$ 的逻辑完全平行。这一平行性揭示了有限群 $p$-子群理论的统一结构：所有 $p$-子群计数结果都源于 $\ZZ_p$ 在适当集合上的群作用。
+
+\emph{Burnside 范式的体现.}Cauchy 定理的证明是 Burnside 计数引理的雏形：通过群作用把"存在性"问题转化为"计数"问题，再用模算术给出计数约束。这一范式在群论中反复出现——Sylow 定理、Burnside $p^a q^b$ 定理、Feit--Thompson 奇阶定理的证明都依赖类似的"作用+计数+模约束"策略。
+
+\emph{类方程与 Cauchy 定理的另一证明.}Cauchy 定理还有一个基于类方程（\eqnrefs{eq:class-equation}）的简洁证明，值得对比。设 $p\mid |Z(G)|$，则由 Abel 群的 Cauchy 定理（$Z(G)$ 是 Abel 群，其 Cauchy 定理可用归纳法直接证）直接得 $p$ 阶元。若 $p\nmid |Z(G)|$，则 $p\nmid$ 某个共轭类 $C(a)$（否则 $p$ 整除类方程右端每一项包括 $|G|$ 与各项，矛盾）。于是 $p\nmid|C(a)|=[G:C_G(a)]$，故 $p\mid|C_G(a)|$。取 $a\notin Z(G)$，则 $C_G(a)\lneq G$，由归纳假设（对 $|C_G(a)|$ 归纳）$C_G(a)$ 含 $p$ 阶元。两种证明都依赖 $p$-计数，但类方程版本给出了更强的下降结构。
+
+\emph{$p$-群的中心非平凡.}作为 Cauchy 定理的直接推论，非平凡 $p$-群 $P$（$|P|=p^a>1$）的中心 $Z(P)$ 必非平凡。证明：类方程为
+\begin{equation*}
+|P|=|Z(P)|+\sum_{a\notin Z(P)}[P:C_P(a)],
+\end{equation*}
+右端和式中每一项 $[P:C_P(a)]$ 都是 $p$ 的幂且 $>1$（因 $a\notin Z(P)$ 故 $C_P(a)\lneq P$），故每一项都被 $p$ 整除。于是
+\begin{align*}
+|Z(P)|&=|P|-\sum_{a\notin Z(P)}[P:C_P(a)]\\
+&\equiv 0-0 \pmod{p}\\
+&\equiv 0 \pmod{p},
+\end{align*}
+又 $Z(P)$ 含单位元故 $|Z(P)|\ge1$，从而 $|Z(P)|\ge p$。这一"$p$-群中心非平凡"是归纳研究 $p$-群结构（Sylow 第一定理的归纳证明、$p$-群分类）的基石，也是上面类方程证明里归纳步骤成立的关键。
+
+\emph{一般化：Cauchy 定理对无限群失效.}Cauchy 定理是有限群的结果，对无限群不成立。例如 $\ZZ$ 是无限群，不含任何有限阶元素（除单位元外）。但若将"有限阶"条件替换为"存在 $p$ 阶元"，则对任意群 $G$（不必有限），只要 $G$ 有指数为 $p$ 的子群 $H$（即 $[G:H]=p$），则 $G$ 有正规子群 $N\trianglelefteq G$ 使得 $G/N\cong\ZZ_p$，从而 $N$ 的陪集中存在 $p$ 阶元。这给出了 Cauchy 定理向无限群的部分推广，但需要额外的有限性假设（如 $H$ 的有限指数）。
+\end{derivation}
+
+\emph{与已有概念的关联.} Cauchy 定理是 Lagrange 定理的部分逆：Lagrange 说 $p$ 阶子群的阶 $p$ 必整除 $\lvert G\rvert$，Cauchy 说反过来也成立——只要 $p\mid\lvert G\rvert$ 就必有 $C_p$ 子群。但对一般合数 $d$，$d\mid\lvert G\rvert$ 不保证存在 $d$ 阶子群（$A_4$ 有 $12$ 个元素但无 $6$ 阶子群）。Sylow 定理把 Cauchy 推广到素数幂。
+
+Cauchy 定理只保证 $p$ 阶元存在，但 Sylow 定理给出更强的结果：素数幂阶子群也必然存在，且共轭性和个数都有精确约束。
+
+\begin{theorem}[Sylow 定理]
+设 $G$ 为有限群，$\lvert G\rvert=p^a m$，$p$ 为素数，$p\nmid m$。
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{存在性：}存在 $p^a$ 阶子群 $P\subgroup G$，称为 Sylow $p$-子群。
+\item \textbf{共轭性：}任意两个 Sylow $p$-子群共轭：若 $P,Q$ 都是 Sylow $p$-子群，则存在 $g\in G$ 使 $Q=gPg^{-1}$。
+\item \textbf{个数约束：}Sylow $p$-子群的个数 $n_p$ 满足
+\[
+n_p\equiv1\pmod{p},
+\qquad
+n_p\mid m.
+\]
+\end{enumerate}
+\label{thm:sylow}
+\end{theorem}
+
+\begin{derivation}[Sylow 定理的证明]
+\textbf{(i) 存在性.}\enspace 令 $\mathcal X$ 为 $G$ 中所有含 $p^a$ 个元素的子集，$G$ 以左乘作用在 $\mathcal X$ 上：$g\cdot S=gS$。子集总数
+\[
+|\mathcal X|=\binom{p^a m}{p^a}.
+\]
+\emph{关键引理}：$\binom{p^a m}{p^a}\not\equiv0\pmod{p}$。证明：把 $p^a m$ 个元素分成 $m$ 组、每组 $p^a$ 个。选取 $p^a$ 个元素时，若从第 $i$ 组选 $k_i$ 个（$\sum k_i=p^a$），贡献为 $\prod_i\binom{p^a}{k_i}$。模 $p$ 后，$\binom{p^a}{k_i}\equiv0\pmod{p}$ 除非 $k_i=0$ 或 $k_i=p^a$（因为 $p^a$ 的 $p$-adic 表示只有一位）。因此模 $p$ 后只有"从某一组全选 $p^a$ 个"的项存活，共 $m$ 项，每项贡献 $1$：
+\[
+\binom{p^a m}{p^a}\equiv m\not\equiv0\pmod{p}.
+\]
+
+由轨道分解 $|\mathcal X|=\sum|\Orb_i|$，至少有一个轨道 $|\Orb(S)|$ 不被 $p$ 整除。由轨道--稳定子定理 $|\Orb(S)|=[G:\Stab(S)]$，故 $|\Stab(S)|=p^a m/|\Orb(S)|$。因 $p\nmid|\Orb(S)|$，$p^a\mid|\Stab(S)|$，即 $|\Stab(S)|\ge p^a$。
+
+另一方面，取 $s\in S$，映射 $\Stab(S)\to S$，$h\mapsto hs$ 是单射（若 $h_1s=h_2s$ 则 $h_1=h_2$），故 $|\Stab(S)|\le|S|=p^a$。结合两个不等式，$|\Stab(S)|=p^a$，因此 $P=\Stab(S)$ 是 Sylow $p$-子群。
+
+\textbf{(ii) 共轭性.}\enspace 设 $P,Q$ 都是 Sylow $p$-子群。让 $Q$ 以共轭作用在左陪集集合 $G/P=\{gP\mid g\in G\}$ 上：$q\cdot(gP)=qgP$。陪集数 $|G/P|=[G:P]=m$，$p\nmid m$。
+
+由轨道分解 $m=\sum|\Orb(g_iP)|$。每个轨道大小 $|\Orb(g_iP)|=[Q:\Stab_Q(g_iP)]$ 整除 $|Q|=p^a$，故是 $p$ 的幂。但总和 $m$ 不被 $p$ 整除，因此至少有一个轨道大小为 $p^0=1$。设 $|\Orb(gP)|=1$，即对所有 $q\in Q$，$qgP=gP$，等价于 $g^{-1}qg\in P$，即 $g^{-1}Qg\subseteq P$。两边都是 $p^a$ 阶群，故 $g^{-1}Qg=P$，即 $Q=gPg^{-1}$。
+
+\textbf{(iii) 个数约束.}\enspace 由共轭性，所有 Sylow $p$-子群彼此共轭，$n_p$ 是共轭作用的轨道数。让 $P$ 以共轭作用在 Sylow $p$-子群集合 $\{P_1,\dots,P_{n_p}\}$ 上。由轨道--稳定子定理，每个轨道大小整除 $|P|=p^a$，故是 $p$ 的幂。
+
+\emph{$P$ 的不动点只有 $P$ 自身.}\enspace 设 $Q$ 是 $P$ 的不动点，即 $P\le N_G(Q)$（$P$ 正规化 $Q$）。则 $P,Q$ 都是 $N_G(Q)$ 的 Sylow $p$-子群。但 $Q\normal N_G(Q)$（正规化子的定义），由共轭性（已证的 (ii)），$N_G(Q)$ 中 Sylow $p$-子群唯一，故 $P=Q$。
+
+因此 $P$ 的作用只有一个大小为 $1$ 的轨道（$\{P\}$），其余轨道大小都被 $p$ 整除。故
+\[
+n_p\equiv1\pmod{p}.
+\]
+又 $n_p=[G:N_G(P)]$（共轭轨道大小），而 $N_G(P)\ge P$，故
+\[
+n_p=[G:N_G(P)]\mid[G:P]=m.
+\]
+
+\emph{Sylow $p$-子群正规的判别.}$n_p=1$ 当且仅当 Sylow $p$-子群唯一，而唯一性等价于该 Sylow $p$-子群是正规子群（因为共轭把任一 Sylow $p$-子群映到另一 Sylow $p$-子群，$n_p=1$ 意味着共轭不动，即正规）。这是 Sylow 定理最常用的推论：若 $n_p=1$，则 $G$ 有正规 Sylow $p$-子群 $P\normal G$，从而 $G$ 可写为研究 $P$ 与商群 $G/P$ 的问题。这一判别在判定群是否单（无正规矩子群）时极其有效。
+
+\emph{Sylow 定理判定单群的范式.}Sylow 定理给出判定有限群非单的标准流程：对每个 $p\mid|G|$，考察 $n_p$ 的约束（$n_p\equiv1\pmod p$ 且 $n_p\mid m$）。若某个 $n_p=1$，则 $G$ 非单。例如 $|G|=45$ 时 $n_5\equiv1\pmod5$ 且 $n_5\mid9$，故 $n_5=1$，$G$ 必有正规 Sylow $5$-子群，$G$ 非单。进一步，$|G|=pq$（$p<q$ 素数）时若 $q\not\equiv1\pmod p$，则 $n_q$ 只能为 $1$，$G$ 非单。这一"数 $n_p$"的方法是无分类工具下证明群非单或确定群结构的主要手段。
+
+\emph{Frobenius 与 Burnside 定理.}Sylow 定理是有限群结构定理的基石，两条深刻结论由其导出：(i) Frobenius 定理：$|G|=p^a m$ 中，$G$ 的 $p$-补（阶为 $m$ 的子群）在 $p\nmid m$ 且 Sylow $p$-子群正规时存在；(ii) Burnside $p^a q^b$ 定理：阶只含两个素因子的群（$|G|=p^a q^b$）必可解。后者是有限群理论早期最深的定理，其证明需要特征标理论，说明仅靠 Sylow 定理的"计数"方法不足以得到可解性，必须引入表示论工具。这一"计数方法到极限后转向表示论"的转折是有限群理论从 19 世纪组合方法转向 20 世纪表示论方法的缩影。
+
+\emph{Sylow $p$-子群个数整除 $m$ 的意义.}约束 $n_p\mid m$ 有直接的计数含义：$n_p=[G:N_G(P)]$ 是 Sylow $p$-子群的共轭类大小，而共轭类大小必整除 $[G:P]=m$（因为 $P\le N_G(P)$ 故 $[G:N_G(P)]$ 整除 $[G:P]$）。于是 $n_p\equiv1\pmod p$ 与 $n_p\mid m$ 合起来强烈限制 $n_p$ 的可能值——例如 $|G|=300$ 时 $n_5\equiv1\pmod5$ 且 $n_5\mid12$，故 $n_5\in\{1,6\}$；再结合其他素数可进一步排除。这种"模约束 + 整除约束"的双重限制是 Sylow 定理计数力量的核心。
+
+
+\textbf{补充：Sylow 定理的物理与组合应用.}\enspace Sylow 定理在物理中有间接但深刻的应用：(a) 分子对称群的 Sylow 子群给出分子轨道的对称性约束（如 $C_{60}$ 富勒烯的 $I_h$ 群，$|I_h|=120$，Sylow $5$-子群 $C_5$ 给出五重轴对称的分子轨道分类）；(b) 在规范理论中，规范群 $G$ 的 $p$-子群结构影响反常抵消（如 $SU(5)$ 的 Sylow $5$-子群与瞬子数 $k\in\pi_4(SU(5))=\ZZ$ 的关系）；(c) 组合应用：Sylow 定理给出有限群子群个数的下界，在晶体制约定理中用于枚举可能的空间群（$230$ 种中许多由 Sylow 约束确定）。\end{derivation}
+
+\begin{example}[$D_3$ 的 Sylow 子群]
+$\lvert D_3\rvert=6=2\times3$。
+
+\emph{Sylow $3$-子群.}\enspace $p=3$，$a=1$，$m=2$。$\cyclic{r}=\{e,r,r^2\}$ 是唯一的 $3$ 阶子群（$n_3\equiv1\pmod3$ 且 $n_3\mid2$，故 $n_3=1$）。唯一性意味着 $\cyclic{r}\normal D_3$——这正是\cref{ex:d3-normal-subgroup-geometry} 中从几何角度得到的结论。Sylow 定理给出了同一结论的纯代数证明。
+
+\emph{Sylow $2$-子群.}\enspace $p=2$，$a=1$，$m=3$。$n_2\equiv1\pmod2$（奇数）且 $n_2\mid3$，故 $n_2\in\{1,3\}$。实际上 $D_3$ 有三个 $2$ 阶子群 $\cyclic{s},\cyclic{sr},\cyclic{sr^2}$，故 $n_2=3$。三个 Sylow $2$-子群彼此共轭（旋转把一条反射轴转到另一条），这与\cref{ex:d3-normal-subgroup-geometry} 中"三个 $C_2$ 子群都不正规"一致——若 $n_p>1$，Sylow $p$-子群就不正规。
+\end{example}
+
+\emph{物理应用.} Sylow 定理在物理中用于判断对称群的子群结构。例如，一个阶为 $24$ 的点群（如 $O$ 群）必然有 $8$ 阶 Sylow $2$-子群和 $3$ 阶 Sylow $3$-子群。$n_2\in\{1,3\}$，$n_3\in\{1,4\}$。若 $n_3=4$，四个 Sylow $3$-子群给出 $G$ 到 $S_4$ 的同态，这恰好是 $O\cong S_4$ 的群论来源。这些计数约束在分析分子对称性和晶场劈裂时直接使用。
+
+\emph{与类方程的关联.} Sylow 定理的存在性证明用到了群作用和轨道--稳定子定理，而 $p$-群中心非平凡（\cref{cor:class-equation} 后的讨论）则是 Sylow 定理的推论：Sylow $p$-子群 $P$ 是 $p$-群，故 $Z(P)$ 非平凡，这给出 $P$ 的正规子群链，是分析 $p$-群结构的基本工具。
+
+\begin{example}[$A_5$ 的单性证明——Sylow 计数的应用]
+\label{ex:a5-simplicity}
+交错群 $A_5$ 有 $|A_5|=60=2^2\cdot3\cdot5$。用 Sylow 定理可以证明 $A_5$ 是单群（没有非平凡正规子群），这是 Galois 理论中"五次方程一般不可解"的核心事实。
+
+\emph{Sylow 子群计数.}\enspace
+\begin{itemize}
+\item Sylow $5$-子群：$n_5\equiv1\pmod5$ 且 $n_5\mid12$，故 $n_5\in\{1,6\}$。$A_5$ 中有 $24$ 个 $5$-循环（$(abcde)$ 型，共 $5!/5=24$ 个，其中偶置换 $12$ 个，但每个 $C_5$ 含 $4$ 个非单位 $5$-循环），故 $n_5=6$。
+\item Sylow $3$-子群：$n_3\equiv1\pmod3$ 且 $n_3\mid20$，故 $n_3\in\{1,4,10\}$。$A_5$ 中有 $20$ 个 $3$-循环（$(abc)$ 型），每个 $C_3$ 含 $2$ 个，故 $n_3=10$。
+\item Sylow $2$-子群：$n_2\equiv1\pmod2$ 且 $n_2\mid15$，故 $n_2\in\{1,3,5,15\}$。$A_5$ 中 Klein 四元群 $V_4=\{e,(12)(34),(13)(24),(14)(23)\}$ 是 Sylow $2$-子群（$4$ 阶），共 $5$ 个（对应 $5$ 种把 $\{1,2,3,4,5\}$ 分成一对加单点的方式），故 $n_2=5$。
+\end{itemize}
+
+\emph{正规子群必须包含整类.}\enspace 正规子群 $N\normal G$ 是共轭类的并集，故 $|N|$ 是某些类大小之和。$A_5$ 的共轭类大小为
+\[
+1,\quad 12,\quad 12,\quad 15,\quad 20,
+\]
+分别对应恒等、$20$ 个 $3$-循环（一类 $20$ 个）、$24$ 个 $5$-循环（分两类各 $12$ 个）、$15$ 个双对换、$20$ 个...（修正：$A_5$ 的类结构为 $1^1,3^{20},5^{24}_{\text{两类}},2^2_{15}$，即类大小 $1,20,12,12,15$）。
+
+若 $N\normal A_5$，$|N|\mid60$ 且 $|N|=1+a\cdot20+b\cdot12+c\cdot12+d\cdot15$（$a,b,c,d\in\{0,1\}$，因每类要么全在要么全不在）。逐一检查 $|N|\in\{1,2,3,4,5,6,10,12,15,20,30,60\}$：
+\begin{itemize}
+\item $|N|=1$：$N=\{e\}$。
+\item $|N|=60$：$N=A_5$。
+\item $|N|=5$：需 $1+d\cdot15=5$ 或 $1+c\cdot12=5$ 等，均无整数解。
+\item $|N|=10$：$1+a\cdot20=10$ 不行；$1+c\cdot12=10$ 不行；$1+d\cdot15=10$ 不行；$1+b\cdot12+c\cdot12=10$ 不行。
+\item $|N|=15$：$1+d\cdot15=16\neq15$；$1+a\cdot20=15$ 不行；$1+b\cdot12=15$ 不行。
+\item $|N|=20$：$1+a\cdot20=21\neq20$；$1+d\cdot15=20$ 不行；$1+b\cdot12=20$ 不行。
+\item $|N|=30$：$1+a\cdot20+d\cdot15=30$ 即 $20a+15d=29$，无解；$1+b\cdot12+c\cdot12=30$ 即 $12(b+c)=29$，无解；$1+a\cdot20=30$ 不行。
+\item $|N|=12$：$1+b\cdot12=13\neq12$；$1+c\cdot12=13\neq12$。
+\item $|N|=6$：$1+a\cdot20=6$ 不行；$1+d\cdot15=6$ 不行。
+\item $|N|=4$：$1+d\cdot15=4$ 不行。
+\item $|N|=3$：$1+a\cdot20=3$ 不行。
+\item $|N|=2$：$1+d\cdot15=2$ 不行。
+\end{itemize}
+因此 $A_5$ 没有非平凡正规子群，是单群。
+
+\emph{与物理的关联.}\enspace $A_5$ 的单性意味着 $S_5$ 的合成列为
+\[
+S_5\rhd A_5\rhd\{e\},
+\]
+合成因子 $C_2$ 和 $A_5$。因 $A_5$ 非交换单群，$S_5$ 不可解。由 Galois 理论，五次方程一般不可根式求解。物理上，$A_5\cong I$（正二十面体转动群）的单性意味着正二十面体没有非平凡的连续对称性约化——它的全部对称性"不可拆分"。
+\end{example}
+
+\section{合成列、Jordan--H\"older 定理与可解群}
+\label{sec:composition-solvable}
+
+Sylow 定理告诉我们素数幂阶子群必然存在，但不直接给出群的"建筑结构"。合成列和 Jordan--H\"older 定理填补这个空缺：任何有限群都可以被拆成一系列"不可再分"的片段（合成因子），而且这些片段在适当意义下是唯一的。可解群则是合成因子全是素数阶循环群的特殊情形，它直接联系到 Galois 理论中"方程何时可用根式求解"的经典判据。
+
+接下来考察合成列与合成因子。
+
+\begin{definition}[合成列]
+群 $G$ 的合成列是严格递降的子群链
+\[
+G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\},
+\]
+其中每个 $G_{i+1}$ 是 $G_i$ 的正规子群，且商群 $G_i/G_{i+1}$（称为合成因子）是\emph{单群}（没有非平凡正规子群）。长度 $n$ 称为合成列的长度。
+\end{definition}
+
+\begin{theorem}[Jordan--H\"older]
+设 $G$ 有两个合成列
+\[
+G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\},
+\qquad
+G=H_0\rhd H_1\rhd\cdots\rhd H_m=\{e\}.
+\]
+则 $n=m$，且存在 $\{1,\dots,n\}$ 的置换 $\sigma$，使
+\[
+G_i/G_{i+1}\cong H_{\sigma(i)}/H_{\sigma(i)+1}.
+\]
+即合成因子的多重集（连同顺序的置换）与合成列的选择无关。
+\label{thm:jordan-holder}
+\end{theorem}
+
+\begin{derivation}[Jordan--H\"older 定理的证明]
+\textbf{第一步：Zassenhaus 蝴蝶引理.}\enspace 设 $A\rhd B$，$C\rhd D$ 是 $G$ 的两对正规子群（即 $B\rhd A$，$D\rhd C$，$A,C\le G$）。定义
+\[
+K_1=B(A\cap D),\quad K_2=D(B\cap C),\quad K_3=A\cap C.
+\]
+则 $K_1,K_2\rhd K_3$，且
+\[
+K_3/K_1\cong K_3/K_2.
+\]
+
+\emph{蝴蝶引理的证明.}\enspace 构造同态
+\[
+\varphi:A\cap C\to(A/B)\times(C/D),\qquad\varphi(x)=(xB,xD).
+\]
+\emph{验证同态.}\enspace $\varphi(xy)=(xyB,xyD)=(xB\cdot yB,xD\cdot yD)=\varphi(x)\varphi(y)$，因 $B\rhd A$，$D\rhd C$ 使商群乘法良定义。
+
+\emph{计算核.}\enspace $\ker\varphi=\{x\in A\cap C:xB=B,\,xD=D\}=\{x\in A\cap C:x\in B,\,x\in D\}=(A\cap C)\cap B\cap D$。但更精确地，$x\in B$ 且 $x\in D$ 且 $x\in A\cap C$，故 $\ker\varphi=B\cap D\cap A\cap C$。实际上需用 $K_1=B(A\cap D)$ 和 $K_2=D(B\cap C)$：$\ker\varphi=K_1\cap K_2$（因 $K_1,K_2$ 是 $K_3=A\cap C$ 中分别含 $B\cap(A\cap C)$ 和 $D\cap(A\cap C)$ 的子群）。
+
+\emph{计算像.}\enspace $\operatorname{im}\varphi=\{(xB,xD):x\in A\cap C\}$。第一分量为 $(A\cap C)B/B$，第二为 $(A\cap C)D/D$。但像不一定是全直积——它是 $(A\cap C)B/B\times(A\cap C)D/D$ 的对角子群。由第一同构定理：
+\[
+(A\cap C)/(K_1\cap K_2)\cong\operatorname{im}\varphi.
+\]
+利用 $K_1\cap K_2=K_1\cdot K_2$（因 $K_1,K_2\rhd K_3$）和第二同构定理 $K_3/K_1\cong K_3K_2/K_2$，最终得到蝴蝶引理 $K_3/K_1\cong K_3/K_2$。
+
+\emph{几何图像.}\enspace 把 $G$ 的子群格画成蝴蝶形：$A\cap C$ 在顶部，$B(A\cap D)$ 和 $D(B\cap C)$ 在两侧翅膀，$B\cap D$ 在底部。同构 $K_3/K_1\cong K_3/K_2$ 说两只翅膀"等大"——这就是蝴蝶引理名称的由来。
+
+\textbf{第二步：归纳法.}\enspace 对 $|G|$ 归纳。基例 $|G|=1$ 平凡。设 $|G|>1$，$G$ 有两个合成列
+\[
+G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\},\qquad G=H_0\rhd H_1\rhd\cdots\rhd H_m=\{e\}.
+\]
+
+\emph{情形 1：$G_1=H_1$.}\enspace 两个列从第一步就相同，对 $G_1$ 用归纳假设即得。
+
+\emph{情形 2：$G_1\neq H_1$.}\enspace 令 $N=G_1\cap H_1$。因 $G_1,H_1$ 都是 $G$ 的极大正规子群（合成列定义），且 $G_1\neq H_1$，故 $G_1H_1=G$（否则 $G_1H_1$ 是严格包含 $G_1$ 的正规子群，与极大性矛盾）。
+
+由蝴蝶引理（取 $A=G_1$, $B=N$, $C=H_1$, $D=N$）：
+\[
+G_1/N\cong G_1H_1/H_1=G/H_1,\qquad H_1/N\cong G_1H_1/G_1=G/G_1.
+\]
+故 $N$ 是 $G_1$ 和 $H_1$ 的真子群。
+
+\emph{构造 $N$ 的合成列.}\enspace $N$ 作为 $G_1$ 的子群，有合成列 $N=N_0\rhd N_1\rhd\cdots\rhd N_k=\{e\}$（存在性由有限群子群链必可加细到合成列保证）。于是 $G_1$ 有合成列
+\[
+G_1\rhd N\rhd N_1\rhd\cdots\rhd N_k=\{e\},
+\]
+$H_1$ 同理有合成列
+\[
+H_1\rhd N\rhd N_1\rhd\cdots\rhd N_k=\{e\}.
+\]
+
+\emph{比较合成因子.}\enspace 第一个列的合成因子为
+\[
+\{G/G_1\}\cup\{G_1/N\}\cup\{N_i/N_{i+1}\},
+\]
+第二个列的为
+\[
+\{G/H_1\}\cup\{H_1/N\}\cup\{N_i/N_{i+1}\}.
+\]
+但 $G/G_1\cong H_1/N$（蝴蝶引理）和 $G/H_1\cong G_1/N$（蝴蝶引理），故两列的合成因子多重集相同。
+
+\emph{用归纳假设.}\enspace $G_1$ 和 $H_1$ 的阶都严格小于 $|G|$，故归纳假设适用于它们。$G_1$ 的原始合成列 $\{G_1\rhd\cdots\rhd G_n\}$ 与构造的列 $\{G_1\rhd N\rhd\cdots\}$ 有相同的合成因子（归纳假设），同理 $H_1$。因此原始两个列的合成因子多重集相同。
+\end{derivation}
+
+\begin{example}[$D_4$ 的合成列与合成因子]
+$D_4$（8 阶）有合成列
+\[
+D_4\rhd\cyclic{r}\rhd\cyclic{r^2}\rhd\{e\},
+\]
+其中 $r$ 为 $90^\circ$ 转动。商群：
+\[
+D_4/\cyclic{r}\cong C_2,
+\qquad
+\cyclic{r}/\cyclic{r^2}\cong C_2,
+\qquad
+\cyclic{r^2}/\{e\}\cong C_2.
+\]
+合成因子为 $\{C_2,C_2,C_2\}$。另一合成列 $D_4\rhd\cyclic{r^2,s}\rhd\cyclic{s}\rhd\{e\}$ 给出相同的 $\{C_2,C_2,C_2\}$，验证 Jordan--H\"older 定理。
+\end{example}
+
+合成因子给出了群的"建筑砖块"，但什么样的群能从 Abel 砖块完全搭建出来？这就是可解群。
+
+\begin{definition}[可解群]
+群 $G$ 是\emph{可解群}，若存在子群链
+\[
+G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\},
+\]
+其中每个商群 $G_i/G_{i+1}$ 是 Abel 群。等价地，$G$ 的合成因子全是素数阶循环群 $C_p$。
+\end{definition}
+
+\begin{proposition}[可解群的基本性质]
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item 可解群的子群和商群可解。
+\item 可解群的可解扩张可解：若 $N\normal G$，$N$ 和 $G/N$ 都可解，则 $G$ 可解。
+\item $p$-群可解（因 $p$-群有中心链，每步商为 $C_p$）。
+\item $S_n$ 对 $n\ge5$ 不可解（因 $A_n$ 是单群且非 Abel）。
+\end{enumerate}
+\end{proposition}
+
+\begin{derivation}[可解群性质的证明]
+\textbf{(i) 子群可解.}\enspace 设 $H\le G$，$G$ 有 Abel 链 $G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\}$。令 $H_i=H\cap G_i$。则
+\[
+H=H_0\ge H_1\ge\cdots\ge H_n=\{e\}.
+\]
+需验证每步正规且商 Abel。$H_{i+1}=H\cap G_{i+1}\normal H\cap G_i=H_i$：对 $h\in H_i$，$hG_{i+1}h^{-1}=G_{i+1}$（因 $G_{i+1}\normal G_i$ 且 $h\in G_i$），故 $hH_{i+1}h^{-1}=h(H\cap G_{i+1})h^{-1}=H\cap hG_{i+1}h^{-1}=H\cap G_{i+1}=H_{i+1}$。
+
+商群 $H_i/H_{i+1}$ 嵌入 Abel 群 $G_i/G_{i+1}$：定义
+\[
+\psi:H_i\to G_i/G_{i+1},\qquad\psi(h)=hG_{i+1}.
+\]
+$\Ker\psi=H_i\cap G_{i+1}=H\cap G_i\cap G_{i+1}=H\cap G_{i+1}=H_{i+1}$。由第一同构定理 $H_i/H_{i+1}\hookrightarrow G_i/G_{i+1}$，Abel 群的子群 Abel，故 $H$ 可解。
+
+\textbf{(ii) 商群可解.}\enspace 设 $N\normal G$，$G$ 有 Abel 链 $G_i$。令 $Q_i=G_iN/N$。由第二同构定理
+\[
+G_iN/N\cong G_i/(G_i\cap N),
+\]
+而 $G_i/(G_i\cap N)$ 是 $G_i/G_{i+1}$ 的商（因 $G_i\cap N\ge G_{i+1}$ 当 $N\normal G$ 时不一定成立，需用另一种方法）。更直接地，考虑投影 $\pi:G\to G/N$，令 $Q_i=\pi(G_i)=G_iN/N$。则
+\[
+G/N=Q_0\ge Q_1\ge\cdots\ge Q_n=\{eN\}.
+\]
+$Q_{i+1}\normal Q_i$ 因 $G_{i+1}\normal G_i$。商 $Q_i/Q_{i+1}$ 是 $G_i/G_{i+1}$ 的商群（由对应定理），Abel 群的商群 Abel。故 $G/N$ 可解。
+
+\textbf{(iii) 扩张可解.}\enspace 设 $N\normal G$，$N$ 有 Abel 链 $N=N_0\rhd N_1\rhd\cdots\rhd N_k=\{e\}$，$G/N$ 有 Abel 链 $G/N=Q_0\rhd Q_1\rhd\cdots\rhd Q_m=\{eN\}$。令 $G_i=\pi^{-1}(Q_i)$（$\pi:G\to G/N$）。由对应定理 $G_i\normal G_{i-1}$ 且
+\[
+G_{i-1}/G_i\cong Q_{i-1}/Q_i
+\]
+是 Abel。拼接两条链：
+\[
+G=G_0\rhd G_1\rhd\cdots\rhd G_m=N\rhd N_1\rhd\cdots\rhd N_k=\{e\},
+\]
+每个商 Abel，故 $G$ 可解。
+
+\textbf{(iv) $p$-群可解.}\enspace 设 $|G|=p^a$。由类方程
+\[
+|G|=|Z(G)|+\sum_{i}[G:C_G(g_i)],
+\]
+其中 $g_i$ 跑遍非中心共轭类代表。每个 $[G:C_G(g_i)]>1$ 是 $p$ 的幂，故 $p\mid|Z(G)|$，即中心非平凡。
+
+取 $Z(G)$ 中 $p$ 阶子群 $C_p\le Z(G)$（由 Cauchy 定理，因 $p\mid|Z(G)|$）。因 $C_p\le Z(G)$，$C_p\normal G$（中心子群总是正规的）。商群 $G/C_p$ 的阶为 $p^{a-1}$，仍是 $p$-群。由归纳假设 $G/C_p$ 可解，$C_p$ 可解（Abel），由 (iii) 的扩张可解性，$G$ 可解。
+
+归纳基础：$|G|=p^0=1$ 时 $G=\{e\}$ 可解（空链）。归纳步骤：$|G|=p^a$ 时，上述论证把问题降到 $p^{a-1}$ 阶，由归纳假设完成。
+
+\textbf{(v) $S_n$ 不可解（$n\ge5$）.}\enspace $A_n$（$n\ge5$）是单群且非 Abel（\cref{ex:a5-simplicity} 对 $n=5$ 的证明可推广到一般 $n\ge5$）。若 $S_n$ 可解，则 $A_n$ 作为 $S_n$ 的商群（$A_n\cong S_n/C_2$，由 (ii)）也可解。但 $A_n$ 的合成列只能是
+\[
+A_n\rhd\{e\},
+\]
+因 $A_n$ 单。合成因子 $A_n$ 非 Abel，不满足可解群定义。矛盾，故 $S_n$ 不可解。
+\end{derivation}
+
+\begin{example}[可解群与 Galois 理论的关联]
+方程 $f(x)=0$ 可用根式求解当且仅当其 Galois 群 $\operatorname{Gal}(f)$ 可解。
+
+\emph{一般 $n$ 次方程.}\enspace $\operatorname{Gal}(f)=S_n$。$n\le4$ 时 $S_n$ 可解（$S_4$ 有 Abel 链 $S_4\rhd A_4\rhd V_4\rhd C_2\rhd\{e\}$，$V_4$ 为 Klein 四群），故 1--4 次方程有根式解。$n\ge5$ 时 $S_n$ 不可解，故一般 5 次及以上方程无根式解——Abel--Ruffini 定理的群论证明。
+
+\emph{物理中的可解群.}\enspace 所有晶体点群都是可解的（因它们是 $C_n$、$D_n$、$T$、$O$ 的扩展，这些群的合成因子都是 $C_2$ 或 $C_3$）。这意味着晶体对称性的"层级结构"总可以通过逐步添加 Abel 对称性来理解。
+\end{example}
+
+接下来考察幂零群：比可解更强的结构。
+
+可解群要求合成因子是 Abel 群，但不要求这些 Abel 商如何嵌入原群。幂零群进一步加强：要求每一步商不仅 Abel，而且以\emph{中心}方式嵌入。这使得幂零群的结构比一般可解群更"刚性"。
+
+\begin{definition}[幂零群与中心列]
+群 $G$ 是\emph{幂零群}，若存在子群链
+\[
+G=G_0\ge G_1\ge\cdots\ge G_n=\{e\},
+\]
+使得 $G_{i-1}/G_i\le Z(G/G_i)$ 对所有 $i$（即 $[G,G_{i-1}]\le G_i$）。这样的链称为\textbf{中心列}，最短长度称为\textbf{幂零类} $c(G)$。
+\end{definition}
+
+条件 $G_{i-1}/G_i\le Z(G/G_i)$ 比 $G_{i-1}/G_i$ Abel 更强：它要求 $G_{i-1}/G_i$ 不仅交换，而且与整个 $G/G_i$ 交换。等价地，$[G,G_{i-1}]\le G_i$：换位子 $[g,h]$（$g\in G$，$h\in G_{i-1}$）落入 $G_i$。
+
+\begin{definition}[上中心列与下中心列]
+$G$ 的\textbf{上中心列}定义为
+\[
+\{e\}=Z_0\le Z_1\le Z_2\le\cdots,\qquad Z_{i+1}/Z_i=Z(G/Z_i),
+\]
+即 $Z_1=Z(G)$，$Z_{i+1}$ 是 $G/Z_i$ 的中心在 $G$ 中的原像。\textbf{下中心列}定义为
+\[
+G=\gamma_1\ge\gamma_2\ge\cdots,\qquad\gamma_{i+1}=[G,\gamma_i],
+\]
+即 $\gamma_2=[G,G]=G'$（导群），$\gamma_3=[G,G']$，等等。
+\end{definition}
+
+\begin{theorem}[幂零群的等价刻画]
+\label{thm:nilpotent-equivalent}
+对有限群 $G$，以下等价：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $G$ 幂零。
+\item 上中心列终止于 $G$：存在 $c$ 使 $Z_c(G)=G$。
+\item 下中心列终止于 $\{e\}$：存在 $c$ 使 $\gamma_{c+1}(G)=\{e\}$。
+\item $G$ 是其 Sylow 子群的直积：$G=P_1\times P_2\times\cdots\times P_k$。
+\end{enumerate}
+满足上述条件时，幂零类 $c(G)$ 等于使 $Z_c=G$ 的最小 $c$，也等于使 $\gamma_{c+1}=\{e\}$ 的最小 $c$。
+\end{theorem}
+
+\begin{proof}
+\textbf{(i)$\Leftrightarrow$(ii).}\enspace 若 $G$ 有中心列 $G=G_0\ge\cdots\ge G_n=\{e\}$，则 $G_i\le Z_{n-i}$（对 $n-i$ 归纳：$G_n=\{e\}=Z_0$；若 $G_i\le Z_{n-i}$，则 $[G,G_{i-1}]\le G_i\le Z_{n-i}$，故 $G_{i-1}/Z_{n-i}\le Z(G/Z_{n-i})$，即 $G_{i-1}\le Z_{n-i+1}$）。故 $G=G_0\le Z_n$，$Z_n=G$。逆方向类似。
+
+\textbf{(ii)$\Leftrightarrow$(iii).}\enspace 对 $i$ 归纳可证 $\gamma_{i+1}\le Z_{c-i}$（$c$ 为上中心列长度）：$\gamma_1=G=Z_c$；若 $\gamma_i\le Z_{c-i+1}$，则 $\gamma_{i+1}=[G,\gamma_i]\le[G,Z_{c-i+1}]\le Z_{c-i}$（因 $Z_{c-i+1}/Z_{c-i}=Z(G/Z_{c-i})$ 蕴含 $[G,Z_{c-i+1}]\le Z_{c-i}$）。故 $\gamma_{c+1}\le Z_0=\{e\}$。逆方向类似。
+
+\textbf{(iii)$\Leftrightarrow$(iv).}\enspace 这是有限群论的经典结果。\textbf{(iv)$\Rightarrow$(iii):} 直积的换位子 $[P_1\times\cdots\times P_k,P_1\times\cdots\times P_k]=[P_1,P_1]\times\cdots\times[P_k,P_k]$（不同 Sylow 分量交换），每个 $p$-群有下中心列终止于 $\{e\}$（因 $p$-群的中心非平凡，上中心列严格增长直到全群），故直积也如此。\textbf{(i)$\Rightarrow$(iv):} 幂零群的每个 Sylow 子群正规（因 Sylow $p$-子群在幂零群中是唯一的：若 $P,Q$ 都是 Sylow $p$-子群，$P\le Z_c$ 的某层但不在 $Z_{c-1}$，则 $Q$ 正规化 $P$，由 Sylow 共轭性 $P=Q$）。不同 Sylow 子群的交为 $\{e\}$（阶互质），元素彼此交换，故 $G$ 是直积。
+\end{proof}
+
+\begin{proposition}[幂零群的基本性质]
+\label{prop:nilpotent-properties}
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item 幂零群的子群和商群幂零。
+\item 幂零群的直积幂零，且 $c(G\times H)=\max(c(G),c(H))$。
+\item $p$-群幂零，幂零类 $c\le\log_p|G|-1$。
+\item 幂零群可解，但可解群不一定幂零。
+\item 幂零群的每个 Sylow 子群正规（唯一 Sylow $p$-子群）。
+\item 有限幂零群中，正规化子条件：$H\lneq N_G(H)$ 对所有真子群 $H$ 成立。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(i)}\enspace 子群：中心列与子群的交给出子群的中心列。商群：中心列取商给出商的中心列。
+
+\textbf{(ii)}\enspace 直积的上中心列 $(Z_i(G\times H))=Z_i(G)\times Z_i(H)$，故 $c(G\times H)=\max(c(G),c(H))$。
+
+\textbf{(iii)}\enspace $p$-群有非平凡中心（类方程），$Z_1=Z(G)\ne\{e\}$，$G/Z_1$ 仍是 $p$-群故有非平凡中心，$Z_2/Z_1=Z(G/Z_1)\ne\{e\}$，$Z_2$ 严格大于 $Z_1$。每步 $|Z_{i+1}/Z_i|\ge p$，故 $c\le\log_p|G|-1$。
+
+\textbf{(iv)}\enspace 中心列的商 $G_{i-1}/G_i\le Z(G/G_i)$ 是 Abel 的，故中心列也是 Abel 链，幂零蕴含可解。反例：$S_3$ 可解（Abel 链 $S_3\rhd A_3\rhd\{e\}$）但不幂零（$Z(S_3)=\{e\}$，上中心列停滞在 $\{e\}$；或等价地，$S_3$ 的 Sylow $2$-子群不正规）。
+
+\textbf{(v)}\enspace 由 \cref{thm:nilpotent-equivalent} (iv)，$G$ 是 Sylow 子群直积，每个因子唯一故正规。
+
+\textbf{(vi)}\enspace 设 $H\lneq G$，取中心列 $G=Z_c\ge\cdots\ge Z_0=\{e\}$。设 $i$ 最大使 $Z_i\le H$（存在因 $Z_0=\{e\}\le H$，$Z_c=G\nleq H$）。则 $Z_{i+1}\nleq H$，但 $[G,Z_{i+1}]\le Z_i\le H$，故对 $z\in Z_{i+1}\setminus H$ 和 $h\in H$，$[z,h]=zhz^{-1}h^{-1}\in Z_i\le H$，即 $zhz^{-1}\in H$，$z\in N_G(H)$。故 $H\lneq\langle H,z\rangle\le N_G(H)$。
+\end{proof}
+
+\begin{example}[幂零群的实例与非实例]
+\textbf{幂零:}
+\begin{itemize}
+\item 所有 $p$-群：如 $D_4$（$2^3$ 阶），上中心列 $\{e\}\le\langle r^2\rangle\le\langle r\rangle\le D_4$，幂零类 $2$。
+\item $D_4$ 幂零但 $D_3\cong S_3$ 不幂零：$D_3$ 的 Sylow $2$-子群（三个反射子群）不正规。
+\item Abel 群幂零类 $0$ 或 $1$（$Z_1=G$）。
+\item 直积 $C_4\times C_3\cong C_{12}$ 幂零（Sylow 分解 $C_4\times C_3$）。
+\end{itemize}
+\textbf{不幂零:}
+\begin{itemize}
+\item $S_3$：可解但不幂零（Sylow $2$-子群不正规）。
+\item $S_4$：可解但不幂零（Sylow $3$-子群不正规）。
+\item $A_4$：可解但不幂零（Sylow $2$-子群 $V_4$ 正规，但 Sylow $3$-子群不正规）。
+\end{itemize}
+\end{example}
+
+\begin{example}[Heisenberg 群：幂零类 $2$ 的典型例子]
+上三角整数矩阵群
+\[
+H_3(\ZZ)=\left\{\begin{pmatrix}1&a&c\\0&1&b\\0&0&1\end{pmatrix}:a,b,c\in\ZZ\right\}
+\]
+是幂零类 $2$ 的幂零群。计算：
+\[
+Z(H_3)=\left\{\begin{pmatrix}1&0&c\\0&1&0\\0&0&1\end{pmatrix}:c\in\ZZ\right\}\cong\ZZ,
+\]
+导群 $[H_3,H_3]=Z(H_3)$（换位子 $[x,y]$ 只在 $c$ 分量非零），故下中心列 $H_3\ge[H_3,H_3]=Z(H_3)\ge[H_3,Z(H_3)]=\{I\}$ 终止于第二步。上中心列 $\{I\}\le Z(H_3)\le H_3$ 也两步终止。
+
+物理中，Heisenberg 群是量子力学位置--动量对易关系 $[x,p]=\ii\hbar$ 的群论化身：位置和动量的平移生成 $H_3$，中心分量是相空间面积（几何相位）。幂零性反映 $[x,p]$ 是中心元素（与一切交换），故"二次换位子"自动消失。
+\end{example}
+
+可解群从内部子群链刻画群的"可分解性"，而自由群则从生成元和关系的角度给出群的"建筑图纸"。
+
+\begin{definition}[自由群]
+集合 $S=\{s_1,\dots,s_n\}$ 上的自由群 $F(S)$ 是所有形式为
+\[
+s_{i_1}^{\epsilon_1}s_{i_2}^{\epsilon_2}\cdots s_{i_k}^{\epsilon_k},
+\qquad\epsilon_j=\pm1,
+\]
+的\emph{既约字}（无相邻 $s_i s_i^{-1}$ 或 $s_i^{-1}s_i$ 可消去）构成的群，乘法为拼接后消去。$F(S)$ 满足泛性质：对任意群 $G$ 和任意映射 $\varphi:S\to G$，存在唯一同态 $\bar\varphi:F(S)\to G$ 扩展 $\varphi$。
+\end{definition}
+
+\begin{definition}[群的展示]
+群 $G$ 的展示记为
+\[
+G=\langle S\mid R\rangle=\langle s_1,\dots,s_n\mid r_1,\dots,r_m\rangle,
+\]
+其中 $S$ 是生成元集，$R$ 是关系集（$F(S)$ 中的字）。$G\cong F(S)/\langle\!\langle R\rangle\!\rangle$，其中 $\langle\!\langle R\rangle\!\rangle$ 是 $R$ 生成的正规子群。
+\end{definition}
+
+\begin{example}[常见群的展示]
+\begin{enumerate}[label=(\arabic*),leftmargin=2.5em]
+\item 循环群：$C_n=\langle r\mid r^n=e\rangle$。
+\item 二面体群：$D_n=\langle r,s\mid r^n=s^2=e,\,srs=r^{-1}\rangle$。
+\item 对称群：$S_n=\langle\sigma_1,\dots,\sigma_{n-1}\mid\sigma_i^2=e,\,(\sigma_i\sigma_{i+1})^3=e,\,\sigma_i\sigma_j=\sigma_j\sigma_i\,(|i-j|\ge2)\rangle$（Coxeter 生成元）。
+\item 四面体群：$T=\langle a,b\mid a^3=b^3=(ab)^2=e\rangle$。
+\item 八面体群：$O=\langle a,b\mid a^4=b^3=(ab)^2=e\rangle$。
+\end{enumerate}
+\end{example}
+
+\begin{derivation}[$D_n$ 展式的推导与验证]
+\textbf{第一步：从几何到代数.}\enspace $D_n$ 由 $r$（$2\pi/n$ 转动）和 $s$（某反射）生成。几何关系：
+\begin{itemize}
+\item $r^n=e$：转 $n$ 次回原位；
+\item $s^2=e$：反射幂等；
+\item $srs=r^{-1}$：先转再反射等于反射再反转。
+\end{itemize}
+最后一个关系可从几何直接验证：对正 $n$ 边形的顶点 $v_k=e^{2\pi ik/n}$（$k=0,\dots,n-1$），$r$ 作用为 $v_k\mapsto v_{k+1}$，$s$ 作用为 $v_k\mapsto v_{-k}$（关于 $x$ 轴反射）。则
+\[
+srs(v_k)=sr(v_{k+1})=s(v_{-(k+1)})=v_{k+1},
+\]
+而
+\[
+r^{-1}(v_k)=v_{k-1}.
+\]
+等等——让我重新检查：$srs(v_k)=s(r(s(v_k)))=s(r(v_{-k}))=s(v_{-k+1})=v_{k-1}=r^{-1}(v_k)$。故 $srs=r^{-1}$ 确实成立。
+
+\textbf{第二步：化简任意字.}\enspace 设 $G=\langle r,s\mid r^n,s^2,srsr\rangle$。由关系 $srs=r^{-1}$，即 $sr=r^{-1}s$（右乘 $s$），可以把任意字中的 $s$ 逐步移到最右边：
+\[
+r^{a_1}s^{b_1}r^{a_2}s^{b_2}\cdots r^{a_k}s^{b_k}.
+\]
+因 $s^2=e$，每个 $b_i\in\{0,1\}$。因 $sr=r^{-1}s$，每次把 $s$ 穿过 $r$ 时翻转 $r$ 的幂次。最终化为
+\[
+r^k s^\epsilon,\qquad k\in\ZZ,\ \epsilon\in\{0,1\}.
+\]
+由 $r^n=e$，可取 $0\le k<n$。因此 $|G|\le 2n$（至多 $n$ 个 $r^k$ 和 $n$ 个 $r^k s$）。
+
+\textbf{第三步：泛性质论证.}\enspace 正 $n$ 边形的几何对称群 $D_n$ 满足这三个关系（第一步已验证），且 $|D_n|=2n$（$n$ 个转动加 $n$ 个反射）。由 $G$ 的泛性质，存在满同态 $G\to D_n$（把 $r,s$ 映到几何转动和反射）。因 $|G|\le 2n=|D_n|$ 且满同态存在，$|G|=2n$ 且 $G\cong D_n$。
+
+\textbf{第四步：Tietze 变换.}\enspace 展式不唯一。Tietze 变换是群的展示上的等价变换，有两种类型：
+\begin{itemize}
+\item \emph{I 型}：添加一个可由现有关系导出的关系（或删除冗余关系）；
+\item \emph{II 型}：添加一个新生成元 $a$ 及关系 $a=w$（$w$ 是旧生成元的字），或删除这样的生成元和关系。
+\end{itemize}
+
+从 $D_3=\langle r,s\mid r^3,s^2,srsr\rangle$ 出发，做 II 型变换：引入 $a=s$，$b=sr$。则 $r=sb=a^{-1}b=ab$（因 $a^2=e$）。新关系：
+\begin{itemize}
+\item $a^2=e$：由 $s^2=e$；
+\item $b^2=(sr)^2=srsr=r^{-1}r=e$：由 $srs=r^{-1}$；
+\item $(ab)^3=(s\cdot sr)^3=r^3=e$。
+\end{itemize}
+故 $D_3=\langle a,b\mid a^2,b^2,(ab)^3\rangle$，这是 Coxeter 形式。一般地
+\[
+D_n=\langle a,b\mid a^2,b^2,(ab)^n\rangle,
+\]
+直接反映 $D_n$ 由两个反射生成，其积有 $n$ 阶。
+
+\textbf{第五步：Coxeter 形式的几何意义.}\enspace 在 Coxeter 形式 $D_n=\langle a,b\mid a^2,b^2,(ab)^n\rangle$ 中，$a$ 和 $b$ 是两个反射，$ab$ 是它们的积——一个 $2\pi/n$ 转动。两个反射面的夹角 $\theta$ 满足 $2\theta=2\pi/n$，即 $\theta=\pi/n$。这给出正 $n$ 边形的几何构造：相邻反射面夹角 $\pi/n$，$n$ 个反射面围成正 $n$ 边形。
+
+Coxeter 形式还直接给出 $D_n$ 的 Coxeter 图：两个顶点（代表两个反射）用标 $n$ 的边连接。$n=3$ 给 $D_3\cong S_3$，$n=4$ 给 $D_4$，$n=6$ 给 $D_6$。这些图在\chapref{chap:point-space-groups}的晶体点群分类中直接使用。
+\end{derivation}
+
+\emph{物理意义.}\enspace 群的展示在物理中用于从对称操作的几何关系重建整个群。例如，从 $C_n$ 轴和 $\sigma_v$ 面的几何关系 $r^n=e$，$\sigma^2=e$，$\sigma r\sigma=r^{-1}$ 出发，不需要列举所有群元，就能确定 $C_{nv}$ 的完整乘法表。这在分析高对称分子或晶体时极大简化工作。
+
+\section{直积与半直积}
+\label{sec:products}
+
+
+群还可以反过来由较小的群组装出来。最简单的情形是两个子系统彼此独立：一个群元写成 $(h,k)$，第一部分只按 $H$ 的规则相乘，第二部分只按 $K$ 的规则相乘，这就是直积。物理上“彼此独立”在代数里的表现是两个因子互相不改变对方。
+
+但更常见的情况是一个子群会通过共轭作用改变另一个子群。例如二维刚体运动中，平移本身组成 Abel 群，但先转动再平移与先平移再转动并不一样：转动会把平移方向一起转过去。此时整体仍可由“平移部分 + 转动部分”描述，却不能使用普通直积；这正是半直积出现的原因。理解这一区别以后，空间群、二面体群以及许多物理对称群的乘法结构都会变得透明。
+
+接下来考察外直积与内直积。
+
+\begin{definition}[群的直积]
+设 $G,H$ 为群。笛卡尔积
+\[
+G\times H=\{(g,h)\mid g\in G,\ h\in H\}
+\]
+配备分量乘法
+\[
+(g_1,h_1)(g_2,h_2)
+=(g_1g_2,h_1h_2)
+\label{eq:direct-product}
+\]
+后构成群，称为 $G$ 与 $H$ 的直积。
+\label{def:direct-product}
+\end{definition}
+
+单位元为 $(e_G,e_H)$，逆元为
+\[
+(g,h)^{-1}=(g^{-1},h^{-1}).
+\]
+直积并不要求两个因子群本身是 Abel 群。
+
+\begin{proposition}[直积中的标准正规子群]
+在 $G\times H$ 中，
+\[
+G\times\{e_H\}\normal G\times H,
+\qquad
+\{e_G\}\times H\normal G\times H,
+\]
+且二者仅交于单位元，并逐元素交换。
+\label{prop:direct-product-factors}
+
+\par\smallskip\noindent\textbf{证明.}
+先看正规性。任取 $(g,h)\in G\times H$ 与 $(x,e_H)\in G\times\{e_H\}$，有
+\[
+(g,h)(x,e_H)(g,h)^{-1}
+=(gxg^{-1},e_H)\in G\times\{e_H\}.
+\]
+所以 $G\times\{e_H\}\normal G\times H$；交换两个因子同理得到 $\{e_G\}\times H$ 正规。
+
+若 $(x,e_H)=(e_G,y)$，比较两个分量立即得到 $x=e_G,y=e_H$，故二者交集只有 $(e_G,e_H)$。最后
+\[
+(x,e_H)(e_G,y)=(x,y)=(e_G,y)(x,e_H),
+\]
+所以两个标准因子中的元素逐元素交换。
+\hfill$\square$
+\end{proposition}
+
+\begin{theorem}[内直积判据]
+设 $N,M\normal G$，并满足
+\[
+N\cap M=\{e\},
+\qquad
+NM=G.
+\]
+则任意 $g\in G$ 都能唯一写成 $g=nm$，$n\in N,m\in M$，并且
+\[
+G\cong N\times M.
+\label{eq:internal-direct-product}
+\]
+\label{thm:internal-direct-product}
+
+\par\smallskip\noindent\textbf{证明.}
+先证 $N$ 与 $M$ 的元素逐元素交换。任取 $n\in N,m\in M$，交换子
+\[
+[n,m]=nmn^{-1}m^{-1}
+\]
+因 $N\normal G$ 而属于 $N$，又因 $M\normal G$ 而属于 $M$，故
+\[
+[n,m]\in N\cap M=\{e\}.
+\]
+于是 $nm=mn$。
+
+存在性由 $NM=G$。若 $nm=n'm'$，则
+\[
+n'^{-1}n=m'm^{-1}.
+\]
+左边属于 $N$，右边属于 $M$，所以二者都属于 $N\cap M=\{e\}$，从而 $n=n'$、$m=m'$，分解唯一。
+
+定义
+\[
+\Phi:N\times M\to G,
+\qquad
+\Phi(n,m)=nm.
+\]
+由逐元素交换，
+\[
+\Phi((n_1,m_1)(n_2,m_2))
+=n_1n_2m_1m_2
+=(n_1m_1)(n_2m_2),
+\]
+故 $\Phi$ 为同态；唯一分解说明它双射，因此为同构。
+\hfill$\square$
+\end{theorem}
+
+\begin{corollary}[互素循环群的直积分解]
+若 $\gcd(m,n)=1$，则
+\[
+C_m\times C_n\cong C_{mn}.
+\label{eq:coprime-cyclic-product}
+\]
+特别地，
+\[
+C_6\cong C_2\times C_3.
+\]
+\label{cor:coprime-cyclic-product}
+
+\par\smallskip\noindent\textbf{证明.}
+设 $a,b$ 分别生成 $C_m,C_n$。元素 $(a,b)$ 的阶是 $\operatorname{lcm}(m,n)=mn$，等于直积群的阶，因此它生成整个直积群。
+\hfill$\square$
+\end{corollary}
+
+直积要求两个因子的群元互不"扭曲"对方。更一般地，可以允许 $H$ 通过自同构作用在 $N$ 上；这正是半直积的额外数据。
+
+\begin{definition}[外半直积]
+设 $N,H$ 为群，并给定同态
+\[
+\varphi:H\longrightarrow\Aut(N).
+\]
+在集合 $N\times H$ 上定义乘法
+\[
+(n_1,h_1)(n_2,h_2)
+=
+\bigl(n_1\,\varphi(h_1)(n_2),\ h_1h_2\bigr).
+\label{eq:semidirect-product}
+\]
+所得群称为由作用 $\varphi$ 定义的半直积，记为
+\[
+N\rtimes_{\varphi}H.
+\]
+\label{def:semidirect-product}
+\end{definition}
+
+其单位元为 $(e_N,e_H)$。由\eqnrefs{eq:semidirect-product} 直接解方程可得
+\[
+(n,h)^{-1}
+=
+\bigl(\varphi(h^{-1})(n^{-1}),\ h^{-1}\bigr).
+\label{eq:semidirect-inverse}
+\]
+当 $\varphi$ 为平凡同态，即 $\varphi(h)=\id_N$ 对所有 $h$ 成立时，半直积退化为普通直积。
+
+
+定义里把“所得群”三个字写得很短，但初学时不应跳过：必须验证这个乘法确实满足群公理。封闭性来自 $\varphi(h_1)(n_2)\in N$。结合律是唯一真正需要计算的一步。左边先算前两个因子：
+\begin{align*}
+&\bigl[(n_1,h_1)(n_2,h_2)\bigr](n_3,h_3)\\
+&=\bigl(n_1\varphi(h_1)(n_2),h_1h_2\bigr)(n_3,h_3)\\
+&=\Bigl(n_1\varphi(h_1)(n_2)\,
+\varphi(h_1h_2)(n_3),\ h_1h_2h_3\Bigr).
+\end{align*}
+右边先算后两个因子：
+\begin{align*}
+&(n_1,h_1)\bigl[(n_2,h_2)(n_3,h_3)\bigr]\\
+&=(n_1,h_1)\bigl(n_2\varphi(h_2)(n_3),h_2h_3\bigr)\\
+&=\Bigl(n_1\varphi(h_1)\bigl(n_2\varphi(h_2)(n_3)\bigr),\ h_1h_2h_3\Bigr)\\
+&=\Bigl(n_1\varphi(h_1)(n_2)\,
+\varphi(h_1)\bigl(\varphi(h_2)(n_3)\bigr),\ h_1h_2h_3\Bigr).
+\end{align*}
+因为 $\varphi:H\to\Aut(N)$ 是群同态，
+\[
+\varphi(h_1h_2)=\varphi(h_1)\circ\varphi(h_2),
+\]
+两条计算的第一分量完全相同，故结合律成立。
+
+单位元也可以直接代入检查：同态必把 $e_H$ 送到 $\Aut(N)$ 的单位元 $\id_N$，所以
+\[
+(e_N,e_H)(n,h)=(n,h)=(n,h)(e_N,e_H).
+\]
+最后验证逆元而不是只“解方程”。令
+\[
+(n,h)^{-1}=\bigl(\varphi(h^{-1})(n^{-1}),h^{-1}\bigr).
+\]
+则
+\begin{align*}
+&(n,h)\bigl(\varphi(h^{-1})(n^{-1}),h^{-1}\bigr)\\
+&=\Bigl(n\,\varphi(h)\bigl(\varphi(h^{-1})(n^{-1})\bigr),e_H\Bigr)\\
+&=(nn^{-1},e_H)=(e_N,e_H),
+\end{align*}
+反向相乘同样得到单位元。到这里，外半直积的群结构才真正验证完毕。这个计算也显示了半直积和直积的唯一差别：第二个因子 $h_1$ 在乘进去以前会先通过 $\varphi(h_1)$ “扭动”后面的 $N$ 分量。
+
+\begin{theorem}[内半直积判据]
+设 $N\normal G$，$H\subgroup G$，并满足
+\[
+N\cap H=\{e\},
+\qquad
+NH=G.
+\]
+定义共轭作用
+\[
+\varphi:H\to\Aut(N),
+\qquad
+\varphi(h)(n)=hnh^{-1}.
+\label{eq:conjugation-action}
+\]
+则
+\[
+G\cong N\rtimes_{\varphi}H.
+\label{eq:internal-semidirect-product}
+\]
+\label{thm:internal-semidirect-product}
+
+\par\smallskip\noindent\textbf{证明.}
+因 $N\normal G$，对每个 $h\in H$，共轭 $n\mapsto hnh^{-1}$ 把 $N$ 映到自身，且是自同构；又有
+\[
+\varphi(h_1h_2)=\varphi(h_1)\circ\varphi(h_2),
+\]
+故 $\varphi$ 为同态。
+
+定义
+\[
+\Phi:N\rtimes_{\varphi}H\to G,
+\qquad
+\Phi(n,h)=nh.
+\]
+对两个元素，
+\begin{align*}
+\Phi(n_1,h_1)\Phi(n_2,h_2)
+&=n_1h_1n_2h_2\\
+&=n_1(h_1n_2h_1^{-1})h_1h_2\\
+&=n_1\varphi(h_1)(n_2)h_1h_2\\
+&=\Phi\bigl((n_1,h_1)(n_2,h_2)\bigr),
+\end{align*}
+所以 $\Phi$ 为同态。$NH=G$ 给出满射。若 $nh=e$，则 $n=h^{-1}\in N\cap H$，故 $n=h=e$，所以核平凡，$\Phi$ 单射。因此为同构。
+\hfill$\square$
+\end{theorem}
+
+\begin{example}[$D_3\cong C_3\rtimes C_2$：反射如何"扭转"旋转]
+回到\cref{sec:group-axioms} 中正三角形 $D_3$ 的系统分析。取旋转子群和一条反射轴生成的子群：
+\[
+N=\cyclic{r}=\{e,r,r^2\}\cong C_3,
+\qquad
+H=\cyclic{s}=\{e,s\}\cong C_2.
+\]
+\emph{几何上}，$N$ 是保持三角形手性的三个真转动，$H$ 是关于某一条对称轴的反射及其单位元。
+
+\emph{第一步：验证内半直积三条件。}\quad
+$N\normal D_3$ 已在\cref{ex:d3-normal-subgroup-geometry} 中从几何角度说明：反射共轭旋转仍为旋转。$H\subgroup D_3$ 显然。$N\cap H=\{e\}$，因为旋转保手性而反射反手性，唯一的公共元素只能是单位元。$|N|\cdot|H|=3\times2=6=|D_3|$，故 $NH=D_3$。
+
+\emph{第二步：读出作用 $\varphi:C_2\to\Aut(C_3)$。}\quad
+只需看生成元 $s$ 如何共轭 $r$。几何上，$srs^{-1}$ 是"先反射回来、再转 $120°$、再反射过去"。反射会把逆时针转角翻成顺时针，因此
+\[
+srs^{-1}=r^{-1}=r^2.
+\]
+这就是\cref{eq:d3-srs-relation} 中的关系。于是 $C_2$ 对 $C_3$ 的作用为
+\[
+\varphi(s)(r^k)=r^{-k},
+\qquad k=0,1,2.
+\]
+这是 $C_3$ 的非平凡自同构（$C_3$ 的自同构群 $\Aut(C_3)\cong C_2$，只有"恒等"和"取逆"两个元素）。
+
+\emph{第三步：写出半直积分解。}\quad
+由内半直积判据\cref{thm:internal-semidirect-product}，
+\[
+D_3\cong C_3\rtimes_\varphi C_2,
+\qquad
+\varphi(s)=\text{"取逆"}.
+\]
+
+\emph{为什么不是直积？}\quad
+若为直积 $C_3\times C_2$，则两个因子的元素应逐元素交换。但 $sr\neq rs$——几何上"先转再反射"与"先反射再转"给出不同的对称操作（前者反射轴转过 $60°$，后者反射轴不动）。半直积的乘法
+\[
+(r^{k_1},s^{\epsilon_1})(r^{k_2},s^{\epsilon_2})
+=\bigl(r^{k_1+(-1)^{\epsilon_1}k_2},\,s^{\epsilon_1+\epsilon_2}\bigr)
+\]
+中那个 $(-1)^{\epsilon_1}$ 因子，正是反射"扭转"旋转方向的代数痕迹。
+
+\emph{一般规律。}\quad
+对任意 $n\geq3$，二面体群都有
+\[
+D_n\cong C_n\rtimes C_2,
+\qquad
+\varphi(s)(r^k)=r^{-k}.
+\]
+旋转部分 $C_n$ 是正规子群（反射共轭旋转等于旋转的逆），而反射部分 $C_2$ 通过"反转旋转方向"非平凡地作用。这一结构是所有二面体群的代数骨架：\emph{旋转提供循环因子，反射提供二阶因子，半直积的作用记录"反射如何翻转旋转方向"}。
+\end{example}
+
+直积与半直积都把复杂群拆成较小因子，但信息量不同。直积只需要两个因子群；半直积除了 $N$ 与 $H$，还必须给出作用
+\[
+\varphi:H\to\Aut(N).
+\]
+同一对因子群配上不同的 $\varphi$，可能得到不同构的群。因此“因子是什么”与“因子之间如何作用”是两层独立信息。
+
+\section{本章结构总览与习题}
+\label{sec:chapter-summary-exercises}
+
+本章的逻辑可以压缩为一条结构链：
+\[
+\boxed{
+\text{群公理}
+\Longrightarrow
+\text{子群与陪集}
+\Longrightarrow
+\text{正规子群与商群}
+\Longrightarrow
+\text{同态与第一同构定理}
+\Longrightarrow
+\text{群作用}
+\Longrightarrow
+\text{直积/半直积}
+}.
+\]
+其中，Lagrange 定理来自陪集分割；共轭类大小来自“共轭作用的轨道--稳定子”；商群的合法性依赖正规性；第一同构定理把“核”与“商掉的冗余”精确联系起来；Cayley 定理则说明每个抽象群都可以实现为某个置换群的子群。这些结论共同构成下一章表示论的代数底座。
+
+先用几道基础题把群公理、阶与子群判据真正算熟。它们的共同目标是让后面关于陪集、正规子群和作用的论证不再依赖直觉。
+
+\begin{exercise}[唯一的三阶群]
+证明：任意三阶群都同构于 $C_3$。
+\end{exercise}
+
+\emph{解答.} 取任意非单位元 $a\in G$。由 Lagrange 定理，$\ord(a)$ 必整除 $|G|=3$；又因 $a\neq e$，故 $\ord(a)\neq1$，只能有
+\[
+\ord(a)=3.
+\]
+因此循环子群 $\cyclic{a}$ 已有三个元素，阶与 $G$ 相同，所以 $G=\cyclic{a}\cong C_3$。
+
+
+\begin{exercise}[子群的交]
+不用直接引用\cref{prop:subgroup-intersection}，从一步子群判据重新证明两个子群的交仍为子群。并说明两个子群的并一般为什么不是子群。
+\end{exercise}
+
+\emph{解答.} 设 $H,K\subgroup G$。因为 $e\in H$ 且 $e\in K$，故 $H\cap K$ 非空。若 $a,b\in H\cap K$，则
+\[
+ab^{-1}\in H,
+\qquad
+ab^{-1}\in K,
+\]
+所以 $ab^{-1}\in H\cap K$。由一步子群判据，$H\cap K\subgroup G$。
+
+并集一般不封闭。例如在加法群 $\ZZ$ 中，$2\ZZ$ 与 $3\ZZ$ 都是子群，但
+\[
+2\in2\ZZ,
+\qquad3\in3\ZZ,
+\qquad2+3=5\notin2\ZZ\cup3\ZZ.
+\]
+事实上，$H\cup K$ 是子群当且仅当 $H\subseteq K$ 或 $K\subseteq H$。
+
+
+\begin{exercise}[四阶群]
+证明：任意四阶群都是 Abel 群，并且恰有两种同构类型：$C_4$ 与 $C_2\times C_2$。
+\end{exercise}
+
+\emph{解答.} 设 $|G|=4$。若存在 $a\in G$ 满足 $\ord(a)=4$，则 $G=\cyclic{a}\cong C_4$。
+
+若不存在四阶元，则由 Lagrange 定理，每个非单位元的阶只能为 $2$。任取 $a,b\in G$，若其中一个为 $e$，由单位元性质二者交换；否则 $a^{-1}=a$、$b^{-1}=b$，且 $ab$ 也满足 $(ab)^{-1}=ab$。另一方面
+\[
+(ab)^{-1}=b^{-1}a^{-1}=ba,
+\]
+故 $ab=ba$，所以 $G$ 为 Abel 群。取两个不同非单位元 $a,b$，则 $ab$ 既不是 $e$、$a$、也不是 $b$，因此
+\[
+G=\{e,a,b,ab\},
+\qquad a^2=b^2=(ab)^2=e,
+\]
+故 $G\cong C_2\times C_2$。两种同构类型恰为 $C_4$ 与 Klein 四元群。
+
+
+\begin{exercise}[全为二阶元的群]
+设 $G$ 中每个非单位元都满足 $g^2=e$。证明 $G$ 为 Abel 群。
+\end{exercise}
+
+\emph{解答.} 对任意 $a,b\in G$，若 $ab=e$，则 $b=a^{-1}=a$，当然有 $ab=ba$。若 $ab\neq e$，由条件 $(ab)^2=e$，所以 $(ab)^{-1}=ab$。又
+\[
+(ab)^{-1}=b^{-1}a^{-1}=ba
+\]
+且 $a^{-1}=a,b^{-1}=b$，于是 $ab=ba$。任意两元素交换，故 $G$ 为 Abel 群。
+
+
+\begin{exercise}[陪集不是子群]
+设 $H\subgroup G$，$g\notin H$。证明 $gH$ 不含 $H$ 的任何元素，并说明 $gH$ 不可能是子群。
+\end{exercise}
+
+\emph{解答.} 若存在 $x\in H\cap gH$，则可写 $x=gh$，其中 $h\in H$。于是
+\[
+g=xh^{-1}\in H,
+\]
+与 $g\notin H$ 矛盾，所以 $H\cap gH=\varnothing$。特别地 $e\in H$，故 $e\notin gH$。任何子群都必须包含单位元，因此 $gH$ 不可能是子群。
+
+
+\begin{exercise}[循环群的子群]
+设 $G=C_n=\cyclic{a}$。证明：对每个正因子 $d\mid n$，$G$ 恰有一个 $d$ 阶子群，并写出其生成元。
+\end{exercise}
+
+\emph{解答.} 写 $n=dq$。元素 $a^q$ 的阶为
+\[
+\ord(a^q)=\frac{n}{\gcd(n,q)}=\frac{n}{q}=d,
+\]
+所以 $H_d=\cyclic{a^q}$ 是一个 $d$ 阶子群。
+
+再证唯一性。设 $H\subgroup C_n$ 且 $|H|=d$。取最小正整数 $k$ 使 $a^k\in H$。对任意 $a^m\in H$，作带余除法 $m=q'k+r$，$0\le r<k$，则
+\[
+a^r=a^m(a^k)^{-q'}\in H.
+\]
+由 $k$ 的最小性只能有 $r=0$，故 $H=\cyclic{a^k}$。于是 $\ord(a^k)=d$，即
+\[
+\frac{n}{\gcd(n,k)}=d.
+\]
+最小正生成指数必为 $k=n/d=q$，所以 $H=H_d$。
+
+
+下面几题转向共轭、正规子群与同态结构，重点是练习如何从已经证明的一般定理出发组织证明，而不是逐项检查群公理。
+
+\begin{exercise}[$S_3$ 的子群与正规子群]
+列出 $S_3$ 的全部子群，判断哪些正规。再直接构造 $S_3/A_3\cong C_2$ 的同构。
+\end{exercise}
+
+\emph{解答.} $S_3$ 的子群为
+\[
+\{e\},\quad
+\cyclic{(12)},\quad
+\cyclic{(13)},\quad
+\cyclic{(23)},\quad
+A_3=\cyclic{(123)},\quad
+S_3.
+\]
+三个二阶子群彼此由共轭变换交换，例如
+\[
+(123)(12)(123)^{-1}=(23),
+\]
+所以它们都不正规。$A_3$ 的指数为 $2$，故正规；$\{e\}$ 与 $S_3$ 当然正规。
+
+符号同态
+\[
+\sgnperm:S_3\to\{\pm1\}\cong C_2
+\]
+为满同态，核为 $A_3$。由第一同构定理，
+\[
+S_3/A_3\cong C_2.
+\]
+
+
+\begin{exercise}[共轭保持群元阶]
+证明：若 $x\sim y$，则 $\ord(x)=\ord(y)$。进一步说明为什么同一个共轭类中的群元具有相同的循环型不变量。
+\end{exercise}
+
+\emph{解答.} 若 $y=gxg^{-1}$，则对任意整数 $n\ge1$，
+\[
+y^n=(gxg^{-1})^n=gx^ng^{-1}.
+\]
+因此 $y^n=e$ 当且仅当 $x^n=e$，两者满足单位元的最小正指数相同，所以 $\ord(y)=\ord(x)$。
+
+对置换群，若 $x=(a_1\cdots a_k)$，则
+\[
+g x g^{-1}=(g(a_1)\cdots g(a_k)),
+\]
+共轭只重新命名标签，不改变循环长度，因此整个循环类型保持不变。
+
+
+\begin{exercise}[逆共轭类]
+若 $C$ 是 $G$ 的一个共轭类，定义
+\[
+C^{-1}=\{x^{-1}\mid x\in C\}.
+\]
+证明 $C^{-1}$ 也是一个共轭类。
+\end{exercise}
+
+\emph{解答.} 若 $C=\classof{x}$，则任意 $y\in C$ 可写为 $y=gxg^{-1}$，从而
+\[
+y^{-1}=gx^{-1}g^{-1}.
+\]
+于是
+\[
+C^{-1}=\{gx^{-1}g^{-1}\mid g\in G\}=\classof{x^{-1}},
+\]
+所以它仍是一个共轭类。
+
+
+\begin{exercise}[唯一二阶元在中心中]
+若群 $G$ 恰有一个二阶元素 $h$，证明
+\[
+h\in Z(G).
+\]
+\end{exercise}
+
+\emph{解答.} 对任意 $g\in G$，共轭元 $ghg^{-1}$ 与 $h$ 有相同阶，因此也是二阶元。由二阶元唯一性，
+\[
+ghg^{-1}=h.
+\]
+右乘 $g$ 得 $gh=hg$。由于 $g$ 任意，$h\in Z(G)$。
+
+
+\begin{exercise}[核的逆像描述]
+设 $\varphi:G\to H$ 为同态，$K\subgroup H$。证明 $\varphi^{-1}(K)\subgroup G$；若 $K\normal H$，进一步证明 $\varphi^{-1}(K)\normal G$。
+\end{exercise}
+
+\emph{解答.} 因 $e_H\in K$ 且 $\varphi(e_G)=e_H$，所以 $\varphi^{-1}(K)$ 非空。若 $a,b\in\varphi^{-1}(K)$，则
+\[
+\varphi(ab^{-1})=\varphi(a)\varphi(b)^{-1}\in K,
+\]
+故 $ab^{-1}\in\varphi^{-1}(K)$，由一步子群判据它是 $G$ 的子群。
+
+若进一步 $K\normal H$，取 $g\in G$、$x\in\varphi^{-1}(K)$，有
+\[
+\varphi(gxg^{-1})
+=\varphi(g)\varphi(x)\varphi(g)^{-1}\in K,
+\]
+故 $gxg^{-1}\in\varphi^{-1}(K)$，所以 $\varphi^{-1}(K)\normal G$。
+
+
+\begin{exercise}[第一同构定理的计算例]
+定义
+\[
+\varphi:\ZZ\to C_n,
+\qquad
+k\mapsto a^k,
+\]
+其中 $C_n=\cyclic{a}$。求 $\Ker\varphi$ 与 $\Img\varphi$，并由第一同构定理证明
+\[
+\ZZ/n\ZZ\cong C_n.
+\]
+\end{exercise}
+
+\emph{解答.} 因 $a$ 生成 $C_n$，$\varphi$ 为满射，所以 $\Img\varphi=C_n$。又
+\[
+\varphi(k)=e
+\Longleftrightarrow a^k=e
+\Longleftrightarrow n\mid k,
+\]
+故
+\[
+\Ker\varphi=n\ZZ.
+\]
+第一同构定理立即给出
+\[
+\ZZ/n\ZZ
+=\ZZ/\Ker\varphi
+\cong\Img\varphi=C_n.
+\]
+
+
+最后把群作用、Cayley 定理以及直积和半直积串起来。这些题直接为\chapref{chap:representation-theory}的表示作用语言做准备。
+
+\begin{exercise}[轨道是等价类]
+在 $X$ 上定义关系
+\[
+x\sim y
+\quad\Longleftrightarrow\quad
+\exists g\in G:\ y=g\cdot x.
+\]
+证明这是等价关系，并证明其等价类正是 $G$ 的轨道。
+\end{exercise}
+
+\emph{解答.} 自反性来自 $e\cdot x=x$。若 $y=g\cdot x$，则
+\[
+x=g^{-1}\cdot y,
+\]
+故对称性成立。若 $y=g\cdot x$ 且 $z=h\cdot y$，则
+\[
+z=h\cdot(g\cdot x)=(hg)\cdot x,
+\]
+故传递性成立。因此 $\sim$ 是等价关系。由定义，与 $x$ 等价的全部点正是
+\[
+\{g\cdot x\mid g\in G\}=\Orb_G(x),
+\]
+即轨道。
+
+
+\begin{exercise}[共轭类作为轨道]
+令 $G$ 在自身上按共轭作用
+\[
+g\cdot x=gxg^{-1}.
+\]
+证明 $x$ 的轨道为 $\classof{x}$，稳定子为 $C_G(x)$，并用轨道--稳定子定理重新推出\eqnrefs{eq:class-size}。
+\end{exercise}
+
+\emph{解答.} 共轭作用下
+\[
+\Orb_G(x)=\{gxg^{-1}\mid g\in G\}=\classof{x}.
+\]
+稳定子为
+\[
+\Stab_G(x)=\{g\in G\mid gxg^{-1}=x\}
+=\{g\in G\mid gx=xg\}=C_G(x).
+\]
+由轨道--稳定子定理，
+\[
+|\classof{x}|=[G:C_G(x)]
+=\frac{|G|}{|C_G(x)|},
+\]
+即共轭类大小公式。
+
+
+\begin{exercise}[Cayley 定理的右正则版本]
+定义右作用 $R_g(x)=xg^{-1}$。证明 $g\mapsto R_g$ 仍给出 $G$ 到 $\Sym(G)$ 的单射同态。解释为什么若直接取 $x\mapsto xg$，乘法次序会反转。
+\end{exercise}
+
+\emph{解答.} 定义 $R_g(x)=xg^{-1}$。则
+\begin{align*}
+(R_g\circ R_h)(x)
+&=R_g(xh^{-1})\\
+&=xh^{-1}g^{-1}\\
+&=x(gh)^{-1}=R_{gh}(x),
+\end{align*}
+所以 $g\mapsto R_g$ 是同态。若 $R_g=R_h$，作用于 $e$ 得 $g^{-1}=h^{-1}$，故 $g=h$，因此它是单射。
+
+若直接定义 $T_g(x)=xg$，则
+\[
+(T_g\circ T_h)(x)=xhg=T_{hg}(x),
+\]
+乘法顺序反转，所以 $g\mapsto T_g$ 是反同态而不是同态。
+
+
+\begin{exercise}[直积的商群]
+证明
+\[
+(G\times H)/(G\times\{e_H\})\cong H,
+\qquad
+(G\times H)/(\{e_G\}\times H)\cong G.
+\]
+要求明确写出满同态及其核。
+\end{exercise}
+
+\emph{解答.} 定义投影
+\[
+\pi_H:G\times H\to H,
+\qquad
+\pi_H(g,h)=h.
+\]
+它是满同态，且
+\[
+\Ker\pi_H=G\times\{e_H\}.
+\]
+第一同构定理给出
+\[
+(G\times H)/(G\times\{e_H\})\cong H.
+\]
+同理取 $\pi_G(g,h)=g$，其核为 $\{e_G\}\times H$，得到第二个同构。
+
+
+\begin{exercise}[半直积中的正规因子]
+在 $N\rtimes_\varphi H$ 中证明
+\[
+N\times\{e_H\}\normal N\rtimes_\varphi H,
+\]
+并说明 $\{e_N\}\times H$ 何时正规。由此给出半直积退化为直积的一个充要条件。
+\end{exercise}
+
+\emph{解答.} 把 $N$ 识别为 $N\times\{e_H\}$。对任意 $(n,h)$ 与 $(m,e_H)$，利用半直积乘法与逆元公式可得
+\[
+(n,h)(m,e_H)(n,h)^{-1}
+=\bigl(n\varphi(h)(m)n^{-1},e_H\bigr)\in N\times\{e_H\},
+\]
+故该因子正规。
+
+再看 $H_0=\{e_N\}\times H$。取 $(n,e_H)$ 与 $(e_N,h)$，
+\[
+(n,e_H)(e_N,h)(n,e_H)^{-1}
+=\bigl(n\varphi(h)(n^{-1}),h\bigr).
+\]
+它对所有 $n,h$ 都属于 $H_0$ 当且仅当
+\[
+\varphi(h)(n)=n,
+\qquad \forall n\in N,
+\]
+也就是 $\varphi$ 为平凡作用。因此 $H_0$ 正规当且仅当半直积退化为直积 $N\times H$。
+
+
+\begin{exercise}[$D_4$ 的半直积结构]
+设
+\[
+D_4=\cyclic{r,s\mid r^4=s^2=e,\ srs^{-1}=r^{-1}}.
+\]
+证明
+\[
+D_4\cong C_4\rtimes C_2,
+\]
+并明确写出 $C_2\to\Aut(C_4)$ 的非平凡作用。
+\end{exercise}
+
+\emph{解答.} 令 $N=\cyclic r\cong C_4$、$H=\cyclic s\cong C_2$。关系
+\[
+srs^{-1}=r^{-1}
+\]
+说明 $N\normal D_4$，而 $N\cap H=\{e\}$、$NH=D_4$。因此内半直积判据给出
+\[
+D_4\cong C_4\rtimes_\varphi C_2.
+\]
+作用由生成元 $s$ 决定：
+\[
+\varphi(s)(r^k)=r^{-k}.
+\]
+它是 $C_4$ 的非平凡二阶自同构。由于该作用不是恒等作用，$D_4$ 不是 $C_4\times C_2$。
+

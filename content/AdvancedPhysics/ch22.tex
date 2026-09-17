@@ -1,0 +1,690 @@
+\chapter{Born--Huang 展开、Born--Oppenheimer 近似与几何规范势}\label{ch:born-huang}
+
+分子中的电子与原子核质量相差几个数量级，因此“电子快、核运动慢”是一个非常有效的物理直觉。但 Born--Oppenheimer (BO) 近似并不能只靠这句话成立。真正严格的路线是：先把完整电子--核波函数在每个核构型处的电子本征基上作 Born--Huang 展开，得到精确耦合通道方程；再识别 derivative coupling、电子能隙和核速度形成的无量纲控制参数；最后才允许截断到单一绝热势能面。
+
+\section{精确 Born--Huang 多通道展开}
+接下来考察完整电子--核 Hamiltonian。
+
+设电子坐标集合为 \(\mathbf r\equiv\{\mathbf r_i\}\)，核坐标集合为 \(\mathbf R\equiv\{\mathbf R_A\}\)。除去整体质心平动后，非相对论分子 Hamiltonian 可以写为
+
+\[
+\hat H
+=\hat T_N+\hat H_e(\mathbf r;\mathbf R),
+\]
+
+\[
+\hat T_N
+=-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2.
+\]
+
+固定核构型 \(\mathbf R\) 时，定义 clamped-nuclei 电子本征问题
+
+\begin{equation}
+\boxed{
+\hat H_e(\mathbf R)|\phi_n(\mathbf R)\rangle
+=E_n(\mathbf R)|\phi_n(\mathbf R)\rangle,
+\qquad
+\langle\phi_m(\mathbf R)|\phi_n(\mathbf R)\rangle=\delta_{mn}.
+}
+\label{eq:clamped-electronic-problem}
+\end{equation}
+
+注意 \(\mathbf R\) 在这里是电子问题的参数，而在完整分子问题中仍然是量子坐标。只要所用电子基在目标子空间内完备，总波函数就可以形式精确地展开为
+
+\begin{equation}
+\boxed{
+|\Psi\rangle
+=\sum_n\chi_n(\mathbf R)|\phi_n(\mathbf R)\rangle.
+}
+\label{eq:born-huang-expansion}
+\end{equation}
+
+这个式子本身不是 BO 近似；它只是一个随 \(\mathbf R\) 移动的基底展开。
+
+接下来考察核动能作用在移动基底上。
+
+关键步骤是让 \(\hat T_N\) 真正作用到 \eqnrefs{eq:born-huang-expansion}。对任意一个核坐标 \(\mathbf R_A\)，
+
+\[
+\nabla_A^2(\chi_n\phi_n)
+=(\nabla_A^2\chi_n)\phi_n
++2(\nabla_A\chi_n)\cdot(\nabla_A\phi_n)
++\chi_n\nabla_A^2\phi_n.
+\]
+
+定义一阶和二阶 derivative coupling
+
+\begin{equation}
+\boxed{
+\mathbf d_{mn}^{(A)}
+\equiv\langle\phi_m|\nabla_A\phi_n\rangle,
+\qquad
+D_{mn}^{(A)}
+\equiv\langle\phi_m|\nabla_A^2\phi_n\rangle.
+}
+\label{eq:derivative-couplings}
+\end{equation}
+
+把完整 Schr\"odinger 方程左乘 \(\langle\phi_m|\)，得到精确耦合通道方程
+
+\begin{equation}
+\boxed{
+\begin{aligned}
+E\chi_m
+=&\left[-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2+E_m(\mathbf R)\right]\chi_m
+\\
+&-\sum_{A,n}\frac{\hbar^2}{2M_A}
+\left[
+2\mathbf d_{mn}^{(A)}\cdot\nabla_A
++D_{mn}^{(A)}
+\right]\chi_n.
+\end{aligned}
+}
+\label{eq:born-huang-coupled}
+\end{equation}
+
+\begin{derivation}[耦合通道方程的推导]
+\emph{思路：}从全 Schrödinger 方程 \(\hat H|\Psi\rangle=E|\Psi\rangle\) 出发，代入 Born--Huang 展开 \(|\Psi\rangle=\sum_n\chi_n|\phi_n\rangle\)，用 Leibniz 公式展开核动能项，然后左乘 \(\langle\phi_m|\) 投影到第 \(m\) 个通道。关键是将核动能的三项（作用在 \(\chi_n\)、交叉项、作用在 \(\phi_n\)）分别处理。
+
+\emph{第一步：核动能的 Leibniz 展开。}核动能算符 \(\hat T_N=-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2\) 同时作用于核坐标依赖的 \(\chi_n(\mathbf R)\) 和 \(|\phi_n(\mathbf R)\rangle\)（电子态也隐含依赖核坐标）。Leibniz 公式给出
+\begin{equation*}
+\hat T_N(\chi_n|\phi_n\rangle)
+=-\sum_A\frac{\hbar^2}{2M_A}\left[(\nabla_A^2\chi_n)\phi_n+2(\nabla_A\chi_n)\cdot(\nabla_A\phi_n)+\chi_n\nabla_A^2\phi_n\right].
+\end{equation*}
+三项分别来自：核动能作用在核波函数 \(\chi_n\) 上（第一项，对角动能）、核波函数梯度与电子态梯度的交叉项（第二项，一阶非绝热耦合）、核动能作用在电子态上（第三项，二阶耦合）。
+
+\emph{第二步：电子 Hamiltonian 项。}电子 Hamiltonian \(\hat H_e(\mathbf R)\) 只作用于电子坐标，满足 \(\hat H_e|\phi_n\rangle=E_n(\mathbf R)|\phi_n\rangle\)。因此
+\begin{equation*}
+\hat H_e\sum_n\chi_n|\phi_n\rangle=\sum_n E_n(\mathbf R)\chi_n|\phi_n\rangle.
+\end{equation*}
+电子能量 \(E_n(\mathbf R)\) 成为核运动的绝热势能面。
+
+\emph{第三步：投影到第 \(m\) 通道。}左乘 \(\langle\phi_m|\) 并利用正交性 \(\langle\phi_m|\phi_n\rangle=\delta_{mn}\)：
+\begin{itemize}
+\item 第一项（核动能作用在 \(\chi_n\) 上）：\(\langle\phi_m|(\nabla_A^2\chi_n)\phi_n\rangle=(\nabla_A^2\chi_m)\delta_{mn}\)，只保留 \(n=m\) 项，给出对角动能 \(-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2\chi_m\)。
+\item 第二项（交叉项）：\(\langle\phi_m|2(\nabla_A\chi_n)\cdot(\nabla_A\phi_n)\rangle=2\mathbf d_{mn}^{(A)}\cdot(\nabla_A\chi_n)\)，给出非绝热一阶耦合，\(\mathbf d_{mn}^{(A)}=\langle\phi_m|\nabla_A\phi_n\rangle\) 是非绝热耦合矢量。
+\item 第三项（核动能作用在 \(\phi_n\) 上）：\(\langle\phi_m|\chi_n\nabla_A^2\phi_n\rangle=D_{mn}^{(A)}\chi_n\)，给出二阶耦合，\(D_{mn}^{(A)}=\langle\phi_m|\nabla_A^2\phi_n\rangle\)。
+\end{itemize}
+电子部分给出 \(E_m(\mathbf R)\chi_m\)。合并即得\eqnrefs{eq:born-huang-coupled}。
+
+\emph{第四步：物理意义。}耦合通道方程的每一项有明确的物理来源：\(-\frac{\hbar^2}{2M_A}\nabla_A^2\chi_m\) 是核 \(A\) 在第 \(m\) 个绝热面上的动能；\(E_m(\mathbf R)\) 是绝热势能面（电子能量随核构型变化）；\(2\mathbf d_{mn}^{(A)}\cdot\nabla_A\) 是一阶非绝热耦合——核运动"拖动"电子态，使其在不同电子本征态间投影，\(\mathbf d_{mn}\) 量化此投影速率；\(D_{mn}^{(A)}\) 是二阶耦合，在完备基中可由一阶联络构造（\eqnrefs{eq:d-from-d}），其结构类比规范理论中的协变导数平方 \(D_\mu D^\mu=\partial^2+A^2+\partial\cdot A\)。
+
+\emph{第五步：绝热近似与非绝热跃迁。}绝热近似忽略所有 \(m\neq n\) 耦合项（\(\mathbf d_{mn}=0\)，\(D_{mn}=0\)），使各通道独立——核在第 \(m\) 个绝热势能面 \(E_m(\mathbf R)\) 上运动，不跃迁到其他电子态。
+
+这在大质量极限 \(M_A\to\infty\) 下成立：核运动远慢于电子运动，电子能瞬时调整到核构型对应的本征态。非绝热耦合使通道间可以跃迁，是分子动力学中势能面交叉的数学根源。
+
+当两个绝热面 \(E_m(\mathbf R)\) 和 \(E_n(\mathbf R)\) 在某构型 \(\mathbf R_0\) 处简并（\(E_m=E_n\)）时，\(\mathbf d_{mn}\) 发散，绝热近似完全失效——这是 Jahn--Teller 系统中 conical intersection 的特征。耦合通道方程的一般形式为
+\begin{equation*}
+\left[-\frac{\hbar^2}{2M}\nabla_{\mathbf R}^2+E_n(\mathbf R)\right]\chi_n(\mathbf R)=-\sum_{m\ne n}\left[\frac{\hbar^2}{2M}\left(2\mathbf d_{nm}\cdot\nabla_{\mathbf R}+D_{nm}\right)\right]\chi_m(\mathbf R),
+\end{equation*}
+其中 \(\mathbf d_{nm}=\langle\phi_n|\nabla_{\mathbf R}\phi_m\rangle\) 为非绝热耦合矢量，\(D_{nm}=\langle\phi_n|\nabla_{\mathbf R}^2\phi_m\rangle\) 为二阶耦合。
+
+
+
+
+
+
+
+
+\end{derivation}
+
+在完备电子基中，\eqnrefs{eq:born-huang-coupled} 与原始分子 Schrödinger 方程严格等价；通道截断和大质量展开属于后续彼此独立的近似。
+
+接下来考察完备电子基中的二阶耦合。
+
+对正交归一关系求导：
+
+\[
+\nabla_A\delta_{mn}
+=\langle\nabla_A\phi_m|\phi_n\rangle
++\langle\phi_m|\nabla_A\phi_n\rangle=0,
+\]
+
+所以
+
+\begin{equation}
+\boxed{
+\mathbf d_{nm}^{(A)*}
+=-\mathbf d_{mn}^{(A)}.
+}
+\label{eq:d-antihermitian}
+\end{equation}
+
+也就是说 \(\mathbf d^{(A)}\) 是反 Hermitian 矩阵。再对 \(\mathbf d_{mn}^{(A)}\) 求散度：
+
+\[
+\nabla_A\cdot\mathbf d_{mn}^{(A)}
+=\langle\nabla_A\phi_m|\nabla_A\phi_n\rangle
++\langle\phi_m|\nabla_A^2\phi_n\rangle.
+\]
+
+在第一项中插入完备关系
+
+\[
+\sum_l|\phi_l\rangle\langle\phi_l|=\mathbb I,
+\]
+
+并使用 \eqnrefs{eq:d-antihermitian}：
+
+\[
+\langle\nabla_A\phi_m|\nabla_A\phi_n\rangle
+=-\sum_l
+\mathbf d_{ml}^{(A)}\cdot\mathbf d_{ln}^{(A)}.
+\]
+
+因此
+
+\begin{equation}
+\boxed{
+D_{mn}^{(A)}
+=\nabla_A\cdot\mathbf d_{mn}^{(A)}
++\sum_l\mathbf d_{ml}^{(A)}\cdot\mathbf d_{ln}^{(A)}.
+}
+\label{eq:d-from-d}
+\end{equation}
+
+所以在完备基中，二阶 derivative coupling 可以完全由一阶联络构造；把 \(D_{mn}\) 当成与 \(d_{mn}\) 无关的经验项会隐藏真正的几何结构。
+
+完备基下的展开是精确的，但实际计算必须截断到有限电子子空间。截断引入的遗漏通道会产生几何标量势（Born--Huang 势），其结构由协变导数和有限子空间投影决定。
+
+\section{协变核动力学与有限子空间几何}
+
+定义矩阵值联络
+
+\begin{equation}
+\boxed{
+\mathbf A_{mn}^{(A)}
+\equiv\ii\hbar\mathbf d_{mn}^{(A)}.
+}
+\label{eq:nonabelian-connection}
+\end{equation}
+
+由于 \(\mathbf d\) 反 Hermitian，\(\mathbf A\) 是 Hermitian。把 \eqnrefs{eq:d-from-d} 代回 \eqnrefs{eq:born-huang-coupled}，核动能恰好可以重组为
+
+\begin{equation}
+\boxed{
+\hat T_N^{\rm ch}
+=\sum_A\frac1{2M_A}
+\left[-\ii\hbar\nabla_A\,\mathbb I-\mathbf A^{(A)}\right]^2.
+}
+\label{eq:covariant-nuclear-kinetic}
+\end{equation}
+
+这个等式可以直接展开核对：
+
+\begin{align*}
+[-\ii\hbar\nabla-\mathbf A]^2
+=&-\hbar^2\nabla^2
++\ii\hbar(\nabla\cdot\mathbf A)
++2\ii\hbar\mathbf A\cdot\nabla
++\mathbf A^2
+\\
+=&-\hbar^2
+\left[
+\nabla^2
++2\mathbf d\cdot\nabla
++\nabla\cdot\mathbf d
++\mathbf d^2
+\right],
+\end{align*}
+
+正好恢复 \(\nabla^2+2\mathbf d\cdot\nabla+D\)。
+
+电子基并不唯一。令
+
+\[
+|\phi_n'\rangle
+=\sum_m|\phi_m\rangle U_{mn}(\mathbf R),
+\qquad U(\mathbf R)\in U(N).
+\]
+
+为了保持总波函数不变，核通道振幅必须变换为
+
+\[
+\boldsymbol\chi'=U^\dagger\boldsymbol\chi.
+\]
+
+由定义直接计算得到
+
+\begin{equation}
+\boxed{
+\mathbf A_A'
+=U^\dagger\mathbf A_AU
++\ii\hbar U^\dagger(\nabla_AU).
+}
+\label{eq:berry-gauge-transform}
+\end{equation}
+
+因此
+
+\[
+[-\ii\hbar\nabla_A-\mathbf A_A']\boldsymbol\chi'
+=U^\dagger
+[-\ii\hbar\nabla_A-\mathbf A_A]\boldsymbol\chi.
+\]
+
+这就是标准的非 Abelian gauge-covariant transformation。Derivative coupling 不是某个坐标选择造成的“多余项”，而是随核坐标移动的电子基底必然带来的联络。
+
+\begin{derivation}[Born--Huang 核动能的协变化]
+分三步验证规范协变性。
+
+\emph{第一步：derivative coupling 的变换律。}电子基变换 \(|\phi_n'\rangle=\sum_m|\phi_m\rangle U_{mn}(\mathbf R)\) 给出
+\[
+ \mathbf d_{mn}^{\prime(A)}
+ =\langle\phi_m'|\nabla_A\phi_n'\rangle
+ =\sum_{p,q}U_{mp}^*\,\langle\phi_p|\nabla_A(U_{nq}\phi_q)\rangle
+ =\sum_{p,q}U_{mp}^*\!\left[
+ (\nabla_AU_{nq})\langle\phi_p|\phi_q\rangle
+ +U_{nq}\langle\phi_p|\nabla_A\phi_q\rangle
+ \right].
+\]
+利用 \(\langle\phi_p|\phi_q\rangle=\delta_{pq}\)，
+\[
+ \mathbf d_{mn}^{\prime(A)}
+ =\sum_p U_{mp}^*(\nabla_AU_{np})
+ +\sum_{p,q}U_{mp}^*\mathbf d_{pq}^{(A)}U_{nq}
+ =\bigl(U^\dagger\nabla_AU\bigr)_{mn}
+ +\bigl(U^\dagger\mathbf d^{(A)}U\bigr)_{mn}.
+\]
+乘以 \(\ii\hbar\) 即得\eqnrefs{eq:berry-gauge-transform}。
+
+\emph{第二步：核振幅的逆变换。}总波函数不变要求
+\[
+ \sum_n\chi_n'\phi_n'=\sum_m\chi_m\phi_m,
+\]
+代入 \(\phi_n'=\sum_m\phi_mU_{mn}\) 并利用 \(\{\phi_m\}\) 线性无关，
+\[
+ \chi_m=\sum_nU_{mn}\chi_n',
+ \qquad\text{即}\quad
+ \boldsymbol\chi=U\boldsymbol\chi',
+ \qquad \boldsymbol\chi'=U^\dagger\boldsymbol\chi.
+\]
+
+\emph{第三步：协变导数的规范不变性。}将 \(\mathbf A_A'=\ii\hbar\mathbf d_A'\) 与 \(\boldsymbol\chi'=U^\dagger\boldsymbol\chi\) 代入，
+\[
+ \begin{aligned}
+ (-\ii\hbar\nabla_A-\mathbf A_A')\boldsymbol\chi'
+ &=(-\ii\hbar\nabla_A-\ii\hbar U^\dagger\mathbf d_AU-\ii\hbar U^\dagger\nabla_AU)\,U^\dagger\boldsymbol\chi\\
+ &=(-\ii\hbar U^\dagger\nabla_A-\ii\hbar U^\dagger\mathbf d_A)\boldsymbol\chi\\
+ &\quad +\ii\hbar U^\dagger(\nabla_AU)U^\dagger\boldsymbol\chi-\ii\hbar U^\dagger(\nabla_AU)U^\dagger\boldsymbol\chi\\
+ &=U^\dagger(-\ii\hbar\nabla_A-\ii\hbar\mathbf d_A)\boldsymbol\chi\\
+ &=U^\dagger(-\ii\hbar\nabla_A-\mathbf A_A)\boldsymbol\chi.
+ \end{aligned}
+\]
+关键处使用了 \(U^\dagger U=\mathbb I\) 求导得到的 \((\nabla_AU^\dagger)U=-U^\dagger(\nabla_AU)\)。因此 \(\nabla_AU\) 产生的非齐次项严格相消，协变导数按 \(U^\dagger\) 左乘变换。平方后矩阵核 Hamiltonian \(H^{\rm nuc}\to U^\dagger H^{\rm nuc}U\)，其谱和总波函数都不依赖局部电子基底的相位或简并子空间中的幺正混合。
+
+\textbf{物理意义。}Born--Huang 协变化保证分子总波函数在电子态基底变换下不变——这是 Berry 相位理论的基础。当电子态简并（如锥面交叉）时，$U$ 的非阿贝尔规范结构产生非阿贝尔 Berry 联络，分子核运动感受到规范势。实例：$\mathrm{Na}_3$ 分子中 $E\times E$ Jahn--Teller 系统的 Berry 相位为 $\pi$，使分子能级序列出现半整数量子化——这是分子物理中 Berry 相位的首次实验验证。
+\end{derivation}
+
+接下来考察有限电子子空间：遗漏通道产生几何标量势。
+
+\eqnrefs{eq:d-from-d}把 $D$ 完全写成 $\mathbf d$ 的关系依赖\emph{完整电子完备关系}。实际计算常只保留有限个电子态。设
+\[
+P_e(\mathbf R)=\sum_{a=1}^{N}|\phi_a(\mathbf R)\rangle\langle\phi_a(\mathbf R)|,
+\qquad
+Q_e=I-P_e.
+\]
+在保留子空间内部，矩阵联络仍定义为 $\mathbf A_A=\ii\hbar P_e\nabla_AP_e$ 的基底表示；但 $Q_e$ 中被删去的电子态不会凭空消失，而留下正半定的量子几何标量矩阵
+\begin{equation}
+\boxed{
+[\boldsymbol\Phi_A]_{mn}
+=\frac{\hbar^2}{2M_A}
+\langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle,
+\qquad m,n\in P_e.
+}
+\label{eq:born-huang-finite-subspace-scalar}
+\end{equation}
+因此有限电子子空间中的有效核 Hamiltonian 应写成
+\begin{equation}
+\boxed{
+H_{P_e}^{\rm nuc}
+=\sum_A\frac{[-\ii\hbar\nabla_A I-\mathbf A_A]^2}{2M_A}
++\mathbf E(\mathbf R)+\sum_A\boldsymbol\Phi_A,
+}
+\label{eq:born-huang-finite-subspace-hamiltonian}
+\end{equation}
+其中 $\mathbf E$ 是保留电子态的势能矩阵。只有当 $P_e$ 扩展到完整电子空间时 $Q_e\to0$，\eqnrefs{eq:born-huang-finite-subspace-scalar}才消失并恢复纯协变平方\eqnrefs{eq:covariant-nuclear-kinetic}。这一区分对于有限态非绝热动力学非常重要：不能把完整基中的 $D=\nabla\!\cdot d+d^2$ 机械套到截断基后便宣称所有二阶几何修正已经包含。
+
+\begin{derivation}[有限子空间几何势的投影来源]
+设保留电子子空间投影 \(P_e=\sum_{a=1}^N|\phi_a\rangle\langle\phi_a|\)，正交补 \(Q_e=I-P_e\)。对任一保留态的导数插入完备关系 \(I=P_e+Q_e\)，
+\begin{equation*}
+ \langle\nabla_A\phi_m|\nabla_A\phi_n\rangle
+ =\langle\nabla_A\phi_m|P_e|\nabla_A\phi_n\rangle
+ +\langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle.
+\end{equation*}
+把 \(P_e\) 的定义代入第一项，
+\begin{align*}
+ \langle\nabla_A\phi_m|P_e|\nabla_A\phi_n\rangle
+ &=\sum_{a=1}^N
+ \langle\nabla_A\phi_m|\phi_a\rangle
+ \langle\phi_a|\nabla_A\phi_n\rangle\\
+ &=-\sum_{a=1}^N
+ \mathbf d_{ma}^{(A)}\cdot\mathbf d_{an}^{(A)},
+\end{align*}
+其中第二步用了\eqnrefs{eq:d-antihermitian}：对正交关系 \(\langle\phi_m|\phi_a\rangle=\delta_{ma}\) 求导得
+\begin{equation*}
+ \langle\nabla_A\phi_m|\phi_a\rangle
+ +\langle\phi_m|\nabla_A\phi_a\rangle=0
+ \quad\Longrightarrow\quad
+ \langle\nabla_A\phi_m|\phi_a\rangle=-\mathbf d_{ma}^{(A)}.
+\end{equation*}
+由\eqnrefs{eq:d-from-d}，
+\begin{equation*}
+ D_{mn}^{(A)}
+ =\nabla_A\cdot\mathbf d_{mn}^{(A)}
+ +\sum_{a=1}^N\mathbf d_{ma}^{(A)}\cdot\mathbf d_{an}^{(A)},
+\end{equation*}
+故 \(\nabla_A\cdot\mathbf d+\mathbf d^2\) 恰重组为协变动能平方\eqnrefs{eq:covariant-nuclear-kinetic}。第二项
+\begin{equation*}
+ \langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle
+\end{equation*}
+无法由有限维内部联络重建，乘以 \(\hbar^2/(2M_A)\) 后正好给出\eqnrefs{eq:born-huang-finite-subspace-scalar}。
+
+为证正定性，对任意保留子空间列向量 \(\mathbf c\)，由\eqnrefs{eq:born-huang-finite-subspace-scalar}展开，
+\begin{align*}
+ \mathbf c^\dagger\boldsymbol\Phi_A\mathbf c
+ &=\frac{\hbar^2}{2M_A}\sum_{m,n}c_m^*c_n
+ \langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle\\
+ &=\frac{\hbar^2}{2M_A}
+ \left\langle \sum_m c_m\nabla_A\phi_m\middle|Q_e\middle|\sum_n c_n\nabla_A\phi_n\right\rangle\\
+ &=\frac{\hbar^2}{2M_A}
+ \left\langle Q_e\nabla_A\sum_n c_n\phi_n\middle|
+ Q_e\nabla_A\sum_m c_m\phi_m\right\rangle\\
+ &=\frac{\hbar^2}{2M_A}
+ \left\|Q_e\nabla_A\sum_n c_n\phi_n\right\|^2\ge0,
+\end{align*}
+第二步交换求和与内积，第三步用了 \(Q_e^\dagger=Q_e\)，第四步用了 \(Q_e^2=Q_e\)。等号成立当且仅当 \(\nabla_A\sum_n c_n\phi_n\) 完全落在 \(P_e\) 子空间内。当 \(P_e\) 扩展到完整电子空间时 \(Q_e\to0\)，\eqnrefs{eq:born-huang-finite-subspace-scalar}消失并恢复纯协变平方\eqnrefs{eq:covariant-nuclear-kinetic}。因此 \(\boldsymbol\Phi_A\) 测量的是保留电子子空间随核坐标移动时向其正交补空间弯曲的程度。
+
+\emph{物理意义。}Born--Huang 几何势的投影来源揭示了"分子 Born--Oppenheimer 近似中的规范结构"：当核运动时，电子基态不仅随核坐标平移（协变导数 \(\nabla_A\)），还会"弯曲"到正交补空间——几何势 \(\boldsymbol\Phi_A=i\langle\phi_0|\nabla_A\phi_0\rangle\) 正是这一弯曲的规范联络。物理上，\(\boldsymbol\Phi_A\) 是 Berry 联络：核在参数空间（核坐标）中沿闭合路径移动一周获得 Berry 相位 \(\oint\boldsymbol\Phi_A\cdot d\mathbf R\)，这是绝热演化的几何相位。有限电子子空间的投影使 \(\boldsymbol\Phi_A\) 非零——只有当电子空间完整（\(P_e\to1\)，\(Q_e\to0\)）时弯曲消失，几何势归零。这解释了为何精确 Born--Oppenheimer（全电子空间）无 Berry 相位，而截断近似（有限电子态）产生几何相位——后者是投影的非平凡拓扑后果，在 Jahn--Teller 效应和分子圆锥交叉中产生可观测的几何相位符号翻转。
+\end{derivation}
+
+接下来考察非绝热耦合的能隙分母。
+
+对 clamped-nuclei 本征方程关于 \(\mathbf R_A\) 求导：
+
+\[
+(\nabla_AH_e)|\phi_n\rangle
++H_e|\nabla_A\phi_n\rangle
+=(\nabla_AE_n)|\phi_n\rangle
++E_n|\nabla_A\phi_n\rangle.
+\]
+
+左乘 \(\langle\phi_m|\)。当 \(m\neq n\) 时，正交性消去 \(\nabla_AE_n\) 项，得到
+
+\begin{equation}
+\boxed{
+\mathbf d_{mn}^{(A)}
+=\frac{\langle\phi_m|\nabla_AH_e|\phi_n\rangle}
+{E_n-E_m},
+\qquad m\neq n.
+}
+\label{eq:hellmann-feynman-offdiagonal}
+\end{equation}
+
+这条式子说明 derivative coupling 会在小能隙处增强。对于真正简并点，绝热单态基甚至会变得奇异，必须保留整个简并子空间并使用矩阵值联络。
+
+能隙分母给出了非绝热耦合的定量判据。当核运动足够慢且能隙足够大时，可以严格截断到单一绝热势能面——这就是 Born--Oppenheimer 近似。本节识别其控制参数并导出单面有效理论中的 Berry 联络与 Born--Huang 标量势。
+
+\section{绝热极限与单势能面有效理论}
+接下来考察Born--Oppenheimer 近似的控制参数。
+
+若核波包中心沿一条经典轨道 \(\mathbf R(t)\) 缓慢运动，电子瞬时本征态之间的非绝热混合频率尺度为
+
+\[
+\left|
+\sum_A\dot{\mathbf R}_A\cdot\mathbf d_{mn}^{(A)}
+\right|.
+\]
+
+与 Bohr 频率 \(|E_m-E_n|/\hbar\) 比较，得到局部绝热参数
+
+\begin{equation}
+\boxed{
+\epsilon_{mn}
+\equiv
+\frac{\hbar\left|
+\sum_A\dot{\mathbf R}_A\cdot\mathbf d_{mn}^{(A)}
+\right|}
+{|E_m-E_n|}.
+}
+\label{eq:bo-adiabatic-parameter}
+\end{equation}
+
+当所有相关 \(m\neq n\) 都满足 \(\epsilon_{mn}\ll1\)，通道间人口转移才被压低。利用 \eqnrefs{eq:hellmann-feynman-offdiagonal} 可进一步看到
+
+\[
+\epsilon_{mn}
+\sim
+\frac{\hbar|\\dot{R}|\,|\langle m|\partial_RH_e|n\rangle|}
+{|E_m-E_n|^2},
+\]
+
+这就是绝热定理常见的“矩阵元除以能隙平方”结构。
+
+“核很重”为什么通常有利？在相似势能曲率下，振动频率 \(\omega_{vib}\sim\sqrt{k/M}\) 随 \(M^{-1/2}\) 下降，典型核速度也随质量增大而减小；与此同时电子能隙仍保持电子伏量级。因此质量比为绝热性提供了基础尺度分离。但在 avoided crossing、conical intersection 或高速碰撞中，能隙可以变小到足以抵消这一质量优势，BO 近似随即失效。
+
+接下来考察单绝热面投影：Berry connection 与 Born--Huang 标量势。
+
+假设目标电子态 \(n\) 非简并且与其他态保持有限能隙，只保留该通道。有效核 Hamiltonian 为
+
+\begin{equation}
+\boxed{
+\hat H_n^{\rm eff}
+=\sum_A\frac{1}{2M_A}
+[-\ii\hbar\nabla_A-\mathbf A_n^{(A)}]^2
++E_n(\mathbf R)+\Phi_n(\mathbf R).
+}
+\label{eq:berry-scalar}
+\end{equation}
+
+其中
+
+\[
+\mathbf A_n^{(A)}
+=\ii\hbar\langle\phi_n|\nabla_A\phi_n\rangle
+\]
+
+是 Abelian Berry connection。标量 Born--Huang 修正为
+
+\begin{equation}
+\boxed{
+\Phi_n
+=\sum_A\frac{\hbar^2}{2M_A}
+\left[
+\langle\nabla_A\phi_n|\nabla_A\phi_n\rangle
+-|\langle\phi_n|\nabla_A\phi_n\rangle|^2
+\right].
+}
+\label{eq:born-huang-scalar}
+\end{equation}
+
+插入电子完备关系后
+
+\[
+\Phi_n
+=\sum_A\sum_{m\neq n}
+\frac{\hbar^2}{2M_A}
+|\mathbf d_{mn}^{(A)}|^2\ge0.
+\]
+
+\begin{derivation}[Born--Huang 标量势的非负性推导]
+\emph{思路：}从\eqnrefs{eq:born-huang-scalar}出发，对 \(\langle\nabla_A\phi_n|\nabla_A\phi_n\rangle\) 插入完备关系分解为各通道贡献，分离出 \(m=n\) 项与被减项抵消，剩余各项均为模平方故非负。再验证规范变换下 \(\Phi_n\) 是规范标量。
+
+\emph{第一步：插入完备关系。}从\eqnrefs{eq:born-huang-scalar}出发，标量势含 \(\langle\nabla_A\phi_n|\nabla_A\phi_n\rangle\) 项。利用电子本征态完备性 \(\sum_m|\phi_m\rangle\langle\phi_m|=\mathbb I\) 插入：
+\begin{equation*}
+\langle\nabla_A\phi_n|\nabla_A\phi_n\rangle
+=\langle\nabla_A\phi_n|\mathbb I|\nabla_A\phi_n\rangle
+=\sum_m\langle\nabla_A\phi_n|\phi_m\rangle\langle\phi_m|\nabla_A\phi_n\rangle
+=\sum_m|\mathbf d_{mn}^{(A)}|^2,
+\end{equation*}
+其中最后一步用了 \(\mathbf d_{mn}^{(A)}=\langle\phi_m|\nabla_A\phi_n\rangle\) 的定义，且 \(\langle\nabla_A\phi_n|\phi_m\rangle=(\langle\phi_m|\nabla_A\phi_n\rangle)^*=(\mathbf d_{mn}^{(A)})^*\)。
+
+\emph{第二步：分离对角项。}求和中 \(m=n\) 项恰为 \(|\langle\phi_n|\nabla_A\phi_n\rangle|^2=|\mathbf d_{nn}^{(A)}|^2\)，与\eqnrefs{eq:born-huang-scalar}中被减去的项抵消。因此
+\begin{equation*}
+\Phi_n=\sum_A\frac{\hbar^2}{2M_A}\sum_{m\neq n}|\mathbf d_{mn}^{(A)}|^2.
+\end{equation*}
+每一项 \(|\mathbf d_{mn}^{(A)}|^2\ge0\)（模平方非负），系数 \(\frac{\hbar^2}{2M_A}>0\)，故 \(\Phi_n\ge0\)。QED。
+
+\emph{第三步：规范变换验证。}在局部相位 \(|\phi_n\rangle\to\ee^{\ii\theta_n(\mathbf R)}|\phi_n\rangle\) 下，非对角耦合变换为
+\begin{equation*}
+\mathbf d_{mn}^{(A)}=\langle\phi_m|\nabla_A\phi_n\rangle
+\to\langle\phi_m|\ee^{-\ii\theta_m}\nabla_A(\ee^{\ii\theta_n}|\phi_n\rangle)
+=\ee^{\ii(\theta_n-\theta_m)}\mathbf d_{mn}^{(A)},
+\end{equation*}
+模 \(|\mathbf d_{mn}^{(A)}|\) 不变（相位因子模为 1）。因此 \(\Phi_n=\sum_A\frac{\hbar^2}{2M_A}\sum_{m\neq n}|\mathbf d_{mn}^{(A)}|^2\) 是规范标量——不依赖电子态的相位约定。对角项 \(\mathbf d_{nn}\) 的变换 \(\mathbf d_{nn}\to\ii\nabla_A\theta_n+\mathbf d_{nn}\) 使 Berry connection \(\mathbf A_n=\ii\hbar\mathbf d_{nn}\to\mathbf A_n-\hbar\nabla_A\theta_n\) 按 \(U(1)\) 规范势变换，但 \(\Phi_n\) 只含非对角项，不受影响。
+
+\emph{第四步：物理意义。}Born--Huang 标量势 \(\Phi_n\ge0\) 意味着绝热近似总是使核的有效势能升高——遗漏的高电子态对核运动的"反作用"等价于一个排斥势。这在分子物理中解释了为何绝热势能面的振动频率通常比实验值偏高：忽略非绝热耦合相当于忽略了正的 \(\Phi_n\) 修正。在凝聚态物理中，\(\Phi_n\) 是 Berry 相位理论的标量部分，与 Berry 曲率 \(\mathbf F_n=\nabla\times\mathbf A_n\) 一起构成绝热演化的几何修正。
+
+\emph{第五步：与规范理论的类比。}Born--Huang 方程中 Berry connection \(\mathbf A_n=\ii\hbar\mathbf d_{nn}\) 类比电磁矢量势，Berry 曲率 \(\mathbf F_n=\nabla\times\mathbf A_n\) 类比磁场，标量势 \(\Phi_n\) 类比电势的"非绝热"部分。
+
+规范变换 \(|\phi_n\rangle\to\ee^{\ii\theta_n}|\phi_n\rangle\) 类比电磁规范变换，\(\mathbf A_n\to\mathbf A_n-\hbar\nabla_A\theta_n\) 类比 \(A_\mu\to A_\mu+\partial_\mu\alpha\)。实例：Jahn--Teller 系统中 conical intersection 附近 \(\mathbf d_{mn}\) 发散，\(\Phi_n\) 随之发散，标志着绝热近似在此处完全失效。Born--Huang 标量势的非负性可总结为
+\begin{equation*}
+\Phi_n(\mathbf R)=\frac{\hbar^2}{2M}\sum_{m\ne n}\frac{|\langle\phi_m|\nabla_{\mathbf R}H_{\rm el}|\phi_n\rangle|^2}{(E_m-E_n)^2}\ge0,
+\end{equation*}
+其中分子为非负实数，分母平方为正，故每项非负。
+
+
+
+
+
+
+
+
+\end{derivation}
+
+\(\mathbf A_n\) 会随局部相位
+
+\[
+|\phi_n\rangle\to \ee^{\ii\theta_n(\mathbf R)}|\phi_n\rangle
+\]
+
+变为
+
+\[
+\mathbf A_n\to\mathbf A_n-\hbar\nabla\theta_n,
+\]
+
+而 \(\Phi_n\) 不变。相应 Berry curvature
+
+\begin{equation}
+\boxed{
+\mathbf F_{AB}^{(n)}
+=\partial_A\mathbf A_B^{(n)}
+-\partial_B\mathbf A_A^{(n)}
+}
+\label{eq:berry-curvature}
+\end{equation}
+
+是局部规范不变量。若围绕 conical intersection 的闭合核路径使电子态获得非平庸几何相位，核波函数必须相应补偿，从而改变振转能级与干涉图样。
+
+几何相位和 conical intersection 的物理效应在绝热表示中表现为发散的 derivative coupling，在 diabatic 表示中则化为光滑的非对角势能矩阵。本节讨论两种表示的等价性与局部两态模型。
+
+\section{绝热表示、diabatic 表示与局部两态模型}
+
+绝热基把电子 Hamiltonian 对角化，却通常产生大的 derivative coupling；diabatic 基试图通过位置依赖幺正变换减小 derivative coupling，代价是电子势能矩阵出现显式非对角耦合。两者是同一多通道理论的不同 gauge/basis representation，并不存在一个对所有核构型都唯一的“严格 diabatic basis”。
+
+当只有两个电子态在局部小能隙区域显著耦合时，可以把 \eqnrefs{eq:born-huang-coupled} 投影到二维子空间。若核波包足够窄，可以进一步把主反应坐标近似成经典轨道 \(R(t)\)。在 crossing 附近对 diabatic 能差线性化
+
+\[
+E_1(R)-E_2(R)
+\simeq \left.\frac{\dd(E_1-E_2)}{\dd R}\right|_{R_c}
+\dot R_c(t-t_c),
+\]
+
+并把局部耦合近似为常数，就得到\chapref{ch:resonance-lz}的 Landau--Zener Hamiltonian。由此可见，Landau--Zener 不是与 BO 理论分离的经验公式，而是精确 Born--Huang 多通道动力学在局部二态、经典核轨道和线性交叉三个近似之后得到的可解极限。
+
+\begin{derivation}[Berry 曲率的 Stokes 定理与 Chern 数的量子化，即\eqnrefs{eq:chern-number-quantization}]
+\emph{策略路线图。}首先回顾 Berry 相位的回路定义并用 Stokes 定理化为曲面积分；其次在参数空间紧致时定义第一 Chern 数；再次对两能级系统显式计算 Berry 曲率，验证它具有单极子形式；然后利用复射影空间 \(\CP^1\) 上的 Hopf 纤维化证明 Chern 数为整数；最后给出分子物理中 conical intersection 的实际应用。
+
+\emph{第一步：从 Berry 回路到曲面积分。}设核构型空间 \(\mathcal M\) 上电子态 \(|\phi_n(\mathbf R)\rangle\) 非简并。沿闭合回路 \(C\subset\mathcal M\) 的 Berry 相位为
+\begin{equation}
+\gamma_n(C)=\oint_C\mathbf A_n\cdot\dd\mathbf R,
+\qquad
+\mathbf A_n=\ii\hbar\langle\phi_n|\nabla_{\mathbf R}\phi_n\rangle,
+\label{eq:berry-phase-circuit}
+\end{equation}
+即\eqnrefs{eq:berry-phase-circuit}。若回路 \(C=\partial S\) 是某曲面 \(S\) 的边界，且 \(S\) 上无简并点，则由 Stokes 定理
+\begin{equation}
+\gamma_n(C)=\int_S\mathbf F_n\cdot\dd\mathbf S,
+\qquad
+\mathbf F_n=\nabla_{\mathbf R}\times\mathbf A_n,
+\label{eq:berry-stokes}
+\end{equation}
+其中 \(\mathbf F_n\) 即\eqnrefs{eq:berry-curvature}。利用电子态完备性插入 \(\sum_m|\phi_m\rangle\langle\phi_m|=\mathbb I\)，对角项因 \(\langle\phi_n|\nabla\phi_n\rangle\) 的纯虚性（来自归一化 \(\nabla\langle\phi_n|\phi_n\rangle=0\)）在旋度中消去，只剩非对角贡献
+\begin{equation*}
+F_{n,AB}=-2\,\ImPart\sum_{m\neq n}
+\langle\phi_n|\partial_A\phi_m\rangle\langle\phi_m|\partial_B\phi_n\rangle.
+\end{equation*}
+
+\emph{第二步：紧致参数空间与 Chern 数。}当 \(\mathcal M\) 紧致（例如分子核构型商去整体转动后剩余的有限维内部空间，或凝聚态中 Brillouin 区 \(\mathbb T^d\)），且 \(|\phi_n\rangle\) 在 \(\mathcal M\) 上处处非简并时，定义第一 Chern 数
+\begin{equation}
+\mathcal C_n=\frac{1}{2\pi}\int_{\mathcal M}\mathbf F_n\cdot\dd\mathbf S
+\label{eq:chern-number-definition}
+\end{equation}
+（二维情形；高维时用相应的微分形式 \(\frac{1}{2\pi}F\) 的积分）。\(\mathcal C_n\) 是整体拓扑不变量：局部规范变换 \(\mathbf A_n\to\mathbf A_n-\hbar\nabla\theta_n\) 不改变 \(\mathbf F_n\)，故 \(\mathcal C_n\) 与电子态相位约定无关。
+
+\emph{第三步：两能级系统的显式 Berry 曲率。}考虑最简单的两能级 Hamiltonian
+\begin{equation*}
+H(\mathbf R)=\mathbf R\cdot\boldsymbol\sigma
+=R_x\sigma_x+R_y\sigma_y+R_z\sigma_z,
+\end{equation*}
+本征值 \(E_\pm=\pm R\)（\(R=|\mathbf R|\)），在 \(R=0\) 处简并。下态本征矢量（球坐标 \(\mathbf R=R(\sin\theta\cos\varphi,\sin\theta\sin\varphi,\cos\theta)\)）为
+\begin{equation*}
+|\phi_-(\theta,\varphi)\rangle
+=\begin{pmatrix}\sin(\theta/2)\\-\cos(\theta/2)\,\ee^{\ii\varphi}\end{pmatrix}.
+\end{equation*}
+首先计算 Berry 联络：
+\begin{equation*}
+A_\varphi=\ii\langle\phi_-|\partial_\varphi\phi_-\rangle
+=\ii\begin{pmatrix}\sin\frac\theta2&-\cos\frac\theta2\,\ee^{-\ii\varphi}\end{pmatrix}
+\begin{pmatrix}0\\-\ii\cos\frac\theta2\,\ee^{\ii\varphi}\end{pmatrix}
+=-\cos^2\frac\theta2=-\frac{1+\cos\theta}{2},
+\end{equation*}
+\begin{equation*}
+A_\theta=\ii\langle\phi_-|\partial_\theta\phi_-\rangle
+=\ii\begin{pmatrix}\sin\frac\theta2&-\cos\frac\theta2\,\ee^{-\ii\varphi}\end{pmatrix}
+\begin{pmatrix}\frac12\cos\frac\theta2\\\frac12\sin\frac\theta2\,\ee^{\ii\varphi}\end{pmatrix}
+=0.
+\end{equation*}
+其次计算 Berry 曲率（球面上唯一分量为 \(F_{\theta\varphi}=\partial_\theta A_\varphi-\partial_\varphi A_\theta\)）：
+\begin{equation}
+F_{\theta\varphi}=\partial_\theta\!\left(-\frac{1+\cos\theta}{2}\right)=\frac{\sin\theta}{2}.
+\label{eq:two-level-berry-curvature}
+\end{equation}
+这恰是单位球面上单极子的场形式——Berry 曲率在简并点 \(R=0\) 处有 Dirac 单极子源。
+
+\emph{第四步：Chern 数的量子化。}在参数空间 \(\mathcal M=S^2\)（半径 \(R\) 的球面，包围简并点）上积分\eqnrefs{eq:two-level-berry-curvature}：
+\begin{equation}
+\mathcal C_-=\frac{1}{2\pi}\int_{S^2}F_{\theta\varphi}\,\dd\theta\,\dd\varphi
+=\frac{1}{2\pi}\int_0^{2\pi}\!\dd\varphi\int_0^\pi\frac{\sin\theta}{2}\,\dd\theta
+=\frac{1}{2\pi}\cdot2\pi\cdot\frac{1}{2}\cdot 2
+=1.
+\label{eq:chern-number-quantization}
+\end{equation}
+\(\mathcal C_-=1\) 是整数。此量子化的拓扑根源在于：球面 \(S^2\) 不能用单一非奇异规范覆盖，必须用两个 patches（北半球 \(U_N\) 与南半球 \(U_S\)），各自规范下 \(A_\varphi^{(N)}=-(1+\cos\theta)/2\) 与 \(A_\varphi^{(S)}=-(1-\cos\theta)/2\)，在赤道 \(\theta=\pi/2\) 上的规范差为
+\begin{equation*}
+A_\varphi^{(N)}-A_\varphi^{(S)}=-\frac{1+\cos\theta}{2}+\frac{1-\cos\theta}{2}=-\cos\theta\Big|_{\theta=\pi/2}=0\quad(\text{赤道}),
+\end{equation*}
+更一般地，两个 patch 的相位差 \(\ee^{\ii\varphi}\) 在赤道上绕原点一圈，缠绕数为 \(1\)，即\eqnrefs{eq:chern-number-quantization}。这正是 \(\CP^1\cong S^2\) 上 Hopf 纤维 \(S^1\hookrightarrow S^3\to S^2\) 的第一 Chern 类。
+
+\emph{第五步：分子 conical intersection 的应用。}在真实分子中，两电子态在 conical intersection 处简并。线性化展开后，有效 Hamiltonian 恰为 \(H_{\rm eff}=x\sigma_x+y\sigma_y\)（\(x,y\) 为 branching plane 坐标），Berry 曲率在 \((x,y)=(0,0)\) 处有 \(\delta\) 函数源。核波函数绕 conical intersection 一周获得 Berry 相位 \(\gamma=\pi\)，即 Longuet--Higgins 相位——波函数变号。这迫使振转能级在 conical intersection 附近出现双重结构（Jahn--Teller 畸变），是\chapref{ch:born-huang}中几何相位最直接的分子物理实现。
+
+
+\emph{[Born--Oppenheimer 近似的误差估计与 Berry 相]} Born--Oppenheimer (BO) 近似的系统误差估计由 Born--Huang 展开给出，Berry 相从核运动的有效 Hamiltonian 中自然出现。分四步建立。
+
+\emph{第一步：Born--Huang 展开。}分子 Hamiltonian \(H=T_N+H_e(\boldsymbol R)\)（\(T_N\) 核动能，\(H_e\) 电子 Hamiltonian 含核坐标参数）。电子本征态 \(\chi_n(\boldsymbol r;\boldsymbol R)\) 满足 \(H_e\chi_n=E_n(\boldsymbol R)\chi_n\)。总波函数展开 \(\Psi(\boldsymbol r,\boldsymbol R)=\sum_n\psi_n(\boldsymbol R)\chi_n(\boldsymbol r;\boldsymbol R)\)。核波函数 \(\psi_n\) 满足耦合方程
+\begin{equation*}
+  \left[T_N+E_n(\boldsymbol R)+V_{nn}(\boldsymbol R)\right]\psi_n+\sum_m\left(\langle\chi_n|T_N|\chi_m\rangle+\sum_\alpha\frac{-\hbar^2}{2M_\alpha}\langle\chi_n|\nabla_\alpha|\chi_m\rangle\cdot\nabla_\alpha\right)\psi_m=E\psi_n.
+\end{equation*}
+
+\emph{第二步：BO 近似与误差。}BO 近似忽略非对角耦合（\(m\neq n\)），保留对角项。误差来源：(1) 非对角耦合 \(\sim\hbar^2/(M\Delta E)\)（\(\Delta E\) 电子能级间隔），小因 \(M\gg m_e\)；(2) 对角项中 \(\langle\chi_n|\nabla|\chi_n\rangle\) 给出几何相。Born--Huang 估计：BO 误差 \(O(\kappa^4)\)（\(\kappa=(m_e/M)^{1/4}\)），能级误差 \(O(\kappa^4)\)，波函数误差 \(O(\kappa^2)\)。
+
+\emph{第三步：Berry 相与规范势。}对角项中 \(\boldsymbol A_n(\boldsymbol R)=i\hbar\langle\chi_n|\nabla_R|\chi_n\rangle\) 是 Berry 联络，核有效 Hamiltonian
+\begin{equation}
+  H_{\rm eff}^{(n)}=\frac{1}{2M}(-i\hbar\nabla_R-\boldsymbol A_n)^2+E_n(\boldsymbol R)+V_{nn}(\boldsymbol R)+\Phi_n(\boldsymbol R),
+  \label{eq:phys-bh-bo-effective}
+\end{equation}
+其中 \(\Phi_n=\frac{\hbar^2}{2M}\left[\langle\nabla\chi_n|\nabla\chi_n\rangle-|\langle\chi_n|\nabla\chi_n\rangle|^2\right]\) 是 Born--Huang 标量势。\(\boldsymbol A_n\) 起规范势作用——核运动"感受"电子态的几何，如分子在锥形交叉处的半整数量子数（分子 Aharonov--Bohm 效应）。
+
+\emph{第四步：绝热条件与交叉。}BO 近似在电子能级交叉处失效：\(\Delta E\to0\) 时非对角耦合发散。避免交叉（conical intersection）处 \(\boldsymbol A_n\) 有奇点，Berry 相 \(\pi\) 给出符号翻转——这是 Jahn--Teller 系统的几何相效应。远离交叉处，BO 近似精确到 \(O(\kappa^4)\)，是分子物理最成功的近似之一。Born--Huang 展开把 BO 近似从"核比电子重"的直觉提升为有精确误差界的渐近展开，Berry 相从副产品提升为核动力学的内禀结构。
+\end{derivation}

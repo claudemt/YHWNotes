@@ -1,0 +1,806 @@
+% 深度非弹性散射：规范不变 PDF、因子化、纵向结构函数与 DGLAP。
+
+深度非弹性散射（deep-inelastic scattering，DIS）是“用一个已知点状轻子去扫描复合强子”的高能散射实验。入射轻子通过一个高虚度电弱规范玻色子向强子传递四动量；虚度越大，对应空间分辨率 $\hbar/\mathcal Q$ 越短。实验只分辨出射轻子，而把所有满足总四动量守恒的强子碎裂末态 $X$ 求和，这称为\emph{包容测量}。把所有未分辨强子末态的电流矩阵元按完备性求和得到的二阶张量称为\emph{强子张量} $W^{\mu\nu}$；它是 DIS 截面中承载强子内部结构的对象。另一方面，把两个强子电流作时间排序并夹在同一个入射强子态之间得到\emph{前向 Compton 振幅} $T^{\mu\nu}$。幺正性给出的光学定理把二者连接为“$T^{\mu\nu}$ 的不连续性/虚部 = 所有真实强子末态的完备和”，因此包容截面可以用前向关联函数计算。
+
+当动量转移远大于强相互作用的长程尺度、同时保持适当的无量纲运动学比值固定时，两个电流的时空分离主要取样很短的距离。此时可用\emph{算符乘积展开}（operator product expansion, OPE）：把两个短距离算符的乘积改写成一组局域复合算符 $\mathcal O_i$ 的线性组合。乘在 $\mathcal O_i$ 前、只含短距离信息的数值函数称为\emph{Wilson 系数} $C_i$；强子内部的长距离动力学则全部留在矩阵元 $\langle P|\mathcal O_i|P\rangle$ 中。OPE 是算符层面的短长程分离，而 PDF 因子化是把同一思想组织成适合强子散射的动量分数卷积。这里的短程/长程分离把同一个截面写成短距离系数与长距离强子矩阵元的卷积；人为选取的因子化尺度 $\mu_{\rm F}$ 规定二者的分界，最终结构函数必须与这条人为分界无关。描述“强子中某个部分子携带多少纵向动量”的对象不能取成某一规范下的夸克波函数，而必须是规范不变矩阵元。两个类光分离的夸克场由 Wilson 线连接，再对分离距离作 Fourier 变换，得到部分子分布函数（PDF）。其重整化尺度依赖描述人为长短程分界改变时短程系数与长程矩阵元如何重新分配。
+
+四动量保持统一采用的 SI 动量量纲。定义
+\begin{equation}
+ \boxed{
+ q^\mu=k^\mu-k'^\mu,
+ \qquad
+ \mathcal Q^2\equiv-q^2>0,
+ \qquad
+ x_B\equiv\frac{\mathcal Q^2}{2P\cdot q},
+ \qquad
+ y\equiv\frac{P\cdot q}{P\cdot k}.}
+ \label{eq:dis-kinematic-invariants-dp68}
+\end{equation}
+其中 $\mathcal Q$ 是硬动量尺度，相应能量为 $E_{\mathcal Q}=c\mathcal Q$；$x_B$ 是 Bjorken 变量，$y$ 是非弹性度。维数正则化的重整化动量尺度与因子化动量尺度分别记为 $\mu_{\rm DR}$ 与 $\mu_{\rm F}$，二者承担不同物理职责。
+
+$x_B$ 首先只是由外部四动量构造的精确无量纲变量；在 Bjorken 极限的领先幂部分子图像中，它才进一步获得“被击中部分子的纵向动量分数”这一解释。$y$ 则表示入射轻子向强子系统转移能量的无量纲程度。Bjorken 高分辨极限同时缩短探针空间分辨率 $\hbar/\mathcal Q$ 并保持纵向运动学比例固定，因此取
+\begin{equation}
+ \boxed{
+ \mathcal Q^2\to\infty,
+ \qquad P\cdot q\to\infty,
+ \qquad x_B=\frac{\mathcal Q^2}{2P\cdot q}\ \text{保持固定}.}
+ \label{eq:dis-bjorken-limit-dp76}
+\end{equation}
+这个高分辨极限称为 Bjorken 极限。它把短程尺度 $\hbar/\mathcal Q$ 与强子的长程关联尺度系统分离；部分子图像和长短程分离公式都建立在这一尺度层级上。
+
+对包容末态 $P_X=P+q$，质量壳条件还给出一个直接限制物理区域的关系：
+\begin{equation}
+ \boxed{
+ M_X^2c^2=M_H^2c^2+\mathcal Q^2\left(\frac1{x_B}-1\right).}
+ \label{eq:dis-hadronic-mass-kinematics-dp68}
+\end{equation}
+在非弹性物理区 $M_X\ge M_H$，因此 $0<x_B\le1$。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,scale=1.0,line label/.style={fill=white,fill opacity=.96,text opacity=1,inner sep=1.15pt}]
+ \coordinate (a) at (-3.6,1.35);
+ \coordinate (l) at (-1.45,0.55);
+ \coordinate (b) at (-3.45,-0.05);
+ \coordinate (c) at (-3.4,-1.35);
+ \coordinate (v) at (0,0);
+ \coordinate (x1) at (3.2,1.35);
+ \coordinate (x2) at (3.4,0.45);
+ \coordinate (x3) at (3.1,-0.55);
+ \coordinate (x4) at (2.7,-1.35);
+ \draw[->,very thick] (a)--(l) node[line label,midway,above]{$k$};
+ \draw[->,very thick] (l)--(b) node[line label,midway,below left]{$k'$};
+ \draw[->,very thick] (c)--(v) node[line label,midway,below]{$P$};
+ \draw[->,decorate,decoration={snake,amplitude=1.1pt,segment length=5pt},thick] (l)--(v)
+   node[line label,midway,above,fill=white,inner sep=1pt]{$q$};
+ \fill (l) circle (1.6pt);
+ \fill (v) circle (1.8pt);
+ \draw[->,thick] (v)--(x1);
+ \draw[->,thick] (v)--(x2);
+ \draw[->,thick] (v)--(x3);
+ \draw[->,thick] (v)--(x4);
+ \node[align=center] at (3.25,-2.0){inclusive hadronic final state\\$X$};
+ \node[align=center] at (-2.95,1.95){lepton probe};
+ \node[align=center] at (-3.1,-1.85){hadron};
+\end{tikzpicture}
+\caption{深度非弹性散射的运动学。实验固定入射强子与轻子并测量出射轻子，对所有未分辨强子末态求和；这种包容求和使光学定理能够把截面连接到前向虚 Compton 振幅。}
+\label{fig:dis-kinematics-dp13}
+\end{figure}
+
+这里的电磁探针耦合到强子中的夸克电流。把夸克的分数电荷 $Q_f$ 与公共电磁耦合常数分开，定义约化电磁流
+\begin{equation*}
+ j_{\rm em}^\mu(x)
+ \equiv\sum_f Q_f\,\bar\psi_f(x)\gamma^\mu\psi_f(x).
+\end{equation*}
+对所有未分辨强子末态求和后，可测的强子响应由电流对易子的前向矩阵元描述。定义强子张量
+\begin{equation*}
+ W_{\mu\nu}(P,q)
+ \equiv\frac1{4\pi}
+ \int\dd^4 z\,
+ \ee^{\ii q\cdot z/\hbar}
+ \langle P|[j^{\rm em}_\mu(z),j^{\rm em}_\nu(0)]|P\rangle.
+\end{equation*}
+它把强子内部所有可能的包容末态响应压缩成一个二阶 Lorentz 张量。为了利用解析性把这一谱对象与时间有序相关函数联系起来，再定义前向虚 Compton 振幅
+\begin{equation*}
+ T_{\mu\nu}(P,q)
+ \equiv\ii\int\dd^4 z\,
+ \ee^{\ii q\cdot z/\hbar}
+ \langle P|\mathcal T\{j^{\rm em}_\mu(z)j^{\rm em}_\nu(0)\}|P\rangle.
+\end{equation*}
+在物理支割上，幺正性给出
+\begin{equation}
+ \boxed{
+ \operatorname{Disc}T_{\mu\nu}=4\pi\ii W_{\mu\nu},
+ \qquad
+ \operatorname{Im}T_{\mu\nu}=2\pi W_{\mu\nu}.}
+ \label{eq:dis-optical-theorem-dp13}
+\end{equation}
+所以 DIS 的强子张量首先是一个精确关联函数的谱对象，部分子图像只是高虚度极限下对它的受控解释。
+
+对非极化靶，Lorentz 协变性与电流守恒把强子张量压缩为两个标量结构函数。定义
+\begin{equation}
+ \boxed{
+ \Pi_{\mu\nu}^{(q)}=-\eta_{\mu\nu}+\frac{q_\mu q_\nu}{q^2},
+ \qquad
+ \widetilde P_\mu=P_\mu-\frac{P\cdot q}{q^2}q_\mu,}
+ \qquad
+ q^\mu\Pi_{\mu\nu}^{(q)}=q\cdot\widetilde P=0.
+ \label{eq:dis-transverse-tensor-basis-dp68}
+\end{equation}
+则
+\begin{equation}
+ \boxed{
+ W_{\mu\nu}
+ =F_1(x_B,\mathcal Q^2)\Pi_{\mu\nu}^{(q)}
+ +\frac{F_2(x_B,\mathcal Q^2)}{P\cdot q}
+ \widetilde P_\mu\widetilde P_\nu.}
+ \label{eq:dis-W-decomposition-dp13}
+\end{equation}
+先采用忽略靶质量的领先幂纵向组合，定义
+\begin{equation}
+ \boxed{F_L(x_B,\mathcal Q^2)\equiv F_2-2x_BF_1.}
+ \label{eq:dis-longitudinal-structure-function-dp31}
+\end{equation}
+在忽略靶质量和纯光子交换的条件下，去掉已知电弱与通量前因子的约化截面可写成
+\begin{equation}
+ \boxed{
+ \sigma_r(x_B,\mathcal Q^2,y)
+ =F_2(x_B,\mathcal Q^2)
+ -\frac{y^2}{Y_+}F_L(x_B,\mathcal Q^2),
+ \qquad
+ Y_+=1+(1-y)^2.}
+ \label{eq:dis-reduced-cross-section-dp31}
+\end{equation}
+因此在相同 $x_B,\mathcal Q^2$ 上改变束流能量以扫描 $y$，可以把 $F_L$ 从 $F_2$ 中实验分离。无质量自旋 $1/2$ 部分子的树级领先幂极限满足
+\begin{equation}
+ \boxed{F_2(x_B)=2x_BF_1(x_B),\qquad F_L(x_B)=0,}
+ \label{eq:dis-callan-gross-dp68}
+\end{equation}
+在同一个领先幂部分子近似中，末态夸克的质量壳条件把被击中部分子的纵向动量分数固定为 $x=x_B$，并给出树级结构函数
+\begin{equation}
+ \boxed{
+ F_2^{\rm LO}(x_B,\mathcal Q^2)
+ =x_B\sum_fQ_f^2\left[
+ f_{f/H}(x_B,\mu_{\rm F})+f_{\bar f/H}(x_B,\mu_{\rm F})
+ \right].}
+ \label{eq:dis-tree-parton-f2-dp76}
+\end{equation}
+因此 $x_B$ 在这一受控高分辨极限中获得“被击中部分子的纵向动量分数”这一动力学解释；它本身仍然首先是正文\eqnrefs{eq:dis-kinematic-invariants-dp68} 定义的精确运动学变量。这就是 Callan--Gross 关系及其树级部分子实现。QCD 辐射从 $\order(\alpha_s)$ 开始产生非零 $F_L$，小 $x_B$ 区域因而对胶子分布尤其敏感。
+
+强子长程结构必须由规范不变算符定义。取无量纲类光向量 $n^\mu$，满足 $n^2=0$、$P\cdot n>0$，并令 $z^\mu(\tau)=\hbar\tau n^\mu/(P\cdot n)$。连接两个类光分离点的基本表示 Wilson 线定义为
+\begin{equation}
+ \boxed{
+ \mathcal W_n(\tau,0)
+ =\mathcal P\exp\!\left[
+ \ii g_s\int_0^{\hbar\tau/(P\cdot n)}\dd\lambda\,
+ n^\mu\mathscr C_\mu^a(\lambda n)T^a
+ \right].}
+ \label{eq:dis-lightlike-wilson-line-dp68}
+\end{equation}
+它在端点处按 $U[z(\tau)]\mathcal W_nU^\dagger(0)$ 变换，因此能把两个夸克场连接成颜色单态。由此构造无量纲纵向动量分数分布：
+\begin{equation}
+ \boxed{
+ f_{f/H}(x,\mu_{\rm F})
+ =\int_{-\infty}^{+\infty}\frac{\dd\tau}{2\pi}\,
+ \ee^{-\ii x\tau}
+ \frac{\langle P|\bar\psi_f[z(\tau)]\slashed n\,
+ \mathcal W_n(\tau,0)\psi_f(0)|P\rangle_{\mu_{\rm F}}}{2P\cdot n}.}
+ \label{eq:pdf-operator-definition-dp14}
+\end{equation}
+Wilson 线补偿两个时空点之间不同的局域颜色转动，因此\eqnrefs{eq:pdf-operator-definition-dp14} 是规范不变、重整化后的类光非局域算符矩阵元。这个随纵向动量分数 $x$ 变化的函数称为\emph{部分子分布函数}（parton distribution function，PDF）。它描述给定分辨尺度下强子的纵向部分子结构，而不是某个规范下的“夸克波函数模平方”。
+
+该定义满足两个重要守恒和规则。味非单态守恒流给出价夸克数
+\begin{equation}
+ \boxed{
+ \int_0^1\dd x\,
+ \left[f_{f/H}(x,\mu_{\rm F})-f_{\bar f/H}(x,\mu_{\rm F})\right]
+ =N_f^{\rm valence},}
+ \label{eq:pdf-valence-sum-rule-dp13}
+\end{equation}
+而能动张量的前向矩阵元给出动量和规则
+\begin{equation}
+ \boxed{
+ \sum_{i\in\{g,f,\bar f\}}
+ \int_0^1\dd x\,x f_{i/H}(x,\mu_{\rm F})=1.}
+ \label{eq:pdf-momentum-sum-rule-dp13}
+\end{equation}
+尺度演化可以在夸克与胶子之间重新分配动量，但不能改变总动量。
+
+Bjorken 极限 $\mathcal Q^2\gg\Lambda_{\rm QCD}^2$ 使电流乘积受短距离区域支配。\emph{算符乘积展开}（operator product expansion, OPE）的含义是：当两个局域算符的间隔 $z$ 很小时，它们的乘积对低能外态的作用可以按一组同点局域算符展开，短距离奇异性全部放入系数函数。为避免把渐近展开符号当成严格恒等式，对任意选定的有限算符集合 $\mathscr S$ 定义余项 $\mathcal R_{\mu\nu}^{(\mathscr S)}$，写成
+\begin{equation}
+ \boxed{
+ \mathcal T\{j_\mu(z)j_\nu(0)\}
+ =\sum_{(N,i)\in\mathscr S}C_{\mu\nu,N}^{(i)}(z,\mu_{\rm F})
+ \mathcal O_N^{(i)}(0,\mu_{\rm F})
+ +\mathcal R_{\mu\nu}^{(\mathscr S)}(z).}
+ \label{eq:dis-current-product-ope-dp68}
+\end{equation}
+在 $z^2\mathcal Q^2/\hbar^2=O(1)$、$\mathcal Q\gg\Lambda_{\rm QCD}$ 的高分辨极限中，按 twist 排序扩大 $\mathscr S$；余项的矩阵元由更高 twist 的幂抑制和被截断的微扰阶共同控制。
+短距离展开还需要判断哪些局域算符在大 $\mathcal Q$ 下最重要。对一个已经取成不可约对称无迹张量、Lorentz 自旋为 $N$、逆长度工程维数为 $\Delta$ 的局域算符，定义它的\emph{扭曲度}（twist）为
+\begin{equation*}
+ \text{twist}\equiv\Delta-N.
+\end{equation*}
+扭曲度越高，在固定 $x_B$ 的大 $\mathcal Q$ 展开中通常多带 $\Lambda_{\rm QCD}/\mathcal Q$ 的幂抑制。非极化 DIS 的最低扭曲夸克和胶子算符具有扭曲度 $2$；所谓领先扭曲近似，就是保留这些最低扭曲度算符并把更高扭曲度项作为幂修正。
+
+为了把 $x_B$ 空间中的卷积变成普通乘法，常对分布取 Mellin 矩。对定义在 $0<x<1$ 上的函数 $f(x)$，第 $N$ 个 Mellin 矩就是带权积分 $\int_0^1\dd x\,x^{N-1}f(x)$；较大的 $N$ 给较大的 $x$ 更高权重，因此不同矩分别压缩了分布形状的不同信息。对 $F_2$ 采用习惯权重 $x_B^{N-2}$，这一展开给
+\begin{equation}
+ \boxed{
+ M_N^{(2)}(\mathcal Q^2)
+ \equiv\int_0^1\dd x_B\,x_B^{N-2}F_2(x_B,\mathcal Q^2)
+ =\sum_i C_{2,N}^{(i)} A_{i,N}
+ +\order\!\left(\frac{\Lambda_{\rm QCD}^2}{\mathcal Q^2}\right),}
+ \label{eq:dis-ope-moment-factorization-dp13}
+\end{equation}
+其中系数函数 $C_{2,N}^{(i)}$ 含短距离物理，$A_{i,N}(\mu_{\rm F})$ 是扭曲度为 $2$ 的算符的强子前向矩阵元；最后一项是更高扭曲度产生的幂修正，与微扰级数的截断误差属于不同误差来源。
+
+在 $x$ 空间，先明确卷积所作用的结构函数归一化。定义 $\mathfrak F_1=F_1$、$\mathfrak F_2=F_2/x_B$、$\mathfrak F_L=F_L/x_B$。这里除去的 $x_B$ 是运动学权重；若直接对 $F_2$ 或 $F_L$ 写卷积，必须把这个因子同时移入分布或系数。对上述约化结构函数，领先扭曲共线因子化为
+\begin{equation}
+ \boxed{
+ \mathfrak F_a(x_B,\mathcal Q^2)
+ =\sum_i\left[
+ C_{a,i}\!\left(
+ \frac{\mathcal Q^2}{\mu_{\rm F}^2},
+ \frac{\mu_{\rm DR}^2}{\mu_{\rm F}^2},
+ \alpha_s(\mu_{\rm DR})\right)
+ \otimes f_{i/H}(\mu_{\rm F})\right](x_B)
+ +\order\!\left(\frac{\Lambda_{\rm QCD}^2}{\mathcal Q^2}\right).}
+ \label{eq:dis-collinear-factorization-dp14}
+\end{equation}
+树级系数为 $C_{2,f}^{(0)}=Q_f^2\delta(1-z)$、$C_{1,f}^{(0)}=Q_f^2\delta(1-z)/2$ 和 $C_{L,i}^{(0)}=0$，从而恢复 $F_2^{\rm LO}=x_B\sum_fQ_f^2(f_f+f_{\bar f})$。卷积定义为 $[A\otimes B](x)=\int_x^1\dd z\,A(z)B(x/z)/z$。因子化尺度 $\mu_{\rm F}$ 只规定短距离系数与共线矩阵元之间的分界；物理结构函数对这一人为尺度不变，因此 PDF 与系数函数必须以相反方向演化。
+
+裸类光算符本身不依赖人为选取的因子化尺度，因此重整化后的纵向分布必须随 $\mu_{\rm F}$ 改变，以补偿重整化核的尺度依赖。所得卷积型尺度方程称为 Dokshitzer--Gribov--Lipatov--Altarelli--Parisi（DGLAP）演化方程。其中 $P_{ij}(z)$ 称为\emph{分裂核}：在领先共线图像中，它给出父部分子 $j$ 在提高分辨尺度时把纵向动量分数 $z$ 交给可分辨子部分子 $i$ 的微分权重。完整 $P_{ij}$ 同时含实辐射和虚修正，并带有端点分布，因此它是重整化核而不是处处非负的普通经典概率密度。
+\begin{equation}
+ \boxed{
+ \frac{\partial f_i(x,\mu_{\rm F}^2)}{\partial\ln\mu_{\rm F}^2}
+ =\frac{\alpha_s(\mu_{\rm F})}{2\pi}
+ \sum_j[P_{ij}^{(0)}\otimes f_j](x)
+ +\order(\alpha_s^2).}
+ \label{eq:dglap-general-evolution-dp68}
+\end{equation}
+以下 $\mu_{\rm F0}$ 表示演化的参考因子化动量尺度。所谓\emph{味非单态}（flavor non-singlet）是不同夸克味 PDF 的线性组合，其味系数之和为零，例如 $u+\bar u-d-\bar d$。胶子没有味量子数，因此这种组合的演化中不会与胶子 PDF 混合。其 Mellin 矩 $f_N^{\rm NS}$ 在一圈耦合与领先对数精度下满足
+\begin{equation}
+ \boxed{
+ \frac{f_N^{\rm NS}(\mu_{\rm F})}{f_N^{\rm NS}(\mu_{\rm F0})}
+ =\left[
+ \frac{\alpha_s(\mu_{\rm F})}{\alpha_s(\mu_{\rm F0})}
+ \right]^{-2P_{qq,N}^{(0)}/\beta_0}.}
+ \label{eq:dglap-mellin-solution-dp13}
+\end{equation}
+$N=1$ 时 $P_{qq,1}^{(0)}=0$，对应价夸克数守恒；更高矩随尺度变化，反映辐射把纵向动量从较大 $x$ 逐渐搬运到较小 $x$。
+
+对味单态组合
+\begin{equation*}
+ \Sigma(x,\mu^2)
+ \equiv\sum_{f=1}^{n_f}\left[q_f(x,\mu^2)+\bar q_f(x,\mu^2)\right],
+\end{equation*}
+胶子分布不能再被消去。领先阶演化构成二分量矩阵方程
+\begin{equation}
+ \boxed{
+ \frac{\partial}{\partial\ln\mu^2}
+ \begin{pmatrix}\Sigma\\ g\end{pmatrix}
+ =\frac{\alpha_s(\mu)}{2\pi}
+ \begin{pmatrix}
+ P_{qq} & 2n_fP_{qg}\\
+ P_{gq} & P_{gg}
+ \end{pmatrix}
+ \otimes
+ \begin{pmatrix}\Sigma\\ g\end{pmatrix}.}
+ \label{eq:dis-singlet-gluon-dglap-dp31}
+\end{equation}
+这说明结构函数的标度破坏不是“夸克分布自己跑动”：胶子通过 $g\to q\bar q$ 不断向电磁可见的夸克扇区输运概率，而夸克也通过 $q\to qg$ 向胶子扇区输运动量。小 $x_B$ 上 $\partial F_2/\partial\ln\mathcal Q^2$ 的正标度破坏以及非零 $F_L$ 因而都能对 $g(x,\mu^2)$ 提供直接约束。
+
+把因子化尺度取在硬尺度附近 $\mu_{\rm F}=\mathcal Q$，并定义电荷加权夸克组合
+\begin{equation*}
+ Q_e(x,\mathcal Q^2)
+ \equiv\sum_f Q_f^2\,[q_f(x,\mathcal Q^2)+\bar q_f(x,\mathcal Q^2)],
+\end{equation*}
+其中 $Q_f$ 是以正电子电荷为单位的夸克分数电荷。树级有 $F_2=x_BQ_e$，所以领先阶标度斜率直接继承 DGLAP 混合：
+\begin{equation}
+ \boxed{
+ \frac{\partial F_2(x_B,\mathcal Q^2)}{\partial\ln\mathcal Q^2}
+ =\frac{\alpha_s(\mathcal Q)}{2\pi}\,x_B
+ \sum_f Q_f^2\left[
+ P_{qq}\otimes(q_f+\bar q_f)
+ +2P_{qg}\otimes g
+ \right](x_B)
+ +\order(\alpha_s^2).}
+ \label{eq:dis-f2-scaling-violation-dp32}
+\end{equation}
+另一方面，纵向结构函数在忽略靶质量的无质量树级极限为零，因此它的首个非零项本身就是 QCD 辐射效应。在固定的因子化方案中可写成
+\begin{equation}
+ \boxed{
+ F_L(x_B,\mathcal Q^2)
+ =\frac{\alpha_s(\mathcal Q)}{2\pi}
+ \left[
+ C_{L,q}^{(1)}\otimes F_q
+ +C_{L,g}^{(1)}\otimes xg
+ \right](x_B)
+ +\order(\alpha_s^2),}
+ \label{eq:dis-fl-gluon-interface-dp32}
+\end{equation}
+其中 $F_q\equiv x\sum_f Q_f^2(q_f+\bar q_f)$。这里的卷积作用于带 $x$ 权重的分布，因此在无质量首个非零阶，$C_{L,q}^{(1)}(z)=2C_Fz^2$、$C_{L,g}^{(1)}(z)=8T_F(\sum_fQ_f^2)z^2(1-z)$。相比作用于普通 PDF 的系数，这两式各多一个 $z$；这是 $x[C\otimes f]=(zC)\otimes(xf)$ 的结果。胶子系数已含味电荷求和，不应再乘一次。\eqnrefs{eq:dis-f2-scaling-violation-dp32} 利用不同 $\mathcal Q^2$ 的数据读取演化方向，\eqnrefs{eq:dis-fl-gluon-interface-dp32} 则利用同一 $x_B,\mathcal Q^2$ 下不同 $y$ 的数据读取纵向响应；二者对胶子分布的依赖不同，因此联合拟合比单独使用一个结构函数更能打破夸克--胶子相关性。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,
+  box/.style={draw,rounded corners,align=center,minimum height=11mm,text width=29mm}]
+\node[box] (corr) at (-5.25,1.25) {current product\\$j_\mu(z)j_\nu(0)$};
+\node[box] (ope)  at (-1.75,1.25) {short-distance\\operator expansion};
+\node[box] (coef) at (1.75,1.25) {hard coefficients\\$C_i(x,\mathcal Q/\mu)$};
+\node[box] (op)   at (-1.75,-1.25) {light-ray operators\\$\mathcal O_i$};
+\node[box] (pdf)  at (1.75,-1.25) {hadron matrix elements\\PDF $f_i(x,\mu)$};
+\node[box,text width=30mm] (obs) at (5.25,0) {structure functions\\$F_2,F_L$};
+\draw[->,thick] (corr.east)--(ope.west);
+\draw[->,thick] (ope.east)--(coef.west);
+\draw[->,thick] (ope.south)--(op.north);
+\draw[->,thick] (op.east)--(pdf.west);
+\draw[->,thick] (coef.east)-- ++(.45,0) |- (obs.north);
+\draw[->,thick] (pdf.east)-- ++(.45,0) |- (obs.south);
+\end{tikzpicture}
+\caption{深度非弹性散射的因子化依赖图。短距离电流乘积先分解为硬系数与类光算符；算符经过重整化并在强子态中取矩阵元后成为 PDF，硬系数与 PDF 的卷积给出可测的 $F_2$ 与 $F_L$。DGLAP 方程正是同一类光算符重整化对因子化尺度的 RG 演化。}
+\label{fig:dis-factorization-chain-dp13}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=.76\linewidth]{content/FreeElectronQuantumOptics/figures/generated/qcd_dglap_mellin_dp13.png}
+ \caption{由\eqnrefs{eq:dglap-mellin-solution-dp13} 计算的领先阶非单态 Mellin 矩演化。横轴采用硬能量 $E_{\mathcal Q}=c\mathcal Q$；曲线展示 $N>1$ 的矩随硬尺度升高而降低的趋势，不代替全球 PDF 拟合。}
+ \label{fig:qcd-dglap-mellin-dp13}
+\end{figure}
+
+领先扭曲近似首先要求
+\begin{equation*}
+ \epsilon_{\rm HT}=\frac{\Lambda_{\rm QCD}^2}{\mathcal Q^2}\ll1.
+\end{equation*}
+靶质量修正还要求
+\begin{equation}
+ \epsilon_M=\frac{M_H^2c^2}{\mathcal Q^2}\ll1,
+ \label{eq:dis-target-mass-control-dp13}
+\end{equation}
+而把活跃重夸克当成无质量部分子需要 $m_h^2c^2/\mathcal Q^2\ll1$。固定阶系数函数要求 $\alpha_s(\mu_{\rm DR})\ll1$；若 $\ln(\mathcal Q^2/\mu_{\rm F}^2)$ 很大，则应通过重整化群与 DGLAP 重新求和。高扭曲度幂修正、微扰截断误差、重夸克方案误差和 PDF 拟合不确定度必须分别评估。
+
+\begin{derivation}[从\eqnrefs{eq:dis-W-decomposition-dp13}到\eqnrefs{eq:dis-tree-parton-f2-dp76}]
+在领先扭曲、无质量部分子极限中，被击中夸克的入射动量写成
+\begin{equation*}
+ p^\mu=xP^\mu,
+ \qquad p^2=0,
+\end{equation*}
+而吸收虚光子后的末态夸克满足 $(p+q)^2=0$。因此
+\begin{equation*}
+ 0=(p+q)^2=2p\cdot q-\mathcal Q^2
+ \quad\Longrightarrow\quad
+ p\cdot q=\frac{\mathcal Q^2}{2}.
+\end{equation*}
+另一方面 $p=xP$，所以
+\begin{equation*}
+ x\,P\cdot q=\frac{\mathcal Q^2}{2}
+ \quad\Longrightarrow\quad x=x_B.
+\end{equation*}
+更严格地，相空间中的质量壳分布满足
+\begin{equation*}
+ \delta\!\bigl((xP+q)^2\bigr)
+ =\delta\!\bigl(2P\cdot q\,(x-x_B)\bigr)
+ =\frac{x_B}{\mathcal Q^2}\,\delta(x-x_B),
+\end{equation*}
+其中已忽略 $x^2M_H^2c^2/\mathcal Q^2$ 的靶质量修正。
+
+树级电磁流的自旋平均张量分子为
+\begin{align*}
+ t_{\mu\nu}(p,q)
+ &\equiv \frac12\Tr\!\left[\slashed p\gamma_\mu(\slashed p+\slashed q)\gamma_\nu\right]\\
+ &=2\left[p_\mu(p+q)_\nu+p_\nu(p+q)_\mu
+ -\eta_{\mu\nu}p\cdot(p+q)\right].
+\end{align*}
+由 $p^2=0$ 与 $p\cdot q=\mathcal Q^2/2$，有 $p\cdot(p+q)=\mathcal Q^2/2$。定义与 $q^\mu$ 横向的部分子动量
+\begin{equation*}
+ \widetilde p_\mu
+ \equiv p_\mu-\frac{p\cdot q}{q^2}q_\mu
+ =p_\mu+\frac12q_\mu,
+\end{equation*}
+于是 $p_\mu=\widetilde p_\mu-q_\mu/2$、$(p+q)_\mu=\widetilde p_\mu+q_\mu/2$。代入上式逐项整理：
+\begin{align*}
+ p_\mu(p+q)_\nu+p_\nu(p+q)_\mu
+ &=2\widetilde p_\mu\widetilde p_\nu-\frac12q_\mu q_\nu,\\
+ t_{\mu\nu}
+ &=4\widetilde p_\mu\widetilde p_\nu-q_\mu q_\nu-\mathcal Q^2\eta_{\mu\nu}\\
+ &=\mathcal Q^2\Pi_{\mu\nu}^{(q)}+4\widetilde p_\mu\widetilde p_\nu.
+\end{align*}
+最后一步使用 $q^2=-\mathcal Q^2$ 与正文\eqnrefs{eq:dis-transverse-tensor-basis-dp68}。因为 $p=x_BP$，横向投影也满足 $\widetilde p_\mu=x_B\widetilde P_\mu$，故单个味的张量必为
+\begin{equation*}
+ w_{\mu\nu}^{(f)}
+ =\mathcal C_f(x_B)
+ \left[
+ \mathcal Q^2\Pi_{\mu\nu}^{(q)}
+ +4x_B^2\widetilde P_\mu\widetilde P_\nu
+ \right].
+\end{equation*}
+比较正文\eqnrefs{eq:dis-W-decomposition-dp13} 的两个独立张量系数，立即有
+\begin{equation*}
+ F_1^{(f)}=\mathcal C_f\mathcal Q^2,
+ \qquad
+ \frac{F_2^{(f)}}{P\cdot q}=4x_B^2\mathcal C_f.
+\end{equation*}
+再用 $P\cdot q=\mathcal Q^2/(2x_B)$ 消去 $\mathcal C_f$：
+\begin{equation*}
+ \boxed{F_2^{(f)}=2x_BF_1^{(f)}}.
+\end{equation*}
+因此 Callan--Gross 关系由无质量自旋 $1/2$ 电磁流的 Dirac 迹与质量壳条件共同确定。
+
+还需固定整体归一化。按正文\eqnrefs{eq:pdf-operator-definition-dp14} 的 PDF 归一化，树级系数函数对应
+\begin{equation*}
+ F_1^{(f)}(x_B)=\frac{Q_f^2}{2}
+ \left[f_{f/H}(x_B,\mu_{\rm F})+f_{\bar f/H}(x_B,\mu_{\rm F})\right].
+\end{equation*}
+将它代入刚得到的 Callan--Gross 关系，便有
+\begin{equation*}
+ F_2^{(f)}(x_B)
+ =x_BQ_f^2
+ \left[f_{f/H}(x_B,\mu_{\rm F})+f_{\bar f/H}(x_B,\mu_{\rm F})\right].
+\end{equation*}
+最后对所有活跃味求和，得到正文\eqnrefs{eq:dis-tree-parton-f2-dp76}，同时正文\eqnrefs{eq:dis-longitudinal-structure-function-dp31} 给出 $F_L=F_2-2x_BF_1=0$。非零 $F_L$ 因而必须来自夸克质量、横向 QCD 辐射或更高扭曲度等超出这一极限的效应。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:dis-lightlike-wilson-line-dp68}到\eqnrefs{eq:pdf-operator-definition-dp14}]
+部分子模型中的 $f_{f/H}$ 必须提升为 QCD 中的规范不变算符矩阵元。取一个指向未来的无量纲类光向量 $n^\mu$，满足
+
+\begin{equation*}
+ n^2=0,
+ \qquad P\cdot n>0.
+\end{equation*}
+沿 $n^\mu$ 的实际时空间隔写成
+\begin{equation*}
+ z^\mu(\tau)
+ =\frac{\hbar\tau}{P\cdot n}\,n^\mu,
+\end{equation*}
+其中 $\tau$ 无量纲；$\hbar/(P\cdot n)$ 具有长度量纲，因此 $z^\mu$ 保持 SI 长度。
+
+两个不同点的夸克双线性本身不规范不变。代入正文\eqnrefs{eq:dis-lightlike-wilson-line-dp68} 的基本表示 Wilson 线
+\begin{equation*}
+ \mathcal W_n(\tau,0)
+ \equiv\mathcal P\exp\left[
+ \ii g_s\int_0^{\hbar\tau/(P\cdot n)}\dd\lambda\,
+ n^\mu\mathscr C_\mu^a(\lambda n)T^a
+ \right].
+\end{equation*}
+因为 $[\mathscr C_\mu^a]=\mathrm{m^{-1}}$、$[\dd\lambda]=\mathrm m$，指数严格无量纲。在局域颜色转动 $U(x)$ 下，规范联络的变换使路径有序指数满足
+\begin{equation*}
+ \mathcal W_n(\tau,0)
+ \longrightarrow
+ U[z(\tau)]\mathcal W_n(\tau,0)U^\dagger(0),
+\end{equation*}
+而夸克场满足
+\begin{equation*}
+ \psi_f[z(\tau)]\to U[z(\tau)]\psi_f[z(\tau)],
+ \qquad
+ \bar\psi_f[z(\tau)]\to\bar\psi_f[z(\tau)]U^\dagger[z(\tau)].
+\end{equation*}
+因此
+\begin{equation*}
+ \bar\psi_f[z(\tau)]\slashed n\,
+ \mathcal W_n(\tau,0)\psi_f(0)
+\end{equation*}
+是颜色单态。
+
+在协变强子态归一化下，把分子矩阵元与 $2P\cdot n$ 的比值暂时记作
+\begin{equation*}
+ \mathcal B_{f/H}(\tau,\mu_{\rm F})
+ \equiv
+ \frac{\langle P|
+ \bar\psi_f[z(\tau)]\slashed n\mathcal W_n(\tau,0)\psi_f(0)
+ |P\rangle_{\mu_{\rm F}}}
+ {2P\cdot n}.
+\end{equation*}
+其无量纲 Fourier 变换就是夸克部分子分布
+\begin{equation*}
+ f_{f/H}(x,\mu_{\rm F})
+ =\int_{-\infty}^{+\infty}
+ \frac{\dd\tau}{2\pi}\,
+ \ee^{-\ii x\tau}
+ \mathcal B_{f/H}(\tau,\mu_{\rm F}).
+\end{equation*}
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:dis-current-product-ope-dp68}到\eqnrefs{eq:dis-ope-moment-factorization-dp13}]
+深度非弹性极限由 $\mathcal Q^2\gg\Lambda_{\rm had}^2$ 控制；Fourier 积分的主贡献来自 $|z^2|=O(\hbar^2/\mathcal Q^2)$ 的短距离区域。对任意选定的有限 OPE 截断集合 $\mathscr S$，先把余项定义为
+\begin{equation*}
+ \mathcal R_{\mu\nu}^{(\mathscr S)}(z)
+ \equiv
+ \mathcal T\{j_\mu(z)j_\nu(0)\}
+ -\sum_{(N,i)\in\mathscr S}
+ C_{\mu\nu,N}^{(i)}(z,\mu_{\rm F})
+ \mathcal O_N^{(i)}(0,\mu_{\rm F}).
+\end{equation*}
+于是有限阶关系是严格等式
+\begin{equation*}
+ \mathcal T\{j_\mu(z)j_\nu(0)\}
+ =
+ \sum_{(N,i)\in\mathscr S}
+ C_{\mu\nu,N}^{(i)}(z,\mu_{\rm F})
+ \mathcal O_N^{(i)}(0,\mu_{\rm F})
+ +\mathcal R_{\mu\nu}^{(\mathscr S)}(z).
+\end{equation*}
+OPE 的动力学内容是：按扭曲度与算符维数扩大 $\mathscr S$ 时，$\mathcal R_{\mu\nu}^{(\mathscr S)}$ 在上述短距离区域按相应的 $\Lambda_{\rm had}^2/\mathcal Q^2$ 幂次受抑；因此截断误差与所保留的 twist 层级一一对应。
+领先的非极化夸克算符是对称无迹、扭曲度为 $2$ 的张量
+\begin{equation*}
+ \mathcal O_{f,N}^{\mu_1\cdots\mu_N}
+ =\bar\psi_f\gamma^{\{\mu_1}
+ (\ii\hbar D^{\mu_2})\cdots
+ (\ii\hbar D^{\mu_N\}})\psi_f
+ -\text{迹项}.
+\end{equation*}
+每个 $\ii\hbar D^\mu$ 都具有物理动量量纲。Lorentz 协变性把前向矩阵元压缩为一个约化标量系数
+\begin{equation*}
+ \langle P|\mathcal O_{f,N}^{\mu_1\cdots\mu_N}|P\rangle
+ =2A_{f,N}(\mu_{\rm F})
+ P^{\{\mu_1}\cdots P^{\mu_N\}}
+ -\text{迹项},
+\end{equation*}
+按此定义 $A_{f,N}$ 无量纲。
+
+PDF 与这些局域算符之间的联系来自类光算符对 $\tau$ 的规范协变 Taylor 展开。先把 Wilson 线与被平移的场搬到同一端点：
+\begin{equation*}
+ \mathcal W_n(0,\tau)\psi_f[z(\tau)]
+ =\sum_{r=0}^{\infty}
+ \frac1{r!}
+ \left(\frac{\hbar\tau}{P\cdot n}\right)^r
+ (n\cdot D)^r\psi_f(0).
+\end{equation*}
+对厄米共轭双局域算符同样展开，便逐阶产生带协变导数的局域算符。另一方面
+\begin{equation*}
+ x^{N-1}\ee^{-\ii x\tau}
+ =(\ii\partial_\tau)^{N-1}\ee^{-\ii x\tau}.
+\end{equation*}
+把 $\partial_\tau$ 通过分部积分移到 $\mathcal B_{f/H}$ 上，每次导数都带出 $\ii\hbar n\cdot D/(P\cdot n)$。因此 Mellin 矩与局域矩阵元一一对应：
+\begin{equation*}
+ \int_0^1\dd x\,x^{N-1}
+ \left[f_{f/H}(x,\mu_{\rm F})+(-1)^Nf_{\bar f/H}(x,\mu_{\rm F})\right]
+ =A_{f,N}(\mu_{\rm F}).
+\end{equation*}
+所以局域 OPE 的算符混合与 DGLAP 的 PDF 演化并不是两套独立理论；它们分别是同一类光算符重整化在 Mellin 空间与 $x$ 空间中的表示。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:dis-ope-moment-factorization-dp13}到\eqnrefs{eq:dis-collinear-factorization-dp14}]
+定义 Mellin 卷积
+
+\begin{equation*}
+ [A\otimes B](x)
+ \equiv\int_x^1\frac{\dd z}{z}
+ A(z)B\!\left(\frac{x}{z}\right).
+\end{equation*}
+它满足结合律：
+\begin{align*}
+ [A\otimes(B\otimes C)](x)
+ &=\int_x^1\frac{\dd z}{z}A(z)
+ \int_{x/z}^1\frac{\dd u}{u}B(u)
+ C\!\left(\frac{x}{zu}\right),\\
+ &=[(A\otimes B)\otimes C](x),
+\end{align*}
+第二行只交换积分次序并令乘积变量 $v=zu$。这个代数性质保证因子化反项可以在系数函数与 PDF 之间一致移动。
+
+在 $d=4-2\epsilon$ 维正则化中，裸类光算符发生混合，写成卷积矩阵
+\begin{equation*}
+ f_i^{\rm bare}
+ =\sum_j Z_{ij}^{\rm F}\otimes f_j(\mu_{\rm F}).
+\end{equation*}
+在 $\overline{\rm MS}$ 方案的领先阶，
+\begin{equation*}
+ Z_{ij}^{\rm F}(z)
+ =\delta_{ij}\delta(1-z)
+ +\frac{\alpha_s}{2\pi}
+ \frac1{\bar\epsilon}
+ P_{ij}^{(0)}(z)
+ +\order(\alpha_s^2),
+\end{equation*}
+其中 $1/\bar\epsilon=1/\epsilon-\gamma_E+\ln4\pi$。部分子级系数函数中的相反共线极点由 $(Z^{\rm F})^{-1}$ 消去，留下有限的短距离系数 $C_{a,i}$。于是领先幂结构函数成为
+\begin{equation*}
+ \mathfrak F_a(x_B,\mathcal Q^2)
+ =\sum_i
+ \left[
+ C_{a,i}\!\left(
+ \frac{\mathcal Q^2}{\mu_{\rm F}^2},
+ \frac{\mu_{\rm DR}^2}{\mu_{\rm F}^2},
+ \alpha_s(\mu_{\rm DR})
+ \right)
+ \otimes f_{i/H}(\mu_{\rm F})
+ \right](x_B)
+ +\order\!\left(\frac{\Lambda_{\rm QCD}^2}{\mathcal Q^2}\right).
+\end{equation*}
+这就是部分子模型在 QCD 中的受控推广：$C_{a,i}$ 可由微扰理论计算，$f_{i/H}$ 是规范不变的非微扰强子矩阵元，而两者对人为因子化尺度的依赖必须互相抵消。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:pdf-operator-definition-dp14}到\eqnrefs{eq:dglap-general-evolution-dp68}]
+PDF 是类光算符的强子矩阵元，因此其紫外/共线重整化不是普通数乘，而是在纵向动量分数上的卷积。写成
+\begin{equation*}
+ f_i^{\rm bare}=Z^{\rm F}_{ij}\otimes f_j,
+ \qquad
+ [A\otimes B](x)=\int_x^1\frac{\dd z}{z}A(z)B(x/z).
+\end{equation*}
+这里矩阵乘法同时包含部分子种类求和与 $x$ 卷积。卷积单位元是
+$\delta_{ij}\delta(1-z)$。裸算符不依赖人为选择的因子化尺度，所以
+\begin{align*}
+ 0
+ &=\frac{\dd f_i^{\rm bare}}{\dd\ln\mu_{\rm F}^2}\\
+ &=\frac{\dd Z^{\rm F}_{ij}}{\dd\ln\mu_{\rm F}^2}\otimes f_j
+ +Z^{\rm F}_{ij}\otimes
+ \frac{\partial f_j}{\partial\ln\mu_{\rm F}^2}.
+\end{align*}
+左卷积乘 $(Z^{\rm F})^{-1}$ 后得到精确重整化群形式
+\begin{equation*}
+ \frac{\partial f_i}{\partial\ln\mu_{\rm F}^2}
+ =\gamma^{\rm F}_{ij}\otimes f_j,
+ \qquad
+ \gamma^{\rm F}
+ \equiv-(Z^{\rm F})^{-1}\otimes
+ \frac{\dd Z^{\rm F}}{\dd\ln\mu_{\rm F}^2}.
+\end{equation*}
+
+关键一步是说明为什么 $Z^{\rm F}$ 中的 $1/\epsilon$ 极点在四维极限后会留下有限导数。维数正则化取 $d=4-2\epsilon$。在最低阶最小减除型方案中可写
+\begin{equation*}
+ Z^{\rm F}_{ij}(z)
+ =\delta_{ij}\delta(1-z)
+ +\frac{\alpha_s}{2\pi\epsilon}P_{ij}^{(0)}(z)
+ +\order(\alpha_s^2),
+\end{equation*}
+其中 $P_{ij}^{(0)}$ 就是类光算符一圈共线极点的残数。由于裸耦合含 $(\mu_{\rm F}^2)^\epsilon$，保持裸耦合不变时
+\begin{equation*}
+ \frac{\dd\alpha_s}{\dd\ln\mu_{\rm F}^2}
+ =-\epsilon\alpha_s+\order(\alpha_s^2).
+\end{equation*}
+因此
+\begin{align*}
+ \frac{\dd Z^{\rm F}}{\dd\ln\mu_{\rm F}^2}
+ &=\frac{1}{2\pi\epsilon}
+ \frac{\dd\alpha_s}{\dd\ln\mu_{\rm F}^2}P^{(0)}
+ +\order(\alpha_s^2)\\
+ &=-\frac{\alpha_s}{2\pi}P^{(0)}
+ +\order(\alpha_s^2,\epsilon).
+\end{align*}
+同时
+$(Z^{\rm F})^{-1}=I+\order(\alpha_s/\epsilon)$；在求一圈有限反常维数时，逆矩阵的非平凡部分只贡献更高阶项。于是取 $\epsilon\to0$ 后
+\begin{equation*}
+ \gamma^{\rm F}_{ij}(z)
+ =\frac{\alpha_s(\mu_{\rm F})}{2\pi}P_{ij}^{(0)}(z)
+ +\order(\alpha_s^2),
+\end{equation*}
+从而得到正文 DGLAP 方程
+\begin{equation*}
+ \frac{\partial f_i(x,\mu_{\rm F}^2)}{\partial\ln\mu_{\rm F}^2}
+ =\frac{\alpha_s(\mu_{\rm F})}{2\pi}
+ \sum_j[P_{ij}^{(0)}\otimes f_j](x)
+ +\order(\alpha_s^2).
+\end{equation*}
+
+最后检查人为尺度确实从可观测量中消失。若
+$\mathfrak F_a=\sum_i C_{a,i}\otimes f_i$，则
+\begin{align*}
+ 0=\frac{\dd F_a}{\dd\ln\mu_{\rm F}^2}
+ =\sum_i\left[
+ \frac{\partial C_{a,i}}{\partial\ln\mu_{\rm F}^2}\otimes f_i
+ +C_{a,i}\otimes\gamma^{\rm F}_{ij}\otimes f_j
+ \right].
+\end{align*}
+对任意 PDF 都成立要求
+\begin{equation*}
+ \frac{\partial C_{a,i}}{\partial\ln\mu_{\rm F}^2}
+ =-\sum_j C_{a,j}\otimes\gamma^{\rm F}_{ji}.
+\end{equation*}
+因此 DGLAP 的物理含义不是“PDF 随能量真的被人为改写”，而是当短程/共线的分界尺度移动时，长程 PDF 与短程系数函数以相反方向重分配同一物理内容；可观测结构函数保持不变。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:dglap-general-evolution-dp68}到\eqnrefs{eq:dglap-mellin-solution-dp13}]
+定义第 $N$ 个 Mellin 矩
+
+\begin{equation*}
+ f_N(\mu_{\rm F})
+ \equiv\int_0^1\dd x\,x^{N-1}f(x,\mu_{\rm F}).
+\end{equation*}
+卷积在 Mellin 空间中化成普通乘法：
+\begin{align*}
+ [A\otimes B]_N
+ &=\int_0^1\dd x\,x^{N-1}
+ \int_x^1\frac{\dd z}{z}
+ A(z)B\!\left(\frac{x}{z}\right),\\
+ &=\int_0^1\dd z\,A(z)
+ \int_0^z\frac{\dd x}{z}\,x^{N-1}
+ B\!\left(\frac{x}{z}\right).
+\end{align*}
+令 $u=x/z$，得到
+\begin{equation*}
+ [A\otimes B]_N=A_NB_N.
+\end{equation*}
+于是味非单态 DGLAP 方程变成一阶常微分方程
+\begin{equation*}
+ \frac{\dd f_N^{\rm NS}}{\dd\ln\mu_{\rm F}^2}
+ =\frac{\alpha_s}{2\pi}P_{qq,N}^{(0)}f_N^{\rm NS}.
+\end{equation*}
+由\eqnrefs{eq:Pqq-leading-dp10} 和加号分布定义，
+\begin{align*}
+ P_{qq,N}^{(0)}
+ &=C_F\left[
+ \frac32+
+ \int_0^1\dd z\,
+ \frac{z^{N-1}(1+z^2)-2}{1-z}
+ \right],\\
+ &=C_F\left[
+ \frac32-H_{N-1}-H_{N+1}
+ \right],\\
+ &=C_F\left[
+ \frac32-2H_N+\frac{1}{N(N+1)}
+ \right],
+\end{align*}
+其中 $H_N=\sum_{k=1}^N1/k$。$N=1$ 时
+\begin{equation*}
+ P_{qq,1}^{(0)}
+ =C_F\left(\frac32-2+\frac12\right)=0,
+\end{equation*}
+正对应价夸克数守恒。
+
+一圈强耦合满足
+\begin{equation*}
+ \frac{\dd\alpha_s}{\dd\ln\mu_{\rm F}^2}
+ =-\frac{\beta_0}{4\pi}\alpha_s^2.
+\end{equation*}
+把非单态演化方程除以这条 $\beta$ 函数并从 $\mu_{\rm F0}$ 积分到 $\mu_{\rm F}$，得到
+\begin{equation*}
+ \frac{f_N^{\rm NS}(\mu_{\rm F})}{f_N^{\rm NS}(\mu_{\rm F0})}
+ =\left[
+ \frac{\alpha_s(\mu_{\rm F})}{\alpha_s(\mu_{\rm F0})}
+ \right]^{-2P_{qq,N}^{(0)}/\beta_0}.
+\end{equation*}
+对 $N>1$，$P_{qq,N}^{(0)}<0$；硬尺度升高时 $\alpha_s$ 下降，因此高阶 Mellin 矩下降。这表示辐射把纵向动量分布从较大 $x$ 输运到较小 $x$，而 $N=1$ 的夸克数矩保持不变。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:dglap-general-evolution-dp68}到\eqnrefs{eq:dis-f2-scaling-violation-dp32}]
+对每个活跃夸克味 $f$，领先阶 DGLAP 方程分别为
+\begin{align*}
+ \frac{\partial q_f}{\partial\ln\mu^2}
+ &=\frac{\alpha_s}{2\pi}
+ \left(P_{qq}\otimes q_f+P_{qg}\otimes g\right),\\
+ \frac{\partial \bar q_f}{\partial\ln\mu^2}
+ &=\frac{\alpha_s}{2\pi}
+ \left(P_{qq}\otimes \bar q_f+P_{qg}\otimes g\right),
+\end{align*}
+而胶子分布满足
+\begin{equation*}
+ \frac{\partial g}{\partial\ln\mu^2}
+ =\frac{\alpha_s}{2\pi}
+ \left[
+ P_{gg}\otimes g
+ +P_{gq}\otimes\sum_{f=1}^{n_f}(q_f+\bar q_f)
+ \right].
+\end{equation*}
+定义味单态组合
+\begin{equation*}
+ \Sigma(x,\mu)\equiv
+ \sum_{f=1}^{n_f}[q_f(x,\mu)+\bar q_f(x,\mu)].
+\end{equation*}
+把前两式逐味相加时，每个味有一个 $q_f$ 和一个 $\bar q_f$ 接收 $g\to q_f\bar q_f$ 的馈入，因此
+\begin{align*}
+ \frac{\partial\Sigma}{\partial\ln\mu^2}
+ &=\sum_f\left(
+ \frac{\partial q_f}{\partial\ln\mu^2}
+ +\frac{\partial\bar q_f}{\partial\ln\mu^2}
+ \right)\\
+ &=\frac{\alpha_s}{2\pi}
+ \left[P_{qq}\otimes\Sigma
+ +2n_fP_{qg}\otimes g\right].
+\end{align*}
+与胶子方程并排写成
+\begin{equation*}
+ \frac{\partial}{\partial\ln\mu^2}
+ \binom{\Sigma}{g}
+ =\frac{\alpha_s}{2\pi}
+ \begin{pmatrix}
+ P_{qq}&2n_fP_{qg}\\
+ P_{gq}&P_{gg}
+ \end{pmatrix}\otimes
+ \binom{\Sigma}{g},
+\end{equation*}
+即正文\eqnrefs{eq:dis-singlet-gluon-dglap-dp31}。这个矩阵就是一般 DGLAP 方程变换到味单态--胶子基后的演化核。作为检查，任取非单态差
+\begin{equation*}
+ q_i+\bar q_i-q_j-\bar q_j,
+\end{equation*}
+两份相同的 $P_{qg}\otimes g$ 严格相消，所以非单态扇区闭合，而单态必然与胶子混合。
+
+现在把同一演化投影到可测的电磁结构函数。取 $\mu_{\rm F}=\mathcal Q$，树级硬系数给
+\begin{equation*}
+ F_2(x,\mathcal Q^2)
+ =x\sum_f Q_f^2[q_f(x,\mathcal Q)+\bar q_f(x,\mathcal Q)]
+ +\order(\alpha_s).
+\end{equation*}
+对 $\ln\mathcal Q^2$ 求导时，树级系数本身没有显式尺度导数，因此到 $O(\alpha_s)$ 只需作用在 PDF 上：
+\begin{align*}
+ \frac{\partial F_2}{\partial\ln\mathcal Q^2}
+ &=x\sum_fQ_f^2
+ \left(
+ \frac{\partial q_f}{\partial\ln\mathcal Q^2}
+ +\frac{\partial\bar q_f}{\partial\ln\mathcal Q^2}
+ \right)+\order(\alpha_s^2)\\
+ &=\frac{\alpha_s}{2\pi}x\sum_fQ_f^2
+ \left[
+ P_{qq}\otimes(q_f+\bar q_f)
+ +2P_{qg}\otimes g
+ \right]+\order(\alpha_s^2),
+\end{align*}
+即正文\eqnrefs{eq:dis-f2-scaling-violation-dp32}。这里的胶子项不是因为电磁流直接耦合胶子，而是因为因子化尺度变化会通过 $g\to q\bar q$ 把胶子分布旋转进带电夸克算符；这正是算符混合在实验量中的投影。
+\end{derivation}

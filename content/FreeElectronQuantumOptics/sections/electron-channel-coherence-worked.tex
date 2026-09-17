@@ -1,0 +1,138 @@
+\subsection{从连续波包到通道相干：偏迹究竟算掉什么}
+\label{sec:electron-channel-coherence-worked}
+
+在离散基底中，态 $\sum_r c_r|r\rangle$ 的归一化通常写成 $\sum_r|c_r|^2=1$。这一写法用到了基矢正交性。电子的实际输入是有宽度的波包，平移后的两个包可能重叠，因此在把它们称为两个通道以前，需要先计算内积。下面固定自旋，只保留纵向动量。取 $\langle p|p'\rangle=\delta(p-p')$，入射态写成
+\begin{equation}
+ |\psi_e\rangle=\int\dd p\,f_p(p)|p\rangle,\qquad
+ \int\dd p\,|f_p(p)|^2=1.
+ \label{eq:electron-channel-packet-normalization}
+\end{equation}
+其中 $f_p(p)$ 是连续动量振幅。电子落在小区间 $[p,p+\dd p]$ 的概率为 $|f_p(p)|^2\dd p$，所以 $|f_p|^2$ 是概率密度，$f_p$ 的单位为动量的负二分之一次方。这与离散系数 $c_r$ 的无量纲性质不同。$|p\rangle$ 的 $\delta$ 归一化保证积分叠加后的波包具有有限范数。
+
+若相互作用主要转移动量 $\hbar\kappa_z$，可以先构造一组平移后的通道包
+\begin{equation*}
+ |\ell\rangle_{\rm pkt}=\int\dd p\,f_p(p-\ell\hbar\kappa_z)|p\rangle.
+\end{equation*}
+下标 $\ell$ 只标记平移次数。能否把这些包当作 Kronecker 正交的格点，需要检查重叠矩阵 $S_{\ell m}^{\rm pkt}={}_{\rm pkt}\langle\ell|m\rangle_{\rm pkt}$。若重叠不可忽略，则 $\|\sum_\ell c_\ell|\ell\rangle_{\rm pkt}\|^2=\sum_{\ell m}c_\ell^*S_{\ell m}^{\rm pkt}c_m$，而不是 $\sum_\ell|c_\ell|^2$；此时应保留连续波包，或先构造正交基。
+
+\begin{exbox}[解析求出高斯通道的重叠与正交条件]
+设入射动量概率分布的标准差为 $\sigma_p$，振幅取为
+\begin{equation*}
+ f_p(p)=(2\pi\sigma_p^2)^{-1/4}
+ \exp[-(p-p_0)^2/(4\sigma_p^2)].
+\end{equation*}
+求平移 $\ell$ 阶与 $m$ 阶后的重叠，并将允许误差写成对谱宽的条件。
+
+令 $a=p_0+\ell\hbar\kappa_z$、$b=p_0+m\hbar\kappa_z$。关键是先配方：
+\begin{equation*}
+ (p-a)^2+(p-b)^2=2[p-(a+b)/2]^2+(a-b)^2/2.
+\end{equation*}
+第一项的高斯积分恰好抵消归一化因子，第二项与积分变量无关，故
+\begin{equation}
+ S_{\ell m}^{\rm pkt}
+ =\exp\!\left[-\frac{(\ell-m)^2\hbar^2\kappa_z^2}{8\sigma_p^2}\right].
+ \label{eq:electron-channel-gaussian-overlap}
+\end{equation}
+若允许相邻通道的振幅重叠至多为 $0<\epsilon_{\rm ov}<1$，取对数即可得到
+\begin{equation*}
+ \sigma_p\le\frac{\hbar|\kappa_z|}{\sqrt{8\ln(1/\epsilon_{\rm ov})}}.
+\end{equation*}
+在同步、窄带条件下，$v_0\kappa_z=\omega$、$\sigma_E\simeq v_0\sigma_p$，故同一条件为
+$\sigma_E\lesssim\hbar\omega/\sqrt{8\ln(1/\epsilon_{\rm ov})}$。
+这里限制的是两个波包本身的内积。仪器是否能把两个峰分开，还要另外计算探测响应。若误差要求施加在重叠的模平方上，同样取对数，分母中的 $8$ 改为 $4$。
+\end{exbox}
+
+\begin{exbox}[能谱相同的啁啾波包为何有不同重叠]
+保持同一高斯动量概率分布，但给振幅加入二次相位与平移相位：
+\begin{equation*}
+ f_p(p)=\frac{\exp[-(1-\ii C_p)(p-p_0)^2/(4\sigma_p^2)]}
+ {(2\pi\sigma_p^2)^{1/4}}
+ \ee^{-\ii z_0(p-p_0)/\hbar}.
+\end{equation*}
+实数 $C_p$ 称为谱啁啾参数，表示相位对动量的二次依赖；它不改变 $|f_p|^2$。$z_0$ 则给波包的空间中心。求这种情况下的通道重叠。
+
+令 $d_p=(\ell-m)\hbar\kappa_z$，将积分变量移到两个包中心的中点，得到
+\begin{equation*}
+ S_{\ell m}^{\rm pkt}
+ =\frac{\ee^{-d_p^2/(8\sigma_p^2)-\ii d_pz_0/\hbar}}
+ {\sqrt{2\pi}\sigma_p}
+ \int\dd x\,\exp\!\left[-\frac{x^2}{2\sigma_p^2}
+             +\frac{\ii C_pd_px}{2\sigma_p^2}\right].
+\end{equation*}
+积分仍是高斯 Fourier 积分，故
+\begin{equation*}
+ S_{\ell m}^{\rm pkt}
+ =\exp\!\left[-\frac{(1+C_p^2)d_p^2}{8\sigma_p^2}
+               -\frac{\ii d_pz_0}{\hbar}\right].
+\end{equation*}
+空间平移只改变重叠的相位；谱啁啾改变其模。进一步在动量表象使用 $\hat z=\ii\hbar\partial_p$，可得
+\begin{equation*}
+ \langle z\rangle=z_0,\qquad
+ \sigma_z^2=\frac{\hbar^2(1+C_p^2)}{4\sigma_p^2},\qquad
+ |S_{\ell m}^{\rm pkt}|=\exp[-d_p^2\sigma_z^2/(2\hbar^2)].
+\end{equation*}
+这也可看作位置概率分布的特征函数：动量平移在位置表象中乘一个线性相位，位置分布越宽，平均时越容易相消。因而仅报告能宽不足以确定波包重叠，必须同时说明谱相位；上一例的条件专用于 $C_p=0$ 的变换极限包。
+\end{exbox}
+
+选好正交通道基以后，还要处理电子与环境的相关。设 $\{|r\rangle_e\}$ 和 $\{|\mu\rangle_X\}$ 分别是电子与环境的正交基。先将联合振幅写为 $C_{r\mu}$，再把同一电子通道对应的所有环境振幅合成一个向量，便有
+\begin{equation}
+ |\Psi\rangle=\sum_r|r\rangle_e|\xi_r\rangle_X,\qquad
+ |\xi_r\rangle_X=\sum_\mu C_{r\mu}|\mu\rangle_X,
+ \qquad \sum_r\langle\xi_r|\xi_r\rangle=1.
+ \label{eq:electron-environment-conditional-vectors}
+\end{equation}
+$|\xi_r\rangle_X$ 是随电子通道而变的环境振幅向量，一般\emph{未归一化}。它的范数平方就是电子落在 $r$ 通道的概率。\emph{偏迹}的含义是：只预测电子观测量时，对所有未读出的环境结果求和。于是
+\begin{equation}
+ (\rho_e)_{rs}=\sum_\mu C_{r\mu}C_{s\mu}^*
+ =\langle\xi_s|\xi_r\rangle,
+ \qquad P_r=(\rho_e)_{rr}.
+ \label{eq:electron-coherence-environment-overlap}
+\end{equation}
+对角元只使用一条环境向量的长度；非对角元使用两条环境向量的内积。环境留下越容易区分的通道记录，该内积越小，电子干涉越弱。这也是\emph{纠缠导致约化混合}的具体计算：联合态仍是纯态，但只保留电子时，不能再用一个电子波函数预测所有测量。
+
+若写 $|\xi_r\rangle=c_r|\chi_r\rangle$，其中 $\langle\chi_r|\chi_r\rangle=1$，便有 $\rho_{rs}=c_rc_s^*\mathsf C_{rs}^X$，$\mathsf C_{rs}^X=\langle\chi_s|\chi_r\rangle$。由 Cauchy--Schwarz 不等式，$|\rho_{rs}|^2\le P_rP_s$。所有环境态相同时，电子保留完整相干；环境态两两正交时，电子只剩对角占据。两种情况可以具有完全相同的 $P_r$，所以“看见一串边带”本身不能证明电子处于相干叠加。
+
+\begin{exbox}[不等权两通道的纯度与干涉可见度]
+取归一化联合态
+\begin{equation*}
+ |\Psi\rangle=\sqrt{w}\,|0\rangle|\chi_0\rangle
+ +\sqrt{1-w}\,\ee^{\ii\varphi}|1\rangle|\chi_1\rangle,
+ \quad 0\le w\le1,\quad \mu_X=\langle\chi_1|\chi_0\rangle.
+\end{equation*}
+不指定环境的具体模型，求电子纯度和参考干涉可见度。
+
+由偏迹规则，非对角元等于两振幅乘积乘环境重叠：
+\begin{equation*}
+ \rho_e=\begin{pmatrix}
+ w&\sqrt{w(1-w)}\,\ee^{-\ii\varphi}\mu_X\\
+ \sqrt{w(1-w)}\,\ee^{\ii\varphi}\mu_X^*&1-w
+ \end{pmatrix}.
+\end{equation*}
+\emph{纯度}是密度矩阵平方的迹。对这个二阶矩阵，不必求本征值，直接平方对角项并加两份非对角模平方：
+\begin{equation*}
+ \operatorname{Tr}\rho_e^2
+ =w^2+(1-w)^2+2w(1-w)|\mu_X|^2
+ =1-2w(1-w)(1-|\mu_X|^2).
+\end{equation*}
+再投影到 $|+_\vartheta\rangle=(|0\rangle+\ee^{\ii\vartheta}|1\rangle)/\sqrt2$，得到
+\begin{equation*}
+ P_+(\vartheta)=\frac12+\sqrt{w(1-w)}
+ \Re[\ee^{\ii(\vartheta-\varphi)}\mu_X],\qquad
+ \mathcal V=\frac{P_{\max}-P_{\min}}{P_{\max}+P_{\min}}
+ =2\sqrt{w(1-w)}|\mu_X|.
+\end{equation*}
+因此可见度下降可能来自两种独立原因：路径权重不等，或环境记录可区分。即使 $|\mu_X|=1$、电子完全纯，只要 $w\ne1/2$，该参考投影的可见度仍小于一；等权时才有 $\mathcal V=|\mu_X|$。
+
+若环境记录是两种相干态，则
+$|\mu_X|=\exp[-|\alpha_1-\alpha_0|^2/2]$，代入即可得到纯度和可见度随记录间距的闭式。记录相同给纯态，正交记录给纯度 $w^2+(1-w)^2$；两者的普通能谱始终都是 $(w,1-w)$。
+\end{exbox}
+
+\begin{derivation}[为何不读环境时要对振幅乘积求和]
+对任意电子算符 $O_e$，联合态的平均值为
+\begin{align*}
+ \langle\Psi|O_e\otimes I_X|\Psi\rangle
+ &=\sum_{r,s,\mu}C_{s\mu}^*C_{r\mu}\langle s|O_e|r\rangle\\
+ &=\operatorname{Tr}_e(\rho_e O_e).
+\end{align*}
+该等式对每个 $O_e$ 成立，便唯一确定\eqnrefs{eq:electron-coherence-environment-overlap}。不同环境结果 $\mu$ 互斥，故应对振幅乘积求和，不能先叠加这些互斥结果的振幅再取模平方。混合环境初态则对各纯态分量的结果按概率加权；偏迹不要求环境为纯态。
+\end{derivation}

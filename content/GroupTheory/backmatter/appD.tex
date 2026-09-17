@@ -1,0 +1,643 @@
+\chapter{Young 方法的技术证明}
+\label{app:young-proofs}
+
+\chapref{chap:permutation-group}把 Young--Specht 理论的主线放在正文中，但几个关键结论需要较长的群代数论证。为了不打断正文的认知链，这些技术证明集中在本附录；这里沿用\chapref{chap:permutation-group}记号
+\[
+a_T=\sum_{r\in R_T}r,
+\qquad
+b_T=\sum_{c\in C_T}\sgnperm(c)c,
+\qquad
+ e_T=a_Tb_T.
+\]
+
+\section{幂等元、左理想与不可约性}
+
+\begin{theorem}[本原幂等元判据]
+设 $A=\groupalg{G}$ 为有限群的复群代数，$p\in A$ 为非零幂等元 $p^2=p$。左理想 $Ap$ 是不可约左 $A$-模，当且仅当
+\begin{equation}
+pAp=\CC p,
+\label{eq:primitive-idempotent-criterion}
+\end{equation}
+即对任意 $x\in A$ 都存在 $\lambda_x\in\CC$ 使
+\[
+pxp=\lambda_xp.
+\]
+
+\par\smallskip\noindent\textbf{证明.}
+先设 $Ap$ 不可约。对任意 $x\in A$，定义
+\[
+T_x:Ap\to Ap,
+\qquad
+T_x(ap)=apxp.
+\]
+它确实把 $Ap$ 映到自身，并且对任意 $y\in A$，
+\[
+T_x(y\cdot ap)=yapxp=y\cdot T_x(ap),
+\]
+所以 $T_x$ 是 $A$-模自同态。由 Schur 引理，存在 $\lambda_x$ 使
+\[
+T_x=\lambda_x I_{Ap}.
+\]
+特别取向量 $p\in Ap$，得到
+\[
+pxp=\lambda_xp,
+\]
+故 $pAp=\CC p$。
+
+反过来设 \eqnrefs{eq:primitive-idempotent-criterion} 成立。若 $Ap$ 可约，由有限群代数的半单性，存在非零真子模 $W\subsetneq Ap$ 及其不变互补，因此存在与左乘作用交换的非平凡投影
+\[
+P:Ap\to Ap,
+\qquad
+P^2=P,
+\qquad P\neq0,I.
+\]
+令 $q=P(p)\in Ap$。因为 $P$ 是 $A$-线性的，对任意 $a\in A$，
+\[
+P(ap)=aP(p)=aq.
+\]
+又因 $p^2=p$，
+\[
+q=P(p)=P(p^2)=pP(p)=pq,
+\]
+而 $q\in Ap$ 可写为 $q=xp$，所以
+\[
+q=pxp\in pAp.
+\]
+按假设 $q=\lambda p$。于是
+\[
+P(ap)=a\lambda p=\lambda ap,
+\]
+即 $P=\lambda I$。投影条件给出 $\lambda^2=\lambda$，故 $\lambda=0$ 或 $1$，与 $P$ 非平凡矛盾。因此 $Ap$ 不可约。
+\end{theorem}
+
+这个判据把“不可约”转化为一个可以在群代数中直接验证的乘法条件。Young 理论后面真正要证明的，正是适当归一化后的 $e_T$ 满足这个条件。
+
+\section{同形 Young 盘之间的共轭关系}
+
+\begin{lemma}[行群与列群随重标号共轭]
+若两个 Young 盘满足 $T'=\pi T$，其中 $\pi\in S_n$ 逐格重标号，则
+\begin{align}
+R_{T'}&=\pi R_T\pi^{-1},\\
+C_{T'}&=\pi C_T\pi^{-1},\\
+a_{T'}&=\pi a_T\pi^{-1},\\
+b_{T'}&=\pi b_T\pi^{-1},\\
+e_{T'}&=\pi e_T\pi^{-1}.
+\label{eq:young-conjugation-all}
+\end{align}
+
+\par\smallskip\noindent\textbf{证明.}
+若 $r\in R_T$，它只交换 $T$ 的同一行中的数字。重标号后，$\pi r\pi^{-1}$ 对 $T'$ 做完全相同的格位置交换，因此属于 $R_{T'}$。反向使用 $\pi^{-1}$ 得到集合相等。列群同理。
+
+对群代数求和，
+\[
+\pi a_T\pi^{-1}
+=\sum_{r\in R_T}\pi r\pi^{-1}
+=\sum_{r'\in R_{T'}}r'=a_{T'}.
+\]
+共轭不改变置换奇偶性，因此 $b_T$ 也同样变换。最后两式相乘即得 $e_{T'}=\pi e_T\pi^{-1}$。
+\end{lemma}
+
+由此，同形不同盘对应的左理想不会产生新的不可约等价类。由
+\[
+e_{T'}=\pi e_T\pi^{-1}
+\]
+先得到
+\[
+Ae_{T'}=A\pi e_T\pi^{-1}=Ae_T\pi^{-1},
+\]
+其中使用了 $A\pi=A$。因此可以定义
+\[
+\Phi_\pi:Ae_T\to Ae_{T'},
+\qquad
+\Phi_\pi(xe_T)=xe_T\pi^{-1}=x\pi^{-1}e_{T'}.
+\]
+若 $xe_T=x'e_T$，右乘 $\pi^{-1}$ 后仍相等，所以映射良定义。对任意 $a\in A$，
+\[
+\Phi_\pi(a\,xe_T)=axe_T\pi^{-1}=a\,\Phi_\pi(xe_T),
+\]
+故它与左正则作用交织。右乘 $\pi$ 给出逆映射，于是 $Ae_T\simeq Ae_{T'}$。因此“表示由图形状而不是数字填法标记”不是经验约定，而是一个明确的模同构结论。
+
+\section{行列冲突与不同形状的正交性}
+
+Young 算符的零乘积并不是偶然的系数抵消，而是“同行要求对称、同列要求反对称”之间的直接冲突。先把这个局部机制写成一个可反复调用的引理。
+
+\begin{lemma}[行列冲突引理]
+设 $T,S$ 为两个 Young 盘。若存在两个数字 $a,b$ 在 $T$ 中位于同一行，而在 $S$ 中位于同一列，则
+\begin{equation}
+b_Sa_T=0.
+\label{eq:row-column-collision}
+\end{equation}
+从而
+\[
+e_Se_T=a_Sb_Sa_Tb_T=0.
+\]
+
+\par\smallskip\noindent\textbf{证明.}
+令 $\tau=(ab)$。因为 $a,b$ 在 $T$ 同行，所以 $\tau\in R_T$，由行群重排有
+\[
+\tau a_T=a_T.
+\]
+因为它们在 $S$ 同列，所以 $\tau\in C_S$，且 $\sgnperm(\tau)=-1$。列反对称子的定义给出
+\[
+b_S\tau=-b_S.
+\]
+于是
+\[
+b_Sa_T=b_S(\tau a_T)=(b_S\tau)a_T=-b_Sa_T,
+\]
+故 $2b_Sa_T=0$。我们工作在复数域上，特征不为 $2$，因此只能有 $b_Sa_T=0$。
+\end{lemma}
+
+同形盘还需要一个互补结论：若没有行列冲突，那么相应的重标号恰能分解成“行置换乘列置换”。这一步正是后面证明 $e_Txe_T$ 一维性的关键。
+
+\begin{lemma}[同形盘的行列分解判据]
+设 $T$ 与 $T'=\pi T$ 具有相同形状。若 $T$ 中同一行的任意两个数字，在 $T'$ 中都不位于同一列，则存在
+\[
+r\in R_T,\qquad c\in C_T
+\]
+使
+\begin{equation}
+\pi=rc.
+\label{eq:row-column-factorization}
+\end{equation}
+反过来，若 $\pi=rc$，则不会出现上述行列冲突。因此
+\[
+\pi\notin R_TC_T
+\quad\Longleftrightarrow\quad
+\text{$T$ 某两个同行数字在 $\pi T$ 中同列}.
+\]
+
+\par\smallskip\noindent\textbf{证明.}
+先假设不存在行列冲突。考察 $T$ 的第一行。它含 $\lambda_1$ 个数字，而形状 $\lambda$ 一共恰有 $\lambda_1$ 列；这些数字在 $T'$ 中落在互不相同的列，所以恰好每列一个。因而可以只在 $T$ 第一行内部重排数字，使第一行每个数字都进入它在 $T'$ 中所在的列。
+
+删除已经配好的第一行数字后，仍含未配数字的列数正好是 $\lambda_2$。$T$ 第二行含 $\lambda_2$ 个数字；无行列冲突保证它们在 $T'$ 的剩余位置中仍落在互异列，因此又可以只在第二行内部重排，使这些数字进入正确的列。逐行重复，得到一个行置换 $r\in R_T$，使 $rT$ 与 $T'$ 的每一列包含完全相同的一组数字，只是列内上下顺序可能不同。
+
+于是存在 $rT$ 的列置换 $c'\in C_{rT}$ 使
+\[
+T'=c'rT.
+\]
+由重标号共轭关系 $C_{rT}=rC_Tr^{-1}$，可写 $c'=rcr^{-1}$，其中 $c\in C_T$。因此
+\[
+T'=rcr^{-1}rT=rcT.
+\]
+Young 盘中每个数字只出现一次，所以若两个置换作用在 $T$ 上得到同一盘，它们必相等，故 $\pi=rc$。
+
+反过来设 $\pi=rc$。若出现两个数字在 $T$ 同行而在 $\pi T$ 同列，令交换这两个数字的对换为 $\tau$，则
+\[
+\tau\in R_T\cap \pi C_T\pi^{-1}.
+\]
+由 $\pi=rc$ 以及 $cC_Tc^{-1}=C_T$，有
+\[
+\pi C_T\pi^{-1}=rC_Tr^{-1}.
+\]
+于是 $r^{-1}\tau r\in R_T$（因为 $r\in R_T$ 且 $R_T$ 是子群），同时 $r^{-1}\tau r\in C_T$，所以
+\[
+r^{-1}\tau r\in R_T\cap C_T=\{e\}.
+\]
+这迫使 $\tau=e$，与 $\tau$ 是交换两个不同数字的对换矛盾。因此不存在行列冲突。
+\end{lemma}
+
+现在比较不同形状。这里使用\textbf{字典序}：若
+\[
+\lambda=(\lambda_1,\lambda_2,\dots),\qquad
+\mu=(\mu_1,\mu_2,\dots)
+\]
+在第一个不同的行指标 $k$ 满足 $\lambda_k>\mu_k$，就记作 $\lambda\succ\mu$。任意两个不同分拆在这个顺序下都可比较。
+
+\begin{lemma}[不同形状必产生行列冲突]
+若 $\lambda\succ\mu$，$T$ 是形状 $\lambda$ 的任意 Young 盘，$S$ 是形状 $\mu$ 的任意 Young 盘，则必存在两个数字在 $T$ 中同行而在 $S$ 中同列。
+
+\par\smallskip\noindent\textbf{证明.}
+反设不存在这样的数字。由于 $T$ 第一行的 $\lambda_1$ 个数字在 $S$ 中必须占据互不相同的列，而 $S$ 一共只有 $\mu_1$ 列，所以
+\[
+\lambda_1\le\mu_1.
+\]
+若第一行已经是两个分拆首次不同之处，这就与 $\lambda_1>\mu_1$ 矛盾。
+
+若 $\lambda_1=\mu_1$，那么 $T$ 第一行的数字必须在 $S$ 的每一列中恰出现一个。把这些数字暂时删去。此时仍含未删数字的列恰有 $\mu_2$ 个，因为原来列高至少为 $2$ 的列数就是第二行长度 $\mu_2$。$T$ 第二行的 $\lambda_2$ 个数字仍必须落在互不相同的剩余列中，所以 $\lambda_2\le\mu_2$。
+
+若前两行仍相等，就继续删除已经匹配的数字。归纳下去：只要
+\[
+\lambda_1=\mu_1,\dots,\lambda_{j-1}=\mu_{j-1},
+\]
+删除前 $j-1$ 行对应数字以后，$S$ 中仍有未删数字的列数恰为 $\mu_j$，而 $T$ 第 $j$ 行的 $\lambda_j$ 个数字必须占据不同列，因此 $\lambda_j\le\mu_j$。取第一个不同指标 $k$ 就得到 $\lambda_k\le\mu_k$，与 $\lambda_k>\mu_k$ 矛盾。
+\end{lemma}
+
+这个组合引理立即给出群代数中的零乘积。设 $\lambda\succ\mu$，$T,S$ 分别具有形状 $\lambda,\mu$。对任意 $\pi\in S_n$，盘 $\pi T$ 仍具有形状 $\lambda$，所以由上个引理，$\pi T$ 的某一行与 $S$ 的某一列发生冲突，从而
+\[
+b_Sa_{\pi T}=0.
+\]
+另一方面
+\[
+a_{\pi T}=\pi a_T\pi^{-1},
+\qquad
+\pi a_T=a_{\pi T}\pi.
+\]
+因此
+\begin{align}
+e_S\pi e_T
+&=a_Sb_S\pi a_Tb_T\notag\\
+&=a_Sb_Sa_{\pi T}\pi b_T=0.
+\label{eq:different-shape-zero}
+\end{align}
+线性延拓后，对任意 $x\in\groupalg{S_n}$ 都有
+\[
+e_Sxe_T=0.
+\]
+这条式子只需要在字典序较大形状 $\lambda$ 到较小形状 $\mu$ 的一个方向成立；它已经足以排除两个 Specht 模之间存在同构，因为若存在同构，其逆映射会给出该方向上的非零模同态。
+
+\section{\texorpdfstring{为什么 $e_Txe_T$ 只能与 $e_T$ 成比例}{为什么 eT x eT 只能与 eT 成比例}}
+
+\begin{lemma}[Young 一维性引理]
+固定 Young 盘 $T$。若 $x\in\groupalg{S_n}$ 满足
+\begin{equation}
+rxc=\sgnperm(c)x,
+\qquad
+\forall r\in R_T,\ c\in C_T,
+\label{eq:young-bi-equivariance}
+\end{equation}
+则 $x$ 必为 $e_T$ 的标量倍数。
+
+\par\smallskip\noindent\textbf{证明.}
+把
+\[
+x=\sum_{\pi\in S_n}x_\pi\pi
+\]
+按置换基展开。先证明若 $\pi\notin R_TC_T$，则 $x_\pi=0$。由 \eqnrefs{eq:row-column-factorization}，此时存在两个数字在 $T$ 中同行而在 $\pi T$ 中同列。令交换这两个数字的对换为 $\tau$。于是
+\[
+\tau\in R_T,
+\qquad
+\tau\in C_{\pi T}=\pi C_T\pi^{-1}.
+\]
+因此存在一个对换 $c\in C_T$ 使
+\[
+\tau=\pi c\pi^{-1},
+\qquad
+\tau\pi=\pi c.
+\]
+由左侧行不变性 $\tau x=x$，比较基向量 $\tau\pi$ 的系数得到
+\[
+x_{\tau\pi}=x_\pi.
+\]
+由右侧列反对称性 $xc=-x$，比较基向量 $\pi c$ 的系数得到
+\[
+x_{\pi c}=-x_\pi.
+\]
+但 $\tau\pi=\pi c$，故 $x_\pi=-x_\pi$，于是 $x_\pi=0$。
+
+所以 $x$ 的支撑只能落在集合 $R_TC_T$ 上。若
+\[
+rc=r'c',
+\qquad r,r'\in R_T,\quad c,c'\in C_T,
+\]
+则
+\[
+r^{-1}r'=cc'^{-1}\in R_T\cap C_T=\{e\},
+\]
+故分解 $rc$ 唯一。设单位元系数 $x_e=\theta$。由 $rx=x$ 可知左乘行置换不改变系数；由 $xc=\sgnperm(c)x$ 可知右乘列置换只给出相应符号，因此
+\[
+x_{rc}=\theta\,\sgnperm(c).
+\]
+于是
+\[
+x
+=\theta\sum_{r\in R_T}\sum_{c\in C_T}\sgnperm(c)rc
+=\theta a_Tb_T
+=\theta e_T.
+\]
+\end{lemma}
+
+现在令 $x=e_Tye_T$。由于 $r a_T=a_T$ 以及 $b_Tc=\sgnperm(c)b_T$，它自动满足 \eqnrefs{eq:young-bi-equivariance}，于是
+\begin{equation}
+e_Tye_T=\lambda_T(y)e_T,
+\qquad \forall y\in\groupalg{S_n}.
+\label{eq:ete-scalar}
+\end{equation}
+特别取 $y=e$，得到
+\[
+e_T^2=c_\lambda e_T.
+\]
+这就严格给出了\chapref{chap:permutation-group}所谓“本质幂等性”。归一化
+\[
+p_T=c_\lambda^{-1}e_T
+\]
+以后，\eqnrefs{eq:ete-scalar} 变成
+\[
+p_Typ_T=\mu_T(y)p_T.
+\]
+由本原幂等元判据，$\groupalg{S_n}p_T$ 不可约。
+
+\section{同形等价、异形不等价与完备性}
+
+同形等价已经由 \eqnrefs{eq:young-conjugation-all} 及右乘 $\pi^{-1}$ 的交织映射得到。现在设 $T,S$ 形状分别为 $\lambda,\mu$，且 $\lambda\succ\mu$。前节已经证明
+\[
+e_Sxe_T=0,
+\qquad \forall x\in A.
+\]
+将本质幂等元归一化为
+\[
+p_T=c_\lambda^{-1}e_T,
+\qquad
+p_S=c_\mu^{-1}e_S,
+\]
+则 $Ap_T=Ae_T$、$Ap_S=Ae_S$，并且 $p_T^2=p_T$、$p_S^2=p_S$。若这两个左 $A$-模等价，则存在模同构 $\Phi:Ap_T\to Ap_S$，从而逆映射
+\[
+\Psi=\Phi^{-1}:Ap_S\to Ap_T
+\]
+也是非零 $A$-模同态。它由 $\Psi(p_S)$ 决定。利用幂等性与 $A$-线性，
+\[
+\Psi(p_S)=\Psi(p_S^2)=p_S\Psi(p_S).
+\]
+另一方面 $\Psi(p_S)\in Ap_T$，故存在某个 $y\in A$ 使
+\[
+\Psi(p_S)=yp_T.
+\]
+两式结合得到
+\[
+\Psi(p_S)=p_Syp_T
+=\frac{1}{c_\mu c_\lambda}e_Sye_T=0,
+\]
+这与 $\Psi$ 为同构矛盾。因此不同形状的 Specht 模不可能等价。
+
+最后，$S_n$ 的共轭类由 $n$ 的整数分拆分类，因此共轭类数正好是分拆数 $p(n)$。有限群复不可约表示等价类数又等于共轭类数。我们已经对每个 $\lambda\vdash n$ 构造出一个不可约且彼此不等价的 Specht 模，所以这些模必然已经穷尽全部不可约表示。这一步把“构造出很多表示”升级成了“分类完毕”。
+
+\section{标准 polytabloid 基与 Specht 模维数}
+
+正文用群代数左理想 $Ae_T$ 构造不可约表示；计算维数时，经典 tabloid 模型更透明。这里把两种语言之间的关系说明清楚，并证明“标准 Young 盘数就是不可约表示维数”。
+
+固定分拆 $\lambda\vdash n$。若两个 $\lambda$-盘只相差同行内部的重排，就把它们视为同一个 tabloid，记为 $\{T\}$。全部 tabloids 构成的复向量空间记为 $M^\lambda$，$S_n$ 通过重标号线性作用。固定参考盘 $T$ 后，映射
+\[
+A a_T\longrightarrow M^\lambda,
+\qquad
+x a_T\longmapsto x\{T\}
+\]
+是良定义的 $A$-模同构：右乘任意 $r\in R_T$ 不改变 $a_T$，也不改变 tabloid；反过来，不同左陪集对应不同 tabloids。因此 $M^\lambda$ 正是行群平凡表示诱导出的置换模。
+
+对任意 $\lambda$-盘 $T$ 定义 polytabloid
+\begin{equation}
+\varepsilon_T
+=\sum_{c\in C_T}\sgnperm(c)\{cT\}.
+\label{eq:polytabloid-app}
+\end{equation}
+其张成空间记为 $\mathscr S^\lambda\subset M^\lambda$。它在 $S_n$ 作用下不变，因为
+\[
+\pi\varepsilon_T=\varepsilon_{\pi T}.
+\]
+这就是经典 Specht 模的 tabloid 实现。
+
+\begin{lemma}[Garnir 拉直关系]
+设 $T$ 已经把每一行按从小到大排列，但还不是标准盘。取最靠左的一处列逆序，设它发生在相邻两行 $i,i+1$ 的第 $j$ 列。令 $A$ 为第 $i$ 行从第 $j$ 格起到行末的数字集合，$B$ 为第 $i+1$ 行从行首到第 $j$ 格的数字集合。记 $\mathcal D(A,B)$ 为把 $A\cup B$ 重新分配回这两段位置、同时保持 $A$ 内部与 $B$ 内部原有相对次序的 shuffle 置换集合，并令恒等置换属于 $\mathcal D(A,B)$。每个 shuffle 的系数固定取其置换奇偶性 $\sgnperm(\sigma)$。则
+\begin{equation}
+\sum_{\sigma\in\mathcal D(A,B)}\sgnperm(\sigma)\,\varepsilon_{\sigma T}=0.
+\label{eq:garnir-straightening-app}
+\end{equation}
+其中恒等置换对应的项正是 $\varepsilon_T$；其余各项在行读字的字典序上都严格高于 $T$。因此 $\varepsilon_T$ 可以表示成更高序 polytabloids 的线性组合。
+
+\par\smallskip\noindent\textbf{证明.}
+集合 $A\cup B$ 的大小严格大于第二段可容纳的格数，所以任何把这些数字放回两段位置的方式中，至少有两个来自同一 shuffle 块的数字落入同一列。对该列中的两个数字做对换 $\tau$，由于它属于相应列群，polytabloid 在左乘 $\tau$ 时变号。把 $\mathcal D(A,B)$ 中的项按照这一对换配对，除了保持两块内部次序的代表选择外，所有内部重排都被列反对称性吸收成符号；成对项相消后得到 \eqnrefs{eq:garnir-straightening-app}。恒等项保留 $\varepsilon_T$，移到等号另一边即得拉直公式。
+
+为什么其余项都“更高”？所选逆序位置满足上格数字大于下格数字。非恒等 shuffle 若要消除该冲突，必把某个较小数字提前到上行的第一个发生变化位置；按从左到右逐行读取的字序比较，新盘在第一个差异处更小。若把顺序方向定义成“小字优先者更高”，则严格单调。因为盘的总数有限，反复拉直不可能形成循环。
+\end{lemma}
+
+由此立即得到张成性：先在每一行内排序，因为 tabloid 不记录同行次序；若仍有列逆序，就反复使用 Garnir 关系。每一步都严格提高有限全序，最终只剩行、列都递增的标准盘。因此
+\[
+\mathscr S^\lambda
+=\Span\{\varepsilon_T\mid T\text{ 为标准 }\lambda\text{-盘}\}.
+\]
+
+\begin{lemma}[标准 polytabloids 线性无关]
+不同标准盘对应的 $\varepsilon_T$ 线性无关。
+
+\par\smallskip\noindent\textbf{证明.}
+需要把“首项不同”说得足够精确。对任意 tabloid $X$、整数 $k=1,\dots,n$ 和前 $r$ 行，记
+\[
+N_{k,r}(X)=\#\{1,\dots,k\}\text{ 中位于 }X\text{ 前 }r\text{ 行的数字个数}.
+\]
+若 $T$ 是标准盘，则在它的每一列中，较小的数字总在较大的数字上方。因此固定 $k,r$ 后，在该列包含的数字中，把 $\{1,\dots,k\}$ 内的那些数字放在尽可能靠上的位置，正是 $T$ 自己所做的排列。任何列置换 $c\in C_T$ 都不能增加前 $r$ 行中小于等于 $k$ 的数字数目，所以
+\begin{equation}
+N_{k,r}(\{cT\})\le N_{k,r}(\{T\}),
+\qquad \forall k,r.
+\label{eq:tabloid-dominance-triangular}
+\end{equation}
+若 $c\neq e$，至少有一列的相对次序被改变，于是对某组 $k,r$ 上式严格小于。
+
+现在在标准 tabloids 上定义偏序：若对所有 $k,r$ 都有 $N_{k,r}(S)\le N_{k,r}(T)$，就记 $S\preceq T$。取这个偏序的任一线性扩张作为全序。由 \eqnrefs{eq:polytabloid-app}，$\varepsilon_T$ 中 $c=e$ 的项是 $\{T\}$，系数为 $1$；所有 $c\neq e$ 产生的 tabloid 若恰好与某个标准 tabloid 行等价，则都严格位于 $T$ 之前。于是把标准 polytabloids 的坐标投影到标准 tabloids 所张成的坐标子空间后，系数矩阵为单位三角矩阵。单位三角矩阵可逆，所以标准 polytabloids 必线性无关。
+\end{lemma}
+
+两条引理合起来得到经典标准基定理
+\begin{equation}
+\dim\mathscr S^\lambda=f^\lambda.
+\label{eq:standard-polytabloid-dimension-app}
+\end{equation}
+还需把它与正文使用的 $Ae_T=Aa_Tb_T$ 联系起来。定义群代数自同构
+\[
+\omega:A\to A,
+\qquad
+\omega(g)=\sgnperm(g)g.
+\]
+若 $T^{\mathsf T}$ 为转置 Young 盘，则 $R_T=C_{T^{\mathsf T}}$、$C_T=R_{T^{\mathsf T}}$，从而
+\[
+\omega(a_T)=b_{T^{\mathsf T}},
+\qquad
+\omega(b_T)=a_{T^{\mathsf T}},
+\qquad
+\omega(e_T)=b_{T^{\mathsf T}}a_{T^{\mathsf T}}.
+\]
+右端正是经典 Specht 构造的 Young symmetrizer。扭曲一个模的作用 by $\omega$ 不改变向量空间维数，因此正文的 $Ae_T$ 与转置形状的经典 Specht 模具有相同维数。标准盘转置给出标准 $\lambda$-盘与标准 $\lambda^{\mathsf T}$-盘的一一对应，所以
+\[
+\dim Ae_T=f^{\lambda^{\mathsf T}}=f^\lambda.
+\]
+这就补全了正文标准盘基定理所需的维数论证。
+
+\section{Hook-length 公式的递归闭合}
+
+\chapref{chap:permutation-group}已经给出标准盘数的分支递推
+\begin{equation}
+f^\lambda=\sum_{\mu\nearrow\lambda}f^\mu,
+\label{eq:hook-recursion-app}
+\end{equation}
+其中 $\mu\nearrow\lambda$ 表示从 $\lambda$ 删除一个可移去角格。本节严格证明 hook 乘积
+\[
+H_\lambda=\prod_{u\in\lambda}h_\lambda(u)
+\]
+满足与 \eqnrefs{eq:hook-recursion-app} 相容的递推，从而闭合正文中的归纳证明。
+
+先引入一个只涉及 Young 图几何的乘积恒等式。设
+\[
+\lambda=(\lambda_1,\dots,\lambda_r),
+\qquad
+\lambda_1\ge\cdots\ge\lambda_r>0,
+\]
+并定义严格递减的整数
+\begin{equation}
+\ell_i=\lambda_i+r-i,
+\qquad i=1,\dots,r.
+\label{eq:shifted-row-lengths}
+\end{equation}
+
+\begin{lemma}[hook 乘积的移位行长形式]
+有
+\begin{equation}
+H_\lambda
+=\frac{\displaystyle\prod_{i=1}^{r}\ell_i!}
+{\displaystyle\prod_{1\le i<j\le r}(\ell_i-\ell_j)}.
+\label{eq:hook-product-shifted}
+\end{equation}
+
+\par\smallskip\noindent\textbf{证明.}
+对行数 $r$ 归纳。$r=1$ 时，Young 图只有一行，hook lengths 为 $\lambda_1,\lambda_1-1,\dots,1$，所以 $H_\lambda=\lambda_1!=\ell_1!$。
+
+设 $r>1$，删去第一行得到
+\[
+\widehat\lambda=(\lambda_2,\dots,\lambda_r).
+\]
+删去上方一行不会改变原来第 $2,\dots,r$ 行各格右侧和下方的格数，因此这些格子的 hook lengths 与 $\widehat\lambda$ 中完全相同。于是
+\[
+H_\lambda=H_{\widehat\lambda}\prod_{j=1}^{\lambda_1}h_{1j}.
+\]
+对 $\widehat\lambda$ 而言，它的移位行长仍恰为 $\ell_2,\dots,\ell_r$，故归纳假设给出
+\[
+H_{\widehat\lambda}
+=\frac{\prod_{i=2}^{r}\ell_i!}
+{\prod_{2\le i<j\le r}(\ell_i-\ell_j)}.
+\]
+
+第一行第 $j$ 格的 hook length 为
+\[
+h_{1j}=\lambda_1-j+\lambda'_j,
+\]
+其中 $\lambda'_j$ 是第 $j$ 列高度。当 $j$ 从 $1$ 增加到 $\lambda_1$ 时，这些 hook lengths 构成整数集合
+\[
+\{1,2,\dots,\ell_1\}
+\setminus
+\{\ell_1-\ell_2,\ell_1-\ell_3,\dots,\ell_1-\ell_r\}.
+\]
+确切地说，若跨过某一行末 $j=\lambda_i$，列高会下降一次，于是 hook 序列除通常的减 $1$ 外额外跳过一个整数；第 $i$ 行造成的被跳过值为
+\[
+\lambda_1+r-1-(\lambda_i+r-i)=\ell_1-\ell_i.
+\]
+所以
+\[
+\prod_{j=1}^{\lambda_1}h_{1j}
+=\frac{\ell_1!}{\prod_{i=2}^{r}(\ell_1-\ell_i)}.
+\]
+与归纳假设相乘便得到 \eqnrefs{eq:hook-product-shifted}。
+\end{lemma}
+
+接下来比较删去一个角格前后的 hook 乘积。允许在分拆末尾补零，使行数 $r$ 在删格前后保持相同。若从第 $k$ 行末删去角格，则
+\[
+\ell_k\longmapsto\ell_k-1,
+\]
+其余 $\ell_i$ 不变。由 \eqnrefs{eq:hook-product-shifted} 直接相除，得到
+\begin{align}
+\frac{H_\lambda}{H_{\lambda\setminus k}}
+&=\ell_k
+\prod_{i<k}
+\frac{\ell_i-\ell_k+1}{\ell_i-\ell_k}
+\prod_{j>k}
+\frac{\ell_k-\ell_j-1}{\ell_k-\ell_j}.
+\label{eq:hook-corner-ratio}
+\end{align}
+如果第 $k$ 行不是可移去角，即 $\lambda_k=\lambda_{k+1}$，那么 $\ell_k-\ell_{k+1}=1$，右边第二个乘积自动出现零因子。因此可以把 \eqnrefs{eq:hook-corner-ratio} 对所有 $k=1,\dots,r$ 求和，而非可移去行自动贡献零。
+
+记
+\[
+A_k=
+\prod_{i<k}
+\frac{\ell_i-\ell_k+1}{\ell_i-\ell_k}
+\prod_{j>k}
+\frac{\ell_k-\ell_j-1}{\ell_k-\ell_j}.
+\]
+则需要证明的关键恒等式是
+\begin{equation}
+\sum_{k=1}^{r}\ell_kA_k=n.
+\label{eq:hook-ratio-sum}
+\end{equation}
+为此定义有理函数
+\[
+F(z)=\prod_{i=1}^{r}\frac{z-\ell_i-1}{z-\ell_i}.
+\]
+它在 $z=\ell_k$ 处只有简单极点，并且
+\[
+\operatorname*{Res}_{z=\ell_k}F(z)=-A_k.
+\]
+因此
+\begin{align*}
+\sum_{k=1}^{r}\ell_kA_k
+&=-\sum_{k=1}^{r}\operatorname*{Res}_{z=\ell_k}\bigl[zF(z)\bigr]\\
+&=\operatorname*{Res}_{z=\infty}\bigl[zF(z)\bigr],
+\end{align*}
+其中最后一步使用 Riemann 球面上全部留数之和为零。
+
+只需计算无穷远处的 Laurent 展开。对每个因子，
+\[
+\frac{z-\ell_i-1}{z-\ell_i}
+=1-\frac{1}{z-\ell_i}
+=1-\frac1z-\frac{\ell_i}{z^2}+O(z^{-3}).
+\]
+相乘得
+\[
+F(z)
+=1-\frac rz
++\frac{\binom r2-\sum_i\ell_i}{z^2}
++O(z^{-3}),
+\]
+所以
+\[
+zF(z)
+=z-r+\frac{\binom r2-\sum_i\ell_i}{z}+O(z^{-2}).
+\]
+无穷远留数等于 $1/z$ 系数的负值，因此
+\[
+\operatorname*{Res}_{z=\infty}[zF(z)]
+=\sum_i\ell_i-\binom r2.
+\]
+由 \eqnrefs{eq:shifted-row-lengths}，
+\[
+\sum_i\ell_i
+=\sum_i\lambda_i+\sum_{i=1}^{r}(r-i)
+=n+\binom r2,
+\]
+故无穷远留数正好等于 $n$，从而 \eqnrefs{eq:hook-ratio-sum} 得证。结合 \eqnrefs{eq:hook-corner-ratio}，我们得到
+\begin{equation}
+\sum_{\mu\nearrow\lambda}\frac{H_\lambda}{H_\mu}=n.
+\label{eq:hook-product-recursion}
+\end{equation}
+
+现在对 $n$ 作归纳。假设所有 $n-1$ 个方格的 Young 图已经满足
+\[
+f^\mu=\frac{(n-1)!}{H_\mu}.
+\]
+代入标准盘分支递推 \eqnrefs{eq:hook-recursion-app}，有
+\begin{align*}
+f^\lambda
+&=\sum_{\mu\nearrow\lambda}f^\mu
+=(n-1)!\sum_{\mu\nearrow\lambda}\frac1{H_\mu}\\
+&=\frac{(n-1)!}{H_\lambda}
+\sum_{\mu\nearrow\lambda}\frac{H_\lambda}{H_\mu}\\
+&=\frac{n!}{H_\lambda}.
+\end{align*}
+初始情形 $[1]$ 满足 $f^{[1]}=1=1!/H_{[1]}$，因此归纳闭合：
+\[
+\boxed{f^\lambda=\frac{n!}{\displaystyle\prod_{u\in\lambda}h(u)}}.
+\]
+
+这套证明把 hook-length 公式拆成三个可以分别核验的步骤：标准盘的分支递推来自“最大数字只能位于可移去角”；hook 乘积的局部变化由 \eqnrefs{eq:hook-corner-ratio} 精确控制；最后的有理函数留数恒等式把所有可移去角的贡献加总为 $n$。因此公式并不是组合计数的猜测，而是一个完整闭合的归纳证明。
+
+\section{从本原幂等元到物理对称化算符}
+
+群代数证明看起来很抽象，但它最终对应一个非常具体的物理操作。若 $S_n$ 作用在多体张量空间 $\mathcal H_1^{\otimes n}$，则把每个置换 $\pi$ 换成粒子标签置换算符 $U(\pi)$，群代数元素
+\[
+p_T=\frac1{h_\lambda}e_T
+\]
+就变成一个实际线性算符。它先在 Young 图每一行对应的粒子标签之间做对称化，再在每一列之间做反对称化，并把一般多体基投影到具有指定交换对称类型 $\lambda$ 的子空间。
+
+完全对称图 $[n]$ 给出玻色对称化算符
+\[
+P_+=\frac1{n!}\sum_{\pi\in S_n}U(\pi),
+\]
+完全反对称图 $[1^n]$ 给出费米反对称化算符
+\[
+P_-=\frac1{n!}\sum_{\pi\in S_n}\sgnperm(\pi)U(\pi).
+\]
+一般 Young 图则插在这两种极端之间，描述多自由度体系中常见的混合交换对称性。于是 Young 方法并不是一套与物理脱节的组合技巧，而是“从群代数本原幂等元构造多体 Hilbert 空间对称扇区”的系统方法。

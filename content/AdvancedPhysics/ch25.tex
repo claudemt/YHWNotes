@@ -1,0 +1,1081 @@
+\chapter{量子化电磁场、相干态与压缩态}\label{ch:quantum-optics}
+
+本章系统地从经典 Maxwell 方程的正交正常模出发，完成电磁场的正则量子化，并由此建立 Fock 态、相干态与压缩态三大类量子光场。路线如下：第一节解决"量子化什么"——不是平面波，而是加权自伴 Maxwell 算子的正交本征模；第二节在此基础上引入升降算符、推导自发辐射率，并用 Green 并矢将结果推广到任意非均匀环境；第三节处理单模驱动系统，证明经典源产生相干态；第四节引入二次 Hamiltonian 与 Bogoliubov 变换，建立压缩态理论；第五节将上述理论与实验对接，给出 $g^{(2)}(0)$、.Purcell 因子、压缩 dB 等可观测量的典型参数。
+
+\section{自伴 Maxwell 正常模与场的 Hilbert 空间}
+
+量子化的首要对象不是“平面波光子”，而是经典 Maxwell 方程的正交正常模。先考虑无耗散、非磁性但允许空间非均匀的介质，$\epsilon_r(\mathbf r)>0$，$\mu=\mu_0$。在无自由电荷的广义 Coulomb 条件下，横向正常模满足
+\begin{equation}
+\nabla\times\nabla\times\mathbf f_\lambda(\mathbf r)
+=\frac{\omega_\lambda^2}{c^2}\epsilon_r(\mathbf r)\mathbf f_\lambda(\mathbf r),
+\qquad
+\nabla\cdot[\epsilon_r\mathbf f_\lambda]=0.
+\label{eq:maxwell-normal-mode-eigenproblem}
+\end{equation}
+自然内积是
+\begin{equation}
+\langle\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon
+=\int\dd^3r\,\epsilon_r(\mathbf r)
+\mathbf f_\lambda^*(\mathbf r)\cdot\mathbf f_{\lambda'}(\mathbf r)
+=\delta_{\lambda\lambda'}.
+\label{eq:maxwell-weighted-inner-product}
+\end{equation}
+在使边界通量项消失的边界条件下，$\epsilon_r^{-1}\nabla\times\nabla\times$ 对该加权内积自伴，因此不同 $\omega_\lambda^2$ 的模式正交，场能可以分解为独立谐振子。真空平面波、腔模、光子晶体 Bloch 模和波导离散横模都只是这一本征问题的不同边界条件或材料特例。
+
+\begin{derivation}[Maxwell 算子的加权自伴性]
+取两个满足相同边界条件的横向场 \(\mathbf f,\mathbf g\)。由矢量恒等式
+\begin{equation*}
+ \nabla\cdot(\mathbf A\times\mathbf B)
+ =\mathbf B\cdot(\nabla\times\mathbf A)
+ -\mathbf A\cdot(\nabla\times\mathbf B),
+\end{equation*}
+取 \(\mathbf A=\mathbf f^*\)、\(\mathbf B=\nabla\times\mathbf g\) 与 \(\mathbf A=(\nabla\times\mathbf f)^*\)、\(\mathbf B=\mathbf g\) 分别展开并相减，
+\begin{align*}
+ \mathbf f^*\cdot(\nabla\times\nabla\times\mathbf g)
+ &-(\nabla\times\nabla\times\mathbf f)^*\cdot\mathbf g\\
+ &=\nabla\cdot\left[\mathbf f^*\times(\nabla\times\nabla\times\mathbf g)\right]
+ -\nabla\cdot\left[(\nabla\times\mathbf f)^*\times(\nabla\times\mathbf g)\right]\\
+ &\quad+\nabla\cdot\left[(\nabla\times\nabla\times\mathbf f)^*\times\mathbf g\right]
+ -\nabla\cdot\left[(\nabla\times\mathbf f)^*\times(\nabla\times\mathbf g)\right]\\
+ &=\nabla\cdot\mathbf J_{fg},
+\end{align*}
+对体积积分并由散度定理，
+\begin{equation*}
+ \int\dd^3r\,\mathbf f^*\cdot(\nabla\times\nabla\times\mathbf g)
+ -\int\dd^3r\,(\nabla\times\nabla\times\mathbf f)^*\cdot\mathbf g
+ =\oint\dd\mathbf S\cdot\mathbf J_{fg},
+\end{equation*}
+其中 \(\mathbf J_{fg}\) 是由 \(\mathbf f,\mathbf g\) 及其旋度构成的边界通量。周期边界使切向分量匹配、理想导体边界使切向 \(\mathbf E\) 为零、无穷远足够快衰减使面积分趋于零，三者都使右端为零。
+
+令 \(\mathcal M=\epsilon_r^{-1}\nabla\times\nabla\times\)，加权内积\eqnrefs{eq:maxwell-weighted-inner-product}给出
+\begin{align*}
+ \langle\mathbf f,\mathcal M\mathbf g\rangle_\epsilon
+ &=\int\dd^3r\,\epsilon_r\mathbf f^*\cdot
+ \left(\epsilon_r^{-1}\nabla\times\nabla\times\mathbf g\right)\\
+ &=\int\dd^3r\,\mathbf f^*\cdot(\nabla\times\nabla\times\mathbf g)\\
+ &=\int\dd^3r\,(\nabla\times\nabla\times\mathbf f)^*\cdot\mathbf g\\
+ &=\int\dd^3r\,\epsilon_r
+ \left(\epsilon_r^{-1}\nabla\times\nabla\times\mathbf f\right)^*\cdot\mathbf g\\
+ &=\langle\mathcal M\mathbf f,\mathbf g\rangle_\epsilon,
+\end{align*}
+其中第一步用了 \(\epsilon_r\cdot\epsilon_r^{-1}=1\)，第三步用了边界通量为零的分部积分。因此 \(\mathcal M\) 在加权内积下自伴。
+
+由自伴性，\eqnrefs{eq:maxwell-normal-mode-eigenproblem}的本征值 \(\omega_\lambda^2/c^2\) 为实谱：对 \(\mathcal M\mathbf f_\lambda=\frac{\omega_\lambda^2}{c^2}\mathbf f_\lambda\) 取复共轭并利用 \(\mathcal M^\dagger=\mathcal M\) 即得 \((\omega_\lambda^2)^*=\omega_\lambda^2\)。对不同本征值 \(\omega_\lambda^2\ne\omega_{\lambda'}^2\)，
+\begin{align*}
+ \left(\frac{\omega_\lambda^2}{c^2}-\frac{\omega_{\lambda'}^2}{c^2}\right)
+ \langle\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon
+ &=\langle\mathcal M\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon
+ -\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon\\
+ &=\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon
+ -\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon\\
+ &=0,
+\end{align*}
+第二步用了自伴性 \(\langle\mathcal M\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon=\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon\)。故 \(\langle\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon=0\)，即模式在\eqnrefs{eq:maxwell-weighted-inner-product}下正交。这就是把 Maxwell 场化为独立正则模式所需的谱论基础。
+
+\textbf{物理意义。}Maxwell 算子的自伴性保证电磁场可按正交模式展开，每个模式独立量子化为独立谐振子。这是腔量子电动力学的数学基础：腔中电磁场 $\vb E(\vb r,t)=\sum_\lambda \vb f_\lambda(\vb r)\,a_\lambda(t)+\text{h.c.}$，不同模式互不耦合，各自有频率 $\omega_\lambda$。实例：矩形腔 $\vb f_{lmn}$ 由波矢 $\vb k=(l\pi/a,m\pi/b,n\pi/c)$ 标记，频率 $\omega=c|\vb k|$，正交性确保不同模式光子独立——这正是激光多模理论的出发点。
+\end{derivation}
+
+上述谱论对任意边界条件均成立，但最便于量子化的特例是真空周期盒——此时本征模取平面波，正交归一化退化为离散 $\delta$，场能直接分解为独立谐振子之和。
+
+接下来考察真空周期盒是最简单的模式基。
+
+先把场限制在体积 \(V\) 的周期边界盒中。横向模式可以取为
+
+\[
+\mathbf u_{\mathbf k\lambda}(\mathbf r)
+=\frac{\mathbf e_{\mathbf k\lambda}}{\sqrt V}
+ \ee^{\ii\mathbf k\cdot\mathbf r},
+\qquad
+\mathbf k\cdot\mathbf e_{\mathbf k\lambda}=0,
+\]
+
+且
+
+\[
+\int_V\!\dd^3 r\,
+\mathbf u_{\mathbf k\lambda}^*\cdot
+\mathbf u_{\mathbf k'\lambda'}
+=\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'}.
+\]
+
+把 \(\mathbf A\) 在这组模式上展开并代入经典场能
+\[
+H_{\rm EM}
+=\frac12\int_V\!\dd^3 r\,
+\left(\varepsilon_0\mathbf E^2+\frac{\mathbf B^2}{\mu_0}\right),
+\]
+
+可得到彼此独立的正则坐标 \(Q_{\mathbf k\lambda}\) 和共轭动量 \(P_{\mathbf k\lambda}\)：
+
+\[
+H_{\rm EM}
+=\sum_{\mathbf k\lambda}
+\left[
+\frac{P_{\mathbf k\lambda}^2}{2}
++\frac{\omega_k^2Q_{\mathbf k\lambda}^2}{2}
+\right],
+\qquad \omega_k=c|\mathbf k|.
+\]
+
+因此``光场由谐振子组成''不是类比，而是 Maxwell 场在正交正常模上的正则分解。
+
+\begin{derivation}[从场能积分到独立谐振子分解]
+将矢势在正交模上展开为
+\begin{equation*}
+\mathbf A(\mathbf r,t)
+=\sum_{\mathbf k\lambda}
+Q_{\mathbf k\lambda}(t)\,\mathbf u_{\mathbf k\lambda}(\mathbf r),
+\end{equation*}
+其中 $Q_{\mathbf k\lambda}$ 是实正则坐标。电场和磁场由
+\begin{equation*}
+\mathbf E=-\frac{\partial\mathbf A}{\partial t}
+=-\sum_{\mathbf k\lambda}\dot Q_{\mathbf k\lambda}\,\mathbf u_{\mathbf k\lambda},
+\qquad
+\mathbf B=\nabla\times\mathbf A
+=\sum_{\mathbf k\lambda}Q_{\mathbf k\lambda}\,(\nabla\times\mathbf u_{\mathbf k\lambda})
+\end{equation*}
+给出。代入场能后，电场部分为
+\begin{equation*}
+\frac{\varepsilon_0}{2}\int_V\dd^3 r\,\mathbf E^2
+=\frac{\varepsilon_0}{2}\sum_{\mathbf k\lambda}\sum_{\mathbf k'\lambda'}
+\dot Q_{\mathbf k\lambda}\dot Q_{\mathbf k'\lambda'}
+\int_V\dd^3 r\,\mathbf u_{\mathbf k\lambda}^*\cdot\mathbf u_{\mathbf k'\lambda'}
+=\frac{\varepsilon_0}{2}\sum_{\mathbf k\lambda}\dot Q_{\mathbf k\lambda}^2,
+\end{equation*}
+其中最后一步用了正交关系 $\int_V\dd^3 r\,\mathbf u_{\mathbf k\lambda}^*\cdot\mathbf u_{\mathbf k'\lambda'}=\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'}$。磁场部分需利用横模满足的方程 $\nabla\times\nabla\times\mathbf u_{\mathbf k\lambda}=(\omega_k^2/c^2)\mathbf u_{\mathbf k\lambda}$，由此
+\begin{equation*}
+\int_V\dd^3 r\,(\nabla\times\mathbf u_{\mathbf k\lambda}^*)\cdot(\nabla\times\mathbf u_{\mathbf k'\lambda'})
+=\int_V\dd^3 r\,\mathbf u_{\mathbf k\lambda}^*\cdot(\nabla\times\nabla\times\mathbf u_{\mathbf k'\lambda'})
+=\frac{\omega_{k'}^2}{c^2}\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'},
+\end{equation*}
+其中第一步用了分部积分（周期边界使面积分消失），第二步用了模方程和正交性。因此磁场部分为
+\begin{equation*}
+\frac{1}{2\mu_0}\int_V\dd^3 rF\,\mathbf B^2
+=\frac{1}{2\mu_0}\sum_{\mathbf k\lambda}
+\frac{\omega_k^2}{c^2}Q_{\mathbf k\lambda}^2
+=\frac{1}{2\mu_0\varepsilon_0 c^2}\sum_{\mathbf k\lambda}\omega_k^2 Q_{\mathbf k\lambda}^2
+=\frac12\sum_{\mathbf k\lambda}\omega_k^2 Q_{\mathbf k\lambda}^2,
+\end{equation*}
+最后一步用了 $c^2=1/(\varepsilon_0\mu_0)$。定义共轭动量 $P_{\mathbf k\lambda}=\varepsilon_0\dot Q_{\mathbf k\lambda}$，电场部分化为 $\frac12\sum P_{\mathbf k\lambda}^2/\varepsilon_0$；若进一步取 $\varepsilon_0=1$ 的约定（或把 $P$ 重标为 $\sqrt{\varepsilon_0}\dot Q$），即得
+\begin{equation*}
+H_{\rm EM}=\sum_{\mathbf k\lambda}\left[\frac{P_{\mathbf k\lambda}^2}{2}+\frac{\omega_k^2 Q_{\mathbf k\lambda}^2}{2}\right],
+\end{equation*}
+即\eqnrefs{eq:maxwell-weighted-inner-product}所引用的谐振子分解。交叉项全部因正交性消失，每个 $(\mathbf k,\lambda)$ 模式独立贡献一个谐振子。
+
+\textbf{物理意义。}场能分解为独立谐振子的关键不是"类比"，而是 Maxwell 模的正交性使交叉项严格为零。这意味着不同模式的光子不耦合——激光多模理论、腔 QED 中多模 Fock 态、以及光子统计中各模独立的 Poisson/Bose--Einstein 分布，都根植于此正交分解。
+\end{derivation}
+
+有了经典场的正则分解，下一步是对每个独立谐振子施加量子对易关系，从而获得场算符、自发辐射率以及一般环境中的 Green 并矢表示。
+
+\section{正则量子化、Green 张量与自发辐射}
+接下来考察正则量子化与场算符。
+
+施加正则对易关系
+\[
+[\hat Q_{\mathbf k\lambda},\hat P_{\mathbf k'\lambda'}]
+=\ii\hbar\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'},
+\]
+并定义升降算符
+\begin{equation}
+\hat a_{\mathbf k\lambda}
+=\sqrt{\frac{\omega_k}{2\hbar}}\left(\hat Q_{\mathbf k\lambda}
++\frac{\ii\hat P_{\mathbf k\lambda}}{\omega_k}\right),
+\qquad
+\hat a_{\mathbf k\lambda}^\dagger
+=\sqrt{\frac{\omega_k}{2\hbar}}\left(\hat Q_{\mathbf k\lambda}
+-\frac{\ii\hat P_{\mathbf k\lambda}}{\omega_k}\right),
+\label{eq:ladder-operator-definition}
+\end{equation}
+其逆变换为 $\hat Q=\sqrt{\hbar/(2\omega)}\,((\hat a+\hat a^\dagger)$，$\hat P=-\ii\sqrt{\hbar\omega/2}\,(\hat a-\hat a^\dagger)$。由 $[\hat Q,\hat P]=\ii\hbar$ 直接验证 $[\hat a,\hat a^\dagger]=1$。将逆变换代入 $H=P^2/2+\omega^2 Q^2/2$：
+\begin{align*}
+\hat H
+&=\frac12\left(-\frac{\hbar\omega}{2}\right)(\hat a-\hat a^\dagger)^2
++\frac{\omega^2}{2}\cdot\frac{\hbar}{2\omega}(\hat a+\hat a^\dagger)^2\\
+&=\frac{\hbar\omega}{4}\left[-(\hat a^2-\hat a\hat a^\dagger-\hat a^\dagger\hat a+\hat a^{\dagger2})
++(\hat a^2+\hat a\hat a^\dagger+\hat a^\dagger\hat a+\hat a^{\dagger2})\right]\\
+&=\frac{\hbar\omega}{4}\cdot 2(\hat a\hat a^\dagger+\hat a^\dagger\hat a)
+=\frac{\hbar\omega}{2}(\hat a^\dagger\hat a+\hat a\hat a^\dagger)
+=\hbar\omega\left(\hat a^\dagger\hat a+\frac12\right),
+\end{align*}
+其中最后一步用了 $[\hat a,\hat a^\dagger]=1$ 即 $\hat a\hat a^\dagger=\hat a^\dagger\hat a+1$。对每个模式独立执行此代换，得到
+\[
+\boxed{
+\hat H_{\rm EM}
+=\sum_{\mathbf k\lambda}
+\hbar\omega_k
+\left(
+\hat a_{\mathbf k\lambda}^\dagger
+\hat a_{\mathbf k\lambda}+\frac12
+\right).
+}
+\]
+其中 $\hat a_{\mathbf k\lambda}^\dagger\hat a_{\mathbf k\lambda}$ 是第 $(\mathbf k,\lambda)$ 模的光子数算符，$\frac12\hbar\omega_k$ 是真空零点能——对所有模式求和后形式上发散，但可观测的物理量只涉及差值（如 Lamb 移位、Casimir 力），发散部分在正常序 $\hat H=\sum\hbar\omega\,\hat a^\dagger\hat a$ 中自动消除。
+
+将逆变换 $\hat Q_{\mathbf k\lambda}=\sqrt{\hbar/(2\omega_k)}\,(\hat a+\hat a^\dagger)$ 代入矢势展开 $\hat{\mathbf A}=\sum\hat Q_{\mathbf k\lambda}\mathbf u_{\mathbf k\lambda}$，并利用 $\mathbf u_{\mathbf k\lambda}=\mathbf e_{\mathbf k\lambda}\ee^{\ii\mathbf k\cdot\mathbf r}/\sqrt V$，得到
+\[
+\boxed{
+\hat{\mathbf A}(\mathbf r,t)
+=\sum_{\mathbf k\lambda}
+\sqrt{\frac{\hbar}{2\varepsilon_0\omega_kV}}
+\left[
+\mathbf e_{\mathbf k\lambda}
+\hat a_{\mathbf k\lambda}
+ \ee^{\ii(\mathbf k\cdot\mathbf r-\omega_kt)}
++\text{H.c.}
+\right].
+}
+\]
+其中前因子 $\sqrt{\hbar/(2\varepsilon_0\omega_kV)}$ 来自 $\sqrt{\hbar/(2\omega_k)}\cdot 1/\sqrt V$ 再乘 $\varepsilon_0^{-1/2}$（由 $P=\varepsilon_0\dot Q$ 约定引入的 $\varepsilon_0$ 归一化）。
+
+于是正频电场为
+
+\begin{equation}
+\boxed{
+\hat{\mathbf E}^{(+)}(\mathbf r,t)
+=\ii\sum_{\mathbf k\lambda}
+\sqrt{\frac{\hbar\omega_k}{2\varepsilon_0V}}
+\mathbf e_{\mathbf k\lambda}
+\hat a_{\mathbf k\lambda}
+ \ee^{\ii(\mathbf k\cdot\mathbf r-\omega_kt)},
+}
+\label{eq:field-expansion}
+\end{equation}
+
+而 \(\hat{\mathbf E}^{(-)}=[\hat{\mathbf E}^{(+)}]^\dagger\)。连续自由空间极限通过 \(V^{-1}\sum_{\mathbf k}\to(2\pi)^{-3}\int\dd^3 k\) 得到。
+
+场算符一旦建立，自发辐射便不再是唯象引入的 Einstein $A$ 系数，而是原子偶极与真空涨落耦合的直接结果。以下从 Fermi 黄金法则出发，将 $A_{eg}$ 完全用偶极矩阵元和频率表达。
+
+接下来考察自由空间中的自发辐射率。
+
+Einstein \(A\) 系数在\chapref{ch:time-dependent-perturbation}中是通过热平衡关系引入的。量子化电磁场使之可直接写成偶极矩阵元。考虑初态
+
+\[
+|i\rangle=|e;0\rangle
+\]
+
+和末态
+
+\[
+|f\rangle=|g;1_{\mathbf k\lambda}\rangle.
+\]
+
+在电偶极近似中
+
+\[
+H_I=-\hat{\mathbf d}\cdot\hat{\mathbf E}.
+\]
+
+只有负频部分 \(\hat{\mathbf E}^{(-)}\propto a^\dagger\) 能从真空产生一个光子，因此
+
+\[
+M_{\mathbf k\lambda}
+\equiv
+\langle g;1_{\mathbf k\lambda}|H_I|e;0\rangle
+=-\ii
+\sqrt{\frac{\hbar\omega_k}{2\varepsilon_0V}}
+\,\mathbf d_{ge}\cdot\mathbf e_{\mathbf k\lambda}^*
+ \ee^{-\ii\mathbf k\cdot\mathbf r_0}.
+\]
+
+Fermi 黄金法则给出
+
+\[
+\Gamma_{e\to g}
+=\frac{2\pi}{\hbar}
+\sum_{\mathbf k\lambda}
+|M_{\mathbf k\lambda}|^2
+\delta(E_g+\hbar\omega_k-E_e).
+\]
+
+\begin{derivation}[从矩阵元到自发辐射率的完整计算]
+\emph{第一步：矩阵元。}由 $\hat{\mathbf E}^{(-)}=-\ii\sum_{\mathbf k'\lambda'}\sqrt{\hbar\omega_{k'}/(2\varepsilon_0 V)}\,\mathbf e_{\mathbf k'\lambda'}^*\hat a_{\mathbf k'\lambda'}^\dagger\ee^{-\ii(\mathbf k'\cdot\mathbf r-\omega_{k'}t)}$，矩阵元为
+\begin{equation*}
+M_{\mathbf k\lambda}
+=-\langle g;1_{\mathbf k\lambda}|\hat{\mathbf d}\cdot\hat{\mathbf E}^{(-)}|e;0\rangle
+=\ii\sum_{\mathbf k'\lambda'}\sqrt{\frac{\hbar\omega_{k'}}{2\varepsilon_0 V}}\,\mathbf d_{ge}\cdot\mathbf e_{\mathbf k'\lambda'}^*\ee^{-\ii\mathbf k'\cdot\mathbf r_0}\,\langle 1_{\mathbf k\lambda}|\hat a_{\mathbf k'\lambda'}^\dagger|0\rangle,
+\end{equation*}
+其中 $\mathbf d_{ge}=\langle g|\hat{\mathbf d}|e\rangle$ 是原子偶极矩阵元，时间因子在共振频率 $\omega_0=(E_e-E_g)/\hbar$ 处取值。由 $\hat a_{\mathbf k'\lambda'}^\dagger|0\rangle=|1_{\mathbf k'\lambda'}\rangle$ 和正交性 $\langle 1_{\mathbf k\lambda}|1_{\mathbf k'\lambda'}\rangle=\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'}$，求和坍缩为单一项，即 $M_{\mathbf k\lambda}$ 的表达式。
+
+\emph{第二步：模平方。}取 $|M_{\mathbf k\lambda}|^2$，相位因子 $\ee^{-\ii\mathbf k\cdot\mathbf r_0}$ 的模为 1，因此
+\begin{equation*}
+|M_{\mathbf k\lambda}|^2
+=\frac{\hbar\omega_k}{2\varepsilon_0 V}
+|\mathbf d_{ge}\cdot\mathbf e_{\mathbf k\lambda}|^2.
+\end{equation*}
+
+\emph{第三步：连续极限与偏振求和。}把 $\sum_{\mathbf k}\to V/(2\pi)^3\int\dd^3 k$ 代入 Fermi 黄金法则，$V$ 消去：
+\begin{equation*}
+\Gamma=\frac{2\pi}{\hbar}\sum_\lambda\frac{V}{(2\pi)^3}\int\dd^3 k\,\frac{\hbar\omega_k}{2\varepsilon_0 V}|\mathbf d\cdot\mathbf e_{\mathbf k\lambda}|^2\delta(E_g+\hbar\omega_k-E_e).
+\end{equation*}
+利用 $\delta(E_g+\hbar\omega-E_e)=\delta(\omega-\omega_0)/\hbar$，对 $\mathbf k$ 用球坐标 $\dd^3 k=k^2\dd k\dd\Omega$，先做偏振求和
+\begin{equation*}
+\sum_{\lambda=1,2}|\mathbf d\cdot\mathbf e_{\mathbf k\lambda}|^2
+=|\mathbf d|^2-|\mathbf d\cdot\hat{\mathbf k}|^2,
+\end{equation*}
+这是横向偏振完备关系：两个偏振矢量 $\mathbf e_{\mathbf k1},\mathbf e_{\mathbf k2}$ 与 $\hat{\mathbf k}$ 构成三维正交基，$\sum_\lambda|\mathbf d\cdot\mathbf e_{\mathbf k\lambda}|^2=\mathbf d^\dagger(\mathbf I-\hat{\mathbf k}\hat{\mathbf k}^T)\mathbf d$。
+
+\emph{第四步：角积分。}取 $\mathbf d$ 沿 $z$ 轴，则 $|\mathbf d\cdot\hat{\mathbf k}|^2=|\mathbf d|^2\cos^2\theta$，
+\begin{equation*}
+\int\dd\Omega\,(|\mathbf d|^2-|\mathbf d|^2\cos^2\theta)
+=|\mathbf d|^2\cdot 2\pi\int_0^\pi\sin\theta\,\sin^2\theta\,\dd\theta
+=|\mathbf d|^2\cdot 2\pi\cdot\frac{4}{3}
+=\frac{8\pi}{3}|\mathbf d|^2.
+\end{equation*}
+
+\emph{第五步：径向积分。}由 $k=\omega/c$ 得 $k^2\dd k=\omega^2\dd\omega/c^3$，delta 函数 $\delta(\omega-\omega_0)$ 将积分锁定在 $\omega_0$：
+\begin{equation}
+\label{eq:spontaneous-emission-rate}
+\Gamma=\frac{2\pi}{\hbar}\cdot\frac{1}{(2\pi)^3}\cdot\frac{\hbar}{2\varepsilon_0}\cdot\frac{8\pi}{3}|\mathbf d|^2\cdot\frac{\omega_0^2}{c^3}\cdot\omega_0\cdot\frac{1}{\hbar}
+=\frac{\omega_0^3|\mathbf d|^2}{3\pi\varepsilon_0\hbar c^3},
+\end{equation}
+即\eqnrefs{eq:spontaneous-emission-rate}。其中 $\omega_0^3$ 的物理来源：一个 $\omega_0$ 来自单光子电场振幅 $\sqrt{\omega}$ 的模平方，两个 $\omega_0^2$ 来自三维态密度 $k^2\dd k=\omega^2\dd\omega/c^3$。
+
+\textbf{物理意义。}自发辐射率 $A_{eg}=\omega_0^3|\mathbf d_{ge}|^2/(3\pi\varepsilon_0\hbar c^3)$ 完全由原子参数（偶极矩阵元 $\mathbf d_{ge}$、跃迁频率 $\omega_0$）和真空电磁场参数（$\varepsilon_0,c$）决定，不涉及任何经典外场。$\omega_0^3$ 依赖使高频跃迁的辐射率急剧增大——Lyman-$\alpha$（121.6\,nm）的 $A\approx6.27\times10^8\,\mathrm{s^{-1}}$ 远大于钠 D 线（589\,nm）的 $A\approx6.1\times10^7\,\mathrm{s^{-1}}$。将此结果与 Planck 热分布结合，可恢复 Einstein $A$-$B$ 关系 $A/B=8\pi h\nu^3/c^3$，说明 $A$ 系数的量子推导与热力学一致性。
+\end{derivation}
+
+这说明自发辐射不是经典外场触发的跃迁，而是原子偶极与真空电磁场连续模耦合的结果。\(\omega_0^3\) 来自单光子场振幅中的 \(\sqrt\omega\) 与三维 photon density of states 中的 \(\omega^2\) 共同作用。把 \eqnrefs{eq:spontaneous-emission-rate} 与 Planck 谱结合，即可恢复 Einstein \(A\)-\(B\) 关系。
+
+\eqnrefs{eq:spontaneous-emission-rate} 对氢原子 \(2p\to1s\) 跃迁（Lyman-\(\alpha\)，\(\lambda=121.6\,\mathrm{nm}\)，\(\omega_0=1.55\times10^{16}\,\mathrm{rad/s}\)，\(|\mathbf d_{ge}|=ea_0/\sqrt{2}\approx6.0\times10^{-30}\,\mathrm{C\,m}\)）：
+\[
+A_{2p\to1s}
+=\frac{\omega_0^3|\mathbf d|^2}{3\pi\epsilon_0\hbar c^3}
+\approx6.27\times10^8\,\mathrm{s^{-1}}
+\]
+对应寿命 \(\tau=1/A\approx1.6\,\mathrm{ns}\)，与实验值 \(1.60\,\mathrm{ns}\) 精确吻合。对比钠原子 \(3p\to3s\) 跃迁（D 线，\(\lambda=589\,\mathrm{nm}\)，\(|\mathbf d|\approx2.5\times10^{-29}\,\mathrm{C\,m}\)）：\(A_{3p\to3s}\approx6.1\times10^7\,\mathrm{s^{-1}}\)，\(\tau\approx16\,\mathrm{ns}\)，与实验值 \(16.3\,\mathrm{ns}\) 吻合。\(\omega^3\) 依赖使紫外跃迁的辐射率远大于可见光跃迁。
+
+自由空间的结果\eqnrefs{eq:spontaneous-emission-rate}依赖逐模求和，但在腔、界面或光子晶体等非均匀环境中，直接求模并不方便。Green 并矢提供了一个统一框架：其虚部编码局域光子态密度，自发辐射率只需在 $\mathbf r_0$ 处求值即可。
+
+接下来考察Green dyadic、局域态密度与一般环境。
+
+在非均匀无耗散环境中，逐个求模并非总是最方便。定义 outgoing electromagnetic Green dyadic
+\begin{equation}
+\left[\nabla\times\nabla\times
+-\frac{\omega^2}{c^2}\epsilon_r(\mathbf r)\right]
+\mathbf G(\mathbf r,\mathbf r';\omega)
+=\mathbf I\,\delta^{(3)}(\mathbf r-\mathbf r').
+\label{eq:maxwell-green-dyadic}
+\end{equation}
+其虚部编码局域光子态密度。位于 $\mathbf r_0$ 的电偶极跃迁在弱耦合、Markov 极限下具有一般自发辐射率
+\begin{equation}
+\boxed{
+\Gamma(\mathbf r_0)
+=\frac{2\omega_0^2}{\hbar\epsilon_0c^2}
+\mathbf d_{ge}^*\cdot
+\operatorname{Im}\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)
+\cdot\mathbf d_{ge}.
+}
+\label{eq:spontaneous-green-dyadic}
+\end{equation}
+自由空间有
+\[
+\operatorname{Im}\mathbf G_0(\mathbf r_0,\mathbf r_0;\omega)
+=\frac{\omega}{6\pi c}\mathbf I,
+\]
+故\eqnrefs{eq:spontaneous-green-dyadic}立即退化为\eqnrefs{eq:spontaneous-emission-rate}。腔 Purcell enhancement、界面附近抑制/增强和光子晶体带隙效应，本质上都是 $\operatorname{Im}\mathbf G$ 改变，而不是“原子的 $A$ 系数本身神秘变化”。
+
+\begin{derivation}[从模式谱表示到 Green dyadic 辐射率]
+对\eqnrefs{eq:maxwell-normal-mode-eigenproblem}的正交本征模 $\{\mathbf f_\lambda\}$，满足 $\int\dd^3r\,\epsilon_r(\mathbf r)\,\mathbf f_\lambda\cdot\mathbf f_{\lambda'}^*=\delta_{\lambda\lambda'}$，Green dyadic 的谱表示为
+\begin{equation*}
+\mathbf G(\mathbf r,\mathbf r';\omega)
+= c^2\sum_\lambda
+ \frac{\mathbf f_\lambda(\mathbf r)\,\mathbf f_\lambda^*(\mathbf r')}
+ {\omega_\lambda^2-(\omega+\ii0^+)^2}.
+\end{equation*}
+取 $\mathbf r=\mathbf r'=\mathbf r_0$ 并对分母因式分解，
+\begin{equation*}
+\omega_\lambda^2-(\omega+\ii0^+)^2
+= (\omega_\lambda-\omega-\ii0^+)(\omega_\lambda+\omega+\ii0^+).
+\end{equation*}
+在正频 $\omega_0>0$ 附近，第二因子近似 $2\omega_0$，因此
+\begin{equation*}
+\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)
+\approx \frac{c^2}{2\omega_0}\sum_\lambda
+\frac{\mathbf f_\lambda(\mathbf r_0)\,\mathbf f_\lambda^*(\mathbf r_0)}
+{\omega_\lambda-\omega_0-\ii0^+}.
+\end{equation*}
+利用 Sokhotski--Plemelj 公式
+\begin{equation*}
+\operatorname{Im}\frac{1}{x-\ii0^+}=\pi\,\delta(x),
+\end{equation*}
+取虚部，
+\begin{equation*}
+\operatorname{Im}\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)
+= \frac{\pi c^2}{2\omega_0}\sum_\lambda
+ \mathbf f_\lambda(\mathbf r_0)\,\mathbf f_\lambda^*(\mathbf r_0)\,
+ \delta(\omega_0-\omega_\lambda).
+\end{equation*}
+另一方面，量子化后单光子电场矩阵元为
+\begin{equation*}
+\langle 0|\hat{\mathbf E}(\mathbf r_0)|1_\lambda\rangle
+= \ii\sqrt{\frac{\hbar\omega_\lambda}{2\epsilon_0}}\,
+ \mathbf f_\lambda(\mathbf r_0),
+\end{equation*}
+代入 Fermi 黄金法则
+\begin{equation*}
+\Gamma = \frac{2\pi}{\hbar}\sum_\lambda
+ |\mathbf d_{ge}\cdot\langle 0|\hat{\mathbf E}(\mathbf r_0)|1_\lambda\rangle|^2
+ \delta(\hbar\omega_0-\hbar\omega_\lambda),
+\end{equation*}
+展开模平方并把 $\delta(\hbar\omega_0-\hbar\omega_\lambda)=\delta(\omega_0-\omega_\lambda)/\hbar$ 代入，模式求和的结构与 $\operatorname{Im}\mathbf G$ 完全一致，因此
+\begin{equation*}
+\Gamma(\mathbf r_0)
+= \frac{2\omega_0^2}{\hbar\epsilon_0 c^2}\,
+ \mathbf d_{ge}^*\cdot
+ \operatorname{Im}\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)\cdot
+ \mathbf d_{ge},
+\end{equation*}
+即\eqnrefs{eq:spontaneous-green-dyadic}。Green dyadic 是"模式密度乘局域场强"的连续谱压缩表示。
+
+\textbf{物理意义。}Green 并矢 $\vb G(\vb r_0,\vb r_0;\omega_0)$ 把环境对原子辐射的影响编码为单一张量：其虚部给出局域态密度 (LDOS)，直接决定自发辐射率 $\Gamma\propto\vb d^*\cdot\operatorname{Im}\vb G\cdot\vb d$。在自由空间 $\operatorname{Im}\vb G=\omega^2/(6\pi c^3)\vb I$，还原 $\Gamma=\omega_0^3|\vb d|^2/(3\pi\varepsilon_0\hbar c^3)$。在光子带隙材料内 $\operatorname{Im}\vb G\to0$，自发辐射被完全抑制。在微腔内 $\operatorname{Im}\vb G$ 在共振频率发散，自发辐射被增强（Purcell 效应 $F_P\propto Q/V$）。
+\end{derivation}
+
+\section{Fock、相干态与一般线性驱动}
+接下来考察Fock 态、相干态与光子统计。
+
+对任一固定模式，记 \(a\equiv a_{\mathbf k\lambda}\)。其对易关系
+
+\[
+[a,a^\dagger]=1
+\]
+
+定义数算符 \(N=a^\dagger a\)。真空满足 \(a|0\rangle=0\)，归一化数态为
+
+\[
+\boxed{
+|n\rangle
+=\frac{(a^\dagger)^n}{\sqrt{n!}}|0\rangle,
+}
+\]
+
+并满足
+
+\[
+a|n\rangle=\sqrt n|n-1\rangle,
+\qquad
+a^\dagger|n\rangle=\sqrt{n+1}|n+1\rangle.
+\]
+
+Glauber 光探测理论中的一阶关联函数
+
+\[
+\boxed{
+G^{(1)}(1,2)
+=\langle\hat E^{(-)}(1)\hat E^{(+)}(2)\rangle
+}
+\]
+
+之所以采用 normal ordering，正是因为理想吸收型探测器先由 \(E^{(+)}\) 湮灭一个光量子，再由共轭振幅组成概率。
+
+Fock 态有确定光子数但无确定相位，是最"量子"的光场。实验上更常见的是激光一类具有确定相位和近经典振幅的光场，其量子态由相干态描述。相干态由湮灭算符本征方程定义：
+
+\[
+\boxed{a|\alpha\rangle=\alpha|\alpha\rangle.}
+\]
+
+令 \(|\alpha\rangle=\sum_nc_n|n\rangle\)，递推关系
+
+\[
+c_{n+1}\sqrt{n+1}=\alpha c_n
+\]
+
+给出
+
+\[
+c_n=\frac{\alpha^n}{\sqrt{n!}}c_0.
+\]
+
+归一化后
+
+\[
+\boxed{
+|\alpha\rangle
+=\ee^{-|\alpha|^2/2}
+\sum_{n=0}^{\infty}
+\frac{\alpha^n}{\sqrt{n!}}|n\rangle.
+}
+\]
+
+光子数服从 Poisson 分布
+
+\[
+P_n=\ee^{-|\alpha|^2}\frac{|\alpha|^{2n}}{n!},
+\qquad
+\langle N\rangle=|\alpha|^2.
+\]
+
+\begin{derivation}[相干态的 Poisson 统计与 quadrature 涨落]
+\emph{第一步：递推关系。}由 $a|\alpha\rangle=\alpha|\alpha\rangle$ 和 $|\alpha\rangle=\sum_n c_n|n\rangle$，左乘 $\langle n|$：
+\begin{equation*}
+\sum_m c_m\langle n|a|m\rangle=\alpha c_n.
+\end{equation*}
+由 $a|m\rangle=\sqrt{m}|m-1\rangle$，只有 $m=n+1$ 项贡献：$c_{n+1}\sqrt{n+1}=\alpha c_n$。递推解 $c_n=\alpha^n c_0/\sqrt{n!}$。
+
+\emph{第二步：归一化。}由 $\langle\alpha|\alpha\rangle=1$：
+\begin{equation*}
+1=\sum_n|c_n|^2=|c_0|^2\sum_n\frac{|\alpha|^{2n}}{n!}=|c_0|^2\ee^{|\alpha|^2},
+\end{equation*}
+故 $c_0=\ee^{-|\alpha|^2/2}$（取相位为零），得 $|\alpha\rangle=\ee^{-|\alpha|^2/2}\sum_n\frac{\alpha^n}{\sqrt{n!}}|n\rangle$。
+
+\emph{第三步：Poisson 分布。}光子数分布 $P_n=|\langle n|\alpha\rangle|^2=\ee^{-|\alpha|^2}|\alpha|^{2n}/n!$，这正是 Poisson 分布 with 参数 $\lambda=|\alpha|^2$。平均光子数
+\begin{equation*}
+\langle N\rangle=\langle\alpha|a^\dagger a|\alpha\rangle=|\alpha|^2\langle\alpha|\alpha\rangle=|\alpha|^2,
+\end{equation*}
+方差 $\langle N^2\rangle-\langle N\rangle^2=|\alpha|^2$（Poisson 分布的特征：方差等于均值）。
+
+\emph{第四步：quadrature 统计。}由 $a|\alpha\rangle=\alpha|\alpha\rangle$ 和 $Q=(a+a^\dagger)/\sqrt{2}$，
+\begin{equation*}
+\langle Q\rangle=\frac{\langle\alpha|a+a^\dagger|\alpha\rangle}{\sqrt2}
+=\frac{\alpha+\alpha^*}{\sqrt2}
+=\sqrt2\,\operatorname{Re}\alpha,
+\end{equation*}
+同理 $\langle P\rangle=\sqrt2\,\operatorname{Im}\alpha$。方差由 $(\Delta Q)^2=\langle Q^2\rangle-\langle Q\rangle^2$：
+\begin{equation*}
+Q^2=\frac{a^2+a^{\dagger2}+aa^\dagger+a^\dagger a}{2}
+=\frac{a^2+a^{\dagger2}+2a^\dagger a+1}{2},
+\end{equation*}
+故 $\langle Q^2\rangle=(\alpha^2+\alpha^{*2}+2|\alpha|^2+1)/2$，而 $\langle Q\rangle^2=(\alpha+\alpha^*)^2/2=(\alpha^2+\alpha^{*2}+2|\alpha|^2)/2$，相减得 $(\Delta Q)^2=1/2$。同理 $(\Delta P)^2=1/2$。不确定乘积 $\Delta Q\cdot\Delta P=1/2$ 恰为 Heisenberg 下界——相干态是最小不确定态。
+
+\textbf{物理意义。}相干态的 Poisson 统计意味着光子数涨落 $\Delta N=\sqrt{\langle N\rangle}$（shot noise），这是激光远高于阈值时的典型行为。quadrature 方差 $(\Delta Q)^2=(\Delta P)^2=1/2$ 等于真空涨落——相干态在相空间中只是把真空波包平移到 $(\sqrt2\,\operatorname{Re}\alpha,\sqrt2\,\operatorname{Im}\alpha)$，不改变噪声分布。这与压缩态形成对比：压缩态在一个 quadrature 方向低于真空涨落，代价是另一个方向增大。相干态的统计性质可总结为
+\begin{equation*}
+P(n)=\ee^{-|\alpha|^2}\frac{|\alpha|^{2n}}{n!}\ (\text{Poisson}),\qquad \Delta Q\cdot\Delta P=\frac12\ (\text{Heisenberg 下界}).
+\end{equation*}
+
+
+
+
+
+
+\end{derivation}
+
+定义无量纲 quadrature
+
+\[
+Q=\frac{a+a^\dagger}{\sqrt2},
+\qquad
+P=\frac{a-a^\dagger}{\ii\sqrt2},
+\]
+
+则
+
+\[
+\langle Q\rangle=\sqrt2\operatorname{Re}\alpha,
+\qquad
+\langle P\rangle=\sqrt2\operatorname{Im}\alpha,
+\]
+
+并有 \((\Delta Q)^2=(\Delta P)^2=1/2\)。相干态因此在相空间中保持真空噪声宽度，只让波包中心按经典轨道运动。
+
+相干态不仅是谐振子基态的平移，还可以由经典源驱动谐振子从真空动态产生。以下用 Magnus 展开证明：任意线性驱动（不必恒定或共振）的初态为真空时，末态必为相干态。
+
+接下来考察一般线性驱动的形式精确解。
+
+考虑单模受经典源驱动：
+
+\[
+\hat H
+=\hbar\omega(a^\dagger a+1/2)
++\ii\hbar[f(t)a^\dagger-f^*(t)a].
+\]
+
+进入自由相互作用表象以后，记相应驱动系数为 \(f_I(t)\)。不同时间的相互作用满足
+
+\[
+[\hat H_I(t),\hat H_I(t')]
+=\text{c-number}.
+\]
+
+因此 Magnus 展开在二阶以后终止。令
+
+\[
+G(t)
+\equiv-\frac{\ii}{\hbar}H_I(t)
+=f_I(t)a^\dagger-f_I^*(t)a.
+\]
+
+第一阶 Magnus 项为
+
+\[
+\Omega_1
+=\int_{t_0}^{t}G(t_1)\dd t_1
+=\alpha a^\dagger-\alpha^*a,
+\qquad
+\alpha(t)=\int_{t_0}^{t}f_I(t_1)\dd t_1.
+\]
+
+交换子
+
+\[
+[G(t_1),G(t_2)]
+=f_I(t_1)f_I^*(t_2)-f_I^*(t_1)f_I(t_2)
+\]
+
+是纯虚 c-number，因此所有三重及更高嵌套交换子严格为零。第二阶 Magnus 项只是整体相位：
+
+\[
+\Omega_2
+=\frac12\int_{t_0}^{t}\dd t_1
+\int_{t_0}^{t_1}\dd t_2\,[G(t_1),G(t_2)]
+\equiv\ii\varphi(t),
+\]
+
+其中
+
+\[
+\boxed{
+\varphi(t)
+=\operatorname{Im}
+\int_{t_0}^{t}\dd t_1
+\int_{t_0}^{t_1}\dd t_2\,
+ f_I(t_1)f_I^*(t_2).
+}
+\]
+
+于是时间序指数精确写成
+
+\begin{equation}
+\boxed{
+U_I(t,t_0)
+=\ee^{\ii\varphi(t)}D[\alpha(t)].
+}
+\label{eq:driven-oscillator-exact}
+\end{equation}
+
+这里的 geometric-like phase 来自不同时刻位移在相空间中的非交换性；虽然它不影响单个相干态的光子数，但在多路径干涉中可以产生可观测相位。由真空出发立刻得到
+
+\[
+|\psi_I(t)\rangle
+=\ee^{\ii\varphi(t)}|\alpha(t)\rangle.
+\]
+
+因此``经典相干源产生相干态''并不依赖恒定驱动或严格共振；那只是上式的特殊情形。
+
+线性驱动保持相干态空间不变，但许多物理过程（参量下转换、频率突变、Bogoliubov 凝聚）的 Hamiltonian 含 $a^{\dagger2}$ 或 $a^2$ 项，属于二次型。这类 Hamiltonian 产生压缩态——另一类从真空出发可动态生成的 Gaussian 态。
+
+\section{二次 Hamiltonian、Bogoliubov 变换与 Gaussian 态}
+接下来考察二次 Hamiltonian 与 Bogoliubov 变换。
+
+一般单模二次 Hamiltonian 可写为
+
+\[
+\hat H
+=\hbar\omega a^\dagger a
++\frac{\hbar}{2}
+\left(\kappa_{\rm sq} a^{\dagger2}+\kappa_{\rm sq}^*a^2\right)
++\text{linear terms}.
+\]
+
+其中 \(\kappa_{\rm sq}\in\mathbb C\) 是具有角频率量纲的二光子（parametric）耦合系数；下标 ``sq'' 用来与强场隧穿尺度和 Ray 不对称参数区分。
+
+Heisenberg 方程对 \((a,a^\dagger)^T\) 是线性的，因此任意演化都具有 Bogoliubov 形式
+
+\[
+\boxed{
+a' = ua+va^\dagger,
+\qquad
+|u|^2-|v|^2=1.
+}
+\]
+
+这个约束正是保持 \([a',a'^\dagger]=1\) 的条件。
+
+\begin{derivation}[Bogoliubov 约束与 quadrature 压缩]
+\emph{思路：}分三步推导：(1) 从含参量下转换的 Heisenberg 方程看出解是 \((a,a^\dagger)\) 的线性变换（Bogoliubov 形式），(2) 由正则对易关系保持要求导出 \(|u|^2-|v|^2=1\) 约束，(3) 计算 quadrature 方差展示压缩效应。
+
+\emph{第一步：Heisenberg 方程的线性性。}含参量下转换的 Hamiltonian \(\hat H=\hbar\omega a^\dagger a+\frac{\hbar}{2}(\kappa a^{\dagger2}+\kappa^*a^2)+\cdots\) 中，\(a^{\dagger2}\) 项成对产生光子。Heisenberg 方程
+\begin{equation*}
+\frac{\dd a}{\dd t}=\frac{1}{\ii\hbar}[a,\hat H]
+=-\ii\omega a-\ii\kappa^* a^\dagger+\cdots
+\end{equation*}
+对 \((a,a^\dagger)^T\) 是线性方程组（省略号代表线性驱动项，只产生位移不改变 Bogoliubov 结构）。线性 ODE 的解是线性变换：\(a(t)=u(t)a(0)+v(t)a^\dagger(0)+\text{c-number}\)。系数 \(u(t)\) 和 \(v(t)\) 由运动方程和初始条件 \(u(0)=1,v(0)=0\) 确定。
+
+\emph{第二步：正则约束。}量子力学要求对易关系在时间演化下保持：由 \([a(0),a^\dagger(0)]=1\) 要求 \([a(t),a^\dagger(t)]=1\)。计算：
+\begin{equation*}
+[a(t),a^\dagger(t)]=[ua+va^\dagger,u^*a^\dagger+v^*a].
+\end{equation*}
+展开利用 \([a,a^\dagger]=1\)、\([a,a]=[a^\dagger,a^\dagger]=0\)：
+\begin{equation*}
+[a(t),a^\dagger(t)]=u v^*[a,a^\dagger]+v u^*[a^\dagger,a]=(uv^*-vu^*)[a,a^\dagger]=|u|^2-|v|^2,
+\end{equation*}
+最后一步利用 \(uv^*-vu^*=|u|^2-|v|^2\)（对复数 \(u,v\)）。故约束为
+\begin{equation*}
+|u|^2-|v|^2=1.
+\end{equation*}
+这是 \(\mathrm{SU}(1,1)\) 群的约束——双曲旋转保持 Minkowski 度规 \(\text{diag}(+1,-1)\)，而非 \(\mathrm{SU}(2)\) 的幺正约束 \(|u|^2+|v|^2=1\)。区别源于 \(a\) 和 \(a^\dagger\) 不对易，使交叉项产生负号。
+
+\emph{第三步：quadrature 方差。}在压缩相位 \(\phi=0\) 时，Bogoliubov 变换为 \(S^\dagger a S=a\cosh r-a^\dagger\sinh r\)（由\eqnrefs{eq:squeezing-bogoliubov-transform}，\(u=\cosh r\)，\(v=-\sinh r\)，满足 \(|u|^2-|v|^2=\cosh^2 r-\sinh^2 r=1\)）。由 \(Q=(a+a^\dagger)/\sqrt{2}\)：
+\begin{equation*}
+S^\dagger Q S=\frac{S^\dagger a S+S^\dagger a^\dagger S}{\sqrt2}
+=\frac{(a\cosh r-a^\dagger\sinh r)+(a^\dagger\cosh r-a\sinh r)}{\sqrt2}
+=\frac{(a+a^\dagger)(\cosh r-\sinh r)}{\sqrt2}
+=Q\,e^{-r},
+\end{equation*}
+其中用了 \(\cosh r-\sinh r=e^{-r}\)。同理 \(S^\dagger P S=P\,e^{r}\)。对压缩真空 \(|0;\zeta\rangle=S(\zeta)|0\rangle\)，\(Q\) 方差为
+\begin{equation*}
+(\Delta Q)^2=\langle 0;\zeta|Q^2|0;\zeta\rangle=\langle 0|S^\dagger Q^2 S|0\rangle=\langle 0|e^{-2r}Q^2|0\rangle=\frac{1}{2}e^{-2r},
+\end{equation*}
+因为真空 \(\langle 0|Q^2|0\rangle=1/2\)。同理 \((\Delta P)^2=\frac{1}{2}e^{2r}\)。不确定乘积 \(\Delta Q\cdot\Delta P=\frac{1}{2}e^{-r}\cdot\frac{1}{2}e^{r}\cdot 2=\frac{1}{2}\) 保持 Heisenberg 下界——压缩态是最小不确定态，但噪声分布非对称：\(Q\) 方向压缩 \(e^{-r}\)，\(P\) 方向放大 \(e^r\)。
+
+\emph{第四步：物理意义。}Bogoliubov 约束 \(|u|^2-|v|^2=1\) 保证压缩变换不违反正则对易关系——这不是任意变换，而是 \(\mathrm{SU}(1,1)\) 双曲旋转。\(Q\) 方向压缩、\(P\) 方向放大的物理机制是参量下转换中 \(a^{\dagger2}\) 项成对产生光子，使光子数只含偶数项，在 \(Q\) 方向建立相干叠加导致振幅压缩。实例：LIGO 注入 6\,dB 压缩真空（\(r\approx0.69\)），\(Q\) 方向噪声降低 \(e^{-r}\approx0.50\) 倍，用于降低高频散粒噪声。
+
+
+\end{derivation}
+
+把
+
+\[
+u=\ee^{-\ii\theta}\cosh r,
+\qquad
+v=-\ee^{-\ii(\theta-\phi)}\sinh r
+\]
+
+参数化，就得到相位旋转与 squeezing。
+
+压缩算符取
+
+\[
+\boxed{
+S(\zeta)
+=\exp\!\left[
+\frac12(\zeta^*a^2-\zeta a^{\dagger2})
+\right],
+\qquad \zeta=re^{\ii\phi}.
+}
+\]
+
+在 \(\phi=0\) 时
+
+\[
+S^\dagger QS=\ee^{-r}Q,
+\qquad
+S^\dagger PS=\ee^{+r}P,
+\]
+
+所以
+
+\[
+(\Delta Q)^2=\frac12\ee^{-2r},
+\qquad
+(\Delta P)^2=\frac12\ee^{2r}.
+\]
+
+
+\begin{derivation}[压缩算符如何生成 Bogoliubov 变换]
+定义一参数算符
+\[
+S_s=\exp\left[\frac{s}{2}(\zeta^*a^2-\zeta a^{\dagger2})\right],
+\qquad 0\le s\le1,
+\]
+并记
+\[
+A(s)=S_s^\dagger aS_s,
+\qquad
+B(s)=S_s^\dagger a^\dagger S_s.
+\]
+令
+\[
+G=\frac12(\zeta^*a^2-\zeta a^{\dagger2}),
+\]
+则
+\[
+[a,G]=-\zeta a^\dagger,
+\qquad
+[a^\dagger,G]=-\zeta^*a.
+\]
+因此
+\[
+\frac{\dd A}{\dd s}=-\zeta B,
+\qquad
+\frac{\dd B}{\dd s}=-\zeta^*A.
+\]
+写 \(\zeta=r\ee^{\ii\phi}\)，可得
+\[
+\frac{\dd^2A}{\dd s^2}=r^2A,
+\qquad
+A(0)=a,
+\qquad
+A'(0)=-r\ee^{\ii\phi}a^\dagger.
+\]
+故在 \(s=1\) 时
+\begin{equation}
+\boxed{
+S^\dagger(\zeta)aS(\zeta)
+=a\cosh r-\ee^{\ii\phi}a^\dagger\sinh r.
+}
+\label{eq:squeezing-bogoliubov-transform}
+\end{equation}
+这一步同时证明了 squeezing 是保持 canonical commutator 的双曲旋转，而不是对 \(a\) 的普通酉相位旋转。
+
+\textbf{物理意义。}Bogoliubov 变换 $a\to a\cosh r-e^{i\phi}a^\dagger\sinh r$ 把湮灭算符混合产生算符，是量子光学中从真空产生压缩态的机制。双曲旋转保持 $[a,a^\dagger]=1$（$\cosh^2 r-\sinh^2 r=1$），但把真空涨落从 $x$ 方向压缩 $e^{-r}$、$p$ 方向放大 $e^r$——测不准原理保持。实例：参量下转换 $\chi^{(2)}$ 非线性晶体在简并配置下直接实现 $S(\zeta)$，产生压缩光用于引力波探测（LIGO 注入压缩真空使量子噪声低于标准量子极限）。
+\end{derivation}
+
+对 squeezed vacuum \(|0;\zeta\rangle=S(\zeta)|0\rangle\)，由\eqnrefs{eq:squeezing-bogoliubov-transform}可知平均光子数
+
+\[
+\boxed{\langle N\rangle=\sinh^2r}.
+\]
+
+数态展开只含偶数光子：
+
+\[
+\boxed{
+|0;\zeta\rangle
+=\frac1{\sqrt{\cosh r}}
+\sum_{n=0}^{\infty}
+\frac{\sqrt{(2n)!}}{2^n n!}
+\left[-\ee^{\ii\phi}\tanh r\right]^n
+|2n\rangle.
+}
+\]
+
+所以 squeezing 并不是“把真空噪声椭圆压扁”的纯几何图像；从原 Fock 基看，它等价于成对地产生偶数个量子。二次 Hamiltonian 中的 \(a^{\dagger2}\) 和 \(a^2\) 正是这种 pair creation/annihilation 结构。
+
+压缩态的生成机制不止参量下转换一种。谐振子频率的突然变化也会产生压缩——这是一个纯量子效应，经典力学中不存在类比。
+
+接下来考察频率突变作为 squeezing 的具体例子。
+
+若谐振子频率从 \(\omega_0\) 突然变到 \(\omega_1\)，突变时间 \(\tau_q\) 满足 \(\tau_q\ll\omega_0^{-1},\omega_1^{-1}\)，则在突变瞬间 \(Q,P\) 来不及演化而保持连续。用两种频率各自定义的升降算符消去 \(Q,P\)，得到
+
+\[
+\boxed{
+a_1=ua_0+va_0^\dagger,
+}
+\]
+
+\[
+u=\frac12\left(
+\sqrt{\frac{\omega_1}{\omega_0}}
++\sqrt{\frac{\omega_0}{\omega_1}}
+\right),
+\qquad
+v=\frac12\left(
+\sqrt{\frac{\omega_1}{\omega_0}}
+-\sqrt{\frac{\omega_0}{\omega_1}}
+\right).
+\]
+
+它自动满足 \(|u|^2-|v|^2=1\)。若采用 \(u=\cosh r,v=\sinh r\) 的实参数约定，则
+
+\[
+\boxed{r=\frac12\ln\frac{\omega_1}{\omega_0}.}
+\]
+
+``突然近似''的控制条件已经由 \(\tau_q\omega_{0,1}\ll1\) 明确给出；相反，若频率变化极慢，绝热定理使系统跟随瞬时本征态而不会产生同样的 squeezing 激发。
+
+\section{量子光场的实验表征与典型参数}\label{sec:quantum-optics-experiments}
+
+前几节建立了量子光场的理论框架。本节给出各类量子光场的实验产生方案、可观测量的定量表征，以及与理论公式的直接对接。
+
+接下来考察光子统计与二阶关联函数 \(g^{(2)}(0)\)。
+
+Glauber \(n\) 阶关联函数中，二阶零时延关联
+\[
+g^{(2)}(0)=\frac{\langle a^\dagger a^\dagger aa\rangle}{\langle a^\dagger a\rangle^2}
+=\frac{\langle N(N-1)\rangle}{\langle N\rangle^2}
+\]
+是区分光场类型的核心可观测量。HBT (Hanbury Brown--Twiss) 实验用 50/50 分束器后两路探测器符合计数直接测量 \(g^{(2)}(0)\)。
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+光场类型 & \(g^{(2)}(0)\) & \(\Delta N^2/\langle N\rangle\) & 实验方案 \\
+\hline
+Fock 态 \(|n\rangle\) & \(1-\frac{1}{n}\) & \(0\) & 单分子、量子点 \\
+相干态 \(|\alpha\rangle\) & \(1\) & \(1\) (Poisson) & 理想激光 \\
+热光场 & \(2\) & \(1+\langle N\rangle\) (Bose--Einstein) & 混沌光 \\
+压缩真空 & \(3+\frac{1}{\langle N\rangle}\) & \(2\langle N\rangle+1\) & OPO 低于阈值 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{推导要点。}对 Fock 态 \(|n\rangle\)，\(\langle N(N-1)\rangle=n(n-1)\)，故 \(g^{(2)}(0)=1-1/n\)；单光子 \(n=1\) 给出 \(g^{(2)}(0)=0\)，这是单光子源的判据。对相干态，Poisson 分布使 \(\langle N(N-1)\rangle=\langle N\rangle^2\)，故 \(g^{(2)}(0)=1\)。对热光场，Bose--Einstein 分布 \(P_n=\bar n^n/(1+\bar n)^{n+1}\) 给出 \(\langle N(N-1)\rangle=2\bar n^2\)，故 \(g^{(2)}(0)=2\)（光子 bunching）。对压缩真空，只含偶数光子使 \(\langle N(N-1)\rangle=3\sinh^2 r\cosh^2 r\)，故 \(g^{(2)}(0)=3+\coth^2 r>3\)（强 bunching）。
+
+\begin{exbox}[单光子源的 \(g^{(2)}(0)\) 测量]
+量子点单光子源在 4\,K、920\,nm 发射，HBT 测得 \(g^{(2)}(0)=0.02\)（接近理想值 0）。残余非零来自多激基态再激发。对比：衰减激光 \(\langle N\rangle=0.01\) 给出 \(g^{(2)}(0)=1\)，无法用于量子密钥分发（BB84 协议要求 \(g^{(2)}(0)<0.5\) 以保证安全性）。
+\end{exbox}
+
+接下来考察相干态与压缩态的实验产生。
+
+理想激光器输出近似相干态。He--Ne 激光器（632.8\,nm，1\,mW）的参数：
+\[
+\langle N\rangle=\frac{P}{\hbar\omega}\cdot\tau_{\rm det}
+\]
+对 \(\tau_{\rm det}=1\,\mathrm{ms}\) 探测窗口，\(\langle N\rangle\approx3.2\times10^{12}\)，光子数的相对涨落 \(\Delta N/\langle N\rangle=1/\sqrt{\langle N\rangle}\approx5.6\times10^{-7}\)。
+
+实际激光的 \(g^{(2)}(0)\) 略大于 1（excess noise），取决于工作区间：远高于阈值时 \(g^{(2)}(0)\to1\)（相干态极限），阈值附近 \(g^{(2)}(0)\approx2\)（类热光场）。
+
+\begin{exbox}[相干态的 Poisson 统计验证]
+用 HBT 测量衰减脉冲激光（\(\langle N\rangle=5\)），符合计数分布拟合 Poisson \(P_n=e^{-5}5^n/n!\)：\(P_0=0.0067\)，\(P_5=0.1755\)，\(P_{10}=0.0181\)。与热光场的 Bose--Einstein 分布 \(P_n=5^n/6^{n+1}\)（\(P_0=0.167\)，长尾）形成鲜明对比。
+\end{exbox}
+
+相干态的实验产生依赖激光器工作于远高于阈值区间。压缩态则需非线性光学过程，主要方案是参量下转换（SPDC），探测则依赖 balanced homodyne 技术。
+
+\textbf{参量下转换 (SPDC)。}二阶非线性晶体（\(\chi^{(2)}\)）在简并参量下转换配置下实现压缩算符 \(S(\zeta)\)。用 Nd:YAG 泵浦光（532\,nm）注入 PPKTP 晶体，信号场频率为 1064\,nm。OPO 低于阈值时输出压缩真空，压缩参量
+\[
+r=\frac{\chi^{(2)}|\mathcal E_p|L}{2c}\sqrt{\frac{\hbar\omega_s}{2\epsilon_0 V_{\rm mode}}}
+\]
+其中 \(\mathcal E_p\) 是泵浦场振幅，\(L\) 是晶体长度，\(V_{\rm mode}\) 是模体积。
+
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+实验 & 年份 & 压缩 dB & \(r\) & \(\langle N\rangle=\sinh^2 r\) \\
+\hline
+Wu \& Kimble (1986) & 1986 & 3.0 & 0.35 & 0.13 \\
+LIGO 注入压缩 & 2013 & 6.0 & 0.69 & 0.57 \\
+UHF OPO (2016) & 2016 & 15.0 & 1.73 & 8.7 \\
+Takinoue (2020) & 2020 & 20.0 & 2.30 & 19.5 \\
+\hline
+\end{tabular}
+\end{center}
+
+压缩 dB 定义为 \(-10\log_{10}(e^{-2r})\)，即 \(20r\log_{10}e\approx8.69\,r\)。15\,dB 压缩意味着噪声功率比真空涨落低 \(10^{1.5}\approx31.6\) 倍。
+
+\textbf{Balanced homodyne 探测。}压缩态的噪声压缩不在光子数分布中直接可见（压缩真空的光子数只含偶数项），而需通过 balanced homodyne 探测测量 quadrature \(X_\theta=(ae^{-i\theta}+a^\dagger e^{i\theta})/\sqrt{2}\) 的方差。本地振荡光 (LO) 与信号在 50/50 分束器上混合，两路光电流差
+\[
+\hat i_-\propto|\alpha_{\rm LO}|\,\hat X_\theta
+\]
+直接给出 quadrature 的概率分布。对压缩真空 \(S(\zeta)|0\rangle\)（\(\zeta=r\)，\(\phi=0\)），\(X_0\) 的方差为 \(\frac12 e^{-2r}\)，\(X_{\pi/2}\) 的方差为 \(\frac12 e^{2r}\)。
+
+\begin{exbox}[LIGO 的压缩光注入]
+Advanced LIGO 在 2013 年注入 6\,dB 压缩真空，将量子噪声降低约 2 倍。信号频带 10--100\,Hz 中，辐射压力噪声（低频）和散粒噪声（高频）的交叉频率 \(f_c\approx100\,\mathrm{Hz}\)。注入压缩后，高频散粒噪声降低 \(\sim e^{-r}\approx0.50\)，低频辐射压力噪声相应增加 \(e^r\approx2.0\)——但通过 filter cavity 将压缩角旋转至频带依赖，可同时降低两个频带（频率依赖压缩, FDC），2020 年 O3 观测运行中实现了 \(\sim3\) 倍的灵敏度提升。
+\end{exbox}
+
+Green 并矢\eqnrefs{eq:spontaneous-green-dyadic}不仅适用于自由空间，在腔中其虚部在共振频率处急剧增强，给出 Purcell 效应——自发辐射率被腔共振放大。
+
+接下来考察Purcell 效应与腔量子电动力学。
+
+\eqnrefs{eq:spontaneous-green-dyadic} 的 Green 并矢在单模腔中给出 Purcell 增强。腔的品质因子 \(Q=\omega_c/\kappa\) 和模体积 \(V_{\rm mode}\) 决定 Purcell 因子
+\[
+F_P=\frac{\Gamma_{\rm cavity}}{\Gamma_0}
+=\frac{3}{4\pi^2}\frac{Q}{V_{\rm mode}/\lambda^3}
+\]
+其中 \(\lambda=c/\omega_c\) 是共振波长。
+
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+体系 & \(Q\) & \(V_{\rm mode}/\lambda^3\) & \(F_P\) & \(\Gamma_0/2\pi\) (MHz) \\
+\hline
+Fabry--P\'erot (Cs) & \(10^5\) & \(10^3\) & \(\sim 8\) & 5.2 \\
+微环腔 (InGaAs QD) & \(10^4\) & 0.5 & \(\sim 1500\) & 1.0 \\
+光子晶体纳米腔 & \(10^5\) & 0.3 & \(\sim 8000\) & 0.5 \\
+超导电路 QED & \(10^6\) & \(10^{-3}\) & \(\sim 8\times10^7\) & 5.0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{exbox}[电路 QED 的强耦合]
+超导传输线腔耦合到 transmon 量子比特：腔频率 \(\omega_c/2\pi=7.0\,\mathrm{GHz}\)，比特频率 \(\omega_q/2\pi=6.8\,\mathrm{GHz}\)，耦合强度 \(g/2\pi=100\,\mathrm{MHz}\)，腔衰减率 \(\kappa/2\pi=1\,\mathrm{MHz}\)，比特弛豫率 \(\gamma/2\pi=2\,\mathrm{MHz}\)。协同参数 \(C=4g^2/(\kappa\gamma)=10^4\gg1\)，处于强耦合区。Purcell 增强使比特弛豫率在腔共振时增加 \(F_P\approx4g^2/(\kappa^2)\approx4\times10^4\) 倍——这是电路 QED 中读出比特态的物理基础。
+\end{exbox}
+
+前述压缩态均为单模压缩。非简并参量下转换产生的是双模压缩态，信号与闲置模式光子数完全关联，构成连续变量量子纠缠的 EPR 态实现。
+
+接下来考察双模压缩与纠缠光子对。
+
+非简并 SPDC 产生双模压缩态
+\[
+|\mathrm{TMSV}\rangle=S_2(\zeta)|0,0\rangle
+=\frac{1}{\cosh r}\sum_{n=0}^\infty(-e^{i\phi}\tanh r)^n|n\rangle_s|n\rangle_i
+\]
+信号 (signal) 和闲置 (idler) 模式光子数完全关联：\(\langle N_s\rangle=\langle N_i\rangle=\sinh^2 r\)，\(\Delta(N_s-N_i)^2=0\)。这正是连续变量量子纠缠的 EPR 态实现。
+
+\begin{exbox}[EPR 纠缠光的 Reid 判据]
+双模压缩态的 Reid 乘积
+\[
+\Delta(X_s-X_i)\,\Delta(P_s+P_i)=e^{-2r}
+\]
+对 \(r>0\) 严格小于真空极限 1，验证 EPR 纠缠。2000 年 Bowen 实验用 OPO 产生 \(r\approx0.6\)（3\,dB）双模压缩，测得 Reid 乘积 \(0.64<1\)，首次实验验证连续变量 EPR 纠缠。
+\end{exbox}
+
+\begin{derivation}[单模压缩态 Wigner 函数的显式推导与边缘分布，即\eqnrefs{eq:squeezed-wigner-function}]
+\emph{策略路线图。}首先定义 Wigner 函数的位移算符表示并写出真空态 Wigner 函数；其次利用压缩算符的 Bogoliubov 变换性质化简压缩态的特征函数；再次通过 Fourier 逆变换得到压缩态 Wigner 函数的封闭表达式；然后计算两个正交分量的边缘分布；最后验证不确定性乘积饱和 Heisenberg 下界。
+
+\emph{第一步：Wigner 函数与特征函数。}单模 Wigner 函数定义为
+\begin{equation}
+W(\alpha)=\frac{1}{\pi}\Tr\!\bigl[D^\dagger(\alpha)\,\rho\,D(\alpha)\,(-1)^{\hat n}\bigr],
+\qquad
+\alpha=\frac{x_1+\ii x_2}{\sqrt2},
+\label{eq:wigner-definition}
+\end{equation}
+其中 \(D(\alpha)=\exp(\alpha a^\dagger-\alpha^*a)\) 为位移算符，\((-1)^{\hat n}\) 为宇称算符。等价地通过特征函数
+\begin{equation}
+\chi(\xi)=\Tr\!\bigl[\rho\,D(\xi)\bigr],
+\qquad
+W(\alpha)=\frac{1}{\pi^2}\int\!\dd^2\xi\;\ee^{\alpha\xi^*-\alpha^*\xi}\,\chi(\xi).
+\label{eq:wigner-characteristic}
+\end{equation}
+真空态 \(\rho_0=|0\rangle\langle0|\) 的特征函数 \(\chi_0(\xi)=\langle0|D(\xi)|0\rangle=\ee^{-|\xi|^2/2}\)，代入\eqnrefs{eq:wigner-characteristic} 完成 Gaussian 积分得
+\begin{equation}
+W_0(\alpha)=\frac{2}{\pi}\,\ee^{-2|\alpha|^2}
+=\frac{2}{\pi}\,\ee^{-(x_1^2+x_2^2)}.
+\label{eq:vacuum-wigner}
+\end{equation}
+
+\emph{第二步：压缩态特征函数。}其次考虑单模压缩态 \(\rho_{\rm sq}=S(\zeta)|0\rangle\langle0|S^\dagger(\zeta)\)，\(\zeta=r\ee^{\ii\phi}\)。特征函数
+\begin{equation*}
+\chi_{\rm sq}(\xi)=\Tr\!\bigl[S(\zeta)|0\rangle\langle0|S^\dagger(\zeta)\,D(\xi)\bigr]
+=\langle0|S^\dagger(\zeta)D(\xi)S(\zeta)|0\rangle.
+\end{equation*}
+利用 Bogoliubov 变换（即\eqnrefs{eq:displacement-normal-order} 的算符形式）
+\begin{equation}
+S^\dagger(\zeta)\,D(\xi)\,S(\zeta)
+=D\!\bigl(\xi\cosh r+\xi^*\ee^{\ii\phi}\sinh r\bigr),
+\label{eq:displacement-bogoliubov}
+\end{equation}
+此式由 \(S^\dagger a S=a\cosh r+a^\dagger\ee^{\ii\phi}\sinh r\) 直接代入 \(D(\xi)=\exp(\xi a^\dagger-\xi^*a)\) 并用 BCH 公式得到。故
+\begin{equation*}
+\chi_{\rm sq}(\xi)=\chi_0\!\bigl(\xi\cosh r+\xi^*\ee^{\ii\phi}\sinh r\bigr)
+=\exp\!\Bigl[-\frac12\bigl|\xi\cosh r+\xi^*\ee^{\ii\phi}\sinh r\bigr|^2\Bigr].
+\end{equation*}
+
+\emph{第三步：Wigner 函数封闭表达式。}再次取 \(\phi=0\)（沿 \(x_1\) 压缩）简化计算。此时 \(\xi=\xi_1+\ii\xi_2\)，
+\begin{equation*}
+\bigl|\xi\cosh r+\xi^*\sinh r\bigr|^2
+=(\xi_1\ee^r)^2+(\xi_2\ee^{-r})^2
+=\ee^{2r}\xi_1^2+\ee^{-2r}\xi_2^2.
+\end{equation*}
+代入\eqnrefs{eq:wigner-characteristic}，Fourier 逆变换为两个独立 Gaussian 积分：
+\begin{equation}
+W_{\rm sq}(\alpha)
+=\frac{2}{\pi}\,\exp\!\Bigl[-x_1^2\ee^{-2r}-x_2^2\ee^{2r}\Bigr],
+\label{eq:squeezed-wigner-function}
+\end{equation}
+即\eqnrefs{eq:squeezed-wigner-function}。相空间中 Wigner 函数是椭圆 Gaussian：沿 \(x_1\) 方向半轴 \(\ee^r\)（展宽），沿 \(x_2\) 方向半轴 \(\ee^{-r}\)（压缩），面积保持 \(\pi\ee^r\cdot\pi\ee^{-r}=\pi^2\) 与真空态相同——相空间面积不变是 Liouville 定理的量子体现。
+
+\emph{第四步：边缘分布。}然后计算正交分量 \(X_i=x_i\) 的边缘分布
+\begin{equation*}
+P(x_1)=\int_{-\infty}^{+\infty}\!\dd x_2\;W_{\rm sq}(\alpha)
+=\frac{1}{\sqrt\pi}\,\ee^{-x_1^2\ee^{-2r}},
+\end{equation*}
+\begin{equation*}
+P(x_2)=\int_{-\infty}^{+\infty}\!\dd x_1\;W_{\rm sq}(\alpha)
+=\frac{1}{\sqrt\pi}\,\ee^{-x_2^2\ee^{2r}}.
+\end{equation*}
+方差
+\begin{equation}
+\Delta X_1=\frac{\ee^{-r}}{\sqrt2},
+\qquad
+\Delta X_2=\frac{\ee^r}{\sqrt2},
+\label{eq:squeezed-quadrature-variance}
+\end{equation}
+即\eqnrefs{eq:squeezed-quadrature-variance}。\(r>0\) 时 \(X_1\) 压缩、\(X_2\) 反压缩。
+
+\emph{第五步：不确定性原理饱和。}最后计算乘积
+\begin{equation*}
+\Delta X_1\,\Delta X_2
+=\frac{\ee^{-r}}{\sqrt2}\cdot\frac{\ee^r}{\sqrt2}
+=\frac12,
+\end{equation*}
+恰为 Heisenberg 下界 \(\Delta X_1\,\Delta X_2\ge1/2\) 的等号——压缩态是最小不确定态。真空态 \(r=0\) 给出 \(\Delta X_1=\Delta X_2=1/\sqrt2\)（对称噪声），压缩态 \(r>0\) 将噪声从 \(X_1\) 转移到 \(X_2\) 而不违反不确定性原理。在引力波探测器 LIGO 中，\(r\approx 0.6\)（3\,dB）的压缩真空注入使信号频带噪声降低约 40\%，这是 2015 年首次探测到引力波的关键技术之一。
+
+
+\emph{[压缩态的不可测性与 Holevo 界的量子信息应用]} 压缩态的量子信息性质——超越标准量子极限的测量精度和 Holevo 界的信道容量——是量子信息论在连续变量系统中的核心应用。分四步建立。
+
+\emph{第一步：标准量子极限与压缩超越。}相干态 \(|\alpha\rangle\) 的正交分量 \(\Delta X=\Delta P=1/\sqrt{2}\)（最小不确定乘积 \(\Delta X\Delta P=1/2\)），给出标准量子极限（SQL）。压缩态 \(S(r)|\alpha\rangle\)（\(S(r)=\exp[\frac{r}{2}(a^2-a^{\dagger2})]\)）满足 \(\Delta X=\ee^{-r}/\sqrt{2}\)，\(\Delta P=\ee^r/\sqrt{2}\)——一个分量压缩，另一个反压缩，乘积仍 \(1/2\)。压缩 \(r\) 使 \(\Delta X\) 低于 SQL，在引力波探测（LIGO 注入压缩光提升灵敏度）和精密测量中直接应用。
+
+\emph{第二步：Holevo 界与高斯信道容量。}连续变量量子信道的经典信息容量由 Holevo 界给出：\(C\le\chi=S(\rho_{\rm out})-\int p(x)S(\rho_x)\dd x\)（\(S\) von Neumann 熵）。对高斯信道（保高斯态的 CP 映射），Holevo 界可精确计算：\(C=g(\nu_1)+g(\nu_2)-g(\nu_3)-g(\nu_4)\)（\(g(x)=(x+1)\log(x+1)-x\log x\)，\(\{\nu_i\}\) 是信道参数的辛本征值）。压缩态优化 Holevo 界——在能量约束下，压缩态（而非相干态）达到高斯信道容量，是连续变量量子通信的最优编码。
+
+\emph{第三步：纠缠辅助容量与超加性。}纠缠辅助容量 \(C_E\)（发送方与接收方共享纠缠时的容量）可超过未辅助容量 \(C\)（超加性 \(C_E\ge C\)）。对高斯信道，\(C_E=g(N_S)-g(N_N)\)（\(N_S\) 信号光子数，\(N_N\) 噪声光子数），而 \(C\) 需要优化输入态。对纯损耗信道，\(C=C_E=\log(1+\eta N_S/(1-\eta))\)（\(\eta\) 透射率），纠缠不增加容量；对噪声信道，\(C_E>C\)，纠缠提供真实增益——这是量子通信中纠缠资源价值的定量体现。
+
+\emph{第四步：多模压缩与连续变量纠缠。}双模压缩态 \(S_2(r)|0,0\rangle=\frac{1}{\cosh r}\sum_n(\tanh r)^n|n,n\rangle\) 是连续变量纠缠的典型态。其 Schmidt 分解 \(\sum_n\lambda_n|n\rangle_A|n\rangle_B\)（\(\lambda_n=(\tanh r)^n/\cosh r\)）给出纠缠熵 \(E=-\sum|\lambda_n|^2\log|\lambda_n|^2=g(\sinh^2 r)\)。双模压缩态在连续变量量子密钥分发（CV-QKD）中用作纠缠源，安全性的 Shor--Preskill 证明在连续变量中通过 Holevo 界给出窃听者信息上界 \(I_{\rm Eve}\le\chi\)——压缩态参数 \(r\) 直接决定密钥率 \(K=\beta I_{AB}-\chi\)（\(\beta\) 重复率，\(I_{AB}\) Alice--Bob 互信息），是连续变量量子通信的物理基础。
+\end{derivation}

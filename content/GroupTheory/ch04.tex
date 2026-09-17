@@ -1,0 +1,2347 @@
+\chapter{群论与量子力学}
+\label{chap:group-theory-quantum}
+
+前三章分别建立了群的结构、群表示以及三维空间对称性的分类。现在这些数学对象终于要进入量子力学本身。本章的核心问题可以用一句话概括：\emph{如果哈密顿量具有某个对称群，那么它的本征态、简并、矩阵元、光谱和能带会因此受到哪些必然约束？}
+
+这不是“用群论给已有答案换一种记号”。恰恰相反，很多时候我们甚至不需要解 Schrödinger 方程，就能仅从对称性判断一个能级至少几重简并、一个微扰会怎样劈裂它、某个跃迁矩阵元是否严格为零、一个振动模是否能出现在红外或 Raman 光谱中，以及晶体能带为何只需在不可约 Brillouin 区内计算。本章因此沿着“哈密顿算符群 $\to$ 能级劈裂 $\to$ 投影算符 $\to$ 选择定则 $\to$ 光谱 $\to$ Bloch 定理 $\to$ Brillouin 区 $\to$ 时间反演”的主线展开，每一步都从前面的表示论结构推出。
+
+为了统一记号，量子态所在 Hilbert 空间记为 $\mathcal H$，哈密顿算符记为 $\hat H$。若空间对称群元素 $g$ 在 Hilbert 空间上由酉算符 $U(g)$ 实现，则
+\[
+U(g_1g_2)=U(g_1)U(g_2).
+\]
+时间反演是反酉算符，将在最后一节单独处理。若无特别说明，本章前七节讨论普通酉对称性。
+
+\section{哈密顿算符群与对称性导致的简并}
+\label{sec:hamiltonian-symmetry}
+
+前三章一直在研究“对称操作本身”。现在要回答物理上真正关心的问题：如果一个量子系统具有这些对称操作，它的能量和波函数会受到什么限制？
+
+量子态是 Hilbert 空间 $\mathcal H$ 中的向量 $|\psi\rangle$，哈密顿算符 $\hat H$ 的本征值方程
+\[
+\hat H|\psi\rangle=E|\psi\rangle
+\]
+决定定态能量 $E$。一个抽象对称群元 $g\in G$ 在 Hilbert 空间中由酉或反酉算符表示；本节先讨论通常的酉情形，记为 $U(g)$。所谓“哈密顿量具有 $g$ 对称性”，不是说 $\hat H$ 的矩阵看起来漂亮，而是说先做对称变换再演化与先演化再做对称变换没有差别，即
+\[
+U(g)\hat H U(g)^{-1}=\hat H,
+\]
+等价地 $[\hat H,U(g)]=0$。这个交换关系是本章所有简并、分块和选择定则的起点。
+
+
+这里的方括号不是新的群论运算，而是量子力学中的\textbf{交换子}：
+\[
+[A,B]\equiv AB-BA.
+\]
+因此 $[\hat H,U(g)]=0$ 逐字展开就是
+\[
+\hat H U(g)=U(g)\hat H.
+\]
+右边先作用哪个算符由通常的算符乘法约定决定。这个等式说的是两个操作的先后顺序可以交换，而不是说它们分别为零。后面凡是出现 $[A,B]=0$，都应先把它在脑中翻译成“$A$ 与 $B$ 可以交换次序”。
+
+接下来考察从几何对称到 Hilbert 空间上的算符。
+
+\chapref{chap:point-space-groups}中的点群元素首先作用在实空间坐标上。例如一个旋转 $R$ 把位置 $\vb r$ 变成 $R\vb r$。但量子力学真正作用的对象是波函数或态矢量，因此我们必须把几何操作提升为 Hilbert 空间上的算符。对无自旋标量波函数，一个常用约定是
+\[
+(U(R)\psi)(\vb r)=\psi(R^{-1}\vb r).
+\]
+之所以出现 $R^{-1}$，是为了保证
+\[
+U(R_1R_2)=U(R_1)U(R_2).
+\]
+若还包含自旋，$U(R)$ 还要同时作用在自旋分量上；这一点到\chapref{chap:rotation-group}转动群和双群时再系统处理。
+
+\begin{definition}[哈密顿量的对称群]
+设群 $G$ 在 Hilbert 空间 $\mathcal H$ 上由酉表示 $U:G\to\mathcal U(\mathcal H)$ 实现。若对所有 $g\in G$ 都有
+\[
+U(g)\hat H U(g)^{-1}=\hat H,
+\label{eq:hamiltonian-invariance}
+\]
+等价地
+\[
+[\hat H,U(g)]=0,
+\]
+则称 $G$ 为 $\hat H$ 的一个\textbf{对称群}。所有保持 $\hat H$ 不变的酉对称操作组成的群称为哈密顿量的完整酉对称群。
+\label{def:hamiltonian-symmetry-group}
+\end{definition}
+
+这个定义把“物体看起来不变”换成了“动力学不变”。只有后者才能约束能谱。一个几何操作即使保持某个静态结构不变，如果它没有在量子 Hilbert 空间上实现为与 $\hat H$ 对易的算符，就不能直接拿来讨论量子简并。
+
+在继续讨论能级之前，有必要先把“与哈密顿量对易”翻译成动力学语言。
+
+在量子力学里，“$[\hat H,U(g)]=0$”经常被直接当作一个形式条件记住，但它值得从动力学角度再解释一次。设系统从初态 $\ket{\psi(0)}$ 按
+\[
+\ket{\psi(t)}=\ee^{-\ii\hat Ht/\hbar}\ket{\psi(0)}
+\]
+演化。如果 $U(g)$ 与 $\hat H$ 对易，则
+\[
+U(g)\ee^{-\ii\hat Ht/\hbar}
+=\ee^{-\ii\hat Ht/\hbar}U(g).
+\]
+因此“先做对称操作再演化”和“先演化再做对称操作”完全等价。换言之，对称性不是静态图形上的装饰，而是动力学演化对某种变换的不敏感性。
+
+对于连续一参数对称群，若
+\[
+U(\epsilon)=\exp\!\left(-\frac{\ii}{\hbar}\epsilon\hat Q\right),
+\]
+并且 $U(\epsilon)\hat H U(\epsilon)^{-1}=\hat H$ 对任意小 $\epsilon$ 成立，则对 $\epsilon$ 在零点求导得到
+\[
+[\hat Q,\hat H]=0.
+\]
+于是生成元 $\hat Q$ 是守恒量。空间平移对应动量，旋转对应角动量，时间平移对应能量。有限点群没有无限小生成元，但“对称算符与哈密顿量对易”仍然是同一个结构在离散群上的版本。这样看，群表示与守恒量并不是两套互不相干的语言，而是连续与离散对称性的两种表现形式。
+
+另一个值得区分的概念是“哈密顿量的完整对称群”和“我们暂时拿来分析的某个子群”。如果只用一个较小子群去标记态，就可能把本来由更大群强制的简并误判成偶然简并。因此，遇到异常简并时，第一反应不应只是“数值巧合”，而应检查是否遗漏了空间群、时间反演、粒子交换或动力学对称性。
+
+设
+\[
+\hat H\ket{\psi}=E\ket{\psi}.
+\]
+如果 $U(g)$ 与 $\hat H$ 对易，那么
+\[
+\hat H U(g)\ket{\psi}
+=U(g)\hat H\ket{\psi}
+=E U(g)\ket{\psi}.
+\]
+因此 $U(g)\ket{\psi}$ 仍然属于同一能量本征空间。这个一行推导就是整个“对称性与简并”理论的起点。
+
+\begin{theorem}[能量本征空间是不变子空间]
+设 $G$ 是 $\hat H$ 的对称群，固定能量 $E$ 的本征空间记为
+\[
+\mathcal E_E=\ker(\hat H-EI).
+\]
+则对任意 $g\in G$，有
+\[
+U(g)\mathcal E_E\subseteq \mathcal E_E.
+\]
+因此 $\mathcal E_E$ 承载群 $G$ 的一个表示，并可分解为不可约表示的直和。
+\label{thm:eigenspace-invariant}
+
+\par\smallskip\noindent\textbf{证明.}
+任取 $\ket{\psi}\in\mathcal E_E$。由 $[\hat H,U(g)]=0$，
+\[
+(\hat H-EI)U(g)\ket{\psi}
+=U(g)(\hat H-EI)\ket{\psi}=0.
+\]
+故 $U(g)\ket{\psi}\in\mathcal E_E$。于是 $\mathcal E_E$ 是 $G$-不变子空间。对有限群或紧群的有限维能级子空间，表示可以完全约化，因此可写为不可约表示直和。
+\end{theorem}
+
+这条定理就是把交换关系翻译成态的语言。若 $|\psi\rangle$ 满足 $\hat H|\psi\rangle=E|\psi\rangle$，则
+\[
+\hat H\,U(g)|\psi\rangle
+=U(g)\hat H|\psi\rangle
+=E\,U(g)|\psi\rangle.
+\]
+所以对称操作可以把一个本征态变成另一个态，但不会改变能量本征值。于是所有能量为 $E$ 的态构成的本征空间
+\[
+\mathcal E_E=\ker(\hat H-EI)
+\]
+在 $G$ 作用下封闭，自然成为一个表示空间。
+
+如果能级非简并，$\mathcal E_E$ 只有一维，于是每个对称操作只能把该态乘一个相位；若能级简并，对称操作可以在这个简并空间内部混合态。所谓“用不可约表示标记能级”，就是对这个有限维表示空间做不可约分解。
+
+
+这一定理真正告诉我们的不是“可以用不可约表示给态命名”，而是更强的结构：\emph{对称操作永远不会把一个确定能量的态送到不同能量去}。因此同一不可约表示中的所有基矢必须具有相同能量。
+
+\begin{theorem}[不可约表示给出的必然简并]
+若某个能量本征空间中包含一个 $d_\alpha$ 维不可约表示 $V_\alpha$，则该能量至少具有 $d_\alpha$ 重简并。更精确地，若
+\[
+\mathcal E_E\simeq\bigoplus_\alpha m_{E,\alpha}V_\alpha,
+\]
+则每个出现的 $V_\alpha$ 都贡献以 $d_\alpha$ 为基本单位的简并结构。
+\label{thm:symmetry-enforced-degeneracy}
+
+\par\smallskip\noindent\textbf{证明.}
+由 \Cref{thm:eigenspace-invariant}，$\mathcal E_E$ 是表示空间。若其中含不可约子空间 $V_\alpha$，则 $V_\alpha$ 中任一非零向量在群作用下生成整个 $V_\alpha$，而这些向量全部仍在同一能量 $E$ 的本征空间内。因此该能量至少包含 $\dim V_\alpha=d_\alpha$ 个线性无关本征态。
+\end{theorem}
+
+要注意定理说的是“至少”多少重简并。若一个不可约表示 $V_\alpha$ 的维数为 $d_\alpha$，并且某能量本征空间中出现一次这个表示，那么群作用会把其中任意一个非零态生成整个 $d_\alpha$ 维不可约子空间，因此同一能量下至少要有 $d_\alpha$ 个线性无关态。
+
+如果同一个不可约表示出现多次，能量还可以在这些“重数副本”之间进一步形成偶然简并或混合。更精确地说，在同类分量 $V_\alpha\otimes\CC^{m_\alpha}$ 上，与全部群作用交换的哈密顿量具有
+\[
+\hat H_\alpha=I_{d_\alpha}\otimes h_\alpha
+\]
+的形式。群论强制的是第一个因子上的 $d_\alpha$ 重简并；第二个重数空间中的谱则由具体动力学决定。
+
+
+高维不可约表示导致的简并称为\textbf{对称性保护的简并}或\textbf{必然简并}。如果一个能级同时包含多个彼此不等价的不可约表示，而它们碰巧具有同样能量，这种额外相等并不由当前对称群强制，通常称为\textbf{偶然简并}。不过“偶然”二字必须谨慎：有时它意味着我们还没有找到哈密顿量更大的隐藏对称群。
+
+能级本征空间承载群表示，而 Schur 引理则给出更精确的结构：同一不可约表示的多重度等于特定投影算符的迹。
+
+如果只知道“同一个不可约表示中的态简并”，还不够解释为什么一个对称哈密顿量能够被分块。\chapref{chap:representation-theory}的 Schur 引理提供了更精确的答案。若 Hilbert 空间某个有限维不变部分分解为
+\[
+\mathcal H_0\simeq\bigoplus_\alpha
+\left(V_\alpha\otimes M_\alpha\right),
+\]
+其中 $M_\alpha$ 是记录同一不可约表示出现多少次的重数空间，那么所有与群作用对易的算符都具有形式
+\[
+\hat H\big|_{\mathcal H_0}
+=\bigoplus_\alpha
+\left(I_{V_\alpha}\otimes h_\alpha\right).
+\label{eq:commutant-block-form}
+\]
+这说明对称性真正强迫的是 $V_\alpha$ 方向上的单位矩阵；至于同一不可约表示出现多次时，重数空间 $M_\alpha$ 内仍允许进一步混合与分裂。这个细节能避免一个常见误解：\emph{“同一不可约表示的两份拷贝”并不一定彼此简并；真正强制的简并度是不可约表示本身的维数。}
+
+
+这个式子如果只看张量积记号仍然有些抽象，可以把指标全部写出来。固定不可约类型 $\alpha$，在 $V_\alpha$ 中取基
+\[
+|\alpha,a\rangle,\qquad a=1,\dots,d_\alpha,
+\]
+在重数空间 $M_\alpha$ 中取基
+\[
+|r\rangle,\qquad r=1,\dots,m_\alpha.
+\]
+同类分量的一组基可写成
+\[
+|\alpha,a;r\rangle=|\alpha,a\rangle\otimes|r\rangle.
+\]
+群只作用在第一个指标上：
+\[
+U(g)|\alpha,a;r\rangle
+=\sum_bD^{(\alpha)}_{ba}(g)|\alpha,b;r\rangle.
+\]
+若 $\hat H$ 与所有 $U(g)$ 对易，那么对固定的两个副本指标 $r,s$，矩阵
+\[
+H^{(rs)}_{ab}
+=\langle\alpha,a;r|\hat H|\alpha,b;s\rangle
+\]
+必须与每个 $D^{(\alpha)}(g)$ 对易。Schur 引理于是迫使
+\[
+H^{(rs)}_{ab}=\delta_{ab}(h_\alpha)_{rs}.
+\]
+把所有 $r,s$ 拼起来，正好就是
+\[
+\hat H_\alpha=I_{d_\alpha}\otimes h_\alpha.
+\]
+现在“为什么不可约表示内部一定简并、而不同副本之间还能混合”就可以直接从指标读出：$a$ 指标上只能出现 $\delta_{ab}$，但 $r,s$ 指标上的矩阵 $h_\alpha$ 完全可以不是对角的。
+
+上面的最低简并结论还可以用 Schur 引理再向前推进一步，从而解释为什么一个能级只能由完整的不可约块组成。
+
+当某个不可约类型 $V_\alpha$ 在所考察空间中只出现一次时，\eqnrefs{eq:commutant-block-form} 退化为最熟悉的 Schur 结论
+\[
+\hat H\big|_{V_\alpha}=E_\alpha I_{d_\alpha}.
+\label{eq:H-scalar-on-irrep}
+\]
+如果同一不可约类型出现多次，则哈密顿量可以在这些等价拷贝之间混合，此时应先在重数空间 $M_\alpha$ 中对 $h_\alpha$ 对角化；对 $h_\alpha$ 的每个本征值，$V_\alpha$ 方向上仍然必然留下一个 $d_\alpha$ 维的单位块。因此真正不可被对称微扰拆开的，是每一个不可约表示内部的 $d_\alpha$ 个方向，而不是事先任意选定的某一份等价拷贝。
+
+反过来，一个能量本征空间可以同时包含多个不可约表示。比如
+\[
+\mathcal E_E=A_1\oplus E
+\]
+是完全可能的，这意味着一个一维态和一个二维多重态恰好处在同一能量。群论只要求 $E$ 内部的两个基矢简并，却不要求 $A_1$ 与 $E$ 的能量相同。如果加入保持全部群对称性的微扰，这两个不可约块通常会沿不同方向移动，从而把“偶然的三重简并”拆成 $1+2$，但 $E$ 的二重简并仍然保留。
+
+这种说法比简单记忆“不可约表示维数就是简并度”更准确：维数给出的是\emph{对称性强制的最小简并}，而完整能级可以是若干不可约块的直和。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.95]
+  \draw[->,line width=.75pt] (0,-.3)--(0,5.2) node[above] {$E$};
+  \draw[line width=.9pt] (.2,4.3)--(2.2,4.3);
+  \node[lecturelabel,right] at (2.25,4.3) {$T$-type, $d=3$};
+  \draw[line width=.9pt] (.2,2.8)--(2.2,2.8);
+  \node[lecturelabel,right] at (2.25,2.8) {$E$-type, $d=2$};
+  \draw[line width=.9pt] (.2,1.2)--(2.2,1.2);
+  \node[lecturelabel,right] at (2.25,1.2) {$A$-type, $d=1$};
+  \foreach \x in {5.2,5.55,5.9}{\draw[line width=.7pt] (\x,4.3)--(\x+.23,4.3);}
+  \foreach \x in {5.2,5.6}{\draw[line width=.7pt] (\x,2.8)--(\x+.28,2.8);}
+  \draw[line width=.7pt] (5.2,1.2)--(5.55,1.2);
+  \node[lecturelabel] at (5.7,.35) {basis states within each irrep};
+\end{tikzfig}
+\caption{不可约表示维数直接给出对称性强制的最小简并度。}
+\label{fig:irrep-degeneracy}
+\end{figure}
+
+氢原子提供了“偶然简并可能来自未识别的更高对称性”的标准例子。普通中心势具有 $SO(3)$ 转动对称性，因此固定角动量 $l$ 的多重态有 $2l+1$ 重磁量子数简并。氢原子的 Coulomb 势却更特殊：束缚态能量只依赖主量子数 $n$，不同 $l$ 之间也简并。原因是除了角动量 $\vb L$，还存在 Runge--Lenz 守恒矢量。
+
+对
+\[
+\hat H=\frac{\hat{\vb p}^{\,2}}{2m}-\frac{\kappa}{r},
+\]
+定义量子 Runge--Lenz 算符
+\[
+\hat{\vb A}
+=\frac{1}{2m}
+\left(\hat{\vb p}\times\hat{\vb L}
+-\hat{\vb L}\times\hat{\vb p}\right)
+-\kappa\frac{\hat{\vb r}}{r}.
+\]
+它满足
+\[
+[\hat H,\hat L_i]=0,
+\qquad
+[\hat H,\hat A_i]=0,
+\]
+以及
+\begin{align*}
+[\hat L_i,\hat L_j]&=\ii\hbar\epsilon_{ijk}\hat L_k,\\
+[\hat L_i,\hat A_j]&=\ii\hbar\epsilon_{ijk}\hat A_k,\\
+[\hat A_i,\hat A_j]&=-\frac{2\ii\hbar}{m}\hat H\epsilon_{ijk}\hat L_k.
+\end{align*}
+在束缚态子空间 $E<0$ 中，令
+\[
+\hat{\vb M}=\sqrt{\frac{m}{-2E}}\,\hat{\vb A},
+\qquad
+\hat{\vb J}_\pm=\frac12(\hat{\vb L}\pm\hat{\vb M}),
+\]
+便得到两个彼此对易的 $\mathfrak{su}(2)$ 代数。因此动力学对称代数为
+\[
+\mathfrak{so}(4)\simeq\mathfrak{su}(2)\oplus\mathfrak{su}(2).
+\]
+氢原子中不同 $l$ 的额外简并因此不是“无缘无故的巧合”，而是更高动力学对称性的结果。这个例子提醒我们：发现异常高的简并时，首先应当检查是否存在新的守恒量和更大的对称群。
+
+对于晶体能带，上述逻辑需要稍作调整：一般 $\vb k$ 点并不保持全部点群对称，只能使用保持该 $\vb k$（模倒格矢）不变的小群。
+
+在孤立分子中，一个能级通常直接用整个分子点群的不可约表示标记；晶体能带稍微复杂，因为不同 $\vb k$ 点保留下来的空间对称性不同。Brillouin 区中心 $\Gamma$ 往往具有完整晶体点群，而沿某条高对称线离开 $\Gamma$ 后，只剩保持该波矢不变的小群。因此同一条能带上的表示标签会随 $\vb k$ 改变。
+
+以立方晶体为例，在 $\Gamma$ 点常可用 $O_h$ 的不可约表示标记态；沿四重轴方向的高对称线，小余群通常降到 $C_{4v}$ 型；到边界高对称点又可能变成 $D_{4h}$ 型。于是一个 $O_h$ 的三维不可约表示沿高对称线限制到 $C_{4v}$ 后，可能分解成一个一维表示加一个二维表示，对应原三重简并离开 $\Gamma$ 后裂成 $1+2$。这就是“兼容关系”（compatibility relation）的基本含义。
+
+真正做能带计算时，不需要把每个 $\vb k$ 的波函数都画出来比较。只要知道各高对称点和高对称线的小群，再把端点不可约表示限制到线的小群，就能判断哪些能带必须相连、哪些可以避免交叉。\chapref{chap:group-theory-quantum}后面的 Brillouin 区部分会把小群严格定义出来；这里先把它看成 \Cref{thm:eigenspace-invariant} 在固定波矢子空间中的应用。
+
+最简单的例子是一组三重简并态承载某个三维不可约表示 $T$。只要完整对称群不变，哈密顿量在这三维块里必须正比于单位矩阵，所以三态同能。若环境把对称群降低到子群 $H$，而限制表示满足
+\[
+T\downarrow_H\simeq A\oplus E,
+\]
+其中 $A$ 一维、$E$ 二维，那么三重态最多能裂成“一重 + 二重”。这条结论不需要知道扰动势的具体系数；具体能量差则需要在 $A$ 与 $E$ 块中计算矩阵元。晶场中的 $p$、$d$ 轨道劈裂就是这一抽象机制的具体实例。
+
+\section{微扰引起的能级劈裂}
+\label{sec:perturbative-splitting}
+
+
+高对称系统的能级常常具有简并，但真实环境会降低对称性：自由原子放入晶体后只剩晶场点群，对称分子受外场后只剩某个子群。如果完整哈密顿量写成
+\[
+\hat H=\hat H_0+\lambda\hat V,
+\]
+其中 $\hat H_0$ 的对称群为 $G$，而扰动 $\hat V$ 只保持子群 $H\subgroup G$，那么原来一个 $G$ 的不可约表示在限制到 $H$ 后可能分裂成多个 $H$ 的不可约表示。能级“怎样劈裂”的群论内容，正是这个限制表示的分解。
+
+这里要区分两类问题。群论能够确定哪些态在降对称后仍必须保持简并，以及原来的多重态分成哪些对称类型；但它通常不能单独决定各分裂能级的绝对数值和上下顺序，那需要 $\hat V$ 的具体矩阵元。
+
+上一节讨论“给定对称性，哪些简并必须存在”。实验中更常见的情况是外场、应变、晶场或结构畸变降低了对称性，于是原来的不可约表示在较小子群下变得可约，简并随之劈裂。本节的关键不是重新做一遍简并微扰理论，而是用群论先把简并微扰矩阵的块结构确定下来。
+
+设
+\[
+\hat H(\lambda)=\hat H_0+\lambda\hat V,
+\qquad |\lambda|\ll1.
+\]
+假设 $\hat H_0$ 的对称群是 $G$，加入微扰后只剩子群 $H\subgroup G$。如果 $E_0$ 的简并空间承载 $G$ 的不可约表示 $\Gamma$，那么加入微扰后，应把 $\Gamma$ \emph{限制}到子群 $H$：
+\[
+\Gamma\downarrow_H^G
+\simeq\bigoplus_\mu n_\mu\,\gamma_\mu.
+\label{eq:branching-rule}
+\]
+右边就是劈裂后允许出现的对称性类型。
+
+\begin{theorem}[对称性降低与一阶劈裂的分块结构]
+设 $P_0$ 为 $\hat H_0$ 的某个简并能级 $E_0$ 的投影，且微扰后的残余对称群为 $H$，即
+\[
+[\hat V,U(h)]=0,
+\qquad \forall h\in H.
+\]
+则一阶简并微扰矩阵
+\[
+V_{\mathrm{eff}}=P_0\hat V P_0
+\]
+与 $H$ 的表示对易。若原简并空间在 $H$ 下分解为
+\[
+\mathcal E_{E_0}\simeq\bigoplus_\mu(V_\mu\otimes M_\mu),
+\]
+则
+\[
+V_{\mathrm{eff}}
+=\bigoplus_\mu(I_{V_\mu}\otimes v_\mu).
+\label{eq:perturbation-block}
+\]
+因此不同不可约表示之间的一阶矩阵元严格为零，每个 $d_\mu$ 维不可约表示至少保留 $d_\mu$ 重简并。
+\label{thm:perturbation-block-structure}
+
+\par\smallskip\noindent\textbf{证明.}
+由于 $P_0$ 是 $G$-不变能级的谱投影，它与 $U(h)$ 对易；$\hat V$ 也与 $U(h)$ 对易，所以
+\[
+[V_{\mathrm{eff}},U(h)]=0.
+\]
+把能级空间按 $H$ 的完全可约分解写成 $\bigoplus_\mu(V_\mu\otimes M_\mu)$，再应用 Schur 引理，所有与群作用对易的算符都只能在不可约表示空间 $V_\mu$ 上与恒等算符成比例，因此具有 \eqnrefs{eq:perturbation-block} 的形式。
+\end{theorem}
+
+这个定理使“劈裂图”不再依赖猜测。真正需要做的只剩两步：先求原不可约表示限制到残余子群后的 branching rule；再在每个重数空间中求少量矩阵元。对称性先把大矩阵拆小，微扰理论再计算每个小块的数值。
+
+\chapref{chap:point-space-groups} \Cref{ex:oh-d-orbitals} 已经从基函数变换看出，在 $O_h$ 对称性下五个 $d$ 轨道分解为
+\[
+\Gamma_d=E_g\oplus T_{2g}.
+\]
+因此一个自由离子中由转动对称性联系的五重 $d$ 多重态进入理想立方晶场后，最多保留一个二重组和一个三重组。至于哪一组能量更高，要由具体晶场势的符号决定；群论只决定\emph{允许怎样分裂}，不决定能级的数值顺序。
+
+若再沿 $z$ 方向施加四方畸变，使对称性降为 $D_{4h}$，则
+\[
+E_g(O_h)\downarrow D_{4h}
+=A_{1g}\oplus B_{1g},
+\]
+\[
+T_{2g}(O_h)\downarrow D_{4h}
+=B_{2g}\oplus E_g.
+\]
+基函数对应关系为
+\[
+A_{1g}:2z^2-x^2-y^2,
+\qquad
+B_{1g}:x^2-y^2,
+\]
+\[
+B_{2g}:xy,
+\qquad
+E_g:(xz,yz).
+\]
+原来的 $2+3$ 简并因此进一步变成 $1+1+1+2$。若再做正交畸变，使 $x,y,z$ 三方向都不等价，群降到 $D_{2h}$，则二维 $E_g$ 也分裂，五个轨道原则上可以全部非简并。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.94]
+  \draw[->,line width=.75pt] (-.6,-.2)--(-.6,5.5) node[above] {$E$};
+  \draw[line width=.95pt] (0,3.0)--(1.8,3.0);
+  \node[lecturelabel] at (.9,3.35) {$l=2$};
+  \draw[lecturearrow] (1.9,3.0)--(3.4,4.1);
+  \draw[lecturearrow] (1.9,3.0)--(3.4,2.0);
+  \draw[line width=.9pt] (3.5,4.1)--(5.1,4.1) node[right,lecturelabel] {$E_g$};
+  \draw[line width=.9pt] (3.5,2.0)--(5.1,2.0) node[right,lecturelabel] {$T_{2g}$};
+  \draw[lecturearrow] (5.35,4.1)--(6.7,4.75);
+  \draw[lecturearrow] (5.35,4.1)--(6.7,3.55);
+  \draw[lecturearrow] (5.35,2.0)--(6.7,2.55);
+  \draw[lecturearrow] (5.35,2.0)--(6.7,1.2);
+  \draw[line width=.8pt] (6.8,4.75)--(8.25,4.75) node[right,lecturelabel] {$A_{1g}$};
+  \draw[line width=.8pt] (6.8,3.55)--(8.25,3.55) node[right,lecturelabel] {$B_{1g}$};
+  \draw[line width=.8pt] (6.8,2.55)--(8.25,2.55) node[right,lecturelabel] {$B_{2g}$};
+  \draw[line width=.8pt] (6.8,1.2)--(8.25,1.2) node[right,lecturelabel] {$E_g$};
+  \node[lecturelabel] at (.9,.45) {$SO(3)$};
+  \node[lecturelabel] at (4.3,.45) {$O_h$};
+  \node[lecturelabel] at (7.55,.45) {$D_{4h}$};
+\end{tikzfig}
+\caption{$d$ 轨道在球对称 $\to$ 立方 $\to$ 四方晶场中的允许劈裂。群论决定分裂的维数模式，不决定具体能量高低。}
+\label{fig:d-orbital-splitting}
+\end{figure}
+
+这个例子展示了微扰问题最重要的思维顺序：先确定对称群如何变化，再做表示限制，最后才讨论能量修正。若一开始就写出一个 $5\times5$ 晶场矩阵再盲目对角化，虽然也能得到结果，却完全看不出为什么某些矩阵元必为零、为什么某些二重简并必须保留。
+
+“限制到子群后怎样分裂”并不需要凭经验猜测；它可以直接用特征标内积计算。
+
+\eqnrefs{eq:branching-rule} 不是只能查表。若 $\Gamma$ 是 $G$ 的表示，把其特征标限制到子群 $H$ 上得到 $\chi_\Gamma(h)$。$H$ 的不可约表示 $\gamma_\mu$ 在限制表示中出现的重数为
+\[
+n_\mu
+=\frac1{|H|}
+\sum_{h\in H}
+\chi_{\gamma_\mu}(h)^*\chi_\Gamma(h).
+\label{eq:branching-multiplicity}
+\]
+这就是\chapref{chap:representation-theory}重数公式在子群上的直接应用。它特别适合处理“已知高对称群特征标表，怎样预测降低对称性后的劈裂”这类问题。
+
+例如从 $O_h$ 降到 $D_{4h}$ 时，只需把 $O_h$ 的某行特征标取在 $D_{4h}$ 那些共同元素上，再与 $D_{4h}$ 的各行做内积，就会得到前面的
+\[
+E_g\to A_{1g}+B_{1g},
+\qquad
+T_{2g}\to B_{2g}+E_g.
+\]
+因此 branching rule 本质上不是一张新表，而是一个标准的表示限制与特征标内积问题。
+
+这里也应明确群论的能力边界。对称性决定允许的分裂方式和必然简并，却一般不决定各支能量的数值大小与高低次序。
+
+对称性可以告诉我们“一个三维表示最多怎样分裂”，却不能单独告诉我们每一支向上还是向下，也不能给出能隙数值。以 $d$ 轨道的八面体晶场为例，常见化学教材会画出 $t_{2g}$ 低、$e_g$ 高的图。这一能量顺序依赖负电荷配体沿坐标轴方向分布的具体静电势；如果改变势的符号或考虑不同配位环境，顺序可以改变。群论只保证
+\[
+5\longrightarrow2+3,
+\]
+并给出这两块的对称性标签。
+
+这一区分非常重要。讲义中的每一张“劈裂图”都应当分成两层理解：\emph{哪些简并数由群论强制}，以及\emph{哪些能量高低由具体动力学决定}。前者是本课程要掌握的普适结构，后者需要具体哈密顿量、晶场参数或第一性原理计算。
+
+接下来考察有效 Hamiltonian 的对称性约束。
+
+前面的理论告诉我们对称性如何分块，但反过来问：给定一个对称群 $G$，最一般的保持 $G$ 对称性的有效 Hamiltonian 是什么形式？这个问题在有效模型构造中极为常见——晶场 Hamiltonian、自旋 Hamiltonian、$\vb k\cdot\vb p$ 模型、Landau--Ginzburg 自由能都是同一原理的实例。
+
+\begin{theorem}[对称性约束下的有效 Hamiltonian 一般形式]
+设 $\hat H_{\mathrm{eff}}$ 作用在表示空间 $\mathcal H_0\simeq\bigoplus_\alpha V_\alpha\otimes M_\alpha$ 上，且与群 $G$ 的作用对易。则
+\begin{equation}
+\hat H_{\mathrm{eff}}
+=\bigoplus_\alpha I_{V_\alpha}\otimes h_\alpha
++\sum_{\alpha\neq\beta}\sum_{\kappa=1}^{N_{\alpha\beta}}
+T^{(\kappa)}_{\alpha\beta}\otimes L^{(\kappa)}_{\alpha\beta},
+\label{eq:effective-hamiltonian-general}
+\end{equation}
+其中第一项是块对角部分（$h_\alpha$ 在重数空间 $M_\alpha$ 上任意），第二项是块非对角部分：$T^{(\kappa)}_{\alpha\beta}:V_\alpha\to V_\beta$ 是不可约表示间的交织映射，$L^{(\kappa)}_{\alpha\beta}:M_\alpha\to M_\beta$ 是重数空间间的任意线性映射。由 Schur 引理，$T^{(\kappa)}_{\alpha\beta}=0$ 当 $V_\alpha\not\cong V_\beta$，故块非对角项只在等价不可约表示之间出现。
+\label{thm:effective-hamiltonian-form}
+\end{theorem}
+
+\begin{derivation}[有效 Hamiltonian 一般形式的推导]
+\textbf{第一步：块对角部分.}\enspace
+设 $\hat H_{\mathrm{eff}}$ 与所有 $U(g)$ 对易。在分解 $\mathcal H_0=\bigoplus_\alpha V_\alpha\otimes M_\alpha$ 下，$U(g)=\bigoplus_\alpha D^{(\alpha)}(g)\otimes I_{M_\alpha}$。把 $\hat H_{\mathrm{eff}}$ 写成分块矩阵 $H_{\alpha\beta}:V_\alpha\otimes M_\alpha\to V_\beta\otimes M_\beta$，对易条件给出
+\[
+(D^{(\beta)}(g)\otimes I)H_{\alpha\beta}=H_{\alpha\beta}(D^{(\alpha)}(g)\otimes I),\qquad\forall g.
+\]
+这要求 $H_{\alpha\beta}$ 是从 $D^{(\alpha)}$ 到 $D^{(\beta)}$ 的交织映射的张量积。由 Schur 引理：
+\begin{itemize}
+\item 若 $\alpha\neq\beta$（不等价）：$H_{\alpha\beta}=0$，不同不可约类型之间没有耦合。
+\item 若 $\alpha=\beta$：$H_{\alpha\alpha}=I_{V_\alpha}\otimes h_\alpha$，在不可约空间上是恒等，在重数空间上任意。
+\end{itemize}
+这给出 \eqnrefs{eq:effective-hamiltonian-general} 的第一项。
+
+\textbf{第二步：等价不可约表示间的耦合.}\enspace
+若同一不可约类型出现多次（$m_\alpha>1$），不同副本之间可以耦合。更精确地，若 $V_\alpha$ 在分解中出现 $m_\alpha$ 次，重数空间 $M_\alpha\cong\CC^{m_\alpha}$，则 $h_\alpha$ 是 $m_\alpha\times m_\alpha$ 矩阵，有 $m_\alpha^2$ 个实参数（若要求厄米则 $m_\alpha(m_\alpha+1)/2$ 个实参数）。这些参数对应"同一不可约表示不同副本间的混合"。
+
+\textbf{第三步：不变张量构造.}\enspace
+实际构造 $\hat H_{\mathrm{eff}}$ 时，不需要从 Schur 引理出发，而可以用不变张量方法。设 $\hat H_{\mathrm{eff}}$ 由一组算符基 $\{O_i\}$ 展开：
+\[
+\hat H_{\mathrm{eff}}=\sum_i c_i O_i.
+\]
+对称性要求 $U(g)\hat H_{\mathrm{eff}}U(g)^{-1}=\hat H_{\mathrm{eff}}$，即
+\[
+\sum_i c_i U(g)O_iU(g)^{-1}=\sum_i c_i O_i.
+\]
+若 $\{O_i\}$ 在群作用下按表示 $\Gamma_O$ 变换，则系数向量 $\vb c$ 必须属于 $\Gamma_O$ 中的全对称表示 $A_1$ 分量。因此：
+\begin{enumerate}
+\item 把所有允许的算符按不可约表示分类；
+\item 只保留属于 $A_1$ 的算符组合；
+\item 各 $A_1$ 分量的系数是自由参数，由动力学或实验确定。
+\end{enumerate}
+
+\emph{Stevens 算符.}\enspace Stevens 算符 $O_k^q$ 是按 $O(3)$ 不可约表示分类的等效算符，用于把晶场势 $V_{\text{cf}}=\sum_{k,q}B_k^q C_k^q$ 写成自旋算符多项式。$C_k^q$ 是重新归一化的球谐函数，$B_k^q$ 是晶场参数（自由参数，由实验拟合）。对称性约束使多数 $B_k^q$ 为零或相关：$O_h$ 晶场中 $B_4^0,B_4^4,B_6^0,B_6^4$ 非零（4 个参数），$D_{3d}$ 中 $B_2^0,B_4^0,B_4^3,B_6^0,B_6^3$ 非零（5 个参数）。Stevens 算符把群论约束直接转化为参数减少，是晶场光谱分析的标准工具。
+
+\emph{Judd--Ofelt 理论.}\enspace 稀土离子 $4f^n$ 组态的有效 Hamiltonian 用 Judd--Ofelt 理论分析。$4f$ 电子屏蔽好，晶场弱，Hamiltonian $H=H_{\text{free}}+H_{\text{cf}}+H_{\text{SO}}$。$H_{\text{cf}}$ 按 $SO(3)\downarrow_{G}$ 分解后只保留 $A_1$ 分量。Judd--Ofelt 引入强度参数 $\Omega_k$（$k=2,4,6$），把振子强度 $f\propto\sum_k\Omega_k\Xi(k,\lambda)$ 分解为群论因子 $\Xi$（从不可约表示约化系数计算）和实验参数 $\Omega_k$。三个 $\Omega_k$ 参数拟合全部谱线强度，是群论约束减少参数的典范。
+
+\emph{自旋 Hamiltonian.}\enspace 对磁性离子，有效 Hamiltonian（自旋 Hamiltonian）$H_{\text{spin}}=\vb D\cdot\vb S+\vb S\cdot\vb D\cdot\vb S+\sum_{ij}d_{ij}S_iS_j+\dots$ 的形式由点群对称和时间反演约束。$D_{ij}$（零场分裂张量）是二阶对称无迹张量，独立分量由 Neumann 原理约束：$C_3$ 对称使 $D_{ij}=\operatorname{diag}(D_\perp,D_\perp,D_\parallel)$（2 个参数）。$d_{ij}$（Dzyaloshinskii--Moriya 向量）是三阶轴张量，仅在非中心对称群中非零。自旋 Hamiltonian 的群论构造把微观对称性转化为宏观磁谱可测参数。
+
+\emph{微扰论与有效 Hamiltonian.}\enspace 有效 Hamiltonian 的构造本质是微扰论中的投影：$H_{\text{eff}}=PHP+PHQ\frac{1}{E-H_0}QHP+\dots$（$P$ 投影到低能子空间，$Q=1-P$）。群论约束 $H_{\text{eff}}$ 的形式：$P$ 和 $Q$ 按不可约表示分解后，$H_{\text{eff}}$ 只含 $A_1$ 分量的矩阵元。Schur 引理保证不同不可约表示间的矩阵元为零，同表示内的矩阵元由 Wigner--Eckart 定理分解为约化矩阵元和 Clebsch--Gordan 系数。这把多体微扰论的复杂计算简化为少数参数的确定。
+
+\emph{Wigner--Eckart 定理.}\enspace 不可约张量算符 $T_q^{(k)}$ 的矩阵元 $\langle\alpha'j'm'|T_q^{(k)}|\alpha jm\rangle=(-1)^{j'-m'}\begin{pmatrix}j'&k&j\\-m'&q&m\end{pmatrix}\langle\alpha'j'||T^{(k)}||\alpha j\rangle$，分解为 3j 符号（纯群论因子）和约化矩阵元（动力学参数）。群论因子完全由不可约表示的 Clebsch--Gordan 系数决定，约化矩阵元由实验或从头计算确定。Wigner--Eckart 定理是有效 Hamiltonian 构造的核心工具：把 $N^2$ 个矩阵元减少为 $N$ 个约化矩阵元，减少因子来自群论约束。
+
+\textbf{第四步：显式构造 $O_h$ 晶场 Hamiltonian 矩阵.}\enspace 以 $3d$ 轨道（$\ell=2$，5维空间 $\{d_{z^2},d_{x^2-y^2},d_{xy},d_{yz},d_{zx}\}$）在 $O_h$ 晶场中为例。五维空间分解为 $E_g\oplus T_{2g}$：
+\begin{align*}
+E_g:&\quad\{d_{z^2},\,d_{x^2-y^2}\},\\
+T_{2g}:&\quad\{d_{xy},\,d_{yz},\,d_{zx}\}.
+\end{align*}
+最一般 $O_h$ 不变 Hamiltonian 在此基下为分块对角：
+\begin{equation*}
+H_{\text{cf}}=\begin{pmatrix}\Delta_1&0&0&0&0\\0&\Delta_1&0&0&0\\0&0&\Delta_2&0&0\\0&0&0&\Delta_2&0\\0&0&0&0&\Delta_2\end{pmatrix}=\Delta_1\,I_{E_g}\oplus\Delta_2\,I_{T_{2g}}.
+\end{equation*}
+验证 $O_h$ 不变性：$C_4$（绕 $z$ 轴 $90^\circ$）在 $E_g$ 上为 $\begin{pmatrix}-1/2&-\sqrt3/2\\\sqrt3/2&-1/2\end{pmatrix}$，在 $T_{2g}$ 上为 $\begin{pmatrix}-1&0&0\\0&0&-1\\0&1&0\end{pmatrix}$。$[H_{\text{cf}},C_4]=0$ 因为 $\Delta_1 I$ 与任何矩阵对易，$\Delta_2 I$ 同理。类似验证所有 $O_h$ 生成元。晶场分裂能 $\Delta_{\text{cf}}=\Delta_1-\Delta_2=10Dq$，群论把 $25$ 个矩阵元压缩为 $2$ 个参数。
+
+\textbf{第五步：一般维数公式与对称性降维.}\enspace 对任意点群 $G$ 和轨道角动量 $\ell$，$2\ell+1$ 维空间在 $G$ 下分解为 $\bigoplus_\alpha m_\alpha V_\alpha$。有效 Hamiltonian 的自由参数数为
+\begin{equation*}
+N_{\text{param}}=\sum_\alpha \frac{m_\alpha(m_\alpha+1)}{2},
+\end{equation*}
+其中求和遍历所有不可约表示 $\alpha$，$m_\alpha$ 为重数，因子 $m_\alpha(m_\alpha+1)/2$ 来自 $m_\alpha\times m_\alpha$ 厄米矩阵的独立参数。例如 $\ell=2$ 在 $O_h$ 下：$m_{E_g}=1$、$m_{T_{2g}}=1$，$N_{\text{param}}=1+1=2$。在 $D_{4h}\subset O_h$ 下：$E_g\to A_{1g}\oplus B_{1g}$、$T_{2g}\to E_g\oplus B_{2g}$，故 $m_{A_{1g}}=m_{B_{1g}}=m_{E_g}=m_{B_{2g}}=1$，$N_{\text{param}}=4$——对称性降低使参数从 $2$ 增到 $4$。在 $D_{3d}\subset O_h$ 下：$E_g\to E_g$、$T_{2g}\to A_{1g}\oplus E_g$，$N_{\text{param}}=1+1+1=3$。这一公式量化了"对称性越高，参数越少"的直觉，是有效 Hamiltonian 构造的普适工具。
+\end{derivation}
+
+\begin{example}[晶场 Hamiltonian 的对称性构造]
+考虑 $O_h$ 对称晶场中 $d$ 轨道（$\ell=2$）的有效 Hamiltonian。五个 $d$ 轨道在 $O_h$ 下分解为 $E_g\oplus T_{2g}$。由 \cref{thm:effective-hamiltonian-form}，最一般的 $O_h$ 对称晶场 Hamiltonian 在此空间上为
+\[
+\hat H_{\mathrm{cf}}=\Delta_1\,I_{E_g}\oplus\Delta_2\,I_{T_{2g}},
+\]
+只有两个参数 $\Delta_1,\Delta_2$。通常写成
+\[
+\hat H_{\mathrm{cf}}=\Delta_{\mathrm{cf}}\left(\frac{2}{5}I_{E_g}-\frac{3}{5}I_{T_{2g}}\right)+\Delta_{\mathrm{avg}}\,I_5,
+\]
+其中 $\Delta_{\mathrm{cf}}=\Delta_1-\Delta_2$ 是晶场劈裂，$\Delta_{\mathrm{avg}}=(2\Delta_1+3\Delta_2)/5$ 是平均能级移动。群论把 $5\times5$ 矩阵（$25$ 个参数）压缩到 $2$ 个参数。
+
+若降低对称性到 $D_{4h}$，$E_g\to A_{1g}\oplus B_{1g}$，$T_{2g}\to B_{2g}\oplus E_g$，四个不可约表示互不等价，故
+\[
+\hat H_{\mathrm{cf}}^{(D_{4h})}=\delta_1 I_{A_{1g}}+\delta_2 I_{B_{1g}}+\delta_3 I_{B_{2g}}+\delta_4 I_{E_g},
+\]
+有四个参数。进一步降到 $D_{2h}$，$E_g\to B_{1g}\oplus B_{2g}$（$D_{4h}$ 的 $E_g$ 在 $D_{2h}$ 下分裂），五个不可约表示各贡献一个参数，五重简并完全解除。
+\end{example}
+
+\begin{example}[自旋 Hamiltonian 的对称性推导]
+对 $S=1$ 的磁性离子在 $D_{4h}$ 对称晶场中，最一般的二次自旋 Hamiltonian 由不变张量构造。$S=1$ 的九个双线性算符 $\{S_iS_j\}$ 在 $D_{4h}$ 下分解。全对称分量 $A_{1g}$ 给出
+\[
+\hat H_{\mathrm{spin}}=D\,S_z^2+E\bigl(S_x^2-S_y^2\bigr)+\text{const},
+\]
+其中 $D$ 来自 $S_z^2\sim A_{1g}$（四方畸变），$E$ 来自 $S_x^2-S_y^2\sim B_{1g}$ 但在 $D_{4h}$ 的全对称投影中贡献。若降到 $D_2$（正交畸变），$S_x^2-S_y^2$ 不再需要与 $S_z^2$ 区分，三个独立参数出现：
+\[
+\hat H_{\mathrm{spin}}=D_x S_x^2+D_y S_y^2+D_z S_z^2.
+\]
+这就是零场分裂参数 $D,E$ 的群论来源：对称性越低，独立参数越多。
+\end{example}
+
+\begin{example}[$\vb k\cdot\vb p$ 有效 Hamiltonian]
+在 Brillouin 区 $\Gamma$ 点附近，$\vb k\cdot\vb p$ 微扰的有效 Hamiltonian 也由对称性约束。设 $\Gamma$ 点能带属于不可约表示 $\Gamma_\alpha$，则
+\[
+H_{\mathrm{eff}}(\vb k)=E_0+\frac{\hbar^2k^2}{2m^*}+\sum_{ij}\alpha_{ij}k_i k_j+\cdots
+\]
+中的参数张量 $\alpha_{ij}$ 必须在 $\Gamma$ 点小群下属于全对称表示。对立方晶系（$O_h$），$\alpha_{ij}=\alpha\,\delta_{ij}$（各向同性），只有一个有效质量 $m^*$。对四方晶系（$D_{4h}$），$\alpha_{xx}=\alpha_{yy}\neq\alpha_{zz}$，有两个有效质量 $m_\perp^*,m_\parallel^*$。对正交晶系（$D_{2h}$），$\alpha_{xx},\alpha_{yy},\alpha_{zz}$ 各不相同。这就是为什么能带色散在各晶系中有不同形式的群论根源。
+\end{example}
+
+\section{投影算符与久期行列式的对角化}
+\label{sec:projection-secular}
+
+知道一个表示“包含哪些不可约表示”还不够，实际计算往往还需要把相应的基函数真正构造出来。投影算符就是完成这一任务的机器。它的思路与普通线性代数中的正交投影完全相同：若一个大空间分成若干互相正交的子空间，希望构造一个算符，作用后只保留其中一个分量。
+
+群论投影的特殊之处在于，我们不知道这些子空间的基，却知道群在整个空间上的作用 $U(g)$ 和目标不可约表示的矩阵元。利用有限群平均，可以把这些已知信息组合成一个算符，使不属于目标不可约表示的部分在求和中相互抵消，而目标分量被保留下来。后面看起来稍复杂的系数 $d_\alpha/|G|$ 和复共轭 $D^{(\alpha)}_{ij}(g)^*$ 都是大正交关系强制出来的，不是经验配方。
+
+上一节已经看到，不可约表示能把哈密顿矩阵分块。接下来的问题是：\emph{给定一组并不适应对称性的原始基，怎样系统地构造出每个不可约表示对应的对称化基？} 这就是投影算符方法的任务。投影算符与久期行列式的分块本质上是同一件事的两面：先用群论找对称化子空间，再把哈密顿算符限制到这些小块中。
+
+接下来考察普通投影与群论投影。
+
+\begin{definition}[投影算符]
+线性算符 $P:V\to V$ 若满足
+\[
+P^2=P,
+\]
+则称为投影算符。若 $V=W\oplus W'$，投影 $P_W$ 把任意 $v=w+w'$ 映到 $w$。
+\label{def:projector}
+\end{definition}
+
+群表示中的目标是把整个表示空间投影到某个不可约类型。设有限群 $G$ 的不可约表示为 $D^{(\alpha)}$，维数 $d_\alpha$，而 $U(g)$ 是 $G$ 在待处理空间 $V$ 上的表示。利用大正交关系，可以构造矩阵元投影算符
+\[
+P_{ij}^{(\alpha)}
+=\frac{d_\alpha}{|G|}
+\sum_{g\in G}
+D_{ij}^{(\alpha)}(g)^*\,U(g).
+\label{eq:matrix-unit-projector}
+\]
+
+\begin{theorem}[群论投影算符的乘法规则]
+定义 \eqnrefs{eq:matrix-unit-projector} 后，有
+\[
+P_{ij}^{(\alpha)}P_{k\ell}^{(\beta)}
+=\delta_{\alpha\beta}\delta_{jk}
+P_{i\ell}^{(\alpha)}.
+\label{eq:projector-matrix-unit-law}
+\]
+特别地，取迹式组合
+\[
+P^{(\alpha)}
+=\sum_{i=1}^{d_\alpha}P_{ii}^{(\alpha)}
+=\frac{d_\alpha}{|G|}
+\sum_{g\in G}\chi^{(\alpha)}(g)^*U(g),
+\label{eq:character-projector}
+\]
+则
+\[
+P^{(\alpha)}P^{(\beta)}
+=\delta_{\alpha\beta}P^{(\alpha)}.
+\]
+$P^{(\alpha)}$ 正好投影到表示空间中所有与不可约表示 $\alpha$ 等价的分量之和。
+\label{thm:group-projectors}
+
+\par\smallskip\noindent\textbf{证明.}
+把两个算符相乘：
+\begin{align*}
+P_{ij}^{(\alpha)}P_{k\ell}^{(\beta)}
+&=\frac{d_\alpha d_\beta}{|G|^2}
+\sum_{g,h}
+D_{ij}^{(\alpha)}(g)^*
+D_{k\ell}^{(\beta)}(h)^*
+U(gh).
+\end{align*}
+令 $x=gh$，即 $h=g^{-1}x$。此时
+\[
+D^{(\beta)}(g^{-1}x)
+=D^{(\beta)}(g^{-1})D^{(\beta)}(x),
+\]
+所以矩阵元满足
+\[
+D_{k\ell}^{(\beta)}(g^{-1}x)^*
+=\sum_m
+D_{km}^{(\beta)}(g^{-1})^*
+D_{m\ell}^{(\beta)}(x)^*.
+\]
+有限群表示已经可以酉化，因此可取 $D^{(\beta)}(g)$ 为酉矩阵。由
+\[
+D^{(\beta)}(g^{-1})=D^{(\beta)}(g)^\dagger
+\]
+得到逐个矩阵元的关系
+\[
+D_{km}^{(\beta)}(g^{-1})^*=D_{mk}^{(\beta)}(g).
+\]
+于是乘积变成
+\begin{align*}
+P_{ij}^{(\alpha)}P_{k\ell}^{(\beta)}
+&=\frac{d_\alpha d_\beta}{|G|^2}
+\sum_x\sum_m
+D_{m\ell}^{(\beta)}(x)^*U(x)
+\sum_g D_{ij}^{(\alpha)}(g)^*D_{mk}^{(\beta)}(g).
+\end{align*}
+现在才能直接使用大正交关系：
+\[
+\sum_g D_{ij}^{(\alpha)}(g)^*D_{mk}^{(\beta)}(g)
+=\frac{|G|}{d_\alpha}
+\delta_{\alpha\beta}\delta_{im}\delta_{jk}.
+\]
+三个 Kronecker delta 分别做三件事：$\delta_{\alpha\beta}$ 要求两个不可约类型相同，$\delta_{jk}$ 要求中间矩阵指标能够“接上”，$\delta_{im}$ 则把求和指标 $m$ 固定成 $i$。因此只剩
+\begin{align*}
+P_{ij}^{(\alpha)}P_{k\ell}^{(\beta)}
+&=\delta_{\alpha\beta}\delta_{jk}
+\frac{d_\alpha}{|G|}
+\sum_xD_{i\ell}^{(\alpha)}(x)^*U(x)\\
+&=\delta_{\alpha\beta}\delta_{jk}P_{i\ell}^{(\alpha)},
+\end{align*}
+这就是 \eqnrefs{eq:projector-matrix-unit-law}。再对 $i=j$、$k=\ell$ 求和，就得到字符投影算符的正交幂等性。
+\end{theorem}
+
+投影公式中的矩阵指标 $i,j$ 有清楚含义。$P^{(\alpha)}_{ij}$ 会从原空间中抽取属于不可约表示 $\alpha$ 的部分，并把“第 $j$ 个分量”送到“第 $i$ 个分量”。乘法规则
+\[
+P^{(\alpha)}_{ij}P^{(\beta)}_{k\ell}
+=\delta_{\alpha\beta}\delta_{jk}P^{(\alpha)}_{i\ell}
+\]
+与矩阵单位 $E_{ij}E_{k\ell}=\delta_{jk}E_{i\ell}$ 完全同形。
+
+特别地，对固定 $\alpha$ 求对角和
+\[
+P^{(\alpha)}=\sum_iP^{(\alpha)}_{ii}
+\]
+得到真正的幂等投影 $[P^{(\alpha)}]^2=P^{(\alpha)}$，它把任意试探函数投到整个 $\alpha$ 同类分量。实际构造对称化轨道或振动模式时，常从一个容易写出的局域基函数 $f$ 出发，计算 $P^{(\alpha)}_{ii}f$；若结果非零，它就提供了目标不可约表示的一条基函数。
+
+
+字符投影 $P^{(\alpha)}$ 只负责抽出某一\emph{不可约类型}的全部拷贝；矩阵元投影 $P_{ij}^{(\alpha)}$ 则能进一步在不可约表示内部选定“第 $i$ 个分量”。实际构造对称化基时，经常从某个简单试探函数 $f$ 出发，计算
+\[
+P_{ij}^{(\alpha)}f,
+\]
+若结果非零，它就是目标不可约表示的一个基函数候选。
+
+考虑等边三角形三个顶点上的局域基
+\[
+\ket{1},\ket{2},\ket{3}.
+\]
+$C_{3v}$ 通过置换三个顶点作用在三维空间上。这正是\chapref{chap:group-basics} 中 $D_3$ 作用在正三角形顶点上的同一物理情境\cref{ex:d3-action-triangle-vertices}：那里用轨道--稳定子定理算出三个顶点彼此等价（$3=6/2$，稳定子是过某顶点的镜面 $C_s$），这里用投影算符把三个等价位置上的局域基分解为不可约表示的 SALC。两章讨论的是同一个 $C_{3v}\cong D_3$ 作用，只是工具从计数换成了线性投影。
+
+这个表示的特征标是
+\[
+\chi(E)=3,
+\qquad
+\chi(C_3)=0,
+\qquad
+\chi(\sigma_v)=1.
+\]
+特征标的几何含义是"被该操作固定的位置数"：$E$ 固定全部 $3$ 个顶点，$C_3$ 转动不固定任何顶点，$\sigma_v$ 反射固定其所在轴上的 $1$ 个顶点。这与\chapref{chap:group-basics} 中轨道--稳定子的计数完全一致。与 \Cref{tab:c3v-character} 比较可得
+\[
+\Gamma_{\mathrm{site}}=A_1\oplus E.
+\]
+字符投影到 $A_1$ 给出
+\[
+P^{(A_1)}\ket{1}
+\propto\ket{1}+\ket{2}+\ket{3},
+\]
+归一化后
+\[
+\ket{A_1}=\frac1{\sqrt3}
+(\ket1+\ket2+\ket3).
+\]
+与之正交的二维子空间就是 $E$ 分量，可取
+\[
+\ket{E_1}=\frac1{\sqrt6}(2\ket1-\ket2-\ket3),
+\qquad
+\ket{E_2}=\frac1{\sqrt2}(\ket2-\ket3).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=1.0]
+  \coordinate (A) at (0,2.0);
+  \coordinate (B) at (-1.75,-1.0);
+  \coordinate (C) at (1.75,-1.0);
+  \draw[line width=.8pt] (A)--(B)--(C)--cycle;
+  \fill (A) circle (1.8pt) node[above,lecturelabel] {$\ket1$};
+  \fill (B) circle (1.8pt) node[below left,lecturelabel] {$\ket2$};
+  \fill (C) circle (1.8pt) node[below right,lecturelabel] {$\ket3$};
+  \draw[lecturearrow] (0,.1) arc[start angle=90,end angle=400,radius=.52];
+  \node[lecturelabel] at (.8,.25) {$C_3$};
+  \draw[dashed] (0,-1.55)--(0,2.45) node[above,lecturelabel] {$\sigma_v$};
+\end{tikzfig}
+\caption{三个等价位置承载 $C_{3v}$ 的三维置换表示，它分解为一个全对称 $A_1$ 与一个二维 $E$。}
+\label{fig:c3v-three-sites}
+\end{figure}
+
+现在设哈密顿量尊重 $C_{3v}$，并且在原始基中三个位置完全等价、任意两点间耦合相同，则最一般矩阵为
+\[
+H=
+\begin{pmatrix}
+\varepsilon&t&t\\
+t&\varepsilon&t\\
+t&t&\varepsilon
+\end{pmatrix}.
+\]
+若直接求三阶行列式也能完成计算；但群论在对角化之前就已经告诉我们答案结构：$A_1$ 给一个一维块，$E$ 给一个二维标量块。实际得到
+\[
+E_{A_1}=\varepsilon+2t,
+\qquad
+E_E=\varepsilon-t,
+\]
+其中 $E$ 必为二重简并。
+
+三位置例子背后有一套可重复使用的构造流程：从任意试探函数出发，用群论投影把它送入指定不可约子空间。
+
+投影算符在化学与凝聚态文献中常以 SALC（symmetry-adapted linear combination）的名字出现。实际使用时，可以按一个稳定流程进行。
+
+先选原始基 $\{\phi_a\}$，它们通常是等价原子上的轨道、位移或局域态。然后计算这组基在每个群元下怎样互相置换，从而得到可约表示 $\Gamma$ 的特征标。第三步用
+\[
+m_\alpha
+=\frac1{|G|}\sum_g\chi^{(\alpha)}(g)^*\chi_\Gamma(g)
+\]
+确定哪些不可约表示真的出现；没有出现的类型没有必要去投影。最后，对每个出现的 $\alpha$ 选择一个简单试探基函数 $\phi_a$，计算 $P_{ij}^{(\alpha)}\phi_a$，归一化并做 Gram--Schmidt，即可得到一组对称化基。
+
+这里先做“特征标分解”再做“矩阵元投影”很重要。如果一开始对每个不可约表示、每个 $i,j$、每个原始基都机械求和，计算量会迅速膨胀；而特征标先告诉我们哪些目标空间根本不存在。群论方法的目的本来就是减少工作量，不应被形式主义反过来拖累。
+
+字符投影只能抽取整个同类分量；若还想获得不可约表示内部的各个基函数，就必须使用带矩阵指标的投影算符。
+
+假设 $f_j^{(\alpha)}$ 已经是不可约表示 $\alpha$ 的第 $j$ 个基函数，即
+\[
+U(g)f_j^{(\alpha)}
+=\sum_k D_{kj}^{(\alpha)}(g)f_k^{(\alpha)}.
+\]
+把 $P_{ij}^{(\alpha)}$ 作用上去并使用大正交关系，可得
+\[
+P_{ij}^{(\alpha)}f_k^{(\beta)}
+=\delta_{\alpha\beta}\delta_{jk}f_i^{(\alpha)}.
+\label{eq:matrix-projector-action}
+\]
+这条公式值得比投影算符本身更牢地记住：$P_{ij}^{(\alpha)}$ 会检查输入是不是 $\alpha$ 型的第 $j$ 个分量；如果是，就把它送到同一不可约表示的第 $i$ 个分量；如果不是，就给零。因此只要找到一个非零种子分量，就可以用不同 $i$ 生成同一不可约表示的整组伙伴函数。
+
+这也解释了为什么投影算符特别适合构造简并态的基：它不仅告诉你“这个空间里有一个 $E$”，还能够明确制造出 $E$ 的两个相互配对基函数，使后续 Hamiltonian 矩阵自动具有正确的对称结构。
+
+这个例子把“投影算符”“对称化基”“久期行列式分块”三件事连成了同一条逻辑链。
+
+有了对称化基以后，久期行列式为什么能够自动分块也就可以直接说明。
+
+
+若变分基共有 $N$ 个函数，通常需要解
+\[
+\det(H-ES)=0,
+\]
+其中 $H_{ij}=\langle\phi_i|\hat H|\phi_j\rangle$，$S_{ij}=\langle\phi_i|\phi_j\rangle$。若基函数按不可约表示重新组织，并且 $\hat H$ 与群作用对易，则不同不可约表示之间的矩阵元为零，矩阵自动成为分块对角形式：
+\[
+H\sim
+\begin{pmatrix}
+H_{\alpha_1}&0&\cdots\\
+0&H_{\alpha_2}&\cdots\\
+\vdots&\vdots&\ddots
+\end{pmatrix}.
+\]
+因此
+\[
+\det(H-ES)
+=\prod_\alpha\det(H_\alpha-E S_\alpha).
+\]
+这不是单纯的“计算技巧”，而是 Schur 引理在数值量子力学中的直接体现。
+
+\section{矩阵元定理、选择定则与电偶极跃迁}
+\label{sec:selection-rules}
+
+实验中经常问的并不是“某个能级是否存在”，而是“两个能级之间的跃迁能不能被某种探测看到”。量子力学把这个问题归结为矩阵元
+\[
+M_{fi}=\langle f|\hat O|i\rangle.
+\]
+若它被对称性强迫为零，则无论微观参数怎样调整，相应过程在保持这些对称性的近似下都禁止；若对称性允许非零，真正大小仍要由动力学计算。选择定则因此是一个“必要条件筛选器”，而不是跃迁强度的完整理论。
+
+群论要做的就是追踪三样东西怎样变换：初态 $|i\rangle$、算符 $\hat O$ 和末态 $|f\rangle$。只有三者的张量积中含有全对称表示，整个矩阵元才能在群平均后留下一个标量。
+
+知道态属于哪个不可约表示以后，下一个自然问题是：两个态之间的某个矩阵元是否可能非零？比如光与物质相互作用中的
+\[
+\bra f\hat{\vb r}\ket i,
+\]
+振动光谱中的偶极矩导数，或者 Raman 散射中的极化率张量。很多这样的矩阵元在不做任何积分之前就能由对称性判零。
+
+接下来考察一般选择定则。
+
+设初态属于不可约表示 $\Gamma_i$，末态属于 $\Gamma_f$，算符 $\hat O_\mu$ 的若干分量在群作用下按表示 $\Gamma_O$ 变换。矩阵元
+\[
+M_\mu=\bra{f}\hat O_\mu\ket{i}
+\]
+要成为一个不随对称操作改变的复数，因此三者张量积中必须能够形成全对称标量。
+
+\begin{theorem}[有限群矩阵元选择定则]
+若
+\[
+\bra{f}\hat O_\mu\ket{i}\neq0,
+\]
+则张量积表示
+\[
+\Gamma_f^*\otimes\Gamma_O\otimes\Gamma_i
+\]
+必须包含平凡表示 $A_1$。等价地，
+\[
+\Gamma_f\subseteq\Gamma_O\otimes\Gamma_i
+\]
+是非零矩阵元的必要条件。
+\label{thm:matrix-element-selection}
+
+\par\smallskip\noindent\textbf{证明.}
+考虑对任意群元 $g$ 同时变换态和算符。若初末态基分别按 $D^{(i)}$、$D^{(f)}$ 变换，而算符分量按 $D^{(O)}$ 变换，则所有矩阵元组成的张量按
+\[
+D^{(f)*}\otimes D^{(O)}\otimes D^{(i)}
+\]
+变换。一个具体非零的、群不变的标量矩阵元只能来自这个张量积表示中的不变向量，而不变向量恰好对应平凡表示。若平凡表示不出现，对群平均就会把任意候选矩阵元投影为零。
+\end{theorem}
+
+为什么条件是三重张量积中含全对称表示？把矩阵元写成
+\[
+M_{fi}=\langle f|\hat O|i\rangle.
+\]
+对任意对称操作 $g$，插入 $U(g)^{-1}U(g)$ 并利用内积不变性，可把它变成末态的对偶表示、算符表示和初态表示三者的共同变换。一个复数矩阵元要在所有群操作下保持不变，就必须属于这个张量积表示中的不变子空间，而不变子空间恰好对应平凡表示。
+
+因此
+\[
+\Gamma_f^*\otimes\Gamma_O\otimes\Gamma_i\supset A_1
+\]
+是非零矩阵元的必要条件。若不含 $A_1$，群平均会把所有贡献完全抵消，矩阵元严格为零；若包含 $A_1$，群论只说明“不被对称性禁止”，实际数值仍可能因为径向积分、动力学参数或其他独立原因而为零。
+
+
+在实际计算中，不需要显式构造张量积矩阵。只要用特征标
+\[
+\chi_{\Gamma_O\otimes\Gamma_i}(g)
+=\chi_{\Gamma_O}(g)\chi_{\Gamma_i}(g)
+\]
+再用重数公式，就能判断 $\Gamma_f$ 是否出现。
+
+在长波电偶极近似下，光与电子的相互作用可写为
+\[
+\hat H_{\mathrm{int}}(t)
+=-q\,\vb E(t)\cdot\hat{\vb r}.
+\]
+因此跃迁振幅的空间部分由
+\[
+\bra f\hat x\ket i,
+\qquad
+\bra f\hat y\ket i,
+\qquad
+\bra f\hat z\ket i
+\]
+控制。于是 $x,y,z$ 在点群下属于哪个不可约表示，就直接决定相应偏振方向的选择定则。
+
+例如在 $C_{4v}$ 中，
+\[
+z\sim A_1,
+\qquad
+(x,y)\sim E.
+\]
+若初态为 $A_1$，则 $z$ 偏振光只能把它耦合到 $A_1$ 型末态，而面内偏振 $(x,y)$ 可以耦合到 $E$ 型末态。偏振选择不是附加的经验规则，而是算符分量所属不可约表示不同的直接结果。
+
+若系统有反演中心，电偶极算符 $\hat{\vb r}$ 在反演下为奇，因此属于 $u$ 型。于是
+\[
+g\otimes u=u,
+\qquad
+u\otimes u=g.
+\]
+所以电偶极跃迁必须改变宇称：
+\[
+g\leftrightarrow u,
+\]
+而 $g\leftrightarrow g$、$u\leftrightarrow u$ 在电偶极近似下被禁止。这就是中心对称体系中最常见的 Laporte 型宇称选择定则。
+
+\begin{example}[$O_h$ 中的矢量算符]
+在 $O_h$ 中，笛卡尔矢量 $(x,y,z)$ 承载 $T_{1u}$。若初态属于 $A_{1g}$，则
+\[
+T_{1u}\otimes A_{1g}=T_{1u},
+\]
+所以电偶极允许的末态必须含 $T_{1u}$。如果末态属于 $E_g$ 或 $T_{2g}$，不仅不可约表示不匹配，而且宇称也是 $g$，矩阵元必为零。
+\end{example}
+
+实际计算时，选择定则也可以直接改写成特征标内积，从而不必显式构造所有 Clebsch--Gordan 系数。
+
+在实际使用中，“张量积里是否含全对称表示”可以直接变成一个整数公式。平凡表示在
+\[
+\Gamma_f^*\otimes\Gamma_O\otimes\Gamma_i
+\]
+中的重数为
+\[
+N_{fi}^{(O)}
+=\frac1{|G|}
+\sum_{g\in G}
+\chi_f(g)
+\chi_O(g)
+\chi_i(g)^*.
+\label{eq:selection-character-count}
+\]
+若 $N_{fi}^{(O)}=0$，对应矩阵元全部严格为零；若大于零，则存在相应对称耦合通道。对于无简并的一维表示，这个判断经常可以直接靠表示乘法完成；对于高维表示，特征标公式更稳妥。
+
+这个整数还有更深的意义：如果 $N_{fi}^{(O)}>1$，说明对称性允许多个线性无关的约化矩阵元。也就是说，即使群论已经把大量积分判成零，剩下的非零矩阵元之间也未必只有一个独立参数。有限群的 Wigner--Eckart 思想正是把全部矩阵元分成“由群决定的几何系数”和“由具体动力学决定的约化矩阵元”。
+
+上述电偶极选择定则默认轨道与自旋可分离。若自旋轨道耦合不能忽略，态应按双群不可约表示分类，常见的 $\Delta S=0$ 规则只是在弱自旋轨道耦合下的近似结论。
+
+电偶极算符主要作用在空间坐标上，不直接翻转电子自旋。因此在自旋--轨道耦合可以忽略、且总波函数近似分成轨道与自旋直积时，还会得到熟悉的近似选择规则
+\[
+\Delta S=0.
+\]
+但这不是普通空间点群单独给出的严格结论。一旦自旋--轨道耦合显著，正确对称群应使用双群，轨道和自旋不可再完全分离，“自旋禁戒跃迁”也会获得有限强度。\chapref{chap:rotation-group}介绍 $SU(2)$、双群和旋量以后，我们会回到这个问题的严格版本。
+
+需要强调，选择定则给出的是\emph{对称性必要条件}。若表示条件允许，矩阵元仍可能因为径向积分、动力学系数或其他偶然原因等于零；群论不能保证一个允许跃迁一定很强。反之，只要表示条件不满足，矩阵元则是严格为零的。
+
+一般选择定则告诉我们哪些矩阵元“可能非零”，而 Wigner--Eckart 定理则进一步给出“非零矩阵元的结构”：它分解为约化矩阵元（物理部分）和 CG 系数（几何部分）的乘积。
+
+选择定则告诉我们矩阵元\emph{何时为零}。Wigner--Eckart 定理更进一步：它把所有非零矩阵元分解为一个\emph{约化矩阵元}（含全部动力学信息）与一个\emph{几何因子}（纯群论 CG 系数）的乘积。这意味着同一不可约表示中不同分量的矩阵元之比完全由对称性决定，不需要任何积分计算。
+
+\begin{definition}[不可约张量算符]
+设群 $G$ 作用在 Hilbert 空间 $\mathcal H$ 上。一组算符 $\{T_q^{(k)}\mid q=1,\dots,d_k\}$ 称为 $k$ 型不可约张量算符，若它们在群作用下按不可约表示 $\rho^{(k)}$ 变换：
+\[
+U(g)\,T_q^{(k)}\,U(g)^{-1}
+=\sum_{q'}\rho^{(k)}_{q'q}(g)\,T_{q'}^{(k)}.
+\]
+\label{def:irreducible-tensor-operator}
+\end{definition}
+
+\emph{与已有概念的关联.}\enspace 不可约张量算符的定义与\cref{def:subrepresentation} 中不变子空间的概念完全平行：算符空间本身也是群的一个表示空间（伴随作用 $T\mapsto U(g)TU(g)^{-1}$），不可约张量算符就是这个表示空间中的不可约块。电偶极矩 $\vb\mu$ 的三个分量 $(\mu_x,\mu_y,\mu_z)$ 构成矢量算符（$k=1$ 型），极化率张量的五个独立分量构成二阶张量算符（$k=2$ 型）。
+
+\begin{theorem}[Wigner--Eckart 定理]
+设 $\ket{\alpha,j,m}$ 是不可约表示 $\rho^{(j)}$ 的第 $m$ 个基矢（$\alpha$ 标记其他量子数），$T_q^{(k)}$ 是 $k$ 型不可约张量算符。则矩阵元
+\[
+\bra{\alpha',j',m'}T_q^{(k)}\ket{\alpha,j,m}
+=\sum_{\text{约化}}\underbrace{\bra{\alpha',j'\|T^{(k)}\|\alpha,j}}_{\text{动力学}}
+\cdot\underbrace{C(j,k,j';m,q,m')}_{\text{几何}},
+\]
+其中 $\bra{\alpha',j'\|T^{(k)}\|\alpha,j}$ 是\emph{约化矩阵元}（与 $m,m',q$ 无关），$C(j,k,j';m,q,m')$ 是 Clebsch--Gordan 系数（纯群论量）。对固定 $(\alpha,j,\alpha',j',k)$，所有 $d_j\times d_k\times d_{j'}$ 个矩阵元只依赖\emph{一个}约化矩阵元。
+\label{thm:wigner-eckart}
+\end{theorem}
+
+\begin{derivation}[Wigner--Eckart 定理的证明]
+\textbf{第一步：构造复合态.}\enspace $T_q^{(k)}\ket{\alpha,j,m}$ 对固定 $\alpha,j,k$ 生成一个空间，它承载表示 $\rho^{(k)}\otimes\rho^{(j)}$。由 Maschke 定理，这个张量积可分解为不可约表示的直和：
+\[
+\rho^{(k)}\otimes\rho^{(j)}\simeq\bigoplus_{J=|j-k|}^{j+k}\rho^{(J)}.
+\]
+这里用了 \chapref{chap:rotation-group} 的 Clebsch--Gordan 定理：$SO(3)$ 的张量积 $D^{(k)}\otimes D^{(j)}$ 无重数地分解为 $\bigoplus_J D^{(J)}$。CG 系数给出这个分解的基变换：
+\[
+\ket{J,M;\alpha,j,k}
+=\sum_{m,q}C(j,k,J;m,q,M)\,T_q^{(k)}\ket{\alpha,j,m}.
+\]
+\emph{符号说明.}\enspace 这里 $T_q^{(k)}$ 是 $k$ 阶不可约张量算符的第 $q$ 分量（$q=-k,\dots,k$），它在对称操作 $R$ 下按 $D^{(k)}$ 变换：$U(R)T_q^{(k)}U(R)^\dagger=\sum_{q'}D^{(k)}_{q'q}(R)T_{q'}^{(k)}$。$\ket{\alpha,j,m}$ 是初态，$\alpha$ 是径向量子数（不在群论中变换），$j,m$ 是角动量量子数。$\ket{J,M;\alpha,j,k}$ 是复合态，它按 $D^{(J)}$ 变换。
+
+\textbf{第二步：矩阵元作为重叠积分.}\enspace 将初态展开逆变换代入矩阵元：
+\[
+T_q^{(k)}\ket{\alpha,j,m}
+=\sum_{J,M}C(j,k,J;m,q,M)\,\ket{J,M;\alpha,j,k},
+\]
+故
+\[
+\bra{\alpha',j',m'}T_q^{(k)}\ket{\alpha,j,m}
+=\sum_{J,M}C(j,k,J;m,q,M)\,\bra{\alpha',j',m'}\ket{J,M;\alpha,j,k}.
+\]
+由于 $\bra{\alpha',j',m'}$ 和 $\ket{J,M;\alpha,j,k}$ 分别属于不可约表示 $j'$ 和 $J$，由 Schur 引理，内积只在 $J=j'$ 且 $M=m'$ 时非零。
+
+\emph{Schur 引理的具体应用.}\enspace 定义算符 $S:\ket{J,M;\alpha,j,k}\mapsto\bra{\alpha',j',m'}\ket{J,M;\alpha,j,k}$（对固定 $m'$）。$S$ 是从 $D^{(J)}$ 到 $D^{(j')}$ 的交织算符，因 $T^{(k)}$ 的张量性质保证了 $\ket{J,M}$ 和 $\ket{j',m'}$ 分别按各自表示变换。Schur 引理给出：
+\begin{itemize}
+\item $J\neq j'$：$S=0$，内积为零。
+\item $J=j'$：$S=\lambda\cdot I$，内积 $\lambda$ 与 $M$（即 $m'$）无关。
+\end{itemize}
+因此
+\[
+\bra{\alpha',j',m'}\ket{j',m';\alpha,j,k}
+=\braket{\alpha',j'\|T^{(k)}\|\alpha,j}
+\]
+是一个与 $m',q,m$ 无关的常数——\emph{约化矩阵元}。它的物理含义是：在去掉群论几何因子（CG 系数）后，剩下的纯粹动力学信息。
+
+\textbf{第三步：结论.}\enspace 代回得
+\[
+\bra{\alpha',j',m'}T_q^{(k)}\ket{\alpha,j,m}
+=\braket{\alpha',j'\|T^{(k)}\|\alpha,j}\cdot C(j,k,j';m,q,m').
+\]
+\emph{选择定则.}\enspace CG 系数 $C(j,k,j';m,q,m')$ 非零的必要条件是：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $m+q=m'$（磁量子数守恒，来自 $J_z$ 的本征值）；
+\item $|j-k|\le j'\le j+k$（三角形条件，来自 CG 级数）。
+\end{enumerate}
+违反任一条件，矩阵元严格为零——这就是选择定则的群论来源。
+\end{derivation}
+
+\emph{物理意义.}\enspace Wigner--Eckart 定理把矩阵元计算分成两步：
+\begin{enumerate}
+\item \emph{几何部分}：CG 系数 $C(j,k,j';m,q,m')$ 完全由群论决定，从特征标表和 CG 表直接读出。它给出选择定则：若 $\rho^{(j')}$ 不出现在 $\rho^{(k)}\otimes\rho^{(j)}$ 中，CG 系数恒为零，矩阵元严格为零。
+\item \emph{动力学部分}：约化矩阵元 $\braket{\alpha',j'\|T^{(k)}\|\alpha,j}$ 含全部径向积分和动力学信息，需要实际计算。但对固定 $(\alpha,j,\alpha',j',k)$，\emph{只需算一次}，其余所有 $m,m',q$ 组合的矩阵元都从这一个数和 CG 系数恢复。
+\end{enumerate}
+
+\begin{example}[电偶极跃迁的 Wigner--Eckart 应用]
+电偶极矩 $\vb\mu$ 是矢量算符（$k=1$ 型，三个分量 $\mu_{-1},\mu_0,\mu_{+1}$ 在球基下）。对从 $\ell=1$（$p$ 态）到 $\ell'=0$（$s$ 态）的跃迁，Wigner--Eckart 给出
+\[
+\bra{s}\mu_q\ket{p,m}
+=\braket{s\|\mu\|p}\cdot C(1,1,0;m,q,0).
+\]
+CG 系数 $C(1,1,0;m,q,0)$ 非零要求 $m+q=0$，即 $q=-m$。三个分量 $m=0,\pm1$ 的矩阵元全部由同一个约化矩阵元 $\braket{s\|\mu\|p}$ 决定：
+\[
+\bra{s}\mu_0\ket{p,0}\propto\braket{s\|\mu\|p},
+\qquad
+\bra{s}\mu_{\pm1}\ket{p,\mp1}\propto\braket{s\|\mu\|p}.
+\]
+这就是为什么原子光谱中 $p\to s$ 跃迁的三个偏振分量强度比完全由对称性给出（$1:1:1$），不需要任何波函数积分。
+\end{example}
+
+\emph{与 Schur 引理的关联.}\enspace Wigner--Eckart 定理的核心是 Schur 引理：不可约表示之间的线性映射要么为零要么为标量。在\cref{thm:schur-lemma} 中，这个"标量"是 $\lambda I$；在 Wigner--Eckart 定理中，这个"标量"就是约化矩阵元。两个定理是同一代数事实在不同物理语境中的翻译。
+
+接下来考察电多极与磁多极跃迁的一般选择定则。
+
+电偶极跃迁只是最简单的情形。一般的光--物质相互作用涉及电多极和磁多极跃迁，它们的选择定则构成原子光谱和核谱学的理论基础。群论把所有这些定则统一在一个框架中：每种多极算符属于 $SO(3)$ 的特定不可约表示，选择定则由 Clebsch--Gordan 级数决定。
+
+\begin{definition}[电多极与磁多极算符]
+\textbf{$k$ 阶电多极矩算符}定义为
+\begin{equation}
+Q_{kq}=q\,r^k\,C_{kq}(\hat{\vb r})
+=q\,r^k\sqrt{\frac{4\pi}{2k+1}}\,Y_{kq}(\hat{\vb r}),
+\qquad q=-k,\dots,k,
+\label{eq:electric-multipole}
+\end{equation}
+其中 $C_{kq}=\sqrt{4\pi/(2k+1)}\,Y_{kq}$ 是 \emph{Racah 归一化球谐函数}。$\{Q_{kq}\}$ 构成 $k$ 阶不可约张量算符，在 $SO(3)$ 下按 $D^{(k)}$ 变换。
+
+\textbf{$k$ 阶磁多极矩算符}定义为
+\begin{equation}
+M_{kq}=\frac{q}{2m}\,r^k\,C_{kq}(\hat{\vb r})\,\vb L\cdot\hat{\vb r}
++\text{自旋项},
+\label{eq:magnetic-multipole}
+\end{equation}
+其中 $\vb L$ 是轨道角动量。磁多极算符在空间反演下为偶（$g$ 型），在时间反演下为奇。
+\label{def:multipole-operators}
+\end{definition}
+
+\begin{theorem}[多极跃迁选择定则]
+设初态 $\ket{\alpha,J_i,M_i}$、末态 $\ket{\alpha',J_f,M_f}$ 分别属于角动量 $J_i,J_f$。则 $k$ 阶电多极跃迁 $E_k$ 的矩阵元
+\[
+\bra{\alpha',J_f,M_f}Q_{kq}\ket{\alpha,J_i,M_i}
+\]
+非零的必要条件为：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{角动量三角形条件}：$|J_i-k|\le J_f\le J_i+k$；
+\item \textbf{磁量子数守恒}：$M_f=M_i+q$；
+\item \textbf{宇称守恒}：$\pi_f\pi_i=(-1)^k$（电多极算符宇称为 $(-1)^k$）。
+\end{enumerate}
+$k$ 阶磁多极跃迁 $M_k$ 的条件为：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $|J_i-k|\le J_f\le J_i+k$；
+\item $M_f=M_i+q$；
+\item $\pi_f\pi_i=(-1)^{k+1}$（磁多极算符宇称为 $(-1)^{k+1}$）。
+\end{enumerate}
+\label{thm:multipole-selection-rules}
+\end{theorem}
+
+\begin{derivation}[多极选择定则的推导]
+\textbf{第一步：角动量条件来自 Wigner--Eckart 定理.}\enspace
+$Q_{kq}$ 是 $k$ 阶不可约张量算符。由 Wigner--Eckart 定理（\cref{thm:wigner-eckart}），
+\[
+\bra{\alpha',J_f,M_f}Q_{kq}\ket{\alpha,J_i,M_i}
+=\braket{\alpha',J_f\|Q_k\|\alpha,J_i}\cdot C(J_i,k,J_f;M_i,q,M_f).
+\]
+CG 系数 $C(J_i,k,J_f;M_i,q,M_f)$ 非零要求：
+\begin{itemize}
+\item $J_f$ 出现在 $D^{(k)}\otimes D^{(J_i)}$ 的 CG 分解中，即 $|J_i-k|\le J_f\le J_i+k$；
+\item $M_i+q=M_f$（来自 $J_z$ 守恒）。
+\end{itemize}
+
+\textbf{第二步：宇称条件来自空间反演.}\enspace
+电多极算符 $Q_{kq}\propto r^k Y_{kq}(\hat{\vb r})$。球谐函数 $Y_{kq}$ 在反演 $\vb r\to-\vb r$ 下变换为
+\[
+Y_{kq}(-\hat{\vb r})=(-1)^k Y_{kq}(\hat{\vb r}),
+\]
+故 $Q_{kq}$ 的宇称为 $(-1)^k$。若初末态宇称为 $\pi_i,\pi_f\in\{\pm1\}$，矩阵元在反演下变换为
+\[
+\bra{f}Q_{kq}\ket{i}\to\pi_f\pi_i(-1)^k\bra{f}Q_{kq}\ket{i}.
+\]
+不变性要求 $\pi_f\pi_i(-1)^k=+1$，即 $\pi_f\pi_i=(-1)^k$。
+
+磁多极算符 $M_{kq}$ 含角动量 $\vb L$（轴矢量，在反演下不变），故其宇称为 $(-1)^k\times(+1)=(-1)^k$。但磁多极还含额外因子：与电多极相比，磁多极用 $\vb L\cdot\hat{\vb r}/r$ 代替径向因子，而 $\vb L$ 是轴矢量（反演下不变），$\hat{\vb r}$ 是极矢量（反演下变号），故磁多极宇称为 $(-1)^{k+1}$。因此 $\pi_f\pi_i=(-1)^{k+1}$。
+
+\textbf{第三步：时间反演约束.}\enspace
+电多极算符在时间反演下为偶（$\Theta Q_{kq}\Theta^{-1}=(-1)^q Q_{k,-q}$，整体保持矩阵元不变）。磁多极算符在时间反演下为奇（因 $\vb L\to-\vb L$）。因此：
+\begin{itemize}
+\item 电多极跃迁：$\Delta S=0$（近似，忽略自旋--轨道耦合）。
+\item 磁多极跃迁：允许 $\Delta S=0$ 但振幅含 $\vb L$ 或 $\vb S$，通常比同级电多极弱（因子 $\sim v/c=\alpha\approx1/137$）。
+\end{itemize}
+
+\textbf{第四步：Laporte 定则作为特例.}\enspace
+对 $k=1$（电偶极，$E1$）：$\pi_f\pi_i=(-1)^1=-1$，即初末态宇称必须相反。这就是 Laporte 定则。对 $k=2$（电四极，$E2$）：$\pi_f\pi_i=+1$，初末态宇称相同。对 $k=1$（磁偶极，$M1$）：$\pi_f\pi_i=(-1)^2=+1$，初末态宇称相同。
+
+因此 $E1$ 跃迁（宇称改变）与 $M1$ 或 $E2$ 跃迁（宇称不变）是互斥的：若 $E1$ 允许，则 $M1,E2$ 禁止；反之亦然。这就是为什么原子光谱中 $S\to S$ 跃迁（宇称不变，$\Delta L=0$）不能通过 $E1$ 实现，但可通过 $M1$（如氢原子 $21\,$cm 线）或 $E2$ 实现。
+
+\emph{高阶多极跃迁.}\enspace $Ek$ 跃迁的选择定则：$\Delta L\le k\le L_i+L_f$，$\Delta J\le k\le J_i+J_f$，宇称 $\pi_f\pi_i=(-1)^k$。$Mk$ 跃迁：宇称 $\pi_f\pi_i=(-1)^{k+1}$。跃迁速率 $\Gamma(Ek)\propto\omega^{2k+1}|Q_k|^2$，$\Gamma(Mk)\propto\omega^{2k+1}|M_k|^2$，高阶多极随 $\omega^{2k+1}$ 快速减小。典型量级：$\Gamma(E1)/\Gamma(M1)\sim(\omega a_0/\alpha c)^2\sim(Z\alpha)^2$（$\alpha$ 为精细结构常数），$E1$ 主导可见光跃迁，$M1$ 和 $E2$ 主导禁戒跃迁（如亚稳态能级）。
+
+\emph{超精细跃迁与禁戒跃迁.}\enspace 氢原子 $21\,$cm 线（$1s$ 超精细分裂，$F=0\to F=1$）是 $M1$ 跃迁（自旋翻转，宇称不变），速率 $\Gamma\sim2.85\times10^{-15}\,\text{s}^{-1}$（寿命 $\sim10^7$ 年），是射电天文学的基础谱线。Lyman-$\alpha$（$2p\to1s$）是 $E1$ 跃迁（宇称改变），速率 $\Gamma\sim6.27\times10^8\,\text{s}^{-1}$。禁戒跃迁的群论分析（选择定则）决定了原子光谱线的存在性和强度量级，是量子力学与群论结合的经典应用。
+
+\textbf{第五步：显式 CG 系数与 $E1$ 跃迁强度.}\enspace 对氢原子 $2p\to1s$ 的 $E1$ 跃迁，约化矩阵元 $\langle1s||r||2p\rangle=\int_0^\infty R_{10}(r)\,r\,R_{21}(r)\,r^3\,\dd r$（径向积分，纯动力学）。角度部分由 CG 系数 $C(1,1,0;m,q,0)$ 给出。对 $\Delta m=0$（$q=0$，$z$ 偏振）：$C(1,1,0;m,0,0)=(-1)^{1-m}\begin{pmatrix}0&1&1\\0&0&0\end{pmatrix}\begin{pmatrix}0&1&1\\0&m&-m\end{pmatrix}$。利用 3j 符号值 $\begin{pmatrix}0&1&1\\0&0&0\end{pmatrix}=-1/\sqrt3$，得 $|C|^2=1/3$。对 $\Delta m=\pm1$（$q=\pm1$，$\sigma^\pm$ 偏振）：$|C|^2=1/3$。三个偏振方向之和 $\sum_q|C|^2=1$，给出总跃迁速率 $\Gamma\propto|\langle1s||r||2p\rangle|^2$——约化矩阵元包含全部动力学，群论因子给出偏振分配。
+
+\textbf{第六步：多极展开的一般理论.}\enspace 电磁场的多极展开把辐射场分解为不可约张量：
+\begin{equation*}
+\vb A(\vb r,\omega)=\sum_{k=1}^\infty\sum_{q=-k}^k\left[a_{kq}^{(E)}\,\vb E_{kq}(\vb r)+a_{kq}^{(M)}\,\vb M_{kq}(\vb r)\right],
+\end{equation*}
+其中 $\vb E_{kq}$（电多极场）和 $\vb M_{kq}$（磁多极场）是 $SO(3)$ 的 $k$ 阶不可约张量。跃迁振幅 $a_{kq}^{(E)}\propto\langle f|Q_{kq}|i\rangle$（电多极矩）和 $a_{kq}^{(M)}\propto\langle f|M_{kq}|i\rangle$（磁多极矩）。选择定则从 $D^{(k)}\otimes D^{(J_i)}\supset D^{(J_f)}$ 给出三角形条件 $|J_i-k|\le J_f\le J_i+k$。多极阶数 $k$ 越高，跃迁速率 $\Gamma\propto\omega^{2k+1}$ 越小（长波极限下 $kr\ll1$），故低阶多极主导。$E1$ 主导允许跃迁，$M1$/$E2$ 主导禁戒跃迁，$E3$/$M2$ 等更高阶通常可忽略。
+\end{derivation}
+
+\begin{example}[氢原子 Lyman 与 Balmer 系的选择定则]
+氢原子态 $\ket{n,\ell,m}$ 的宇称为 $(-1)^\ell$。$E1$ 跃迁要求 $(-1)^{\ell_f}(-1)^{\ell_i}=-1$，即 $\ell_f+\ell_i$ 为奇数。结合三角形条件 $|\ell_i-1|\le\ell_f\le\ell_i+1$，得到
+\[
+\Delta\ell=\pm1.
+\]
+这就是熟知的轨道角动量选择定则。对 $\Delta\ell=0$（如 $s\to s$）或 $\Delta\ell=\pm2$（如 $s\to d$），$E1$ 严格禁止，但 $M1$（$\Delta\ell=0$）或 $E2$（$\Delta\ell=0,\pm2$）可以允许。
+
+Lyman 系 $np\to1s$：$\Delta\ell=-1$，$E1$ 允许。Balmer 系 $np\to2s$ 或 $ns,nd\to2p$：前者 $\Delta\ell=-1$，后者 $\Delta\ell=\pm1$，均 $E1$ 允许。而 $2s\to1s$：$\Delta\ell=0$，$E1$ 禁止，只能通过 $M1$（双光子跃迁）实现，这正是氢原子 $2s$ 亚稳态寿命极长（$\sim0.12\,$s）的群论根源。
+\end{example}
+
+\begin{example}[核跃迁中的多极展开]
+在核物理中，$\gamma$ 衰变跃迁通常按最低允许多极分类。对初末态自旋--宇称 $J_i^{\pi_i}\to J_f^{\pi_f}$：
+\begin{itemize}
+\item 若 $\pi_i\pi_f=-1$（宇称改变）：最低阶为 $E1$（若 $|J_i-J_f|\le1\le J_i+J_f$），否则 $E2,E3,\dots$。
+\item 若 $\pi_i\pi_f=+1$（宇称不变）：最低阶为 $M1$（若 $|J_i-J_f|\le1$）或 $E2$（若 $|J_i-J_f|\le2$），取能量更低者。
+\end{itemize}
+多极阶越高，跃迁概率越小（典型标度 $\sim(kR)^{2L}$，$R$ 为核半径，$k$ 为光子波数）。因此核谱学中观测到的强跃迁几乎总是最低允许多极。群论选择定则把"哪个多极最低"变成纯对称问题，不需要核波函数细节。
+\end{example}
+
+在进入不同光谱之前，先统一“正常模”的语言。若分子有 $N$ 个原子，小位移可写成 $3N$ 维向量。去掉整体平移与整体转动后，非线性分子剩 $3N-6$ 个振动自由度，线性分子剩 $3N-5$ 个。哈密顿量在谐振近似下可以通过正交坐标变换分解成独立正常坐标 $Q_\lambda$。点群作用会在线性化位移空间中给出一个表示，把它分解为不可约表示，就能给每个正常模贴上对称性标签。
+
+红外、Raman 与和频光谱的差别并不在“振动模不同”，而在探测算符不同：红外耦合到偶极矩，Raman 耦合到极化率张量，和频过程同时涉及两个入射场与一个输出极化。因此同一个正常模可能在一种光谱中允许、在另一种中禁止。
+
+\section{红外谱、Raman 谱与和频光谱}
+\label{sec:ir-raman-sfg}
+
+上一节讨论的是抽象矩阵元。现在把同一套选择定则放到三个最常见的振动光谱实验中：红外、Raman 与和频光谱。实验手段虽然不同，群论问题却完全同构——判断哪个矢量或张量分量能与某个振动模耦合。
+
+接下来考察正常模与三类振动光谱的表示判据。
+
+一个含 $N$ 个原子的非线性分子有 $3N$ 个笛卡尔位移自由度。把所有原子位移组成表示 $\Gamma_{3N}$，去掉整体平移和整体转动后，得到振动表示
+\[
+\Gamma_{\mathrm{vib}}
+=\Gamma_{3N}-\Gamma_{\mathrm{trans}}-\Gamma_{\mathrm{rot}}.
+\label{eq:vibrational-representation}
+\]
+其维数为 $3N-6$；对线性分子则为 $3N-5$。把 $\Gamma_{\mathrm{vib}}$ 分解成不可约表示，就得到所有正常模的对称性标签。
+
+从这里开始，红外与 Raman 的区别只在于“探针算符”不同。
+
+红外吸收由偶极矩与电场耦合控制。对正常坐标 $Q_\lambda$，若平衡位置附近
+\[
+\vb\mu
+=\vb\mu_0
++\left(\frac{\partial\vb\mu}{\partial Q_\lambda}\right)_0Q_\lambda+\cdots,
+\]
+则该模要有红外吸收，必须有
+\[
+\left(\frac{\partial\mu_i}{\partial Q_\lambda}\right)_0\neq0
+\]
+对某个 $i=x,y,z$。因此
+\[
+\Gamma(Q_\lambda)
+\subseteq \Gamma_{\mathrm{vec}}
+=\Gamma(x,y,z)
+\]
+是红外活性的条件。简言之：\emph{一个振动模若按 $x$、$y$ 或 $z$ 中某个分量的不可约表示变换，它就是相应偏振方向上的 IR active 模。}
+
+Raman 散射的电偶极响应取决于极化率张量 $\alpha_{ij}$。对正常坐标展开
+\[
+\alpha_{ij}
+=(\alpha_{ij})_0
++\left(\frac{\partial\alpha_{ij}}{\partial Q_\lambda}\right)_0Q_\lambda+\\cdots.
+\]
+因此 Raman 活性要求 $Q_\lambda$ 与某个二次函数分量具有相同对称性。由于对称极化率张量对应
+\[
+\operatorname{Sym}^2\Gamma_{\mathrm{vec}},
+\]
+故
+\[
+\Gamma(Q_\lambda)
+\subseteq\operatorname{Sym}^2\Gamma_{\mathrm{vec}}
+\]
+就是 Raman 选择定则。特征标表里常把
+\[
+x^2,y^2,z^2,xy,xz,yz
+\]
+列在“basis functions”一栏，正是为了让这条规则可以直接读取。
+
+\begin{example}[中心对称体系的互斥规则]
+若体系有反演中心，位移矢量 $(x,y,z)$ 为 $u$，因此 IR active 模必须是 $u$ 型。Raman 张量是两个矢量分量的乘积，宇称为
+\[
+u\otimes u=g,
+\]
+所以 Raman active 模必须是 $g$ 型。于是同一基本振动在理想中心对称体系中不能同时 IR 与 Raman active。这就是常说的 mutual exclusion rule。
+\end{example}
+
+和频过程把频率 $\omega_1$ 与 $\omega_2$ 的两个入射场混合，产生 $\omega_3=\omega_1+\omega_2$ 的极化：
+\[
+P_i^{(2)}(\omega_3)
+=\epsilon_0\sum_{jk}
+\chi^{(2)}_{ijk}(\omega_3;\omega_1,\omega_2)
+E_j(\omega_1)E_k(\omega_2).
+\label{eq:sfg-polarization}
+\]
+这里真正的对称性对象是三阶极性张量 $\chi^{(2)}_{ijk}$。若体材料具有反演对称性，$\vb P$ 与 $\vb E$ 都在反演下变号。对 \eqnrefs{eq:sfg-polarization} 做反演，左边变号，而右边的两个电场乘积不变，因此只能有
+\[
+\chi^{(2)}_{ijk}=0
+\]
+对电偶极体响应成立。于是体中心对称晶体的电偶极二阶非线性消失，而表面/界面由于天然破坏反演对称性，可以产生明显的 SFG 信号。这正是和频光谱具有表面敏感性的群论根源。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.92]
+  \draw[->,line width=.75pt] (-.6,-.2)--(-.6,5.2) node[above] {$E$};
+  \draw[line width=.8pt] (0,1.0)--(2.2,1.0) node[right,lecturelabel] {$v=0$};
+  \draw[line width=.8pt] (0,2.2)--(2.2,2.2) node[right,lecturelabel] {$v=1$};
+  \draw[line width=.8pt] (4.2,4.45)--(6.4,4.45) node[right,lecturelabel] {virtual state};
+  \draw[lecturearrow] (.8,1.05)--(.8,2.15) node[midway,right,lecturelabel] {IR};
+  \draw[lecturearrow] (4.8,1.05)--(5.25,4.38) node[midway,left,lecturelabel] {$\omega_L$};
+  \draw[lecturearrow] (5.35,4.38)--(5.9,2.25) node[midway,right,lecturelabel] {$\omega_L-\omega_v$};
+  \node[lecturelabel] at (5.2,.45) {Raman};
+\end{tikzfig}
+\caption{IR 与 Raman 过程的能量示意。两种实验都探测振动模，但耦合算符分别是偶极矩与极化率张量，因此选择定则不同。}
+\label{fig:ir-raman-schematic}
+\end{figure}
+
+$\mathrm{H_2O}$ 属于 $C_{2v}$。三个振动正常模分解为
+\[
+\Gamma_{\mathrm{vib}}=2A_1\oplus B_2.
+\]
+在标准取向中，$z\sim A_1$，$y\sim B_2$，因此三个模都能通过某个偶极分量耦合，全部 IR active。另一方面，$A_1$ 出现在 $x^2,y^2,z^2$ 中，$B_2$ 出现在 $yz$ 中，所以三个模也都 Raman active。这个简单例子展示了如何从一张特征标表直接读出实验选择定则，而不需要重新计算复杂的波函数积分。
+
+对较大的分子，不可能逐个写出全部 $3N\times3N$ 矩阵；真正实用的方法是直接计算振动表示的特征标。
+
+对实际分子，不必先写出 $3N\times3N$ 的全部变换矩阵。若群元 $g$ 把某个原子送到另一个不同原子，那么与该原子相关的三个位移基在表示矩阵中只出现在非对角置换块，对迹没有贡献。只有在 $g$ 下位置保持不动的原子才贡献特征标；每个固定原子的贡献就是三维矢量变换矩阵的迹。因此
+\[
+\chi_{3N}(g)
+=\sum_{a\in\operatorname{Fix}(g)}
+\tr R_g^{(a)}.
+\label{eq:3n-character-fixed-atoms}
+\]
+这条“固定原子计数公式”是做分子振动群论最实用的公式之一。
+
+以 $\mathrm{H_2O}$ 为例，取 $z$ 为 $C_2$ 轴、分子平面为 $yz$。$C_{2v}$ 的四个元素为 $E,C_2,\sigma_v(yz),\sigma_v'(xz)$。对 $E$，三个原子都固定，三维矢量迹为 $3$，所以 $\chi_{3N}(E)=9$。对 $C_2$，只有 O 固定，其矢量矩阵为 $\operatorname{diag}(-1,-1,1)$，迹为 $-1$，故 $\chi_{3N}(C_2)=-1$。对分子平面 $\sigma_v(yz)$，三个原子都固定，矢量反射矩阵迹为 $1$，故 $\chi=3$。对另一镜面 $\sigma_v'(xz)$，只有 O 固定，迹仍为 $1$。于是
+\[
+\chi_{3N}=(9,-1,3,1).
+\]
+用 $C_{2v}$ 特征标表分解得到
+\[
+\Gamma_{3N}=3A_1\oplus A_2\oplus2B_1\oplus3B_2.
+\]
+再减去平移
+\[
+\Gamma_{\mathrm{trans}}=A_1\oplus B_1\oplus B_2
+\]
+与转动
+\[
+\Gamma_{\mathrm{rot}}=A_2\oplus B_1\oplus B_2,
+\]
+得到
+\[
+\Gamma_{\mathrm{vib}}=2A_1\oplus B_2.
+\]
+这样水分子的三个振动模不是“查表知道”的，而是从原子位置、矢量表示与特征标分解一步步算出来的。
+
+\chapref{chap:representation-theory} 中已经用同一方法完成了氨分子 $\mathrm{NH_3}$ 的振动模对称分析：位移表示特征标 $\chi_{\mathrm{disp}}=(12,0,2)$（对 $C_{3v}\cong D_3$ 的三类操作 $E,2C_3,3\sigma_v$），扣除平移和转动后得到 $\chi_{\mathrm{vib}}=(6,0,2)$，分解为
+\[
+\Gamma_{\mathrm{vib}}^{\mathrm{NH_3}}=2A_1\oplus 2E
+\]
+（见\eqnrefs{eq:nh3-vib-decomposition}）。6 个振动自由度分为 4 个模式：2 个非简并 $A_1$（对称伸缩 $
+u_1$ 与对称弯曲 $
+u_2$）和 2 个二重简并 $E$（简并伸缩 $
+u_{3a},
+u_{3b}$ 与简并弯曲 $
+u_{4a},
+u_{4b}$）。与 $\mathrm{H_2O}$ 的 $2A_1\oplus B_2$ 相比，$\mathrm{NH_3}$ 多出的二重简并来自 $C_3$ 旋转——三重轴的不可约表示 $E$ 是二维的，而 $C_2$ 轴的所有不可约表示都是一维的。这正是\chapref{chap:representation-theory} 中 Maschke 定理的物理体现：简并结构在求解动力学方程之前就被对称群完全确定。
+
+Raman 活性不仅告诉我们“有没有峰”，还决定不同偏振配置下峰的强弱。原因是二阶张量分量本身也按点群表示变换。
+
+“某模 Raman active”只是第一层信息。实验还关心用什么入射/出射偏振能看到它。若某个振动模 $Q_\lambda$ 属于不可约表示 $\Gamma_\lambda$，对应的 Raman 张量
+\[
+R^{(\lambda)}_{ij}
+=\left(\frac{\partial\alpha_{ij}}{\partial Q_\lambda}\right)_0
+\]
+必须具有同样的变换性质。于是特征标表中二次函数对应关系可以直接翻译成 Raman 张量的非零分量。
+
+例如 $C_{4v}$ 中，$A_1$ 对应 $x^2+y^2,z^2$，所以 $A_1$ Raman 张量可有 $R_{xx}=R_{yy}$ 与 $R_{zz}$；$B_1$ 对应 $x^2-y^2$，表现为 $R_{xx}=-R_{yy}$；$B_2$ 对应 $xy$，只允许 $R_{xy}=R_{yx}$；$E$ 对应 $(xz,yz)$。因此改变偏振几何可以选择性增强不同不可约表示的振动峰。群论在这里不只判断“有没有峰”，还直接指导实验构型。
+
+\section{平移不变性与 Bloch 定理}
+\label{sec:translation-bloch}
+
+
+前面的点群都是有限群，而理想晶体还具有无限多个晶格平移。乍看之下，这似乎是完全不同的问题；实际上平移群是 Abel 群，因此它的全部不可约复表示都是一维的。这件事一旦与量子哈密顿量的平移对称性结合，就直接给出 Bloch 定理。
+
+因此 Bloch 定理不必从“猜波函数形状”开始。先取晶格平移 $T_{\vb R}$，其中 $\vb R$ 是任意 Bravais 格矢；由于不同平移可交换，它们可以与 $\hat H$ 同时对角化。一个共同本征态满足
+\[
+T_{\vb R}|\psi\rangle=\lambda(\vb R)|\psi\rangle.
+\]
+酉性要求 $|\lambda|=1$，群乘法又要求 $\lambda(\vb R_1+\vb R_2)=\lambda(\vb R_1)\lambda(\vb R_2)$，于是这些一维特征标只能写成 $\ee^{-\ii\vb k\cdot\vb R}$。Bloch 波矢 $\vb k$ 就这样从平移群表示中出现。
+
+前五节主要讨论有限点群。晶体还具有无限离散平移群，因此量子态必须同时尊重平移对称性。Bloch 定理应当从平移群的一维不可约表示推出：它不是某个特定微分方程的巧妙解法，而是 Abel 平移群表示理论的必然结论。
+
+接下来考察晶格平移群与倒格子。
+
+设 Bravais 晶格
+\[
+\mathcal L
+=\{\vb R=n_1\vb a_1+n_2\vb a_2+n_3\vb a_3\}.
+\]
+对应平移算符定义为
+\[
+(T_{\vb R}\psi)(\vb r)=\psi(\vb r-\vb R).
+\label{eq:translation-operator}
+\]
+于是
+\[
+T_{\vb R_1}T_{\vb R_2}=T_{\vb R_1+\vb R_2},
+\]
+平移群是 Abel 群。
+
+倒格基矢 $\vb b_i$ 由
+\[
+\vb a_i\cdot\vb b_j=2\pi\delta_{ij}
+\]
+定义，显式为
+\[
+\vb b_1=2\pi\frac{\vb a_2\times\vb a_3}{\Omega},
+\quad
+\vb b_2=2\pi\frac{\vb a_3\times\vb a_1}{\Omega},
+\quad
+\vb b_3=2\pi\frac{\vb a_1\times\vb a_2}{\Omega},
+\]
+其中
+\[
+\Omega=\vb a_1\cdot(\vb a_2\times\vb a_3)
+\]
+是原胞有向体积。倒格矢写作
+\[
+\vb G=m_1\vb b_1+m_2\vb b_2+m_3\vb b_3.
+\]
+由定义立刻有
+\[
+\ee^{\ii\vb G\cdot\vb R}=1,
+\qquad
+\forall\vb G\in\mathcal L^*,\ \vb R\in\mathcal L.
+\]
+
+无限晶体可以通过 Born--von Karman 周期边界条件先放入有限超胞：
+\[
+T_{N_i\vb a_i}=I,
+\qquad i=1,2,3.
+\]
+此时平移群成为有限 Abel 群，因此所有不可约表示都是一维。设某个不可约表示在 $T_{\vb a_i}$ 上的值为 $\lambda_i$，则
+\[
+\lambda_i^{N_i}=1.
+\]
+于是
+\[
+\lambda_i=\exp\!\left(-\frac{2\pi\ii m_i}{N_i}\right),
+\qquad m_i=0,1,\dots,N_i-1.
+\]
+把三个整数合并成波矢
+\[
+\vb k=\sum_i\frac{m_i}{N_i}\vb b_i,
+\]
+便得到任意平移的不可约表示
+\[
+D_{\vb k}(T_{\vb R})
+=\ee^{-\ii\vb k\cdot\vb R}.
+\label{eq:translation-irrep}
+\]
+由于 $\vb k$ 与 $\vb k+\vb G$ 给出完全相同的表示，波矢只在模倒格矢意义下有区别。因此可以把 $\vb k$ 限制在第一 Brillouin 区中。
+
+\begin{theorem}[Bloch 定理]
+若周期哈密顿量满足
+\[
+[\hat H,T_{\vb R}]=0,
+\qquad \forall\vb R\in\mathcal L,
+\]
+则其本征态可选为平移群不可约表示的共同本征态：
+\[
+T_{\vb R}\psi_{n\vb k}
+=\ee^{-\ii\vb k\cdot\vb R}\psi_{n\vb k}.
+\label{eq:bloch-translation-eigenvalue}
+\]
+按照 \eqnrefs{eq:translation-operator} 的约定，这等价于
+\[
+\psi_{n\vb k}(\vb r+\vb R)
+=\ee^{\ii\vb k\cdot\vb R}
+\psi_{n\vb k}(\vb r).
+\label{eq:bloch-boundary}
+\]
+因此波函数可写为
+\[
+\psi_{n\vb k}(\vb r)
+=\ee^{\ii\vb k\cdot\vb r}
+ u_{n\vb k}(\vb r),
+\qquad
+u_{n\vb k}(\vb r+\vb R)
+=u_{n\vb k}(\vb r).
+\label{eq:bloch-form}
+\]
+\label{thm:bloch}
+
+\begin{derivation}[Bloch 定理：从平移群一维表示到平面波×周期函数]
+\textbf{第一步：同时对角化.}\enspace
+平移群 $\{T_{\vb R}\}_{\vb R\in\mathcal L}$ 是 Abel 群，且全部 $T_{\vb R}$ 与 $\hat H$ 对易。Abel 群的不可约表示都是一维的，因此可在每个能量本征空间中\emph{同时对角化}所有平移算符。于是可选本征态 $\psi_{n\vb k}$ 满足
+\[
+T_{\vb R}\psi_{n\vb k}=\ee^{-\ii\vb k\cdot\vb R}\psi_{n\vb k},
+\]
+其中本征值 $\ee^{-\ii\vb k\cdot\vb R}$ 是平移群的一维不可约表示\eqnrefs{eq:translation-irrep}，标签 $\vb k$ 就是晶体动量。
+
+\textbf{第二步：位置表象.}\enspace
+平移算符在位置表象中定义为 $(T_{\vb R}\psi)(\vb r)=\psi(\vb r-\vb R)$，因此本征方程直接给出
+\[
+\psi_{n\vb k}(\vb r-\vb R)=\ee^{-\ii\vb k\cdot\vb R}\psi_{n\vb k}(\vb r).
+\]
+把 $\vb r$ 换成 $\vb r+\vb R$，得到更常见的形式
+\[
+\psi_{n\vb k}(\vb r+\vb R)=\ee^{\ii\vb k\cdot\vb R}\psi_{n\vb k}(\vb r).
+\]
+
+\textbf{第三步：提取周期因子.}\enspace
+定义
+\[
+u_{n\vb k}(\vb r)=\ee^{-\ii\vb k\cdot\vb r}\psi_{n\vb k}(\vb r),
+\]
+则
+\begin{align*}
+u_{n\vb k}(\vb r+\vb R)
+&=\ee^{-\ii\vb k\cdot(\vb r+\vb R)}\psi_{n\vb k}(\vb r+\vb R)\\
+&=\ee^{-\ii\vb k\cdot\vb r}\ee^{-\ii\vb k\cdot\vb R}\cdot\ee^{\ii\vb k\cdot\vb R}\psi_{n\vb k}(\vb r)\\
+&=\ee^{-\ii\vb k\cdot\vb r}\psi_{n\vb k}(\vb r)=u_{n\vb k}(\vb r),
+\end{align*}
+即 $u_{n\vb k}$ 具有晶格周期性。因此
+\[
+\psi_{n\vb k}(\vb r)=\ee^{\ii\vb k\cdot\vb r}\,u_{n\vb k}(\vb r),
+\qquad u_{n\vb k}(\vb r+\vb R)=u_{n\vb k}(\vb r),
+\]
+即"平面波相位 $\times$ 晶格周期函数"。
+
+\emph{Bloch 函数的性质.}\enspace Bloch 函数 $\psi_{n\vb k}$ 满足正交归一 $\langle\psi_{n\vb k}|\psi_{m\vb k'}\rangle=\delta_{nm}\delta(\vb k-\vb k')$，能带 $E_n(\vb k)$ 在 Brillouin 区上连续（除简并点外）。$\vb k$ 和 $\vb k+\vb G$ 给出同一态（差相位 $\ee^{i\vb G\cdot\vb r}$），故 $\vb k$ 取第一 Brillouin 区。时间反演对称（无磁场）给出 $E_n(\vb k)=E_n(-\vb k)$（Kramers 简并对半整数自旋）。空间反演对称给出 $E_n(\vb k)=E_n(-\vb k)$（即使无时间反演）。两者结合给出 $E_n(\vb k)=E_n(-\vb k)$，减少需计算的 Brillouin 区到 $1/8$（如有反演和时间反演）。
+
+\emph{$\vb k\cdot\vb p$ 理论.}\enspace 在 $\vb k_0$ 点附近展开 $H(\vb k)=\ee^{-i\vb k\cdot\vb r}H\ee^{i\vb k\cdot\vb r}=H(\vb k_0)+\frac{\hbar}{m}\vb k\cdot\vb p+\frac{\hbar^2k^2}{2m}$。用微扰论处理 $\vb k\cdot\vb p$ 项，有效质量 $m^*_{ij}=\frac{m}{\delta_{ij}+\frac{2}{m}\sum_{n'\ne n}\frac{\langle n\vb k_0|p_i|n'\vb k_0\rangle\langle n'\vb k_0|p_j|n\vb k_0\rangle}{E_n-E_{n'}}}$。动量矩阵元由不可约表示的 Clebsch--Gordan 系数约束：$\vb p$ 按 $T_{1u}$ 变换，$\langle\Gamma_f|T_{1u}|\Gamma_i\rangle$ 非零仅当 $\Gamma_f\otimes T_{1u}\otimes\Gamma_i\supset A_1$。$\vb k\cdot\vb p$ 理论把能带色散的群论约束转化为有效质量张量的对称性，是半导体物理的理论基础。
+
+\emph{Wannier 函数.}\enspace Bloch 函数的 Fourier 变换给出 Wannier 函数 $w_n(\vb r-\vb R)=\frac{1}{\sqrt{N}}\sum_{\vb k}\ee^{-i\vb k\cdot\vb R}\psi_{n\vb k}(\vb r)$，是晶格定域化的正交完备基。Wannier 函数的定域性取决于能带的解析性质：孤立能带（与其他能带有能隙分开）的 Wannier 函数指数衰减。用规范变换 $\psi_{n\vb k}\to\ee^{i\phi_n(\vb k)}\psi_{n\vb k}$ 可优化定域性（Marzari--Vanderbilt 最大定域化 Wannier 函数）。Wannier 函数把 $k$ 空间的群论信息转化为实空间的定域轨道，是紧束缚模型构造和拓扑不变量计算的基础。
+
+\textbf{第四步：$\vb k\cdot\vb p$ 有效质量的显式推导.}\enspace 在 $\vb k_0=0$（$\Gamma$ 点）附近，Bloch Hamiltonian $H(\vb k)=\frac{\hbar^2k^2}{2m}+H_0+\frac{\hbar}{m}\vb k\cdot\vb p$。将 $\frac{\hbar}{m}\vb k\cdot\vb p$ 视为微扰，二阶能量修正
+\begin{equation*}
+E_n(\vb k)=E_n(0)+\frac{\hbar^2k^2}{2m}+\frac{\hbar^2}{m^2}\sum_{n'\ne n}\frac{|\langle n0|\vb k\cdot\vb p|n'0\rangle|^2}{E_n(0)-E_{n'}(0)}.
+\end{equation*}
+展开 $|\langle n|\vb k\cdot\vb p|n'\rangle|^2=\sum_{ij}k_i k_j\langle n|p_i|n'\rangle\langle n'|p_j|n\rangle$，有效质量张量
+\begin{equation*}
+\frac{1}{m^*_{ij}}=\frac{1}{m}\delta_{ij}+\frac{2}{m^2}\sum_{n'\ne n}\frac{\langle n|p_i|n'\rangle\langle n'|p_j|n\rangle}{E_n-E_{n'}}.
+\end{equation*}
+群论约束：$p$ 按 $T_{1u}$ 变换，故 $p_i$ 的矩阵元非零仅当 $\Gamma_n\otimes T_{1u}\otimes\Gamma_{n'}\supset A_{1g}$。对 $O_h$ 群在 $\Gamma$ 点：若 $\Gamma_n=A_{1g}$（如导带底 $s$ 轨道），则需 $\Gamma_{n'}=T_{1u}$（$p$ 轨道），给出各向同性有效质量 $m^*_{ij}=m^*\delta_{ij}$。若 $\Gamma_n=T_{2g}$（如价带顶 $d$ 轨道），则 $\Gamma_{n'}$ 可为 $T_{1u}\oplus T_{2u}$，有效质量张量有独立分量 $m_\parallel^*$ 和 $m_\perp^*$。
+
+\textbf{第五步：能带对称性的群论来源.}\enspace 能带 $E_n(\vb k)$ 的对称性来自空间群 $G$ 的两个操作：(a) 时间反演 $\Theta$：若 $[\Theta,H]=0$，则 $E_n(\vb k)=E_n(-\vb k)$（Kramers 配对）；(b) 空间反演 $-I$：若 $I\in G$，则 $E_n(\vb k)=E_n(-\vb k)$。两者结合给出 $E_n(\vb k)=E_n(-\vb k)$，使 Brillouin 区计算减半。更一般地，对任意 $g\in G$，$E_n(g\vb k)=E_n(\vb k)$（群操作保持能带）。小群 $G_{\vb k}=\{g\in G\mid g\vb k\equiv\vb k\}$ 决定 $\vb k$ 点的能级简并度：不可约表示维数即为简并度。高对称点（$\Gamma$, $X$, $L$ 等）的小群较大，简并度高；一般 $\vb k$ 点小群为 $\{E\}$，无简并。这一从群论到能带结构的映射是固体能带计算的数学基础。
+\end{derivation}
+\end{theorem}
+
+Bloch 定理最值得记住的不是公式本身，而是它的逻辑来源：\emph{晶格平移群是 Abel 群，所以不可约表示是一维相位；这个相位的标签就是晶体动量 $\vb k$。} 这样看以后，$\vb k$ 不再只是 Fourier 变换里的变量，而是平移对称性的量子数。Bloch 形式不是额外假设，而是平移群一维不可约表示在位置表象中的必然重写。
+
+波矢 $\vb k$ 只在模倒格矢意义下有区别，因此需要从每个等价类中选一个代表。最对称的选法是 Wigner--Seitz 原胞，也就是第一 Brillouin 区。
+
+由于 $\vb k$ 与 $\vb k+\vb G$ 标记同一个平移不可约表示，我们需要从每个倒格等价类中选一个代表。最对称的选法就是以倒格原点为中心构造 Wigner--Seitz 原胞：对每个倒格点与原点的连线作垂直平分面，取离原点最近的区域。这就是第一 Brillouin 区。
+
+因此 Brillouin 区并不是因为“电子波矢最大到某个值”而人为截断，而是一个商空间基本域：
+\[
+\mathbb R^3/\mathcal L^*.
+\]
+边界上的点之所以需要特别小心，是因为它们与相邻 Brillouin 区中的点相差一个倒格矢，常常具有更大的小群或非对称空间群相位。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=.9]
+  \foreach \i in {-2,...,2}{
+    \foreach \j in {-2,...,2}{\fill (1.5*\i,1.5*\j) circle (1.1pt);}}
+  \draw[line width=.85pt,fill=gray!8] (-.75,-.75) rectangle (.75,.75);
+  \node[lecturelabel] at (0,0) {1st BZ};
+  \draw[dashed] (-3.2,.75)--(3.2,.75) (-3.2,-.75)--(3.2,-.75)
+                (.75,-3.2)--(.75,3.2) (-.75,-3.2)--(-.75,3.2);
+\end{tikzfig}
+\caption{二维方格倒格子的 Wigner--Seitz 原胞，也就是第一 Brillouin 区。}
+\label{fig:bz-wigner-seitz}
+\end{figure}
+
+有限周期边界把 $\vb k$ 离散化，而热力学极限把这些点变成 Brillouin 区中的积分测度；两者之间的换算也应在此处一次说明清楚。
+
+Born--von Karman 条件把允许 $\vb k$ 离散化为
+\[
+\vb k=\sum_i\frac{m_i}{N_i}\vb b_i.
+\]
+若晶体含 $N=N_1N_2N_3$ 个原胞，第一 Brillouin 区中恰有 $N$ 个不同的 $\vb k$ 点。热力学极限中，$N_i\to\infty$，离散求和变为积分：
+\[
+\frac1N\sum_{\vb k\in\mathrm{BZ}}f(\vb k)
+\longrightarrow
+\frac{\Omega}{(2\pi)^3}
+\int_{\mathrm{BZ}}\dd^3k\,f(\vb k),
+\]
+其中 $\Omega$ 为实空间原胞体积。这一测度因子来自倒格原胞体积
+\[
+\Omega^*=\frac{(2\pi)^3}{\Omega}.
+\]
+虽然本章重点是群论，但把这一步写清有助于理解为什么能带论里“每个原胞一个 $\vb k$ 态”的计数与平移群表示个数完全一致。
+
+\section{Brillouin 区、空间群与小群}
+\label{sec:brillouin-lattice-symmetry}
+
+平移对称性告诉我们本征态可以用 $\vb k$ 标记，但第一 Brillouin 区仍包含连续无穷多个点。晶体的点操作还会把不同 $\vb k$ 联系起来，从而进一步减少真正独立的区域。下面从空间群操作 $\{R\mid\vb t\}$ 出发推导 $E_n(R\vb k)=E_n(\vb k)$，并同时引出不可约 Brillouin 区、波矢星与小群。
+
+接下来考察空间群如何作用在 $\vb k$ 上。
+
+设空间群元素
+\[
+g=\{R\mid\boldsymbol\tau\},
+\]
+其 Hilbert 空间表示记作 $U(g)$。空间群的群关系给出
+\[
+g\,T_{\vb L}\,g^{-1}=T_{R\vb L}.
+\label{eq:space-translation-conjugation}
+\]
+若 $\ket{\psi_{n\vb k}}$ 是 Bloch 态，满足
+\[
+T_{\vb L}\ket{\psi_{n\vb k}}
+=\ee^{-\ii\vb k\cdot\vb L}
+\ket{\psi_{n\vb k}},
+\]
+则
+\begin{align*}
+T_{\vb L}U(g)\ket{\psi_{n\vb k}}
+&=U(g)T_{R^{-1}\vb L}\ket{\psi_{n\vb k}}\\
+&=\ee^{-\ii\vb k\cdot R^{-1}\vb L}
+U(g)\ket{\psi_{n\vb k}}\\
+&=\ee^{-\ii(R\vb k)\cdot\vb L}
+U(g)\ket{\psi_{n\vb k}}.
+\end{align*}
+因此 $U(g)\ket{\psi_{n\vb k}}$ 属于 $R\vb k$ 的 Bloch 表示。
+
+若 $g$ 是哈密顿量对称操作，便进一步有
+\[
+E_n(R\vb k)=E_n(\vb k),
+\label{eq:band-star-degeneracy}
+\]
+其中 $R\vb k$ 可随时加上倒格矢折回第一 Brillouin 区。
+
+\begin{definition}[波矢的星与小群]
+给定 $\vb k$，其在空间群点操作下得到的所有不等价波矢
+\[
+\star\vb k
+=\{R\vb k\bmod\mathcal L^*\}
+\]
+称为 $\vb k$ 的\textbf{星}（star of $\vb k$）。
+
+所有满足
+\[
+R\vb k=\vb k+\vb G,
+\qquad \vb G\in\mathcal L^*,
+\]
+的空间群元素 $\{R\mid\boldsymbol\tau\}$ 构成 $\vb k$ 的\textbf{小群} $\mathcal G_{\vb k}$。把其中纯平移商掉后得到有限的\textbf{小余群}（little co-group）。
+\label{def:star-little-group}
+\end{definition}
+
+一般 $\vb k$ 点的小群很小，因此能带通常不简并；高对称点、线和面的小群更大，可以出现二维、三维乃至更高维不可约表示，因此常有对称性保护的简并。这正是能带图中 $\Gamma,X,L,K$ 等特殊点需要单独命名的原因。
+
+设 $\vb k_0$ 是高对称点，小群 $\mathcal G_{\vb k_0}$ 较大；沿某条离开它的高对称线，小群通常降为子群 $\mathcal H\subset\mathcal G_{\vb k_0}$。如果端点某能级属于不可约表示 $\Gamma$，那么沿线允许连接到哪些能带，由限制表示
+\[
+\Gamma\downarrow_{\mathcal H}
+\]
+决定。这就是能带“兼容关系”的群论来源，与 \secref{sec:perturbative-splitting} 的能级劈裂完全同构：那里是外界微扰把空间对称群降为子群，这里是选定一般波矢本身把保持 $\vb k$ 的对称群降为子群。
+
+如果一个二维不可约表示在沿线小群下分成两个不同的一维表示，那么离开高对称点后两支可以分开；如果沿线仍是二维不可约表示，则二重简并必须沿整条线保留。反之，两条属于不同沿线不可约表示的能带即使能量相遇，也不能杂化打开反交叉；它们可以形成受对称性保护的交叉点。这正是现代能带拓扑讨论中“不同 symmetry eigenvalues 可以交叉”的基础版本。
+
+小群还控制一个常用的计数问题：一个 $\vb k$ 点在整个点群作用下会产生多少个对称等价的波矢。
+
+轨道--稳定子定理在倒空间再次出现。若空间群点群为 $P$，而 $P_{\vb k}$ 是保持 $\vb k$ 模倒格矢不变的小余群，则星中不同波矢的个数为
+\[
+|\star\vb k|=\frac{|P|}{|P_{\vb k}|}.
+\label{eq:k-star-size}
+\]
+因此一般点的小群最小，星最大；高对称点的小群更大，星更小。半导体中常说的“等价谷数”本质上就是某个能谷波矢星的大小。例如若一个最低点位于六个由立方对称联系的方向上，那么六个谷并不是六套独立参数，而是同一星中的六个等价成员。
+
+如果两个波矢属于同一个星，能量由 \eqnrefs{eq:band-star-degeneracy} 联系，因此数值计算没有必要重复求解。把第一 Brillouin 区按点群轨道分割，只保留一个代表区域，就得到\textbf{不可约 Brillouin 区}。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=1.05]
+  \draw[line width=.8pt] (-2.3,-2.3) rectangle (2.3,2.3);
+  \draw[fill=gray!12,line width=.7pt] (0,0)--(2.3,0)--(2.3,2.3)--cycle;
+  \draw[axes] (-2.7,0)--(2.8,0) node[right] {$k_x$};
+  \draw[axes] (0,-2.7)--(0,2.8) node[above] {$k_y$};
+  \fill (0,0) circle (1.5pt) node[below left,lecturelabel] {$\Gamma$};
+  \fill (2.3,0) circle (1.5pt) node[below right,lecturelabel] {$X$};
+  \fill (2.3,2.3) circle (1.5pt) node[above right,lecturelabel] {$M$};
+  \node[lecturelabel] at (1.45,.85) {irreducible wedge};
+\end{tikzfig}
+\caption{具有 $D_4$ 型点对称性的二维方格倒空间。阴影三角形可作为不可约 Brillouin 区；其余区域由旋转和反射得到。}
+\label{fig:irreducible-bz}
+\end{figure}
+
+如果空间群含有不可消去的分数平移，上面的点群式小群分析还要多保留一个 Bloch 相位。
+
+
+如果空间群是非对称的，小群表示不能简单退化成点群表示，因为分数平移会带来 Bloch 相位。以二重螺旋轴
+\[
+S=\{C_{2z}\mid \tfrac c2\hat{\vb z}\}
+\]
+为例。由 Seitz 乘法
+\[
+S^2=\{E\mid c\hat{\vb z}\}=T_{c\hat{\vb z}}.
+\]
+在波矢 $k_z$ 的 Bloch 态上，表示必须满足
+\[
+D_{\vb k}(S)^2
+=\ee^{-\ii k_z c}.
+\label{eq:screw-eigenvalue}
+\]
+因此螺旋轴本征值不是普通点群里的 $\pm1$，而是
+\[
+s_\pm(k_z)=\pm\ee^{-\ii k_z c/2}.
+\]
+在 Brillouin 区边界 $k_z=\pi/c$ 时，它们变成 $\pm\ii$。这就是为什么非对称空间群在能带边界上会表现出普通点群表中看不到的结构；再结合时间反演，某些复共轭螺旋本征值还会被迫成对出现。
+
+\section{时间反演对称性}
+\label{sec:time-reversal}
+
+前面所有对称性都由酉算符实现。时间反演不同：它不是普通的酉空间变换，而是\textbf{反酉}变换。这个差别看似技术性，实际上决定了 Kramers 简并以及拓扑能带理论的许多基本结构。因此必须从 $\vb k\to-\vb k$、自旋翻转与复共轭开始，并明确区分 $\Theta^2=+1$ 与 $\Theta^2=-1$。
+
+接下来考察反酉算符。
+
+\begin{definition}[时间反演算符]
+时间反演算符记为 $\Theta$。它是反线性的：
+\[
+\Theta(a\ket\psi+b\ket\phi)
+=a^*\Theta\ket\psi+b^*\Theta\ket\phi,
+\]
+并保持概率内积的模，满足
+\[
+\braket{\Theta\psi|\Theta\phi}
+=\braket{\phi|\psi}.
+\]
+若
+\[
+\Theta\hat H\Theta^{-1}=\hat H,
+\]
+则称系统具有时间反演对称性。
+\label{def:time-reversal}
+\end{definition}
+
+时间反演下，经典对应量的变换为
+\[
+ t\to-t,
+\qquad
+\vb r\to\vb r,
+\qquad
+\vb p\to-\vb p,
+\qquad
+\vb L\to-\vb L,
+\qquad
+\vb S\to-\vb S.
+\]
+因此无磁场、无磁序的普通动能与标量势通常保持不变，而 Zeeman 项
+\[
+-\boldsymbol\mu\cdot\vb B
+\]
+在只翻转粒子自由度而固定外磁场时会破坏时间反演对称性。
+
+对于无自旋粒子，在位置表象且哈密顿量可以取实的常见情形中，可以选
+\[
+\Theta=K,
+\]
+其中 $K$ 是复共轭。对自旋 $1/2$，一个标准相位约定是
+\[
+\Theta=-\ii\sigma_yK,
+\label{eq:spin-half-time-reversal}
+\]
+并且
+\[
+\Theta^2=-1.
+\label{eq:theta-square-minus}
+\]
+这个负号正是 Kramers 定理的来源。
+
+时间反演的反酉性并不是人为规定，而是由量子力学正则对易关系与动量反向共同逼出来的。
+
+可以从最基本的正则对易关系看出这一点。时间反演要求
+\[
+\Theta\hat{\vb r}\Theta^{-1}=\hat{\vb r},
+\qquad
+\Theta\hat{\vb p}\Theta^{-1}=-\hat{\vb p}.
+\]
+而量子力学有
+\[
+[\hat r_i,\hat p_j]=\ii\hbar\delta_{ij}.
+\]
+若 $\Theta$ 是普通线性酉算符，则共轭后左边变成
+\[
+[\hat r_i,-\hat p_j]=-\ii\hbar\delta_{ij},
+\]
+但右边的数 $\ii\hbar$ 不会改变，产生矛盾。若 $\Theta$ 是反酉的，它会把复数 $\ii$ 共轭成 $-\ii$，于是两边同时变号，正则对易关系保持成立。因此反酉性不是人为约定，而是由“位置不变、动量反号”与量子对易关系共同强迫出来的。
+
+接下来考察自旋 $1/2$ 时间反演算符的推导。
+
+在 $\sigma_z$ 基下，复共轭 $K$ 对 Pauli 矩阵的作用为
+\[
+K\sigma_xK^{-1}=\sigma_x,
+\qquad
+K\sigma_yK^{-1}=-\sigma_y,
+\qquad
+K\sigma_zK^{-1}=\sigma_z.
+\]
+单独的 $K$ 不能把三个自旋分量全部反号，因此还需乘一个酉矩阵。取绕 $y$ 轴转 $\pi$ 的自旋旋转
+\[
+U_y(\pi)=\exp\!\left(-\frac{\ii\pi}{2}\sigma_y\right)=-\ii\sigma_y,
+\]
+定义
+\[
+\Theta=U_y(\pi)K=-\ii\sigma_yK.
+\]
+直接计算可得
+\[
+\Theta\sigma_i\Theta^{-1}=-\sigma_i,
+\qquad i=x,y,z.
+\]
+于是时间反演确实把自旋翻转。再次作用一次，
+\[
+\Theta^2=-1,
+\]
+说明半整数自旋与无自旋/整数自旋的时间反演结构有本质区别。
+
+在周期晶体中，某些 $\vb k$ 与 $-\vb k$ 只差一个倒格矢；这些点在时间反演下映回自身，称为时间反演不变动量。
+
+TRIM 条件
+\[
+-\vb k=\vb k+\vb G
+\]
+等价于
+\[
+2\vb k=-\vb G.
+\]
+因此在 $d$ 维 Bravais 晶格中，每个倒格基方向上的系数只能取 $0$ 或 $1/2$，共有
+\[
+2^d
+\]
+个不等价 TRIM。三维晶体因此有八个 TRIM，二维有四个。一些 TRIM 在具体晶格中会被空间点群进一步分成不同的星，例如立方晶格里常见 $\Gamma$、若干 $X$、$L$ 型点。
+
+Kramers 定理保证自旋 $1/2$ 时间反演体系在每个 TRIM 都至少二重简并。拓扑绝缘体理论进一步利用这些 TRIM 上的 Kramers 对如何在整个 Brillouin 区连接来定义拓扑不变量；那已经超出本课程，但其最基本的代数根源就是本节证明的 $\Theta^2=-1$。
+
+\begin{theorem}[Kramers 定理]
+若系统具有时间反演对称性，且在所讨论的态空间上
+\[
+\Theta^2=-1,
+\]
+则每个能量本征态至少二重简并。具体地，若
+\[
+\hat H\ket\psi=E\ket\psi,
+\]
+则 $\Theta\ket\psi$ 具有同样能量，并与 $\ket\psi$ 正交。
+\label{thm:kramers}
+
+\par\smallskip\noindent\textbf{证明.}
+由 $\Theta\hat H\Theta^{-1}=\hat H$，
+\[
+\hat H\Theta\ket\psi
+=\Theta\hat H\ket\psi
+=E\Theta\ket\psi,
+\]
+所以时间反演态能量相同。再用反酉内积恒等式，取 $\ket\phi=\ket\psi$、$\ket\chi=\Theta\ket\psi$：
+\[
+\braket{\Theta\psi|\Theta^2\psi}
+=\braket{\Theta\psi|\psi}.
+\]
+由 $\Theta^2=-1$，左边又等于
+\[
+-\braket{\Theta\psi|\psi}.
+\]
+故
+\[
+\braket{\Theta\psi|\psi}=0.
+\]
+因此 $\ket\psi$ 与 $\Theta\ket\psi$ 是两个线性无关、同能量的本征态。
+\end{theorem}
+
+证明中的关键不是“时间反演让自旋翻转”这句物理直觉，而是反酉性与 $\Theta^2=-1$ 的组合。设 $|\psi\rangle$ 是能量本征态。若 $[\Theta,\hat H]=0$，则 $\Theta|\psi\rangle$ 具有同样能量。接下来要证明这两个态不是同一个方向。
+
+利用反酉算符满足
+\[
+\langle\Theta\phi|\Theta\psi\rangle=\langle\psi|\phi\rangle,
+\]
+取 $|\phi\rangle=|\psi\rangle$、并把第二个态再作用一次 $\Theta$，可得
+\[
+\langle\Theta\psi|\Theta^2\psi\rangle
+=\langle\Theta\psi|\psi\rangle.
+\]
+若 $\Theta^2=-1$，左边又等于 $-\langle\Theta\psi|\psi\rangle$，所以该内积只能为零。于是 $|\psi\rangle$ 与 $\Theta|\psi\rangle$ 正交，必然是两个线性无关的同能态。
+
+
+时间反演算符的构造完成后，现在分析它在晶体中的物理后果：$\vb k$ 和 $-\vb k$ 态的配对，以及复共轭表示的等价性判据。
+
+时间反演把动量反号，因此 Bloch 态满足
+\[
+\Theta:\quad \vb k\longmapsto-\vb k.
+\]
+若系统有时间反演对称性，则能带满足
+\[
+E_n(\vb k)=E_n(-\vb k),
+\label{eq:tr-band-symmetry}
+\]
+这里若存在自旋--轨道耦合，$n$ 应理解为连续追踪的 Kramers 相关能带，而不能简单把态写成固定的“$\uparrow/\downarrow$”自旋本征态。
+
+若某个波矢满足
+\[
+-\vb k=\vb k+\vb G,
+\]
+则它称为时间反演不变动量（TRIM）。在自旋 $1/2$ 且 $\Theta^2=-1$ 的系统中，Kramers 定理保证每个 TRIM 上都有二重简并。
+
+如果系统还具有空间反演 $P$，则
+\[
+P:\vb k\to-\vb k,
+\qquad
+\Theta:\vb k\to-\vb k,
+\]
+所以组合 $P\Theta$ 保持同一个 $\vb k$ 不变。对通常的非磁、中心对称自旋 $1/2$ 系统，$P$ 与 $\Theta$ 对易，且
+\[
+(P\Theta)^2=-1.
+\]
+于是 Kramers 型论证在\emph{每一个} $\vb k$ 上都成立，得到整条能带的双重简并。若破坏反演但保留时间反演，则一般 $\vb k$ 点可以发生自旋--轨道劈裂，只在 TRIM 处仍有 Kramers 简并。这就是 Rashba/Dresselhaus 型自旋分裂为何需要缺失空间反演的对称性基础。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.98]
+  \draw[axes] (-3.2,0)--(3.25,0) node[right] {$k$};
+  \draw[axes] (0,-.4)--(0,4.6) node[above] {$E$};
+  \draw[line width=.9pt,domain=-3:3,samples=80] plot (\x,{1.15+0.28*(\x)^2+0.42*\x});
+  \draw[line width=.9pt,domain=-3:3,samples=80] plot (\x,{1.15+0.28*(\x)^2-0.42*\x});
+  \fill (0,1.15) circle (1.6pt);
+  \node[lecturelabel] at (.75,.8) {Kramers point};
+  \node[lecturelabel] at (1.65,3.7) {$E_+(k)=E_-(-k)$};
+\end{tikzfig}
+\caption{保时间反演但缺少空间反演时的典型自旋分裂示意。一般 $k$ 处两支分开，但在时间反演不变动量处仍必须相交成 Kramers 对。}
+\label{fig:tr-kramers-bands}
+\end{figure}
+
+时间反演的反酉性还解释了一个在点群特征标表中常见的现象。若一个无自旋态按复表示 $D(g)$ 变换，则其时间反演态中的系数被复共轭，因此按 $D(g)^*$ 变换。若 $D$ 与 $D^*$ 不等价，纯空间点群并不要求两者属于同一个不可约表示；但时间反演会把它们联系起来。在具有时间反演对称性的完整问题中，这对复共轭表示不能被任意分开处理。
+
+这也说明为什么仅看普通点群特征标表有时会低估简并：真正的对称结构可能包含反酉操作。要系统处理磁性系统和时间反演，需要把普通群表示推广到共表示（corepresentation）理论；这超出本课程主体范围，但本节的 Kramers 定理和 $\vb k\leftrightarrow-\vb k$ 关系已经覆盖后续凝聚态物理中最常用的部分。
+
+接下来考察Frobenius--Schur 指标与表示的实性分类。
+
+时间反演算符把复表示 $D(g)$ 送到复共轭 $D(g)^*$。一个自然的问题是：$D$ 与 $D^*$ 是否等价？如果等价，能否在实数域上实现？这两个问题的答案由\textbf{Frobenius--Schur 指标}完全分类。这个指标不仅是一个纯代数不变量，还直接决定时间反演对称性下简并的结构。
+
+\begin{definition}[Frobenius--Schur 指标]
+设 $G$ 是有限群，$D^{(\alpha)}$ 是不可约酉表示，维数 $d_\alpha$。定义
+\begin{equation}
+\nu_\alpha
+=\frac{1}{|G|}\sum_{g\in G}\chi^{(\alpha)}(g^2).
+\label{eq:frobenius-schur-indicator}
+\end{equation}
+称为不可约表示 $\alpha$ 的\textbf{Frobenius--Schur 指标}。
+\label{def:frobenius-schur-indicator}
+\end{definition}
+
+\begin{theorem}[Frobenius--Schur 分类定理]
+对有限群 $G$ 的每个不可约表示 $\alpha$，Frobenius--Schur 指标 $\nu_\alpha\in\{+1,0,-1\}$，且：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $\nu_\alpha=+1$（\textbf{实型}）：$D^{(\alpha)}\cong D^{(\alpha)*}$，且存在对称非退化不变双线性形式。表示可在实数域上实现。
+\item $\nu_\alpha=0$（\textbf{复型}）：$D^{(\alpha)}\not\cong D^{(\alpha)*}$。$D^{(\alpha)}$ 与 $D^{(\alpha)*}$ 是两个不等价不可约表示。
+\item $\nu_\alpha=-1$（\textbf{四元数型/伪实型}）：$D^{(\alpha)}\cong D^{(\alpha)*}$，且存在反对称非退化不变双线性形式。表示不能在实数域上实现。
+\end{enumerate}
+\label{thm:frobenius-schur-classification}
+\end{theorem}
+
+\begin{derivation}[Frobenius--Schur 分类定理的证明]
+\textbf{第一步：$\nu_\alpha$ 只取 $+1,0,-1$.}\enspace
+考虑表示空间 $V_\alpha$ 上的双线性形式。对任意不变双线性形式 $B:V_\alpha\times V_\alpha\to\CC$（即 $B(D(g)v,D(g)w)=B(v,w)$），定义其转置 $B^T(v,w)=B(w,v)$。$B^T$ 也是不变的。于是 $B_\pm=\frac12(B\pm B^T)$ 分别给出对称和反对称不变双线性形式。
+
+关键引理：$V_\alpha$ 上的不变双线性形式空间至多一维。事实上，若 $B_1,B_2$ 都非零不变，各给出同构 $V_\alpha\to V_\alpha^*$。由 Schur 引理，两个同构只差标量倍，故 $\dim\operatorname{Bil}_{\mathrm{inv}}(V_\alpha)\le1$。
+
+由此可知：对称不变形式和反对称不变形式不能同时非零（否则空间至少二维）。三种情形为：
+\begin{itemize}
+\item 存在非零对称不变形式：$\nu_\alpha=+1$；
+\item 不存在非零不变形式（即 $D^{(\alpha)}\not\cong D^{(\alpha)*}$）：$\nu_\alpha=0$；
+\item 存在非零反对称不变形式：$\nu_\alpha=-1$。
+\end{itemize}
+
+\textbf{第二步：不变双线性形式与 $D\cong D^*$ 的等价.}\enspace
+给定不变双线性形式 $B$，定义线性映射 $\varphi_B:V\to V^*$ 为 $\varphi_B(v)(w)=B(v,w)$。不变性 $B(D(g)v,D(g)w)=B(v,w)$ 等价于 $\varphi_B$ 是从 $D$ 到 $D^*$ 的交织映射。因此：
+\begin{itemize}
+\item $D\cong D^*$ 当且仅当存在非零不变双线性形式；
+\item 由 Schur 引理，若 $D\cong D^*$，则 $\varphi_B$ 在差标量意义下唯一，故不变双线性形式空间恰为一维。
+\end{itemize}
+
+\textbf{第三步：计算 $\nu_\alpha$ 的值.}\enspace
+设 $D\cong D^*$，取非零不变双线性形式 $B$。在 $V$ 中取基，$B$ 对应矩阵 $A$，不变性给出
+\[
+D(g)^T A\, D(g)=A,\qquad\forall g\in G.
+\]
+若 $B$ 对称则 $A^T=A$，若反对称则 $A^T=-A$。
+
+现在计算 $\sum_g\chi(g^2)$。在矩阵形式中，
+\[
+\chi(g^2)=\tr D(g)^2=\sum_{ij}D_{ij}(g)D_{ji}(g).
+\]
+利用不变性 $D(g)^T A D(g)=A$，即 $D(g)^T=A\,D(g)^{-1}A^{-1}$，可以建立
+\[
+\sum_g D_{ij}(g)D_{ji}(g)
+=\sum_g D_{ij}(g)\bigl(A\,D(g)^{-1}A^{-1}\bigr)_{ji}.
+\]
+对 $g$ 求和后用大正交关系：
+\[
+\frac{1}{|G|}\sum_g D_{ij}(g)D_{kl}(g)^*
+=\frac{1}{d_\alpha}\delta_{il}\delta_{jk}.
+\]
+注意 $D(g)^{-1}=D(g^{-1})=D(g)^\dagger$（酉表示），故 $D(g)^*=D(g^{-1})^T$。经过指标追踪（把 $A$ 的对称/反对称性代入），最终得到
+\[
+\nu_\alpha=\frac{1}{|G|}\sum_g\chi(g^2)
+=\begin{cases}
++1,& B\text{ 对称},\\
+-1,& B\text{ 反对称}.
+\end{cases}
+\]
+若 $D\not\cong D^*$，则 $\sum_g\chi(g^2)=0$，因为 $\chi^*\neq\chi$ 时大正交关系给出
+\[
+\frac{1}{|G|}\sum_g\chi(g)\chi(g)=\frac{1}{|G|}\sum_g\chi(g)\overline{\chi^*(g)}=0.
+\]
+更精确地，$\chi(g^2)$ 可用特征标的 Frobenius--Schur 诱导公式处理，最终给出 $\nu_\alpha=0$。
+
+\textbf{第四步：实型可在实数域上实现.}\enspace
+若 $\nu_\alpha=+1$，取对称不变形式 $B$。因 $B$ 非退化对称，可选实基使 $B$ 的矩阵为 $I$。在此基下，不变性 $D(g)^T D(g)=I$ 结合 $D(g)$ 酉给出 $D(g)$ 为实正交矩阵。因此表示确实在 $\RR$ 上实现。
+
+若 $\nu_\alpha=-1$，反对称不变形式 $B$ 的矩阵 $A$ 满足 $A^T=-A$。若表示可在 $\RR$ 上实现，则 $D(g)$ 为实矩阵且 $D(g)^T A\,D(g)=A$。但非退化实反对称矩阵只存在于偶数维空间，故 $d_\alpha$ 必为偶数。更深层地，四元数型表示自然在 $\mathbb H$ 上实现：$V_\alpha\cong\CC^{d/2}\otimes\CC^2$，其中 $\CC^2$ 承载 $SU(2)$ 的基本表示，这正是 $\Theta^2=-1$ 的代数来源。
+\end{derivation}
+
+Frobenius--Schur 指标与时间反演的关系是本节的核心物理连接。
+
+\begin{theorem}[Frobenius--Schur 指标与时间反演简并]
+设系统具有时间反演对称性 $\Theta\hat H\Theta^{-1}=\hat H$，且 $\Theta^2=\epsilon=\pm1$。若某能级承载群 $G$ 的不可约表示 $\alpha$，则：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $\epsilon=+1$（整数自旋/无自旋）：时间反演不产生额外简并。能级简并度为 $d_\alpha$。
+\item $\epsilon=-1$（半整数自旋）：时间反演产生额外简并当且仅当 $\nu_\alpha=-1$（四元数型）。此时简并度为 $2d_\alpha$。若 $\nu_\alpha=+1$（实型），简并度仍为 $d_\alpha$。
+\end{enumerate}
+\label{thm:fs-time-reversal-degeneracy}
+\end{theorem}
+
+\begin{derivation}[定理证明]
+\textbf{情形 $\epsilon=+1$.}\enspace
+$\Theta$ 是普通反酉算符且 $\Theta^2=+1$。对能量本征态 $\ket\psi$，$\Theta\ket\psi$ 同能。但
+\[
+\braket{\Theta\psi|\psi}=\braket{\Theta\psi|\Theta^2\psi}=\braket{\Theta\psi|\psi},
+\]
+没有符号矛盾，$\Theta\ket\psi$ 可以与 $\ket\psi$ 平行。因此时间反演不强制额外简并。
+
+\textbf{情形 $\epsilon=-1$.}\enspace
+由 Kramers 定理（\cref{thm:kramers}），$\ket\psi$ 与 $\Theta\ket\psi$ 正交。但简并结构取决于 $\Theta$ 在整个不可约表示空间上的作用。
+
+设 $\{\ket{\alpha,m}\}_{m=1}^{d_\alpha}$ 是不可约表示 $\alpha$ 的一组基。$\Theta$ 把这个空间映到自身（因为 $\Theta$ 与 $G$ 对易，由 Schur 引理 $\Theta$ 在不可约空间上的作用是标量或零）。更精确地，$\Theta$ 给出从 $D^{(\alpha)}$ 到 $D^{(\alpha)*}$ 的反线性交织映射。
+
+若 $D^{(\alpha)}\not\cong D^{(\alpha)*}$（复型，$\nu_\alpha=0$）：$\Theta$ 把 $\alpha$ 型空间送到不等价的 $\alpha^*$ 型空间。两者必须同能，简并度为 $2d_\alpha$。
+
+若 $D^{(\alpha)}\cong D^{(\alpha)*}$（实型或四元数型）：$\Theta$ 在 $\alpha$ 型空间内部作用。关键在于 $\Theta^2$ 在此空间上的值：
+\begin{itemize}
+\item $\nu_\alpha=+1$（实型）：可选取基使 $D(g)$ 为实矩阵，$\Theta=K$（复共轭）。在此基下 $\Theta^2=+1$，与假设 $\epsilon=-1$ 矛盾。因此实型不可约表示不能承载 $\Theta^2=-1$ 的系统——更精确地说，实型表示在 $\Theta^2=-1$ 下会自动加倍：表示空间必须是 $V_\alpha\otimes\CC^2$，$\Theta$ 作用在 $\CC^2$ 因子上给出 $\Theta^2=-1$。简并度为 $2d_\alpha$。
+
+\item $\nu_\alpha=-1$（四元数型）：存在反对称不变形式 $A$。$\Theta$ 可取为
+\[
+\Theta=\sum_{m,n}A_{mn}K\,D(g),
+\]
+满足 $\Theta^2=-1$。由 Kramers 论证，每个态 $\ket{\alpha,m}$ 与 $\Theta\ket{\alpha,m}$ 正交。由于 $A$ 反对称，$d_\alpha$ 必为偶数，设 $d_\alpha=2k$。$\Theta$ 把 $d_\alpha$ 维空间分成 $k$ 个 Kramers 对，简并度为 $d_\alpha$（不额外加倍，因为 Kramers 配对已在 $d_\alpha$ 内部完成）。
+\end{itemize}
+
+综合：对 $\Theta^2=-1$ 系统，复型（$\nu=0$）和实型（$\nu=+1$）表示都给出 $2d_\alpha$ 简并，四元数型（$\nu=-1$）给出 $d_\alpha$ 简并（但 $d_\alpha$ 为偶数，内部已有 Kramers 配对）。
+
+\textbf{物理总结.}\enspace 对半整数自旋系统（$\Theta^2=-1$，如含奇数个电子的原子在无外磁场时）：
+\begin{itemize}
+\item 若能级承载的不可约表示是四元数型（$\nu=-1$，如 $SU(2)$ 的半整数 $j$ 表示），Kramers 配对已在表示内部完成，简并度为 $d_\alpha$（偶数）。
+\item 若能级承载的不可约表示是实型或复型，则时间反演把表示空间加倍，简并度为 $2d_\alpha$。
+\end{itemize}
+对整数自旋系统（$\Theta^2=+1$，如含偶数个电子或无自旋的系统），时间反演不产生额外简并，简并度始终为 $d_\alpha$。这就是为什么晶场劈裂的计算中，整数自旋只需考虑空间对称性，而半整数自旋必须额外考虑时间反演带来的 Kramers 简并。
+
+\emph{双群方法.}\enspace 半整数自旋在空间群作用下是射影表示（$SO(3)$ 上自旋 $1/2$ 需双重覆盖 $SU(2)$）。双群 $\tilde G=G\times\{E,\bar E\}$（$\bar E$ 为 $2\pi$ 转动，在 $SU(2)$ 中非单位）把射影表示修正为真正表示。$\tilde G$ 的不可约表示分两类：单值表示（$\bar E\mapsto+I$，整数自旋）和双值表示（$\bar E\mapsto-I$，半整数自旋）。双值表示的维数是 Kramers 简并的基础：每个双值表示的维数为偶数（因 $\Theta$ 在表示空间上无不动向量）。双群方法是晶场理论中半整数自旋能级分析的标准工具。
+
+\emph{自旋-轨道耦合与能级结构.}\enspace 自旋-轨道耦合 $H_{\text{SO}}=\lambda\vb L\cdot\vb S$ 把轨道角动量 $L$ 和自旋 $S$ 耦合为总角动量 $J$。在 $O(3)$ 对称下，$H_{\text{SO}}$ 使能级按 $J$ 标记（而非分别按 $L$ 和 $S$）。晶场 $V_{\text{cf}}$ 进一步把 $J$ 多重态按晶体点群 $G$ 的不可约表示劈裂。对半整数 $J$，每个不可约表示的维数 $\ge2$（Kramers 简并），使晶场劈裂后的能级至少二重简并。例如 $J=5/2$ 在 $O_h$ 晶场中劈裂为 $\Gamma_7\oplus\Gamma_8$（2+4=6），$\Gamma_7$ 为 Kramers 双重态，$\Gamma_8$ 为 Kramers 四重态。
+
+\emph{Kramers 配对与能带理论.}\enspace 在能带理论中，时间反演对称使 $E_n(\vb k,\uparrow)=E_n(-\vb k,\downarrow)$（Kramers 配对）。在 $\vb k=-\vb k$ 点（即 $\vb k=0$ 或 Brillouin 区边界），Kramers 配对在同一 $\vb k$ 点，给出二重简并（Kramers 简并）。在一般 $\vb k$ 点，Kramers 配对在不同 $\vb k$ 点（$\vb k$ 和 $-\vb k$），不产生额外简并。自旋-轨道耦合使能带 $E_n(\vb k)$ 不再自旋简并，但 Kramers 简并保证 $\vb k=0$ 点二重简并。这一简并是拓扑绝缘体中 $Z_2$ 不变量的基础。
+
+\emph{拓扑绝缘体与 Kramers 简并.}\enspace 时间反演对称的绝缘体用 $Z_2$ 拓扑不变量分类。Kramers 简并在 Brillouin 区时间反演不变点（$\vb k=-\vb k+\vb G$，共 8 个）强制能带二重简并。$Z_2$ 不变量 $\nu=\prod_{i=1}^4\delta_i\pmod 2$（$\delta_i=\pm1$ 为时间反演不变点上能带的 Kramers 配对 Pfaffian 符号）。$\nu=1$ 为拓扑绝缘体（表面必有 Kramers 简并的 Dirac 锥），$\nu=0$ 为普通绝缘体。Kramers 简并从原子能级的简单约束提升为拓扑相的分类工具，是现代凝聚态物理中群论与拓扑结合的典范。
+\end{derivation}
+
+\begin{example}[$SU(2)$ 表示的 Frobenius--Schur 指标]
+对 $SU(2)$ 的 $j$ 表示（维数 $2j+1$），特征标为 $\chi_j(\theta)=\frac{\sin((2j+1)\theta/2)}{\sin(\theta/2)}$。Frobenius--Schur 指标为
+\[
+\nu_j=(-1)^{2j}.
+\]
+因此：
+\begin{itemize}
+\item $j\in\NN$（整数自旋）：$\nu=+1$，实型。表示可在实数域上实现（如 $j=1$ 的三维表示是实正交矩阵）。
+\item $j\in\NN+1/2$（半整数自旋）：$\nu=-1$，四元数型。表示维数 $2j+1$ 为偶数，存在反对称不变形式。这正是 Kramers 简并的群论根源。
+\end{itemize}
+对 $SU(2)$ 没有复型（$\nu=0$）表示，因为所有表示都自共轭：$D^{(j)*}\cong D^{(j)}$。这反映了 $SU(2)$ 的特殊性——其所有不可约表示都是实或四元数型。
+\end{example}
+
+\begin{example}[点群的 Frobenius--Schur 指标]
+对常见晶体点群：
+\begin{itemize}
+\item $C_n$ 的一维表示 $e^{2\pi im/n}$：若 $m=0$ 或 $m=n/2$（当 $n$ 偶），则 $\nu=+1$（实型）；否则 $\nu=0$（复型），因为 $e^{2\pi im/n}$ 与 $e^{-2\pi im/n}$ 不等价。
+\item $D_n$ 的所有不可约表示都是实型（$\nu=+1$），因为 $D_n$ 是实反射群。
+\item $T$（正四面体群）的三维表示：$\nu=+1$（实型，由实正交矩阵实现）。
+\item $O$（立方群）的三维表示：$\nu=+1$。
+\end{itemize}
+晶体点群中四元数型表示（$\nu=-1$）很少见，但双群中会出现。例如 $T_d$ 的双群 $\bar T_d$ 有二维旋量表示，其 $\nu=-1$，这正是半整数自旋在晶场中的 Kramers 简并来源。
+\end{example}
+
+Frobenius--Schur 指标还给出一个有用的维数约束。
+
+\begin{proposition}[四元数型表示维数为偶数]
+若 $\nu_\alpha=-1$，则 $d_\alpha$ 为偶数。
+\label{prop:quaternionic-even-dim}
+
+\par\smallskip\noindent\textbf{证明.}\enspace
+四元数型表示存在非退化反对称不变双线性形式 $B$。非退化反对称矩阵只存在于偶数维空间（$\det A=\det A^T=(-1)^{d_\alpha}\det A$，若 $d_\alpha$ 奇则 $\det A=0$）。故 $d_\alpha$ 为偶数。
+\end{proposition}
+
+这个结论与 Kramers 定理一致：半整数自旋的不可约表示维数 $2j+1$ 为偶数，因此可以承载 $\Theta^2=-1$ 的反酉时间反演。
+
+\section{对称性破缺与序参量}
+\label{sec:symmetry-breaking}
+
+前面各节处理的是"对称性 $\Rightarrow$ 简并与选择定则"的正向逻辑。现在反过来：当系统的对称性从高对称群 $G$ 降为子群 $H\subset G$ 时，群论如何描述这一"破缺"？这个问题在相变理论（Landau 理论）、Jahn--Teller 效应和凝聚态物理中是核心。
+
+接下来考察对称性破缺的群论描述。
+
+\begin{definition}[对称性破缺]
+设系统 Hamilton 量 $\hat H$ 在群 $G$ 下不变（$[\hat H,U(g)]=0$，$\forall g\in G$）。若基态 $\ket{\psi_0}$ 满足 $U(g)\ket{\psi_0}\ne\ket{\psi_0}$ 对某些 $g\in G$，则称对称性从 $G$ 破缺到\textbf{保持基态不变的子群}
+\[
+H=\{h\in G\mid U(h)\ket{\psi_0}=\ket{\psi_0}\}\le G.
+\]
+$H$ 称为\textbf{残余对称群}，$G/H$（若 $H\normal G$）或陪集结构描述被破缺的对称操作。
+\end{definition}
+
+\begin{proposition}[序参量的表示论]
+\label{prop:order-parameter}
+对称性破缺由\textbf{序参量} $\eta$ 描述，它是在 $G$ 下按某个非平凡不可约表示 $\Gamma\ne A_1$ 变换的量。具体地：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item 高对称相：$\eta=0$，系统在 $G$ 下不变。
+\item 低对称相：$\eta\ne0$，$\eta$ 在残余群 $H$ 下不变，但在 $G\setminus H$ 的操作下改变。
+\item $\eta$ 按 $\Gamma$ 的某个分量变换，$H$ 是 $\Gamma$ 中使该分量不变的子群。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(i)}\enspace 高对称相中基态 $\ket{\psi_0}$ 在 $G$ 下不变，所有按非平凡表示变换的量期望值为零（由 \cref{thm:matrix-element-selection}，$A_1\to\Gamma$ 的矩阵元为零若 $\Gamma\ne A_1$）。
+
+\textbf{(ii)}\enspace 低对称相中 $\ket{\psi_0}$ 只在 $H$ 下不变。序参量 $\eta=\bra{\psi_0}\hat O\ket{\psi_0}$（$\hat O$ 按 $\Gamma$ 变换）非零，因 $\hat O$ 在 $H$ 下有 $A_1$ 分量（即 $\Gamma\downarrow_H$ 含 $A_1$）。但对 $g\in G\setminus H$，$U(g)\ket{\psi_0}\ne\ket{\psi_0}$，$\eta$ 在 $g$ 下改变。
+
+\textbf{(iii)}\enspace $H=\{g\in G\mid D^{(\Gamma)}(g)\eta=\eta\}$，即 $H$ 是 $\eta$ 在 $\Gamma$ 表示中的稳定子群。
+\end{proof}
+
+\begin{example}[铁磁相变的序参量]
+各向同性铁磁体的对称群 $G=SO(3)$（自旋转动）。高温顺磁相：$\vb M=0$（磁化强度为零），$SO(3)$ 完整。低温铁磁相：$\vb M\ne0$（自发磁化），设 $\vb M$ 沿 $z$ 方向。残余对称群 $H=SO(2)$（绕 $z$ 轴的转动保持 $\vb M$ 不变）。序参量 $\vb M$ 是矢量（rank $1$ 张量），按 $SO(3)$ 的 $j=1$ 表示变换。破缺的对称操作：$SO(3)/SO(2)\cong S^2$（单位球面），对应磁化方向的选择——这就是铁磁体中"自发选择方向"的群论描述。
+\end{example}
+
+接下来考察Landau 理论的群论基础。
+
+Landau 相变理论把自由能展开为序参量的幂级数，群论严格约束哪些项可以出现。
+
+\begin{theorem}[Landau 自由能的群论约束]
+\label{thm:landau-group}
+设序参量 $\eta$ 按群 $G$ 的不可约表示 $\Gamma$ 变换（维数 $d_\Gamma$）。自由能 $F(\eta)$ 在 $G$ 下不变，故只含 $G$ 不变的项。具体地：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item 线性项 $\eta_i$：仅当 $\Gamma=A_1$（平凡表示）时允许。对非平凡 $\Gamma$，$\sum_i\eta_i$ 不是不变量，线性项被禁。
+\item 二次项 $\eta_i\eta_j$：对称化后按 $\mathrm{Sym}^2\Gamma$ 变换，不变项要求 $A_1\subset\mathrm{Sym}^2\Gamma$。对实表示，$A_1$ 总在 $\mathrm{Sym}^2\Gamma$ 中（$\sum_i\eta_i^2$ 不变），给出 $\alpha|\eta|^2$ 项。
+\item 三次项 $\eta_i\eta_j\eta_k$：按 $\mathrm{Sym}^3\Gamma$ 变换，仅当 $A_1\subset\mathrm{Sym}^3\Gamma$ 时允许。
+\item 四次项：按 $\mathrm{Sym}^4\Gamma$ 变换，$A_1\subset\mathrm{Sym}^4\Gamma$ 的重数给出独立四次不变量个数。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+自由能 $F$ 是标量（在 $G$ 下不变），故 $F$ 中每项必须是 $G$ 不变的多项式。rank $n$ 不变量对应 $\mathrm{Sym}^n\Gamma$ 中的 $A_1$ 分量，重数 $m_{A_1}=\frac1{|G|}\sum_g\chi_{\mathrm{Sym}^n\Gamma}(g)$ 给出独立的 $n$ 次不变量个数。
+
+\textbf{线性项.}\enspace $\eta_i$ 按 $\Gamma$ 变换，$A_1\subset\Gamma$ 当且仅当 $\Gamma=A_1$。对非平凡序参量，线性项被禁——这就是 Landau 理论中"连续相变要求序参量在临界点连续变化"的群论基础。
+
+\textbf{二次项.}\enspace $\eta_i\eta_j$ 按 $\Gamma\otimes\Gamma$ 变换，对称部分按 $\mathrm{Sym}^2\Gamma$ 变换。对实表示，$\Gamma\otimes\Gamma$ 总含 $A_1$（因 $\chi_\Gamma^2$ 的平均 $\frac1{|G|}\sum|\chi_\Gamma|^2=1$），且 $A_1$ 在对称部分（因 $\sum_i\eta_i^2$ 不变）。故二次项 $\alpha\sum_i\eta_i^2$ 总允许。
+
+\textbf{三次项.}\enspace $\mathrm{Sym}^3\Gamma$ 是否含 $A_1$ 取决于 $\Gamma$ 的具体结构。若 $A_1\not\subset\mathrm{Sym}^3\Gamma$，三次项被禁，Landau 自由能 $F=\alpha|\eta|^2+\beta|\eta|^4+\cdots$ 允许连续的二阶相变。若 $A_1\subset\mathrm{Sym}^3\Gamma$，三次项允许，一般导致一阶相变（序参量在临界点跳变）。
+\end{proof}
+
+\begin{example}[Landau 理论对立方晶系铁电相变的应用]
+立方晶系铁电体（如 $\mathrm{BaTiO_3}$）的序参量是极化矢量 $\vb P=(P_x,P_y,P_z)$，按 $O$ 的三维不可约表示 $T_1$ 变换。
+
+\textbf{二次项.}\enspace $\mathrm{Sym}^2 T_1=A_1\oplus E\oplus T_2$，$A_1$ 重数 $1$，唯一二次不变量 $P_x^2+P_y^2+P_z^2=|\vb P|^2$。
+
+\textbf{三次项.}\enspace $\mathrm{Sym}^3 T_1=A_1\oplus A_2\oplus 2E\oplus 2T_1\oplus T_2$，$A_1$ 重数 $1$，唯一三次不变量 $P_xP_yP_z$。三次项允许意味着立方铁电相变一般是一阶的——这正是 $\mathrm{BaTiO_3}$ 相变为一阶的群论原因。
+
+\textbf{四次项.}\enspace $\mathrm{Sym}^4 T_1$ 中 $A_1$ 重数 $2$，两个独立四次不变量：$|\vb P|^4=(P_x^2+P_y^2+P_z^2)^2$ 和 $P_x^4+P_y^4+P_z^4$。自由能
+\[
+F=\alpha|\vb P|^2+\beta P_xP_yP_z+\gamma_1|\vb P|^4+\gamma_2(P_x^4+P_y^4+P_z^4)+\cdots.
+\]
+$\gamma_2$ 项决定极化方向：$\gamma_2<0$ 时沿 $\langle 100\rangle$（如四方 $\mathrm{BaTiO_3}$ 低温相），$\gamma_2>0$ 时沿 $\langle 111\rangle$（如三方 $\mathrm{LiNbO_3}$）。
+\end{example}
+
+接下来考察Jahn--Teller 效应的群论证明。
+
+Jahn--Teller 效应是分子和晶体中对称性自发破缺的经典实例：高对称构型下若电子态简并，系统会自发畸变以消除简并，降低能量。
+
+\begin{theorem}[Jahn--Teller 定理]
+\label{thm:jahn-teller}
+设分子的电子基态在核构型 $Q_0$（高对称点群 $G$）下按不可约表示 $\Gamma$ 变换，$\dim\Gamma>1$（简并）。若振动表示 $\rho_{\mathrm{vib}}$ 的对称化平方 $\mathrm{Sym}^2\Gamma$ 与某个非全对称振动模式 $\Gamma_v\ne A_1$ 有非零交集：
+\[
+\mathrm{Sym}^2\Gamma\otimes\Gamma_v\supset A_1,
+\]
+则 $Q_0$ 不是稳定平衡构型：存在畸变 $Q\ne Q_0$ 使能量降低，对称性从 $G$ 破缺到 $H\subset G$。
+\end{theorem}
+
+\begin{proof}
+\textbf{第一步：能量展开.}\enspace 把电子能量 $E(Q)$ 在 $Q_0$ 附近按核位移 $Q$ 展开：
+\[
+E(Q)=E_0+\sum_i\frac{\partial E}{\partial Q_i}Q_i+\frac12\sum_{ij}\frac{\partial^2E}{\partial Q_i\partial Q_j}Q_iQ_j+\cdots.
+\]
+高对称点 $Q_0$ 是平衡点，一次项为零。
+
+\textbf{第二步：线性耦合.}\enspace 简并态 $\{\ket{\Gamma,m}\}$ 的能量矩阵为
+\[
+H_{mn}(Q)=E_0\delta_{mn}+\sum_i\bra{\Gamma,m}\frac{\partial\hat H}{\partial Q_i}\ket{\Gamma,n}Q_i+\cdots.
+\]
+矩阵元 $\bra{\Gamma,m}\partial\hat H/\partial Q_i\ket{\Gamma,n}$ 非零要求 $A_1\subset\Gamma^*\otimes\Gamma_v\otimes\Gamma$（$Q_i$ 按 $\Gamma_v$ 变换，$\partial\hat H/\partial Q_i$ 也按 $\Gamma_v$ 变换）。等价地 $\Gamma\otimes\Gamma\otimes\Gamma_v\supset A_1$，即 $\mathrm{Sym}^2\Gamma\otimes\Gamma_v\supset A_1$（因 $m,n$ 对称）。
+
+\textbf{第三步：能量降低.}\enspace 若条件满足，线性耦合矩阵 $V_{mn}=\sum_i\bra{\Gamma,m}\partial\hat H/\partial Q_i\ket{\Gamma,n}Q_i$ 非零。$V$ 是 $\dim\Gamma\times\dim\Gamma$ 厄米矩阵，迹为零（因 $V$ 按 $\Gamma_v\ne A_1$ 变换，$A_1$ 分量的迹为零）。迹零厄米矩阵至少有一个负本征值。故存在简并态的线性组合使能量降低 $\Delta E<0$，畸变 $Q$ 使总能量 $E(Q)<E_0$。
+
+\textbf{第四步：对称性破缺.}\enspace 畸变 $Q$ 按 $\Gamma_v\ne A_1$ 变换，故 $Q$ 不在所有 $G$ 操作下不变。残余对称群 $H=\{g\in G\mid D^{(\Gamma_v)}(g)Q=Q\}$ 是 $G$ 的真子群。
+\end{proof}
+
+\begin{example}[$E\otimes e$ Jahn--Teller 效应]
+正三角形分子（如 $\mathrm{H_3}$、$\mathrm{C_3H_3}$）的电子基态按 $C_{3v}$ 的 $E$ 表示变换（二重简并），振动模式中有一个 $e$ 型模式（二重简并的弯曲振动）。检查条件：
+\[
+\mathrm{Sym}^2 E = A_1\oplus E,\qquad \mathrm{Sym}^2 E\otimes E = (A_1\oplus E)\otimes E = E\oplus(A_1\oplus A_2\oplus E)\supset A_1.
+\]
+条件满足，Jahn--Teller 效应发生：正三角形构型不稳定，系统畸变为等腰三角形（对称性从 $C_{3v}$ 破缺到 $C_s$）。这就是 $E\otimes e$ Jahn--Teller 效应，是分子物理中最常见的类型。
+
+\textbf{例外.}\enspace 若 $\Gamma$ 是一维表示（$\dim\Gamma=1$），$\mathrm{Sym}^2\Gamma=\Gamma^2$，对一维表示 $\Gamma^2$ 可能不含任何 $\Gamma_v\ne A_1$，Jahn--Teller 效应不发生。线性分子的 $\Sigma$ 态（一维）不发生 Jahn--Teller 畸变，保持线性构型。Kramers 简并（时间反演强制二重简并）也不受 Jahn--Teller 效应影响——Kramers 对不能被晶场劈裂，这是 \cref{thm:kramers} 的推论。
+\end{example}
+
+\section{习题与解答}
+\label{sec:quantum-group-exercises}
+
+下面习题沿本章主线排列。前几题训练“本征空间承载表示”和对称性劈裂；中间几题练投影算符、选择定则与光谱；最后几题处理 Bloch 定理、空间群和时间反演。每题解答都尽量指出所调用的前文结构。
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2.5em]
+
+\item 设 $[\hat H,U(g)]=0$。证明若 $\ket\psi$ 是能量 $E$ 的本征态，则 $U(g)\ket\psi$ 也是能量 $E$ 的本征态。
+
+\emph{解答.}
+\[
+\hat H U(g)\ket\psi
+=U(g)\hat H\ket\psi
+=E U(g)\ket\psi.
+\]
+这正是 \Cref{thm:eigenspace-invariant} 的单态版本。
+
+\item 某能级承载点群的一个三维不可约表示。只由该点群对称性，能否保证该能级恰好三重简并？
+
+\emph{解答.} 只能保证\emph{至少}三重简并。若同一能量还包含其他不可约表示，或者同一三维表示出现多份并且由于额外动力学原因碰巧同能，简并度可以更高。对称性强制的是不可约表示维数这一基本单位。
+
+\item 设原对称群 $G$ 的二维不可约表示在子群 $H$ 下限制为 $A\oplus B$，其中 $A,B$ 是两个不等价一维表示。说明一个保持 $H$ 但破坏 $G$ 的一般微扰会怎样影响原二重简并。
+
+\emph{解答.} 根据 \Cref{thm:perturbation-block-structure}，一阶微扰矩阵在 $A$ 与 $B$ 之间没有矩阵元，各自形成一个一维块。由于 $A$、$B$ 不等价，残余对称性不要求两个块能量相同，因此一般会分裂成两个非简并能级。
+
+\item 写出 $O_h$ 晶场中五个 $d$ 轨道的不可约分解，并给出一组对应基函数。
+
+\emph{解答.}
+\[
+\Gamma_d=E_g\oplus T_{2g},
+\]
+其中
+\[
+E_g:\ \{2z^2-x^2-y^2,\ x^2-y^2\},
+\qquad
+T_{2g}:\ \{xy,yz,zx\}.
+\]
+
+\item 若把上一题的立方晶场沿 $z$ 轴作四方畸变，使对称性降为 $D_{4h}$，写出允许的进一步分裂。
+
+\emph{解答.}
+\[
+E_g(O_h)\to A_{1g}\oplus B_{1g},
+\qquad
+T_{2g}(O_h)\to B_{2g}\oplus E_g(D_{4h}).
+\]
+因此五重空间最终按 $1+1+1+2$ 分组。
+
+\item 对\figref{fig:c3v-three-sites} 的三个等价位置，证明全对称态
+\[
+\ket{A_1}=\frac1{\sqrt3}(\ket1+\ket2+\ket3)
+\]
+在所有 $C_{3v}$ 操作下不变。
+
+\emph{解答.} $C_{3v}$ 的任何群元只会置换 $\ket1,\ket2,\ket3$。三者系数完全相同，因此置换后线性组合不变，即承载平凡不可约表示 $A_1$。
+
+\item 设 $C_{3v}$ 对称哈密顿量在三个等价位置基下为
+\[
+H=\begin{pmatrix}\varepsilon&t&t\\t&\varepsilon&t\\t&t&\varepsilon\end{pmatrix}.
+\]
+求全部本征值，并指出对应表示。
+
+\emph{解答.} 全对称态给
+\[
+E_{A_1}=\varepsilon+2t.
+\]
+与它正交的二维子空间是 $E$ 表示，任一向量都满足分量和为零，因此
+\[
+H\vb v=(\varepsilon-t)\vb v.
+\]
+故
+\[
+E_E=\varepsilon-t
+\]
+二重简并。
+
+\item 在中心对称体系中，为什么电偶极跃迁要求初末态宇称相反？
+
+\emph{解答.} 电偶极算符 $\hat{\vb r}$ 在反演下为奇，属于 $u$。非零矩阵元要求
+\[
+\Gamma_f^*\otimes u\otimes\Gamma_i
+\]
+含全对称 $g$。因此 $\Gamma_f$ 与 $\Gamma_i$ 的宇称必须相反，即 $g\leftrightarrow u$。
+
+\item 在 $C_{4v}$ 中，初态属于 $A_1$。分别判断 $z$ 偏振与 $x$ 偏振电偶极光能把它耦合到哪些不可约表示。
+
+\emph{解答.} $z\sim A_1$，故
+\[
+A_1\otimes A_1=A_1,
+\]
+所以 $z$ 偏振允许到 $A_1$ 末态。$(x,y)\sim E$，故 $x$ 或 $y$ 偏振可把 $A_1$ 耦合到 $E$ 末态。
+
+\item 某中心对称分子的振动模为 $g$ 型。它能否同时是一阶电偶极 IR active 与普通 Raman active？
+
+\emph{解答.} 不能。IR 偶极算符为 $u$，因此 IR active 模必须为 $u$；Raman 张量由两个矢量乘积组成，为 $g$，所以 $g$ 型模可以 Raman active。中心对称体系中两种活性互斥。
+
+\item 证明体中心对称晶体的电偶极二阶极化率 $\chi^{(2)}$ 必为零。
+
+\emph{解答.} 反演下 $\vb P\to-\vb P$，而 $E_jE_k$ 为偶。若
+\[
+P_i^{(2)}=\epsilon_0\chi^{(2)}_{ijk}E_jE_k
+\]
+在反演后形式不变，则必须同时满足
+\[
+-P_i^{(2)}=\epsilon_0\chi^{(2)}_{ijk}E_jE_k=P_i^{(2)},
+\]
+故所有电偶极 $\chi^{(2)}_{ijk}=0$。
+
+\item 由 $T_{\vb R}\psi_{\vb k}=\ee^{-\ii\vb k\cdot\vb R}\psi_{\vb k}$ 推出 Bloch 形式。
+
+\emph{解答.} 由平移算符定义得到
+\[
+\psi_{\vb k}(\vb r+\vb R)=\ee^{\ii\vb k\cdot\vb R}\psi_{\vb k}(\vb r).
+\]
+定义
+\[
+u_{\vb k}(\vb r)=\ee^{-\ii\vb k\cdot\vb r}\psi_{\vb k}(\vb r),
+\]
+则直接代入可得 $u_{\vb k}(\vb r+\vb R)=u_{\vb k}(\vb r)$，故
+\[
+\psi_{\vb k}=\ee^{\ii\vb k\cdot\vb r}u_{\vb k}.
+\]
+
+\item 为什么 $\vb k$ 与 $\vb k+\vb G$ 标记相同的平移群不可约表示？
+
+\emph{解答.} 对任意晶格矢量 $\vb R$，
+\[
+\ee^{-\ii(\vb k+\vb G)\cdot\vb R}
+=\ee^{-\ii\vb k\cdot\vb R}\ee^{-\ii\vb G\cdot\vb R}
+=\ee^{-\ii\vb k\cdot\vb R},
+\]
+因为 $\vb G\cdot\vb R\in2\pi\mathbb Z$。
+
+\item 若空间群中存在二重螺旋轴 $S=\{C_{2z}|c/2\}$，证明在 $k_z=\pi/c$ 上其本征值为 $\pm\ii$。
+
+\emph{解答.} $S^2=T_c$，因此
+\[
+s^2=\ee^{-\ii k_z c}.
+\]
+当 $k_z=\pi/c$ 时，$s^2=-1$，所以
+\[
+s=\pm\ii.
+\]
+
+\item 对自旋 $1/2$，验证 $\Theta=-\ii\sigma_yK$ 满足 $\Theta^2=-1$。
+
+\emph{解答.} 注意 $K(-\ii\sigma_y)K^{-1}=(-\ii\sigma_y)^*$。由于 $-\ii\sigma_y$ 是实矩阵
+\[
+-\ii\sigma_y=\begin{pmatrix}0&-1\\1&0\end{pmatrix},
+\]
+故
+\[
+\Theta^2=(-\ii\sigma_y)^2=-I.
+\]
+
+\item 证明具有时间反演和空间反演的自旋 $1/2$ 非磁晶体在每个 $\vb k$ 上至少二重简并。
+
+\emph{解答.} $P$ 与 $\Theta$ 都把 $\vb k$ 送到 $-\vb k$，所以 $P\Theta$ 保持 $\vb k$。若二者对易，则
+\[
+(P\Theta)^2=P^2\Theta^2=-1.
+\]
+同时 $P\Theta$ 与哈密顿量对易，因此对每个固定 $\vb k$ 都可应用 Kramers 论证，得到二重简并。
+
+\end{enumerate}

@@ -1,0 +1,645 @@
+\chapter{四阶经典场：变分、自伴边界与 Green 谱}
+\label{chap:phys-cont-biharmonic}
+
+前十章从配分函数、转移算子与散射数据组织平衡统计体系；从这里开始，研究对象转为确定性的连续场。方法上的主线并未改变：先把决定问题的算子、定义域和守恒/变分结构完整确定，再讨论 Green 函数、谱与可解几何。薄板、二维弹性有效理论以及许多连续介质模型都会产生四阶空间算子，而只写出 \(\Delta^2u=f\) 仍不足以定义一个物理问题：四阶算子必须连同二次型、边界配对和算子定义域一起给出；自由边界还存在刚体零模，使普通逆算子失效。本章先建立与具体材料和几何无关的四阶变分母结构，再把均匀各向同性双调和算子作为其重要特例。下一章才从三维线弹性推出相应二维构成张量。
+
+\section{一般四阶变分算子}
+
+设 \(\mathcal D\subset\mathbb R^2\) 为有界连通区域。弱形式只要求 Lipschitz 边界；写点态边界算子时再假定边界分段 \(C^2\)，并把角点单独处理。令
+\[
+ \mathsf C(\vb x)=\bigl(C_{\alpha\beta\gamma\delta}(\vb x)\bigr)
+\]
+为作用在二维对称矩阵上的四阶实张量场，满足弹性型对称性
+\[
+ C_{\alpha\beta\gamma\delta}
+ =C_{\beta\alpha\gamma\delta}
+ =C_{\alpha\beta\delta\gamma}
+ =C_{\gamma\delta\alpha\beta},
+\]
+以及一致强椭圆性：存在与位置无关的常数 \(0<c_0\le c_1<\infty\)，使任意对称矩阵 \(\mathsf S\) 都有
+\begin{equation}
+ c_0|\mathsf S|^2
+ \le C_{\alpha\beta\gamma\delta}(\vb x)S_{\alpha\beta}S_{\gamma\delta}
+ \le c_1|\mathsf S|^2.
+ \label{eq:phys-cont-fourth-ellipticity}
+\end{equation}
+这里以及下文重复的希腊指标 \(\alpha,\beta,\gamma,\delta\in\{1,2\}\) 求和。记 Hessian 为 \((\nabla^2u)_{\alpha\beta}:=\partial_\alpha\partial_\beta u\)，Laplacian 为 \(\Delta u:=\partial_\alpha\partial_\alpha u\)；二者在本章中严格区分。对 \(u\in H^2(\mathcal D)\) 定义广义曲率应力张量
+\begin{equation}
+ \mathsf M_{\mathsf C}[u]
+ :=\mathsf C:\nabla^2u,
+ \qquad
+ (\mathsf M_{\mathsf C}[u])_{\alpha\beta}
+ =C_{\alpha\beta\gamma\delta}\partial_\gamma\partial_\delta u,
+ \label{eq:phys-cont-general-moment}
+\end{equation}
+以及 sesquilinear 二次型
+\begin{equation}
+ a_{\mathsf C}[u,v]
+ :=\int_\mathcal D
+ \mathsf M_{\mathsf C}[u]:\nabla^2\overline v\,\dd^2x.
+ \label{eq:phys-cont-general-bending-form}
+\end{equation}
+式~\eqnrefs{eq:phys-cont-fourth-ellipticity} 保证
+\[
+ c_0\|\nabla^2u\|_{L^2}^2
+ \le a_{\mathsf C}[u,u]
+ \le c_1\|\nabla^2u\|_{L^2}^2,
+\]
+所以真正被能量控制的是 Hessian，而不是位移本身。对应的形式微分算子为
+\begin{equation}
+ \mathcal L_{\mathsf C}u
+ :=\partial_\alpha\partial_\beta
+ \bigl(C_{\alpha\beta\gamma\delta}\partial_\gamma\partial_\delta u\bigr)
+ =\nabla\!\cdot\nabla\!\cdot\mathsf M_{\mathsf C}[u].
+ \label{eq:phys-cont-general-fourth-operator}
+\end{equation}
+当 \(\mathsf C\) 非均匀或各向异性时，式~\eqnrefs{eq:phys-cont-general-fourth-operator} 一般并不等于常数乘 \(\Delta^2\)。因此“先建立四阶变分算子，再特殊化为双调和算子”是后续薄板理论的正确逻辑顺序。
+
+沿光滑边界段记单位外法向和单位切向为 \(\vb n,\vb\tau\)，沿弧长导数为 \(\partial_s\)。定义
+\begin{align}
+ M_{nn}[u]
+ &:=\vb n\cdot\mathsf M_{\mathsf C}[u]\vb n,
+ \label{eq:phys-cont-general-Mnn}\\
+ V_n[u]
+ &:=\vb n\cdot(\nabla\cdot\mathsf M_{\mathsf C}[u])
+ +\partial_s\!\left(\vb\tau\cdot\mathsf M_{\mathsf C}[u]\vb n\right).
+ \label{eq:phys-cont-general-Vn}
+\end{align}
+两次分部积分给出第一 Green 恒等式
+\begin{equation}
+ a_{\mathsf C}[u,v]
+ =\int_\mathcal D(\mathcal L_{\mathsf C}u)\overline v\,\dd^2x
+ +\int_{\partial\mathcal D}
+ \left[M_{nn}[u]\,\partial_n\overline v-V_n[u]\,\overline v\right]\dd s.
+ \label{eq:phys-cont-general-green-first}
+\end{equation}
+相减后得到边界辛型
+\begin{align}
+ &\int_\mathcal D\left[(\mathcal L_{\mathsf C}u)\overline v
+ -u\,\overline{\mathcal L_{\mathsf C}v}\right]\dd^2x\notag\\
+ &\quad=\int_{\partial\mathcal D}
+ \Bigl[V_n[u]\overline v-M_{nn}[u]\partial_n\overline v
+ +(\partial_nu)\overline{M_{nn}[v]}-u\,\overline{V_n[v]}\Bigr]\dd s.
+ \label{eq:phys-cont-general-green-second}
+\end{align}
+因此 \((u,V_n)\) 与 \((\partial_nu,M_{nn})\) 是两对变分共轭边界变量。对光滑边界，\(H^2(\mathcal D)\) 的运动学迹属于
+\[
+ \mathscr X_{\partial}:=H^{3/2}(\partial\mathcal D)\times H^{1/2}(\partial\mathcal D),
+ \qquad
+ \Gamma_0u:=\binom{u}{\partial_nu}\in\mathscr X_{\partial}.
+\]
+对最大算子定义域中满足 \(u\in H^2(\mathcal D)\)、\(\mathcal L_{\mathsf C}u\in L^2(\mathcal D)\) 的函数，Green 恒等式把共轭的广义边界力定义为对偶迹，它们自然属于对偶空间
+\[
+ \mathscr X_{\partial}^{*}
+ =H^{-3/2}(\partial\mathcal D)\times H^{-1/2}(\partial\mathcal D),
+ \qquad
+ \Gamma_1u:=\binom{V_n[u]}{-M_{nn}[u]}\in\mathscr X_{\partial}^{*},
+\]
+其中对足够光滑的 \(u\)，这些广义迹就是前面写出的点态边界量。于是式~\eqnrefs{eq:phys-cont-general-green-second} 可写成对偶配对
+\[
+ \langle\Gamma_1u,\Gamma_0v\rangle_{\mathscr X_{\partial}^{*},\mathscr X_{\partial}}
+ -\overline{\langle\Gamma_1v,\Gamma_0u\rangle_{\mathscr X_{\partial}^{*},\mathscr X_{\partial}}}.
+\]
+这给出了比“给四阶 PDE 补两个条件”更精确的自伴性判据：算子定义域的允许边界数据 \((\Gamma_0u,\Gamma_1u)\) 必须构成该边界辛型的极大零化子空间（Lagrangian subspace），即辛型在该子空间内恒为零，而且再加入任何独立边界方向都会破坏这一性质。固支、简支、自由边界只是这一母条件的三个坐标型特例；Robin 型或不同边段上的混合条件也必须满足同一辛正交要求。分段光滑边界还会从 \(\partial_s\) 的一维分部积分产生角点项；其物理解释将在下一章由薄板虚功给出。
+
+均匀各向同性情形是上述母结构的特例。取无量纲构成张量使
+\begin{equation}
+ \mathsf H_\nu[u]
+ =(1-\nu)\nabla^2u+\nu(\Delta u)\mathsf I_2,
+ \qquad -1<\nu<1,
+ \label{eq:phys-cont-biharmonic-Hnu}
+\end{equation}
+并令 \(\mathsf M_{\mathsf C}[u]=\mathsf H_\nu[u]\)。则
+\begin{equation}
+ a_\nu[u,v]
+ =\int_\mathcal D\left[(1-\nu)\nabla^2u:\nabla^2\overline v
+ +\nu(\Delta u)(\Delta\overline v)\right]\dd^2x,
+ \label{eq:phys-cont-bending-form}
+\end{equation}
+而
+\[
+ \nabla\cdot\mathsf H_\nu[u]=\nabla\Delta u,
+ \qquad
+ \mathcal L_{\mathsf C}u=\Delta^2u.
+\]
+对任意二维对称矩阵定义 \(\operatorname{dev}\mathsf S:=\mathsf S-\tfrac12(\tr\mathsf S)\mathsf I_2\)。二维迹--无迹分解给出
+\[
+ a_\nu[u,u]
+ =\int_\mathcal D\left[(1-\nu)|\operatorname{dev}\nabla^2u|^2
+ +\frac{1+\nu}{2}|\Delta u|^2\right]\dd^2x,
+\]
+所以 \(-1<\nu<1\) 足以保证这个二维曲率二次型正定。对三维稳定各向同性材料，下一章还会得到更严格的物理范围 \(-1<\nu<1/2\)。在该特例中
+\begin{align}
+ B_{2,\nu}u&:=M_{nn}[u]=\vb n\cdot\mathsf H_\nu[u]\vb n,
+ \label{eq:phys-cont-biharmonic-B2}\\
+ B_{3,\nu}u&:=V_n[u]
+ =\vb n\cdot\nabla\Delta u
+ +\partial_s\!\left(\vb\tau\cdot\mathsf H_\nu[u]\vb n\right),
+ \label{eq:phys-cont-biharmonic-B3}
+\end{align}
+于是式~\eqnrefs{eq:phys-cont-general-green-first} 退化为
+\begin{equation}
+ a_\nu[u,v]
+ =\int_\mathcal D(\Delta^2u)\overline v\,\dd^2x
+ +\int_{\partial\mathcal D}
+ \left[B_{2,\nu}u\,\partial_n\overline v-B_{3,\nu}u\,\overline v\right]\dd s.
+ \label{eq:phys-cont-biharmonic-green-first}
+\end{equation}
+
+\begin{derivation}[式~\eqnrefs{eq:phys-cont-general-green-first}：一般张量算子的两次分部积分]
+记 \(M_{\alpha\beta}=(\mathsf M_{\mathsf C}[u])_{\alpha\beta}\)。第一次分部积分为
+\begin{align*}
+ a_{\mathsf C}[u,v]
+ &=\int_\mathcal D M_{\alpha\beta}\partial_\alpha\partial_\beta\overline v\,\dd^2x\\
+ &=\int_{\partial\mathcal D}n_\alpha M_{\alpha\beta}\partial_\beta\overline v\,\dd s
+ -\int_\mathcal D(\partial_\alpha M_{\alpha\beta})\partial_\beta\overline v\,\dd^2x.
+\end{align*}
+此步用了散度定理 \(\int_\mathcal D\partial_\alpha(M_{\alpha\beta}\partial_\beta\overline v)\dd^2x=\int_{\partial\mathcal D}n_\alpha M_{\alpha\beta}\partial_\beta\overline v\dd s\)，把 \(\partial_\alpha\) 从 \(\overline v\) 转移到 \(M_{\alpha\beta}\)，产生负号。第二项再分部积分：
+\begin{align*}
+ -\int_\mathcal D(\partial_\alpha M_{\alpha\beta})\partial_\beta\overline v\,\dd^2x
+ &=\int_\mathcal D\partial_\beta\partial_\alpha M_{\alpha\beta}\,\overline v\,\dd^2x\\
+ &\quad-\int_{\partial\mathcal D}n_\beta\partial_\alpha M_{\alpha\beta}\,\overline v\,\dd s.
+\end{align*}
+合并后体积项给出 \(\int_\mathcal D(\mathcal L_{\mathsf C}u)\overline v\dd^2x\)，边界项含两个贡献。边界梯度分解为
+\[
+ \nabla\overline v=\vb n\,\partial_n\overline v+\vb\tau\,\partial_s\overline v,
+\]
+故
+\[
+ n_\alpha M_{\alpha\beta}\partial_\beta\overline v
+ =M_{nn}\partial_n\overline v+M_{n\tau}\partial_s\overline v.
+\]
+沿闭合光滑边界对后一项做一维分部积分，
+\[
+ \int_{\partial\mathcal D}M_{n\tau}\partial_s\overline v\,\dd s
+ =-\int_{\partial\mathcal D}(\partial_sM_{n\tau})\overline v\,\dd s,
+\]
+此步把切向导数 \(\partial_s\) 从 \(\overline v\) 转移到 \(M_{n\tau}\)，闭合边界无端点项。并用
+\[
+ \partial_\beta\partial_\alpha M_{\alpha\beta}=\mathcal L_{\mathsf C}u
+\]
+即可得到正文的 Green 恒等式。若边界由多个光滑边段拼接，最后一步还留下端点值
+\(
+ [M_{n\tau}]_{P_j}\overline v(P_j)
+\)，这就是角点自然条件的来源。
+
+\emph{椭圆估计的关联。}此 Green 恒等式是后续 coercivity 估计的代数基础：把 \(a_{\mathsf C}[u,u]\) 写成 \(\int_\mathcal D M_{\alpha\beta}\partial_\alpha\partial_\beta\overline u\dd^2x\) 加边界项后，强椭圆性\eqnrefs{eq:phys-cont-fourth-ellipticity} 直接给出 \(c_0\|\nabla^2u\|_{L^2}^2\le a_{\mathsf C}[u,u]\)，而边界项在固支/简支/自由条件下分别消失或化为自然条件。
+
+\emph{举例：各向同性双调和。}对 \(\mathsf C\) 各向同性，\(\mathcal L_{\mathsf C}=D\Delta^2\)，\(M_{nn}=D(\partial_n^2u+\nu\partial_s^2u)\)（弯矩），\(V_n=D(\partial_n\Delta u+(1-\nu)\partial_s(\partial_n\partial_su))\)（等效剪力）。固支 \(u=\partial_nu=0\)、简支 \(u=M_{nn}=0\)、自由 \(M_{nn}=V_n=0\) 即 Kirchhoff 板的三类经典边界，与 Green 恒等式自然导出的边界对一致。
+
+\emph{推广：变系数与角点。}对变系数 \(\mathsf C(\vb x)\)，分部积分产生低阶项，但主符号仍由 \(\mathsf C\) 的最高阶部分决定，Weyl 渐近不变。角点处 \(M_{n\tau}\) 的跳跃给出角点条件 \([M_{n\tau}]_{P_j}=0\)（自由角点）或 \(u(P_j)=0\)（固支角点），是有限元方法中 Kirchhoff 单元构造的依据。
+
+\emph{物理意义。}两次分部积分的物理意义是"弹性板的虚功原理"：把内能 \(\frac12\int\sigma:\epsilon\,\dd^3x\) 的变分通过分部积分转化为"内力做虚功 + 边界力做虚功"的形式，边界自然出现弯矩 \(M_{nn}\)（法向正应力对厚度积分）、扭矩 \(M_{n\tau}\)（切向应力）和等效剪力 \(V_n\)（Kirchhoff 等效剪力含扭矩导数修正）。三类边界条件对应三种物理约束：固支（位移和转角固定）、简支（位移和弯矩为零，如板搁在刚性支撑上）、自由（弯矩和剪力为零，如板的自由边缘）。角点条件来自扭矩沿边界的跳跃——在角点处两侧扭矩不平衡需额外约束，这是 Kirchhoff 板理论区别于低阶方程的特征。分部积分保证 Green 恒等式的自伴性，使本征值实数性和正交性自动成立。
+\end{derivation}
+
+\section{自伴实现、零模与加权动力学}
+
+先考虑三类经典纯边界。相应的 form domain 为
+\[
+ V_{\mathrm C}=H_0^2(\mathcal D),
+ \qquad
+ V_{\mathrm S}=H^2(\mathcal D)\cap H_0^1(\mathcal D),
+ \qquad
+ V_{\mathrm F}=H^2(\mathcal D).
+\]
+把式~\eqnrefs{eq:phys-cont-general-bending-form} 限制在这些空间上，第一表示定理生成非负自伴算子 \(\mathsf L_X\)（\(X=\mathrm C,\mathrm S,\mathrm F\)），满足
+\begin{equation}
+ a_{\mathsf C}[u,v]=\langle \mathsf L_Xu,v\rangle_{L^2(\mathcal D)},
+ \qquad u\in D(\mathsf L_X),\quad v\in V_X.
+ \label{eq:phys-cont-form-operator}
+\end{equation}
+对足够光滑的系数和函数，内部表达式都是 \(\mathsf L_Xu=\mathcal L_{\mathsf C}u\)，而边界条件分别为
+\begin{align*}
+ \mathrm C:&\quad u=0,\qquad \partial_nu=0,\\
+ \mathrm S:&\quad u=0,\qquad M_{nn}[u]=0,\\
+ \mathrm F:&\quad M_{nn}[u]=0,\qquad V_n[u]=0.
+\end{align*}
+固支条件把两对运动学边界量都固定；简支固定 \(u\)，其共轭弯矩由变分产生；自由边界则两项都为自然条件。混合边界同样必须从式~\eqnrefs{eq:phys-cont-general-green-second} 选择互补边界对，而不能只按局部 PDE 阶数计数。
+
+\begin{theorem}[经典边界下的离散谱与自由零模]
+\label{thm:phys-cont-biharmonic-spectrum}
+设 \(\mathcal D\) 有界连通，\(\mathsf C\) 满足式~\eqnrefs{eq:phys-cont-fourth-ellipticity}，并具有足以保证相应迹定理和椭圆正则性的边界与系数。则 \(\mathsf L_{\mathrm C},\mathsf L_{\mathrm S},\mathsf L_{\mathrm F}\) 非负自伴且 resolvent 紧。固支与简支没有零模；自由边界的核为
+\begin{equation}
+ \ker \mathsf L_{\mathrm F}
+ =\mathcal P_1(\mathcal D)
+ =\operatorname{span}\{1,x,y\}.
+ \label{eq:phys-cont-free-kernel}
+\end{equation}
+其余谱由有限重数正本征值组成，并且 \(\lambda_n\to\infty\)。
+\end{theorem}
+
+自由边界的三个零模有直接几何意义：常数对应整体横向平移，\(x,y\) 对应无曲率刚体倾斜。它们的 Hessian 为零，因此任何只依赖曲率的弯曲能都无法惩罚这些运动。这一结论与材料各向同性无关，只依赖式~\eqnrefs{eq:phys-cont-fourth-ellipticity} 对 Hessian 的正定性。
+
+实际动力学还带有正的面质量密度 \(\mu_A(\vb x)\)。以下假定 \(0<\mu_-\le\mu_A(\vb x)\le\mu_+<\infty\)，并在讨论 Weyl 渐近时再要求足够光滑。若
+\begin{equation}
+ \mu_A(\vb x)\,\partial_t^2u+\mathsf L_Xu=f,
+ \label{eq:phys-cont-weighted-dynamics}
+\end{equation}
+则本征问题应写为广义形式
+\[
+ \mathsf L_X\phi_n=\omega_n^2\mu_A\phi_n,
+ \qquad
+ \langle\phi_m,\phi_n\rangle_\mu
+ :=\int_\mathcal D\mu_A\,\overline{\phi_m}\phi_n\,\dd^2x.
+\]
+等价地，令
+\[
+ \widetilde{\mathsf L}_X:=\mu_A^{-1/2}\mathsf L_X\mu_A^{-1/2},
+\]
+就在普通 \(L^2\) 上得到自伴算子。若 \(\widetilde{\mathsf L}_X\psi_n=\omega_n^2\psi_n\)、\(\langle\psi_m,\psi_n\rangle=\delta_{mn}\)，则避开谱点的精确频域响应是
+\begin{equation}
+ u(\vb x;\omega)
+ =\int_\mathcal D G_\omega(\vb x,\vb y)f(\vb y;\omega)\dd^2y,
+ \qquad
+ G_\omega(\vb x,\vb y)
+ =\frac{1}{\sqrt{\mu_A(\vb x)\mu_A(\vb y)}}
+ \sum_n\frac{\psi_n(\vb x)\overline{\psi_n(\vb y)}}{\omega_n^2-\omega^2}.
+ \label{eq:phys-cont-weighted-dynamic-green}
+\end{equation}
+这就是非均匀面质量下的形式精确 Green/resolvent 解。对自由边界，\(\omega_n=0\) 的三个刚体模也属于这个动力学谱：只要驱动频率 \(\omega\neq0\)，它们在分母中给出有限的 \(-\omega^{-2}\) 惯性响应，不能像静态 pseudoinverse 那样删除；只有严格静态极限才需要先施加净力和净力矩兼容条件。只有当 \(\mu_A\) 是常数时，动态算子才退化为简单的 \((\mathsf L_X-\mu_A\omega^2I)^{-1}\)；非均匀质量不能被一个常数谱参数吸收。
+
+\begin{derivation}[式~\eqnrefs{eq:phys-cont-form-operator,eq:phys-cont-free-kernel}：闭二次型与紧 resolvent]
+\emph{策略：}对三种边界分别建立 coercivity（能量范数控制 Sobolev 范数），再用 Rellich 紧嵌入得到紧 resolvent，最后由谱定理给出离散谱。
+
+\emph{第一步：椭圆上下界。}式~\eqnrefs{eq:phys-cont-fourth-ellipticity} 给出 Hessian 层面的夹逼
+\begin{equation*}
+ c_0\|\nabla^2u\|_{L^2}^2
+ \le a_{\mathsf C}[u,u]
+ \le c_1\|\nabla^2u\|_{L^2}^2.
+\end{equation*}
+这是所有后续估计的出发点：能量二次型与 \(H^2\) 半范数等价，只差低阶项 \(\|u\|_{L^2}\)。此估计来自 \(\mathsf M_{\mathsf C}[u]\) 作为 Hessian 的线性变换，其特征值被 \(c_0,c_1\) 控制。
+
+\emph{第二步：固支与简支的 coercivity。}在 \(H_0^2(\mathcal D)\)（固支）与 \(H^2(\mathcal D)\cap H_0^1(\mathcal D)\)（简支）上，二阶 Poincar\'e 不等式
+\begin{equation*}
+ \|u\|_{H^2}^2\le C\bigl(\|\nabla^2u\|_{L^2}^2+\|u\|_{L^2}^2\bigr)
+\end{equation*}
+中，边界条件强制 \(\|u\|_{L^2}\le C'\|\nabla^2u\|_{L^2}\)（固支时 \(u\) 有零延拓，简支时迹为零），因此
+\begin{equation*}
+ \|u\|_{H^2}\le C''\|\nabla^2u\|_{L^2}\le C''c_0^{-1/2}\,a_{\mathsf C}[u,u]^{1/2}.
+\end{equation*}
+故二次型 coercive，零能量只能由 \(u=0\) 实现——没有零模。Poincar\'e 不等式的常数 \(C'\) 依赖区域直径与边界正则性，但对有界连通区域始终有限。
+
+\emph{第三步：自由边界的核与正交补上的 coercivity。}自由边界时，\(a_{\mathsf C}[u,u]=0\) 与强椭圆性共同推出 \(\nabla^2u=0\) 几乎处处。连通性因此给出 \(u=a+bx+cy\in\mathcal P_1(\mathcal D)\)，即\eqnrefs{eq:phys-cont-free-kernel}。这三个函数有明确几何意义：常数是横向平移，\(x,y\) 是无曲率刚体倾斜。
+
+在正交补 \(\mathcal P_1(\mathcal D)^\perp\) 上，存在模仿射函数的二阶 Poincar\'e 不等式
+\begin{equation*}
+ \|u\|_{H^2}\le C\|\nabla^2u\|_{L^2},
+ \qquad u\perp\mathcal P_1(\mathcal D),
+\end{equation*}
+其证明思路是反证法：若不等式不成立，存在序列 \(\|u_n\|_{H^2}=1\)、\(u_n\perp\mathcal P_1\)、\(\|\nabla^2u_n\|_{L^2}\to0\)。由 Rellich 紧嵌入取弱收敛子列 \(u_n\rightharpoonup u\)，极限满足 \(\nabla^2u=0\) 故 \(u\in\mathcal P_1\)，但 \(u\perp\mathcal P_1\) 又强制 \(u=0\)，与 \(\|u_n\|_{H^2}=1\) 矛盾。故自由二次型在正交补上重新 coercive。
+
+\emph{第四步：紧 resolvent 与谱定理。}三种情形的 form norm
+\begin{equation*}
+ \|u\|_a^2=a_{\mathsf C}[u,u]+\|u\|_{L^2}^2
+\end{equation*}
+与相应 form domain 上的 \(H^2\) 范数等价（由前三步的 coercivity）。有界区域上 Sobolev 嵌入 \(H^2(\mathcal D)\hookrightarrow\hookrightarrow L^2(\mathcal D)\) 是紧的（Rellich 定理），因此 form domain 到 \(L^2\) 的嵌入也紧。由 Kato--Rellich 或直接用紧算子谱定理，表示定理生成的自伴算子具有紧 resolvent，谱定理便给出离散谱 \(\{\lambda_n\}_{n=1}^\infty\)（有限重数，\(\lambda_n\to\infty\)）与完备正交本征系 \(\{\phi_n\}\)。
+
+\emph{举例：矩形板的本征频率。}对 \(L_x\times L_y\) 矩形板各向同性 Kirchhoff 方程 \(D\Delta^2u=\omega^2\mu u\)，简支边界下本征函数 \(u_{mn}=\sin(m\pi x/L_x)\sin(n\pi y/L_y)\)，本征值
+\begin{equation*}
+ \omega_{mn}=\sqrt{\frac{D}{\mu}}\left[\left(\frac{m\pi}{L_x}\right)^2+\left(\frac{n\pi}{L_y}\right)^2\right],
+ \qquad m,n\ge1,
+\end{equation*}
+即 \(\omega_n\sim 4\pi n/(L_xL_y)\sqrt{D/\mu}\)，与\eqnrefs{eq:phys-cont-isotropic-frequency-weyl} 的 Weyl 渐近一致。固支/自由边界本征值无显式公式，但 Weyl 渐近相同——这是谱渐近对边界条件不敏感的体现。
+
+\emph{推广：Weyl 定律的几何意义。}\(\lambda_n\sim(4\pi n/|\mathcal D|)^2\) 表明高频态密度只依赖面积 \(|\mathcal D|\) 与主符号，不依赖边界形状或低阶系数。此即 Weyl 定律：本征值计数 \(N(\lambda)\sim|\mathcal D|\sqrt\lambda/(4\pi)\) 由相空间体积决定，是 semiclassical 分析与路径积分中"态密度=相空间体积/\((2\pi\hbar)^d\)"的严格版本。推广到高阶椭圆算子 \(2m\) 阶、\(d\) 维，\(N(\lambda)\sim C_{m,d}|\mathcal D|\lambda^{d/(2m)}\)，板模型 \(m=2,d=2\) 给 \(N(\lambda)\propto\sqrt\lambda\)。
+
+\emph{物理意义。}闭二次型与紧 resolvent 的物理意义是"弹性板的谱性质从能量泛函直接读出"：闭二次型 \(a[u,u]=\int\sigma:\epsilon\,\dd^3x\) 是应变能，其闭性保证能量有限的函数空间（Sobolev 空间 \(H^2\)）是 Hilbert 空间，紧 resolvent 保证本征值离散——物理上，有限尺寸板的振动模只有离散频率，无连续谱。Weyl 定律 \(N(\lambda)\sim|\mathcal D|\sqrt\lambda/(4\pi)\) 的物理内容是"高频态密度由相空间体积决定"：每个本征态在相空间占据 \((2\pi)^d\) 体积，\(\lambda\) 以下的态数等于相空间中 \(\{(\mathbf x,\mathbf k):|\mathbf k|^2\le\lambda\}\) 的体积除以 \((2\pi)^d\)，结果只依赖面积 \(|\mathcal D|\) 而不依赖边界形状——这是"高频振动不感知边界细节"的数学表述，在鼓声问题（"能否听出鼓的形状"）中给出否定的第一步回答：面积可听，但形状不可听。
+\end{derivation}
+
+\section{Green 算子、pseudoinverse 与 resolvent}
+
+若 \(0\notin\sigma(\mathsf L_X)\)，静态问题 \(\mathsf L_Xu=f\) 有唯一解。取普通 \(L^2\)-归一化本征函数 \(\{\phi_n\}\)，Green 算子具有谱表示
+\begin{equation}
+ \mathsf L_X^{-1}f
+ =\sum_{n=1}^{\infty}\frac{\langle\phi_n,f\rangle}{\lambda_n}\phi_n.
+ \label{eq:phys-cont-green-operator}
+\end{equation}
+若椭圆正则性足以产生积分核，则
+\begin{equation}
+ G_X(\vb x,\vb y)
+ =\sum_{n=1}^{\infty}
+ \frac{\phi_n(\vb x)\overline{\phi_n(\vb y)}}{\lambda_n},
+ \qquad
+ G_X(\vb x,\vb y)=\overline{G_X(\vb y,\vb x)}.
+ \label{eq:phys-cont-green-kernel}
+\end{equation}
+点态级数如何收敛取决于边界和系数正则性；算子意义的展开只依赖紧自伴性。
+
+自由边界时，静态方程可解的必要且在正交补上充分的条件是
+\begin{equation}
+ \langle1,f\rangle=\langle x,f\rangle=\langle y,f\rangle=0.
+ \label{eq:phys-cont-free-load-compatibility}
+\end{equation}
+令 \(P_0\) 为到 \(\mathcal P_1(\mathcal D)\) 的正交投影，则 Moore--Penrose 逆为
+\begin{equation}
+ \mathsf L_{\mathrm F}^{+}f
+ =\sum_{\lambda_n>0}\frac{\langle\phi_n,f\rangle}{\lambda_n}\phi_n,
+ \qquad
+ \mathsf L_{\mathrm F}\mathsf L_{\mathrm F}^{+}=I-P_0.
+ \label{eq:phys-cont-free-pseudoinverse}
+\end{equation}
+这才是自由静态问题的 Green 对象。若兼容条件失败，物理上没有静态平衡：净力或净力矩会激发刚体零模，而不是仅仅导致某个级数“收敛得不好”。
+
+对复参数 \(z\notin\sigma(\mathsf L_X)\)，定义
+\begin{equation}
+ \mathscr R_X(z):=(\mathsf L_X-zI)^{-1}
+ =\sum_n\frac{|\phi_n\rangle\langle\phi_n|}{\lambda_n-z}.
+ \label{eq:phys-cont-biharmonic-resolvent}
+\end{equation}
+当面质量密度为常数 \(\mu_A\) 时，式~\eqnrefs{eq:phys-cont-weighted-dynamics} 的频域响应就是 \(\mathscr R_X(\mu_A\omega^2)\)；质量非均匀时则应使用 \(\widetilde{\mathsf L}_X\) 的 resolvent。静态 Green 函数、模态展开和共振极点因此是同一自伴谱理论的不同切片。
+
+分离变量后常遇到一维常系数算子
+\[
+ L_\alpha=\left(\frac{\dd^2}{\dd y^2}-\alpha^2\right)^2.
+\]
+若 \(L_\alpha g(y,\eta)=\delta(y-\eta)\)，则源点两侧必须满足
+\begin{equation}
+ [g]_\eta=[g']_\eta=[g'']_\eta=0,
+ \qquad
+ [g''']_\eta=1,
+ \label{eq:phys-cont-fourth-order-green-jump}
+\end{equation}
+其中 \([f]_\eta=f(\eta^+)-f(\eta^-)\)。若最高阶项前有常数 \(D\)，最后一式变为 \([g''']_\eta=1/D\)。变系数或曲线坐标下应直接对守恒型算子积分；不能把这条笛卡尔常系数跳跃律机械搬到极坐标。
+
+\begin{derivation}[式~\eqnrefs{eq:phys-cont-fourth-order-green-jump}：分布阶数匹配]
+设 \(g_\pm(y)\) 在 \(\eta\) 两侧分别光滑，把 \(g\) 写为分段函数
+\[
+ g(y)=g_-(y)\Theta(\eta-y)+g_+(y)\Theta(y-\eta),
+\]
+其中 \(\Theta\) 为 Heaviside 分布，\(\Theta'=\delta\)。记跳跃 \([f]_\eta=f(\eta^+)-f(\eta^-)\)。先建立分布求导公式。由 Leibniz 律与 \(\Theta(\eta-y)'=-\delta(y-\eta)\)、\(\Theta(y-\eta)'=\delta(y-\eta)\)，
+\[
+ \begin{aligned}
+ g'(y)
+ &=g_-'(y)\Theta(\eta-y)+g_+'(y)\Theta(y-\eta)
+ +[g]_\eta\delta(y-\eta),\\
+ g''(y)
+ &=g_-''(y)\Theta(\eta-y)+g_+''(y)\Theta(y-\eta)
+ +[g']_\eta\delta(y-\eta)
+ +[g]_\eta\delta'(y-\eta),\\
+ g'''(y)
+ &=g_-'''(y)\Theta(\eta-y)+g_+'''(y)\Theta(y-\eta)
+ +[g'']_\eta\delta(y-\eta)
+ +[g']_\eta\delta'(y-\eta)
+ +[g]_\eta\delta''(y-\eta),\\
+ g^{(4)}(y)
+ &=g_-^{(4)}(y)\Theta(\eta-y)+g_+^{(4)}(y)\Theta(y-\eta)
+ +[g''']_\eta\delta(y-\eta)
+ +[g'']_\eta\delta'(y-\eta)\\
+ &\quad
+ +[g']_\eta\delta''(y-\eta)
+ +[g]_\eta\delta'''(y-\eta).
+ \end{aligned}
+\]
+方程 \(L_\alpha g=\delta(y-\eta)\) 展开为
+\[
+ g^{(4)}-2\alpha^2 g''+\alpha^4 g=\delta(y-\eta).
+\]
+右端只含 \(\delta\)，不含 \(\delta',\delta'',\delta'''\)。比较两端奇异分布阶数：由 \(g^{(4)}\) 表达式，\(\delta'''\) 系数为 \([g]_\eta\)，故 \([g]_\eta=0\)；在此条件下 \(\delta''\) 系数为 \([g']_\eta\)，故 \([g']_\eta=0\)；再在此条件下 \(\delta'\) 系数为 \([g'']_\eta\)，故 \([g'']_\eta=0\)。即
+\[
+ [g]_\eta=[g']_\eta=[g'']_\eta=0.
+\]
+此时 \(g,g',g''\) 跨越 \(\eta\) 连续，分布求导公式简化为
+\[
+ \begin{aligned}
+ g''(y)
+ &=g_-''(y)\Theta(\eta-y)+g_+''(y)\Theta(y-\eta),\\
+ g^{(4)}(y)
+ &=g_-^{(4)}(y)\Theta(\eta-y)+g_+^{(4)}(y)\Theta(y-\eta)
+ +[g''']_\eta\delta(y-\eta).
+ \end{aligned}
+\]
+低阶项 \(-2\alpha^2 g''+\alpha^4 g\) 中 \(g\) 与 \(g''\) 均无跳跃，不再产生奇异分布。因此
+\[
+ L_\alpha g
+ =\left(L_\alpha g\right)_{\rm reg}
+ +[g''']_\eta\delta(y-\eta).
+\]
+在 \(\eta\) 两侧 \(g_\pm\) 满足齐次方程 \(L_\alpha g_\pm=0\)，正则部分 \(\left(L_\alpha g\right)_{\rm reg}\) 在分布意义下为零。比较 \(\delta\) 系数即得
+\[
+ [g''']_\eta=1,
+\]
+连同前述三个连续条件，即\eqnrefs{eq:phys-cont-fourth-order-green-jump}。若最高阶项前有常数 \(D\)，则 \(Dg^{(4)}\) 给出 \(D[g''']_\eta\delta\)，比较系数得 \([g''']_\eta=1/D\)。
+
+\textbf{物理意义。}四阶 Green 函数的跳跃条件 $[g]=[g']=[g'']=0$、$[g''']=1/D$ 对应薄板弯曲的物理：位移、斜率、弯矩在集中力作用点连续，只有有效剪力跳跃——跳跃量等于集中力除以弯曲刚度 $D$。这与二阶 Green 函数（Laplace）的跳跃 $[g']=1$ 形成对比：二阶问题只有斜率跳跃，四阶问题前三阶导数连续、第三阶导数跳跃。
+\end{derivation}
+
+\section{主符号与 Weyl 高频谱}
+
+一般四阶算子的高频计数由主符号而不是低阶边界细节决定。式~\eqnrefs{eq:phys-cont-general-fourth-operator} 的主符号为
+\begin{equation}
+ p_4(\vb x,\boldsymbol\xi)
+ =C_{\alpha\beta\gamma\delta}(\vb x)
+ \xi_\alpha\xi_\beta\xi_\gamma\xi_\delta,
+ \label{eq:phys-cont-general-principal-symbol}
+\end{equation}
+它由式~\eqnrefs{eq:phys-cont-fourth-ellipticity} 保证正定。若系数与边界具有满足经典谱渐近所需的正则性，并且所选自伴边界实现满足四阶椭圆边值问题的补条件（regular elliptic/complementing condition），则二维 Weyl 首项为
+\begin{equation}
+ N(\lambda)
+ \sim\frac{1}{(2\pi)^2}
+ \int_\mathcal D\dd^2x
+ \int_{p_4(\vb x,\boldsymbol\xi)\le\lambda}\dd^2\xi,
+ \qquad \lambda\to\infty.
+ \label{eq:phys-cont-general-weyl}
+\end{equation}
+由于 \(p_4\) 对 \(\boldsymbol\xi\) 是四次齐次的，二维动量子水平集面积正比于 \(\lambda^{1/2}\)，所以在上述正则椭圆边值条件下，二维四阶标量算子的首项都具有 \(N(\lambda)\asymp\lambda^{1/2}\) 的尺度。边界条件影响低阶修正与边界项，但不改变这一主指数。
+
+对均匀各向同性的归一化双调和算子，\(p_4=|\boldsymbol\xi|^4\)，于是式~\eqnrefs{eq:phys-cont-general-weyl} 化为
+\begin{equation}
+ N(\lambda)
+ \sim\frac{|\mathcal D|}{4\pi}\sqrt\lambda,
+ \qquad
+ \lambda_n\sim\left(\frac{4\pi n}{|\mathcal D|}\right)^2.
+ \label{eq:phys-cont-weyl-counting}
+\end{equation}
+真正的振动频率还受到质量权重控制。广义本征问题
+\[
+ \mathsf L_X\phi_n=\omega_n^2\mu_A\phi_n
+\]
+等价于普通自伴算子 \(\widetilde{\mathsf L}_X=\mu_A^{-1/2}\mathsf L_X\mu_A^{-1/2}\) 的谱问题，而 \(\widetilde{\mathsf L}_X\) 的四阶主符号为 \(p_4/\mu_A\)。因此物理频率的计数函数满足
+\begin{equation}
+ N_\omega(\varpi)
+ \sim\frac{1}{(2\pi)^2}
+ \int_\mathcal D\dd^2x
+ \int_{p_4(\vb x,\boldsymbol\xi)\le\mu_A(\vb x)\varpi^2}
+ \dd^2\xi,
+ \qquad \varpi\to\infty.
+ \label{eq:phys-cont-weighted-frequency-weyl}
+\end{equation}
+这里用 \(\varpi\) 表示计数阈值，以免与单个本征频率 \(\omega_n\) 混淆。由于二维相空间中的四次齐次子水平集面积随右端平方根缩放，仍有 \(N_\omega(\varpi)\asymp\varpi\)：空间非均匀质量与各向异性刚度只改变前因子，不改变二维四阶系统的线性高频频率计数。
+
+若 \(p_4=D|\boldsymbol\xi|^4\)、\(\mu_A\) 为常数，则
+\begin{equation}
+ N_\omega(\varpi)
+ \sim\frac{|\mathcal D|}{4\pi}
+ \sqrt{\frac{\mu_A}{D}}\,\varpi,
+ \qquad
+ \omega_n\sim\frac{4\pi n}{|\mathcal D|}
+ \sqrt{\frac{D}{\mu_A}}.
+ \label{eq:phys-cont-isotropic-frequency-weyl}
+\end{equation}
+这才是下一章薄板振动真正使用的高频结论；把刚度谱的 \(\lambda_n\) 与物理频率 \(\omega_n\) 区分开，可以避免在非均匀质量下误用常系数换元。
+
+\begin{derivation}[式~\eqnrefs{eq:phys-cont-general-weyl,eq:phys-cont-weighted-frequency-weyl}：刚度谱与物理频率 Weyl 计数]
+\emph{策略：}分三步进行——(1) 对四阶刚度算子直接做相空间计数得到 \(\lambda_n\) 渐近；(2) 通过酉变换把质量加权本征问题化为标准形式并提取主符号；(3) 对变换后算子做相空间计数得到 \(\omega_n\) 渐近。
+
+\emph{第一步：刚度谱 Weyl 计数。}对 \(p_4=|\boldsymbol\xi|^4\)，条件 \(p_4\le\lambda\) 即 \(|\boldsymbol\xi|\le\lambda^{1/4}\)，是半径 \(\lambda^{1/4}\) 的二维圆盘，面积为
+\begin{equation*}
+ \int_{|\boldsymbol\xi|^4\le\lambda}\dd^2\xi
+ =\pi\bigl(\lambda^{1/4}\bigr)^2
+ =\pi\lambda^{1/2}.
+\end{equation*}
+代入一般相空间计数 \(N(\lambda)\sim(2\pi)^{-2}\int_\mathcal D\dd^2x\int_{p_4\le\lambda}\dd^2\xi\) 得到
+\begin{equation*}
+ N(\lambda)
+ \sim\frac{|\mathcal D|}{(2\pi)^2}\,\pi\sqrt\lambda
+ =\frac{|\mathcal D|}{4\pi}\sqrt\lambda.
+\end{equation*}
+再令 \(N(\lambda_n)\sim n\)，解出 \(\lambda_n\sim(4\pi n/|\mathcal D|)^2\)，即正文的 \(\lambda_n\) 渐近式。相空间计数 \(N(\lambda)\sim(2\pi)^{-d}\int_{p\le\lambda}\dd x\dd\xi\) 是 semiclassical 分析的标准结果，对椭圆算子由 Helffer--Robert 或热迹 Tauberian 方法严格证明：先证热迹 \(\Tr\ee^{-t\mathsf L}\sim(4\pi t)^{-d/2}\sum_{j}a_j t^j\) 的渐近展开，再由 Karamata Tauberian 定理反推 \(N(\lambda)\) 的幂律渐近。
+
+\emph{第二步：质量加权算子的主符号。}广义本征问题 \(\mathsf L_X\phi_n=\omega_n^2\mu_A\phi_n\) 通过酉变换 \(\psi_n=\mu_A^{1/2}\phi_n\) 化为普通本征问题 \(\widetilde{\mathsf L}_X\psi_n=\omega_n^2\psi_n\)，其中 \(\widetilde{\mathsf L}_X=\mu_A^{-1/2}\mathsf L_X\mu_A^{-1/2}\)。乘法算子 \(\mu_A^{-1/2}\) 是零阶 PsDO，在最高阶只把主符号左右各乘一次，因此
+\begin{equation*}
+ p_{\widetilde{\mathsf L}}(\vb x,\boldsymbol\xi)
+ =\mu_A^{-1/2}(\vb x)\,p_4(\vb x,\boldsymbol\xi)\,\mu_A^{-1/2}(\vb x)
+ =\frac{p_4(\vb x,\boldsymbol\xi)}{\mu_A(\vb x)}.
+\end{equation*}
+此步关键：主符号是最高阶齐次部分，零阶乘法算子不改变主符号的齐次性，只整体乘 \(\mu_A^{-1}\)。酉性验证：\(\|\psi_n\|^2=\int\mu_A|\phi_n|^2\dd x=\|\phi_n\|_{\mu_A}^2\)，故 \(\phi_n\mapsto\mu_A^{1/2}\phi_n\) 是 \(L^2(\mu_A\dd x)\to L^2(\dd x)\) 的酉算子。
+
+\emph{第三步：物理频率计数。}阈值 \(\omega_n\le\varpi\) 等价于 \(p_{\widetilde{\mathsf L}}\le\varpi^2\)，即
+\begin{equation*}
+ p_4(\vb x,\boldsymbol\xi)
+ \le\mu_A(\vb x)\,\varpi^2,
+\end{equation*}
+直接得到式~\eqnrefs{eq:phys-cont-weighted-frequency-weyl}。由于被积函数在二维相空间中对 \(\boldsymbol\xi\) 的四次齐次子水平集面积正比于右端的 \(1/2\) 次方（二维、四阶），\(N_\omega(\varpi)\asymp\varpi\)：非均匀质量与各向异性刚度只改变前因子，不改变线性频率计数。
+
+\emph{特例：各向同性均匀板。}若 \(p_4=D|\boldsymbol\xi|^4\)、\(\mu_A\) 为常数，则动量区域 \(D|\boldsymbol\xi|^4\le\mu_A\varpi^2\) 的半径为 \((\mu_A\varpi^2/D)^{1/4}=(\mu_A/D)^{1/4}\varpi^{1/2}\)，面积为 \(\pi(\mu_A/D)^{1/2}\varpi\)，从而得到式~\eqnrefs{eq:phys-cont-isotropic-frequency-weyl}。
+
+\emph{举例：矩形板的 Weyl 验证。}对 \(L_x\times L_y\) 矩形板简支边界，本征频率 \(\omega_{mn}=\sqrt{D/\mu}\,[(m\pi/L_x)^2+(n\pi/L_y)^2]\)。计数 \(N_\omega(\varpi)=\#\{(m,n):\omega_{mn}\le\varpi\}\) 近似为椭圆 \((m\pi/L_x)^2+(n\pi/L_y)^2\le\varpi^2\sqrt{\mu/D}\) 在第一象限的整数点数，由 Gauss 圆问题给出 \(N_\omega(\varpi)\sim(L_xL_y/4\pi)\varpi\sqrt{\mu/D}\)，与\eqnrefs{eq:phys-cont-isotropic-frequency-weyl} 一致。误差项 \(O(\varpi^{1/2})\) 来自格点计数的余项，等价于经典 Gauss 圆问题中圆周上整数点的估计。
+
+\emph{推广：Weyl 定律的统计力学解读。}Weyl 计数 \(N(\lambda)\sim|\mathcal D|\sqrt\lambda/(4\pi)\) 等价于配分函数 \(Z(\beta)=\Tr\ee^{-\beta\mathsf L}\) 的高温渐近 \(Z(\beta)\sim|\mathcal D|/(8\pi\beta^{1/2})\)（由 Tauberian 定理联系）。此即路径积分中"配分函数=相空间体积/\((2\pi\hbar)^d\)"的严格实现：板的振动谱与经典相空间计数通过 Laplace 变换一一对应，是统计力学→量子场论路径积分的谱论基础。对一般 \(2m\) 阶 \(d\) 维椭圆算子，\(Z(\beta)\sim C\beta^{-d/(2m)}\)，对应热核渐近 \(K(t)\sim(4\pi t)^{-d/2}\) 的推广。此联系的物理意义在于：板的振动可视为无穷多个独立谐振子的集合，配分函数因式分解为各模态贡献之积，而高温极限正是大量模态被激发的统计力学极限。
+
+\emph{更一般的算子类比。}对 \(d\) 维流形上的 \(2m\) 阶正椭圆算子 \(P\)，Weyl 定律给出 \(N(\lambda)\sim C_{P}\lambda^{d/(2m)}\)，其中前因子 \(C_P=(2\pi)^{-d}\int_{p_m\le1}\dd x\dd\xi\) 由主符号水平集体积决定。此结果与 Hagedorn 谱增长估计 \(\rho(E)\sim E^{d/(2m)-1}\) 一致，是量子场论中粒子谱密度分析的几何基础。在 \(m=1,d=3\)（Laplace 算子）时恢复经典 Debye 模型 \(N(\lambda)\sim V\lambda^{3/2}/(6\pi^2)\)，在 \(m=2,d=2\)（双调和算子）时即本节板的 \(N(\lambda)\sim|\mathcal D|\sqrt\lambda/(4\pi)\)。这些特例说明 Weyl 定律是连接几何（相空间体积）、分析（谱计数）与物理（态密度）的统一桥梁。
+
+\emph{应用：从谱计数到热容。}板的振动热容 \(C_V=\partial\langle E\rangle/\partial T\) 在高温极限由 Weyl 前因子决定：\(\langle E\rangle=\sum_n\hbar\omega_n/(e^{\beta\hbar\omega_n}-1)\sim k_BT\cdot N_\omega(k_BT/\hbar)\sim C_{\rm Weyl}(k_BT)^2\)，故 \(C_V\propto T\)，与 Debye \(T^3\) 律的 \(d=3,m=1\) 情形形成维数—阶数对比。
+\end{derivation}
+
+本章得到的接口现在与具体板模型无关：构成张量决定二次型和主符号，Green 边界型决定自伴边界对，零模决定是否必须使用 pseudoinverse，质量权重决定真正的动力学 Hilbert 空间，而 Green 函数、共振和高频态密度都来自同一谱分解。下一章将从三维线弹性推出二维构成张量，并说明何时它进一步退化为熟悉的各向同性 Kirchhoff--Love 双调和方程。
+
+\section{薄板振动的材料参数与实验数值}\label{sec:plate-experiments}
+
+接下来考察板的弯曲刚度与典型材料参数。
+
+各向同性 Kirchhoff--Love 板的弯曲刚度
+\[
+D=\frac{Eh^3}{12(1-\nu^2)}
+\]
+其中 \(E\) 是杨氏模量，\(\nu\) 是 Poisson 比，\(h\) 是板厚。板振动频率 \(\omega\propto\sqrt{D/\mu}\)（\(\mu=\rho h\) 是面密度）。
+
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+材料 & \(E\) (GPa) & \(\nu\) & \(\rho\) (kg/m\(^3\)) & \(\sqrt{D/\mu}\) (m\(^2\)/s, \(h=1\,\mathrm{mm}\)) \\
+\hline
+钢 & 200 & 0.30 & 7850 & 0.046 \\
+铝 & 70 & 0.33 & 2700 & 0.049 \\
+铜 & 110 & 0.34 & 8960 & 0.034 \\
+玻璃 & 70 & 0.22 & 2500 & 0.051 \\
+钛 & 116 & 0.32 & 4500 & 0.048 \\
+碳纤维复合材料 & 150 & 0.30 & 1600 & 0.091 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{exbox}[钢板的基频]
+\(1\,\mathrm{m}\times1\,\mathrm{m}\times1\,\mathrm{mm}\) 简支钢板的基频
+\[
+\omega_{11}=\sqrt{\frac{D}{\rho h}}\left[\left(\frac{\pi}{L_x}\right)^2+\left(\frac{\pi}{L_y}\right)^2\right]
+=0.046\times2\pi^2\approx0.91\,\mathrm{rad/s}
+\]
+对应 \(f_{11}\approx0.14\,\mathrm{Hz}\)。加厚到 \(h=10\,\mathrm{mm}\) 使 \(\omega\) 增加 \(10^{3/2}\approx31.6\) 倍，\(f\approx4.5\,\mathrm{Hz}\)。薄板基频对厚度的 \(h^{3/2}\) 依赖（因 \(D\propto h^3\)，\(\mu\propto h\)）是板与膜（\(\omega\propto h^0\)）的关键区别。
+\end{exbox}
+
+接下来考察Chladni 图形的定量参数。
+
+\chapref{chap:phys-sm-thin-plate-chladni} 的 Chladni 图形是本节四阶算子本征模的视觉化。方形简支板的本征频率
+\[
+\omega_{mn}=\sqrt{\frac{D}{\rho h}}\left[\left(\frac{m\pi}{L}\right)^2+\left(\frac{n\pi}{L}\right)^2\right]
+\]
+节线位置由 \(\sin(m\pi x/L)\sin(n\pi y/L)=0\) 给出。
+
+\begin{exbox}[\(1\,\mathrm{m}\) 钢板的 Chladni 频率]
+\(L=1\,\mathrm{m}\)，\(h=2\,\mathrm{mm}\) 钢板：\(\sqrt{D/\rho h}=0.046\times\sqrt{8}\approx0.13\,\mathrm{m^2/s}\)。
+\[
+\begin{aligned}
+f_{11}&=0.13\times2\pi^2/(2\pi)=0.41\,\mathrm{Hz},\\
+f_{12}&=0.13\times5\pi^2/(2\pi)=1.02\,\mathrm{Hz},\\
+f_{22}&=0.13\times8\pi^2/(2\pi)=1.63\,\mathrm{Hz},\\
+f_{13}&=0.13\times10\pi^2/(2\pi)=2.04\,\mathrm{Hz}.
+\end{aligned}
+\]
+\(f_{12}=f_{21}\)（简并），对应两条节线形成十字形 Chladni 图。\(f_{22}\) 的节线将板分为 9 块。这些频率与 Chladni 1787 年的实验观测在量级上吻合。
+\end{exbox}
+
+接下来考察Weyl 谱计数的实验验证。
+
+\eqnrefs{eq:phys-cont-isotropic-frequency-weyl} 的 Weyl 定律 \(N_\omega(\varpi)\sim|\mathcal D|\varpi\sqrt{\rho h/D}/(4\pi)\) 可通过板的振动谱实验验证。全息干涉术测量板的振型，逐模计数直到频率 \(\varpi\)。
+
+\begin{exbox}[\(0.5\,\mathrm{m}\times0.5\,\mathrm{m}\) 铝板的 Weyl 计数]
+\(L=0.5\,\mathrm{m}\)，\(h=5\,\mathrm{mm}\) 铝板：Weyl 前因子 \(|\mathcal D|\sqrt{\rho h/D}/(4\pi)=0.25\times\sqrt{2700\times0.005/(70\times0.005^3/(12\times0.89))}/(4\pi)\approx0.95\,\mathrm{s/m^2}\)。在 \(\varpi=2\pi\times100\,\mathrm{rad/s}\)（100\,Hz）时 \(N\approx0.95\times628\approx596\) 个模态。实验测得约 580 个共振峰，偏差 \(\sim3\%\) 来自 Weyl 定律的次前项修正（边界项 \(\propto\varpi^{1/2}\)）。
+\end{exbox}
+
+\begin{derivation}[热核渐近与 Weyl 定律的完整证明]
+Weyl 谱计数定律可由热核的短时渐近严格导出，其展开系数由 Seeley--DeWitt 理论给出。分四步建立。
+
+\emph{第一步：热核与谱的关系。}对正自伴算子 \(A\)（如双调和算子 \(\Delta^2\)），热核 \(K(t,x,y)=\ee^{-tA}\) 的对角迹
+\begin{equation*}
+  \Theta(t)=\Tr\ee^{-tA}=\int_{\mathcal D}K(t,x,x)\dd x=\sum_{n=1}^\infty\ee^{-t\lambda_n},
+\end{equation*}
+其中 \(\{\lambda_n\}\) 是 \(A\) 的本征值。谱计数 \(N(\lambda)=\#\{n:\lambda_n\le\lambda\}\) 与 \(\Theta(t)\) 由 Laplace--Stieltjes 变换联系：\(\Theta(t)=\int_0^\infty\ee^{-t\lambda}\dd N(\lambda)\)。因此 \(\Theta(t)\) 的短时渐近确定 \(N(\lambda)\) 的大 \(\lambda\) 渐近。
+
+\emph{第二步：热核的伪微分算子构造。}对 \(m\) 阶正椭圆算子 \(A\)，热核 \(K(t,x,y)\) 有渐近展开
+\begin{equation*}
+  K(t,x,x)\sim\sum_{j=0}^\infty a_j(x)\,t^{(d-j)/m},\qquad t\to0^+,
+\end{equation*}
+其中 \(d\) 是流形维数，\(a_j(x)\) 是由 \(A\) 的系数及其导数构造的局域不变量。对双调和算子 \(A=\Delta^2\)（\(m=4\)，\(d=2\)）：
+\begin{equation*}
+  K(t,x,x)\sim a_0(x)\,t^{-1/2}+a_2(x)\,t^{0}+a_4(x)\,t^{1/2}+\cdots.
+\end{equation*}
+首项 \(a_0(x)=(2\pi)^{-d}\int_{\mathbb R^d}\ee^{-t|\xi|^m}\dd\xi\)。对 \(m=4\)，\(d=2\)：
+\begin{equation*}
+  a_0(x)=\frac{1}{(2\pi)^2}\int_{\mathbb R^2}\ee^{-|\xi|^4}\dd\xi=\frac{1}{4\pi}\Gamma\!\left(\frac{1}{2}\right)=\frac{1}{4\sqrt\pi}.
+\end{equation*}
+
+\emph{第三步：迹渐近与 Weyl 定律。}积分 \(\Theta(t)\sim\sum_j A_j\,t^{(d-j)/m}\)，\(A_j=\int_{\mathcal D}a_j(x)\dd x\)。首项
+\begin{equation*}
+  \Theta(t)\sim\frac{|\mathcal D|}{4\sqrt\pi}\,t^{-1/2}+\cdots.
+\end{equation*}
+由 Tauber 定理（Karamata 或 Hardy--Littlewood），\(\Theta(t)\sim C\,t^{-\alpha}\) 蕴含 \(N(\lambda)\sim\frac{C}{\Gamma(\alpha+1)}\lambda^\alpha\)。这里 \(\alpha=1/2\)，\(\Gamma(3/2)=\sqrt\pi/2\)，故
+\begin{equation*}
+  N(\lambda)\sim\frac{|\mathcal D|}{4\sqrt\pi}\cdot\frac{2}{\sqrt\pi}\,\lambda^{1/2}=\frac{|\mathcal D|}{2\pi}\lambda^{1/2},
+\end{equation*}
+即 Weyl 定律 \(N(\lambda)\sim\frac{|\mathcal D|}{2\pi}\sqrt\lambda\)（二维双调和算子）。
+
+\emph{第四步：次前项与边界几何。}次前项 \(A_2\) 由边界积分给出：\(A_2=\int_{\partial\mathcal D}b_2(s)\dd s\)，\(b_2\) 依赖边界曲率和算子在边界处的系数。对简支边界（Dirichlet 型），\(b_2=\frac{1}{8\sqrt\pi}\kappa(s)\)（\(\kappa\) 为曲率），给出
+\begin{equation*}
+  N(\lambda)=\frac{|\mathcal D|}{2\pi}\sqrt\lambda-\frac{|\partial\mathcal D|}{8\pi}\lambda^{1/4}+o(\lambda^{1/4}).
+\end{equation*}
+第二项的 \(\lambda^{1/4}\) 依赖边界长度，是 Ivrii 第二项定律的特例（在"测地流非周期"通有条件下严格成立）。对 Neumann 型边界，第二项符号翻转。这些次前项在 Chladni 图形实验中可观测：高频模态计数偏离 Weyl 首项的部分由边界修正解释。
+
+\emph{物理意义与反问题。}Weyl 定律把谱计数与几何不变量（面积、周长、Euler 特征）联系起来，是"听鼓声辨鼓形"（Kac 1966）问题的数学基础。首项确定面积，次前项确定周长，更高阶项确定 Euler 特征——但 Weyl 渐近不能完全确定区域形状（Milnor 反例：同谱不同形的 16 维环面）。对薄板振动，Weyl 定律保证高频模态密度只依赖板面积和材料参数，不依赖边界形状——这是统计力学中"密度态"普适性的几何根源。
+
+
+\emph{[双调和算子的自伴扩张与边界条件分类]} 四阶算子 \(\Delta^2\) 的自伴扩张远比二阶 Laplacian 丰富——其边界条件空间是四维的，包含 Dirichlet、Neumann、简支、自由边界等多种物理边界。分四步系统分类。
+
+\emph{第一步：亏指数与自伴域。}双调和算子 \(\Delta^2\) 在 \(C_c^\infty(\mathcal D)\) 上正对称但非自伴。其亏指数由 \(\Delta^2 u=\pm\ii u\) 的 \(L^2\) 解空间维数给出：在二维有界区域上亏指数为 \((4m,4m)\)（\(m\) 依赖边界分量数），自伴扩张由 \(4m\times4m\) 酉矩阵参数化。每个自伴扩张对应一组边界条件，物理上代表不同的板支承方式。
+
+\emph{第二步：四种经典边界条件。}(1) Dirichlet（固支）：\(u|_{\partial\mathcal D}=0\)，\(\partial_n u|_{\partial\mathcal D}=0\)——位移和法向斜率均为零，板边缘完全固定。(2) Neumann（自由）：\(Mu|_{\partial\mathcal D}=0\)，\(Vu|_{\partial\mathcal D}=0\)——弯矩 \(M\) 和等效剪力 \(V\) 为零，板边缘完全自由。(3) 简支（Kirárhoff）：\(u|_{\partial\mathcal D}=0\)，\(Mu|_{\partial\mathcal D}=0\)——位移为零但可自由转动。(4) 滑动：\(\partial_n u|_{\partial\mathcal D}=0\)，\(Vu|_{\partial\mathcal D}=0\)——法向斜率为零但可自由位移。其中 \(Mu=-D(\partial_{nn}u+\nu\partial_{ss}u)\)，\(Vu=-D(\partial_n\Delta u+(1-\nu)\partial_s(\partial_{ns}u))\)（\(D\) 是抗弯刚度，\(\nu\) 是 Poisson 比）。
+
+\emph{第三步：谱的正性与离散性。}所有四种边界条件给出半正定离散谱：\(\lambda_n\ge0\)，\(\lambda_n\to\infty\)。Dirichlet 和简支边界给出严格正谱（\(\lambda_1>0\)）；Neumann 和滑动边界有 \(\lambda_0=0\)（常数函数是零模）。谱的渐近 Weyl 展开对所有自伴扩张相同首项（面积项），但次前项（边界项）的符号和系数依赖边界条件类型——Dirichlet 给负边界项，Neumann 给正边界项，简支和滑动给出不同的中间值。
+
+\emph{第四步：变分原理与 Rayleigh 商。}双调和算子的特征值由 Rayleigh 商变分给出：
+\begin{equation*}
+  \lambda_1=\inf_{u\in H_0^2(\mathcal D),\,\|u\|=1}\int_{\mathcal D}(\Delta u)^2\dd x,
+\end{equation*}
+其中 \(H_0^2\) 是满足边界条件的 Sobolev 空间。不同边界条件给出不同 \(H_0^2\)，因此 \(\lambda_1\) 不同：Dirichlet 最严格（\(\lambda_1\) 最大），Neumann 最宽松（\(\lambda_1=0\)），简支持居中。变分原理还给出特征值的单调性：区域放大则 \(\lambda_n\) 减小（域单调性），边界条件放松则 \(\lambda_n\) 减小。这些性质使双调和算子谱理论成为板振动分析的严格数学基础。
+\end{derivation}
+

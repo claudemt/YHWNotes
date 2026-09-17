@@ -1,0 +1,480 @@
+\chapter{Clifford 线性化、Jordan--Wigner 与有限扇区}
+\label{chap:phys-sm-clifford-jw-finite-sectors}
+
+transfer factorization \eqnrefs{eq:phys-sm-transfer-pauli-factorization} 已把二维方格 Ising 的 transfer operator 写成局域 Pauli 指数的乘积。要把指数维谱问题降成线性代数，必须同时处理两个结构：局域二次费米子化与有限环的全局奇偶约束。前者给出 Clifford 共轭作用，后者决定 NS/R 动量网格和环面四个 fermionic spin structures。有限尺寸分析中二者不能交换顺序。
+
+\section{轴旋转与 Jordan--Wigner 变换}
+\label{sec:phys-sm-jw-majorana}
+
+Ising 模型的 transfer factor 中，垂直传递因子 $\mathsf V_v$ 含 $\sigma^z$（onsite），水平因子 $\mathsf V_h$ 含 $\sigma^z\sigma^z$（邻接）。Jordan--Wigner 变换要求 onsite 项对角、邻接项在 $\tau^x$ 方向——因此需先做一个 $\pi/2$ 轴旋转，把 $\sigma^z\sigma^z$ 耦合转到 $\tau^x\tau^x$ 方向。定义旋转后的 Pauli 算符
+\begin{equation}
+ \tau_j^z=X_j,
+ \qquad
+ \tau_j^x=Z_j,
+ \qquad
+ \tau_j^y=-Y_j.
+ \label{eq:phys-sm-pauli-axis-rotation}
+\end{equation}
+于是
+\[
+ \mathsf V_v=\exp\!\left(K_v^*\sum_j\tau_j^z\right),
+ \qquad
+ \mathsf V_h=\exp\!\left(K_h\sum_j\tau_j^x\tau_{j+1}^x\right).
+\]
+沿横向顺序定义 Jordan--Wigner 字符串
+\[
+ \mathscr S_j=\prod_{k<j}\tau_k^z
+\]
+以及费米子
+\begin{equation}
+ c_j=\mathscr S_j\tau_j^+,
+ \qquad
+ c_j^\dagger=\mathscr S_j\tau_j^-,
+ \qquad
+ \tau_j^\pm=\frac{\tau_j^x\pm\ii\tau_j^y}{2}.
+ \label{eq:phys-sm-jordan-wigner}
+\end{equation}
+这个升降算符 convention 被选成使数算符满足
+\begin{equation}
+ \tau_j^z=1-2c_j^\dagger c_j.
+ \label{eq:phys-sm-tauz-number}
+\end{equation}
+由不同站点 Pauli 算符对易和同站点反对易关系，得到 CAR
+\begin{equation}
+ \{c_i,c_j\}=0,
+ \qquad
+ \{c_i,c_j^\dagger\}=\delta_{ij}.
+ \label{eq:phys-sm-jw-car}
+\end{equation}
+对非边界键 \(j<N\)，
+\begin{equation}
+ \tau_j^x\tau_{j+1}^x
+ =(c_j^\dagger-c_j)(c_{j+1}^\dagger+c_{j+1}).
+ \label{eq:phys-sm-neighbor-jw}
+\end{equation}
+因此两个 transfer factors 的指数生成元都是费米子二次型。
+
+\begin{derivation}[Jordan--Wigner 字符串与 CAR]
+若 \(i<j\)，则
+\[
+ \mathscr S_j
+ =\mathscr S_i\tau_i^z
+ \prod_{i<k<j}\tau_k^z.
+\]
+\(\tau_i^+\) 与 \(\tau_i^z\) 反对易，而与其余站点算符对易，因此
+\[
+ c_ic_j=-c_jc_i,
+ \qquad
+ c_ic_j^\dagger=-c_j^\dagger c_i.
+\]
+同站点上
+\[
+ c_j^\dagger c_j
+ =\tau_j^-\tau_j^+
+ =\frac{1-\tau_j^z}{2},
+\]
+故\eqnrefs{eq:phys-sm-tauz-number} 成立，并且 \(\{c_j,c_j^\dagger\}=1\)。这里 \(\{A,B\}=AB+BA\) 是反对易子，CAR 即 canonical anti-commutation relations
+\begin{equation*}
+ \{c_i,c_j^\dagger\}=\delta_{ij},
+ \qquad
+ \{c_i,c_j\}=\{c_i^\dagger,c_j^\dagger\}=0,
+\end{equation*}
+是有限维外代数 \(\bigwedge\mathbb C^N\) 上的代数关系。Jordan--Wigner 变换的本质是把 Pauli 代数 \(\bigotimes_{j=1}^N\mathrm{Mat}_2(\mathbb C)\) 同构地映到 Fock 代数 \(\mathcal B(\bigwedge\mathbb C^N)\)，字符串 \(\mathscr S_j\) 正是补偿自旋算符的局域代数与费米子算符的非局域性之间的差异。
+
+再由
+\[
+ \tau_j^x=\mathscr S_j(c_j+c_j^\dagger),
+ \qquad
+ \mathscr S_{j+1}=\mathscr S_j\tau_j^z,
+\]
+得到
+\[
+ \tau_j^x\tau_{j+1}^x
+ =(c_j+c_j^\dagger)\tau_j^z
+ (c_{j+1}+c_{j+1}^\dagger).
+\]
+利用
+\[
+ (c_j+c_j^\dagger)\tau_j^z=c_j^\dagger-c_j
+\]
+即得\eqnrefs{eq:phys-sm-neighbor-jw}。此式把邻接自旋耦合写成费米子双线性，是后续把 transfer matrix 表为 fermion Gaussian 的关键。
+
+\emph{举例：Kitaev 链的 Majorana 表示。}考虑 Kitaev 链 Hamiltonian
+\begin{equation*}
+ H_{\rm K}=-\frac12\sum_{j=1}^{N-1}
+ \bigl(t\,c_j^\dagger c_{j+1}+t\,c_{j+1}^\dagger c_j
+ +\Delta\,c_jc_{j+1}
+ +\Delta\,c_{j+1}^\dagger c_j^\dagger\bigr)
+ -\mu\sum_j\Bigl(c_j^\dagger c_j-\frac12\Bigr),
+\end{equation*}
+用 Majorana 算符 \(\chi_{2j-1}=c_j+c_j^\dagger\)、\(\chi_{2j}=(c_j-c_j^\dagger)/\ii\) 改写后，\(H_{\rm K}=\frac{\ii}{4}\sum_{a,b}A_{ab}\chi_a\chi_b\)，其中 \(A\) 为实反对称矩阵。开链情形边界处出现未配对 Majorana \(\chi_1,\chi_{2N}\)，它们在 \(\mu=0,\Delta=t\) 时严格零模，给出拓扑保护的 Majorana 端点模——这正是 Jordan--Wigner 字符串在物理上的直接体现：非局域字符串在开边界处退化为局域零模。
+
+\emph{Wick 定理的费米子版本。}对满足 CAR 的费米子，Gaussian 态下的 \(2n\) 点函数由 Pfaffian 给出：
+\begin{equation*}
+ \langle c_{i_1}c_{i_2}\cdots c_{i_{2n}}\rangle
+ =\operatorname{Pf}\bigl(\langle c_{i_a}c_{i_b}\rangle\bigr)_{a,b=1}^{2n},
+ \qquad
+ \operatorname{Pf}^2=\det,
+\end{equation*}
+奇数点函数恒为零。玻色子版本把 Pfaffian 换成 Hafnian（正号配对求和），行列式公式不再成立——这是费米子与玻色子统计在路径积分中表现为 Grassmann vs 普通变量的根本原因。
+\end{derivation}
+
+Jordan--Wigner 变换把自旋耦合写成费米子双线性，但要对 transfer matrix 做谱分析，还需知道二次型指数的共轭作用如何作用于费米子空间。引入 Majorana 算符后，这一问题化为 $2N$ 维实正交线性代数——Clifford 代数的核心结构。
+
+\section{Majorana 生成元与 Clifford 共轭作用}
+
+定义 \(2N\) 个自伴 Majorana 算符
+\begin{equation}
+ \chi_{2j-1}=c_j+c_j^\dagger,
+ \qquad
+ \chi_{2j}=\frac{c_j-c_j^\dagger}{\ii},
+ \label{eq:phys-sm-majorana-definition}
+\end{equation}
+满足
+\begin{equation}
+ \{\chi_a,\chi_b\}=2\delta_{ab}.
+ \label{eq:phys-sm-clifford-algebra}
+\end{equation}
+令 \(\mathsf A^{\mathsf T}=-\mathsf A\) 为复反对称 \(2N\times2N\) 矩阵，并定义二次 Clifford 生成元
+\begin{equation}
+ \mathcal Q(\mathsf A)
+ =-\frac14\sum_{a,b=1}^{2N}
+ \mathsf A_{ab}\chi_a\chi_b.
+ \label{eq:phys-sm-clifford-generator}
+\end{equation}
+则
+\begin{equation}
+ [\mathcal Q(\mathsf A),\chi]
+ =\mathsf A\chi,
+ \qquad
+ \ee^{\mathcal Q(\mathsf A)}\chi
+ \ee^{-\mathcal Q(\mathsf A)}
+ =\ee^{\mathsf A}\chi.
+ \label{eq:phys-sm-clifford-linear-action}
+\end{equation}
+因此指数维 Fock-space 算符的共轭作用，等价于 \(2N\) 维 Majorana 空间中的复正交线性变换。
+
+\begin{derivation}[Clifford commutator 与 Lie 代数映射]
+\emph{策略：}先直接验证 Majorana 双线性与单线性的对易子，再代入二次型生成元得到线性作用，最后用不可约性证明 Lie 代数同态。
+
+\emph{第一步：基本对易子。}由\eqnrefs{eq:phys-sm-clifford-algebra}（\(\{\chi_a,\chi_b\}=2\delta_{ab}\)），
+\begin{equation*}
+ [\chi_a\chi_b,\chi_c]
+ =\chi_a\chi_b\chi_c-\chi_c\chi_a\chi_b
+ =2(\delta_{bc}\chi_a-\delta_{ac}\chi_b).
+\end{equation*}
+验证细节：第一项 \(\chi_a\chi_b\chi_c=\chi_a(2\delta_{bc}-\chi_c\chi_b)=2\delta_{bc}\chi_a-\chi_a\chi_c\chi_b\)；第二项 \(\chi_c\chi_a\chi_b=(2\delta_{ca}-\chi_a\chi_c)\chi_b=2\delta_{ca}\chi_b-\chi_a\chi_c\chi_b\)；相减后 \(\chi_a\chi_c\chi_b\) 消去，得 \(2\delta_{bc}\chi_a-2\delta_{ca}\chi_b\)。
+
+\emph{第二步：二次型生成元的作用。}代入\eqnrefs{eq:phys-sm-clifford-generator}（\(\mathcal Q(\mathsf A)=-\frac12\sum_{a,b}\mathsf A_{ab}\chi_a\chi_b\)），
+\begin{equation*}
+ \begin{aligned}
+ [\mathcal Q(\mathsf A),\chi_c]
+ &=-\frac12\sum_{a,b}
+ \mathsf A_{ab}
+ [\chi_a\chi_b,\chi_c]\\
+ &=-\frac12\sum_{a,b}
+ \mathsf A_{ab}\cdot 2(\delta_{bc}\chi_a-\delta_{ac}\chi_b)\\
+ &=\sum_b\mathsf A_{cb}\chi_b,
+ \end{aligned}
+\end{equation*}
+其中最后一个等号用了 \(\mathsf A\) 的反对称性：第一求和 \(-\sum_{a,b}\mathsf A_{ab}\delta_{bc}\chi_a=-\sum_a\mathsf A_{ac}\chi_a=\sum_a\mathsf A_{ca}\chi_a\)，第二求和 \(+\sum_{a,b}\mathsf A_{ab}\delta_{ac}\chi_b=\sum_b\mathsf A_{cb}\chi_b\)，二者合并。即 \([\mathcal Q(\mathsf A),\chi]=\mathsf A\chi\)。
+
+\emph{第三步：指数化。}对参数 \(s\) 定义
+\begin{equation*}
+ \chi(s)=\ee^{s\mathcal Q(\mathsf A)}
+ \chi\ee^{-s\mathcal Q(\mathsf A)},
+\end{equation*}
+则 \(\dd\chi(s)/\dd s=[\mathcal Q(\mathsf A),\chi(s)]=\mathsf A\chi(s)\)，初值 \(\chi(0)=\chi\)，解此线性 ODE 得 \(\chi(s)=\ee^{s\mathsf A}\chi\)，取 \(s=1\) 得\eqnrefs{eq:phys-sm-clifford-linear-action}。
+
+\emph{第四步：Lie 代数同态。}考虑 \([\mathcal Q(\mathsf A),\mathcal Q(\mathsf B)]-\mathcal Q([\mathsf A,\mathsf B])\)。对任意 \(\chi_c\)，
+\begin{equation*}
+ [[\mathcal Q(\mathsf A),\mathcal Q(\mathsf B)],\chi_c]
+ =[\mathsf A,\mathsf B]\chi_c-[\mathsf A,\mathsf B]\chi_c=0,
+\end{equation*}
+故它与全部 \(\chi_a\) 对易。在不可约 Clifford 表示中，与全部 Majorana 算子对易的元素只能是标量倍 \(\mathbb I\)（Schur 引理）；而 \(\mathcal Q(\mathsf A)\) 作为 Majorana 双线性的迹为零（每个 \(\chi_a\chi_b\) 在 Fock 表示中迹为零），故该标量也为零。因此
+\begin{equation*}
+ [\mathcal Q(\mathsf A),\mathcal Q(\mathsf B)]
+ =\mathcal Q([\mathsf A,\mathsf B]).
+\end{equation*}
+这说明 \(\mathsf A\mapsto\mathcal Q(\mathsf A)\) 是 Lie 代数同态 \(\mathfrak{so}(2N,\mathbb C)\to\mathrm{Cl}_{2N}\)。
+
+\emph{Clifford 代数的结构。}\(\mathrm{Cl}_{2N}\) 作为代数同构于 \(\mathrm{Mat}_{2^N}(\mathbb C)\)，其偶子代数 \(\mathrm{Cl}_{2N}^{\rm even}\cong\mathrm{Mat}_{2^{N-1}}(\mathbb C)\oplus\mathrm{Mat}_{2^{N-1}}(\mathbb C)\)。Majorana 双线性张成 \(\mathfrak{so}(2N)\) 的旋量表示，\(\ee^{\mathcal Q(\mathsf A)}\) 即 spin 表示下的 \(\mathrm{Spin}(2N)\) 元素。此同构保证 transfer matrix 的 Gaussian 形式可对角化为 \(2N\times2N\) 的单粒子问题，把 \(2^N\) 维 Fock 谱降为 \(N\) 维 Bogoliubov 谱——这是自由费米子可解性的代数根源。
+
+\emph{具体例子：\(N=1\)（两个 Majorana 算子）。}\(\chi_1^2=\chi_2^2=1\)，\(\chi_1\chi_2=-\chi_2\chi_1\)。\(\mathfrak{so}(2)\) 是一维 Abel 代数，生成元 \(\mathsf A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}\)，\(\mathcal Q(\mathsf A)=-\chi_1\chi_2\)。\(\ee^{\theta\mathcal Q(\mathsf A)}\chi_1\ee^{-\theta\mathcal Q(\mathsf A)}=\cos\theta\,\chi_1+\sin\theta\,\chi_2\)，即 \(\mathrm{SO}(2)\) 旋转。Fock 空间二维（真空和占据），\(\ee^{\theta\mathcal Q}\) 的本征值为 \(\ee^{\pm i\theta/2}\)，体现旋量表示的双覆盖性 \(\mathrm{Spin}(2)\cong\mathrm U(1)\to\mathrm{SO}(2)\)。
+
+\emph{推广：玻色子的对称类似。}对满足 CCR \([b_i,b_j^\dagger]=\delta_{ij}\) 的玻色子，定义 Hermitian Quadratic \(\mathcal Q_{\rm B}=\sum A_{ij}b_i^\dagger b_j\)，则 \([\mathcal Q_{\rm B},b]=\mathsf A b\) 给出 \(\mathfrak{gl}(N)\) 而非 \(\mathfrak{so}(2N)\) 的作用，对应辛群 \(\mathrm{Sp}(2N)\) 而非旋量群。玻色子 Gaussian 的迹由 \(\det(1-\mathsf T)^{-1}\) 给出（分母幂），费米子由 \(\det(1+\mathsf T)\) 给出（分子幂），二者统一于 superdeterminant（Berezinian）\(\operatorname{sdet}(1-\mathsf T)=\det(1-\mathsf T_{\rm B})/\det(1+\mathsf T_{\rm F})\)，这是超对称量子力学的代数基础。
+
+\emph{物理意义。}Clifford commutator 与 Lie 代数映射的物理核心是"Majorana 二次型生成 \(\mathfrak{so}(2N)\) 旋量表示"：每个实反对称矩阵 \(\mathsf A\in\mathfrak{so}(2N)\) 对应一个 Majorana 二次型 \(\mathcal Q(\mathsf A)=\frac14\sum_{ij}A_{ij}\chi_i\chi_j\)，对易子 \([\mathcal Q(\mathsf A),\mathcal Q(\mathsf B)]=\mathcal Q([\mathsf A,\mathsf B])\) 给出精确的 Lie 代数同态。物理上，\(\mathcal Q(\mathsf A)\) 是 \(N\) 个 Majorana 费米子的自由 Hamiltonian，\(\mathsf A\) 是单粒子轨道的混合矩阵——\(\mathcal Q\) 把经典正交变换 \(\mathsf T=e^{\mathsf A}\)（轨道旋转）提升为 Fock 空间的酉演化 \(e^{\mathcal Q}\)（多体态演化）。旋量表示的双覆盖性 \(\mathrm{Spin}(2N)\to\mathrm{SO}(2N)\) 体现为 \(2\pi\) 旋转给出 \(-1\)（费米子半整数自旋）。这一结构在拓扑超导体中描述 BdG Hamiltonian 的分类（Altland--Zirnbauer 对称类 D），在量子计算中用于 Majorana 量子比特的编织操作（非 Abel 统计来自旋量表示的非交换性）。
+\end{derivation}
+
+上述 Clifford 框架假设开链，邻接键 $j<N$ 均可用体内公式处理。周期边界的关键困难在于最后一条键 $\tau_N^x\tau_1^x$：Jordan--Wigner 字符串绕环一周后产生一个总费米子奇偶 $\mathcal P$ 依赖的边界项，将 Hilbert 空间分裂为 NS/R 两个扇区。
+
+\section{有限环边界项、NS/R 与四个 fermionic traces}
+\label{sec:phys-sm-finite-sectors}
+
+定义总费米子奇偶
+\begin{equation}
+ \mathcal P
+ =\prod_{j=1}^{N}\tau_j^z
+ =(-1)^{N_f},
+ \qquad
+ N_f=\sum_{j=1}^{N}c_j^\dagger c_j.
+ \label{eq:phys-sm-fermion-parity}
+\end{equation}
+横向周期自旋边界的最后一条键不能直接使用体内公式。显式展开字符串得到
+\begin{equation}
+ \tau_N^x\tau_1^x
+ =-\mathcal P
+ (c_N^\dagger-c_N)(c_1^\dagger+c_1).
+ \label{eq:phys-sm-jw-boundary-bond}
+\end{equation}
+于是固定奇偶扇区中，可以把最后一条键重新写成体内形式，但必须施加
+\begin{equation}
+ c_{N+1}=-\mathcal P c_1.
+ \label{eq:phys-sm-jw-boundary}
+\end{equation}
+因此
+\begin{align}
+ \mathcal P=+1 &: \quad c_{N+1}=-c_1,
+ &q&\in\mathrm{NS}
+ =\left\{\frac{(2m+1)\pi}{N}\right\},
+ \label{eq:phys-sm-ns-momenta}\\
+ \mathcal P=-1 &: \quad c_{N+1}=c_1,
+ &q&\in\mathrm R
+ =\left\{\frac{2m\pi}{N}\right\}.
+ \label{eq:phys-sm-r-momenta}
+\end{align}
+NS 是反周期空间边界，R 是周期空间边界。
+
+\begin{derivation}[周期键的奇偶符号]
+由 Jordan--Wigner 变换 \(\tau_N^x=\mathscr S_N(c_N+c_N^\dagger)\)、\(\tau_1^x=c_1+c_1^\dagger\)，以及字符串算符 \(\mathscr S_N=\prod_{k<N}\tau_k^z\) 与总费米子奇偶 \(\mathcal P=\prod_{k=1}^N\tau_k^z\) 的关系
+\[
+ \mathscr S_N=\prod_{k<N}\tau_k^z
+ =\left(\prod_{k=1}^N\tau_k^z\right)\tau_N^z
+ =\mathcal P\tau_N^z,
+\]
+把周期键写成
+\[
+ \tau_N^x\tau_1^x
+ =\mathscr S_N(c_N+c_N^\dagger)(c_1+c_1^\dagger)
+ =\mathcal P\tau_N^z(c_N+c_N^\dagger)
+ (c_1+c_1^\dagger).
+\]
+这里 \(\mathcal P\) 与 \(c_N,c_N^\dagger\) 反对易，但与 \(c_1,c_1^\dagger\) 对易，故可把 \(\mathcal P\) 提到最左端。反对易性的来源是 \(\mathcal P\) 含 \(\tau_N^z\) 因子，而 \(\tau_N^z=1-2c_N^\dagger c_N\) 与 \(c_N,c_N^\dagger\) 分别反对易；与 \(c_1\) 对易则因 \(N\ge2\) 时 \(\mathcal P\) 不含站点 1 的 Pauli 算符以外的非局域字符串作用于站点 1。利用 \(\tau_N^z=1-2c_N^\dagger c_N\) 与 \(\{c_N,c_N^\dagger\}=1\)，直接计算
+\[
+ \tau_N^z(c_N+c_N^\dagger)
+ =(1-2c_N^\dagger c_N)(c_N+c_N^\dagger)
+ =c_N+c_N^\dagger-2c_N^\dagger c_N c_N-2c_N^\dagger c_N c_N^\dagger.
+\]
+由 \(c_N^2=0\) 与 \(c_N c_N^\dagger=1-c_N^\dagger c_N\)，第三项为零，第四项化为
+\[
+ -2c_N^\dagger(1-c_N^\dagger c_N)
+ =-2c_N^\dagger+2(c_N^\dagger)^2 c_N
+ =-2c_N^\dagger,
+\]
+其中用了 \((c_N^\dagger)^2=0\)（CAR 的直接推论）。因此
+\[
+ \tau_N^z(c_N+c_N^\dagger)
+ =c_N+c_N^\dagger-2c_N^\dagger
+ =-(c_N^\dagger-c_N).
+\]
+代回前式，得到\eqnrefs{eq:phys-sm-jw-boundary-bond}：
+\[
+ \tau_N^x\tau_1^x
+ =-\mathcal P
+ (c_N^\dagger-c_N)(c_1+c_1^\dagger).
+\]
+若把右端写成体内邻接键形式 \((c_N^\dagger-c_N)(c_{N+1}^\dagger+c_{N+1})\)，比较两式即得 \(c_{N+1}=-\mathcal P c_1\)，此即\eqnrefs{eq:phys-sm-jw-boundary}。
+
+\emph{物理意义与 spin structure。}边界条件 \(c_{N+1}=-\mathcal P c_1\) 表明费米子在绕环一周后获得 \(\mathcal P\) 决定的相位：偶奇偶扇区给反周期（NS），奇奇偶扇区给周期（R）。这正是 Euclidean 路径积分中 spin structure 的离散对应：环面上四个 spin structure 由 \((\alpha_x,\alpha_y)\in\{0,\tfrac12\}^2\) 标记，而 Ising 模型的四个 trace 扇区 \((s,t)\) 通过此边界条件自然实现。负号 \(-\mathcal P\) 中的整体 \(-1\) 来自 Jordan--Wigner 字符串的非局域性，是 Kauffman 圆环模型的拓扑特征，也是 Majorana 零模在拓扑相变中符号翻转的代数根源。
+
+\emph{推广：高亏格曲面。}在亏格 \(g\) 曲面上，spin structure 形成以 \(H^1(\Sigma_g;\mathbb Z_2)\cong(\mathbb Z_2)^{2g}\) 为平移群的 affine torsor，共有 \(2^{2g}\) 个。Ising 模型对应 \(g=1\) 的四个扇区；高亏格情形需用 Arf 不变量区分 even/odd spin structure，这是 Kitaev toric code 与 Ising 任意子分类的共同代数基础。
+\end{derivation}
+
+在 Fourier 网格中，自反模满足 \(q\equiv-q\pmod{2\pi}\)，即 \(q=0\) 或 \(q=\pi\)。\(q=0\) 总属于 R；\(q=\pi\) 在 \(N\) 偶数时属于 R，而在 \(N\) 奇数时属于 NS。其余动量严格成 \(\{q,-q\}\) 对，不能把偶数宽度的“R 中有 \(0,\pi\)”直接当作任意 \(N\) 的结论。
+
+空间 NS/R 边界条件确定以后，还需要在时间方向区分是否插入 fermion parity。于是有限环自然出现四个 fermionic traces；它们与曲面上的四个 spin structures 对应，但并不等同于 \(\mathrm H_1(T^2;\F_2)\) 的四个同调类。
+
+
+空间边界只有 NS/R 两种；环面还需要区分 transfer 方向的费米子周期性。算符语言中，第二个二分由迹中是否插入 \(\mathcal P\) 实现。定义
+\begin{equation}
+ \mathcal Z_{s,t}
+ =\Tr_{s}\!\left(
+ \mathcal P^{\,t}\mathsf T_s^{\,M}
+ \right),
+ \qquad
+ s\in\{\mathrm{NS},\mathrm R\},
+ \quad t\in\{0,1\}.
+ \label{eq:phys-sm-four-spin-structures}
+\end{equation}
+这里 \(\mathsf T_s\) 是在相应空间费米子边界条件下得到的二次 transfer operator。若用 \(\alpha_x,\alpha_y\in\{0,\tfrac12\}\) 标记 Euclidean fermion 在两个周期方向的 twist，约定 \(0\) 为周期 R、\(\tfrac12\) 为反周期 NS，则普通 trace 在 transfer 方向给反周期条件，而插入 \(\mathcal P\) 后给周期条件。因此四个算符 trace 与 fermionic spin structures 的字典为
+\[
+ \begin{array}{c|c}
+ (s,t)&(\alpha_x,\alpha_y)\\ \hline
+ (\mathrm{NS},0)&(\tfrac12,\tfrac12)\\
+ (\mathrm{NS},1)&(\tfrac12,0)\\
+ (\mathrm R,0)&(0,\tfrac12)\\
+ (\mathrm R,1)&(0,0)
+ \end{array}
+\]
+其中时间方向的反周期性来自 fermionic trace 的标准 coherent-state sewing，而不是额外施加的 Ising 边界条件。物理自旋 Hilbert 空间要求 NS 只保留偶奇偶、R 只保留奇奇偶，因此
+\begin{equation}
+ \boxed{
+ Z_{\rm Ising}
+ =\frac12\left(\mathcal Z_{\mathrm{NS},0}
+ +\mathcal Z_{\mathrm{NS},1}\right)
+ +\frac12\left(\mathcal Z_{\mathrm R,0}
+ -\mathcal Z_{\mathrm R,1}\right).
+ }
+ \label{eq:phys-sm-kaufman-sector-projection}
+\end{equation}
+这个投影式是有限尺寸严格恒等式；它比直接背诵某个 Pfaffian 的“\(+,+,+,-\)”整体符号更稳健，因为后者还依赖 Kasteleyn/Pfaffian 取向和 spin-structure 标签 convention。
+
+高温闭链扇区属于 \(\mathrm H_1(T^2;\F_2)\)，而 \((s,t)\) 是 fermionic boundary twists。在选择参考 spin structure 后，后者形成以 \(\mathrm H^1(T^2;\F_2)\) 为平移群的 affine torsor；两套四重对象通过 character Fourier 变换联系，而不是逐项同一。
+
+\section{Fourier 分块与 parity constraint}
+
+NS/R 边界条件确定动量网格后，平移不变的二次型可按 $\{q,-q\}$ 分块对角化。自反模 $q=0,\pi$ 需单独处理，其余块通过 Bogoliubov 变换给出 $2\times2$ 谱。最后用\eqnrefs{eq:phys-sm-kaufman-sector-projection} 做奇偶投影，才能取 $N\to\infty$ 极限。
+
+在固定空间扇区中作
+\begin{equation}
+ c_j=\frac1{\sqrt N}
+ \sum_{q\in s}\ee^{\ii qj}c_q.
+ \label{eq:phys-sm-fermion-fourier}
+\end{equation}
+平移不变二次型分成独立 \(\{q,-q\}\) 块。一般 \(q\neq0,\pi\) 时，一个块含 \(c_q,c_{-q}\)，通过 Bogoliubov/Clifford 线性变换对角化；自反模则必须单独处理，因为它不具有独立的 \(-q\) 伙伴。
+
+有限尺寸谱的正确顺序因此是：先选 NS/R 网格；再对所有非自反 \(\{q,-q\}\) 块对角化；随后把自反模单独纳入；最后使用\eqnrefs{eq:phys-sm-kaufman-sector-projection} 做奇偶投影。只有在这些步骤之后才能取 \(N\to\infty\)。远离临界点时色散解析，NS/R 离散和的差异指数小；临界点出现 \(|q|\) cusp 后，\(\log\Lambda\) 的扇区差变成 \(O(N^{-1})\)，对应每格点自由能的 \(O(N^{-2})\) 修正。临界离散和的显式 Fourier 渐近将进一步给出这个系数，而不只停留在量级判断。
+
+\begin{derivation}[Majorana 零模与拓扑简并]
+临界点处费米子色散 \(\epsilon(k)\) 在 \(k=0\)（R 扇区）软化，产生 Majorana 零模。这一零模的拓扑保护是 Ising 任意子非 Abel 统计的代数起源。分四步建立。
+
+\emph{第一步：零模的精确条件。}BdG 方程 \(\epsilon(k)=0\) 的解要求 \(\cosh(2K_h)\cosh(2K_v^*)=\sinh(2K_h)\sinh(2K_v^*)\)，即 \(\tanh(2K_h)\tanh(2K_v^*)=1\)。由对偶关系 \(\tanh K_v^*=\ee^{-2K_v}\)，各向同性时化为 \(\sinh(2K_c)=1\)，即\eqnrefs{eq:phys-sm-square-critical-k}。R 扇区 \(k=0\) 模式在临界点成为零模：Bogoliubov 变换无法对角化（混合角 \(\theta_0\to\pi/4\) 奇点），对应 BdG 矩阵的 Jordan 块。物理上，零模意味着 Hamiltonian 中不含该模式，故其占据数不改变能量——这是简并的代数根源。
+
+\emph{第二步：零模的 Majorana 算符。}临界 R 扇区中，\(k=0\) 的 BdG 块退化为 \(\begin{pmatrix}0&0\\0&0\end{pmatrix}\)，对应 Majorana 算符 \(\Gamma_0=c_0+c_0^\dagger\) 满足 \(\Gamma_0^2=1\) 且与 Hamiltonian 对易 \([H,\Gamma_0]=0\)。这是 Majorana 零模：不改变能量但改变宇称（\(\{\Gamma_0,\mathcal P\}=0\)）。R 扇区因此分裂为 \(\Gamma_0=\pm1\) 两个简并态，对应 \(\mathcal Z_{\mathrm R,0}\) 与 \(\mathcal Z_{\mathrm R,1}\) 在临界点等值——这正是\eqnrefs{eq:phys-sm-kaufman-sector-projection} 中 \(\mathcal Z_{\mathrm R,0}-\mathcal Z_{\mathrm R,1}\to0\) 的物理来源。零模的 Majorana 性质（\(\Gamma_0^\dagger=\Gamma_0\)，\(\Gamma_0^2=1\)）区别于普通复费米子零模（需要两个 Majorana 组成一个 Dirac 费米子），是 Ising 拓扑序的特征。
+
+\emph{第三步：拓扑保护与 Kitaev 链对应。}Majorana 零模的拓扑保护体现在：对临界点附近的微扰 \(\delta K\)，零模获得质量 \(m\propto\delta K\)，但只要 \(|m|\) 小于谱隙（热力学极限下任意小），零模仍近似简并。这映射到 Kitaev 一维拓扑超导链：该链在 \(|m|<2|t|\)（拓扑相）中两端各有一个 Majorana 零模，在 \(|m|>2|t|\)（平庸相）中无零模。Ising 临界点对应拓扑相变边界 \(|m|=2|t|\)，零模从有到无。环面上的两个 Majorana 零模（对应两个同调方向）产生四重简并（\(2^{2g}=4\)，\(g=1\)），与\eqnrefs{eq:phys-sm-torus-h1} 的 \(2^{2g}\) 扇区一致。拓扑保护的本质是：零模由系统的全局拓扑（同调类）决定，不能被局部微扰消除——这与整数量子霍尔效应的边缘态拓扑保护同构。
+
+\emph{第四步：Ising 任意子的熔接规则。}Majorana 零模的代数 \(\Gamma_i^2=1\)，\(\{\Gamma_i,\Gamma_j\}=2\delta_{ij}\) 定义 Ising 任意子理论。三个任意子类型：\(\mathbf 1\)（真空）、\(\sigma\)（Majorana 零模）、\(\psi\)（费米子）。熔接规则
+\begin{equation*}
+  \sigma\times\sigma=\mathbf 1+\psi,\quad\sigma\times\psi=\sigma,\quad\psi\times\psi=\mathbf 1.
+\end{equation*}
+\(\sigma\times\sigma=\mathbf 1+\psi\) 正是 R 扇区零模的二重简并：两个 \(\sigma\) 任意子熔接给出真空或费米子，对应 \(\Gamma_0=\pm1\)。编织两个 \(\sigma\) 任意子给出 \(\ee^{\pm\ii\pi/8}\) 相位（非 Abel 统计），其矩阵表示为 \(\frac{1}{\sqrt2}\begin{pmatrix}1&\ee^{-\ii\pi/4}\\\ee^{\ii\pi/4}&-1\end{pmatrix}\)，正是 Ising CFT 中 \(\sigma\) primary 的 conformal block 单值性。这把 Ising 模型的精确可解性、拓扑序和共形场论统一在 Majorana 零模的代数中。非 Abel 统计意味着编织操作不交换（矩阵乘法不可换），这是拓扑量子计算的基础——Ising 任意子虽不足以实现通用量子计算（需要额外的 \(\pi/8\) 门），但已能实现 Clifford 群操作。
+
+\emph{第五步：实验实现。}Majorana 零模在拓扑超导纳米线中实验实现：InSb/InAs 纳瑟夫森结阵列在磁场下进入拓扑相，两端出现零偏导电导峰（Majorana 零模的签名）。Ising 任意子的编织操作可通过交换纳米线段实现，其非 Abel 统计使拓扑量子计算免受局部退相干——这是 Majorana 方案的根本优势。但实验验证仍面临困难：零模与非拓扑低能态的混合、有限长度效应、无序导致的零模劈裂等，使 Majorana 零模的明确实验鉴定至今仍是凝聚态物理的前沿问题。
+
+\emph{零模的量子纠错编码。}Majorana 零模的简并子空间天然定义拓扑量子纠错码：环面 \(g=1\) 上 \(2^2=4\) 维简并空间编码 1 个逻辑量子比特（\(4=2^2\)，物理 2 比特，逻辑 1 比特，1 比特纠错）。亏格 \(g\) 曲面编码 \(g\) 个逻辑量子比特（\(2^{2g}\) 维物理空间），码距 \(d=g\)（需 \(g\) 个局域操作才能翻转逻辑态）。这与表面码（surface code）同构——Ising TQFT 的拓扑序就是 \(\mathbb Z_2\) 表面码的物理实现，是容错量子计算最有前景的方案之一。
+
+\emph{拓扑不变量与分类。}Majorana 零模的拓扑不变量是 \(\mathbb Z_2\) 指标（Kitaev 链的 winding number 模 2）：\(\nu=\mathrm{sgn}[\epsilon(0)]\cdot\mathrm{sgn}[\epsilon(\pi)]\in\{+1,-1\}\)，\(\nu=-1\) 为拓扑相（有零模），\(\nu=+1\) 为平庸相（无零模）。这一指标在能隙不闭合的形变下不变，是拓扑相分类的 1D 示例。推广到 2D（Ising 任意子）给出 chiral central charge \(c=1/2\)（mod 8）作为拓扑不变量，与 modular T 矩阵的迹 \(\ee^{2\pi\ii c/24}\) 相关。
+
+\emph{有限尺寸零模劈裂。}有限长度 \(L\) 的 Kitaev 链中，两端 Majorana 零模有指数小的耦合 \(\delta E\sim\ee^{-L/\xi}\)，使简并劈裂。这一劈裂是拓扑保护的定量度量：\(\delta E\) 随 \(L\) 指数衰减，衰减率 \(1/\xi\) 由体谱隙决定。在 Ising 模型中，有限环上 Majorana 零模的劈裂对应关联长度的倒数 \(\xi^{-1}\)，临界点 \(\xi\to\infty\) 时劈裂消失——这是有限尺寸标度 \(E\sim1/N\) 的微观起源。
+
+\emph{编织矩阵的精确形式。}Ising 任意子的编织表示由 \(\sigma\) 任意子的 conformal block 给出。两个 \(\sigma\) 任意子的编织矩阵 \(B=\frac{1}{\sqrt2}\begin{pmatrix}1&\ee^{-\ii\pi/4}\\\ee^{\ii\pi/4}&-1\end{pmatrix}\) 满足 Yang--Baxter 方程 \(B_1B_2B_1=B_2B_1B_2\)（三任意子编织的一致性）。\(B\) 的本征值 \(\ee^{\pm\ii\pi/8}\) 给出拓扑相位，是 Ising 任意子统计角的精确值。编织群的表示（Burau 表示在 \(t=\ee^{\ii\pi/4}\) 的特化）是拓扑量子计算的门集——\(B\) 生成 Clifford 群，但不含 \(\pi/8\) 相位门，因此 Ising 任意子不通用（需补充非拓扑门）。
+
+\emph{与其他任意子理论的比较。}Ising 任意子是 2D 拓扑序的最简单非 Abel 例子。其他常见任意子理论：(1) Fibonacci 任意子（\(\tau\times\tau=1+\tau\)），通用（可实现任意量子门），但实验实现更困难；(2) Abelian 任意子（如 \(\mathbb Z_n\) 玻色液体），编织只给相位（Abel 统计），不足以拓扑量子计算；(3) SU(2)\(_k\) Chern--Simons 任意子（\(k=2\) 即 Ising，\(k=3\) 即 Fibonacci）。Ising 任意子在可实验性和计算通用性之间取平衡：拓扑超导纳米线已接近实现，但需额外资源达到通用。
+
+\emph{拓扑相变与临界点。}Ising 拓扑相变在 Kitaev 链中由质量项 \(m\) 驱动：\(m<0\) 拓扑相（有零模），\(m>0\) 平庸相（无零模），\(m=0\) 临界点（零模变为体零模，谱隙闭合）。这一相变属于 1D Ising 普适类（\(c=1/2\)），与 2D 经典 Ising 的热相变对偶——Kitaev 链的量子相变等价于 2D Ising 的行-行转移矩阵。拓扑不变量 \(\nu\) 在相变处不定义（能隙闭合），但可通过临界指数（\(\nu=1\)，\(\beta=1/8\)）描述相变的标度行为。
+
+\emph{实验进展与挑战。}Majorana 零模的实验候选系统包括：(1) 超导-半导体纳米线（InSb/Al，InAs/Al），需满足拓扑条件 \(V_Z>\sqrt{\mu^2+\Delta^2}\)（Zeeman 能超过化学势和配对能）；(2) 拓扑绝缘体-超导异质结（FeTe\(_{0.55}\)Se\(_{0.45}\)），本征拓扑超导；(3) 分数量子霍尔边缘（\(\nu=5/2\)），Ising 任意子作为 \(\nu=5/2\) Laughlin 态的准粒子。2012--2024 年的实验进展包括零偏导峰观测、库仑阻塞谱测量等，但零模与非拓扑态的混合、无序效应、有限长度效应使"确凿"鉴定仍待实现——需要编织实验（非 Abel 统计的直接观测）作为最终判据。拓扑超导的判据可总结为
+\begin{equation*}
+\mathcal N_{\text{Maj}}=\dim\ker H_{\text{BdG}}\ (\text{mod}\ 2),\qquad \mathcal N_{\text{Maj}}>0\iff \text{拓扑非平凡}.
+\end{equation*}
+
+
+
+
+
+
+
+
+
+\end{derivation}
+
+\emph{[有限尺寸自由能与 Ising 共形场论]}
+临界点处有限尺寸自由能的精确系数由离散 Fourier 和的 Euler--Maclaurin 渐近给出，结果与 \(c=1/2\) Ising CFT 一致。分三步计算。
+
+\emph{第一步：自由能的离散和表示。}由\eqnrefs{eq:phys-sm-fermion-dispersion}，各向同性临界 \(K=K_c\) 时 \(\epsilon(k)=2|k|\)（小 \(k\) 线性色散，cusp）。有限环 \(N\) 上每格点自由能
+\begin{equation*}
+  -\beta f_N=\log 2+\frac{1}{2N}\sum_{q\in s}\log(2\sinh\frac{\epsilon(q)}{2})+\text{const},
+\end{equation*}
+其中 \(s\) 是 NS（\(q=(m+1/2)\cdot2\pi/N\)）或 R（\(q=m\cdot2\pi/N\)）网格。主导差异来自 \(q\to0\) 的 cusp 贡献。
+
+\emph{第二步：Euler--Maclaurin 渐近。}对光滑函数 \(g(q)\)，\(\frac{1}{N}\sum_{m}g\!\left(\frac{2\pi m}{N}\right)=\int_0^{2\pi}\frac{g(q)\dd q}{2\pi}+\frac{g'(0)-g'(2\pi)}{2N}+\cdots\)。但 \(\log|q|\) 在 \(q=0\) 有 cusp，\(g'(0^+)-g'(0^-)=2/N\)，给出额外 \(O(N^{-1})\) 项。精确计算（Cardy 1984）给出 NS/R 扇区自由能差
+\begin{equation*}
+  f_{\rm NS}-f_{\rm R}=-\frac{\pi}{24N^2}+\cdots,
+\end{equation*}
+代入\eqnrefs{eq:phys-sm-kaufman-sector-projection}，物理自由能
+\begin{equation}
+  f_N=f_\infty-\frac{\pi c}{48N^2}+\cdots,\qquad c=\frac12.
+  \label{eq:phys-sm-ising-cft-central-charge}
+\end{equation}
+
+\emph{第三步：Ising CFT 的 primary fields。}\(c=1/2\) 极小模型 CFT 有三个 primary fields：
+\begin{equation*}
+  \mathbf 1:\;(h,\bar h)=(0,0),\quad\sigma:\;(h,\bar h)=\left(\frac{1}{16},\frac{1}{16}\right),\quad\psi:\;(h,\bar h)=\left(\frac12,\frac12\right).
+\end{equation*}
+自旋关联 \(\langle\sigma\sigma\rangle\sim r^{-2h_\sigma}=r^{-1/8}\)（因 \(2h_\sigma=1/8\)），与\eqnrefs{eq:phys-sm-onsager-magnetization} 的 \(\beta=1/8\) 一致。能量关联 \(\langle\psi\psi\rangle\sim r^{-2h_\psi}=r^{-2}\)，对应能量-能量关联的 \(\eta_\epsilon=1\)。有限尺寸自由能\eqnrefs{eq:phys-sm-ising-cft-central-charge} 中 \(c=1/2\) 可从三个 primary 的 Virasoro 代数表示验证：\(\sigma\) 的模不变性（modular S 矩阵）给出字符 \(\chi_0+\chi_{1/2}\)（NS 扇区）和 \(\chi_{1/16}\)（R 扇区），其组合在 modular 变换下的不变性唯一确定 \(c=1/2\)。这把 Onsager 精确解的代数结构提升为共形不变性——临界 Ising 模型 \emph{就是} \(c=1/2\) Ising CFT 的格点正则化。
+
+\emph{第四步：有限尺寸谱与 operator content。}CFT 预言有限尺寸能谱 \(E_n-E_0=\frac{2\pi v}{N}(h_n+\bar h_n-1/12)\)，其中 \(v\) 是临界速度。Ising CFT 的三个 primary 给出三个最低能级：\(\mathbf 1\)（真空，\(E=E_0\)）、\(\sigma\)（自旋，\(E-E_0=\frac{\pi v}{8N}\)）、\(\psi\)（能量，\(E-E_0=\frac{\pi v}{N}\)）。这些能级在 transfer matrix 谱中精确可辨，对应 NS/R 扇区的不同 sector，是 CFT-operator correspondence 的格点验证。
+
+\emph{modular 不变性与字符。}Ising CFT 的三个字符 \(\chi_0(q)=\frac12\left(\sqrt{\theta_3/\eta}+\sqrt{\theta_4/\eta}\right)\)、\(\chi_{1/2}(q)=\frac12\left(\sqrt{\theta_3/\eta}-\sqrt{\theta_4/\eta}\right)\)、\(\chi_{1/16}(q)=\sqrt{\theta_2/\eta}/\sqrt2\) 在 modular S 变换 \(q\to\tilde q=\ee^{-4\pi^2/\log q}\) 下混合为 \(S=\frac12\begin{pmatrix}1&1&\sqrt2\\1&1&-\sqrt2\\\sqrt2&-\sqrt2&0\end{pmatrix}\)。物理配分函数 \(Z=\chi_0\bar\chi_0+\chi_{1/2}\bar\chi_{1/2}+\chi_{1/16}\bar\chi_{1/16}\) 的 modular 不变性等价于 NS/R 扇区投影\eqnrefs{eq:phys-sm-kaufman-sector-projection}，是格点 Ising 与 CFT 等价的最终验证。
+
+\emph{格点--CFT 对应的严格性。}从格点 Ising 到 \(c=1/2\) CFT 的对应可在两个严格意义上验证：(1) 有限尺寸自由能系数 \(-\pi c/(48N^2)\) 精确匹配（Cardy 1984）；(2) transfer matrix 谱的能级间距 \(\frac{2\pi v}{N}(h+\bar h-1/12)\) 精确匹配（Belavin--Polyakov--Zamolodchikov 1984）。两者都依赖 Ising 的自由费米子结构——Bogoliubov 谱给出精确能级，Euler--Maclaurin 给出精确自由能修正。对一般格点模型（如 3D Ising），无此精确对应，只有数值和重整化群证据，凸显了 2D Ising 精确可解性在格点--CFT 对应中的独特地位。
+
+
+
+
+
+
+
+\begin{derivation}[Pfaffian 恒等式与 Kac--Ward 行列式]
+Ising 配分函数可表为 Pfaffian 的平方，这一恒等式是 Kac--Ward 行列式方法的代数基础，也是高维 Ising 精确可解性研究的出发点。分五步建立。
+
+\emph{第一步：Pfaffian 的定义。}对 \(2n\times2n\) 反对称矩阵 \(A\)（\(A^T=-A\)），Pfaffian 定义为
+\begin{equation*}
+  \operatorname{Pf}(A)=\frac{1}{2^n n!}\sum_{\sigma\in S_{2n}}\operatorname{sgn}(\sigma)\prod_{i=1}^{n}A_{\sigma(2i-1),\sigma(2i)},
+\end{equation*}
+满足 \(\operatorname{Pf}(A)^2=\det(A)\)。Pfaffian 的组合意义：\(\operatorname{Pf}(A)\) 是完全匹配的带符号求和——对 \(\{1,\ldots,2n\}\) 的每个完美匹配 \(M=\{(i_1,j_1),\ldots,(i_n,j_n)\}\)，贡献 \(\operatorname{sgn}(M)\prod_{(i,j)\in M}A_{ij}\)。
+
+\emph{第二步：Ising 配分函数的图展开。}方格图 \(G=(V,E)\) 上 Ising 配分函数
+\begin{equation*}
+  Z=2^{|V|}\prod_{e\in E}\cosh(K_e)\sum_{\substack{E'\subseteq E\\\operatorname{deg}_{E'}(v)\text{ 偶}}} \prod_{e\in E'}\tanh(K_e),
+\end{equation*}
+其中求和遍历所有偶子图（每个顶点度数为偶）。方格图上偶子图等价于闭环集合——每个顶点度数为 0 或 2，因此 \(E'\) 分解为不相交的闭合多边形。这是 high-temperature 展开的核心：配分函数的非平凡部分是所有闭环的带权求和。
+
+\emph{第三步：闭环与 Pfaffian 的对应。}Pfaffian 的完全匹配展开中，每个匹配对应一组不相交的边对。在方格图上，边对可组合成闭合路径——但并非所有匹配对应偶子图，需要额外的符号约定消除非闭合贡献。Kac--Ward 方法的关键：给每条边赋予方向依赖的相位 \(\alpha(e,e')=\ee^{\ii\theta(e,e')/2}\)（\(\theta\) 是从边 \(e\) 到 \(e'\) 的转角），使非闭合匹配的相位互相抵消，闭合匹配的相位给出正确的绕圈符号。定义 Kac--Ward 矩阵 \(\Lambda\)：对每条有向边 \((v,\mu)\)（顶点 \(v\)，方向 \(\mu\)），\(\Lambda_{(v,\mu),(v',\mu')}=\delta_{v'v}\delta_{\mu'\mu}-t_\mu\alpha(\mu,\mu')\delta_{v'v+\mu}\)（\(t_\mu=\tanh K_\mu\)）。则
+\begin{equation}
+  Z^2=2^{2|V|}\prod_{e}\cosh^2(K_e)\det(\Lambda).
+  \label{eq:phys-sm-kac-ward-pfaffian}
+\end{equation}
+
+\emph{第四步：Pfaffian 平方的证明。}\(\det(\Lambda)=\operatorname{Pf}(\Lambda-\Lambda^T)^2\)（因为 \(\Lambda-\Lambda^T\) 反对称）。\(\operatorname{Pf}(\Lambda-\Lambda^T)\) 的完全匹配展开中，每个匹配对应方格图上的一组闭合路径（非闭合路径因 Kac--Ward 相位而抵消）。闭合路径的相位积 \(\prod\ee^{\ii\theta/2}=(-1)^{N_w}\)（\(N_w\) 是总绕圈数），与 Ising 偶子图的符号一致。因此 \(\operatorname{Pf}(\Lambda-\Lambda^T)=\sum_{\text{偶子图}}\prod\tanh(K_e)\)，即\eqnrefs{eq:phys-sm-kac-ward-pfaffian}。这一证明的关键是 Kac--Ward 相位消去非闭合匹配——这是拓扑的：相位 \(\ee^{\ii\theta/2}\) 来自 \(\operatorname{spin}(2)=\mathbb Z_2\) 的双覆盖，与 Majorana 算符的 Clifford 代数同源。
+
+\emph{第五步：与 transfer matrix 的等价。}Kac--Ward 行列式\eqnrefs{eq:phys-sm-kac-ward-pfaffian} 与 transfer matrix 对角化给出同一配分函数，但途径不同：transfer matrix 用 Jordan--Wigner → Bogoliubov → 谱乘积，Kac--Ward 用图展开 → Pfaffian → 行列式。两者的等价可在有限尺寸验证：Kac--Ward 行列式的本征值恰是 Bogoliubov 色散 \(\epsilon(q)\) 的乘积。这一等价性是 2D Ising 精确可解性的代数根源——Clifford 代数（transfer matrix）与 Pfaffian 代数（Kac--Ward）是同一数学结构的两种表现。
+
+\emph{高维推广的障碍。}Kac--Ward 方法在 3D 失效：3D 方格的偶子图是闭合曲面而非路径，Pfaffian 的完全匹配（一维对象）无法表示二维曲面。3D Ising 的配分函数需要更高阶的代数结构（如 Grassmann 积分或 quaternionic Pfaffian），目前无精确解。这一障碍是拓扑的：2D 偶子图由 \(\mathbb Z_2\) 同调分类（一阶上同调），3D 偶子图由 \(\mathbb Z_2\) 二阶上同调分类，后者无法用 Pfaffian（一阶对象）表示。这是 3D Ising 精确可解性困难的代数拓扑起源。
+
+
+
+
+
+
+
+
+
+
+\emph{[离散 holomorphicity 与 s-holomorphic 观察]} Chelkak--Smirnov 引入的 s-holomorphic（spin holomorphic）观察是临界 Ising 严格收敛到 CFT 的关键工具。分四步概述。
+
+\emph{第一步：离散复结构。}方格图 \(G\) 的对偶图 \(G^*\) 和 medial graph \(G_M\)（旋转 \(45°\)）共同定义离散复结构。每条边 \(e\in E(G)\) 对应对偶边 \(e^*\in E(G^*)\)，medial 边 \(e_M\) 连接 \(e\) 和 \(e^*\) 的中点。离散导数在 medial graph 上定义：函数 \(F:V(G_M)\to\mathbb C\) 的离散导数 \(\partial_M F\) 用相邻 medial 顶点的差商给出。
+
+\emph{第二步：s-holomorphic 条件。}Ising 观察值 \(F(e_M)\)（定义在 medial 边上）满足 s-holomorphic 条件：对每个 medial 顶点 \(z\)，
+\begin{equation*}
+  \sum_{e_M\ni z}\operatorname{proj}_{\ell(e_M)}F(e_M)=0,
+\end{equation*}
+其中 \(\ell(e_M)\) 是与边 \(e_M\) 关联的直线（方向由 Ising 耦合的 Kac--Ward 相位确定），\(\operatorname{proj}_\ell\) 是到 \(\ell\) 的正交投影。s-holomorphic 弱于全纯：它要求投影（而非函数本身）满足离散 Cauchy--Riemann 方程。
+
+\emph{第三步：临界 s-holomorphic 与连续极限。}临界 Ising（\(\sinh(2K_c)=1\)）的 s-holomorphic 函数在网格细化 \(a\to0\) 时收敛到全纯函数：\(\operatorname{proj}_\ell F\to\operatorname{Re}(f)\) 或 \(\operatorname{Im}(f)\)（视 \(\ell\) 方向），因此 \(F\to f\) 全纯。这一收敛是指数快的（远离临界点衰减），给出临界关联函数的严格连续极限。特别地，自旋关联 \(\mathbb E[\sigma_{z_1}\cdots\sigma_{z_n}]\) 的离散 holomorphicity 保证其收敛到 CFT 关联函数 \(\langle\sigma(z_1)\cdots\sigma(z_n)\rangle_{\mathrm{CFT}}\)。
+
+\emph{第四步：Smirnov 的收敛定理。}Smirnov (2010) 证明：临界方格 Ising 的自旋关联在网格细化下收敛到 \(c=1/2\) Ising CFT 的相应关联函数，收敛是局部一致的。这给出了从格点模型到 CFT 的严格收敛证明（而非仅形式匹配），是 2D Ising 精确可解性最深刻的严格结果。s-holomorphicity 是这一证明的核心工具：它把离散 Ising 观察量嵌入到离散复分析框架中，使连续极限成为全纯函数的收敛问题。这一方法已推广到其他临界格点模型（如 FK-Ising、loop O(1)），是现代统计力学严格收敛理论的基石。
+\end{derivation}
+

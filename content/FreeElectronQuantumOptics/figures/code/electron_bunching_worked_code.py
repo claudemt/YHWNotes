@@ -1,0 +1,20 @@
+from _electron_worked_models import *
+with figure_style():
+    fig,ax=plt.subplots(1,2,figsize=(10,4.5))
+    theta=np.linspace(-np.pi,np.pi,700)
+    beta=1.2; s=np.arcsin(1.8411837813406593/(4*beta))
+    pure=density(theta,beta,s)
+    noisy=np.ones_like(theta,dtype=complex)
+    for d in range(1,31):
+        B=(-1j)**d*jv(d,4*beta*np.sin(d*s))*np.exp(-.5*(d*omega*.5e-15)**2)
+        noisy+=B*np.exp(1j*d*theta)+B.conjugate()*np.exp(-1j*d*theta)
+    ax[0].plot(theta/np.pi,pure,label='Coherent')
+    ax[0].plot(theta/np.pi,noisy.real,label='0.50 fs jitter')
+    ax[0].axhline(1,color='.45',ls='--',label='Phase mixed')
+    ax[0].set(xlabel=r'Comoving phase $\theta_\zeta/\pi$',ylabel=r'Relative density $\mathfrak{n}_e$',ylim=(0,pure.max()*1.5))
+    add_legend(ax[0],loc='upper left',fontsize=10)
+    distance=np.linspace(0,.5,600)
+    for d in [1,2,3]: ax[1].plot(distance,abs(jv(d,4*beta*np.sin(d*2*np.pi*distance))),label=rf'$|B_{d}|$')
+    ax[1].set(xlabel=r'Drift distance $L/L_T$',ylabel='Harmonic magnitude',ylim=(0,.85))
+    add_legend(ax[1],loc='upper right',ncol=3,fontsize=10)
+    finish(fig,ax,'electron_bunching_worked')

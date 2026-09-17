@@ -1,0 +1,1518 @@
+\chapter{量子场论基础}\label{chap:qft-foundations}
+
+前两章仍然可以在“一个给定场怎样运动”的语言里工作；现在必须解决一个普通单粒子量子力学容纳不了的问题：相对论相互作用能够产生和湮灭粒子。若我们预先只选一个一电子 Hilbert 空间，那么一旦过程允许出现电子—正电子对或真实光子，这个空间就不再对时间演化封闭。量子场论首先要解决的正是这个状态空间问题。
+
+经典场可以分解成许多正常模，每个模在自由极限下都像一个谐振子；量子化这些模以后，产生、湮灭算符改变模的占据数，把零粒子、一粒子和多粒子状态统一放进 Fock 空间。状态空间建立以后，一个量子从一点传播到另一点由自由运动算符的 Green 核描述；局域相互作用通过 Dyson--Wick 展开把这些自由传播连接起来；LSZ 与质量壳相空间再把相关函数转成实验截面或衰变率。圈修正和规范结构是在这条链上继续加入量子涨落与冗余自由度。
+
+实标量场在这一章承担一个最小模型的角色：没有旋量指标，也没有规范冗余，因此 Fock 空间、Gaussian 配对、传播子和 LSZ 的共同结构可以先单独显现出来。它描述的是自旋 $0$ 场，而不是所有相对论粒子的通用波动方程。自旋 $1/2$ 电子仍由 Dirac 算符描述，光子仍由具有规范冗余的 Maxwell 场描述；到了相应章节，同一套量子场论结构会分别建立在 Dirac 与 Maxwell 算符之上。
+
+\section{自由场量子化与多粒子状态空间}
+
+经典场的正常模已经像一组彼此独立的谐振子。把这些模式量子化后，每个模的占据数成为离散量子数；对带电场，正、负频分支进一步对应粒子和反粒子。这样得到的 Fock 空间同时容纳不同粒子数，传播子和散射外态才可以在同一 Hilbert 空间中定义。
+
+连续动量极限要求场算符、单粒子态与 Lorentz 不变相空间采用彼此兼容的归一化；否则二点传播核、从相关函数提取的单粒子外态以及散射相空间中的能量因子将失去共同来源。实标量场给出这套归一化的最小模型，复标量场则在相同归一化下进一步区分粒子与反粒子的两套独立产生、湮灭算符。
+
+\subsection{量子场的必要性}
+
+非相对论单粒子量子力学预先选定一个一粒子 Hilbert 空间，随后研究这个空间内的波函数演化。相对论把能量与质量联系起来，因此足够集中的能量可以转化为新的粒子自由度。设质量为 $m$ 的波包被局域在尺度 $L$ 内，Heisenberg 关系给出典型动量不确定度
+\begin{equation*}
+ \Delta p\sim \frac{\hbar}{L}.
+\end{equation*}
+当 $L$ 缩短到使相对论动能尺度 $c\Delta p$ 与静能 $mc^2$ 同阶时，固定粒子数描述失去封闭性：
+\begin{equation}
+ L\sim \lambda_C,
+ \qquad
+ \lambda_C\equiv\frac{\hbar}{mc}.
+ \label{eq:qft-compton-scale}
+\end{equation}
+若过程允许提供约 $2mc^2$ 的能量，则粒子--反粒子对可以进入动力学。阈值的精确数值取决于具体过程，而 $\lambda_C$ 给出单粒子局域化概念开始失效的基本长度尺度。
+
+电子的相对论动力学应直接从 Dirac 方程理解。它的一阶时间演化具有正定密度 $\psi^\dagger\psi$，但自由解仍同时包含正、负频率分支；量子化以后这两支分别组织成电子湮灭算符和正电子产生算符。更重要的是，局域相互作用能够连接不同粒子数扇区，所以固定粒子数 Hilbert 空间仍不是相对论相互作用理论的封闭状态空间。Fock 空间因此来自粒子产生与湮灭的动力学需要，而不是由某一种二阶波动方程的缺陷“补救”出来。
+
+场论同时实现了另一个要求：局域性。粒子间的“远距势能”可改写成局域场与源的耦合；扰动先改变附近的场，再按场方程传播。经典场论已经用局域场把相互作用的传播写成微分方程。量子场论保留这一局域结构，但把场本身提升为算符；不同场在既定时空对称性下属于不同表示，其稳定单量子谱由此表现为不同粒子种类。
+
+经典场 $\varphi(\mathbf x,t)$ 中的 $\mathbf x$ 是自由度的标签，而不是某个粒子的坐标。量子化后，$\hat\varphi(\mathbf x,t)$ 对每个空间点都给出一个算符，但这种“逐点算符”在连续极限中通常含有 $\delta$ 函数型奇性；严格可作用在态上的对象是把它与光滑、有限支撑的测试函数积分后的涂抹场。因此量子场严格说是\emph{算符值分布}：它像数学物理方法中的 $\delta$ 分布一样，通过积分作用定义，而不是要求每个点上的算符都单独有界。对场作正常模展开后，相应的产生算符会构造具有确定能量和动量的单量子态。于是“场”是动力学变量，“粒子”是场的谱结构。因此场的运动方程与对称性先确定允许的谱结构，粒子种类再由该谱中的稳定或共振激发识别。
+
+
+\subsection{标量场作为最小 Gaussian 模型}
+
+电子最终要量子化的是 Dirac 场，但正则量子化、Fock 空间、二点函数、Dyson 展开和 Wick 配对的共同数学结构与自旋无关。为了先把这些结构算清楚，这里暂时取一个自旋 $0$ 的实标量场；它只承担最小 Gaussian 模型的角色，后续电子结果由 Dirac 场重新建立。其自由拉氏量取
+\begin{equation}
+ \Lag_0
+ =\frac12\left[
+ \frac{1}{c^2}(\partial_t\varphi)^2
+ -(\boldsymbol\nabla\varphi)^2
+ -\frac{m^2c^2}{\hbar^2}\varphi^2
+ \right],
+ \label{eq:kg-lagrangian-r2}
+\end{equation}
+则 Euler--Lagrange 方程为
+\begin{equation}
+ \left(\Box+\frac{m^2c^2}{\hbar^2}\right)\varphi=0,
+ \qquad
+ \Box\equiv\partial_\mu\partial^\mu
+ =\frac1{c^2}\partial_t^2-\nabla^2.
+ \label{eq:kg-eom-r2}
+\end{equation}
+共轭动量与哈密顿量密度分别为
+\begin{align}
+ \pi(\mathbf x,t)
+ &=\frac{\partial\Lag_0}{\partial(\partial_t\varphi)}
+ =\frac1{c^2}\partial_t\varphi,
+ \label{eq:kg-pi-r2}\\
+ \Ham_0
+ &=\pi\partial_t\varphi-\Lag_0
+ =\frac{c^2}{2}\pi^2
+ +\frac12(\nabla\varphi)^2
+ +\frac{m^2c^2}{2\hbar^2}\varphi^2.
+ \label{eq:kg-H-density-r2}
+\end{align}
+这已经是一个具有连续无穷多个自由度的哈密顿系统。
+
+\subsection{正则量子化}
+
+经典自由场已经被分解为彼此独立的正常模；量子化所要做的，是把每个正常模的经典正则变量提升为算符，并要求它们满足与经典 Poisson 括号对应的正则对易关系。先把系统放在体积 $V=L^3$ 的周期盒中，允许动量离散取值
+\begin{equation*}
+ \mathbf p=\frac{2\pi\hbar}{L}\mathbf n,
+ \qquad \mathbf n\in\mathbb Z^3.
+\end{equation*}
+实标量场可写成
+\begin{equation*}
+ \varphi(\mathbf x,t)
+ =\frac1{\sqrt V}\sum_{\mathbf p}q_{\mathbf p}(t)
+ \ee^{\ii\mathbf p\cdot\mathbf x/\hbar},
+ \qquad q_{-\mathbf p}=q_{\mathbf p}^*.
+\end{equation*}
+代入 Klein--Gordon 方程 \eqnrefs{eq:kg-eom-r2} 后，各动量模彼此解耦，并分别满足
+\begin{equation}
+ \ddot q_{\mathbf p}+\omega_{\mathbf p}^2q_{\mathbf p}=0,
+ \qquad
+ \omega_{\mathbf p}\equiv\frac{E_{\mathbf p}}{\hbar},
+ \qquad
+ E_{\mathbf p}=\sqrt{m^2c^4+c^2\mathbf p^2}.
+ \label{eq:kg-mode-frequency-r2}
+\end{equation}
+因此，自由场不是一种全新的力学系统，而是无限多个频率不同的谐振子在连续极限下的集合；量子化以后，每个正常模自然对应一组产生与湮灭算符。
+
+\begin{exbox}[把一个场模真的当作谐振子来算]
+为使“一个场模就是一个量子谐振子”成为可数的离散问题，把实标量场先放在边长为 $L$ 的周期盒中。最低的零动量模满足 $\mathbf p=\mathbf0$，因此
+\begin{equation*}
+ E_{\mathbf0}=mc^2,
+ \qquad
+ \omega_{\mathbf0}=\frac{mc^2}{\hbar}.
+\end{equation*}
+量子化以后，这个模的 Hamiltonian 就是
+\begin{equation*}
+ H_{\mathbf0}=mc^2\left(a_{\mathbf0}^\dagger a_{\mathbf0}+\frac12\right).
+\end{equation*}
+这一模的 $mc^2/2$ 是所有占据数态共有的零点常数。为了只比较相对于真空的激发能，先在这个例题中取
+\begin{equation*}
+ H_{\mathbf0}^{\rm exc}
+ \equiv H_{\mathbf0}-\langle0|H_{\mathbf0}|0\rangle
+ =mc^2a_{\mathbf0}^\dagger a_{\mathbf0}.
+\end{equation*}
+于是，真空、一个零动量量子和两个零动量量子依次满足
+\begin{align*}
+ H_{\mathbf0}^{\rm exc}|0\rangle&=0,\\
+ H_{\mathbf0}^{\rm exc}a_{\mathbf0}^\dagger|0\rangle
+ &=mc^2a_{\mathbf0}^\dagger|0\rangle,\\
+ H_{\mathbf0}^{\rm exc}\frac{(a_{\mathbf0}^\dagger)^2}{\sqrt{2!}}|0\rangle
+ &=2mc^2\frac{(a_{\mathbf0}^\dagger)^2}{\sqrt{2!}}|0\rangle.
+\end{align*}
+这就是“静止质量”在场量子化中的最直接出现方式：$mc^2$ 不是另外塞进粒子模型的能量，而是零动量正常模的单量子激发能。
+
+再看最小的非零动量，例如 $\mathbf p=(2\pi\hbar/L)\mathbf e_x$。它的一次激发能变为
+\begin{equation*}
+ E_{1x}=\sqrt{m^2c^4+c^2\left(\frac{2\pi\hbar}{L}\right)^2}.
+\end{equation*}
+于是同一套升降算符代数自动同时生成不同动量、不同粒子数的态。取 $L\to\infty$ 后，离散标签 $\mathbf p$ 变成连续变量，这给出连续 Fock 空间的极限来源，而不是一次新的物理假设。
+\end{exbox}
+
+\begin{exbox}[两个动量模的 Fock 态]
+“一个量子”与“两个量子”在场论里不是不同种类的波函数，而是同一组产生算符在 Fock 空间中作用不同次数。为把这句话算成一个可以直接检查的结果，仍在有限周期盒中取两个不同动量模 $\mathbf p\neq\mathbf q$，并定义归一化占据数态
+\begin{equation*}
+ |n_{\mathbf p},n_{\mathbf q}\rangle
+ =\frac{(a_{\mathbf p}^\dagger)^{n_{\mathbf p}}}{\sqrt{n_{\mathbf p}!}}
+  \frac{(a_{\mathbf q}^\dagger)^{n_{\mathbf q}}}{\sqrt{n_{\mathbf q}!}}|0\rangle .
+\end{equation*}
+两个不同模彼此对易。把自由 Hamiltonian 的共同真空常数减去，并记所得激发 Hamiltonian 为 $H_0^{\rm exc}$，则
+\begin{align*}
+ H_0^{\rm exc}|n_{\mathbf p},n_{\mathbf q}\rangle
+ &=\bigl(n_{\mathbf p}E_{\mathbf p}+n_{\mathbf q}E_{\mathbf q}\bigr)
+ |n_{\mathbf p},n_{\mathbf q}\rangle,\\
+ \mathbf P\,|n_{\mathbf p},n_{\mathbf q}\rangle
+ &=\bigl(n_{\mathbf p}\mathbf p+n_{\mathbf q}\mathbf q\bigr)
+ |n_{\mathbf p},n_{\mathbf q}\rangle.
+\end{align*}
+例如 $|2_{\mathbf p},1_{\mathbf q}\rangle$ 的能量和总动量分别是
+\begin{equation*}
+ 2E_{\mathbf p}+E_{\mathbf q},
+ \qquad
+ 2\mathbf p+\mathbf q.
+\end{equation*}
+这说明 Fock 态中的“粒子数”就是各正常模的占据数，而能量和动量是各量子的逐个相加。
+
+再看同一个模上的产生、湮灭算符。由 $[a_{\mathbf p},a_{\mathbf p}^\dagger]=1$，逐次把 $a_{\mathbf p}$ 移过 $(a_{\mathbf p}^\dagger)^n$，得到
+\begin{align*}
+ a_{\mathbf p}(a_{\mathbf p}^\dagger)^n|0\rangle
+ &=n(a_{\mathbf p}^\dagger)^{n-1}|0\rangle,\\
+ a_{\mathbf p}|n_{\mathbf p}\rangle
+ &=\sqrt{n_{\mathbf p}}\,|n_{\mathbf p}-1\rangle,\\
+ a_{\mathbf p}^\dagger|n_{\mathbf p}\rangle
+ &=\sqrt{n_{\mathbf p}+1}\,|n_{\mathbf p}+1\rangle.
+\end{align*}
+所以相互作用 Hamiltonian 中若出现一个 $a_{\mathbf p}$ 或 $a_{\mathbf p}^\dagger$，吸收与发射振幅分别带 $\sqrt n$ 与 $\sqrt{n+1}$。自由电子与量子光场相互作用中的玻色增强因子也来自同一个 Fock 阶梯代数。
+\end{exbox}
+
+对经过正则缩放的单个谐振子，取
+\begin{equation*}
+ H_{\rm osc}=\frac{P^2}{2}+\frac{\omega^2Q^2}{2},
+ \qquad [Q,P]=\ii\hbar,
+\end{equation*}
+并定义
+\begin{equation}
+ a=\sqrt{\frac{\omega}{2\hbar}}Q
+ +\frac{\ii}{\sqrt{2\hbar\omega}}P,
+ \qquad
+ a^\dagger=\sqrt{\frac{\omega}{2\hbar}}Q
+ -\frac{\ii}{\sqrt{2\hbar\omega}}P.
+ \label{eq:sho-ladder-r3}
+\end{equation}
+这一定义把正则对易关系等价地写成
+\begin{equation}
+ [a,a^\dagger]=1,
+ \qquad
+ H_{\rm osc}=\hbar\omega\left(a^\dagger a+\frac12\right).
+ \label{eq:sho-H-r3}
+\end{equation}
+于是 $a^\dagger$ 与 $a$ 分别使能量增加或减少一个 $\hbar\omega$；若能谱有下界，真空满足 $a|0\rangle=0$，全部激发可由 $(a^\dagger)^n|0\rangle$ 构造。场论只是在每个连续动量标签 $\mathbf p$ 上复制这套结构。
+
+回到场变量，正则量子化要求等时算符满足
+\begin{align}
+ [\hat\varphi(\mathbf x,t),\hat\varphi(\mathbf y,t)]&=0,\\
+ [\hat\pi(\mathbf x,t),\hat\pi(\mathbf y,t)]&=0,\\
+ [\hat\varphi(\mathbf x,t),\hat\pi(\mathbf y,t)]
+ &=\ii\hbar\delta^{(3)}(\mathbf x-\mathbf y).
+ \label{eq:kg-canonical-r2}
+\end{align}
+连续动量表象中取产生、湮灭算符的归一化
+\begin{equation}
+ [\hat a(\mathbf p),\hat a^\dagger(\mathbf q)]
+ =(2\pi\hbar)^3\delta^{(3)}(\mathbf p-\mathbf q).
+ \label{eq:scalar-aa-r2}
+\end{equation}
+此时平移不变性、实场的厄米条件以及正频率质量壳已经把场展开的形式限制为一对正、负频率平面波；唯一尚未确定的是每个动量模前的归一化系数。这个系数不能任意选择，因为它必须使场的等时对易关系恰好恢复 \eqnrefs{eq:kg-canonical-r2}。比较 Fourier 核后得到
+\begin{equation}
+ C_{\mathbf p}=\frac{\hbar c}{\sqrt{2E_{\mathbf p}}}.
+ \label{eq:scalar-C-normalization-r16}
+\end{equation}
+因此自由实标量场的连续模展开为
+\begin{equation}
+ \boxed{
+ \hat\varphi(x)=
+ \int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \frac{\hbar c}{\sqrt{2E_{\mathbf p}}}
+ \left[
+ \hat a(\mathbf p)\ee^{-\ii p\cdot x/\hbar}
+ +\hat a^\dagger(\mathbf p)\ee^{+\ii p\cdot x/\hbar}
+ \right].}
+ \label{eq:scalar-mode-r2}
+\end{equation}
+其中 $p^\mu=(E_{\mathbf p}/c,\mathbf p)$ 位于质量壳 $p^2=m^2c^2$。对\eqnrefs{eq:scalar-mode-r2} 的两个频率分支分别作时间导数，并使用共轭动量定义~\eqnrefs{eq:kg-pi-r2}，得到
+\begin{equation*}
+ \hat\pi(x)=
+ -\ii\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \sqrt{\frac{E_{\mathbf p}}{2c^2}}
+ \left[
+ \hat a(\mathbf p)\ee^{-\ii p\cdot x/\hbar}
+ -\hat a^\dagger(\mathbf p)\ee^{+\ii p\cdot x/\hbar}
+ \right].
+\end{equation*}
+
+产生、湮灭算符的物理意义由时空平移生成元确定，而不只是来自谐振子的类比。把上述模展开代入自由场哈密顿量，质量壳关系使 $aa$ 与 $a^\dagger a^\dagger$ 项相消，留下
+\begin{align}
+ \hat H_0
+ &=\frac12\int_{\mathbf p}E_{\mathbf p}
+ \left(
+ \hat a_{\mathbf p}\hat a_{\mathbf p}^\dagger
+ +\hat a_{\mathbf p}^\dagger\hat a_{\mathbf p}
+ \right),\\
+ &=\int_{\mathbf p}E_{\mathbf p}
+ \left[
+ \hat a_{\mathbf p}^\dagger\hat a_{\mathbf p}
+ +\frac12(2\pi\hbar)^3\delta^{(3)}(0)
+ \right],
+ \label{eq:scalar-H-vac-r2}
+\end{align}
+其中
+\begin{equation*}
+ \int_{\mathbf p}\equiv\int\frac{\dd^3 p}{(2\pi\hbar)^3}.
+\end{equation*}
+第二项是所有正常模零点能的连续和。若当前只研究相对于这个真空的粒子激发，可以先把共同的真空常数从能量零点中分离出来，并在普通正文中定义激发 Hamiltonian
+\begin{equation}
+ \boxed{
+ \hat H_0^{\rm exc}
+ \equiv \hat H_0-\langle0|\hat H_0|0\rangle
+ =\int_{\mathbf p}E_{\mathbf p}
+ \hat a_{\mathbf p}^\dagger\hat a_{\mathbf p}.}
+ \label{eq:scalar-H-excitation-dp76}
+\end{equation}
+在固定几何下，正规序把共同的真空常数与粒子激发能分开：将湮灭算符移到产生算符右侧后，自由标量 Hamiltonian 的激发部分正是\eqnrefs{eq:scalar-H-excitation-dp76}。改变边界、几何或引力耦合时，真空能差需要重新作为物理量处理。
+
+空间平移的 Noether 荷量子化后，动量算符为
+\begin{equation}
+ \hat{\mathbf P}
+ =\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \mathbf p\,\hat a^\dagger(\mathbf p)\hat a(\mathbf p).
+ \label{eq:scalar-P-r3}
+\end{equation}
+于是
+\begin{equation*}
+ |\mathbf p\rangle\equiv\hat a^\dagger(\mathbf p)|0\rangle
+\end{equation*}
+同时是能量与动量的单量子本征态，并满足
+\begin{equation*}
+ \hat H_0^{\rm exc}|\mathbf p\rangle=E_{\mathbf p}|\mathbf p\rangle,
+ \qquad
+ \hat{\mathbf P}|\mathbf p\rangle=\mathbf p|\mathbf p\rangle.
+\end{equation*}
+因此“粒子”不是量子化以前额外加入的对象，而是自由场时空平移生成元的共同本征激发。对标量场，静止单量子态的内禀角动量为零，所以这些激发具有自旋 $0$。
+
+
+\begin{derivation}[从\eqnrefs{eq:scalar-aa-r2}到\eqnrefs{eq:scalar-C-normalization-r16}]
+满足平移不变性和实场厄米条件的一般质量壳展开可写成
+
+\begin{equation*}
+ \hat\varphi(x)=
+ \int\frac{\dd^3 p}{(2\pi\hbar)^3}C_{\mathbf p}
+ \left[
+ \hat a(\mathbf p)\ee^{-\ii p\cdot x/\hbar}
+ +\hat a^\dagger(\mathbf p)\ee^{+\ii p\cdot x/\hbar}
+ \right],
+ \qquad C_{\mathbf p}=C_{-\mathbf p}>0.
+\end{equation*}
+由 $\hat\pi=c^{-2}\partial_t\hat\varphi$，
+\begin{equation*}
+ \hat\pi(x)=
+ -\ii\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \frac{E_{\mathbf p}C_{\mathbf p}}{\hbar c^2}
+ \left[
+ \hat a(\mathbf p)\ee^{-\ii p\cdot x/\hbar}
+ -\hat a^\dagger(\mathbf p)\ee^{+\ii p\cdot x/\hbar}
+ \right].
+\end{equation*}
+在等时面 $x^0=y^0$ 上，把这两式与 \eqnrefs{eq:scalar-aa-r2} 代入对易子。$aa$ 与 $a^\dagger a^\dagger$ 项为零，只剩
+\begin{align*}
+ [\hat\varphi(\mathbf x,t),\hat\pi(\mathbf y,t)]
+ &=\ii\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \frac{E_{\mathbf p}C_{\mathbf p}^{2}}{\hbar c^2}
+ \left[
+ \ee^{+\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}
+ +\ee^{-\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}
+ \right]\\
+ &=2\ii\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \frac{E_{\mathbf p}C_{\mathbf p}^{2}}{\hbar c^2}
+ \ee^{+\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}.
+\end{align*}
+第二行在第二个积分中作 $\mathbf p\mapsto-\mathbf p$，并使用 $E_{-\mathbf p}=E_{\mathbf p}$ 与 $C_{-\mathbf p}=C_{\mathbf p}$。另一方面，
+\begin{equation*}
+ \delta^{(3)}(\mathbf x-\mathbf y)
+ =\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \ee^{+\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}.
+\end{equation*}
+与 \eqnrefs{eq:kg-canonical-r2} 比较同一 Fourier 核的系数，得到
+\begin{equation*}
+ \frac{2E_{\mathbf p}C_{\mathbf p}^{2}}{\hbar c^2}=\hbar
+ \quad\Longrightarrow\quad
+ C_{\mathbf p}=\frac{\hbar c}{\sqrt{2E_{\mathbf p}}},
+\end{equation*}
+即\eqnrefs{eq:scalar-C-normalization-r16}。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:scalar-mode-r2}到\eqnrefs{eq:scalar-aa-r2}]
+把
+
+\begin{equation*}
+ \hat H_0=\frac12\int\dd^3 x\left[
+ c^2\hat\pi^2+(\nabla\hat\varphi)^2
+ +\frac{m^2c^2}{\hbar^2}\hat\varphi^2
+ \right]
+ \end{equation*}
+分成时间导数项、空间梯度项与质量项三部分。为缩短中间式，记
+\begin{equation*}
+ A_{\mathbf p}\equiv\frac{\hbar c}{\sqrt{2E_{\mathbf p}}},
+ \qquad \int_{\mathbf p}\equiv\int\frac{\dd^3 p}{(2\pi\hbar)^3}.
+\end{equation*}
+在固定时间上，\eqnrefs{eq:scalar-mode-r2} 可写成
+\begin{align*}
+ \hat\varphi(\mathbf x)
+ &=\int_{\mathbf p}A_{\mathbf p}
+ \left(\hat a_{\mathbf p}\ee^{+\ii\mathbf p\cdot\mathbf x/\hbar-\ii E_{\mathbf p}t/\hbar}
+ +\hat a_{\mathbf p}^\dagger \ee^{-\ii\mathbf p\cdot\mathbf x/\hbar+\ii E_{\mathbf p}t/\hbar}\right),\\
+ \hat\pi(\mathbf x)
+ &=-\ii\int_{\mathbf p}\sqrt{\frac{E_{\mathbf p}}{2c^2}}
+ \left(\hat a_{\mathbf p}\ee^{+\ii\mathbf p\cdot\mathbf x/\hbar-\ii E_{\mathbf p}t/\hbar}
+ -\hat a_{\mathbf p}^\dagger \ee^{-\ii\mathbf p\cdot\mathbf x/\hbar+\ii E_{\mathbf p}t/\hbar}\right).
+ \end{align*}
+先看两个湮灭算符相乘的项。空间积分
+\begin{equation*}
+ \int\dd^3 x\,
+ \ee^{\ii(\mathbf p+\mathbf q)\cdot\mathbf x/\hbar}
+ =(2\pi\hbar)^3\delta^{(3)}(\mathbf p+\mathbf q)
+ \end{equation*}
+强制 $\mathbf q=-\mathbf p$，从而 $E_{\mathbf q}=E_{\mathbf p}$。三部分分别给出
+\begin{align*}
+ H_{\pi}^{(aa)}
+ &=-\int_{\mathbf p}\frac{E_{\mathbf p}}{4}\,
+ \hat a_{\mathbf p}\hat a_{-\mathbf p}
+ \ee^{-2\ii E_{\mathbf p}t/\hbar},\\
+ H_{\nabla}^{(aa)}
+ &=+\int_{\mathbf p}\frac{c^2\mathbf p^2}{4E_{\mathbf p}}\,
+ \hat a_{\mathbf p}\hat a_{-\mathbf p}
+ \ee^{-2\ii E_{\mathbf p}t/\hbar},\\
+ H_{m}^{(aa)}
+ &=+\int_{\mathbf p}\frac{m^2c^4}{4E_{\mathbf p}}\,
+ \hat a_{\mathbf p}\hat a_{-\mathbf p}
+ \ee^{-2\ii E_{\mathbf p}t/\hbar}.
+ \end{align*}
+所以总系数只需一行：
+\begin{equation*}
+ -\frac{E_{\mathbf p}}4+\frac{c^2\mathbf p^2+m^2c^4}{4E_{\mathbf p}}
+ =\frac{-E_{\mathbf p}^2+c^2\mathbf p^2+m^2c^4}{4E_{\mathbf p}}=0.
+\end{equation*}
+这里仅使用自由质量壳 $E_{\mathbf p}^2=c^2\mathbf p^2+m^2c^4$。$a^\dagger a^\dagger$ 项是其厄米共轭，因此同样消失。这些项的消失源于自由标量二次作用量与其质量壳频率的精确匹配；不存在额外的粒子数守恒删项。
+
+再看一个产生算符与一个湮灭算符相乘的交叉项。空间积分给 $\delta^{(3)}(\mathbf p-\mathbf q)$，三部分系数直接合并为
+\begin{equation*}
+ \frac{E_{\mathbf p}}4+\frac{c^2\mathbf p^2+m^2c^4}{4E_{\mathbf p}}
+ =\frac{E_{\mathbf p}^2+c^2\mathbf p^2+m^2c^4}{4E_{\mathbf p}}
+ =\frac{E_{\mathbf p}}2.
+\end{equation*}
+因此
+\begin{align*}
+ \hat H_0
+ &=\frac12\int_{\mathbf p}E_{\mathbf p}
+ \left(
+ \hat a_{\mathbf p}\hat a_{\mathbf p}^\dagger
+ +\hat a_{\mathbf p}^\dagger\hat a_{\mathbf p}
+ \right),\\
+ &=\int_{\mathbf p}E_{\mathbf p}
+ \left[
+ \hat a_{\mathbf p}^\dagger\hat a_{\mathbf p}
+ +\frac12(2\pi\hbar)^3\delta^{(3)}(0)
+ \right],
+ \end{align*}
+其中第二行用了 \eqnrefs{eq:scalar-aa-r2}。这样单个谐振子的 $\hbar\omega(a^\dagger a+1/2)$ 与连续场的结果逐项对应，因为 $\hbar\omega_{\mathbf p}=E_{\mathbf p}$。
+\end{derivation}
+\subsection{Fock 空间与态归一化}
+
+场量子化把每个正常模变成谐振子，但散射理论真正使用的是由这些模式构成的多粒子 Hilbert 空间（希尔伯特空间）。定义真空 $a(\mathbf p)|0\rangle=0$，一粒子态由 $a^\dagger(\mathbf p)|0\rangle$ 产生。实标量场的产生算符彼此对易，因此 $n$ 粒子扇区是单粒子 Hilbert 空间的对称张量幂：
+\begin{equation*}
+\mathscr F_B
+=\mathbb C|0\rangle\oplus\mathcal H_1
+\oplus\operatorname{Sym}\mathcal H_1^{\otimes2}\oplus\cdots .
+\end{equation*}
+自由理论中
+\begin{equation*}
+N=\int\frac{\dd^3 p}{(2\pi\hbar)^3}a^\dagger(\mathbf p)a(\mathbf p)
+\end{equation*}
+与 $H_0$ 对易；相互作用则一般混合不同粒子数扇区，因此 Fock 空间而不是固定 $N$ 的 Hilbert 空间才是相对论场论的自然状态空间。
+
+自由哈密顿量含有每个模式的零点能。场论计算中经常需要一种统一的算符排列规则：把所有产生算符移动到所有湮灭算符左侧；若交换的是费米算符，每交换一次还要带上反对易产生的负号。这种排列称为\emph{正规序}（normal ordering），并用一对冒号 $:\!\cdots\!:$ 表示。对当前自由标量 Hamiltonian，正规序恰好把由 $aa^\dagger=a^\dagger a+1$ 产生的真空 $c$ 数常数与激发部分分开，因此它与正文已经定义的激发 Hamiltonian 完全相同：
+\begin{equation}
+\boxed{
+:\!H_0\!:
+=\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+E_{\mathbf p}\,a^\dagger(\mathbf p)a(\mathbf p),
+\qquad \langle0|:\!H_0\!:|0\rangle=0.}
+\label{eq:normal-H-r2}
+\end{equation}
+正规序选定了算符排列与参考能量零点；它并不消除真空能在所有物理问题中的作用。改变边界条件会改变模谱，两个真空能之间的有限差仍可产生 Casimir 力；进入有引力或重整化问题时，真空能本身也需要作为理论参数处理。
+
+连续动量态是广义本征态，而不是单位范数 Hilbert 空间向量。Lorentz 对称性要求散射完备关系使用正能质量壳上的不变测度
+\begin{equation}
+\boxed{
+\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}.}
+\label{eq:lorentz-measure-r2}
+\end{equation}
+相应一粒子归一化与完备关系为
+\begin{equation*}
+\langle p|q\rangle
+=(2\pi\hbar)^3\frac{2E_{\mathbf p}}{c}
+\delta^{(3)}(\mathbf p-\mathbf q),
+\end{equation*}
+以及
+\begin{equation}
+\boxed{
+\id_1
+=\int\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}
+|p\rangle\langle p|.}
+\label{eq:one-particle-completeness-r2}
+\end{equation}
+把场的相关函数转换成散射振幅时，外部单粒子从渐近区传播到相互作用区的自由极点因子必须被约去。这个操作称为外腿约化，并且必须与 Lorentz 不变相空间和截面使用同一套一粒子态归一化。因此态归一化不是记号细节，而是所有 $2E$ 与 $(2\pi\hbar)^3$ 因子的共同来源。
+
+最后，局域场 $\varphi(x)$ 严格说是算符值分布。物理探测器具有有限时空分辨率，因此真正良定义的对象是经测试函数涂抹的场
+\begin{equation*}
+\varphi[f]=\int \dd^4 x\,f(x)\varphi(x),
+\end{equation*}
+这也解释了为什么固定点的 $\langle\varphi(x)^2\rangle$ 发散并不直接等同于可测量发散。
+
+
+\begin{exbox}[一维 Casimir 模型]
+零点能为何不能简单“全部删除”可由一维 Dirichlet 标量模型看出。间距为 $d$ 的两边界允许 $k_n=n\pi/d$，形式零点能为
+\begin{equation*}
+E_0(d)=\frac{\pi\hbar c}{2d}\sum_{n=1}^\infty n.
+\end{equation*}
+引入长度调节器 $a>0$，
+\begin{equation*}
+E_0(d;a)=\frac{\pi\hbar c}{2d}
+\sum_{n=1}^\infty n \ee^{-a\pi n/d}
+=\frac{\pi\hbar c}{2d}
+\frac{\ee^{-a\pi/d}}{(1-\ee^{-a\pi/d})^2}.
+\end{equation*}
+小 $a$ 展开给
+\begin{equation*}
+E_0(d;a)=\frac{\hbar c\,d}{2\pi a^2}-\frac{\pi\hbar c}{24d}+O(a^2/d^3).
+\end{equation*}
+把系统嵌入总长 $L$ 的大盒后，$d$ 与 $L-d$ 两区的 $1/a^2$ 项只合成与 $d$ 无关的常数；对 $d$ 求导并取 $L\to\infty,a\to0$，得到
+\begin{equation*}
+F(d)=-\frac{\partial E}{\partial d}=-\frac{\pi\hbar c}{24d^2}.
+\end{equation*}
+因此，依赖调节器的绝对真空能量与不依赖调节器的边界力可以被明确区分。
+\end{exbox}
+
+\begin{derivation}[从\eqnrefs{eq:lorentz-measure-r2}到\eqnrefs{eq:one-particle-completeness-r2}]
+正文\eqnrefs{eq:lorentz-measure-r2} 可以从四维 Lorentz 不变量
+\[
+\dd^4 p\,\delta(p^2-m^2c^2)\Theta(p^0)
+\]
+直接读出。固定 $\mathbf p$ 后，质量壳方程在 $p^0$ 上有两个根
+\[
+p^0=\pm\frac{E_{\mathbf p}}{c},
+\qquad
+E_{\mathbf p}=\sqrt{m^2c^4+c^2\mathbf p^2}.
+\]
+利用
+\[
+\delta[f(x)]=\sum_i\frac{\delta(x-x_i)}{|f'(x_i)|}
+\]
+以及 $f(p^0)=(p^0)^2-E_{\mathbf p}^2/c^2$，有
+\begin{align*}
+\delta\!\left((p^0)^2-\frac{E_{\mathbf p}^2}{c^2}\right)
+&=\frac{c}{2E_{\mathbf p}}
+\left[
+\delta\!\left(p^0-\frac{E_{\mathbf p}}c\right)
++\delta\!\left(p^0+\frac{E_{\mathbf p}}c\right)
+\right].
+\end{align*}
+$\Theta(p^0)$ 只保留正能根，因此 $p^0$ 积分给出正文测度中的 $c/(2E_{\mathbf p})$。
+
+现在考虑正文已经给出的协变归一化
+\[
+\langle p|q\rangle
+=(2\pi\hbar)^3\frac{2E_{\mathbf p}}{c}
+\delta^{(3)}(\mathbf p-\mathbf q).
+\]
+令
+\[
+\mathcal I_1
+\equiv
+\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\frac{c}{2E_{\mathbf p}}|p\rangle\langle p|.
+\]
+让它作用在任意基矢 $|q\rangle$ 上：
+\begin{align*}
+\mathcal I_1|q\rangle
+&=\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\frac{c}{2E_{\mathbf p}}|p\rangle
+(2\pi\hbar)^3\frac{2E_{\mathbf p}}c
+\delta^{(3)}(\mathbf p-\mathbf q)\\
+&=\int\dd^3 p\,|p\rangle
+\delta^{(3)}(\mathbf p-\mathbf q)\\
+&=|q\rangle.
+\end{align*}
+由于这些正能质量壳基矢张成一粒子扇区，$\mathcal I_1$ 就是一粒子恒等算符，从而得到正文\eqnrefs{eq:one-particle-completeness-r2}。
+\end{derivation}
+实标量 Fock 空间还留下一个自然问题：怎样在同一套量子化语言里表示带守恒电荷的粒子与反粒子？答案不是另造一套状态空间，而是把两个实自由度组合成一个复场。
+
+实标量场只有一个实自由度，不能在保持实条件的同时承受非平凡的连续相位旋转；因此它没有像电荷那样的 $U(1)$ Noether 荷。若希望最简单的自旋零场也能携带守恒内部荷，就必须把两个实场组合成一个复场。这样正、负频系数不再互为同一个算符的厄米共轭，而会形成两套独立的粒子与反粒子算符。
+
+实标量场满足 $\varphi^\dagger=\varphi$，正负频系数因此互为厄米共轭。复标量场 $\varphi_{\rm ch}$ 不受这个条件约束。把它的静质量记为 $m_{\rm ch}$，其中 $[m_{\rm ch}]=\mathrm{kg}$；这个记号随后也用于复标量玩具模型。取
+\begin{equation*}
+ \Lag_{\rm ch}
+ =\partial_\mu\varphi_{\rm ch}^*\partial^\mu\varphi_{\rm ch}
+ -\frac{m_{\rm ch}^2c^2}{\hbar^2}\varphi_{\rm ch}^*\varphi_{\rm ch},
+\end{equation*}
+其量子场展开需要两套独立算符：
+\begin{equation}
+ \hat\varphi_{\rm ch}(x)=
+ \int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \frac{\hbar c}{\sqrt{2E_{\mathbf p}}}
+ \left[
+ \hat b(\mathbf p)\ee^{-\ii p\cdot x/\hbar}
+ +\hat d^\dagger(\mathbf p)\ee^{+\ii p\cdot x/\hbar}
+ \right].
+ \label{eq:complex-scalar-exp-r2}
+\end{equation}
+$\hat b^\dagger$ 与 $\hat d^\dagger$ 分别产生粒子和反粒子。全局 $U(1)$ 变换 $\varphi_{\rm ch}\to \ee^{\ii\alpha}\varphi_{\rm ch}$ 的 Noether 电荷量子化后具有形式
+\begin{equation}
+ \hat Q=q\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \left[
+ \hat b^\dagger\hat b-\hat d^\dagger\hat d
+ \right].
+ \label{eq:complex-scalar-charge-r2}
+\end{equation}
+因此粒子数 $N_b$ 和反粒子数 $N_d$ 在有相互作用时可以分别改变，而净 $U(1)$ 电荷仍可守恒。反粒子并不是 Dirac 海或 Fermi 统计独有的现象；它已经出现在最简单的相对论复标量场中。
+
+\begin{exbox}[粒子与反粒子的 $U(1)$ 荷]
+单看\eqnrefs{eq:complex-scalar-charge-r2} 中的减号还不够；真正可测的是荷算符作用在激发态上的本征值。定义
+\begin{equation*}
+ |\mathbf p;b\rangle
+ =\hat b^\dagger(\mathbf p)|0\rangle,
+ \qquad
+ |\mathbf p;d\rangle
+ =\hat d^\dagger(\mathbf p)|0\rangle,
+ \qquad \hat Q|0\rangle=0.
+\end{equation*}
+由玻色对易关系，数算符满足
+\begin{align*}
+ [\hat b^\dagger\hat b,\hat b^\dagger]&=+\hat b^\dagger,\\
+ [\hat d^\dagger\hat d,\hat d^\dagger]&=+\hat d^\dagger.
+\end{align*}
+因此荷算符与两种产生算符的对易子分别为
+\begin{equation*}
+ [\hat Q,\hat b^\dagger(\mathbf p)]
+ =+q\,\hat b^\dagger(\mathbf p),
+ \qquad
+ [\hat Q,\hat d^\dagger(\mathbf p)]
+ =-q\,\hat d^\dagger(\mathbf p).
+\end{equation*}
+把 $\hat Q$ 移过产生算符作用到真空上，便得到
+\begin{equation*}
+ \hat Q|\mathbf p;b\rangle=+q|\mathbf p;b\rangle,
+ \qquad
+ \hat Q|\mathbf p;d\rangle=-q|\mathbf p;d\rangle.
+\end{equation*}
+这个结果把负频率分支与反粒子携带相反内部荷区分开：反粒子的能量仍由 $E_{\mathbf p}>0$ 给出，改变符号的是守恒荷本征值。Dirac 场中的正电子遵循同一粒子--反粒子逻辑，只是算符代数改为费米反对易关系。
+\end{exbox}
+
+电子的非相对论动力学已经由 Dirac Hamiltonian 的 Foldy--Wouthuysen 分块对角化得到，最低阶即为正能 Pauli--Schr\"odinger Hamiltonian。此处要连接的是态空间：普通的一粒子波函数如何作为 Fock 空间固定粒子数扇区的坐标表示出现。守粒子数的非相对论场给出这个对应。
+
+\input{sections/02qft-oneparticle-causality}
+Fourier 变换、分布、$\ii0^+$ 与围道规定由数学母定义固定；自由场传播子由这些数学边界条件作用于相应逆算符而得到。
+
+传播子属于时空二点函数，所以先转到 Heisenberg 绘景。Schr\"odinger 绘景的场算符在固定时刻定义，而 Heisenberg 场定义为
+\begin{equation*}
+ \hat\varphi_H(\mathbf x,t)
+ =\ee^{+\ii\hat H_0t/\hbar}\hat\varphi_S(\mathbf x)
+ \ee^{-\ii\hat H_0t/\hbar}.
+\end{equation*}
+由 $[\hat H_0,\hat a(\mathbf p)]=-E_{\mathbf p}\hat a(\mathbf p)$ 得
+\begin{equation*}
+ \ee^{+\ii\hat H_0t/\hbar}\hat a(\mathbf p)\ee^{-\ii\hat H_0t/\hbar}
+ =\ee^{-\ii E_{\mathbf p}t/\hbar}\hat a(\mathbf p),
+\end{equation*}
+于是恢复了 \eqnrefs{eq:scalar-mode-r2} 的完整时空平面波。进一步计算任意两点的场对易子
+\begin{align}
+ [\hat\varphi(x),\hat\varphi(y)]
+ &=\hbar^2c^2\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \frac{1}{2E_{\mathbf p}}
+ \left[\ee^{-\ii p\cdot(x-y)/\hbar}-\ee^{+\ii p\cdot(x-y)/\hbar}\right]\\
+ &\equiv \ii\hbar c\,\Delta(x-y).
+ \label{eq:pauli-jordan-r3}
+\end{align}
+积分测度 $\dd^3 p/(2E_{\mathbf p})$ 是 Lorentz 不变，而在等时、空间分离情况下，把第二项作 $\mathbf p\to-\mathbf p$ 变换便与第一项抵消，所以
+\begin{equation}
+ [\hat\varphi(x),\hat\varphi(y)]=0,
+ \qquad (x-y)^2<0.
+ \label{eq:microcausality-scalar-r3}
+\end{equation}
+任何类空分离都能通过 Lorentz 变换化到等时分离，因此上式对全部类空点成立。这是局域量子场论的微观因果性条件：类空分离处的局域玻色可观测量可以同时测量而不彼此影响。
+
+现在定义不带时间排序的真空二点函数
+\begin{equation}
+ D^+(x-y)\equiv
+ \langle0|\hat\varphi(x)\hat\varphi(y)|0\rangle
+ =\hbar^2c^2\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+ \frac{\ee^{-\ii p\cdot(x-y)/\hbar}}{2E_{\mathbf p}}.
+ \label{eq:wightman-plus-r3}
+\end{equation}
+它常称为正频 Wightman 函数。它可以在类空分离时非零，因此不能被解释成“粒子以超光速从 $y$ 跑到 $x$ 的概率幅”。真正控制因果性的对象是两种顺序之差
+\begin{equation*}
+ D^+(x-y)-D^+(y-x)
+ =\langle0|[\hat\varphi(x),\hat\varphi(y)]|0\rangle,
+\end{equation*}
+其类空值由 \eqnrefs{eq:microcausality-scalar-r3} 为零。Feynman 传播子把两个 Wightman 函数按时间先后拼接，从而同时编码传播边界条件和时序乘积。
+
+
+\input{sections/02qft-oneparticle-causality-detail-dp18}
+
+\section{传播子与相互作用展开}
+
+Fock 空间给出了自由粒子的态，但一次局域激发怎样从 $x$ 传播到 $y$ 仍由运动方程的逆核决定。逆核还必须带有边界条件，否则同一微分算符有不止一种 Green 函数。选定自由传播以后，相互作用只需在其上作 Dyson 展开；自由场的高阶时序乘积再由 Wick 配对化成二点函数。实验散射态位于遥远的入射区和出射区，因而最后还要从这些相关函数中剥离外腿的自由极点，留下真正的散射振幅。
+
+
+\subsection{传播子的边界条件}
+
+自由场的二点时序关联函数与运动算符的 Feynman 逆核是同一对象的两种刻画。时序定义先固定真空关联的物理边界条件，随后作用运动算符才显示其 Green 函数性质。先记
+\(D^+(x-y)\equiv\langle0|\varphi(x)\varphi(y)|0\rangle\)，它是只含正频质量壳分量的真空二点函数，通常称为 Wightman 函数。对自由实标量场，时间排序只是按两个时刻的先后次序选取 \(D^+(x-y)\) 或 \(D^+(y-x)\)：
+\begin{equation}
+\boxed{
+\Delta_F(x-y)
+\equiv\langle0|\Tord\{\varphi(x)\varphi(y)\}|0\rangle
+=\Theta(x^0-y^0)D^+(x-y)+\Theta(y^0-x^0)D^+(y-x).}
+\label{eq:feynman-from-wightman-r3}
+\end{equation}
+两支 Wightman 函数分别承载正、负频谱分量，阶跃函数按照时间先后选择相应分量。
+
+同一个自由标量二次核可以有不同的 Green 逆算符，因为极点处必须补充边界条件。推迟逆算符在 $x^0<y^0$ 时为零，适合经典初值响应；超前逆算符选择相反因果方向；Feynman 逆算符则编码真空时间排序。对有源方程
+\begin{equation*}
+\left(\Box+\frac{m^2c^2}{\hbar^2}\right)\varphi(x)=J(x),
+\end{equation*}
+推迟解为
+\begin{equation*}
+\varphi(x)=\varphi_{\rm hom}(x)+\int\dd^4 y\,G_R(x-y)J(y),
+\end{equation*}
+因此 $G_R$ 与 $\Delta_F$ 的物理用途不同，即使它们反演的是同一个微分算符。
+
+Feynman 边界条件在动量空间中由 $\ii0^+$ 规定指定：正能极点位于实轴下方，负能极点位于实轴上方。沿用在 SI 场归一化下，最终得到
+\begin{equation}
+\boxed{
+\Delta_F(x-y)
+=\int\frac{\dd^4 p}{(2\pi\hbar)^4}
+\frac{\ii\hbar^3c}{p^2-m^2c^2+\ii0^+}
+ \ee^{-ip\cdot(x-y)/\hbar}.}
+\label{eq:scalar-Fourier-r2}
+\end{equation}
+其极点选择恰好重现\eqnrefs{eq:feynman-from-wightman-r3}：$x^0>y^0$ 时围道只包围正能极点，$x^0<y^0$ 时只包围负能极点。
+
+传播子之所以也是 Green 函数，可以直接由正则对易子看出。作用自由标量逆算符后，非等时区域的 Wightman 函数都满足齐次方程，唯一剩下的项来自时间排序阶跃函数在 $x^0=y^0$ 处的导数。因此
+\begin{equation}
+\boxed{
+\left(\Box_x+\frac{m^2c^2}{\hbar^2}\right)\Delta_F(x-y)
+=-\ii\hbar c\,\delta^{(4)}(x-y).}
+\label{eq:scalar-green-exact-r2}
+\end{equation}
+定义 $G_F=\ii\Delta_F/(\hbar c)$ 后便有 $(\Box+m^2c^2/\hbar^2)G_F=\delta^{(4)}$。因此真空时序关联与 Feynman Green 逆核由同一等时正则代数和同一极点边界条件固定。
+
+\begin{figure}[htbp]
+\centering
+\input{figures/tikz/feynman-poles}
+\caption{Feynman $\ii0^+$ 规定：正能极点位于下半平面，负能极点位于上半平面；围道的闭合方向由 $x^0-y^0$ 的符号决定。}
+\label{fig:feynman-poles-r2}
+\end{figure}
+
+\begin{derivation}[从\eqnrefs{eq:scalar-Fourier-r2}到\eqnrefs{eq:scalar-green-exact-r2}]
+记 $\tau=x^0-y^0$、$\Omega_{\mathbf p}=E_{\mathbf p}/c$。\eqnrefs{eq:scalar-Fourier-r2} 中的 $p^0$ 积分为
+
+\begin{equation*}
+I(\tau)=\int\frac{\dd p^0}{2\pi\hbar}
+\frac{\ii\hbar^3c\,\ee^{-ip^0\tau/\hbar}}
+{(p^0-\Omega_{\mathbf p}+\ii0^+)(p^0+\Omega_{\mathbf p}-\ii0^+)}.
+\end{equation*}
+当 $\tau>0$ 时指数要求在下半平面闭合，顺时针积分轮廓给
+\begin{equation*}
+I(\tau>0)=\frac{\hbar^2c^2}{2E_{\mathbf p}}
+ \ee^{-iE_{\mathbf p}\tau/(\hbar c)}.
+\end{equation*}
+当 $\tau<0$ 时在上半平面闭合，得到
+\begin{equation*}
+I(\tau<0)=\frac{\hbar^2c^2}{2E_{\mathbf p}}
+ \ee^{+iE_{\mathbf p}\tau/(\hbar c)}.
+\end{equation*}
+恢复空间 Fourier 相位，并在第二支作 $\mathbf p\to-\mathbf p$，就得到\eqnrefs{eq:feynman-from-wightman-r3}。
+
+再从时间序形式直接作用微分算符。第一次对 $x^0$ 求导时会出现
+\begin{equation*}
+\delta(\tau)[D^+(x-y)-D^+(y-x)],
+\end{equation*}
+但等时场对易子为零，所以该项消失。第二次求导产生等时 $[\dot\varphi(\mathbf x,t),\varphi(\mathbf y,t)]$。由正则动量 $\pi=\dot\varphi/c^2$ 与
+\begin{equation*}
+[\varphi(\mathbf x,t),\pi(\mathbf y,t)]=\ii\hbar\delta^{(3)}(\mathbf x-\mathbf y)
+\end{equation*}
+得到接触项 $-\ii\hbar c\delta(x^0-y^0)\delta^{(3)}(\mathbf x-\mathbf y)$；而 $x\ne y$ 时两支 Wightman 函数的齐次自由标量方程项彼此为零。于是得到\eqnrefs{eq:scalar-green-exact-r2}。
+\end{derivation}
+\subsection{对量子历史求和与相关函数的源方法}
+
+算符量子力学还有一种完全等价的演化语言：固定初态与末态后，把所有可能的中间历史都作为积分变量，每条历史按 $\ee^{\ii S/\hbar}$ 的相位权重贡献振幅。这种“对历史求和”的表示称为\emph{路径积分}。演化算符的乘法性质、完备关系和受控的时间切片极限直接构造出这一“对历史求和”的表示。场论中的函数积分同样先用格点、模截断或其它调节定义为有限自由度积分，再取连续极限；连续 Green 核由调节后的二次算符逆在该极限中定义。
+
+正则量子化使用 Hilbert 空间和算符代数描述动力学；路径积分则从同一个演化算符出发，把有限时间传播分解成许多短时间传播。取一维原型位置坐标 $\xi$，哈密顿量为
+\begin{equation*}
+ \hat H=\frac{\hat p^2}{2m_{\rm qm}}+V(\hat\xi),
+\end{equation*}
+其中 $m_{\rm qm}$ 是原型粒子的质量，SI 单位为 $\mathrm{kg}$；$\hat\xi$ 是位置算符，SI 单位为 $\mathrm m$；与它正则共轭的 $\hat p$ 是一维物理动量算符，满足 $[\hat\xi,\hat p]=\ii\hbar$。把总时间 $T=t_f-t_i$ 分成 $N$ 个小区间
+\begin{equation*}
+ \Delta t\equiv\frac{T}{N},
+ \qquad [\Delta t]=\mathrm s,
+\end{equation*}
+并在每一小步之间插入位置完备关系
+\begin{equation*}
+ \id=\int\dd \xi_n\,|\xi_n\rangle\langle \xi_n|.
+\end{equation*}
+连续插入 $N-1$ 次后，有限时间核严格分解为
+\begin{align}
+ \langle \xi_f|\ee^{-\ii \hat H T/\hbar}|\xi_i\rangle
+ &=\int\prod_{n=1}^{N-1}\dd \xi_n
+ \prod_{n=0}^{N-1}
+ \langle \xi_{n+1}|\ee^{-\ii \hat H\Delta t/\hbar}|\xi_n\rangle.
+ \label{eq:path-slicing-r15}
+\end{align}
+这一分解由演化算符的群性质与位置本征态的完备关系给出；单个短时核的构造还需要显式处理动能算符与势能算符的非对易性。
+
+为了计算单个短时核，记
+\[
+\hat T=\frac{\hat p^2}{2m_{\rm qm}},\qquad \hat V=V(\hat\xi).
+\]
+在有限格点或有限能量截断 $\Pi_\Lambda$ 下，Lie--Trotter 分裂给
+\begin{equation}
+ \ee^{-\ii\Delta t(\hat T+\hat V)/\hbar}
+ =\ee^{-\ii\Delta t\hat T/\hbar}
+  \ee^{-\ii\Delta t\hat V/\hbar}
+ +\order((\Delta t)^2),
+ \label{eq:trotter-short-r15}
+\end{equation}
+而单片首个误差算符正比于 $[\hat T,\hat V]$。固定总时间 $T=N\Delta t$ 时，一个有意义的受控量例如
+\begin{equation}
+ \epsilon_{\rm split}(\Lambda)
+ \sim\frac{T\Delta t}{\hbar^2}
+ \bigl\|\Pi_\Lambda[\hat T,\hat V]\Pi_\Lambda\bigr\|\ll1.
+ \label{eq:trotter-control-regulated-dp73}
+\end{equation}
+因此“$\Delta t$ 很小”必须相对于实际的不对易能标理解。对未截断的无界算符，一般不能用全空间算符范数写同一估计；若 $\hat T$ 与 $\hat V$ 满足相应的自伴与半有界条件，应使用 Trotter 乘积公式的强极限
+\[
+ \ee^{-\ii T(\hat T+\hat V)/\hbar}
+ =\operatorname*{s-lim}_{N\to\infty}
+ \left(\ee^{-\ii T\hat T/(N\hbar)}\ee^{-\ii T\hat V/(N\hbar)}\right)^N.
+\]
+
+在动能与势能因子之间插入动量完备关系，短时核为
+\begin{align}
+ K_{\Delta t}(\xi_{n+1},\xi_n)
+ &=\int\frac{\dd p_n}{2\pi\hbar}
+ \exp\left\{\frac{\ii}{\hbar}
+ \left[p_n(\xi_{n+1}-\xi_n)
+ -\Delta t\frac{p_n^2}{2m_{\rm qm}}
+ -\Delta t\,V(\xi_n)\right]\right\}
+ +\order((\Delta t)^2),
+ \label{eq:short-kernel-momentum-r15}\\
+ &=\sqrt{\frac{m_{\rm qm}}{2\pi\ii\hbar\Delta t}}
+ \exp\left\{\frac{\ii\Delta t}{\hbar}
+ \left[
+ \frac{m_{\rm qm}}{2}
+ \left(\frac{\xi_{n+1}-\xi_n}{\Delta t}\right)^2
+ -V(\xi_n)
+ \right]\right\}
+ +\order((\Delta t)^2).
+ \label{eq:short-kernel-config-r15}
+\end{align}
+第一行显示短时相位是 $p\Delta\xi-H\Delta t$；第二行只是对标准 Fresnel 二次积分的计算结果。
+
+把 $N$ 个短时核相乘，指数中的黎曼和满足
+\begin{align}
+ &\sum_{n=0}^{N-1}\Delta t
+ \left[
+ \frac{m_{\rm qm}}{2}
+ \left(\frac{\xi_{n+1}-\xi_n}{\Delta t}\right)^2
+ -V(\xi_n)
+ \right]\\
+ &\qquad\xrightarrow[N\to\infty]{}
+ \int_{t_i}^{t_f}\dd t\,
+ \left[\frac{m_{\rm qm}}{2}\dot\xi^2-V(\xi)\right]
+ \equiv S[\xi].
+ \label{eq:lattice-action-limit-r15}
+\end{align}
+同时所有 Fresnel 前因子与中间位置积分共同定义泛函测度
+\begin{equation*}
+ \mathcal D\xi\equiv
+ \lim_{N\to\infty}
+ \left(\frac{m_{\rm qm}}{2\pi\ii\hbar\Delta t}\right)^{N/2}
+ \prod_{n=1}^{N-1}\dd \xi_n.
+\end{equation*}
+因此
+\begin{equation}
+ \boxed{
+ \langle \xi_f|\ee^{-\ii\hat H T/\hbar}|\xi_i\rangle
+ =\int_{\xi(t_i)=\xi_i}^{\xi(t_f)=\xi_f}\mathcal D\xi\,
+ \exp\left[\frac{\ii}{\hbar}S[\xi]\right].}
+ \label{eq:qm-path-integral-r15}
+\end{equation}
+\eqnrefs{eq:qm-path-integral-r15} 因而是有限维时间演化在连续插入完备关系并取 Trotter 极限后的连续表示。泛函测度由离散时间切片上的普通多重积分定义；场论中同样先以有限格点或其它调节化离散化定义测度，再取连续极限。
+
+
+
+\begin{exbox}[自由粒子传播核]
+\eqnrefs{eq:qm-path-integral-r15} 给出任意势能下的路径积分定义，但“对所有路径求和”仍然比较抽象。取 $V(\xi)=0$ 后，传播核可以解析算完：
+\begin{equation}
+ \boxed{
+ K_0(\xi_f,t_f;\xi_i,t_i)
+ =\sqrt{\frac{m_{\rm qm}}{2\pi\ii\hbar T}}
+ \exp\!\left[
+ \frac{\ii m_{\rm qm}(\xi_f-\xi_i)^2}{2\hbar T}
+ \right],
+ \qquad T\equiv t_f-t_i>0.}
+ \label{eq:free-particle-kernel-dp61}
+\end{equation}
+这个结果把路径积分里的三个对象同时具体化。指数恰好是连接两个端点的经典直线路径作用量
+\begin{equation*}
+ S_{\rm cl}
+ =\frac{m_{\rm qm}(\xi_f-\xi_i)^2}{2T},
+\end{equation*}
+前因子则不是可随意省略的“归一化常数”：它负责在 $T\to0^+$ 时恢复 $\delta(\xi_f-\xi_i)$，并保证连续两段传播满足
+\begin{equation}
+ \boxed{
+ \int_{-\infty}^{\infty}\dd\xi\,
+ K_0(\xi_f,t_f;\xi,t)
+ K_0(\xi,t;\xi_i,t_i)
+ =K_0(\xi_f,t_f;\xi_i,t_i).}
+ \label{eq:free-kernel-composition-dp61}
+\end{equation}
+因此“路径积分测度”“经典作用量”和“量子演化的群性质”不是三个互不相干的约定；自由粒子已经把它们锁定在同一个可直接检验的闭式中。
+\end{exbox}
+
+
+
+
+\input{sections/03qft-harmonic-kernel-dp64}
+
+场论先把场 $\varphi(x)$ 在格点或有限模基上调节成有限组积分变量，并以调节极限定义连续函数积分。为了用同一个对象一次生成任意阶时间有序相关函数，在作用量中加入一个任意的普通数值函数 $\mathcal J(x)$，让它只以线性形式与场相乘。对这个外加函数求一次泛函导数会插入一个 $\varphi(x)$，求 $n$ 次就会插入 $n$ 个场，因此把“每个给定 $\mathcal J$ 对应的真空函数积分”整体看成 $\mathcal J$ 的泛函最方便。这个用于生成相关函数的对象称为\emph{生成泛函}，定义为
+\begin{equation}
+ Z[\mathcal J]
+ =\int\mathcal D\varphi\,
+ \exp\left\{\frac{\ii}{\hbar}
+ \left[S[\varphi]+\frac1c\int\dd^4 x\,\mathcal J(x)\varphi(x)\right]\right\}.
+ \label{eq:scalar-ZJ-r3}
+\end{equation}
+源 $\mathcal J(x)$ 的作用只是给每个时空点的场插入一个线性探针。对 $\mathcal J$ 求泛函导数会把一个场算符拉下来：
+\begin{equation*}
+ \frac{\hbar c}{\ii}\frac{\delta Z[\mathcal J]}{\delta \mathcal J(x)}
+ =\int\mathcal D\varphi\,\varphi(x)
+ \ee^{\frac{\ii}{\hbar}(S+S_\mathcal J)}.
+\end{equation*}
+因此归一化后
+\begin{equation}
+ \left.\left(\frac{\hbar c}{\ii}\right)^n
+ \frac{1}{Z[0]}
+ \frac{\delta^n Z[\mathcal J]}{\delta \mathcal J(x_1)\cdots\delta \mathcal J(x_n)}
+ \right|_{\mathcal J=0}
+ =\langle0|\Tord\{\hat\varphi(x_1)\cdots\hat\varphi(x_n)\}|0\rangle.
+ \label{eq:ZJ-correlators-r3}
+\end{equation}
+因此 $Z[\mathcal J]$ 的各阶源泛函导数同时生成全部时序 $n$ 点 Green 函数。
+
+自由场的作用量是二次型，因此生成泛函由高斯积分完全确定。令有限维积分变量为 $\mathbf z\in\mathbb R^n$，二次核为可逆矩阵 $\mathcal K$，源为 $\mathcal J$。在 Feynman $+\ii0^+$ 规定固定平方根支以后，定义
+\begin{equation*}
+ \mathcal N_{\mathcal K}
+ \equiv
+ \int\dd^nz\,
+ \exp\!\left(\frac{\ii}{2\hbar}\mathbf z^{\mathsf T}\mathcal K\mathbf z\right),
+\end{equation*}
+则配方给出严格高斯恒等式
+\begin{equation}
+ \int\dd^nz\,
+ \exp\left[\frac{\ii}{2\hbar}\mathbf z^{\mathsf T}\mathcal K\mathbf z+\frac{\ii}{\hbar}\mathcal J^{\mathsf T}\mathbf z\right]
+ =
+ \mathcal N_{\mathcal K}
+ \exp\left[-\frac{\ii}{2\hbar}\mathcal J^{\mathsf T}\mathcal K^{-1}\mathcal J\right],
+ \qquad
+ \mathcal N_{\mathcal K}=(2\pi\ii\hbar)^{n/2}(\det\mathcal K)^{-1/2}.
+ \label{eq:gaussian-finite-r2}
+\end{equation}
+对自由场，调节后的二次核可直接求逆；连续极限中的逆算符就是带所选边界条件的 Green 核。由于取 $x^0=ct$，$\dd^4 x=c\,\dd t\,\dd^3 x$。实自由标量场作分部积分后写成
+\begin{equation*}
+ S_0[\varphi]
+ =-\frac1{2c}\int\dd^4 x\,\dd^4 y\,
+ \varphi(x)\mathcal K(x,y)\varphi(y),
+\end{equation*}
+其中
+\begin{equation*}
+ \mathcal K(x,y)
+ =\left(\Box_x+\frac{m^2c^2}{\hbar^2}\right)
+ \delta^{(4)}(x-y).
+\end{equation*}
+Feynman 真空边界条件选择 $\mathcal K_F^{-1}$。若源项写成
+$S_\mathcal J=(1/c)\int\dd^4 x\,\mathcal J\varphi$，完成平方后所有 $\mathcal J$-依赖都由 $\mathcal K_F^{-1}$ 控制。与 \eqnrefs{eq:scalar-green-exact-r2} 对比，二者的精确关系为
+\begin{equation}
+ \boxed{
+ \Delta_F(x,y)=-\ii\hbar c\,\mathcal K_F^{-1}(x,y).}
+ \label{eq:scalar-kernel-inverse-r2}
+\end{equation}
+完成平方可把自由生成泛函写成
+\begin{equation}
+ \boxed{
+ \frac{Z_0[\mathcal J]}{Z_0[0]}
+ =\exp\left[
+ -\frac{1}{2\hbar^2c^2}
+ \int\dd^4 x\,\dd^4 y\,
+ \mathcal J(x)\Delta_F(x-y)\mathcal J(y)
+ \right],}
+ \label{eq:free-generating-functional-r3}
+\end{equation}
+指数中的二次型由自由 Feynman 传播子控制。两次源导数给出一个二点函数，四次源导数给出三种两两配对；Wick 定理的组合结构由此已经包含在高斯生成泛函中。
+
+若作用量写成 $S=S_0+S_{\rm int}$，则
+\begin{align}
+ Z[\mathcal J]
+ &=\int\mathcal D\varphi\,
+ \ee^{\frac{\ii}{\hbar}S_0}
+ \ee^{\frac{\ii}{\hbar}S_{\rm int}[\varphi]}
+ \ee^{\frac{\ii}{\hbar c}\int \mathcal J\varphi},\\
+ &=\exp\left[
+ \frac{\ii}{\hbar}S_{\rm int}\!\left[
+ \frac{\hbar c}{\ii}\frac{\delta}{\delta \mathcal J}
+ \right]\right] Z_0[\mathcal J].
+ \label{eq:interacting-Z-from-free-r3}
+\end{align}
+第二行用源泛函导数代替相互作用作用量中的场。展开相互作用指数产生耦合常数的微扰级数，而自由生成泛函的每一对源导数产生一个 $\Delta_F$。因此路径积分中的内部线与算符方法中的 Wick 收缩都来自自由二次核的逆；相互作用顶角则来自 $S_{\rm int}$ 对场的多项式结构。
+
+\input{sections/03qft-gaussian-to-diagrams-explicit}
+
+散射与量子修正还需要把相关函数按“能否分成彼此独立的部分”继续分类。先考虑若干外部时空点上的场插入。如果一个贡献能够分解成两个互不相连的因子的乘积，那么其中一组外部点与另一组之间没有任何传播链把它们连接起来；这种贡献称为\emph{非连通}。反之，只要所有外部插入都属于同一个连接网络，就称为\emph{连通}。这个区分由相关函数能否分解为互不连通因子的乘积来定义。$Z[J]$ 同时生成连通和非连通贡献；对真空归一化后的生成泛函取对数，正好把乘积型非连通部分消去，只留下连通累积量。因此写成
+\begin{equation}
+\mathcal Z[J]\equiv\frac{Z[J]}{Z[0]},
+\qquad
+W[J]\equiv-\ii\hbar\ln\mathcal Z[J].
+\label{eq:connected_generating_functional_definition}
+\end{equation}
+$W$ 的 SI 量纲为作用量。由于源项采用
+$S_J=c^{-1}\int\dd^4 x\,J(x)\varphi(x)$，逐项求导有
+\begin{align*}
+\frac{\delta W}{\delta J(x)}
+&=-\ii\hbar\frac1{\mathcal Z}
+\frac{\delta\mathcal Z}{\delta J(x)}
+=\frac1c\langle\hat\varphi(x)\rangle_J.
+\end{align*}
+因此定义含源经典场
+\begin{equation}
+\boxed{
+\varphi_c(x)\equiv c\frac{\delta W[J]}{\delta J(x)}.}
+\label{eq:qft_classical_field_from_W}
+\end{equation}
+第二次导数已经显示“取对数”怎样消去非连通乘积。由
+\(
+W=-\ii\hbar\ln\mathcal Z
+\)
+先求一次导数，得到
+\begin{equation*}
+\frac{\delta W}{\delta J_1}
+=-\ii\hbar\frac{1}{\mathcal Z}
+\frac{\delta\mathcal Z}{\delta J_1}.
+\end{equation*}
+再求第二次导数：
+\begin{align*}
+\frac{\delta^2W}{\delta J_1\delta J_2}
+=-\ii\hbar\left[
+\frac1{\mathcal Z}
+\frac{\delta^2\mathcal Z}{\delta J_1\delta J_2}
+-\frac1{\mathcal Z^2}
+\frac{\delta\mathcal Z}{\delta J_1}
+\frac{\delta\mathcal Z}{\delta J_2}
+\right].
+\end{align*}
+方括号的第二项正好减去二点矩中的一阶矩乘积，因此留下二阶连通累积量。第三次求导会进一步产生“完整三点矩减去三个一阶乘二阶乘积，再加两个一阶矩三重乘积”的三阶累积量。继续求导时，每一阶都按乘积法则生成外部点的所有分组方式，而对数产生的交替组合系数恰好逐层减去能够分解成较低阶乘积的部分。因此 $W$ 的任意高阶源导数只保留不能再分解为独立乘积的连通关联函数。
+
+连通相关函数仍然可以包含“由一条内部传播子串联起来的两个较小块”。为了找出不能再由这种单条内部线拼接得到的基本块，再定义\emph{单粒子不可约}（one-particle irreducible，简称 1PI）：一个连通图若切断任意一条内部传播线后仍不会分成两个互不相连的部分，就称为 1PI。一般连通图可以由若干 1PI 顶角块和完整传播子重新拼接，因此 1PI 对象适合作为量子修正后的基本动力学核。
+
+数学上，从“外源 $J$ 是自变量”改到“外源诱导的平均场 $\varphi_c$ 是自变量”需要一次 Legendre 变换。这与经典力学中在不同共轭变量之间变换势函数的做法相同：不是增加新的物理自由度，而是换一种更适合写运动方程的变量。由此定义\emph{1PI 有效作用量}
+\begin{equation}
+\boxed{
+\Gamma_{\rm eff}[\varphi_c]
+\equiv W[J]
+-\frac1c\int\dd^4 x\,J(x)\varphi_c(x),}
+\label{eq:onepi_effective_action_definition}
+\end{equation}
+其中右端的 $J$ 要理解为由\eqnrefs{eq:qft_classical_field_from_W} 反解成 $\varphi_c$ 的泛函。$\Gamma_{\rm eff}$ 的 $n$ 次泛函导数生成 1PI 的 $n$ 点顶角核；特别地，二阶导数是完整二点传播子的逆核。变分时
+\begin{align*}
+\delta\Gamma_{\rm eff}
+&=\frac1c\int\dd^4 x\,\varphi_c(x)\delta J(x)
+-\frac1c\int\dd^4 x\,[\delta J(x)\varphi_c(x)+J(x)\delta\varphi_c(x)]\\
+&=-\frac1c\int\dd^4 x\,J(x)\delta\varphi_c(x),
+\end{align*}
+故
+\begin{equation}
+\boxed{
+\frac{\delta\Gamma_{\rm eff}}{\delta\varphi_c(x)}=-\frac{J(x)}{c}.}
+\label{eq:effective_action_eom}
+\end{equation}
+物理真空或平均场对应 $J=0$，所以精确量子运动方程是
+$\delta\Gamma_{\rm eff}/\delta\varphi_c=0$。这条式子说明“量子修正后的运动方程”不是把若干圈图能量修正手工加回经典方程，而是由同一个 $\Gamma_{\rm eff}$ 的驻值条件统一生成。
+
+二点层级还给出一个关键逆关系。由
+$\delta\varphi_c(x)/\delta J(y)=c\,\delta^2W/\delta J(x)\delta J(y)$，以及
+$\delta J(y)/\delta\varphi_c(z)=-c\,\delta^2\Gamma_{\rm eff}/\delta\varphi_c(y)\delta\varphi_c(z)$，链式法则
+\[
+\int\dd^4 y\,
+\frac{\delta\varphi_c(x)}{\delta J(y)}
+\frac{\delta J(y)}{\delta\varphi_c(z)}
+=\delta^{(4)}(x-z)
+\]
+给
+\begin{equation}
+\int\dd^4 y\,
+W^{(2)}(x,y)\,\Gamma_{\rm eff}^{(2)}(y,z)
+=-\frac1{c^2}\delta^{(4)}(x-z).
+\label{eq:connected_onepi_inverse_relation}
+\end{equation}
+所以精确连通传播子与精确 1PI 二点核互为逆算符。把完整逆传播子与自由逆传播子之差组织成一个二点 1PI 核，这个核称为\emph{自能}（self-energy）：它汇总粒子在传播途中发生并最终回到同一粒子通道的全部不可约虚过程。把自由逆传播子与自能重新组合就得到 Dyson 关系 $G^{-1}=G_0^{-1}-\Sigma$；QED 的电子自能和光子真空极化都是这一二点结构的具体实现。
+
+在任意背景 $\varphi_c$ 附近把场分解为
+$\varphi=\varphi_c+\delta\varphi$。作用量 Taylor 展开为
+\begin{align*}
+S[\varphi_c+\delta\varphi]
+&=S[\varphi_c]
++\int\dd^4 x\,S^{(1)}(x)\,\delta\varphi(x)\\
+&\quad+\frac12\iint\dd^4 x\dd^4 y\,
+\delta\varphi(x)S^{(2)}(x,y)\delta\varphi(y)+O((\delta\varphi)^3).
+\end{align*}
+在背景满足相应源方程后线性项被抵消，高斯涨落积分产生行列式。于是圈图展开的前两阶具有普适结构
+\begin{equation}
+\boxed{
+\Gamma_{\rm eff}[\varphi_c]
+=S[\varphi_c]
++\frac{\ii\hbar}{2}\Tr\ln S^{(2)}[\varphi_c]
++O(\hbar^2),}
+\label{eq:one_loop_effective_action_general}
+\end{equation}
+其中 $\Tr$ 同时包含时空积分和内部指标。费米型高斯因 Grassmann 行列式位于分子而多一个负号。\eqnrefs{eq:one_loop_effective_action_general} 说明第一阶量子涨落修正完全由经典背景周围二次涨落算符的泛函行列式决定。这个 $O(\hbar)$ 泛函行列式就是图形展开中的一圈贡献：它表示经典背景周围高斯二次涨落对经典作用量的第一阶量子修正。
+
+Grassmann 高斯积分与源平移恒等式给出费米型生成泛函的代数基础。对具体 Dirac 场，有限维矩阵 $\mathsf M$ 被连续时空与自旋指标上的 Dirac 二次核替代，Grassmann 外源记为 $\mathcal J_\psi(x)$ 与 $\overline{\mathcal J}_\psi(x)$；它们是反对易的外部探针，行列式结构和二次源项仍保持同一代数形式。
+
+费米型场的路径积分需要反对易 Grassmann 变量。有限维 Grassmann 高斯恒等式给出其行列式结构，因此其原型不是 $(\det\mathcal K)^{-1/2}$，而是
+\begin{equation}
+ \int\prod_i\dd\bar\theta_i\,\dd\theta_i\,
+ \ee^{-\bar\theta\,\mathsf M\,\theta}
+ =\det\mathsf M,
+ \label{eq:grassmann-det-r2}
+\end{equation}
+带 Grassmann 源时完成平方产生 $\mathsf M^{-1}$。因此对易场与反对易场的二次核都通过逆算符控制二点函数；差别在于普通高斯积分给出行列式的负半次幂，而 Grassmann 高斯积分给出行列式的一次幂。在选择具体粒子表示以前，这一有限维恒等式只规定“反对易变量的二次核由逆矩阵产生二点函数”；具体矩阵核必须由该场的时空表示与作用量另行确定。
+
+
+
+\input{sections/03qft-gaussian-to-diagrams-detail-dp18}
+
+\subsection{时间有序相互作用展开}
+
+相互作用理论的困难可以说得很具体：自由哈密顿量 $\hat H_0$ 已经能够精确求解，而完整哈密顿量 $\hat H=\hat H_0+\hat H_{\rm int}$ 一般不能。若完全改用 Schr\"odinger 绘景，所有时间依赖都压在态上，自由演化与相互作用演化混在一起；若完全改用 Heisenberg 绘景，算符又按照完整 $\hat H$ 演化，同样难以求解。相互作用绘景的目的，就是把这两部分有意拆开：算符只承担已知的自由运动，态只承担待展开的相互作用。这样，微扰参数真正只出现在 $\hat H_{\rm int}$ 中。
+
+把哈密顿量分为
+\begin{equation*}
+ \hat H=\hat H_0+\hat H_{\rm int}.
+\end{equation*}
+Schr\"odinger 绘景中态满足
+\begin{equation*}
+ \ii\hbar\partial_t|\Psi(t)\rangle_S
+ =\hat H|\Psi(t)\rangle_S.
+\end{equation*}
+定义相互作用表象
+\begin{equation}
+ |\Psi(t)\rangle_I
+ =\ee^{+\ii\hat H_0t/\hbar}|\Psi(t)\rangle_S,
+ \qquad
+ \hat O_I(t)=\ee^{+\ii\hat H_0t/\hbar}\hat O_S \ee^{-\ii\hat H_0t/\hbar}.
+ \label{eq:interaction-picture-def-r3}
+\end{equation}
+由这一分工得到相互作用绘景哈密顿量
+\begin{equation}
+ \hat H_I(t)
+ =\ee^{+\ii\hat H_0t/\hbar}
+ \hat H_{\rm int}
+ \ee^{-\ii\hat H_0t/\hbar},
+ \label{eq:HI-interaction-r3}
+\end{equation}
+而态只满足
+\begin{equation}
+ \boxed{
+ \ii\hbar\frac{\dd}{\dd t}|\Psi(t)\rangle_I
+ =\hat H_I(t)|\Psi(t)\rangle_I.}
+ \label{eq:interaction-sch-r2}
+\end{equation}
+因此自由场的平面波展开、产生湮灭代数和传播规律都可以继续使用；微扰真正需要处理的只有 $\hat H_I(t)$。
+
+相互作用为什么会改变自由粒子数，可以先在算符层直接看见。对实标量场的四次相互作用，
+\begin{equation*}
+ \hat\varphi^4\sim(\hat a+\hat a^\dagger)^4,
+\end{equation*}
+其中同时含有 $a^{\dagger4}$、$a^{\dagger3}a$、$a^{\dagger2}a^2$、$a^\dagger a^3$ 和 $a^4$ 等结构，所以 $\hat H_{\rm int}$ 会连接不同的自由 Fock 扇区。某一项能否成为真实散射或衰变过程，还要再满足四动量守恒和外腿质量壳条件；“算符允许改变粒子数”与“运动学允许该过程发生”是两个不同条件。
+
+定义相互作用绘景演化算符
+\begin{equation*}
+ |\Psi(t)\rangle_I
+ =\hat U_I(t,t_0)|\Psi(t_0)\rangle_I,
+\end{equation*}
+则
+\begin{equation}
+ \ii\hbar\partial_t\hat U_I(t,t_0)
+ =\hat H_I(t)\hat U_I(t,t_0),
+ \qquad
+ \hat U_I(t_0,t_0)=\id.
+ \label{eq:UI-diff-r3}
+\end{equation}
+不同时间的 $\hat H_I$ 一般不对易，因此演化算符由微分方程~\eqnrefs{eq:UI-diff-r3} 的 Volterra 积分形式及其逐次迭代定义；第 $n$ 阶系数具有一般形式
+\begin{equation}
+ \hat U_I^{(n)}(t,t_0)
+ =\left(-\frac{\ii}{\hbar}\right)^n
+ \int_{t_0}^{t}\dd t_1
+ \int_{t_0}^{t_1}\dd t_2\cdots
+ \int_{t_0}^{t_{n-1}}\dd t_n\,
+ \hat H_I(t_1)\cdots\hat H_I(t_n).
+ \label{eq:dyson-general-simplex-dp73}
+\end{equation}
+积分域已经对任意 $n$ 强制 $t_1>t_2>\cdots>t_n$。把超立方体的 $n!$ 个时间排序区域合并，得到精确的形式解
+\begin{equation}
+ \boxed{
+ \hat U_I(t,t_0)
+ =\Tord\exp\left[-\frac{\ii}{\hbar}
+ \int_{t_0}^{t}\dd t'\,\hat H_I(t')\right].}
+ \label{eq:dyson-r2}
+\end{equation}
+这种由非交换时间演化产生的有序展开通常称为 Dyson 级数。时间排序由\eqnrefs{eq:UI-diff-r3} 的一般解唯一确定，并在图展开中固定各相互作用算符的次序。二阶只是\eqnrefs{eq:dyson-general-simplex-dp73} 的第一个非平凡检验：
+\begin{align}
+ \hat U_I(t,t_0)
+ =&\;\id-\frac{\ii}{\hbar}\int_{t_0}^{t}\dd t_1\,\hat H_I(t_1)\nonumber\\
+ &+\left(-\frac{\ii}{\hbar}\right)^2
+ \int_{t_0}^{t}\dd t_1\int_{t_0}^{t_1}\dd t_2\,
+ \hat H_I(t_1)\hat H_I(t_2)+\cdots .
+ \label{eq:dyson-ordered-domain-r2}
+\end{align}
+
+有限 $t_i,t_f$ 的演化由 \eqnrefs{eq:dyson-r2} 定义。散射实验比较的是“相互作用发生前已经彼此远离的自由入射态”和“相互作用结束后再次彼此远离的自由出射态”。把每个自由入射态映射成相应自由出射态的线性算符称为\emph{散射算符}，通常记为 $\hat S$，也称 $S$ 矩阵。要从有限时间演化得到它，必须规定相互作用怎样在遥远过去和未来关闭；先用缓慢开关
+\begin{equation*}
+ \hat H_I(t)\longrightarrow \ee^{-\epsilon|t|}\hat H_I(t),
+ \qquad \epsilon>0,
+\end{equation*}
+定义
+\begin{equation}
+ \hat S
+ =\lim_{\epsilon\to0^+}
+ \Tord\exp\left[-\frac{\ii}{\hbar}
+ \int_{-\infty}^{+\infty}\dd t\,
+ \ee^{-\epsilon|t|}\hat H_I(t)\right].
+ \label{eq:S-adiabatic-r3}
+\end{equation}
+于是
+\begin{equation}
+ S_{fi}=\langle f|\hat S|i\rangle,
+ \qquad
+ \hat S=\id+\ii\hat T_S.
+ \label{eq:S-T-def-r3}
+\end{equation}
+$\id$ 对应没有发生散射，$\hat T_S$ 是无量纲的散射跃迁算符。对时间无关散射，还可以抽出能量守恒 $\delta$ 函数，并定义具有能量量纲的定态 $\hat T(E)$。Lippmann--Schwinger 预解式把这一能量分辨的 $\hat T(E)$ 与同一精确散射映射联系起来；Born 级数、Fermi 黄金律和 Feynman 展开只是针对不同条件的下游展开。
+
+\input{sections/02a0-exact-scattering}
+
+\begin{derivation}[从\eqnrefs{eq:interaction-sch-r2}到\eqnrefs{eq:dyson-r2}]
+
+由\eqnrefs{eq:UI-diff-r3} 积分得到
+\begin{equation*}
+ \hat U_I(t,t_0)=\id-\frac{\ii}{\hbar}
+ \int_{t_0}^{t}\dd t_1\,\hat H_I(t_1)\hat U_I(t_1,t_0).
+\end{equation*}
+从 $\hat U_I^{[0]}=\id$ 开始，把右端的 $\hat U_I$ 反复代回同一个 Volterra 积分。第 $N+1$ 次代回写成
+\begin{equation*}
+ \hat U_I^{[N+1]}(t,t_0)
+ =\id-\frac{\ii}{\hbar}\int_{t_0}^{t}\dd t_1\,
+ \hat H_I(t_1)\hat U_I^{[N]}(t_1,t_0).
+\end{equation*}
+对 $N$ 作归纳：若第 $n$ 阶齐次项具有正文\eqnrefs{eq:dyson-general-simplex-dp73} 的有序单纯形形式，则再代回一次 Volterra 核只是在最外层增加 $t_0<t_{n+1}<t_n$ 的积分，因此对任意 $n\ge1$
+\begin{equation*}
+ \hat U_I^{(n)}(t,t_0)
+ =\left(-\frac{\ii}{\hbar}\right)^n
+ \int_{t_0<t_n<\cdots<t_1<t}\dd t_1\cdots\dd t_n\,
+ \hat H_I(t_1)\cdots\hat H_I(t_n).
+\end{equation*}
+除去等时零测集，超立方体 $[t_0,t]^n$ 被 $n!$ 个时间排列单纯形分割；时间排序算符在每个单纯形上恢复同一有序乘积，所以
+\begin{equation*}
+ \hat U_I^{(n)}
+ =\frac1{n!}\left(-\frac{\ii}{\hbar}\right)^n
+ \int_{t_0}^{t}\dd t_1\cdots\dd t_n\,
+ \Tord\{\hat H_I(t_1)\cdots\hat H_I(t_n)\}.
+\end{equation*}
+从 $n=0$ 起求和即得\eqnrefs{eq:dyson-r2}。若任意两时刻的 $H_I$ 彼此对易，时间排序可去掉，结果退化为普通指数；否则普通指数并不满足\eqnrefs{eq:UI-diff-r3}。
+\end{derivation}
+
+\subsection{自由高斯场的配对结构与外腿约化}
+
+Dyson 展开已经把相互作用问题化成自由场的时序乘积。自由理论是高斯的，因此高阶时序乘积不含新的独立统计信息：它们都可由二点函数的配对组合得到。引入一个紧支撑经典源 $\mathcal J(x)$，可把任意场数的配对一次编码进生成恒等式
+\begin{equation}
+\boxed{
+ \Tord\exp\!\left[\frac{\ii}{\hbar c}\int\dd^4 x\,\mathcal J(x)\varphi(x)\right]
+ =:\!\exp\!\left[\frac{\ii}{\hbar c}\int\dd^4 x\,\mathcal J(x)\varphi(x)\right]\!:
+ \exp\!\left[-\frac{1}{2\hbar^2c^2}\int\dd^4 x\,\dd^4 y\,
+ \mathcal J(x)\Delta_F(x-y)\mathcal J(y)\right].}
+\label{eq:wick-generating-identity-dp74}
+\end{equation}
+这里第一个指数保留未配对的正规序场，第二个纯 $c$ 数指数一次产生一个二点收缩。对源作任意阶泛函导数后再令 $\mathcal J=0$，便一次性得到所有场数的配对组合。记
+\[
+\Delta_{rs}\equiv
+\langle0|\Tord\{\varphi_r\varphi_s\}|0\rangle,
+\]
+并令 $\mathfrak M_n$ 为指标集合 $\{1,\ldots,n\}$ 的全部互不重叠部分配对。若 $V(P)$ 是配对 $P$ 中已经出现的指标集合，则一般恒等式为
+\begin{equation}
+\boxed{
+\Tord\!\left\{\prod_{r=1}^{n}\varphi_r\right\}
+=\sum_{P\in\mathfrak M_n}
+\left[\prod_{(r,s)\in P}\Delta_{rs}\right]
+:\!\prod_{k\notin V(P)}\varphi_k\!: .}
+\label{eq:wick-general-r3}
+\end{equation}
+这里空配对给出完整正规序项，完全配对给出纯传播子乘积，其余项包含尚未收缩的正规序场。这个“任意自由高斯时序乘积等于所有互不重叠二点配对之和”的结构通常称为玻色 Wick 定理。Feynman 图中的内部线只是二点缩并的图形化记账，不是经典粒子轨迹。
+
+两场恒等式只是 $n=2$ 的特例：
+\begin{equation}
+ \boxed{
+ \Tord\{\varphi(x)\varphi(y)\}
+ =:\!\varphi(x)\varphi(y)\!:+\Delta_F(x-y).}
+ \label{eq:wick-two-field-r68}
+\end{equation}
+
+
+
+对四点真空关联，只有完全配对在真空期望值中存活。\eqnrefs{eq:wick-general-r3} 的三个完全配对直接给出
+\begin{equation}
+ \boxed{
+ \langle0|\Tord\{\varphi_1\varphi_2\varphi_3\varphi_4\}|0\rangle
+ =\Delta_{12}\Delta_{34}
+ +\Delta_{13}\Delta_{24}
+ +\Delta_{14}\Delta_{23}.}
+ \label{eq:wick-four-scalar-example-dp48}
+\end{equation}
+这个四点公式是一般配对定理的最低非平凡实例；更高点函数由同一配对规则递归生成。
+
+
+费米场的母结构相同，但交换两个 Grassmann 奇算符会产生负号。定义一般自由收缩
+\begin{equation*}
+ S_{ij}\equiv\langle0|\Tord\{\psi_i\bar\psi_j\}|0\rangle,
+\end{equation*}
+则完全收缩是带置换奇偶性的配对和；闭合费米子闭合圈因而额外带一个 $-1$。这一负号来自反对易代数本身，而不是 QED 顶角的特殊规定。
+\input{sections/03qft-fermionic-wick-dp8}
+
+为把 Wick 定理的组合计数连接到图规则，取无量纲耦合 $g_4$ 的标量相互作用
+\begin{equation*}
+ \Lag_{\rm int}=-\frac{g_4}{4!\,\hbar c}\varphi^4.
+\end{equation*}
+在 Dyson 展开的一阶，四点函数中与一个局域 $\varphi^4$ 插入对应的项是
+\begin{equation}
+ G^{(4,1)}(x_1,x_2,x_3,x_4)
+ =-\frac{\ii g_4}{4!\,\hbar^2c^2}
+ \int\dd^4 z\,
+ \langle0|\Tord\{\varphi_1\varphi_2\varphi_3\varphi_4\varphi^4(z)\}|0\rangle .
+ \label{eq:phi4-first-dyson-r68}
+\end{equation}
+只取把四个外场各自连接到 $z$ 点一个场的连通树级收缩，才得到 $g_4$ 的最低非平凡四点 Green 函数
+\begin{equation}
+ \boxed{
+ G_c^{(4)}(x_1,x_2,x_3,x_4)
+ =-\frac{\ii g_4}{\hbar^2c^2}
+ \int\dd^4 z\,\prod_{a=1}^{4}\Delta_F(x_a-z).}
+ \label{eq:phi4-tree-green-r3}
+\end{equation}
+$1/4!$ 与四条外部场插入同顶角上四个场的 $4!$ 种收缩正好抵消。Fourier 变换后，每个顶角的位置积分给出四动量守恒；未被这些 $\delta$ 函数固定的内部动量就是圈动量积分变量。
+
+\begin{figure}[htbp]
+ \centering
+ \begin{tikzpicture}[line width=.8pt,line label/.style={fill=white,fill opacity=.96,text opacity=1,inner sep=1.15pt}]
+  \coordinate (v) at (0,0);
+  \draw (v)--(-2,1.5) node[left]{$x_1$};
+  \draw (v)--(-2,-1.5) node[left]{$x_2$};
+  \draw (v)--(2,1.5) node[right]{$x_3$};
+  \draw (v)--(2,-1.5) node[right]{$x_4$};
+  \fill (v) circle (2pt) node[above right]{$z$};
+ \end{tikzpicture}
+ \caption{$\varphi^4$ 理论四点 Green 函数的最低阶连通图。图只是\eqnrefs{eq:phi4-tree-green-r3} 中四个传播子与一次相互作用插入的图形缩写。}
+ \label{fig:phi4-first-diagram-r3}
+\end{figure}
+
+同一 Dyson 展开在有限作用时间下还给出 Fermi 黄金律的来源。对时间无关微扰 $V$ 在时间窗 $T$ 内的一阶跃迁，定义能量失谐 $\Delta E\equiv E_f-E_i$，则有限时间概率核为
+\begin{equation}
+ \boxed{
+ |c_f^{(1)}(T)|^2
+ =\frac{|V_{fi}|^2T^2}{\hbar^2}
+ \operatorname{sinc}^2\!\left(\frac{\Delta E\,T}{2\hbar}\right).}
+ \label{eq:golden-sinc-r3}
+\end{equation}
+只有对平滑连续态密度 $\nu_f(E)$ 积分并取长时间极限，才可使用 $\sinc^2\to\delta$ 的分布极限，得到
+\begin{equation}
+ \boxed{
+ w_{i\to f}
+ =\frac{2\pi}{\hbar}|V_{fi}|^2\nu_f(E_i).}
+ \label{eq:fermi-golden-r3}
+\end{equation}
+因此有限时间振幅先产生宽度约为 $1/T$ 的 sinc 谱核；在对平滑末态谱求和并取 $T\to\infty$ 后，该核才以分布极限收缩为能量守恒 $\delta$ 函数。
+
+前面的自由场配对定理和图规则仍然使用自由场的产生、湮灭算符，但真实散射实验中的“入射电子”和“出射电子”属于相互作用理论。要把相关函数连接到实验散射振幅，必须先说明相互作用理论为什么在遥远过去和未来仍能定义自由的入射、出射粒子。
+
+设相互作用理论存在稳定的单粒子态，物理质量为 $m_{\rm phys}$。把完整 Heisenberg 场记为 $\varphi_H(x)$。在遥远过去和遥远未来，彼此分离的稳定粒子已经离开有限的散射区，因此可分别引入自由的入场和出场
+\begin{equation}
+ \left(\Box+\frac{m_{\rm phys}^2c^2}{\hbar^2}\right)
+ \varphi_{\rm in/out}(x)=0.
+ \label{eq:asymptotic-free-field-dp48}
+\end{equation}
+它们各自具有与自由场相同形式的模展开，只是产生、湮灭算符分别记为 $a_{\rm in/out}(\mathbf p)$。于是
+\begin{equation*}
+ |\mathbf p;{\rm in}\rangle
+ =a_{\rm in}^\dagger(\mathbf p)|\Omega\rangle,
+ \qquad
+ |\mathbf p;{\rm out}\rangle
+ =a_{\rm out}^\dagger(\mathbf p)|\Omega\rangle,
+\end{equation*}
+其中 $|\Omega\rangle$ 是相互作用理论的真空。多粒子入态、出态由相应产生算符继续构造，而实验散射振幅的起点正是
+\begin{equation}
+ \boxed{S_{fi}=\langle f,{\rm out}|i,{\rm in}\rangle.}
+ \label{eq:in-out-smatrix-dp48}
+\end{equation}
+这一定义把“远处可以识别的粒子”与“相互作用区内复杂的量子场”明确分开。
+
+
+对无导数标量相互作用，$\pi_H=c^{-2}\partial_t\varphi_H$。自由场模展开~\eqnrefs{eq:scalar-mode-r2} 可以逐模反演，因此对完整 Heisenberg 场定义有限时刻的单粒子投影算符
+\begin{equation}
+ \hat a_t(\mathbf p)
+ \equiv\int\dd^3 x\,\ee^{+\ii p\cdot x/\hbar}
+ \left[
+ \frac{1}{\hbar c}\sqrt{\frac{E_{\mathbf p}}{2}}\,\varphi_H(x)
+ +\frac{\ii c}{\sqrt{2E_{\mathbf p}}}\,\pi_H(x)
+ \right],
+ \label{eq:lsz-finite-time-mode-projection-dp52}
+\end{equation}
+其中指数中的 $p^0=E_{\mathbf p}/c$ 取物理质量壳值。若 $\varphi_H$ 本身就是自由场，\eqnrefs{eq:lsz-finite-time-mode-projection-dp52} 精确返回 $\hat a(\mathbf p)$；存在相互作用时，它会随 $t$ 改变，因为局域场在散射区内不断与多粒子扇区混合。
+
+稳定单粒子极点意味着在足够早和足够晚的时刻，完整场在单粒子方向上的投影趋于自由入、出模。用极点留数 $Z$ 修正局域场与归一化粒子态之间的重叠，定义
+\begin{equation}
+ \boxed{
+ \hat a_{\rm in/out}(\mathbf p)
+ =Z^{-1/2}\lim_{t\to\mp\infty}\hat a_t(\mathbf p).}
+ \label{eq:asymptotic-annihilator-projection-dp52}
+\end{equation}
+对\eqnrefs{eq:lsz-finite-time-mode-projection-dp52} 求时间导数，再把空间 Laplace 项分部积分到平面波上，可得
+\begin{equation}
+ \boxed{
+ \hat a_{\rm out}(\mathbf p)-\hat a_{\rm in}(\mathbf p)
+ =\frac{\ii Z^{-1/2}}{\sqrt{2E_{\mathbf p}}}
+ \int\dd^4 x\,
+ \ee^{+\ii p\cdot x/\hbar}
+ \left(\Box+\frac{m_{\rm phys}^2c^2}{\hbar^2}\right)
+ \varphi_H(x).}
+ \label{eq:lsz-one-leg-position-dp52}
+\end{equation}
+这里 $x^0=ct$，所以 $\dd^4 x=c\,\dd t\,\dd^3 x$。\eqnrefs{eq:lsz-one-leg-position-dp52} 已经建立了外腿约化的核心桥梁：每把一个标量渐近粒子从外态移入时序关联函数，就会在相应外部坐标上作用一次自由标量逆核 $\Box+m_{\rm phys}^2c^2/\hbar^2$。电子外腿不能沿用这一二阶算符；对自旋 $1/2$ 电子，截肢由一阶 Dirac 逆算符 $\ii\hbar\slashed\partial-\me c$ 完成。第 4 章将从 Dirac 二点函数本身建立其极点分子与外腿结构。对所有外腿分别作用与其 Lorentz 表示相匹配的自由逆算符，再 Fourier 变换，才得到相应的动量空间截肢公式。这整套由单粒子极点把时序相关函数转换成渐近散射振幅的步骤称为\emph{Lehmann--Symanzik--Zimmermann 约化}，简称 LSZ 约化。
+
+完整场并不等于入场或出场。稳定单粒子态在精确二点函数中表现为与连续谱分支切割分离的孤立极点：
+\begin{equation}
+ \boxed{
+ \widetilde G_2(p)
+ =\frac{\ii\hbar^3c\,Z}{p^2-m_{\rm phys}^2c^2+\ii0^+}
+ +\widetilde G_{2,\rm cont}(p).}
+ \label{eq:lsz-pole-plus-cont-r7}
+\end{equation}
+$Z$ 是所选局域场与物理单粒子态的无量纲交叠留数；等价地说，$Z^{1/2}$ 衡量 $\varphi_H$ 在稳定单粒子极点附近与相应渐近自由场的重叠。因此 LSZ 中出现的 $Z^{-1/2}$ 不是人为补上的归一化常数，而是把“局域场插入”换成“归一化渐近粒子”的必要因子。
+
+LSZ 外腿要求与连续谱分开的稳定单粒子极点。具有有限寿命的共振对应复能量平面上的极点，不能作为 $t\to\pm\infty$ 的自由渐近粒子；它只能通过内部共振传播或连续谱进入散射振幅。
+
+对连通 $n$ 点函数，最清楚的写法不是用一个模糊的“近似于”符号，而是在每个外部质量壳附近作多变量 Laurent 分解。定义
+\[
+ \zeta_i\equiv p_i^2-m_i^2c^2,
+\]
+并先把 $\zeta_i$ 视为复变量；Feynman 的 $+\ii0^+$ 只规定最后从哪一侧取实轴边界值。则在稳定单粒子极点的邻域内可以写成精确分解
+\begin{equation}
+ \boxed{
+ \widetilde G_{n,c}
+ =
+ (2\pi\hbar)^4\delta^{(4)}\!\left(\sum_i\sigma_i^{\rm io}p_i\right)
+ \left[\prod_i
+ \frac{\ii\hbar^3c\,Z_i^{1/2}}
+ {\zeta_i+\ii0^+}\right]
+ \ii\mathfrak A_{fi}(\{p_i\})
+ +\widetilde R_n(\{p_i\}),}
+ \label{eq:LSZ-factorization-r7}
+\end{equation}
+其中入射/出射外线分别取 $\sigma_i^{\rm io}=+1,-1$；$\mathfrak A_{fi}(\{p_i\})$ 在所有 $\zeta_i=0$ 的联合邻域内正则，而余项 $\widetilde R_n$ 的定义性质是它至少缺少一条外部单粒子极点，因此
+\[
+ \lim_{\zeta_1,\ldots,\zeta_n\to0}
+ \left(\prod_i\zeta_i\right)\widetilde R_n=0.
+\]
+这一定义把“外腿极点”和“真正的相互作用核”严格分开。于是 LSZ 约化的核心就是先用逆极点因子截去外线传播子，再取在壳极限：
+\begin{equation}
+ \boxed{
+ \lim_{p_i^2\to m_i^2c^2}
+ \left[\prod_i
+ Z_i^{-1/2}\frac{p_i^2-m_i^2c^2}{\ii\hbar^3c}\right]
+ \widetilde G_{n,c}
+ =(2\pi\hbar)^4\delta^{(4)}(P_f-P_i)\,\ii\mathfrak A_{fi}.}
+ \label{eq:lsz-momentum-reduction-r7}
+\end{equation}
+对上面的 $\varphi^4$ 树图，四条外线传播子全部被这一操作消去，只留下
+\begin{equation}
+ \boxed{
+ (2\pi\hbar)^4\delta^{(4)}(p_1+p_2-p_3-p_4)
+ \left(-\frac{\ii g_4}{\hbar^2c^2}\right).}
+ \label{eq:phi4-lsz-result-r7}
+\end{equation}
+因此外线传播子的截除来自精确单粒子极点的因子化。旋量与光子外线分别由相应的矩阵值逆动能算符完成截肢。
+
+Dyson 级数产生自由场的时序乘积，Wick 定理把它们化为传播子与顶角，有限时间谱核说明能量守恒如何从长时间极限进入跃迁率，而精确单粒子极点再经 LSZ 约化把 Green 函数连接到渐近 $S$ 矩阵元。这四层共同构成微扰散射的算符基础。
+
+
+\input{sections/03qft-lsz-worked-example-dp64}
+\input{sections/03qft-wick-lsz-detail-dp18}
+
+\section{散射振幅与可观测量}
+
+有了传播子和顶角，我们仍然只有计算振幅的语言；实验并不直接测量 Green 函数。LSZ、质量壳相空间和入射通量把相关函数依次变成约化振幅、截面与衰变率，从而第一次闭合“场算符—散射振幅—实验数字”的链条。
+
+散射振幅只有与协变态归一化、质量壳测度、Mandelstam 不变量、末态相空间和不变入射流量结合后才成为衰变率或截面。以下公式统一使用物理四动量并显式保留 $c,\hbar$，使振幅归一化与实验单位之间的关系保持可追踪。
+
+散射积分使用 $\delta[f]$、Feynman/Schwinger 参数以及相应积分恒等式。
+
+\subsection{相空间与 Lorentz 不变量}
+从振幅到实验量的第一步由运动学决定：协变态归一化固定外态的 $\delta$ 归一化，Mandelstam 变量编码 Lorentz 不变量，两体相空间给出末态态密度，不变通量给出单位入射流的归一化。具体相互作用进入这些通用因子的唯一位置是约化矩阵元 $\mathcal M$。
+\input{sections/02a-scattering-kinematics}
+\input{sections/03-scattering-kinematics-derivations}
+
+\subsection{交叉与色散}
+同一个截肢核在不同外态指派下产生交叉过程；解析性又把不同能区的实部、虚部和阈值连接起来。因而交叉不是“换符号口诀”，色散关系也不是独立技巧，而是同一复解析振幅的两种读取方式。
+\input{sections/03qft-crossing-dispersion-dp9}
+
+\subsection{标量散射实验室}
+最简单的标量相互作用已经足以同时产生图、振幅、衰变率、截面与静态势，并且不引入自旋和规范自由度。它因此隔离出散射论本身的运动学、相空间与解析结构；自旋和规范代数只在更复杂的费米子与光子模型中加入。
+\input{sections/01si-scalar-reduced-rules}
+\input{sections/02a1-scalar-toy-full}
+
+\subsection{精确关联函数与谱表示}\label{subsec:exact-correlators-spectral}
+
+树级展开给出了相互作用振幅的最低阶近似，但完整理论的传播子并不等于有限阶图的和。更基础的问题是：不截断微扰级数时，完整二点函数必须具有怎样的方程和谱结构？稳定粒子之所以能作为散射外态，正是因为完整传播子存在孤立单粒子极点；多粒子产生则对应连续谱。因而需要直接从路径积分恒等式和完整 Hamiltonian 的谱分解约束二点函数，而不是把极点结构当成额外假设。
+
+路径积分首先给出相关函数之间的动力学约束。积分变量的平移不改变积分值，因此生成泛函满足一个泛函微分恒等式；继续对外源求导，就得到把不同阶相关函数连接起来的 Schwinger--Dyson 层级。
+
+谱分解回答另一个问题：一个完整传播子究竟由哪些物理激发组成。把完整 Hamiltonian 的完备本征态插入二点函数，稳定单粒子产生孤立极点，多粒子态产生连续谱。把这些谱权重整理成 Lorentz 不变形式，就得到 Källén--Lehmann 表示。
+
+实标量 $\varphi^4$ 模型已经包含相互作用、完整二点函数和非平凡谱结构，同时不需要额外携带自旋或规范指标，因此足以承载这两条一般结论：积分变量不变性约束相关函数，完整态分解决定传播子的谱结构。
+\input{sections/01-exact-correlators-spectral}
+
+\section{量子修正与规范结构}
+
+树级振幅只包含有限条内部传播线；闭合圈出现以后，内部四动量必须在所有可能取值上积分，于是首先要回答两个具体问题：这些积分的高动量部分怎样定义，以及中间态真正达到质量壳时为什么会给振幅带来虚部。规范场还包含并非独立物理自由度的冗余分量；具有简并最低能态的理论则在选定真空后出现新的低能自由度。
+
+$S$ 矩阵的幺正性首先把振幅虚部与真实中间态联系起来，这使圈积分的解析结构具有直接的概率解释。圈积分的紫外部分又迫使裸参数改写成由实验条件定义的有限参数。规范场还多出一个结构性问题：规范冗余使二次核不可逆，必须先选定规范截面才能定义传播子。若势能最低点不是孤立点，真空附近的二次涨落还会沿简并方向出现新的低能结构。
+
+\subsection{幺正性与割线}
+散射概率不能在时间演化中凭空增加或减少，因此 $S$ 矩阵必须满足幺正性。把这一条件展开到给定初态和末态之间，会发现振幅的虚部并不是独立信息：它由所有允许的真实在壳中间态共同决定。等到这个算符关系写成具体圈图积分时，才得到通常所称的 Cutkosky 割线规则。
+\input{sections/03qft-unitarity-cuts-dp8}
+\input{sections/03-unitarity-cuts-derivations}
+
+\subsection{紫外发散、尺度依赖与短距离展开}
+圈积分会探测任意大的内部动量，因此中间表达式可能依赖一个人为引入的紫外调节尺度。物理预测不能依赖这个人为选择：需要先把发散写成局域参数的重新定义，再研究当参考尺度改变时这些有限参数怎样随之变化。这种有限参数随重整化尺度的演化就是重整化群。
+
+当计算推广到多圈或局域复合算符时，同一个“短距离效应应由局域结构吸收”的原则仍然成立，只是需要更系统的递归组织。等真正比较两个相近时空点上的算符乘积时，再引入算符乘积展开；热核则只在需要计算一般二次算符的一圈紫外项时出现。
+\input{sections/03qft-renormalization-rg-dp10}
+\input{sections/03qft-renorm-allorders-ope-dp11}
+\input{sections/03qft-heat-kernel-dp11}
+
+\input{sections/03qft-renorm-allorders-detail-dp18}
+\input{sections/03qft-heat-kernel-detail-dp18}
+\input{sections/03qft-renormalization-detail-dp21}
+
+\subsection{规范固定与量子规范冗余}
+普通高斯场的传播子来自可逆二次核；规范势却含有不改变场强的冗余方向，所以其二次核有零模，不能直接求逆。必须在每条规范轨道上只计数一个代表，这就是规范固定。非阿贝尔情况下，这个变量约束产生依赖规范场的泛函 Jacobian；用一对反交换辅助场表示该 Jacobian 后，扩大场空间具有一个幂零对称变换。这个幂零结构把规范冗余转化为代数约束，并使物理态能够由相应上同调类选出。
+\input{sections/03qft-gauge-brst-dp11}
+
+\subsection{自发对称破缺}
+一个对称势能可以拥有一整族等能最低点。理论方程仍保持对称，但一旦选择其中一个最低点作为真空，沿最低点族切向移动就可能没有恢复力。对真正作用在物理态上的整体连续对称性，这种平坦方向对应低能无隙激发；对局域规范冗余，同样的场方向会与规范场的纵向分量重新组合。为了区分这两种机制，先用势能 Hessian 判断真空切向方向是否具有恢复力，再用规范质量矩阵判断哪些方向被重新组织进有质量规范场。
+\input{sections/03qft-ssb-higgs-general-dp11}

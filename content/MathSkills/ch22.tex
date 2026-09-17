@@ -1,0 +1,1077 @@
+\chapter{假设检验、局部似然几何与 Pearson 投影}\label{chap:math-stat-testing}
+
+估计问题在参数空间中寻找一个点或区域，检验问题则比较两个参数集合。有限样本精确检验依赖特殊模型中的枢轴量或离散分布；一般正则模型的大样本检验则由 \chapref{chap:math-stat-estimation-likelihood} 的 LAN 二次型统一控制。因而本章不按“某某检验公式”分类，而是先定义检验作为一个受第一类错误约束的决策问题，再从 Neyman--Pearson 的有限样本最优性进入 Fisher 几何，随后由同一个局部法向投影推出 LR、Wald、Score、局部功效与 nuisance parameter 消元，最后把 Pearson 卡方解释成概率单纯形上的同一投影机制。
+
+\section{检验函数、水平、功效与 Neyman--Pearson 原理}
+
+设参数空间分成原假设与备择集合
+\[
+ \Theta_0\subseteq\Theta,
+ \qquad
+ \Theta_1=\Theta\setminus\Theta_0.
+\]
+一个随机化检验是可测函数
+\[
+ \phi_n:\mathcal X^n\to[0,1].
+\]
+观察到 $X^n=x^n$ 后，以概率 $\phi_n(x^n)$ 拒绝原假设。普通拒绝域检验对应 $\phi_n\in\{0,1\}$。
+
+检验的功效函数定义为
+\[
+ \Power_n(\theta)
+ =\E_\theta\phi_n(X^n).
+\]
+在 $\theta\in\Theta_0$ 时，它就是第一类错误概率；在 $\Theta_1$ 上则表示识别备择的概率。若
+\begin{equation}\label{eq:math-stat-test-level}
+ \sup_{\theta\in\Theta_0}\E_\theta\phi_n\le\alpha,
+\end{equation}
+则称检验的水平不超过 $\alpha$。因此检验的基本优化顺序是：先满足整个原假设上的错误控制，再在这个约束下比较功效。
+
+$p$ 值也可以直接用错误控制定义。随机变量 $p_n(X^n)\in[0,1]$ 若满足
+\[
+ \sup_{\theta\in\Theta_0}
+ \Pbb_\theta\{p_n(X^n)\le u\}
+ \le u,
+ \qquad 0\le u\le1,
+\]
+则称其为对 $\Theta_0$ 有效的 $p$ 值。这样“当 $p_n\le\alpha$ 时拒绝”自动给出水平不超过 $\alpha$ 的检验。若一个统计量 $T$ 越大越反对原假设，一个常见构造是
+\[
+ p_n(x^n)
+ =\sup_{\theta\in\Theta_0}
+ \Pbb_\theta\{T(X^n)\ge T(x^n)\}.
+\]
+简单原假设时它退化为普通尾概率；复合原假设中的上确界则保证 nuisance parameter 不能被随意代成有利于拒绝的值。
+
+先看有限样本的基本最优性问题：
+\[
+ \Hnull:\theta=\theta_0,
+ \qquad
+ \Halt:\theta=\theta_1.
+\]
+Neyman--Pearson 引理说明，在所有满足给定水平约束的检验中，最强检验按 likelihood ratio
+\[
+ \frac{p_{\theta_1}^{(n)}(X^n)}{p_{\theta_0}^{(n)}(X^n)}
+\]
+排序样本点；超过阈值时拒绝，边界处必要时随机化。
+
+若一参数模型对统计量 $T$ 具有单调 likelihood ratio，即 $\theta_1>\theta_0$ 时
+\[
+ \frac{f_{\theta_1}(t)}{f_{\theta_0}(t)}
+\]
+关于 $t$ 单调不减，则 Neyman--Pearson 的拒绝域可以统一为 $T$ 的右尾。更精确地，若一个水平不超过 $\alpha$ 的检验 $\phi^*$ 满足：对任意其他同水平检验 $\phi$ 与每个 $\theta\in\Theta_1$，都有
+\[
+ \E_\theta\phi^*\ge\E_\theta\phi,
+\]
+则称 $\phi^*$ 在该复合备择上 uniformly most powerful（UMP）。Karlin--Rubin 定理说明：在一参数单调 likelihood-ratio 族中，检验
+\[
+ \Hnull:\theta\le\theta_0,
+ \qquad
+ \Halt:\theta>\theta_0
+\]
+可以由 $T$ 的同一个右尾拒绝域得到 UMP 检验。双侧复合问题通常没有 UMP 检验，这不是技术缺陷，而是不同备择方向对“最有利的拒绝域”存在冲突。
+
+\begin{exbox}[精确二项单侧检验]
+若 $X_i\iid\Bern(p)$，则
+\[
+ S=\sum_{i=1}^nX_i\sim\Bin(n,p)
+\]
+是充分统计量，并且 likelihood ratio 随 $S$ 单调。检验
+\[
+ \Hnull:p=p_0,
+ \qquad
+ \Halt:p>p_0
+\]
+时，取最小整数 $c$ 使
+\[
+ \Pbb_{p_0}(S\ge c)\le\alpha
+\]
+并在 $S\ge c$ 时拒绝，就得到有限样本水平不超过 $\alpha$ 的检验。由于二项分布离散，若要求 size 恰好等于 $\alpha$，通常必须在边界随机化。该构造直接使用精确 Binomial 尾概率，因此结论对有限样本成立；若把二项尾替换为正态尾，则只得到大样本近似。
+\end{exbox}
+
+\begin{derivation}[Karlin--Rubin 为何把逐点最强升级为 UMP]
+设 $T$ 的分布族具有单调 likelihood ratio，并取阈值 $c$ 及必要的边界随机化，使
+\[
+ \E_{\theta_0}\phi^*=\alpha,
+ \qquad
+ \phi^*(T)=\ind\{T>c\}+\gamma\ind\{T=c\}.
+\]
+对任意固定 $\theta_1>\theta_0$，比值
+\[
+ f_{\theta_1}(t)/f_{\theta_0}(t)
+\]
+随 $t$ 单调，因此 Neyman--Pearson 引理给出的最强 level-$\alpha$ 检验正是同一个右尾 $\phi^*$；关键在于拒绝域不随所选的 $\theta_1$ 改变。这一步把"对每个备择最强"压缩为"对每个备择都对应同一检验"，是 MLR 减少复杂性的核心机制。还要验证整个复合原假设上的水平。固定 $\theta<\theta_0$，令
+\[
+ r(t)=\frac{f_{\theta_0}(t)}{f_\theta(t)}.
+\]
+单调 likelihood ratio 使 $r(t)$ 单调不减，而右尾检验函数 $\phi^*(t)$ 也单调不减。在 $P_\theta$ 下，两个同向单调函数的协方差非负；用独立副本 $T'$ 可写成
+\[
+ 2\Cov_\theta\{\phi^*(T),r(T)\}
+ =\E_\theta\!\left[
+ \{\phi^*(T)-\phi^*(T')\}
+ \{r(T)-r(T')\}
+ \right]\ge0,
+\]
+因为当 \(T>T'\) 时两差同号，当 \(T<T'\) 时两差同号反号，乘积恒非负。又因为 \(\E_\theta r(T)=\int f_{\theta_0}=1\)，所以
+\[
+ \E_{\theta_0}\phi^*(T)
+ =\int\phi^*(t)f_{\theta_0}(t)\,\dd t
+ =\int\phi^*(t)r(t)f_\theta(t)\,\dd t
+ =\E_\theta\{\phi^*(T)r(T)\}
+ \ge\E_\theta\phi^*(T)\cdot\E_\theta r(T)
+ =\E_\theta\phi^*(T).
+\]
+中间的不等式即 \(\Cov\ge0\)。故对任意 $\theta\le\theta_0$，
+\[
+ \E_\theta\phi^*
+ \le\E_{\theta_0}\phi^*=\alpha.
+\]
+因此它对整个复合原假设保持水平约束，又同时对每个 $\theta_1>\theta_0$ 都是最强检验，故为 UMP。这一论证也说明：若不同备择点的 likelihood-ratio 排序方向不能共用同一拒绝域，就不能仅靠 Neyman--Pearson 得到 UMP。
+
+\emph{举例：正态均值的单边检验。}对 \(X_1,\ldots,X_n\iid\Normal(\theta,\sigma^2)\)（\(\sigma^2\) 已知），检验 \(H_0:\theta\le\theta_0\) 对 \(H_1:\theta>\theta_0\)。似然比
+\[
+\frac{f_{\theta_1}(x)}{f_{\theta_0}(x)}
+=\exp\!\left\{\frac{\theta_1-\theta_0}{\sigma^2}\sum_i x_i-\frac{n(\theta_1^2-\theta_0^2)}{2\sigma^2}\right\}
+\]
+是 \(\sum_i x_i\) 的单调增函数。Karlin--Rubin 立即给出 UMP 检验：拒绝当 \(\bar X>\theta_0+z_{1-\alpha}\sigma/\sqrt n\)。这一检验对每个 \(\theta_1>\theta_0\) 都最强，且对整个 \(\theta\le\theta_0\) 控制水平。
+
+\emph{更一般结论：双边检验无 UMP。}对 \(H_0:\theta=\theta_0\) 对 \(H_1:\theta\ne\theta_0\)，不存在 UMP 水平 \(\alpha\) 检验。若存在，它必须同时是对 \(\theta_1>\theta_0\) 的最强（右尾）和对 \(\theta_1<\theta_0\) 的最强（左尾），二者拒绝域不同，矛盾。这一限制促使引入 UMPU（unbiased）、相似（similar）与不变（invariant）等弱化概念，正态双边 \(t\) 检验在 UMPU 类中最强。
+
+\emph{物理建模：信号检测与恒虚警率。}Karlin--Rubin 的 UMP 性质在雷达信号检测中对应恒虚警率（CFAR）检测器设计。当噪声分布具有单调似然比（如 Gaussian、Rayleigh），阈值检测器在固定虚警概率下使检测概率最大，且阈值不依赖噪声功率参数（因 MLR 保证检验形式不变）。这正是 Karlin--Rubin"拒绝域不随备择改变"的工程价值：单一检测器结构覆盖整个备择空间。
+\end{derivation}
+
+\begin{derivation}[Neyman--Pearson 不等式]
+令 $\phi^*$ 为 likelihood-ratio 检验，阈值为 $c>0$，拒绝域为
+\[
+ R=\{t:p_{\theta_1}^{(n)}(t)>c\,p_{\theta_0}^{(n)}(t)\},
+\]
+即 $\phi^*(t)=\ind_R(t)$（为简洁略去边界随机化）。令 $\phi$ 是另一个满足 $0\le\phi\le1$ 且
+\[
+ \E_{\theta_0}\phi\le\E_{\theta_0}\phi^*
+\]
+的检验。把样本空间按 $R$ 与 $R^c$ 分段讨论。在 $R$ 上，由定义 $p_{\theta_1}^{(n)}-c\,p_{\theta_0}^{(n)}>0$，且 $\phi^*=1$，而 $0\le\phi\le1$ 给出 $\phi^*-\phi\ge0$；在 $R^c$ 上，$p_{\theta_1}^{(n)}-c\,p_{\theta_0}^{(n)}\le0$，且 $\phi^*=0$，给出 $\phi^*-\phi\le0$。两段中 $(\phi^*-\phi)$ 与 $(p_{\theta_1}^{(n)}-c\,p_{\theta_0}^{(n)})$ 同号，因此逐点有
+\[
+ (\phi^*-\phi)
+ (p_{\theta_1}^{(n)}-cp_{\theta_0}^{(n)})\ge0.
+\]
+这一逐点同号性是 Neyman--Pearson 的几何核心：拒绝域 \(R\) 选在 likelihood-ratio 大的方向，把检验函数差与密度差对齐。对样本空间积分，展开左端得
+\begin{align*}
+0&\le\int(\phi^*-\phi)(p_{\theta_1}^{(n)}-cp_{\theta_0}^{(n)})\,\dd\mu\\
+&=\int(\phi^*-\phi)p_{\theta_1}^{(n)}\,\dd\mu
+ -c\int(\phi^*-\phi)p_{\theta_0}^{(n)}\,\dd\mu\\
+&=\E_{\theta_1}(\phi^*-\phi)-c\,\E_{\theta_0}(\phi^*-\phi).
+\end{align*}
+移项得到
+\[
+ \E_{\theta_1}(\phi^*-\phi)
+ \ge c\,\E_{\theta_0}(\phi^*-\phi).
+\]
+由水平约束 $\E_{\theta_0}\phi\le\E_{\theta_0}\phi^*$，右端因子 $\E_{\theta_0}(\phi^*-\phi)\ge0$，又 $c>0$，故
+\[
+ \E_{\theta_1}(\phi^*-\phi)\ge0,
+\]
+即 $\E_{\theta_1}\phi^*\ge\E_{\theta_1}\phi$。因此 $\phi^*$ 在 $\theta_1$ 下的功效不低于任意同水平检验。注意这个结论只比较一个具体备择点；复合备择需要额外结构。
+
+\emph{举例：简单正态检验的 NP 形式。}对 \(X\sim\Normal(\theta,1)\) 单观测，检验 \(H_0:\theta=0\) 对 \(H_1:\theta=\mu_1>0\)。似然比
+\[
+\frac{p_{\mu_1}(x)}{p_0(x)}
+=\exp\!\left\{\mu_1 x-\frac{\mu_1^2}{2}\right\}
+\]
+是 \(x\) 的单调增函数，拒绝域 \(R=\{x>c'\}\)。水平 \(\alpha\) 选 \(c'=z_{1-\alpha}\)，得 \(\phi^*=\ind\{X>z_{1-\alpha}\}\)。NP 不等式保证：在所有 \(\E_0\phi\le\alpha\) 的检验中，此 \(\phi^*\) 在 \(\theta=\mu_1\) 处功效最大。
+
+\emph{更一般结论：随机化与 NP 引理的完整形式。}当 \(\E_{\theta_0}\phi^*=\alpha\) 不能由非随机检验精确达到（离散分布情形），在边界 \(\{p_{\theta_1}=cp_{\theta_0}\}\) 上引入随机化参数 \(\gamma\in[0,1]\) 使
+\[
+\E_{\theta_0}\phi^*=\Pbb_{\theta_0}(T>c)+\gamma\Pbb_{\theta_0}(T=c)=\alpha.
+\]
+完整 NP 引理断言：随机化 likelihood-ratio 检验在所有水平 \(\alpha\) 检验中功效最强，且这一最强性对每个备择点 \(\theta_1\) 都成立。复合备择下的 UMP 需要似然比方向一致（即 MLR），这正是 Karlin--Rubin 定理的条件。
+
+\emph{物理建模：信号检测与匹配滤波。}Neyman--Pearson 框架在信号检测中对应假设 \(H_0:X=\text{噪声}\) 对 \(H_1:X=\text{signal}+\text{noise}\)。若噪声为白 Gaussian，似然比检验退化为线性内积 \(\langle X,s\rangle>c\)，其中 \(s\) 是已知信号模板——这正是匹配滤波器。NP 最优性因此说明：在固定虚警概率下，匹配滤波器使检测概率最大，这是雷达与通信系统检测理论的基石。
+
+\emph{更一般结论：Neyman--Pearson 与 minimax 检验。}当先验分布放在备择参数上时，Bayes 检验对应加权平均功效最大。Neyman--Pearson 是 Bayes 检验在两点先验（\(\theta_0\) 与 \(\theta_1\)）下的特例。对复合备择，minimax 检验寻找使最坏备择功效最大的检验，其求解通常需要 least favorable prior——使 Bayes 风险最大的先验。这一框架在鲁棒检测（Huber 污染邻域）中给出 clipped likelihood-ratio 检验，是工程鲁棒统计的理论基础。
+
+\emph{举例：简单 vs 简单的似然比阈值。}对 \(H_0:X\sim f_0\) 对 \(H_1:X\sim f_1\)，NP 检验拒绝当 \(f_1(x)/f_0(x)>k\)。阈值 \(k\) 由水平约束 \(\int_{f_1>kf_0}f_0\,\dd\mu=\alpha\) 确定。在通信论中，\(f_0\) 是噪声分布，\(f_1\) 是信号+噪声分布，\(k\) 对应信噪比阈值。NP 最优性保证：在虚警概率 \(\alpha\) 下，此检测器使检测概率最大，且这一最优性对任意 \(f_0,f_1\) 都成立，不依赖 Gaussian 假设。
+\end{derivation}
+
+接下来考察群不变性、交换性与随机化检验。
+
+Neyman--Pearson 从已知概率模型中寻找最优拒绝域；另一类有限样本精确检验并不需要把原假设分布完全参数化，而是利用原假设下的\emph{群不变性}。设有限群 $\mathcal G$ 作用于样本空间，$g x$ 表示变换后的样本，并假设在原假设下
+\begin{equation}\label{eq:math-stat-group-invariance-null}
+ X\overset{d}=gX,
+ \qquad
+ \text{对每个 }g\in\mathcal G.
+\end{equation}
+给定一个“越大越反对原假设”的统计量 $T$，定义轨道
+\[
+ \mathcal O(x)=\{gx:g\in\mathcal G\}
+\]
+以及随机化尾概率
+\begin{equation}\label{eq:math-stat-randomization-pvalue}
+ p_{\mathcal G}(x)
+ =\frac{1}{|\mathcal G|}
+ \sum_{g\in\mathcal G}
+ \ind\{T(gx)\ge T(x)\}.
+\end{equation}
+若群作用存在重复点，上式等价于对群元素均匀抽样，而不是把不同轨道点各算一次。由\eqnrefs{eq:math-stat-group-invariance-null}可知，在原假设下，$X$ 在自己的群轨道上没有一个位置比其他位置更特殊；因此
+\begin{equation}\label{eq:math-stat-randomization-validity}
+ \Pbb_{\Hnull}\{p_{\mathcal G}(X)\le\alpha\}
+ \le\alpha.
+\end{equation}
+离散轨道会使不等号通常严格成立；若在临界秩处再作适当随机化，可以把 size 调到恰好 $\alpha$。这是有限样本结论，不依赖 CLT、Wilks 或大样本正态近似。
+
+最常见的特殊情形是两样本置换检验。设
+\[
+ X_1,\ldots,X_m,
+ \qquad
+ Y_1,\ldots,Y_n
+\]
+在原假设下来自同一分布，并且合并后的 $m+n$ 个观测可交换。条件于合并样本的数值以后，哪 $m$ 个位置被标记为 $X$ 组是等可能的；群 $\mathcal G$ 就是所有保持组容量的标签置换。于是均值差、秩和或其他预先指定统计量的置换分布给出精确条件原假设分布。这里真正的假设是\emph{exchangeability}；若两组在原假设下方差、相关结构或抽样机制仍不同，机械交换标签并不产生精确检验。
+
+配对资料给出另一个清楚的群作用。令差值 $D_i=X_i-Y_i$。若 $D_1,\ldots,D_n$ 独立、各自关于 $0$ 对称，并且 $\Pbb(D_i=0)=0$，则条件于绝对值 $|D_i|$，符号向量在 $\{\pm1\}^n$ 上均匀，故所有 $2^n$ 个独立符号翻转构成精确随机化群。若 $|D_i|$ 出现 ties，可以在给定绝对值后固定使用 midrank 或其他预先规定的分数；精确性来自符号翻转不变性，而不是“秩恰好互异”。以
+\[
+ T_{\rm SR}
+ =\sum_{i=1}^n R_i\ind\{D_i>0\},
+\]
+其中 $R_i$ 是 $|D_i|$ 的秩，就得到 Wilcoxon signed-rank 的精确原假设分布。若只假设 $\Pbb(D_i>0)=1/2$ 且无零差值，则正号个数本身仍服从 $\Bin(n,1/2)$，但 signed-rank 所需的符号--绝对值不变性不再自动成立。这两个检验的假设层级不能混为一谈。
+
+实验设计中的 randomization test 还要再区分一层：若处理标签是由已知随机分配机制产生的，精确性来自\emph{设计本身}的随机化分布；观测值交换性的模型假设并非必要。置换检验与随机化检验可以得到相同计算式，但它们的概率来源不同，因此失效条件也不同。
+
+\begin{derivation}[群轨道上的秩为何给出精确 $p$ 值]
+令 $G$ 在有限群 $\mathcal G$ 上均匀分布，并与 $X$ 独立。由原假设不变性，
+\[
+ GX\overset{d}=X.
+\]
+固定样本点 $x$，记群元素产生的统计量多重集为
+\[
+ \mathcal T_x=\{T(gx):g\in\mathcal G\}.
+\]
+这里必须保留\emph{多重集}而不是只保留不同轨道点：若 $x$ 有非平凡稳定子群，同一个轨道点会由相同数目的群元素产生。均匀抽取群元素 $G$ 因而恰好等价于从 $\mathcal T_x$ 的 $|\mathcal G|$ 个带重数元素中均匀抽取一个。
+
+令这些数值按非增序排列为
+\[
+ t_{(1)}\ge t_{(2)}\ge\cdots\ge t_{(M)},
+ \qquad M=|\mathcal G|.
+\]
+对任意群元素 $g$，
+\[
+ p_{\mathcal G}(gx)
+ =\frac1M\#\{h\in\mathcal G:T(hgx)\ge T(gx)\}.
+\]
+右乘 $g$ 只是群元素的一个置换，所以集合
+\[
+ \{T(hgx):h\in\mathcal G\}
+\]
+与 $\mathcal T_x$ 是同一个多重集。若 $T(gx)=t_{(j)}$，则使用“$\ge$”定义尾部时至少有前 $j$ 个元素不小于它，因此
+\[
+ p_{\mathcal G}(gx)\ge\frac{j}{M}.
+\]
+于是满足 $p_{\mathcal G}(gx)\le\alpha$ 的群元素至多对应
+\[
+ j\le \lfloor \alpha M\rfloor
+\]
+的前 $\lfloor\alpha M\rfloor$ 个位置。即使存在 ties，这个计数只会进一步减少，而不会增加。因此
+\[
+ \Pbb\!\left\{
+ p_{\mathcal G}(Gx)\le\alpha
+ \middle|X=x
+ \right\}
+ \le
+ \frac{\lfloor\alpha M\rfloor}{M}
+ \le\alpha.
+\]
+最后利用 $GX\overset d=X$，
+\[
+ \Pbb_{\Hnull}\{p_{\mathcal G}(X)\le\alpha\}
+ =
+ \Pbb_{\Hnull}\{p_{\mathcal G}(GX)\le\alpha\}
+ \le\alpha,
+\]
+得到\eqnrefs{eq:math-stat-randomization-validity}。因此精确性并不要求群作用自由，也不要求轨道上的统计量没有 ties；真正使用的只有原假设下的群不变性和对群元素的均匀平均。
+\end{derivation}
+
+\section{LAN 下的 LR、Wald 与 Score：同一个法向距离}
+
+设 $\theta\in\R^d$，真值为 $\theta_0$，模型满足 \chapref{chap:math-stat-estimation-likelihood} 的 LAN。为看清最基本结构，一维形式为
+\begin{equation}\label{eq:math-stat-lan-one-dimensional}
+ \ell_n\!\left(\theta_0+\frac h{\sqrt n}\right)-\ell_n(\theta_0)
+ =h\Delta_n-\frac12h^2I_0+o_{P_{\theta_0}}(1),
+ \qquad
+ \Delta_n\toD\Normal(0,I_0).
+\end{equation}
+局部 likelihood 是开口向下的随机抛物线；它的顶点同时决定 MLE 的一阶位置与所有二次型检验的一阶统计量。
+
+现在考虑光滑复合原假设
+\[
+ \Hnull:g(\theta)=0,
+ \qquad
+ g:\R^d\to\R^r,
+\]
+并设
+\[
+ G_0=Dg(\theta_0)
+\]
+满行秩 $r$。零假设在 $\theta_0$ 的切空间为
+\[
+ \mathcal T_0
+ =\{h\in\R^d:G_0h=0\}.
+\]
+Fisher 信息定义局部内积
+\[
+ \langle a,b\rangle_{I_0}
+ =a^{\mathsf T}I_0b.
+\]
+LAN 的不受限局部极大点为
+\[
+ h^*=I_0^{-1}\Delta_n.
+\]
+受限局部极大点则是 $h^*$ 到 $\mathcal T_0$ 的 $I_0$-正交投影。于是原假设可被数据区分的那一部分，恰好是 $h^*$ 在 Fisher 法向空间上的分量。
+
+这个投影可以显式写出。对任意 $h$，其法向分量为
+\begin{equation}\label{eq:math-stat-fisher-normal-projection}
+ h_\perp
+ =I_0^{-1}G_0^{\mathsf T}
+ (G_0I_0^{-1}G_0^{\mathsf T})^{-1}
+ G_0h.
+\end{equation}
+它满足 $h-h_\perp\in\mathcal T_0$，并且对任意 $v\in\mathcal T_0$，
+\[
+ \langle h_\perp,v\rangle_{I_0}=0.
+\]
+相应平方长度为
+\begin{equation}\label{eq:math-stat-fisher-normal-distance}
+ \|h_\perp\|_{I_0}^2
+ =(G_0h)^{\mathsf T}
+ (G_0I_0^{-1}G_0^{\mathsf T})^{-1}
+ (G_0h).
+\end{equation}
+
+设 $\widehat\theta_n$ 为不受限 MLE，$\widetilde\theta_n$ 为 $\Theta_0$ 上的受限 MLE。likelihood-ratio 统计量定义为
+\[
+ \LR_n
+ =2\{\ell_n(\widehat\theta_n)-\ell_n(\widetilde\theta_n)\}.
+\]
+Wald 统计量写成
+\[
+ W_n
+ =n\,g(\widehat\theta_n)^{\mathsf T}
+ \left[
+ G(\widehat\theta_n)
+ I(\widehat\theta_n)^{-1}
+ G(\widehat\theta_n)^{\mathsf T}
+ \right]^{-1}
+ g(\widehat\theta_n).
+\]
+Score 统计量应当只测量受限点处 score 的法向部分；在光滑约束下可以写为与有效 score 等价的二次型。若用全参数 score 表示，则受限极大化的一阶条件已经使切向分量消失，因此
+\[
+ \mathcal S_n
+ =\frac1nU_n(\widetilde\theta_n)^{\mathsf T}
+ I(\widetilde\theta_n)^{-1}
+ U_n(\widetilde\theta_n)
+\]
+在一阶上就是同一法向长度。
+
+在正则条件下，三者满足
+\begin{equation}\label{eq:math-stat-lr-wald-score-equivalence}
+ \LR_n=W_n+o_{\Pbb}(1)
+ =\mathcal S_n+o_{\Pbb}(1)
+ \toD\chiSq_r.
+\end{equation}
+这同时包含 Wilks 定理以及 Wald、Score 的一阶等价性。自由度 $r$ 是从完整参数空间到零假设子流形减少的局部维数，而不是由统计量名称决定的经验表项。
+
+\begin{derivation}[LAN 中三类统计量的显式投影]
+LAN 主项为
+\[
+ q_n(h)
+ =h^{\mathsf T}\Delta_n-\frac12h^{\mathsf T}I_0h
+ =-\frac12\|h-h^*\|_{I_0}^2
+ +\frac12\|h^*\|_{I_0}^2,
+\]
+其中 $h^*=I_0^{-1}\Delta_n$。受限极大点是
+\[
+ \widetilde h^*=h^*-h_\perp^*,
+\]
+其中由\eqnrefs{eq:math-stat-fisher-normal-projection}
+\[
+ h_\perp^*
+ =I_0^{-1}G_0^{\mathsf T}
+ (G_0I_0^{-1}G_0^{\mathsf T})^{-1}
+ G_0h^*.
+\]
+所以 LR 主项为
+\[
+ 2\{q_n(h^*)-q_n(\widetilde h^*)\}
+ =\|h_\perp^*\|_{I_0}^2.
+\]
+另一方面，由约束的一阶展开和 MLE 渐近线性表示，
+\[
+ \sqrt n\,g(\widehat\theta_n)
+ =G_0h^*+o_{\Pbb}(1),
+\]
+代入 Wald 统计量并使用\eqnrefs{eq:math-stat-fisher-normal-distance}，得到
+\[
+ W_n
+ =\|h_\perp^*\|_{I_0}^2+o_{\Pbb}(1).
+\]
+对 Score，在受限 MLE 处考虑 Lagrange 条件
+\[
+ U_n(\widetilde\theta_n)
+ =G(\widetilde\theta_n)^{\mathsf T}\kappa_n.
+\]
+这说明 score 落在约束法向余切空间。将 $U_n/\sqrt n$ 用 LAN 线性化并乘以 $I_0^{-1}$，得到的参数空间向量正是 $h_\perp^*+o_{\Pbb}(1)$，故 Score 也给出相同平方长度。最后
+\[
+ I_0^{-1/2}\Delta_n\toD\Normal_d(0,I_d),
+\]
+而标准高斯向量在 $r$ 维法向子空间上的平方长度服从 $\chiSq_r$，于是得到\eqnrefs{eq:math-stat-lr-wald-score-equivalence}。
+
+\textbf{实例。}正态均值检验 $H_0:\mu=0$ vs $H_1:\mu\neq0$：LR 统计量 $n\bar X_n^2/\sigma^2$，Wald 统计量 $n\bar X_n^2/\sigma^2$，Score 统计量 $n\bar X_n^2/\sigma^2$——三者精确相等。一般模型中三者只在渐近意义下等价，有限样本下 Wald 对参数变换敏感（换 $\theta\to\theta^3$ 后 Wald 变但 LR 不变），Score 对参数化最不敏感——这是实践中偏好 LR 和 Score 检验的原因。
+\end{derivation}
+
+\begin{exbox}[Bernoulli 模型中 LR、Wald 与 Score 的有限样本差异]
+令 $X_i\iid\Bern(p)$，检验 $\Hnull:p=p_0$，其中 $0<p_0<1$，并记 $\widehat p=\overline X$。当 $0<\widehat p<1$ 时，三类统计量分别为
+\begin{align*}
+ W_n
+ &=\frac{n(\widehat p-p_0)^2}
+ {\widehat p(1-\widehat p)},\\
+ \mathcal S_n
+ &=\frac{n(\widehat p-p_0)^2}
+ {p_0(1-p_0)},\\
+ \LR_n
+ &=2n\left[
+ \widehat p\log\frac{\widehat p}{p_0}
+ +(1-\widehat p)\log\frac{1-\widehat p}{1-p_0}
+ \right].
+\end{align*}
+它们在有限样本中不是同一个函数：Wald 在 MLE 处估计曲率，Score 在原假设处估计曲率，LR 则直接比较两个极大 likelihood。若 $\Hnull$ 成立，$\widehat p-p_0=O_{\Pbb}(n^{-1/2})$。对 Bernoulli KL 距离在 $p_0$ 处作 Taylor 展开，
+\[
+ 2\left[
+ p\log\frac p{p_0}
+ +(1-p)\log\frac{1-p}{1-p_0}
+ \right]
+ =\frac{(p-p_0)^2}{p_0(1-p_0)}
+ +O(|p-p_0|^3).
+\]
+因此
+\[
+ \LR_n-\mathcal S_n=O_{\Pbb}(n^{-1/2}),
+ \qquad
+ W_n-\mathcal S_n=o_{\Pbb}(1),
+\]
+三者才在一阶上共同趋于 $\chiSq_1$。若样本全为 $0$ 或全为 $1$，则 $\widehat p$ 落在边界，以上 Wald 形式甚至因 $\widehat p(1-\widehat p)=0$ 而失效，而 Score 与 LR 在 $0<p_0<1$ 下仍有良好定义。这进一步说明 Wald 统计量对参数坐标和边界更敏感；“三者正则渐近等价”绝不是有限样本可互换性。
+\end{exbox}
+
+接下来考察局部备择、contiguity 与非中心卡方。
+
+对固定备择 $\theta\ne\theta_0$，一致检验的功效往往趋于 $1$，因此不能描述统计程序在极限中的最细分辨率。LAN 的自然局部备择是
+\[
+ \theta_{n,h}
+ =\theta_0+\frac h{\sqrt n}.
+\]
+在 $P_{\theta_0}$ 下，log-likelihood ratio 满足
+\[
+ \log\frac{\dd P_{\theta_{n,h}}^{(n)}}
+ {\dd P_{\theta_0}^{(n)}}
+ =h^{\mathsf T}\Delta_n
+ -\frac12h^{\mathsf T}I_0h
+ +o_{\Pbb}(1).
+\]
+其极限是均值为 $-h^{\mathsf T}I_0h/2$、方差为 $h^{\mathsf T}I_0h$ 的正态变量。这里若一列事件 $A_n$ 满足 $P_{\theta_0}^{(n)}(A_n)\to0$ 时也必有 $P_{\theta_{n,h}}^{(n)}(A_n)\to0$，就称后者关于前者 contiguous；若两个方向都成立，则称两列实验 mutually contiguous。LAN 的极限似然比严格为正且期望为 $1$，由 Le Cam 第一引理得到这里的 mutual contiguity。它保证 $n^{-1/2}$ 局部换测度不会把原假设下的零概率极限事件突然变成正概率事件。
+
+Le Cam 第三引理把测度变化作用到中心序列上，得到在 $P_{\theta_{n,h}}$ 下
+\begin{equation}\label{eq:math-stat-third-lemma-shift}
+ \Delta_n
+ \toD\Normal_d(I_0h,I_0).
+\end{equation}
+所以标准化向量 $I_0^{-1/2}\Delta_n$ 的均值从 $0$ 平移到 $I_0^{1/2}h$。把它投影到零假设法向空间后，LR/Wald/Score 极限都变成
+\[
+ \chiSq_r(\Lambda_h),
+\]
+其中
+\begin{equation}\label{eq:math-stat-local-noncentrality}
+ \Lambda_h
+ =\|h_\perp\|_{I_0}^2
+ =(G_0h)^{\mathsf T}
+ (G_0I_0^{-1}G_0^{\mathsf T})^{-1}
+ (G_0h).
+\end{equation}
+因此水平 $\alpha$ 检验的局部渐近功效为
+\[
+ \Pbb\{\chiSq_r(\Lambda_h)>\chi^2_{r,1-\alpha}\}.
+\]
+沿零假设切空间的 $h$ 有 $\Lambda_h=0$，一阶上不可区分；只有 Fisher 法向分量贡献局部功效。
+
+\begin{exbox}[正态均值设计把功效写成标准化法向距离]
+设 $X_i\iid\Normal(\mu,\sigma^2)$，其中 $\sigma$ 已知，检验
+\[
+ \Hnull:\mu\le\mu_0,
+ \qquad
+ \Halt:\mu>\mu_0.
+\]
+由单调 likelihood ratio，水平 $\alpha$ 的 UMP 检验在
+\[
+ Z_{\mu,n}=\frac{\sqrt n(\overline X-\mu_0)}{\sigma}
+ >z_{1-\alpha}
+\]
+时拒绝。对任意固定 $\mu_1>\mu_0$，其有限样本精确功效为
+\[
+ \Power_n(\mu_1)
+ =1-\Phi\!\left(
+ z_{1-\alpha}
+ -\frac{\sqrt n(\mu_1-\mu_0)}{\sigma}
+ \right).
+\]
+若希望该点的功效至少为 $1-\beta$，等价于
+\[
+ \frac{\sqrt n(\mu_1-\mu_0)}{\sigma}
+ \ge z_{1-\alpha}+z_{1-\beta},
+\]
+因而
+\[
+ n\ge
+ \left[
+ \frac{\sigma(z_{1-\alpha}+z_{1-\beta})}
+ {\mu_1-\mu_0}
+ \right]^2.
+\]
+这不是额外的“样本量公式”：分子中的高斯分位数来自错误概率约束，分母中的效应量通过 $\sqrt n(\mu_1-\mu_0)/\sigma$ 进入，而这个量正是 Fisher 度量下的法向距离。LAN 中的非中心参数只是把这套精确 Gaussian 几何推广到一般正则模型。
+\end{exbox}
+
+\begin{derivation}[第三引理为何使中心序列均值平移]
+在原假设下，联合向量
+\[
+ \left(
+ \Delta_n,
+ \log\frac{\dd P_{\theta_{n,h}}^{(n)}}
+ {\dd P_{\theta_0}^{(n)}}
+ \right)
+\]
+由 LAN 渐近等价于
+\[
+ \left(
+ Z,
+ h^{\mathsf T}Z-\frac12h^{\mathsf T}I_0h
+ \right),
+ \qquad
+ Z\sim\Normal_d(0,I_0).
+\]
+换到局部备择测度 \(P_{\theta_{n,h}}^{(n)}\)，相当于用指数权重
+\[
+ \exp\!\left(
+ h^{\mathsf T}Z-\frac12h^{\mathsf T}I_0h
+ \right)
+\]
+重新加权原高斯分布。具体地，对任意有界可测 \(\varphi\)，
+\[
+\E_{\theta_{n,h}}\varphi(\Delta_n)
+=\E_{\theta_0}\!\left[
+\varphi(\Delta_n)\frac{\dd P_{\theta_{n,h}}^{(n)}}{\dd P_{\theta_0}^{(n)}}
+\right]
+\approx\E\!\left\{
+\varphi(Z)\exp\!\left(h^{\mathsf T}Z-\frac12h^{\mathsf T}I_0h\right)
+\right\}.
+\]
+把 \(Z\) 的密度 \((2\pi)^{-d/2}|I_0|^{1/2}\exp(-\frac12z^{\mathsf T}I_0^{-1}z)\) 与权重相乘，指数合并为
+\[
+ -\frac12z^{\mathsf T}I_0^{-1}z
+ +h^{\mathsf T}z
+ -\frac12h^{\mathsf T}I_0h.
+\]
+完成平方：令 \(w=z-I_0h\)，则
+\[
+ -\frac12z^{\mathsf T}I_0^{-1}z
+ +h^{\mathsf T}z
+ -\frac12h^{\mathsf T}I_0h
+ =-\frac12(z-I_0h)^{\mathsf T}
+ I_0^{-1}(z-I_0h),
+\]
+因此加权后的 \(Z\) 密度正比于 \(\exp(-\frac12w^{\mathsf T}I_0^{-1}w)\)，分布正是 \(\Normal_d(I_0h,I_0)\)，这就得到\eqnrefs{eq:math-stat-third-lemma-shift}。
+
+\emph{举例：正态位置模型的第三引理。}对 \(X_1,\ldots,X_n\iid\Normal(\theta,1)\)，\(\Delta_n=\sqrt n\bar X\)、\(I_0=1\)。在 \(H_0:\theta=0\) 下 \(\Delta_n\sim\Normal(0,1)\)；在局部备择 \(\theta=h/\sqrt n\) 下，
+\[
+\Delta_n=\sqrt n\bar X\sim\Normal(h,1),
+\]
+均值平移 \(h=I_0h\)，与第三引理一致。这把"局部备择下中心序列均值平移 \(I_0h\)"从抽象 LAN 结论落到具体正态计算。
+
+\emph{更一般结论：Le Cam 三引理的完整版本。}第三引理是 Le Cam 三引理中最常用的一条；第一引理把单点似然比收敛与中心极限定理结合，第二引理处理三角阵情形，第三引理给出局部备择下的联合渐近分布。三者共同构成"实验收敛"理论的核心工具，是 Wald、score、likelihood ratio 三大检验在局部备择下统一为 \(\chi^2\) 非中心分布的推导基础。在半参数与经验过程理论中，第三引理以泛函形式出现，把有限维 LAN 推广到无穷维 tangent space 上的弱收敛。
+\end{derivation}
+
+接下来考察Nuisance parameter 与有效信息。
+
+将参数分块为
+\[
+ \theta=(\vartheta,\eta),
+\]
+其中 $\vartheta\in\R^r$ 是关注参数，$\eta\in\R^q$ 是 nuisance parameter。Fisher 信息写成
+\[
+ I=
+ \begin{pmatrix}
+ I_{\vartheta\vartheta}&I_{\vartheta\eta}\\
+ I_{\eta\vartheta}&I_{\eta\eta}
+ \end{pmatrix}.
+\]
+若 $I_{\eta\eta}$ 可逆，关注参数 score 中可由 nuisance score 线性预测的部分应当先投影掉。定义有效 score
+\begin{equation}\label{eq:math-stat-efficient-score}
+ s_{\vartheta\cdot\eta}
+ =s_\vartheta-I_{\vartheta\eta}I_{\eta\eta}^{-1}s_\eta.
+\end{equation}
+由于
+\[
+ \Cov(s_\vartheta,s_\eta)=I_{\vartheta\eta},
+ \qquad
+ \Cov(s_\eta)=I_{\eta\eta},
+\]
+它正是 $s_\vartheta$ 对 nuisance score 线性子空间做 $L^2$ 投影后的残差。其协方差为 Schur complement
+\begin{equation}\label{eq:math-stat-efficient-information}
+ I_{\vartheta\cdot\eta}
+ =I_{\vartheta\vartheta}
+ -I_{\vartheta\eta}I_{\eta\eta}^{-1}I_{\eta\vartheta}.
+\end{equation}
+profile likelihood、受限 score 与 Wald 协方差在一阶上都使用同一个有效信息。若 $I_{\vartheta\cdot\eta}$ 奇异，说明某些关注方向在消去 nuisance 后已没有一阶可识别信息，普通 $\sqrt n$ 正则推断必须失效。
+
+\begin{derivation}[消去 nuisance 参数就是 Fisher 正交投影]
+把 LAN 局部参数和中心序列按同样方式分块：
+\[
+ h=\begin{pmatrix}h_\vartheta\\h_\eta\end{pmatrix},
+ \qquad
+ \Delta_n=\begin{pmatrix}\Delta_{\vartheta,n}\\\Delta_{\eta,n}\end{pmatrix}.
+\]
+局部二次型写成
+\begin{align*}
+ q_n(h_\vartheta,h_\eta)
+ &=h_\vartheta^{\mathsf T}\Delta_{\vartheta,n}
+   +h_\eta^{\mathsf T}\Delta_{\eta,n}\\
+ &\quad-\frac12h_\vartheta^{\mathsf T}I_{\vartheta\vartheta}h_\vartheta
+   -h_\vartheta^{\mathsf T}I_{\vartheta\eta}h_\eta
+   -\frac12h_\eta^{\mathsf T}I_{\eta\eta}h_\eta.
+\end{align*}
+对固定 $h_\vartheta$，关于 $h_\eta$ 的一阶条件给出
+\[
+ \widehat h_\eta(h_\vartheta)
+ =I_{\eta\eta}^{-1}
+ \{\Delta_{\eta,n}-I_{\eta\vartheta}h_\vartheta\}.
+\]
+把它代回 $q_n$，与 $h_\vartheta$ 无关的项并入常数 $C_n$，得到 profile LAN：
+\begin{align*}
+ q_n^{\rm prof}(h_\vartheta)
+ &=C_n
+ +h_\vartheta^{\mathsf T}
+ \underbrace{\left(
+ \Delta_{\vartheta,n}
+ -I_{\vartheta\eta}I_{\eta\eta}^{-1}\Delta_{\eta,n}
+ \right)}_{\Delta_{\vartheta\cdot\eta,n}}\\
+ &\quad-\frac12h_\vartheta^{\mathsf T}
+ \underbrace{\left(
+ I_{\vartheta\vartheta}
+ -I_{\vartheta\eta}I_{\eta\eta}^{-1}I_{\eta\vartheta}
+ \right)}_{I_{\vartheta\cdot\eta}}
+ h_\vartheta.
+\end{align*}
+因此 nuisance 参数并不是“把协方差矩阵某一块删掉”。必须先从关注 score 中减去它在 nuisance score 线性空间上的 $L^2$ 投影：
+\[
+ \Delta_{\vartheta\cdot\eta,n}
+ =\Delta_{\vartheta,n}
+ -I_{\vartheta\eta}I_{\eta\eta}^{-1}\Delta_{\eta,n}.
+\]
+直接计算协方差，
+\[
+ \Cov(\Delta_{\vartheta\cdot\eta,n})
+ \to I_{\vartheta\cdot\eta},
+\]
+所以 Schur complement 正是投影后剩余的 Fisher 信息。profile LR、efficient Score 与关注参数的 Wald 协方差之所以一阶一致，根源就在这个同一个投影后的局部高斯实验。
+\end{derivation}
+
+接下来考察正则条件失效时的非标准极限。
+
+\eqnrefs{eq:math-stat-lr-wald-score-equivalence} 依赖真值位于光滑参数空间内部、局部可识别、Fisher 信息非奇异以及 QMD/LAN。若这些条件失效，$\chi^2$ 极限没有理由保持不变。
+
+最简单的边界例子是单参数 $\theta\ge0$ 且检验 $\theta=0$。局部无约束高斯极大点若为负，会被边界截到 $0$，典型 LR 极限成为
+\[
+ \frac12\delta_0+\frac12\chiSq_1,
+\]
+而不是 $\chiSq_1$。若 $X_i\iid\Unif(0,\theta)$，最大次序统计量以 $n^{-1}$ 而非 $n^{-1/2}$ 速度逼近端点，支撑依赖参数使普通 score/Fisher 展开失效。有限混合模型在成分重合处还会同时出现不可识别与奇异信息矩阵。遇到这些模型时，应先重新确定局部尺度和极限实验，而不是机械查 Wilks 自由度。
+
+\section{Pearson 卡方：概率单纯形上的切空间投影}
+
+设
+\[
+ (N_1,\ldots,N_k)
+ \sim\operatorname{Multinomial}(n;p_1,\ldots,p_k),
+ \qquad
+ p_j>0,
+ \qquad
+ \sum_{j=1}^kp_j=1.
+\]
+记
+\[
+ p=(p_1,\ldots,p_k)^{\mathsf T},
+ \qquad
+ D_p=\diag(p_1,\ldots,p_k),
+ \qquad
+ s=(\sqrt{p_1},\ldots,\sqrt{p_k})^{\mathsf T}.
+\]
+定义标准化频数残差
+\begin{equation}\label{eq:math-stat-pearson-standardized-vector}
+ Z_n
+ =D_p^{-1/2}\frac{N-np}{\sqrt n}.
+\end{equation}
+因为 $\sum_j(N_j-np_j)=0$，
+\[
+ s^{\mathsf T}Z_n=0,
+\]
+所以 $Z_n$ 始终位于 $s^\perp$，这正是概率单纯形在 $p$ 处经过方差标准化后的 $(k-1)$ 维切空间。
+
+把每次分类观测写成 one-hot 向量 $Y_i\in\{e_1,\ldots,e_k\}$，则
+\[
+ N=\sum_{i=1}^nY_i,
+ \qquad
+ \E Y_i=p,
+ \qquad
+ \Cov(Y_i)=D_p-pp^{\mathsf T}.
+\]
+于是
+\begin{equation}\label{eq:math-stat-pearson-projector-covariance}
+ \Cov(Z_n)
+ =D_p^{-1/2}(D_p-pp^{\mathsf T})D_p^{-1/2}
+ =I_k-ss^{\mathsf T}.
+\end{equation}
+右端恰好是投影到 $s^\perp$ 的正交投影。多元 CLT 因此给出退化高斯极限，它在该切空间上是标准球对称正态。
+
+Pearson 统计量就是这个向量的平方长度：
+\begin{equation}\label{eq:math-stat-pearson-quadratic-form}
+ X_n^2
+ =\sum_{j=1}^k\frac{(N_j-np_j)^2}{np_j}
+ =Z_n^{\mathsf T}Z_n.
+\end{equation}
+所以当 $p_j$ 固定为正时
+\begin{equation}\label{eq:math-stat-pearson-limit}
+ X_n^2\toD\chiSq_{k-1}.
+\end{equation}
+自由度是切空间维数，而不是“总格数减一”的记忆规则。
+
+更重要的是原假设本身含待估参数的情形。设
+\[
+ p=p(\eta),
+ \qquad
+ \eta\in\R^q,
+\]
+且 $\eta_0$ 是真值。记 $p_0=p(\eta_0)$、$D_{p_0}=\diag(p_0)$，并令
+\[
+ \dot p_0
+ =\left.
+ \frac{\partial p(\eta)}{\partial\eta^{\mathsf T}}
+ \right|_{\eta_0}
+ \in\R^{k\times q}.
+\]
+由于 $\mathbf1^{\mathsf T}p(\eta)=1$，有
+\[
+ \mathbf1^{\mathsf T}\dot p_0=0.
+\]
+若 $\dot p_0$ 满列秩 $q<k-1$，标准化模型切空间由
+\[
+ B_{p,0}=D_{p_0}^{-1/2}\dot p_0
+\]
+的列空间张成，并且 $s^{\mathsf T}B_{p,0}=0$，所以 $\mathcal C(B_{p,0})$ 是 $s^\perp$ 内的 $q$ 维子空间。拟合 $\eta$ 会吸收经验频率涨落在这些模型切向方向上的分量。
+
+此时真正用于拟合优度检验的 Pearson 统计量必须以拟合概率为中心并用拟合概率标准化：
+\[
+ X_{n,\mathrm{fit}}^2
+ =\sum_{j=1}^k
+ \frac{\{N_j-np_j(\widehat\eta)\}^2}
+ {np_j(\widehat\eta)}.
+\]
+它与前面固定 $p$ 的 $X_n^2$ 不是同一个随机变量；“估计参数后减自由度”也不能直接套到固定中心的\eqnrefs{eq:math-stat-pearson-quadratic-form}上。在上述内部点、满秩与光滑正则条件下，score 方程恰好消去 $s^\perp$ 中的 $q$ 个 Fisher 切向方向，因此剩余涨落位于维数 $k-1-q$ 的正交补中，并有
+\begin{equation}\label{eq:math-stat-pearson-fitted-df}
+ X_{n,\mathrm{fit}}^2\toD\chiSq_{k-1-q}.
+\end{equation}
+这里的自由度下降是投影维数的结论；若真值位于边界、模型切空间退化或某些格概率趋于零，则这个正则卡方极限不能机械沿用。
+
+\begin{derivation}[估计参数后 Pearson 自由度为何变成 \texorpdfstring{$k-1-q$}{k-1-q}]
+记经验概率 $\widehat p=N/n$，并令 $p_0=p(\eta_0)$、$D_{p_0}=\diag(p_0)$。这里取 $\widehat\eta$ 为位于参数空间内部的 multinomial MLE，并假设 $p_j(\eta_0)>0$、$\dot p_0$ 满列秩且 $p(\eta)$ 在 $\eta_0$ 附近二阶可微。模型的 log-likelihood 为
+\[
+ \ell_n(\eta)=\sum_{j=1}^kN_j\log p_j(\eta).
+\]
+因为 $\mathbf1^{\mathsf T}\dot p(\eta)=0$，score 可写成
+\begin{align*}
+ U_n(\eta)
+ &=\dot p(\eta)^{\mathsf T}
+ D_{p(\eta)}^{-1}N\\
+ &=\dot p(\eta)^{\mathsf T}
+ D_{p(\eta)}^{-1}
+ \{N-np(\eta)\}.
+\end{align*}
+在真值处令
+\[
+ Z_n=D_{p_0}^{-1/2}\sqrt n(\widehat p-p_0),
+ \qquad
+ B_{p,0}=D_{p_0}^{-1/2}\dot p_0.
+\]
+于是
+\[
+ \frac1{\sqrt n}U_n(\eta_0)
+ =B_{p,0}^{\mathsf T}Z_n.
+\]
+另一方面，单位样本 Fisher 信息为
+\[
+ I_\eta(\eta_0)
+ =\dot p_0^{\mathsf T}D_{p_0}^{-1}\dot p_0
+ =B_{p,0}^{\mathsf T}B_{p,0}.
+\]
+对 score 方程 $U_n(\widehat\eta)=0$ 在 $\eta_0$ 处作 Taylor 展开，并使用 $-n^{-1}\nabla U_n(\eta_0)\toP I_\eta(\eta_0)$，得到
+\[
+ 0
+ =B_{p,0}^{\mathsf T}Z_n
+ -B_{p,0}^{\mathsf T}B_{p,0}
+ \sqrt n(\widehat\eta-\eta_0)
+ +o_{\Pbb}(1).
+\]
+由于 $B_{p,0}$ 满列秩，
+\[
+ \sqrt n(\widehat\eta-\eta_0)
+ =(B_{p,0}^{\mathsf T}B_{p,0})^{-1}B_{p,0}^{\mathsf T}Z_n
+ +o_{\Pbb}(1).
+\]
+再乘以 $B_{p,0}$，便得到拟合掉的标准化频率分量
+\[
+ B_{p,0}\sqrt n(\widehat\eta-\eta_0)
+ =P_{B_{p,0}}Z_n+o_{\Pbb}(1),
+ \qquad
+ P_{B_{p,0}}
+ =B_{p,0}(B_{p,0}^{\mathsf T}B_{p,0})^{-1}B_{p,0}^{\mathsf T}.
+\]
+同时，参数映射的一阶展开给出
+\[
+ D_{p_0}^{-1/2}\sqrt n
+ \{p(\widehat\eta)-p_0\}
+ =P_{B_{p,0}}Z_n+o_{\Pbb}(1).
+\]
+因此以真值概率标准化的拟合残差为
+\[
+ D_{p_0}^{-1/2}\sqrt n
+ \{\widehat p-p(\widehat\eta)\}
+ =(I-P_{B_{p,0}})Z_n+o_{\Pbb}(1).
+\]
+由于 $\widehat\eta\toP\eta_0$ 且所有 $p_j(\eta_0)>0$，把分母中的 $D_{p_0}$ 换成 $D_{p(\widehat\eta)}$ 只改变 $o_{\Pbb}(1)$ 项，所以真正的 $X_{n,\mathrm{fit}}^2$ 具有同一极限。
+
+原始 multinomial 涨落满足 $Z_n\toD\Normal_k(0,I-ss^{\mathsf T})$，其中 $s=(\sqrt{p_{01}},\ldots,\sqrt{p_{0k}})^{\mathsf T}$，故极限随机向量位于 $s^\perp$。又因为 $s^{\mathsf T}B_{p,0}=0$，$\mathcal C(B_{p,0})$ 是 $s^\perp$ 内的 $q$ 维子空间。投影掉它之后，剩余球对称 Gaussian 分量位于维数
+\[
+ (k-1)-q
+\]
+的正交补中，于是得到正文\eqnrefs{eq:math-stat-pearson-fitted-df}。所以“估计 $q$ 个参数就扣掉 $q$ 个自由度”不是计数口诀，而是 score 方程把经验涨落沿模型 Fisher 切空间的 $q$ 个方向正交消去后的几何结果。
+\end{derivation}
+
+对于固定的完全指定概率向量 $p$，saturated model 与 $p$ 之间的 likelihood-ratio goodness-of-fit 统计量为
+\[
+ \mathcal D_n^{2}
+ =2\sum_{j:N_j>0}
+ N_j\log\frac{N_j}{np_j}.
+\]
+写 $N_j=np_j(1+\delta_j)$，其中 $\delta_j=O_{\Pbb}(n^{-1/2})$。利用
+\[
+ (1+\delta)\log(1+\delta)
+ =\delta+\frac12\delta^2+O(\delta^3)
+\]
+以及 $\sum_jnp_j\delta_j=\sum_j(N_j-np_j)=0$，线性项抵消，得到
+\[
+ \mathcal D_n^{2}
+ =\sum_jnp_j\delta_j^2+o_{\Pbb}(1)
+ =X_n^2+o_{\Pbb}(1).
+\]
+所以完全指定 $p$ 时 Pearson 与 multinomial LR 的一阶等价来自同一个局部二次 likelihood，而不是偶然共享 $\chi^2$ 表。
+
+若零假设是前面的光滑参数族 $p(\eta)$，LR 也必须把参数拟合计入，而不能继续把真值 $p_0$ 当作已知。定义 fitted deviance
+\begin{equation}\label{eq:math-stat-fitted-multinomial-deviance}
+ \mathcal D_{n,\mathrm{fit}}^{2}
+ =2\sum_{j:N_j>0}
+ N_j\log\frac{N_j}{n p_j(\widehat\eta)}.
+\end{equation}
+令
+\[
+ \delta_{j,n}^{\rm fit}
+ =\frac{N_j-np_j(\widehat\eta)}{np_j(\widehat\eta)}.
+\]
+正则 MLE 的 $n^{-1/2}$ 局部化与 $p_j(\eta_0)>0$ 给出 $\max_j|\delta_{j,n}^{\rm fit}|=O_{\Pbb}(n^{-1/2})$。而
+\[
+ \sum_jnp_j(\widehat\eta)\delta_{j,n}^{\rm fit}
+ =\sum_jN_j-n=0.
+\]
+对每一项使用同一个 Taylor 展开，有限个 cell 的三阶余项总和为 $o_{\Pbb}(1)$，因此
+\begin{equation}\label{eq:math-stat-pearson-deviance-fitted-equivalence}
+ \mathcal D_{n,\mathrm{fit}}^{2}
+ =X_{n,\mathrm{fit}}^2+o_{\Pbb}(1)
+ \toD\chiSq_{k-1-q}.
+\end{equation}
+所以“拟合 $q$ 个参数后”的 Pearson 与 LR 仍由同一个 $k-1-q$ 维法向子空间控制；区别只在有限样本中使用不同的二次近似，而不是自由度规则发生了两套独立来源。
+
+列联表只是这一结构的特殊参数模型。对 $r\times c$ 表，完整单纯形维数是 $rc-1$；独立性模型
+\[
+ p_{ij}=a_ib_j
+\]
+具有
+\[
+ (r-1)+(c-1)=r+c-2
+\]
+个自由参数。因此法向维数为
+\[
+ (rc-1)-(r+c-2)=(r-1)(c-1).
+\]
+用边际频率的 MLE 得到期望频数
+\[
+ E_{ij}=\frac{N_{i+}N_{+j}}{n},
+\]
+于是
+\begin{equation}\label{eq:math-stat-contingency-pearson}
+ X^2
+ =\sum_{i=1}^r\sum_{j=1}^c
+ \frac{(N_{ij}-E_{ij})^2}{E_{ij}}
+ \toD\chiSq_{(r-1)(c-1)}.
+\end{equation}
+若存在结构零、约束参数或单元格概率随 $n$ 变小，则模型切空间维数和普通卡方近似都需要重新检查。
+
+\section{正态精确检验与检验--置信集对偶}
+
+LAN 给出广泛适用的大样本结构，但 \chapref{chap:math-stat-gaussian-sampling} 的正态投影在特定模型中能给更强的有限样本精确检验。两者应该通过模型强弱而不是通过“传统方法/现代方法”区分。
+
+若 $X_i\iid\Normal(\mu,\sigma^2)$、$\sigma^2$ 未知，检验
+\[
+ \Hnull:\mu=\mu_0
+\]
+时
+\[
+ T
+ =\frac{\overline X-\mu_0}{S/\sqrt n}
+ \sim\Tdist_{n-1}
+\]
+在原假设下精确成立。双侧水平 $\alpha$ 检验拒绝条件为
+\[
+ |T|>t_{n-1,1-\alpha/2}.
+\]
+它并不是 Wilks 定理的有限样本“近似版”，而是独立 Gaussian projection 的精确结果。
+
+从 likelihood ratio 也能看出二者在这个模型中严格等价。完整模型 MLE 为
+\[
+ \widehat\mu=\overline X,
+ \qquad
+ \widehat\sigma^2=\frac1n\sum_i(X_i-\overline X)^2,
+\]
+原假设下
+\[
+ \widetilde\sigma^2=\frac1n\sum_i(X_i-\mu_0)^2.
+\]
+平方和分解给出
+\[
+ \widetilde\sigma^2
+ =\widehat\sigma^2
+ \left(1+\frac{T^2}{n-1}\right),
+\]
+所以 likelihood ratio
+\[
+ \Lambda_{\rm LR}
+ =\left(
+ 1+\frac{T^2}{n-1}
+ \right)^{-n/2}
+\]
+严格随 $|T|$ 递减。因此双侧 LR 与双侧 $t$ 检验具有完全相同的拒绝域排序；这里是有限样本单调变换等价，而不是渐近等价。
+
+若均值 $\mu$ 已知并检验
+\[
+ \Hnull:\sigma^2=\sigma_0^2,
+\]
+令
+\[
+ S_\mu=\sum_i(X_i-\mu)^2,
+ \qquad
+ \tau=\sigma^2.
+\]
+log-likelihood 为
+\[
+ \ell(\tau)=C-\frac n2\log\tau-\frac{S_\mu}{2\tau},
+\]
+不受限 MLE 为 $\widehat\tau=S_\mu/n$，从而
+\begin{equation}\label{eq:math-stat-variance-lr}
+ -2\log\Lambda_{\rm LR}
+ =n\log\frac{\sigma_0^2}{S_\mu/n}
+ +\frac{S_\mu}{\sigma_0^2}-n.
+\end{equation}
+在原假设下 $U=S_\mu/\sigma_0^2\sim\chiSq_n$，右端等于
+\[
+ U-n-n\log(U/n),
+\]
+它在 $U=n$ 处最小并向两侧增大。因此 LR 拒绝域同样可以由精确卡方分布校准。若 $\mu$ 未知，投影掉均值方向后自由度变为 $n-1$。
+
+最后，检验与置信集具有一般对偶性，但随机化检验必须区分“拒绝概率”与真正发生的拒绝事件。若对每个 $\theta_0$ 都有水平 $\alpha$ 的检验函数 $\phi_{\theta_0}(x)\in[0,1]$，再引入与数据独立的
+\[
+ U\sim\Unif(0,1),
+\]
+并规定当 $U\le\phi_{\theta_0}(x)$ 时实际拒绝 $\theta_0$。反演所有未被拒绝的参数值得到随机置信集
+\begin{equation}\label{eq:math-stat-randomized-test-confidence-duality}
+ C_{1-\alpha}(x,U)
+ =\{\theta_0:U>\phi_{\theta_0}(x)\}.
+\end{equation}
+于是对任意真值 $\theta$，利用 $U$ 的条件均匀性，
+\begin{align*}
+ \Pbb_\theta\{\theta\in C_{1-\alpha}(X,U)\}
+ &=\E_\theta\!
+ \left[
+ \Pbb\{U>\phi_\theta(X)\mid X\}
+ \right]\\
+ &=1-\E_\theta\phi_\theta(X)
+ \ge1-\alpha.
+\end{align*}
+当检验非随机化、$\phi_{\theta_0}\in\{0,1\}$ 时，辅助变量 $U$ 不再影响接受与否，\eqnrefs{eq:math-stat-randomized-test-confidence-duality}才退化为熟悉的
+\[
+ C_{1-\alpha}(x)=\{\theta_0:\phi_{\theta_0}(x)=0\}.
+\]
+若检验 size 恰为 $\alpha$，覆盖率也恰为 $1-\alpha$；若检验只在渐近意义下控制水平，相应置信集也只有渐近覆盖保证。这与\eqnrefs{eq:math-stat-confidence-set-definition}的定义完全一致。
+
+对含 nuisance parameter 的正则 likelihood，这个对偶性最自然地写成 profile-likelihood 置信集。把参数分块为 $\theta=(\vartheta,\eta)\in\Theta$，其中 $\vartheta\in\R^r$ 是关注参数。关注参数的可行空间与给定 $\vartheta$ 时的 nuisance 切片分别记为
+\[
+ \mathcal V
+ =\{\vartheta:\exists\eta,\ (\vartheta,\eta)\in\Theta\},
+ \qquad
+ \mathcal H(\vartheta)
+ =\{\eta:(\vartheta,\eta)\in\Theta\}.
+\]
+于是 profile-LR 统计量严格定义为
+\begin{equation}\label{eq:math-stat-profile-lr-statistic}
+ \LR_n^{\rm prof}(\vartheta)
+ =2\left\{
+ \ell_n(\widehat\theta_n)
+ -\sup_{\eta\in\mathcal H(\vartheta)}\ell_n(\vartheta,\eta)
+ \right\},
+ \qquad \vartheta\in\mathcal V.
+\end{equation}
+在本章前述正则条件下，真值 $\vartheta_0$ 满足
+\[
+ \LR_n^{\rm prof}(\vartheta_0)\toD\chiSq_r.
+\]
+因此
+\begin{equation}\label{eq:math-stat-profile-lr-confidence-set}
+ C^{\rm PL}_{1-\alpha}
+ =\left\{
+ \vartheta\in\mathcal V:
+ \LR_n^{\rm prof}(\vartheta)\le\chi^2_{r,1-\alpha}
+ \right\}
+\end{equation}
+具有渐近覆盖率 $1-\alpha$。它不是有限样本精确区间；边界参数、奇异信息、支撑依赖参数或不可识别模型中，临界分布必须重新求出。
+
+profile-LR 区域与 Wald 区域的一阶等价可以直接从有效信息看出。前文消去 nuisance parameter 后的 profile LAN 二次型为
+\[
+ q_n^{\rm prof}(h)
+ =C_n+h^{\mathsf T}\Delta_{\vartheta\cdot\eta,n}
+ -\frac12h^{\mathsf T}I_{\vartheta\cdot\eta}h
+ +o_{\Pbb}(1).
+\]
+其无约束顶点为
+\[
+ \widehat h
+ =I_{\vartheta\cdot\eta}^{-1}
+ \Delta_{\vartheta\cdot\eta,n}.
+\]
+把任意 $h$ 与顶点比较，完成平方得到
+\begin{align*}
+ 2\{q_n^{\rm prof}(\widehat h)-q_n^{\rm prof}(h)\}
+ &=(h-\widehat h)^{\mathsf T}
+ I_{\vartheta\cdot\eta}
+ (h-\widehat h)
+ +o_{\Pbb}(1).
+\end{align*}
+所以 profile LR 置信集在 $n^{-1/2}$ 局部尺度上正是 Fisher 有效信息诱导的椭球。Wald 区域是在估计点处直接写出同一个椭球；Score 区域则在候选原假设点处用有效 score 测量法向距离。三者有限样本边界可以不同，但一阶几何相同。
+
+本章的统一图像是：正则 likelihood 在 $n^{-1/2}$ 局部尺度上是带 Fisher 度量的随机二次型，检验只测量无约束极大点相对零假设切空间的法向距离；nuisance parameter 是先投影掉的切向方向，Pearson 检验则把完全相同的几何搬到概率单纯形。下一章中，线性模型会把这些抽象的 Fisher 投影变成观测空间中的显式矩阵投影，并在正态误差下给出有限样本精确 $F$ 理论。

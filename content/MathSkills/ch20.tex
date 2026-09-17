@@ -1,0 +1,951 @@
+\chapter{正态样本的投影几何与精确抽样分布}\label{chap:math-stat-gaussian-sampling}
+
+上一章的中心极限定理依赖 $n\to\infty$。正态模型却有一类更强的结论：对每一个有限样本量，只要能把统计量写成标准高斯向量在正交子空间上的坐标或平方长度，就可以精确得到其分布与独立性。$\chi^2$、Student $t$ 与 Fisher--Snedecor $F$ 因而不是三套需要分别记忆的公式，而是同一个 Gaussian projection 结构的不同函数。本章先建立这个母结构，再把单样本、两样本和方差推断作为它的直接特例。
+
+\section{标准高斯向量与正交投影}
+
+设
+\[
+ Z\sim\Normal_n(0,I_n).
+\]
+对任意确定矩阵 $A\in\R^{m\times n}$，线性变换仍为正态：
+\[
+ AZ\sim\Normal_m(0,AA^{\mathsf T}).
+\]
+特别地，若 $U$ 是正交矩阵，则 $UZ\sim\Normal_n(0,I_n)$。这条旋转不变性是本章全部精确分布的来源。
+
+任意非退化 Gaussian 向量都可先化到这个母结构。若
+\[
+ Y\sim\Normal_n(\mu,\Sigma),
+ \qquad
+ \Sigma\succ0,
+\]
+取对称平方根 $\Sigma^{-1/2}$ 并定义
+\begin{equation}\label{eq:math-stat-gaussian-whitening}
+ Z=\Sigma^{-1/2}(Y-\mu),
+\end{equation}
+则 $Z\sim\Normal_n(0,I_n)$。因此一般协方差下的“正交”应先在 Mahalanobis 内积
+\[
+ \langle a,b\rangle_{\Sigma^{-1}}
+ =a^{\mathsf T}\Sigma^{-1}b
+\]
+中理解，再由 whitening 搬到欧氏空间。\chapref{chap:math-stat-linear-models} 的 GLS 正是这一变换用于均值子空间后的结果；本章随后取球形协方差，是为了把抽样分布的几何来源写得最透明。
+
+设 $P\in\R^{n\times n}$ 满足
+\[
+ P^{\mathsf T}=P,
+ \qquad
+ P^2=P.
+\]
+则 $P$ 是某个线性子空间的正交投影。若 $r=\operatorname{rank}(P)$，存在正交矩阵 $U$ 使
+\[
+ P=U^{\mathsf T}
+ \begin{pmatrix}
+ I_r&0\\
+ 0&0
+ \end{pmatrix}U.
+\]
+因此
+\[
+ Z^{\mathsf T}PZ
+ =(UZ)^{\mathsf T}
+ \begin{pmatrix}
+ I_r&0\\
+ 0&0
+ \end{pmatrix}(UZ)
+ =\sum_{j=1}^r(UZ)_j^2,
+\]
+从而得到有限样本精确结论
+\begin{equation}\label{eq:math-stat-normal-projection-chi-square}
+ Z^{\mathsf T}PZ\sim\chiSq_r.
+\end{equation}
+这里自由度 $r$ 就是被测量的高斯子空间维数。
+
+若 $P_1P_2=0$，则
+\[
+ \Cov(P_1Z,P_2Z)
+ =P_1P_2^{\mathsf T}=0.
+\]
+由于 $(P_1Z,P_2Z)$ 联合正态，零协方差进一步等价于独立。于是“正交”同时控制几何平方和与概率独立性；这一点在非正态模型中一般不成立。
+
+\begin{theorem}[Cochran 投影定理]
+设 $P_1,\ldots,P_m$ 为两两正交的正交投影，满足
+\[
+ \sum_{j=1}^mP_j=I_n,
+ \qquad
+ r_j=\operatorname{rank}(P_j).
+\]
+若 $Z\sim\Normal_n(0,I_n)$，则
+\[
+ Z^{\mathsf T}P_jZ\sim\chiSq_{r_j},
+ \qquad j=1,\ldots,m,
+\]
+并且这些二次型相互独立。
+\end{theorem}
+
+若高斯向量具有均值，平方长度变为非中心卡方。设
+\[
+ Y\sim\Normal_n(\mu,\sigma^2I_n),
+\]
+$P$ 为秩 $r$ 的正交投影，则
+\[
+ \frac{Y^{\mathsf T}PY}{\sigma^2}
+ \sim\chiSq_r(\Lambda_P),
+ \qquad
+ \Lambda_P=\frac{\mu^{\mathsf T}P\mu}{\sigma^2}.
+\]
+非中心参数就是均值在该子空间中的平方信噪比。后面线性模型中，原假设使待检验子空间的均值投影为零，备择则产生同一个非中心参数。
+
+\begin{derivation}[Cochran 定理的正交坐标证明]
+分三步证明。
+
+\emph{第一步：构造正交坐标。}因为 \(\mathcal R(P_i)\) 两两正交（\(P_iP_j=0\)，\(i\neq j\)）且直和等于 \(\R^n\)，可以分别在每个 \(\mathcal R(P_i)\) 中选择标准正交基 \(\{u_{i,1},\ldots,u_{i,r_i}\}\)，其中 \(r_i=\rank P_i\)。把所有基向量按 \(i\) 顺序拼成
+\[
+ U=[u_{1,1},\ldots,u_{1,r_1},u_{2,1},\ldots,u_{2,r_2},\ldots].
+\]
+因各子空间正交且直和为全空间，\(U\) 是 \(n\times n\) 正交矩阵。在这组坐标中，每个 \(P_i\) 成为互不重叠的坐标块：
+\[
+ UP_iU^{\mathsf T}
+ =\diag(0,\ldots,0,\underbrace{I_{r_i}}_{\text{第 }i\text{ 块}},0,\ldots,0).
+\]
+这里用到 \(P_i\) 的谱分解：对称幂等矩阵的特征值只能是 \(0\) 或 \(1\)，几何重数等于代数重数，故可对角化为这种二值对角矩阵。
+
+\emph{第二步：旋转不变性与坐标独立。}令 \(W=UZ\)。因 \(Z\sim\Normal_n(0,I_n)\) 且 \(U\) 正交，
+\[
+ W=UZ\sim\Normal_n(0,UI_nU^{\mathsf T})=\Normal_n(0,UU^{\mathsf T})=\Normal_n(0,I_n),
+\]
+故 \(W\) 的各坐标 \(W_1,\ldots,W_n\) 相互独立且同为标准正态。在 \(W\) 坐标中，
+\[
+ Z^{\mathsf T}P_iZ
+ =Z^{\mathsf T}U^{\mathsf T}(UP_iU^{\mathsf T})UZ
+ =W^{\mathsf T}(UP_iU^{\mathsf T})W
+ =\sum_{j\in J_i}W_j^2,
+\]
+其中 \(J_i\) 是第 \(i\) 块对应的坐标指标集，\(|J_i|=r_i\)，且不同 \(i\) 对应互不相交的 \(J_i\)。最后一步用了 \(UP_iU^{\mathsf T}\) 的对角块结构：只有 \(J_i\) 中的对角元为 \(1\)，其余为零。
+
+\emph{第三步：分布与独立性。}每个 \(Z^{\mathsf T}P_iZ=\sum_{j\in J_i}W_j^2\) 是 \(r_i\) 个独立标准正态平方之和，由 \(\chi^2\) 分布定义即
+\[
+ Z^{\mathsf T}P_iZ\sim\chiSq_{r_i}.
+\]
+由于不同 \(i\) 的和依赖互不相交的独立坐标子集 \(\{W_j:j\in J_i\}\)，这些二次型相互独立。这个证明同时说明了"自由度等于秩"（\(\mathrm{df}=r_i\)）和"正交平方和独立"两个结论来自同一个坐标分解：正交投影分解把高斯向量拆成独立分量，每个分量的模长平方给出对应的 \(\chi^2\) 分布。
+
+\emph{举例：一元正态的平方和分解。}对 \(Z_1,\ldots,Z_n\iid\Normal(0,1)\)，取 \(P_1=I_n/n\)（投影到常数方向 \(\mathbf 1/\sqrt n\)）与 \(P_2=I_n-P_1\)（投影到其正交补）。则
+\[
+\sum_{i=1}^n Z_i^2
+=\underbrace{\frac{(\sum_i Z_i)^2}{n}}_{\chiSq_1}
++\underbrace{\sum_{i=1}^n\left(Z_i-\bar Z\right)^2}_{\chiSq_{n-1}},
+\]
+两个分量独立。这正是样本方差 \(S^2=\frac1{n-1}\sum(Z_i-\bar Z)^2\) 满足 \((n-1)S^2\sim\chiSq_{n-1}\) 且与 \(\bar Z\) 独立的来源。
+
+\emph{更一般结论：非中心情形。}若 \(Y\sim\Normal_n(\mu,I_n)\)，则 \(Y^{\mathsf T}P_iY\) 不再是中心 \(\chi^2\)，而是非中心 \(\chiSq_{r_i}(\lambda_i)\)，非中心参数 \(\lambda_i=\mu^{\mathsf T}P_i\mu\)。当 \(\sum_iP_i=I_n\) 时 \(\sum_i\lambda_i=\|\mu\|^2\)，即总非中心性按子空间正交分解。这把 Cochran 定理从均值零情形推广到一般正态，是线性模型 \(F\) 检验在备择下功效计算的基础。
+
+\emph{与统计力学的联系：能量按模分解。}Cochran 分解 \(\|Z\|^2=\sum_i\|P_iZ\|^2\) 对应统计力学中能量按独立自由度的分解。每个 \(P_iZ\) 是独立 Gaussian 分量，模长平方 \(\|P_iZ\|^2\) 是该自由度上的"能量"，分布为 \(\chi^2_{r_i}\)（即 \(r_i\) 个独立 \(\frac12k_BT\) 指数能量之和）。这正是能量均分定理的数学形式：每个二次自由度贡献 \(k_BT/2\) 平均能量，Cochran 定理给出其精确分布而非仅平均。
+
+\emph{自由度的几何意义。}\(\mathrm{df}=r_i=\rank(P_i)\) 不是统计惯例，而是被测子空间维数。在 ANOVA 中，处理间自由度 \(g-1\) 是处理均值空间的维数（减去总体均值约束），误差自由度 \(n-g\) 是残差空间的维数。当约束增加（如 ANCOVA 中协变量调整），自由度相应减少——这正是参数化复杂度对残差空间维数的侵占。
+
+\emph{完备性与 Cochran 的对偶。}Cochran 给出"正交分解 \(\Rightarrow\) 独立 \(\chi^2\)"，其逆向也成立：若 \(\{Q_i\}\) 独立 \(\chi^2\) 且 \(\sum Q_i=\|Z\|^2\)，则存在正交投影分解使 \(Q_i=Z^{\mathsf T}P_iZ\)。这把 Cochran 从单向工具提升为正态平方和分解的等价刻画，是线性模型中"平方和分解与正交投影分解一一对应"的理论基础。该对偶性也解释了为什么 ANOVA 表中"F 检验显著"等价于"对应子空间投影非零"：独立 \(\chi^2\) 分量非零当且仅当投影捕获了真实信号。这一等价使几何语言（投影、正交补）与统计语言（平方和、自由度、F 比）可以无缝互译，是线性模型理论的统一视角。
+
+\emph{非正态情形的失效。}Cochran 定理强烈依赖正态性：旋转不变性只在 Gaussian 下成立。对非正态误差，平方和分解仍可形式写出，但分量既不独立也不 \(\chi^2\)。这把正态线性模型的精确理论与一般模型的渐近理论区分开：前者有限样本精确，后者依赖 CLT 与 Slutsky 在大样本下近似。
+\end{derivation}
+
+
+Gaussian 的独特性还可以从“线性不相关即独立”反向刻画。若 \(Y\) 是联合 Gaussian 向量，任意线性像仍 Gaussian，因此对两个矩阵 \(A,B\)，
+\[
+AY\perp\!\!\!\perp BY
+\quad\Longleftrightarrow\quad
+A\Sigma B^{\mathsf T}=0.
+\]
+换言之，在 Gaussian 世界里，协方差内积的正交性就是概率独立性；Cochran 定理只是把这条线性结论施加到一族正交投影后再取平方长度。
+
+这一结构可以推广到矩阵正态分布。若随机矩阵 \(X\in\RR^{n\times p}\) 满足
+\[
+\operatorname{vec}(X)
+\sim
+\Normal_{np}(\operatorname{vec}(M),\,V\otimes U),
+\]
+则记
+\begin{equation}
+X\sim MN_{n,p}(M,U,V).
+\label{eq:math-stat-matrix-normal}
+\end{equation}
+这里 \(U\) 控制行协方差、\(V\) 控制列协方差。对确定矩阵 \(A,B\)，有
+\begin{equation}
+AXB
+\sim
+MN(AMB,\,AUA^{\mathsf T},\,B^{\mathsf T}VB).
+\label{eq:math-stat-matrix-normal-affine}
+\end{equation}
+多元正态样本、MANOVA 与多元线性模型都可以放在这一母结构中，而无需逐列重复一维 Gaussian 计算。
+
+若 \(Y\sim\Normal_n(\mu,\Sigma)\) 且 \(P\) 是关于普通 Euclidean 内积的投影，\(PY\) 与 \((I-P)Y\) 未必独立；真正条件是
+\[
+P\Sigma(I-P)=0.
+\]
+当 \(\Sigma=\sigma^2I\) 时该条件自动成立，这正是球形协方差为何让最小二乘残差与拟合量独立。对一般 \(\Sigma\)，先 whitening 再作正交投影，就得到 generalized least squares 的几何。
+
+\begin{derivation}[Gaussian 条件分布是 Schur complement]
+把联合 Gaussian 向量分块为
+\[
+\begin{pmatrix}X\\Y\end{pmatrix}
+\sim
+\Normal\!\left(
+\begin{pmatrix}\mu_X\\\mu_Y\end{pmatrix},
+\begin{pmatrix}
+\Sigma_{XX}&\Sigma_{XY}\\
+\Sigma_{YX}&\Sigma_{YY}
+\end{pmatrix}
+\right),
+\qquad \Sigma_{YY}>0.
+\]
+定义残差
+\[
+R
+:=X-\mu_X
+-\Sigma_{XY}\Sigma_{YY}^{-1}(Y-\mu_Y).
+\]
+它与 \(Y\) 的协方差为
+\[
+\Cov(R,Y)
+=\Sigma_{XY}
+-\Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YY}=0.
+\]
+由于 \((R,Y)\) 联合 Gaussian，零协方差推出独立。因此给定 \(Y=y\) 后，只有线性预测项改变均值，而残差分布保持不变：
+\begin{equation}
+X\mid Y=y
+\sim
+\Normal\!\left(
+\mu_X+\Sigma_{XY}\Sigma_{YY}^{-1}(y-\mu_Y),
+\Sigma_{XX\cdot Y}
+\right),
+\label{eq:math-stat-gaussian-conditional}
+\end{equation}
+其中 Schur complement
+\begin{equation}
+\Sigma_{XX\cdot Y}
+=
+\Sigma_{XX}
+-\Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YX}.
+\label{eq:math-stat-gaussian-schur-complement}
+\end{equation}
+因此 Gaussian conditioning、线性回归和 Schur complement 是同一个正交残差结构的三种语言。
+\end{derivation}
+
+接下来考察一般 Gaussian 二次型与 Wishart 母结构。
+
+Cochran 定理之所以要求投影矩阵，是因为一般对称二次型并不服从单个卡方分布。设 $A=A^{\mathsf T}$，谱分解为
+\[
+A=U^{\mathsf T}\diag(\lambda_1,\ldots,\lambda_n)U,
+\qquad U\in O(n).
+\]
+若 $Z\sim\Normal_n(0,I_n)$，则 $UZ\overset{d}=Z$，从而
+\begin{equation}
+\boxed{
+Z^{\mathsf T}AZ
+\overset{d}=\sum_{j=1}^n\lambda_j\chi^2_{1,j},
+}
+\label{eq:math-stat-general-gaussian-quadratic-form}
+\end{equation}
+其中右侧的 $\chi^2_{1,j}$ 独立。于是
+\[
+Z^{\mathsf T}AZ\sim\chi^2_r
+\]
+当且仅当 $A$ 的非零本征值全为 $1$ 且恰有 $r$ 个，也就是 $A$ 为秩 $r$ 的正交投影。自由度等于秩并不是卡方分布的神秘参数，而是投影谱中本征值 $1$ 的重数。
+
+由\eqnrefs{eq:math-stat-general-gaussian-quadratic-form}还能立即得到
+\begin{equation}
+\E(Z^{\mathsf T}AZ)=\tr A,
+\qquad
+\Var(Z^{\mathsf T}AZ)=2\tr(A^2).
+\label{eq:math-stat-gaussian-quadratic-moments}
+\end{equation}
+若 $A,B$ 是正交投影且 $AB=0$，则二次型依赖互不相交的 Gaussian 正交坐标，因此独立；这正是 Cochran 定理的矩阵核心。对一般对称矩阵，零协方差并不足以推出二次型独立，Gaussian 二次型独立需要更强的代数条件。
+
+多元版本把“平方和”升级成“外积和”。设
+\[
+Z_1,\ldots,Z_\nu\iid\Normal_p(0,\Sigma),
+\qquad \Sigma>0,
+\]
+定义随机半正定矩阵
+\begin{equation}
+W:=\sum_{a=1}^{\nu}Z_aZ_a^{\mathsf T}.
+\label{eq:math-stat-wishart-definition}
+\end{equation}
+称
+\[
+W\sim W_p(\nu,\Sigma)
+\]
+服从 $p$ 维 Wishart 分布，自由度为 $\nu$，scale matrix 为 $\Sigma$。其期望直接为
+\begin{equation}
+\E W=\nu\Sigma.
+\label{eq:math-stat-wishart-mean}
+\end{equation}
+若写 $Z_a=\Sigma^{1/2}G_a$、$G_a\sim\Normal_p(0,I_p)$，则
+\begin{equation}
+W
+=\Sigma^{1/2}
+\left(\sum_{a=1}^{\nu}G_aG_a^{\mathsf T}\right)
+\Sigma^{1/2}.
+\label{eq:math-stat-wishart-whitening}
+\end{equation}
+因此所有一般协方差 Wishart 结论都可由球形情形经 whitening 搬回。
+
+Wishart 分布的矩阵 Laplace transform 把一维 \(\chi^2\) 母函数完整推广。若 \(T\succeq0\)，则
+\begin{equation}
+\E\exp\{-\operatorname{tr}(TW)\}
+=
+\det(I+2\Sigma T)^{-\nu/2}.
+\label{eq:math-stat-wishart-laplace}
+\end{equation}
+特别地，对任意向量 \(a\)，
+\[
+a^{\mathsf T}Wa
+=\sum_{j=1}^{\nu}(a^{\mathsf T}Z_j)^2
+\sim
+(a^{\mathsf T}\Sigma a)\chi^2_\nu.
+\]
+因此 Wishart 不只是“随机协方差矩阵”的名字，而是所有方向平方和彼此兼容的一致矩阵分布。
+
+对元素二阶矩，可由独立 Gaussian 外积直接得到
+\begin{equation}
+\Cov(W_{ij},W_{k\ell})
+=\nu(\Sigma_{ik}\Sigma_{j\ell}+\Sigma_{i\ell}\Sigma_{jk}).
+\label{eq:math-stat-wishart-entry-covariance}
+\end{equation}
+于是样本协方差矩阵的不同元素即使在总体坐标系中也一般相关；只有特定对角协方差结构才会进一步简化。
+
+若 Gaussian 外积中的均值不为零，则出现 noncentral Wishart。对
+\[
+Z_a\sim\Normal_p(\mu_a,\Sigma),
+\]
+平方和
+\[
+W=\sum_aZ_aZ_a^{\mathsf T}
+\]
+的非中心性由
+\[
+\Omega
+:=\Sigma^{-1/2}
+\left(\sum_a\mu_a\mu_a^{\mathsf T}\right)
+\Sigma^{-1/2}
+\]
+编码。在线性模型中，备择假设产生的 noncentral \(F\) 正是这个矩阵非中心结构投影到待检验子空间后的结果。
+
+\begin{derivation}[Wishart Laplace transform 来自 Gaussian 积分的 determinant]
+先取 \(\nu=1\)，\(Z\sim\Normal_p(0,\Sigma)\)。whitening 写成 \(Z=\Sigma^{1/2}G\)，其中 \(G\sim\Normal_p(0,I)\)。由迹的循环性质，
+\[
+\operatorname{tr}(TZZ^{\mathsf T})
+=\operatorname{tr}(T\Sigma^{1/2}GG^{\mathsf T}\Sigma^{1/2})
+=G^{\mathsf T}\Sigma^{1/2}T\Sigma^{1/2}G.
+\]
+令
+\[
+A=\Sigma^{1/2}T\Sigma^{1/2}\succeq0.
+\]
+将 \(A\) 正交对角化为 \(A=Q^{\mathsf T}\Lambda Q\)，\(\Lambda=\diag(\lambda_1,\ldots,\lambda_p)\)，\(\lambda_j\ge0\)。令 \(H=QG\)，由标准正态分布在正交变换下不变，\(H\sim\Normal_p(0,I)\) 且各分量独立。于是
+\[
+\E\ee^{-G^{\mathsf T}AG}
+=\E\ee^{-H^{\mathsf T}\Lambda H}
+=\E\ee^{-\sum_{j=1}^p\lambda_jH_j^2}
+=\prod_{j=1}^p\E\ee^{-\lambda_jH_j^2}.
+\]
+对每个一维积分，配方并完成 Gaussian 积分，
+\[
+\E\ee^{-\lambda H^2}
+=\frac1{\sqrt{2\pi}}\int_\R\ee^{-\lambda h^2}\ee^{-h^2/2}\,\dd h
+=\frac1{\sqrt{2\pi}}\int_\R\ee^{-(\lambda+1/2)h^2}\,\dd h
+=(1+2\lambda)^{-1/2}.
+\]
+代回乘积，
+\[
+\prod_{j=1}^p(1+2\lambda_j)^{-1/2}
+=\det(I+2\Lambda)^{-1/2}
+=\det(I+2A)^{-1/2}.
+\]
+再用 Sylvester determinant identity \(\det(I+UV)=\det(I+VU)\)，
+\[
+\det(I+2A)
+=\det(I+2\Sigma^{1/2}T\Sigma^{1/2})
+=\det(I+2T\Sigma)
+=\det(I+2\Sigma T).
+\]
+于是 \(\nu=1\) 时 Laplace transform 为 \(\det(I+2\Sigma T)^{-1/2}\)。对 \(\nu\) 个独立外积 \(Z_1Z_1^{\mathsf T},\ldots,Z_\nu Z_\nu^{\mathsf T}\)，和 \(W=\sum_{a=1}^\nu Z_aZ_a^{\mathsf T}\) 的 Laplace transform 因独立性分解为单因子之积，
+\[
+\E\ee^{-\operatorname{tr}(TW)}
+=\prod_{a=1}^\nu\E\ee^{-\operatorname{tr}(TZ_aZ_a^{\mathsf T})}
+=\det(I+2\Sigma T)^{-\nu/2},
+\]
+指数从 \(-1/2\) 变为 \(-\nu/2\)，得到\eqnrefs{eq:math-stat-wishart-laplace}。
+
+\textbf{统计意义。}Wishart 分布 $W_p(\nu,\Sigma)$ 是多元正态样本协方差矩阵的精确分布：若 $X_1,\ldots,X_n\iid\Normal_p(\mu,\Sigma)$，则 $\sum_{a=1}^n(X_a-\bar X)(X_a-\bar X)^{\mathsf T}\sim W_p(n-1,\Sigma)$。Laplace 变换 $\det(I+2\Sigma T)^{-\nu/2}$ 完全由 $\Sigma$ 和自由度 $\nu$ 决定，是 Wishart 分布的特征函数。在多元回归中，残差交叉积矩阵服从 Wishart 分布，由此推出 Hotelling $T^2$ 检验和 Wilks $\Lambda$ 检验的零分布。
+
+\textbf{低维特例。}取 $p=1$：$W\sim W_1(\nu,\sigma^2)$ 退化为 $\sigma^2\chi^2_\nu$，Laplace 变换 $(1+2\sigma^2 t)^{-\nu/2}$ 正是 Gamma 分布 $\Gamma(\nu/2,2\sigma^2)$ 的变换。取 $p=2,\nu=1$：$W=ZZ^{\mathsf T}$ 是秩 1 矩阵，其行列式为零几乎必然——自由度 $\nu<p$ 时 Wishart 矩阵奇异，这是高维统计中 $\nu\ge p$ 假设的来源。
+\end{derivation}
+
+\begin{derivation}[正态样本协方差为何是 Wishart 且与样本均值独立]
+设
+\[
+X_1,\ldots,X_n\iid\Normal_p(\mu,\Sigma),
+\]
+把数据堆成 $n\times p$ 矩阵 $X$，第 $i$ 行为 $X_i^{\mathsf T}$。取 $n\times n$ 正交矩阵 $Q$，第一行为
+\[
+q_1^{\mathsf T}=\frac1{\sqrt n}\mathbf1_n^{\mathsf T}.
+\]
+则
+\[
+Y:=QX
+\]
+的各行仍联合 Gaussian。第一行是
+\[
+Y_1=\sqrt n\,\overline X^{\mathsf T},
+\]
+其余 $n-1$ 行都对应样本方向中与 $\mathbf1_n$ 正交的残差坐标。减去均值并 whiten 后，这些行是互相独立的 $N_p(0,I_p)$ 向量，因此第一行与其余残差行独立。
+
+记无偏样本协方差
+\[
+S
+:=\frac1{n-1}\sum_{i=1}^n
+(X_i-\overline X)(X_i-\overline X)^{\mathsf T}.
+\]
+由正交变换保持平方和，
+\[
+(n-1)S
+=\sum_{a=2}^{n}Y_a^{\mathsf T}Y_a
+\]
+在适当的行/列识别下就是 $n-1$ 个独立 $N_p(0,\Sigma)$ 向量的外积和。因此
+\begin{equation}
+\boxed{
+(n-1)S\sim W_p(n-1,\Sigma),
+\qquad
+\overline X\perp\!\!\!\perp S.
+}
+\label{eq:math-stat-normal-mean-wishart-independence}
+\end{equation}
+这正是一维“样本均值与样本方差独立、残差平方和为卡方”的矩阵版本：$\chi^2$ 是 $p=1$ 的 Wishart。
+\end{derivation}
+
+Wishart 结构进一步给出多元均值的精确枢轴量。若 $n>p$，定义 Hotelling statistic
+\begin{equation}
+T^2
+:=n(\overline X-\mu)^{\mathsf T}S^{-1}(\overline X-\mu).
+\label{eq:math-stat-hotelling-t2}
+\end{equation}
+由\eqnrefs{eq:math-stat-normal-mean-wishart-independence}及 Wishart 的旋转不变结构，
+\begin{equation}
+\boxed{
+\frac{n-p}{p(n-1)}T^2
+\sim F_{p,n-p}.
+}
+\label{eq:math-stat-hotelling-f}
+\end{equation}
+当 $p=1$ 时，$T^2$ 就是单样本 Student statistic 的平方，而\eqnrefs{eq:math-stat-hotelling-f}退化为 $t_{n-1}^2\sim F_{1,n-1}$。因此 Hotelling $T^2$ 不是另一个孤立分布，而是“均值投影 + Wishart 残差协方差”这一 Gaussian 几何在多维中的自然延伸。
+
+从 affine invariance 看，这个统计量几乎是被结构强制出来的。若对数据作可逆仿射变换
+\[
+Y_i=AX_i+b,
+\qquad A\in GL(p),
+\]
+则
+\[
+\overline Y-A\mu-b=A(\overline X-\mu),
+\qquad
+S_Y=AS_XA^{\mathsf T},
+\]
+所以
+\[
+n(\overline Y-A\mu-b)^{\mathsf T}
+S_Y^{-1}
+(\overline Y-A\mu-b)
+=T^2.
+\]
+因此 Hotelling \(T^2\) 是均值偏差在样本 Mahalanobis metric 下的平方长度；它不是坐标相关的欧氏距离。
+
+若总体协方差 \(\Sigma\) 已知，则更简单的统计量
+\[
+Q=n(\overline X-\mu)^{\mathsf T}
+\Sigma^{-1}(\overline X-\mu)
+\]
+精确服从 \(\chi^2_p\)。用随机 \(S\) 替换 \(\Sigma\) 后，分母多出 Wishart 随机性，\(\chi^2\) 因而变成缩放后的 \(F\)。这一点与一维中“已知 \(\sigma\) 用 \(z\)，未知 \(\sigma\) 用 \(t\)”完全平行。
+
+\section{正态样本的均值方向与残差子空间}
+
+设
+\[
+ X_1,\ldots,X_n\iid\Normal(\mu,\sigma^2),
+ \qquad \sigma^2>0.
+\]
+写成向量
+\[
+ X=(X_1,\ldots,X_n)^{\mathsf T},
+ \qquad
+ \mathbf1=(1,\ldots,1)^{\mathsf T},
+ \qquad
+ Z=\frac{X-\mu\mathbf1}{\sigma}.
+\]
+于是 $Z\sim\Normal_n(0,I_n)$。定义单位均值方向及其投影
+\[
+ u=\frac{\mathbf1}{\sqrt n},
+ \qquad
+ P=uu^{\mathsf T}=\frac1n\mathbf1\mathbf1^{\mathsf T},
+ \qquad
+ M_\perp=I_n-P.
+\]
+$P$ 的像空间是一维常数向量空间，$M_\perp$ 的像空间是
+\[
+ \{v\in\R^n:\mathbf1^{\mathsf T}v=0\},
+\]
+维数为 $n-1$。
+
+均值方向上的坐标是
+\[
+ u^{\mathsf T}Z
+ =\frac{\sqrt n(\overline X_n-\mu)}{\sigma},
+\]
+残差子空间的平方长度是
+\[
+ Z^{\mathsf T}M_\perp Z
+ =\frac1{\sigma^2}\sum_{i=1}^n(X_i-\overline X_n)^2
+ =\frac{(n-1)S_n^2}{\sigma^2}.
+\]
+由前一节的投影定理得到
+\begin{equation}\label{eq:math-stat-normal-mean-variance-independence}
+ \frac{\sqrt n(\overline X_n-\mu)}{\sigma}\sim\Normal(0,1),
+ \qquad
+ \frac{(n-1)S_n^2}{\sigma^2}\sim\chiSq_{n-1},
+ \qquad
+ \overline X_n\mathrel{\perp\!\!\!\perp}S_n^2.
+\end{equation}
+这些都是对每一个 $n\ge2$ 成立的精确结论，没有使用极限。
+
+向量恒等式
+\[
+ X-\mu\mathbf1
+ =(X-\overline X_n\mathbf1)
+ +(\overline X_n-\mu)\mathbf1
+\]
+的两个加数正交，所以
+\[
+ \sum_{i=1}^n(X_i-\mu)^2
+ =\sum_{i=1}^n(X_i-\overline X_n)^2
+ +n(\overline X_n-\mu)^2.
+\]
+这条 Pythagoras 恒等式对任意数据都成立；只有正态性把几何正交升级成随机独立，并把平方长度识别为卡方分布。这个区别会在后面每次谈“精确 $t/F$”时反复出现。
+
+\section{\texorpdfstring{$\chi^2$、$t$ 与 $F$}{chi-square, t and F}：同一投影结构的函数}
+
+按照 \chapref{chap:math-stat-models} 固定的 Gamma shape--rate 参数化，
+\[
+ V\sim\chiSq_\nu
+ \quad\Longleftrightarrow\quad
+ V\sim\GammaD\!\left(\frac\nu2,\frac12\right).
+\]
+因此
+\[
+ \E V=\nu,
+ \qquad
+ \Var(V)=2\nu.
+\]
+若 $Z\sim\Normal(0,1)$、$V\sim\chiSq_\nu$ 且二者独立，则定义
+\[
+ T=\frac{Z}{\sqrt{V/\nu}}\sim\Tdist_\nu.
+\]
+其密度为
+\[
+ f_{\Tdist_\nu}(t)
+ =\frac{\Gamma((\nu+1)/2)}{\sqrt{\nu\pi}\,\Gamma(\nu/2)}
+ \left(1+\frac{t^2}{\nu}\right)^{-(\nu+1)/2}.
+\]
+若 $U\sim\chiSq_r$、$V\sim\chiSq_s$ 独立，则定义
+\[
+ F=\frac{U/r}{V/s}\sim\Fdist_{r,s},
+\]
+其密度为
+\[
+ f_{\Fdist_{r,s}}(f)
+ =\frac{(r/s)^{r/2}}{B(r/2,s/2)}
+ f^{r/2-1}
+ \left(1+\frac rsf\right)^{-(r+s)/2},
+ \qquad f>0.
+\]
+这些密度可由标准 Jacobian 与 Gamma 积分得到；真正决定统计结构的不是积分本身，而是分子与分母来自\emph{相互独立的正交高斯子空间}。
+
+由 $T=Z/\sqrt{U/\nu}$ 的定义，
+\[
+ T^2=\frac{Z^2/1}{U/\nu}.
+\]
+由于 $Z^2\sim\chiSq_1$ 且 $Z^2\perp\!\!\!\perp U$，因此
+\[
+ T\sim\Tdist_\nu
+ \quad\Longrightarrow\quad
+ T^2\sim\Fdist_{1,\nu},
+\]
+以及
+\[
+ F\sim\Fdist_{r,s}
+ \quad\Longrightarrow\quad
+ F^{-1}\sim\Fdist_{s,r}.
+\]
+把\eqnrefs{eq:math-stat-normal-mean-variance-independence}代入 $t$ 的定义，得到
+\begin{equation}\label{eq:math-stat-one-sample-t-pivot}
+ T_n
+ =\frac{\sqrt n(\overline X_n-\mu)}{S_n}
+ \sim\Tdist_{n-1}.
+\end{equation}
+这里用 $S_n$ 替换 $\sigma$ 仍保留精确分布，是因为分子的一维均值投影与分母的残差平方长度独立。若总体不是正态，这种独立性一般消失；在有限方差等条件下，只能由 Slutsky 得到
+\[
+ \frac{\sqrt n(\overline X_n-\mu)}{S_n}
+ \toD\Normal(0,1).
+\]
+“精确 Student $t$”与“渐近 studentized normal”因此是两种不同强度的结论。
+
+\section{精确枢轴量、置信区间与两样本结构}
+
+参数 $\theta$ 的枢轴量是一个由样本与 $\theta$ 共同构成、但其抽样分布不再依赖未知参数的随机变量。正态样本直接提供
+\[
+ \frac{\sqrt n(\overline X_n-\mu)}{\sigma},
+ \qquad
+ \frac{(n-1)S_n^2}{\sigma^2},
+ \qquad
+ \frac{\sqrt n(\overline X_n-\mu)}{S_n}.
+\]
+反解这些枢轴事件即可得到精确置信区间。更一般地，若目标参数函数为 $g(\theta)$，一个置信集是由样本决定的随机集合 $C_n(X^n)$。若对每个 $\theta\in\Theta$ 都有
+\begin{equation}\label{eq:math-stat-confidence-set-definition}
+ P_\theta^{(n)}\{g(\theta)\in C_n(X^n)\}\ge1-\alpha,
+\end{equation}
+则称它具有至少 $1-\alpha$ 的有限样本覆盖；若处处取等号，则称为精确 $1-\alpha$ 置信集。相反，若只对每个固定真值满足
+\[
+ P_\theta^{(n)}\{g(\theta)\in C_n(X^n)\}\longrightarrow1-\alpha,
+\]
+则只是点态渐近覆盖。若需要在一族参数上同时可靠，还必须进一步要求相应的统一覆盖，而不能把点态极限自动提升为一致结论。
+
+例如记 $t_{\nu,q}$ 为 $\Tdist_\nu$ 的 $q$ 分位数，则
+\[
+ \Pbb_{\mu,\sigma^2}\!\left(
+ -t_{n-1,1-\alpha/2}
+ \le\frac{\sqrt n(\overline X_n-\mu)}{S_n}
+ \le t_{n-1,1-\alpha/2}
+ \right)=1-\alpha.
+\]
+所以
+\[
+ \mu\in
+ \left[
+ \overline X_n-t_{n-1,1-\alpha/2}\frac{S_n}{\sqrt n},
+ \overline X_n+t_{n-1,1-\alpha/2}\frac{S_n}{\sqrt n}
+ \right]
+\]
+具有\emph{恰好} $1-\alpha$ 的覆盖概率。相反，由 MLE 渐近正态性构造的区间通常只满足覆盖概率趋于 $1-\alpha$。
+
+对方差，若 $\chi^2_{\nu,q}$ 表示 $\chiSq_\nu$ 的 $q$ 分位数，则
+\[
+ \Pbb\!\left(
+ \chi^2_{n-1,\alpha/2}
+ \le\frac{(n-1)S_n^2}{\sigma^2}
+ \le\chi^2_{n-1,1-\alpha/2}
+ \right)=1-\alpha,
+\]
+从而
+\[
+ \sigma^2\in
+ \left[
+ \frac{(n-1)S_n^2}{\chi^2_{n-1,1-\alpha/2}},
+ \frac{(n-1)S_n^2}{\chi^2_{n-1,\alpha/2}}
+ \right]
+\]
+也是有限样本精确区间。
+
+现在设两组样本独立且共享未知方差：
+\[
+ X_1,\ldots,X_m\iid\Normal(\mu_X,\sigma^2),
+ \qquad
+ Y_1,\ldots,Y_n\iid\Normal(\mu_Y,\sigma^2).
+\]
+两组残差空间的维数分别为 $m-1$、$n-1$，并且由于两组样本独立，两个残差平方和也独立。因此
+\[
+ \frac{(m-1)S_X^2+(n-1)S_Y^2}{\sigma^2}
+ \sim\chiSq_{m+n-2}.
+\]
+定义 pooled variance
+\[
+ S_p^2
+ =\frac{(m-1)S_X^2+(n-1)S_Y^2}{m+n-2},
+\]
+同时
+\[
+ \frac{(\overline X-\overline Y)-(\mu_X-\mu_Y)}
+ {\sigma\sqrt{m^{-1}+n^{-1}}}
+ \sim\Normal(0,1),
+\]
+并且这个均值方向与两组残差空间独立，于是
+\begin{equation}\label{eq:math-stat-pooled-two-sample-t}
+ \frac{(\overline X-\overline Y)-(\mu_X-\mu_Y)}
+ {S_p\sqrt{m^{-1}+n^{-1}}}
+ \sim\Tdist_{m+n-2}.
+\end{equation}
+$m+n-2$ 不是经验公式，而是两个独立残差子空间维数之和。
+
+若两组方差分别为 $\sigma_X^2$ 与 $\sigma_Y^2$，则
+\[
+ \frac{(m-1)S_X^2}{\sigma_X^2}\sim\chiSq_{m-1},
+ \qquad
+ \frac{(n-1)S_Y^2}{\sigma_Y^2}\sim\chiSq_{n-1},
+\]
+且二者独立。因此
+\begin{equation}\label{eq:math-stat-variance-ratio-f}
+ \frac{S_X^2/\sigma_X^2}{S_Y^2/\sigma_Y^2}
+ \sim\Fdist_{m-1,n-1}.
+\end{equation}
+当原假设是 $\sigma_X^2=\sigma_Y^2$ 时，样本方差比本身才直接具有该 $F$ 分布。
+
+\begin{derivation}[两样本 \texorpdfstring{$t/F$}{t/F} 来自直和空间的正交投影]
+先处理等方差模型。把两组标准化噪声拼成
+\[
+ \varepsilon
+ =\begin{pmatrix}
+ (X-\mu_X\mathbf1_m)/\sigma\\
+ (Y-\mu_Y\mathbf1_n)/\sigma
+ \end{pmatrix}
+ \sim\Normal_{m+n}(0,I_{m+n}).
+\]
+在直和空间 $\R^m\oplus\R^n$ 中定义两个组内残差投影
+\[
+ M_m=I_m-\frac1m\mathbf1_m\mathbf1_m^{\mathsf T},
+ \qquad
+ M_n=I_n-\frac1n\mathbf1_n\mathbf1_n^{\mathsf T},
+\]
+以及块对角投影
+\[
+ M=\begin{pmatrix}
+ M_m&0\\
+ 0&M_n
+ \end{pmatrix}.
+\]
+它满足
+\[
+ M^2=M=M^{\mathsf T},
+ \qquad
+ \rank(M)=(m-1)+(n-1)=m+n-2.
+\]
+定义标准化均值对比方向
+\[
+ a
+ =\frac{1}{\sqrt{m^{-1}+n^{-1}}}
+ \begin{pmatrix}
+ m^{-1}\mathbf1_m\\
+ -n^{-1}\mathbf1_n
+ \end{pmatrix}.
+\]
+直接计算得到
+\[
+ a^{\mathsf T}a
+ =\frac{m^{-1}+n^{-1}}{m^{-1}+n^{-1}}
+ =1,
+ \qquad
+ Ma=0.
+\]
+因此 $aa^{\mathsf T}$ 与 $M$ 是正交投影，并且
+\[
+ a^{\mathsf T}\varepsilon
+ =\frac{(\overline X-\overline Y)-(\mu_X-\mu_Y)}
+ {\sigma\sqrt{m^{-1}+n^{-1}}}
+ \sim\Normal(0,1).
+\]
+另一方面，
+\begin{align*}
+ \varepsilon^{\mathsf T}M\varepsilon
+ &=\frac{1}{\sigma^2}
+ \left\{
+ \sum_{i=1}^m(X_i-\overline X)^2
+ +\sum_{j=1}^n(Y_j-\overline Y)^2
+ \right\}\\
+ &=\frac{(m-1)S_X^2+(n-1)S_Y^2}{\sigma^2}
+ =\frac{(m+n-2)S_p^2}{\sigma^2}.
+\end{align*}
+由 Gaussian 正交投影独立性，$a^{\mathsf T}\varepsilon$ 与
+$\varepsilon^{\mathsf T}M\varepsilon$ 独立；再由 $\rank(M)=m+n-2$，
+\[
+ \varepsilon^{\mathsf T}M\varepsilon\sim\chiSq_{m+n-2}.
+\]
+于是
+\[
+ \frac{(\overline X-\overline Y)-(\mu_X-\mu_Y)}
+ {S_p\sqrt{1/m+1/n}}
+ =\frac{Z}{\sqrt{U/(m+n-2)}},
+\]
+其中 $Z\sim\Normal(0,1)$、$U\sim\chiSq_{m+n-2}$ 且相互独立；按 Student 分布定义，这正是正文\eqnrefs{eq:math-stat-pooled-two-sample-t}。所以分母自由度来自两个组内残差空间的直和维数，而不是对两个样本量作形式运算。
+
+若两组方差不同，则分别标准化两组残差。令
+\[
+ U=\frac{(m-1)S_X^2}{\sigma_X^2},
+ \qquad
+ V=\frac{(n-1)S_Y^2}{\sigma_Y^2}.
+\]
+两个样本块独立，而各自残差投影的秩分别为 $m-1$ 与 $n-1$，故
+\[
+ U\sim\chiSq_{m-1},
+ \qquad
+ V\sim\chiSq_{n-1},
+ \qquad
+ U\perp\!\!\!\perp V.
+\]
+于是
+\[
+ \frac{U/(m-1)}{V/(n-1)}
+ =\frac{S_X^2/\sigma_X^2}{S_Y^2/\sigma_Y^2}
+ \sim\Fdist_{m-1,n-1},
+\]
+这就是\eqnrefs{eq:math-stat-variance-ratio-f}。因此 pooled $t$ 与方差比 $F$ 并非两条独立公式，而是同一“正交子空间的 Gaussian 平方长度”母结构在不同直和分解下的结果。
+\end{derivation}
+
+方差不等时，pooled 结构不再成立。自然 studentized 统计量
+\[
+ T_W
+ =\frac{(\overline X-\overline Y)-(\mu_X-\mu_Y)}
+ {\sqrt{S_X^2/m+S_Y^2/n}}
+\]
+没有有限样本精确 Student $t$ 分布。Welch--Satterthwaite 方法把随机分母
+\[
+ W=\frac{S_X^2}{m}+\frac{S_Y^2}{n}
+\]
+近似为缩放卡方 $a\chiSq_\nu$，并用前两阶矩确定 $a,\nu$，得到
+\begin{equation}\label{eq:math-stat-welch-df}
+ \nu_W
+ =\frac{(S_X^2/m+S_Y^2/n)^2}
+ {S_X^4/[m^2(m-1)]+S_Y^4/[n^2(n-1)]}.
+\end{equation}
+因此 Welch $t$ 属于矩匹配近似；随着样本量增大，也可以直接由 CLT 与 Slutsky 建立渐近正态性。
+
+\begin{derivation}[Satterthwaite 自由度来自矩匹配]
+正态样本下，由 \((m-1)S_X^2/\sigma_X^2\sim\chiSq_{m-1}\) 及 \(\E\chiSq_\nu=\nu\)、\(\Var(\chiSq_\nu)=2\nu\)，
+\[
+ \E S_X^2=\sigma_X^2,
+ \qquad
+ \Var(S_X^2)=\frac{2\sigma_X^4}{m-1},
+\]
+对第二组使用同一正态残差投影公式，
+\[
+ \Var(S_Y^2)=\frac{2\sigma_Y^4}{n-1}.
+\]
+两组独立，所以对 \(W=S_X^2/m+S_Y^2/n\)，
+\[
+ \E W
+ =\frac{\sigma_X^2}{m}+\frac{\sigma_Y^2}{n},
+\]
+\[
+ \Var(W)
+ =\frac{\Var(S_X^2)}{m^2}+\frac{\Var(S_Y^2)}{n^2}
+ =2\left[
+ \frac{\sigma_X^4}{m^2(m-1)}
+ +\frac{\sigma_Y^4}{n^2(n-1)}
+ \right].
+\]
+若用 \(a\chiSq_\nu\) 逼近 \(W\)，则由 \(\chiSq_\nu\) 的前两阶矩，
+\[
+ \E(a\chiSq_\nu)=a\nu,
+ \qquad
+ \Var(a\chiSq_\nu)=2a^2\nu.
+\]
+令两阶矩分别相等得方程组
+\[
+a\nu=\E W,
+\qquad
+2a^2\nu=\Var(W).
+\]
+把第一式代入第二式消去 \(a\)：由 \(a=\E W/\nu\)，得
+\[
+2\frac{(\E W)^2}{\nu}=\Var(W),
+\]
+即
+\[
+ \nu
+ =\frac{2\{\E W\}^2}{\Var(W)}.
+\]
+再用 \(S_X^2,S_Y^2\) 代替未知方差 \(\sigma_X^2,\sigma_Y^2\)，就得到\eqnrefs{eq:math-stat-welch-df}。因此 Welch 自由度本质上是把两个不同尺度卡方和的前两阶矩压缩成一个等效卡方维数。
+
+\emph{矩匹配的合理性。}\(W\) 是两个独立缩放卡方之和，其精确分布是广义卡方（两个不同尺度的 \(\chi^2\) 卷积），没有单一卡方形式。矩匹配选择在低阶矩上与卡方一致，从而保证一阶 Welch \(t\) 的均值与方差近似正确；Edgeworth 展开表明其分布函数误差为 \(O(m^{-1}+n^{-1})\)，比直接正态近似的 \(O(m^{-1/2}+n^{-1/2})\) 更优。
+
+\emph{举例：等样本量退化。}当 \(m=n\) 且 \(\sigma_X^2=\sigma_Y^2=\sigma^2\) 时，
+\[
+\nu_W
+=\frac{(2\sigma^2/n)^2}{2\sigma^4/[n^2(n-1)]+2\sigma^4/[n^2(n-1)]}
+=2(n-1),
+\]
+正好回到 pooled \(t\) 的自由度 \(m+n-2=2(n-1)\)。即 Welch--Satterthwaite 在方差相等时自动退化为经典 pooled 情形，这是矩匹配在边界处与精确理论相容的体现。
+
+\emph{更一般结论：Satterthwaite--Smith 综合。}对任意独立缩放卡方和 \(Q=\sum_j c_j\chiSq_{\nu_j}\)，同一矩匹配给出
+\[
+\nu_{\rm eff}
+=\frac{\{\sum_j c_j\nu_j\}^2}{\sum_j c_j^2\nu_j},
+\qquad
+a_{\rm eff}=\frac{\sum_j c_j\nu_j}{\nu_{\rm eff}}.
+\]
+方差分析中混合效应模型的均方期望正是这种结构，Satterthwaite 公式因此给出随机效应检验的分母自由度。
+\end{derivation}
+
+配对设计也不需要新的分布理论。若观测成对出现 $(X_i,Y_i)$，定义差值 $D_i=X_i-Y_i$。只要 $D_i\iid\Normal(\mu_D,\sigma_D^2)$，问题就退化为对 $D_1,\ldots,D_n$ 的单样本 $t$ 推断。成对相关性并没有被忽略，而是已经进入 $\sigma_D^2=\Var(X_i-Y_i)$ 中。
+
+本章的精确理论有清楚的适用边界：平方和分解本身只依赖线性代数，$\chi^2$ 识别和正交独立则依赖正态球对称性。下一章进入一般参数估计；在那里大部分模型不再有这种有限样本闭式结构，必须回到充分性、风险以及 likelihood 的局部二次几何。
+
+\section{正态抽样分布的数值实例与应用}\label{sec:gaussian-sampling-examples}
+
+接下来考察单样本 \(t\) 检验的完整数值。
+
+\begin{exbox}[混凝土抗压强度检验]
+10 个混凝土试样的抗压强度（MPa）：\(21.0, 21.4, 22.0, 21.5, 21.8, 22.2, 21.3, 21.7, 22.1, 21.9\)。规格要求 \(\mu_0=21.0\,\mathrm{MPa}\)。
+
+样本均值 \(\bar X=21.69\)，样本标准差 \(S=0.364\)，标准误 \(S/\sqrt{n}=0.115\)。检验统计量
+\[
+t=\frac{\bar X-\mu_0}{S/\sqrt{n}}=\frac{0.69}{0.115}=6.00
+\]
+自由度 \(\nu=9\)。双边 \(p\)-值：\(P(|T_9|>6.00)\approx0.0002\)，远小于 0.05，拒绝 \(H_0\)。95\% 置信区间：\(21.69\pm2.262\times0.115=[21.43,21.95]\)。
+
+\textbf{与正态近似的对比。}若用 \(z=6.00\) 查标准正态，\(p\approx0.00000002\)——比精确 \(t\) 的 \(p\) 值小 10000 倍。这展示了小样本（\(n=10\)）下用正态近似代替 \(t\) 分布的风险：尾部概率被严重低估。
+\end{exbox}
+
+接下来考察两样本 \(t\) 检验与 Welch 修正。
+
+\begin{exbox}[两种工艺的均值比较]
+工艺 A：\(n_A=8\)，\(\bar X_A=50.2\)，\(S_A=2.1\)。工艺 B：\(n_B=12\)，\(\bar X_B=48.5\)，\(S_B=3.4\)。
+
+\textbf{Pooled \(t\)（假设等方差）：}\(S_p^2=\frac{7\times4.41+11\times11.56}{18}=8.78\)，\(S_p=2.96\)，
+\[
+t=\frac{1.7}{2.96\sqrt{1/8+1/12}}=1.49,\quad\nu=18,\quad p\approx0.155
+\]
+
+\textbf{Welch \(t\)（不等方差）：}
+\[
+t=\frac{1.7}{\sqrt{4.41/8+11.56/12}}=\frac{1.7}{1.12}=1.52
+\]
+\[
+\nu_W=\frac{(4.41/8+11.56/12)^2}{(4.41/8)^2/7+(11.56/12)^2/11}=\frac{1.25}{0.049+0.075}=10.1
+\]
+\(p\approx0.158\)。两种方法结论一致（不拒绝），但 Welch 的自由度 \(\nu_W\approx10\) 远小于 pooled 的 18，反映了方差不等导致的精度损失。
+\end{exbox}
+
+接下来考察\(\chi^2\) 检验：方差置信区间。
+
+\begin{exbox}[仪器精度的置信区间]
+用同一仪器重复测量标准件 20 次，样本标准差 \(S=0.053\,\mathrm{mm}\)。求仪器标准差 \(\sigma\) 的 95\% 置信区间。
+
+\[
+\frac{(n-1)S^2}{\chi^2_{0.025,19}}\le\sigma^2\le\frac{(n-1)S^2}{\chi^2_{0.975,19}}
+\]
+\(\chi^2_{0.025,19}=32.85\)，\(\chi^2_{0.975,19}=8.91\)：
+\[
+\frac{19\times0.002809}{32.85}\le\sigma^2\le\frac{19\times0.002809}{8.91}
+\]
+\[
+0.00163\le\sigma^2\le0.00599,\quad 0.040\le\sigma\le0.077\,\mathrm{mm}
+\]
+标准差的置信区间不对称（因为取平方根），且比正态近似 \(S\pm1.96S/\sqrt{2n}\) 更精确。
+\end{exbox}
+
+接下来考察\(F\) 检验：方差比。
+
+\begin{exbox}[两种仪器精度比较]
+仪器 A：\(n_A=15\)，\(S_A^2=0.024\)。仪器 B：\(n_B=12\)，\(S_B^2=0.018\)。检验 \(H_0:\sigma_A^2=\sigma_B^2\)。
+
+\[
+F=\frac{S_A^2}{S_B^2}=\frac{0.024}{0.018}=1.33,\quad(\nu_1,\nu_2)=(14,11)
+\]
+\(F_{0.025,14,11}\approx3.25\)，\(F_{0.975,14,11}\approx1/3.56=0.281\)。\(0.281<1.33<3.25\)，不拒绝 \(H_0\)。两种仪器精度无显著差异。方差比置信区间：\(1.33\times[0.281,3.25]=[0.37,4.33]\)。
+\end{exbox}

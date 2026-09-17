@@ -1,0 +1,2069 @@
+\chapter{充分性、估计理论、似然与 Bayes 推断}\label{chap:math-stat-estimation-likelihood}
+
+从概率模型进入参数推断以后，首先要区分三类问题。充分性问“样本中哪些随机细节与参数无关”；估计理论问“在给定损失或无偏约束下，怎样比较不同统计量”；likelihood 与 Bayes 则利用整个模型族的参数依赖结构建立一般推断。它们不是互相替代的方法：充分统计量描述信息压缩，风险描述决策质量，Fisher 信息描述局部可识别性，而 LAN 把正则模型在 $n^{-1/2}$ 邻域中的 likelihood 统一成高斯二次实验。本章沿这条顺序推进，并把 MLE 与 Bernstein--von Mises 定理都还原到同一个局部二次结构。
+
+\section{充分性、最小充分性与完备性}
+
+设样本联合分布为
+\[
+ \mathcal P_n=\{P_\theta^{(n)}:\theta\in\Theta\}
+\]
+定义在 $(\mathcal X^n,\mathcal A^{\otimes n})$ 上，$T=T(X^n)$ 为统计量。统计量产生的 $\sigma$-代数记为 $\sigma(T)$。直观上，若在知道 $T$ 之后，样本剩余随机性不再携带关于 $\theta$ 的信息，则 $T$ 已经保留了与参数有关的全部样本信息。
+
+\begin{definition}[充分统计量]
+若存在一个条件分布版本
+\[
+ P_\theta^{(n)}(X^n\in A\mid T)
+\]
+对每个 $A\in\mathcal A^{\otimes n}$ 都可以选得与 $\theta$ 无关，则称 $T$ 对模型 $\mathcal P_n$ 充分。
+\end{definition}
+
+在共同支配模型中，充分性可以直接从密度的参数依赖结构辨认。
+
+\begin{theorem}[Neyman--Fisher 因子分解]
+设 $P_\theta^{(n)}$ 都被同一个 $\sigma$-有限测度 $\mu_n$ 支配，联合密度为 $p_\theta^{(n)}$。若存在非负可测函数 $g_\theta$ 与 $h$，使
+\begin{equation}\label{eq:math-stat-factorization}
+ p_\theta^{(n)}(x^n)
+ =g_\theta(T(x^n))h(x^n),
+\end{equation}
+其中 $h$ 与 $\theta$ 无关，则 $T$ 充分。在通常的标准 Borel 条件下，充分性也推出这样的分解。
+\end{theorem}
+
+因子分解的含义是：样本点 $x^n$ 对参数的全部区分能力只通过 $T(x^n)$ 进入；$h(x^n)$ 只描述在同一个 $T$ 水平集内部如何随机分布。
+
+\begin{exbox}[正态样本中的充分统计量]
+若 $X_i\iid\Normal(\mu,\sigma^2)$，则
+\[
+ p_{\mu,\sigma^2}^{(n)}(x^n)
+ =(2\pi\sigma^2)^{-n/2}
+ \exp\!\left[-\frac{1}{2\sigma^2}
+ \left\{\sum_i x_i^2-2\mu\sum_i x_i+n\mu^2\right\}\right].
+\]
+参数依赖只通过
+\[
+ T(x^n)=\left(\sum_i x_i,\sum_i x_i^2\right)
+\]
+进入，因此 $T$ 对 $(\mu,\sigma^2)$ 充分。$(\overline X,S^2)$ 与它一一对应，所以也是充分统计量。
+\end{exbox}
+
+\begin{derivation}[因子分解如何严格地产生参数无关的条件分布]
+只证明因子分解定理中最常用的“分解 $\Rightarrow$ 充分”方向。因为 $\mu_n$ 是 $\sigma$-有限测度，可以选取一个与 $\mu_n$ 等价的概率测度 $Q$，写成
+\[
+ Q(\dd x)=q(x)\mu_n(\dd x),
+ \qquad q(x)>0\quad \mu_n\text{-a.e.}
+\]
+令
+\[
+ H(x)=\frac{h(x)}{q(x)}.
+\]
+于是 $P_\theta^{(n)}$ 关于 $Q$ 的密度为
+\[
+ \frac{\dd P_\theta^{(n)}}{\dd Q}(x)
+ =g_\theta\{T(x)\}H(x).
+\]
+为把所有事件 $A$ 同时组织成一个条件概率核，这里使用标准 Borel 样本空间上的 regular conditional law。记 $Q_t(\dd x)$ 为 $Q$ 下给定 $T=t$ 的一个 regular conditional distribution，并定义
+\[
+ m(t)=\int H(x)Q_t(\dd x).
+\]
+在 $0<m(t)<\infty$ 时令
+\[
+ K(t,A)
+ =\frac{\int_AH(x)Q_t(\dd x)}{m(t)}.
+\]
+在其余 $t$ 上任取一个固定概率分布作为 $K(t,\cdot)$。由于
+\[
+ 1=\E_Q\{g_\theta(T)H\}
+ =\int g_\theta(t)m(t)Q_T(\dd t),
+\]
+对每个 $\theta$，集合 $\{t:g_\theta(t)>0,\ m(t)\notin(0,\infty)\}$ 在 $P_\theta^T$ 下为零；因此上述任意定义不会影响任何模型成员的条件分布。这个 $K$ 完全由 $Q,h,T$ 决定，与 $\theta$ 无关。
+
+现在验证它确实是 $P_\theta^{(n)}$ 下给定 $T$ 的条件概率。对任意 $B\in\sigma(T)$，
+\begin{align*}
+ \E_{P_\theta}[\ind_B K(T,A)]
+ &=\E_Q\!\left[
+ g_\theta(T)H\ind_BK(T,A)
+ \right]\\
+ &=\E_Q\!\left[
+ g_\theta(T)m(T)\ind_BK(T,A)
+ \right]\\
+ &=\E_Q\!\left[
+ g_\theta(T)\ind_B
+ \E_Q\{\ind_AH\mid T\}
+ \right]\\
+ &=\E_Q\!\left[
+ g_\theta(T)\ind_B\ind_AH
+ \right]\\
+ &=P_\theta^{(n)}(A\cap B).
+\end{align*}
+第二步与第四步只用了条件期望的定义，因为 $g_\theta(T)\ind_BK(T,A)$ 与 $g_\theta(T)\ind_B$ 都是 $\sigma(T)$-可测的。于是
+\[
+ K(T,A)
+ =P_\theta^{(n)}(X^n\in A\mid T)
+ \quad P_\theta^{(n)}\text{-a.s.}
+\]
+可以同时选成与 $\theta$ 无关的版本，所以 $T$ 充分。这里参数依赖的“约消”不是对零概率水平集做形式除法，而是发生在条件期望的 Radon--Nikodym 结构中。
+
+
+充分统计量可能仍包含冗余信息。若对任意另一个充分统计量 $S$，都存在可测函数 $f$ 使 $T=f(S)$ 几乎处处成立，则称 $T$ 最小充分。密度比写法在 $p_\theta(y)=0$ 时没有定义，因此更稳健的共同支配判据先定义样本点之间的关系
+\begin{equation}\label{eq:math-stat-minimal-sufficiency-cross-product}
+ x\sim y
+ \quad\Longleftrightarrow\quad
+ p_\theta^{(n)}(x)p_\eta^{(n)}(y)
+ =p_\theta^{(n)}(y)p_\eta^{(n)}(x)
+ \quad\text{对所有 }\theta,\eta\in\Theta.
+\end{equation}
+若 $T$ 已充分，并且存在一个对所有 $P_\theta^{(n)}$ 都为全测度的共同可测集合 $\mathcal X_0$，使在 $\mathcal X_0$ 上
+\begin{equation}\label{eq:math-stat-minimal-sufficiency-fibers}
+ T(x)=T(y)
+ \quad\Longleftrightarrow\quad
+ x\sim y,
+\end{equation}
+再假设这里产生的商映射具有通常的可测因子化性质——具体地，若另一个统计量 $S$ 的纤维细化这些等价类，则存在可测 $f$ 使 $T=f(S)$ 在 $\mathcal X_0$ 上成立；欧氏样本空间中本章使用的连续或离散统计量都满足这一条件——则 $T$ 是最小充分统计量。在所有密度都严格为正的共同支撑上，\eqnrefs{eq:math-stat-minimal-sufficiency-cross-product}等价于
+\[
+ \frac{p_\theta^{(n)}(x)}{p_\theta^{(n)}(y)}
+ \text{ 不依赖 }\theta,
+\]
+这才得到常见的“密度比判据”。交叉乘积形式明确处理了零密度点，因此不会把除零问题隐藏在记号中。直观上，最小充分统计量正好把对整个模型族都不可区分的样本点压到同一个纤维中。
+
+
+设 $S$ 是任意另一个充分统计量。由因子分解定理，在共同全测度集合上可以写成
+\[
+ p_\theta^{(n)}(x)
+ =a_\theta\{S(x)\}b(x).
+\]
+若 $S(x)=S(y)$，则对任意 $\theta,\eta$，
+\begin{align*}
+ p_\theta^{(n)}(x)p_\eta^{(n)}(y)
+ &=a_\theta\{S(x)\}a_\eta\{S(y)\}b(x)b(y)\\
+ &=a_\theta\{S(y)\}a_\eta\{S(x)\}b(y)b(x)\\
+ &=p_\theta^{(n)}(y)p_\eta^{(n)}(x).
+\end{align*}
+中间一步用了 \(S(x)=S(y)\) 把 \(a_\theta\{S(x)\}\) 与 \(a_\theta\{S(y)\}\) 互换。所以 $S(x)=S(y)$ 必推出 \(x\sim y\)，即两样本的 likelihood 向量成比例。若 $T$ 满足\eqnrefs{eq:math-stat-minimal-sufficiency-fibers}（即 \(x\sim y\Rightarrow T(x)=T(y)\)），进一步得到
+\[
+ S(x)=S(y)
+ \quad\Longrightarrow\quad
+ x\sim y
+ \quad\Longrightarrow\quad
+ T(x)=T(y).
+\]
+也就是说，$T$ 在 $S$ 的每个纤维上都为常数。由上面明确假设的可测因子化条件（在本章欧氏模型中可由 Doob--Dynkin 因子化实现），存在可测函数 $f$，使
+\[
+ T=f(S)
+ \qquad P_\theta^{(n)}\text{-a.s. 对所有 }\theta.
+\]
+由于 $S$ 是任意充分统计量，$T$ 必是所有充分统计量的可测函数，因此按定义最小充分。这个证明也解释了为什么判据比较的是整个 likelihood 向量的比例类：任何充分压缩都不能再区分同一比例类内部的样本点。
+
+\emph{举例：正态位置族的最小充分统计量。}对 \(X_1,\ldots,X_n\iid\Normal(\mu,1)\)，
+\[
+p_\mu^{(n)}(x)\propto\exp\!\left\{-\frac12\sum_i(x_i-\mu)^2\right\}
+\propto\exp\!\left\{\mu\sum_i x_i-\frac{n\mu^2}{2}\right\}\cdot\ee^{-\frac12\sum_i x_i^2}.
+\]
+两样本 \(x,y\) 的 likelihood 成比例当且仅当 \(\sum_i x_i=\sum_i y_i\)，故 \(T(x)=\sum_i X_i\)（等价地 \(\bar X\)）最小充分。注意原始样本 \((X_1,\ldots,X_n)\) 充分但非最小；顺序统计量在非参数族中最小充分，但在参数族中通常过度。
+
+\emph{举例：均匀族的最小充分统计量。}对 \(X_1,\ldots,X_n\iid\Uniform(0,\theta)\)，
+\[
+p_\theta^{(n)}(x)=\theta^{-n}\ind_{\{x_{(n)}\le\theta\}}\prod_i\ind_{\{x_i\ge0\}},
+\]
+两样本成比例当且仅当 \(x_{(n)}=y_{(n)}\)，故 \(T=X_{(n)}=\max_i X_i\) 最小充分。这与正态情形对比鲜明：充分统计量维数可远小于样本量，也可等于 1，关键在于 likelihood 对样本的依赖通道。
+
+\emph{更一般结论：Birnbaum 定理与充分性的认识论意义。}Birnbaum 定理断言：若推断方法满足似然原理（likelihood principle）与条件化原理（conditionality principle），则它只依赖似然函数而非整个样本。充分性原则是似然原理的弱形式：充分统计量保留全部似然信息。最小充分统计量因此是"在不违反似然原理前提下最大压缩"——任何进一步压缩都会丢失区分不同似然比例类的能力。这一把充分性从计算工具提升为统计推断基础公理的视角，是经典统计与 Bayesian 统计的共同基石。
+
+\emph{信息论视角：最小充分统计量与互信息。}最小充分统计量 \(T\) 使 \(I(\theta;X^n)=I(\theta;T)\)，即它保留了参数与样本的全部互信息。任何进一步压缩 \(S=f(T)\) 严格损失信息（除非模型退化）。这把充分性从"分布因子分解"等价表述为"信息保持"，是 Fisher 信息几何与充分统计量对偶关系的起点。
+
+\emph{举例：Poisson 族的最小充分统计量。}对 \(X_1,\ldots,X_n\iid\Poisson(\lambda)\)，联合密度
+\[
+p_\lambda^{(n)}(x)=\ee^{-n\lambda}\lambda^{\sum x_i}\prod_i\frac1{x_i!},
+\]
+两样本成比例当且仅当 \(\sum x_i=\sum y_i\)，故 \(T=\sum X_i\) 最小充分。注意 \(T\sim\Poisson(n\lambda)\) 仍属同一族，这是指数族的闭包性质：充分统计量分布仍在新指数族中。
+
+
+指数族把这一结构显式化。设单次观测密度为
+\begin{equation}\label{eq:math-stat-exponential-family}
+ p_\eta(x)
+ =h(x)\exp\{\eta^{\mathsf T}t(x)-A(\eta)\},
+ \qquad
+ \eta\in\mathcal H\subseteq\R^k.
+\end{equation}
+则 iid 样本的联合密度为
+\[
+ \prod_{i=1}^nh(x_i)
+ \exp\!\left\{
+ \eta^{\mathsf T}\sum_{i=1}^nt(x_i)-nA(\eta)
+ \right\},
+\]
+所以
+\[
+ T_n=\sum_{i=1}^nt(X_i)
+\]
+充分。只要可以在自然参数空间内部对积分微分，配分函数还满足
+\begin{equation}\label{eq:math-stat-log-partition-moments}
+ \nabla A(\eta)=\E_\eta t(X),
+ \qquad
+ \nabla^2A(\eta)=\Cov_\eta\{t(X)\}.
+\end{equation}
+因此指数族的均值映射和局部协方差都由同一个凸函数 $A$ 编码。
+
+\textbf{定义（完备统计量）.}\enspace 统计量 $T$ 称为完备的，若对任意可测函数 $a$，只要
+\[
+ \E_\theta[a(T)]=0
+ \qquad\text{对所有 }\theta\in\Theta
+\]
+且这些期望存在，就必有 $a(T)=0$ 几乎处处。
+
+完备性比充分性更强。充分性说条件分布中不再有参数；完备性说统计量分布族自身也没有“在所有参数下期望都恰好抵消”的非零方向。对\eqnrefs{eq:math-stat-exponential-family}这类共同支配的满秩指数族，若自然参数空间含有 $\R^k$ 中的非空开集，并且相应 Laplace 积分在该开集内有限，则自然充分统计量完备；下面的证明正好说明这些条件分别用在哪里。
+
+\textbf{例（Poisson 完备性）.}\enspace 若 $X_i\iid\Poisson(\lambda)$，则
+\[
+ T=\sum_{i=1}^nX_i\sim\Poisson(n\lambda)
+\]
+充分。若 $\E_\lambda a(T)=0$ 对所有 $\lambda>0$，则
+\[
+ 0=\ee^{-n\lambda}
+ \sum_{t=0}^\infty a(t)\frac{(n\lambda)^t}{t!}.
+\]
+乘以 $\ee^{n\lambda}$ 后得到在开区间上恒为零的幂级数，因此每个系数 $a(t)$ 都为零；故 $T$ 完备。
+
+
+考虑 iid 样本对应的自然统计量
+\[
+ T_n=\sum_{i=1}^nt(X_i).
+\]
+把乘积基准测度经过 $T_n$ 推前，得到一个不依赖 $\eta$ 的测度 $\nu_n$。由\eqnrefs{eq:math-stat-exponential-family}，$T_n$ 的分布相对于 $\nu_n$ 可写成
+\[
+ \frac{\dd P_\eta^{T_n}}{\dd\nu_n}(t)
+ =\exp\{\eta^{\mathsf T}t-nA(\eta)\}.
+\]
+设可测函数 $a$ 满足
+\[
+ \E_\eta a(T_n)=0
+\]
+对自然参数空间中的所有 $\eta$ 成立。乘去严格为正的 $\ee^{-nA(\eta)}$，得到
+\[
+ \int a(t)\ee^{\eta^{\mathsf T}t}\,\nu_n(\dd t)=0.
+\]
+若自然参数空间含有一个非空开集 $U\subset\R^k$，并且上述积分在 $U$ 上绝对有限，则左端是带符号测度
+\[
+ \nu_a(\dd t)=a(t)\nu_n(\dd t)
+\]
+的多元 Laplace 变换。它在开集 $U$ 上恒为零。取任意 $\eta_0\in U$，定义有限带符号测度
+\[
+ \widetilde\nu_a(\dd t)
+ =\ee^{\eta_0^{\mathsf T}t}\nu_a(\dd t).
+\]
+因为 $U$ 含有 $\eta_0$ 的一个邻域，$\widetilde\nu_a$ 的矩母变换在原点邻域存在且恒为零。具体地，对 \(\xi\) 在 \(0\) 附近，
+\[
+\int\ee^{\xi^{\mathsf T}t}\,\widetilde\nu_a(\dd t)
+=\int a(t)\ee^{(\eta_0+\xi)^{\mathsf T}t}\,\nu_n(\dd t)=0,
+\]
+因为 \(\eta_0+\xi\in U\)。Laplace/Fourier 变换的唯一性（由 Stone--Weierstrass 或测度决定矩序列的经典结果给出）于是推出
+\[
+ \widetilde\nu_a=0,
+ \qquad
+ \nu_a=0.
+\]
+因此 \(a(t)=0\) 对 $\nu_n$ 几乎处处成立，也就对每个 $P_\eta^{T_n}$ 几乎处处成立。故 $T_n$ 完备。
+
+这个证明解释了"自然参数空间必须含开集"的作用：只有参数能在 $k$ 个独立方向上局部变化，零期望条件才足以把整个 Laplace 变换钉死；曲线指数族或参数受低维约束时，完备性一般不能由这条定理自动得到。
+
+\emph{举例：正态族 \((\mu,\sigma^2)\) 的完备性。}对 \(\Normal(\mu,\sigma^2)\) 两参数族，自然参数 \(\eta=(\mu/\sigma^2,-1/(2\sigma^2))\) 取值于下半平面 \(\eta_2<0\)，这是 \(\R^2\) 中开集。自然统计量 \(T_n=(\sum_i X_i,\sum_i X_i^2)\) 因此完备。但若固定 \(\sigma^2=1\) 只变 \(\mu\)，参数空间是一维曲线 \(\{(\mu,-1/2):\mu\in\R\}\)，它不是 \(\R^2\) 中开集；不过此时退化为一维满秩指数族，仍完备。
+
+\emph{反例：曲线指数族可能不完备。}考虑密度 \(p_\theta(x)=C(\theta)\exp\{\theta x+\theta^2 x^2\}\) 在 \(\theta\in\R\) 上形成的族，自然参数 \(\eta=(\theta,\theta^2)\) 落在抛物线上，不含开集。可构造非零函数 \(a\) 使 \(\E_\theta a(T)=0\) 对所有 \(\theta\) 成立，故 \(T\) 不完备。这说明完备性不是"族有多大"而是"参数在自然空间中能否张满开集"。
+
+\emph{与热力学配分函数的联系。}指数族密度 \(p_\eta(x)=h(x)\exp\{\eta^{\mathsf T}t(x)-A(\eta)\}\) 中，\(A(\eta)=\log\int h(x)\exp\{\eta^{\mathsf T}t(x)\}\,\dd x\) 正是统计力学的 log-partition function（自由能）。其导数 \(\nabla A(\eta)=\E_\eta t(X)\) 给出能量期望，二阶导 \(\nabla^2 A(\eta)=\Cov_\eta(t)\) 是 Fisher 信息即热容。完备性定理中"Laplace 变换在开集上恒零推出测度零"对应热力学中"配分函数决定全部状态方程"：自由能的解析延拓唯一确定分布族。
+
+\emph{举例：Poisson 族的完备性验证。}对 \(X\sim\Poisson(\lambda)\)，自然参数 \(\eta=\log\lambda\)，自然空间 \(\R\)（开集）。若 \(\E_\lambda a(X)=\sum_x a(x)\ee^{-\lambda}\lambda^x/x!=0\) 对所有 \(\lambda>0\)，乘以 \(\ee^\lambda\) 得 \(\sum_x a(x)\lambda^x/x!=0\)，这是 \(a(x)/x!\) 的幂级数恒为零，故 \(a(x)=0\) 对所有 \(x\)。完备性成立，且证明不需抽象 Laplace 变换，直接用幂级数唯一性。
+
+
+充分性与完备性还给出一个常被忽略但非常有力的独立性原则。若统计量 $A=A(X^n)$ 的分布在整个参数空间上都不依赖 $\theta$，则称 $A$ 为\emph{辅助统计量}（ancillary statistic）。它描述样本中与参数无关的随机形状，而充分统计量描述全部参数信息。
+
+\textbf{定理（Basu 定理）.}\enspace 若 $T$ 对模型充分且完备，$A$ 为辅助统计量，则 $T$ 与 $A$ 独立。
+
+
+\emph{思路：}对任意有界可测函数 $h(A)$，证明 $\E_\theta\{h(A)\mid T\}=\E_\theta h(A)$，即 $A$ 与 $T$ 独立。充分性使条件期望不依赖 $\theta$，完备性排除条件期望的非平凡波动。
+
+\emph{第一步：充分性分离参数。}取任意有界可测函数 $h(A)$。由于 $T$ 充分，由 Rao--Blackwell 定理，条件期望
+\begin{equation*}
+ q(T)=\E_\theta\{h(A)\mid T\}
+\end{equation*}
+不依赖 $\theta$（充分性保证条件分布 $P(A\in\cdot\mid T)$ 与 $\theta$ 无关）。这一步把 \(q(T)\) 从参数中解放出来，使其成为一个纯粹的统计量函数。
+
+\emph{第二步：辅助性给出常数期望。}因为 $A$ 的分布与 $\theta$ 无关（辅助性），存在常数 $c$ 使
+\begin{equation*}
+ \E_\theta h(A)=c
+ \qquad\text{对所有 }\theta.
+\end{equation*}
+辅助性是关键：它使 \(h(A)\) 的期望在参数变化时保持不动，与第一步的 \(q(T)\) 形成对照——一个不依赖 \(\theta\) 是因为条件机制，另一个是因为边缘机制。
+
+\emph{第三步：塔式性质传递到 $T$。}由条件期望的塔式性质 $\E_\theta\E_\theta\{h(A)\mid T\}=\E_\theta h(A)$，
+\begin{equation*}
+ \E_\theta\{q(T)-c\}
+ =\E_\theta q(T)-c
+ =\E_\theta h(A)-c
+ =0
+ \qquad\text{对所有 }\theta.
+\end{equation*}
+这一步把 \(h(A)\) 的常数性通过条件期望的塔性质传递为 \(q(T)-c\) 的零均值。
+
+\emph{第四步：完备性迫使退化。}$q(T)-c$ 是 $T$ 的可测函数，且对所有 $\theta$ 期望为零。由 $T$ 的完备性，这迫使
+\begin{equation*}
+ q(T)=c
+ \qquad P_\theta\text{-几乎处处，对所有 }\theta.
+\end{equation*}
+完备性把"对所有参数期望为零"提升为"几乎处处为零"，这是从平均信息到逐点信息的关键跃迁，也是辅助性 + 完备性组合的力量所在。
+
+\emph{第五步：独立性。}代回 $q(T)$ 的定义，
+\begin{equation*}
+ \E_\theta\{h(A)\mid T\}=c=\E_\theta h(A),
+\end{equation*}
+即条件期望等于无条件期望。由任意有界可测 $h$ 的任意性，$A$ 与 $T$ 独立。
+
+Basu 定理的逻辑不是"某两个统计量恰好零相关"，而是：充分性先把给定 $T$ 后的条件机制从参数中分离，完备性再排除任何仍随 $T$ 波动但对所有参数平均为零的方向。
+
+\emph{举例：正态样本均值与样本方差的独立性。}对 \(X_1,\ldots,X_n\iid\Normal(\mu,\sigma^2)\)，\(T=(\bar X,\sum(X_i-\bar X)^2)\) 充分且完备（满秩指数族），而 \(A=(X_1-\bar X,\ldots,X_n-\bar X)/S\)（标准化残差方向）是辅助统计量——其分布在 \(\mu,\sigma^2\) 的平移与尺度变换下不变。Basu 定理立即给出 \(A\perp\!\!\!\perp T\)，特别地 \(\bar X\perp\!\!\!\perp S^2\)。这给出了 \(\bar X\) 与 \(S^2\) 独立这一基本事实的群论解释，而不必直接计算联合分布。
+
+\emph{更一般结论：Basu 在指数族中的系统应用。}对满秩指数族，自然统计量 \(T_n\) 充分完备。任何分布不依赖自然参数的统计量都与 \(T_n\) 独立。这一原理在构造 pivot、检验统计量分布无关性以及简化期望计算时反复出现：例如 \(F\) 统计量的分子分母独立性、Student \(t\) 的分子分母独立性，都可以从 Basu 定理一次性推出。
+
+\emph{物理建模：充分统计量与可观测量的分离。}在统计物理中，充分统计量对应宏观可观测量（如总能量、总粒子数），辅助统计量对应微观构型的"形状"信息（如能量分布的标准化模式）。Basu 定理的物理对应是：在正则系综下，宏观可观测量与微观构型形状独立——这正是统计力学中"宏观与微观尺度分离"的数学形式。完备性对应参数可识别性：若宏观量期望固定，则分布唯一确定，没有隐藏自由度。
+
+\emph{举例：位置尺度族的辅助统计量。}对 \(X_1,\ldots,X_n\iid\Normal(\mu,\sigma^2)\)，标准化残差 \(A_i=(X_i-\bar X)/S\) 的分布不依赖 \((\mu,\sigma^2)\)，是辅助统计量。Basu 定理给出 \(A\perp\!\!\!\perp(\bar X,S^2)\)。这把"残差形状与位置尺度参数独立"从直观提升为定理，是回归诊断中残差图可解释性的理论基础：残差形状只反映模型拟合质量，不携带参数信息。同理，Student \(t\) 统计量作为尺度不变商，其分布只依赖自由度而非 \((\mu,\sigma^2)\)，这正是 Basu 定理在 pivot 构造中的体现。这一类"参数无关量"的系统性识别，使经典统计能构造出分布表可查的 pivot，而不必对每个参数值重新计算临界值。
+
+\emph{完备性缺失时的反例。}若 \(T\) 充分但不完备，Basu 定理一般失效。例如对 \(\Uniform(\theta,\theta+1)\) 位置族，\((X_{(1)},X_{(n)})\) 充分但不完备，存在非零函数 \(a\) 使 \(\E_\theta a(T)=0\)。此时辅助统计量可能与 \(T\) 不独立，Basu 的"充分+完备 \(\Rightarrow\) 独立"链条在完备性环节断裂。
+\end{derivation}
+
+\section{估计量、风险与最优无偏估计}
+
+设目标是参数函数 $g(\theta)\in\R^q$。估计量 $\widehat g_n=T_n(X^n)$ 的偏差与均方误差在标量情形定义为
+\[
+ \Bias_\theta(\widehat g_n)
+ =\E_\theta\widehat g_n-g(\theta),
+\]
+\[
+ \MSE_\theta(\widehat g_n)
+ =\E_\theta\{\widehat g_n-g(\theta)\}^2
+ =\Var_\theta(\widehat g_n)+\Bias_\theta(\widehat g_n)^2.
+\]
+无偏性是每个固定 $n$ 的精确期望约束；一致性则是序列性质
+\[
+ \widehat g_n\toP g(\theta).
+\]
+二者互不推出。一个估计量可以有 $O(n^{-1})$ 偏差而仍然一致，也可以对每个 $n$ 无偏却具有不消失的方差。
+
+更一般地，给定行动空间 $\mathcal A$ 与损失 $L(a,\theta)$，决策规则 $\delta(X^n)$ 的频率风险定义为
+\[
+ R(\theta,\delta)
+ =\E_\theta L(\delta(X^n),\theta).
+\]
+平方误差只是其中一个特例。风险函数把“估计好坏”从单一无偏性推广为完整的决策准则，也为后面的 Bayes risk 提供统一语言。
+
+\begin{theorem}[Rao--Blackwell]
+设 $U$ 是 $g(\theta)$ 的平方可积无偏估计量，$T$ 是充分统计量。令
+\[
+ U^*=\E(U\mid T).
+\]
+则 $U^*$ 可以选为不显含 $\theta$ 的 $T$ 的函数，仍然无偏，并且
+\[
+ \Var_\theta(U^*)\le\Var_\theta(U)
+\]
+对所有 $\theta$ 成立。
+\end{theorem}
+
+若 $T$ 同时完备，则任意两个 $T$ 的无偏函数几乎处处相同。因此只要存在 $a(T)$ 满足 $\E_\theta a(T)=g(\theta)$，它就是唯一的无偏 $T$-函数，并且在所有无偏估计量中方差最小。这就是 Lehmann--Scheff\'e 定理。
+
+\begin{exbox}[Poisson 均值与正态方差的 UMVU]
+对 $X_i\iid\Poisson(\lambda)$，$T=\sum_iX_i$ 充分完备，而
+\[
+ \E_\lambda(T/n)=\lambda,
+\]
+所以 $\overline X=T/n$ 是 $\lambda$ 的 UMVU 估计量。
+
+若 $X_i\iid\Normal(\mu,\sigma^2)$ 且两参数未知，则
+\[
+ T=\left(\sum_iX_i,\sum_iX_i^2\right)
+\]
+是完整满秩二参数指数族的充分完备统计量。由于 $S^2$ 是 $T$ 的函数且 $\E S^2=\sigma^2$，Lehmann--Scheff\'e 定理给出 $S^2$ 是 $\sigma^2$ 的 UMVU 估计量。
+\end{exbox}
+
+\begin{derivation}[Rao--Blackwell 是条件期望投影]
+分三步证明：无偏性保持、方差不增、完备性给出唯一性。
+
+\emph{第一步：无偏性保持。}设 \(U\) 是 \(g(\theta)\) 的无偏估计量，\(T\) 是充分统计量。Rao--Blackwell 化简为 \(U^*=\E_\theta(U\mid T)\)。由塔式性质（\(T\) 生成的 \(\sigma\)-代数是全空间的子 \(\sigma\)-代数），
+\[
+ \E_\theta U^*
+ =\E_\theta\{\E_\theta(U\mid T)\}
+ =\E_\theta U
+ =g(\theta),
+\]
+故 \(U^*\) 仍无偏。这里充分性通过保证 \(\E_\theta(U\mid T)\) 不依赖 \(\theta\) 来起作用：否则化简后的量会随参数变化，无法作为统一估计量。
+
+\emph{第二步：方差不增。}由条件方差分解（对任意随机变量 \(U\) 和子 \(\sigma\)-代数 \(\sigma(T)\) 成立），
+\[
+ \Var_\theta(U)
+ =\Var_\theta\{\E(U\mid T)\}
+ +\E_\theta\{\Var(U\mid T)\}.
+\]
+右端第二项 \(\E_\theta\{\Var(U\mid T)\}\ge0\)，因为方差非负。因此
+\[
+ \Var_\theta(U^*)
+ =\Var_\theta\{\E(U\mid T)\}
+ \le\Var_\theta(U).
+\]
+等号成立当且仅当 \(\Var(U\mid T)=0\) a.s.，即 \(U\) 已经是 \(T\) 的函数，化简不改变任何东西。
+
+在 \(L^2(P_\theta)\) 语言中，\(U^*=\E(U\mid T)\) 就是 \(U\) 到闭子空间 \(L^2(\sigma(T))\) 的正交投影。记 \(U^\perp=U-U^*\)，则 \(\E(U^\perp\mid T)=0\)，即 \(U^\perp\perp L^2(\sigma(T))\)。方差分解就是 Pythagoras 定理：
+\[
+ \norm{U-g(\theta)}_{L^2}^2
+ =\norm{U^*-g(\theta)}_{L^2}^2
+ +\norm{U^\perp}_{L^2}^2,
+\]
+投影缩短范数，等价于方差不增。这一 Hilbert 空间视角也解释了为什么 Rao--Blackwell 只能改进一次：再投影到 \(L^2(\sigma(T))\) 不变，\(U^*\) 已是 \(T\) 可测。
+
+\emph{第三步：完备性给出唯一性。}若 \(T\) 完备且 \(a_1(T),a_2(T)\) 都是 \(g(\theta)\) 的无偏估计，则
+\[
+ \E_\theta\{a_1(T)-a_2(T)\}=0
+\]
+对所有 \(\theta\) 成立。完备性定义恰好要求：若 \(\E_\theta h(T)=0\) 对所有 \(\theta\)，则 \(h(T)=0\) a.s.。故 \(a_1(T)=a_2(T)\) a.s.，UMVU 估计唯一。结合第二步的方差下界和第三步的唯一性，Lehmann--Scheff\'e 定理给出：完备充分统计量的无偏函数是唯一 UMVU 估计。
+
+\emph{举例：Poisson 总体的 UMVU 估计。}设 \(X_1,\ldots,X_n\iid\Poisson(\lambda)\)，求 \(g(\lambda)=\ee^{-\lambda}=\Pbb(X_1=0)\) 的 UMVU 估计。原始估计 \(U=\ind_{\{X_1=0\}}\) 无偏但方差大。完备充分统计量 \(T=\sum_i X_i\sim\Poisson(n\lambda)\)。Rao--Blackwell 化简：
+\[
+U^*=\E(U\mid T)=\Pbb(X_1=0\mid T=t)
+=\frac{\Pbb(X_1=0,T=t)}{\Pbb(T=t)}
+=\frac{\ee^{-\lambda}\cdot\ee^{-(n-1)\lambda}[(n-1)\lambda]^t/t!}{\ee^{-n\lambda}(n\lambda)^t/t!}
+=\left(1-\frac1n\right)^t.
+\]
+这是 \(\ee^{-\lambda}\) 的 UMVU 估计，方差严格小于 \(\ind_{\{X_1=0\}}\)。它体现了 Rao--Blackwell 把"用第一个观测指示零"改进为"用全体观测通过充分统计量估计零概率"。
+
+\emph{更一般结论：Lehmann--Scheff\'e 与 Cramér--Rao 比较。}当模型满足正则条件且 \(T\) 完备充分时，UMVU 方差同时是 Cramér--Rao 下界 \(g'(\theta)^2/I(\theta)\) 的上界。等号成立当且仅当 \(g'(\theta)/I(\theta)\) 与 score 成比例，即 \(g\) 是指数族自然参数的仿射函数。一般情形下 UMVU 方差严格大于 CRLB，差距来自充分统计量分布的非线性结构。
+
+
+矩估计最好放在一般估计方程中理解。设
+\[
+ \Psi_n(\theta)
+ =\frac1n\sum_{i=1}^n\psi(X_i,\theta),
+\]
+并由
+\begin{equation}\label{eq:math-stat-estimating-equation}
+ \Psi_n(\widehat\theta_n)=0
+\end{equation}
+定义估计量。若 $\E_{\theta_0}\psi(X,\theta_0)=0$，定义
+\[
+ \dot\Psi_n(\theta)
+ =\frac1n\sum_{i=1}^n
+ \frac{\partial}{\partial\theta^{\mathsf T}}
+ \psi(X_i,\theta),
+ \qquad
+ A
+ =\E_{\theta_0}\!\left[
+ \frac{\partial}{\partial\theta^{\mathsf T}}
+ \psi(X,\theta_0)
+ \right].
+\]
+再定义真分布 $P_{\theta_0}$ 下的确定 Jacobian 映射
+\[
+ A_0(\vartheta)
+ =\E_{\theta_0}\!\left[
+ \frac{\partial}{\partial\vartheta^{\mathsf T}}
+ \psi(X,\vartheta)
+ \right],
+ \qquad
+ A_0(\theta_0)=A.
+\]
+假设 $A$ 可逆、$\widehat\theta_n\toP\theta_0$，并且在某个固定邻域 $N$ 内满足统一 Jacobian 大数律
+\begin{equation}\label{eq:math-stat-estimating-jacobian-uniform}
+ \sup_{\vartheta\in N}
+ \|\dot\Psi_n(\vartheta)-A_0(\vartheta)\|\toP0,
+ \qquad
+ A_0(\vartheta)\to A
+ \quad(\vartheta\to\theta_0).
+\end{equation}
+沿随机线段积分可得
+\[
+ 0=\Psi_n(\theta_0)
+ +\left\{
+ \int_0^1
+ \dot\Psi_n\!\left(
+ \theta_0+t(\widehat\theta_n-\theta_0)
+ \right)\dd t
+ \right\}
+ (\widehat\theta_n-\theta_0).
+\]
+由一致性与\eqnrefs{eq:math-stat-estimating-jacobian-uniform}，花括号中的随机矩阵依概率趋于 $A$。因此
+\begin{equation}\label{eq:math-stat-estimating-equation-linearization}
+ \sqrt n(\widehat\theta_n-\theta_0)
+ =-A^{-1}\frac1{\sqrt n}
+ \sum_{i=1}^n\psi(X_i,\theta_0)
+ +o_{\Pbb}(1).
+\end{equation}
+这比笼统地说“对向量方程作 Taylor 展开”更精确：真正需要的是 Jacobian 在估计量经过的局部路径上一致稳定。因此估计方程自动产生 \chapref{chap:math-stat-asymptotics} 的渐近线性表示。若 $B=\Var_{\theta_0}\{\psi(X,\theta_0)\}$，则
+\[
+ \sqrt n(\widehat\theta_n-\theta_0)
+ \toD\Normal_d(0,A^{-1}BA^{-\mathsf T}).
+\]
+矩估计对应 $\psi(x,\theta)=h(x)-m(\theta)$；likelihood 的 score 方程则会给出最重要的特殊情形。
+
+在正确设定且可微的参数模型中，score 之所以特殊，还可以直接从所有无偏估计方程中比较出来。设 $\theta\in\R^d$，$\psi(X,\theta)\in\R^d$ 满足
+\[
+ \E_\theta\psi(X,\theta)=0,
+\]
+并令
+\[
+ A=\E_\theta\!\left[
+ \frac{\partial\psi(X,\theta)}
+ {\partial\theta^{\mathsf T}}
+ \right],
+ \qquad
+ B=\E_\theta[\psi\psi^{\mathsf T}].
+\]
+若可把微分移入期望，则对零均值恒等式求导得到
+\begin{equation}\label{eq:math-stat-estimating-score-covariance}
+ A+\E_\theta[\psi s_\theta^{\mathsf T}]=0.
+\end{equation}
+因此 $A$ 不是任意 Jacobian；它同时记录估计函数与 score 的 $L^2$ 协方差。把 score 投影到 $\psi$ 的线性张成空间，投影协方差为
+\[
+ A^{\mathsf T}B^{-1}A.
+\]
+投影不能增加平方范数，所以在 Loewner 次序下
+\begin{equation}\label{eq:math-stat-godambe-information-bound}
+ A^{\mathsf T}B^{-1}A\preceq I(\theta).
+\end{equation}
+若 $A,B,I$ 均非奇异，取逆后得到
+\begin{equation}\label{eq:math-stat-godambe-covariance-bound}
+ A^{-1}BA^{-\mathsf T}\succeq I(\theta)^{-1}.
+\end{equation}
+左边正是一般估计方程的 sandwich 一阶协方差，右边是 score 方程达到的 Fisher inverse。等号成立当且仅当 score 几乎处处落在 $\psi$ 的线性张成空间内；换言之，正则 likelihood score 在这类无偏估计方程中保留了全部一阶 Fisher 信息。
+
+
+\emph{思路：}在 $L^2(P_\theta)$ 中，将 score $s_\theta$ 投影到估计函数 $\psi$ 张成的子空间。投影的协方差不超过 score 的协方差（即 Fisher 信息），差是正交残差的协方差（半正定）。
+
+\emph{第一步：最佳线性投影。}把随机向量 $s_\theta$ 对 $\psi$ 的各坐标所张成的有限维子空间作线性投影 $C\psi$。最佳线性系数矩阵由最小化 $\E\|s_\theta-C\psi\|^2$ 得到。对目标关于 \(C\) 求导并令其为零：
+\[
+\frac{\partial}{\partial C}\E\|s_\theta-C\psi\|^2
+=-2\E(s_\theta\psi^{\mathsf T})+2C\E(\psi\psi^{\mathsf T})=0,
+\]
+解出
+\begin{equation*}
+ C
+ =\E(s_\theta\psi^{\mathsf T})
+ B^{-1}
+ =-A^{\mathsf T}B^{-1},
+\end{equation*}
+其中 $B=\E(\psi\psi^{\mathsf T})$，最后一步用了\eqnrefs{eq:math-stat-estimating-score-covariance}（即 \(\E(s_\theta\psi^{\mathsf T})=-A^{\mathsf T}\)，来自对 \(\E_\theta\psi=0\) 关于 \(\theta\) 求导并交换积分与微分）。
+
+\emph{第二步：投影的协方差。}
+\begin{equation*}
+ \E[(C\psi)(C\psi)^{\mathsf T}]
+ =C\,B\,C^{\mathsf T}
+ =(-A^{\mathsf T}B^{-1})B(-A^{\mathsf T}B^{-1})^{\mathsf T}
+ =A^{\mathsf T}B^{-1}A.
+\end{equation*}
+
+\emph{第三步：Pythagoras 分解。}残差 $s_\theta-C\psi$ 与投影 $C\psi$ 正交（由最佳投影性，\(\E[(s_\theta-C\psi)\psi^{\mathsf T}]=0\) 推出 \(\E[(s_\theta-C\psi)(C\psi)^{\mathsf T}]=0\)），故协方差作正交分解：
+\begin{equation*}
+ I(\theta)
+ =\E(s_\theta s_\theta^{\mathsf T})
+ =A^{\mathsf T}B^{-1}A
+ +\E[(s_\theta-C\psi)(s_\theta-C\psi)^{\mathsf T}].
+\end{equation*}
+
+\emph{第四步：残差半正定。}对任意 $v\in\R^d$，
+\begin{equation*}
+ v^{\mathsf T}
+ \E[(s_\theta-C\psi)(s_\theta-C\psi)^{\mathsf T}]
+ v
+ =\E\!\left[\{v^{\mathsf T}(s_\theta-C\psi)\}^2\right]\ge0,
+\end{equation*}
+所以残差协方差矩阵半正定。移项后得到\eqnrefs{eq:math-stat-godambe-information-bound}：$A^{\mathsf T}B^{-1}A\preceq I(\theta)$。
+
+\emph{第五步：等号条件。}当残差协方差为零时，$s_\theta=C\psi$ 几乎处处成立；score 与估计函数只差一个非奇异线性变换。此时 sandwich 协方差 $A^{-1}BA^{-\mathsf T}=I(\theta)^{-1}$，达到 Cram\'er--Rao 下界。等号成立当且仅当 score 几乎处处落在 $\psi$ 的线性张成空间内；换言之，正则 likelihood score 在这类无偏估计方程中保留了全部一阶 Fisher 信息。
+
+\emph{举例：MLE 的 score 方程达到 CRLB。}取 \(\psi=s_\theta\) 即 likelihood score 本身，则 \(A=\E(s_\theta s_\theta^{\mathsf T})=I(\theta)\)、\(B=I(\theta)\)，sandwich 协方差
+\[
+A^{-1}BA^{-\mathsf T}=I(\theta)^{-1}I(\theta)I(\theta)^{-1}=I(\theta)^{-1},
+\]
+正好是 Cramér--Rao 下界。这把 MLE 的渐近有效性置于 Godambe 框架中：MLE 估计方程就是 score 本身，自然达到信息下界。
+
+\emph{更一般结论：sandwich 与 Huber 稳健估计。}对稳健 M 估计 \(\psi(x,\theta)=\psi_c(x-\theta)\)（Huber 截断函数），\(A=-\E\psi'\)、\(B=\E\psi^2\)，渐近方差为 \(\E\psi^2/(\E\psi')^2\)。当误差分布为正态时，取 \(c\to\infty\) 退化为 \(1/I(\theta)=\sigma^2\)；当误差有重尾时，有限 \(c\) 给出比 OLS 更小的渐近方差。Godambe 不等式因此不仅是理论下界，更是估计方程设计的指导原则：在指定 \(\psi\) 类中选使 \(A^{\mathsf T}B^{-1}A\) 最大的估计函数。
+
+
+接下来考察矩估计是矩映射的局部求逆。
+
+取 $h:\mathcal X\to\R^d$，定义总体矩映射
+\[
+ m(\theta)=\E_\theta h(X),
+ \qquad
+ \theta\in\Theta\subseteq\R^d.
+\]
+矩估计量不是“令几个样本矩等于总体矩”的孤立规则，而是经验矩 $P_nh$ 经过逆映射 $m^{-1}$ 得到的参数坐标。若 $m$ 在真值 $\theta_0$ 的邻域一一、连续可逆，且
+\[
+ P_nh\toP m(\theta_0),
+\]
+则任何局部解
+\[
+ m(\widehat\theta_n)=P_nh
+\]
+都满足 $\widehat\theta_n\toP\theta_0$。若进一步 $m$ 在 $\theta_0$ 可微且
+\[
+ M_0=Dm(\theta_0)
+\]
+可逆，记
+\[
+ \Sigma_h=\Var_{\theta_0}\{h(X)\},
+\]
+则多元 CLT 与逆函数的一阶展开给出
+\begin{equation}\label{eq:math-stat-moment-estimator-asymptotic}
+ \sqrt n(\widehat\theta_n-\theta_0)
+ =M_0^{-1}\frac1{\sqrt n}
+ \sum_{i=1}^n\{h(X_i)-m(\theta_0)\}
+ +o_{\Pbb}(1),
+\end{equation}
+从而
+\[
+ \sqrt n(\widehat\theta_n-\theta_0)
+ \toD
+ \Normal_d(0,M_0^{-1}\Sigma_hM_0^{-\mathsf T}).
+\]
+因此矩估计的一致性来自 LLN 与可识别性，渐近分布来自 CLT 与矩映射的局部 Jacobian；这正是一般估计方程公式的具体坐标形式。
+
+以本书统一的 shape--rate 参数化 $X\sim\GammaD(\alpha,\lambda)$ 为例，
+\[
+ \E X=\frac{\alpha}{\lambda},
+ \qquad
+ \Var(X)=\frac{\alpha}{\lambda^2}.
+\]
+令
+\[
+ \widehat v_n
+ =\frac1n\sum_{i=1}^nX_i^2-\overline X^2.
+\]
+在 $\widehat v_n>0$ 时，两矩方程给出
+\begin{equation}\label{eq:math-stat-gamma-moment-estimator}
+ \widehat\alpha_{\rm MM}
+ =\frac{\overline X^2}{\widehat v_n},
+ \qquad
+ \widehat\lambda_{\rm MM}
+ =\frac{\overline X}{\widehat v_n}.
+\end{equation}
+这里有限样本中 $\widehat v_n$ 使用分母 $n$，因为它是经验二阶中心矩而不是无偏方差估计量；其 $O(n^{-1})$ 偏差不影响上述 $\sqrt n$ 一阶极限。
+
+
+由矩方程，
+\[
+ 0=P_nh-m(\widehat\theta_n).
+\]
+多维向量函数不能直接套用一维 Lagrange 中值定理；一般并不存在一个共同中间点 $\widetilde\theta_n$ 使全部坐标同时满足同一个 Jacobian 等式。正确做法是沿连接 $\theta_0$ 与 $\widehat\theta_n$ 的线段积分。令
+\[
+ \overline M_n
+ =\int_0^1
+ Dm\!\left(
+ \theta_0+t(\widehat\theta_n-\theta_0)
+ \right)\dd t.
+\]
+微积分基本定理逐坐标给出精确恒等式
+\begin{align*}
+ m(\widehat\theta_n)-m(\theta_0)
+ &=\int_0^1
+ \frac{\dd}{\dd t}
+ m\!\left(
+ \theta_0+t(\widehat\theta_n-\theta_0)
+ \right)\dd t\\
+ &=\overline M_n(\widehat\theta_n-\theta_0).
+\end{align*}
+因此，只要 $\overline M_n$ 可逆，
+\[
+ \sqrt n(\widehat\theta_n-\theta_0)
+ =\overline M_n^{-1}
+ \sqrt n\{P_nh-m(\theta_0)\}.
+\]
+一致性使整条随机线段收缩到 $\theta_0$。若 $Dm$ 在 $\theta_0$ 连续，则
+\[
+ \|\overline M_n-M_0\|
+ \le
+ \sup_{0\le t\le1}
+ \left\|
+ Dm\!\left(
+ \theta_0+t(\widehat\theta_n-\theta_0)
+ \right)-M_0
+ \right\|
+ \toP0.
+\]
+由于 $M_0$ 可逆，逆矩阵映射在 $M_0$ 邻域连续，于是
+\[
+ \overline M_n^{-1}\toP M_0^{-1}.
+\]
+再由多元 CLT，
+\[
+ \sqrt n\{P_nh-m(\theta_0)\}
+ \toD\Normal_d(0,\Sigma_h),
+\]
+Slutsky 定理遂得到\eqnrefs{eq:math-stat-moment-estimator-asymptotic}。这也说明：若矩映射在真值处 Jacobian 奇异，即使矩方程仍有解，也不能机械保留普通 $\sqrt n$ 正态极限。
+\end{derivation}
+
+\begin{exbox}[Uniform 端点：同一参数的两种局部尺度]
+令 $X_i\iid\Unif(0,\theta)$，$\theta>0$。由于 $\E X=\theta/2$，矩估计为
+\[
+ \widehat\theta_{\rm MM}=2\overline X,
+\]
+而 $\Var(X)=\theta^2/12$，所以
+\[
+ \sqrt n(\widehat\theta_{\rm MM}-\theta)
+ \toD\Normal\!\left(0,\frac{\theta^2}{3}\right).
+\]
+另一方面，likelihood 为
+\[
+ L_n(\theta)
+ =\theta^{-n}\ind\{\theta\ge X_{(n)}\},
+\]
+故 MLE 是 $\widehat\theta_{\rm MLE}=X_{(n)}$。对固定 $t\ge0$，
+\begin{align*}
+ \Pbb_\theta\!\left\{
+ \frac{n(\theta-X_{(n)})}{\theta}>t
+ \right\}
+ &=\Pbb_\theta\!\left\{
+ X_{(n)}<\theta\left(1-\frac tn\right)
+ \right\}\\
+ &=\left(1-\frac tn\right)^n
+ \longrightarrow e^{-t}.
+\end{align*}
+因此
+\begin{equation}\label{eq:math-stat-uniform-endpoint-rate}
+ \frac{n(\theta-X_{(n)})}{\theta}
+ \toD\operatorname{Exp}(1),
+\end{equation}
+MLE 具有 $n^{-1}$ 而非 $n^{-1/2}$ 误差尺度，而且极限不是正态。这里更快的速率并不违背 Cramér--Rao 理论，因为支撑区间随 $\theta$ 改变，普通 QMD/score 正则性根本不成立。又由于
+\[
+ \E_\theta X_{(n)}=\frac{n}{n+1}\theta,
+\]
+偏差校正量 $((n+1)/n)X_{(n)}$ 对 $\theta$ 无偏。因子分解直接给出 $T=X_{(n)}$ 的充分性。若对所有 $\theta>0$ 都有 $\E_\theta a(T)=0$，则
+\[
+ 0=\frac{n}{\theta^n}
+ \int_0^\theta a(t)t^{n-1}\,\dd t.
+\]
+因此
+\[
+ \int_0^\theta a(t)t^{n-1}\,\dd t=0
+ \qquad\text{对所有 }\theta>0.
+\]
+对 $\theta$ 几乎处处求导得到 $a(\theta)\theta^{n-1}=0$，故 $a=0$ 几乎处处，$T$ 完备。Lehmann--Scheff'e 定理于是说明 $((n+1)/n)X_{(n)}$ 是 $\theta$ 的 UMVU 估计量。这个例子同时分开了有限样本无偏最优、渐近收敛速率与正则 likelihood 几何。
+\end{exbox}
+
+\section{Likelihood、Fisher 信息与局部二次实验}
+
+先从一般样本实验出发。设 $n$ 个观测组成的实验
+\[
+ \mathcal P_n=\{P_\theta^{(n)}:\theta\in\Theta\}
+\]
+被共同测度 $\mu_n$ 支配，其联合密度为
+\[
+ p_\theta^{(n)}(x^n)
+ =\frac{\dd P_\theta^{(n)}}{\dd\mu_n}(x^n).
+\]
+给定观测值 $x^n$，likelihood 定义为
+\begin{equation}\label{eq:math-stat-general-likelihood}
+ L_n(\theta;x^n)=p_\theta^{(n)}(x^n),
+ \qquad
+ \ell_n(\theta;x^n)=\log L_n(\theta;x^n).
+\end{equation}
+likelihood 不是“参数的概率密度”；它是在数据固定以后，同一个联合密度作为参数函数的相对大小。只有当抽样机制进一步满足 iid，且单观测密度为 $p_\theta$ 时，联合密度才特化为
+\[
+ p_\theta^{(n)}(x^n)=\prod_{i=1}^np_\theta(x_i),
+ \qquad
+ \ell_n(\theta)=\sum_{i=1}^n\log p_\theta(X_i).
+\]
+后文的 score 求和、每观测 Fisher 信息和标准 LAN 展开使用这一 iid 特例；一般独立非同分布或依赖实验需要从\eqnrefs{eq:math-stat-general-likelihood}重新定义相应的 score 与局部信息。
+
+最大似然估计量是任一可测选择
+\[
+ \widehat\theta_n
+ \in\argmax_{\theta\in\Theta}\ell_n(\theta).
+\]
+若最大值不达到，也可以研究满足
+\[
+ \ell_n(\widehat\theta_n)
+ \ge\sup_{\theta\in\Theta}\ell_n(\theta)-o_{\Pbb}(1)
+\]
+的近似极大化序列。MLE 的参数变换性质不要求 $g$ 一一。对任意目标参数 $\vartheta=g(\theta)$，先定义目标参数空间
+\[
+ \mathcal V=g(\Theta)
+\]
+以及 profile likelihood
+\begin{equation}\label{eq:math-stat-profile-likelihood-definition}
+ L_n^*(\vartheta)
+ =\sup_{\theta:g(\theta)=\vartheta}L_n(\theta),
+ \qquad \vartheta\in\mathcal V.
+\end{equation}
+若 $\widehat\theta_n$ 是 $L_n$ 的一个全局极大点，则
+\[
+ L_n^*\{g(\widehat\theta_n)\}
+ =L_n(\widehat\theta_n)
+ =\sup_{\vartheta\in\mathcal V}L_n^*(\vartheta),
+\]
+所以 $g(\widehat\theta_n)$ 必为 profile likelihood 的极大点。这就是 MLE 不变性的正确一般形式。一一重参数化只使 fiber $\{\theta:g(\theta)=\vartheta\}$ 退化为单点，从而写成更熟悉的 $\widehat\vartheta_n=g(\widehat\theta_n)$；若原模型有多个全局极大点且它们映到不同 $\vartheta$，则 MLE 本身应视为一个极大点集合，而不能人为选择唯一值。
+
+\begin{exbox}[Bernoulli、Poisson 与正态 MLE]
+Bernoulli 样本中，若 $S=\sum_iX_i$，
+\[
+ \ell_n(p)=S\log p+(n-S)\log(1-p),
+\]
+内点解为 $\widehat p=S/n$。若 $S=0$ 或 $S=n$，MLE 在闭参数空间 $[0,1]$ 的边界；若参数空间错误地限定为 $(0,1)$，最大值根本不存在。
+
+Poisson 样本满足
+\[
+ \ell_n(\lambda)=S\log\lambda-n\lambda+C,
+\]
+故 $\widehat\lambda=\overline X$。正态两参数模型中
+\[
+ \widehat\mu=\overline X,
+ \qquad
+ \widehat\sigma^2_{\rm MLE}
+ =\frac1n\sum_i(X_i-\overline X)^2.
+\]
+后者与无偏估计 $S^2$ 不同，因为极大 likelihood 与有限样本无偏性是两种不同准则；但二者之比趋于 $1$，所以一阶渐近行为相同。
+\end{exbox}
+
+若 $\theta\in\R^d$ 且 log-density 可微，定义单观测 score、样本 score 与 observed information
+\[
+ s_\theta(X)=\nabla_\theta\log p_\theta(X),
+ \qquad
+ U_n(\theta)=\nabla_\theta\ell_n(\theta)
+ =\sum_{i=1}^ns_\theta(X_i),
+\]
+\[
+ J_n(\theta)=-\nabla_\theta^2\ell_n(\theta).
+\]
+每观测 Fisher 信息定义为
+\begin{equation}\label{eq:math-stat-fisher-information}
+ I(\theta)
+ =\E_\theta[s_\theta(X)s_\theta(X)^{\mathsf T}].
+\end{equation}
+若支撑固定且可以把参数微分移入积分，则
+\[
+ \E_\theta s_\theta(X)=0,
+\]
+并且
+\[
+ I(\theta)
+ =-\E_\theta\nabla_\theta^2\log p_\theta(X).
+\]
+所以 $nI(\theta)$ 是样本 Fisher 信息。它既是 score 协方差，也是平均 log-likelihood 的局部负 Hessian；这正是后面 Fisher 几何出现的原因。
+
+这种几何不是坐标选择的产物。设 $\eta=g(\theta)$ 是局部 $C^1$ 微分同胚，逆映射记为 $\theta=h(\eta)$，Jacobian 为
+\[
+ H(\eta)=\frac{\partial h(\eta)}{\partial\eta^{\mathsf T}}.
+\]
+链式法则给出新坐标 score
+\[
+ s_\eta(X)
+ =H(\eta)^{\mathsf T}s_\theta(X),
+\]
+从而 Fisher 信息按
+\begin{equation}\label{eq:math-stat-fisher-reparameterization}
+ I_\eta(\eta)
+ =H(\eta)^{\mathsf T}I_\theta\{h(\eta)\}H(\eta)
+\end{equation}
+变换。于是局部位移 $\dd\theta=H\dd\eta$ 满足
+\[
+ \dd\theta^{\mathsf T}I_\theta\dd\theta
+ =\dd\eta^{\mathsf T}I_\eta\dd\eta,
+\]
+说明 Fisher 二次型是参数流形上的坐标不变量，而 $I$ 的矩阵只是该度量在具体坐标中的表示。后面 Wald、Score、LR 和 nuisance 投影之所以能用同一套几何语言，正依赖这一点。
+
+对于无偏估计量，Fisher 信息还给出有限样本 Cram\'er--Rao 下界。若 $T$ 无偏估计标量 $g(\theta)$，$I(\theta)$ 正定并满足上述微分条件，则
+\begin{equation}\label{eq:math-stat-cramer-rao}
+ \Var_\theta(T)
+ \ge
+ \nabla g(\theta)^{\mathsf T}
+ \{nI(\theta)\}^{-1}
+ \nabla g(\theta).
+\end{equation}
+它是有限样本不等式，不应与“MLE 渐近有效”混为一谈。
+
+\begin{derivation}[多参数 Cramér--Rao 下界]
+无偏性给出
+\[
+ \E_\theta T=g(\theta).
+\]
+对第 $j$ 个参数求导，并把微分移入积分（正则条件允许交换 \(\partial_j\) 与 \(\int\cdot\,p_\theta\)），
+\[
+ \partial_j g(\theta)
+ =\int T(x)\,\partial_j p_\theta(x)\,\dd x
+ =\int T(x)\,\frac{\partial_j p_\theta(x)}{p_\theta(x)}p_\theta(x)\,\dd x
+ =\E_\theta[TU_{n,j}(\theta)].
+\]
+因为 $\E_\theta U_n=0$（对 \(\int p_\theta=1\) 求导即得），向量形式为
+\[
+ \Cov_\theta(U_n,T)
+ =\E_\theta(U_n T)-\E_\theta U_n\,\E_\theta T
+ =\nabla g(\theta).
+\]
+令
+\[
+ a=\{nI(\theta)\}^{-1}\nabla g(\theta).
+\]
+则随机变量 $a^{\mathsf T}U_n$ 的方差为
+\[
+ \Var(a^{\mathsf T}U_n)
+ =a^{\mathsf T}\Cov(U_n)a
+ =a^{\mathsf T}nI(\theta)a.
+\]
+Cauchy--Schwarz 给出
+\[
+ \{\Cov(T,a^{\mathsf T}U_n)\}^2
+ \le\Var(T)\Var(a^{\mathsf T}U_n).
+\]
+左边为 \(\{a^{\mathsf T}\Cov(U_n,T)\}^2=\{a^{\mathsf T}\nabla g\}^2\)。代入 \(a=\{nI(\theta)\}^{-1}\nabla g\) 并约去公共因子，
+\[
+\{\nabla g^{\mathsf T}[nI(\theta)]^{-1}\nabla g\}^2
+\le\Var(T)\cdot\nabla g^{\mathsf T}[nI(\theta)]^{-1}\nabla g,
+\]
+即 \(\Var(T)\ge\nabla g^{\mathsf T}[nI(\theta)]^{-1}\nabla g\)，就得到\eqnrefs{eq:math-stat-cramer-rao}。等号成立要求估计误差几乎处处与有效 score 方向线性相关，这已经预示了后面有效估计量的 influence function \(I^{-1}s_\theta\)。
+
+\emph{举例：正态均值的信息下界。}对 \(X_1,\ldots,X_n\iid\Normal(\mu,\sigma^2)\)（\(\sigma^2\) 已知），单参数 Fisher 信息 \(I(\mu)=1/\sigma^2\)，CRLB 给出
+\[
+\Var_\mu(\widehat\mu)\ge\frac{1}{nI(\mu)}=\frac{\sigma^2}{n}.
+\]
+\(\bar X\) 达到此下界，因 \(\bar X-\mu=\frac1n\sum(X_i-\mu)=\frac{\sigma}{n}\sum Z_i\) 与 score \(U_n=\frac1{\sigma^2}\sum(X_i-\mu)\) 严格成比例，比例系数 \(\sigma^2/n=1/(nI(\mu))\)。这正是等号条件的体现。
+
+\emph{更一般结论：多参数与 nuisance 的下界。}对 \(\theta=(\psi,\lambda)\)（\(\psi\) 兴趣参数，\(\lambda\) nuisance），分块 Fisher 信息
+\[
+I(\theta)=\begin{pmatrix}I_{\psi\psi}&I_{\psi\lambda}\\I_{\lambda\psi}&I_{\lambda\lambda}\end{pmatrix},
+\]
+对 \(\psi\) 的有效下界为 Schur 补 \([I_{\psi\psi}-I_{\psi\lambda}I_{\lambda\lambda}^{-1}I_{\lambda\psi}]^{-1}\)，严格大于无 nuisance 时的 \(I_{\psi\psi}^{-1}\)。Nuisance 参数通过 score 的相关性抬高兴趣参数的有效方差，这正是半参数统计中 profile likelihood 与 efficient score \(U_\psi-I_{\psi\lambda}I_{\lambda\lambda}^{-1}U_\lambda\) 的来源。
+
+
+MLE 的一致性首先是一个全局问题。设真实参数为 $\theta_0$。由 \chapref{chap:math-stat-asymptotics} 的统一 LLN，若
+\[
+ \sup_{\theta\in\Theta}
+ \left|
+ \frac1n\ell_n(\theta)
+ -\E_{\theta_0}\log p_\theta(X)
+ \right|\toP0,
+\]
+而总体准则在 $\theta_0$ 唯一最大，则 argmax 定理给出 $\widehat\theta_n\toP\theta_0$。唯一最大性来自 Kullback--Leibler 分离：
+\[
+ \E_{\theta_0}\log p_{\theta_0}(X)
+ -\E_{\theta_0}\log p_\theta(X)
+ =D_{\rm KL}(P_{\theta_0}\Vert P_\theta)\ge0.
+\]
+所以“MLE 一致”并不是 score 方程局部展开的结果，而是经验目标的一致逼近加模型可识别性。
+
+一致性只把估计量带到真值邻域；一阶随机形状需要模型本身在该邻域可微。称模型在内点 $\theta_0$ 处平方均值可微（QMD），若存在 $s_{\theta_0}\in L^2(P_{\theta_0})^d$ 使
+\begin{equation}\label{eq:math-stat-qmd}
+ \int\left[
+ \sqrt{p_{\theta_0+h}}
+ -\sqrt{p_{\theta_0}}
+ -\frac12h^{\mathsf T}s_{\theta_0}\sqrt{p_{\theta_0}}
+ \right]^2\mu(\dd x)
+ =o(\|h\|^2).
+\end{equation}
+QMD 是对概率模型本身的局部光滑性要求，比“某次计算中 Hessian 存在”更稳定。它自动给出 $\E_{\theta_0}s_{\theta_0}=0$，并把
+\[
+ I_0=I(\theta_0)
+ =\E_{\theta_0}[s_{\theta_0}s_{\theta_0}^{\mathsf T}]
+\]
+识别为局部二次曲率。
+
+对 iid QMD 模型，若 $I_0$ 有限，则对固定 $h\in\R^d$，局部参数
+\[
+ \theta_{n,h}=\theta_0+\frac{h}{\sqrt n}
+\]
+满足局部渐近正态性（LAN）：
+\begin{equation}\label{eq:math-stat-lan-vector}
+ \ell_n(\theta_{n,h})-\ell_n(\theta_0)
+ =h^{\mathsf T}\Delta_n
+ -\frac12h^{\mathsf T}I_0h
+ +o_{P_{\theta_0}}(1),
+\end{equation}
+其中
+\begin{equation}\label{eq:math-stat-score-clt}
+ \Delta_n
+ =\frac1{\sqrt n}U_n(\theta_0)
+ \toD\Normal_d(0,I_0).
+\end{equation}
+这说明原统计实验在 $n^{-1/2}$ 邻域中，一阶等价于观察一个均值随 $h$ 平移的高斯向量；随机线性项 $h^{\mathsf T}\Delta_n$ 提供局部证据，确定二次项 $h^{\mathsf T}I_0h/2$ 提供 Fisher 曲率。
+
+LAN 假定局部信息极限是确定矩阵。把更一般实验中的随机局部信息记为 $\mathcal J_n$。若存在随机正定矩阵 $\mathcal J_n$ 使
+\begin{equation}\label{eq:math-stat-lamn}
+ \ell_n(\theta_0+h/r_n)-\ell_n(\theta_0)
+ =h^{\mathsf T}\Delta_n
+ -\frac12h^{\mathsf T}\mathcal J_nh
+ +o_{P_{\theta_0}}(1),
+\end{equation}
+其中 $r_n\to\infty$，并且
+\[
+ (\Delta_n,\mathcal J_n)\toD(\Delta,\mathcal J),
+ \qquad
+ \Delta\mid\mathcal J\sim\Normal_d(0,\mathcal J),
+\]
+则称实验在 $\theta_0$ 处满足局部渐近混合正态性（LAMN）。条件于随机信息 $\mathcal J$ 后，极限实验仍是 Gaussian shift；取消条件以后则成为不同信息水平的混合。普通 iid 正则模型是 $r_n=\sqrt n$ 且 $\mathcal J_n\toP I_0$ 的退化特例。LAMN 常出现在信息量本身受随机路径控制的实验中，因此不能把所有局部二次 likelihood 都强行写成固定 Fisher 矩阵。后面的 Wilks/Wald/Score 与 BvM 结论若要推广到 LAMN，也必须把确定信息椭球相应替换为条件于 $\mathcal J$ 的随机椭球。
+
+
+固定 $h\in\R^d$，令 $h_n=h/\sqrt n$。先记真分布密度的正支撑为
+\[
+ \mathcal D_0=\{x:p_{\theta_0}(x)>0\}.
+\]
+QMD 的积分是在共同 dominating measure $\mu$ 下进行，因此它并不要求局部模型 $P_{\theta_0+h_n}$ 完全由 $P_{\theta_0}$ 支配。在 $\mathcal D_0^c$ 上，$p_{\theta_0}=0$，QMD 余项就退化为 $\sqrt{p_{\theta_0+h_n}}$，故局部模型落到真值支撑之外的概率质量
+\[
+ q_n
+ =P_{\theta_0+h_n}(\mathcal D_0^c)
+ =\int_{\mathcal D_0^c}p_{\theta_0+h_n}\,\dd\mu
+ =o(\|h_n\|^2)
+ =o(n^{-1}).
+\]
+在 $P_{\theta_0}$ 几乎处处的集合 $\mathcal D_0$ 上定义平方根似然增量
+\[
+ r_n(x)
+ =\left\{\frac{p_{\theta_0+h_n}(x)}{p_{\theta_0}(x)}\right\}^{1/2}-1.
+\]
+QMD 给出真正的 $L^2(P_{\theta_0})$ 线性化：存在 $u_n\in L^2(P_{\theta_0})$ 使
+\[
+ r_n(x)
+ =\frac{1}{2\sqrt n}h^{\mathsf T}s_{\theta_0}(x)+u_n(x),
+ \qquad
+ n\E_{\theta_0}u_n^2\to0.
+\]
+因此
+\[
+ n\E r_n^2
+ =\frac14h^{\mathsf T}I_0h+o(1).
+\]
+需要注意，$P_{\theta_0+h_n}$ 可能有 $q_n$ 的质量位于 $\mathcal D_0^c$，所以不能直接把 $\E(1+r_n)^2$ 写成 $1$。在 $\mathcal D_0$ 上积分得到
+\[
+ \E(1+r_n)^2
+ =\int_{\mathcal D_0}p_{\theta_0+h_n}\,\dd\mu
+ =1-q_n.
+\]
+于是
+\[
+ 2\E r_n+\E r_n^2=-q_n,
+\]
+从而利用 $nq_n\to0$，
+\[
+ \E r_n
+ =-\frac12\E r_n^2-\frac12q_n
+ =-\frac{1}{8n}h^{\mathsf T}I_0h+o(n^{-1}).
+\]
+
+对第 $i$ 个观测记 $r_{n,i}=r_n(X_i)$、$u_{n,i}=u_n(X_i)$，并写
+\[
+ a_i=h^{\mathsf T}s_{\theta_0}(X_i).
+\]
+线性项先分解为
+\begin{align*}
+ 2\sum_{i=1}^n\{r_{n,i}-\E r_n\}
+ &=\frac1{\sqrt n}\sum_{i=1}^n a_i
+ +2\sum_{i=1}^n\{u_{n,i}-\E u_n\}.
+\end{align*}
+第二项的方差满足
+\[
+ \Var\!\left(
+ 2\sum_{i=1}^n\{u_{n,i}-\E u_n\}
+ \right)
+ \le4n\E u_n^2\to0,
+\]
+故
+\[
+ 2\sum_{i=1}^n\{r_{n,i}-\E r_n\}
+ =h^{\mathsf T}\Delta_n+o_{P_{\theta_0}}(1).
+\]
+
+平方项不能只靠形式上的“大数律”处理，因为 $r_n$ 本身随 $n$ 改变。利用 QMD 分解，
+\begin{align*}
+ \sum_{i=1}^nr_{n,i}^2
+ &=\frac1{4n}\sum_{i=1}^na_i^2
+ +\frac1{\sqrt n}\sum_{i=1}^na_i u_{n,i}
+ +\sum_{i=1}^nu_{n,i}^2.
+\end{align*}
+第一项由普通 LLN 收敛到
+\[
+ \frac14\E a_1^2
+ =\frac14h^{\mathsf T}I_0h.
+\]
+第三项满足
+\[
+ \E\sum_{i=1}^nu_{n,i}^2
+ =n\E u_n^2\to0,
+\]
+所以由 Markov 不等式为 $o_{\Pbb}(1)$。交叉项用 Cauchy--Schwarz 控制：
+\begin{align*}
+ \left|
+ \frac1{\sqrt n}\sum_{i=1}^na_i u_{n,i}
+ \right|
+ &\le
+ \left(\frac1n\sum_{i=1}^na_i^2\right)^{1/2}
+ \left(\sum_{i=1}^nu_{n,i}^2\right)^{1/2}
+ =o_{\Pbb}(1).
+\end{align*}
+因此
+\[
+ \sum_{i=1}^nr_{n,i}^2
+ \toP\frac14h^{\mathsf T}I_0h.
+\]
+
+还需要确认对数展开可以在 $n$ 个观测上同时使用。由于
+\[
+ \sqrt n\,r_n
+ \longrightarrow
+ \frac12h^{\mathsf T}s_{\theta_0}
+ \quad\text{于 }L^2(P_{\theta_0}),
+\]
+族 $\{n r_n^2\}$ 一致可积。故对每个固定 $\varepsilon>0$，
+\[
+ n\E\!\left[
+ r_n^2\ind\{|r_n|>\varepsilon\}
+ \right]
+ =\E\!\left[
+ nr_n^2\ind\{\sqrt n|r_n|>\varepsilon\sqrt n\}
+ \right]
+ \to0.
+\]
+于是
+\begin{align*}
+ \Pbb\!\left(
+ \max_{1\le i\le n}|r_{n,i}|>\varepsilon
+ \right)
+ &\le n\Pbb(|r_n|>\varepsilon)\\
+ &\le\varepsilon^{-2}n\E\!\left[
+ r_n^2\ind\{|r_n|>\varepsilon\}
+ \right]
+ \to0,
+\end{align*}
+即
+\[
+ \max_{1\le i\le n}|r_{n,i}|\toP0.
+\]
+于是，在概率趋于 $1$ 的事件上，Taylor 余项满足某个常数 $C$ 下的界
+\[
+ \left|2\log(1+r)-2r+r^2\right|
+ \le C|r|^3.
+\]
+因此
+\[
+ \sum_{i=1}^n|r_{n,i}|^3
+ \le
+ \left(\max_i|r_{n,i}|\right)
+ \sum_{i=1}^nr_{n,i}^2
+ =o_P(1),
+\]
+从而
+\[
+ \sum_{i=1}^n2\log(1+r_{n,i})
+ =2\sum_{i=1}^nr_{n,i}
+ -\sum_{i=1}^nr_{n,i}^2
+ +o_P(1).
+\]
+把随机中心化项、均值项和平方项分别代回，得到
+\begin{align*}
+ \ell_n(\theta_0+h/\sqrt n)-\ell_n(\theta_0)
+ &=h^{\mathsf T}\Delta_n
+   +2n\E r_n
+   -\frac14h^{\mathsf T}I_0h
+   +o_P(1)\\
+ &=h^{\mathsf T}\Delta_n
+   -\frac12h^{\mathsf T}I_0h
+   +o_P(1),
+\end{align*}
+这就是\eqnrefs{eq:math-stat-lan-vector}。这里确定漂移的一半来自局部概率质量归一化所固定的 $2n\E r_n$，另一半来自对数展开中的 $-\sum r_{n,i}^2$；QMD 允许的支撑外质量只有 $q_n=o(n^{-1})$，因此不进入 $O(1)$ 的 LAN 漂移。LAN 的 $1/2$ 系数不是形式 Taylor 展开的记忆项，而是 QMD 与局部概率归一化共同固定的。
+
+
+\textbf{定理（正则 MLE 的渐近正态性）.}\enspace \label{thm:math-stat-mle-asymptotic-normal}
+设 $\theta_0\in\operatorname{int}\Theta$，模型在 $\theta_0$ 邻域可识别并满足 QMD/LAN，且 $I_0$ 正定。再设 MLE 一致，并满足局部化条件
+\begin{equation}\label{eq:math-stat-mle-rootn-localization}
+ \sqrt n(\widehat\theta_n-\theta_0)=O_{\Pbb}(1),
+\end{equation}
+同时 LAN 余项在每个有界局部参数集上一致为 $o_{\Pbb}(1)$。则
+\begin{equation}\label{eq:math-stat-mle-asymptotic-normal}
+ \sqrt n(\widehat\theta_n-\theta_0)
+ \toD\Normal_d(0,I_0^{-1}).
+\end{equation}
+在通常二阶可微的正则模型中，\eqnrefs{eq:math-stat-mle-rootn-localization} 可由 score 的 $O_{\Pbb}(\sqrt n)$ 波动、平均 Hessian 向 $-I_0$ 的一致收敛以及局部严格凹性推出；它不能仅由一致性本身推出。
+
+同一组条件实际上给出比弱收敛更强的一阶随机展开：
+\begin{equation}\label{eq:math-stat-mle-score-representation}
+ \sqrt n(\widehat\theta_n-\theta_0)
+ =I_0^{-1}\Delta_n+o_{\Pbb}(1)
+ =I_0^{-1}\frac{U_n(\theta_0)}{\sqrt n}+o_{\Pbb}(1).
+\end{equation}
+它说明正则 MLE 的一阶随机性完全来自中心序列；后面的 Wald 推断、BvM 中心化与效率比较都将复用这一表示。
+
+
+在局部坐标 $h=\sqrt n(\theta-\theta_0)$ 中，LAN 展式给出对数似然比
+\[
+ \log\frac{\dd P_{\theta_0+h/\sqrt n}^{\otimes n}}{\dd P_{\theta_0}^{\otimes n}}
+ =h^{\mathsf T}\Delta_n-\frac12h^{\mathsf T}I_0h+o_{\Pbb}(1),
+\]
+其随机二次主项为
+\[
+ q_n(h)
+ =h^{\mathsf T}\Delta_n-\frac12h^{\mathsf T}I_0h.
+\]
+对二次型完成平方。展开
+\[
+ -\frac12(h-I_0^{-1}\Delta_n)^{\mathsf T}I_0(h-I_0^{-1}\Delta_n)
+ =-\frac12h^{\mathsf T}I_0h+h^{\mathsf T}\Delta_n-\frac12\Delta_n^{\mathsf T}I_0^{-1}\Delta_n,
+\]
+因此
+\[
+ q_n(h)
+ =-\frac12(h-I_0^{-1}\Delta_n)^{\mathsf T}
+ I_0(h-I_0^{-1}\Delta_n)
+ +\frac12\Delta_n^{\mathsf T}I_0^{-1}\Delta_n.
+\]
+对 $q_n$ 求梯度，
+\[
+ \nabla q_n(h)=\Delta_n-I_0h,
+\]
+令其为零得唯一驻点 $h^\star=I_0^{-1}\Delta_n$。Hessian 为 $-I_0\prec0$，故 $h^\star$ 是严格极大点。这里必须使用\eqnrefs{eq:math-stat-mle-rootn-localization}，而不能只用一致性：局部化先保证
+\[
+ \widehat h_n=\sqrt n(\widehat\theta_n-\theta_0)=O_{\Pbb}(1),
+\]
+即以任意高概率落在某个固定大球内。LAN 余项在这个球上的一致控制，再把真实局部极大点与二次近似极大点之差压到 $o_{\Pbb}(1)$：
+\[
+ \widehat h_n-h^\star=o_{\Pbb}(1).
+\]
+代回 $h^\star=I_0^{-1}\Delta_n$，得到正文的渐近线性表示\eqnrefs{eq:math-stat-mle-score-representation}。由\eqnrefs{eq:math-stat-score-clt}即 $\Delta_n\toD\Normal_d(0,I_0)$，连续映射给出 $I_0^{-1}\Delta_n\toD\Normal_d(0,I_0^{-1})$，并用 Slutsky 定理吸收 $o_{\Pbb}(1)$ 项，得到\eqnrefs{eq:math-stat-mle-asymptotic-normal}。因此有效 MLE 的 influence function 正是
+\[
+ \mathrm{IF}_{\theta_0}^{\rm eff}(x)
+ =I_0^{-1}s_{\theta_0}(x).
+\]
+
+\textbf{实例。}正态模型 $\Normal(\mu,\sigma^2)$：$\hat\mu_n=\bar X_n$，$I_0=1/\sigma^2$，渐近表示 $\sqrt n(\hat\mu_n-\mu)=\frac1{\sqrt n}\sum(X_i-\mu)/\sigma+o_P(1)$，直接给出 $\sqrt n(\hat\mu_n-\mu)\toD\Normal(0,\sigma^2)$。Logistic 回归：MLE 的 influence function $I_0^{-1}s_\theta(x)$ 把单个观测的 score 向量乘以 Fisher 逆，量化该观测对估计量的影响——Huber 稳健统计用 influence function 的有界性定义稳健性，MLE 的 IF 无界（单个离群点可任意影响 $\hat\theta$），故需 M-估计量稳健化。
+
+
+“达到 $I_0^{-1}$”必须说明比较的是哪一类估计量。若只在单个参数点比较方差，可以人为构造在该点异常快、却在 $n^{-1/2}$ 邻域中行为不稳定的估计序列，因此 Fisher inverse 不是对任意估计量逐点成立的渐近方差下界。正确的比较对象是对局部备择稳定的 \emph{regular estimator}。称 $T_n$ 在 $\theta_0$ 处 regular，若存在不依赖固定 $h$ 的极限分布 $L$，使对每个 $h\in\R^d$，在
+\[
+ \theta_{n,h}=\theta_0+\frac h{\sqrt n}
+\]
+下都有
+\begin{equation}\label{eq:math-stat-regular-estimator}
+ \sqrt n\{T_n-\theta_{n,h}\}\toD L.
+\end{equation}
+这里要求的是“把真值随局部备择一起移动以后，估计误差的极限规律不变”；这正是局部推断可迁移性的数学表达。
+
+在 LAN 且 $I_0\succ0$ 的正则实验中，H\'ajek--Le Cam convolution theorem 说明任何 regular estimator 的极限分布都可写成
+\begin{equation}\label{eq:math-stat-hajek-convolution}
+ L
+ =\Normal_d(0,I_0^{-1})*M
+\end{equation}
+的卷积，其中 $M$ 是某个额外噪声分布。若 $L$ 有有限二阶矩，则
+\[
+ \Cov(L)\succeq I_0^{-1}.
+\]
+有效估计量对应 $M$ 退化在 $0$；MLE 在前述正则条件下正是这一情形。这个结论比有限样本 Cram\'er--Rao 更精确地说明了“渐近效率”的含义：下界约束的是整个 $n^{-1/2}$ 局部实验中稳定的估计程序，而不是只在某一个参数点观察到的方差。
+
+
+在真值 $\theta_0$ 下记
+\[
+ T_n^*=\sqrt n(T_n-\theta_0),
+ \qquad
+ \Delta_n=\frac1{\sqrt n}\sum_{i=1}^ns_{\theta_0}(X_i).
+\]
+regularity 使 $T_n^*\toD L$，而 LAN 给出 $\Delta_n\toD\Normal_d(0,I_0)$。两者边缘都紧，因此任取子序列都可再取子序列，使
+\[
+ (T_n^*,\Delta_n)\toD(T,\Delta),
+ \qquad
+ \Delta\sim\Normal_d(0,I_0),
+ \qquad
+ T\sim L.
+\]
+对局部参数 $\theta_{n,h}=\theta_0+h/\sqrt n$，LAN 的 likelihood ratio 收敛为
+\[
+ \exp\!\left(h^{\mathsf T}\Delta-
+ \frac12h^{\mathsf T}I_0h\right).
+\]
+Le Cam 第三引理于是说明：在局部备择下，极限联合分布 $Q_h$ 相对于 $Q_0$ 的密度正是上式。另一方面，regularity 要求
+\[
+ T_n^*-h
+ =\sqrt n(T_n-\theta_{n,h})
+ \toD L
+\]
+对每个固定 $h$ 都成立，因此 $T$ 在 $Q_h$ 下必须具有 $L+h$ 的分布。令
+\[
+ \varphi_L(t)=\E_{Q_0}\ee^{\ii t^{\mathsf T}T}.
+\]
+把这两个事实合并，对任意实向量 $h,t$ 有
+\begin{equation}\label{eq:math-stat-convolution-transform-identity}
+ \E_{Q_0}\!\left[
+ \ee^{\ii t^{\mathsf T}T+h^{\mathsf T}\Delta}
+ \right]
+ =\varphi_L(t)
+ \exp\!\left(
+ \frac12h^{\mathsf T}I_0h
+ +\ii t^{\mathsf T}h
+ \right).
+\end{equation}
+左端关于 $h$ 在复邻域中有解析延拓，因为 $\Delta$ 是 Gaussian，而 $|\ee^{\ii t^{\mathsf T}T}|=1$。因此可在\eqnrefs{eq:math-stat-convolution-transform-identity}中令
+\[
+ h=\ii\{s-I_0^{-1}t\}.
+\]
+定义
+\[
+ V=T-I_0^{-1}\Delta.
+\]
+则
+\begin{align*}
+ \E\ee^{\ii t^{\mathsf T}V+\ii s^{\mathsf T}\Delta}
+ &=\varphi_L(t)
+ \exp\!\left(\frac12t^{\mathsf T}I_0^{-1}t\right)
+ \exp\!\left(-\frac12s^{\mathsf T}I_0s\right).
+\end{align*}
+右端分解成只依赖 $t$ 与只依赖 $s$ 的两个因子，所以 $V$ 与 $\Delta$ 独立。又
+\[
+ I_0^{-1}\Delta\sim\Normal_d(0,I_0^{-1}),
+\]
+从而
+\[
+ T=I_0^{-1}\Delta+V
+\]
+是有效 Gaussian 噪声与独立额外噪声之和。由于上述论证对任意联合收敛子序列都成立，regular estimator 的极限分布必满足正文的卷积分解\eqnrefs{eq:math-stat-hajek-convolution}。
+\end{derivation}
+
+卷积定理仍然先限定了 regular estimator；LAN 还能给出更强的邻域型下界。令
+\[
+ \theta_{n,h}=\theta_0+\frac{h}{\sqrt n},
+ \qquad
+ Z_0\sim\Normal_d(0,I_0^{-1}).
+\]
+对任意非负、有界连续、中心对称且具有凸子水平集的损失 $L$，局部渐近最小最大定理给出：对任意估计量序列 $T_n$，
+\begin{equation}\label{eq:math-stat-local-asymptotic-minimax}
+ \lim_{c\to\infty}\liminf_{n\to\infty}
+ \sup_{\|h\|\le c}
+ \E_{\theta_{n,h}}
+ L\!\left(\sqrt n\{T_n-\theta_{n,h}\}\right)
+ \ge \E L(Z_0).
+\end{equation}
+因此 Fisher inverse 不只是 regular estimator 的卷积核；它还是整个收缩局部邻域中无法统一突破的高斯噪声尺度。对平方损失，可先取截断损失
+\[
+ L_M(u)=\min\{\|u\|^2,M\}
+\]
+应用\eqnrefs{eq:math-stat-local-asymptotic-minimax}，再在局部二阶风险一致可积时令 $M\to\infty$，得到下界 $\operatorname{tr}(I_0^{-1})$。
+
+\begin{derivation}[Gaussian shift 极限中的最小最大风险]
+LAN 的极限实验可以等价写成直接观察
+\[
+ Y=h+Z_0,
+ \qquad
+ Z_0\sim\Normal_d(0,I_0^{-1}),
+\]
+并估计局部参数 $h$。先看平方损失。平移等变估计量 $\delta(Y)=Y$ 的误差恒为 $Z_0$，所以其风险与 $h$ 无关：
+\[
+ R(h,\delta)
+ =\E_h\|Y-h\|^2
+ =\E\|Z_0\|^2
+ =\operatorname{tr}(I_0^{-1}).
+\]
+为了证明任何估计规则都不可能把最大风险压得更低，给 $h$ 一个弥散的 Gaussian 先验
+\[
+ h\sim\Normal_d(0,\tau^2I_d).
+\]
+在观测模型 $Y\mid h\sim\Normal_d(h,I_0^{-1})$ 下，后验精度相加（Gaussian--Gaussian 共轭：先验精度 \(\tau^{-2}I_d\) 加观测精度 \(I_0\)），故后验协方差为
+\[
+ V_\tau
+ =(I_0+\tau^{-2}I_d)^{-1},
+\]
+后验均值为 \(V_\tau I_0 Y\)。平方损失的 Bayes action 是后验均值，而 Bayes risk 等于后验方差迹：
+\[
+ r_\tau^*
+ =\E_h\E_{Y\mid h}\|\delta^*(Y)-h\|^2
+ =\E_h\operatorname{tr}(V_\tau)
+ =\operatorname{tr}(V_\tau).
+\]
+任意估计规则的最大风险至少不小于它在任意先验下的平均风险，所以 Gaussian shift 的最小最大风险满足
+\[
+ \inf_\delta\sup_hR(h,\delta)
+ \ge r_\tau^*.
+\]
+令 $\tau\to\infty$，先验精度 \(\tau^{-2}I_d\to0\)，故
+\[
+ r_\tau^*=\operatorname{tr}\{(I_0+\tau^{-2}I_d)^{-1}\}\to\operatorname{tr}(I_0^{-1}).
+\]
+而 $\delta(Y)=Y$ 已经达到同一个常数风险，因此极限实验的平方损失最小最大风险恰为 $\operatorname{tr}(I_0^{-1})$。这一步完整计算的是\emph{极限 Gaussian shift 实验}的风险。
+
+从极限实验回到原始 LAN 实验还需要 Le Cam 的局部实验比较定理：有限个局部参数下的 likelihood-ratio 向量由 LAN 收敛到 Gaussian shift 中相应的 likelihood-ratio 向量，再利用随机化决策规则的紧性与风险下半连续性，把任意原实验估计程序的局部风险下极限转移到极限实验。这个"实验收敛 $\Rightarrow$ 风险下界转移"是局部渐近最小最大定理中独立于上面 Gaussian 风险计算的非平凡部分，不能由一次 Taylor 展开替代。对有界 bowl-shaped loss 不需要额外二阶矩控制；平方损失则先截断，再在局部二阶风险一致可积时解除截断。
+
+\emph{举例：正态位置的最小最大性。}对 \(X_1,\ldots,X_n\iid\Normal(\theta,1)\)，\(I_0=1\)，\(\bar X\) 的局部风险 \(\E\|\sqrt n(\bar X-\theta)\|^2=1=\operatorname{tr}(I_0^{-1})\)。Hodges 估计在 \(\theta=0\) 处达到超效率 \(o(n^{-1})\)，但 Le Cam 三引理保证这种逐点改进不能在邻域上整体压低最小最大常数 \(1\)。这正是 Hájek--Le Cam 下界的内容：正则估计的最大风险 \(\ge\operatorname{tr}(I_0^{-1})\)，超效率只能在零测集上发生。
+
+\emph{更一般结论：Hájek 投影下界与 Le Cam 引理。}对任意 bowl-shaped 损失 \(L\)，极限实验最小最大风险为 \(\E L(Z_0)\)，\(Z_0\sim\Normal_d(0,I_0^{-1})\)。Le Cam 第三引理把原实验的局部风险列下极限与极限实验风险通过 likelihood-ratio 加权联系起来，是局部渐近理论从"Gaussian 计算"过渡到"原实验结论"的桥梁。Bernstein--von Mises 定理可看作这一框架在 Bayes 后验下的对应：后验局部化后渐近 Gaussian，且中心在 MLE，方差为 \(I_0^{-1}/n\)。
+
+\emph{物理建模：量子参数估计的 Heisenberg 下界。}Gaussian shift 最小最大风险 \(\operatorname{tr}(I_0^{-1})\) 与量子参数估计的量子 Cramér--Rao 下界 \(\operatorname{tr}(J_Q^{-1})\)（\(J_Q\) 为量子 Fisher 信息）同构。经典与量子下界的差异在于 \(J_Q\ge J_C\)（量子信息不小于经典信息），因此量子估计原则上可超越经典极限——这是量子计量学的理论基础。最小最大常数对应量子 Heisenberg 不确定关系的统计形式：\(\Delta\theta\cdot\Delta p\ge1/2\) 中的 \(1/2\) 正是单参数 Gaussian shift 的最小最大风险。
+
+\emph{举例：位置参数的常数风险估计。}对 \(X\sim\Normal(\theta,1)\)，\(\delta(X)=X\) 风险恒为 1。James--Stein 估计 \(\delta^{JS}(X)=(1-(p-2)/\|X\|^2)X\) 在 \(p\ge3\) 时最大风险严格小于 1，违反正态均值估计的"显然最优"。这一现象的 Le Cam 解释是：Gaussian shift 极限实验的最小最大风险只在\emph{极限}中达到，有限样本下存在严格改进；但改进只能在 \(p\ge3\) 出现，\(p=1,2\) 时 \(\delta(X)=X\) 仍最小最大。
+
+
+\textbf{例（Hodges 估计量：逐点超效率为何不违反 Fisher 下界）.}\enspace 在最简单的正态位置模型
+\[
+ X_i\iid\Normal(\theta,1)
+\]
+中定义
+\[
+ \widetilde\theta_n
+ =\begin{cases}
+ 0,&|\overline X_n|\le n^{-1/4},\\
+ \overline X_n,&|\overline X_n|>n^{-1/4}.
+ \end{cases}
+\]
+在固定真值 $\theta=0$ 下，$\overline X_n=O_{\Pbb}(n^{-1/2})$，而 $n^{-1/2}=o(n^{-1/4})$，故
+\[
+ \Pbb_0\{|\overline X_n|\le n^{-1/4}\}\to1.
+\]
+因此
+\[
+ \sqrt n\,\widetilde\theta_n\toP0,
+\]
+表面上它在 $\theta=0$ 的渐近方差甚至小于 Fisher 下界 $1$。
+
+但取局部备择 $\theta_{n,h}=h/\sqrt n$。此时
+\[
+ \overline X_n
+ =\frac h{\sqrt n}+O_{\Pbb}(n^{-1/2})
+ =O_{\Pbb}(n^{-1/2}),
+\]
+所以仍有 $|\overline X_n|\le n^{-1/4}$ 的概率趋于 $1$，从而
+\[
+ \sqrt n(\widetilde\theta_n-\theta_{n,h})
+ \toP-h.
+\]
+极限显式依赖 $h$，违反\eqnrefs{eq:math-stat-regular-estimator}。Hodges 估计量的“超效率”因此是用邻域中的严重不稳定换来的；它没有推翻 convolution theorem，而是退出了该定理比较的 regular 类。
+
+MLE 渐近正态性给出 Wald 型置信椭球。若 $I(\widehat\theta_n)\toP I_0$，则
+\[
+ n(\widehat\theta_n-\theta_0)^{\mathsf T}
+ I(\widehat\theta_n)
+ (\widehat\theta_n-\theta_0)
+ \toD\chiSq_d.
+\]
+因此一阶 $1-\alpha$ 置信域可以写成相应 Fisher 椭球。其覆盖率只是渐近趋于 $1-\alpha$，不能与 \chapref{chap:math-stat-gaussian-sampling} 的有限样本精确枢轴区间混淆。
+
+若工作模型错设，经验 log-likelihood 仍然是一个 $M$-估计准则。真分布为 $P_0$ 时，极限参数是 KL 投影
+\[
+ \theta^*=\argmin_\theta
+ D_{\rm KL}(P_0\Vert P_\theta).
+\]
+若 $\theta^*$ 是总体 KL 准则的唯一内点极值，$\widehat\theta_n\toP\theta^*$，score 在其邻域可微，经验 Hessian 一致收敛到非奇异矩阵 $-A$，并且 $n^{-1/2}\sum_i s_{\theta^*}(X_i)$ 满足协方差为 $B$ 的多元 CLT，则得分方程线性化给出
+\[
+ \sqrt n(\widehat\theta_n-\theta^*)
+ \toD\Normal_d(0,A^{-1}BA^{-\mathsf T}),
+\]
+其中
+\[
+ A=-\E_0\nabla^2\log p_{\theta^*}(X),
+ \qquad
+ B=\E_0[s_{\theta^*}(X)s_{\theta^*}(X)^{\mathsf T}].
+\]
+只有模型正确设定时信息恒等式才给出 $A=B=I(\theta_0)$。这就是 sandwich 协方差的来源，也说明“Fisher inverse 是 MLE 方差”必须附带正确设模与正则条件。
+
+\begin{note}[EM 只解决优化，不修复统计正则性]
+潜变量模型中可令
+\[
+ q_t(z)=p_{\theta^{(t)}}(z\mid x),
+ \qquad
+ Q(\theta\mid\theta^{(t)})
+ =\E_{q_t}\log p_\theta(x,Z).
+\]
+Bayes 恒等式给出
+\begin{equation}\label{eq:math-stat-em-kl-decomposition}
+ \ell(\theta)-\ell(\theta^{(t)})
+ =Q(\theta\mid\theta^{(t)})-Q(\theta^{(t)}\mid\theta^{(t)})
+ +D_{\rm KL}\!\left(q_t\Vert p_\theta(\,\cdot\mid x)\right).
+\end{equation}
+所以只要 M 步使 $Q$ 不下降，就有
+\begin{equation}\label{eq:math-stat-em-monotonicity}
+ \ell(\theta^{(t+1)})\ge\ell(\theta^{(t)}).
+\end{equation}
+但这只是优化单调性。混合模型可能有局部极值、标签不可识别、奇异 Fisher 信息甚至无界 likelihood；EM 并不会使这些模型自动满足普通 MLE、Wilks 或 BvM 的正则条件。
+\end{note}
+
+
+接下来考察半参数切空间、影响函数与效率界。
+
+有限维 LAN 把局部模型压缩成 $d$ 维 Gaussian shift；但许多统计问题同时包含有限维目标参数与无限维 nuisance。例如密度本身未知而只关心均值、分位数、回归函数某个线性泛函，或缺失机制/误差分布作为无限维未知量。这时 Fisher 信息矩阵不再足够，必须把``所有可行局部扰动''组织成 Hilbert 空间中的 tangent space。
+
+固定真实分布 $P$。一条 regular parametric submodel 是一族
+\[
+\{P_t:-\varepsilon<t<\varepsilon\}
+\subset\mathcal P,
+\qquad P_0=P,
+\]
+并在 $t=0$ 处具有 QMD score $s\in L_0^2(P)$：
+\[
+\int s\,\dd P=0,
+\qquad
+\left\|
+\sqrt{\frac{\dd P_t}{\dd\mu}}
+-
+\sqrt{\frac{\dd P}{\dd\mu}}
+-
+\frac t2 s\sqrt{\frac{\dd P}{\dd\mu}}
+\right\|_{L^2(\mu)}
+=o(t).
+\]
+把模型中所有这类 submodel score 的线性张成取 $L^2(P)$ 闭包，得到 tangent space
+\begin{equation}
+\boxed{
+\mathcal T_P
+:=\overline{\operatorname{span}}
+\{s:\ s\text{ 是某条 regular submodel 的 score}\}
+\subseteq L_0^2(P).
+}
+\label{eq:math-stat-semiparametric-tangent-space}
+\end{equation}
+这一定义不要求整个模型能被某个无限维坐标参数化；它只保留真值附近所有一阶可辨认方向。
+
+设目标参数是映射
+\[
+\Psi:\mathcal P\to\RR^q.
+\]
+若对每条 score 为 $s$ 的 regular submodel，方向导数
+\[
+\dot\Psi_P(s)
+:=\left.\frac{\dd}{\dd t}\Psi(P_t)\right|_{t=0}
+\]
+存在，并且 $s\mapsto\dot\Psi_P(s)$ 是 $\mathcal T_P$ 上连续线性泛函，则称 $\Psi$ 在 $P$ 处 pathwise differentiable。由 Riesz 表示，存在唯一
+\[
+\phi_{\mathrm{eff}}
+\in\mathcal T_P^q
+\]
+使
+\begin{equation}
+\boxed{
+\dot\Psi_P(s)
+=
+\E_P\bigl[\phi_{\mathrm{eff}}(X)s(X)\bigr],
+\qquad s\in\mathcal T_P.
+}
+\label{eq:math-stat-pathwise-gradient}
+\end{equation}
+这个 Riesz representer 称为 canonical gradient 或 efficient influence function (EIF)。它是无限维 Fisher 几何中真正对应于 $I^{-1}s$ 的对象。
+
+更一般地，一个均值为零的函数 $\phi\in L_0^2(P)^q$ 若满足
+\[
+\dot\Psi_P(s)
+=
+\E_P[\phi s]
+\qquad\forall s\in\mathcal T_P,
+\]
+也称为 influence function。任意两个 influence functions 之差都正交于 $\mathcal T_P$。因此
+\[
+\phi
+=\phi_{\mathrm{eff}}+h,
+\qquad h\in\mathcal T_P^\perp,
+\]
+并由 Pythagoras 得
+\begin{equation}
+\boxed{
+\Var_P(\phi)
+=
+\Var_P(\phi_{\mathrm{eff}})
++\Var_P(h)
+\succeq
+\Var_P(\phi_{\mathrm{eff}})
+}
+\label{eq:math-stat-semiparametric-efficiency-bound}
+\end{equation}
+这里最后一个不等式按半正定矩阵理解。于是半参数效率界不是另一个独立的 Cram\'er--Rao 公式，而是 tangent-space 正交投影的直接结果。
+
+
+设有限维参数写成 $\theta=(\psi,\eta)$，score 分块为
+\[
+ s_\theta=
+ \begin{pmatrix}
+ s_\psi\\ s_\eta
+ \end{pmatrix},
+ \qquad
+ I=
+ \begin{pmatrix}
+ I_{\psi\psi}&I_{\psi\eta}\\
+ I_{\eta\psi}&I_{\eta\eta}
+ \end{pmatrix}.
+\]
+nuisance tangent space 是 $s_\eta$ 各线性组合张成的有限维子空间 \(\mathcal T_\eta=\{B^{\mathsf T}s_\eta:B\in\R^{r\times q}\}\)。把 $s_\psi$ 正交投影到其正交补 \(\mathcal T_\eta^\perp\)：找 \(B^*\) 使 \(s_\psi-B^{{\mathsf T}*}s_\eta\perp\mathcal T_\eta\)，即
+\[
+\E\{(s_\psi-B^{{\mathsf T}*}s_\eta)s_\eta^{\mathsf T}\}=0
+\quad\Longrightarrow\quad
+I_{\psi\eta}-B^{{\mathsf T}*}I_{\eta\eta}=0
+\quad\Longrightarrow\quad
+B^*=I_{\eta\eta}^{-1}I_{\eta\psi}.
+\]
+代入得 efficient score
+\[
+ s_{\mathrm{eff}}
+ =s_\psi-
+ I_{\psi\eta}I_{\eta\eta}^{-1}s_\eta.
+\]
+其方差为
+\[
+ \begin{aligned}
+ I_{\mathrm{eff}}
+ &=\E(s_{\mathrm{eff}}s_{\mathrm{eff}}^{\mathsf T})\\
+ &=I_{\psi\psi}
+ -I_{\psi\eta}I_{\eta\eta}^{-1}I_{\eta\psi}
+ -I_{\psi\eta}I_{\eta\eta}^{-1}I_{\eta\psi}
+ +I_{\psi\eta}I_{\eta\eta}^{-1}I_{\eta\eta}I_{\eta\eta}^{-1}I_{\eta\psi}\\
+ &=I_{\psi\psi}
+ -I_{\psi\eta}I_{\eta\eta}^{-1}I_{\eta\psi},
+ \end{aligned}
+\]
+正是 Schur complement。对参数 $\psi$ 的 efficient influence function 则是
+\[
+ \phi_{\mathrm{eff}}
+ =I_{\mathrm{eff}}^{-1}s_{\mathrm{eff}}.
+\]
+因此后文 profile likelihood 中的 ``消去 nuisance'' 与这里无限维 tangent-space projection 是完全同一几何操作；有限维矩阵公式只是投影算子可显式写出的特例。
+
+\emph{举例：正态两参数的 efficient score。}对 \(\Normal(\mu,\sigma^2)\)，兴趣参数 \(\psi=\mu\)，nuisance \(\eta=\sigma^2\)。Score
+\[
+s_\mu=\frac{X-\mu}{\sigma^2},
+\qquad
+s_{\sigma^2}=\frac{(X-\mu)^2}{2\sigma^4}-\frac1{2\sigma^2},
+\]
+Fisher 信息分块 \(I_{\mu\mu}=1/\sigma^2\)、\(I_{\mu,\sigma^2}=0\)、\(I_{\sigma^2,\sigma^2}=1/(2\sigma^4)\)。因 \(I_{\mu,\sigma^2}=0\)，efficient score \(s_{\rm eff}=s_\mu\)，efficient 信息 \(I_{\rm eff}=1/\sigma^2\)。即正态中均值与方差参数正交，nuisance \(\sigma^2\) 不影响 \(\mu\) 的有效方差。若改为兴趣参数 \(\psi=\sigma^2\)、nuisance \(\eta=\mu\)，则 \(I_{\sigma^2,\mu}=0\) 仍成立，两参数始终正交。
+
+\emph{更一般结论：半参数有效信息。}当 nuisance 是无限维（如分布函数、连接函数），tangent space 是无限维闭子空间，efficient score 仍定义为 \(s_\psi\) 到 nuisance tangent space 正交补的投影，但投影算子一般无显式公式。Cramér--Rao 型下界推广为
+\[
+\Var(\text{efficient estimator})\ge I_{\rm eff}^{-1}/n,
+\]
+达到此下界的估计量称为半参数有效。经验似然、双稳健估计与增广逆概率加权估计都是构造 efficient influence function 的具体实现路径。
+
+
+对渐近线性估计量，influence function 具有直接抽样含义。若
+\begin{equation}
+\sqrt n\{T_n-\Psi(P)\}
+=
+\frac1{\sqrt n}
+\sum_{i=1}^n\phi(X_i)
++o_P(1),
+\label{eq:math-stat-semiparametric-asymptotic-linear}
+\end{equation}
+且 $\E_P\phi=0$、$\E_P\|\phi\|^2<\infty$，则多元 CLT 给出
+\[
+\sqrt n\{T_n-\Psi(P)\}
+\Longrightarrow
+\Normal_q(0,\Var_P\phi).
+\]
+若 $T_n$ 在模型的所有 $n^{-1/2}$ 局部 submodels 下 regular，则它的 $\phi$ 必须满足 pathwise derivative 方程，因此其渐近协方差不能低于\eqnrefs{eq:math-stat-semiparametric-efficiency-bound}。达到 EIF 方差的 regular estimator 称为 semiparametrically efficient。
+
+最简单的例子是完全非参数模型中的均值
+\[
+\Psi(P)=\int x\,P(\dd x)=:\mu.
+\]
+沿 score $s$ 的 submodel，
+\[
+\dot\Psi_P(s)
+=\int x s(x)\,P(\dd x)
+=\E_P[(X-\mu)s(X)],
+\]
+因为 $\E_Ps=0$。所以
+\[
+\boxed{
+\phi_{\mathrm{eff}}(x)=x-\mu
+}
+\]
+且效率界就是 $\Var_P(X)$。样本均值满足
+\[
+\sqrt n(\overline X_n-\mu)
+=\frac1{\sqrt n}\sum_{i=1}^n(X_i-\mu),
+\]
+所以它在整个非参数有限方差模型中已经有效；这里根本不需要假设正态分布。
+
+另一个更能体现函数参数微分的例子是 $p$-分位数
+\[
+q_p(P):=F_P^{-1}(p).
+\]
+假设 $F$ 在 $q_p$ 邻域可微且密度 $f(q_p)>0$。沿 score $s$ 的 submodel，由恒等式
+\[
+F_t(q_p(P_t))=p
+\]
+对 $t$ 求导：
+\[
+0
+=
+\E_P[\ind_{\{X\le q_p\}}s(X)]
++f(q_p)\dot q_p(s).
+\]
+又因 $\E s=0$ 且 $F(q_p)=p$，可写成
+\[
+\dot q_p(s)
+=
+\E_P\left[
+\frac{p-\ind_{\{X\le q_p\}}}{f(q_p)}s(X)
+\right].
+\]
+因此
+\begin{equation}
+\boxed{
+\phi_{q_p}(x)
+=
+\frac{p-\ind_{\{x\le q_p\}}}{f(q_p)}
+}
+\label{eq:math-stat-quantile-eif}
+\end{equation}
+并得到效率界
+\[
+\Var(\phi_{q_p})
+=
+\frac{p(1-p)}{f(q_p)^2}.
+\]
+这与经验分位数的经典渐近方差一致，也解释了为什么分位数在密度很小的区域估计更不稳定。
+
+实际构造 efficient estimator 时，EIF 往往依赖未知 nuisance。若已有初始估计 $\widehat P$，一阶 one-step 修正具有通用形式
+\begin{equation}
+\boxed{
+\widehat\Psi_{\mathrm{1step}}
+=
+\Psi(\widehat P)
++P_n\phi_{\mathrm{eff}}(\widehat P)
+}.
+\label{eq:math-stat-one-step}
+\end{equation}
+若 nuisance 估计足够快并满足适当二阶余项条件，第一项的 plug-in bias 会被 EIF 校正到 $o_P(n^{-1/2})$，于是主随机项重新变成
+\[
+(P_n-P)\phi_{\mathrm{eff}}(P).
+\]
+现代 cross-fitting 的作用之一，就是把复杂机器学习 nuisance 与这一经验过程主项解耦，从而在较弱 Donsker 条件下仍保留 $n^{-1/2}$ 推断。具体算法可以很多，但理论判据始终是同一个：目标泛函必须 pathwise differentiable，且二阶 remainder 必须比 $n^{-1/2}$ 更小。
+
+\begin{note}[不可 pathwise differentiable 时为何没有普通 root-$n$ 正态极限]
+若 $s\mapsto\dot\Psi_P(s)$ 不能由某个 $L^2(P)$ 函数表示，则不存在有限方差 influence function。此时普通 regular asymptotically linear estimator 的 $n^{-1/2}$ 理论没有支点，问题可能需要更慢速率、非高斯极限或额外平滑假设。点态密度值 $p(x_0)$ 在完全非参数模型中就是典型例子：它对越来越局部的扰动过于敏感，因此不能像均值那样拥有 $L^2$ EIF。
+\end{note}
+
+\textbf{过渡：Bayes 风险、后验与 Bernstein--von Mises 极限.}\enspace
+
+Bayes 模型在 likelihood 之外给参数指定先验概率测度 $\Pi$。首先必须区分“先验测度”和“先验密度”：测度是坐标无关对象，密度会随参数坐标改变。若 $\eta=g(\theta)$ 是局部微分同胚，逆映射为 $\theta=h(\eta)$，则同一个先验测度满足
+\begin{equation}\label{eq:math-stat-prior-density-transform}
+ \pi_\eta(\eta)
+ =\pi_\theta\{h(\eta)\}
+ \left|\det\frac{\partial h(\eta)}{\partial\eta^{\mathsf T}}\right|.
+\end{equation}
+因此“某个密度在参数空间上是常数”不是坐标不变陈述；非线性重参数化会产生 Jacobian。这个事实也预示了后面 MAP 的坐标依赖性：众数依赖所选密度坐标，而先验测度本身不依赖坐标。
+
+Fisher 度量提供一个自然的坐标不变体积元。由\eqnrefs{eq:math-stat-fisher-reparameterization}，若
+\[
+ H(\eta)=\frac{\partial h(\eta)}{\partial\eta^{\mathsf T}},
+\]
+则
+\[
+ \det I_\eta(\eta)
+ =\det(H)^2\det I_\theta\{h(\eta)\}.
+\]
+于是
+\begin{equation}\label{eq:math-stat-fisher-volume-element}
+ \sqrt{\det I_\eta(\eta)}\,\dd\eta
+ =\sqrt{\det I_\theta(\theta)}\,\dd\theta.
+\end{equation}
+这导出 Jeffreys 先验
+\begin{equation}\label{eq:math-stat-jeffreys-prior}
+ \pi_J(\theta)\propto\sqrt{\det I(\theta)},
+\end{equation}
+它在光滑一一重参数化下表示同一个先验测度。Jeffreys 构造只解决坐标不变性，并不保证先验可归一化、后验必为 proper，也不保证在边界或奇异模型中具有良好频率性质；这些仍需逐模型检查。
+
+若先验关于当前坐标中的 Lebesgue 测度有密度 $\pi(\theta)$，则观察 $X^n=x^n$ 后
+\begin{equation}\label{eq:math-stat-bayes-posterior}
+ \pi(\theta\mid x^n)
+ =\frac{L_n(\theta;x^n)\pi(\theta)}
+ {\int_\Theta L_n(\theta';x^n)\pi(\theta')\,\dd\theta'}.
+\end{equation}
+这里的后验概率是“在给定数据以后对参数不确定性的概率描述”；频率学派中参数仍固定，置信覆盖概率则对重复样本取概率。两个概率空间不同，不能仅凭区间数值相近就交换解释。
+
+若给定损失 $L(a,\theta)$，数据 $x^n$ 后的后验风险为
+\[
+ \mathcal R_\Pi(a\mid x^n)
+ =\int_\Theta L(a,\theta)\,\Pi(\dd\theta\mid x^n).
+\]
+最小化它得到 Bayes action。平方损失下是后验均值，绝对损失下是后验中位数。MAP 是后验密度的众数；连续参数下它只能通过“小邻域命中”之类的局部 $0$--$1$ 损失极限得到，而且后验密度众数会随非线性重参数化改变，因此不能脱离损失函数把 MAP 称为普适的“最佳点估计”。预先对样本也取平均得到 Bayes risk
+\[
+ r(\Pi,\delta)
+ =\int_\Theta R(\theta,\delta)\,\Pi(\dd\theta).
+\]
+这把前面频率风险与先验权重连接起来。Bayes rule 的关键不是某个共轭公式，而是这个整体风险可以按观测值分解为后验风险的平均。
+
+
+为简化记号，设样本实验被 $\mu_n$ 支配，联合密度为 $p_\theta^{(n)}(x)$，并记先验预测密度
+\[
+ m_\Pi(x)
+ =\int_\Theta p_\theta^{(n)}(x)\,\Pi(\dd\theta).
+\]
+对任意决策规则 $\delta$，由 Tonelli/Fubini 定理，
+\begin{align*}
+ r(\Pi,\delta)
+ &=\int_\Theta\int
+ L\{\delta(x),\theta\}
+ p_\theta^{(n)}(x)\,\mu_n(\dd x)\,\Pi(\dd\theta)\\
+ &=\int m_\Pi(x)
+ \left[
+ \int_\Theta L\{\delta(x),\theta\}
+ \Pi(\dd\theta\mid x)
+ \right]\mu_n(\dd x)\\
+ &=\int m_\Pi(x)
+ \mathcal R_\Pi\{\delta(x)\mid x\}
+ \,\mu_n(\dd x).
+\end{align*}
+权重 $m_\Pi(x)$ 非负。若后验风险的逐点极小值存在，并且极小点集合允许选取一个可测选择 $x\mapsto\delta^*(x)$，使
+\[
+ \delta^*(x)
+ \in\argmin_a\mathcal R_\Pi(a\mid x)
+ \qquad m_\Pi(x)\mu_n(\dd x)\text{-a.e.},
+\]
+则对任意可测决策规则 $\delta$，逐点都有
+\[
+ \mathcal R_\Pi\{\delta^*(x)\mid x\}
+ \le
+ \mathcal R_\Pi\{\delta(x)\mid x\},
+\]
+乘以 $m_\Pi(x)$ 后积分便得到
+\[
+ r(\Pi,\delta^*)\le r(\Pi,\delta).
+\]
+因此 $\delta^*$ 同时最小化整个 Bayes risk。若逐点极小值不一定取得，则需要使用可测 $\varepsilon$-极小选择并令 $\varepsilon\downarrow0$；这时得到的是 Bayes risk 的下确界而不是未经条件保证的“极小点”。也就是说，“先算后验，再最小化后验风险”并不是另一套独立原则，而是联合风险经 Bayes 公式重排后的逐点优化；可测选择条件负责把逐点优化真正拼成一个合法的决策规则。
+
+标量平方损失下，令后验均值为 $m_x=\E(\theta\mid x)$，则
+\begin{align*}
+ \E\{(a-\theta)^2\mid x\}
+ &=\E\{(a-m_x+m_x-\theta)^2\mid x\}\\
+ &=(a-m_x)^2+\Var(\theta\mid x),
+\end{align*}
+交叉项因为 $\E(m_x-\theta\mid x)=0$ 消失，所以唯一极小点是 $a=m_x$。绝对损失
+\[
+ q_x(a)=\E(|a-\theta|\mid x)
+\]
+的左右导数分别由后验分布函数控制；其极小点恰满足
+\[
+ \Pi(\theta\le a\mid x)\ge\frac12,
+ \qquad
+ \Pi(\theta\ge a\mid x)\ge\frac12,
+\]
+即任一后验中位数。平方损失与绝对损失给出不同 Bayes action，说明“最佳点估计”必须连同损失函数一起定义。
+
+
+\textbf{例（Beta--Bernoulli 与 Normal--Normal）.}\enspace 若 $X_i\iid\Bern(p)$、$p\sim\BetaD(a,b)$，记 $S=\sum_iX_i$，则
+\[
+ p\mid X^n\sim\BetaD(a+S,b+n-S).
+\]
+后验均值为
+\[
+ \E(p\mid X^n)
+ =\frac{a+b}{a+b+n}\frac{a}{a+b}
+ +\frac{n}{a+b+n}\frac{S}{n},
+\]
+显示先验中心与经验比例按“等效样本量”加权。
+
+若
+\[
+ X_i\iid\Normal(\mu,\sigma^2),
+ \qquad
+ \mu\sim\Normal(m_0,v_0),
+\]
+且 $\sigma^2$ 已知，则后验仍为正态，精度相加：
+\[
+ v_n^{-1}=v_0^{-1}+\frac{n}{\sigma^2},
+\]
+\[
+ m_n
+ =v_n\left(\frac{m_0}{v_0}
+ +\frac{n\overline X}{\sigma^2}\right).
+\]
+新的独立观测满足后验预测分布
+\[
+ X_{n+1}\mid X^n
+ \sim\Normal(m_n,\sigma^2+v_n),
+\]
+其中 $\sigma^2$ 是不可约的新观测噪声，$v_n$ 是参数不确定性。
+
+本书的 Gamma 参数统一采用 shape--rate 形式。若
+\[
+ X_i\mid\lambda\iid\Poisson(\lambda),
+ \qquad
+ \lambda\sim\GammaD(a,b),
+\]
+则 posterior kernel 为
+\[
+ \lambda^{\sum_iX_i}e^{-n\lambda}
+ \lambda^{a-1}e^{-b\lambda}
+ =\lambda^{a+\sum_iX_i-1}
+ e^{-(b+n)\lambda}.
+\]
+与 shape--rate Gamma 核逐项比较得到
+\[
+ \lambda\mid X^n
+ \sim\GammaD\!\left(a+\sum_{i=1}^nX_i,b+n\right).
+\]
+这里后验第二个参数仍是 rate；若把它误当成 scale，共轭更新、后验均值与预测分布都会整体出错。
+
+共轭性只是让积分闭式可算，并不是 Bayes 推断的逻辑基础。一般模型可以通过 Laplace 方法、重要性抽样、MCMC 或其他数值方法近似\eqnrefs{eq:math-stat-bayes-posterior}。理论上更重要的问题是：当 $n$ 很大时，后验局部形状是否也由前面的 LAN 二次型控制。
+
+设真实值 $\theta_0\in\operatorname{int}\Theta$，模型是固定有限维正则模型。为了把局部二次核升级为总变差意义的后验正态性，不能只要求普通后验一致性和“每个固定球上的 LAN”。下面采用一组足够强而清楚的充分条件：存在确定序列
+\[
+ M_n\to\infty,
+ \qquad
+ M_n=o(\sqrt n),
+\]
+使后验在 $n^{-1/2}$ 局部坐标中集中于该扩张球，
+\begin{equation}\label{eq:math-stat-bvm-rootn-concentration}
+ \Pi\!\left(
+ \sqrt n\|\theta-\theta_0\|>M_n
+ \middle|X^n
+ \right)\toP0,
+\end{equation}
+并且 LAN 余项满足扩张球上的一致控制
+\[
+ \sup_{\|h\|\le M_n}|R_n(h)|\toP0,
+\]
+其中
+\[
+ \ell_n(\theta_0+h/\sqrt n)-\ell_n(\theta_0)
+ =h^{\mathsf T}\Delta_n-
+ \frac12h^{\mathsf T}I_0h+R_n(h).
+\]
+再要求 $I_0\succ0$，以及先验密度在 $\theta_0$ 连续并严格为正；由 $M_n/\sqrt n\to0$ 可取该序列使
+\[
+ \sup_{\|h\|\le M_n}
+ \left|
+ \frac{\pi(\theta_0+h/\sqrt n)}{\pi(\theta_0)}-1
+ \right|\to0.
+\]
+这些条件是便于直接证明下式的一组充分条件；在更一般的 BvM 定理中，扩张球上的控制可由局部检验、后验收缩与模型特有的经验过程论证替代，但不能从固定球 LAN 自动推出。令
+\[
+ h=\sqrt n(\theta-\theta_0).
+\]
+则局部后验核为
+\[
+ \exp\!\left[
+ h^{\mathsf T}\Delta_n
+ -\frac12h^{\mathsf T}I_0h
+ +o_{\Pbb}(1)
+ \right]
+ \pi\!\left(\theta_0+\frac h{\sqrt n}\right).
+\]
+先验在该尺度上趋于常数，而 likelihood 的二次项完成平方后中心为 $I_0^{-1}\Delta_n$。结合 MLE 的表示\eqnrefs{eq:math-stat-mle-score-representation}，典型 Bernstein--von Mises 结论是
+\begin{equation}\label{eq:math-stat-bvm-local}
+ \sup_{B\in\mathcal B(\R^d)}
+ \left|
+ \Pi\!\left(
+ \sqrt n(\theta-\widehat\theta_n)\in B
+ \mid X^n
+ \right)
+ -\Normal_d(0,I_0^{-1})(B)
+ \right|
+ \toP0.
+\end{equation}
+这里是总变差意义的随机收敛；它比“后验均值和方差看起来近似正态”更强。
+
+
+把局部参数写成
+\[
+ h=I_0^{-1}\Delta_n+z.
+\]
+这一变量替换把 LAN 二次型的顶点 \(I_0^{-1}\Delta_n\) 平移到原点，\(z\) 即相对于顶点的位移。LAN 主项满足
+\[
+ \begin{aligned}
+ h^{\mathsf T}\Delta_n-\frac12h^{\mathsf T}I_0h
+ &=h^{\mathsf T}\Delta_n-\frac12h^{\mathsf T}I_0h\\
+ &=(I_0^{-1}\Delta_n+z)^{\mathsf T}\Delta_n
+   -\frac12(I_0^{-1}\Delta_n+z)^{\mathsf T}I_0(I_0^{-1}\Delta_n+z)\\
+ &=\Delta_n^{\mathsf T}I_0^{-1}\Delta_n+z^{\mathsf T}\Delta_n
+   -\frac12\Delta_n^{\mathsf T}I_0^{-1}\Delta_n
+   -z^{\mathsf T}\Delta_n
+   -\frac12z^{\mathsf T}I_0z\\
+ &=\frac12\Delta_n^{\mathsf T}I_0^{-1}\Delta_n
+   -\frac12z^{\mathsf T}I_0z.
+ \end{aligned}
+\]
+第一个项与 $z$ 无关，会在后验归一化常数中消去。因此，只要 LAN 余项在后验实际集中的局部区域上一致为 $o_{\Pbb}(1)$，且
+\[
+ \frac{\pi(\theta_0+h/\sqrt n)}{\pi(\theta_0)}\to1
+\]
+在有界 $h$ 上一致成立（先验在 \(n^{-1/2}\) 尺度局部缓变），局部后验密度与
+\[
+ z\mapsto
+ \frac{|I_0|^{1/2}}{(2\pi)^{d/2}}
+ \exp\!\left(-\frac12z^{\mathsf T}I_0z\right)
+\]
+之比趋于 $1$。后验集中条件负责说明有界局部区域之外的质量可以忽略：即对任意 \(M_n\to\infty\)（缓增），\(\Pi(\|h\|>M_n\mid X^n)\toP0\)。最后用
+\[
+ I_0^{-1}\Delta_n
+ =\sqrt n(\widehat\theta_n-\theta_0)+o_{\Pbb}(1)
+\]
+把中心从随机 LAN 顶点换成 MLE，即得到\eqnrefs{eq:math-stat-bvm-local}。因此 BvM 的三块必要输入分别是：后验先集中、likelihood 在集中尺度上二次化、先验在该尺度上近似常数。
+
+\emph{举例：正态均值后验的精确 BvM。}对 \(X_1,\ldots,X_n\iid\Normal(\theta,1)\) 配先验 \(\pi\) 在真值 \(\theta_0\) 连续且严格正，后验
+\[
+\pi(\theta\mid X^n)\propto\pi(\theta)\exp\!\left\{-\frac n2(\theta-\bar X)^2\right\}.
+\]
+取 \(z=\sqrt n(\theta-\bar X)\)，则
+\[
+\pi(\theta_0+(\bar X-\theta_0)+z/\sqrt n)\to\pi(\theta_0),
+\]
+后验 \(z\) 密度趋于 \((2\pi)^{-1/2}\ee^{-z^2/2}\)，即 \(\sqrt n(\theta-\bar X)\mid X^n\toD\Normal(0,1)\)。这里 BvM 是精确的，因 likelihood 本身就是 Gaussian。
+
+\emph{更一般结论：Bernstein--von Mises 与非参数 Bayesian。}BvM 在半参数模型中仍可成立，只要先验在参数方向上"充分光滑"且在 nuisance 方向上"足够不集中"。但在纯非参数模型（如先验放在分布函数空间）中，BvM 一般失效：后验收缩速率不再是 \(n^{-1/2}\)，且极限形状依赖先验的光滑度参数。这把 BvM 与频率统计的 \(\sqrt n\) 渐近理论区分开：BvM 是"参数 + 半参数"现象，不是普遍 Bayesian 现象。
+
+\emph{物理建模：BvM 与系综等价。}BvM 定理的物理对应是统计系综等价：在热力学极限下，不同系综（microcanonical、canonical、grand canonical）给出相同的宏观可观测量分布。BvM 中"后验渐近 Gaussian 中心在 MLE"对应"不同先验在热力学极限下给出相同后验"——先验选择（系综选择）在大样本下不重要，因为 likelihood（能量函数）主导后验（概率测度）。这正是统计力学中"边界条件不重要"的 Bayesian 表述。
+\end{derivation}
+
+BvM 的价值不只在“后验形状近似正态”。设 $g:\Theta\to\R^k$ 在 $\theta_0$ 可微，Jacobian 为 $G_0$。把后验局部变量写成
+\[
+ H_n=\sqrt n(\theta-\widehat\theta_n).
+\]
+由 BvM、$g$ 的局部可微性与后验集中，对任意有界连续函数 $\varphi:\R^k\to\R$，都有
+\begin{equation}\label{eq:math-stat-bvm-delta}
+ \int
+ \varphi\!\left(
+ \sqrt n\{g(\theta)-g(\widehat\theta_n)\}
+ \right)
+ \Pi(\dd\theta\mid X^n)
+ \toP
+ \E\varphi(Z_g),
+ \qquad
+ Z_g\sim\Normal_k(0,G_0I_0^{-1}G_0^{\mathsf T}).
+\end{equation}
+这里写成有界连续测试函数的后验积分收敛，是为了明确这一步只声明后验弱收敛；非线性降维映射不会仅凭连续映射定理自动保留总变差收敛。
+若再有局部二阶矩的一致可积性，则后验均值和协方差也可由该极限取矩：平方损失 Bayes estimator 满足
+\[
+ \E(\theta\mid X^n)
+ =\widehat\theta_n+o_{P_{\theta_0}}(n^{-1/2}),
+ \qquad
+ n\Cov(\theta\mid X^n)\toP I_0^{-1}.
+\]
+因此正则有限维模型中，有效频率估计与平方损失 Bayes 估计具有相同的一阶随机误差；这里对矩的一致可积性是必要附加条件，因为仅有总变差收敛并不能自动控制无界函数的期望。
+
+BvM 还给出后验预测的一阶频率解释。设未来观测 $Y$ 条件于参数服从 $P_\theta^Y$，且 $\theta\mapsto P_\theta^Y$ 在 $\theta_0$ 处关于总变差连续。后验预测测度为
+\[
+ \widetilde P_n^Y(A)
+ =\int P_\theta^Y(A)\,\Pi(\dd\theta\mid X^n).
+\]
+后验集中于 $\theta_0$ 的任意收缩邻域便推出
+\[
+ \|\widetilde P_n^Y-P_{\theta_0}^Y\|_{\rm TV}
+ \toP0.
+\]
+这是一阶预测一致性；若要写出 $n^{-1}$ 级别的先验修正、曲率修正或 posterior predictive coverage，则需要二阶 BvM，而不能从一阶正态近似直接外推。
+
+BvM 还把“Bayes 可信度”和“频率覆盖率”在正则有限维模型中联系到同一个一阶 Fisher 椭球，但二者的概率含义仍然不同。给定数据后，若随机集合 $C_n^{\rm B}(X^n)$ 满足
+\[
+ \Pi(C_n^{\rm B}\mid X^n)=1-\alpha
+\]
+或渐近等于 $1-\alpha$，就称它为后验 $1-\alpha$ 可信集；这是后验分布内部的概率陈述，不等同于\eqnrefs{eq:math-stat-confidence-set-definition}的重复抽样覆盖定义。记 $q_{d,1-\alpha}$ 为 $\chiSq_d$ 的 $1-\alpha$ 分位数，并定义
+\begin{equation}\label{eq:math-stat-bvm-credible-ellipsoid}
+ C_n^{\rm B}
+ =\left\{
+ \theta:
+ n(\theta-\widehat\theta_n)^{\mathsf T}
+ I(\widehat\theta_n)
+ (\theta-\widehat\theta_n)
+ \le q_{d,1-\alpha}
+ \right\}.
+\end{equation}
+由总变差 BvM 与 $I(\widehat\theta_n)\toP I_0$，其后验可信度满足
+\[
+ \Pi(C_n^{\rm B}\mid X^n)=1-\alpha+o_{P_{\theta_0}}(1).
+\]
+另一方面，MLE 渐近正态性独立给出
+\[
+ P_{\theta_0}\{\theta_0\in C_n^{\rm B}\}
+ \to1-\alpha.
+\]
+前一式是给定数据后的后验概率，后一式是重复抽样下的覆盖概率；BvM 只是在这组正则条件下证明两套构造具有同一个一阶 Fisher 几何，并没有把两种概率解释变成同一件事。
+
+这也说明错设模型下为什么不能把普通后验可信域直接解释成频率置信域。若正则错设 BvM 成立，后验局部曲率通常由 $A$ 控制，后验协方差的一阶项为 $A^{-1}/n$；而前面 MLE 的重复抽样协方差是
+\[
+ \frac1nA^{-1}BA^{-\mathsf T}.
+\]
+除非信息恒等式恢复为 $A=B$，两者一般不同，所以 nominal posterior credibility 不自动等于 frequentist coverage。若真值位于参数空间边界、支撑随参数变化、模型不可识别、Fisher 信息奇异、混合模型处于奇异点、参数维数随 $n$ 快速增长、先验在真值附近为零或过度收缩，普通 BvM 本身也可能失效。
+
+本章的主线至此闭合：充分性控制信息压缩，风险与 Rao--Blackwell 控制有限样本决策，Fisher 信息控制局部可识别性，QMD/LAN 把正则 likelihood 化为高斯二次实验，MLE 与 BvM 则分别是这个二次实验的频率极大点与 Bayes 局部归一化。下一章将对同一个 LAN 二次型施加参数约束，从而统一推出 LR、Wald、Score 与局部功效理论。

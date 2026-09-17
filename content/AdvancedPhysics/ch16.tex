@@ -1,0 +1,516 @@
+\chapter{角动量表示、不可约张量与多电子原子}\label{ch:angular-momentum}
+
+原子结构中的角动量规则并不是一组需要背诵的 Clebsch--Gordan 表格。单电子轨道、自旋、多电子交换对称性和光谱选择定则都来自同一个表示论事实：旋转群的 Hilbert 空间分解为不可约表示，而物理算符按照确定的张量秩在这些表示之间作 intertwining。本章先建立一般表示结构，再把多电子反对称性与 Hartree--Fock 变分放在同一框架中；He 原子与 Rydberg 态只作为最后的特例。
+
+\section{旋转群表示与角动量耦合}
+
+量子角动量生成元满足
+\begin{equation}
+[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k,
+\qquad
+[J^2,J_i]=0.
+\label{eq:am-su2-algebra}
+\end{equation}
+不可约表示以 $j=0,\tfrac12,1,\ldots$ 标记，标准基满足
+\[
+J^2|jm\rangle=\hbar^2j(j+1)|jm\rangle,
+\qquad
+J_z|jm\rangle=\hbar m|jm\rangle.
+\]
+升降算符 $J_\pm=J_x\pm\ii J_y$ 的作用为
+\begin{equation}
+J_\pm|jm\rangle
+=\hbar\sqrt{j(j+1)-m(m\pm1)}\,|j,m\pm1\rangle.
+\label{eq:am-ladder-action}
+\end{equation}
+
+若 Hilbert 空间含两个独立角动量 $\mathbf J_1$、$\mathbf J_2$，总生成元 $\mathbf J=\mathbf J_1+\mathbf J_2$ 在张量积表示 $\mathcal H_{j_1}\otimes\mathcal H_{j_2}$ 上作用。SU(2) 的张量积分解为
+\begin{equation}
+\boxed{
+\mathcal H_{j_1}\otimes\mathcal H_{j_2}
+=\bigoplus_{j=|j_1-j_2|}^{j_1+j_2}\mathcal H_j,
+}
+\label{eq:am-cg-decomposition}
+\end{equation}
+每个 $j$ 恰出现一次。直积基与耦合基之间的酉变换定义 Clebsch--Gordan 系数：
+\begin{equation}
+|jm\rangle
+=\sum_{m_1,m_2}
+C^{jm}_{j_1m_1,j_2m_2}
+|j_1m_1\rangle|j_2m_2\rangle,
+\qquad m=m_1+m_2.
+\label{eq:am-cg-definition}
+\end{equation}
+
+\begin{derivation}[从最高权态递归构造 Clebsch--Gordan 系数，即\eqnrefs{eq:am-cg-definition}]
+\emph{策略：}从最高权态出发，用降算符生成同一 $j$ 支的全部 $|j,m\rangle$，再用正交化得到下一支 $j-1$ 的最高权态，递归降 $j$ 直到 $|j_1-j_2|$。整套构造只依赖 SU(2) 代数、内积归一化与 Condon--Shortley 相位约定 $\langle j_1j_1|\langle j_2j_2|j,j\rangle\ge0$，不引入任何额外经验输入。
+
+\emph{第一步：最高 $j$ 支的最高权态。}最大总角动量 $j=j_1+j_2$ 的最高权态（$m=j$）没有混合自由度，因为 $m_1\le j_1$、$m_2\le j_2$ 且 $m=m_1+m_2=j_1+j_2$ 只能由 $m_1=j_1$、$m_2=j_2$ 实现：
+\begin{equation*}
+ |j_1+j_2,\,j_1+j_2\rangle
+ =|j_1,j_1\rangle\,|j_2,j_2\rangle,
+\end{equation*}
+即 $C^{j_1+j_2,\,j_1+j_2}_{j_1j_1,j_2j_2}=1$。这是 Condon--Shortley 约定的起点。
+
+\emph{第二步：降算符生成 $m=j-1$ 态。}令 $j=j_1+j_2$，对最高权态作用总降算符 $J_-=J_{1-}+J_{2-}$。一方面，总角动量代数给出
+\begin{equation*}
+ J_-|j,j\rangle=\hbar\sqrt{j(j+1)-j(j-1)}\,|j,j-1\rangle
+ =\hbar\sqrt{2j}\,|j,j-1\rangle,
+\end{equation*}
+另一方面，分别作用在两个因子上（$J_{1-}$ 只作用在第一因子，$J_{2-}$ 只作用在第二因子）：
+\begin{align*}
+ J_-|j_1,j_1\rangle|j_2,j_2\rangle
+ ={}&\hbar\sqrt{j_1(j_1+1)-j_1(j_1-1)}\,|j_1,j_1-1\rangle|j_2,j_2\rangle\\
+ &+\hbar\sqrt{j_2(j_2+1)-j_2(j_2-1)}\,|j_1,j_1\rangle|j_2,j_2-1\rangle\\
+ ={}&\hbar\sqrt{2j_1}\,|j_1,j_1-1\rangle|j_2,j_2\rangle
+ +\hbar\sqrt{2j_2}\,|j_1,j_1\rangle|j_2,j_2-1\rangle.
+\end{align*}
+两边除以 $\hbar\sqrt{2j}=\hbar\sqrt{2(j_1+j_2)}$，得到
+\begin{equation*}
+ |j,j-1\rangle
+ =\sqrt{\frac{j_1}{j_1+j_2}}\,|j_1,j_1-1\rangle|j_2,j_2\rangle
+ +\sqrt{\frac{j_2}{j_1+j_2}}\,|j_1,j_1\rangle|j_2,j_2-1\rangle,
+\end{equation*}
+即两个 CG 系数 $C^{j,j-1}_{j_1,j_1-1;\,j_2,j_2}=\sqrt{j_1/(j_1+j_2)}$、$C^{j,j-1}_{j_1,j_1;\,j_2,j_2-1}=\sqrt{j_2/(j_1+j_2)}$。
+
+\emph{第三步：正交化给出下一支。}固定 $m=j-1$ 的直积空间是二维的，由 $\{|j_1,j_1-1\rangle|j_2,j_2\rangle,\;|j_1,j_1\rangle|j_2,j_2-1\rangle\}$ 张成。$|j,j-1\rangle$ 已占一维，与之正交的归一化组合就是下一支 $j'=j_1+j_2-1$ 的最高权态 $|j',j'\rangle$。由 Schmidt 正交化（取 Condon--Shortley 约定使 $\langle j_1,j_1-1|\langle j_2,j_2|j',j'\rangle\ge0$），
+\begin{equation*}
+ |j_1+j_2-1,\,j_1+j_2-1\rangle
+ =\sqrt{\frac{j_2}{j_1+j_2}}\,|j_1,j_1-1\rangle|j_2,j_2\rangle
+ -\sqrt{\frac{j_1}{j_1+j_2}}\,|j_1,j_1\rangle|j_2,j_2-1\rangle.
+\end{equation*}
+符号差对应于总角动量交换反对称性 $|j_1j_2;jm\rangle=(-1)^{j_1+j_2-j}|j_2j_1;jm\rangle$。
+
+\emph{第四步：一般递推公式。}对任意已知的 $|j,m\rangle$，再作用一次降算符给出 $|j,m-1\rangle$。把 $J_-=J_{1-}+J_{2-}$ 分别作用到展开式 \eqnrefs{eq:am-cg-definition} 的两端，
+\begin{equation*}
+ \hbar\sqrt{j(j+1)-m(m-1)}\,|j,m-1\rangle
+ =\sum_{m_1,m_2}C^{jm}_{j_1m_1,j_2m_2}
+ \bigl[\hbar\sqrt{j_1(j_1+1)-m_1(m_1-1)}\,|j_1,m_1-1\rangle|j_2m_2\rangle
+ +\hbar\sqrt{j_2(j_2+1)-m_2(m_2-1)}\,|j_1m_1\rangle|j_2,m_2-1\rangle\bigr].
+\end{equation*}
+在右端作换元 $m_1\to m_1+1$（第一项）和 $m_2\to m_2+1$（第二项），合并 $|j_1m_1\rangle|j_2m_2\rangle$ 的系数，得到一般递推关系
+\begin{equation*}
+ \sqrt{j(j+1)-m(m-1)}\,C^{j,m-1}_{j_1m_1,j_2m_2}
+ =\sqrt{j_1(j_1+1)-m_1(m_1+1)}\,C^{jm}_{j_1,m_1+1;\,j_2m_2}
+ +\sqrt{j_2(j_2+1)-m_2(m_2+1)}\,C^{jm}_{j_1m_1;\,j_2,m_2+1}.
+\end{equation*}
+给定最高权态 $C^{jj}_{j_1m_1,j_2m_2}$，沿 $m$ 递降即可确定该 $j$ 支的全部系数。
+
+\emph{第五步：递归降 $j$。}对每个新最高权态重复"降算符 + 正交化"：降算符生成当前 $j$ 支的 $|j,m-1\rangle$，正交化从剩余维度提取下一支 $j-1$ 的最高权态。如此递归降 $j$ 直到 $|j_1-j_2|$（最低支）。因此 CG 表不是额外输入，而是 SU(2) 代数与内积归一化的结果。
+
+\emph{举例：两个自旋 $1/2$ 的 CG 表。}取 $j_1=j_2=\tfrac12$。由第一步，$|1,1\rangle=|\tfrac12,\tfrac12\rangle|\tfrac12,\tfrac12\rangle$。由第二步，
+\begin{equation*}
+ |1,0\rangle=\frac1{\sqrt2}\Bigl|\tfrac12,\tfrac12\Bigr\rangle\Bigl|\tfrac12,-\tfrac12\Bigr\rangle
+ +\frac1{\sqrt2}\Bigl|\tfrac12,-\tfrac12\Bigr\rangle\Bigl|\tfrac12,\tfrac12\Bigr\rangle,
+\end{equation*}
+再降一次得 $|1,-1\rangle=|\tfrac12,-\tfrac12\rangle|\tfrac12,-\tfrac12\rangle$。第三步给出 singlet
+\begin{equation*}
+ |0,0\rangle=\frac1{\sqrt2}\Bigl|\tfrac12,\tfrac12\Bigr\rangle\Bigl|\tfrac12,-\tfrac12\Bigr\rangle
+ -\frac1{\sqrt2}\Bigl|\tfrac12,-\tfrac12\Bigr\rangle\Bigl|\tfrac12,\tfrac12\Bigr\rangle.
+\end{equation*}
+triplet（$j=1$）在粒子交换下对称、singlet（$j=0$）反对称，正对应于 $\mathcal H_{1/2}\otimes\mathcal H_{1/2}=\mathcal H_1\oplus\mathcal H_0$ 的对称/反对称分解。
+
+\emph{与 Wigner 3-j 符号的关系。}把 CG 系数重新归一化为
+\begin{equation*}
+  \begin{pmatrix}j_1&j_2&j\\m_1&m_2&-m\end{pmatrix}
+  =\frac{(-1)^{j_1-j_2+m}}{\sqrt{2j+1}}\,C^{jm}_{j_1m_1,j_2m_2},
+\end{equation*}
+3-j 符号在三列任意置换下满足简单的对称/反对称律（偶置换不变，奇置换乘以 $(-1)^{j_1+j_2+j}$），并把三角选择定则和 $m_1+m_2+m=0$ 直接编码进其非零条件。三个不可约表示的逐次耦合 $(j_1\otimes j_2)\otimes j_3$ 与 $j_1\otimes(j_2\otimes j_3)$ 之间的重耦变换由 6-j 符号给出，其正交关系来自重耦变换的酉性。
+
+\emph{物理意义。}CG 系数的物理角色是"角动量耦合的变换矩阵"：当两个独立角动量系统（如轨道角动量 \(\mathbf l\) 与自旋 \(\mathbf s\)）合成总角动量 \(\mathbf j=\mathbf l+\mathbf s\) 时，CG 系数给出从"未耦合基" \(|l m_l\rangle|s m_s\rangle\) 到"耦合基" \(|j m\rangle\) 的基变换。这一变换的物理必要性来自旋转对称性：总 \(J^2\) 与 \(J_z\) 与任何球对称 Hamiltonian 对易，故能量本征态应按 \(|j,m\rangle\) 分类，而实验可测的往往是各分量角动量（如轨道量子数 \(l\) 和自旋 \(s\)）。递归构造的物理含义是"从最高权态用降算符走下来"——最高权态对应"所有角动量对齐"的经典图像（如 \(j=l+s\) 的拉伸构型），降算符逐级翻转一个分量，正交化分离出次高总角动量支。两个自旋 \(1/2\) 的 triplet-singlet 分解 \(\mathcal H_{1/2}\otimes\mathcal H_{1/2}=\mathcal H_1\oplus\mathcal H_0\) 是最简单的实例：triplet（对称）和 singlet（反对称）分别对应交换对称和反对称，直接给出氦原子正氦/仲氦的能级分裂。
+\end{derivation}
+
+\section{不可约张量与 Wigner--Eckart 定理}
+
+rank-$k$ 球张量 $T_q^{(k)}$ 的定义是它在旋转下按 $j=k$ 不可约表示变换。等价的无穷小条件为
+\begin{equation}
+[J_z,T_q^{(k)}]=\hbar qT_q^{(k)},
+\qquad
+[J_\pm,T_q^{(k)}]
+=\hbar\sqrt{k(k+1)-q(q\pm1)}\,T_{q\pm1}^{(k)}.
+\label{eq:am-tensor-commutators}
+\end{equation}
+对任意两个角动量不可约子空间 $\mathcal H_j$、$\mathcal H_{j'}$，Wigner--Eckart 定理把全部磁量子数依赖分离：
+\begin{equation}
+\boxed{
+\langle \alpha'j'm'|T_q^{(k)}|\alpha jm\rangle
+=(-1)^{j'-m'}
+\begin{pmatrix}
+ j'&k&j\\
+ -m'&q&m
+\end{pmatrix}
+\langle \alpha'j'||T^{(k)}||\alpha j\rangle .
+}
+\label{eq:wigner-eckart}
+\end{equation}
+额外量子数统一收进 $\alpha,\alpha'$；约化矩阵元不依赖 $m,m',q$。
+
+\begin{derivation}[Wigner--Eckart：intertwiner 与 Schur 引理]
+\emph{第一步：把张量算符包装成 intertwiner。}固定初态不可约表示 $\mathcal H_j$ 与末态 $\mathcal H_{j'}$。把 rank-$k$ 张量算符 $T_q^{(k)}$ 视为线性映射
+\begin{equation*}
+ \mathcal T:\mathcal H_j\longrightarrow
+ \mathcal H_{j'}\otimes\mathcal H_k^*,
+\end{equation*}
+其分量定义为
+\begin{equation*}
+ |jm\rangle\mapsto
+ \sum_{m',q}\langle j'm'|T_q^{(k)}|jm\rangle
+ |j'm'\rangle\otimes|kq\rangle^*.
+\end{equation*}
+由式~\eqnrefs{eq:am-tensor-commutators} 给出的张量算符与角动量对易关系 $[J_\pm,T_q^{(k)}]=\hbar\sqrt{k(k+1)-q(q\pm1)}\,T_{q\pm1}^{(k)}$ 与 $[J_z,T_q^{(k)}]=\hbar q\,T_q^{(k)}$，正好保证 $\mathcal T$ 与旋转作用可交换。具体地，对无穷小旋转，由对易关系
+\begin{equation*}
+ J_\pm\mathcal T|jm\rangle=\mathcal T J_\pm|jm\rangle,
+ \qquad
+ J_z\mathcal T|jm\rangle=\mathcal T J_z|jm\rangle,
+\end{equation*}
+积分到有限旋转，即对任意 $g\in\mathrm{SU}(2)$，
+\begin{equation*}
+ \mathcal T\,D^{(j)}(g)=\bigl[D^{(j')}(g)\otimes D^{(k)*}(g)\bigr]\,\mathcal T,
+\end{equation*}
+所以 $\mathcal T$ 是 intertwiner。
+
+\emph{第二步：用 CG 分解与 Schur 引理定维数。}另一方面，由 Clebsch--Gordan 分解
+\begin{equation*}
+ \mathcal H_{j'}\otimes\mathcal H_k^*
+ \cong\bigoplus_{J=|j'-k|}^{j'+k}\mathcal H_J.
+\end{equation*}
+若 $\mathcal H_j$ 不在右侧直和出现，即 $j\notin\{|j'-k|,\ldots,j'+k\}$，由 Schur 引理：不同不可约表示之间的 intertwiner 恒为零，故 $\mathcal T=0$，这就是三角选择定则。若出现，由于 SU(2) 二重张量积分解无重数，每个 $\mathcal H_J$ 在直和中只出现一次。由 Schur 引理的另一形式：同一不可约表示到自身的 intertwiner 空间为一维（仅由恒等算子的标量倍组成），$\mathcal H_j$ 到该同构分量的 intertwiner 空间是一维的，故 $\mathcal T$ 只差一个标量倍数。因此
+\begin{equation*}
+ \langle j'm'|T_q^{(k)}|jm\rangle
+ =\mathcal N_{j'jk}\,C^{j'm'}_{jm,kq},
+\end{equation*}
+其中 $\mathcal N_{j'jk}$ 与 $m,m',q$ 无关，$C^{j'm'}_{jm,kq}$ 为 CG 系数。
+
+\emph{第三步：约定 3-j 形式与约化矩阵元。}把 CG 系数改写为 3-j 符号
+\begin{equation*}
+ C^{j'm'}_{jm,kq}
+ =(-1)^{j-k+m'}\sqrt{2j+1}
+ \begin{pmatrix} j&k&j'\\ m&q&-m'\end{pmatrix},
+\end{equation*}
+并把唯一的比例常数定义为约化矩阵元 $\langle j'||T^{(k)}||j\rangle$，即得式~\eqnrefs{eq:wigner-eckart}。定理的核心是不可约表示之间 intertwiner 的唯一性，而不是逐个积分矩阵元。
+
+\emph{约化矩阵元的计算。}约化矩阵元 $\langle j'||T^{(k)}||j\rangle$ 需通过具体积分计算，通常取最方便的 $m,m',q$ 组合。例如对 rank-1 张量，取 $m'=j'$、$q=j'-j$（若三角条件允许），由 $\langle j'j'|T^{(k)}_{j'-j}|jj\rangle$ 反解出约化矩阵元。这一步把 $(2j'+1)(2j+1)(2k+1)$ 个矩阵元的计算简化为单个积分，是 Wigner--Eckart 定理的实用价值所在。
+
+\emph{举例：电四极矩的 rank-2 选择定则。}取 $k=2$ 的电四极算符 $Q^{(2)}_q$。三角条件给出 $|j-2|\le j'\le j+2$，即 $\Delta J=0,\pm1,\pm2$；但 $J=0\leftrightarrow J'=1$ 虽满足三角条件，却被 3-j 符号 $\begin{pmatrix}1&2&0\\0&0&0\end{pmatrix}$ 中 $1+2+0=3$ 为奇数的附加条件排除。更一般地，对 $M=M'=q=0$ 的轴向分量，3-j 符号 $\begin{pmatrix}j'&2&j\\0&0&0\end{pmatrix}$ 非零还要求 $j+j'+2$ 为偶数。这些选择定则全部从 intertwiner 维数自动产生，无需逐个计算四极积分。
+
+\emph{与超精细结构的联系。}原子核自旋 $\mathbf I$ 与电子总角动量 $\mathbf J$ 耦合时，磁偶极相互作用 $H_{\rm hfs}^{\rm (M1)}=A\,\mathbf I\cdot\mathbf J$ 是两个 rank-1 张量的标量积，超精细常数 $A$ 正是该 rank-1 算符的约化矩阵元 $\langle IJ||T^{(1)}||IJ\rangle$ 除以 $J(J+1)$；电四极贡献 $H_{\rm hfs}^{\rm (E2)}=B\,[\mathbf I\otimes\mathbf J]^{(2)}_0/\bigl[I(2I-1)J(2J-1)\bigr]$ 则由 rank-2 约化矩阵元决定。Wigner--Eckart 定理保证超精细结构常数 $A,B$ 只依赖电子--核态的不可约表示内容，所有 $F,m_F$ 依赖被 CG 系数一次性吸收，这就是超精细能级 $E_F=E_J+\frac{A}{2}K+B\frac{\frac32K(K+1)-2I(I+1)J(J+1)}{2I(2I-1)2J(2J-1)}$（$K=F(F+1)-I(I+1)-J(J+1)$）的群论根源。对氢原子基态 $I=1/2$、$J=1/2$，只有 M1 项贡献，$F=0,1$ 两个超精细能级分裂为 $E_{F=1}-E_{F=0}=A$，即 21 cm 线的来源。
+
+\emph{物理意义。}Wigner--Eckart 定理的物理核心是"对称性决定结构，动力学只填数值"：任何 rank-\(k\) 不可约张量算符在角动量本征态间的全部 \((2j'+1)(2j+1)(2k+1)\) 个矩阵元，被分解为一个纯几何因子（CG 系数/3-j 符号，编码全部 \(m,m',q\) 依赖）和一个约化矩阵元（编码全部动力学信息）。这把矩阵元计算从 \((2j'+1)(2j+1)\) 个独立积分缩减为单个积分，其余由群论完全确定。物理后果包括：(1) 选择定则——3-j 符号非零的三角条件和磁量子数守恒直接给出 \(\Delta J\le k\)、\(\Delta M\le q\)，无需逐个计算；(2) 分支比——同一约化矩阵元控制的多条跃迁的相对强度完全由 CG 系数决定，可群论预测而无需知道径向波函数（如超精细结构中 M1 和 E2 常数的 \(F\) 依赖）；(3) 极化依赖——光场偏振（\(\sigma^\pm,\pi\)）选择不同 \(q\) 分量，跃迁强度的极化依赖被 3-j 符号一次性给出。这些性质使 Wigner--Eckart 定理成为原子分子光谱、核谱学和凝聚态 EPR/ENDOR 的日常计算工具。
+\end{derivation}
+
+电偶极算符 $\mathbf d=\sum_aq_a\mathbf r_a$ 是奇宇称 rank-$1$ 张量；电四极矩是偶宇称 rank-$2$ 张量；磁偶极矩也是 rank-$1$，但空间反演宇称与电偶极不同。因而光谱选择定则首先由张量秩和宇称给出，具体径向积分只决定允许跃迁的强度。下一章以后所有光学跃迁都沿用这一分离方式。
+
+\section{反对称多电子空间与 Hartree--Fock 母结构}
+
+对 $N$ 个相同电子，物理 Hilbert 空间不是普通张量积，而是含自旋的一电子空间 $\mathfrak h$ 的反对称外幂
+\begin{equation}
+\boxed{
+\mathcal H_N=\bigwedge^N\mathfrak h,
+\qquad
+\mathfrak h=L^2(\mathbb R^3)\otimes\mathbb C^2.
+}
+\label{eq:am-fermion-hilbert}
+\end{equation}
+反对称投影算符为
+\[
+\mathcal A_N
+=\frac{1}{N!}\sum_{\pi\in S_N}\operatorname{sgn}(\pi)P_\pi.
+\]
+给定正交自旋轨道 $\{\varphi_a(x)\}$，$x=(\mathbf r,\sigma)$，归一化 Slater determinant 为
+\begin{equation}
+\Phi(x_1,\ldots,x_N)
+=\frac{1}{\sqrt{N!}}\det[\varphi_a(x_i)]_{i,a=1}^{N}.
+\label{eq:am-slater-determinant}
+\end{equation}
+
+在无限重核近似下，非相对论 Coulomb Hamiltonian 为
+\begin{equation}
+H
+=\sum_{i=1}^{N}
+\left[
+\frac{\mathbf p_i^2}{2m_e}
+-\frac{Ze^2}{4\pi\epsilon_0r_i}
+\right]
++\sum_{i<j}\frac{e^2}{4\pi\epsilon_0|\mathbf r_i-\mathbf r_j|}.
+\label{eq:am-nelectron-hamiltonian}
+\end{equation}
+这一定义先于“独立电子”或“屏蔽势”近似。限制变分流形为单个 Slater determinant 后，能量泛函为
+\begin{equation}
+E_{\rm HF}
+=\sum_i\langle i|h|i\rangle
++\frac12\sum_{i,j}(J_{ij}-K_{ij}),
+\label{eq:am-hf-energy}
+\end{equation}
+其中
+\[
+J_{ij}
+=\iint\dd x\,\dd x'\,
+|\varphi_i(x)|^2
+\frac{e^2}{4\pi\epsilon_0|\mathbf r-\mathbf r'|}
+|\varphi_j(x')|^2,
+\]
+\[
+K_{ij}
+=\iint\dd x\,\dd x'\,
+\varphi_i^*(x)\varphi_j^*(x')
+\frac{e^2}{4\pi\epsilon_0|\mathbf r-\mathbf r'|}
+\varphi_j(x)\varphi_i(x').
+\]
+$J$ 是直接 Coulomb 项，$K$ 则完全来自费米子反对称性。
+
+\begin{derivation}[从 Slater 变分到 Hartree--Fock 方程]
+\emph{策略：}把能量泛函\eqnrefs{eq:am-hf-energy} 在轨道正交归一约束下做变分，逐项算出单体、直接、交换三类贡献，再借助 Lagrange 乘子矩阵的正则可对角化性得到本征形式的 Fock 方程。
+
+\emph{第一步：约束变分问题。}在约束 $\langle\varphi_i|\varphi_j\rangle=\delta_{ij}$ 下极小化
+\[
+\mathcal L
+=E_{\rm HF}
+-\sum_{i,j}\Lambda_{ij}
+(\langle\varphi_i|\varphi_j\rangle-\delta_{ij}).
+\]
+这里对每个约束 $\langle\varphi_i|\varphi_j\rangle=\delta_{ij}$ 引入一个 Lagrange 乘子 $\Lambda_{ij}$，全体组成矩阵 $\Lambda$。对 $\varphi_i^*(x)$ 作独立变分即可（对 $\varphi_i$ 变分给出共轭方程，等价）。
+
+\emph{第二步：单体项。}$\langle i|h|i\rangle=\int\varphi_i^*(x)\,h\varphi_i(x)\dd x$ 对 $\varphi_i^*(x)$ 变分直接给出
+\begin{equation*}
+ \frac{\delta}{\delta\varphi_i^*}\sum_i\langle i|h|i\rangle
+ =h\varphi_i.
+\end{equation*}
+
+\emph{第三步：直接项。}直接能 $\frac12\sum_{i,j}J_{ij}$ 中，$J_{ij}=\iint|\varphi_i(x)|^2V|\varphi_j(x')|^2$，对 $\varphi_i^*(x)$ 求导得
+\[
+\frac{\delta J_{ij}}{\delta\varphi_i^*(x)}
+=\varphi_i(x)\int\dd x'\,V(x,x')\,|\varphi_j(x')|^2,
+\]
+因 $J_{ij}=J_{ji}$，求和 $\frac12\sum_{i,j}$ 使 $(i,j)$ 每对被数两次，系数 $\frac12\times2=1$，故直接项总贡献为
+\[
+\hat J_j\varphi_i(x)
+=\left[
+\int\dd x'\,
+\frac{e^2|\varphi_j(x')|^2}
+{4\pi\epsilon_0|\mathbf r-\mathbf r'|}
+\right]\varphi_i(x).
+\]
+
+\emph{第四步：交换项。}交换能 $-\frac12\sum_{i,j}K_{ij}$ 中，$K_{ij}$ 含 $\varphi_i^*(x)$ 与 $\varphi_i(x')$ 两处共轭。对 $x$ 处的 $\varphi_i^*(x)$ 变分（另一半经指标对称 $K_{ij}=K_{ji}$ 与系数 $\frac12$ 合并）给出非局域算符
+\[
+\hat K_j\varphi_i(x)
+=\int\dd x'\,
+\frac{e^2\varphi_j^*(x')\varphi_i(x')}
+{4\pi\epsilon_0|\mathbf r-\mathbf r'|}
+\varphi_j(x),
+\]
+符号为负，且因 $\hat K_j\varphi_j=\hat J_j\varphi_j$（$i=j$ 时直接项与交换项相消），自相互作用被排除。
+
+\emph{第五步：约束项与矩阵方程。}约束项的变分为 $\sum_{j}\Lambda_{ij}\varphi_j$。合并三类贡献，
+\[
+\left[h+\sum_{j=1}^{N}(\hat J_j-\hat K_j)\right]\varphi_i
+=\sum_j\Lambda_{ji}\varphi_j.
+\]
+
+\emph{第六步：canonical 化。}$\Lambda$ 为 Hermitian（约束与泛函皆实），故可用酉矩阵 $U$ 对角化 $\Lambda U=U\,\text{diag}(\varepsilon_i)$。令新轨道 $\widetilde\varphi_i=\sum_j\varphi_j U_{ji}$；酉变换不改变 Slater determinant（$\det[\widetilde\varphi]=\det[\varphi]\det U$，而 $|\det U|=1$），故总波函数不变。在新基下右端化为对角形式，得到 canonical Hartree--Fock 方程
+\begin{equation}
+\boxed{
+\hat f\varphi_i=\varepsilon_i\varphi_i,
+\qquad
+\hat f=h+\sum_j(\hat J_j-\hat K_j).
+}
+\label{eq:am-hf-equation}
+\end{equation}
+其中 Fock 算符 $\hat f$ 通过 $\hat J_j,\hat K_j$ 依赖全部占据轨道，故本征值问题必须自洽迭代求解。
+
+\emph{物理解读。}“独立电子轨道”并非先验假设，而是把完整多电子变分限制在单 determinant 流形后的自洽场方程；$\varepsilon_i$ 通过 Koopmans 定理可近似解释为电离能，而遗漏的 determinant 之外部分正是电子关联能，需用组态相互作用或耦合簇等方法补充。
+
+\emph{物理意义。}Hartree--Fock 方程的物理本质是"平均场近似下的自洽"：每个电子在其他所有电子的平均 Coulomb 场中运动，而非感受到瞬时电子-电子排斥。Fock 算符 $\hat f=h+\sum_j(\hat J_j-\hat K_j)$ 中直接项 $\hat J_j$ 是第 $j$ 个电子的电荷分布产生的经典 Coulomb 势，交换项 $\hat K_j$ 纯粹来自费米子反对称性——它无经典对应，物理效应是"相同自旋电子相互回避"（Fermi hole），降低同自旋电子对的出现概率。交换项的非局域性（$\hat K_j\varphi_i(x)$ 含 $\varphi_j(x)$ 而非 $|\varphi_j(x)|^2$）是 HF 方程区别于经典 Hartree 方程的关键。HF 的系统误差是"关联能"——单 determinant 无法描述电子瞬时关联（如动态屏蔽、色散力），对弱相互作用体系（如 van der Waals 键合）尤为严重，需后 HF 方法（MP2、CCSD(T)、DFT）补充。Koopmans 定理 $\varepsilon_i\approx-I_i$（电离能）和 Brillouin 定理（HF 基态与单激发态的耦合为零）是 HF 自洽性的两个直接推论。
+\end{derivation}
+
+\section{两电子、LS/jj 耦合与 Rydberg 极限}
+
+对两个电子，空间轨道 $a,b$ 的对称/反对称组合为
+\[
+\Psi_\pm(1,2)
+=\frac{\phi_a(1)\phi_b(2)\pm\phi_b(1)\phi_a(2)}
+{\sqrt{2(1\pm|S_{ab}|^2)}}.
+\]
+若轨道正交，$S_{ab}=0$。总费米子波函数必须反对称，所以空间对称态与自旋 singlet $S=0$ 配对，空间反对称态与 triplet $S=1$ 配对。对电子间 Coulomb 相互作用取期望，得到
+\begin{equation}
+\langle V_{12}\rangle_\pm=J_{ab}\pm K_{ab}.
+\label{eq:helium-coulomb-integral}
+\end{equation}
+这就是 He 类原子 singlet--triplet 分裂最基本的非相对论来源；更高精度还需叠加自旋轨道、spin--spin 等 Breit--Pauli 修正。
+
+对多电子原子，当自旋轨道耦合相对电子间静电分裂较弱时，先形成 $\mathbf L=\sum_i\mathbf l_i$ 和 $\mathbf S=\sum_i\mathbf s_i$，再令 $\mathbf J=\mathbf L+\mathbf S$，得到 LS coupling。重原子强自旋轨道区更自然先形成 $\mathbf j_i=\mathbf l_i+\mathbf s_i$，再把各 $\mathbf j_i$ 耦合成总 $J$。intermediate coupling 不是第三种基本代数，而是同一固定 $J$ 子空间中由真实 Hamiltonian 对不同耦合基的混合。
+
+高激发 Rydberg 电子大部分时间位于离子实之外，长程势趋于 Coulomb 形式。短程核区的多电子效应可压缩进分波相移，因此能级可参数化为
+\begin{equation}
+E_{nl}
+=E_{\rm ion}
+-\frac{R_Mhc}{(n-\delta_l)^2},
+\label{eq:am-quantum-defect}
+\end{equation}
+其中 $R_M$ 是含约化质量修正的 Rydberg 常数，$\delta_l$ 是 quantum defect。高 $l$ 轨道受离心势屏蔽而较少进入核区，故 $\delta_l\to0$；低 $l$ 对穿透、交换和离子实极化更敏感。quantum defect 因而是短程多电子散射信息在 Coulomb 长程边界条件中的相移参数化。
+
+\section{原子光谱：从理论到实验}
+\label{sec:am-spectroscopy-experiment}
+
+前几节建立了角动量耦合、Hartree--Fock 自洽场和 quantum defect 的理论框架。本节把这些结构代入具体原子，给出可与光谱实验直接对比的数值和选择定则，使抽象的表示论成为可操作的原子物理工具。
+
+接下来考察氢原子光谱：Balmer 系与 Rydberg 常数。
+
+氢原子是最简单的单电子系统，能级由 Bohr 公式给出
+\[
+ E_n=-\frac{R_\infty hc}{n^2},
+ \qquad
+ R_\infty=\frac{m_e e^4}{8\varepsilon_0^2 h^3 c}=1.0973731568\times10^7\,\mathrm{m}^{-1}.
+\]
+含约化质量修正 $R_M=R_\infty\mu/m_e$ 后，跃迁波长
+\[
+ \frac1\lambda=R_M\left(\frac1{n_1^2}-\frac1{n_2^2}\right).
+\]
+Balmer 系（$n_1=2$）的前几条谱线为：
+\begin{itemize}
+ \item $n_2=3$：H$\alpha$ $\lambda=656.28\,\mathrm{nm}$（红色，可见）
+ \item $n_2=4$：H$\beta$ $\lambda=486.13\,\mathrm{nm}$（蓝绿）
+ \item $n_2=5$：H$\gamma$ $\lambda=434.05\,\mathrm{nm}$（紫色）
+ \item $n_2=6$：H$\delta$ $\lambda=410.17\,\mathrm{nm}$（紫色）
+\end{itemize}
+Lyman 系（$n_1=1$）在紫外，首线 $\lambda=121.57\,\mathrm{nm}$。Rydberg 常数的实验精度达 $10^{-12}$，是基本常数测定中精度最高的之一。
+
+接下来考察碱金属光谱与 quantum defect。
+
+碱金属的最外层电子在离子实 $(Z-1)e$ 的屏蔽 Coulomb 势中运动，能级由 quantum defect 公式~\eqnrefs{eq:am-quantum-defect} 给出。钠的典型 quantum defect 值：
+\begin{center}
+\begin{tabular}{cccc}
+\hline
+$l$ & 0 (s) & 1 (p) & 2 (d) \\
+\hline
+$\delta_l$ & 1.347 & 0.854 & 0.015 \\
+\hline
+\end{tabular}
+\end{center}
+由此算出 Na $3s\to3p$ 跃迁（D 线）波长：
+\[
+ \lambda_D=\frac{1}{R_{\rm Na}\left[\frac1{(3-1.347)^2}-\frac1{(3-0.854)^2}\right]}\approx589.0\,\mathrm{nm},
+\]
+与实验值 $589.0/589.6\,\mathrm{nm}$ 双线（精细结构分裂 $\Delta\lambda=0.6\,\mathrm{nm}$）一致。高 $l$ 的 $\delta_l\approx0$ 说明 d 轨道几乎不穿入核区，接近纯 Coulomb。
+
+接下来考察氦原子：singlet--triplet 分裂与交换积分。
+
+氦原子的两电子组态 $1s2s$ 产生 singlet $^1S_0$ 和 triplet $^3S_1$ 两个态，能量差由式~\eqnrefs{eq:helium-coulomb-integral} 给出：
+\[
+ \Delta E=E(^1S_0)-E(^3S_1)=2K_{1s,2s}\approx0.80\,\mathrm{eV}.
+\]
+交换积分 $K_{1s,2s}$ 的非零值来自两个轨道的空间重叠。实验值：$1s2s\,^3S_1$ 在 $19.820\,\mathrm{eV}$，$1s2s\,^1S_0$ 在 $20.616\,\mathrm{eV}$，差 $0.796\,\mathrm{eV}$。triplet 态能量更低（Hund 第一规则）：空间反对称使电子概率密度在接近时减小，Coulomb 排斥降低。
+
+氦基态 $1s^2\,^1S_0$ 的 Hartree--Fock 能量为 $-2.8617\,\mathrm{Hartree}$，实验值为 $-2.9037\,\mathrm{Hartree}$，差 $0.042\,\mathrm{Hartree}\approx1.14\,\mathrm{eV}$ 即电子关联能。此关联能虽仅占总能的 $1.4\%$，但在化学键能尺度（$\sim1\,\mathrm{eV}$）上不可忽略——这正是量子化学需要超越 Hartree--Fock（组态相互作用、耦合簇 CCSD(T) 等）的物理原因。
+
+接下来考察Hartree--Fock 数值结果。
+
+对若干小原子，Hartree--Fock 基态能量与实验值的对比：
+\begin{center}
+\begin{tabular}{ccccc}
+\hline
+原子 & $Z$ & $E_{\rm HF}$ (Hartree) & $E_{\rm exp}$ (Hartree) & 关联能 (Hartree) \\
+\hline
+He & 2 & $-2.8617$ & $-2.9037$ & $0.0420$ \\
+Li & 3 & $-7.4327$ & $-7.4780$ & $0.0453$ \\
+Be & 4 & $-14.5730$ & $-14.6674$ & $0.0944$ \\
+Ne & 10 & $-128.547$ & $-128.862$ & $0.315$ \\
+Ar & 18 & $-526.817$ & $-527.499$ & $0.682$ \\
+\hline
+\end{tabular}
+\end{center}
+关联能随电子数增长但占比始终在 $1\%$ 以下。Koopmans 定理给出的 HF 轨道能 $\varepsilon_i$ 近似等于电离能：Ne 的 $2p$ 轨道能 $\varepsilon_{2p}=-0.850\,\mathrm{Hartree}$，实验电离能 $I_p=0.792\,\mathrm{Hartree}$，偏差来自关联和弛豫效应。
+
+接下来考察选择定则与实验验证。
+
+电偶极跃迁的选择定则 $\Delta l=\pm1$、$\Delta j=0,\pm1$（$0\not\to0$）、$\Delta m=0,\pm1$ 来自 Wigner--Eckart 定理对 $T^{(1)}_q$（一阶不可约张量）的限制。实验验证：
+\begin{itemize}
+ \item Na D 线 $3s\to3p$：$\Delta l=+1$，允许；$3s\to4s$：$\Delta l=0$，禁戒（实验中极弱，需磁偶极/电四极机制）。
+ \item 氢 Lyman $\alpha$ $1s\to2p$：$\Delta l=+1$，允许，$\lambda=121.6\,\mathrm{nm}$；$1s\to2s$：$\Delta l=0$，电偶极禁戒（双光子跃迁 $1s\to2s$ 需吸收两个光子，速率 $\sim10^{-8}\,\mathrm{s}^{-1}$）。
+ \item Ca $4s^2\,^1S_0\to4s4p\,^1P_1$：$\Delta L=1$、$\Delta S=0$、$\Delta J=1$，允许，$\lambda=422.7\,\mathrm{nm}$。
+\end{itemize}
+
+接下来考察Land\'e g 因子与 Zeeman 效应实验。
+
+Land\'e g 因子~\eqnrefs{eq:lande-g-factor} 给出原子在弱磁场中能级分裂 $\Delta E=\mu_B g_J M B$。典型实验值：
+\begin{center}
+\begin{tabular}{cccccc}
+\hline
+态 & $L$ & $S$ & $J$ & $g_J$ (理论) & $g_J$ (实验) \\
+\hline
+$^2S_{1/2}$ & 0 & 1/2 & 1/2 & 2 & $2.0023$ \\
+$^2P_{1/2}$ & 1 & 1/2 & 1/2 & 2/3 & $0.666$ \\
+$^2P_{3/2}$ & 1 & 1/2 & 3/2 & 4/3 & $1.333$ \\
+$^1D_2$ & 2 & 0 & 2 & 1 & $1.000$ \\
+$^3P_1$ & 1 & 1 & 1 & 3/2 & $1.501$ \\
+\hline
+\end{tabular}
+\end{center}
+理论与实验的微小偏差来自电子 $g_s=2.0023$（QED 修正）和原子核效应。Na D 线在 $B=1\,\mathrm{T}$ 磁场中分裂为 6 条（$D_1$ 线 $^2P_{1/2}\to^2S_{1/2}$ 给出 4 条，$D_2$ 线 $^2P_{3/2}\to^2S_{1/2}$ 给出 6 条），间距 $\mu_B B/h\approx14\,\mathrm{GHz}$，可由 Fabry--Perot 干涉仪直接分辨。
+
+接下来考察从 LS 耦合到 jj 耦合：重原子过渡。
+
+轻原子（$Z\lesssim20$）中电子间静电排斥 $\gg$ 自旋轨道耦合，LS 耦合适用。重原子（$Z\gtrsim80$）中自旋轨道耦合 $\sim$ 静电排斥，趋向 jj 耦合。中间区域需对角化混合矩阵。典型例子：
+\begin{itemize}
+ \item C $2p^2$：LS 耦合，项 $^3P$, $^1D$, $^1S$，能量间距由 Racah 参数 $B,C$ 决定。
+ \item Pb $6p^2$：接近 jj 耦合，$6p_{1/2}^2$, $6p_{1/2}6p_{3/2}$, $6p_{3/2}^2$ 间距由自旋轨道分裂主导。
+ \item Xe $5p^5$：中间耦合，需对角化 $9\times9$ 矩阵，LS 和 jj 基都不是好基。
+\end{itemize}
+这一过渡是原子物理中对称性破缺的典型实例：自旋轨道耦合作为微扰从零增长到与静电排斥同阶，不可约表示的标记从 $(L,S)$ 连续过渡到 $(j_1,j_2)$。
+
+\begin{derivation}[Racah 6j 符号与三角动量重耦合]
+三个角动量耦合 \(j_1\otimes j_2\otimes j_3\) 有两种自然方案：\(((j_1\otimes j_2)\otimes j_3)_{J}\) 和 \((j_1\otimes(j_2\otimes j_3))_{J}\)，由 Racah 6j 符号联系。分四步建立。
+
+\emph{第一步：重耦合问题。}两种耦合方案的基
+\begin{align*}
+  |((j_1j_2)J_{12},j_3)JM\rangle&=\sum_{m_1m_2m_3}C^{JM}_{J_{12}M_{12},j_3m_3}C^{J_{12}M_{12}}_{j_1m_1,j_2m_2}|j_1m_1j_2m_2j_3m_3\rangle,\\
+  |(j_1,(j_2j_3)J_{23})JM\rangle&=\sum_{m_1m_2m_3}C^{JM}_{j_1m_1,J_{23}M_{23}}C^{J_{23}M_{23}}_{j_2m_2,j_3m_3}|j_1m_1j_2m_2j_3m_3\rangle.
+\end{align*}
+重耦合系数 \(\langle((j_1j_2)J_{12},j_3)J|(j_1,(j_2j_3)J_{23})J\rangle\) 不依赖磁量子数 \(M\)（Wigner--Eckart），定义为 Racah 系数
+\begin{equation*}
+  W(j_1j_2j_3J;J_{12}J_{23})=\frac{\langle((j_1j_2)J_{12},j_3)J|(j_1,(j_2j_3)J_{23})J\rangle}{\sqrt{(2J_{12}+1)(2J_{23}+1)}}.
+\end{equation*}
+
+\emph{第二步：6j 符号的定义与对称性。}Racah--Wigner 6j 符号
+\begin{equation*}
+  \begin{Bmatrix}j_1&j_2&J_{12}\\j_3&J&J_{23}\end{Bmatrix}=(-1)^{j_1+j_2+j_3+J}W(j_1j_2j_3J;J_{12}J_{23}).
+\end{equation*}
+6j 符号在四角行列式的列置换和上行下行交换下不变（共 24 个对称性）。非零条件是三组三角形不等式：\(\triangle(j_1,j_2,J_{12})\)，\(\triangle(j_3,J,J_{12})\)，\(\triangle(j_1,J_{23},J)\)，\(\triangle(j_2,j_3,J_{23})\)——对应 6j 符号的四面体边长条件。
+
+\emph{第三步：Racah 闭式。}Racah 1942 给出 6j 符号的有限和闭式：
+\begin{equation*}
+  \begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}=\Delta(j_1j_2j_3)\Delta(j_1j_5j_6)\Delta(j_4j_2j_6)\Delta(j_4j_5j_3)\sum_t\frac{(-1)^t(t+1)!}{\prod_k(t-a_k)!\prod_k(a_k-b_k)!},
+\end{equation*}
+其中 \(\Delta(abc)=\sqrt{\frac{(a+b-c)!(a-b+c)!(-a+b+c)!}{(a+b+c+1)!}}\) 是三角形系数，求和遍历使所有阶乘非负的整数 \(t\)。这一闭式把重耦合系数从 Clebsch--Gordan 级数化为有限和，是多电子原子 Racah 代数的基础。
+
+\emph{第四步：多电子原子中的 Racah 代数。}对等效电子组态 \(l^n\)（如 \(d^n\) 过渡金属、\(f^n\) 稀土），谱项能量由 Racah 参数 \(B,C\)（\(d^n\)）或 \(E^1,E^2,E^3\)（\(f^n\)）给出。这些参数是 Slater--Condon 径向积分 \(F^k\) 的 Racah 组合，系数由 6j 符号计算。例如 \(d^2\) 的三个谱项
+\begin{equation*}
+  E(^3F)=A-8B,\quad E(^3P)=A+7B,\quad E(^1D)=A-3B+2C,
+\end{equation*}
+其中 \(A,B,C\) 由 Racah 6j 符号从 \(F^0,F^2,F^4\) 组合得到。\(f^n\) 稀土的谱项分类更复杂，需用 Racah 高阶代数（Lie 群方法，Racah 1961）：\(f^n\) 的谱项按 \(G_2\) 群的不可约表示分类，这是 Racah 从 6j 符号到 Lie 群表示论的深刻推广，把原子光谱的"壳层结构"提升为"群论分类"。
+
+\emph{9j 符号与四个角动量。}四个角动量的重耦合由 9j 符号描述，是 6j 符号的进一步推广。9j 符号在核物理（两个核子的 LS--jj 变换）和原子物理（两个电子的组态混合）中直接应用。6j 和 9j 符号的代数性质（正交关系、Biedenharn--Elliott 恒等式）构成 Racah 代数的完整公理体系，是多角动量问题的标准工具。
+
+
+
+
+
+
+
+
+
+\emph{[Wigner--Eckart 定理与约化矩阵元的选择定则]} Wigner--Eckart 定理把不可约张量算符的矩阵元分解为几何因子（Clebsch--Gordan 系数）和物理因子（约化矩阵元），是角动量理论的核心工具。分四步建立。
+
+\emph{第一步：不可约张量算符。}\(k\) 阶不可约张量算符 \(T^{(k)}_q\)（\(q=-k,\ldots,k\)）在角动量旋转下按 \(D^{(k)}\) 变换：\(U(R)T^{(k)}_q U^\dagger(R)=\sum_{q'}D^{(k)}_{q'q}(R)T^{(k)}_{q'}\)。等价地，对易关系 \([J_z,T^{(k)}_q]=q\,T^{(k)}_q\)，\([J_\pm,T^{(k)}_q]=\sqrt{k(k+1)-q(q\pm1)}\,T^{(k)}_{q\pm1}\)。例子：\(J\) 本身是 \(k=1\) 张量，\(Q_{ij}=\frac{1}{2}(x_ix_j+x_jx_i)-\frac{r^2}{3}\delta_{ij}\)（四极矩）是 \(k=2\) 张量。
+
+\emph{第二步：Wigner--Eckart 定理。}矩阵元 \(\langle j'm'|T^{(k)}_q|jm\rangle\) 分解为
+\begin{equation}
+  \langle j'm'|T^{(k)}_q|jm\rangle=\langle j\,m\,k\,q|j'm'\rangle\frac{\langle j'||T^{(k)}||j\rangle}{\sqrt{2j'+1}},
+  \label{eq:phys-am-wigner-eckart}
+\end{equation}
+其中 \(\langle j\,m\,k\,q|j'm'\rangle\) 是 Clebsch--Gordan 系数（纯几何），\(\langle j'||T^{(k)}||j\rangle\) 是约化矩阵元（含物理信息）。CG 系数的非零条件给出选择定则：\(m'=m+q\)（磁量子数守恒）和 \(|j-k|\le j'\le j+k\)（三角条件）。
+
+\emph{第三步：选择定则的物理来源。}\(m'=m+q\) 来自 \(z\) 分量守恒（\(J_z\) 与 \(T^{(k)}_q\) 的对易关系）：\(T^{(k)}_q\) 携带 \(q\) 单位角动量，改变 \(m\) 到 \(m+q\)。三角条件来自角动量耦合：\(T^{(k)}_q|jm\rangle\) 属于 \(D^{(k)}\otimes D^{(j)}=\bigoplus_{j'=|j-k|}^{j+k}D^{(j')}\)，只有 \(j'\) 在此范围内的分量非零。对电偶极跃迁（\(k=1\)，\(q=0,\pm1\)）：\(\Delta m=0,\pm1\)，\(\Delta j=0,\pm1\)（但 \(j=0\to j'=0\) 禁止，因 \(D^{(0)}\otimes D^{(1)}=D^{(1)}\) 不含 \(D^{(0)}\)）——这是原子光谱的熟悉选择定则。
+
+\emph{第四步：多极展开与系统化。}任意算符可展开为不可约张量：\(A=\sum_{k,q}a_{kq}T^{(k)}_q\)。Wigner--Eckart 定理把 \(A\) 的所有矩阵元归结为约化矩阵元 \(\langle j'||T^{(k)}||j\rangle\)（每个 \(k,j,j'\) 三元组一个数）和 CG 系数（查表）。对 \(N\) 电子原子，Hamiltonian \(H=H_0+H_1\)（\(H_1\) 含 Coulomb 交互、自旋-轨道等），\(H_1\) 的多极展开给出各阶修正的选择定则：电多极（\(k\) 阶张量，宇称 \((-1)^k\)）、磁多极（\(k\) 阶张量，宇称 \((-1)^{k+1}\)）。Wigner--Eckart 定理因此把原子物理的矩阵元计算系统化：物理在约化矩阵元中，几何在 CG 系数中，两者分离是角动量理论的核心效率。
+\end{derivation}

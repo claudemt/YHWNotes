@@ -1,0 +1,133 @@
+\chapter{数学工具与物理约定}\label{chap:math-foundations}
+
+普通量子力学已经提供三件会反复使用的工具：动量表象、Hilbert 空间和 Green 函数。进入相对论场论以后，这些工具仍然有效，但必须同时服从四维度规、连续谱归一化和统一的 Fourier 约定。Fourier 变换的正负号、Minkowski 度规、Green 函数的边界条件与连续态测度会进入同一条计算；只要其中一项前后不一致，$2\pi$、$\hbar$ 或整体符号就会随之出错。
+
+这些问题自然给出一条由熟悉对象通向场论的路线：单位、坐标和 Fourier 约定先固定“怎样表示”；连续谱、张量积和投影再固定“量子态怎样组织”；有限维 Gaussian 积分提供函数积分的代数原型；参数积分与长时间极限则把这些工具接到实际散射计算。
+
+\section{单位、Fourier 变换与分布}
+
+Fourier 变换把微分方程化成代数方程，也把时空局域性转化成能量—动量守恒；因此传播子、谱密度和散射振幅都会反复依赖同一套号规。先固定单位、度规和 Fourier 变换，Dirac $\delta$、极点边界值与连续动量测度便随之唯一确定。
+
+全文固定使用 SI 制并显式保留 $c,\hbar,\varepsilon_0,\mu_0,k_B$。Minkowski 度规取
+\begin{equation}
+\eta_{\mu\nu}=\operatorname{diag}(1,-1,-1,-1),
+\qquad x^\mu=(ct,\mathbf r),
+\qquad p^\mu=(E/c,\mathbf p).
+\label{eq:global-metric-convention}
+\end{equation}
+希腊指标 $\mu,\nu=0,1,2,3$，拉丁空间指标 $i,j=1,2,3$；重复 Lorentz 指标求和。Fourier 四波矢记作 $\kappa^\mu=(\omega/c,\boldsymbol\kappa)$，真实四动量则是 $p^\mu$；特别地，对光子 $k^\mu=\hbar\kappa^\mu$。这个区分避免把“波矢”和“动量”混为同一个量纲。
+
+时间 Fourier 对固定为
+\begin{equation}
+\widetilde f(\omega)=\int_{-\infty}^{\infty}\dd t\,f(t)\ee^{+\ii\omega t},
+\qquad
+f(t)=\int_{-\infty}^{\infty}\frac{\dd\omega}{2\pi}\,\widetilde f(\omega)\ee^{-\ii\omega t}.
+\label{eq:global-time-fourier}
+\end{equation}
+空间波矢与物理动量两种表示分别使用 $\dd^3 \kappa/(2\pi)^3$ 和 $\dd^3 p/(2\pi\hbar)^3$。Fourier 反演也固定 $\delta$ 分布、$\Theta$ 函数、$\ii0^+$ 处方和积分轮廓边界值之间的关系。
+
+\input{sections/02math-fourier-complex-r13}
+\input{sections/01math-fourier-distribution-detail-dp21}
+\input{sections/01math-fourier-derivations}
+
+\section{Hilbert 空间与投影}
+
+Fourier 约定解决了“同一个对象怎样换表示”，却没有解决“哪些量子态属于我们要保留的系统”。因此下一步从表示空间转到状态空间，并用投影算符把保留自由度与被消去自由度严格区分。
+
+\subsection{Hilbert 空间与连续态}
+离散能级问题里，读者习惯把态写成一列可平方求和的系数；自由粒子却以连续动量标记本征态，归一化中必然出现 Dirac $\delta$ 函数。进入散射理论以前，必须先把“普通 Hilbert 空间向量”和“连续谱广义本征态”区分清楚，否则完备关系、态密度和相空间测度会混入彼此不兼容的归一化因子。
+
+量子态属于 Hilbert 空间 $\mathcal H$；可观测量由定义域适当的自伴算符表示。若复合系统由 $A$ 与 $B$ 构成，则状态空间是张量积 $\mathcal H_A\otimes\mathcal H_B$，局域算符写成 $A\otimes I_B$ 与 $I_A\otimes B$。对两个算符定义
+\begin{equation*}
+[A,B]\equiv AB-BA,
+\qquad
+\{A,B\}\equiv AB+BA.
+\end{equation*}
+幺正算符满足 $U^\dagger U=I$；由自伴生成元 $G$ 产生的一参数连续变换写为 $U(s)=\ee^{-\ii sG/\hbar}$。Poincar\'e 群、时间演化和量子散射均采用这一约定。
+
+连续本征态不是普通 Hilbert 空间向量，而是装备 Hilbert 空间意义下的广义态。连续谱常用两种等价但不能混写的归一化。这里分别定义它们。Fourier 归一化平面波基记作 $|\mathbf p,s\rangle_F$：
+\begin{align}
+{}_F\!\langle\mathbf p,s|\mathbf p',s'\rangle_F
+&=(2\pi\hbar)^3\delta_{ss'}\delta^{(3)}(\mathbf p-\mathbf p'),\\
+I&=\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+|\mathbf p,s\rangle_F{}_F\!\langle\mathbf p,s|.
+\label{eq:global-continuum-normalization-fourier}
+\end{align}
+自由电子光学的连续积分核更适合使用纯 Dirac-$\delta$ 归一化，定义
+\begin{equation}
+|\mathbf p,s\rangle_\delta
+\equiv(2\pi\hbar)^{-3/2}|\mathbf p,s\rangle_F.
+\label{eq:delta-normalized-state-definition}
+\end{equation}
+逐项代入上式便得到
+\begin{align}
+{}_{\delta}\!\langle\mathbf p,s|\mathbf p',s'\rangle_{\delta}
+&=\delta_{ss'}\delta^{(3)}(\mathbf p-\mathbf p'),\\
+I&=\sum_s\int \dd^3 p\,
+|\mathbf p,s\rangle_\delta{}_{\delta}\!\langle\mathbf p,s|.
+\label{eq:global-continuum-normalization-delta}
+\end{align}
+若省略下标而直接写 $|\mathbf p,s\rangle$，在自由电子连续核章节默认指第二套 $\delta$ 归一化；相对论散射中使用的协变量子态归一化还会另外引入 $2E_{\mathbf p}$ 因子，并在相应章节从 Lorentz 不变测度推出。三套归一化的换算必须显式进行，不能通过“吸收常数”混用。
+
+\input{sections/01math-continuum-detail-dp21}
+
+\subsection{投影与有效哈密顿量}
+“保留哪些自由度”可以由投影算符精确定义。令 $P=P^2=P^\dagger$ 投影到目标子空间，$Q=I-P$；任意哈密顿量都可按 $P\oplus Q$ 分块。有效哈密顿量应由完整预解式的 Schur 补得到，而不是预先删去 $Q$ 空间，因为被消去自由度仍通过能量依赖的自能反馈到目标子空间。
+
+\input{sections/01math-projection}
+\input{sections/01math-projection-extra-dp21}
+\input{sections/01math-projection-derivations}
+
+\section{函数积分与规范结构}
+
+Hilbert 空间中的投影把自由度分成保留部分与消去部分；场论还需要处理自由度数目趋于无穷的极限。最稳妥的入口仍是有限维积分：先研究普通交换变量和反交换 Grassmann 变量的二次型积分，再把格点或模截断后的场看成一个高维向量。这样函数积分中的逆核、行列式和费米负号都先由有限维代数获得，再在连续极限中继承。连续对称与规范结构随后使用同样的“局部线性化”思想建立。
+
+\subsection{高斯积分与反交换变量}
+场论中的自由理论之所以特别重要，是因为它的作用量对场变量是二次的；二次型的逆给传播核，而带源二次积分又是后面 Wick 配对和微扰展开的母计算。玻色自由度使用普通交换变量即可；费米自由度若仍用普通数积分，就无法产生反交换统计和费米行列式，因此需要 Grassmann 代数与 Berezin 积分。先在有限维里把这两类二次积分算清楚，连续场函数积分只是在调节后把矩阵指标扩展为时空或模指标。
+
+在有限维哈密顿系统中，正则对 $(q_a,p_a)$ 的量子化约定是
+\begin{equation}
+[\hat q_a,\hat p_b]=\ii\hbar\delta_{ab}.
+\label{eq:global-canonical-quantization}
+\end{equation}
+场的正则结构不由“把离散指标换成连续坐标”推出。对玻色场，经典场论的辛形式直接给出等时 Poisson 括号
+\[
+ \{\phi_a(\mathbf x,t),\pi_b(\mathbf y,t)\}_{\rm PB}
+ =\delta_{ab}\delta^{(3)}(\mathbf x-\mathbf y),
+\]
+正则量子化才把它变成 $[\hat\phi_a(\mathbf x,t),\hat\pi_b(\mathbf y,t)]=\ii\hbar\delta_{ab}\delta^{(3)}(\mathbf x-\mathbf y)$。费米场的作用量对时间导数是一阶的，约束正则结构与正能 Hamiltonian 要求使用反对易代数；费米场的反对易代数必须由其一阶正则结构和正能谱要求建立，不能由玻色对易子作形式替换得到。
+
+先固定二次积分最常用的有限维恒等式。所谓 Grassmann 变量不是普通数，而是满足 $\theta_i\theta_j=-\theta_j\theta_i$、因而 $\theta_i^2=0$ 的代数变量；与它配套的 Berezin 积分本质上抽取变量的最高次系数。这些定义随后固定行列式与反交换符号规则。这里的有限维公式不能仅靠“把矩阵指标换成连续坐标”就自动成为无限维结论。对场函数作积分时，先用格点、模截断或其它有限自由度调节，使二次核成为有限维矩阵，再在调节极限中定义函数空间测度。有限维公式的作用，是展示调节后必然出现的代数结构：普通变量的二次核由逆矩阵控制二点响应，Grassmann 变量则额外产生行列式和反交换符号。量子场论的带源函数积分则把这一有限维结构应用到经过调节的物理作用量。
+
+\input{sections/01math-gaussian-path}
+\input{sections/01math-gaussian-grassmann-extra-dp21}
+\input{sections/01math-gaussian-grassmann-derivations}
+
+\subsection{连续对称与规范几何}
+高斯与反交换变量积分解决“怎样对许多自由度积分”，但它还没有回答另一类问题：若某个物理系统在一整族连续变换下保持不变，怎样系统记录这些变换的组合规律，以及同一个变换怎样作用在普通数值场、时空向量或内部多分量场上？先从“群”这一最基本的变换集合开始定义，再逐步引入连续群的无穷小生成方向、表示以及局域规范场所需的联络与曲率。所有术语第一次出现时都按普通线性代数和多元微积分可以理解的方式建立；$U(1)$、$SU(2)$、$SU(3)$ 和 Lorentz 对称随后只是这套一般语言的具体实例。
+
+\input{sections/01math-lie-groups-sm-dp11}
+\input{sections/01math-differential-geometry-topology-dp11}
+
+\input{sections/01math-lie-groups-detail-dp18}
+\input{sections/01math-differential-geometry-detail-dp18}
+
+\section{散射积分与长时间极限}
+
+连续积分核、带源二次积分和函数积分的有限维代数确定以后，散射计算还需要把多个分母、能量守恒和有限作用时间转化为可积表达式。参数积分与长时间分布极限正是从形式积分走向有限截面与跃迁率的一组通用数学工具。
+
+\subsection{参数积分与多维动量积分}
+多维动量积分反复需要三种操作：用参数积分合并多个二次分母，把平移后的动量积分化成标准高斯型，以及在含 $\delta$ 函数的变量替换中保留正确的 Jacobian。标准高斯积分、Gamma 函数恒等式和 $\delta[f]$ 根公式可直接调用；真正需要逐步追踪的是参数化怎样改变分母、$\ii0^+$ 怎样固定解析边界，以及调节器是否保持平移与 Lorentz 对称性。有限作用时间造成的能量选择则由时间 Fourier 核单独控制。
+
+\input{sections/01math-scattering-common}
+\input{sections/01math-loop-integrals-detail-dp21}
+
+\subsection{长时间分布极限}
+有限作用时间首先给出宽度约为 $1/T$ 的谱选择函数，而不是严格的能量 $\delta$ 函数。只有在对平滑末态谱密度积分并取 $T\to\infty$ 后，$\mathrm{sinc}^2$ 核才以分布的意义趋于能量守恒条件；这一分布极限正是散射率和 Fermi 黄金律中能量守恒的数学来源。
+
+\input{sections/01math-sinc-limit}
+
+傅里叶变换、$\delta/\Theta$ 分布、$\ii0^+$ 处方、连续态测度、算符伴随、投影/预解式、高斯/Grassmann 积分以及有限时间谱核共同固定了全书的数学底座。群论、电动力学与场量子化只在这些对象上增加新的物理结构，因而不同章节中的前因子、测度和边界处方可以直接比较。
+
+
+\input{sections/01math-sinc-limit-detail-dp18}

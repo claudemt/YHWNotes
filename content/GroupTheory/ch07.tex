@@ -1,0 +1,1054 @@
+\chapter{洛伦兹群与 Poincar\'e 群}
+\label{chap:lorentz-poincare}
+
+\chapref{chap:rotation-group}把三维空间转动群 $SO(3)$ 及其二重覆盖 $SU(2)$ 处理成紧 Lie 群，并用角动量代数严格推出了全部有限维不可约表示。那里自始至终假设：不同惯性系的观察者通过\emph{空间转动}相互联系，时间是一个独立的、人人共有的背景参数。狭义相对论推翻的正是这个假设——它把时间与空间合并成一个闵可夫斯基时空 $\RR^{3,1}$，而联系不同惯性系的变换从纯转动群 $SO(3)$ 扩大为\textbf{洛伦兹群} $O(3,1)$。把平移与洛伦兹变换放在一起，就得到四维时空的全部等距对称群，即\textbf{Poincar\'e 群}。
+
+这一章的意义不止于"把第三章的转轴群改成四维"。真正的新内容是两点。第一，洛伦兹群是\textbf{非紧}的：boost 参数可以任意大，而 $SO(3)$ 的转角被限制在紧区间 $[0,2\pi]$。非紧性彻底改变了表示论——有限维表示不再幺正，而物理上要求幺正的幺正当维表示。第二，Poincar\'e 群是一个\textbf{半直积} $\RR^{3,1}\rtimes SO^+(3,1)$，既不是单群也不是直积，它的单粒子不可约表示要用\textbf{Wigner 的小群方法}才能系统分类，而这一分类直接给出粒子物理中最基本的两个量子数——\emph{质量}与\emph{自旋}（对有质量粒子）或\emph{螺旋度}（对无质量粒子）。
+
+因此本章的逻辑链是
+\[
+\text{闵可夫斯基时空}
+\longrightarrow \text{洛伦兹群的结构}
+\longrightarrow \mathfrak{so}(3,1)\text{ 的复化分解}
+\longrightarrow \text{有限维表示 }(j_L,j_R)
+\longrightarrow \text{旋量与 \ Clifford\ 代数}
+\longrightarrow \text{Poincar\'e\ 群半直积}
+\longrightarrow \text{Wigner\ 小群分类}.
+\]
+
+除特别说明外，本章采用\textbf{自然单位} $c=\hbar=1$，度规签名取 $(+,-,-,-)$。这一签名让 $p^\mu p_\mu=m^2$ 对在壳粒子取正值，与量子场论的主流约定一致；它也意味着本章的"时间分量"是上指标第 $0$ 分量，空间分量带负号。
+
+\section{闵可夫斯基时空与洛伦兹群}
+
+
+狭义相对论把时间与空间合并为闵可夫斯基时空，其基本对象是四矢量与度规。
+
+狭义相对论的基本对象是四矢量 $x^\mu=(x^0,x^1,x^2,x^3)=(t,\vb x)$。闵可夫斯基内积由度规
+\[
+\eta=\eta_{\mu\nu}=\operatorname{diag}(+1,-1,-1,-1),\qquad
+x\cdot y=\eta_{\mu\nu}x^\mu y^\nu=x^0y^0-\vb x\cdot\vb y
+\]
+定义。约定指标用希腊字母 $\mu,\nu\in\{0,1,2,3\}$，重复的上下指标自动求和；$x_\mu=\eta_{\mu\nu}x^\nu$ 于是有 $x_\mu=(t,-\vb x)$，故 $x^\mu x_\mu=t^2-|\vb x|^2$。两个事件的间隔
+\[
+\Delta s^2=\eta_{\mu\nu}\Delta x^\mu\Delta x^\nu
+\]
+在惯性系变换下保持不变，正是狭义相对论所有运动学结论的来源。
+
+\begin{definition}[洛伦兹群]
+\textbf{洛伦兹群} $O(3,1)$ 是所有保持闵可夫斯基内积的实 $4\times4$ 矩阵构成的群：
+\[
+O(3,1)=\{\Lambda\in M_4(\RR)\mid \Lambda^{\mathsf T}\eta\,\Lambda=\eta\}.
+\]
+取行列式得到 $(\det\Lambda)^2=1$，故 $\det\Lambda=\pm1$。取 $(\mu,\nu)=(0,0)$ 分量得到
+\[
+(\Lambda^0{}_0)^2-\sum_i(\Lambda^i{}_0)^2=1
+\Longrightarrow
+|\Lambda^0{}_0|\ge 1.
+\]
+\end{definition}
+
+\begin{definition}[洛伦兹群的连通分支]
+由 $\det\Lambda$ 与 $\Lambda^0{}_0$ 的符号，$O(3,1)$ 分成四个连通分支：
+\[
+\begin{aligned}
+SO^+(3,1)&:\ \det=+1,\ \Lambda^0{}_0\ge+1\ (\text{正常正时洛伦兹群}),\\
+SO^-(3,1)&:\ \det=+1,\ \Lambda^0{}_0\le-1,\\
+O^\pm(3,1)&\ \text{其余两种 }(\det=-1).
+\end{aligned}
+\]
+只有 $SO^+(3,1)$ 是包含单位元的分支，因而是 $O(3,1)$ 的单位连通分支。它由 $SO(3)$（空间转动）与\textbf{boost}（沿某方向的纯 Lorentz 变换）联合生成，是物理上联系惯性系的那部分，通常狭义地就称之为"洛伦兹群"。
+\end{definition}
+
+分立变换相应地有三种：空间反演 $P=\operatorname{diag}(1,-1,-1,-1)$（宇称），时间反演 $T=\operatorname{diag}(-1,1,1,1)$，以及二者之积 $PT=-I$。它们放在 \cref{sec:wigner-classification} 讨论分立对称性时再分别处理。
+
+
+有了度规与四矢量的语言，接下来考察保持闵可夫斯基内积的线性变换——洛伦兹群元素的具体形式，特别是 boost 与转动的指数参数化。
+
+沿 $x$ 轴的 boost 把静止系与速度 $v=\tanh\eta$ 的惯性系联系起来，矩阵为
+\[
+\Lambda_x(\eta)=
+\begin{pmatrix}
+\cosh\eta & -\sinh\eta & 0 & 0\\
+-\sinh\eta & \cosh\eta & 0 & 0\\
+0&0&1&0\\
+0&0&0&1
+\end{pmatrix},
+\]
+其中 $\eta$ 称为\textbf{快度}，满足 $\gamma=\cosh\eta$，$\gamma v=\sinh\eta$。空间转动沿用 \chapref{chap:rotation-group} 的主动记号：绕 $z$ 轴转 $\theta$ 的矩阵是
+\[
+R_z(\theta)=
+\begin{pmatrix}
+1&0&0&0\\
+0&\cos\theta&-\sin\theta&0\\
+0&\sin\theta&\cos\theta&0\\
+0&0&0&1
+\end{pmatrix}.
+\]
+注意关键差别：$R_z$ 中的转角 $\theta$ 在 $[0,2\pi]$ 上取值（紧参数），而 $\Lambda_x$ 中的快度 $\eta\in(-\infty,\infty)$ 无界（非紧参数）。$\eta\to\infty$ 对应 $v\to c$ 的极限，永远不会"回到原点"。这正是洛伦兹群非紧性的最直接体现。
+
+\section{洛伦兹代数的复化分解}
+
+
+把洛伦兹群在单位元附近展开，就得到它的 Lie 代数。生成元与对易关系完全编码了群的局部结构，是后续一切表示论的出发点。
+
+本章用六个生成元组织洛伦兹代数。设 $M_{\mu\nu}=-M_{\nu\mu}$ 是六个反对称参数对应的生成元，约定
+\[
+J_i=\tfrac12\epsilon_{ijk}M_{jk}\ (\text{转动}),\qquad
+K_i=M_{0i}\ (\text{boost}).
+\]
+即 $J_i$ 生成 $SO(3)$ 子群，$K_i$ 生成沿第 $i$ 轴的 boost。无穷小洛伦兹变换写作 $\Lambda=I-\tfrac{\ii}{2}\omega^{\mu\nu}M_{\mu\nu}$，其中参数矩阵 $\omega_{\mu\nu}=-\omega_{\nu\mu}$。
+
+由 $SO(3)$ 的对易关系（\chapref{chap:rotation-group}），转动部分满足 $[J_i,J_j]=\ii\epsilon_{ijk}J_k$。含 boost 的对易关系可以这样记住：$J$ 和 $K$ 都是矢量算符，但 $K$ 与 $K$ 的交换子回到 $J$ 并带一个负号。完整地，
+\begin{equation}
+[J_i,J_j]=\ii\epsilon_{ijk}J_k,\qquad
+[J_i,K_j]=\ii\epsilon_{ijk}K_k,\qquad
+[K_i,K_j]=-\ii\epsilon_{ijk}J_k.
+\label{eq:lorentz-algebra}
+\end{equation}
+第三个式子的负号是洛伦兹代数的核心，也是它与 $SO(4)$（欧氏四维转动，$[K_i,K_j]=+\ii\epsilon_{ijk}J_k$）的唯一区别。这个负号正是非紧性的代数表现。
+
+\begin{derivation}[Boost 交换子给出转动生成元的矩阵推导]
+直接用 $4\times4$ 矩阵算 $x$、$y$ 方向的 boost。
+
+\textbf{第一步：单参 boost 矩阵.}\enspace 沿 $x$、$y$ 的 boost 矩阵（保留到 $\eta$ 一阶）为
+\[
+\Lambda_x(\eta)\simeq
+\begin{pmatrix}
+1&-\eta&0&0\\-\eta&1&0&0\\0&0&1&0\\0&0&0&1
+\end{pmatrix},
+\qquad
+\Lambda_y(\eta)\simeq
+\begin{pmatrix}
+1&0&-\eta&0\\0&1&0&0\\-\eta&0&1&0\\0&0&0&1
+\end{pmatrix}.
+\]
+写成 $\Lambda_x=I-\ii\eta_x K_x$、$\Lambda_y=I-\ii\eta_y K_y$，读出生成元
+\[
+K_x=\ii\begin{pmatrix}
+0&-1&-1&0&0\\-1&0&0&0\\0&0&0&0\\0&0&0&0
+\end{pmatrix}
+\]
+（这里只示意非零元：$K_x$ 的 $(0,1),(1,0)$ 元为 $-\ii$，$K_y$ 的 $(0,2),(2,0)$ 元为 $-\ii$）。
+
+\textbf{第二步：计算交换子.}\enspace 真正要算的是两个 boost 沿不同方向的"差转"效应。三个 boost 的交换子 $[K_x,K_y]=K_xK_y-K_yK_x$ 由矩阵乘法得出，直接相乘 $4\times4$ 矩阵（$K_x$ 仅 $(0,1),(1,0)$ 非零，$K_y$ 仅 $(0,2),(2,0)$ 非零）：
+\[
+(K_xK_y)_{\mu\nu}=\sum_\lambda(K_x)_{\mu\lambda}(K_y)_{\lambda\nu}.
+\]
+$K_x$ 把指标 $0\leftrightarrow1$ 搬运并乘 $\ii$（有符号），$K_y$ 把 $0\leftrightarrow2$ 搬运。于是 $K_xK_y$ 的非零元在 $(1,2)$，$K_yK_x$ 的非零元在 $(2,1)$。具体地，
+\[
+K_xK_y=(+\ii)(+\ii)E_{12}=(-1)E_{12}
+\]
+的符号要小心追踪：$K_x$ 的 $(1,0)$ 元是 $\ii$（因为 $\Lambda_x$ 的 $(1,0)$ 元是 $-\eta$，$-\ii\eta$ 对应生成元 $\ii$）；$K_y$ 的 $(0,2)$ 元是 $\ii$。于是
+\[
+(K_xK_y)_{12}=(K_x)_{10}(K_y)_{02}=\ii\cdot\ii=-1,
+\]
+同理 $(K_yK_x)_{21}=(K_y)_{20}(K_x)_{01}=\ii\cdot\ii=-1$，而 $K_yK_x$ 的 $(1,2)$ 分量为零。结果
+\[
+[K_x,K_y]=K_xK_y-K_yK_x=-E_{12}+E_{21}.
+\]
+这里 $-E_{12}+E_{21}$ 正是"绕 $z$ 轴的无穷小转动"的生成元，而 $J_z$ 的 $4\times4$ 矩阵形如 $J_z=\ii(E_{21}-E_{12})$，故 $[K_x,K_y]=-\ii J_z$。循环置换坐标即得 \eqnrefs{eq:lorentz-algebra} 第三式，负号不可回避。
+
+\textbf{第三步：物理解读.}\enspace 负号说明：先沿 $x$ 加速再沿 $y$ 加速，与反过来做，二者之差不是又一次加速，而是一个绕 $z$ 轴的\textbf{转动}（Thomas 进动）。这正是相对论中"加速不被交换但合成后多出一个转动"这一经典现象（Wigner 转动、Thomas 旋进）的李代数根源。
+
+
+
+上述对易关系中最值得注意的是 boost 之间的负号。这个负号提示我们：复化后洛伦兹代数可能分裂为两个熟悉的 piece。事实确实如此——复化分解 $\mathfrak{so}(3,1)_{\CC}\cong\mathfrak{su}(2)_{\CC}\oplus\mathfrak{su}(2)_{\CC}$ 是本章最关键的代数事实。
+
+洛伦兹代数最深刻的结构是：把生成元\textbf{复线性组合}后，它分解成两个互相交换的 $\mathfrak{su}(2)$。
+
+\textbf{定理（洛伦兹代数的复化）.}\enspace 定义复生成元
+\begin{equation}
+A_i=\frac12(J_i+\ii K_i),\qquad
+B_i=\frac12(J_i-\ii K_i).
+\label{eq:complex-rotation-boost}
+\end{equation}
+则 $A_i,B_i$ 各自生成一个 $\mathfrak{su}(2)$，并且两个 $\mathfrak{su}(2)$ 彼此交换：
+\begin{equation}
+[A_i,A_j]=\ii\epsilon_{ijk}A_k,\qquad
+[B_i,B_j]=\ii\epsilon_{ijk}B_k,\qquad
+[A_i,B_j]=0.
+\label{eq:so31-complex-decomposition}
+\end{equation}
+因此复化洛伦兹代数同构于两个 $\mathfrak{su}(2)$ 的直和：
+\[
+\mathfrak{so}(3,1)_{\CC}\simeq\mathfrak{su}(2)_{\CC}\oplus\mathfrak{su}(2)_{\CC}.
+\]
+
+\begin{proof}
+\textbf{第一步：$[A_i,A_j]$.}\enspace 用 \eqnrefs{eq:lorentz-algebra} 逐项展开：
+\[
+[A_i,A_j]
+=\frac14[J_i+\ii K_i,\,J_j+\ii K_j]
+=\frac14\Bigl([J_i,J_j]+\ii[J_i,K_j]+\ii[K_i,J_j]+\ii^2[K_i,K_j]\Bigr).
+\]
+由 $[J_i,J_j]=\ii\epsilon_{ijk}J_k$、$[J_i,K_j]=\ii\epsilon_{ijk}K_k$、$[K_i,J_j]=-[J_j,K_i]=-\ii\epsilon_{jik}K_k=\ii\epsilon_{ijk}K_k$、$[K_i,K_j]=-\ii\epsilon_{ijk}J_k$，代入得
+\[
+[A_i,A_j]=\frac14\Bigl(\ii\epsilon_{ijk}J_k+\ii^2\epsilon_{ijk}K_k+\ii^2\epsilon_{ijk}K_k-\ii^2\epsilon_{ijk}J_k\Bigr).
+\]
+利用 $\ii^2=-1$，前两项 $J$ 的贡献为 $\ii\epsilon_{ijk}J_k-(-\epsilon_{ijk}J_k)$，即 $2\ii\epsilon_{ijk}J_k$；$K$ 的两项为 $-2\epsilon_{ijk}K_k$。故
+\[
+[A_i,A_j]=\frac14\bigl(2\ii\epsilon_{ijk}J_k-2\epsilon_{ijk}K_k\bigr)
+=\frac{\ii}{2}\epsilon_{ijk}\bigl(J_k+\ii K_k\bigr)=\ii\epsilon_{ijk}A_k.
+\]
+\textbf{第二步：$[B_i,B_j]$} 完全同理，只是 $K\to-K$，得到 $[B_i,B_j]=\ii\epsilon_{ijk}B_k$。
+
+\textbf{第三步：$[A_i,B_j]$} 交叉项：
+\[
+[A_i,B_j]=\frac14[J_i+\ii K_i,\,J_j-\ii K_j]
+=\frac14\Bigl([J_i,J_j]-\ii[J_i,K_j]+\ii[K_i,J_j]+\ii^2(-1)[K_i,K_j]\Bigr).
+\]
+代入后 $[J_i,J_j]=\ii\epsilon_{ijk}J_k$、$-\ii[J_i,K_j]=\epsilon_{ijk}K_k$、$\ii[K_i,J_j]=\ii(\ii\epsilon_{ijk}K_k)=-\epsilon_{ijk}K_k$、$-[K_i,K_j]=\ii\epsilon_{ijk}J_k$，逐项抵消全部为零。故 $[A_i,B_j]=0$。
+\end{proof}
+
+这个定理的物理含义极其重要：\emph{每个洛伦兹群的有限维不可约表示}都由一对角动量 $(j_L,j_R)$ 标记，其中 $j_L$ 来自 $A$ 的 $\mathfrak{su}(2)$，$j_R$ 来自 $B$ 的 $\mathfrak{su}(2)$。
+
+
+复化分解 $\mathfrak{so}(3,1)_\CC\cong\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC$ 把实代数 $\mathfrak{so}(3,1)$ 嵌入到一个更大的复代数中。要完整理解这一分解，需要回答三个问题：如何从 $(A_i,B_i)$ 反解出 $(J_i,K_i)$？哪些复代数元素属于实子代数 $\mathfrak{so}(3,1)$？实形式条件如何约束表示？
+
+\textbf{第一步：逆映射的显式公式.}\enspace 从 $A_i=\tfrac12(J_i+\ii K_i)$、$B_i=\tfrac12(J_i-\ii K_i)$ 直接解出
+\begin{equation}
+\label{eq:inverse-complexification}
+J_i=A_i+B_i,\qquad K_i=-\ii(A_i-B_i).
+\end{equation}
+此逆映射在表示论中起关键作用：给定两个 $\mathfrak{su}(2)$ 表示 $V_{j_L}$、$V_{j_R}$，洛伦兹代数在 $V_{j_L}\otimes V_{j_R}$ 上的作用由 $J_i=A_i\otimes\mathbb{1}+\mathbb{1}\otimes B_i$（转动）和 $K_i=-\ii(A_i\otimes\mathbb{1}-\mathbb{1}\otimes B_i)$（boost）给出。注意 $K_i$ 中的 $-\ii$ 因子：即使 $A_i,B_i$ 取厄米矩阵，$K_i$ 也是反厄米的（$K_i^\dagger=+\ii(A_i^\dagger-B_i^\dagger)=\ii(A_i-B_i)=-K_i$），这正是有限维表示中 boost 反厄米、表示非幺正的根源。
+
+\textbf{第二步：实形式条件.}\enspace 复化代数 $\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC$ 是 $6$ 维复空间（$12$ 维实空间），而实代数 $\mathfrak{so}(3,1)$ 是 $6$ 维实空间。实形式条件刻画哪些复元素属于实子代数。由 \eqnrefs{eq:inverse-complexification}，$J_i=A_i+B_i$ 和 $K_i=-\ii(A_i-B_i)$ 必须是实的。$J_i$ 实要求 $A_i+B_i$ 的虚部为零，$K_i$ 实要求 $-\ii(A_i-B_i)$ 的虚部为零。等价地，定义共轭运算（\emph{共轭线性}对合）$\sigma$：
+\begin{equation}
+\label{eq:real-form-conjugation}
+\sigma(A_i)=B_i,\qquad \sigma(B_i)=A_i,\qquad \sigma(\ii)=-\ii.
+\end{equation}
+则 $\mathfrak{so}(3,1)=\{X\in\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC\mid \sigma(X)=X\}$ 是 $\sigma$ 的不动点集。验证：$\sigma(J_i)=\sigma(A_i+B_i)=B_i+A_i=J_i$（实），$\sigma(K_i)=\sigma(-\ii(A_i-B_i))=+\ii(B_i-A_i)=-\ii(A_i-B_i)=K_i$（实）。反过来，若 $\sigma(X)=X$，写 $X=\sum_i(\alpha_i A_i+\beta_i B_i)$（$\alpha_i,\beta_i\in\CC$），则 $\sigma(X)=\sum_i(\bar\beta_i A_i+\bar\alpha_i B_i)=X$ 要求 $\alpha_i=\bar\beta_i$，即 $X=\sum_i(\alpha_i A_i+\bar\alpha_i B_i)$，这正是 $J_i$ 和 $K_i$ 的实线性组合。
+
+\textbf{第三步：与 $\mathfrak{so}(4)$ 的对比.}\enspace 欧氏四维转动群 $SO(4)$ 的 Lie 代数 $\mathfrak{so}(4)$ 有相同的复化 $\mathfrak{so}(4)_\CC\cong\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC$，但实形式不同。$\mathfrak{so}(4)$ 的生成元满足 $[K_i,K_j]=+\ii\epsilon_{ijk}J_k$（无负号），复化时定义 $A_i'=\tfrac12(J_i+K_i)$、$B_i'=\tfrac12(J_i-K_i)$（无 $\ii$），实形式条件为 $\sigma'(A_i')=A_i'$、$\sigma'(B_i')=B_i'$（标准复共轭，不交换 $A$ 和 $B$）。因此 $\mathfrak{so}(4)\cong\mathfrak{su}(2)\oplus\mathfrak{su}(2)$ 是\emph{直和}（紧群），而 $\mathfrak{so}(3,1)$ 的实形式条件交换 $A\leftrightarrow B$，使其不是直和而是\emph{单}的——同一个复代数的两个不同实形式，一个紧（$SO(4)$），一个非紧（$SO(3,1)$），由实形式共轭 $\sigma$ 的选择区分。Killing 形式的对比：
+\begin{equation*}
+\kappa_{\mathfrak{so}(4)}<0\ (\text{负定，紧}),\qquad \kappa_{\mathfrak{so}(3,1)}\ \text{符号差}(+,+,+,-,-,-)\ (\text{非紧}).
+\end{equation*}
+
+\textbf{第四步：表示的实性判据.}\enspace 实形式条件 $\sigma$ 作用于表示：表示 $(j_L,j_R)$ 在 $\sigma$ 下变为 $(j_R,j_L)$（因 $\sigma$ 交换 $A\leftrightarrow B$）。因此：
+\begin{itemize}
+\item $j_L=j_R$（即 $(j,j)$）：$\sigma$ 不交换标签，表示是\emph{实表示}。如 $(0,0)$ 标量、$(\tfrac12,\tfrac12)$ 矢量、$(1,1)$ 无迹对称张量——这些都有实分量。
+\item $j_L\ne j_R$ 但 $(j_L,j_R)$ 与 $(j_R,j_L)$ 等价：不可能，因维数 $(2j_L+1)(2j_R+1)$ 在 $j_L\ne j_R$ 时不同。故 $j_L\ne j_R$ 的表示是\emph{复表示}，必须与其共轭 $(j_R,j_L)$ 配对才能描述实场。如 $(\tfrac12,0)\oplus(0,\tfrac12)$ Dirac 旋量、$(1,0)\oplus(0,1)$ 电磁场张量。
+\item $(\tfrac12,0)$ 与 $(0,\tfrac12)$ 互为复共轭但彼此不等价——这是 Weyl 旋量有手征性的代数根源。
+\end{itemize}
+表示实性的一般判据为
+\begin{equation*}
+(j_L,j_R)\text{ 实}\iff j_L=j_R,\qquad (j_L,j_R)\text{ 复}\iff j_L\ne j_R.
+\end{equation*}
+物理上，实表示对应实场（如矢量 $A^\mu$），复表示对应复场（如 Weyl 旋量 $\psi_L$），其对偶 $(j_R,j_L)$ 描述反手征场。实表示与复表示的维数公式为
+\begin{equation*}
+\dim_\RR(j,j)=2j+1,\qquad \dim_\CC(j_L,j_R)=(2j_L+1)(2j_R+1).
+\end{equation*}
+
+\textbf{第五步：复化分解的维数验证.}\enspace $\mathfrak{so}(3,1)$ 是 $6$ 维实代数，复化后是 $6$ 维复代数。$\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC$ 每个因子 $3$ 维复，共 $6$ 维复——维数一致。作为实代数，$\mathfrak{su}(2)\oplus\mathfrak{su}(2)$ 是 $6$ 维实（紧的），而 $\mathfrak{so}(3,1)$ 也是 $6$ 维实（非紧的），二者复化后相同但实形式不同。维数验证：
+\begin{equation*}
+\dim_\RR\mathfrak{so}(3,1)=6=\dim_\CC\bigl(\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC\bigr)=3+3.
+\end{equation*}
+这展示了 Cartan 的实形式分类理论：同一个复半单 Lie 代数可以有多个不等价的实形式，由 Killing 形式的符号差区分。$\mathfrak{so}(4)$ 的 Killing 形式负定（紧），$\mathfrak{so}(3,1)$ 的 Killing 形式符号差 $(+,+,+,-,-,-)$（非紧），它们是 $\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC$ 的两个极端实形式。一般地，复半单 Lie 代数 $\mathfrak{g}_\CC$ 的实形式由 Cartan 对合 $\theta$ 分类：$\theta=\id$ 给紧实形式，$\theta\ne\id$ 给非紧实形式，不同 $\theta$ 给出不同实形式。
+
+
+$O(3,1)$ 不是连通群——它有四个连通分支，由行列式 $\det\Lambda$ 和正时性条件 $\Lambda^0{}_0\ge+1$ 或 $\Lambda^0{}_0\le-1$ 区分。分立变换 $P$（宇称）、$T$（时间反演）、$PT$（全反演）将不同分支联系起来。本推导完整分析这四个分支的代数结构和分立变换在表示上的作用。
+
+\textbf{第一步：四个连通分支的代数刻画.}\enspace 由 $\Lambda^{\mathsf T}\eta\Lambda=\eta$ 取行列式得 $(\det\Lambda)^2=1$，故 $\det\Lambda=\pm1$。取 $(0,0)$ 分量得 $(\Lambda^0{}_0)^2-\sum_i(\Lambda^i{}_0)^2=1$，故 $|\Lambda^0{}_0|\ge1$，即 $\Lambda^0{}_0\ge+1$ 或 $\Lambda^0{}_0\le-1$。两个条件独立，给出四个分支：
+\begin{equation}
+\label{eq:lorentz-components}
+\begin{array}{c|c|c|c}
+\text{分支} & \det\Lambda & \Lambda^0{}_0 & \text{代表元}\\\hline
+L_+^\uparrow=SO^+(3,1) & +1 & \ge+1 & \mathbb{1}\ (\text{单位元})\\
+L_-^\uparrow & -1 & \ge+1 & P=\diag(1,-1,-1,-1)\ (\text{宇称})\\
+L_+^\downarrow & +1 & \le-1 & PT=\diag(-1,-1,-1,-1)\ (\text{全反演})\\
+L_-^\downarrow & -1 & \le-1 & T=\diag(-1,1,1,1)\ (\text{时间反演})
+\end{array}
+\end{equation}
+每个分支是 $L_+^\uparrow$ 的陪集：$L_-^\uparrow=PL_+^\uparrow$，$L_+^\downarrow=PTL_+^\uparrow$，$L_-^\downarrow=TL_+^\uparrow$。群乘法表为 $P^2=T^2=(PT)^2=\mathbb{1}$，$PT=TP$，故分立商群 $O(3,1)/SO^+(3,1)\cong\ZZ_2\times\ZZ_2=\{1,P,T,PT\}$（Klein 四元群）。
+
+\textbf{第二步：$P$ 和 $T$ 作为 Lie 代数自同构.}\enspace 宇称 $P:x^\mu\mapsto P^\mu{}_\nu x^\nu$（$P=\diag(1,-1,-1,-1)$）诱导 Lie 代数自同构 $\varphi_P:\mathfrak{so}(3,1)\to\mathfrak{so}(3,1)$，由 $M_{\mu\nu}\mapsto P_\mu{}^\alpha P_\nu{}^\beta M_{\alpha\beta}$ 给出。具体地：
+\begin{equation}
+\label{eq:parity-action}
+\varphi_P(J_i)=J_i,\qquad \varphi_P(K_i)=-K_i.
+\end{equation}
+物理含义：宇称保持转动（极矢量不变）但反转 boost（速度变号）。在复化分解下，$\varphi_P(A_i)=\tfrac12(J_i-\ii K_i)=B_i$，$\varphi_P(B_i)=A_i$——\emph{宇称交换两个 $\mathfrak{su}(2)$}。因此 $\varphi_P$ 恰是实形式共轭 $\sigma$ \eqnrefs{eq:real-form-conjugation} 在 Lie 代数上的实现。
+
+时间反演 $T=\diag(-1,1,1,1)$ 诱导 $\varphi_T(M_{\mu\nu})=T_\mu{}^\alpha T_\nu{}^\beta M_{\alpha\beta}$：
+\begin{equation}
+\label{eq:time-reversal-action}
+\varphi_T(J_i)=-J_i,\qquad \varphi_T(K_i)=K_i.
+\end{equation}
+物理含义：时间反演反转角动量（$\vb J=\vb r\times\vb p$，$\vb p$ 不变但 $\vb r$ 在时间反演下不变，而 $\vb v=\dot{\vb r}$ 变号，故 $\vb L=\vb r\times m\vb v$ 变号）但保持 boost 方向（$K_i=M_{0i}$，$0$ 和 $i$ 都变号故 $M_{0i}$ 不变）。在复化分解下，$\varphi_T(A_i)=\tfrac12(-J_i+\ii K_i)=-B_i$，$\varphi_T(B_i)=-A_i$——时间反演交换两个 $\mathfrak{su}(2)$ 并加负号。
+
+$PT$ 诱导 $\varphi_{PT}(J_i)=-J_i$、$\varphi_{PT}(K_i)=-K_i$，即 $M_{\mu\nu}\mapsto M_{\mu\nu}$（全反演保持所有生成元，因 $x^\mu\mapsto-x^\mu$ 是中心元素）。在复化下 $\varphi_{PT}(A_i)=-A_i$、$\varphi_{PT}(B_i)=-B_i$——每个 $\mathfrak{su}(2)$ 各加负号。
+
+\textbf{第三步：分立变换对表示 $(j_L,j_R)$ 的作用.}\enspace 宇称 $P$ 交换 $A\leftrightarrow B$，故
+\begin{equation}
+\label{eq:parity-rep-action}
+P:\ (j_L,j_R)\longmapsto(j_R,j_L).
+\end{equation}
+因此 $(j,j)$ 表示（标量、矢量、无迹对称张量）在宇称下不变——它们可以描述宇称守恒理论中的粒子。但 $(\tfrac12,0)$（左手 Weyl 旋量）在宇称下变为 $(0,\tfrac12)$（右手 Weyl 旋量），二者不等价——\emph{纯 Weyl 旋量不能描述宇称不变理论}。只有 Dirac 旋量 $(\tfrac12,0)\oplus(0,\tfrac12)$ 在宇称下不变（$P$ 交换两个直和项），故有质量费米子（需要质量项联结左右手）必然是 Dirac 旋量而非 Weyl 旋量。
+
+时间反演 $T$ 交换 $A\leftrightarrow B$ 并加负号，在表示层面与 $P$ 相同（负号被 $(-1)^{2j}$ 吸收），故 $T:(j_L,j_R)\mapsto(j_R,j_L)$。但 $T$ 是\emph{反酉}算符（$T$ 不保内积而是取复共轭），这导致 Kramers 简并：对半整数自旋（$j_L+j_R\in\ZZ+\tfrac12$），$T^2=-1$，每个态至少二重简并。
+
+\textbf{第四步：表示的可扩展性判据.}\enspace 给定 $SO^+(3,1)$ 的表示 $(j_L,j_R)$，何时可扩展到 $O(3,1)$ 的表示？需要存在算符 $\hat P$、$\hat T$ 满足 $\hat P^2=\hat T^2=\mathbb{1}$（或 $-1$，对旋量表示）且与群作用相容。
+\begin{itemize}
+\item $(j,j)$ 表示：$\hat P=\hat T=\mathbb{1}$ 平凡扩展，表示是 $O(3,1)$ 的真实表示。
+\item $(j_L,j_R)\oplus(j_R,j_L)$（$j_L\ne j_R$）：$\hat P$ 交换两个直和项，$\hat P^2=\mathbb{1}$，可扩展。如 Dirac 旋量 $(\tfrac12,0)\oplus(0,\tfrac12)$、电磁场张量 $(1,0)\oplus(0,1)$。
+\item 纯 $(j_L,j_R)$（$j_L\ne j_R$）：不可扩展到 $O(3,1)$，只能是 $SO^+(3,1)$ 或其覆盖 $SL(2,\CC)$ 的表示。如纯左手 Weyl 旋量 $(\tfrac12,0)$ 只存在于 $SL(2,\CC)$ 上，不能扩展到含宇称的群。
+\end{itemize}
+这一判据直接约束粒子物理模型构建：若理论需宇称守恒，所有粒子必须用可扩展表示描述（$(j,j)$ 或 $(j_L,j_R)\oplus(j_R,j_L)$）；若理论破坏宇称（如弱相互作用），可用纯 $(j_L,j_R)$ 表示（如只含左手中微子 $(\tfrac12,0)$）。
+
+\textbf{第五步：$P$、$T$ 对 Casimir 的作用.}\enspace Poincar\'e 代数的 Casimir $P^2=P^\mu P_\mu$ 和 $W^2=W^\mu W_\mu$ 在分立变换下的行为：
+\begin{itemize}
+\item $P$：$P^0\to P^0$、$P^i\to-P^i$，故 $P^2\to P^2$（不变）。$W^2\to W^2$（因 $W^\mu$ 是赝矢量，$W^0\to-W^0$、$W^i\to W^i$，但 $W^2=-W_0^2+\vb W^2$ 不变）。
+\item $T$：$P^0\to-P^0$、$P^i\to P^i$，故 $P^2\to P^2$（不变）。$W^2\to W^2$（同理）。
+\end{itemize}
+两个 Casimir 在所有分立变换下不变——这保证了质量和自旋（螺旋度）是 $O(3,1)$ 的不变量，而不仅是 $SO^+(3,1)$ 的。但螺旋度 $h$ 在 $P$ 下变号（$h\to-h$），因 $h$ 不是 Casimir 而是 $ISO(2)$ 小群的量子数，$P$ 把 $h$ 的表示映到 $-h$ 的表示。因此无质量宇称不变理论必须同时含 $h$ 和 $-h$（如光子 $h=\pm1$），而纯 $h=\tfrac12$ 的左手中微子破坏宇称。
+
+\textbf{第六步：CPT 定理的群论基础.}\enspace CPT 定理断言任何 Lorentz 不变的局域量子场论在 $CPT$ 联合变换下不变。群论上，$PT$ 是 $O(3,1)$ 的中心元素（$x^\mu\mapsto-x^\mu$），它在 Lie 代数上作用为 $\varphi_{PT}(M_{\mu\nu})=M_{\mu\nu}$（平凡作用），但在表示空间上作用为 $\Psi(x)\mapsto\gamma^0\Psi(-x)$（对旋量），这不是平凡的——$PT$ 把粒子映到反粒子（电荷共轭 $C$ 的角色）。$CPT$ 联合恰是 $O(3,1)$ 的全反演在量子场论中的正确实现，其不变性来自 Lorentz 不变性和局域性——这是 CPT 定理的群论侧面。
+
+
+\textbf{过渡：有限维不可约表示 $(j_L,j_R)$.}\enspace
+
+
+复化分解把洛伦兹代数的表示论归结为两个独立的 $\mathfrak{su}(2)$ 表示的直积，由此立即得到有限维不可约表示的完整分类。
+
+\textbf{定理（洛伦兹群的有限维不可约表示）.}\enspace $SL(2,\CC)$（洛伦兹群 $SO^+(3,1)$ 的二重覆盖）的每个有限维不可约表示由一对半整数 $(j_L,j_R)$（$j_L,j_R\in\tfrac12\NN$）标记。表示记作 $(j_L,j_R)$，维数为
+\begin{equation}
+\dim(j_L,j_R)=(2j_L+1)(2j_R+1).
+\label{eq:finite-dim-lorentz}
+\end{equation}
+其中 $j_L$、$j_R$ 分别是 \eqnrefs{eq:complex-rotation-boost} 中 $A_i$、$B_i$ 生成的两个 $\mathfrak{su}(2)$ 的自旋量子数。
+
+\begin{proof}
+\textbf{第一步：从代数表示到群表示.}\enspace $\mathfrak{su}(2)$ 的全部有限维不可约表示已知（\chapref{chap:rotation-group}）：由 $j=0,\tfrac12,1,\dots$ 标记，维数 $2j+1$。由 \eqnrefs{eq:so31-complex-decomposition}，$\mathfrak{so}(3,1)_{\CC}$ 的不可约表示是两个 $\mathfrak{su}(2)_{\CC}$ 的不可约表示的张量积，故由 $(j_L,j_R)$ 标记，维数 $(2j_L+1)(2j_R+1)$。
+
+\textbf{第二步：实数形式约束.}\enspace 洛伦兹群是实群，还要考察"复表示下降到实群"需要什么条件。由于 $A_i,B_i$ 是 $J_i,K_i$ 的复组合，$J_i,K_i$ 是实的，有 $A_i^\dagger\ne A_i$。在有限维表示里，$J_i$ 可以选为厄米（$J_i^\dagger=J_i$），$K_i$ 必须反厄米（$K_i^\dagger=-K_i$）以保证 $\Lambda$ 不幺正，这正是有限维表示非幺正的来源。由 $A_i=\tfrac12(J_i+\ii K_i)$，$B_i=\tfrac12(J_i-\ii K_i)$，可见 $B_i^\dagger=A_i$。
+
+\textbf{第三步：单值与双值的分界.}\enspace 用 $j_L+j_R$ 判定表示是 $SO^+(3,1)$ 的单值表示还是旋量表示。空间转动由 $J_i=A_i+B_i$ 生成，故转动子群的角动量为 $j_L+j_R$。当 $j_L+j_R\in\ZZ$ 时，$2\pi$ 转动给出 $+1$，表示下降到 $SO^+(3,1)$ 的单值表示；当 $j_L+j_R\in\ZZ+\tfrac12$ 时，$2\pi$ 转动给出 $-1$，表示是 $SO^+(3,1)$ 的\textbf{双值}表示，即真正的旋量表示，只在覆盖群 $SL(2,\CC)$ 上单值。
+\end{proof}
+
+
+\textbf{第一步：表示空间的构造.}\enspace 对给定 $(j_L,j_R)$，表示空间为 $V=V_{j_L}\otimes V_{j_R}$，其中 $V_j$ 是 $SU(2)$ 自旋 $j$ 表示的标准 $(2j+1)$ 维空间，基为 $|j,m\rangle$（$m=-j,\dots,j$）。$V$ 的基为 $|j_L,m_L\rangle\otimes|j_R,m_R\rangle$，共 $(2j_L+1)(2j_R+1)$ 个。两个 $\mathfrak{su}(2)$ 分别作用：
+\begin{equation*}
+A_i|j_L,m_L\rangle\otimes|j_R,m_R\rangle=(J_i^{(j_L)}|j_L,m_L\rangle)\otimes|j_R,m_R\rangle,\quad B_i\text{ 同理作用于第二因子.}
+\end{equation*}
+由此 $J_i=A_i+B_i$（转动）和 $K_i=-\ii(A_i-B_i)$（boost）的矩阵形式完全确定。
+
+\textbf{第二步：不可约性证明.}\enspace 需证 $V_{j_L}\otimes V_{j_R}$ 作为 $\mathfrak{so}(3,1)_\CC=\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC$ 模不可约。设 $W\subset V$ 是不变子空间。因 $A_i$ 只作用于第一因子，$W$ 在 $A_i$ 下不变，故 $W=\bigoplus_{m_R}W_{m_R}\otimes|m_R\rangle$，其中每个 $W_{m_R}\subset V_{j_L}$。由 $B_\pm$（升降第二因子的 $m_R$）的不变性，$W_{m_R}$ 在 $m_R$ 变化时被 $B_\pm$ 传递：$B_+(W_{m_R}\otimes|m_R\rangle)\subset W_{m_R}\otimes|m_R+1\rangle$，故所有 $W_{m_R}$ 相等。又因 $V_{j_L}$ 作为 $\mathfrak{su}(2)$ 模不可约，$W_{m_R}=0$ 或 $V_{j_L}$。若某个 $W_{m_R}=V_{j_L}$，则所有 $W_{m_R}=V_{j_L}$（由 $B_\pm$ 传递性），故 $W=V$。因此 $V$ 不可约。
+
+\textbf{第三步：非幺正性的显式展示.}\enspace 有限维表示不是幺正的。取 $(\tfrac12,0)$，boost 生成元 $K_i=-\ii\sigma_i/2$。有限 boost $\Lambda_x(\xi)=\exp(\xi K_x)=\exp(-\ii\xi\sigma_x/2)=\cosh(\xi/2)\mathbb 1-\ii\sinh(\xi/2)\sigma_x$。验证幺正性：$\Lambda^\dagger=\cosh(\xi/2)\mathbb 1+\ii\sinh(\xi/2)\sigma_x\ne\Lambda^{-1}=\cosh(\xi/2)\mathbb 1+\ii\sinh(\xi/2)\sigma_x$——实际上 $\Lambda^\dagger=\Lambda^{-1}$ 成立，但 $\det\Lambda=\cosh^2(\xi/2)+\sinh^2(\xi/2)\ne1$（不是 $SU(2)$ 元素）。更准确地说，$\Lambda^\dagger\Lambda=\cosh^2(\xi/2)\mathbb 1+\sinh^2(\xi/2)\mathbb 1=\cosh(\xi)\mathbb 1\ne\mathbb 1$（当 $\xi\ne0$）——boost 使旋量"放大"，这是非紧群有限维表示非幺正的显式体现。物理上，这迫使粒子态用\emph{无限维}幺正表示（Wigner 分类）而非有限维表示描述。
+
+\textbf{第四步：旋转子群分解.}\enspace 把 $(j_L,j_R)$ 限制到旋转子群 $SO(3)\subset SO^+(3,1)$，生成元 $J_i=A_i+B_i$。这是两个 $SU(2)$ 角动量的耦合 $j_L\otimes j_R$，按 Clebsch--Gordan 分解：
+\begin{equation}
+\label{eq:lorentz-rotation-restriction}
+(j_L,j_R)\downarrow_{SO(3)}=\bigoplus_{j=|j_L-j_R|}^{j_L+j_R} j,
+\end{equation}
+其中 $j$ 从 $|j_L-j_R|$ 到 $j_L+j_R$ 步长 $1$。例如 $(\tfrac12,\tfrac12)\downarrow=0\oplus1$：四矢量在旋转下分解为标量（时间分量）加矢量（空间分量），维数 $4=1+3$。$(1,0)\oplus(0,1)\downarrow=1\oplus1$：电磁场张量分解为电场（矢量）加磁场（矢量），$6=3+3$。$(1,1)\downarrow=0\oplus1\oplus2$：无迹对称张量分解为迹（标量）、无迹反对称部分（矢量）、无迹对称部分（张量），$9=1+3+5$。
+
+\textbf{第五步：自旋内容的物理意义.}\enspace 旋转子群分解 \eqnrefs{eq:lorentz-rotation-restriction} 给出 $(j_L,j_R)$ 表示中粒子的自旋内容。对 $(\tfrac12,0)\oplus(0,\tfrac12)$（Dirac 旋量）：$(\tfrac12,0)\downarrow=\tfrac12$，$(0,\tfrac12)\downarrow=\tfrac12$，总自旋 $\tfrac12$——电子的自旋。对 $(\tfrac12,\tfrac12)$（四矢量）：$0\oplus1$，自旋 $0$（时间分量）加自旋 $1$（空间分量）——光子的极化。对 $(1,1)$（引力子）：$0\oplus1\oplus2$，自旋 $2$ 是物理引力子，自旋 $0$ 和 $1$ 是规范伪迹。无质量粒子的螺旋度 $h=j_L-j_R$：$(\tfrac12,0)$ 给 $h=+\tfrac12$（左手中微子），$(0,\tfrac12)$ 给 $h=-\tfrac12$（右手中微子），$(1,0)$ 给 $h=+1$（自对偶光子），$(0,1)$ 给 $h=-1$（反自对偶光子）。
+
+\textbf{第六步：一般表示的配分函数.}\enspace $(j_L,j_R)$ 的特征标在旋转子群上退化为 $\chi_{j_L}(\theta)\chi_{j_R}(\theta)=\frac{\sin((2j_L+1)\theta/2)}{\sin(\theta/2)}\frac{\sin((2j_R+1)\theta/2)}{\sin(\theta/2)}$。用 CG 分解 \eqnrefs{eq:lorentz-rotation-restriction}，此乘积等于 $\sum_{j=|j_L-j_R|}^{j_L+j_R}\chi_j(\theta)$——这正是 $SU(2)$ CG 恒等式的特征标形式。配分函数 $Z_{(j_L,j_R)}(q)=\sum_{j=|j_L-j_R|}^{j_L+j_R}(2j+1)q^{2j}$ 给出各自旋态的维数加权配分。对 $(\tfrac12,\tfrac12)$：$Z=q^0\cdot1+q^2\cdot3=1+3q^2$（标量 $1$ 维 + 矢量 $3$ 维）。
+
+\textbf{第七步：$(\tfrac12,0)$ 表示的显式矩阵.}\enspace 对 $(\tfrac12,0)$，$A_i=\sigma_i/2$、$B_i=0$，故 $J_i=\sigma_i/2$（转动）、$K_i=-\ii\sigma_i/2$（boost）。有限转动 $R(\vb\theta)=\exp(-\ii\vb\theta\cdot\vb J)=\exp(-\ii\vb\theta\cdot\boldsymbol\sigma/2)$ 和有限 boost $\Lambda(\vb\xi)=\exp(\vb\xi\cdot\vb K)=\exp(-\ii\vb\xi\cdot\boldsymbol\sigma/2)$。显式地，绕 $z$ 轴转动 $\theta$ 和沿 $x$ 方向 boost $\xi$：
+\begin{align*}
+R_z(\theta)&=\begin{pmatrix}e^{-i\theta/2}&0\\0&e^{i\theta/2}\end{pmatrix},\\
+\Lambda_x(\xi)&=\begin{pmatrix}\cosh(\xi/2)&-i\sinh(\xi/2)\\-i\sinh(\xi/2)&\cosh(\xi/2)\end{pmatrix}.
+\end{align*}
+验证非幺正性：$\Lambda_x^\dagger\Lambda_x=\cosh(\xi)\,\mathbb 1\ne\mathbb 1$（$\xi\ne0$），确认有限维表示非幺正。Weyl 旋量 $\psi_L$ 的 Lorentz 变换 $\psi_L\to\Lambda\psi_L$，在 $(0,\tfrac12)$ 中 $\psi_R\to\Lambda^*\psi_R$。Dirac 旋量 $\Psi=(\psi_L,\psi_R)^T$ 的变换由 $(\tfrac12,0)\oplus(0,\tfrac12)$ 给出。
+
+\textbf{第八步：CG 分解的显式验证.}\enspace 对 $(\tfrac12,\tfrac12)\downarrow_{SO(3)}=0\oplus1$，四维基 $\{|\tfrac12,\tfrac12\rangle\otimes|\tfrac12,m_R\rangle\}$ 在 $J_i=A_i+B_i$ 下重新组合为标量和矢量：
+\begin{align*}
+\text{标量}(j=0):&\quad\frac{1}{\sqrt2}\bigl(|\tfrac12,\tfrac12\rangle|\tfrac12,-\tfrac12\rangle-|\tfrac12,-\tfrac12\rangle|\tfrac12,\tfrac12\rangle\bigr),\\
+\text{矢量}(j=1):&\quad\bigl\{|\tfrac12,\tfrac12\rangle|\tfrac12,\tfrac12\rangle,\,\frac{1}{\sqrt2}(|\tfrac12,\tfrac12\rangle|-\tfrac12\rangle+|-\tfrac12\rangle|\tfrac12\rangle),\,|-\tfrac12\rangle|-\tfrac12\rangle\bigr\}.
+\end{align*}
+标量对应四矢量的时间分量 $v^0$，矢量对应空间分量 $v^i$（$i=1,2,3$）。这一分解把 Lorentz 四矢量在静止系中分离为时间部分（自旋 $0$）和空间部分（自旋 $1$），是粒子物理中螺旋度分析的数学基础。类似地，$(1,1)\downarrow_{SO(3)}=0\oplus1\oplus2$ 的维数验证：
+\begin{equation*}
+\dim(1,1)=(2\cdot1+1)(2\cdot1+1)=9=1+3+5=\dim(0)+\dim(1)+\dim(2),
+\end{equation*}
+确认无迹对称张量的 $9$ 个分量在旋转下分解为迹（标量 $1$ 维）、无迹反对称部分（矢量 $3$ 维）和无迹对称部分（张量 $5$ 维）。一般 CG 分解的维数公式为
+\begin{equation*}
+\dim(j_L,j_R)=(2j_L+1)(2j_R+1)=\sum_{j=|j_L-j_R|}^{j_L+j_R}(2j+1).
+\end{equation*}
+
+
+\textbf{例（最低维表示与物理对象）.}\enspace 按维数从低到高列出基本表示及其物理含义：
+\begin{itemize}
+\item $(0,0)$：\textbf{标量}，维数 $1$。Higgs 玻色子、$\pi$ 介子等自旋 $0$ 粒子。
+\item $(\tfrac12,0)$：\textbf{左手 Weyl 旋量}，维数 $2$。中微子（无质量近似下）、无质量费米子的左手分量。
+\item $(0,\tfrac12)$：\textbf{右手 Weyl 旋量}，维数 $2$。无质量费米子的右手分量。
+\item $(\tfrac12,0)\oplus(0,\tfrac12)$：\textbf{Dirac 旋量}，维数 $4$。电子、夸克等自旋 $\tfrac12$ 粒子。
+\item $(\tfrac12,\tfrac12)$：\textbf{四矢量}，维数 $4$。电磁势 $A^\mu$、矢量玻色子。
+\item $(1,0)\oplus(0,1)$：\textbf{二阶反对称张量}（电磁场 $F_{\mu\nu}$），维数 $6$。
+\item $(1,1)$：\textbf{无迹对称二阶张量}（引力子场 $h_{\mu\nu}$），维数 $9$。
+\end{itemize}
+
+
+分类定理告诉我们表示由 $(j_L,j_R)$ 标记，但还需要写出矩阵的显式形式，并弄清共轭、对偶等关系——这些在物理上区分粒子的手征性时直接用到。
+
+对固定 $(j_L,j_R)$，表示在"角动量基" $|\,j_L,m_L\rangle\otimes|\,j_R,m_R\rangle$ 上由
+\[
+J_i=J_i^{(j_L)}\otimes\mathbb{1}+\mathbb{1}\otimes J_i^{(j_R)},
+\qquad
+K_i=-\ii J_i^{(j_L)}\otimes\mathbb{1}+\ii\,\mathbb{1}\otimes J_i^{(j_R)}
+\]
+给出的 $A_i=J_i^{(j_L)}\otimes\mathbb{1}$、$B_i=\mathbb{1}\otimes J_i^{(j_R)}$ 实现（$J_i^{(j)}$ 是 $2j+1$ 维角动量矩阵）。第二章 \chapref{chap:representation-theory} 的对偶表示在这里有重要应用。
+
+\textbf{命题（$(j_L,j_R)$ 的复共轭与对偶）.}\enspace 表示 $(j_L,j_R)$ 的复共轭表示满足
+\begin{equation}
+(j_L,j_R)^*=(j_R,j_L),
+\label{eq:lorentz-conjugate}
+\end{equation}
+因为 $J_i^\dagger=J_i$、$K_i^\dagger=-K_i$ 导致 $A_i^\dagger=A_i$ 而 $B_i^\dagger=(-B_i)$ 需要一个把 $A\leftrightarrow B$ 的等价变换。因此：
+\begin{itemize}
+\item $(j,j)$ 是实表示（如 $(0,0)$、$(\tfrac12,\tfrac12)$、$(1,1)$）。
+\item $(\tfrac12,0)$ 与 $(0,\tfrac12)$ 互为复共轭，是两个不同的表示——这对应"左手旋量"与"右手旋量"是不同对象。
+\end{itemize}
+
+\begin{proof}
+取表示 $(j_L,j_R)$ 中 $A_i=J_i^{(j_L)}\otimes\mathbb{1}$、$B_i=\mathbb{1}\otimes J_i^{(j_R)}$，其中 $J_i^{(j)}$ 用标准（$J_z$ 对角）基。对 $A_i$ 取复共轭：$(J_i^{(j_L)})^*$ 与 $-J_i^{(j_L)}$ 等价（因 $\mathfrak{su}(2)$ 的表示是自共轭的，存在 $C$ 使 $C J_i^{(j)} C^{-1}=-J_i^{(j)*}$）。对 $B_i$ 同样。整体上复共轭把 $A_i^{(j_L)}\otimes B_j^{(j_R)}$ 送到与 $A_i^{(j_R)}\otimes B_j^{(j_L)}$ 等价的表示，故 $(j_L,j_R)^*=(j_R,j_L)$。对 $(j,j)$ 表示 $j_L=j_R$，故自共轭；对 $(\tfrac12,0)$ 表示，复共轭是 $(0,\tfrac12)\ne(\tfrac12,0)$。
+\end{proof}
+
+
+\textbf{第一步：张量积的 Clebsch--Gordan 规则.}\enspace 由复化分解 $\mathfrak{so}(3,1)_\CC\cong\mathfrak{su}(2)_\CC\oplus\mathfrak{su}(2)_\CC$，两个 $(j_L,j_R)$ 表示的张量积分解为两个独立的 $SU(2)$ Clebsch--Gordan 序列的乘积：
+\begin{equation}
+\label{eq:lorentz-tensor-product}
+(j_L,j_R)\otimes(j_L',j_R')=\bigoplus_{J_L=|j_L-j_L'|}^{j_L+j_L'}\;\bigoplus_{J_R=|j_R-j_R'|}^{j_R+j_R'}(J_L,J_R),
+\end{equation}
+其中每个 $J_L$ 从 $|j_L-j_L'|$ 到 $j_L+j_L'$ 步长 $\tfrac12$，每个 $J_R$ 从 $|j_R-j_R'|$ 到 $j_R+j_R'$ 步长 $\tfrac12$。这是两个独立的角动量耦合：左手部分和右手部分各自按 $SU(2)$ CG 规则耦合，互不干扰。
+
+\textbf{第二步：两个 Weyl 旋量的直积.}\enspace 两个左手 Weyl 旋量的直积：
+\begin{equation*}
+(\tfrac12,0)\otimes(\tfrac12,0)=(0,0)\oplus(1,0).
+\end{equation*}
+$(0,0)$ 是标量（旋量双线性 $\psi_L^T\epsilon\psi_L$，$\epsilon=\ii\sigma_2$ 是 $SU(2)$ 不变张量），$(1,0)$ 是自对偶二阶反对称张量。类似地，两个右手旋量 $(0,\tfrac12)\otimes(0,\tfrac12)=(0,0)\oplus(0,1)$，$(0,1)$ 是反自对偶张量。左手与右手旋量的直积：
+\begin{equation*}
+(\tfrac12,0)\otimes(0,\tfrac12)=(\tfrac12,\tfrac12),
+\end{equation*}
+恰好是四矢量表示——这就是"一个左手旋量乘一个右手旋量给出矢量"的群论基础，也是 Weyl 方程 $\sigma^\mu\partial_\mu\psi_R=m\psi_L$ 中 $\sigma^\mu$ 作为 $(\tfrac12,\tfrac12)$ 分量的群论来源。
+
+\textbf{第三步：Dirac 旋量的双线性.}\enspace Dirac 旋量 $\Psi=(\psi_L,\psi_R)$ 属于 $(\tfrac12,0)\oplus(0,\tfrac12)$，其双线性 $\bar\Psi\Gamma\Psi$（$\Gamma$ 取各种 Dirac 矩阵组合）按不同表示变换。用张量积 \eqnrefs{eq:lorentz-tensor-product} 系统推导：
+\begin{equation*}
+\big[(\tfrac12,0)\oplus(0,\tfrac12)\big]\otimes\big[(0,\tfrac12)\oplus(\tfrac12,0)\big]=(0,0)\oplus(1,0)\oplus(0,1)\oplus(\tfrac12,\tfrac12)\oplus(\tfrac12,\tfrac12)\oplus(\tfrac12,\tfrac12).
+\end{equation*}
+整理后得到 Dirac 双线性的完整分类：
+
+\end{derivation}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+双线性 & 表示 & Lorentz 性质 & 物理量 \\
+\midrule
+$\bar\Psi\Psi$ & $(0,0)$ & 标量 & 质量项 \\
+$\bar\Psi\gamma^5\Psi$ & $(0,0)$ & 赝标量 & \\
+$\bar\Psi\gamma^\mu\Psi$ & $(\tfrac12,\tfrac12)$ & 矢量 & 流 $J^\mu$ \\
+$\bar\Psi\gamma^\mu\gamma^5\Psi$ & $(\tfrac12,\tfrac12)$ & 赝矢量 & 轴矢流 \\
+$\bar\Psi\sigma^{\mu\nu}\Psi$ & $(1,0)\oplus(0,1)$ & 二阶张量 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+五个双线性共 $1+1+4+4+6=16$ 个分量，恰好等于 $4\times4$ Dirac 矩阵空间的维数。两个标量来自 $(0,0)$ 出现两次（一次从 $(\tfrac12,0)\otimes(0,\tfrac12)$，一次从 $(0,\tfrac12)\otimes(\tfrac12,0)$），对应 $\bar\Psi\Psi$ 和 $\bar\Psi\gamma^5\Psi$。
+
+\textbf{第四步：两个矢量的直积.}\enspace 两个四矢量的直积：
+\begin{equation*}
+(\tfrac12,\tfrac12)\otimes(\tfrac12,\tfrac12)=(0,0)\oplus(1,0)\oplus(0,1)\oplus(1,1).
+\end{equation*}
+$(0,0)$ 是迹（内积 $p_\mu q^\mu$），$(1,0)\oplus(0,1)$ 是无迹反对称部分（$p_\mu q_\nu-p_\nu q_\mu$，$6$ 维，分解为自对偶 $(1,0)$ 和反自对偶 $(0,1)$ 各 $3$ 维），$(1,1)$ 是无迹对称部分（$p_\mu q_\nu+p_\nu q_\mu-\tfrac12\eta_{\mu\nu}p\cdot q$，$9$ 维）。维数验证：$16=1+6+9$ $\checkmark$。这就是"两个矢量分解为标量+反对称张量+对称张量"的群论分解，电磁场张量 $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$ 恰是 $(1,0)\oplus(0,1)$ 部分。
+
+\textbf{第五步：引力子的表示.}\enspace 无迹对称二阶张量 $(1,1)$ 是引力子场 $h_{\mu\nu}$ 的表示，维数 $9$。在四维中，无质量自旋 $2$ 粒子有 $2$ 个物理自由度（螺旋度 $\pm2$），剩余 $7$ 个是规范与约束自由度（diffeomorphism $h_{\mu\nu}\to h_{\mu\nu}+\partial_\mu\xi_\nu+\partial_\nu\xi_\mu$ 给 $4$ 参数8规范参数，加上运动方程的 $3$ 个约束）。$(1,1)$ 的维数 $9=2+7$ 恰好是物理自由度加规范约束自由度——这是线性化引力作为规范理论的群论约束。
+
+\textbf{第六步：Fierz 重排恒等式.}\enspace 张量积分解还给出 Fierz 恒等式——旋量双线性之间的代数关系。完备性关系 $\sum_A(\Gamma_A)_{ij}(\Gamma^A)_{kl}=4\delta_{il}\delta_{jk}$（$\Gamma_A$ 取 $16$ 个 Dirac 矩阵基）把任意旋量双线性展开为完备集的线性组合。例如 $(\bar\Psi\gamma^\mu\Psi)(\bar\Psi\gamma_\mu\Psi)=-2(\bar\Psi\Psi)^2+2(\bar\Psi\gamma^5\Psi)^2$ 把矢量流的平方用标量流表示。Fierz 恒等式在超对称、Majorana 费米子散射和有效 Lagrangian 构造中是基本工具。
+
+
+\textbf{过渡：旋量与 Clifford 代数.}\enspace
+
+
+物理上最重要的旋量表示来自 Clifford 代数与 Dirac 矩阵。它们把抽象的 $(\tfrac12,0)\oplus(0,\tfrac12)$ 实现为具体的 $4\times4$ 矩阵，并直接给出 Dirac 方程。
+
+$(\tfrac12,0)$ 和 $(0,\tfrac12)$ 可以统一放在 Clifford 代数框架里，从而自然引出 Dirac 方程。
+
+\textbf{定义（Dirac 矩阵）.}\enspace Dirac 矩阵 $\gamma^\mu$（$\mu=0,1,2,3$）满足 Clifford 代数关系
+\[
+\{\gamma^\mu,\gamma^\nu\}=2\eta^{\mu\nu}\mathbb{1}.
+\]
+它给出 $SL(2,\CC)$ 的旋量表示：由 $\gamma^\mu$ 构造洛伦兹生成元
+\[
+S^{\mu\nu}=\frac{\ii}{4}[\gamma^\mu,\gamma^\nu]=\frac{\ii}{2}\gamma^\mu\gamma^\nu\ (\mu\ne\nu),
+\]
+则 $S^{\mu\nu}$ 满足洛伦兹代数 \eqnrefs{eq:lorentz-algebra}。
+
+\textbf{命题（旋量表示是 $(\tfrac12,0)\oplus(0,\tfrac12)$）.}\enspace Weyl 表象
+\[
+\gamma^0=\begin{pmatrix}0&\mathbb{1}\\\mathbb{1}&0\end{pmatrix},\qquad
+\gamma^i=\begin{pmatrix}0&\boldsymbol\sigma_i\\-\boldsymbol\sigma_i&0\end{pmatrix},
+\]
+代入手征矩阵 $\gamma^5=\ii\gamma^0\gamma^1\gamma^2\gamma^3=\operatorname{diag}(\mathbb{1},-\mathbb{1})$ 后，转动生成元
+\[
+J_i=\tfrac12\epsilon_{ijk}S^{jk}=\frac12\begin{pmatrix}\sigma_i&0\\0&\sigma_i\end{pmatrix}
+\]
+是块对角的，boost 生成元
+\[
+K_i=S^{0i}=-\frac{\ii}{2}\begin{pmatrix}\sigma_i&0\\0&-\sigma_i\end{pmatrix}
+\]
+也是块对角的。因此旋量表示分解为两个不可约块 $(\tfrac12,0)\oplus(0,\tfrac12)$，分别由 $\gamma^5=+1$（左手）与 $\gamma^5=-1$（右手）的本征子空间承载。
+
+
+\textbf{第一步：转动部分.}\enspace $J_i=\tfrac12\epsilon_{ijk}S^{jk}$。在 Weyl 表象中直接算 $S^{jk}=\frac{\ii}{4}[\gamma^j,\gamma^k]$。对空间指标，$\gamma^j\gamma^k$ 与 $\gamma^k\gamma^j$ 反对易（$j\ne k$），故 $S^{jk}=\frac{\ii}{2}\gamma^j\gamma^k$。代入 $\gamma^i=\begin{pmatrix}0&\sigma_i\\-\sigma_i&0\end{pmatrix}$：
+\[
+\gamma^j\gamma^k=\begin{pmatrix}0&\sigma_j\\-\sigma_j&0\end{pmatrix}\begin{pmatrix}0&\sigma_k\\-\sigma_k&0\end{pmatrix}
+=\begin{pmatrix}-\sigma_j\sigma_k&0\\0&-\sigma_j\sigma_k\end{pmatrix},
+\]
+故 $S^{jk}=\frac{\ii}{2}\gamma^j\gamma^k=\frac{\ii}{2}\bigl(\begin{smallmatrix}-\sigma_j\sigma_k&0\\0&-\sigma_j\sigma_k\end{smallmatrix}\bigr)$，于是 $J_i=\tfrac12\epsilon_{ijk}\frac{\ii}{2}(-\sigma_j\sigma_k\oplus-\sigma_j\sigma_k)$。用 Pauli 矩阵关系 $\sigma_j\sigma_k=\delta_{jk}\mathbb{1}+\ii\epsilon_{jkl}\sigma_l$，得 $\epsilon_{ijk}\sigma_j\sigma_k=\epsilon_{ijk}\ii\epsilon_{jkl}\sigma_l=2\ii\sigma_i$，故
+\[
+J_i=\frac12\,\frac{\ii}{2}\,(-2\ii)\begin{pmatrix}\sigma_i&0\\0&\sigma_i\end{pmatrix}
+=\frac12\begin{pmatrix}\sigma_i&0\\0&\sigma_i\end{pmatrix},
+\]
+正是自旋 $\tfrac12$ 的自旋矩阵 $\tfrac12\sigma_i$ 在两个块上的直和。
+
+\textbf{第二步：Boost 部分.}\enspace $K_i=S^{0i}=\frac{\ii}{2}\gamma^0\gamma^i$：
+\[
+\gamma^0\gamma^i=\begin{pmatrix}0&\mathbb{1}\\\mathbb{1}&0\end{pmatrix}\begin{pmatrix}0&\sigma_i\\-\sigma_i&0\end{pmatrix}
+=\begin{pmatrix}-\sigma_i&0\\0&\sigma_i\end{pmatrix},
+\]
+故 $K_i=\frac{\ii}{2}\bigl(\begin{smallmatrix}-\sigma_i&0\\0&\sigma_i\end{smallmatrix}\bigr)=-\frac{\ii}{2}\bigl(\begin{smallmatrix}\sigma_i&0\\0&-\sigma_i\end{smallmatrix}\bigr)$。左手块（上）得到 $-\ii\sigma_i/2$，右手块（下）得到 $+\ii\sigma_i/2$，正好对应 $(\tfrac12,0)$ 的 $A_i=\tfrac12(J_i+\ii K_i)=\tfrac12\sigma_i$、$B_i=0$ 和 $(0,\tfrac12)$ 的 $A_i=0$、$B_i=\tfrac12\sigma_i$。
+
+\textbf{第三步：转动--转动对易关系.}\enspace 已知 $\tfrac12\sigma_i$ 生成 $\mathfrak{su}(2)$，即 $[\tfrac12\sigma_i,\tfrac12\sigma_j]=\ii\epsilon_{ijk}\tfrac12\sigma_k$，故
+\begin{equation*}
+[J_i,J_j]=\ii\epsilon_{ijk}J_k
+\end{equation*}
+成立——转动部分闭合为 $\mathfrak{su}(2)$ 子代数。
+
+\textbf{第四步：Boost--Boost 对易关系.}\enspace 在左手块中：
+\begin{equation*}
+[-\tfrac{\ii}{2}\sigma_i,-\tfrac{\ii}{2}\sigma_j]=\tfrac{\ii^2}{4}[\sigma_i,\sigma_j]=-\tfrac{1}{4}\cdot2\ii\epsilon_{ijk}\sigma_k=-\ii\epsilon_{ijk}\tfrac{\sigma_k}{2},
+\end{equation*}
+恰好 $-\ii\epsilon_{ijk}J_k$（左手块中 $J_k=\sigma_k/2$）。右手块中 $K_i=+\ii\sigma_i/2$，$[K_i,K_j]=\tfrac{\ii^2}{4}[\sigma_i,\sigma_j]=-\ii\epsilon_{ijk}\sigma_k/2=-\ii\epsilon_{ijk}J_k$。故 $[K_i,K_j]=-\ii\epsilon_{ijk}J_k$，即 \eqnrefs{eq:lorentz-algebra} 的负号——boost 对易给出反向转动，这是双曲几何（非紧 $SO(1,3)$）的标志。
+
+\textbf{第五步：转动--Boost 混合对易关系.}\enspace 左手块：
+\begin{equation*}
+[J_i,K_j]=\Bigl[\tfrac{\sigma_i}{2},-\tfrac{\ii\sigma_j}{2}\Bigr]=-\tfrac{\ii}{4}[\sigma_i,\sigma_j]=-\tfrac{\ii}{4}\cdot2\ii\epsilon_{ijk}\sigma_k=\tfrac{\epsilon_{ijk}\sigma_k}{2}=\ii\epsilon_{ijk}\Bigl(-\tfrac{\ii\sigma_k}{2}\Bigr)=\ii\epsilon_{ijk}K_k.
+\end{equation*}
+右手块同理（符号一致）。故 $[J_i,K_j]=\ii\epsilon_{ijk}K_k$——转动混合 boost 给出 boost，与三维转动作用于矢量的法则一致。三个对易关系合在一起给出 $\mathfrak{so}(1,3)$ 的完整 Lie 代数结构。
+
+\textbf{第六步：$(\tfrac12,0)\oplus(0,\tfrac12)$ 分解的验证.}\enspace 定义 $A_i=\tfrac12(J_i+\ii K_i)$、$B_i=\tfrac12(J_i-\ii K_i)$。由上述对易关系直接验证：
+\begin{align*}
+[A_i,A_j]&=\tfrac14([J_i,J_j]+\ii[J_i,K_j]+\ii[K_i,J_j]-[K_i,K_j])\\
+&=\tfrac14(\ii\epsilon_{ijk}J_k+\ii^2\epsilon_{ijk}K_k-\ii^2\epsilon_{ijk}K_k+\ii\epsilon_{ijk}J_k)=\ii\epsilon_{ijk}A_k,\\
+[B_i,B_j]&=\tfrac14([J_i,J_j]-\ii[J_i,K_j]-\ii[K_i,J_j]-[K_i,K_j])=\ii\epsilon_{ijk}B_k,\\
+[A_i,B_j]&=\tfrac14([J_i,J_j]-\ii[J_i,K_j]+\ii[K_i,J_j]+[K_i,K_j])=0.
+\end{align*}
+两个独立 $\mathfrak{su}(2)$ 互不耦合，故 Dirac 旋量表示 $\mathfrak{so}(1,3)\cong\mathfrak{su}(2)\oplus\mathfrak{su}(2)$ 在 Weyl 表象下显式对角化为 $(\tfrac12,0)\oplus(0,\tfrac12)$。左手 Weyl 旋量 $(\tfrac12,0)$ 只有 $A_i$ 非零（$B_i=0$），右手 Weyl 旋量 $(0,\tfrac12)$ 只有 $B_i$ 非零——这正是手征投影 $P_{L/R}=\tfrac12(1\mp\gamma^5)$ 分离的两个子空间。宇称交换左右手征块（$\gamma^0$ 把 $(\tfrac12,0)\leftrightarrow(0,\tfrac12)$），故宇称不守恒的理论（弱相互作用）只在单侧 Weyl 旋量上书写——标准模型 $SU(2)_L$ 只耦合左手旋量的群论根源。
+
+Clifford 代数不仅是构造 $\gamma$ 矩阵的工具，它本身有独立的代数结构，其表示分类直接决定旋量的种类。
+
+\begin{derivation}[Clifford 代数的一般理论与旋量分类]
+\textbf{第一步：Clifford 代数的定义与维数.}\enspace 闵可夫斯基时空 $(\RR^{1,3},\eta)$ 上的 Clifford 代数 $\mathrm{Cl}(1,3)$ 由生成元 $e_\mu$（$\mu=0,1,2,3$）与关系
+\begin{equation*}
+e_\mu e_\nu+e_\nu e_\mu=2\eta_{\mu\nu}\mathbf 1
+\end{equation*}
+定义。基底由反对称积 $1,\ e_\mu,\ e_\mu\wedge e_\nu,\ e_\mu\wedge e_\nu\wedge e_\rho,\ e_0\wedge e_1\wedge e_2\wedge e_3$ 张成，维数
+\begin{equation*}
+\binom 40+\binom 41+\binom 42+\binom 43+\binom 44=1+4+6+4+1=16=\dim M_4(\CC).
+\end{equation*}
+事实上 $\mathrm{Cl}(1,3)\otimes\CC\cong M_4(\CC)$（复化后同构于 $4\times4$ 复矩阵代数），不可约表示恰为 $4$ 维 Dirac 旋量。
+
+\textbf{第二步：Clifford 代数的分类.}\enspace 一般地 $\mathrm{Cl}(p,q)\otimes\CC\cong M_{2^{n/2}}(\CC)$（$n=p+q$ 偶），不可约表示维数 $2^{n/2}$。对 $n=4$：$\mathrm{Cl}(1,3)\cong M_4(\CC)$，Dirac 旋量 $4$ 维。对 $n=3$：$\mathrm{Cl}(3,0)\cong M_2(\CC)\oplus M_2(\CC)$，两个 $2$ 维不可约表示（Pauli 旋量）。对 $n=2$：$\mathrm{Cl}(1,1)\cong M_2(\CC)$，$2$ 维。物理上，$n=4$ 给 Dirac 旋量，$n=3$ 给非相对论 Pauli 旋量，$n=2$ 给二维 Dirac 材料（石墨烯）的旋量。
+
+\textbf{第三步：Dirac 方程从 Lorentz 协变性导出.}\enspace Klein--Gordon 方程 $(\partial^2+m^2)\phi=0$ 是 Lorentz 不变的，但对旋量需要一阶方程。设方程形如 $(\ii\Gamma^\mu\partial_\mu-\mathcal M)\psi=0$，要求其平方给出 KG 方程 $(\partial^2+m^2)\psi=0$。计算：
+\begin{equation*}
+(\ii\Gamma^\mu\partial_\mu+\mathcal M)(\ii\Gamma^\nu\partial_\nu-\mathcal M)\psi=(-\Gamma^\mu\Gamma^\nu\partial_\mu\partial_\nu-\mathcal M^2)\psi.
+\end{equation*}
+对称化 $\Gamma^\mu\Gamma^\nu\partial_\mu\partial_\nu=\tfrac12\{\Gamma^\mu,\Gamma^\nu\}\partial_\mu\partial_\nu$（反对称部分因 $\partial_\mu\partial_\nu$ 对称而消失）。要求 $-\tfrac12\{\Gamma^\mu,\Gamma^\nu\}\partial_\mu\partial_\nu=\eta^{\mu\nu}\partial_\mu\partial_\nu$，即 $\{\Gamma^\mu,\Gamma^\nu\}=2\eta^{\mu\nu}\mathbb 1$——正是 Clifford 关系！且 $\mathcal M^2=m^2\mathbb 1$，取 $\mathcal M=m\mathbb 1$。于是 Dirac 方程不是凭空写出，而是\emph{Lorentz 协变的一阶方程中 Clifford 代数的唯一选择}。
+
+\textbf{第四步：旋量的 Lorentz 变换.}\enspace 对无穷小洛伦兹变换 $\Lambda=1+\tfrac12\omega_{\mu\nu}M^{\mu\nu}$，旋量按 $S(\Lambda)=\exp(-\tfrac{\ii}{4}\omega_{\mu\nu}\gamma^\mu\gamma^\nu)$ 变换：$\psi'(x')=S(\Lambda)\psi(x)$。关键恒等式
+\begin{equation}
+\label{eq:gamma-lorentz}
+S(\Lambda)\gamma^\mu S(\Lambda)^{-1}=\Lambda^\mu{}_\nu\gamma^\nu
+\end{equation}
+保证 Dirac 方程协变：$\ii\gamma^\mu\partial'_\mu\psi'=\ii\gamma^\mu\Lambda_\mu{}^\rho\partial_\rho S\psi=\ii S\gamma^\rho\partial_\rho\psi=mS\psi=m\psi'$。验证 \eqnrefs{eq:gamma-lorentz}：对无穷小 $\omega$，$S\approx1-\tfrac{\ii}{4}\omega_{\alpha\beta}\gamma^\alpha\gamma^\beta$，展开到一阶：
+\begin{equation*}
+S\gamma^\mu S^{-1}\approx\gamma^\mu-\tfrac{\ii}{4}\omega_{\alpha\beta}[\gamma^\alpha\gamma^\beta,\gamma^\mu].
+\end{equation*}
+用 Clifford 关系算交换子：先写 $\gamma^\alpha\gamma^\beta\gamma^\mu=2\eta^{\beta\mu}\gamma^\alpha-\gamma^\alpha\gamma^\mu\gamma^\beta$，再对 $\gamma^\mu\gamma^\alpha\gamma^\beta$ 做同样操作，合并得
+\begin{equation*}
+[\gamma^\alpha\gamma^\beta,\gamma^\mu]=2(\eta^{\beta\mu}\gamma^\alpha-\eta^{\alpha\mu}\gamma^\beta).
+\end{equation*}
+故 $S\gamma^\mu S^{-1}\approx\gamma^\mu+\tfrac12\omega^\mu{}_\nu\gamma^\nu=\Lambda^\mu{}_\nu\gamma^\nu$。
+
+\textbf{第五步：双线性协变量与 Lorentz 分类.}\enspace 由 $\bar\psi=\psi^\dagger\gamma^0$ 构造的双线性 $\bar\psi\Gamma\psi$ 按 $\Gamma$ 的结构分类为不同的 Lorentz 协变量：
+\begin{equation}
+\label{eq:bilinear-classification}
+\begin{array}{c|c|c|c}
+\text{类型} & \Gamma & \text{协变量} & \text{表示}\\\hline
+\text{标量} & \mathbb 1 & \bar\psi\psi & (0,0)\\
+\text{赝标量} & \gamma^5 & \bar\psi\gamma^5\psi & (0,0)\\
+\text{矢量} & \gamma^\mu & \bar\psi\gamma^\mu\psi & (\tfrac12,\tfrac12)\\
+\text{赝矢量} & \gamma^\mu\gamma^5 & \bar\psi\gamma^\mu\gamma^5\psi & (\tfrac12,\tfrac12)\\
+\text{张量} & \sigma^{\mu\nu}=\tfrac{\ii}{2}[\gamma^\mu,\gamma^\nu] & \bar\psi\sigma^{\mu\nu}\psi & (1,0)\oplus(0,1)
+\end{array}
+\end{equation}
+共 $16$ 个分量（$1+1+4+4+6=16$），张成 Clifford 代数的完整基底。变换律由 \eqnrefs{eq:gamma-lorentz} 给出：例如矢量 $\bar\psi\gamma^\mu\psi\to\Lambda^\mu{}_\nu\bar\psi\gamma^\nu\psi$（四矢量），标量 $\bar\psi\psi\to\bar\psi\psi$（不变）。这 $5$ 类双线性恰好对应标准模型中所有可能的费米子耦合：Yukawa 耦合（标量）、CP 破坏（赝标量）、矢量流（规范耦合）、轴矢流（反常）、磁矩（张量）。
+
+\textbf{第六步：Majorana 旋量与电荷共轭.}\enspace 电荷共轭旋量 $\psi^c=C\bar\psi^T$，其中 $C=\ii\gamma^2\gamma^0$ 满足 $C\gamma^\mu C^{-1}=-(\gamma^\mu)^T$。Majorana 条件 $\psi=\psi^c$ 要求旋量等于自身的电荷共轭，此时粒子与反粒子相同。在 $4$ 维 Minkowski 时空中，Majorana 旋量只有 $2$ 个独立复分量（$4$ 个复分量减去 Majorana 条件的 $2$ 个实约束）。Weyl 旋量 $(\tfrac12,0)$ 有 $2$ 个复分量，Dirac 旋量有 $4$ 个，Majorana 旋量有 $2$ 个复分量（等价于 $4$ 个实分量）。中微子若是 Majorana 粒子（$\nu=\nu^c$），则只有 $2$ 个独立自由度——这正是 seesaw 机制中重 Majorana 中微子的群论基础。
+
+
+\textbf{例（Dirac 方程作为旋量表示的物理实现）.}\enspace 自由 Dirac 方程
+\[
+(\ii\gamma^\mu\partial_\mu-m)\psi=0
+\]
+把 $(\tfrac12,0)\oplus(0,\tfrac12)$ 的洛伦兹变换与质量项 $m$ 耦合起来。左手分量 $\psi_L=\tfrac{1-\gamma^5}{2}\psi$ 与右手分量 $\psi_R=\tfrac{1+\gamma^5}{2}\psi$ 各按 $(\tfrac12,0)$、$(0,\tfrac12)$ 变换，质量项 $\propto m(\psi_L^\dagger\psi_R+\psi_R^\dagger\psi_L)$ 把两者联结。这就是为什么\textbf{有质量旋量必须同时含左右手分量}——一个纯粹的 $(\tfrac12,0)$（左手）旋量没有洛伦兹不变的质量项，只能描述无质量粒子或通过 Higgs 耦合获得质量。
+
+\textbf{过渡：Poincar\'e 群与半直积结构.}\enspace
+
+
+把平移与洛伦兹变换放在一起，就得到 Poincar\'e 群。它的群乘法不是直积而是半直积，这一结构差异正是 Wigner 分类的起点。
+
+\textbf{定义（Poincar\'e 群）.}\enspace 闵可夫斯基时空的\textbf{Poincar\'e 群} $\mathcal P=\RR^{3,1}\rtimes SO^+(3,1)$ 是所有保持闵可夫斯基度规的时空变换构成的群，元素为 $(a,\Lambda)$，其中 $a\in\RR^{3,1}$ 是时空平移，$\Lambda\in SO^+(3,1)$ 是洛伦兹变换，作用在四矢量上为
+\[
+(a,\Lambda):x^\mu\longmapsto \Lambda^\mu{}_\nu x^\nu+a^\mu.
+\]
+群乘法为
+\begin{equation}
+(a_2,\Lambda_2)(a_1,\Lambda_1)
+=\bigl(a_2+\Lambda_2 a_1,\ \Lambda_2\Lambda_1\bigr).
+\label{eq:poincare-multiplication}
+\end{equation}
+
+\textbf{命题（Poincar\'e 群是半直积）.}\enspace 平移子群 $T=\{ (a,\mathbb{1})\}\cong\RR^{3,1}$ 是 $\mathcal P$ 的正规子群，洛伦兹子群 $L=\{(0,\Lambda)\}\cong SO^+(3,1)$ 是补子群，且 $L$ 通过共轭作用在 $T$ 上：
+\[
+(0,\Lambda)(a,\mathbb{1})(0,\Lambda)^{-1}=(\Lambda a,\mathbb{1}).
+\]
+因此 $\mathcal P\cong T\rtimes L$ 是\textbf{半直积}，不是直积：平移与洛伦兹变换不可交换。
+
+\begin{proof}
+\textbf{正规性.}\enspace 由群乘法 \eqnrefs{eq:poincare-multiplication}，取 $g=(b,\Lambda)$，$t=(a,\mathbb{1})$：
+\[
+g t g^{-1}=(b,\Lambda)(a,\mathbb{1})(-\Lambda^{-1}b,\Lambda^{-1})
+=(b+\Lambda a,\Lambda)(-\Lambda^{-1}b,\Lambda^{-1})
+=(\Lambda a,\mathbb{1}),
+\]
+确实是平移。故 $T\normal\mathcal P$。
+
+\textbf{半直积.}\enspace $T\cap L=\{(0,\mathbb{1})\}$ 平凡，且 $\mathcal P=TL$（每个元素 $(a,\Lambda)=(a,\mathbb{1})(0,\Lambda)$）。由共轭作用 $(\Lambda a)$，这正是半直积的定义 $\RR^{3,1}\rtimes SO^+(3,1)$。
+\end{proof}
+
+这个半直积结构是整个 Wigner 分类的出发点。$\mathcal P$ 的表示不是"洛伦兹表示"与"平移表示"的简单堆叠，而是被"平移在洛伦兹变换下改变"这一事实深刻地相互耦合。
+
+
+群乘法确定后，取无穷小展开就得到 Poincar\'e 代数的对易关系。其中两个 Casimir 算符——不变质量 $P^2$ 与 Pauli--Lubanski 向量 $W^2$——是粒子分类的代数基础。
+
+Poincar\'e 代数由四动量 $P_\mu$（平移生成元）和角动量 $M_{\mu\nu}$（洛伦兹生成元）张成：
+\begin{equation}
+[P_\mu,P_\nu]=0,\qquad
+[M_{\mu\nu},P_\rho]=\ii(\eta_{\nu\rho}P_\mu-\eta_{\mu\rho}P_\nu),
+\label{eq:poincare-algebra-1}
+\end{equation}
+\begin{equation}
+[M_{\mu\nu},M_{\rho\sigma}]=\ii(\eta_{\nu\rho}M_{\mu\sigma}-\eta_{\mu\rho}M_{\nu\sigma}-\eta_{\nu\sigma}M_{\mu\rho}+\eta_{\mu\sigma}M_{\nu\rho}).
+\label{eq:poincare-algebra-2}
+\end{equation}
+第一个式子说明 $P_\mu$ 是四矢量；第二个是洛伦兹代数 \eqnrefs{eq:lorentz-algebra} 的四维形式。
+
+\textbf{命题（Poincar\'e 代数的 Casimir 算符）.}\enspace Poincar\'e 代数有两个 Casimir 算符：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{质量平方} $P^2=P^\mu P_\mu$；
+\item \textbf{Pauli--Lubanski 矢量的平方} $W^2=W^\mu W_\mu$，其中
+\begin{equation}
+W^\mu=\tfrac12\epsilon^{\mu\nu\rho\sigma}M_{\nu\rho}P_\sigma.
+\label{eq:pauli-lubanski}
+\end{equation}
+\end{enumerate}
+$W^\mu$ 与 $P_\mu$ 正交（$W^\mu P_\mu=0$），是"自旋"的协变刻画。
+
+\begin{proof}
+$P^2$ 是 Casimir 由 $P_\mu$ 是四矢量直接得到：$[M_{\mu\nu},P^2]=0$ 因 $[M,P_\rho]\propto P_\mu,P_\nu$。$W^2$ 是 Casimir 需要更长的验证，其本质是 $W^\mu$ 在洛伦兹变换下像四矢量一样变换（$[M_{\mu\nu},W_\rho]=\ii(\eta_{\nu\rho}W_\mu-\eta_{\mu\rho}W_\nu)$），故 $W^2$ 不变。$W^\mu P_\mu=0$ 由 $\epsilon$ 全反对称直接可得。
+\end{proof}
+
+
+\textbf{第一步：$W^\mu$ 的矢量变换律.}\enspace 需证 $[M_{\alpha\beta},W_\rho]=\ii(\eta_{\beta\rho}W_\alpha-\eta_{\alpha\rho}W_\beta)$。由定义 $W_\rho=\tfrac12\epsilon_{\rho\mu\nu\sigma}M^{\mu\nu}P^\sigma$，用 Poincar\'e 代数 \eqnrefs{eq:poincare-algebra-1}--\eqnrefs{eq:poincare-algebra-2}：
+\begin{equation*}
+[M_{\alpha\beta},W_\rho]=\tfrac12\epsilon_{\rho\mu\nu\sigma}\bigl([M_{\alpha\beta},M^{\mu\nu}]P^\sigma+M^{\mu\nu}[M_{\alpha\beta},P^\sigma]\bigr).
+\end{equation*}
+第一项用 \eqnrefs{eq:poincare-algebra-2} 展开：
+\begin{equation*}
+[M_{\alpha\beta},M^{\mu\nu}]=\ii\bigl(\eta^{\mu}_{\ \beta}M_{\alpha}^{\ \nu}-\eta^{\mu}_{\ \alpha}M_{\beta}^{\ \nu}-\eta^{\nu}_{\ \beta}M_{\alpha}^{\ \mu}+\eta^{\nu}_{\ \alpha}M_{\beta}^{\ \mu}\bigr),
+\end{equation*}
+第二项用 \eqnrefs{eq:poincare-algebra-1} 给 $[M_{\alpha\beta},P^\sigma]=\ii(\delta_\beta^\sigma P_\alpha-\delta_\alpha^\sigma P_\beta)$。合并后，含 $M$ 的项重新组合为 $W$ 的定义形式，含 $P$ 的项因 $\epsilon$ 的反对称性相消。最终得到
+\begin{equation*}
+[M_{\alpha\beta},W_\rho]=\ii(\eta_{\beta\rho}W_\alpha-\eta_{\alpha\rho}W_\beta),
+\end{equation*}
+即 $W^\rho$ 确实按四矢量变换。因此 $W^2=W^\mu W_\mu$ 是 Lorentz 标量，$[M_{\alpha\beta},W^2]=0$；又因 $[P_\mu,W^2]=0$（$W$ 只含 $M$ 和 $P$，$[P,P]=0$），故 $W^2$ 与全 Poincar\'e 代数对易——是 Casimir。
+
+\textbf{第二步：有质量粒子 $W^2=-m^2s(s+1)$.}\enspace 在静止系 $p=(m,0,0,0)$，$P_\sigma$ 只有 $\sigma=0$ 分量非零。$W^0=\tfrac12\epsilon^{0\nu\rho\sigma}M_{\nu\rho}P_\sigma=0$（因 $\epsilon^{0\nu\rho 0}=0$）。空间分量
+\begin{equation*}
+W^i=\tfrac12\epsilon^{i\nu\rho\sigma}M_{\nu\rho}P_\sigma=\tfrac12\epsilon^{ijk0}M_{jk}P_0=\tfrac12\epsilon^{ijk}m\,M_{jk}=m\,S_i,
+\end{equation*}
+其中 $S_i=\tfrac12\epsilon_{ijk}M_{jk}$ 是自旋算符（空间旋转生成元）。故
+\begin{equation}
+\label{eq:W2-massive}
+W^2=W^iW_i=-\delta_{ij}W^iW^j=-m^2\mathbf S^2=-m^2s(s+1),
+\end{equation}
+其中 $s(s+1)$ 是 $\mathbf S^2$ 在自旋 $s$ 表示中的本征值，负号来自度规 $\eta_{ij}=-\delta_{ij}$。对电子（$s=\tfrac12$）：$W^2=-m_e^2\tfrac34$。对 $W$ 玻色子（$s=1$）：$W^2=-m_W^2\cdot2$。对 Higgs（$s=0$）：$W^2=0$。
+
+\textbf{第三步：无质量粒子 $W^\mu=hP^\mu$.}\enspace 取标准动量 $k=(E,0,0,E)$。$W^\mu=\tfrac12\epsilon^{\mu\nu\rho\sigma}M_{\nu\rho}k_\sigma$，因 $k_\sigma$ 只有 $\sigma=0,3$ 分量非零：
+\begin{align*}
+W^0&=\tfrac12\epsilon^{0123}M_{12}k_3+\tfrac12\epsilon^{0213}M_{21}k_3=E\,J_3,\\
+W^3&=\tfrac12\epsilon^{3012}M_{12}k_0+\tfrac12\epsilon^{3021}M_{21}k_0=E\,J_3,\\
+W^1&=W^2=0,
+\end{align*}
+其中 $J_3=M_{12}$ 是绕 $z$ 轴的角动量。故 $W^\mu=h\,k^\mu$（$h=J_3$ 是螺旋度本征值），$W^2=h^2k^2=0$（因 $k^2=0$）。无质量粒子的 $W^2$ 恒为零，螺旋度 $h$ 成为区分不同不可约表示的量子数——这正是 Wigner 分类中无质量粒子由 $ISO(2)$ 的螺旋度标记的代数根源。宇称翻转 $h\to-h$，故无质量宇称不变理论必须同时含 $h$ 和 $-h$（如光子 $h=\pm1$）。
+
+\textbf{第四步：$W^\mu P_\mu=0$ 的几何意义.}\enspace 直接计算：
+\begin{equation*}
+W^\mu P_\mu=\tfrac12\epsilon_{\mu\nu\rho\sigma}M^{\nu\rho}P^\sigma P^\mu=0,
+\end{equation*}
+因 $\epsilon$ 反对称而 $P^\sigma P^\mu$ 对称。几何上，$W^\mu$ 与 $P^\mu$ 正交意味着 Pauli--Lubanski 向量位于动量的正交补空间中。对有质量粒子，这个补空间是三维类空超平面（静止系中的空间方向），$W^\mu$ 恰好是 $m$ 倍的自旋向量。对无质量粒子，补空间是二维（横截方向），$W^\mu$ 被限制为 $P^\mu$ 的标量倍——倍数就是螺旋度。
+
+\textbf{第五步：Casimir 谱与粒子分类.}\enspace 两个 Casimir $(P^2,W^2)$ 的可能本征值给出 Poincar\'e 群不可约表示的完整标签：
+\begin{equation*}
+\begin{array}{c|c|c|c}
+\text{类型} & P^2 & W^2 & \text{附加量子数}\\\hline
+\text{有质量} & m^2>0 & -m^2s(s+1) & s\in\tfrac12\NN\\
+\text{无质量} & 0 & 0 & h\in\tfrac12\ZZ\\
+\text{快子} & -\mu^2<0 & \text{连续} & \text{非物理}
+\end{array}
+\end{equation*}
+有质量粒子由 $(m,s)$ 标记（$m$ 连续、$s$ 离散），无质量粒子由 $(0,h)$ 标记（$h$ 离散）。Casimir 谱直接给出粒子物理学的基本分类表——质量与自旋（或螺旋度）不是人为引入的量子数，而是 Poincar\'e 对称性的代数后果。标准模型粒子在此表中的位置：费米子（$s=\tfrac12$，Dirac）或（$h=\pm\tfrac12$，Weyl），规范玻色子（$h=\pm1$），Higgs（$s=0$）。
+\end{derivation}
+
+\section{单粒子态与 Wigner 分类}
+\label{sec:wigner-classification}
+
+
+Casimir 算符给出不变量，但完整的不可约表示分类需要更精细的方法。Wigner 的小群方法通过在每一个动量轨道上构造诱导表示，把问题归结为小群的表示——这是非紧群表示论的核心技术。
+
+Poincar\'e 群的非紧性与半直积结构使它的\textbf{幺正}不可约表示（单粒子态的 Hilbert 空间）需要用与有限群不同的方法分类。核心工具是\textbf{Wigner 小群方法}。
+
+\begin{theorem}[Wigner 分类]
+Poincar\'e 群的不可约幺正表示由两个参数定出：$\operatorname{sign}(P^2)=0$ 或 $+$（有质量/无质量），以及一个小群的不可约幺正表示。具体分两类：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{有质量} $P^2=m^2>0$：小群同构于 $SO(3)$，表示由自旋 $j\in\tfrac12\NN$ 标记，$2j+1$ 个自旋态。
+\item \textbf{无质量} $P^2=0$：小群同构于 $ISO(2)$（二维欧几里得群），其有限维表示由\textbf{螺旋度} $h$ 标记，只有两个态 $\pm h$。
+\end{enumerate}
+\end{theorem}
+
+\begin{derivation}[小群方法的完整推导]
+\textbf{第一步：态空间的动量子空间.}\enspace 考虑 Poincar\'e 群的不可约幺正表示 $\mathcal H$。四动量算符 $P^\mu$ 与自身对易，可取共同本征态 $|p,\sigma\rangle$ 满足 $P^\mu|p,\sigma\rangle=p^\mu|p,\sigma\rangle$，其中 $\sigma$ 标记所有其他（内禀）自由度。洛伦兹变换作用为
+\[
+U(\Lambda)|p,\sigma\rangle=\sum_{\sigma'}D_{\sigma'\sigma}(\Lambda,p)|p_\Lambda,\sigma'\rangle,
+\]
+其中 $p_\Lambda=\Lambda p$ 是 boost 后的四动量。因此 $\Lambda$ 把一个动量子空间映到另一个动量子空间；不可约性要求所有由 $SO^+(3,1)$ 作用于某个 $p$ 得到的动量 $\{\Lambda p\}$ 必须张成整个表示。
+
+\textbf{第二步：标准动量与轨道.}\enspace 同一 $P^2$ 值（质量）的动量构成洛伦兹群的一条\emph{轨道}（orbits）。Chatz 轨道分六类，其中物理的是两类：
+\begin{itemize}
+\item $p^2=m^2>0$，$p^0>0$：单叶双曲面，选取\textbf{标准动量} $k=(m,0,0,0)$。
+\item $p^2=0$，$p^0>0$：未来光锥，选取\textbf{标准动量} $k=(E,0,0,E)$。
+\end{itemize}
+任意动量 $p$ 通过一个 boost $\Lambda_p$ 从标准动量得到：$p=\Lambda_p k$。
+
+\textbf{第三步：小群.}\enspace 对固定的标准动量 $k$，\textbf{小群}（little group）$G_k$ 由所有保持 $k$ 不变的洛伦兹变换构成：
+\[
+G_k=\{W\in SO^+(3,1)\mid W k=k\}.
+\]
+$G_k$ 对角动量态 $|k,\sigma\rangle$ 的作用不改变动量：
+\[
+U(W)|k,\sigma\rangle=\sum_{\sigma'}D_{\sigma'\sigma}(W)|k,\sigma'\rangle.
+\]
+因此 $D(W)$ 是 $G_k$ 的一个幺正表示，$\sigma$ 标记其分量。
+
+\textbf{第四步：诱导表示.}\enspace 对任意动量 $p$，$|p,\sigma\rangle=U(\Lambda_p)|k,\sigma\rangle$。则一般洛伦兹变换 $\Lambda$ 对 $|p,\sigma\rangle$ 的作用为
+\[
+U(\Lambda)|p,\sigma\rangle=U(\Lambda)U(\Lambda_p)|k,\sigma\rangle
+=U(\Lambda_{\Lambda p})U(\Lambda_{\Lambda p}^{-1}\Lambda\Lambda_p)|k,\sigma\rangle.
+\]
+$W=\Lambda_{\Lambda p}^{-1}\Lambda\Lambda_p$ 满足 $W k=\Lambda_{\Lambda p}^{-1}\Lambda(p)=\Lambda_{\Lambda p}^{-1}(\Lambda p)=k$，故 $W$ 是\emph{小群元素}，称为\textbf{Wigner 转动}。于是
+\[
+U(\Lambda)|p,\sigma\rangle=\sum_{\sigma'}D_{\sigma'\sigma}(W)|p_\Lambda,\sigma'\rangle,
+\]
+任意动量的变换完全由小群的表示 $D$ 决定——这就是"用小群表示诱导出 Poincar\'e 群的表示"。
+
+\textbf{第五步：有质量情形.}\enspace 标准动量 $k=(m,0,0,0)$ 在空间转动 $R\in SO(3)$ 下不变，boost 则把它移开，故小群 $G_k\cong SO(3)$。$SO(3)$ 的不可约幺正表示由自旋 $j$ 标记，$2j+1$ 维。因此在静止系中，自旋 $j$ 的粒子有 $2j+1$ 个自旋态 $|m,\sigma\rangle$（$\sigma=-j,\dots,j$）。这就是"自旋量子数 $j$ 是相对论量子力学的基本量子数"的群论来源。
+
+\textbf{第六步：无质量情形.}\enspace 标准动量 $k=(E,0,0,E)$。保持 $k$ 不变的洛伦兹变换（在 $k$ 方向取 $z$ 轴）形如
+\[
+W=
+\begin{pmatrix}
+1+\tfrac{u^2+v^2}{2} & u & v & -\tfrac{u^2+v^2}{2}\\
+u & 1 & 0 & -u\\
+v & 0 & 1 & -v\\
+\tfrac{u^2+v^2}{2} & u & v & 1-\tfrac{u^2+v^2}{2}
+\end{pmatrix}
+\begin{pmatrix}
+1&0&0&0\\
+0&\cos\theta&-\sin\theta&0\\
+0&\sin\theta&\cos\theta&0\\
+0&0&0&1
+\end{pmatrix},
+\]
+即小群 $G_k\cong ISO(2)=SO(2)\ltimes\RR^2$（二维欧几里得群）：$\theta$ 生成 $SO(2)$ 子群（绕动量方向的转动），$u,v$ 生成两个"类平移"。
+
+\textbf{第七步：无质量螺旋度.}\enspace $ISO(2)$ 的不可约表示中，$\RR^2$ 平移部分若是非平凡（$u,v\ne0$ 作用非零），会给出无限维连续表示（对应连续自旋，物理上未观察到）；物理上取平移平凡，此时表示退化为 $SO(2)$ 的表示 $\ee^{\ii h\theta}$，$h\in\tfrac12\ZZ$ 称为\textbf{螺旋度}。于是无质量粒子只有两个态：螺旋度 $+h$ 和 $-h$，分别对应粒子与反粒子（或右旋与左旋极化）。光子 $h=\pm1$，引力子 $h=\pm2$，体现了无质量规范玻色子的螺旋度结构。
+
+
+Wigner 的小群方法不是一个特例——它是 Mackey 的半直积群表示论的一般构造在 Poincar\'e 群上的具体化。把一般理论写清楚，才能看到 Wigner 分类的完整数学框架。
+
+\textbf{定理（Mackey 小群定理）.}\enspace 设 $G=N\rtimes H$ 是局部紧群 $H$ 对 Abel 正规子群 $N$ 的半直积。$G$ 的不可约幺正表示与以下配对一一对应：
+\begin{enumerate}
+\item 取 $N$ 的一个特征标 $\chi\in\hat N$（连续群同态 $\chi:N\to U(1)$）；
+\item 取 $H$ 在 $\hat N$ 上的轨道 $\mathcal O=H\cdot\chi$ 中一个代表元 $\chi_0$；
+\item 取小群 $H_{\chi_0}=\{h\in H\mid \chi_0(h\cdot n\cdot h^{-1})=\chi_0(n)\ \forall n\in N\}$ 的一个不可约幺正表示 $\rho$；
+\item 诱导表示 $U=\operatorname{Ind}_{N\rtimes H_{\chi_0}}^G(\tilde\chi_0\otimes\rho)$ 是 $G$ 的不可约幺正表示，其中 $\tilde\chi_0$ 是 $\chi_0$ 提升到 $N\rtimes H_{\chi_0}$。
+\end{enumerate}
+
+
+\textbf{第一步：$N$ 的特征标与 $H$ 的作用.}\enspace 对 Poincar\'e 群 $\mathcal P=\RR^{3,1}\rtimes SO^+(3,1)$，$N=\RR^{3,1}$（平移群）是 Abel 正规子群。$\RR^{3,1}$ 的特征标由动量 $p\in\RR^{3,1}$ 参数化：$\chi_p(a)=\ee^{ip\cdot a}$（$p\cdot a=\eta_{\mu\nu}p^\mu a^\nu$）。洛伦兹群 $SO^+(3,1)$ 在特征标上的作用为 $\Lambda\cdot\chi_p=\chi_{\Lambda p}$（即 $\chi_{\Lambda p}(a)=\chi_p(\Lambda^{-1}a)$）——这正是动量在洛伦兹变换下的变换。
+
+\textbf{第二步：轨道与质量壳.}\enspace $SO^+(3,1)$ 在 $\hat N\cong\RR^{3,1}$ 上的轨道由 $p^2=\eta_{\mu\nu}p^\mu p^\nu$ 的符号和大小分类：(a) 有质量轨道 $\mathcal O_m^+=\{p\mid p^2=m^2,\ p^0>0\}$（$m>0$），标准代表 $k=(m,0,0,0)$；(b) 无质量轨道 $\mathcal O_0^+=\{p\mid p^2=0,\ p^0>0\}$，标准代表 $k=(E,0,0,E)$；(c) 虚质量轨道 $\{p^2<0\}$（快子，物理上通常排除）；(d) 零轨道 $\{p=0\}$（真空）。每条轨道正是一个\emph{质量壳}——Mackey 理论把粒子分类归结为质量壳的分类。
+
+\textbf{第三步：小群作为稳定子.}\enspace 小群 $H_\chi$ 是特征标 $\chi$ 的稳定子：$H_{\chi_p}=\{\Lambda\mid \Lambda p=p\}$，即保持动量 $p$ 不变的洛伦兹变换——这正是 Wigner 的小群 $G_k$。对有质量轨道，$H_{\chi_k}\cong SO(3)$（保持静止系动量的转动）；对无质量轨道，$H_{\chi_k}\cong ISO(2)$（保持光锥动量的变换）。Mackey 定理中的"小群表示"就是 Wigner 的"小群表示"——两者完全一致。
+
+\textbf{第四步：诱导表示的显式构造.}\enspace 给定小群表示 $\rho:H_{\chi_0}\to U(V_\rho)$，诱导表示 $U=\operatorname{Ind}_{N\rtimes H_{\chi_0}}^G(\tilde\chi_0\otimes\rho)$ 的表示空间为
+\begin{equation}
+\label{eq:induced-rep-space}
+\mathcal H=\Bigl\{\psi:G\to V_\rho\ \Big|\ \psi(ng)=\tilde\chi_0(n)\rho(h)^{-1}\psi(g),\ \forall n\in N,\ h\in H_{\chi_0},\ \int_{G/(N\rtimes H_{\chi_0})}|\psi|^2<\infty\Bigr\},
+\end{equation}
+$G$ 的作用为左平移 $(U(g_0)\psi)(g)=\psi(gg_0)$。由于 $G/(N\rtimes H_{\chi_0})\cong \mathcal O$（轨道），$\mathcal H$ 可实现为轨道上 $V_\rho$-值 $L^2$ 函数的空间——物理上这就是"动量壳上的波函数" $\psi(p,\sigma)$（$\sigma$ 标记 $V_\rho$ 的分量）。
+
+\textbf{第五步：不可约性与完备性.}\enspace Mackey 定理断言：(a) 每个如此构造的 $U$ 不可约（由 $\rho$ 的不可约性和轨道的传递性保证）；(b) 每个不可约幺正表示都等价于某个如此构造的 $U$（完备性）。证明的关键是用 $N$ 的 Abel 性：$N$ 在任何不可约表示中由 Schur 引理约化为一维特征标 $\chi$，$G$ 的表示限制到 $N$ 只含 $H$-轨道 $\mathcal O$ 上的特征标，余下的自由度恰是小群表示 $\rho$。具体地，限制分解为
+\begin{equation*}
+U\big|_N \cong \int_{\mathcal O}^{\oplus} \chi_p \, \mathrm{d}\mu(p),
+\end{equation*}
+其中 $\mathcal O$ 是 $H$ 在 $\hat{N}$ 上的轨道，$\mathrm{d}\mu$ 是轨道上的 $H$-不变测度。非 Abel 正规子群（如 $N$ 非交换）时 Mackey 机器失效——需要更一般的 Mackey--Littlewood 方法或 Kirillov 轨道方法。
+
+\textbf{第六步：Poincar\'e 群的完整表示谱.}\enspace 应用 Mackey 定理到 $\mathcal P=\RR^{3,1}\rtimes SO^+(3,1)$，全部不可约幺正表示为：
+\begin{itemize}
+\item \textbf{有质量主系列} $(m,j)$：轨道 $p^2=m^2>0$，小群 $SO(3)$ 表示 $j$，Hilbert 空间 $L^2(\mathcal O_m,\CC^{2j+1})$。物理粒子：电子 $(m_e,\tfrac12)$、质子 $(m_p,\tfrac12)$、W 玻色子 $(m_W,1)$。
+\item \textbf{无质量系列} $(0,h)$：轨道 $p^2=0$，小群 $ISO(2)$ 的螺旋度表示 $h$，Hilbert 空间 $L^2(\mathcal O_0,\CC^2)$。物理粒子：光子 $(0,\pm1)$、引力子 $(0,\pm2)$、胶子 $(0,\pm1)$。
+\item \textbf{快子系列} $(\mu,j)$：轨道 $p^2=-\mu^2<0$，小群 $SO(2,1)$，物理上通常排除（因果性违反）。
+\item \textbf{真空表示}：轨道 $p=0$，平凡表示。
+\end{itemize}
+此分类穷尽了 Poincar\'e 群的所有不可约幺正表示——Wigner 1939 年的原始分类恰是此列表的物理部分。
+
+\textbf{第七步：直积分分解与散射理论.}\enspace Poincar\'e 群的正则表示 $L^2(\mathcal P)$ 不可离散分解（非紧群无离散不可约表示在 $L^2$ 中），而是按 Plancherel 测度直积分分解：
+\begin{equation*}
+L^2(\mathcal P)\cong\int_{m>0}^{\oplus}\sum_{j\in\frac12\NN}\bigl(V_{m,j}\otimes V_{m,j}^*\bigr)\,\mathrm d\mu(m,j)\ \oplus\ \int_{h\in\frac12\ZZ}^{\oplus}\bigl(V_{0,h}\otimes V_{0,h}^*\bigr)\,\mathrm d\nu(h).
+\end{equation*}
+物理上，散射态（多粒子态）是不同 $(m,j)$ 表示的直积分叠加——束缚态（如氢原子）是离散谱中的特定表示。散射理论的数学结构（$S$-矩阵、LSZ 约化公式）建立在 Poincar\'e 群表示的直积分分解上：入态与出态是同一不可约表示的不同实现，$S$-矩阵是它们之间的 intertwining 算符。
+
+\textbf{第八步：电子表示的显式构造.}\enspace 以电子 $(m_e,\tfrac12)$ 为例。轨道 $\mathcal O_{m_e}=\{p\mid p^2=m_e^2,\ p^0>0\}$，小群 $SO(3)$ 的 $j=\tfrac12$ 表示 $V_\rho=\CC^2$（自旋向上/向下）。表示空间
+\begin{equation*}
+\mathcal H_{m_e,1/2}=L^2(\mathcal O_{m_e},\CC^2)=\Bigl\{\psi(p,\sigma)\ \Big|\ \int\frac{\mathrm d^3p}{2E_{\vb p}}\sum_{\sigma=\pm1/2}|\psi(p,\sigma)|^2<\infty\Bigr\},
+\end{equation*}
+其中 $E_{\vb p}=\sqrt{|\vb p|^2+m_e^2}$，Lorentz 不变测度 $\mathrm d^3p/(2E_{\vb p})$。Poincar\'e 变换 $(\Lambda,a)$ 的作用为
+\begin{equation*}
+(U(\Lambda,a)\psi)(p,\sigma)=\ee^{ip\cdot a}\sum_{\sigma'}D^{(1/2)}_{\sigma\sigma'}\!\bigl(W(\Lambda,p)\bigr)\,\psi(\Lambda^{-1}p,\sigma'),
+\end{equation*}
+其中 $W(\Lambda,p)=L_{\Lambda p}^{-1}\Lambda L_p\in SU(2)$ 是 Wigner 转动（$L_p$ 为将静止系动量 $(m_e,0,0,0)$ 转到 $p$ 的标准 Lorentz 变换），$D^{(1/2)}$ 是 $SU(2)$ 的 $j=\tfrac12$ 表示矩阵。这正是 Dirac 旋量在动量空间中的变换律——Mackey 构造给出 Dirac 方程的群论基础。
+
+把上面的推导总结为粒子物理的基本字典：
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+ & 有质量 $m>0$ & 无质量 $m=0$ \\
+\midrule
+小群 & $SO(3)$ & $ISO(2)$ \\
+量子数 & 自旋 $j$ & 螺旋度 $h$ \\
+态数 & $2j+1$ & $2$ \\
+例子 & 电子 $(j=\tfrac12)$ & 光子 $(\pm1)$、引力子 $(\pm2)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+这个表格是本章的点睛之笔：\emph{"自旋"和"螺旋度"不是人为引入的量子数，而是 Poincar\'e 群不可约幺正表示的分类标签}。质量与自旋（或螺旋度）被证明是洛伦兹不变性下仅有的两个独立内禀量子数，其余一切量子数（电荷、同位旋、色等）都来自\emph{额外的内部对称群}，那是 \chapref{chap:lie-standard-model} 的主题。
+
+\textbf{例（中微子：有质量还是无质量？）.}\enspace 历史上中微子曾长期被视为无质量粒子，按 Wigner 分类只有 $h=\pm\tfrac12$ 两个螺旋度态，因此标准模型只引入左手中微子 $\nu_L$。中微子振荡实验证明中微子有微小质量，按 Wigner 分类它应回到 $j=\tfrac12$、$2$ 个自旋态的图景，需要引入右手中微子 $\nu_R$（或 Majorana 结构）。这正是 Wigner 分类直接约束粒子物理模型的一个实例：\emph{有质量与无质量粒子属于 Poincar\'e 群的不同不可约表示，其态数与结构根本不同}。
+
+
+Poincar\'e 群只含连续对称性。在它上面附加分立变换——宇称 $P$ 与时间反演 $T$——把 $SO^+(3,1)$ 扩大为完整 $O(3,1)$，就触及了手征性与 Kramers 简并的群论根源。
+
+
+前面已在 Lie 代数层面分析了 $P$、$T$ 对表示 $(j_L,j_R)$ 的作用 \eqnrefs{eq:parity-rep-action}。本推导把这些抽象结果落实到物理场——标量场、旋量场、矢量场——的显式变换律，并推导 Kramers 简并和螺旋度翻转的物理后果。
+
+\textbf{第一步：标量场的宇称与时间反演.}\enspace 实标量场 $\phi(x)$ 属于 $(0,0)$ 表示，$P$ 和 $T$ 的作用为
+\begin{equation*}
+P:\ \phi(t,\vb x)\mapsto\phi_P(t,\vb x)=\eta_P\,\phi(t,-\vb x),\qquad T:\ \phi(t,\vb x)\mapsto\phi_T(t,\vb x)=\eta_T\,\phi(-t,\vb x),
+\end{equation*}
+其中 $\eta_P=\pm1$（标量/赝标量）、$\eta_T=\pm1$（$T$ 宇称）是内禀分立量子数。$P^2=T^2=1$ 要求 $\eta_P^2=\eta_T^2=1$。对 $\pi^0$ 介子：$\eta_P=-1$（赝标量），$\eta_T=+1$。Klein--Gordon 方程 $(\partial^2+m^2)\phi=0$ 在 $P$、$T$ 下不变（$\partial^2$ 对 $x\to-x$ 或 $t\to-t$ 不变）。
+
+\textbf{第二步：Dirac 旋量场的宇称变换.}\enspace Dirac 旋量 $\Psi\in(\tfrac12,0)\oplus(0,\tfrac12)$，宇称交换两个直和项。在 Weyl 表象中，$\Psi=(\psi_L,\psi_R)^T$，宇称算符为 $\hat P=\gamma^0=\begin{pmatrix}0&\mathbb{1}\\\mathbb{1}&0\end{pmatrix}$：
+\begin{equation}
+\label{eq:parity-dirac}
+P:\ \Psi(t,\vb x)\mapsto\gamma^0\Psi(t,-\vb x)=\begin{pmatrix}\psi_R(t,-\vb x)\\\psi_L(t,-\vb x)\end{pmatrix}.
+\end{equation}
+$\hat P^2=(\gamma^0)^2=\mathbb{1}$，确认 $P^2=1$。关键：$\gamma^0$ 恰是交换 Weyl 块的矩阵——这是 \eqnrefs{eq:parity-rep-action} 中 $P:(j_L,j_R)\mapsto(j_R,j_L)$ 在矩阵层面的实现。Dirac 方程 $(\ii\gamma^\mu\partial_\mu-m)\Psi=0$ 在 $P$ 下不变：$\gamma^0(\ii\gamma^\mu\partial_\mu)\gamma^0=\ii\gamma^0\gamma^0\partial_0-\ii\gamma^0\gamma^i\gamma^0\partial_i=\ii\gamma^0\partial_0+\ii\gamma^i\partial_i$（用了 $\{\gamma^0,\gamma^i\}=0$），而 $\partial_\mu$ 在 $\vb x\to-\vb x$ 下 $\partial_i\to-\partial_i$，故整体不变。
+
+\textbf{第三步：Weyl 旋量不能定义宇称.}\enspace 纯左手 Weyl 旋量 $\psi_L\in(\tfrac12,0)$ 的 Lorentz 变换为 $\psi_L\mapsto A\psi_L$（$A\in SL(2,\CC)$）。若存在宇称算符 $\hat P$ 使 $\psi_L\mapsto\hat P\psi_L$ 仍是 $(\tfrac12,0)$ 表示，则 $\hat P A\hat P^{-1}=A$ 对所有 $A\in SL(2,\CC)$ 成立，但 $P$ 交换 $A\leftrightarrow A^\dagger$，故 $\hat P A\hat P^{-1}=A^\dagger\ne A$（对一般 boost）——矛盾。因此\emph{Weyl 旋量没有宇称算符}。宇称把 $\psi_L$ 映到 $\psi_R$（另一个表示空间中的旋量），只有 Dirac 旋量 $(\psi_L,\psi_R)$ 才有自洽的宇称定义 \eqnrefs{eq:parity-dirac}。这是弱相互作用 $V-A$ 结构破坏宇称的群论根源：$SU(2)_L$ 规范耦合只涉及 $\psi_L$，宇称把 $\psi_L$ 映到 $\psi_R$ 但 $\psi_R$ 不耦合 $SU(2)_L$，故拉格朗日量在 $P$ 下变到不同的形式。
+
+\textbf{第四步：时间反演的反酉性与 $T^2$.}\enspace 时间反演 $T$ 是反酉算符：$T$ 保持范数但取复共轭，$T(\alpha|\psi\rangle)=\bar\alpha T|\psi\rangle$（反线性）。对自旋 $j$ 表示，$T$ 作用在角动量本征态上为
+\begin{equation}
+\label{eq:time-reversal-spin}
+T|j,m\rangle=(-1)^{j-m}|j,-m\rangle,
+\end{equation}
+其中 $(-1)^{j-m}$ 是 Condon--Shortley 约定的相位因子。连续两次时间反演：
+\begin{equation*}
+T^2|j,m\rangle=T\bigl((-1)^{j-m}|j,-m\rangle\bigr)=(-1)^{j-m}\overline{(-1)^{j-m}}\,T|j,-m\rangle=(-1)^{j-m}(-1)^{j-m}(-1)^{j+m}|j,m\rangle.
+\end{equation*}
+因 $(-1)^{j-m}(-1)^{j+m}=(-1)^{2j}$，故 $T^2=(-1)^{2j}\mathbb{1}$：整数自旋 $T^2=+1$，半整数自旋 $T^2=-1$。
+
+\textbf{第五步：Kramers 简并.}\enspace 对半整数自旋（$T^2=-1$），设 $|\psi\rangle$ 是 $T$ 不变态：$T|\psi\rangle=\ee^{\ii\alpha}|\psi\rangle$。则 $T^2|\psi\rangle=T(\ee^{\ii\alpha}|\psi\rangle)=\ee^{-\ii\alpha}T|\psi\rangle=\ee^{-\ii\alpha}\ee^{\ii\alpha}|\psi\rangle=|\psi\rangle$，但 $T^2=-1$ 给 $T^2|\psi\rangle=-|\psi\rangle$——矛盾。故 $T$ 不可能有本征态：$T|\psi\rangle$ 与 $|\psi\rangle$ 正交（$\langle\psi|T|\psi\rangle=\langle T\psi|T^2\psi\rangle^*=-\langle T\psi|\psi\rangle^*=-\langle\psi|T|\psi\rangle$，故 $\langle\psi|T|\psi\rangle=0$）。因此每个能级至少二重简并——\emph{Kramers 简并}。电子（$s=\tfrac12$）在只有电场（$T$ 不变态）的势中，每个能级至少二重简并（自旋向上/向下），这是 Kramers 定理的群论证明。磁场破坏 $T$ 不变性（$\vb B\to-\vb B$），解除 Kramers 简并（Zeeman 效应）。
+
+\textbf{第六步：螺旋度翻转与无质量粒子.}\enspace 对无质量粒子，螺旋度 $h$ 是 $ISO(2)$ 小群的量子数。宇称 $P$ 把绕动量方向的转动 $R_z(\theta)$ 映到 $R_z(-\theta)$（因 $P$ 反转空间），故 $P:\ee^{\ii h\theta}\mapsto\ee^{-\ii h\theta}$，即 $h\to-h$。因此：
+\begin{itemize}
+\item 光子 $h=\pm1$：$P$ 交换 $+1$ 和 $-1$ 螺旋度态（左旋光子 $\leftrightarrow$ 右旋光子），QED 宇称不变。
+\item 中微子 $h=-\tfrac12$（纯左手）：$P$ 把 $h=-\tfrac12$ 映到 $h=+\tfrac12$（右手），但标准模型不含右手中微子 $\nu_R$——$P$ 把态映到不存在的表示，故弱相互作用破坏宇称。
+\item 引力子 $h=\pm2$：$P$ 交换 $\pm2$，广义相对论宇称不变。
+\end{itemize}
+时间反演 $T$ 同样翻转螺旋度（$T$ 反转动量 $\vb p\to-\vb p$ 和自旋 $\vb S\to-\vb S$，螺旋度 $h=\vb S\cdot\hat{\vb p}$ 两次变号故 $h\to h$——实际上 $T$ 翻转动量但不翻转极化方向，净效果 $h\to-h$）。故 $PT$ 保持螺旋度不变（两次翻转），但 $P$ 或 $T$ 单独翻转——这是为什么 $P$ 和 $T$ 各自被弱相互作用破坏但 $CPT$ 联合保持不变。
+
+\textbf{第七步：分立变换对 Feynman 规则的约束.}\enspace 分立对称性约束拉格朗日量的形式。宇称不变要求：标量场 $\eta_P=\pm1$ 分类标量/赝标量；矢量场 $A^\mu$ 的空间分量变号（极矢量）或不变（轴矢量）；旋量双线性 $\bar\Psi\gamma^\mu\Psi$ 是极矢量（$P:\ \bar\Psi\gamma^0\Psi\to\bar\Psi\gamma^0\Psi$，$\bar\Psi\gamma^i\Psi\to-\bar\Psi\gamma^i\Psi$），$\bar\Psi\gamma^\mu\gamma^5\Psi$ 是轴矢量（空间分量不变）。弱相互作用 $V-A=\bar\Psi\gamma^\mu(1-\gamma^5)\Psi$ 是极矢量减轴矢量，$P$ 把它变为 $V+A$——不同的形式，故 $P$ 破坏。时间反演不变要求振幅满足 $|M_{fi}|^2=|M_{\bar f\bar i}|^2$（初末态反演后概率不变），$T$ 破坏表现为 $|M_{fi}|^2\ne|M_{\bar f\bar i}|^2$（如 $K^0$--$\bar K^0$ 混合中的 $\epsilon$ 参数）。
+
+
+\textbf{过渡：参数化、Haar 测度与幺正表示.}\enspace
+
+前面各节分别从代数结构（复化分解）、表示分类（$(j_L,j_R)$）和物理分类（Wigner 小群）三个角度处理了洛伦兹群。本节把这三个角度统一起来：先给出群的显式参数化（转动--boost 分解与 Cayley--Klein 参数），再用参数化计算不变积分（Haar 测度），最后用 Haar 测度建立正则表示的谱分解（Plancherel 公式），给出 $SL(2,\CC)$ 全部幺正不可约表示的完整分类。这条链从"群作为微分流形"的几何出发，经"群上的积分"到达"群上的调和分析"，是非紧群表示论的标准路线。
+
+\textbf{转动--boost 分解.}\enspace 任意 $\Lambda\in SO^+(3,1)$ 可唯一分解为 $\Lambda=R_1\,\Lambda_z(\eta)\,R_2$，其中 $R_1,R_2\in SO(3)$，$\Lambda_z(\eta)$ 是沿 $z$ 轴快度 $\eta\ge0$ 的 boost。证明如下。把 $\Lambda$ 写成 $4\times4$ 分块形式 $\Lambda=\begin{pmatrix}a&\vb b^T\\ \vb c&D\end{pmatrix}$（$a=\Lambda^0{}_0\ge1$）。洛伦兹条件 $\Lambda^T\eta\Lambda=\eta$ 给出 $a^2-|\vb c|^2=1$，故 $a=\cosh\eta$，$|\vb c|=\sinh\eta$。若 $\eta>0$，取 $R_1$ 把 $\vb c/|\vb c|$ 转到 $z$ 轴，则 $R_1^{-1}\Lambda$ 的 $\vb c$ 沿 $z$ 方向；再取 $R_2\in SO(3)$ 消去空间部分的混合项，得到标准形式 $\Lambda_z(\eta)$。唯一性由 $\tr\Lambda=2\cosh\eta+2$ 给出：因 $\tr(\Lambda_z R)=2\cosh\eta+R_{22}+R_{33}\le2\cosh\eta+2$，等号仅在 $R_2R_1=\mathbb{1}$ 时取，故 $\eta$ 由 $\Lambda$ 唯一确定。这个分解把 $6$ 维群流形显式参数化为 $SO(3)\times[0,\infty)\times SO(3)$，是计算 Haar 测度的出发点。
+
+\textbf{Cayley--Klein 参数.}\enspace $SO^+(3,1)$ 的二重覆盖是 $SL(2,\CC)$，通过 $\Lambda^\mu{}_\nu=\tfrac12\tr(\sigma^\mu A\sigma_\nu A^\dagger)$ 映射（$\sigma^\mu=(\mathbb{1},\sigma_1,\sigma_2,\sigma_3)$）。$SL(2,\CC)$ 的任意元素可参数化为 $A=\ee^{-\ii\phi\sigma_3/2}\,\ee^{-\ii\theta\sigma_2/2}\,\ee^{\eta\sigma_3/2}\,\ee^{-\ii\psi\sigma_3/2}$，其中 $(\phi,\theta,\psi)$ 是 Euler 角，$\eta\ge0$ 是快度。其矩阵元 $A=\begin{pmatrix}\alpha&\beta\\ \gamma&\delta\end{pmatrix}$（$\alpha\delta-\beta\gamma=1$）称为 Cayley--Klein 参数，是 $6$ 个实参数（约束去掉一个复方程）。对纯转动（$A\in SU(2)$），酉约束 $\delta=\bar\alpha$，$\gamma=-\bar\beta$ 把参数退化为 \chapref{chap:rotation-group} 的 Euler 参数。对沿 $z$ 轴快度 $\eta$ 的纯 boost，$A=\diag(\ee^{\eta/2},\ee^{-\eta/2})$；对沿任意方向 $\hat{\vb n}$ 的 boost，$A=\cosh(\eta/2)\,\mathbb{1}+\sinh(\eta/2)\,(\hat{\vb n}\cdot\vb\sigma)$。与纯转动 $A=\cos(\theta/2)\,\mathbb{1}-\ii\sin(\theta/2)\,(\hat{\vb n}\cdot\vb\sigma)$ 对比，Cayley--Klein 参数揭示了"boost 是虚转角的转动"这一解析延拓关系。在 Cayley--Klein 参数下，左手 Weyl 旋量变换为 $\psi_L\mapsto A\psi_L$，右手 $\psi_R\mapsto A^\dagger\psi_R$：对纯转动 $A^\dagger=A^{-1}$（两手征以互逆 $SU(2)$ 变换），对纯 boost $A=A^\dagger$（两手征以相同 boost 变换），这正是 boost 不交换手征性的群论表达。
+
+\textbf{Haar 测度.}\enspace 群上的不变积分是表示论的基石。任意局部紧 Hausdorff 拓扑群 $G$ 上存在非零左不变正则 Borel 测度 $\mu_L$（$\mu_L(gA)=\mu_L(A)$），在等差常数意义下唯一。若左不变蕴含右不变（$\mu_L(Ag)=\mu_L(A)$），则称 $G$ 幺模。幺模的充分条件包括：$G$ 紧、$G$ 半单、或 $G$ 连通且 $\det\operatorname{Ad}(g)=1$。半单的情形证明如下：设 $\omega$ 为左不变体积形式，右平移 $R_g$ 下 $\omega$ 变为 $|\det\operatorname{Ad}(g)|\,\omega$，故左 Haar 测度右不变的充要条件是 $|\det\operatorname{Ad}(g)|=1$。对半单 Lie 群，$\operatorname{Ad}(g)$ 保持 Killing 形式 $\kappa$ 不变：$\kappa(\operatorname{Ad}(g)X,\operatorname{Ad}(g)Y)=\kappa(X,Y)$。在 $\kappa$ 非退化基下 $\operatorname{Ad}(g)$ 是保双线性形式的矩阵，故 $\det\operatorname{Ad}(g)=\pm1$。由连通性及 $\operatorname{Ad}(e)=\mathbb{1}$，连续性迫使 $\det\operatorname{Ad}(g)=1$。
+
+$SO^+(3,1)$ 是半单 Lie 群（Killing 形式非退化），故幺模。用转动--boost 分解 $\Lambda=R_1\Lambda_z(\eta)R_2$，Haar 测度为
+\begin{equation}
+\label{eq:haar-lorentz}
+\mathrm{d}\mu(\Lambda)=\sinh\eta\,\mathrm{d}\eta\,\mathrm{d}\mu_{SO(3)}(R_1)\,\mathrm{d}\mu_{SO(3)}(R_2),
+\end{equation}
+其中 $\mathrm{d}\mu_{SO(3)}=\frac{1}{8\pi^2}\sin\beta\,\mathrm{d}\alpha\,\mathrm{d}\beta\,\mathrm{d}\gamma$ 是 $SO(3)$ 的归一化 Haar 测度（Euler 角）。关键因子 $\sinh\eta$ 的推导如下。用 $SL(2,\CC)$ 参数化，左不变 Maurer--Cartan 形式 $A^{-1}\mathrm{d}A$ 的分量给出左不变 $1$-形式。取参数化 $A(\phi,\theta,\psi,\eta)$，计算 $\omega=\tr(A^{-1}\mathrm{d}A\wedge A^{-1}\mathrm{d}A)$ 的外幂给出体积形式。具体地，$A^{-1}\mathrm{d}A$ 在 Weyl 表象中分块为 $\begin{pmatrix}\omega_0&\omega_+\\ \omega_-&-\omega_0\end{pmatrix}$（迹零条件），其中 $\omega_0,\omega_\pm$ 是三个复值 $1$-形式（$6$ 个实 $1$-形式）。左不变体积形式为 $\omega_0\wedge\bar\omega_0\wedge\omega_+\wedge\bar\omega_+\wedge\omega_-\wedge\bar\omega_-$。代入 Euler--boost 参数化后，$\omega_0$ 含 $\mathrm{d}\eta/2$ 分量，$\omega_\pm$ 含 $\ee^{\pm\eta/2}$ 因子（boost 对左手和右手旋量以不同尺度变换），外楔积给出 $\sinh\eta\,\mathrm{d}\eta\wedge\mathrm{d}\mu_{SO(3)}(R_1)\wedge\mathrm{d}\mu_{SO(3)}(R_2)$。因子 $\sinh\eta$ 在 $\eta=0$ 处消失（群流形在纯转动子群处"收缩"），在 $\eta\to\infty$ 时指数增长 $\sim\ee^\eta/2$，使群体积
+\[
+\int_{SO^+(3,1)}\mathrm{d}\mu=\int_0^\infty\sinh\eta\,\mathrm{d}\eta\times 1\times 1=\infty
+\]
+发散——这是非紧性的直接后果。正则表示 $L^2(G)$ 上的左正则表示因此不能分解为离散直和（紧群的 Peter--Weyl），而需要连续谱分解，即下面的 Plancherel 公式。
+
+\textbf{从有限维到无限维.}\enspace 前面给出的有限维表示 $(j_L,j_R)$ 有一个根本缺陷：$SO^+(3,1)$ 的任何非平凡有限维表示都不幺正。证明：设 $\rho:SO^+(3,1)\to U(V)$ 是有限维幺正表示。$SO^+(3,1)$ 含无界单参数子群 $\{\Lambda_z(\eta)\}$，而 $\rho(\Lambda_z(\eta))\in U(V)$ 有界。连续同态 $\RR\to U(V)$ 必形如 $t\mapsto\ee^{\ii tH}$（$H$ 厄米），故 $\rho(\Lambda_z(\eta))$ 是周期的。但 $\Lambda_z(\eta)$ 在 $SO^+(3,1)$ 中无周期，故 $\ker\rho\ne\{e\}$，矛盾。因此物理上需要的单粒子 Hilbert 空间上的幺正表示\emph{必须无限维}。
+
+\textbf{$SL(2,\CC)$ 在球面上的作用与主系列.}\enspace $SL(2,\CC)$ 通过 Möbius 变换 $w=(az+b)/(cz+d)$ 作用于 Riemann 球面 $S^2\cong\hat\CC$。球面度规 $\mathrm{d}\Omega=4\,\mathrm{d}x\,\mathrm{d}y/(1+|z|^2)^2$ 在此作用下\emph{不}不变——Möbius 变换是共形的但非等距。其 Jacobian 为
+\[
+\frac{\mathrm{d}\Omega(w)}{\mathrm{d}\Omega(z)}=\frac{(1+|z|^2)^2}{(|cz+d|^2+|az+b|^2)^2}=:J(A,z)^{-2},
+\]
+其中 $J(A,z)=\frac{|cz+d|^2+|az+b|^2}{1+|z|^2}$ 是共形因子。关键观察：若在表示公式中插入 $J(A,z)^{-1}$（Jacobian 的半密度因子），则幺正性\emph{自动成立}。对 $\nu\in\RR$ 和 $n\in\ZZ$，定义
+\begin{equation}
+\label{eq:principal-series-action}
+[\pi_{\nu,n}(A)f](z)=J(A,z)^{-1}\left(\frac{cz+d}{|cz+d|}\right)^{-n}|cz+d|^{-2\ii\nu}f\!\left(\frac{az+b}{cz+d}\right).
+\end{equation}
+三个因子的模分别为 $J(A,z)^{-1}$、$1$、$1$（后两个是纯相位），故 $|\pi_{\nu,n}(A)f|^2=J(A,z)^{-2}|f(w)|^2$。换元 $z\mapsto w$：
+\[
+\int_{S^2}J(A,z)^{-2}|f(w)|^2\,\mathrm{d}\Omega(z)=\int_{S^2}J(A,z)^{-2}|f(w)|^2\,J(A,z)^2\,\mathrm{d}\Omega(w)=\int_{S^2}|f|^2\,\mathrm{d}\Omega,
+\]
+幺正性成立——半密度因子 $J^{-1}$ 恰好抵消 Jacobian $J^2$。参数 $\nu\in\RR$ 通过纯振荡因子 $|cz+d|^{-2\ii\nu}$ 进入（不影响模），整数 $n$ 通过相位因子 $(cz+d/|cz+d|)^{-n}$ 进入（$M\cong U(1)$ 的特征标）。这些表示 $\{\pi_{\nu,n}:\nu\in\RR,\,n\in\ZZ\}$ 称为 $SL(2,\CC)$ 的\textbf{主系列}。
+
+
+\textbf{第一步：$K$-有限向量的有限维空间.}\enspace $K=SU(2)$ 是 $SL(2,\CC)$ 的极大紧子群，$M=\{\pm I\}\subset K$ 是 $K$ 的中心。$K$ 作用于边界 $S^2\cong K/M$ 的球面调和函数 $\phi_n(z)=\bar z^{\,n}$（$n\in\ZZ$，$M$ 的特征标），$\pi_{\nu,n}$ 的 $K$-有限向量是 $\{f_m:m\in\ZZ\}$（$f_m$ 是权 $m$ 的球面调和函数）。$K$-有限向量空间 $\mathcal H_K=\bigoplus_{m\in\ZZ}\CC f_m$ 是 $(\mathfrak{g},K)$-模的核心——$\mathfrak{sl}(2,\CC)$ 的生成元保持 $\mathcal H_K$ 不变（把 $K$-有限向量映到 $K$-有限向量），故 $\pi_{\nu,n}$ 不可约当且仅当 $\mathfrak{sl}(2,\CC)$ 在 $\mathcal H_K$ 上不可约地作用。
+
+\textbf{第二步：降权算符的显式作用.}\enspace Lie 代数生成元 $H=\sigma_3$、$E=\sigma_+$、$F=\sigma_-$ 作用在 $K$-有限向量 $f_m$ 上。$H$ 保持权 $m$ 不变：
+\begin{equation*}
+Hf_m=m\,f_m,
+\end{equation*}
+$E$ 升权（$Ef_m\propto f_{m+2}$），$F$ 降权（$Ff_m\propto f_{m-2}$）。关键：$F$ 的作用系数从 $\pi_{\nu,n}$ 的显式公式 \eqnrefs{eq:principal-series-action} 直接计算 $F=\left.\frac{\mathrm{d}}{\mathrm{d}t}\pi_{\nu,n}(\ee^{t\sigma_-})\right|_{t=0}$ 得到：
+\begin{equation*}
+Ff_m=c_m\,f_{m-2},\qquad c_m=\frac{(m-n)(m+n)}{4}+\frac{1-\nu^2}{4}.
+\end{equation*}
+展开 $c_m=\frac{m^2-n^2+1-\nu^2}{4}$，这是 $m$ 的二次多项式。类似地，$E$ 的作用系数为
+\begin{equation*}
+Ef_m=d_m\,f_{m+2},\qquad d_m=\frac{(m+n)(m-n)}{4}+\frac{1-\nu^2}{4}=c_m,
+\end{equation*}
+故 $E$ 和 $F$ 的系数相同（$d_m=c_m$），反映 $\pi_{\nu,n}\cong\pi_{\nu,-n}$ 的对称性。$H$、$E$、$F$ 满足 $\mathfrak{sl}(2)$ 标准对易关系：
+\begin{equation*}
+[H,E]=2E,\qquad [H,F]=-2F,\qquad [E,F]=H.
+\end{equation*}
+
+\textbf{第三步：不可约性判据——$c_m$ 的零点分析.}\enspace 若所有 $c_m\ne0$（$m\ne\pm n$ 时），则从任意 $K$-有限向量 $f_m$ 出发，反复用 $E$ 升权到 $f_{m+2},f_{m+4},\dots$，用 $F$ 降权到 $f_{m-2},f_{m-4},\dots$，可到达所有 $f_k$（$k\equiv m\pmod{2}$），表示不可约。$c_m=0$ 的条件是
+\begin{equation*}
+m^2-n^2+1-\nu^2=0\iff\nu^2=1+m^2-n^2.
+\end{equation*}
+对 $\nu\in\RR$（主系列），$\nu^2\ge0$ 而 $c_m=0$ 要求 $\nu^2=1+m^2-n^2\ge0$。具体地 $c_m=0$ 当且仅当 $\nu=0$ 且 $m=\pm n$。此时 $\pi_{0,n}\cong\pi_{0,-n}$（唯一等价对），表示可约：$f_n$ 和 $f_{-n}$ 分别生成两个不变子空间。除此之外主系列全部不可约。
+
+\textbf{第四步：Casimir 本征值与不可约性的关系.}\enspace 二次 Casimir 算符 $C=H^2+2EF+2FE$ 在 $\pi_{\nu,n}$ 上的本征值为
+\begin{equation*}
+C\pi_{\nu,n}=\frac{1-\nu^2-n^2/4}{4}\cdot\mathbb{1}.
+\end{equation*}
+不可约表示的 Casimir 本征值唯一确定表示（至等价）。主系列 $\nu\in\RR$ 给出 Casimir $\le\frac14$，补系列 $\nu=-is$（$0<s<1$）给出 Casimir $s(1-s)\in(0,\tfrac14)$，平凡表示给出 Casimir $0$。Casimir 本征值的分布恰好覆盖 $(-\infty,\tfrac14]$，无间隙——这是 $SL(2,\CC)$ 表示完备性的群论证据。具体地，Casimir 谱为
+\begin{equation*}
+\operatorname{Spec}(C)=\underbrace{\left(-\infty,\tfrac14\right]}_{\text{主系列}}\cup\underbrace{\left(0,\tfrac14\right)}_{\text{补系列}}\cup\underbrace{\{0\}}_{\text{平凡表示}}=\left(-\infty,\tfrac14\right].
+\end{equation*}
+
+\textbf{第五步：物理对应——有质量与无质量表示.}\enspace Wigner 分类中，有质量自旋 $j$ 的表示对应主系列中 $n=0$、$\nu$ 由质量 $m$ 决定的特定点：
+\begin{equation*}
+\nu=\sqrt{m^2-\tfrac14},
+\end{equation*}
+$m>\frac12$ 时为实数（属主系列），$m<\frac12$ 时为虚数（属补系列）。无质量螺旋度 $h$ 的表示对应 $n=2h$ 的极限离散系列（$\nu\to0$）。主系列的不可约性保证不同质量/自旋的粒子态不混合——这是粒子物理中质量本征态正交性的群论根源。
+
+
+\textbf{第八步：Plancherel 公式的验证.}\enspace 主系列的 Plancherel 测度 $\mu(\rho)\propto\rho\tanh(\pi\rho)$ 可由 $L^2$ 范数的显式计算验证：对 $f\in L^2(SL(2,\CC))$，$\|f\|^2=\sum_j\int_0^\infty\|\hat f(j,\rho)\|^2_{\text{HS}}(2j+1)\rho\tanh(\pi\rho)\,\mathrm d\rho$。$\rho\tanh(\pi\rho)$ 在 $\rho\to\infty$ 时 $\sim\rho$（连续谱测度线性增长），在 $\rho\to0$ 时 $\sim\pi\rho^2$（补系列残余贡献）。这与 Harish-Chandra c 函数 $|c(\rho)|^{-2}=\frac{2\rho\sinh(\pi\rho)}{\pi}$ 一致，确认了 Plancherel 测度的正确性。
+
+\textbf{补系列.}\enspace 主系列的参数 $\nu$ 沿实轴取值。把 $\nu$ 解析延拓到虚轴 $\nu=-is$（$0<s<1$），半密度因子 $J^{-1}$ 仍保证形式上的幺正性，但 Hilbert 空间需换为带权 $L^2(S^2,|z|^{2s-1}\mathrm{d}\Omega)$。这些表示 $\{\pi_{s}:0<s<1\}$ 称为\textbf{补系列}，Casimir 本征值 $s(1-s)\in(0,\tfrac14)$ 恰好填补主系列 Casimir $\tfrac14+\nu^2\in(\tfrac14,\infty)$ 与平凡表示 $0$ 之间的空隙。补系列的不可约性由 $c_m$ 判据同样给出：$0<s<1$ 时 $c_m=0$ 要求 $s=\frac{|m\pm n|}{2}\in\{0,\frac12,1,\dots\}$，但 $0<s<1$ 排除了所有整数解，故补系列全部不可约。$SL(2,\CC)$ 作为复半单 Lie 群没有离散系列：$SL(2,\CC)/SU(2)\cong\mathbb{H}^3$（双曲 $3$-空间）体积无穷，使任何非零 $K$-有限向量在群上的积分发散。
+
+\textbf{Plancherel 公式.}\enspace $L^2(SL(2,\CC))$ 作为左正则表示分解为主系列的直积分：
+\begin{equation}
+\label{eq:plancherel-sl2c}
+L^2(SL(2,\CC))\cong\bigoplus_{n\in\ZZ}\int_0^\infty \mathcal{H}_{\nu,n}\otimes\mathcal{H}_{\nu,n}^*\;\frac{\nu(\nu^2+n^2/4)}{4\pi^2}\,\mathrm{d}\nu,
+\end{equation}
+Plancherel 测度 $\nu(\nu^2+n^2/4)$ 在 $\nu=0$ 处为零（对应 $n\ne0$ 的极限离散系列），在 $\nu\to\infty$ 时三次增长。补系列不出现（零 Plancherel 测度）。
+
+
+\textbf{第一步：Abel 积分约化——从群到 Abel 子群.}\enspace Harish-Chandra 把 $G=SL(2,\CC)$ 上的球面函数（$K$-双不变函数）约化为 Abel 积分。取 Iwasawa 分解 $G=NAK$（$N$ 幂零、$A$ Abel、$K$ 紧），$A$ 的参数为快度 $\eta$（$a=\diag(\ee^\eta,\ee^{-\eta},1)$）。球面函数 $\varphi_\nu(g)$ 只依赖 $A$ 部分，满足 Abel 积分方程
+\begin{equation*}
+\varphi_\nu(\ee^{\eta H})=\int_K \ee^{(\ii\nu+\rho)(H(gk))}\,\mathrm{d}k,
+\end{equation*}
+其中 $\rho$ 是 Weyl 向量（$SL(2,\CC)$ 的 $\rho=1$，由正根之和的一半给出），$H(g)$ 是 $g$ 的 $A$ 分量。此约化把 $6$ 维群上的积分化为 $1$ 维 Abel 子群上的积分——Harish-Chandra 的核心简化。
+
+\textbf{第二步：Harish-Chandra $c$ 函数——渐近展开的系数.}\enspace 球面函数的渐近展开为
+\begin{equation*}
+\varphi_\nu(\ee^{\eta H})\sim c(\nu)\,\ee^{\ii\nu\eta}+c(-\nu)\,\ee^{-\ii\nu\eta}\qquad(\eta\to\infty),
+\end{equation*}
+其中 $c(\nu)$ 是 \textbf{Harish-Chandra $c$ 函数}。对 $SL(2,\CC)$，$c$ 函数可用 Gindikin--Karpelevich 公式显式计算：
+\begin{equation*}
+c(\nu)=\frac{2^{\ii\nu}\,\Gamma(\ii\nu)}{\Gamma(\tfrac12+\tfrac{\ii\nu}{2})^2},
+\end{equation*}
+其中 $\Gamma$ 是 Euler Gamma 函数。$c$ 函数的模方 $|c(\nu)|^{-2}$ 给出 Plancherel 测度的核心因子。$c$ 函数的极点对应补系列（$\nu=-is$，$0<s<1$），零点对应离散系列。
+
+\textbf{第三步：Plancherel 测度的显式计算——Gamma 函数模方.}\enspace 对 $SL(2,\CC)$ 的主系列 $\pi_{\nu,n}$，$c$ 函数推广为 $c(\nu,n)$，由 $n$ 个移位 Gamma 函数的乘积给出：
+\begin{equation*}
+c(\nu,n)=\frac{2^{\ii\nu}\,\Gamma(\ii\nu)}{\Gamma(\tfrac{1+\ii\nu+|n|}{2})\,\Gamma(\tfrac{1+\ii\nu-|n|}{2})}.
+\end{equation*}
+利用 Gamma 函数的倍元公式 $\Gamma(z)\Gamma(z+\frac12)=2^{1-2z}\sqrt\pi\,\Gamma(2z)$ 和模方公式 $|\Gamma(\ii\nu)|^2=\frac{\pi}{\nu\sinh(\pi\nu)}$，计算 $|c(\nu,n)|^{-2}$。分子贡献 $|\Gamma(\ii\nu)|^2=\frac{\pi}{\nu\sinh(\pi\nu)}$，分母贡献 $|\Gamma(\frac{1+\ii\nu\pm|n|}{2})|^2$ 由 $|\Gamma(\sigma+\ii t)|^2$ 公式给出。化简后得
+\begin{equation*}
+|c(\nu,n)|^{-2}=\frac{\nu(\nu^2+n^2/4)}{4\pi^2}.
+\end{equation*}
+这就是 \eqnrefs{eq:plancherel-sl2c} 中的 Plancherel 测度。关键步骤：$c(\nu,n)$ 的分母含 $\Gamma(\frac{\ii\nu+|n|}{2})^2$，其模方倒数给出 $\nu^2+n^2/4$ 因子；额外的 $\nu$ 因子来自 $c$ 函数分子的 $\Gamma(\ii\nu)$ 的模方倒数。
+
+\textbf{第四步：Plancherel 公式的验证与补系列的排除.}\enspace Plancherel 公式要求对任意 $f\in L^2(G)$，
+\begin{equation*}
+\|f\|^2=\sum_{n\in\ZZ}\int_0^\infty \|\hat f(\nu,n)\|^2\,|c(\nu,n)|^{-2}\,\mathrm{d}\nu,
+\end{equation*}
+其中 $\hat f(\nu,n)$ 是表示论 Fourier 变换。对 $K$-双不变函数（球面函数），这退化为 Abel 变换的逆公式，由 Paley--Wiener 定理保证（球面函数的 Fourier 变换是 Paley--Wiener 类的整函数）。一般函数通过 $K$-左右平移分解为球面函数的有限和，逐项验证。
+
+补系列对应 $\nu=-is$（$0<s<1$），此时 $|c(-is,n)|^{-2}=0$（Gamma 函数在非零整数极点的留数为零），故补系列 Plancherel 测度为零——它们是不可约幺正表示但不出现在正则表示的谱分解中。这与紧群 Peter--Weyl 定理对比：紧群的全部不可约表示都出现在正则表示中（Plancherel 测度为正整数 $\dim\pi$），非紧群的补系列虽不可约但"测度为零"——是非正则表示。
+
+
+\textbf{第四步：Harish-Chandra c 函数的显式公式.}\enspace 对 $SL(2,\CC)$，c 函数 $c(\rho)=\frac{\Gamma(i\rho)}{\Gamma(\frac12+i\rho)}\cdot\frac{\pi^{-1/2}}{2}$。$|c(\rho)|^{-2}=\frac{2\rho\sinh(\pi\rho)}{\pi}$（由 $|\Gamma(i\rho)|^2=\pi/(\rho\sinh(\pi\rho))$ 和 $|\Gamma(\frac12+i\rho)|^2=\pi/\cosh(\pi\rho)$）。Plancherel 测度 $\mu(\rho)=|c(\rho)|^{-2}\,\mathrm d\rho$。
+
+\textbf{第五步：Gindikin--Karpelevich 公式.}\enspace 对一般半单 Lie 群 $G$，c 函数分解 $c(\lambda)=\prod_{\alpha\in\Phi^+}c_\alpha(\lambda_\alpha)$，各正根独立贡献。高秩群的 Plancherel 测度由 $|c(\lambda)|^{-2}$ 在权空间积分给出——Harish-Chandra Plancherel 定理的核心。
+
+\textbf{第六步：物理应用.}\enspace $SL(2,\CC)$ 的酉表示分类给出相对论粒子的量子态：主系列 → 连续自旋，补系列 → 快子，离散系列 → 有质量粒子（自旋 $j$）。Plancherel 分解给出 Lorentz 群上函数的"Fourier 变换"，用于相对论散射理论的波包展开。\end{derivation}
+
+与紧群 Peter--Weyl 定理 $L^2(G)\cong\bigoplus_\pi V_\pi\otimes V_\pi^*$（离散直和）对比，非紧群的直和变为直积分，Plancherel 测度从离散计数变为连续测度——不可约表示不再是可数集而是连续族，"求和"变为"积分"。物理上，Wigner 分类中的有质量表示 $(m,j)$ 对应主系列中 $n=0$、$\nu$ 由质量决定的特定点；无质量表示 $(m=0,h)$ 对应 $n=2h$ 的极限离散系列。完整的 Plancherel 公式描述了所有波包（不限于单粒子态）在群上的分解，是量子场论中散射理论的数学基础。
+
+\section{小结}
+
+本章把 \chapref{chap:rotation-group} 的紧群表示论推广到非紧的洛伦兹群与 Poincar\'e 群。相对于紧群的三个关键新事实是：
+
+\begin{enumerate}
+\item \textbf{非紧性}\quad 洛伦兹群含无界参数（boost 快度 $\eta$），使它的有限维表示不幺正，而幺正的不可约表示只能无限维（单粒子 Hilbert 空间）。
+\item \textbf{复化分解}\quad $\mathfrak{so}(3,1)_{\CC}\cong\mathfrak{su}(2)_{\CC}\oplus\mathfrak{su}(2)_{\CC}$，使有限维表示由一对角动量 $(j_L,j_R)$ 标记；$(\tfrac12,0)$（左手）与 $(0,\tfrac12)$（右手）互为共轭而不等价，这是手征性的群论根源。
+\item \textbf{半直积与 Wigner 分类}\quad Poincar\'e 群 $=\RR^{3,1}\rtimes SO^+(3,1)$ 的幺正不可约表示按不变质量 $m$ 与小群分类：$m>0$ 由 $SO(3)$ 给自旋 $j$，$m=0$ 由 $ISO(2)$ 给螺旋度 $h$。
+\end{enumerate}
+
+有了质量与自旋这两个来自时空对称性的量子数，剩下的一切内部量子数都需要\textbf{内部对称群}（规范群）。下一章把 Lie 群、Lie 代数的表示论一般化到 $SU(3)$，并最终写出现代粒子物理标准模型 $SU(3)_c\times SU(2)_L\times U(1)_Y$ 的完整表示结构。

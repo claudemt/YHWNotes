@@ -1,0 +1,671 @@
+\chapter{标架、余标架与非完整性}
+
+切空间在每一点都是线性空间，但实际计算必须选择局部基。坐标基 \(\{\partial_i\}\) 只是一类特殊标架：它们来自坐标函数，因此彼此对易。许多对称性明显的计算反而更适合使用正交、左不变或随体标架，这些基一般不来自任何坐标系。本章只研究标架自身的运动学结构，特别是 Lie 括号和余标架外微分如何编码“非坐标性”；联络仍留到下一章。
+
+\section{局部标架与对偶余标架}
+
+接下来考察局部基、对偶基与换标架。
+
+在开集 \(U\subset M\) 上，一组处处线性无关的向量场
+\[
+\{e_a\}_{a=1}^n
+\]
+称为局部标架。它给出每点切空间的一组基。唯一的对偶一形式 \(\{\theta^a\}_{a=1}^n\) 满足
+\begin{equation}\label{eq:math-dg-frame-duality}
+\theta^a(e_b)=\delta^a{}_b.
+\end{equation}
+任意向量场和一形式分别展开为
+\[
+X=X^ae_a,
+\qquad
+\alpha=\alpha_a\theta^a.
+\]
+指标只是相对于所选标架的分量标签；在尚未引入度量时，上、下指标之间没有“升降”关系。
+
+若从标架 \(e_a\) 换到另一标架 \(e'_a\)，用可逆矩阵值函数 \(\Lambda=(\Lambda^b{}_a)\) 写成
+\begin{equation}\label{eq:math-dg-frame-change}
+e'_a=e_b\Lambda^b{}_a.
+\end{equation}
+对偶条件\eqnrefs{eq:math-dg-frame-duality}要求
+\[
+\theta'^a=(\Lambda^{-1})^a{}_b\theta^b.
+\]
+因此同一个向量的分量满足
+\[
+X'^a=(\Lambda^{-1})^a{}_bX^b,
+\]
+而同一个一形式的分量满足
+\[
+\alpha'_a=\alpha_b\Lambda^b{}_a.
+\]
+几何对象不随换基改变，改变的是表示它的分量。
+
+
+接下来考察标架丛、主丛与 associated bundle。
+
+
+更一般地，一个 principal $G$-bundle 是带自由右 $G$-作用的纤维丛
+\[
+\pi:P\to M,
+\]
+其每根纤维都是一个 $G$-torsor：不存在优先选定的单位点，但任意两点由唯一群元素联系。局部平凡化给出
+\[
+\pi^{-1}(U_\alpha)\cong U_\alpha\times G.
+\]
+在重叠区域 $U_\alpha\cap U_\beta$ 上，两种局部截面满足
+\begin{equation}
+s_\beta=s_\alpha g_{\alpha\beta},
+\qquad
+g_{\alpha\beta}:U_\alpha\cap U_\beta\to G,
+\label{eq:principal-transition-function}
+\end{equation}
+并在三重重叠上满足 cocycle condition
+\begin{equation}
+g_{\alpha\beta}g_{\beta\gamma}=g_{\alpha\gamma}.
+\label{eq:principal-transition-cocycle}
+\end{equation}
+因此 principal bundle 的全局拓扑被局部平凡化之间的粘合函数编码。
+
+给定群表示
+\[
+\rho:G\to GL(W),
+\]
+可以由 principal bundle 构造 associated vector bundle
+\begin{equation}
+E=P\times_\rho W
+:=(P\times W)/\sim,
+\qquad
+(pg,w)\sim(p,\rho(g)w).
+\label{eq:associated-bundle}
+\end{equation}
+标架丛是母对象：取 $P=\operatorname{Fr}(M)$、$G=GL(n,\RR)$，标准表示给回切丛
+\[
+TM\cong\operatorname{Fr}(M)\times_{GL(n)}\RR^n,
+\]
+对偶表示给出 $T^*M$，张量表示给出任意 $T^r{}_sM$。因此“张量分量怎样随标架变换”本质上只是 associated-bundle 表示律。
+
+\begin{derivation}[局部截面、transition function 与 associated-bundle 分量]
+\emph{思路：}主丛局部截面之间的换页函数完全由结构群的右作用决定；associated bundle 上截面的分量变换则由表示 $\rho$ 把这一右作用翻译成 $W$ 上的线性变换。两步合起来给出"换标架"的统一机制。
+
+\emph{第一步：局部截面与 transition function。}设 $s_\alpha:U_\alpha\to P$、$s_\beta:U_\beta\to P$ 是开覆盖 $\{U_\alpha\}$ 上的两个局部截面。在重叠 $U_\alpha\cap U_\beta$ 上，$s_\alpha(p)$ 与 $s_\beta(p)$ 落在同一根 fiber $P_p$ 中。由于结构群 $G$ 在每根 fiber 上的右作用自由且传递，对每个 $p\in U_\alpha\cap U_\beta$ 存在唯一 $g_{\alpha\beta}(p)\in G$ 使
+\begin{equation*}
+ s_\beta(p)=s_\alpha(p)\,g_{\alpha\beta}(p),
+ \qquad g_{\alpha\beta}:U_\alpha\cap U_\beta\to G.
+\end{equation*}
+光滑性由局部截面的光滑性与右作用的光滑性保证。$g_{\alpha\beta}$ 称为 \emph{transition function}（或换页函数）。
+
+\emph{第二步：cocycle 条件。}在三重重叠 $U_\alpha\cap U_\beta\cap U_\gamma$ 上依次换页，
+\begin{equation*}
+ s_\gamma
+ =s_\beta\,g_{\beta\gamma}
+ =\bigl(s_\alpha\,g_{\alpha\beta}\bigr)g_{\beta\gamma}
+ =s_\alpha\,\bigl(g_{\alpha\beta}g_{\beta\gamma}\bigr).
+\end{equation*}
+另一方面直接换页给出 $s_\gamma=s_\alpha\,g_{\alpha\gamma}$。由右作用的自由性（若 $s_\alpha g=s_\alpha h$ 则 $g=h$），得到
+\begin{equation*}
+ g_{\alpha\gamma}=g_{\alpha\beta}\,g_{\beta\gamma},
+\end{equation*}
+即\eqnrefs{eq:principal-transition-cocycle}。同时 $g_{\alpha\alpha}=e$、$g_{\alpha\beta}=g_{\beta\alpha}^{-1}$。$\{g_{\alpha\beta}\}$ 因此是取值于 $G$ 的 \v Cech $1$-cocycle，主丛的拓扑分类恰由其 \v Cech 上同调类决定。
+
+\emph{第三步：associated-bundle 截面的分量变换。}设 $E=P\times_\rho W$，$\sigma$ 是 $E$ 上一个截面。在 $U_\alpha$ 上把它写成 $\sigma|_{U_\alpha}=[s_\alpha,w_\alpha]$，其中 $w_\alpha:U_\alpha\to W$ 是局部 $W$-值函数。在重叠上同一截面有两种表示
+\begin{equation*}
+ [s_\alpha(p),w_\alpha(p)]=[s_\beta(p),w_\beta(p)].
+\end{equation*}
+把 $s_\beta=s_\alpha g_{\alpha\beta}$ 代入右端，再用等价关系的定义 $(p g,w)\sim(p,\rho(g)w)$ 把 $g_{\alpha\beta}$ 从第一分量搬到第二分量：
+\begin{equation*}
+ [s_\alpha,w_\alpha]
+ =[s_\alpha g_{\alpha\beta},w_\beta]
+ =[s_\alpha,\rho(g_{\alpha\beta})\,w_\beta].
+\end{equation*}
+由 $P\times W\to E$ 在每个 $p$ 处限制为 $W\to E_p$ 的单射性，得到分量变换律
+\begin{equation*}
+ w_\alpha=\rho(g_{\alpha\beta})\,w_\beta,
+ \qquad
+ w_\beta=\rho(g_{\alpha\beta}^{-1})\,w_\alpha
+ =\rho(g_{\beta\alpha})\,w_\alpha.
+\end{equation*}
+
+\emph{第四步：典型例子。}取 $P=\operatorname{Fr}(M)$、$G=GL(n,\RR)$：
+\begin{itemize}
+\item 标准表示 $\rho=\mathrm{id}$ 给出 $w_\alpha=g_{\alpha\beta}w_\beta$，即切向分量按 $GL(n,\RR)$ 矩阵换标架，对应 $E=TM$。
+\item 对偶表示 $\rho(g)=(g^{-1})^T$ 给出 $w_\alpha=(g_{\alpha\beta}^{-1})^T w_\beta$，对应 $E=T^*M$，余切分量按逆的转置变换。
+\item $(r,s)$ 张量表示给出 $w_\alpha=g_{\alpha\beta}^{\otimes r}\otimes(g_{\alpha\beta}^{-1})^{\otimes s}w_\beta$，对应 $E=T^r{}_sM$。
+\end{itemize}
+因此所有换标架分量公式——向量、余向量、张量、张量密度——都是同一条 associated-bundle 表示律 $w_\alpha=\rho(g_{\alpha\beta})w_\beta$ 在不同表示 $\rho$ 下的特例。
+
+\emph{物理建模。}规范理论中 matter field 是 associated bundle $P\times_\rho W$ 的截面，$W$ 是内部空间（如 $\CC^n$ 上的表示空间），$g_{\alpha\beta}$ 是规范变换。分量变换律 $w_\alpha=\rho(g_{\alpha\beta})w_\beta$ 正是"波函数在重叠区域上的规范变换"的几何来源。
+\end{derivation}
+
+局部标架还可以提升为一个全局几何对象。定义标架丛
+\[
+\operatorname{Fr}(M):=\bigsqcup_{p\in M}
+\operatorname{Iso}(\RR^n,T_pM),
+\]
+其一点 $u\in\operatorname{Fr}(M)$ 是一个线性同构 $u:\RR^n\to T_pM$，也就是 $p$ 处的一组有序基。投影 $\pi(u)=p$，右作用
+\[
+R_A(u):=u\circ A,
+\qquad A\in GL(n,\RR),
+\]
+使 $\operatorname{Fr}(M)$ 成为主 $GL(n,\RR)$ 丛。一个局部标架 $e_a$ 与一个局部截面
+\[
+s:U\to\operatorname{Fr}(M),
+\qquad
+s(p)(\mathbf e_a)=e_a(p)
+\]
+完全等价，因此“换标架”就是主丛截面之间的 gauge 变换，而不是坐标变换的同义词。
+
+标架丛上存在不需要任何联络就能定义的典范 $\RR^n$-值一形式，称为 solder form 或 tautological form：
+\begin{equation}
+\vartheta_u(V)
+:=u^{-1}(\pi_*V),
+\qquad
+V\in T_u\operatorname{Fr}(M).
+\label{eq:math-dg-solder-form}
+\end{equation}
+它把标架丛上的切向量投到底流形，再用当前标架 $u$ 读成 $\RR^n$ 分量。若 $s$ 是由 $e_a$ 给出的局部截面，则
+\begin{equation}
+ s^*\vartheta
+ =\theta^a\mathbf e_a.
+\label{eq:math-dg-solder-pullback}
+\end{equation}
+所以普通余标架并不是凭空出现的局部记号，而是全局 solder form 在局部 gauge 中的表示。由右作用定义还可直接得到
+\begin{equation}
+R_A^*\vartheta=A^{-1}\vartheta.
+\label{eq:math-dg-solder-equivariance}
+\end{equation}
+下一章的联络一形式将与 $\vartheta$ 一起组成 Cartan 结构方程；前者描述“如何比较邻点标架”，后者描述“标架如何焊接到底流形切空间”。
+
+\section{结构函数与余标架外微分}
+
+接下来考察非完整系数与余标架结构方程。
+
+一般标架不必对易。定义结构函数 \(C^c{}_{ab}\in C^\infty(U)\) 为
+\begin{equation}\label{eq:math-dg-synthesis-anholonomy}
+[e_a,e_b]=C^c{}_{ab}e_c,
+\qquad
+C^c{}_{ab}=-C^c{}_{ba}.
+\end{equation}
+若 \(e_a=\partial/\partial y^a\) 来自某组局部坐标，则偏导数交换，故全部 \(C^c{}_{ab}=0\)。反过来，一组线性无关且彼此对易的向量场局部上可以同时化成坐标基；严格的可积性机制将在 Frobenius 定理中给出。
+
+结构函数与余标架外微分包含完全相同的信息。
+
+\begin{derivation}[从 Lie 括号得到 \eqnrefs{eq:math-dg-frame-structure-equation} 中的 $\dd\theta^a$]
+\emph{思路：}利用外微分在两个向量场上的内在公式，将 $\dd\theta^a(e_b,e_c)$ 用 Lie 括号 $[e_b,e_c]$ 表达，再用结构函数 $C^a{}_{bc}$ 代入。
+
+\emph{第一步：外微分的内在公式。}对任意一形式 $\alpha$，外微分在两个向量场上满足
+\begin{equation*}
+ \dd\alpha(X,Y)
+ =X[\alpha(Y)]-Y[\alpha(X)]-\alpha([X,Y]).
+\end{equation*}
+这是外微分的不坐标定义，可直接验证：在坐标基下两端都等于 $\partial_i\alpha_j-\partial_j\alpha_i$，由张量性全局成立。第三项中 Lie 括号的出现正是外微分"反对称化方向导数并扣除方向场自身不交换"的几何实质。
+
+\emph{第二步：代入余标架。}令 $\alpha=\theta^a$、$X=e_b$、$Y=e_c$。由余标架的对偶性 $\theta^a(e_b)=\delta^a{}_b$（\eqnrefs{eq:math-dg-frame-duality}），
+\begin{equation*}
+ e_b[\theta^a(e_c)]
+ =e_b(\delta^a{}_c)=0,
+ \qquad
+ e_c[\theta^a(e_b)]
+ =e_c(\delta^a{}_b)=0,
+\end{equation*}
+因为 $\delta^a{}_c$ 是常数，其方向导数为零。故前两项消失，只剩
+\begin{equation*}
+ \dd\theta^a(e_b,e_c)
+ =-\theta^a([e_b,e_c]).
+\end{equation*}
+这一步只用对偶性，不需要任何联络或度量。
+
+\emph{第三步：代入结构函数。}由\eqnrefs{eq:math-dg-synthesis-anholonomy}，$[e_b,e_c]=C^d{}_{bc}\,e_d$，故
+\begin{equation*}
+ \dd\theta^a(e_b,e_c)
+ =-\theta^a(C^d{}_{bc}\,e_d)
+ =-C^d{}_{bc}\,\theta^a(e_d)
+ =-C^d{}_{bc}\,\delta^a{}_d
+ =-C^a{}_{bc}.
+\end{equation*}
+关键处用了 $\theta^a$ 的 $C^\infty$-线性把系数 $C^d{}_{bc}$ 提到外面，再用对偶性 $\theta^a(e_d)=\delta^a{}_d$ 收缩哑指标 $d$。
+
+\emph{第四步：写出二形式。}任意二形式都由其在基向量上的值唯一确定。因 $C^a{}_{bc}$ 对 $(b,c)$ 反对称，展开为楔积时需除以 $2$（重复计数修正）：
+\begin{equation}\label{eq:math-dg-frame-structure-equation}
+ \dd\theta^a
+ =-\frac{1}{2}C^a{}_{bc}\,\theta^b\wedge\theta^c,
+\end{equation}
+即\eqnrefs{eq:math-dg-frame-structure-equation}。因子 $1/2$ 来自对反对称指标 $(b,c)$ 的重复计数：$\theta^b\wedge\theta^c$ 在 $(b,c)$ 和 $(c,b)$ 处取相反值，求和时每对出现两次。
+
+\emph{第五步：典型例子。}
+\begin{itemize}
+\item 完整标架 $e_a=\partial/\partial y^a$：偏导数交换，$C^a{}_{bc}\equiv0$，结构方程退化为 $\dd\theta^a=0$，即 $\dd(\dd y^a)=0$。
+\item $\RR^2$ 上极坐标标架 $e_r=\partial_r$、$e_\theta=(1/r)\partial_\theta$，余标架 $\theta^r=\dd r$、$\theta^\theta=r\,\dd\theta$。由 $[e_r,e_\theta]=-(1/r)e_\theta$ 得 $C^\theta{}_{r\theta}=-C^\theta{}_{\theta r}=-1/r$，结构方程 $\dd\theta^\theta=\theta^r\wedge\theta^\theta$ 直接验证 $\dd(r\,\dd\theta)=\dd r\wedge\dd\theta$。
+\item 左不变标架于 Lie 群 $G$：$C^a{}_{bc}$ 退化为 Lie 代数结构常数 $c^a{}_{bc}$，结构方程成为 Maurer--Cartan 方程 $\dd\theta^a=-\tfrac12 c^a{}_{bc}\theta^b\wedge\theta^c$。
+\end{itemize}
+
+\emph{物理意义。}非完整系数 $C^a{}_{bc}$ 在刚体力学中表现为旋转标架下的"假想力"系数（Coriolis、离心）；在广义相对论中，选择非完整标架（如 tetrad）时，$C^a{}_{bc}$ 是连接局部 Lorentz 标架与坐标系的运动学数据，与联络系数 $\omega^a{}_b$ 一起进入 Cartan 第一结构方程 $T^a=\dd\theta^a+\omega^a{}_b\wedge\theta^b$。
+\end{derivation}
+
+\eqnrefs{eq:math-dg-frame-structure-equation}并不是 Cartan 第一结构方程；它还没有引入联络和挠率。它只说明标架本身是否来自坐标。下一章加入联络以后，这个纯运动学恒等式会成为挠率结构方程的一部分。
+
+接下来考察非坐标导数、分量公式与局部可积性。
+
+
+在非坐标标架中，函数的外微分仍然没有任何额外修正：
+\begin{equation}
+\dd f=e_a(f)\theta^a.
+\label{eq:df-anholonomic-frame}
+\end{equation}
+但是连续作两次 frame derivative 时不再交换：
+\begin{equation}
+[e_a,e_b]f
+=e_a(e_bf)-e_b(e_af)
+=C^c{}_{ab}e_cf.
+\label{eq:frame-derivative-commutator}
+\end{equation}
+这已经表明 $C^c{}_{ab}$ 是“基向量作为微分算子”的非交换系数，而不是联络曲率。
+
+若 $X=X^ae_a$、$Y=Y^ae_a$，Lie 括号的分量为
+\begin{equation}
+[X,Y]^c
+=X^ae_a(Y^c)-Y^ae_a(X^c)
++C^c{}_{ab}X^aY^b.
+\label{eq:lie-bracket-anholonomic-components}
+\end{equation}
+最后一项恰是从坐标基公式迁移到非完整标架时必须补上的结构项。
+
+\begin{derivation}[非完整标架中的 Lie bracket 分量]
+先回忆对光滑函数 $f,g$ 与向量场 $X,Y$，Lie 括号作为微分算子作用在检验函数 $\varphi$ 上满足
+\begin{equation*}
+[fX,gY]\varphi
+=fX(gY\varphi)-gY(fX\varphi).
+\end{equation*}
+由乘积法则
+\begin{equation*}
+X(gY\varphi)=X(g)\,Y\varphi+g\,X(Y\varphi),
+\qquad
+Y(fX\varphi)=Y(f)\,X\varphi+f\,Y(X\varphi),
+\end{equation*}
+代回得
+\begin{align*}
+[fX,gY]\varphi
+&=fX(g)\,Y\varphi+fg\,X(Y\varphi)
+ -gY(f)\,X\varphi-gf\,Y(X\varphi)\\
+&=fg\bigl(X(Y\varphi)-Y(X\varphi)\bigr)
+ +fX(g)\,Y\varphi-gY(f)\,X\varphi\\
+&=fg[X,Y]\varphi+fX(g)\,Y\varphi-gY(f)\,X\varphi.
+\end{align*}
+由 $\varphi$ 任意，得到恒等式
+\begin{equation*}
+[fX,gY]=fg[X,Y]+fX(g)Y-gY(f)X.
+\end{equation*}
+于是令 $f=X^a$、$g=Y^b$、$X=e_a$、$Y=e_b$ 并对重复指标求和，
+\begin{align*}
+[X^ae_a,Y^be_b]
+&=X^aY^b[e_a,e_b]
+ +X^ae_a(Y^b)\,e_b
+ -Y^be_b(X^a)\,e_a.
+\end{align*}
+由非完整标架定义 $[e_a,e_b]=C^c{}_{ab}e_c$，代回第一项，
+\begin{equation*}
+X^aY^b[e_a,e_b]
+=X^aY^bC^c{}_{ab}e_c.
+\end{equation*}
+再把后两项的自由指标 $b$、$a$ 一致改写为 $c$，
+\begin{align*}
+X^ae_a(Y^b)\,e_b
+&=X^ae_a(Y^c)\,e_c,\\
+Y^be_b(X^a)\,e_a
+&=Y^be_b(X^c)\,e_c.
+\end{align*}
+合并三项并提取公因子 $e_c$，
+\begin{equation*}
+[X,Y]
+=\Bigl(
+ X^ae_a(Y^c)-Y^be_b(X^c)
+ +C^c{}_{ab}X^aY^b
+\Bigr)e_c,
+\end{equation*}
+即\eqnrefs{eq:lie-bracket-anholonomic-components}。因此结构函数不仅出现在 $\dd\theta^a$ 中，也必然出现在所有以非坐标基表示的交换子计算中。
+\end{derivation}
+
+一组余标架是否来自局部坐标，可以直接由 exterior derivative 判断。若存在局部函数 $y^a$ 使
+\[
+\theta^a=\dd y^a,
+\]
+则必有 $\dd\theta^a=0$。反过来，若每个 $\theta^a$ 都闭，则 Poincar\'e 引理局部给出 $\theta^a=\dd y^a$；由于余标架处处线性无关，Jacobian $\dd y^1\wedge\cdots\wedge\dd y^n$ 非零，故 $y^a$ 构成局部坐标。于是
+\begin{equation}
+C^a{}_{bc}=0\ \forall a,b,c
+\quad\Longleftrightarrow\quad
+\theta^a\text{ 局部为坐标余标架}.
+\label{eq:frame-coordinate-integrability}
+\end{equation}
+这是一组满秩标架的 Frobenius 条件；一般秩分布的版本将在后续章节系统处理。
+
+\begin{exbox}[一个简单的非坐标标架]
+在 \(\RR^3\) 上取
+\[
+e_1=\partial_x+y\partial_z,
+\qquad
+e_2=\partial_y,
+\qquad
+e_3=\partial_z.
+\]
+直接计算
+\[
+[e_1,e_2]=-e_3,
+\qquad
+[e_1,e_3]=[e_2,e_3]=0.
+\]
+与它对偶的余标架为
+\[
+\theta^1=\dd x,
+\qquad
+\theta^2=\dd y,
+\qquad
+\theta^3=\dd z-y\,\dd x.
+\]
+于是
+\[
+\dd\theta^3
+=-\dd y\wedge\dd x
+=\theta^1\wedge\theta^2,
+\]
+恰好与 \(C^3{}_{12}=-1\) 代入\eqnrefs{eq:math-dg-frame-structure-equation}得到的结果一致。
+\end{exbox}
+
+\section{标架变换下的结构函数}
+
+接下来考察非齐次换标架律。
+
+结构函数不是张量分量，因为换标架时会出现 \(\Lambda\) 的导数。把\eqnrefs{eq:math-dg-frame-change}代入 Lie 括号，得到
+\[
+\begin{aligned}
+[e'_a,e'_b]
+={}&[e_c\Lambda^c{}_a,e_d\Lambda^d{}_b]\\
+={}&\Lambda^c{}_a\Lambda^d{}_b[e_c,e_d]
++\Lambda^c{}_a e_c(\Lambda^d{}_b)e_d
+-\Lambda^d{}_b e_d(\Lambda^c{}_a)e_c.
+\end{aligned}
+\]
+再用 \(e_f=e'_r(\Lambda^{-1})^r{}_f\)，可读出
+\begin{align*}
+C'^r{}_{ab}
+=(\Lambda^{-1})^r{}_f\bigl(&\Lambda^c{}_a\Lambda^d{}_b C^f{}_{cd}
++\Lambda^c{}_a e_c(\Lambda^f{}_b)\\
+&-\Lambda^c{}_b e_c(\Lambda^f{}_a)\bigr).
+\end{align*}
+第二行的导数项正是“结构函数不是张量”的原因。它描述的是所选基场自身怎样扭动，而不是一个独立于基的多线性映射。
+
+接下来考察transition cocycle 与张量表示。
+
+
+若 $e^{(\alpha)}$ 与 $e^{(\beta)}$ 是两个局部标架，它们在重叠区满足
+\[
+e^{(\beta)}=e^{(\alpha)}\Lambda_{\alpha\beta}.
+\]
+在三重重叠上必须有
+\begin{equation}
+\Lambda_{\alpha\beta}\Lambda_{\beta\gamma}
+=\Lambda_{\alpha\gamma}.
+\label{eq:frame-transition-cocycle}
+\end{equation}
+所以换标架矩阵不是彼此独立的局部选择，而是切丛的 transition cocycle。若所有 $\Lambda_{\alpha\beta}$ 都能同时写成
+\[
+\Lambda_{\alpha\beta}=h_\alpha^{-1}h_\beta,
+\]
+则可通过局部 gauge $h_\alpha$ 把 transition functions 全部消掉，得到全局标架；这等价于切丛 trivializable。不是每个流形都可平行化，因此“选一组全局 frame”本身可能受拓扑阻碍。
+
+一个固定 tensor type 对应 $GL(n)$ 的一个表示。例如 $(1,1)$ tensor 在换标架下按 conjugation 变换：
+\[
+T'^a{}_b
+=(\Lambda^{-1})^a{}_cT^c{}_d\Lambda^d{}_b,
+\]
+而 top form 的分量带 determinant character：
+\[
+\theta'^1\wedge\cdots\wedge\theta'^n
+=(\det\Lambda)^{-1}
+\theta^1\wedge\cdots\wedge\theta^n.
+\]
+于是 orientation 可以理解为把标架丛的结构群从 $GL(n,\RR)$ 约化到 $GL^+(n,\RR)$；Riemannian metric 则进一步把结构群约化到 $O(n)$，定向 Riemannian manifold 约化到 $SO(n)$。后续 Spin structure 正是在 $SO(n)$ frame bundle 上再寻求二重覆盖提升。
+
+这一区分在后面十分重要：联络系数同样不是张量，也会在换标架时出现非齐次导数项；挠率与曲率却是张量。判断一个分量公式是否具有几何意义，不能只看指标形状，而要看它的换基律。
+
+\section{非完整性与 Lie 群的原型}
+
+接下来考察左不变标架与 Maurer--Cartan 方程。
+
+若结构函数是常数，最重要的例子来自 Lie 群上的左不变标架。设 \(G\) 为 Lie 群，\(E_a\) 是 Lie 代数基，
+\[
+[E_b,E_c]=c^a{}_{bc}E_a.
+\]
+把 \(E_a\) 左平移成全局左不变向量场，并记对偶左不变一形式为 \(\vartheta^a\)。由于结构系数不依赖位置，\eqnrefs{eq:math-dg-frame-structure-equation}化为 Maurer--Cartan 方程
+\begin{equation}\label{eq:math-dg-maurer-cartan}
+\boxed{
+\dd\vartheta^a
+=-\frac12c^a{}_{bc}\,\vartheta^b\wedge\vartheta^c.}
+\end{equation}
+它说明 Lie 代数的结构常数可以直接编码进一组一形式的外微分。
+把 Maurer--Cartan 形式写成 Lie algebra 值一形式更紧凑。对矩阵 Lie 群 $G\subset GL(N)$，左 Maurer--Cartan form 为
+\begin{equation}
+\Theta=g^{-1}\dd g\in\Omega^1(G;\mathfrak g).
+\label{eq:matrix-maurer-cartan-form}
+\end{equation}
+直接使用
+\[
+\dd(g^{-1})=-g^{-1}(\dd g)g^{-1}
+\]
+得到
+\begin{equation}
+\dd\Theta+\Theta\wedge\Theta=0,
+\label{eq:matrix-maurer-cartan-equation}
+\end{equation}
+其中矩阵乘法与 wedge product 同时作用。若取 Lie algebra 基 $E_a$，写
+\[
+\Theta=\vartheta^aE_a,
+\qquad
+[E_b,E_c]=c^a{}_{bc}E_a,
+\]
+则\eqnrefs{eq:matrix-maurer-cartan-equation} 正好化为\eqnrefs{eq:math-dg-maurer-cartan}。
+
+更重要的是，Maurer--Cartan 方程不仅是 Lie 群上已有形式的恒等式，也是一阶重构方程。设 $U$ 单连通，给定 $\mathfrak g$-值一形式 $A$ 满足
+\begin{equation}
+\dd A+A\wedge A=0.
+\label{eq:mc-flat-integrability}
+\end{equation}
+则局部存在映射 $g:U\to G$ 使
+\begin{equation}
+A=g^{-1}\dd g.
+\label{eq:mc-pure-gauge}
+\end{equation}
+在单连通区域上，适当全局条件下也可全局构造。方程\eqnrefs{eq:mc-flat-integrability} 是矩阵系统
+\[
+\dd g=gA
+\]
+路径无关可积的精确条件。
+
+\begin{derivation}[Maurer--Cartan 方程是纯 gauge 表示的可积条件，即\eqnrefs{eq:mc-flat-integrability} 对\eqnrefs{eq:mc-pure-gauge} 的充要性]
+\emph{方向一：纯 gauge $\Rightarrow$ 平坦。}若 $A=g^{-1}\dd g$，由外微分的 Leibniz 规则 $\dd(g^{-1})=-g^{-1}(\dd g)g^{-1}$（对 $g\cdot g^{-1}=I$ 求微分），
+\begin{align*}
+ \dd A
+ &=\dd(g^{-1})\wedge\dd g+g^{-1}\dd^2 g\\
+ &=-g^{-1}(\dd g)g^{-1}\wedge\dd g+0\\
+ &=-(g^{-1}\dd g)\wedge(g^{-1}\dd g)\\
+ &=-A\wedge A,
+\end{align*}
+其中 $\dd^2g=0$（外微分的幂零性），第三步用了 $g^{-1}\dd g$ 的矩阵乘法与楔积的兼容性。因此 $\dd A+A\wedge A=0$，即\eqnrefs{eq:mc-flat-integrability} 必要。
+
+\emph{方向二：平坦 $\Rightarrow$ 纯 gauge。}固定基点 $x_0$ 与 $g_0\in G$，沿路径 $\gamma:[0,1]\to U$ 解矩阵 ODE
+\begin{equation*}
+ \frac{\dd g}{\dd t}
+ =g(t)\,A_{\gamma(t)}(\dot\gamma(t)),
+ \qquad
+ g(0)=g_0.
+\end{equation*}
+这是一个线性 ODE，对每条路径有唯一解 $g_\gamma(1)\in G$。
+
+\emph{路径无关性。}若把路径作一个小矩形变形（先沿 $s$ 方向再沿 $t$ 方向，与先 $t$ 再 $s$），两种次序所得解的最低非平凡差由曲率
+\begin{equation*}
+ F_A=\dd A+A\wedge A
+\end{equation*}
+在矩形顶点处的值控制（这是非 Abel 换位子的标准计算）。平坦条件 $F_A=0$ 使这个差为零，因此平行积分对可缩路径变形不敏感。单连通性进一步消除 homotopy obstruction：任意两条具有相同端点的路径同伦，故 $g(x)$ 只依赖终点而不依赖所选路径，得到\eqnrefs{eq:mc-pure-gauge}。
+
+\emph{显式小矩形计算。}取 $\RR^2$ 上小矩形 $[0,\epsilon]^2$，先 $s$ 后 $t$ 与先 $t$ 后 $s$ 的乘积相差
+\begin{equation*}
+ g_{\text{先}s\text{后}t}^{-1}g_{\text{先}t\text{后}s}
+ =I+\epsilon^2 F_A(\partial_s,\partial_t)+O(\epsilon^3),
+\end{equation*}
+其中 $F_A$ 在矩形角点取值。这一展开来自 Taylor 展开 $A$ 与 BCH 公式保留 $\epsilon^2$ 阶。具体地，沿 $s$ 方向积分给 $g_s(\epsilon)=I+\epsilon A_s+\tfrac12\epsilon^2\partial_t A_s+O(\epsilon^3)$，沿 $t$ 方向给 $g_t(\epsilon)=I+\epsilon A_t+\tfrac12\epsilon^2\partial_s A_t+O(\epsilon^3)$，两种次序的乘积差含 $\epsilon^2(\partial_s A_t-\partial_t A_s+[A_s,A_t])=\epsilon^2 F_A(\partial_s,\partial_t)$。$F_A=0$ 时差异消失至 $O(\epsilon^3)$，把任意可缩大变形分解为小矩形即可归纳得路径无关。
+
+\emph{非单连通区域的修正。}若 $U$ 不单连通，平坦条件 $F_A=0$ 只保证局部纯 gauge，全局仍可能非平凡。基本群 $\pi_1(U)$ 通过 holonomy 表示
+\begin{equation*}
+ \mathrm{Hol}_A:\pi_1(U,x_0)\to G,
+ \qquad
+ [\gamma]\mapsto g_\gamma(1)
+\end{equation*}
+给出全局信息。两个平坦联络 $A,A'$ 给同一 holonomy 当且仅当差一个全局 gauge 变换。因此平坦联络的同构类由 $\mathrm{Hom}(\pi_1(U),G)/G$ 参数化（moduli 空间）。这是规范理论中"真空模空间"的几何原型：即使场强为零，全局拓扑仍可区分不同规范真空。在 Chern--Simons 理论中，这一 moduli 空间正是三维流形上的拓扑不变量来源，对应 Witten 对 Jones 多项式的规范理论解释。
+
+\emph{典型例子。}
+\begin{itemize}
+\item $G=U(1)$：$A\in\Omega^1(U,\mathfrak u(1))\cong\Omega^1(U,\ii\RR)$，$F_A=\dd A$（因 Abel 群 $A\wedge A=0$）。平坦条件 $\dd A=0$ 即电磁场强度为零；局部 $A=\ii\,\dd\chi$ 即纯规范势，$\chi$ 为规范函数。这正是电磁学中"零场强 $\Rightarrow$ 局部纯规范"的几何表述。
+\item $G=SU(2)$：$A=A_\mu^a\tau_a\,\dd x^\mu$（$\tau_a=\sigma_a/2\ii$），$F_A=\dd A+A\wedge A$ 含非 Abel 自相互作用项 $A\wedge A$。平坦 $SU(2)$ 联络局部可写 $A=g^{-1}\dd g$，$g:U\to SU(2)$；但全局可能存在非平凡 $SU(2)$ 丛（第二 Chern 类 $c_2\neq0$）即使局部平坦。
+\item $G=\RR^n$（平移群）：$A$ 是普通闭一形式，平坦即 $\dd A=0$，纯 gauge $A=\dd f$ 对应势函数 $f$。这是 Hodge 分解中"闭形式 vs 恰当形式"的群论原型。
+\end{itemize}
+
+\emph{意义。}下一章中，非零曲率 $F_A\neq0$ 正是这个路径无关性失败的测量：沿不同路径的 holonomy 产生非平凡群元素，即规范场有"磁通"。在物理上，Aharonov--Bohm 效应正是 $U(1)$ 平坦联络在非单连通区域（挖去磁通管）上具有非平凡 holonomy 的体现：局部 $F=0$ 但全局 $A$ 不能写成纯规范，绕磁通管一圈积累相位 $e^{\ii\Phi/\hbar}$。
+\end{derivation}
+
+一般非坐标标架只是把常数 \(c^a{}_{bc}\) 推广成位置依赖的 \(C^a{}_{bc}(x)\)。但任意给定的一组函数 \(C^a{}_{bc}(x)\) 并不都能来自某个标架；它们必须满足 Lie 括号的 Jacobi 恒等式。这个微分约束也是 \(\dd^2=0\) 在余标架结构方程上的具体表现。
+
+\begin{derivation}[Jacobi 恒等式对结构函数的微分约束]
+\emph{思路：}Lie 括号的 Jacobi 恒等式对结构函数 $C^c{}_{ab}$ 给出一组一阶微分约束；另一方面 $\dd^2=0$ 作用在结构方程上给出同一组约束。两条途径的等价性揭示"代数可积（Lie 代数）"与"微分可积（$\dd^2=0$）"是同一局部可积条件的两种语言。
+
+\emph{第一步：展开三重括号。}由
+\begin{equation*}
+ [e_a,e_b]=C^c{}_{ab}e_c
+\end{equation*}
+和 Lie 括号的 Jacobi 恒等式
+\begin{equation*}
+ [e_a,[e_b,e_c]]+[e_b,[e_c,e_a]]+[e_c,[e_a,e_b]]=0,
+\end{equation*}
+第一项展开为（用 Lie 括号对第一因子 $C^\infty$-线性、对第二因子 Leibniz）
+\begin{equation*}
+\begin{aligned}
+ [e_a,[e_b,e_c]]
+ &=[e_a,C^r{}_{bc}e_r]\\
+ &=e_a(C^r{}_{bc})e_r+C^r{}_{bc}[e_a,e_r]\\
+ &=\bigl[e_a(C^d{}_{bc})+C^r{}_{bc}C^d{}_{ar}\bigr]e_d.
+\end{aligned}
+\end{equation*}
+第二行用 Lie 括号对函数系数的 Leibniz 规则，第三行把 $[e_a,e_r]=C^d{}_{ar}e_d$ 代入并合并 $e_d$ 的系数。
+
+\emph{第二步：合并循环项。}对三个循环项 $(a,b,c)$、$(b,c,a)$、$(c,a,b)$ 求和，并利用 $\{e_d\}$ 线性无关得到
+\begin{equation}\label{eq:math-dg-anholonomy-jacobi}
+\boxed{
+\sum_{\mathrm{cyc}(a,b,c)}
+\left[
+ e_a(C^d{}_{bc})+C^r{}_{bc}C^d{}_{ar}
+\right]=0.}
+\end{equation}
+第一项 $e_a(C^d{}_{bc})$ 是结构函数的方向导数（微分部分），第二项 $C^r{}_{bc}C^d{}_{ar}$ 是结构函数的二次乘积（代数部分）。完整标架时 $C\equiv0$ 自动满足。
+
+\emph{第三步：从 $\dd^2=0$ 重新得到。}对\eqnrefs{eq:math-dg-frame-structure-equation}再作用一次 $\dd$，由 $\dd^2\equiv0$ 得
+\begin{equation*}
+ 0=\dd^2\theta^d
+ =-\frac12\dd C^d{}_{bc}\wedge\theta^b\wedge\theta^c
+ -\frac12C^d{}_{bc}\dd(\theta^b\wedge\theta^c).
+\end{equation*}
+把 $\dd C^d{}_{bc}=e_a(C^d{}_{bc})\theta^a$（结构函数沿标架的方向导数）以及结构方程再次代入 $\dd\theta^b$，并读取 $\theta^a\wedge\theta^b\wedge\theta^c$ 的系数，恰好重新得到\eqnrefs{eq:math-dg-anholonomy-jacobi}。
+
+\emph{第四步：显式核对三维。}取 $n=3$、$(a,b,c)=(1,2,3)$，Jacobi 约束为
+\begin{equation*}
+ e_1(C^d{}_{23})+e_2(C^d{}_{31})+e_3(C^d{}_{12})
+ +C^r{}_{23}C^d{}_{1r}
+ +C^r{}_{31}C^d{}_{2r}
+ +C^r{}_{12}C^d{}_{3r}=0,
+\end{equation*}
+对 $d=1,2,3$ 各给一条方程。若 $C^d{}_{ab}$ 是常数（左不变标架于 Lie 群），微分项消失，只剩代数项
+\begin{equation*}
+ c^r{}_{bc}c^d{}_{ar}+c^r{}_{ca}c^d{}_{br}+c^r{}_{ab}c^d{}_{cr}=0,
+\end{equation*}
+即 Lie 代数结构常数的 Jacobi 恒等式。
+
+\emph{更一般结论。}这一可积条件是 Frobenius 定理与 Newlander--Nirenberg 定理的共同原型：一组分布可积当且仅当 Lie 括号封闭；一组近复结构可积当且仅当 Nijenhuis 张量消失。在规范理论中，Maurer--Cartan 方程 $\dd A+A\wedge A=0$ 是同一思想在主丛上的版本——"局部存在 $g$ 使 $A=g^{-1}\dd g$"的充要条件。
+\end{derivation}
+
+
+
+接下来考察G-structure：从结构群约化到几何结构。
+
+标架丛 $F(M)$ 的结构群天然是 $GL(n,\RR)$。许多“额外几何结构”都可以统一理解为把这个结构群约化到一个子群 $G\subset GL(n,\RR)$。所谓 $G$-structure，就是一个主 $G$-子丛
+\begin{equation}
+P_G\subset F(M)
+\label{eq:math-dg-g-structure}
+\end{equation}
+使得每个 fiber 中只保留满足指定几何条件的标架。
+
+几个最重要的例子直接说明这一定义的统一性：
+\begin{align*}
+\text{orientation}
+&\Longleftrightarrow GL(n,\RR)\to GL^+(n,\RR),\\
+\text{Riemannian metric}
+&\Longleftrightarrow GL(n,\RR)\to O(n),\\
+\text{oriented Riemannian metric}
+&\Longleftrightarrow GL(n,\RR)\to SO(n),\\
+\text{almost complex structure }J
+&\Longleftrightarrow GL(2m,\RR)\to GL(m,\CC),\\
+\text{symplectic form }\omega
+&\Longleftrightarrow GL(2m,\RR)\to Sp(2m,\RR).
+\end{align*}
+这里最后两行的含义分别是：允许的标架必须把固定模型复结构 $J_0$ 或模型 symplectic form $\omega_0$ 搬到当前点的 $J_p$、$\omega_p$。因此 tensor field 与 structure-group reduction 是同一几何信息的两种描述。
+
+若 $G$ 是某个模型张量 $T_0$ 的稳定子群
+\[
+G=\{A\in GL(n,\RR):A\cdot T_0=T_0\},
+\]
+则一个 $G$-structure 等价于在 $M$ 上给定一个处处与 $T_0$ 属于同一 $GL(n)$-orbit 的 tensor field $T$。例如 Euclidean 内积的稳定子群是 $O(n)$，所以 Riemannian metric 正是 $O(n)$-structure；标准复结构的稳定子群是 $GL(m,\CC)$，所以 almost complex structure 是 $GL(m,\CC)$-structure。
+
+但“约化结构群”和“结构可积”必须严格区分。一个 almost complex structure 只要求
+\[
+J^2=-I,
+\]
+并不自动来自复坐标。其 integrability obstruction 是 Nijenhuis tensor
+\begin{equation}
+N_J(X,Y)
+=[JX,JY]-J[JX,Y]-J[X,JY]-[X,Y].
+\label{eq:math-dg-nijenhuis-tensor}
+\end{equation}
+Newlander--Nirenberg 定理说明
+\[
+N_J=0
+\quad\Longleftrightarrow\quad
+J\text{ 局部来自复坐标图册}.
+\]
+这与下一章的 torsion、再下一章的 Frobenius obstruction 具有相同哲学：给定 pointwise algebraic structure 只是第一步，真正的局部几何还要检查其一阶微分可积条件。
+
+同样地，一个非退化二形式 $\omega$ 把结构群约化到 $Sp(2m,\RR)$，但只有再满足
+\begin{equation}
+\dd\omega=0
+\label{eq:math-dg-symplectic-closedness}
+\end{equation}
+时才是 symplectic structure。Darboux theorem 随后说明所有 symplectic forms 局部都可以化为
+\[
+\omega=\sum_{a=1}^m\dd q^a\wedge\dd p_a.
+\]
+因此 symplectic 几何没有类似 Riemann 曲率那样的局部零阶不变量；其局部非平凡性首先受 closedness 这一一阶微分条件控制。
+
+G-structure 还解释了“兼容联络”意味着什么。若 $\omega$ 是 $F(M)$ 上的 $\mathfrak{gl}(n)$-值联络一形式，一个联络保持 $G$-structure，当且仅当限制到 $P_G$ 后它取值于 Lie algebra $\mathfrak g$：
+\begin{equation}
+\omega|_{P_G}\in\Omega^1(P_G;\mathfrak g).
+\label{eq:math-dg-g-compatible-connection}
+\end{equation}
+Riemannian 情形 $G=O(n)$ 时，这就是联络形式反对称；若再要求 torsion-free，便唯一得到 Levi--Civita 联络。其他 $G$-structures 未必存在唯一 torsion-free compatible connection；剩余的不可消去 torsion 成分称为 intrinsic torsion，它刻画该 $G$-structure 偏离“最理想局部模型”的一阶程度。
+
+这套语言把后续多种结构统一在一张图里：
+\[
+\text{frame bundle}
+\longrightarrow
+\text{structure-group reduction}
+\longrightarrow
+\text{compatible connection}
+\longrightarrow
+\text{torsion/curvature/holonomy}.
+\]
+因此标架并非只为写 Cartan 公式服务，它实际上是联结 tensor geometry、gauge geometry 与特殊 holonomy 的共同母空间。
+
+这一章至此仍未回答“如何把一个向量沿曲线平行搬运”以及“怎样比较邻点上的向量”。结构函数只刻画基场的非完整性。下一章引入 affine connection 后，平行移动、挠率与曲率才成为新的几何数据。

@@ -1,0 +1,134 @@
+\subsection{有限相关时间噪声：可见度、回波与近似误差}
+\label{sec:electron-colored-noise-applications}
+
+如果环境的随机频率偏移在一段时间内仍彼此相关，电子先后积累的相位也会相关。这时用一个常数衰减率描述全部演化，可能低估或高估相干。下面从一般相位噪声的关联函数出发，计算自由积累与理想回波，并用一个可解析的相关函数比较它们。
+
+沿用前文无量纲能量格算符 $\hat\Lambda_e$ 和频率噪声 $\mathfrak n_\varphi(t)$。假定后者是均值为零的平稳经典高斯过程，并且所研究的相位演化阶段满足 $[H_e,\hat\Lambda_e]=0$。外加控制用已知实函数 $y_\varphi(t)$ 表示，噪声耦合为 $\hbar y_\varphi(t)\mathfrak n_\varphi(t)\hat\Lambda_e$。$y_\varphi=1$ 对应自由相位积累；理想反号控制使 $y_\varphi$ 在指定时刻改变符号。这个反号是对选定相干子空间的控制假设，在连续电子能谱上实现它需要另行指定器件与脉冲，不能由符号变换直接推断实验可行性。
+
+对能量格相干 $\rho_{\ell m}$，定义阶差 $d_{\ell m}=\ell-m$。去掉已知自由传播相位后，剩余相干比为
+\begin{equation}
+ \mathcal V_{\ell m}(t)
+ =\exp[-d_{\ell m}^2\chi_\varphi[y_\varphi;t]],\qquad
+ \chi_\varphi[y_\varphi;t]
+ =\frac12\int_0^t\dd s\int_0^t\dd s'\,
+ y_\varphi(s)y_\varphi(s')C_\varphi(s-s').
+ \label{eq:electron-noise-filter-time}
+\end{equation}
+$\mathcal V_{\ell m}$ 是单个密度矩阵元的幅值衰减因子；实际干涉可见度若混合多个阶差，需先将各项按测量算符组合。$C_\varphi$ 的单位为 $\mathrm{s^{-2}}$，故 $\chi_\varphi$ 无量纲。高斯性与对易性使该式在这个噪声模型内精确，无需弱噪声假设。非高斯过程需要高阶累积量，不对易耦合则需要时间排序的算符核。
+
+按照全书 Fourier 约定，定义双边频率噪声谱与控制滤波振幅
+\begin{equation*}
+ S_\varphi(\omega)=\int_{-\infty}^{\infty}\dd\tau\,
+ C_\varphi(\tau)\ee^{\ii\omega\tau},\qquad
+ F_{y}(\omega,t)=\int_0^t\dd s\,y_\varphi(s)\ee^{\ii\omega s}.
+\end{equation*}
+$S_\varphi$ 的单位为 $\mathrm{s^{-1}}$，$F_y$ 为时间，频域形式为
+\begin{equation}
+ \chi_\varphi[y_\varphi;t]
+ =\frac12\int_{-\infty}^{\infty}\frac{\dd\omega}{2\pi}
+ S_\varphi(\omega)|F_y(\omega,t)|^2.
+ \label{eq:electron-noise-filter-frequency}
+\end{equation}
+平稳经典噪声的谱非负，所以 $\chi_\varphi\geq0$，单条相干不会超出其初值。此式的因子 $1/2$ 来自高斯特征函数，$1/(2\pi)$ 来自双边 Fourier 测度；若改用单边谱，必须同时修改测度与谱归一化。
+
+现在代入具有指数相关函数的高斯噪声，令 $\sigma_\varphi$ 为频率噪声的均方根、$\tau_\varphi$ 为相关时间：
+\begin{equation}
+ C_\varphi(\tau)=\sigma_\varphi^2\ee^{-|\tau|/\tau_\varphi},\qquad
+ S_\varphi(\omega)=\frac{2\sigma_\varphi^2\tau_\varphi}{1+\omega^2\tau_\varphi^2}.
+ \label{eq:electron-exponential-noise}
+\end{equation}
+这就是 Ornstein--Uhlenbeck 平稳噪声的相关函数。对自由积累 $y_\varphi=1$，时间积分给
+\begin{equation}
+ \chi_{\rm free}(t)
+ =\sigma_\varphi^2\tau_\varphi^2
+ \left[\frac{t}{\tau_\varphi}-1+\ee^{-t/\tau_\varphi}\right].
+ \label{eq:electron-exponential-dephasing}
+\end{equation}
+它在短时呈二次增长，长时才近似线性。将线性部分写成前文 $\Gamma_\varphi t/2$，得到 $\Gamma_\varphi=2\sigma_\varphi^2\tau_\varphi$。常数率近似相对于精确相干的比值为
+\begin{equation}
+ \frac{\mathcal V_{\ell m}^{\rm M}}{\mathcal V_{\ell m}^{\rm exact}}
+ =\exp\!\left[-d_{\ell m}^2\sigma_\varphi^2\tau_\varphi^2
+ (1-\ee^{-t/\tau_\varphi})\right].
+ \label{eq:electron-markov-visibility-error}
+\end{equation}
+因此 $t\gg\tau_\varphi$ 保证瞬时斜率接近常数，却不自动保证从 $t=0$ 初始化的相干幅值准确。若要求该比值与一之差小于给定误差，还需控制 $d_{\ell m}^2\sigma_\varphi^2\tau_\varphi^2$。高阶边带相干对同一记忆时间更敏感；这把一般 Markov 时间尺度判据落实到具体可观测量。
+
+若在 $t/2$ 作理想反号，使前半段 $y_\varphi=1$、后半段 $y_\varphi=-1$，则
+\begin{equation}
+ \chi_{\rm echo}(t)=\sigma_\varphi^2\tau_\varphi^2
+ \left[\frac{t}{\tau_\varphi}-3
+ +4\ee^{-t/(2\tau_\varphi)}-\ee^{-t/\tau_\varphi}\right].
+ \label{eq:electron-exponential-echo}
+\end{equation}
+准静态相位在两半程互相抵消，短时领先项从 $t^2$ 变成 $t^3$。有限相关时间内新产生的涨落仍然保留，所以回波不等于关闭环境。有限脉冲宽度、反号误差或反号期间发生的能量交换需回到真实 $y_\varphi$ 与联合动力学。
+
+\begin{exbox}[不同阶相干对记忆误差的敏感性]
+设相邻边带的相干衰减因子为 $v(t)=\exp[-\chi_{\rm free}(t)]$。求相隔 $d$ 阶的相干，以及常数率近似误差不超过 $0<\varepsilon<1$ 时允许的阶差。
+
+由\eqnrefs{eq:electron-noise-filter-time}，相隔 $d$ 阶的因子为 $v(t)^{d^2}$。因此，即使相邻边带的相干只略有减小，更远的非对角元也可能明显衰减。记无量纲时间 $x=t/\tau_\varphi>0$、噪声强度 $a_\varphi=\sigma_\varphi\tau_\varphi>0$，则常数率近似相对于精确结果的比值为
+\[
+R_d=\exp[-d^2a_\varphi^2(1-\ee^{-x})].
+\]
+要求 $1-R_d\le\varepsilon$，对两边取对数，得到
+\[
+|d|\le\frac{\sqrt{-\ln(1-\varepsilon)}}
+{a_\varphi\sqrt{1-\ee^{-x}}}.
+\]
+长时间 $x\gg1$ 时，右边趋于有限值 $\sqrt{-\ln(1-\varepsilon)}/a_\varphi$。因此延长观测时间虽使瞬时衰减率接近常数，却不会消除最初记忆阶段积累的相对幅值误差。
+
+对理想回波，直接相减两个指数得
+\[
+\chi_{\rm free}-\chi_{\rm echo}
+=2a_\varphi^2(1-\ee^{-x/2})^2,
+\qquad
+\frac{\mathcal V_d^{\rm echo}}{\mathcal V_d^{\rm free}}
+=\exp[2d^2a_\varphi^2(1-\ee^{-x/2})^2].
+\]
+回波提高保留下来的相干，但两者在长时间仍共同衰减。若另有独立的到达时间抖动，还需乘上\eqnrefs{eq:arrival_jitter_dephasing}的衰减因子；若两种噪声相关，则必须保留交叉协方差。
+\end{exbox}
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.75\textwidth]{electron_colored_noise.pdf}
+ \caption{指数相关噪声中的自由相干、理想回波和常数率近似，取 $\sigma_\varphi\tau_\varphi=0.20$。相隔三个边带的相干比相邻边带更早区分不同近似；回波主要抑制低频相位噪声。}
+ \label{fig:electron-colored-noise}
+\end{figure}
+\figref{fig:electron-colored-noise} 将近似误差和实际信号放在同一尺度上。判定某个近似足够好时，应使用所测阶差和曝光时间，而非只依据环境相关时间的绝对长短。
+
+\begin{derivation}[高斯平均与自由积累闭式]
+在相互作用绘景中，各时刻的噪声哈密顿量彼此对易，单次实现的传播算符为
+\begin{equation*}
+ U_I(t)=\exp\!\left[-\ii\hat\Lambda_e\int_0^t\dd s\,
+ y_\varphi(s)\mathfrak n_\varphi(s)\right].
+\end{equation*}
+令随机相位 $\Theta_y=\int_0^t\dd s\,y_\varphi(s)\mathfrak n_\varphi(s)$，则
+$\rho_{\ell m,I}(t)=\rho_{\ell m,I}(0)\langle\ee^{-\ii d_{\ell m}\Theta_y}\rangle$。
+由于 $\Theta_y$ 是零均值高斯变量，其特征函数为 $\exp[-d_{\ell m}^2\langle\Theta_y^2\rangle/2]$，直接得到\eqnrefs{eq:electron-noise-filter-time}。将 $C_\varphi(\tau)=\int\dd\omega\,S_\varphi(\omega)\ee^{-\ii\omega\tau}/(2\pi)$ 代入双积分，两段时间积分互为复共轭，得到频域模平方。
+
+自由积累时，相关函数为偶函数，所以
+\begin{align*}
+ \chi_{\rm free}(t)
+ &=\int_0^t\dd\tau\,(t-\tau)C_\varphi(\tau)\\
+ &=\sigma_\varphi^2\left[t\tau_\varphi(1-\ee^{-t/\tau_\varphi})
+ -\tau_\varphi^2\{1-(1+t/\tau_\varphi)\ee^{-t/\tau_\varphi}\}\right]\\
+ &=\sigma_\varphi^2\tau_\varphi^2(t/\tau_\varphi-1+\ee^{-t/\tau_\varphi}).
+\end{align*}
+短时展开给 $\chi_{\rm free}=\sigma_\varphi^2t^2/2-\sigma_\varphi^2t^3/(6\tau_\varphi)+\order(t^4)$；这同时检验初始值和初始斜率都为零。对白噪声极限，必须保持 $\Gamma_\varphi=2\sigma_\varphi^2\tau_\varphi$ 不变并令 $\tau_\varphi\to0$；若反而固定 $\sigma_\varphi$，噪声谱的总低频强度趋零，不会得到有限退相干率。
+\end{derivation}
+
+\begin{derivation}[回波的跨区间相关项]
+令半程时间 $a_t=t/2$，并令 $\Theta_1,\Theta_2$ 为两半程积累相位。反号后总相位为 $\Theta_1-\Theta_2$，故
+\begin{equation*}
+ \chi_{\rm echo}=\frac12\operatorname{Var}(\Theta_1-\Theta_2)
+ =2\chi_{\rm free}(a_t)-\langle\Theta_1\Theta_2\rangle.
+\end{equation*}
+跨区间协方差不能丢弃，因为回波正是利用它消去缓慢变化的噪声。指数相关函数给
+\begin{align*}
+ \langle\Theta_1\Theta_2\rangle
+ &=\sigma_\varphi^2\int_0^{a_t}\dd s\int_{a_t}^{2a_t}\dd s'\,
+ \ee^{-(s'-s)/\tau_\varphi}\\
+ &=\sigma_\varphi^2\tau_\varphi^2(1-\ee^{-a_t/\tau_\varphi})^2.
+\end{align*}
+代回即得\eqnrefs{eq:electron-exponential-echo}。其短时展开为
+$\chi_{\rm echo}=\sigma_\varphi^2t^3/(12\tau_\varphi)+\order(t^4)$，长时自由积累和回波具有相同斜率 $\sigma_\varphi^2\tau_\varphi$。频域中 $F_y(0,t)=0$ 表明回波消除严格静态的噪声分量，而有限频率的权重仍非零。
+\end{derivation}

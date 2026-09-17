@@ -1,0 +1,107 @@
+% Detailed bridge between Born memory kernels and the Gaussian/Langevin form.
+
+\begin{derivation}[从\eqnrefs{eq:born_nonmarkov_redfield_kernel}到\eqnrefs{eq:born_nonmarkov_noise_dissipation_form}]
+记
+
+\begin{equation*}
+A=q(t),\qquad B_\tau=q(t-\tau),\qquad \rho_\tau=\rho_{S,I}(t-\tau),
+\end{equation*}
+并把平稳环境相关函数写成
+\begin{equation*}
+C(\tau)=C_{\rm sym}(\tau)+\ii C_{\rm asym}(\tau),\qquad
+C(-\tau)=C_{\rm sym}(\tau)-\ii C_{\rm asym}(\tau).
+\end{equation*}
+二阶 Born 核中的算符组合为
+\begin{align*}
+\mathcal K_\tau
+={}&C(\tau)[A,B_\tau\rho_\tau]
++C(-\tau)[\rho_\tau B_\tau,A]\\
+={}&(C_{\rm sym}+\ii C_{\rm asym})(AB_\tau\rho_\tau-B_\tau\rho_\tau A)
++(C_{\rm sym}-\ii C_{\rm asym})(\rho_\tau B_\tau A-A\rho_\tau B_\tau).
+\end{align*}
+先收集 $C_{\rm sym}$ 项：
+\begin{align*}
+\mathcal K_\tau^{({\rm sym})}
+&=C_{\rm sym}(AB_\tau\rho_\tau-A\rho_\tau B_\tau-B_\tau\rho_\tau A+\rho_\tau B_\tau A)\\
+&=C_{\rm sym}[A,[B_\tau,\rho_\tau]].
+\end{align*}
+再收集 $C_{\rm asym}$ 项：
+\begin{align*}
+\mathcal K_\tau^{({\rm asym})}
+&=\ii C_{\rm asym}(AB_\tau\rho_\tau+A\rho_\tau B_\tau-B_\tau\rho_\tau A-\rho_\tau B_\tau A)\\
+&=\ii C_{\rm asym}[A,\{B_\tau,\rho_\tau\}].
+\end{align*}
+因此
+\begin{equation*}
+\mathcal K_\tau
+=C_{\rm sym}(\tau)[q(t),[q(t-\tau),\rho_\tau]]
++\ii C_{\rm asym}(\tau)[q(t),\{q(t-\tau),\rho_\tau\}].
+\end{equation*}
+把它代回二阶 Born 方程前面的 $-\lambda^2/\hbar^2$ 系数和 $\tau$ 积分，就得到\eqnrefs{eq:born_nonmarkov_noise_dissipation_form}。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:generalized_langevin_from_influence}到\eqnrefs{eq:dressed_oscillator_retarded_response}]
+对谐振子势 $V(q)=M\Omega_0^2q^2/2$，正文\eqnrefs{eq:generalized_langevin_from_influence} 可写成
+\[
+M\ddot q(t)+M\Omega_0^2q(t)
++\int_{-\infty}^{t}\dd s\,\chi_B^R(t-s)q(s)
+=\xi(t).
+\]
+在推迟核中令 $\tau=t-s$，则
+\[
+\int_{-\infty}^{t}\dd s\,\chi_B^R(t-s)q(s)
+=\int_0^\infty\dd\tau\,\chi_B^R(\tau)q(t-\tau).
+\]
+采用正文的 Fourier 约定
+$q(t)=\int \dd\omega\,q(\omega)\ee^{-\ii\omega t}/(2\pi)$，卷积项变成
+\begin{align*}
+&\int_0^\infty\dd\tau\,\chi_B^R(\tau)
+\int\frac{\dd\omega}{2\pi}q(\omega)
+\ee^{-\ii\omega(t-\tau)}\\
+&=\int\frac{\dd\omega}{2\pi}
+\left[
+\int_0^\infty\dd\tau\,
+\chi_B^R(\tau)\ee^{+\ii\omega\tau}
+\right]q(\omega)\ee^{-\ii\omega t}\\
+&=\int\frac{\dd\omega}{2\pi}
+\chi_B^R(\omega)q(\omega)\ee^{-\ii\omega t}.
+\end{align*}
+同时 $\ddot q(t)\mapsto-\omega^2q(\omega)$。因此每个频率分量满足
+\[
+\left[
+M\bigl(\Omega_0^2-(\omega+\ii0^+)^2\bigr)
++\chi_B^R(\omega)
+\right]q(\omega)=\xi(\omega).
+\]
+对乘在 $q(\omega)$ 前的标量核求逆，得到
+\[
+q(\omega)=\mathcal R_q(\omega)\xi(\omega),
+\qquad
+\mathcal R_q(\omega)
+=\frac{1}{M[\Omega_0^2-(\omega+\ii0^+)^2]+\chi_B^R(\omega)},
+\]
+即正文\eqnrefs{eq:dressed_oscillator_retarded_response}。
+\end{derivation}
+
+\begin{derivation}[从\eqnrefs{eq:dressed_coordinate_spectrum_dp68}到\eqnrefs{eq:dressed_system_fdt_from_bath_fdt}]
+
+正文\eqnrefs{eq:dressed_coordinate_spectrum_dp68} 表明系统坐标谱等于响应模方乘环境噪声谱。热平衡时，环境噪声谱又由\eqnrefs{eq:fdt_from_defined_correlators} 与环境响应的虚部关联。利用复数逆函数的虚部恒等式，把 $|\mathcal R_{x_S}|^2[-\operatorname{Im}\chi_B^R]$ 改写成系统自身响应的耗散部分，就得到\eqnrefs{eq:dressed_system_fdt_from_bath_fdt}。
+
+令
+\[
+D(\omega)=M[\Omega_0^2-(\omega+\ii0^+)^2]+\chi_B^R(\omega),
+\qquad
+\mathcal R_{x_S}=D^{-1}.
+\]
+于是
+\[
+\operatorname{Im}\mathcal R_{x_S}
+=-|\mathcal R_{x_S}|^2\operatorname{Im}\chi_B^R.
+\]
+按正文约定 $\chi_{x_S}^R=-\mathcal R_{x_S}$，因此
+\[
+-\operatorname{Im}\chi_{x_S}^R
+=|\mathcal R_{x_S}|^2[-\operatorname{Im}\chi_B^R].
+\]
+将这一恒等式和环境 FDT~\eqnrefs{eq:fdt_from_defined_correlators} 代入\eqnrefs{eq:dressed_coordinate_spectrum_dp68}，得到\eqnrefs{eq:dressed_system_fdt_from_bath_fdt}。
+\end{derivation}

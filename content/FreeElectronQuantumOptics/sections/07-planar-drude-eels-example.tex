@@ -1,0 +1,206 @@
+% -----------------------------------------------------------------------------
+% Worked example: aloof-electron EELS above a planar Drude half-space
+% -----------------------------------------------------------------------------
+
+\begin{exbox}[真空--Drude 半空间]
+这一例题只做系统参数代入，不重新建立一般 EELS 理论。起点是正文已经得到的平面界面散射 Green 张量~\eqnrefs{eq:planar_scattering_green_dyadic} 与单位长度损失母\eqnrefs{eq:planar_eels_mixed_green_per_length}。目标是对一个具体材料模型和具体电子轨迹把所有偏振投影、Fresnel 系数、同步条件和数值积分都算到底。
+
+取界面为 $z=0$，真空位于 $z>0$。电子在高度 $b>0$ 处沿 $x$ 方向匀速运动，
+\begin{equation*}
+\mathbf r_e(t)=(vt,0,b),
+\qquad
+\mathbf v=v\hat{\mathbf x},
+\qquad 0<v<c.
+\end{equation*}
+长直轨迹的时间 Fourier 积分已经在正文中给出同步条件
+\begin{equation*}
+\kappa_x=\frac{\omega}{v}.
+\end{equation*}
+仍需积分的横向波数为 $\kappa_y$。记
+\begin{equation*}
+\kappa_\parallel=\sqrt{\kappa_x^2+\kappa_y^2},
+\qquad
+\kappa_0=\frac{\omega}{c}.
+\end{equation*}
+由于 $v<c$，有 $|\kappa_x|=\omega/v>\kappa_0$，故整个同步支撑位于真空光锥外。于是
+\begin{equation*}
+\kappa_{z1}=\ii\alpha_1,
+\qquad
+\alpha_1=\sqrt{\kappa_\parallel^2-\kappa_0^2}>0.
+\end{equation*}
+这里 $\alpha_1$ 是真空侧倏逝衰减常数，单位为 ${\rm m^{-1}}$。
+
+先把正文 Green 并矢投影到电子速度方向。真空侧 TE 单位偏振为
+\begin{equation*}
+\hat{\mathbf s}
+=\frac{\hat{\mathbf z}\times\boldsymbol\kappa_\parallel}{\kappa_\parallel}
+=\frac{-\kappa_y\hat{\mathbf x}+\kappa_x\hat{\mathbf y}}{\kappa_\parallel},
+\end{equation*}
+所以
+\begin{equation*}
+|\hat{\mathbf x}\cdot\hat{\mathbf s}|^2
+=\frac{\kappa_y^2}{\kappa_\parallel^2}.
+\end{equation*}
+TM 单位偏振取
+\begin{equation*}
+\hat{\mathbf p}_1^\pm
+=\frac{\kappa_\parallel\hat{\mathbf z}
+\mp\kappa_{z1}\hat{\boldsymbol\kappa}_\parallel}{\kappa_0},
+\qquad
+\hat{\boldsymbol\kappa}_\parallel
+=\frac{\boldsymbol\kappa_\parallel}{\kappa_\parallel}.
+\end{equation*}
+因此
+\begin{align*}
+(\hat{\mathbf x}\cdot\hat{\mathbf p}_1^+)
+(\hat{\mathbf p}_1^-\cdot\hat{\mathbf x})
+&=-\frac{\kappa_{z1}^2}{\kappa_0^2}
+\frac{\kappa_x^2}{\kappa_\parallel^2}\\
+&=\frac{\alpha_1^2}{\kappa_0^2}
+\frac{\kappa_x^2}{\kappa_\parallel^2}.
+\end{align*}
+源点和观察点都在 $z=b$，所以 Green 核的公共传播因子化为
+\begin{align*}
+\frac{\ii}{2\kappa_{z1}}
+\ee^{\ii\kappa_{z1}(z+z')}
+\bigg|_{z=z'=b}
+&=\frac{\ii}{2\ii\alpha_1}\ee^{-2\alpha_1b}\\
+&=\frac{\ee^{-2\alpha_1b}}{2\alpha_1}.
+\end{align*}
+将 TE/TM 两个投影分别乘以 Fresnel 反射振幅 $r_s$、$r_p$，得到电子真正采样的 $xx$ 分量
+\begin{equation}
+\boxed{
+G_{{\rm sc},W;xx}^R
+=\ee^{-2\alpha_1 b}
+\left[
+\frac{\kappa_y^2}{2\alpha_1\kappa_\parallel^2}r_s
++\frac{\alpha_1\kappa_x^2}{2\kappa_0^2\kappa_\parallel^2}r_p
+\right].}
+\label{eq:planar_aloof_gxx_explicit}
+\end{equation}
+第一项来自 TE 偏振，第二项来自 TM 偏振；平面表面模的极点只出现在相应 Fresnel 振幅中。
+
+把\eqnrefs{eq:planar_aloof_gxx_explicit} 代入正文单位长度 EELS 母\eqnrefs{eq:planar_eels_mixed_green_per_length}，立刻得到完整 Fresnel 积分
+\begin{equation}
+\boxed{
+\frac1L\frac{\dd P_{\rm sc}}{\dd\omega}
+=\frac{\mu_0e^2}{2\pi^2\hbar}
+\int_{-\infty}^{+\infty}\dd\kappa_y\,
+\operatorname{Im}\!\left\{
+\ee^{-2\alpha_1 b}
+\left[
+\frac{\kappa_y^2}{2\alpha_1\kappa_\parallel^2}r_s
++\frac{\alpha_1\kappa_x^2}{2\kappa_0^2\kappa_\parallel^2}r_p
+\right]\right\}.}
+\label{eq:planar_aloof_eels_explicit_fresnel_integral}
+\end{equation}
+这里 $L$ 是近似平移不变区中的有效轨迹长度。混合 Weyl Green 核满足
+\begin{equation*}
+[\mathbf G_{{\rm sc},W}^R]={\rm m},
+\end{equation*}
+因为三维 Green 张量 $[\mathbf G^R]={\rm m^{-1}}$，而 Weyl 逆变换带有 $\dd^2 \kappa_\parallel$。故 $\dd\kappa_y\,G_{{\rm sc},W;xx}^R$ 无量纲，而
+\begin{equation*}
+\left[\frac{\mu_0e^2}{\hbar}\right]={\rm s\,m^{-1}},
+\end{equation*}
+从而
+\begin{equation*}
+\left[\frac1L\frac{\dd P_{\rm sc}}{\dd\omega}\right]
+={\rm s\,m^{-1}}.
+\end{equation*}
+若改用损失能量 $E_{\rm loss}=\hbar\omega$，则
+\begin{equation*}
+\frac1L\frac{\dd P}{\dd E_{\rm loss}}
+=\frac1\hbar\frac1L\frac{\dd P}{\dd\omega}.
+\end{equation*}
+
+现在代入具体材料。真空侧 $\varepsilon_1=1$，材料侧取被动 Drude 介电函数
+\begin{equation}
+\boxed{
+\varepsilon_2(\omega)
+=1-\frac{\omega_p^2}{\omega(\omega+\ii\Gamma_D)}.}
+\label{eq:planar_drude_permittivity_example}
+\end{equation}
+$\omega_p$ 是等离子体角频率，$\Gamma_D$ 是动量弛豫率。在 Fourier 约定 $\ee^{-\ii\omega t}$ 下，$\Gamma_D>0$ 给出正频率处 $\operatorname{Im}\varepsilon_2>0$，因此材料吸收而不主动放大场。
+
+先求一个解析峰位尺度。令 $\Gamma_D=0$，并考察 $\kappa_y=0$ 的 TM 表面支。真空--Drude 界面的表面模色散为
+\begin{equation*}
+\frac{\kappa_{\rm sp}}{\kappa_0}
+=\sqrt{\frac{\varepsilon_2}{1+\varepsilon_2}}.
+\end{equation*}
+电子同步条件给
+\begin{equation*}
+\kappa_{\rm sp}=\frac{\omega}{v}
+=\frac{\kappa_0}{\beta_{\rm rel}},
+\qquad
+\beta_{\rm rel}=\frac vc.
+\end{equation*}
+两式平方并联立：
+\begin{align*}
+\frac1{\beta_{\rm rel}^2}
+&=\frac{\varepsilon_2}{1+\varepsilon_2},\\
+1+\varepsilon_2
+&=\beta_{\rm rel}^2\varepsilon_2,\\
+\varepsilon_2
+&=-\frac1{1-\beta_{\rm rel}^2}.
+\end{align*}
+再代入无损 Drude 形式 $\varepsilon_2=1-\omega_p^2/\omega^2$：
+\begin{align*}
+1-\frac{\omega_p^2}{\omega^2}
+&=-\frac1{1-\beta_{\rm rel}^2},\\
+\frac{\omega_p^2}{\omega^2}
+&=\frac{2-\beta_{\rm rel}^2}{1-\beta_{\rm rel}^2}.
+\end{align*}
+因此正频率交叉尺度为
+\begin{equation}
+\boxed{
+\omega_{\rm sync}
+=\omega_p
+\sqrt{\frac{1-\beta_{\rm rel}^2}{2-\beta_{\rm rel}^2}}.}
+\label{eq:drude_surface_pole_electron_sync_frequency}
+\end{equation}
+这不是有限损耗谱峰的精确位置，而是无损、$\kappa_y=0$ 条件下的解析同步尺度。
+
+取数值参数
+\begin{equation*}
+\hbar\omega_p=\SI{9.0}{eV},
+\qquad
+\hbar\Gamma_D=\SI{0.08}{eV},
+\qquad
+v=0.70c,
+\qquad
+b=\SI{20}{nm}.
+\end{equation*}
+由\eqnrefs{eq:drude_surface_pole_electron_sync_frequency} 得
+\begin{equation*}
+\hbar\omega_{\rm sync}=\SI{5.230}{eV}.
+\end{equation*}
+有限损耗相对这一尺度可用
+\begin{equation*}
+\epsilon_D=\frac{\Gamma_D}{\omega_{\rm sync}}
+\end{equation*}
+衡量；$\epsilon_D\ll1$ 时，无损交叉适合作为峰位的初始估计，但完整峰形仍由复 Fresnel 极点、$\kappa_y$ 连续相空间和 $\ee^{-2\alpha_1b}$ 共同决定。
+
+数值上直接积分\eqnrefs{eq:planar_aloof_eels_explicit_fresnel_integral}。上述参数给出谱最大值约在
+\begin{equation*}
+E_{\rm peak}\simeq\SI{5.249}{eV},
+\end{equation*}
+峰值约为
+\begin{equation*}
+\left.\frac1L\frac{\dd P}{\dd E_{\rm loss}}\right|_{\rm peak}
+\simeq2.64\times10^{-4}\,{\rm eV^{-1}nm^{-1}}.
+\end{equation*}
+在弱单电子损失区，可以定义所关心频窗 $\mathcal W_\omega$ 内的总损失概率
+\begin{equation*}
+\epsilon_{\rm loss}
+=L\int_{\mathcal W_\omega}\dd\omega\,
+\frac1L\frac{\dd P_{\rm sc}}{\dd\omega}.
+\end{equation*}
+只有 $\epsilon_{\rm loss}\ll1$ 时，\eqnrefs{eq:planar_aloof_eels_explicit_fresnel_integral} 才能直接解释成单次损失概率密度；更强耦合下需要进一步处理多次能量交换。
+
+\begin{center}
+\includegraphics[width=0.82\textwidth]{planar_drude_eels.png}\\[-0.2em]
+{\small 数值结果：真空侧掠射电子对 Drude 半空间的单位长度 EELS 谱。实线由\eqnrefs{eq:planar_aloof_eels_explicit_fresnel_integral} 直接积分；虚线表示无损 $\kappa_y=0$ 的同步尺度~\eqnrefs{eq:drude_surface_pole_electron_sync_frequency}。参数为 $\hbar\omega_p=9.0\,\mathrm{eV}$、$\hbar\Gamma_D=0.08\,\mathrm{eV}$、$v=0.70c$、$b=20\,\mathrm{nm}$。生成脚本为 \texttt{figures/code/planar\_drude\_eels\_code.py}。}
+\end{center}
+
+这个完整例题也显示不同参数进入前向模型的位置不同：$v$ 改变同步线 $\kappa_x=\omega/v$，$b$ 改变高平行动量分量的倏逝权重，$\Gamma_D$ 改变复极点位置和留数。因此三类参数在原则上可以通过谱形和峰位的不同响应加以区分。
+\end{exbox}

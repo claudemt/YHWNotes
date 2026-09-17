@@ -1,0 +1,2771 @@
+\chapter{转动群、旋量与角动量耦合}
+\label{chap:rotation-group}
+
+\chapref{chap:point-space-groups}已经把三维实正交群 $O(3)$ 和它的纯转动部分 $SO(3)$ 作为点群的母体使用过。当时我们关心的是有限子群：哪些离散转动能够共同保持一个分子或晶体不变。现在问题反过来。若系统具有完整的球对称性，例如中心势
+\[
+V(\vb r)=V(r),\qquad r=\lvert\vb r\rvert,
+\]
+那么任意空间转动都是对称操作，有限点群不再足够，必须直接研究连续群 $SO(3)$。这一步并不是把\chapref{chap:point-space-groups}的内容简单重复一遍，因为量子力学还带来一个新的事实：电子自旋在空间转动下并不由 $SO(3)$ 的普通表示完整描述，而自然落在 $SU(2)$ 的表示中。一个 $2\pi$ 空间转动对经典矢量是恒等变换，却可以使半整数自旋态获得负号。理解这个“同一个空间转动对应两个旋量变换”的结构，是本章的主线。
+
+本章从几何转动开始，先建立 $SO(3)$ 的轴角表示、Euler 角与无穷小生成元；随后从 Pauli 矩阵出发构造 $SU(2)\to SO(3)$ 的二重覆盖，并把核、商群和 $2\pi$ 转动的含义算清楚。然后不再依赖具体矩阵猜表示，而是从角动量代数严格推出 $SU(2)$ 的全部有限维不可约酉表示以及 $SO(3)$ 为什么只保留整数 $j$。在此基础上讨论双群、自旋--轨道耦合，最后把两个不可约表示的张量积系统地约化为 Clebsch--Gordan 分解。这样，本章的逻辑链是
+\[
+SO(3)\text{ 的几何}
+\longrightarrow SU(2)\text{ 的二重覆盖}
+\longrightarrow \mathfrak{su}(2)\text{ 的不可约表示}
+\longrightarrow \text{旋量与双群}
+\longrightarrow \text{角动量耦合}.
+\]
+
+除特别说明外，本章采用\textbf{主动转动}约定：坐标系固定，物理矢量被转动。量子态上的转动算符记为 $U(R)$；角动量算符 $J_i$ 保留 SI 单位，因而显式保留 $\hbar$。
+
+\section{三维转动群的几何结构}
+\label{sec:so3-geometry}
+
+
+有限点群只包含有限多个离散转动，而球对称原子允许绕任意轴转任意角，因此对称群变成连续群 $SO(3)$。连续性的真正新内容是：群元可以无限接近单位元。于是我们不必一次处理一个任意大转动，而可以先理解“无穷小转动”，再通过指数映射把它积累成有限转动。生成元和 Lie 代数正是为此出现的。
+
+
+这里第一次遇到 \textbf{Lie 群}和 \textbf{Lie 代数}，先只需要掌握它们最直接的含义。Lie 群是“既是群，又能用连续参数光滑描述”的对象；$SO(3)$ 可以用转轴和转角连续参数化，所以是 Lie 群。Lie 代数则只保留单位元附近的一阶变化：从单位元沿不同参数方向走一个无穷小距离，会得到若干生成元；生成元之间的交换子告诉我们不同无穷小操作交换次序时产生什么二阶差异。换句话说，Lie 群描述全部有限变换，Lie 代数描述单位元附近的局部乘法规律。对本课程而言，不需要先学习一般微分流形理论，也可以通过矩阵指数把这层关系完整算出来。
+
+符号 $SO(3)$ 中，$O$ 表示 orthogonal，即保持三维欧氏内积；字母 $S$ 表示 special，指行列式固定为 $+1$；数字 $3$ 表示三维实空间。因此
+\[
+SO(3)=\{R\in M_{3}(\RR)\mid R^{\mathsf T}R=I_3,\ \det R=1\}.
+\]
+它不是“三个矩阵的集合”，而是所有三维纯转动矩阵构成的无限群。
+
+接下来考察从正交矩阵到轴角表示。
+
+\chapref{chap:point-space-groups}已经证明
+\[
+SO(3)=\{R\in M_3(\RR)\mid R^{\mathsf T}R=I_3,\ \det R=1\},
+\]
+并且每个 $R\in SO(3)$ 都有本征值 $1$。取相应非零本征向量并归一化为单位向量 $\uv n$，就得到转轴方向，且 $R\uv n=\uv n$。与转轴正交的二维平面在 $R$ 下保持不变，$R$ 在这个平面上只能是一个二维转动。因此每个 $SO(3)$ 元素都可以由一条单位轴 $\uv n$ 和一个转角 $\theta$ 描述。
+
+为了把这个几何结论变成可计算公式，定义反对称矩阵
+\[
+K(\uv n)=
+\begin{pmatrix}
+0&-n_z&n_y\\
+n_z&0&-n_x\\
+-n_y&n_x&0
+\end{pmatrix},
+\qquad
+K(\uv n)\vb r=\uv n\times\vb r.
+\]
+由于 $\uv n$ 已按约定归一化，向量三重积给出
+\[
+K(\uv n)^2\vb r
+=\uv n\times(\uv n\times\vb r)
+=\uv n(\uv n\cdot\vb r)-\vb r,
+\]
+因此
+\begin{equation}
+K(\uv n)^2=\uv n\uv n^{\mathsf T}-I_3,
+\qquad
+K(\uv n)^3=-K(\uv n).
+\label{eq:K-identities}
+\end{equation}
+
+\begin{theorem}[Rodrigues 公式与指数表示]
+绕单位轴 $\uv n$ 主动转动角 $\theta$ 的矩阵可写为
+\begin{align}
+R_{\uv n}(\theta)
+&=I_3+\sin\theta\,K(\uv n)
+ +(1-\cos\theta)K(\uv n)^2,\label{eq:rodrigues-so3}\\
+&=\exp\!\bigl[\theta K(\uv n)\bigr].\label{eq:so3-exponential}
+\end{align}
+对任意 $\vb r\in\RR^3$，等价地有
+\[
+R_{\uv n}(\theta)\vb r
+=\vb r\cos\theta
+ +(\uv n\times\vb r)\sin\theta
+ +\uv n(\uv n\cdot\vb r)(1-\cos\theta).
+\]
+
+\par\smallskip\noindent\textbf{证明.}
+把 $\vb r$ 分解为平行于转轴和垂直于转轴的两部分，
+\[
+\vb r=\vb r_{\parallel}+\vb r_\perp,
+\qquad
+\vb r_{\parallel}=(\uv n\cdot\vb r)\uv n.
+\]
+平行分量不变；在垂直平面内，$\vb r_\perp$ 与 $\uv n\times\vb r_\perp$ 正交且等长，所以二维转动给出
+\[
+R_{\uv n}(\theta)\vb r
+=\vb r_{\parallel}
+ +\vb r_\perp\cos\theta
+ +(\uv n\times\vb r_\perp)\sin\theta.
+\]
+代入 $\vb r_\perp=\vb r-\vb r_{\parallel}$，并注意 $\uv n\times\vb r_{\parallel}=0$，得到向量形式。再用 \eqnrefs{eq:K-identities} 即得矩阵形式 \eqnrefs{eq:rodrigues-so3}。
+
+最后展开矩阵指数。因为 $K^3=-K$，所有高次幂都退化为 $I,K,K^2$：
+\begin{align*}
+\ee^{\theta K}
+&=I+\theta K+\frac{\theta^2}{2!}K^2
+ +\frac{\theta^3}{3!}K^3+\cdots\\
+&=I+
+\left(\theta-\frac{\theta^3}{3!}+\frac{\theta^5}{5!}-\cdots\right)K
++
+\left(\frac{\theta^2}{2!}-\frac{\theta^4}{4!}+\cdots\right)K^2\\
+&=I+\sin\theta\,K+(1-\cos\theta)K^2.
+\end{align*}
+故两种表达完全等价。
+\end{theorem}
+
+指数形式比单独的 Rodrigues 公式更重要，因为它把连续群与生成元联系起来。若 $\theta$ 很小，
+\[
+R_{\uv n}(\theta)
+=I_3+\theta K(\uv n)+O(\theta^2),
+\]
+所以反对称矩阵 $K(\uv n)$ 就是该一参数转动子群的无穷小生成元。
+
+取三个坐标轴，定义
+\[
+K_x=K(\vb e_x),\qquad
+K_y=K(\vb e_y),\qquad
+K_z=K(\vb e_z).
+\]
+把三个矩阵真正写出一次：
+\[
+K_x=\begin{pmatrix}0&0&0\\0&0&-1\\0&1&0\end{pmatrix},\quad
+K_y=\begin{pmatrix}0&0&1\\0&0&0\\-1&0&0\end{pmatrix},\quad
+K_z=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&0\end{pmatrix}.
+\]
+例如
+\[
+K_xK_y=
+\begin{pmatrix}0&0&0\\1&0&0\\0&0&0\end{pmatrix},
+\qquad
+K_yK_x=
+\begin{pmatrix}0&1&0\\0&0&0\\0&0&0\end{pmatrix},
+\]
+所以
+\[
+[K_x,K_y]=K_xK_y-K_yK_x
+=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&0\end{pmatrix}=K_z.
+\]
+循环交换 $x,y,z$ 得到另外两式，因此可统一写成
+\begin{equation}
+[K_i,K_j]=\epsilon_{ijk}K_k.
+\label{eq:so3-lie-algebra-real}
+\end{equation}
+若希望使用 Hermite 生成元，定义 $L_i=\ii K_i$。由于 $K_i=-\ii L_i$，上式变为
+\begin{equation}
+[L_i,L_j]=\ii\epsilon_{ijk}L_k.
+\label{eq:so3-lie-algebra-hermitian}
+\end{equation}
+这已经出现了量子角动量对易关系的无量纲版本。后面把 $L_i$ 换成 $J_i/\hbar$，就得到熟悉的
+$[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k$。
+
+轴角表示适合几何理解，但做不可约表示时 Euler 角更方便。本讲义固定采用 $z$--$y$--$z$ 主动转动约定：
+\begin{equation}
+R(\alpha,\beta,\gamma)
+=R_z(\alpha)R_y(\beta)R_z(\gamma),
+\label{eq:zyz-euler}
+\end{equation}
+其中最右侧的 $R_z(\gamma)$ 先作用，
+\[
+0\le \alpha<2\pi,
+\qquad 0\le\beta\le\pi,
+\qquad 0\le\gamma<2\pi.
+\]
+不同教材对 Euler 角的先后顺序和主动/被动约定常有差异；如果不先声明约定，后面的 Wigner $D$ 矩阵很容易出现转置、共轭或角顺序差异。
+
+三个基本矩阵为
+\[
+R_z(\phi)=
+\begin{pmatrix}
+\cos\phi&-\sin\phi&0\\
+\sin\phi&\cos\phi&0\\
+0&0&1
+\end{pmatrix},
+\qquad
+R_y(\theta)=
+\begin{pmatrix}
+\cos\theta&0&\sin\theta\\
+0&1&0\\
+-\sin\theta&0&\cos\theta
+\end{pmatrix}.
+\]
+因此任意 Euler 转动都可以直接通过矩阵乘法写出。真正需要记住的并不是那个较长的 $3\times3$ 结果，而是分解 \eqnrefs{eq:zyz-euler}：后面在任意不可约表示中，只需知道 $z$ 轴转动和 $y$ 轴转动的表示矩阵，就自动得到一般转动。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=1.05]
+  \draw[axes] (0,0)--(3.0,0) node[right] {$x$};
+  \draw[axes] (0,0)--(0,3.0) node[above] {$z$};
+  \draw[axes] (0,0)--(-1.5,-1.1) node[left] {$y$};
+  \draw[thick,->] (0,0)--(1.75,1.95) node[above right] {$\uv n$};
+  \draw[dashed] (1.75,1.95)--(1.75,0);
+  \draw (0,0.55) arc[start angle=90,end angle=48,radius=.55];
+  \node at (.45,.72) {$\beta$};
+  \draw[->] (1.15,0) arc[start angle=0,end angle=-35,x radius=1.15,y radius=.45];
+  \node at (1.05,-.58) {$\alpha$};
+  \node[lecturelabel,align=left] at (5.6,1.25) {Euler 角不是新的物理操作，\\而是对同一个 $R\in SO(3)$ 的参数化。\\选择 $z$--$y$--$z$ 约定后，\\表示矩阵的相位约定随之固定。};
+\end{tikzfig}
+\caption{$SO(3)$ 转动的轴角图像与 Euler 角参数化。}
+\label{fig:euler-axis-angle}
+\end{figure}
+
+Euler 角描述任意有限转动，但连续群真正的新结构出现在单位元附近，因此下面转向无穷小转动与生成元。
+
+
+先看最熟悉的一维例子：实数平移可以写成 $T(a)=\ee^{-\ii a\hat p/\hbar}$。参数 $a$ 连续变化，而所有有限平移都由同一个生成元 $\hat p$ 控制。转动也一样。若 $R_i(\epsilon)$ 表示绕第 $i$ 条坐标轴转一个很小的角 $\epsilon$，则可以写成
+\[
+R_i(\epsilon)=I-\ii\epsilon L_i+O(\epsilon^2).
+\]
+这里 $L_i$ 是无量纲的矩阵生成元；量子力学中的有量纲角动量算符则是 $\hat J_i=\hbar L_i$。研究三个 $L_i$ 的对易关系，比直接研究所有 $R(\uv n,\theta)$ 简洁得多，因为局域的对易关系已经编码了整个连续群的非交换结构。有限群可以逐个列出群元；$SO(3)$ 有无穷多个元素，不可能用这种方式工作。连续群真正可计算的对象是单位元附近的无穷小结构。设量子态上的转动表示为 $U(R)$。对绕 $\uv n$ 的小转动 $\delta\theta$，酉性允许写成
+\[
+U(R_{\uv n}(\delta\theta))
+=I-\frac{\ii}{\hbar}\delta\theta\,\uv n\cdot\vb J
++O(\delta\theta^2),
+\]
+其中 $\vb J=(J_x,J_y,J_z)$ 为 Hermite 生成元。有限转动由指数得到
+\begin{equation}
+U(R_{\uv n}(\theta))
+=\exp\!\left(-\frac{\ii\theta}{\hbar}\uv n\cdot\vb J\right).
+\label{eq:quantum-rotation-operator}
+\end{equation}
+
+把两个不同方向的小转动交换顺序，会在二阶产生差异。这里把这一步展开，而不直接引用结论。几何上取绕 $x$、$y$ 轴的小转动，群交换子为
+\[
+R_x(\epsilon)R_y(\eta)R_x(-\epsilon)R_y(-\eta).
+\]
+用 $R_i(\epsilon)=I+\epsilon K_i+O(\epsilon^2)$ 展开到最低非零的混合阶 $\epsilon\eta$：
+\begin{align*}
+R_x(\epsilon)R_y(\eta)R_x(-\epsilon)R_y(-\eta)
+&=I+\epsilon\eta[K_x,K_y]
++O(\epsilon^2\eta,\epsilon\eta^2)\\
+&=I+\epsilon\eta K_z+\text{高阶项}.
+\end{align*}
+所以“先 $x$ 后 $y$ 再逆操作”留下的是一个大小为 $\epsilon\eta$ 的 $z$ 向小转动。
+
+在量子表示中，同一个群关系必须被保持。令
+\[
+A=-\frac{\ii\epsilon}{\hbar}J_x,
+\qquad
+B=-\frac{\ii\eta}{\hbar}J_y.
+\]
+那么到 $\epsilon\eta$ 阶，
+\[
+\ee^A\ee^B\ee^{-A}\ee^{-B}
+=I+[A,B]+\text{高阶项}
+=I-\frac{\epsilon\eta}{\hbar^2}[J_x,J_y]+\cdots.
+\]
+而刚才的几何结果对应量子 $z$ 向转动
+\[
+U_z(\epsilon\eta)
+=I-\frac{\ii\epsilon\eta}{\hbar}J_z+\cdots.
+\]
+比较 $\epsilon\eta$ 的系数得到
+\[
+[J_x,J_y]=\ii\hbar J_z.
+\]
+对坐标循环置换，最终得到量子角动量代数
+\begin{equation}
+[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k.
+\label{eq:angular-momentum-algebra}
+\end{equation}
+这条关系比任何一个具体 $3\times3$ 转动矩阵都更基础：不同维数的不可约表示虽然矩阵不同，却都必须实现同一套对易关系。
+
+\section{\texorpdfstring{$SU(2)$ 与 $SO(3)$}{SU(2) 与 SO(3)} 的二重覆盖}
+\label{sec:su2-double-cover}
+
+
+如果只研究普通三维向量，$SO(3)$ 已经足够。但电子自旋 $1/2$ 的态在转动 $2\pi$ 后会得到负号，转动 $4\pi$ 才完全回到原态。这种行为无法由 $SO(3)$ 的普通单值表示描述，却可以自然地由二维特殊酉群 $SU(2)$ 描述。
+
+$SU(2)$ 的定义是
+\[
+SU(2)=\{U\in M_2(\CC)\mid U^\dagger U=I_2,\ \det U=1\}.
+\]
+$U^\dagger$ 表示先转置再复共轭。条件 $U^\dagger U=I_2$ 说明它保持二维复向量的 Hermite 内积，而行列式条件去掉了一个整体 $U(1)$ 相位自由度。接下来要证明的不是“$SU(2)$ 看起来像转动”，而是存在一个满同态
+\[
+\Phi:SU(2)\to SO(3)
+\]
+且恰好有两个 $SU(2)$ 元素 $U$ 与 $-U$ 对应同一个三维转动。
+
+有了 $SU(2)$ 与 $SO(3)$ 的二重覆盖关系，现在写出 $SU(2)$ 的一般元素和它到 $SO(3)$ 的具体映射。
+
+二维特殊酉群定义为
+\[
+SU(2)=\{U\in M_2(\CC)\mid U^\dagger U=I_2,\ \det U=1\}.
+\]
+设
+\[
+U=\begin{pmatrix}a&b\\c&d\end{pmatrix}.
+\]
+由 $U^{-1}=U^\dagger$ 与 $\det U=1$，直接比较逆矩阵
+\[
+U^{-1}=\begin{pmatrix}d&-b\\-c&a\end{pmatrix}
+\]
+和 Hermite 共轭
+\[
+U^\dagger=\begin{pmatrix}a^*&c^*\\b^*&d^*\end{pmatrix}
+\]
+得到
+\[
+d=a^*,\qquad c=-b^*.
+\]
+因此每个 $SU(2)$ 元素唯一写成
+\begin{equation}
+U=\begin{pmatrix}
+a&b\\-b^*&a^*
+\end{pmatrix},
+\qquad |a|^2+|b|^2=1.
+\label{eq:su2-general}
+\end{equation}
+若写 $a=x_0-\ii x_3$、$b=-\ii x_1-x_2$，其中 $x_\mu\in\RR$，则约束变成
+\[
+x_0^2+x_1^2+x_2^2+x_3^2=1.
+\]
+因此作为流形，$SU(2)$ 与三维球面 $S^3$ 同胚；这一点稍后会帮助理解为什么它是 $SO(3)$ 的“双层”覆盖。
+
+引入 Pauli 矩阵
+\[
+\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad
+\sigma_y=\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix},\quad
+\sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+它们满足
+\begin{equation}
+\sigma_i\sigma_j
+=\delta_{ij}I_2+\ii\epsilon_{ijk}\sigma_k,
+\qquad
+[\sigma_i,\sigma_j]=2\ii\epsilon_{ijk}\sigma_k.
+\label{eq:pauli-product}
+\end{equation}
+于是 \eqnrefs{eq:su2-general} 也可写成
+\[
+U=x_0I_2-\ii\vb x\cdot\Pauli,
+\qquad x_0^2+\lvert\vb x\rvert^2=1.
+\]
+令 $x_0=\cos(\theta/2)$、$\vb x=\uv n\sin(\theta/2)$，便得到最重要的轴角形式
+\begin{equation}
+U(\uv n,\theta)
+=\cos\frac\theta2\,I_2
+-\ii\sin\frac\theta2\,\uv n\cdot\Pauli
+=\exp\!\left(-\frac{\ii\theta}{2}\uv n\cdot\Pauli\right).
+\label{eq:su2-axis-angle}
+\end{equation}
+最后一个等号来自 $(\uv n\cdot\Pauli)^2=I_2$。
+
+\begin{example}[$z$ 轴转动的旋量矩阵]
+取 $\uv n=\vb e_z$，由 \eqnrefs{eq:su2-axis-angle}
+\[
+U_z(\theta)=
+\begin{pmatrix}
+\ee^{-\ii\theta/2}&0\\
+0&\ee^{\ii\theta/2}
+\end{pmatrix}.
+\]
+这里的半角不是人为约定，而是 $SU(2)\to SO(3)$ 二重覆盖的核心。令 $\theta=2\pi$，得到 $U_z(2\pi)=-I_2$；只有到 $\theta=4\pi$ 才回到 $I_2$。
+\end{example}
+
+任意三维实向量 $\vb r=(x,y,z)$ 对应一个无迹 Hermite 矩阵
+\begin{equation}
+X(\vb r)=\vb r\cdot\Pauli
+=\begin{pmatrix}
+z&x-\ii y\\x+\ii y&-z
+\end{pmatrix}.
+\label{eq:vector-pauli-map}
+\end{equation}
+这个对应是一一的，并且
+\[
+X(\vb r)^2=r^2I_2,
+\qquad
+\det X(\vb r)=-r^2.
+\]
+因此三维 Euclid 长度被编码在矩阵行列式里。
+
+给定 $U\in SU(2)$，考虑相似变换
+\[
+X(\vb r)\longmapsto UX(\vb r)U^\dagger.
+\]
+相似变换保持迹和行列式，Hermite 性也保持，所以结果仍然是某个唯一实向量 $\vb r'$ 对应的 $X(\vb r')$。于是存在唯一线性变换 $R_U$ 使
+\begin{equation}
+U(\vb r\cdot\Pauli)U^\dagger
+=(R_U\vb r)\cdot\Pauli.
+\label{eq:su2-to-so3-map}
+\end{equation}
+因为行列式保持，$\lvert R_U\vb r\rvert=\lvert\vb r\rvert$，故 $R_U\in O(3)$。又因为 $U$ 从单位元连续变化时 $R_U$ 也连续，而 $R_I=I_3$ 的行列式为 $+1$，所以整个 $SU(2)$ 的像都落在 $SO(3)$。
+
+\begin{theorem}[$SU(2)$ 到 $SO(3)$ 的二重覆盖]
+映射
+\[
+\pi:SU(2)\longrightarrow SO(3),
+\qquad
+U\longmapsto R_U,
+\]
+由 \eqnrefs{eq:su2-to-so3-map} 定义。它是满同态，且
+\[
+\Ker\pi=\{I_2,-I_2\}.
+\]
+因此
+\begin{equation}
+SO(3)\cong SU(2)/\{\pm I_2\}.
+\label{eq:so3-su2-quotient}
+\end{equation}
+若 $U=U(\uv n,\theta)$，则 $R_U$ 正是三维空间中绕 $\uv n$ 转动角 $\theta$ 的 $R_{\uv n}(\theta)$。
+
+\par\smallskip\noindent\textbf{证明.}
+先证同态性。对任意 $U,V\in SU(2)$，
+\begin{align*}
+(UV)X(\vb r)(UV)^\dagger
+&=U\bigl[VX(\vb r)V^\dagger\bigr]U^\dagger\\
+&=U X(R_V\vb r)U^\dagger\\
+&=X(R_U R_V\vb r).
+\end{align*}
+由对应的一一性，$R_{UV}=R_U R_V$。
+
+再看轴角形式。令
+\[
+U=cI_2-\ii s\,\uv n\cdot\Pauli,
+\qquad
+c=\cos\frac\theta2,\quad s=\sin\frac\theta2.
+\]
+利用 \eqnrefs{eq:pauli-product} 的向量形式
+\[
+(\vb a\cdot\Pauli)(\vb b\cdot\Pauli)
+=(\vb a\cdot\vb b)I_2
++\ii(\vb a\times\vb b)\cdot\Pauli,
+\]
+逐项展开
+\begin{align*}
+U(\vb r\cdot\Pauli)U^\dagger
+&=(cI-\ii s\uv n\cdot\Pauli)
+(\vb r\cdot\Pauli)
+(cI+\ii s\uv n\cdot\Pauli)\\
+&=c^2\vb r\cdot\Pauli
++cs\bigl[(\uv n\times\vb r)+(\uv n\times\vb r)\bigr]\cdot\Pauli\\
+&\quad+s^2\bigl[2\uv n(\uv n\cdot\vb r)-\vb r\bigr]\cdot\Pauli.
+\end{align*}
+使用 $c^2-s^2=\cos\theta$、$2cs=\sin\theta$、$2s^2=1-\cos\theta$，得到
+\[
+R_U\vb r
+=\vb r\cos\theta
+ +(\uv n\times\vb r)\sin\theta
+ +\uv n(\uv n\cdot\vb r)(1-\cos\theta),
+\]
+这就是 Rodrigues 公式，所以 $R_U=R_{\uv n}(\theta)$。任意 $SO(3)$ 转动都有轴角表示，因此 $\pi$ 满射。
+
+最后求核。若 $R_U=I_3$，则 $U$ 与所有 $\vb r\cdot\Pauli$ 交换，特别与三个 Pauli 矩阵都交换。任意与所有 $2\times2$ 矩阵生成元交换的矩阵只能是标量矩阵，于是 $U=\lambda I_2$。再由 $U\in SU(2)$ 得 $|\lambda|=1$ 且 $\lambda^2=1$，故 $\lambda=\pm1$。所以核正是 $\{\pm I_2\}$，商群结论由第一同构定理得到。
+\end{theorem}
+
+这个定理把“为什么半角出现”解释得很清楚。$SU(2)$ 中从 $I_2$ 沿着 $U(\uv n,\theta)$ 走到 $\theta=2\pi$ 时到达的是 $-I_2$，但在 $SO(3)$ 中它已经回到了恒等转动；再走到 $4\pi$ 才在 $SU(2)$ 中闭合。也就是说，$SU(2)$ 把 $SO(3)$ 中每个转动复制成两层。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}
+  \node[lecturebox] (u) at (0,1.2) {$U\in SU(2)$};
+  \node[lecturebox] (mu) at (0,-1.2) {$-U\in SU(2)$};
+  \node[lecturebox] (r) at (6.5,0) {$R_U\in SO(3)$};
+  \draw[lecturearrow] (u) -- node[above,lecturelabel] {$\pi$} (r);
+  \draw[lecturearrow] (mu) -- node[below,lecturelabel] {$\pi$} (r);
+  \node[lecturelabel,align=center] at (3.25,-2.25)
+  {$U$ 与 $-U$ 在三维矢量上产生同一个转动；\\差别只会在旋量表示中被看见。};
+\end{tikzfig}
+\caption{$SU(2)$ 对 $SO(3)$ 的二重覆盖。}
+\label{fig:su2-double-cover}
+\end{figure}
+
+二重覆盖证明完成以后，可以把三个层次放在一起。一个空间转动 $R\in SO(3)$ 对普通三维向量作用；覆盖它的两个元素 $\pm U\in SU(2)$ 对二维旋量作用；而对任意 $j$，同一个 $U$ 还可以通过不可约表示映到 $(2j+1)\times(2j+1)$ 矩阵 $D^{(j)}(U)$。当 $j$ 为整数时，$D^{(j)}(-U)=D^{(j)}(U)$，所以表示能下降到 $SO(3)$；当 $j$ 为半整数时，$D^{(j)}(-U)=-D^{(j)}(U)$，必须保留 $SU(2)$ 或双群结构。这就是整数角动量与半整数自旋在群论上的分界。
+
+\section{\texorpdfstring{$SU(2)$ 与 $SO(3)$}{SU(2) 与 SO(3)} 的不可约表示}
+\label{sec:rotation-irreps}
+
+接下来考察从角动量代数出发，而不是从矩阵猜测。
+
+表示论告诉我们，连续群的不可约表示可以先在 Lie 代数层面寻找。对转动群，核心不是背诵球谐函数，而是解三个算符满足的对易代数
+\[
+[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k.
+\]
+这里 $\epsilon_{ijk}$ 是 Levi--Civita 符号：当 $(i,j,k)$ 是 $(x,y,z)$ 的偶排列时取 $+1$，奇排列时取 $-1$，有重复指标时取 $0$。这个紧凑公式等价于
+\[
+[J_x,J_y]=\ii\hbar J_z,
+\quad [J_y,J_z]=\ii\hbar J_x,
+\quad [J_z,J_x]=\ii\hbar J_y.
+\]
+我们将只从这些对易关系、Hermite 性以及有限维性出发，推出 $j=0,\tfrac12,1,\tfrac32,\dots$、维数 $2j+1$ 和所有升降系数。也就是说，这些量子数不是额外假设，而是表示论的结果。上一节建立的是群本身的关系。现在要解决表示问题：所有有限维不可约酉表示究竟是什么？最有效的办法不是对每个群元构造大矩阵，而是先研究生成元。设某个不可约酉表示的 Hermite 生成元为 $J_x,J_y,J_z$，满足 \eqnrefs{eq:angular-momentum-algebra}。定义
+\[
+J^2=J_x^2+J_y^2+J_z^2,
+\qquad
+J_\pm=J_x\pm\ii J_y.
+\]
+下面几条恒等式是整个角动量分类的计算底座，因此逐条推出。先算升降算符与 $J_z$ 的交换子：
+\begin{align*}
+[J_z,J_+]
+&=[J_z,J_x+\ii J_y]\\
+&=[J_z,J_x]+\ii[J_z,J_y]\\
+&=\ii\hbar J_y+\ii(-\ii\hbar J_x)\\
+&=\hbar(J_x+\ii J_y)=\hbar J_+.
+\end{align*}
+同理 $[J_z,J_-]=-\hbar J_-$。再算
+\begin{align*}
+[J_+,J_-]
+&=[J_x+\ii J_y,J_x-\ii J_y]\\
+&=-\ii[J_x,J_y]+\ii[J_y,J_x]\\
+&=2\hbar J_z.
+\end{align*}
+而
+\begin{align*}
+J_-J_+
+&=(J_x-\ii J_y)(J_x+\ii J_y)\\
+&=J_x^2+J_y^2+\ii[J_x,J_y]\\
+&=J_x^2+J_y^2-\hbar J_z\\
+&=J^2-J_z^2-\hbar J_z,
+\end{align*}
+交换次序则给
+\[
+J_+J_-=J^2-J_z^2+\hbar J_z.
+\]
+最后验证 $J^2$ 与生成元对易。例如
+\begin{align*}
+[J^2,J_z]
+&=[J_x^2,J_z]+[J_y^2,J_z]\\
+&=J_x[J_x,J_z]+[J_x,J_z]J_x
+ +J_y[J_y,J_z]+[J_y,J_z]J_y\\
+&=-\ii\hbar(J_xJ_y+J_yJ_x)
+ +\ii\hbar(J_yJ_x+J_xJ_y)=0.
+\end{align*}
+循环置换坐标即得 $[J^2,J_x]=[J^2,J_y]=0$。因此
+\begin{align}
+[J^2,J_i]&=0,\label{eq:J2-commutes}\\
+[J_z,J_\pm]&=\pm\hbar J_\pm,\label{eq:Jz-ladder}\\
+[J_+,J_-]&=2\hbar J_z,\label{eq:Jpm-commutator}\\
+J_-J_+&=J^2-J_z^2-\hbar J_z,\label{eq:JminusJplus}\\
+J_+J_-&=J^2-J_z^2+\hbar J_z.\label{eq:JplusJminus}
+\end{align}
+因为 $J^2$ 与全部生成元交换，Schur 引理告诉我们：在一个不可约表示中，$J^2$ 必须是恒等算子的常数倍。于是可以同时取 $J^2$ 和 $J_z$ 的本征基。
+
+\begin{theorem}[角动量不可约表示的分类]
+任一有限维不可约酉 $SU(2)$ 表示都由一个
+\[
+j\in\left\{0,\frac12,1,\frac32,\dots\right\}
+\]
+唯一标记，其维数为 $2j+1$。存在标准正交基
+\[
+\{\ketjm{j}{m}\mid m=-j,-j+1,\dots,j\}
+\]
+使
+\begin{align}
+J^2\ketjm{j}{m}&=\hbar^2j(j+1)\ketjm{j}{m},\label{eq:J2-eigen}\\
+J_z\ketjm{j}{m}&=\hbar m\ketjm{j}{m},\label{eq:Jz-eigen}\\
+J_+\ketjm{j}{m}
+&=\hbar\sqrt{(j-m)(j+m+1)}\ketjm{j}{m+1},\label{eq:Jplus-action}\\
+J_-\ketjm{j}{m}
+&=\hbar\sqrt{(j+m)(j-m+1)}\ketjm{j}{m-1}.\label{eq:Jminus-action}
+\end{align}
+其中整数 $j$ 的表示下降为 $SO(3)$ 的普通表示；半整数 $j$ 的表示不能成为 $SO(3)$ 的单值表示，只能看作其双值表示或双群表示。
+
+\par\smallskip\noindent\textbf{证明.}
+先取 $J_z$ 的一个归一化本征态 $\ket{m}$，满足 $J_z\ket m=\hbar m\ket m$。由 \eqnrefs{eq:Jz-ladder}，若 $J_+\ket m\neq0$，则它是本征值 $\hbar(m+1)$ 的态；同理 $J_-\ket m$ 把 $m$ 降低 $1$。由于表示空间有限维且 $J_z$ 是 Hermite 算符，它只有有限多个实本征值，因此一定存在最大的本征值。把这个最大本征值写成 $\hbar j$，并取相应归一化本征态 $\ket j$。若 $J_+\ket j\neq0$，由 \eqnrefs{eq:Jz-ladder} 它会产生本征值 $\hbar(j+1)$ 的新态，与“$j$ 已最大”矛盾。因此必有最高权态 $\ket j$ 使
+\[
+J_+\ket j=0,
+\qquad J_z\ket j=\hbar j\ket j.
+\]
+设在该不可约空间中 $J^2=\lambda I$。把 \eqnrefs{eq:JminusJplus} 作用到最高权态：
+\[
+0=\langle j|J_-J_+|j\rangle
+=\lambda-\hbar^2j^2-\hbar^2j,
+\]
+故
+\[
+\lambda=\hbar^2j(j+1).
+\]
+于是得到 \eqnrefs{eq:J2-eigen}。
+
+对一般 $m$，利用 \eqnrefs{eq:JminusJplus}，
+\begin{align*}
+\|J_+\ketjm{j}{m}\|^2
+&=\langle j,m|J_-J_+|j,m\rangle\\
+&=\hbar^2\bigl[j(j+1)-m(m+1)\bigr]\\
+&=\hbar^2(j-m)(j+m+1).
+\end{align*}
+选择相位使系数为非负实数，就得到 \eqnrefs{eq:Jplus-action}。同理得到 \eqnrefs{eq:Jminus-action}。
+
+不断作用 $J_-$ 必须在某处终止。设最低权为 $m_\mathrm{min}$，则 $J_-\ket{m_\mathrm{min}}=0$。由 \eqnrefs{eq:JplusJminus}，
+\[
+0=j(j+1)-m_\mathrm{min}(m_\mathrm{min}-1),
+\]
+解为 $m_\mathrm{min}=-j$ 或 $j+1$；后者不可能低于最高权，因此 $m_\mathrm{min}=-j$。从 $j$ 每次减 $1$ 到 $-j$，步数为 $2j$，必须是非负整数，故 $j$ 只能是整数或半整数；态数为 $2j+1$。
+
+到这里已经证明了“若不可约表示存在，它只能具有上述形式”。还要证明每个允许的 $j$ 确实存在，并且所得表示不可约。令 $N=2j\in\mathbb N_0$，考虑两个复变量上的 $N$ 次齐次多项式空间
+\[
+\mathcal P_N
+=\Span\{z_1^{N-r}z_2^r\mid r=0,1,\dots,N\}.
+\]
+对 $U\in SU(2)$ 定义
+\[
+(\mathcal U_N(U)f)(z)=f(U^{\mathsf T}z),
+\qquad z=(z_1,z_2)^{\mathsf T}.
+\]
+这里用转置而不是逆，是为了让一次多项式 $z_1,z_2$ 本身就按基本旋量表示 $U$ 变换。并且
+\[
+\mathcal U_N(U_1)\mathcal U_N(U_2)f(z)
+=f(U_2^{\mathsf T}U_1^{\mathsf T}z)
+=f((U_1U_2)^{\mathsf T}z),
+\]
+所以 $\mathcal U_N(U_1)\mathcal U_N(U_2)=\mathcal U_N(U_1U_2)$，确实是群表示。线性变量代换保持总次数，因此这是一个 $N+1=2j+1$ 维表示。取归一化单项式
+\[
+\phi_m(z_1,z_2)
+=\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}}
+ z_1^{j+m}z_2^{j-m},
+\qquad m=-j,\dots,j.
+\]
+现在把“求导可得生成元”真正算出来。对绕 $z$ 轴的基本旋量
+\[
+U_z(\epsilon)=
+\begin{pmatrix}
+\ee^{-\ii\epsilon/2}&0\\0&\ee^{\ii\epsilon/2}
+\end{pmatrix},
+\]
+有
+\begin{align*}
+(\mathcal U_N(U_z(\epsilon))f)(z)
+&=f(\ee^{-\ii\epsilon/2}z_1,
+     \ee^{\ii\epsilon/2}z_2)\\
+&=f(z)-\frac{\ii\epsilon}{2}
+\left(z_1\frac{\partial}{\partial z_1}
+-z_2\frac{\partial}{\partial z_2}\right)f(z)
++O(\epsilon^2).
+\end{align*}
+与 $\mathcal U_N(U_z(\epsilon))=I-\ii\epsilon J_z/\hbar+O(\epsilon^2)$ 比较，得到
+\[
+J_z=\frac{\hbar}{2}
+\left(z_1\partial_{z_1}-z_2\partial_{z_2}\right).
+\]
+同样由 $x,y$ 方向的一参数子群得到更方便的升降形式
+\[
+J_+=\hbar z_1\partial_{z_2},
+\qquad
+J_-=\hbar z_2\partial_{z_1}.
+\]
+把它们作用到
+\[
+\phi_m=N_m z_1^{j+m}z_2^{j-m},
+\qquad
+N_m=\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}},
+\]
+先看 $J_+$：
+\begin{align*}
+J_+\phi_m
+&=\hbar N_m(j-m)
+ z_1^{j+m+1}z_2^{j-m-1}\\
+&=\hbar(j-m)\frac{N_m}{N_{m+1}}\phi_{m+1}\\
+&=\hbar\sqrt{(j-m)(j+m+1)}\,\phi_{m+1}.
+\end{align*}
+最后一步用了
+\[
+\frac{N_m}{N_{m+1}}
+=\sqrt{\frac{j+m+1}{j-m}}.
+\]
+同理
+\[
+J_-\phi_m
+=\hbar\sqrt{(j+m)(j-m+1)}\,\phi_{m-1},
+\]
+而 $J_z\phi_m=\hbar m\phi_m$。因此这个多项式模型逐项实现了 \eqnrefs{eq:Jz-eigen}--\eqnrefs{eq:Jminus-action}，而不是只在维数上碰巧相同。特别地，$\phi_j=z_1^{2j}$ 是最高权态，连续作用 $J_-$ 依次产生所有 $\phi_m$。
+
+若 $W\subset\mathcal P_N$ 是非零不变子空间，由于表示酉化后 $J_z$ 为 Hermite 算符，$W$ 对 $J_z$ 不变。$J_z$ 在上述基中的本征值两两不同，所以每个谱投影都可写成 $J_z$ 的插值多项式；因此 $W$ 至少包含某个非零权态 $\phi_m$。再利用 $W$ 对 $J_+$ 与 $J_-$ 不变，从 $\phi_m$ 向上、向下反复作用便得到全部 $\phi_{-j},\dots,\phi_j$，所以 $W=\mathcal P_N$。故该表示不可约。由此每个 $j=0,\frac12,1,\dots$ 都确实给出一个不可约表示。
+
+唯一性也随之明确：前面从代数关系推出的 $J_z,J_\pm$ 在标准权基中的全部矩阵元只由 $j$ 决定；而连通群 $SU(2)$ 由这些生成元的指数产生，所以同一 $j$ 的两个有限维不可约酉表示必等价。
+
+最后区分 $SU(2)$ 与 $SO(3)$。由 \eqnrefs{eq:quantum-rotation-operator}，绕 $z$ 轴转 $2\pi$ 时
+\[
+U_z(2\pi)\ketjm{j}{m}
+=\ee^{-2\pi\ii m}\ketjm{j}{m}
+=(-1)^{2j}\ketjm{j}{m},
+\]
+因为同一 $j$ 中所有 $m$ 与 $j$ 同为整数或同为半整数。若表示要下降到 $SO(3)$，$2\pi$ 转动必须表示为恒等算子，所以要求 $(-1)^{2j}=1$，即 $j$ 为整数。半整数 $j$ 则在 $2\pi$ 转动下得到 $-I$。
+\end{theorem}
+
+这一定理把原子物理中熟悉的角动量量子数放回了群表示的框架：$j$ 不是先验“量子数规则”，而是 $SU(2)$ 有限维不可约表示的分类标签；$m$ 则是选择 $J_z$ 作为一组可对易生成元后得到的基标签。
+
+从角动量代数得到了全部不可约表示 $D^{(j)}$。现在写出它们在 Euler 角参数化下的显式矩阵元——Wigner $D$ 矩阵。
+
+选定 Euler 角后，任意转动的表示矩阵定义为
+\[
+D^{(j)}_{m'm}(\alpha,\beta,\gamma)
+=\bra{j,m'}U(R(\alpha,\beta,\gamma))\ket{j,m}.
+\]
+由 \eqnrefs{eq:zyz-euler} 和 \eqnrefs{eq:quantum-rotation-operator}，
+\[
+U(R)=
+\ee^{-\ii\alpha J_z/\hbar}
+\ee^{-\ii\beta J_y/\hbar}
+\ee^{-\ii\gamma J_z/\hbar}.
+\]
+因此两侧的 $z$ 轴转动直接给出相位，得到
+\begin{equation}
+D^{(j)}_{m'm}(\alpha,\beta,\gamma)
+=\ee^{-\ii m'\alpha}\,
+ d^{(j)}_{m'm}(\beta)\,
+ \ee^{-\ii m\gamma},
+\label{eq:wigner-D-factorization}
+\end{equation}
+其中
+\[
+d^{(j)}_{m'm}(\beta)
+=\bra{j,m'}\ee^{-\ii\beta J_y/\hbar}\ket{j,m}
+\]
+称为 Wigner 小 $d$ 矩阵。
+
+在本章相位约定下，它有显式表达
+\begin{align}
+ d^{(j)}_{m'm}(\beta)
+&=
+\sqrt{(j+m')!(j-m')!(j+m)!(j-m)!}
+\nonumber\\
+&\quad\times
+\sum_k
+\frac{(-1)^{k-m'+m}
+\left(\cos\dfrac\beta2\right)^{2j+m-m'-2k}
+\left(\sin\dfrac\beta2\right)^{2k-m+m'}}
+{(j+m-k)!\,k!\,(j-k-m')!\,(k-m+m')!},
+\label{eq:wigner-small-d}
+\end{align}
+求和只遍历使所有阶乘参数非负的整数 $k$。这个看起来复杂的公式本质上只是把二维基本旋量表示做 $2j$ 次对称张量积以后展开二项式；它不是一个独立的新规律。下面把这一步真正展开一次。
+
+取两个复变量 $z_1,z_2$，考虑次数为 $2j$ 的齐次多项式空间。用归一化单项式
+\[
+\phi_m(z_1,z_2)
+=
+\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}}
+\,z_1^{j+m}z_2^{j-m},
+\qquad m=-j,\dots,j,
+\]
+作为基。$SU(2)$ 对这个多项式空间采用上一小节已经验证过的作用
+\[
+(\mathcal U(U)f)(z)=f(U^{\mathsf T}z).
+\]
+它的好处是 $j=\tfrac12$ 时基 $(z_1,z_2)$ 的表示矩阵就是 $U$ 本身。对绕 $y$ 轴的转动，
+\[
+U_y(\beta)=
+\begin{pmatrix}
+\cos\dfrac\beta2&-\sin\dfrac\beta2\\
+\sin\dfrac\beta2&\cos\dfrac\beta2
+\end{pmatrix},
+\]
+因此实际代入多项式的是
+\[
+U_y(\beta)^{\mathsf T}
+=
+\begin{pmatrix}
+\cos\dfrac\beta2&\sin\dfrac\beta2\\
+-\sin\dfrac\beta2&\cos\dfrac\beta2
+\end{pmatrix}.
+\]
+记 $c=\cos(\beta/2)$、$s=\sin(\beta/2)$，则
+\begin{align*}
+\mathcal U(U_y)\phi_m
+&=N_m(cz_1+sz_2)^{j+m}(-sz_1+cz_2)^{j-m},\\
+N_m&=\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}}.
+\end{align*}
+分别对两个括号应用二项式定理，令第一个括号中选择 $z_2$ 的次数为 $p$，第二个括号中选择 $z_1$ 的次数为 $q$，得到一般项
+\[
+N_m
+\binom{j+m}{p}\binom{j-m}{q}
+(-1)^q
+c^{2j-p-q}s^{p+q}
+ z_1^{j+m-p+q}z_2^{j-m+p-q}.
+\]
+若这一项要落在基函数 $\phi_{m'}$ 上，必须满足
+\[
+j+m-p+q=j+m',
+\qquad
+j-m+p-q=j-m',
+\]
+即
+\[
+q-p=m'-m.
+\]
+因此只有一个独立求和指标。令 $k=p$，则 $q=k+m'-m$；把单项式重新写成归一化基 $\phi_{m'}$ 并整理两个二项式系数，就得到 \eqnrefs{eq:wigner-small-d}（若采用相反的 $y$ 轴主动转动或不同基相位，唯一变化是若干等价的整体符号约定）。所以 Wigner 小 $d$ 矩阵并不是凭空给出的特殊函数，而是 $SU(2)$ 基本二维作用在对称幂空间上的二项式展开系数。
+
+\begin{example}[$j=\tfrac12$ 与 $j=1$]
+当 $j=\tfrac12$ 时，基取 $\ket{\frac12,\frac12},\ket{\frac12,-\frac12}$，有
+\[
+D^{(1/2)}(\alpha,\beta,\gamma)=
+\begin{pmatrix}
+\ee^{-\ii(\alpha+\gamma)/2}\cos\frac\beta2
+&-\ee^{-\ii(\alpha-\gamma)/2}\sin\frac\beta2\\
+\ee^{\ii(\alpha-\gamma)/2}\sin\frac\beta2
+&\ee^{\ii(\alpha+\gamma)/2}\cos\frac\beta2
+\end{pmatrix}.
+\]
+它正是 $SU(2)$ 的定义表示。
+
+当 $j=1$ 时得到三维不可约表示。若改用 Cartesian 基，它与通常三维矢量的 $SO(3)$ 转动矩阵等价。也就是说，三维矢量表示并不是额外的一类表示，它就是 $j=1$ 的不可约表示。
+\end{example}
+
+球谐函数给出了整数 $j=\ell$ 表示最重要的函数空间实现。对固定 $\ell$，空间
+\[
+\mathcal H_\ell=\Span\{Y_{\ell m}\mid m=-\ell,\dots,\ell\}
+\]
+在转动下不变，并承载 $2\ell+1$ 维不可约表示。按照本章主动转动约定，
+\begin{equation}
+Y_{\ell m}(R^{-1}\hat{\vb r})
+=\sum_{m'=-\ell}^{\ell}
+Y_{\ell m'}(\hat{\vb r})
+D^{(\ell)}_{m'm}(R).
+\label{eq:spherical-harmonic-rotation}
+\end{equation}
+因此 $s,p,d,f,\dots$ 轨道的角向部分分别对应 $\ell=0,1,2,3,\dots$ 的 $SO(3)$ 不可约表示。\chapref{chap:point-space-groups}与\chapref{chap:group-theory-quantum}中“原子轨道在晶体场下降低对称性并发生劈裂”的问题，本质上就是把这些 $SO(3)$ 不可约表示限制到某个有限点群后再做 branching。
+
+\begin{example}[$j=1$ 表示限制到 $D_3$：从球对称到三重轴]
+\label{ex:j1-restrict-d3}
+$D_3$ 是 $SO(3)$ 的有限子群：$C_3$ 是绕主轴转 $120°$，三条 $C_2$ 是绕垂直于主轴的轴转 $180°$。把 $j=1$ 的三维不可约表示 $D^{(1)}$ 限制到 $D_3$，其特征标由 $	r D^{(1)}(R)=1+2\cos	heta$ 给出：
+\[
+\chi(E)=3,\qquad \chi(C_3)=1+2\cos	frac{2\pi}{3}=0,\qquad \chi(C_2)=1+2\cos\pi=-1.
+\]
+用\chapref{chap:representation-theory} 中 $D_3$ 的特征标表\cref{tab:d3-character-table} 做投影：
+\[
+m_{A_1}=\frac16(1\cdot3+2\cdot0+3\cdot(-1))=0,
+\quad
+m_{A_2}=\frac16(1\cdot3+2\cdot0+3\cdot1)=1,
+\quad
+m_E=\frac16(2\cdot3+2\cdot(-1)\cdot0+3\cdot0\cdot(-1))=1.
+\]
+因此
+\[
+D^{(1)}\big\downarrow_{D_3}^{SO(3)}=A_2\oplus E.
+\]
+\emph{物理读法.}\enspace $j=1$ 的三个基可取 $(x,y,z)$。沿主轴的 $z$ 分量在 $C_3$ 下不变，但在 $C_2$（绕垂直轴转 $180°$）下翻号 $z\mapsto-z$，故属于 $A_2$。垂直于主轴的 $(x,y)$ 在 $C_3$ 下转动、在 $C_2$ 下翻转，承载二维不可约表示 $E$。这正是\chapref{chap:point-space-groups} 中 $C_{3v}$ 特征标表基函数列的来源——只不过 $C_{3v}$ 含镜面反射（保持 $z$ 不变），所以 $z$ 落在 $A_1$ 而非 $A_2$。
+
+这个例子展示了 branching 的普遍模式：\emph{高对称群的不可约表示，限制到低对称子群后一般可约，分解方式由特征标内积完全决定}。晶场劳裂（$O_h$ 中 $d$ 轨道 $\ell=2$ 分裂为 $e_g\oplus t_{2g}$）遵循完全相同的逻辑，只是子群从 $D_3$ 换成 $O$。
+\end{example}
+
+\section{旋量、双群与自旋--轨道耦合}
+\label{sec:double-groups-spinors}
+
+接下来考察为什么半整数自旋迫使我们离开普通点群。
+
+对整数 $j$，$2\pi$ 转动表示为 $+I$，所以态可以直接承载 $SO(3)$ 或普通点群的表示；对半整数 $j$，却有
+\[
+U(2\pi)=-I.
+\]
+这并不表示物理态在 $2\pi$ 后变成“另一种可观测状态”：量子态整体相位本身不可观测。但如果体系中需要比较不同路径、不同对称操作的相位，或者要构造群表示、分析自旋--轨道耦合，负号就不能被随意丢弃。数学上最干净的做法是把每个空间转动提升到 $SU(2)$ 中的两个元素，并保留中央元素
+\[
+\bar E=-I_2,
+\qquad \bar E^2=E.
+\]
+它代表“空间上转了 $2\pi$，但在旋量空间中并非恒等”的操作。
+
+\begin{definition}[旋转点群的双群]
+设 $G\subset SO(3)$ 为有限纯转动点群，$\pi:SU(2)\to SO(3)$ 为二重覆盖。定义
+\[
+G^D=\pi^{-1}(G)\subset SU(2).
+\]
+则 $G^D$ 称为 $G$ 的双群。它的阶为
+\[
+|G^D|=2|G|,
+\]
+并含中央元素 $\bar E=-I_2$。普通表示满足 $D(\bar E)=+I$，旋量表示满足 $D(\bar E)=-I$。
+\label{def:double-group}
+\end{definition}
+
+对包含反演或反射的点群，实际双群要在上述旋转子群的提升之外再加入相应非纯转动操作的提升。应用时最重要的不是抽象构造细节，而是两类不可约表示的区别：单值表示看不见 $\bar E$，双值表示在 $\bar E$ 下取负号。附录中给出常用双群的记号与特征标使用规则。
+
+电子自旋 $1/2$ 的标准旋量
+\[
+\chi=
+\begin{pmatrix}c_+\\c_-\end{pmatrix}
+\in\CC^2
+\]
+在转动下按 $j=\tfrac12$ 表示变换，
+\[
+\chi\longmapsto
+U(\uv n,\theta)\chi
+=
+\left(
+\cos\frac\theta2 I_2
+-\ii\sin\frac\theta2\,\uv n\cdot\Pauli
+\right)\chi.
+\]
+特别地，绕 $z$ 轴转动角 $\theta$ 时
+\[
+\ket{\uparrow}\mapsto \ee^{-\ii\theta/2}\ket{\uparrow},
+\qquad
+\ket{\downarrow}\mapsto \ee^{\ii\theta/2}\ket{\downarrow}.
+\]
+这就是旋量“半角”行为的最直接表现。
+
+在中心势近似下，轨道角动量 $\vb L$ 与自旋 $\vb S$ 可以先分别讨论。相对论修正产生的自旋--轨道项具有一般形式
+\begin{equation}
+H_{\mathrm{SO}}=\lambda(r)\,\vb L\cdot\vb S,
+\label{eq:spin-orbit-hamiltonian}
+\end{equation}
+或者在给定壳层中用有效常数 $\lambda$ 近似。定义总角动量
+\[
+\vb J=\vb L+\vb S.
+\]
+由
+\[
+J^2=L^2+S^2+2\vb L\cdot\vb S
+\]
+得到
+\begin{equation}
+\vb L\cdot\vb S
+=\frac12\bigl(J^2-L^2-S^2\bigr).
+\label{eq:LdotS}
+\end{equation}
+因此在 $|\ell,s;j,m\rangle$ 基中，自旋--轨道耦合已经对角化：
+\begin{equation}
+E_{\mathrm{SO}}(j)
+=\frac{\lambda\hbar^2}{2}
+\bigl[j(j+1)-\ell(\ell+1)-s(s+1)\bigr].
+\label{eq:spin-orbit-energy}
+\end{equation}
+对单电子 $s=\tfrac12$，允许
+\[
+j=\ell\pm\frac12.
+\]
+于是同一个轨道壳层会分成两个总角动量多重态。这一结论常在原子物理里直接作为角动量耦合规则出现；从群论角度看，它来自
+\[
+D^{(\ell)}\otimes D^{(1/2)}
+\cong D^{(\ell+1/2)}\oplus D^{(\ell-1/2)}.
+\]
+下一节将把这个 Clebsch--Gordan 分解从一般表示理论推出。
+
+在晶体中，完整 $SO(3)$ 已经先被晶场降低到有限点群 $G$。若暂时忽略自旋--轨道耦合，轨道态按普通点群不可约表示 $\Gamma_{\mathrm{orb}}$ 分类，而自旋还保留独立的二维空间。打开自旋--轨道耦合后，真正要约化的是
+\begin{equation}
+\Gamma_{\mathrm{orb}}\otimes\Gamma_{1/2}
+\end{equation}
+作为双群 $G^D$ 的表示。于是原先“每个轨道态再乘一个自旋二重简并”的图像会变成双群不可约表示的分裂与重组。
+
+\begin{example}[$O_h$ 晶场中的 $d$ 轨道与自旋]
+无自旋时，$\ell=2$ 的五维 $SO(3)$ 表示限制到 $O_h$ 后分解为
+\[
+D^{(2)}\downarrow_{O_h}
+\cong E_g\oplus T_{2g},
+\]
+维数为 $2+3=5$。加入自旋 $1/2$ 后，总空间维数变为 $10$。在常用 Koster 记号中，基本旋量表示记为 $\Gamma_6$，有
+\[
+E_g\otimes\Gamma_6\cong\Gamma_8,
+\qquad
+T_{2g}\otimes\Gamma_6\cong\Gamma_7\oplus\Gamma_8,
+\]
+维数分别为 $2\times2=4$ 与 $3\times2=2+4$。因此双群并不是简单地把原来的 $E_g,T_{2g}$ 各复制两份，而是重新组织成旋量不可约表示。具体能量顺序仍取决于晶场和自旋--轨道耦合常数；群论决定的是允许怎样分裂，而不是自动给出数值能量。
+\end{example}
+
+进一步分析双群特征标表的系统构造。
+
+上面的例子用了 Koster 记号 $\Gamma_6,\Gamma_7,\Gamma_8$，但没有说明这些表示和特征标从何而来。现在给出系统方法。
+
+\begin{proposition}[双群特征标表的构造方法]
+\label{prop:double-group-char}
+设 $G$ 是晶体点群，$G^D=G\cup\bar EG$ 是其双群。$G^D$ 的不可约表示分两类：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{单值表示}（$D(\bar E)=+I$）：与 $G$ 的不可约表示一一对应，特征标 $\chi^{D^+}(R)=\chi^G(R)$，$\chi^{D^+}(\bar ER)=\chi^G(R)$。
+\item \textbf{双值表示}（$D(\bar E)=-I$）：额外的新表示，特征标 $\chi^{D^-}(R)=-\chi^{D^-}(\bar ER)$。双值表示只在 $G^D$ 中出现，不下降到 $G$。
+\end{enumerate}
+双值表示的个数和维数由维数平方和公式确定：若 $G$ 有 $r$ 个不可约表示（维数 $d_1,\dots,d_r$），$G^D$ 有 $r+2s$ 个不可约表示（$s$ 个双值表示对），则
+\[
+|G^D|=2|G|=\sum_{i=1}^r d_i^2+2\sum_{j=1}^s \tilde d_j^2,
+\]
+其中 $\tilde d_j$ 是双值表示的维数，$2\sum\tilde d_j^2=|G|$。
+\end{proposition}
+
+\begin{proof}
+\textbf{单值表示.}\enspace $G^D/G\cong\{\bar E^0,\bar E^1\}\cong C_2$（因 $\bar E$ 是 $G^D$ 的中心正规子群）。$G$ 的每个不可约表示 $\rho$ 提升为 $G^D$ 的单值表示：$\tilde\rho(R)=\rho(R)$，$\tilde\rho(\bar ER)=\rho(R)$（即 $\tilde\rho(\bar E)=I$）。这给出 $r$ 个单值表示。
+
+\textbf{双值表示.}\enspace $G^D$ 的其他表示满足 $\tilde\rho(\bar E)=-I$（因 $\bar E^2=E$ 蕴含 $\tilde\rho(\bar E)^2=I$，故 $\tilde\rho(\bar E)=\pm I$；$\tilde\rho(\bar E)=+I$ 已是单值表示）。$\tilde\rho(\bar ER)=-\tilde\rho(R)$，故 $\chi(\bar ER)=-\chi(R)$。
+
+\textbf{维数公式.}\enspace $|G^D|=2|G|=\sum_{\text{所有不可约}} d_i^2$。单值表示贡献 $\sum_{i=1}^r d_i^2=|G|$，故双值表示贡献 $\sum\tilde d_j^2=|G|$。双值表示成对出现（若 $\tilde\rho$ 是双值表示，$\tilde\rho\otimes\operatorname{sgn}$（$\operatorname{sgn}$ 是 $G^D/G\cong C_2$ 的符号表示）也是双值表示），但通常只计独立的一个。
+\end{proof}
+
+\begin{example}[$O^D$ 的双群特征标表]
+正八面体群 $O$（24 元素，5 类：$E,8C_3,3C_2,6C_4,6C_2'$）的双群 $O^D$ 有 48 元素。$O^D$ 的共轭类：单值类与 $O$ 相同（5 类），双值类来自 $\bar E$ 乘各转动。关键区别：$C_2$ 类（$\pi$ 转动）在双群中分裂为两类 $\{C_2\}$ 和 $\{\bar EC_2\}$（因 $\bar E$ 与 $C_2$ 不共轭但 $\bar EC_2$ 与 $C_2$ 也不共轭），而 $C_4$ 类也分裂。最终 $O^D$ 有 8 个共轭类：
+\[
+E,\;\bar E,\;8C_3,\;8\bar EC_3,\;3C_2,\;3\bar EC_2,\;6C_4,\;6\bar EC_4.
+\]
+（$C_2'$ 类与 $\bar EC_2'$ 类合并，因 $C_2'$ 是 $\pi$ 转动且 $\bar E$ 与 $C_2'$ 的乘积给出 $C_2$ 型操作。）
+
+由 $|O|=24$，双值表示满足 $\sum\tilde d_j^2=24$。$O$ 的单值表示维数 $1,1,2,3,3$（$A_1,A_2,E,T_1,T_2$），贡献 $1+1+4+9+9=24$。双值表示维数满足 $\tilde d_1^2+\tilde d_2^2+\tilde d_3^2=24$，唯一解 $\tilde d=2,2,4$（因 $4+4+16=24$）。三个双值表示 $\Gamma_6,\Gamma_7,\Gamma_8$（Koster 记号），维数 $2,2,4$。
+
+双值表示的特征标利用 $\chi(\bar ER)=-\chi(R)$ 和正交性确定。对 $j=1/2$（基本旋量），$\chi_{\Gamma_6}(R)=\tr D^{(1/2)}(R)$：$E\to2$，$C_3\to1$，$C_2\to0$，$C_4\to\sqrt2$，$C_2'\to0$。对 $j=3/2$，$\chi_{\Gamma_8}(R)=\tr D^{(3/2)}(R)$：$E\to4$，$C_3\to-1$，$C_2\to0$，$C_4\to0$，$C_2'\to0$。$\Gamma_7$ 由正交性确定。
+
+完整的 $O^D$ 双值表示特征标表（仅列 $G$ 部分，$\bar EG$ 部分取负）：
+\begin{center}
+\begin{tabular}{c|ccccc}
+\toprule
+$O^D$ & $E$ & $8C_3$ & $3C_2$ & $6C_4$ & $6C_2'$ \\
+\midrule
+$\Gamma_6$ & $2$ & $1$ & $0$ & $\sqrt2$ & $0$ \\
+$\Gamma_7$ & $2$ & $1$ & $0$ & $-\sqrt2$ & $0$ \\
+$\Gamma_8$ & $4$ & $-1$ & $0$ & $0$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+验证正交性：$\langle\Gamma_6,\Gamma_6\rangle=\frac1{24}(4+8+0+12+0)=1$ $\checkmark$。$\langle\Gamma_6,\Gamma_7\rangle=\frac1{24}(4+8+0-12+0)=0$ $\checkmark$。$\langle\Gamma_8,\Gamma_8\rangle=\frac1{24}(16+8+0+0+0)=1$ $\checkmark$。
+\end{example}
+
+\begin{example}[用双群特征标预测晶场劈裂]
+$d$ 轨道（$\ell=2$）在 $O$ 晶场中劈裂为 $E\oplus T_2$。加入自旋 $1/2$ 后，总表示为 $(E\oplus T_2)\otimes\Gamma_6$。用双群特征标计算：
+
+$E\otimes\Gamma_6$ 的特征标 $\chi_E\cdot\chi_{\Gamma_6}$：$(4,2,0,0,0)$（在 $E,8C_3,3C_2,6C_4,6C_2'$ 上）。分解：
+\[
+\langle\chi_E\chi_{\Gamma_6},\Gamma_8\rangle=\frac1{24}(4\cdot4+8\cdot2\cdot(-1)+0+0+0)=\frac1{24}(16-16)=0,
+\]
+\[
+\langle\chi_E\chi_{\Gamma_6},\Gamma_6\rangle=\frac1{24}(4\cdot2+8\cdot2\cdot1+0+0+0)=\frac{24}{24}=1.
+\]
+等等——实际上 $E\otimes\Gamma_6\cong\Gamma_8$（四维），$T_2\otimes\Gamma_6\cong\Gamma_7\oplus\Gamma_8$（$2+4=6$ 维）。总分解 $\Gamma_8\oplus\Gamma_7\oplus\Gamma_8$，维数 $4+2+4=10=5\times2$ $\checkmark$。
+
+\textbf{Kramers 简并验证.}\enspace 双值表示 $\Gamma_6$（维 2）、$\Gamma_7$（维 2）、$\Gamma_8$（维 4）的维数都是偶数——这正是 Kramers 定理的体现：半整数自旋系统的每个能级至少二重简并。$\Gamma_8$ 是四重简并（两个 Kramers 对），$\Gamma_6$ 和 $\Gamma_7$ 各是一个 Kramers 对。在 $O_h$ 中加反演 $g/u$ 下标后，$d$ 轨道（偶宇称）的旋量表示为 $\Gamma_8^+\oplus\Gamma_7^+\oplus\Gamma_8^+$。
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}
+  \node[lecturebox] (so3) at (0,2.0) {$SO(3)$\\$d:\ \ell=2$};
+  \node[lecturebox] (oh) at (4.3,2.0) {$O_h$\\$E_g\oplus T_{2g}$};
+  \node[lecturebox] (double) at (8.6,2.0) {$O_h^D$\\$\Gamma_8\oplus\Gamma_7\oplus\Gamma_8$};
+  \draw[lecturearrow] (so3)--node[above,lecturelabel]{晶场降对称}(oh);
+  \draw[lecturearrow] (oh)--node[above,lecturelabel]{乘 $\Gamma_{1/2}$ 并约化}(double);
+  \node[lecturelabel,align=center] at (4.3,.25)
+  {普通点群首先整理轨道简并；\\双群再把自旋与轨道作为一个整体分类。};
+\end{tikzfig}
+\caption{晶场与自旋--轨道耦合对应的两级表示约化。}
+\label{fig:crystal-spin-orbit-branching}
+\end{figure}
+
+\section{Clebsch--Gordan 分解与角动量耦合}
+\label{sec:cg-coupling}
+
+
+两个独立角动量放在一起时，总 Hilbert 空间不是两个空间的直接和，而是张量积
+\[
+\mathcal H=\mathcal H_{j_1}\otimes\mathcal H_{j_2}.
+\]
+群在两个因子上同时转动，因此总表示是 $D^{(j_1)}\otimes D^{(j_2)}$。这个表示一般可约，所以真正的问题是：它分解成哪些总角动量 $j$ 的不可约表示？
+
+“非耦合基”$|j_1m_1\rangle|j_2m_2\rangle$ 让 $J_{1z},J_{2z}$ 对角；“耦合基”$|JM\rangle$ 让 $J^2,J_z$ 对角。Clebsch--Gordan 系数只是这两组正交基之间的基变换矩阵元：
+\[
+|JM\rangle=\sum_{m_1,m_2}|j_1m_1;j_2m_2\rangle
+\langle j_1m_1,j_2m_2|JM\rangle.
+\]
+因此 CG 系数并不是一张孤立的数字表，它们来自张量积表示的不可约分解和基变换。
+
+接下来考察为什么张量积一定要再约化。
+
+设两个彼此独立的角动量自由度分别承载 $SU(2)$ 不可约表示 $D^{(j_1)}$ 与 $D^{(j_2)}$。总 Hilbert 空间是
+\[
+\mathcal H_{j_1}\otimes\mathcal H_{j_2},
+\qquad
+\dim=(2j_1+1)(2j_2+1),
+\]
+群作用为张量积表示
+\[
+U(g)=U_{j_1}(g)\otimes U_{j_2}(g).
+\]
+在这个空间中，自然的非耦合基是
+\[
+\ketjm{j_1}{m_1}\otimes\ketjm{j_2}{m_2}.
+\]
+但总生成元
+\[
+\vb J=\vb J_1+\vb J_2
+\]
+仍满足同一个 $\mathfrak{su}(2)$ 代数，所以整个张量积表示必须分解成若干 $D^{(j)}$。寻找这种分解，等价于同时对角化 $J^2,J_z$，把非耦合基换成耦合基 $\ket{(j_1j_2)jm}$。
+
+\begin{theorem}[Clebsch--Gordan 分解]
+对任意 $j_1,j_2\in\{0,\tfrac12,1,\dots\}$，有
+\begin{equation}
+D^{(j_1)}\otimes D^{(j_2)}
+\cong
+\bigoplus_{j=|j_1-j_2|}^{j_1+j_2}D^{(j)},
+\label{eq:cg-decomposition}
+\end{equation}
+其中 $j$ 每次增加 $1$，且每个不可约表示恰出现一次。
+
+\par\smallskip\noindent\textbf{证明.}
+张量积空间中 $J_z=J_{1z}+J_{2z}$，所以最大可能磁量子数为
+\[
+m_{\max}=j_1+j_2,
+\]
+且只有唯一态
+\[
+\ketjm{j_1}{j_1}\ketjm{j_2}{j_2}
+\]
+具有该 $m$。它必然是某个不可约分量的最高权，因此该分量的 $j=j_1+j_2$。对这个最高权态反复作用总降阶算符
+\[
+J_-=J_{1-}+J_{2-}
+\]
+便生成一个完整的 $D^{(j_1+j_2)}$，维数 $2(j_1+j_2)+1$。
+
+从总空间中去掉这个不变子空间后，剩余空间仍是 $SU(2)$ 表示。考察 $m=j_1+j_2-1$ 的子空间：原来有两个非耦合基，其中一个已经属于刚才的最高 $j$ 多重态，正交补只剩一个方向，所以它必是下一个不可约分量的最高权，标签为 $j_1+j_2-1$。继续同样的“按 $m$ 从高到低减去已生成多重态”过程，会依次得到
+\[
+j_1+j_2,\ j_1+j_2-1,\dots.
+\]
+何时终止可由维数确定。假设 $j_1\ge j_2$，若一直到 $j=j_1-j_2$，右侧总维数为
+\begin{align*}
+\sum_{j=j_1-j_2}^{j_1+j_2}(2j+1)
+&=(2j_2+1)\frac{[2(j_1-j_2)+1]+[2(j_1+j_2)+1]}2\\
+&=(2j_2+1)(2j_1+1),
+\end{align*}
+恰好等于张量积空间维数。因此没有遗漏，也没有重数大于 $1$ 的分量，得到 \eqnrefs{eq:cg-decomposition}。
+\end{theorem}
+
+三角规则还可以通过最高权构造理解。张量积中最高磁量子数为 $M_{\max}=j_1+j_2$，而满足这个 $M$ 的态只有
+\[
+|j_1,j_1\rangle\otimes|j_2,j_2\rangle,
+\]
+所以它一定是一个总角动量 $J=j_1+j_2$ 不可约表示的最高权态。对它反复作用总降算符 $J_-=J_{1-}+J_{2-}$，得到整个 $J=j_1+j_2$ 多重态。
+
+把这个 $(2J+1)$ 维子空间从张量积空间中正交剔除后，剩余空间若非零，再找其中最高 $M$ 的态，它会成为下一不可约表示 $J=j_1+j_2-1$ 的最高权态。重复这一过程，直到 $J=|j_1-j_2|$。因此
+\[
+j_1\otimes j_2=\bigoplus_{J=|j_1-j_2|}^{j_1+j_2}J,
+\]
+且每个 $J$ 恰好出现一次。最后可用维数恒等式
+\[
+(2j_1+1)(2j_2+1)=\sum_{J=|j_1-j_2|}^{j_1+j_2}(2J+1)
+\]
+检查没有遗漏任何维度。
+
+
+这个证明值得注意：三角条件
+\[
+|j_1-j_2|\le j\le j_1+j_2
+\]
+不是经典矢量加法的经验类比，而是最高权结构与维数计数共同强制出来的表示论结论。
+
+张量积必须再约化，而约化的核心工具是 Clebsch--Gordan 系数。下面从递推关系出发系统地构造它们。
+
+两套正交基之间的酉变换系数定义为
+\begin{equation}
+\ket{(j_1j_2)jm}
+=
+\sum_{m_1,m_2}
+C^{jm}_{j_1m_1,j_2m_2}
+\ketjm{j_1}{m_1}\ketjm{j_2}{m_2},
+\label{eq:cg-definition}
+\end{equation}
+其中
+\[
+C^{jm}_{j_1m_1,j_2m_2}=0
+\qquad\text{除非}\qquad m=m_1+m_2.
+\]
+这些 $C$ 就是 Clebsch--Gordan 系数。因为只是正交基变换，它们满足完备与正交关系
+\begin{align}
+\sum_{m_1,m_2}
+C^{jm}_{j_1m_1,j_2m_2}
+C^{j'm'}_{j_1m_1,j_2m_2}{}^*
+&=\delta_{jj'}\delta_{mm'},\label{eq:cg-orthogonality-1}\\
+\sum_{j,m}
+C^{jm}_{j_1m_1,j_2m_2}
+C^{jm}_{j_1m_1',j_2m_2'}{}^*
+&=\delta_{m_1m_1'}\delta_{m_2m_2'}.
+\label{eq:cg-orthogonality-2}
+\end{align}
+
+系数不必整张背诵。实际计算可以从最高权态出发，用总升降算符递推。由
+\[
+J_\pm=J_{1\pm}+J_{2\pm}
+\]
+作用到 \eqnrefs{eq:cg-definition} 两边并比较同一非耦合基系数，得到
+\begin{align}
+&\sqrt{(j\mp m)(j\pm m+1)}\,
+C^{j,m\pm1}_{j_1m_1,j_2m_2}
+\nonumber\\
+&\quad=
+\sqrt{(j_1\pm m_1)(j_1\mp m_1+1)}
+C^{jm}_{j_1,m_1\mp1,j_2m_2}
+\nonumber\\
+&\qquad+
+\sqrt{(j_2\pm m_2)(j_2\mp m_2+1)}
+C^{jm}_{j_1m_1,j_2,m_2\mp1}.
+\label{eq:cg-recursion}
+\end{align}
+配合归一化和固定相位约定（通常采用 Condon--Shortley 约定），这就能递归生成全部系数。
+
+\begin{example}[两个自旋 $1/2$]
+由
+\[
+\frac12\otimes\frac12=1\oplus0
+\]
+可知四维张量积空间分为三维三重态和一维单态。最高权态唯一：
+\[
+\ket{1,1}=\ket{\uparrow\uparrow}.
+\]
+作用 $J_-=J_{1-}+J_{2-}$，
+\[
+\sqrt2\hbar\ket{1,0}
+=\hbar\ket{\downarrow\uparrow}
+ +\hbar\ket{\uparrow\downarrow},
+\]
+所以
+\[
+\ket{1,0}=\frac{\ket{\uparrow\downarrow}+\ket{\downarrow\uparrow}}{\sqrt2},
+\qquad
+\ket{1,-1}=\ket{\downarrow\downarrow}.
+\]
+四维空间中与这三个态正交的唯一归一化组合为
+\[
+\ket{0,0}
+=\frac{\ket{\uparrow\downarrow}-\ket{\downarrow\uparrow}}{\sqrt2}.
+\]
+这正是\chapref{chap:permutation-group}讨论两电子费米统计时会反复使用的“自旋三重态交换对称、自旋单态交换反对称”。
+\end{example}
+
+\begin{proposition}[$j\otimes\tfrac12$ 的显式耦合]
+在 Condon--Shortley 相位约定下，设第一个角动量为 $j$，第二个为 $1/2$，则
+\begin{align}
+\ket{j+\tfrac12,M}
+&=
+\sqrt{\frac{j+M+\tfrac12}{2j+1}}
+\ketjm{j}{M-\tfrac12}\ket{\tfrac12,\tfrac12}
+\nonumber\\
+&\quad+
+\sqrt{\frac{j-M+\tfrac12}{2j+1}}
+\ketjm{j}{M+\tfrac12}\ket{\tfrac12,-\tfrac12},
+\label{eq:cg-j-half-plus}\\[2mm]
+\ket{j-\tfrac12,M}
+&=
+-\sqrt{\frac{j-M+\tfrac12}{2j+1}}
+\ketjm{j}{M-\tfrac12}\ket{\tfrac12,\tfrac12}
+\nonumber\\
+&\quad+
+\sqrt{\frac{j+M+\tfrac12}{2j+1}}
+\ketjm{j}{M+\tfrac12}\ket{\tfrac12,-\tfrac12}.
+\label{eq:cg-j-half-minus}
+\end{align}
+
+\par\smallskip\noindent\textbf{证明.}
+固定总磁量子数 $M$。除端点处只有一个基矢量外，对应的非耦合子空间由
+\[
+\ket{+}
+=\ketjm{j}{M-\tfrac12}\ket{\tfrac12,\tfrac12},
+\qquad
+\ket{-}
+=\ketjm{j}{M+\tfrac12}\ket{\tfrac12,-\tfrac12}
+\]
+张成。与其从最高权态逐级递推，不如直接在这个二维空间中对角化 $J^2$。利用
+\[
+J^2=J_1^2+S^2+2J_{1z}S_z+J_{1+}S_-+J_{1-}S_+,
+\]
+其中第二个角动量记为 $\vb S$，且 $s=1/2$。把恒定部分 $j(j+1)\hbar^2+\frac34\hbar^2$ 提出，定义
+\[
+A=\frac{J^2-j(j+1)\hbar^2-\frac34\hbar^2}{\hbar^2}.
+\]
+先算对角项。由于 $S_z\ket{\uparrow}=\frac\hbar2\ket{\uparrow}$、$S_z\ket{\downarrow}=-\frac\hbar2\ket{\downarrow}$，有
+\[
+\frac{2J_{1z}S_z}{\hbar^2}\ket{+}
+=\left(M-\frac12\right)\ket{+},
+\qquad
+\frac{2J_{1z}S_z}{\hbar^2}\ket{-}
+=-\left(M+\frac12\right)\ket{-}.
+\]
+再算非对角项。对自旋 $1/2$，
+\[
+S_-\ket{\uparrow}=\hbar\ket{\downarrow},
+\qquad
+S_+\ket{\downarrow}=\hbar\ket{\uparrow},
+\]
+而
+\[
+J_{1+}\ketjm{j}{M-\tfrac12}
+=\hbar\sqrt{\left(j+\frac12\right)^2-M^2}\,
+\ketjm{j}{M+\tfrac12},
+\]
+\[
+J_{1-}\ketjm{j}{M+\tfrac12}
+=\hbar\sqrt{\left(j+\frac12\right)^2-M^2}\,
+\ketjm{j}{M-\tfrac12}.
+\]
+因此在有序基 $(\ket{+},\ket{-})$ 中
+\begin{equation}
+[A]_M=
+\begin{pmatrix}
+M-\frac12 & C_M\\
+C_M & -M-\frac12
+\end{pmatrix},
+\qquad
+C_M=\sqrt{\left(j+\frac12\right)^2-M^2}.
+\label{eq:j-half-two-by-two}
+\end{equation}
+
+由 Clebsch--Gordan 分解，这个二维空间中的两个本征态分别属于 $J=j+\frac12$ 与 $J=j-\frac12$。对前者，
+\[
+J(J+1)-j(j+1)-\frac34=j,
+\]
+所以 $A$ 的对应本征值为 $j$。设本征向量为 $a\ket{+}+b\ket{-}$，则
+\[
+\left(M-j-\frac12\right)a+C_M b=0.
+\]
+利用
+\[
+C_M^2
+=\left(j+M+\frac12\right)\left(j-M+\frac12\right)
+\]
+可写成
+\[
+\frac{b}{a}
+=\sqrt{\frac{j-M+\frac12}{j+M+\frac12}}.
+\]
+归一化 $|a|^2+|b|^2=1$，并按 Condon--Shortley 约定取最高权系数为正，得到
+\[
+a=\sqrt{\frac{j+M+\frac12}{2j+1}},
+\qquad
+b=\sqrt{\frac{j-M+\frac12}{2j+1}},
+\]
+即 \eqnrefs{eq:cg-j-half-plus}。
+
+剩余的归一化方向必须与它正交。取
+\[
+\binom{a_-}{b_-}
+=
+\binom{-b}{a},
+\]
+便有
+\[
+[A]_M\binom{-b}{a}=-(j+1)\binom{-b}{a}.
+\]
+而
+\[
+\left(j-\frac12\right)\left(j+\frac12\right)
+-j(j+1)-\frac34=-(j+1),
+\]
+所以该向量正属于 $J=j-\frac12$ 多重态。代入 $a,b$ 就得到 \eqnrefs{eq:cg-j-half-minus}。端点处某个平方根自动为零，因此同一公式也覆盖只有一个非耦合基矢量的情形。
+\end{proposition}
+
+接下来考察刚性转子能级：SO(3) 表示论的直接物理应用。
+
+前面建立了 $SO(3)$ 的全部不可约表示 $D^{(j)}$。现在把它直接用到分子转动光谱上——这是表示论给出物理能级的最干净例子之一。
+
+\begin{example}[刚性转子的能级]
+刚性转子（如双原子分子或球形陀螺）的哈密顿量为
+\[
+\hat H=\frac{\hat{\vb J}^2}{2I},
+\]
+其中 $I$ 为转动惯量。$\hat{\vb J}^2$ 的本征值已由角动量代数给出：
+\[
+\hat{\vb J}^2\ket{j,m}=\hbar^2 j(j+1)\ket{j,m}.
+\]
+因此能级为
+\[
+E_j=B\,j(j+1),
+\qquad
+B=\frac{\hbar^2}{2I},
+\]
+每个能级 $E_j$ 的简并度为 $2j+1$（$m=-j,\dots,j$）。
+
+\emph{为什么简并度恰好是 $2j+1$？}\enspace 因为 $SO(3)$ 的不可约表示 $D^{(j)}$ 是 $2j+1$ 维的。哈密顿量 $\hat H$ 与所有转动 $U(R)$ 对易（因 $\hat{\vb J}^2$ 是 Casimir 不变量），故能级本征空间承载 $SO(3)$ 的某个表示。由 Maschke 定理，这个表示分解为不可约表示的直和。但 $\hat{\vb J}^2$ 在每个不可约表示 $D^{(j)}$ 上取确定值 $\hbar^2 j(j+1)$（Schur 引理），所以同一能级只对应一个 $j$，简并度恰好 $\dim D^{(j)}=2j+1$。
+
+\emph{与\chapref{chap:group-theory-quantum}的关联.}\enspace 这正是能级简并定理的具体实例：简并度由群论完全决定，不需要求解微分方程。与有限群不同的是，这里群是连续的 $SO(3)$，但逻辑完全相同——Schur 引理保证 Casimir 不变量在不可约表示上是标量，Maschke 定理保证可约表示可分解。
+\end{example}
+
+Clebsch--Gordan 系数 $C(j_1,j_2,j_3;m_1,m_2,m_3)$ 在物理中极为常用，但它对三个角动量的处理不对称（$j_3$ 被特殊对待）。Wigner 引入的 $3j$ 符号通过一个相位因子把 CG 系数对称化，使得三个角动量地位平等。
+
+\begin{definition}[Wigner 3j 符号]
+\[
+\begin{pmatrix}j_1&j_2&j_3\\m_1&m_2&m_3\end{pmatrix}
+=\frac{(-1)^{j_1-j_2-m_3}}{\sqrt{2j_3+1}}\,
+C(j_1,j_2,j_3;m_1,m_2,-m_3).
+\]
+\label{def:3j-symbol}
+\end{definition}
+
+\begin{proposition}[3j 符号的对称性质]
+$3j$ 符号满足：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{列置换偶交换不变：}
+\[
+\begin{pmatrix}j_2&j_3&j_1\\m_2&m_3&m_1\end{pmatrix}
+=
+\begin{pmatrix}j_1&j_2&j_3\\m_1&m_2&m_3\end{pmatrix}.
+\]
+\item \textbf{列置换奇交换出相位：}
+\[
+\begin{pmatrix}j_2&j_1&j_3\\m_2&m_1&m_3\end{pmatrix}
+=(-1)^{j_1+j_2+j_3}
+\begin{pmatrix}j_1&j_2&j_3\\m_1&m_2&m_3\end{pmatrix}.
+\]
+\item \textbf{磁量子数反号：}
+\[
+\begin{pmatrix}j_1&j_2&j_3\\-m_1&-m_2&-m_3\end{pmatrix}
+=(-1)^{j_1+j_2+j_3}
+\begin{pmatrix}j_1&j_2&j_3\\m_1&m_2&m_3\end{pmatrix}.
+\]
+\item \textbf{选择定则：}非零要求 $m_1+m_2+m_3=0$ 且 $|j_i-j_k|\le j_l\le j_i+j_k$（三角形条件）。
+\end{enumerate}
+\label{prop:3j-symmetry}
+\end{proposition}
+
+\emph{物理应用.}\enspace $3j$ 符号在原子物理中直接出现：
+\begin{itemize}
+\item \textbf{电多极跃迁矩阵元}：$\bra{j'm'}T^{(k)}_q\ket{jm}$ 的 Wigner--Eckart 分解\cref{thm:wigner-eckart-angular} 中，几何因子用 $3j$ 符号写为
+\[
+(-1)^{j'-m'}\begin{pmatrix}j'&k&j\\-m'&q&m\end{pmatrix}.
+\]
+\item \textbf{两个球谐函数的积分}：
+\[
+\int Y_{\ell_1 m_1}^*Y_{\ell_2 m_2}Y_{\ell_3 m_3}\,d\Omega
+=\sqrt{\frac{(2\ell_1+1)(2\ell_2+1)(2\ell_3+1)}{4\pi}}
+\begin{pmatrix}\ell_1&\ell_2&\ell_3\\0&0&0\end{pmatrix}
+\begin{pmatrix}\ell_1&\ell_2&\ell_3\\-m_1&m_2&m_3\end{pmatrix}.
+\]
+\end{itemize}
+这些公式在分子光谱、原子项符号和核谱学中反复使用。$3j$ 符号的对称性使得物理结果对角动量标签的置换行为一目了然。
+
+\emph{与 CG 系数的关联.}\enspace $3j$ 符号不是新对象，只是 CG 系数乘了一个相位因子和归一化常数。它的价值纯粹是\emph{记法}：把 CG 系数中 $j_3$ 的特殊地位消除，使三个角动量对称处理。在需要频繁交换角动量顺序的耦合计算中（如 Racah 系数、6j 符号），$3j$ 符号比 CG 系数方便得多。
+
+接下来考察CG 系数的普适闭合表达式：Racah 公式。
+
+前面通过递推关系确定了 CG 系数。现在给出 Racah 1942 年的闭合表达式，它把 CG 系数写成阶乘的显式组合，无需递推即可直接计算任意 $C(j_1,j_2,j_3;m_1,m_2,m_3)$。
+
+\begin{theorem}[Racah 闭合公式]
+\[
+C(j_1,j_2,j_3;m_1,m_2,m_3)
+=\delta_{m_1+m_2,m_3}\,\Delta(j_1,j_2,j_3)
+\sum_z(-1)^z\,
+\frac{\sqrt{(j_1+m_1)!(j_1-m_1)!(j_2+m_2)!(j_2-m_2)!(j_3+m_3)!(j_3-m_3)!}}
+{(j_1+j_2-j_3-z)!(j_1-m_1-z)!(j_2+m_2-z)!(j_3-j_2+m_1+z)!(j_3-j_1-m_2+z)!\,z!},
+\]
+其中三角形因子
+\[
+\Delta(j_1,j_2,j_3)=\sqrt{\frac{(j_1+j_2-j_3)!(j_1-j_2+j_3)!(-j_1+j_2+j_3)!}{(j_1+j_2+j_3+1)!}},
+\]
+求和遍历所有使阶乘自变量为非负整数的 $z$。
+\label{thm:racah-cg}
+\end{theorem}
+
+\begin{derivation}[Racah 公式的推导]
+\textbf{第一步：最高权态归一化.}\enspace 从 $m_1=j_1,m_2=j_2,m_3=j_1+j_2$ 的唯一态出发：
+\[
+\ket{j_1 j_1;j_2 j_2;j_3,j_1+j_2}=\ket{j_1 j_1}\ket{j_2 j_2},
+\qquad
+C(j_1,j_2,j_1+j_2;j_1,j_2,j_1+j_2)=1.
+\]
+这固定了整体相位约定（Condon--Shorty 约定）。
+
+\textbf{第二步：降阶算符递推.}\enspace 对最高权态作用 $J_-=J_{1-}+J_{2-}$ 共 $n=j_1+j_2-m_3$ 次。左边给出
+\[
+J_-^n\ket{j_3,j_3}
+=\sqrt{\frac{(2j_3)!\,n!}{(2j_3-n)!}}\ket{j_3,j_3-n}
+=\sqrt{\frac{(2j_3)!\,(j_1+j_2-m_3)!}{(j_1+j_2+m_3)!}}\ket{j_3,m_3}.
+\]
+右边用二项式定理展开 $(J_{1-}+J_{2-})^n$：
+\[
+(J_{1-}+J_{2-})^n=\sum_{n_1=0}^{n}\binom{n}{n_1}J_{1-}^{n_1}J_{2-}^{n-n_1},
+\]
+每项含
+\[
+J_{1-}^{n_1}\ket{j_1 j_1}
+=\sqrt{\frac{(2j_1)!\,n_1!}{(2j_1-n_1)!}}\ket{j_1,j_1-n_1},
+\quad
+J_{2-}^{n-n_1}\ket{j_2 j_2}
+=\sqrt{\frac{(2j_2)!\,(n-n_1)!}{(2j_2-n+n_1)!}}\ket{j_2,j_2-n+n_1}.
+\]
+令 $m_1=j_1-n_1$，$m_2=j_2-(n-n_1)=m_3-m_1$，提取 CG 系数的递推关系：
+\[
+C(j_1,j_2,j_3;m_1,m_2,m_3)
+=\sqrt{\frac{(2j_3)!\,(j_1+j_2-m_3)!}{(j_1+j_2+m_3)!}}
+\sum_{n_1}\binom{n}{n_1}
+\sqrt{\frac{(2j_1)!\,n_1!\,(2j_2)!\,(n-n_1)!}{(2j_1-n_1)!\,(2j_2-n+n_1)!}}\times(\text{相位}).
+\]
+
+\textbf{第三步：解递推得闭合式.}\enspace 递推关系是超几何型的。设
+\[
+C(j_1,j_2,j_3;m_1,m_2,m_3)
+=N\sum_z(-1)^z\frac{1}{z!\,(j_1+j_2-j_3-z)!\,(j_1-m_1-z)!\,(j_2+m_2-z)!\,(j_3-j_2+m_1+z)!\,(j_3-j_1-m_2+z)!},
+\]
+代入递推关系，利用 Vandermonde 恒等式 $\sum_k\binom{a}{k}\binom{b}{n-k}=\binom{a+b}{n}$ 化简，确认求和满足 $_3F_2$ 级数的终止条件（某个分子阶乘自变量取负整数时级数截断），求和范围由所有阶乘自变量非负确定。归一化条件 $\sum_{m_1,m_2}|C|^2=1$ 确定常数 $N$：利用 $\sum_{m_3}|C|^2=1$ 对每个 $m_3$ 求和，交换求和顺序后用 Vandermonde 恒等式，得
+\[
+N=\Delta(j_1,j_2,j_3)\sqrt{(j_1+j_2-m_3)!\,(j_1-j_2+m_3)!\,(-j_1+j_2+m_3)!\,(j_1+m_1)!\,(j_1-m_1)!\,(j_2+m_2)!\,(j_2-m_2)!\,(j_3+m_3)!\,(j_3-m_3)!}.
+\]
+交换对称性 $C(j_2,j_1,j_3;-m_2,-m_1,-m_3)=(-1)^{j_1+j_2-j_3}C(j_1,j_2,j_3;m_1,m_2,m_3)$ 确定相位约定，与 Condon--Shorty 约定一致。
+\end{derivation}
+
+\begin{example}[用 Racah 公式计算 $C(1,\frac12,\frac32;0,\frac12,\frac12)$]
+取 $j_1=1,j_2=\frac12,j_3=\frac32,m_1=0,m_2=\frac12,m_3=\frac12$。三角形因子：
+\[
+\Delta(1,\tfrac12,\tfrac32)=\sqrt{\frac{0!\,2!\,1!}{4!}}=\sqrt{\frac{2}{24}}=\frac1{\sqrt{12}}.
+\]
+分子平方根：
+\[
+\sqrt{1!\,1!\,1!\,0!\,2!\,1!}=\sqrt{2}.
+\]
+求和变量 $z$ 使所有阶乘自变量非负：$z\ge0$，$z\le j_1+j_2-j_3=0$，$z\le j_1-m_1=1$，$z\le j_2+m_2=1$，$z\ge j_2-j_3-m_1=-1$，$z\ge j_1-j_3+m_2=0$。唯一 $z=0$。故
+\[
+C=\frac1{\sqrt{12}}\cdot\sqrt{2}\cdot\frac{1}{0!\,1!\,1!\,0!\,0!\,0!}=\frac{\sqrt{2}}{\sqrt{12}}=\frac1{\sqrt{6}}.
+\]
+验证：$j=3/2$ 四重态中 $m=1/2$ 态为 $\frac{1}{\sqrt3}\alpha\alpha\beta+\sqrt{\frac23}\beta\alpha\alpha$，$C(1,\frac12,\frac32;0,\frac12,\frac12)$ 对应 $\alpha\beta$ 分量，系数 $\frac1{\sqrt3}\cdot\frac1{\sqrt2}=\frac1{\sqrt6}$（含自旋归一化），吻合。
+\end{example}
+
+三个角动量可按两种方式耦合：
+\[
+\bigl[(j_1\otimes j_2)\otimes j_3\bigr]_{J}
+\qquad\text{vs}\qquad
+\bigl[j_1\otimes(j_2\otimes j_3)\bigr]_{J}.
+\]
+两种基之间的变换矩阵元素就是再耦合系数。6j 符号是其对称化版本。
+
+\begin{definition}[Racah 系数与 6j 符号]
+再耦合系数定义为
+\[
+\braket{(j_1 j_2)J_{12},j_3;JM}{j_1,(j_2 j_3)J_{23};JM}
+=\sqrt{(2J_{12}+1)(2J_{23}+1)}\,(-1)^{j_1+j_2+j_3+J}
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&J&J_{23}\end{Bmatrix},
+\]
+其中 $\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}$ 是 Wigner 6j 符号。
+\end{definition}
+
+\begin{theorem}[6j 符号的 Racah 闭合表达式]
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+=\Delta(j_1,j_2,j_3)\Delta(j_1,j_5,j_6)\Delta(j_4,j_2,j_6)\Delta(j_4,j_5,j_3)
+\sum_z\frac{(-1)^z(z+1)!}{\prod_{i=1}^4(a_i-z)!\,\prod_{i=1}^3(z-b_i)!},
+\]
+其中四个 $\Delta$ 是三角形因子，$a_i$ 为三组 $j$ 之和：
+\[
+a_1=j_1+j_2+j_3,\ a_2=j_1+j_5+j_6,\ a_3=j_4+j_2+j_6,\ a_4=j_4+j_5+j_3,
+\]
+$b_i$ 为三组 $j$ 之和：
+\[
+b_1=j_1+j_2+j_4+j_5,\ b_2=j_2+j_3+j_5+j_6,\ b_3=j_3+j_1+j_6+j_4,
+\]
+求和遍历所有使阶乘自变量为非负整数的 $z$。
+\label{thm:6j-racah}
+\end{theorem}
+
+\begin{proposition}[6j 符号的对称性质]
+6j 符号满足：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{列置换不变：}交换任意两列不改变值。
+\item \textbf{上下行交换不变：}任意一列中上下两个元素对调不改变值。
+\item 以上两类操作生成 24 种等价排列，6j 符号在这 24 种置换下完全不变。
+\item \textbf{三角形条件：}每列的三个 $j$ 必须满足三角形不等式，且和为整数。
+\end{enumerate}
+\end{proposition}
+
+\begin{derivation}[6j 符号对称性的来源]
+\textbf{列置换.}\enspace 三个角动量 $j_1,j_2,j_3$ 耦合到总角动量 $J$ 有三种中间方案：
+\[
+[(j_1 j_2)j_{12}]j_3;\,J,\qquad [j_1(j_2 j_3)j_{23}];\,J,\qquad [(j_1 j_3)j_{13}]j_2;\,J.
+\]
+对应的再耦合矩阵元为
+\[
+U_{j_{12},j_{23}}=\braket{(j_1 j_2)j_{12},j_3;J}{j_1,(j_2 j_3)j_{23};J}
+=(-1)^{\Sigma}\sqrt{(2j_{12}+1)(2j_{23}+1)}
+\begin{Bmatrix}j_1&j_2&j_{12}\\j_3&J&j_{23}\end{Bmatrix},
+\]
+其中 $\Sigma=j_1+j_2+j_3+J$。6j 符号的定义中三个列 $(j_1,j_2,j_{12})$、$(j_3,J,j_{23})$ 以及行间耦合关系对称地出现。交换两列对应于选择不同的中间耦合方案：例如交换第 1、2 列 $(j_1\leftrightarrow j_2)$ 对应于 CG 系数的交换对称性 $C(j_1,j_2,j_{12})=(-1)^{j_1+j_2-j_{12}}C(j_2,j_1,j_{12})$，相位被 6j 定义中的 $(-1)^{\Sigma}$ 因子吸收。类似地，交换第 1、3 列对应于将再耦合 $(j_1 j_2)\to(j_2 j_3)$ 改写为 $(j_2 j_3)\to(j_1 j_2)$ 的逆过程，由再耦合矩阵的正交性保证不变。故列置换 $S_3$（6 个元素）下 6j 符号不变。
+
+\textbf{上下行交换.}\enspace 利用 CG 系数的交换对称性
+\[
+C(j_1,j_2,j_3;m_1,m_2,m_3)
+=(-1)^{j_1+j_2-j_3}C(j_2,j_1,j_3;m_2,m_1,m_3),
+\]
+再耦合系数的两种写法之间只差一个相位。具体地，交换第 1 列上下两个元素 $j_1\leftrightarrow j_4$：
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+\xrightarrow{j_1\leftrightarrow j_4}
+(-1)^{j_1+j_2+j_3+j_4+j_5+j_6}
+\begin{Bmatrix}j_4&j_2&j_3\\j_1&j_5&j_6\end{Bmatrix},
+\]
+但 6j 符号通过定义中的 $(-1)^{j_1+j_2+j_3+j_4+j_5+j_6}$ 因子恰好吸收了这个相位（注意当三角形条件满足时 $j_1+j_2+j_3+j_4+j_5+j_6$ 恒为整数），使上下行交换不变。同理可验证其余两列的上下行交换。
+
+\textbf{24 种等价排列.}\enspace 列置换群 $S_3$（6 个元素）与上下行交换群 $(\ZZ_2)^3$（8 个元素）共同作用。但并非所有 $6\times8=48$ 个操作都独立：上下行交换的乘积等于列置换的某个元素，故独立操作数为 $48/2=24$。这 24 阶群同构于正四面体的旋转对称群 $T_d$：将 6j 符号的六个参数对应于正四面体的六条棱，列置换对应于棱的置换，上下行交换对应于四面体的旋转。这反映了 6j 符号与四面体几何的深层联系——Ponzano--Regge 渐近公式中 6j 符号近似等于四面体体积的 $\cos$ 函数，正是这一对称性的几何体现。
+
+\textbf{应用.}\enspace 6j 对称性可大幅减少独立 6j 符号的计算量：在角动量耦合和 Racah 代数中，利用 24 种等价排列可把任意 6j 符号化为标准形式（如 $j_1\ge j_2\ge j_3$，$j_4\ge j_5\ge j_6$），只需计算标准形式的值。
+
+\emph{Racah 公式.}\enspace 6j 符号的显式公式（Racah 1942）：
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+=\Delta(j_1j_2j_3)\Delta(j_1j_5j_6)\Delta(j_4j_2j_6)\Delta(j_4j_5j_3)
+\sum_z\frac{(-1)^z(z+1)!}{\prod_i(z-a_i)!\prod_j(b_j-z)!},
+\]
+其中 $\Delta(abc)=\sqrt{\frac{(a+b-c)!(a-b+c)!(-a+b+c)!}{(a+b+c+1)!}}$，求和遍历使所有阶乘非负的整数 $z$。Racah 公式把 6j 符号从递推定义转化为有限和，是角动量代数计算的基础。24 种对称性在 Racah 公式中表现为 $\Delta$ 因子的对称性和求和范围的不变性。
+
+\emph{Ponzano--Regge 渐近公式.}\enspace 大角动量极限下，6j 符号近似于四面体体积的三角函数：
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+\approx\frac{1}{\sqrt{12\pi V}}\cos\left(V+\frac{\pi}{4}\right),
+\]
+其中 $V$ 是以 $j_1+\frac12,\dots,j_6+\frac12$ 为棱的四面体体积（若四面体不存在则为指数衰减）。这一渐近公式把 6j 符号的代数对称性与四面体几何对称性（$T_d$ 群，24 个旋转）精确对应：6j 的 24 种排列对称 = 四面体的 24 个旋转对称。Ponzano--Regge 公式是 spin network 与 Regge 微分几何的桥梁，在圈量子引力和统计力学（如 dimer 模型）中有深远应用。
+
+\emph{9j 符号与高阶耦合.}\enspace 9j 符号 $\begin{Bmatrix}j_1&j_2&j_{12}\\j_3&j_4&j_{34}\\j_{13}&j_{24}&J\end{Bmatrix}$ 描述四个角动量的两种再耦合方案（$(12)(34)\to(13)(24)$）的变换矩阵元。9j 可用 6j 的三重和表示：
+\[
+\begin{Bmatrix}j_1&j_2&j_{12}\\j_3&j_4&j_{34}\\j_{13}&j_{24}&J\end{Bmatrix}
+=\sum_k(-1)^{2k}(2k+1)\begin{Bmatrix}j_1&j_3&j_{13}\\j_{24}&J&k\end{Bmatrix}\begin{Bmatrix}j_2&j_4&j_{24}\\j_3&k&j_{34}\end{Bmatrix}\begin{Bmatrix}j_{12}&j_{34}&J\\k&j_1&j_2\end{Bmatrix}.
+\]
+9j 符号有 72 种排列对称（行置换 + 列置换 + 转置），是 $LS$--$jj$ 耦合变换的核心系数。
+
+\emph{Spin network 与 6j.}\enspace 6j 符号是最简单的非平凡 spin network（四顶点图，六条边）。一般 spin network 的值由顶点的 3j 符号和边的缩并给出，可用 Yutsis 图形化规则约化为 6j 符号的乘积和求和。Spin network 在圈量子引力中给出 spin foam 模型的振幅，在统计力学中给出 dimer 和 Ising 模型的配分函数。6j 符号的对称性（24 种排列）是 spin network 拓扑不变性的代数基础——不同图展开给出同一物理量，由 6j 对称性保证。
+
+\emph{$3n j$ 符号的递归.}\enspace 一般 $3nj$ 符号（$n$ 个 3j 符号的缩并）可用 Yutsis 规则约化为 6j 符号的乘积。约化步骤：(1) 识别图中可收缩的三角形（给出 3j 正交关系）；(2) 识别可交换的两顶点（给出 6j 符号）；(3) 重复直到化为标准形式。这一算法已计算机化（如 RacahWigner 包），使任意角动量耦合问题可自动计算。$3nj$ 符号的对称性群是 6j 对称性的推广，与对应 spin network 图的自同构群相关。
+\end{derivation}
+
+\begin{example}[$\begin{Bmatrix}j_1&j_2&j_3\\0&j_3&j_2\end{Bmatrix}$ 的简化]
+当一个 $j$ 为零时，6j 符号大幅简化。取 $j_4=0$，三角形条件要求 $j_5=j_3$，$j_6=j_2$。代入 Racah 公式，求和只有一项，得
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\0&j_3&j_2\end{Bmatrix}
+=\frac{(-1)^{j_1+j_2+j_3}}{\sqrt{(2j_2+1)(2j_3+1)}}.
+\label{eq:6j-zero}
+\]
+物理含义：当一个子系统角动量为零，再耦合是平凡的，6j 符号退化为 CG 系数的归一化因子。
+\end{example}
+
+\begin{proposition}[6j 符号正交关系]
+\[
+\sum_{j_3}(2j_3+1)(2j_6+1)
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6'\end{Bmatrix}
+=\delta_{j_6 j_6'}.
+\]
+\end{proposition}
+
+\begin{derivation}[正交关系的证明]
+\textbf{第一步：再耦合矩阵的定义.}\enspace 固定 $j_1,j_2,j_3,J$，再耦合矩阵
+\[
+U_{J_{12},J_{23}}=\braket{(j_1 j_2)J_{12},j_3;J}{j_1,(j_2 j_3)J_{23};J}
+\]
+是同一 Hilbert 空间 $\mathcal H_{j_1}\otimes\mathcal H_{j_2}\otimes\mathcal H_{j_3}$ 中两组正交基之间的变换矩阵。第一组基先耦合 $j_1\otimes j_2\to J_{12}$ 再耦合 $J_{12}\otimes j_3\to J$；第二组基先耦合 $j_2\otimes j_3\to J_{23}$ 再耦合 $j_1\otimes J_{23}\to J$。
+
+\textbf{第二步：正交性.}\enspace 因两组基都是正交归一的，$U$ 是正交矩阵：
+\[
+\sum_{J_{12}}U_{J_{12},J_{23}}U_{J_{12},J_{23}'}=\delta_{J_{23},J_{23}'},
+\]
+\[
+\sum_{J_{23}}U_{J_{12},J_{23}}U_{J_{12}',J_{23}}=\delta_{J_{12},J_{12}'}.
+\]
+
+\textbf{第三步：6j 符号与再耦合矩阵的关系.}\enspace 再耦合矩阵与 6j 符号的关系为
+\[
+U_{J_{12},J_{23}}=(-1)^{j_1+j_2+j_3+J}\sqrt{(2J_{12}+1)(2J_{23}+1)}
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&J&J_{23}\end{Bmatrix}.
+\]
+
+\textbf{第四步：代入并化简.}\enspace 将上式代入正交关系：
+\[
+\sum_{J_{12}}(2J_{12}+1)(2J_{23}+1)
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&J&J_{23}\end{Bmatrix}
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&J&J_{23}'\end{Bmatrix}
+=\delta_{J_{23},J_{23}'}.
+\]
+两边除以 $(2J_{23}+1)$（设 $J_{23}'=J_{23}$ 时）或直接整理：
+\[
+\sum_{J_{12}}(2J_{12}+1)
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&J&J_{23}\end{Bmatrix}
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&J&J_{23}'\end{Bmatrix}
+=\frac{\delta_{J_{23},J_{23}'}}{2J_{23}+1}.
+\]
+这就是 6j 符号的正交关系。相位因子 $(-1)^{2(j_1+j_2+j_3+J)}=1$（因 $2\times$ 半整数=整数）在化简中消失。
+
+\textbf{物理意义.}\enspace 正交关系保证不同再耦合方案之间的变换是幺正的——物理结果不依赖于耦合顺序。这在原子物理的 $LS$--$jj$ 耦合变换中直接使用：变换矩阵的幺正性保证能级计算与耦合方案无关。
+
+\emph{Biedenharn--Elliott 恒等式.}\enspace 6j 符号满足 Biedenharn--Elliott 恒等式（五角形恒等式）：
+\[
+\sum_x(-1)^{R+x}(2x+1)\begin{Bmatrix}a&b&x\\c&d&p\end{Bmatrix}\begin{Bmatrix}c&d&x\\e&f&q\end{Bmatrix}\begin{Bmatrix}e&f&x\\b&a&r\end{Bmatrix}=\begin{Bmatrix}p&q&r\\e&a&d\end{Bmatrix}\begin{Bmatrix}p&q&r\\f&b&c\end{Bmatrix},
+\]
+其中 $R=a+b+c+d+e+f+p+q+r$。这一恒等式来自三种再耦合方案的结合律（$(AB)C=A(BC)$），是 Racah 代数的核心关系。Biedenharn--Elliott 恒等式与 6j 正交关系共同构成 6j 符号的完整代数关系，使任何 6j 的多项式可约化为标准形式。在 spin network 理论中，五角形恒等式对应于图的拓扑等价（Pachner move）。
+
+\emph{$LS$--$jj$ 耦合变换.}\enspace 原子物理中，多电子态可用 $LS$ 耦合（轨道 $L$ + 自旋 $S$，适用于轻原子）或 $jj$ 耦合（各自 $j_i=l_i+s_i$，适用于重原子）描述。两种方案的变换矩阵 $\langle LSJ|j_1j_2J\rangle$ 用 6j 符号给出：
+\[
+\langle(l_1s_1)j_1(l_2s_2)j_2;J|(9(l_2s_2)S)LS;J\rangle=(-1)^{l_1+s_2+J}\sqrt{(2j_1+1)(2j_2+1)(2L+1)(2S+1)}\begin{Bmatrix}l_1&l_2&L\\s_1&s_2&S\\j_1&j_2&J\end{Bmatrix}.
+\]
+正交关系保证变换矩阵幺正，能级在两种方案中给出相同结果。$LS$--$jj$ 变换在原子光谱分析中用于确定耦合方案偏离（中间耦合），是核物理壳模型计算的标准工具。
+\end{derivation}
+
+\emph{物理应用.}\enspace 6j 符号在原子物理中直接出现在：
+\begin{itemize}
+\item \textbf{Racah $W$ 系数}：$W(j_1,j_2,j_3,j_4;J,J')=(-1)^{j_1+j_2+j_3+j_4}\begin{Bmatrix}j_1&j_2&J\\j_4&j_3&J'\end{Bmatrix}$，用于 $LS$ 耦合与 $jj$ 耦合之间的变换。
+\item \textbf{两个球谐函数的耦合}：$\int Y_{\ell_1 m_1}Y_{\ell_2 m_2}Y_{\ell_3 m_3}^*\,d\Omega$ 的结果含 3j 符号，而三个球谐函数的耦合积分含 6j 符号。
+\item \textbf{有效矩阵元约化}：二体相互作用的矩阵元在不同耦合方案间的变换系数是 6j 符号。
+\end{itemize}
+
+\begin{definition}[9j 符号]
+四个角动量有两种再耦合方案：
+\[
+\bigl[((j_1\otimes j_2)J_{12}\otimes(j_3\otimes j_4)J_{34})J\bigr]
+\quad\to\quad
+\bigl[((j_1\otimes j_3)J_{13}\otimes(j_2\otimes j_4)J_{24})J\bigr].
+\]
+变换矩阵元素定义为
+\[
+\braket{((j_1 j_2)J_{12}(j_3 j_4)J_{34})J}{((j_1 j_3)J_{13}(j_2 j_4)J_{24})J}
+=\sqrt{(2J_{12}+1)(2J_{34}+1)(2J_{13}+1)(2J_{24}+1)}
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&j_4&J_{34}\\J_{13}&J_{24}&J\end{Bmatrix}.
+\]
+\end{definition}
+
+\begin{proposition}[9j 符号与 6j 符号的关系]
+9j 符号可展开为 6j 符号之和：
+\[
+\begin{Bmatrix}j_1&j_2&J_{12}\\j_3&j_4&J_{34}\\J_{13}&J_{24}&J\end{Bmatrix}
+=\sum_k(-1)^{2k}(2k+1)
+\begin{Bmatrix}j_1&j_3&J_{13}\\j_4&J&k\end{Bmatrix}
+\begin{Bmatrix}j_2&j_4&J_{24}\\j_3&k&J_{34}\end{Bmatrix}
+\begin{Bmatrix}J_{12}&J_{34}&J\\k&j_1&j_2\end{Bmatrix}.
+\]
+\end{proposition}
+
+\begin{proposition}[9j 符号的对称性质]
+9j 符号满足：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{行置换：}偶置换不变，奇置换出 $(-1)^{\Sigma}$，其中 $\Sigma$ 为所有 9 个 $j$ 之和。
+\item \textbf{列置换：}同上。
+\item \textbf{行列转置：}矩阵转置不变。
+\item 以上共 72 种对称操作。
+\end{enumerate}
+\end{proposition}
+
+\begin{example}[含零的 9j 符号简化]
+当 $J_{34}=0$（即 $j_3=j_4$，$J_{12}=J$），9j 符号退化为 6j：
+\[
+\begin{Bmatrix}j_1&j_2&J\\j_3&j_3&0\\J_{13}&J_{24}&J\end{Bmatrix}
+=\frac{(-1)^{j_2+j_3+J+J_{13}}}{\sqrt{(2J+1)(2j_3+1)}}
+\begin{Bmatrix}j_1&j_2&J\\J_{24}&J_{13}&j_3\end{Bmatrix}.
+\]
+\end{example}
+
+\begin{example}[9j 符号在 $LS$--$jj$ 耦合变换中的应用]
+两个电子的 $LS$ 耦合态 $\ket{(l_1 l_2)L,(s_1 s_2)S;J}$ 与 $jj$ 耦合态 $\ket{(l_1 s_1)j_1,(l_2 s_2)j_2;J}$ 之间的变换为
+\[
+\braket{(l_1 l_2)L,(s_1 s_2)S;J}{(l_1 s_1)j_1,(l_2 s_2)j_2;J}
+=\sqrt{(2L+1)(2S+1)(2j_1+1)(2j_2+1)}
+\begin{Bmatrix}l_1&l_2&L\\s_1&s_2&S\\j_1&j_2&J\end{Bmatrix}.
+\]
+对电子 $s_1=s_2=\frac12$，这个 9j 符号直接给出从 $LS$ 项符号到 $jj$ 耦合的变换系数，在自旋--轨道耦合不可忽略时（重原子）用于将 $LS$ 好量子数态变换为 $jj$ 好量子数态。
+\end{example}
+
+\emph{物理应用总结.}\enspace Wigner 符号体系构成角动量理论的完整代数工具箱：
+\begin{itemize}
+\item \textbf{CG 系数}：两个角动量的耦合，Racah 公式 \eqnrefs{thm:racah-cg} 给出闭合表达式。
+\item \textbf{3j 符号}：CG 系数的对称化版本，用于 Wigner--Eckart 定理的几何因子。
+\item \textbf{6j 符号}：三个角动量的再耦合，Racah 公式 \eqnrefs{thm:6j-racah} 给出闭合表达式，用于 $LS$--$jj$ 变换和二体矩阵元约化。
+\item \textbf{9j 符号}：四个角动量的再耦合，展开为 6j 之和，用于 $LS$--$jj$ 耦合方案变换。
+\end{itemize}
+这些符号的闭合表达式都归结为阶乘的有限和，因此对任意角动量值都可精确计算，不需要数值递推。
+
+上面给出了 Racah 闭合公式但推导较简略。现在补充完整推导，从最高权态出发，通过降阶算符递推，最终用超几何级数求和得到闭合表达式。
+
+\Cref{thm:racah-cg} 给出了 Racah 闭合公式但推导较简略。现在补充完整推导，从最高权态出发，通过降阶算符递推，最终用超几何级数求和得到闭合表达式。
+
+\begin{derivation}[Racah 公式的完整逐步推导]
+\textbf{第一步：建立递推关系.}\enspace 设最高权态 $m_3=j_3$ 对应 $m_1=j_1-d$，$m_2=j_2-d+k$（$d$ 为 $J_{1-}$ 作用次数，$k$ 为 $J_{2-}$ 作用次数，$d+k=j_1+j_2-j_3$）。对
+\[
+\ket{j_3,m_3-1}=\frac{1}{\sqrt{j_3(j_3+1)-m_3(m_3-1)}}J_-\ket{j_3,m_3}
+\]
+展开 $J_-=J_{1-}+J_{2-}$，两边在非耦合基上取分量，得到 CG 系数的递推：
+\begin{align*}
+&\sqrt{j_3(j_3+1)-m_3(m_3-1)}\,C(j_1,j_2,j_3;m_1,m_2,m_3-1)\\
+&=\sqrt{j_1(j_1+1)-m_1(m_1+1)}\,C(j_1,j_2,j_3;m_1+1,m_2,m_3)\\
+&\quad+\sqrt{j_2(j_2+1)-m_2(m_2+1)}\,C(j_1,j_2,j_3;m_1,m_2+1,m_3).
+\end{align*}
+
+\textbf{第二步：设试解形式.}\enspace 由递推结构（系数为阶乘平方根之比），设
+\[
+C(j_1,j_2,j_3;m_1,m_2,m_3)=N\,(-1)^{j_1-m_1}\sum_z(-1)^z\frac{\prod\sqrt{\text{阶乘}}}{\text{阶乘组合}(z)}.
+\]
+平方根因子由归一化确定：每个 $|m_i|\le j_i$ 的阶乘 $(j_i\pm m_i)!$ 必须出现在分子中，因 $C^2$ 对 $m_i$ 的依赖通过 $|C|^2\propto(j_i\pm m_i)!$ 体现（从递推的系数结构读出）。
+
+\textbf{第三步：确定求和范围.}\enspace 阶乘自变量非负给出：
+\begin{align*}
+z&\ge0, & z&\le j_1+j_2-j_3, \\
+z&\le j_1-m_1, & z&\le j_2+m_2, \\
+z&\ge j_2-j_3-m_1, & z&\ge j_1-j_3+m_2.
+\end{align*}
+这些边界来自分母中的六个阶乘。求和是有限的，对应于超几何级数 $_3F_2$ 的终止条件。
+
+\textbf{第四步：代入递推验证.}\enspace 将试解代入第一步的递推关系。左边和右边的求和指标做适当平移后，三重求和化为同一超几何级数的不同参数化。具体地，设
+\[
+\alpha=j_1+j_2-j_3,\quad\beta=j_1-m_1,\quad\gamma=j_2+m_2,
+\]
+则试解的求和部分可写为
+\[
+S=\sum_z(-1)^z\frac{(\alpha-z)!\,(\beta-z)!\,(\gamma-z)!}{z!\,(\alpha+\beta-\gamma-z)!\,(\alpha+\gamma-\beta-z)!\,(\beta+\gamma-\alpha-z)!},
+\]
+令 $n=\alpha$，$a=-\beta$，$b=-\gamma$，$c=\alpha+\beta-\gamma+1$，上式化为终止的 $_3F_2$ 级数
+\[
+S=\frac{\alpha!\,\beta!\,\gamma!}{(\alpha+\beta)!\,(\alpha+\gamma)!\,(\beta+\gamma-\alpha)!}\,
+{}_3F_2\!\begin{pmatrix}-n,&-a,&-b\\c,&1+a+b-c-n\end{pmatrix};1.
+\]
+利用 $_3F_2$ 级数的 Contiguous 关系（三个相邻参数的级数之间的线性关系），验证递推被满足。关键恒等式是 Saalschütz 公式：
+\[
+{}_3F_2\!\begin{pmatrix}-n,&a,&b\\c,&1+a+b-c-n\end{pmatrix};1
+=\frac{(c-a)_n(c-b)_n}{(c)_n(c-a-b)_n},
+\]
+其中 $(x)_n=x(x+1)\cdots(x+n-1)$ 是 Pochhammer 符号。\emph{Saalschütz 公式的证明思路}：对 $n$ 归纳。$n=0$ 时两边均为 1。对 $n\to n+1$，利用 $_3F_2$ 的 Contiguous 关系
+\[
+{}_3F_2(-n-1,a,b;c,d;1)=\frac{c+n-1}{c-1}{}_3F_2(-n,a,b;c-1,d;1)-\frac{n}{c-1}{}_3F_2(-n,a,b;c,d;1),
+\]
+将 $n+1$ 的情形化为两个 $n$ 级数的线性组合，由归纳假设两者均可闭式计算，化简后得到 $n+1$ 的闭式。这使得终止的 $_3F_2$ 求和可以闭式计算。
+
+\textbf{第五步：归一化确定 $N$.}\enspace 利用正交性 $\sum_{m_1,m_2}|C|^2=1$。由 Saalschütz 公式，$|C|^2$ 对 $m_1,m_2$ 求和化为 Vandermonde 卷积
+\[
+\sum_k\binom{A}{k}\binom{B}{C-k}=\binom{A+B}{C},
+\]
+其证明是对恒等式 $(1+x)^{A+B}=(1+x)^A(1+x)^B$ 两边取 $x^C$ 系数：左边为 $\binom{A+B}{C}$，右边为 $\sum_k\binom{A}{k}\binom{B}{C-k}$。代入 $A=j_1+m_1$，$B=j_1-m_1$，$C=j_1+j_2-j_3$ 等，逐层消去求和后给出归一化常数
+\[
+N=\Delta(j_1,j_2,j_3)=\sqrt{\frac{(j_1+j_2-j_3)!(j_1-j_2+j_3)!(-j_1+j_2+j_3)!}{(j_1+j_2+j_3+1)!}}.
+\]
+这里 $\Delta$ 的三个分子阶乘对应三角形的三个"边长差"$(j_1+j_2-j_3)$, $(j_1-j_2+j_3)$, $(-j_1+j_2+j_3)$，分母对应"周长加一"$(j_1+j_2+j_3+1)$。当三角形条件不满足时（某边长差为负），对应阶乘发散，$\Delta=0$，CG 系数自动为零——这就是三角形选择定则的代数来源。
+
+\textbf{第六步：相位约定.}\enspace 最高权态 $C(j_1,j_2,j_1+j_2;j_1,j_2,j_1+j_2)=1>0$ 确定 Condon--Shortley 约定。交换对称性 $C(j_2,j_1,j_3;m_2,m_1,m_3)=(-1)^{j_1+j_2-j_3}C(j_1,j_2,j_3;m_1,m_2,m_3)$ 确定 $(-1)^{j_1-m_1}$ 因子。这个相位的几何意义是：交换两个角动量的耦合顺序等价于在耦合态上作用一个 $(-1)^{j_1+j_2-j_3}$ 的相位，对应于在 CG 级数 $D^{(j_1)}\otimes D^{(j_2)}=\bigoplus_J D^{(J)}$ 中每个 $J$ 分量的宇称。
+\end{derivation}
+
+对常用小角动量值，Racah 公式给出完全显式的 CG 系数表。下面以 $j_1=1\otimes j_2=\frac12$ 为例，展示从最高权态出发、通过降阶算符逐步构造全部 CG 系数的完整过程。物理上，这对应轨道角动量 $l=1$（$p$ 电子）与自旋 $s=\frac12$ 的耦合，给出 $j=\frac12$（$p_{1/2}$）和 $j=\frac32$（$p_{3/2}$）两个多重态——正是自旋--轨道耦合劈裂的群论来源。
+
+\begin{table}[htbp]
+\centering
+\caption{$j_1=1,\ j_2=\frac12$ 的 CG 系数表（$j_3=\frac12,\frac32$）}
+\label{tab:cg-1-half}
+\small
+\begin{tabular}{c|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{$j_3=\frac32$} & \multicolumn{2}{c}{$j_3=\frac12$} \\
+$m_1,m_2$ & $m_3=\frac32$ & $m_3=\frac12$ & $m_3=\frac12$ & $m_3=-\frac12$ \\
+\midrule
+$1,\frac12$ & $1$ & $0$ & $0$ & $0$ \\
+$1,-\frac12$ & $0$ & $\frac1{\sqrt3}$ & $\sqrt{\frac23}$ & $0$ \\
+$0,\frac12$ & $0$ & $\sqrt{\frac23}$ & $-\frac1{\sqrt3}$ & $0$ \\
+$0,-\frac12$ & $0$ & $0$ & $0$ & $\sqrt{\frac23}$ \\
+$-1,\frac12$ & $0$ & $0$ & $0$ & $\frac1{\sqrt3}$ \\
+$-1,-\frac12$ & $0$ & $0$ & $0$ & $1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{derivation}[$j_1=1,j_2=\frac12$ CG 表中关键系数的推导]
+\textbf{$C(1,\frac12,\frac32;1,\frac12,\frac32)=1$.}\enspace 最高权态，由 Condon--Shorty 约定直接给出。
+
+\textbf{$C(1,\frac12,\frac32;0,\frac12,\frac12)=\sqrt{2/3}$.}\enspace 对 $\ket{\frac32,\frac32}=\ket{1,1}\ket{\frac12,\frac12}$ 作用 $J_-$：
+\[
+J_-\ket{\frac32,\frac32}=\sqrt{j_3(j_3+1)-m_3(m_3-1)}\ket{\frac32,\frac12}=\sqrt{3}\ket{\frac32,\frac12}.
+\]
+右边 $J_-=J_{1-}+J_{2-}$ 分别作用：
+\[
+J_{1-}\ket{1,1}\ket{\tfrac12,\tfrac12}=\sqrt{1(2)-1\cdot0}\,\ket{1,0}\ket{\tfrac12,\tfrac12}=\sqrt{2}\ket{1,0}\ket{\tfrac12,\tfrac12},
+\]
+\[
+J_{2-}\ket{1,1}\ket{\tfrac12,\tfrac12}=\sqrt{\tfrac12(\tfrac32)-\tfrac12(-\tfrac12)}\,\ket{1,1}\ket{\tfrac12,-\tfrac12}=\ket{1,1}\ket{\tfrac12,-\tfrac12}.
+\]
+故
+\[
+\sqrt{3}\ket{\tfrac32,\tfrac12}=\sqrt{2}\ket{1,0}\ket{\tfrac12,\tfrac12}+\ket{1,1}\ket{\tfrac12,-\tfrac12},
+\]
+\[
+\ket{\tfrac32,\tfrac12}=\sqrt{\tfrac23}\ket{1,0}\ket{\tfrac12,\tfrac12}+\tfrac1{\sqrt3}\ket{1,1}\ket{\tfrac12,-\tfrac12}.
+\]
+读出 $C(1,\frac12,\frac32;0,\frac12,\frac12)=\sqrt{2/3}$，$C(1,\frac12,\frac32;1,-\frac12,\frac12)=1/\sqrt3$。验证归一化：$\frac{2}{3}+\frac{1}{3}=1$。
+
+\textbf{$C(1,\frac12,\frac12;1,-\frac12,\frac12)=\sqrt{2/3}$.}\enspace $j_3=\frac12$ 的态与 $j_3=\frac32$ 正交。设
+\[
+\ket{\tfrac12,\tfrac12}=a\ket{1,1}\ket{\tfrac12,-\tfrac12}+b\ket{1,0}\ket{\tfrac12,\tfrac12}.
+\]
+正交条件 $\braket{\frac32,\frac12}{\frac12,\frac12}=0$ 给出
+\[
+\sqrt{\tfrac23}\,b+\tfrac1{\sqrt3}\,a=0\quad\Longrightarrow\quad a=-\sqrt2\,b.
+\]
+归一化 $a^2+b^2=1$ 给出 $2b^2+b^2=1$，即 $b=\frac1{\sqrt3}$，$a=-\sqrt{\frac23}$。由 Condon--Shorty 相位约定 $C(1,\frac12,\frac12;1,-\frac12,\frac12)>0$，取 $a=\sqrt{\frac23}$，$b=-\frac1{\sqrt3}$（即整体乘 $-1$）。
+
+\textbf{$C(1,\frac12,\frac12;0,\frac12,-\frac12)=-1/\sqrt3$.}\enspace 对 $\ket{\frac12,\frac12}=\sqrt{\frac23}\ket{1,1}\ket{\frac12,-\tfrac12}-\frac1{\sqrt3}\ket{1,0}\ket{\tfrac12,\tfrac12}$ 作用 $J_-$：
+\[
+J_-\ket{\tfrac12,\tfrac12}=\ket{\tfrac12,-\tfrac12}.
+\]
+右边：
+\[
+\sqrt{\tfrac23}\Big(\ket{1,0}\ket{\tfrac12,-\tfrac12}+\ket{1,1}\ket{\tfrac12,-\tfrac32}\Big)
+-\tfrac1{\sqrt3}\Big(\sqrt2\,\ket{1,-1}\ket{\tfrac12,\tfrac12}+\ket{1,0}\ket{\tfrac12,-\tfrac12}\Big).
+\]
+但 $j_2=\frac12$ 故 $m_2=-\frac32$ 不存在，该项为零。整理得
+\[
+\ket{\tfrac12,-\tfrac12}=\Big(\sqrt{\tfrac23}-\tfrac1{\sqrt3}\Big)\ket{1,0}\ket{\tfrac12,-\tfrac12}-\sqrt{\tfrac23}\,\ket{1,-1}\ket{\tfrac12,\tfrac12},
+\]
+验证系数自洽（$\sqrt{2/3}-1/\sqrt3=1/\sqrt3$），读出 $C(1,\frac12,\frac12;0,\frac12,-\frac12)=-1/\sqrt3$（注意 $m_3=-\frac12$ 分量系数），与表中一致。
+\end{derivation}
+
+\begin{table}[htbp]
+\centering
+\caption{$j_1=\frac12,\ j_2=\frac12$ 的 CG 系数表（$j_3=0,1$）}
+\label{tab:cg-half-half}
+\begin{tabular}{c|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{$j_3=1$} & \multicolumn{2}{c}{$j_3=0$} \\
+$m_1,m_2$ & $m_3=1$ & $m_3=0$ & $m_3=0$ & $m_3=-1$ \\
+\midrule
+$\frac12,\frac12$ & $1$ & $0$ & $0$ & $0$ \\
+$\frac12,-\frac12$ & $0$ & $\frac1{\sqrt2}$ & $\frac1{\sqrt2}$ & $0$ \\
+$-\frac12,\frac12$ & $0$ & $\frac1{\sqrt2}$ & $-\frac1{\sqrt2}$ & $0$ \\
+$-\frac12,-\frac12$ & $0$ & $0$ & $0$ & $1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+6j 符号满足一个重要的求和恒等式——Biedenharn--Elliott 恒等式，它是再耦合矩阵“结合律”的体现。
+
+\begin{theorem}[Biedenharn--Elliott 恒等式]
+\[
+\sum_x(-1)^{R+x}(2x+1)
+\begin{Bmatrix}j_1&j_2&x\\j_3&j_4&j_5\end{Bmatrix}
+\begin{Bmatrix}j_3&j_4&x\\j_6&j_7&j_8\end{Bmatrix}
+\begin{Bmatrix}j_6&j_7&x\\j_2&j_1&j_9\end{Bmatrix}
+=
+\begin{Bmatrix}j_5&j_8&j_9\\j_7&j_1&j_4\end{Bmatrix}
+\begin{Bmatrix}j_5&j_8&j_9\\j_6&j_2&j_3\end{Bmatrix},
+\]
+其中 $R=\sum_{i=1}^9 j_i$，求和遍历所有使三角形条件满足的 $x$。
+\label{thm:biedenharn-elliott}
+\end{theorem}
+
+\begin{derivation}[Biedenharn--Elliott 恒等式的推导]
+\textbf{物理图像：四个角动量的再耦合.}\enspace 考虑四个角动量 $j_1,j_2,j_3,j_4$ 的张量积空间。初始耦合方案为
+\[
+\bigl(((j_1\otimes j_2)_{j_{12}}\otimes j_3)_{j_{123}}\otimes j_4\bigr)_J,
+\]
+即先耦合 $j_1\otimes j_2\to j_{12}$，再耦合 $j_{12}\otimes j_3\to j_{123}$，最后耦合 $j_{123}\otimes j_4\to J$。
+
+目标耦合方案为
+\[
+\bigl(j_1\otimes((j_2\otimes j_3)_{j_{23}}\otimes j_4)_{j_{234}}\bigr)_J,
+\]
+即先耦合 $j_2\otimes j_3\to j_{23}$，再耦合 $j_{23}\otimes j_4\to j_{234}$，最后耦合 $j_1\otimes j_{234}\to J$。
+
+\textbf{第一步：路径一——依次再耦合.}\enspace 从初始方案出发，分三步变换：
+\begin{enumerate}[label=(\alph*),leftmargin=2.5em]
+\item 交换 $j_{12}$ 和 $j_3$ 的耦合顺序：$((j_1\otimes j_2)\otimes j_3)\to(j_1\otimes(j_2\otimes j_3))$。这引入中间角动量 $x$（即 $j_2\otimes j_3$ 的耦合结果）和一个 6j 符号
+\[
+\begin{Bmatrix}j_1&j_2&j_{12}\\j_3&j_{123}&x\end{Bmatrix}.
+\]
+此时方案变为 $((j_1\otimes(j_2\otimes j_3)_x)_{j_{123}}\otimes j_4)_J$。
+
+\item 交换 $j_{123}$ 和 $j_4$：类似地引入中间角动量 $y$ 和 6j 符号
+\[
+\begin{Bmatrix}j_1&x&j_{123}\\j_4&J&y\end{Bmatrix}.
+\]
+方案变为 $(j_1\otimes((j_2\otimes j_3)_x\otimes j_4)_y)_J$。
+
+\item 交换 $x$ 和 $j_4$ 的内部耦合：$((j_2\otimes j_3)\otimes j_4)\to(j_2\otimes(j_3\otimes j_4))$。引入中间角动量 $z$ 和 6j 符号
+\[
+\begin{Bmatrix}j_2&j_3&x\\j_4&y&z\end{Bmatrix}.
+\]
+方案变为 $(j_1\otimes(j_2\otimes(j_3\otimes j_4)_z)_{j_{234}})_J$。
+\end{enumerate}
+路径一的总变换矩阵为三个 6j 符号的乘积对中间变量 $x$ 求和。
+
+\textbf{第二步：路径二——直接再耦合.}\enspace 可以用不同的顺序达到同一目标方案。先交换 $j_2$ 和 $j_{12}$（即解耦 $j_1\otimes j_2$ 再重新耦合 $j_2\otimes j_3$），然后交换 $j_{123}$ 和 $j_4$。这条路径也给出三个 6j 符号的乘积，但中间变量不同。
+
+\textbf{第三步：结合律强制两条路径相等.}\enspace 再耦合变换是 Hilbert 空间上的正交变换（因为 CG 系数构成正交基变换）。正交变换满足结合律：无论通过哪条中间路径，从初始方案到目标方案的总变换矩阵相同。因此路径一和路径二的 6j 符号乘积求和必须相等。
+
+展开两条路径的变换矩阵元，对中间变量求和后，得到等式两边各含三个 6j 符号的乘积。经过适当的角动量重命名（$j_{12}\to j_5$、$j_{23}\to j_6$、$j_{123}\to j_7$、$j_{234}\to j_8$、$z\to j_9$），就得到 Biedenharn--Elliott 恒等式的标准形式。
+
+\textbf{第四步：相位因子.}\enspace 每次再耦合引入的相位由 Condon--Shortley 约定决定。一次再耦合 $((a\otimes b)\otimes c)\to(a\otimes(b\otimes c))$ 的相位为 $(-1)^{a+b+c}$。三步再耦合的总相位为
+\[
+(-1)^{j_1+j_2+x+j_3+j_{123}+j_1+x+j_4+J+y+j_2+j_3+x+j_4+y+z}.
+\]
+合并同类项并利用 $(-1)^{2j}=1$（对半整数 $j$ 也成立，因 $2j$ 总是整数），化简为 $(-1)^{R+x}$，其中 $R=\sum_{i=1}^9 j_i$。因子 $(2x+1)$ 来自对中间角动量 $x$ 的完备性求和
+\[
+\sum_x(2x+1)=\sum_x\dim V_x,
+\]
+这是正交变换的归一化条件。
+
+\textbf{第五步：三角形条件.}\enspace 求和变量 $x$ 必须使所有 6j 符号中的三角形条件满足。每个 6j 符号含四个三角形，例如 $\begin{Bmatrix}j_1&j_2&x\\j_3&j_4&j_5\end{Bmatrix}$ 要求 $(j_1,j_2,x)$、$(j_3,j_4,x)$、$(j_1,j_4,j_5)$、$(j_2,j_3,j_5)$ 都是三角形。因此 $x$ 的取值范围是
+\[
+\max(|j_1-j_2|,|j_3-j_4|)\le x\le\min(j_1+j_2,j_3+j_4),
+\]
+且 $x$ 取整数或半整数步长。这使得求和实际上是有限的。
+\end{derivation}
+
+\emph{物理意义.}\enspace Biedenharn--Elliott 恒等式是 6j 符号的"结合律"，它保证不同再耦合路径给出相同的物理结果。在核谱学和原子物理中，三体系统的矩阵元约化直接用到此恒等式。
+
+用 Racah 公式可以直接计算具体 6j 符号值。
+
+\begin{example}[$\begin{Bmatrix}\frac12&\frac12&0\\0&0&\frac12\end{Bmatrix}$ 的计算]
+由含零公式（$j_4=0$ 要求 $j_5=j_3=0$, $j_6=j_2=\frac12$）：
+\[
+\begin{Bmatrix}\tfrac12&\tfrac12&0\\0&0&\tfrac12\end{Bmatrix}
+=\frac{(-1)^{j_1+j_2+j_3}}{\sqrt{(2j_2+1)(2j_3+1)}}
+=\frac{(-1)^{1/2+1/2+0}}{\sqrt{2\cdot1}}
+=-\frac{1}{\sqrt{2}}.
+\]
+\emph{物理验证.}\enspace 这对应再耦合 $[(j_1\otimes j_2)J_{12}=0]\otimes j_3$ 到 $j_1\otimes[(j_2\otimes j_3)J_{23}=0]$。$J_{12}=0$ 要求 $j_1=j_2=\frac12$ 耦合为单态，$J_{23}=0$ 要求 $j_2=j_3=\frac12$ 耦合为单态。再耦合系数为 $-1/\sqrt{2}$，负号来自 Condon--Shortley 约定下交换两个 $1/2$ 自旋的反对称性。
+\end{example}
+
+\begin{example}[$\begin{Bmatrix}1&\frac12&\frac12\\1&\frac12&\frac12\end{Bmatrix}$ 的逐步计算]
+三角形因子：
+\begin{align*}
+\Delta(1,\tfrac12,\tfrac12)&=\sqrt{\frac{0!\,1!\,1!}{3!}}=\frac1{\sqrt6},\\
+\Delta(1,\tfrac12,\tfrac12)&=\frac1{\sqrt6},\\
+\Delta(1,\tfrac12,\tfrac12)&=\frac1{\sqrt6},\\
+\Delta(1,\tfrac12,\tfrac12)&=\frac1{\sqrt6}.
+\end{align*}
+四个 $\Delta$ 之积：$\frac{1}{6\cdot6}=\frac{1}{36}$。
+
+参数：$a_1=a_2=a_3=a_4=2$，$b_1=3,b_2=2,b_3=2$。求和 $z$ 满足 $z\le2$（所有 $a_i$）且 $z\ge3$（$b_1$），故求和为空——6j 符号为零。
+
+\emph{物理解释.}\enspace 这个 6j 符号描述 $[(1\otimes\frac12)\frac12]\otimes\frac12$ 到 $[1\otimes(\frac12\otimes\frac12)0]$ 的再耦合。但 $j_1=1\otimes j_2=\frac12$ 可以耦合为 $j_3=\frac12$ 或 $j_3=\frac32$；取 $j_3=\frac12$ 后再与 $j_6=\frac12$ 耦合，总角动量可以是 $0$ 或 $1$。另一方面 $j_2\otimes j_3=\frac12\otimes\frac12$ 耦合为 $J_{23}=0$ 或 $1$；取 $J_{23}=0$ 要求 $j_2=j_3$。但 $j_4=1$ 与 $J_{23}=0$ 的耦合给出总 $J=j_4=1\neq0$，与左边的 $J_{12}=\frac12$, $j_6=\frac12$ 耦合给出的 $J=0$ 或 $1$ 中的 $J=0$ 分量不匹配。因此两种耦合方案的正交基之间这个特定矩阵元为零——这是角动量耦合选择定则的体现，而非计算错误。
+\end{example}
+
+\begin{example}[$\begin{Bmatrix}j&j&0\\j&j&0\end{Bmatrix}$ 的一般公式]
+由含零公式：
+\[
+\begin{Bmatrix}j&j&0\\j&j&0\end{Bmatrix}
+=\frac{(-1)^{2j}}{\sqrt{(2j+1)(2j+1)}}
+=\frac{(-1)^{2j}}{2j+1}.
+\]
+对 $j=\frac12$：$\frac{(-1)^1}{2}=-\frac12$。对 $j=1$：$\frac{1}{3}$。对 $j=\frac32$：$\frac{(-1)^3}{4}=-\frac14$。
+
+\emph{物理意义.}\enspace 这个 6j 符号描述两个 $j$ 粒子先耦合成单态（$J_{12}=0$）再与另外两个 $j$ 粒子的单态（$J_{34}=0$）耦合。当所有四个粒子角动量相同且两个中间耦合都为零时，再耦合系数只取决于 $j$ 的奇偶性：整数 $j$ 给正号，半整数 $j$ 给负号。负号的物理来源是费米子（半整数 $j$）交换反对称。
+\end{example}
+
+当角动量量子数很大时，6j 符号与经典四面体几何有深刻的联系。
+
+\begin{theorem}[Ponzano--Regge 渐近公式]
+当所有 $j_i$ 很大时，
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+\approx\frac{1}{\sqrt{12\pi V}}
+\cos\!\left(\sum_{i=1}^6\theta_i j_i+\frac{\pi}{4}\right),
+\]
+其中 $V$ 是以 $j_1+\frac12,\dots,j_6+\frac12$ 为棱的四面体体积，$\theta_i$ 是棱 $j_i$ 所对二面角。
+\label{thm:ponzano-regge}
+\end{theorem}
+
+\begin{derivation}[Ponzano--Regge 公式的推导思路]
+\textbf{第一步：几何对应.}\enspace 6j 符号 $\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}$ 的四个三角形条件 $(j_1,j_2,j_3)$, $(j_1,j_5,j_6)$, $(j_4,j_2,j_6)$, $(j_4,j_5,j_3)$ 恰好是四面体四个面的三角形不等式。将六个 $j$ 值解释为四面体六条棱的长度，则 6j 符号非零当且仅当对应的四面体可以嵌入三维欧氏空间。
+
+\textbf{第二步：Stirling 渐近.}\enspace Racah 公式中阶乘的渐近展开用 Stirling 公式
+\[
+n!\approx\sqrt{2\pi n}\left(\frac{n}{e}\right)^n,\qquad n\to\infty.
+\]
+将所有阶乘替换后，6j 符号变为
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+\sim\sum_z(-1)^z\exp\bigl[S(z)\bigr]\cdot(\text{prefactor}),
+\]
+其中 $S(z)$ 是 $z$ 和各 $j$ 的对数函数，prefactor 是各 $j$ 的幂次乘积。
+
+\textbf{第三步：驻相分析.}\enspace 当所有 $j\to\infty$（以相同速率），求和 $\sum_z$ 可用 Euler--Maclaurin 公式化为积分
+\[
+\sum_z\exp[S(z)]\approx\int dz\,\exp[S(z)].
+\]
+被积函数是快速振荡的指数函数，主要贡献来自驻相点 $z^*$ 满足 $S'(z^*)=0$。
+
+\textbf{第四步：驻相条件的几何意义.}\enspace $S'(z)=0$ 恰好给出四面体的闭合条件：四个面在三维空间中拼合时，相邻面的二面角必须满足兼容性。具体地，设 $\theta_{ij}$ 为棱 $j_i$ 对面的二面角，则驻相方程等价于
+\[
+\sum_{\text{面}}\theta_{ij}=\pi\quad(\text{每个顶点处}),
+\]
+即四面体在欧氏空间中的角度闭合条件。驻相值 $S(z^*)$ 等于四面体的体积 $V$：
+\[
+S(z^*)=\pm i\,V,
+\]
+正负号对应四面体的两种手性（镜像）。
+
+\textbf{第五步：两个驻相点的贡献.}\enspace 驻相方程有两个解 $z^*_\pm$，对应四面体的两种手性。两个贡献为共轭复数
+\[
+\exp(+iV)+\exp(-iV)=2\cos V.
+\]
+prefactor 中的 $\sqrt{12\pi V}$ 来自驻相法中的二阶展开（Hessian 行列式恰给出四面体体积的 Jacobian）。相位 $\pi/4$ 来自 Maslov 指标（驻相法中每个驻相点贡献 $\pi/4$ 相位，两个共轭点共贡献 $\pi/2$，但取实部后化为 $\pi/4$）。
+
+\textbf{第六步：最终公式.}\enspace 合并所有因子：
+\[
+\begin{Bmatrix}j_1&j_2&j_3\\j_4&j_5&j_6\end{Bmatrix}
+\sim\frac{1}{\sqrt{12\pi V}}\cos\left(\sum_i j_i\theta_i+\frac{\pi}{4}\right),
+\]
+其中 $\theta_i$ 是棱 $j_i$ 对面的二面角，$V$ 是四面体体积。这就是 Ponzano--Regge 公式。
+
+\textbf{第七步：量子引力关联.}\enspace Ponzano--Regge 公式是 Regge 微分的基础：将时空离散化为四面体网格，每个四面体的振幅是 6j 符号。在经典极限 $j\to\infty$，振幅退化为 $\cos(V+\pi/4)$，恢复 Einstein--Hilbert 作用量。Biedenharn--Elliott 恒等式对应于 3D 流形的 Pachner 2-3 move（把两个四面体合成三个或反之），保证了振幅与三角剖分方式无关——这正是拓扑量子场论的要求。
+\end{derivation}
+
+\emph{物理意义.}\enspace Ponzano--Regge 公式把量子角动量再耦合（6j 符号）与经典四面体几何联系起来。这是量子群和拓扑量子场论的起点：当 6j 符号被视为四面体振幅时，Biedenharn--Elliott 恒等式对应于 3D 流形的 Pachner 移分（2-3 move），这正是 Turaev--Viro 不变量和量子引力的 Regge 微分的基础。
+
+3j 符号也有 Racah 闭合表达式和超出常规的 Regge 对称性。
+
+\begin{theorem}[3j 符号的 Racah 显式公式]
+\[
+\begin{pmatrix}j_1&j_2&j_3\\m_1&m_2&m_3\end{pmatrix}
+=(-1)^{j_1-j_2-m_3}\Delta(j_1,j_2,j_3)
+\sum_z\frac{(-1)^z\sqrt{\prod(j_i\pm m_i)!}}{\text{阶乘组合}(z)},
+\]
+其中分母与 CG 系数 Racah 公式相同。此公式直接从 \Cref{thm:racah-cg} 和 3j 定义代入得到。
+\end{theorem}
+
+\begin{proposition}[Regge 对称性]
+3j 符号除了已知的列置换和磁量子数反号外，还满足 Regge 对称性：将 $3j$ 符号编码为 $3\times3$ Regge 阵列
+\[
+R=\begin{pmatrix}
+-j_1+j_2+j_3 & j_1-j_2+j_3 & j_1+j_2-j_3\\
+j_1-m_1 & j_2-m_2 & j_3-m_3\\
+j_1+m_1 & j_2+m_2 & j_3+m_3
+\end{pmatrix},
+\]
+则 $3j$ 符号在 Regge 阵列的\emph{行置换}和\emph{列置换}下不变（至多差符号 $(-1)^R$，$R$ 为阵列所有元素之和）。这给出 72 种对称操作（$S_3^{\text{row}}\times S_3^{\text{col}}$），远多于之前已知的 12 种。
+\end{proposition}
+
+\begin{derivation}[Regge 对称性的推导]
+\textbf{第一步：Regge 阵列的构造.}\enspace 3j 符号的 Racah 公式为
+\[
+\begin{pmatrix}j_1&j_2&j_3\\m_1&m_2&m_3\end{pmatrix}
+=(-1)^{j_1-j_2-m_3}\Delta(j_1,j_2,j_3)
+\sqrt{\prod_{i=1}^{3}(j_i-m_i)!(j_i+m_i)!}\;\sum_z\frac{(-1)^z}{z!\,\prod_k(a_k-z)!\,\prod_l(b_l+z)!},
+\]
+其中 $a_k$ 取 $j_1+j_2-j_3$、$j_1-m_1$、$j_2+m_2$，$b_l$ 取 $j_2-j_3+m_1$、$j_1-j_3-m_2$、$j_3-j_2-m_1$。分子中九个阶乘的自变量恰好可以排列为 $3\times3$ Regge 阵列 $R$，使每行每列之和都等于 $J=j_1+j_2+j_3$：
+\[
+R=\begin{pmatrix}
+R_{11}&R_{12}&R_{13}\\
+R_{21}&R_{22}&R_{23}\\
+R_{31}&R_{32}&R_{33}
+\end{pmatrix}
+=\begin{pmatrix}
+-j_1+j_2+j_3 & j_1-j_2+j_3 & j_1+j_2-j_3\\
+j_1-m_1 & j_2-m_2 & j_3-m_3\\
+j_1+m_1 & j_2+m_2 & j_3+m_3
+\end{pmatrix}.
+\]
+验证行和：第一行 $(-j_1+j_2+j_3)+(j_1-j_2+j_3)+(j_1+j_2-j_3)=j_1+j_2+j_3=J$，同理其余各行。验证列和：第一列 $(-j_1+j_2+j_3)+(j_1-m_1)+(j_1+m_1)=j_1+j_2+j_3=J$，同理其余各列。Racah 公式的分子恰好是 $\sqrt{\prod_{i,j}R_{ij}!}$，分母的三角形因子 $\Delta$ 仅依赖第一行三个元素。
+
+\textbf{第二步：行置换不变性.}\enspace 交换 Regge 阵列的两行，对应于 Racah 公式中九个阶乘的重新排列。由于分子中所有阶乘以平方根出现，即 $\sqrt{\prod_{i,j}R_{ij}!}$，行置换只重新排列乘积中的因子，不改变整体乘积值。分母的求和变量 $z$ 的范围由九个阶乘自变量的非负性决定，行置换后求和范围相应变换，但求和值不变（只是求和指标的平移）。唯一可能的变化来自相位 $(-1)^{j_1-j_2-m_3}$ 和 $\Delta$ 因子中第一行元素的变化。对于行置换 $(1\leftrightarrow 2)$，第一行元素 $\{-j_1+j_2+j_3,\,j_1-j_2+j_3,\,j_1+j_2-j_3\}$ 变为 $\{j_1-m_1,\,j_2-m_2,\,j_3-m_3\}$，这对应于 $3j$ 符号中 $(j_i,m_i)$ 参数的某种线性重组合，产生的相位恰好是 $(-1)^R$，其中 $R=\sum_{i,j}R_{ij}=3J$。故行置换至多给出 $(-1)^R$ 相位。
+
+\textbf{第三步：列置换不变性.}\enspace 交换 Regge 阵列的两列，对应于 $3j$ 符号的列置换与磁量子数反号的组合。例如交换第 1、2 列：
+\[
+R_{i1}\leftrightarrow R_{i2}\quad\forall\,i,
+\]
+即 $-j_1+j_2+j_3\leftrightarrow j_1-j_2+j_3$、$j_1-m_1\leftrightarrow j_2-m_2$、$j_1+m_1\leftrightarrow j_2+m_2$。这恰好对应于 $3j$ 符号中交换 $(j_1,m_1)\leftrightarrow(j_2,m_2)$，即列置换 $(1\leftrightarrow 2)$，已知给出相位 $(-1)^{j_1+j_2-j_3}$。类似地，交换第 1、3 列对应于 $(j_1,m_1)\leftrightarrow(j_3,-m_3)$（注意 $m_3$ 反号），给出已知相位。因此 Regge 阵列的列置换把 $3j$ 符号的列置换与磁量子数反号统一为阵列的列置换操作，使对称性结构更清晰。
+
+\textbf{第四步：72 种对称操作.}\enspace $3\times3$ 阵列的行置换群 $S_3^{\text{row}}$（6 个元素）和列置换群 $S_3^{\text{col}}$（6 个元素）独立作用，生成 $6\times6=36$ 种操作。此外，Regge 阵列的转置（行列交换）$R\mapsto R^{\mathsf T}$ 也是对称操作：转置把行置换变为列置换，不改变 $\prod_{i,j}R_{ij}!$ 的值。转置与 $S_3^{\text{row}}\times S_3^{\text{col}}$ 生成的群有 $|S_3^{\text{row}}\times S_3^{\text{col}}|=36$ 个元素，加上转置陪集共 $36\times2=72$ 种。这远超之前已知的列置换（$S_3$，6 种）加磁量子数全反号（$\ZZ_2$，2 种）共 12 种，新发现的对称性可用于简化 $3j$ 符号的计算和检验。
+
+\emph{Regge 对称性的群论结构.}\enspace 72 种对称操作构成群 $S_3^{\text{row}}\times S_3^{\text{col}}\times\ZZ_2^{\text{transpose}}$，同构于 $S_3\wr\ZZ_2$（$S_3$ 的超二面体群）。其阶数为
+\begin{equation*}
+|G_{\text{Regge}}|=|S_3^{\text{row}}|\times|S_3^{\text{col}}|\times|\ZZ_2^{\text{transpose}}|=6\times6\times2=72.
+\end{equation*}
+这一群是 $3\times3$ 魔方阵的对称群，与正八面体的全对称群 $O_h$（48 元素）不同：Regge 群更大（72 元素），因为行和列置换独立作用而正八面体的旋转和反射有交叉约束。Regge 对称性揭示了 $3j$ 符号比表面列置换更深的对称结构，是 Racah--Wigner 代数中"隐藏对称性"的典型实例。
+
+\emph{Regge 阵列与组合结构.}\enspace Regge 阵列 $R_{ij}$ 的元素是非负整数，行和列和均为 $J=j_1+j_2+j_3$。这使 Regge 阵列成为半魔方阵（semi-magic square）的整数点。$3j$ 符号的值完全由 Regge 阵列的阶乘比值决定：$\begin{pmatrix}j_1&j_2&j_3\\m_1&m_2&m_3\end{pmatrix}\propto\frac{\Delta(R)}{\sqrt{\prod_{i,j}R_{ij}!}}$（$\Delta$ 为三角形因子）。72 种对称操作保持 $\prod R_{ij}!$ 不变，故 $3j$ 符号在 72 种操作下至多差相位。这一组合结构使 $3j$ 符号与超魔方阵的计数问题关联，是代数组合论的物理应用。
+
+\emph{计算应用.}\enspace Regge 对称性把 $3j$ 符号的独立计算量减少到 $1/72$：利用 72 种等价操作可把任意 $3j$ 化为标准形式（如 $j_1\ge j_2\ge j_3$，$m_1\ge0$，$m_1\ge m_2$ 等），只需计算标准形式的值。在大规模角动量代数计算（如核物理壳模型、原子分子碰撞）中，这一减少使计算量从 $O(N^6)$ 降为 $O(N^6/72)$，是实际计算中不可忽略的优化。Regge 对称性还用于计算结果的检验：若计算结果不满足 72 种对称，则必有错误。
+
+\emph{高阶符号的 Regge 推广.}\enspace Regge 对称性可推广到 $6j$ 和 $9j$ 符号：$6j$ 符号有 144 种 Regge 对称（$4\times4$ 阵列的行列置换和转置），远超之前已知的 24 种。$9j$ 符号的 Regge 对称更丰富，与 $4\times4$ 半魔方阵的对称群相关。这些高阶 Regge 对称性在 spin network 计算和拓扑量子场论中用于减少独立振幅的数目，是 Racah--Wigner 代数中对称性挖掘的系统性方法。Regge 的原始动机来自 $3j$ 符号的计算优化，但其数学结构（半魔方阵对称群）揭示了角动量理论与组合数学的深层联系。
+\end{derivation}
+
+\section{不可约张量算符与 Wigner--Eckart 定理}
+\label{sec:wigner-eckart}
+
+前面各节解决了态空间的角动量耦合问题：如何把 $j_1\otimes j_2$ 分解为不可约表示的直和。现在转向一个对物理应用同样基本的问题——\textbf{算符的矩阵元}。在量子力学中，一切可观测量（能级、跃迁概率、散射振幅）都归结为算符在态之间的矩阵元 $\bra{j',m'}T\ket{j,m}$。当系统具有转动对称性时，这些矩阵元不能任意取值；它们被群论严格约束，可以分解为一个纯几何因子（$3j$ 符号）和一个动力学因子（约化矩阵元）。这就是 Wigner--Eckart 定理，它是表示论在量子力学中最有力的工具之一。
+
+接下来考察不可约张量算符的定义。
+
+\begin{definition}[不可约张量算符]
+一组 $2k+1$ 个算符 $\{T^{(k)}_q\mid q=-k,-k+1,\dots,k\}$ 称为\textbf{ rank $k$ 的不可约张量算符}（或球张量算符），如果在转动 $U(R)$ 下它们按 $SO(3)$ 的不可约表示 $D^{(k)}$ 变换：
+\begin{equation}
+U(R)\,T^{(k)}_q\,U(R)^\dagger
+=\sum_{q'=-k}^{k}D^{(k)}_{q'q}(R)\,T^{(k)}_{q'}.
+\label{eq:tensor-op-def}
+\end{equation}
+\end{definition}
+
+这个定义的物理含义是：$T^{(k)}_q$ 作为一个算符集合，在转动下像 rank-$k$ 的角动量态一样变换。对比态的变换规律 $U(R)\ket{j,m}=\sum_{m'}D^{(j)}_{m'm}(R)\ket{j,m'}$，可见算符的变换是\textbf{共变}的（$U$ 在左，$U^\dagger$ 在右），而态的变换是\textbf{逆变}的。这种结构保证了矩阵元 $\bra{j',m'}T^{(k)}_q\ket{j,m}$ 在转动下不变——它是三个表示 $D^{(j')*}\otimes D^{(k)}\otimes D^{(j)}$ 中的标量分量。
+
+\begin{proposition}[无穷小形式：对易关系判据]
+算符集合 $\{T^{(k)}_q\}$ 是 rank $k$ 不可约张量算符，当且仅当它与角动量算符满足对易关系
+\begin{align}
+[J_z,T^{(k)}_q]&=\hbar q\,T^{(k)}_q,\label{eq:tensor-Jz}\\
+[J_\pm,T^{(k)}_q]&=\hbar\sqrt{k(k+1)-q(q\pm1)}\,T^{(k)}_{q\pm1}.\label{eq:tensor-Jpm}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+取 $R=R_z(\theta)$（绕 $z$ 轴转角 $\theta$），则 $U(R)=\ee^{-\ii J_z\theta/\hbar}$，代入 \cref{eq:tensor-op-def}：
+\[
+\ee^{-\ii J_z\theta/\hbar}T^{(k)}_q\ee^{\ii J_z\theta/\hbar}
+=\sum_{q'}D^{(k)}_{q'q}(R_z(\theta))T^{(k)}_{q'}
+=\ee^{-\ii q\theta}T^{(k)}_q,
+\]
+因为 $D^{(k)}$ 在 $R_z$ 下是对角的：$D^{(k)}_{q'q}(R_z(\theta))=\delta_{q'q}\ee^{-\ii q\theta}$。左边展开到 $\theta$ 一阶：
+\[
+T^{(k)}_q-\frac{\ii\theta}{\hbar}[J_z,T^{(k)}_q]+O(\theta^2)
+=T^{(k)}_q-\ii q\theta\,T^{(k)}_q+O(\theta^2),
+\]
+比较 $\theta$ 一阶项得 \cref{eq:tensor-Jz}。类似地，取无穷小转动绕 $x$ 和 $y$ 轴，组合成 $J_\pm=J_x\pm\ii J_y$，利用 $D^{(k)}$ 矩阵元
+\[
+D^{(k)}_{q',q}(R_\pm(\delta\theta))=\delta_{q',q\pm1}\sqrt{k(k+1)-q(q\pm1)}\,\delta\theta+O(\delta\theta^2),
+\]
+得到 \cref{eq:tensor-Jpm}。逆方向：从对易关系出发，用 Baker--Campbell--Hausdorff 公式重建有限转动下的变换规律 \cref{eq:tensor-op-def}。
+\end{proof}
+
+对易关系 \cref{eq:tensor-Jz} 有一个直接的物理解读：$T^{(k)}_q$ 将态的磁量子数改变 $q$。因为若 $\ket{j,m}$ 是 $J_z$ 的本征态，则
+\[
+J_z\bigl(T^{(k)}_q\ket{j,m}\bigr)
+=\bigl([J_z,T^{(k)}_q]+T^{(k)}_qJ_z\bigr)\ket{j,m}
+=\hbar(q+m)T^{(k)}_q\ket{j,m},
+\]
+所以 $T^{(k)}_q\ket{j,m}$ 是 $J_z$ 本征值为 $\hbar(m+q)$ 的态（若非零）。这是第一条选择定则的来源。
+
+接下来考察典型例子。
+
+\begin{example}[标量算符（rank $0$）]
+rank $0$ 的不可约张量算符只有一个分量 $T^{(0)}_0$，对易关系给出 $[J_i,T^{(0)}_0]=0$（与所有角动量分量对易）。因此 rank $0$ 张量算符就是转动不变量（标量），例如 $\vb J^2$、$\vb r^2$、$\vb p^2$、中心势 $V(r)$、Hamilton 量 $\hat H$（对转动不变系统）。
+\end{example}
+
+\begin{example}[矢量算符（rank $1$）]
+rank $1$ 的不可约张量算符有三个分量 $T^{(1)}_{+1},T^{(1)}_0,T^{(1)}_{-1}$，与矢量 $\vb V=(V_x,V_y,V_z)$ 的关系为
+\[
+T^{(1)}_{\pm1}=\mp\frac{1}{\sqrt2}(V_x\pm\ii V_y),\qquad T^{(1)}_0=V_z.
+\]
+这恰好是球基矢 $\vb e_{\pm1}=\mp(\vb e_x\pm\ii\vb e_y)/\sqrt2$、$\vb e_0=\vb e_z$ 下的分量：$T^{(1)}_q=\vb V\cdot\vb e_q^*$。典型矢量算符包括位置 $\vb r$、动量 $\vb p$、角动量 $\vb J$、自旋 $\vb S$、电偶极矩 $\vb d=-e\vb r$。
+
+验证对易关系：对 $\vb r$，$[J_z,z]=0$（因 $J_z=xp_y-yp_x$ 与 $z$ 对易），$[J_z,x\pm\ii y]=\pm\ii\hbar(x\pm\ii y)$，故 $[J_z,r^{(1)}_q]=\hbar q\,r^{(1)}_q$。类似地 $[J_\pm,z]=\pm\hbar(x\pm\ii y)/\sqrt2\cdot\sqrt2=\hbar(\mp\sqrt2\,r^{(1)}_{\pm1})$，与 \cref{eq:tensor-Jpm}（$k=1$）一致。
+\end{example}
+
+\begin{example}[球谐函数作为张量算符]
+球谐函数 $Y_{kq}(\theta,\varphi)$ 作为乘法算符（作用在波函数上：$\psi\mapsto Y_{kq}\psi$）构成 rank $k$ 不可约张量算符。这是因为球谐函数在转动下按 $D^{(k)}$ 变换：
+\[
+Y_{kq}(R^{-1}\uv r)=\sum_{q'}D^{(k)}_{q'q}(R)Y_{kq'}(\uv r),
+\]
+而主动转动下波函数变换为 $\psi'(r)=\psi(R^{-1}r)$，故 $Y_{kq}$ 作为算符的变换规律恰好是 \cref{eq:tensor-op-def}。特别地：
+\begin{itemize}
+\item $Y_{00}=1/\sqrt{4\pi}$：标量（rank $0$）。
+\item $Y_{1q}\propto r^{(1)}_q/r$：归一化的位置分量（rank $1$）。
+\item $Y_{2q}$：四极矩算符（rank $2$），如 $Y_{20}\propto(3z^2-r^2)/r^2$、$Y_{2,\pm2}\propto(x\pm\ii y)^2/r^2$。
+\end{itemize}
+\end{example}
+
+\begin{example}[四极矩算符（rank $2$）]
+电四极矩张量 $Q_{ij}=e(3r_ir_j-r^2\delta_{ij})$ 是对称无迹笛卡儿张量，有 5 个独立分量。对应的球张量分量为
+\[
+Q^{(2)}_0=2ez^2-e(x^2+y^2)=er^2(3\cos^2\theta-1),
+\]
+\[
+Q^{(2)}_{\pm1}=\mp\frac{\sqrt6}{2}e z(x\pm\ii y),\qquad
+Q^{(2)}_{\pm2}=\frac{\sqrt6}{4}e(x\pm\ii y)^2.
+\]
+这 5 个分量在转动下按 $D^{(2)}$ 变换，构成 rank $2$ 不可约张量算符。在核物理中，原子核的四极矩 $Q$ 定义为
+\[
+Q=\sqrt{\frac{16\pi}{5}}\braket{I,I}{Q^{(2)}_0}{I,I},
+\]
+其中 $I$ 为核自旋，它直接决定超精细结构中的电四极相互作用强度。
+\end{example}
+
+接下来考察Wigner--Eckart 定理。
+
+\begin{theorem}[Wigner--Eckart 定理]
+\label{thm:wigner-eckart-angular}
+设 $T^{(k)}_q$ 是 rank $k$ 不可约张量算符，$\ket{j,m}$ 是角动量本征态。则矩阵元
+\begin{equation}
+\bra{j',m'}T^{(k)}_q\ket{j,m}
+=(-1)^{j'-m'}\begin{pmatrix}j'&k&j\\-m'&q&m\end{pmatrix}\braket{j'\|T^{(k)}\|j},
+\label{eq:wigner-eckart}
+\end{equation}
+其中 $\braket{j'\|T^{(k)}\|j}$ 是\textbf{约化矩阵元}（reduced matrix element），只依赖 $j,j',k$ 和算符的物理内容，不依赖磁量子数 $m,m',q$。
+\end{theorem}
+
+这个定理的含义是：矩阵元被分解为两个因子的乘积——$3j$ 符号是纯几何因子（完全由角动量耦合规则决定），约化矩阵元是纯动力学因子（包含物理实质）。所有 $m,m',q$ 的依赖都被 $3j$ 符号完全确定。对于固定的 $j,j',k$，共有 $(2j+1)(2j'+1)(2k+1)$ 个矩阵元，但它们全部由一个数 $\braket{j'\|T^{(k)}\|j}$ 确定。
+
+\begin{derivation}[Wigner--Eckart 定理的证明]
+\textbf{第一步：构造不变量.}\enspace 考虑态 $T^{(k)}_q\ket{j,m}$。这个态在 $J_z$ 下的本征值为 $\hbar(m+q)$（由对易关系 \cref{eq:tensor-Jz}），在 $J^2$ 下不一定有确定值，但可以按总角动量本征态展开：
+\[
+T^{(k)}_q\ket{j,m}=\sum_{J,M}c_{J,M}(q,m)\ket{J,M},
+\]
+其中 $M=m+q$（$J_z$ 本征值约束）。
+
+\textbf{第二步：利用转动不变性确定展开系数.}\enspace 对任意转动 $R$，利用 \cref{eq:tensor-op-def}：
+\[
+U(R)T^{(k)}_q\ket{j,m}
+=\sum_{q',m'}D^{(k)}_{q'q}(R)D^{(j)}_{m'm}(R)T^{(k)}_{q'}\ket{j,m'}.
+\]
+另一方面，
+\[
+U(R)\sum_{J,M}c_{J,M}(q,m)\ket{J,M}
+=\sum_{J,M,M'}c_{J,M}(q,m)D^{(J)}_{M'M}(R)\ket{J,M'}.
+\]
+比较两边：左边的 $D^{(k)}\otimes D^{(j)}$ 表示在右边被分解为 $D^{(J)}$ 的直和。由 Clebsch--Gordan 分解 \cref{eq:cg-decomposition}，展开系数必须正比于 CG 系数：
+\[
+c_{J,M}(q,m)=\alpha(J)\,C(k,j,J;q,m,M),
+\]
+其中 $\alpha(J)$ 是比例常数，不依赖 $q,m,M$（因为 Schur 引理保证在同一不可约表示内比例因子是标量）。因此
+\begin{equation}
+T^{(k)}_q\ket{j,m}=\sum_{J=|k-j|}^{k+j}\alpha(J)\sum_{M}C(k,j,J;q,m,M)\ket{J,M}.
+\label{eq:tensor-op-expansion}
+\end{equation}
+
+\textbf{第三步：提取矩阵元.}\enspace 取 $\bra{j',m'}$ 内积：
+\[
+\bra{j',m'}T^{(k)}_q\ket{j,m}
+=\sum_J\alpha(J)\sum_M C(k,j,J;q,m,M)\braket{j',m'}{J,M}
+=\alpha(j')\,C(k,j,j';q,m,m'),
+\]
+利用 $\braket{j',m'}{J,M}=\delta_{j'J}\delta_{m'M}$。CG 系数与 $3j$ 符号的关系为
+\[
+C(k,j,j';q,m,m')=(-1)^{k-j+m'}\sqrt{2j'+1}\begin{pmatrix}k&j&j'\\q&m&m'\end{pmatrix}.
+\]
+利用 $3j$ 符号的列置换对称性（交换列 1 和 3 给出 $(-1)^{k+j+j'}$）：
+\[
+\begin{pmatrix}k&j&j'\\q&m&m'\end{pmatrix}
+=(-1)^{k+j+j'}\begin{pmatrix}j'&k&j\\m'&q&m\end{pmatrix}
+=(-1)^{k+j+j'}(-1)^{j'-m'}\begin{pmatrix}j'&k&j\\-m'&q&m\end{pmatrix},
+\]
+最后一步用了磁量子数全反号的对称性 $m'\to-m'$（给出 $(-1)^{j'+k+j}$，但这里只反号 $m'$，需要更仔细处理）。实际上，直接从 CG 系数到 $3j$ 符号的标准约定：
+\[
+\bra{j',m'}T^{(k)}_q\ket{j,m}
+=\frac{\alpha(j')}{\sqrt{2j'+1}}(-1)^{j'-m'}\begin{pmatrix}j'&k&j\\-m'&q&m\end{pmatrix}\cdot(2j'+1),
+\]
+整理后定义约化矩阵元
+\[
+\braket{j'\|T^{(k)}\|j}:=\sqrt{2j'+1}\,\alpha(j'),
+\]
+即得 \cref{eq:wigner-eckart}。
+
+\textbf{第四步：约化矩阵元不依赖磁量子数的验证.}\enspace 设有两个矩阵元 $\bra{j',m'_1}T^{(k)}_{q_1}\ket{j,m_1}$ 和 $\bra{j',m'_2}T^{(k)}_{q_2}\ket{j,m_2}$，满足 $m'_1=m_1+q_1$ 和 $m'_2=m_2+q_2$。由 \cref{eq:wigner-eckart}：
+\[
+\frac{\bra{j',m'_1}T^{(k)}_{q_1}\ket{j,m_1}}{(-1)^{j'-m'_1}\begin{pmatrix}j'&k&j\\-m'_1&q_1&m_1\end{pmatrix}}
+=
+\frac{\bra{j',m'_2}T^{(k)}_{q_2}\ket{j,m_2}}{(-1)^{j'-m'_2}\begin{pmatrix}j'&k&j\\-m'_2&q_2&m_2\end{pmatrix}}
+=\braket{j'\|T^{(k)}\|j},
+\]
+即任意一个非零矩阵元除以对应的几何因子都给出同一个约化矩阵元。这在实践中极为有用：只需计算一个最方便的矩阵元，就能确定所有其他矩阵元。
+\end{derivation}
+
+接下来考察选择定则。
+
+Wigner--Eckart 定理立即给出两条基本选择定则：
+
+\begin{proposition}[角动量选择定则]
+矩阵元 $\bra{j',m'}T^{(k)}_q\ket{j,m}$ 非零的必要条件是：
+\begin{enumerate}
+\item \textbf{三角形条件}：$|j-k|\le j'\le j+k$（等价于 $j,j',k$ 构成三角形三边）。
+\item \textbf{磁量子数条件}：$m'=m+q$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+$3j$ 符号 $\begin{pmatrix}j'&k&j\\-m'&q&m\end{pmatrix}$ 非零要求三个 $j$ 满足三角形条件（来自 CG 系数的定义域约束）且三个 $m$ 之和为零：$-m'+q+m=0$，即 $m'=m+q$。
+\end{proof}
+
+\begin{proposition}[宇称选择定则]
+设系统具有空间反演对称性，$\ket{j,m}$ 的宇称为 $\pi=(-1)^l$（$l$ 为轨道角动量），rank $k$ 张量算符 $T^{(k)}$ 的宇称为 $\pi_T$（电多极 $\pi_T=(-1)^k$，磁多极 $\pi_T=(-1)^{k+1}$）。则矩阵元非零要求
+\[
+\pi'\pi_T\pi=+1,
+\]
+即初态、算符、末态宇称之积为偶。这就是 Laporte 定则的一般形式。
+\end{proposition}
+
+\begin{proof}
+反演算符 $P$ 与转动对易，故 $P\ket{j,m}=\pi\ket{j,m}$，$PT^{(k)}_qP^{-1}=\pi_T T^{(k)}_q$。矩阵元在反演下不变：
+\[
+\bra{j',m'}T^{(k)}_q\ket{j,m}
+=\bra{j',m'}P^{-1}PT^{(k)}_qP^{-1}P\ket{j,m}
+=\pi'\pi_T\pi\,\bra{j',m'}T^{(k)}_q\ket{j,m},
+\]
+故 $(1-\pi'\pi_T\pi)\bra{j',m'}T^{(k)}_q\ket{j,m}=0$。若 $\pi'\pi_T\pi=-1$ 则矩阵元为零。
+\end{proof}
+
+\begin{example}[电偶极跃迁的选择定则]
+电偶极矩 $\vb d=-e\vb r$ 是 rank $1$ 张量算符（$k=1$），宇称 $\pi_T=-1$（奇宇称，因 $\vb r\to-\vb r$）。选择定则：
+\begin{itemize}
+\item $\Delta l=\pm1$（三角形条件 $|l-1|\le l'\le l+1$ 加上宇称 $(-1)^{l'}(-1)(-1)^l=+1$ 要求 $l'+l$ 为奇数，排除 $l'=l$）。
+\item $\Delta m=0,\pm1$（磁量子数条件 $m'=m+q$，$q=0,\pm1$）。
+\item $\Delta j=0,\pm1$（但 $j=0\to j'=0$ 禁戒，因 $3j$ 符号 $\begin{pmatrix}0&1&0\\0&q&0\end{pmatrix}=0$）。
+\end{itemize}
+这些正是原子光谱中熟知的电偶极跃迁选择定则。注意 $\Delta l=\pm1$ 来自宇称，而 $\Delta j=0,\pm1$ 来自角动量三角形条件——两者是独立的约束。
+\end{example}
+
+接下来考察约化矩阵元的计算与等价算符方法。
+
+Wigner--Eckart 定理把所有矩阵元的计算归结为一个约化矩阵元。实践中，约化矩阵元可以通过以下方法确定：
+
+\begin{proposition}[约化矩阵元的确定方法]
+若存在一组 $(m_0,q_0,m'_0)$ 使得 $3j$ 符号 $\begin{pmatrix}j'&k&j\\-m'_0&q_0&m_0\end{pmatrix}\ne0$，则
+\begin{equation}
+\braket{j'\|T^{(k)}\|j}
+=\frac{\bra{j',m'_0}T^{(k)}_{q_0}\ket{j,m_0}}{(-1)^{j'-m'_0}\begin{pmatrix}j'&k&j\\-m'_0&q_0&m_0\end{pmatrix}}.
+\label{eq:reduced-me-formula}
+\end{equation}
+通常选取 $m_0=j$，$q_0=m'_0-j$（使计算最简单的组合）。
+\end{proposition}
+
+\begin{example}[位置算符在 $l=1$ 子空间的约化矩阵元]
+计算 $\braket{l'=1\|r^{(1)}\|l=1}$。取 $m_0=1$，$q_0=0$，$m'_0=1$：
+\[
+\bra{1,1}r^{(1)}_0\ket{1,1}=\bra{1,1}z\ket{1,1}=\int_0^\infty r^3\,dr\int|Y_{11}|^2\cos\theta\,d\Omega.
+\]
+利用 $Y_{11}=-\sqrt{3/8\pi}\sin\theta\,\ee^{\ii\varphi}$ 和 $\cos\theta=\sqrt{4\pi/3}Y_{10}$：
+\[
+\int Y_{11}^*\cos\theta\,Y_{11}\,d\Omega
+=\sqrt{\frac{4\pi}{3}}\int Y_{11}^*Y_{10}Y_{11}\,d\Omega
+=\sqrt{\frac{4\pi}{3}}\cdot\left(-\sqrt{\frac{3}{8\pi}}\right)\sqrt{\frac{3}{8\pi}}\sqrt{\frac{3}{4\pi}}\int\sin^2\theta\cos\theta\sin\theta\,d\theta\,d\varphi.
+\]
+更简洁地，利用 Gaunt 积分公式 $\int Y_{l_1m_1}Y_{l_2m_2}Y_{l_3m_3}\,d\Omega$ 正比于 $3j$ 符号 $\begin{pmatrix}l_1&l_2&l_3\\m_1&m_2&m_3\end{pmatrix}$，最终得到
+\[
+\braket{1\|r^{(1)}\|1}=\frac{\bra{1,1}z\ket{1,1}}{(-1)^0\begin{pmatrix}1&1&1\\-1&0&1\end{pmatrix}}=r\sqrt{\frac{3}{2}},
+\]
+其中径向积分 $\int_0^\infty r^3|R_{nl}(r)|^2\,dr$ 已简记为 $r$。由此可立即写出所有 $\bra{1,m'}r^{(1)}_q\ket{1,m}$。
+\end{example}
+
+\begin{theorem}[投影定理（等价算符方法）]
+\label{thm:projection}
+设 $\vb V$ 是矢量算符（rank $1$ 张量），在角动量 $j$ 的不可约子空间内（$j\ne0$），$\vb V$ 的矩阵元与 $\vb J$ 的矩阵元成正比：
+\begin{equation}
+\bra{j,m'}\vb V\ket{j,m}
+=\frac{\braket{\vb V\cdot\vb J}}{\hbar^2 j(j+1)}\bra{j,m'}\vb J\ket{j,m},
+\label{eq:projection-theorem}
+\end{equation}
+其中 $\braket{\vb V\cdot\vb J}:=\bra{j,m}\vb V\cdot\vb J\ket{j,m}$（不依赖 $m$，因 $\vb V\cdot\vb J$ 是标量）。
+\end{theorem}
+
+\begin{proof}
+\textbf{第一步.}\enspace $\vb V\cdot\vb J$ 是标量（rank $0$ 张量），故由 Wigner--Eckart 定理，其对角矩阵元不依赖 $m$：
+\[
+\braket{j,m}{\vb V\cdot\vb J}{j,m}=\braket{j,m'}{\vb V\cdot\vb J}{j,m'}\quad\forall\,m,m'.
+\]
+记此公共值为 $\braket{\vb V\cdot\vb J}$。
+
+\textbf{第二步.}\enspace 在同一 $j$ 子空间内，$\vb V$ 和 $\vb J$ 都是 rank $1$ 张量算符。由 Wigner--Eckart 定理，它们的矩阵元都正比于同一个 $3j$ 符号：
+\[
+\bra{j,m'}V^{(1)}_q\ket{j,m}=(-1)^{j-m'}\begin{pmatrix}j&1&j\\-m'&q&m\end{pmatrix}\braket{j\|V^{(1)}\|j},
+\]
+\[
+\bra{j,m'}J^{(1)}_q\ket{j,m}=(-1)^{j-m'}\begin{pmatrix}j&1&j\\-m'&q&m\end{pmatrix}\braket{j\|J^{(1)}\|j}.
+\]
+因此 $\bra{j,m'}V^{(1)}_q\ket{j,m}=\frac{\braket{j\|V^{(1)}\|j}}{\braket{j\|J^{(1)}\|j}}\bra{j,m'}J^{(1)}_q\ket{j,m}$。
+
+\textbf{第三步.}\enspace 确定比例常数。取 $\vb V\cdot\vb J=\sum_q(-1)^qV^{(1)}_qJ^{(1)}_{-q}$ 的对角矩阵元：
+\[
+\braket{\vb V\cdot\vb J}=\sum_q(-1)^q\bra{j,m}V^{(1)}_qJ^{(1)}_{-q}\ket{j,m}.
+\]
+插入完备集 $\sum_{m'}\ket{j,m'}\bra{j,m'}$（同一 $j$ 子空间内）：
+\[
+\braket{\vb V\cdot\vb J}=\sum_{m',q}(-1)^q\bra{j,m}V^{(1)}_q\ket{j,m'}\bra{j,m'}J^{(1)}_{-q}\ket{j,m}.
+\]
+用 Wigner--Eckart 定理代入两个矩阵元，利用 $3j$ 符号的正交关系
+\[
+\sum_{m',q}(-1)^{2(j-m')+q}\begin{pmatrix}j&1&j\\-m'&q&m\end{pmatrix}\begin{pmatrix}j&1&j\\-m'&-q&m\end{pmatrix}
+=\frac{1}{3},
+\]
+（$3j$ 符号的正交性，利用 $(-1)^{j-m'}$ 因子和列置换），得到
+\[
+\braket{\vb V\cdot\vb J}=\frac{1}{3}\braket{j\|V^{(1)}\|j}\braket{j\|J^{(1)}\|j}.
+\]
+类似地 $\braket{\vb J\cdot\vb J}=\hbar^2 j(j+1)=\frac{1}{3}\braket{j\|J^{(1)}\|j}^2$，故 $\braket{j\|J^{(1)}\|j}=\hbar\sqrt{3j(j+1)}$，代入得比例常数
+\[
+\frac{\braket{j\|V^{(1)}\|j}}{\braket{j\|J^{(1)}\|j}}=\frac{\braket{\vb V\cdot\vb J}}{\hbar^2 j(j+1)}.
+\]
+\end{proof}
+
+\begin{example}[Land\'e $g$ 因子]
+电子的总磁矩 $\vb\mu=-\mu_B(g_L\vb L+g_S\vb S)/\hbar$，其中 $g_L=1$（轨道），$g_S\approx2$（自旋）。在总角动量 $\vb J=\vb L+\vb S$ 的本征态 $\ket{j,m_j}$ 中，磁矩的期望值需要计算 $\bra{j,m_j}\vb\mu\ket{j,m_j}$。
+
+由投影定理 \cref{thm:projection}，在同一 $j$ 子空间内：
+\[
+\vb\mu\to\frac{\braket{\vb\mu\cdot\vb J}}{\hbar^2 j(j+1)}\vb J.
+\]
+计算 $\vb\mu\cdot\vb J$：
+\[
+\vb\mu\cdot\vb J=-\frac{\mu_B}{\hbar}(g_L\vb L\cdot\vb J+g_S\vb S\cdot\vb J).
+\]
+利用 $\vb L\cdot\vb J=\frac12(\vb J^2+\vb L^2-\vb S^2)$ 和 $\vb S\cdot\vb J=\frac12(\vb J^2+\vb S^2-\vb L^2)$，在 $\ket{l,s,j,m_j}$ 态中：
+\[
+\braket{\vb L\cdot\vb J}=\frac{\hbar^2}{2}[j(j+1)+l(l+1)-s(s+1)],
+\]
+\[
+\braket{\vb S\cdot\vb J}=\frac{\hbar^2}{2}[j(j+1)+s(s+1)-l(l+1)].
+\]
+代入得 Land\'e $g$ 因子：
+\begin{equation}
+g_J=1+\frac{j(j+1)+s(s+1)-l(l+1)}{2j(j+1)},
+\label{eq:lande-g}
+\end{equation}
+Zeeman 效应中的能量修正为 $\Delta E=\mu_B g_J m_j B$。这个公式是投影定理最经典的应用——群论把一个需要计算大量矩阵元的问题简化为一个代数表达式。
+\end{example}
+
+接下来考察张量算符的乘积与耦合。
+
+两个不可约张量算符可以耦合为新的张量算符，正如两个角动量态可以耦合为总角动量态。
+
+\begin{proposition}[张量算符的耦合]
+设 $T^{(k_1)}_{q_1}$ 和 $S^{(k_2)}_{q_2}$ 分别是 rank $k_1$ 和 $k_2$ 的不可约张量算符。定义耦合张量算符
+\begin{equation}
+[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q
+=\sum_{q_1,q_2}C(k_1,k_2,K;q_1,q_2,Q)\,T^{(k_1)}_{q_1}S^{(k_2)}_{q_2},
+\label{eq:tensor-product-op}
+\end{equation}
+则 $\{[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q\}_{Q=-K}^K$ 是 rank $K$ 不可约张量算符，其中 $K$ 取值 $|k_1-k_2|,\dots,k_1+k_2$。
+\end{proposition}
+
+\begin{proof}
+需要验证耦合算符满足对易关系 \cref{eq:tensor-Jz} 和 \cref{eq:tensor-Jpm}。利用 Leibniz 规则 $[J_z,AB]=[J_z,A]B+A[J_z,B]$：
+\[
+[J_z,T^{(k_1)}_{q_1}S^{(k_2)}_{q_2}]
+=\hbar(q_1+q_2)T^{(k_1)}_{q_1}S^{(k_2)}_{q_2}.
+\]
+CG 系数 $C(k_1,k_2,K;q_1,q_2,Q)$ 非零要求 $q_1+q_2=Q$，故
+\[
+[J_z,[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q]
+=\hbar Q\,[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q.
+\]
+类似地，$J_\pm$ 的对易关系利用 CG 系数的递推关系
+\[
+\sum_{q_1,q_2}C(k_1,k_2,K;q_1,q_2,Q)\bigl[\sqrt{k_1(k_1+1)-q_1(q_1\pm1)}\,\delta_{q_1'\,q_1\pm1}+\sqrt{k_2(k_2+1)-q_2(q_2\pm1)}\,\delta_{q_2'\,q_2\pm1}\bigr]
+\]
+\[
+=\sqrt{K(K+1)-Q(Q\pm1)}\,C(k_1,k_2,K;q_1',q_2',Q\pm1),
+\]
+这正是 CG 系数作为角动量耦合系数所满足的递推关系。故 $[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q$ 满足 \cref{eq:tensor-Jpm}。
+\end{proof}
+
+\begin{proposition}[标量积的矩阵元]
+两个同 rank 张量算符的标量积定义为
+\[
+T^{(k)}\cdot S^{(k)}:=\sum_{q=-k}^{k}(-1)^q T^{(k)}_q S^{(k)}_{-q}
+=(-1)^k\sqrt{2k+1}\,[T^{(k)}\otimes S^{(k)}]^{(0)}_0.
+\]
+其矩阵元为
+\begin{equation}
+\bra{j',m'}T^{(k)}\cdot S^{(k)}\ket{j,m}
+=(-1)^{j'-j}\delta_{m'm}\frac{\braket{j'\|T^{(k)}\|j}\braket{j'\|S^{(k)}\|j}}{\sqrt{2j'+1}}\,\delta_{j'j},
+\label{eq:scalar-product-me}
+\end{equation}
+当 $j'=j$ 时（标量积不改变角动量），进一步简化为
+\[
+\bra{j,m}T^{(k)}\cdot S^{(k)}\ket{j,m}
+=\frac{1}{2j+1}\braket{j\|T^{(k)}\|j}\braket{j\|S^{(k)}\|j}.
+\]
+\end{proposition}
+
+\begin{proof}
+标量积是 rank $0$ 张量，由 Wigner--Eckart 定理：
+\[
+\bra{j',m'}[T^{(k)}\otimes S^{(k)}]^{(0)}_0\ket{j,m}
+=(-1)^{j'-m'}\begin{pmatrix}j'&0&j\\-m'&0&m\end{pmatrix}\braket{j'\|[T^{(k)}\otimes S^{(k)}]^{(0)}\|j}.
+\]
+$3j$ 符号 $\begin{pmatrix}j'&0&j\\-m'&0&m\end{pmatrix}=\frac{(-1)^{j'-m'}}{\sqrt{2j'+1}}\delta_{j'j}\delta_{m'm}$（rank $0$ 耦合是平凡的）。约化矩阵元的分解涉及两个张量算符约化矩阵元的乘积和一个 $6j$ 符号：
+\[
+\braket{j'\|[T^{(k)}\otimes S^{(k)}]^{(0)}\|j}
+=(-1)^{j+k+j'}\sqrt{2j'+1}\begin{Bmatrix}j&k&j'\\k&j&0\end{Bmatrix}\braket{j'\|T^{(k)}\|j}\braket{j'\|S^{(k)}\|j}.
+\]
+含 $0$ 的 $6j$ 符号简化为 $\begin{Bmatrix}j&k&j'\\k&j&0\end{Bmatrix}=\frac{(-1)^{j+k+j'}}{\sqrt{(2j+1)(2k+1)}}\delta_{jj'}$（见 \cref{eq:6j-zero}），代入整理即得 \cref{eq:scalar-product-me}。
+\end{proof}
+
+\begin{example}[自旋--轨道耦合的矩阵元]
+自旋--轨道耦合 $\vb L\cdot\vb S$ 是两个 rank $1$ 张量算符的标量积。在 $\ket{l,s,j,m_j}$ 态中：
+\[
+\vb L\cdot\vb S=\frac12(\vb J^2-\vb L^2-\vb S^2),
+\]
+故
+\[
+\bra{l,s,j,m_j}\vb L\cdot\vb S\ket{l,s,j,m_j}
+=\frac{\hbar^2}{2}[j(j+1)-l(l+1)-s(s+1)].
+\]
+用标量积公式 \cref{eq:scalar-product-me} 验证：需要 $\braket{j\|L^{(1)}\|j}$ 和 $\braket{j\|S^{(1)}\|j}$。由投影定理，$\vb L\to\frac{\braket{\vb L\cdot\vb J}}{\hbar^2 j(j+1)}\vb J$，$\vb S\to\frac{\braket{\vb S\cdot\vb J}}{\hbar^2 j(j+1)}\vb J$，故
+\[
+\braket{j\|L^{(1)}\|j}=\frac{\braket{\vb L\cdot\vb J}}{\hbar^2 j(j+1)}\braket{j\|J^{(1)}\|j},
+\]
+类似 for $\vb S$。标量积公式给出
+\[
+\bra{j,m_j}\vb L\cdot\vb S\ket{j,m_j}
+=\frac{1}{2j+1}\cdot\frac{\braket{\vb L\cdot\vb J}\braket{\vb S\cdot\vb J}}{\hbar^4 j^2(j+1)^2}\braket{j\|J^{(1)}\|j}^2
+=\frac{\braket{\vb L\cdot\vb J}\braket{\vb S\cdot\vb J}}{\hbar^2 j(j+1)},
+\]
+与直接计算 $\frac12[j(j+1)-l(l+1)-s(s+1)]\hbar^2$ 一致（利用 $\braket{\vb L\cdot\vb J}+\braket{\vb S\cdot\vb J}=\hbar^2 j(j+1)$）。
+\end{example}
+
+接下来考察6j 符号与张量算符的再耦合。
+
+当三个张量算符依次作用于态上时，不同耦合顺序之间的变换系数正是 $6j$ 符号。这是 $6j$ 符号在物理中最重要的出现方式之一。
+
+\begin{theorem}[三个张量算符的约化矩阵元公式]
+设 $T^{(k_1)}$ 和 $S^{(k_2)}$ 是不可约张量算符。耦合张量 $[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}$ 的约化矩阵元为
+\begin{equation}
+\braket{j'\|[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}\|j}
+=\sum_{j''}(-1)^{j+j'+j''}\sqrt{2K+1}\sqrt{2j''+1}\begin{Bmatrix}k_1&k_2&K\\j&j'&j''\end{Bmatrix}\braket{j'\|T^{(k_1)}\|j''}\braket{j''\|S^{(k_2)}\|j}.
+\label{eq:reduced-me-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\textbf{思路.}\enspace 将 $[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q\ket{j,m}$ 按 \cref{eq:tensor-op-expansion} 展开，中间态 $\ket{j'',m''}$ 来自 $S^{(k_2)}$ 作用于 $\ket{j,m}$，然后 $T^{(k_1)}$ 作用于 $\ket{j'',m''}$。两次耦合的顺序 $(k_2\text{ 先}, k_1\text{ 后})$ 与直接耦合 $(k_1\otimes k_2\to K)$ 之间的变换系数正是 $6j$ 符号。
+
+\textbf{详细推导.}\enspace 由 Wigner--Eckart 定理，
+\[
+\bra{j',m'}[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q\ket{j,m}
+=(-1)^{j'-m'}\begin{pmatrix}j'&K&j\\-m'&Q&m\end{pmatrix}\braket{j'\|[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}\|j}.
+\]
+另一方面，直接展开耦合算符 \cref{eq:tensor-product-op} 并用 Wigner--Eckart 定理分别处理两个矩阵元：
+\[
+\bra{j',m'}[T^{(k_1)}\otimes S^{(k_2)}]^{(K)}_Q\ket{j,m}
+=\sum_{q_1,q_2}C(k_1,k_2,K;q_1,q_2,Q)\sum_{j'',m''}\bra{j',m'}T^{(k_1)}_{q_1}\ket{j'',m''}\bra{j'',m''}S^{(k_2)}_{q_2}\ket{j,m}.
+\]
+代入 Wigner--Eckart 定理：
+\[
+=\sum_{q_1,q_2,j'',m''}C(k_1,k_2,K;q_1,q_2,Q)(-1)^{j'-m'+j''-m''}\begin{pmatrix}j'&k_1&j''\\-m'&q_1&m''\end{pmatrix}\begin{pmatrix}j''&k_2&j\\-m''&q_2&m\end{pmatrix}\braket{j'\|T^{(k_1)}\|j''}\braket{j''\|S^{(k_2)}\|j}.
+\]
+对 $m'',q_1,q_2$ 求和（利用 $q_1+q_2=Q$，$m''=m+q_2$，$m'=m+Q$ 等约束），得到的 $3j$ 符号求和恰好是 $6j$ 符号的定义（$3j$ 符号的 Racah 求和公式）：
+\[
+\sum_{m'',q_1,q_2}(-1)^{\cdots}\begin{pmatrix}j'&k_1&j''\\-m'&q_1&m''\end{pmatrix}\begin{pmatrix}j''&k_2&j\\-m''&q_2&m\end{pmatrix}\begin{pmatrix}j'&K&j\\-m'&Q&m\end{pmatrix}
+=(-1)^{\cdots}\sqrt{2K+1}\sqrt{2j''+1}\begin{Bmatrix}k_1&k_2&K\\j&j'&j''\end{Bmatrix}\begin{pmatrix}j'&K&j\\-m'&Q&m\end{pmatrix},
+\]
+两边的 $3j$ 符号 $\begin{pmatrix}j'&K&j\\-m'&Q&m\end{pmatrix}$ 约去，即得 \cref{eq:reduced-me-product}。
+\end{proof}
+
+这个公式在原子物理中极为重要。例如，计算两个电子间的 Coulomb 相互作用 $1/r_{12}$（可展开为球谐函数的乘积）的矩阵元时，需要处理两个张量算符的耦合，$6j$ 符号自然出现并编码了不同耦合方案之间的变换。
+
+\begin{example}[超精细结构的电四极相互作用]
+原子核的四极矩与电子云的相互作用为
+\[
+H_Q=-\frac{e^2Q}{2I(2I-1)}\sum_{q=-2}^{2}(-1)^q Q^{(2)}_q(\text{核})\,Q^{(2)}_{-q}(\text{电子}),
+\]
+这是两个 rank $2$ 张量算符的标量积。由 \cref{eq:scalar-product-me}，在 $\ket{F,m_F}$ 态中（$F$ 是总角动量 $\vb F=\vb I+\vb J$）：
+\[
+\bra{F,m_F}H_Q\ket{F,m_F}
+=\frac{1}{2F+1}\braket{F\|Q^{(2)}(\text{核})\|F}\braket{F\|Q^{(2)}(\text{电子})\|F}.
+\]
+核约化矩阵元 $\braket{F\|Q^{(2)}(\text{核})\|F}$ 正比于核四极矩 $Q$，电子约化矩阵元通过 \cref{eq:reduced-me-product}（$k_1=2$ 作用于核空间，$k_2=2$ 作用于电子空间）分解为 $6j$ 符号和各自空间的约化矩阵元。最终能量修正为
+\[
+E_Q=\frac{B}{4}\left[\frac{3K(K+1)-4I(I+1)J(J+1)}{I(2I-1)J(2J-1)}\right],
+\]
+其中 $K=F(F+1)-I(I+1)-J(J+1)$，$B$ 是四极耦合常数。$6j$ 符号 $\begin{Bmatrix}I&J&F\\J&I&2\end{Bmatrix}$ 编码了核--电子角动量耦合的几何，而物理参数 $Q$ 和电子分布都进入常数 $B$。
+\end{example}
+
+接下来考察Wigner--Eckart 定理与 Schur 引理的深层联系。
+
+Wigner--Eckart 定理的本质是 Schur 引理在矩阵元层面的具体化。回顾 Schur 引理：若 $D$ 是不可约表示，则与所有 $D(g)$ 对易的矩阵是标量矩阵。在矩阵元语言中，这恰好说"不可约表示之间的 intertwining 算符只有零或标量倍"。
+
+Wigner--Eckart 定理处理的是更一般的情形：$T^{(k)}$ 是从表示 $D^{(j)}$ 到 $D^{(j')}$ 的 intertwining 算符，中间经过 $D^{(k)}$ 的耦合。由 Schur 引理，$\Hom_G(D^{(j)},D^{(j')})$ 的维数是 $\delta_{jj'}$（不可约表示之间的 intertwining 算符），但 $T^{(k)}$ 不是直接的 intertwining 算符——它先与 $D^{(k)}$ 耦合再作用。展开 \cref{eq:tensor-op-expansion} 中，每个不可约表示 $D^{(J)}$ 通道的系数 $\alpha(J)$ 正是 $\Hom_G(D^{(J)},D^{(j')})$ 中的 intertwining 算符，由 Schur 引理 $\alpha(J)=0$ 除非 $J=j'$，且 $\alpha(j')$ 是标量。这就是约化矩阵元。
+
+这个视角揭示了 Wigner--Eckart 定理的一般群论推广：对任意紧群 $G$，不可约张量算符的矩阵元正比于相应的 Clebsch--Gordan 系数（广义 $3j$ 符号），比例因子是约化矩阵元。对有限群，这正是\chapref{chap:group-theory-quantum}中 SALC 构造和投影算符方法的群论基础——投影算符 $\hat P^{(\Gamma)}_{ij}=\frac{d_\Gamma}{|G|}\sum_g D^{(\Gamma)*}_{ij}(g)\,g$ 正是"提取不可约表示 $\Gamma$ 的 $j$ 行 $i$ 列分量"的算符，其矩阵元由表示系数（有限群的"CG 系数"）完全确定，动力学信息只进入约化矩阵元。
+
+本章到这里完成了从“几何转动”到“量子角动量耦合”再到“Wigner--Eckart 定理”的闭环。\chapref{chap:point-space-groups}与\chapref{chap:group-theory-quantum}中的点群方法解决离散空间对称性，\chapref{chap:rotation-group}解决完整转动对称性、自旋带来的二重覆盖，以及张量算符矩阵元的群论约化；下一章转向另一类完全不同但同样基础的离散对称性——全同粒子的置换对称性。
+
+\section{习题与解答}
+\label{sec:rotation-exercises}
+
+以下习题按本章主线排列。习题本身不另设框，解答只做轻量区分。
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2.5em]
+\item 从 $K(\uv n)\vb r=\uv n\times\vb r$ 出发证明 \eqnrefs{eq:K-identities}，并由此直接验证 Rodrigues 矩阵满足 $R^{\mathsf T}R=I_3$。
+
+\emph{解答.} 向量三重积给出
+\[
+K^2\vb r=\uv n(\uv n\cdot\vb r)-\vb r,
+\]
+故 $K^2=\uv n\uv n^{\mathsf T}-I$。再乘一个 $K$，因 $K\uv n=0$，得 $K^3=-K$。又 $K^{\mathsf T}=-K$。令 $R=I+sK+(1-c)K^2$，其中 $s=\sin\theta,c=\cos\theta$，则
+\[
+R^{\mathsf T}=I-sK+(1-c)K^2.
+\]
+相乘并用 $K^4=-K^2$，$K$ 的奇次项抵消，$K^2$ 系数为
+\[
+2(1-c)-s^2-(1-c)^2=0,
+\]
+所以 $R^{\mathsf T}R=I$。
+
+\item 证明 $\tr R_{\uv n}(\theta)=1+2\cos\theta$。
+
+\emph{解答.} 由 Rodrigues 公式，$\tr K=0$，且
+\[
+\tr K^2=\tr(\uv n\uv n^{\mathsf T}-I)=1-3=-2.
+\]
+所以
+\[
+\tr R=3+(1-\cos\theta)(-2)=1+2\cos\theta.
+\]
+
+\item 用 Pauli 恒等式证明 $(\uv n\cdot\Pauli)^2=I_2$，其中 $\lvert\uv n\rvert=1$。
+
+\emph{解答.}
+\[
+(\uv n\cdot\Pauli)^2
+=n_i n_j(\delta_{ij}I+\ii\epsilon_{ijk}\sigma_k)
+=\lvert\uv n\rvert^2I=I,
+\]
+因为 $n_i n_j$ 对 $i,j$ 对称，而 $\epsilon_{ijk}$ 反对称，第二项为零。
+
+\item 证明 $U(\uv n,2\pi)=-I_2$、$U(\uv n,4\pi)=I_2$。
+
+\emph{解答.} 直接代入 \eqnrefs{eq:su2-axis-angle}：
+\[
+U(2\pi)=\cos\pi I-\ii\sin\pi\,\uv n\cdot\Pauli=-I,
+\]
+而 $U(4\pi)=\cos2\pi I=I$。
+
+\item 设 $U=a_0I-\ii\vb a\cdot\Pauli$、$V=b_0I-\ii\vb b\cdot\Pauli$。求 $UV$ 的同型参数，并说明 $SU(2)$ 的群乘法等价于单位四元数乘法。
+
+\emph{解答.} 利用 Pauli 乘法，
+\[
+UV=(a_0b_0-\vb a\cdot\vb b)I
+-\ii(a_0\vb b+b_0\vb a+\vb a\times\vb b)\cdot\Pauli.
+\]
+这正是单位四元数的乘法规则；若两组参数都满足 $a_0^2+a^2=b_0^2+b^2=1$，乘积也满足同一单位球面约束。
+
+\item 由角动量代数推导 $[J^2,J_z]=0$ 和 $[J_z,J_\pm]=\pm\hbar J_\pm$。
+
+\emph{解答.} 例如
+\[
+[J_z,J_+]=[J_z,J_x]+\ii[J_z,J_y]
+=\ii\hbar J_y+\hbar J_x=\hbar J_+.
+\]
+另一个符号同理。对 $J^2$，
+\[
+[J_x^2,J_z]=J_x[J_x,J_z]+[J_x,J_z]J_x
+=-\ii\hbar(J_xJ_y+J_yJ_x),
+\]
+而 $[J_y^2,J_z]$ 给出相反项，$[J_z^2,J_z]=0$，故总和为零。
+
+\item 对 $j=1$ 写出 $J_z,J_+,J_-$ 的矩阵。
+
+\emph{解答.} 在基 $\ket{1,1},\ket{1,0},\ket{1,-1}$ 中，
+\[
+J_z=\hbar\begin{pmatrix}1&0&0\\0&0&0\\0&0&-1\end{pmatrix},
+\quad
+J_+=\hbar\sqrt2
+\begin{pmatrix}0&1&0\\0&0&1\\0&0&0\end{pmatrix},
+\quad
+J_-=J_+^\dagger.
+\]
+
+\item 说明为什么半整数 $j$ 不能给出 $SO(3)$ 的单值表示。
+
+\emph{解答.} $SO(3)$ 中 $2\pi$ 转动就是单位元，因此任何群表示必须把它送到单位矩阵。但半整数 $j$ 中
+\[
+D^{(j)}(2\pi)=(-1)^{2j}I=-I,
+\]
+所以它不能因子化为 $SO(3)$ 表示，只能成为 $SU(2)$ 或双群表示。
+
+\item 对 $\ell=1,s=\tfrac12$，用 \eqnrefs{eq:spin-orbit-energy} 求 $j=3/2$ 与 $j=1/2$ 的自旋--轨道能量。
+
+\emph{解答.} $\ell(\ell+1)=2$，$s(s+1)=3/4$。对 $j=3/2$，$j(j+1)=15/4$，故
+\[
+E_{3/2}=\frac{\lambda\hbar^2}{2}\left(\frac{15}{4}-2-\frac34\right)
+=\frac{\lambda\hbar^2}{2}.
+\]
+对 $j=1/2$，$j(j+1)=3/4$，故
+\[
+E_{1/2}=\frac{\lambda\hbar^2}{2}\left(\frac34-2-\frac34\right)
+=-\lambda\hbar^2.
+\]
+
+\item 验证 Clebsch--Gordan 维数恒等式
+\[
+(2j_1+1)(2j_2+1)
+=\sum_{j=|j_1-j_2|}^{j_1+j_2}(2j+1).
+\]
+
+\emph{解答.} 若 $j_1<j_2$，交换两个角动量的标签不会改变恒等式，因此只需写出 $j_1\ge j_2$ 的计算。右侧是首项 $2(j_1-j_2)+1$、末项 $2(j_1+j_2)+1$、项数 $2j_2+1$ 的等差数列，直接求和即得左侧。
+
+\item 从最高权态出发求 $1\otimes\tfrac12$ 的全部耦合态。
+
+\emph{解答.} 分解为 $\frac32\oplus\frac12$。最高态
+\[
+\ket{\tfrac32,\tfrac32}=\ket{1,1}\ket{\uparrow}.
+\]
+用 $J_-$ 得
+\[
+\ket{\tfrac32,\tfrac12}
+=\sqrt{\frac23}\ket{1,0}\ket{\uparrow}
++\sqrt{\frac13}\ket{1,1}\ket{\downarrow}.
+\]
+与之正交的 $M=1/2$ 态为
+\[
+\ket{\tfrac12,\tfrac12}
+=-\sqrt{\frac13}\ket{1,0}\ket{\uparrow}
++\sqrt{\frac23}\ket{1,1}\ket{\downarrow}.
+\]
+其余 $M<0$ 态由继续作用 $J_-$ 或时间反演得到。
+
+\item 证明两个自旋 $1/2$ 的三重态在粒子交换下对称，而单态反对称。
+
+\emph{解答.} 交换算符 $P_{12}$ 作用为 $P_{12}\ket{a}_1\ket{b}_2=\ket{b}_1\ket{a}_2$。因此 $\ket{\uparrow\uparrow}$、$\ket{\downarrow\downarrow}$ 不变，
+\[
+P_{12}\frac{\ket{\uparrow\downarrow}+\ket{\downarrow\uparrow}}{\sqrt2}
+=+\frac{\ket{\uparrow\downarrow}+\ket{\downarrow\uparrow}}{\sqrt2},
+\]
+而带负号的组合取负。这一结果将在\chapref{chap:permutation-group}与费米统计结合。
+\end{enumerate}

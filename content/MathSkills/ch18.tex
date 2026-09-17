@@ -1,0 +1,1033 @@
+\chapter{概率模型、随机样本与经验分布}\label{chap:math-stat-models}
+
+前一部分研究的是给定几何结构后的确定性对象；从这里开始，未知量不再是一条确定曲线或一个张量场，而是一族可能的数据生成规律。数理统计因而必须先区分三层对象：参数决定概率分布，抽样机制决定观测的联合分布，统计量再把观测压缩为较低维的随机对象。只有这三层先分清，后面的“无偏”“一致”“充分”“似然”“检验水平”才有明确的概率空间和参数语义。本章固定统计部分的模型语言、随机样本约定与常用分布参数化，并用经验测度把有限样本与后面的极限定理连接起来。
+
+\section{统计模型、参数函数与随机样本}
+
+设 $(\mathcal X,\mathcal A)$ 为单次观测的可测空间，$\Theta$ 为参数集合。统计模型是一族定义在同一观测空间上的概率测度
+\begin{equation}\label{eq:math-stat-model-family}
+ \mathcal P=\{P_\theta:\theta\in\Theta\}.
+\end{equation}
+这里暂不要求 $\Theta$ 是欧氏空间：有限维参数模型取 $\Theta\subseteq\R^d$，而把未知分布函数、密度或回归函数本身作为参数时，$\Theta$ 可以是函数空间。\chapref{chap:math-stat-estimation-likelihood}--\chapref{chap:math-stat-testing} 的 Fisher 信息、QMD 与有限维 LAN 会在需要微分结构时再明确加入 $\Theta\subseteq\R^d$ 的假设。
+
+参数 $\theta$ 在频率学派模型中是未知但固定的数学量；随机性来自给定 $\theta$ 后的数据分布。若研究目标不是整个 $\theta$，而是一个映射
+\[
+ g:\Theta\to\R^q,
+\]
+则 $g(\theta)$ 称为参数函数。均值、方差、回归系数的线性组合以及假设检验中的约束函数都属于这一层，而不能与样本统计量混为一谈。
+
+单次观测模型还没有指定“怎样获得 $n$ 个数据”。一般地，大小为 $n$ 的统计实验是一族联合分布
+\[
+ \mathcal P_n
+ =\{P_\theta^{(n)}:\theta\in\Theta\}
+\]
+定义在 $(\mathcal X^n,\mathcal A^{\otimes n})$ 上。只有当抽样机制确实是独立同分布重复时，才有 $P_\theta^{(n)}=P_\theta^{\otimes n}$。这一层区分十分重要：相同的单次边缘分布配上不同的时间、空间或聚类依赖，会给出不同的 likelihood 与极限定理。
+
+对单次观测模型，若
+\[
+ P_{\theta_1}=P_{\theta_2}
+ \quad\Longrightarrow\quad
+ \theta_1=\theta_2,
+\]
+则称该参数化可识别。对一般 $n$-样本实验，相应定义必须施加在联合分布上：
+\[
+ P_{\theta_1}^{(n)}=P_{\theta_2}^{(n)}
+ \quad\Longrightarrow\quad
+ \theta_1=\theta_2.
+\]
+若研究一列实验 $\{\mathcal P_n\}$，还要说明可识别性是对每个固定 $n$ 成立，还是只要求整列联合规律最终能够区分参数。这个区分不能省略：依赖参数可能完全不出现在单次边缘分布中，却能由联合相关结构识别。不可识别则意味着存在不同参数坐标产生完全相同的相关数据分布，此时任何统计程序都不可能仅凭该实验区分这些参数值。后面的 Fisher 信息奇异、混合模型标签交换与秩亏线性模型都可以追溯到这一点。
+
+若存在一个 $\sigma$-有限测度 $\mu$，使所有 $P_\theta$ 都绝对连续于 $\mu$，则称模型被 $\mu$ 支配，并写
+\[
+ p_\theta=\frac{\dd P_\theta}{\dd\mu}.
+\]
+连续模型可取 Lebesgue 测度，离散模型可取计数测度。这样概率质量函数与概率密度可以统一写成 $p_\theta$。支配性本身并不保证普通似然微分成立；还要检查支撑是否随 $\theta$ 改变，以及微分能否与积分交换。比如 $\Unif(0,\theta)$ 的支撑依赖参数，它就不会服从后面正则模型的普通 $n^{-1/2}$ LAN 结构。
+
+\begin{definition}[随机样本]
+若 $X_1,\ldots,X_n$ 在参数值 $\theta$ 下相互独立且具有共同分布 $P_\theta$，则记
+\begin{equation}\label{eq:math-stat-iid-sample}
+ X_1,\ldots,X_n\iid P_\theta,
+ \qquad
+ X^n=(X_1,\ldots,X_n)\sim P_\theta^{\otimes n},
+\end{equation}
+并称 $X^n$ 为来自 $P_\theta$ 的大小为 $n$ 的 iid 随机样本。
+\end{definition}
+
+独立同分布是后面大多数定理的默认抽样结构，却不是“统计模型”的定义。时间序列、有限总体不放回抽样、空间场与聚类数据都可能具有同一个边缘模型 $P_\theta$，但联合分布不同；一旦联合结构改变，方差、极限定理和 likelihood 都必须重新推导。
+
+\begin{definition}[统计量、估计量与抽样分布]
+统计量是一个不显含未知参数的可测映射
+\[
+ T_n:\mathcal X^n\to\mathcal T,
+ \qquad
+ T_n=T_n(X^n).
+\]
+若 $T_n$ 用来估计参数函数 $g(\theta)$，则称其为 $g(\theta)$ 的估计量。对于一般 $n$-样本实验 $P_\theta^{(n)}$，其在参数值 $\theta$ 下的抽样分布是推前测度
+\begin{equation}\label{eq:math-stat-sampling-law-general}
+ \mathcal L_\theta^{(n)}(T_n)
+ =P_\theta^{(n)}\circ T_n^{-1}.
+\end{equation}
+只有在 iid 抽样时才进一步化为 $P_\theta^{\otimes n}\circ T_n^{-1}$。观测到 $x^n$ 后，$T_n(x^n)$ 才是一个具体估计值。
+\end{definition}
+
+这个定义把三个对象严格分开：$g(\theta)$ 是参数空间上的确定函数，$T_n(X^n)$ 是重复抽样下的随机变量，$T_n(x^n)$ 是给定数据后的数值。所谓“估计量无偏”或“检验统计量服从某分布”，说的都是第二个对象的抽样性质。
+
+
+接下来考察独立性、乘积测度与尾事件。
+
+iid 记号中的“独立”必须先在事件的 \(\sigma\)-代数层面定义。若随机变量 \(X_i:(\Omega,\mathcal F,P)\to(S_i,\mathcal S_i)\)，称 \(X_1,\ldots,X_n\) 相互独立，若对任意 \(A_i\in\mathcal S_i\)，
+\begin{equation}
+P(X_1\in A_1,\ldots,X_n\in A_n)
+=\prod_{i=1}^nP(X_i\in A_i).
+\label{eq:math-stat-mutual-independence}
+\end{equation}
+相互独立强于两两独立。三枚 \(\{\pm1\}\) 随机变量可以满足任意两枚独立，却因乘积恒为 \(1\) 而不相互独立；因此高阶联合结构不能由协方差或两两独立恢复。
+
+测度论上，独立性等价于联合分布分解为乘积测度：
+\begin{equation}
+P_{(X_1,\ldots,X_n)}
+=P_{X_1}\otimes\cdots\otimes P_{X_n}.
+\label{eq:math-stat-independence-product-measure}
+\end{equation}
+这也是\eqnrefs{eq:math-stat-iid-sample} 中 \(P_\theta^{\otimes n}\) 的严格含义。若只在一个生成类上核验乘积公式，\(\pi\)-\(\lambda\) 定理可以把结论推广到整个乘积 \(\sigma\)-代数。具体地，若 \(\mathcal C_i\) 是生成 \(\mathcal S_i\) 的 \(\pi\)-system，且
+\[
+P(X_1\in A_1,\ldots,X_n\in A_n)
+=\prod_iP(X_i\in A_i)
+\]
+对所有 \(A_i\in\mathcal C_i\) 成立，则通过逐坐标 monotone-class/\(\pi\)-\(\lambda\) 扩张即可得到所有可测集上的独立性。这解释了为什么对实随机变量只需检查半直线事件、对随机过程常只需检查 cylinder events。
+
+独立 \(\sigma\)-代数还给出条件期望的简化。若 \(X\in L^1\) 与 \(\mathcal G\) 独立，则
+\begin{equation}
+\E(X\mid\mathcal G)=\E X
+\quad\text{a.s.}
+\label{eq:math-stat-independent-condexp}
+\end{equation}
+若 \(X\) 与 \(Y\) 独立而 \(h(X,Y)\) 可积，则
+\[
+\E\{h(X,Y)\mid Y\}
+=\int h(x,Y)P_X(\dd x).
+\]
+这条公式不是“把 \(Y\) 当常数”的口语规则，而是 product measure 与 Fubini 定理的直接结果。
+
+对独立序列 \(X_1,X_2,\ldots\)，定义尾 \(\sigma\)-代数
+\[
+\mathcal T
+:=\bigcap_{n\ge1}\sigma(X_n,X_{n+1},\ldots).
+\]
+其中事件只依赖任意远处的样本，而不受删除有限多个观测影响。Kolmogorov 零一律断言
+\begin{equation}
+A\in\mathcal T
+\quad\Longrightarrow\quad
+P(A)\in\{0,1\}.
+\label{eq:math-stat-kolmogorov-zero-one}
+\end{equation}
+
+\begin{derivation}[尾事件为什么只能有概率 \(0\) 或 \(1\)]
+记前 \(n\) 步生成的信息流为
+\[
+\mathcal F_n=\sigma(X_1,\ldots,X_n),
+\]
+尾 \(\sigma\)-代数为
+\[
+\mathcal T=\bigcap_{n\ge1}\sigma(X_{n+1},X_{n+2},\ldots).
+\]
+任取 \(A\in\mathcal T\)。由尾 \(\sigma\)-代数的定义，对每个 \(n\) 都有
+\[
+A\in\sigma(X_{n+1},X_{n+2},\ldots),
+\]
+而后者由 \(X_{n+1},X_{n+2},\ldots\) 生成。由 iid 假设，样本块 \(\{X_1,\ldots,X_n\}\) 与 \(\{X_{n+1},X_{n+2},\ldots\}\) 相互独立，因此 \(A\) 与 \(\mathcal F_n\) 独立。换言之，对任意 \(B\in\mathcal F_n\)，
+\[
+P(A\cap B)=P(A)P(B).
+\]
+令
+\[
+\mathcal C=\bigcup_{n\ge1}\mathcal F_n,
+\]
+则 \(\mathcal C\) 是一个 \(\pi\)-系（对有限交封闭）且 \(A\) 与 \(\mathcal C\) 中每个事件独立。定义
+\[
+\mathcal L=\{B\in\sigma(\mathcal C):P(A\cap B)=P(A)P(B)\},
+\]
+则 \(\mathcal L\) 是包含 \(\mathcal C\) 的 \(\lambda\)-系。由 \(\pi\)-\(\lambda\) 定理，\(\sigma(\mathcal C)\subseteq\mathcal L\)，即独立性从 \(\mathcal C\) 扩张到 \(\sigma(\mathcal C)\)。而
+\[
+\sigma(\mathcal C)
+=\sigma\Bigl(\bigcup_{n\ge1}\mathcal F_n\Bigr)
+=\sigma(X_1,X_2,\ldots).
+\]
+因此 \(A\) 与整个 \(\sigma(X_1,X_2,\ldots)\) 独立。又因
+\[
+A\in\mathcal T\subseteq\sigma(X_1,X_2,\ldots),
+\]
+故可取 \(B=A\)，即 \(A\) 与自身独立。于是
+\[
+P(A)=P(A\cap A)=P(A)\,P(A)=P(A)^2.
+\]
+移项得 \(P(A)\bigl(1-P(A)\bigr)=0\)，因此
+\[
+P(A)\in\{0,1\}.
+\]
+强大数律中“样本平均是否收敛”只依赖任意远处的样本，属于尾事件，所以一旦证明其概率为正，零一律即可把它自动提升到概率 \(1\)。
+\end{derivation}
+
+\section{期望、条件期望与样本矩}
+
+对 $P_\theta$-可积的 $g:\mathcal X\to\R^m$，期望统一记为
+\begin{equation}\label{eq:math-stat-expectation}
+ \E_\theta[g(X)]
+ =\int_{\mathcal X}g(x)\,P_\theta(\dd x).
+\end{equation}
+若模型被 $\mu$ 支配，才进一步写成
+\[
+ \E_\theta[g(X)]
+ =\int_{\mathcal X}g(x)p_\theta(x)\,\mu(\dd x).
+\]
+因此“期望存在”首先是可积性陈述，而不是形式积分记号。
+
+若 $Y\in\R^m$ 具有有限二阶矩，则
+\[
+ \Cov_\theta(Y)
+ =\E_\theta\!
+ \left[(Y-\E_\theta Y)(Y-\E_\theta Y)^{\mathsf T}\right].
+\]
+对任意 $a\in\R^m$，
+\[
+ \Var_\theta(a^{\mathsf T}Y)
+ =a^{\mathsf T}\Cov_\theta(Y)a.
+\]
+协方差矩阵因此不是若干方差公式的集合，而是描述所有线性方向涨落的二次型。Fisher 信息、正态投影和一般线性模型都会再次出现同一结构。
+
+
+接下来考察条件期望的存在、唯一性与信息投影。
+
+条件期望不能只靠“把条件概率密度代进去积分”定义，因为一般可测空间未必存在密度。真正的一般定义来自 Radon--Nikodym 定理。设 $(\Omega,\mathcal F,P)$ 为概率空间，$X\in L^1(P)$，$\mathcal G\subseteq\mathcal F$ 为子 $\sigma$-代数。先在 $(\Omega,\mathcal G)$ 上定义有限符号测度
+\[
+\nu(A):=\int_A X\,\dd P,
+\qquad A\in\mathcal G.
+\]
+由定义 $\nu\ll P|_{\mathcal G}$。Radon--Nikodym 定理因此给出一个 $\mathcal G$-可测函数 $Y$，使
+\[
+\nu(A)=\int_A Y\,\dd P,
+\qquad A\in\mathcal G.
+\]
+这个 $Y$ 就定义为
+\[
+\boxed{Y=\E(X\mid\mathcal G)}.
+\]
+Radon--Nikodym 导数只在几乎处处意义下唯一，所以条件期望也只定义到 $P$-a.s. 等价类。这一点在连续模型中经常被密度公式掩盖，但在严格概率论中不可省略。
+
+从定义立即得到三条结构性质。若 $a,b\in\RR$，则
+\[
+\E(aX+bZ\mid\mathcal G)
+=a\E(X\mid\mathcal G)+b\E(Z\mid\mathcal G).
+\]
+若 $Y$ 有界且 $\mathcal G$-可测，则
+\begin{equation}
+\boxed{
+\E(YX\mid\mathcal G)
+=Y\E(X\mid\mathcal G)
+}.
+\label{eq:math-stat-pullout-known}
+\end{equation}
+若 $\mathcal H\subseteq\mathcal G\subseteq\mathcal F$，则 tower property 为
+\begin{equation}
+\boxed{
+\E\{\E(X\mid\mathcal G)\mid\mathcal H\}
+=\E(X\mid\mathcal H)
+}.
+\label{eq:math-stat-tower-property}
+\end{equation}
+特别地，取 $\mathcal H=\{\varnothing,\Omega\}$ 得
+\[
+\E\E(X\mid\mathcal G)=\E X.
+\]
+
+凸函数与条件期望还满足 conditional Jensen inequality。若 $\varphi$ 凸且两边可积，则
+\begin{equation}
+\varphi\!\left(\E(X\mid\mathcal G)\right)
+\le
+\E\!\left(\varphi(X)\mid\mathcal G\right)
+\quad\text{a.s.}
+\label{eq:math-stat-conditional-jensen}
+\end{equation}
+取 $\varphi(x)=|x|^p$ 可知条件期望在 $L^p$ 中是 contraction：
+\[
+\|\E(X\mid\mathcal G)\|_p
+\le\|X\|_p,
+\qquad 1\le p\le\infty.
+\]
+因此“丢掉信息”不会增大 $L^p$ 风险；Rao--Blackwell 改进正是这一 contraction 在统计估计上的体现。
+
+当 $X\in L^2$ 时，条件期望具有更强的 Hilbert 空间刻画。对任意 $Z\in L^2(\mathcal G)$，
+\[
+\E\left[
+\bigl(X-\E(X\mid\mathcal G)\bigr)Z
+\right]=0.
+\]
+于是
+\begin{equation}
+\boxed{
+\E(X\mid\mathcal G)
+=P_{L^2(\mathcal G)}X
+}.
+\label{eq:math-stat-condexp-projection}
+\end{equation}
+这说明 tower property 本质上就是嵌套闭子空间投影
+\[
+L^2(\mathcal H)\subseteq L^2(\mathcal G)\subseteq L^2(\mathcal F)
+\]
+满足
+\[
+P_{\mathcal H}P_{\mathcal G}=P_{\mathcal H}.
+\]
+
+\begin{derivation}[全方差公式来自 Pythagoras]
+令
+\[
+M:=\E(X\mid\mathcal G).
+\]
+写成正交分解
+\[
+X-\E X
+=(X-M)+(M-\E X).
+\]
+第一项与所有 $\mathcal G$-可测平方可积变量正交，尤其与第二项正交。因此
+\[
+\E|X-\E X|^2
+=
+\E|X-M|^2+
+\E|M-\E X|^2.
+\]
+第一项由 tower property 写成
+\[
+\E|X-M|^2
+=\E\{\Var(X\mid\mathcal G)\},
+\]
+第二项就是
+\[
+\Var\{\E(X\mid\mathcal G)\}.
+\]
+从而得到
+\begin{equation}
+\boxed{
+\Var(X)
+=
+\E\{\Var(X\mid\mathcal G)\}
++\Var\{\E(X\mid\mathcal G)\}
+}.
+\label{eq:math-stat-total-variance}
+\end{equation}
+所以 total variance 并不是另一个概率恒等式，而是 Hilbert 空间 Pythagoras 定理。
+
+\emph{正交性的显式验证。}要证 $X-M$ 与任何 $\mathcal G$-可测 $Z$ 正交，即 $\E[(X-M)Z]=0$。由条件期望的投影性质，
+\begin{equation*}
+\E[(X-M)Z]
+=\E\{Z\,\E[X-M\mid\mathcal G]\}
+=\E\{Z\,(M-M)\}=0.
+\end{equation*}
+关键步骤是把 $Z$ 移进条件期望，这要求 $Z$ 是 $\mathcal G$-可测的。这正是 $L^2(\Omega,\mathcal F,\P)$ 中 $L^2(\Omega,\mathcal G,\P)$ 作为闭子空间的正交补刻画。
+
+\emph{条件期望作为正交投影。}映射 $X\mapsto\E(X\mid\mathcal G)$ 是 $L^2(\mathcal F)\to L^2(\mathcal G)$ 的正交投影，满足幂等性 $P_\mathcal G^2=P_\mathcal G$ 与自伴性 $\E[P_\mathcal GX\cdot Y]=\E[X\cdot P_\mathcal GY]$。全方差公式正是投影算子的 Pythagoras 分解：总能量分解为投影方向能量与正交补能量。这一视角把概率论中的不等式（如 Jensen 不等式 $\Var(X)\geq\Var(\E(X\mid\mathcal G))$）化为 Hilbert 空间几何。
+
+\emph{嵌套信息与 martingale。}若 $(\mathcal F_n)$ 是递增信息族，过程 $M_n=\E(X\mid\mathcal F_n)$ 满足
+\begin{equation*}
+\E(M_{n+1}\mid\mathcal F_n)=\E\{\E(X\mid\mathcal F_{n+1})\mid\mathcal F_n\}=\E(X\mid\mathcal F_n)=M_n,
+\end{equation*}
+即 $(M_n)$ 是 martingale。由全方差公式递推，
+\begin{equation*}
+\Var(X)=\sum_{n=0}^\infty\E\{(M_{n+1}-M_n)^2\}+\lim_{n\to\infty}\Var(M_n),
+\end{equation*}
+当 $\mathcal F_n\uparrow\mathcal F$ 时 $\Var(M_n)\to\Var(X)$，得 $L^2$ martingale 收敛定理：$M_n\to X$ 在 $L^2$ 中。这是 Doob martingale 收敛定理的 Hilbert 空间证明。
+
+\emph{举例：分层抽样与 Rao--Blackwell。}在统计抽样中，总体方差可分解为组间方差与组内方差均值。设总体分为 $K$ 层，第 $k$ 层均值 $\mu_k$、方差 $\sigma_k^2$、比例 $p_k$，则
+\begin{equation*}
+\Var(X)=\sum_kp_k\sigma_k^2+\sum_kp_k(\mu_k-\mu)^2,
+\end{equation*}
+正是全方差公式在分层结构上的应用。Rao--Blackwell 定理给出：对估计量 $T$，$T^*=\E(T\mid\text{充分统计量})$ 满足 $\Var(T^*)\leq\Var(T)$，由全方差公式 $\Var(T)=\E\Var(T\mid S)+\Var(T^*)\geq\Var(T^*)$ 直接得到。
+
+\emph{物理建模：测量与信息获取。}在量子测量中，全方差公式描述测量前后信息的不确定性分解。设 $X$ 为可观测量，$\mathcal G$ 为先前测量结果生成的 $\sigma$-代数，则 $\Var(X)$ 是测量前不确定性，$\E\Var(X\mid\mathcal G)$ 是测量后剩余不确定性（量子噪声），$\Var\E(X\mid\mathcal G)$ 是测量获得的信息。Heisenberg 不确定关系可视为这一分解在非交换可观测量情形的推广，其中非交换性给出额外的 Born--Jordan 修正项。
+
+\emph{更一般结论：条件 Hilbert 空间。}把 $L^2$ 推广到 Hilbert 空间 $\mathcal H$ 上的闭子空间族 $\{\mathcal H_\alpha\}$，投影算子 $P_\alpha$ 满足类似分解。当子空间族形成 lattice 时，全方差公式推广为 Jordan--Hölder 型分解，对应 von Neumann 代数中的条件期望理论。这是量子统计与算子代数中非交换概率论的基础框架。
+\end{derivation}
+
+如果 $(\mathcal F_n)$ 是递增信息族，过程
+\[
+M_n:=\E(X\mid\mathcal F_n)
+\]
+满足
+\[
+\E(M_{n+1}\mid\mathcal F_n)=M_n,
+\]
+因此构成 martingale。也就是说，条件期望不仅是静态投影，还自然产生随信息增长演化的 martingale。后续若研究依赖数据的极限定理，martingale difference 将成为 iid 求和之外的第二类基本涨落结构。
+
+
+接下来考察Regular conditional distribution 与概率核。
+
+条件期望给出“某个可积函数在已知信息下的最佳预测”，但许多问题需要条件分布本身。设 $X:\Omega\to S$、$Y:\Omega\to T$，其中 $S,T$ 是 standard Borel spaces。一个 regular conditional distribution 是概率核
+\[
+K:T\times\mathcal B(S)\to[0,1],
+\qquad
+K(y,A)=P(X\in A\mid Y=y),
+\]
+满足：对固定 $y$，$A\mapsto K(y,A)$ 是概率测度；对固定可测集 $A$，$y\mapsto K(y,A)$ 可测；并且
+\begin{equation}
+P(X\in A,\,Y\in B)
+=\int_B K(y,A)\,P_Y(\dd y)
+\label{eq:math-stat-disintegration-event}
+\end{equation}
+对所有可测 $A\subseteq S$、$B\subseteq T$ 成立。
+
+在 standard Borel 条件下，这样的 kernel 存在，并且只在 $P_Y$-a.e. 的 $y$ 上唯一。它把抽象的“给定 $Y=y$”从零概率事件的口语操作提升为严格的 disintegration：
+\begin{equation}
+\boxed{
+P_{X,Y}(\dd x,\dd y)
+=K(y,\dd x)P_Y(\dd y).
+}
+\label{eq:math-stat-disintegration-kernel}
+\end{equation}
+因此对任何可积函数 $f$，
+\begin{equation}
+\boxed{
+\E\{f(X)\mid Y\}
+=\int_S f(x)K(Y,\dd x)
+\quad\text{a.s.}
+}
+\label{eq:math-stat-condexp-via-kernel}
+\end{equation}
+条件期望只是条件概率核对测试函数 $f$ 的积分。
+
+若联合分布关于乘积测度具有密度 $p_{X,Y}(x,y)$，且
+\[
+p_Y(y)=\int p_{X,Y}(x,y)\,\dd x>0,
+\]
+则 kernel 才退化为熟悉的条件密度
+\begin{equation}
+p_{X\mid Y}(x\mid y)
+=\frac{p_{X,Y}(x,y)}{p_Y(y)}.
+\label{eq:math-stat-conditional-density}
+\end{equation}
+这说明“条件密度相除”只是 disintegration 的一个受支配特例，而不是条件概率的一般定义。
+
+\begin{derivation}[Bayes 公式是同一联合测度的两种 disintegration]
+设参数 $\Theta$ 本身带先验分布 $\Pi(\dd\theta)$，观测 $X$ 在给定 $\Theta=\theta$ 时由 likelihood kernel $P_\theta(\dd x)$ 产生。联合分布为
+\[
+P_{\Theta,X}(\dd\theta,\dd x)
+=P_\theta(\dd x)\Pi(\dd\theta),
+\]
+这是先对 $\theta$ 取先验、再对 $x$ 取 likelihood 的 disintegration。若存在共同支配测度 $\mu$ 使
+\[
+P_\theta(\dd x)=p_\theta(x)\mu(\dd x),
+\]
+则联合测度关于 $\mu(\dd x)\Pi(\dd\theta)$ 有密度 $p_\theta(x)$。先对 $\theta$ 积分得 $X$ 的边缘预测分布
+\[
+P_X(\dd x)=m(x)\mu(\dd x),
+\qquad
+m(x)=\int p_\vartheta(x)\,\Pi(\dd\vartheta).
+\]
+这是联合测度关于 $\mu(\dd x)$ 的 Radon--Nikodym 导数，即 $m(x)=\dd P_X/\dd\mu(x)$。现在把同一个联合测度改按 $X$ 先积分，得到给定 $X=x$ 时 $\Theta$ 的条件核 $\Pi(\dd\theta\mid x)$。由 disintegration 的唯一性，
+\[
+P_{\Theta,X}(\dd\theta,\dd x)
+=\Pi(\dd\theta\mid x)\,P_X(\dd x)
+=\Pi(\dd\theta\mid x)\,m(x)\mu(\dd x).
+\]
+与原始表达式 $p_\theta(x)\Pi(\dd\theta)\mu(\dd x)$ 逐点比较，对 $m(x)>0$ 得
+\[
+\Pi(\dd\theta\mid x)\,m(x)=p_\theta(x)\Pi(\dd\theta),
+\]
+即
+\begin{equation}
+\boxed{
+\Pi(\dd\theta\mid x)
+=\frac{p_\theta(x)\Pi(\dd\theta)}
+{\int p_\vartheta(x)\Pi(\dd\vartheta)}.
+}
+\label{eq:math-stat-bayes-kernel}
+\end{equation}
+右端分母正是 $m(x)$。验证归一化：对可测集 $B\subseteq\Theta$，
+\[
+\int_B\frac{p_\theta(x)\Pi(\dd\theta)}{m(x)}
+=\frac{\int_B p_\theta(x)\Pi(\dd\theta)}{m(x)}
+\le\frac{\int_\Theta p_\theta(x)\Pi(\dd\theta)}{m(x)}
+=\frac{m(x)}{m(x)}=1,
+\]
+对 $B$ 取全空间 $\Theta$ 即得等号，故 posterior 是概率测度。因此 Bayes 公式不是把"先验乘似然"作为形式规则，而是联合概率测度关于另一个坐标的 Radon--Nikodym/disintegration 表示。
+\end{derivation}
+
+概率核还可以复合。若
+\[
+K_1(x,\dd y),\qquad K_2(y,\dd z)
+\]
+是两个 Markov kernels，则
+\begin{equation}
+(K_1K_2)(x,A)
+:=\int K_2(y,A)K_1(x,\dd y)
+\label{eq:math-stat-kernel-composition}
+\end{equation}
+仍是概率核。这正是 Chapman--Kolmogorov 结构的抽象形式。因而“条件概率”“Bayes 更新”“Markov 转移”在测度论层面都是同一个 kernel calculus；区别只在于哪个变量被视为状态、数据或参数。
+
+接下来考察Filtration、martingale 与条件期望收敛。
+
+把信息随时间增长写成 filtration
+\[
+\mathcal F_0\subseteq\mathcal F_1\subseteq\cdots\subseteq\mathcal F.
+\]
+若 \(M_n\in L^1\) 为 \(\mathcal F_n\)-可测并满足
+\begin{equation}
+\E(M_{n+1}\mid\mathcal F_n)=M_n,
+\label{eq:math-stat-martingale-definition}
+\end{equation}
+则 \((M_n,\mathcal F_n)\) 称为 martingale。若右侧改为 \(\ge M_n\) 或 \(\le M_n\)，则分别是 submartingale 或 supermartingale。iid 中心化和
+\[
+M_n=\sum_{k=1}^n(X_k-\E X_k)
+\]
+是最基本例子；而
+\[
+M_n=\E(X\mid\mathcal F_n)
+\]
+说明条件期望本身就是 martingale 的母构造。
+
+定义 martingale difference
+\[
+D_n=M_n-M_{n-1}.
+\]
+则
+\[
+\E(D_n\mid\mathcal F_{n-1})=0.
+\]
+在 \(L^2\) 情形，不同时刻的差分正交：若 \(i<j\)，则
+\[
+\E(D_iD_j)
+=\E\{D_i\E(D_j\mid\mathcal F_{j-1})\}=0.
+\]
+所以
+\begin{equation}
+\E M_n^2
+=\E M_0^2+
+\sum_{k=1}^n\E D_k^2
+\label{eq:math-stat-martingale-orthogonal-increments}
+\end{equation}
+在中心化情形成立。它是独立方差可加性的条件期望版本，也是 martingale CLT 的二阶基础。
+
+Doob convergence theorem 给出信息递增下的极限机制。若 \((M_n)\) 是 \(L^1\)-bounded submartingale 并满足适当 uniform integrability，则存在 \(M_\infty\in L^1\) 使
+\[
+M_n\to M_\infty
+\quad\text{a.s. 且在 }L^1.
+\]
+特别地，若 \(X\in L^p\)、\(1<p<\infty\)，则
+\begin{equation}
+M_n=\E(X\mid\mathcal F_n)
+\longrightarrow
+\E(X\mid\mathcal F_\infty)
+\quad\text{a.s. 且在 }L^p,
+\label{eq:math-stat-martingale-condexp-convergence}
+\end{equation}
+其中
+\[
+\mathcal F_\infty
+=\sigma\Bigl(\bigcup_n\mathcal F_n\Bigr).
+\]
+当 \(p=2\) 时，这个结论甚至不必从概率不等式理解：\(L^2(\mathcal F_n)\) 是递增闭子空间，\(M_n\) 是 \(X\) 在这些子空间上的正交投影，而嵌套正交投影强收敛到 \(L^2(\mathcal F_\infty)\) 上的投影。
+
+\begin{derivation}[\(L^2\) martingale convergence 是嵌套投影收敛]
+设
+\[
+M_n=P_nX,
+\qquad
+P_n=P_{L^2(\mathcal F_n)}.
+\]
+由于子空间嵌套，\(m\ge n\) 时有
+\[
+P_nP_m=P_n.
+\]
+于是
+\[
+M_m-M_n
+\perp L^2(\mathcal F_n),
+\]
+特别地与 \(M_n\) 正交。因此
+\[
+\|M_m\|_2^2
+=\|M_n\|_2^2+\|M_m-M_n\|_2^2.
+\]
+序列 \(\|M_n\|_2\le\|X\|_2\) 单调不减且有界，所以其平方收敛；上式立即给出
+\[
+\|M_m-M_n\|_2\to0.
+\]
+故 \(M_n\) 在 \(L^2\) 中收敛到某个 \(M_\infty\)。极限属于
+\[
+\overline{\bigcup_nL^2(\mathcal F_n)}
+=L^2(\mathcal F_\infty),
+\]
+而对每个有限 \(n\) 与 \(Z\in L^2(\mathcal F_n)\)，
+\[
+\langle X-M_m,Z\rangle=0
+\quad(m\ge n).
+\]
+令 \(m\to\infty\) 得 \(X-M_\infty\) 与整个极限子空间正交，因此
+\[
+M_\infty=P_{L^2(\mathcal F_\infty)}X
+=\E(X\mid\mathcal F_\infty).
+\]
+
+\textbf{实例。}设 $X_n$ 为 iid 且 $\E|X_1|^2<\infty$，$\mathcal F_n=\sigma(X_1,\ldots,X_n)$，则 $M_n=\E(X_1\mid\mathcal F_n)=\bar X_n$（样本均值），$L^2$ 收敛到 $X_1$ 自身——这是 $L^2$ 强大数律的鞅证明。对 Brown 运动 $B_t$ 关于自然滤子 $\mathcal F_t$，$M_t=B_t$ 是鞅，$L^2$ 极限不存在（$B_t$ 不 $L^2$ 收敛），但 Doob 鞅收敛定理给出 a.s. 收敛到 $0$（当 $t\to\infty$ 时 $B_t/t\to0$）。
+\end{derivation}
+
+对实值 iid 样本，定义样本均值和无偏样本方差
+\[
+ \overline X_n=\frac1n\sum_{i=1}^nX_i,
+ \qquad
+ S_n^2=\frac1{n-1}\sum_{i=1}^n(X_i-\overline X_n)^2.
+\]
+若
+\[
+ \mu_\theta=\E_\theta X_1,
+ \qquad
+ \sigma_\theta^2=\Var_\theta(X_1)<\infty,
+\]
+则有限样本下精确地有
+\[
+ \E_\theta\overline X_n=\mu_\theta,
+ \qquad
+ \Var_\theta(\overline X_n)=\frac{\sigma_\theta^2}{n},
+ \qquad
+ \E_\theta S_n^2=\sigma_\theta^2.
+\]
+这些结论只用 iid 与有限二阶矩。正态性真正额外带来的，是 $\overline X_n$ 与 $S_n^2$ 的独立性以及精确的 $\chi^2$、$t$、$F$ 抽样分布。
+
+\begin{derivation}[样本方差的自由度损失]
+设 $\mu=\E X_1$，$\sigma^2=\Var X_1$。对每一项作中心化分解
+\[
+ X_i-\mu=(X_i-\overline X_n)+(\overline X_n-\mu),
+\]
+两边平方并对 $i$ 求和，
+\[
+ \sum_{i=1}^n(X_i-\mu)^2
+ =\sum_{i=1}^n(X_i-\overline X_n)^2
+ +2(\overline X_n-\mu)\sum_{i=1}^n(X_i-\overline X_n)
+ +n(\overline X_n-\mu)^2.
+\]
+由样本均值的定义 $\overline X_n=\frac1n\sum_i X_i$，
+\[
+ \sum_{i=1}^n(X_i-\overline X_n)
+ =\sum_{i=1}^n X_i-n\overline X_n
+ =0,
+\]
+因此交叉项消失，得到平方和分解
+\[
+ \sum_{i=1}^n(X_i-\mu)^2
+ =\sum_{i=1}^n(X_i-\overline X_n)^2
+ +n(\overline X_n-\mu)^2.
+\]
+两边取期望。由 iid 与 $\E(X_i-\mu)^2=\sigma^2$，
+\[
+ \E\sum_{i=1}^n(X_i-\mu)^2
+ =n\sigma^2.
+\]
+又由 $\Var(\overline X_n)=\sigma^2/n$，
+\[
+ \E\bigl[n(\overline X_n-\mu)^2\bigr]
+ =n\Var(\overline X_n)
+ =n\cdot\frac{\sigma^2}{n}
+ =\sigma^2.
+\]
+代回分解式，
+\[
+ n\sigma^2
+ =\E\sum_{i=1}^n(X_i-\overline X_n)^2+\sigma^2,
+\]
+于是
+\[
+ \E\sum_{i=1}^n(X_i-\overline X_n)^2
+ =(n-1)\sigma^2.
+\]
+因此除以 $n-1$ 使 $S_n^2$ 无偏。\chapref{chap:math-stat-gaussian-sampling} 会进一步说明，这个 $n-1$ 正是从 $\R^n$ 中投影掉一维均值方向后剩余子空间的维数。
+\end{derivation}
+
+\section{特征函数与统一分布参数化}
+
+极限定理需要一个能够唯一刻画分布、又始终存在的变换。对实值随机变量，特征函数定义为
+\[
+ \varphi_X(t)=\E\ee^{\ii tX},
+ \qquad t\in\R.
+\]
+若 $X,Y$ 独立，则
+\[
+ \varphi_{X+Y}(t)=\varphi_X(t)\varphi_Y(t).
+\]
+若原点邻域内矩母函数 $M_X(t)=\E\ee^{tX}$ 有限，则它可以产生矩；但 Cauchy 等重尾分布没有非平凡邻域上的矩母函数，而特征函数仍存在。后面的 CLT 因此以特征函数或弱收敛为基础，而不是假设所有模型都有矩母函数。
+
+这里固定后文反复出现的分布参数化。Bernoulli 与 Binomial 写为
+\[
+ X\sim\Bern(p),\qquad p\in(0,1),
+\]
+\[
+ \Pbb_p(X=x)=p^x(1-p)^{1-x},\qquad x\in\{0,1\},
+\]
+以及 $\sum_{i=1}^mX_i\sim\Bin(m,p)$。若一次观测有 $k$ 个互斥类别，类别概率向量记为
+\[
+ p=(p_1,\ldots,p_k)^{\mathsf T},
+ \qquad
+ p_j\ge0,
+ \qquad
+ \sum_{j=1}^kp_j=1.
+\]
+把单次类别观测写成 one-hot 向量 $Y\in\{e_1,\ldots,e_k\}$，则
+\[
+ \Pbb(Y=e_j)=p_j,
+ \qquad
+ \E Y=p,
+ \qquad
+ \Cov(Y)=\diag(p)-pp^{\mathsf T}.
+\]
+$n$ 次独立重复后，计数向量 $N=\sum_{i=1}^nY_i$ 服从 multinomial 分布
+\[
+ \Pbb_p(N_1=n_1,\ldots,N_k=n_k)
+ =\frac{n!}{\prod_{j=1}^kn_j!}\prod_{j=1}^kp_j^{n_j},
+ \qquad
+ \sum_{j=1}^kn_j=n.
+\]
+这里参数空间是概率单纯形；\chapref{chap:math-stat-testing} 的 Pearson 理论会把其约束 $\sum_jp_j=1$ 直接解释为一个少一维的切空间，而不是把“减一自由度”作为额外规则记忆。
+
+Poisson 模型写为
+\[
+ X\sim\Poisson(\lambda),\qquad \lambda>0,
+\]
+\[
+ \Pbb_\lambda(X=k)=\ee^{-\lambda}\frac{\lambda^k}{k!}.
+\]
+正态分布统一写成
+\[
+ X\sim\Normal(\mu,\sigma^2),\qquad \mu\in\R,\ \sigma^2>0,
+\]
+其中第二个参数始终是方差。指数分布采用 rate 参数
+\[
+ X\sim\Exp(\lambda),\qquad
+ p_\lambda(x)=\lambda\ee^{-\lambda x}\ind_{(0,\infty)}(x).
+\]
+
+Gamma 分布在全书固定为 shape--rate 参数化：
+\begin{equation}\label{eq:math-stat-gamma-rate}
+ X\sim\GammaD(\alpha,\lambda),\qquad
+ p_{\alpha,\lambda}(x)
+ =\frac{\lambda^\alpha}{\Gamma(\alpha)}
+ x^{\alpha-1}\ee^{-\lambda x}\ind_{(0,\infty)}(x),
+\end{equation}
+其中 $\alpha>0$ 为 shape、$\lambda>0$ 为 rate。因此
+\[
+ \E X=\frac{\alpha}{\lambda},
+ \qquad
+ \Var(X)=\frac{\alpha}{\lambda^2}.
+\]
+相同 rate 的独立 Gamma 变量可加：
+\[
+ X_j\sim\GammaD(\alpha_j,\lambda)
+ \quad\Longrightarrow\quad
+ \sum_jX_j\sim\GammaD\!\left(\sum_j\alpha_j,\lambda\right).
+\]
+后面的卡方分布只是
+\[
+ \chiSq_\nu=\GammaD\!\left(\frac\nu2,\frac12\right).
+\]
+
+Beta 分布写为
+\[
+ X\sim\BetaD(\alpha,\beta),\qquad
+ p_{\alpha,\beta}(x)
+ =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}
+ x^{\alpha-1}(1-x)^{\beta-1}\ind_{(0,1)}(x).
+\]
+它会在 Bernoulli/Binomial Bayes 模型中出现。均匀分布记为 $\Unif(a,b)$；当端点本身是参数时，它同时给出“支撑依赖参数”的最简单非正则模型。
+
+接下来考察特征函数的唯一性、反演与 L\'evy 连续性。
+
+特征函数的价值不只是“总存在”，更在于它唯一决定概率分布。若两个概率测度 \(P,Q\) 满足
+\[
+\varphi_P(t)=\varphi_Q(t)
+\qquad\forall t\in\RR,
+\]
+则 \(P=Q\)。证明可用 Gaussian mollifier 把测度与光滑核卷积：卷积后的密度 Fourier transform 为
+\[
+\widehat{P*\phi_\varepsilon}(t)
+=\varphi_P(t)\widehat\phi_\varepsilon(t),
+\]
+因此两者相等；再令 \(\varepsilon\downarrow0\) 恢复原测度。这说明特征函数是概率测度的 injective Fourier transform。
+
+若 \(X\) 有可积特征函数 \(\varphi_X\in L^1(\RR)\)，则 \(X\) 必有连续有界密度，并由 Fourier 反演给出
+\begin{equation}
+f_X(x)
+=\frac1{2\pi}
+\int_{\RR}\ee^{-\ii tx}\varphi_X(t)\,\dd t.
+\label{eq:math-stat-cf-fourier-inversion}
+\end{equation}
+更一般地，在分布函数连续点 \(a<b\) 上可用截断反演公式恢复
+\[
+P(a<X\le b)
+\]
+而不要求存在密度。因而“特征函数唯一决定分布”比密度反演更一般。
+
+独立和的卷积结构在 Fourier 空间中完全乘法化：
+\[
+P_{X+Y}=P_X*P_Y
+\quad\Longleftrightarrow\quad
+\varphi_{X+Y}(t)=\varphi_X(t)\varphi_Y(t).
+\]
+Gamma 可加性、Poisson 可加性、正态稳定性都可以从这一乘法结构一行推出。例如
+\[
+\varphi_{\Normal(\mu,\sigma^2)}(t)
+=\exp\!\left(\ii\mu t-\frac12\sigma^2t^2\right),
+\]
+所以独立正态变量求和只会把均值与方差相加。
+
+L\'evy continuity theorem 把 Fourier 点态收敛转成弱收敛。若
+\[
+\varphi_{X_n}(t)\to\varphi(t)
+\quad\forall t,
+\]
+且 \(\varphi\) 在 \(t=0\) 连续，则 \(\varphi\) 是某个概率分布的特征函数，并且
+\begin{equation}
+X_n\toD X,
+\qquad
+\varphi_X=\varphi.
+\label{eq:math-stat-levy-continuity}
+\end{equation}
+反之，弱收敛必推出特征函数逐点收敛。这条定理正是下一章特征函数版 CLT 最后一步的严格依据；仅证明
+\[
+\varphi_{X_n}(t)\to\ee^{-t^2/2}
+\]
+而不调用 L\'evy 连续性，还没有完成从变换收敛到分布收敛的逻辑闭环。
+
+若矩存在，特征函数在原点的导数编码矩：
+\[
+\varphi_X^{(k)}(0)=\ii^k\E X^k.
+\]
+但反向不能无条件使用：一个特征函数即使无限可微，也需要额外增长/可积性条件才能保证相应绝对矩存在。统计渐近中更稳妥的策略是先明确所需矩条件，再做原点 Taylor 展开，而不是把形式微分当作矩存在性的证明。
+
+\begin{note}[参数化决定后续全部微分结构]
+Gamma 的 rate 与 scale、正态分布的方差与标准差若混用，会同时改变 score、Fisher 信息、共轭先验和抽样分布公式。因此参数化不是排版约定，而是统计模型本身的一部分。
+\end{note}
+
+\section{推前分布、经验测度与次序统计量}
+
+若 $Y=g(X)$，则 $Y$ 的分布从测度角度就是推前 $P_X\circ g^{-1}$。在一维单调可微情形，写 $x=g^{-1}(y)$，密度变换为
+\[
+ f_Y(y)=f_X(g^{-1}(y))
+ \left|\frac{\dd}{\dd y}g^{-1}(y)\right|.
+\]
+多维一一可微变换则使用 Jacobian
+\[
+ f_Y(y)=f_X(g^{-1}(y))
+ \left|\det Dg^{-1}(y)\right|.
+\]
+若 $g:\R^d\to\R^d$ 在给定 $y$ 上不是一一映射，但只有有限个正则原像 $x\in g^{-1}(y)$，则每个局部逆分支都必须计入：
+\[
+ f_Y(y)
+ =\sum_{x\in g^{-1}(y)}
+ \frac{f_X(x)}{|\det Dg(x)|}.
+\]
+若变换降低维数，则不能把非方阵 Jacobian 生硬地放进上式；概率质量必须沿纤维 $g^{-1}(y)$ 积分，普通边缘化就是最简单的例子。这些公式都只是同一推前测度在不同坐标结构下的表达。
+
+对 iid 样本，一个特别重要的随机概率测度是经验测度
+\[
+ P_n=\frac1n\sum_{i=1}^n\delta_{X_i}.
+\]
+对任意可积函数 $g$，
+\[
+ P_ng=\int g\,\dd P_n
+ =\frac1n\sum_{i=1}^ng(X_i).
+\]
+因此样本均值只是经验测度作用在 $g(x)=x$ 上的特例。后面的 LLN 可以统一写成 $P_ng\to Pg$；MLE 与一般 $M$-估计的一致性则需要对一族 $g_\theta$ 同时控制 $P_ng_\theta-Pg_\theta$。
+
+经验分布函数是
+\[
+ F_n(x)=P_n(( -\infty,x])
+ =\frac1n\sum_{i=1}^n\ind\{X_i\le x\}.
+\]
+固定 $x$ 时，它是 Bernoulli 样本均值，因此 LLN 给出 $F_n(x)\toP F(x)$。更强的 Glivenko--Cantelli 定理说明
+\begin{equation}\label{eq:math-stat-glivenko-cantelli}
+ \sup_x|F_n(x)-F(x)|\toas0,
+\end{equation}
+即经验分布在整个实线上一致逼近总体分布。这个结论不能由“对每个固定 $x$ 都收敛”直接交换上确界得到；\chapref{chap:math-stat-asymptotics} 会利用分布函数的单调性与有限网格把逐点强大数律升级为一致收敛。
+
+若总体分布函数 $F$ 连续，则概率积分变换给出
+\[
+ U=F(X)\sim\Unif(0,1).
+\]
+更一般地，以广义逆
+\[
+ F^{-1}(u)=\inf\{x:F(x)\ge u\}
+\]
+定义时，$U\sim\Unif(0,1)$ 总能产生 $F^{-1}(U)\sim F$。这使一般次序统计问题可以归约到均匀分布。
+
+把样本排序为
+\[
+ X_{(1)}\le\cdots\le X_{(n)}.
+\]
+排序本身先是一个一般推前映射，而不是 iid 假设的产物。设随机向量
+\[
+ X=(X_1,\ldots,X_n)
+\]
+关于 Lebesgue 测度具有联合密度 $f_X$，并且不同坐标相等的集合概率为零。令 $\mathfrak S_n$ 为 $n$ 个坐标的对称群。对严格有序点 $x_1<\cdots<x_n$，排序映射的全部正则原像正好是这些坐标的 $n!$ 个排列，因此有序向量的联合密度为
+\begin{equation}\label{eq:math-stat-general-ordered-density}
+ f_{X_{(1)},\ldots,X_{(n)}}(x_1,\ldots,x_n)
+ =\ind\{x_1<\cdots<x_n\}
+ \sum_{\pi\in\mathfrak S_n}
+ f_X(x_{\pi(1)},\ldots,x_{\pi(n)}).
+\end{equation}
+这个式子不要求坐标独立，也不要求交换对称；所有依赖结构都保留在 $f_X$ 中。只有在 iid 情形
+\[
+ f_X(x_1,\ldots,x_n)=\prod_{i=1}^nf(x_i)
+\]
+时，每个排列项才完全相同，求和才化成 $n!\prod_i f(x_i)$。
+
+若进一步 $X_1,\ldots,X_n$ iid、$F$ 连续并有密度 $f$，则第 $k$ 个次序统计量的密度为
+\[
+ f_{X_{(k)}}(x)
+ =\frac{n!}{(k-1)!(n-k)!}
+ F(x)^{k-1}\{1-F(x)\}^{n-k}f(x),
+\]
+等价地
+\[
+ F(X_{(k)})\sim\BetaD(k,n+1-k).
+\]
+更完整的有限样本结构来自整个有序样本。连续 iid 情形下，
+\begin{equation}\label{eq:math-stat-ordered-sample-joint-density}
+ f_{X_{(1)},\ldots,X_{(n)}}(x_1,\ldots,x_n)
+ =n!\prod_{i=1}^nf(x_i)\,
+ \ind\{x_1<\cdots<x_n\}.
+\end{equation}
+$n!$ 不是额外的经验系数，而是把同一个严格有序向量对应的 $n!$ 个样本排列全部合并。因而对 $1\le r<s\le n$，把其余有序坐标积分掉可得
+\begin{align*}
+ f_{X_{(r)},X_{(s)}}(x,y)
+ &=\frac{n!}{(r-1)!(s-r-1)!(n-s)!}
+ [F(x)]^{r-1}\{F(y)-F(x)\}^{s-r-1}\notag\\
+ &\quad\times[1-F(y)]^{n-s}f(x)f(y),
+ \qquad x<y.
+\end{align*}
+特别地，最小值与最大值满足
+\[
+ f_{X_{(1)},X_{(n)}}(x,y)
+ =n(n-1)\{F(y)-F(x)\}^{n-2}f(x)f(y),
+ \qquad x<y,
+\]
+于是极差 $R=X_{(n)}-X_{(1)}$ 的密度为
+\[
+ f_R(r)
+ =n(n-1)\int_{-\infty}^{\infty}
+ \{F(x+r)-F(x)\}^{n-2}f(x)f(x+r)\,\dd x,
+ \qquad r>0.
+\]
+这些式子以后不仅用于经典抽样分布，也会直接暴露端点参数模型为何具有不同于 $\sqrt n$ 的局部尺度。
+
+\begin{derivation}[排序推前为何产生排列求和]
+取严格递增点 $x_1<\cdots<x_n$，并在每个 $x_j$ 周围取互不相交的小区间 $I_j$。事件
+\[
+ X_{(1)}\in I_1,\ldots,X_{(n)}\in I_n
+\]
+等价于原始坐标按某个排列分别落入这些区间。不同排列对应互斥事件，因此在一般联合密度 $f_X$ 下，概率为
+\[
+ \sum_{\pi\in\mathfrak S_n}
+ \int_{I_{\pi(1)}\times\cdots\times I_{\pi(n)}}
+ f_X(u_1,\ldots,u_n)\,
+ \dd u_1\cdots\dd u_n.
+\]
+除以 $\prod_j|I_j|$ 并令各区间宽度趋于零，Lebesgue 微分定理给出
+\[
+ \ind\{x_1<\cdots<x_n\}
+ \sum_{\pi\in\mathfrak S_n}
+ f_X(x_{\pi(1)},\ldots,x_{\pi(n)}),
+\]
+即\eqnrefs{eq:math-stat-general-ordered-density}。若坐标 iid，则每一项都等于 $\prod_jf(x_j)$，所以恢复
+\eqnrefs{eq:math-stat-ordered-sample-joint-density}中的 $n!$ 因子。
+
+\emph{排列分解的细节。}事件 $A_j=\{X_{(j)}\in I_j\}$ 要求第 $j$ 大样本落入 $I_j$。原始坐标 $(X_1,\ldots,X_n)$ 落入 $\bigcup_\pi I_{\pi(1)}\times\cdots\times I_{\pi(n)}$，其中 $\pi$ 遍历所有排列。这些区域两两不交（因 $I_j$ 两两不交），故概率按可加性相加。当 $f_X$ 连续时，每个积分在小区间上近似为 $f_X$ 在中心点的值乘以区间体积，除以总体积即得密度。
+
+\emph{Lebesgue 微分定理的应用。}对局部可积函数 $g$，Lebesgue 微分定理给出
+\begin{equation*}
+\lim_{r\to0}\frac{1}{|B_r(x)|}\int_{B_r(x)}g(y)\,\dd y=g(x)\quad\text{a.e.}
+\end{equation*}
+在多元情形下对每个坐标分别应用，得到联合密度在排列点的极限值。严格递增条件 $x_1<\cdots<x_n$ 排除对角线（测度零集），保证密度良定义。
+
+\emph{iid 情形的简化。}当 $X_1,\ldots,X_n$ iid 且密度为 $f$ 时，$f_X(u_1,\ldots,u_n)=\prod_jf(u_j)$，每个排列项都等于 $\prod_jf(x_j)$，与 $\pi$ 无关。求和给出 $n!\prod_jf(x_j)$，恢复经典公式。这正是 iid 样本"对称性"的精确表述：所有排列等概率，密度在排列下不变。
+
+\emph{顺序统计量的边缘密度。}对 iid 情形继续把未固定的有序坐标积分掉。给定 $X_{(r)}=x$、$X_{(s)}=y$ 且 $x<y$，其余点分别有 $r-1$ 个落在 $(-\infty,x)$、$s-r-1$ 个落在 $(x,y)$、$n-s$ 个落在 $(y,\infty)$。对应概率质量分别给出
+\[
+ F(x)^{r-1},
+ \qquad
+ \{F(y)-F(x)\}^{s-r-1},
+ \qquad
+ \{1-F(y)\}^{n-s},
+\]
+而排列数为
+\[
+ \frac{n!}{(r-1)!(s-r-1)!(n-s)!}.
+\]
+乘上固定在 $x,y$ 两点的密度因子 $f(x)f(y)$，便得到正文的两次序统计量联合密度。
+
+\emph{极差分布的推导。}取 $r=1$、$s=n$ 得极差 $R=X_{(n)}-X_{(1)}$ 的联合密度
+\begin{equation*}
+f_{1,n}(x,y)=n(n-1)\{F(y)-F(x)\}^{n-2}f(x)f(y),\quad x<y.
+\end{equation*}
+作变量替换 $(x,y)\mapsto(x,r=y-x)$，对 $x$ 积分得极差密度
+\begin{equation*}
+f_R(r)=n(n-1)\int_{-\infty}^\infty\{F(x+r)-F(x)\}^{n-2}f(x)f(x+r)\,\dd x,\quad r>0.
+\end{equation*}
+对均匀分布 $U[0,1]$，此式简化为 $f_R(r)=n(n-1)r^{n-2}(1-r)$，是 Beta 分布 $\mathrm{Beta}(n-1,2)$。
+
+\emph{举例：指数分布的顺序量。}对 iid 指数分布 $\mathrm{Exp}(\lambda)$，$F(x)=1-\ee^{-\lambda x}$。顺序统计量间距 $Z_j=X_{(j)}-X_{(j-1)}$（$X_{(0)}=0$）独立且 $Z_j\sim\mathrm{Exp}((n-j+1)\lambda)$，这是指数分布的无记忆性给出的特殊结构。由此 $X_{(r)}=\sum_{j=1}^rZ_j$ 是独立指数和，服从 Gamma 分布 $\Gamma(r,(n-r+1)\lambda)$ 的卷积。
+
+\emph{更一般结论：经验过程的联系。}顺序统计量与经验分布 $F_n$ 通过 $F_n(X_{(r)})=r/n$ 关联。Glivenko--Cantelli 定理给出 $F_n\to F$ 一致收敛，DKW 不等式给出收敛速度 $\P(\sup_x|F_n(x)-F(x)|>\varepsilon)\leq2\ee^{-2n\varepsilon^2}$。顺序统计量的渐近理论因此与经验过程一致：$\sqrt n(F_n-F)$ 在 Skorohod 空间 $D[0,1]$ 中收敛到 Brownian bridge $B\circ F$，这是非参数统计的理论基础。
+
+\emph{物理建模：粒子能级与顺序统计。}在统计力学中，$n$ 个无相互作用粒子在势场中的能级经排序后给出顺序统计量。对 Fermi 气体，Pauli 不相容原理要求能级严格递增，顺序统计量分布与费米子占据数一致。对 Bose 气体，对称性允许重复能级，对应可重复顺序统计量。两类统计的差异正是 Fermi--Bose 不对称性的数学表述，与全方差公式中的排列结构形成对偶。
+\end{derivation}
+
+若 $\xi_p=F^{-1}(p)$，则 $X_{(\lceil np\rceil)}$ 是一个自然的样本分位数。这里首先只有有限样本随机对象和分布结构；只有在 $F$ 在 $\xi_p$ 附近足够光滑并且 $f(\xi_p)>0$ 时，才能进一步得到 $\sqrt n$ 渐近正态性。
+
+本章已经把参数、样本、统计量和经验分布放到同一概率框架中。下一章研究 $P_n-P$ 在 $n\to\infty$ 时如何缩小，并把“大数律给确定极限、中心极限定理给一阶随机涨落”发展成后面 likelihood 与推断所需的统一渐近演算。
+
+\section{常用分布的数值实例与物理对应}\label{sec:probability-examples}
+
+接下来考察常用分布的矩与典型值。
+
+\begin{center}
+\begin{tabular}{lccccc}
+\hline
+分布 & 参数 & 均值 & 方差 & 偏度 & 峰度 \\
+\hline
+\(N(\mu,\sigma^2)\) & \(\mu=0,\sigma=1\) & 0 & 1 & 0 & 0 \\
+\(\mathrm{Exp}(\lambda)\) & \(\lambda=1\) & 1 & 1 & 2 & 6 \\
+\(\mathrm{Gamma}(k,\theta)\) & \(k=2,\theta=1\) & 2 & 2 & \(\sqrt2\) & 3 \\
+\(\mathrm{Beta}(\alpha,\beta)\) & \(\alpha=\beta=2\) & 1/2 & 1/20 & 0 & \(-6/7\) \\
+\(\chi^2_\nu\) & \(\nu=5\) & 5 & 10 & \(\sqrt{8/5}\) & 12/5 \\
+\(t_\nu\) & \(\nu=5\) & 0 & 5/3 & 0 & 6 \\
+\(\mathrm{Pois}(\lambda)\) & \(\lambda=4\) & 4 & 4 & 1/2 & 1/2 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{exbox}[指数分布的无记忆性验证]
+\(X\sim\mathrm{Exp}(\lambda=0.01)\)（平均寿命 100 小时）。无记忆性：\(P(X>200|X>100)=P(X>100)=e^{-1}\approx0.368\)。对比 Weibull 分布 \(W\sim\mathrm{Weib}(k=2,\lambda=100)\)：\(P(W>200|W>100)=e^{-(2)^2+1^2}=e^{-3}\approx0.050\)。Weibull \(k>1\) 有递增失效率，老化效应显著。
+\end{exbox}
+
+接下来考察顺序统计量的数值。
+
+\begin{exbox}[\(n=10\) 均匀分布的顺序统计量]
+\(X_1,\ldots,X_{10}\sim\mathrm{Uniform}(0,1)\)。最小值 \(X_{(1)}\) 的均值 \(\E[X_{(1)}]=1/11\approx0.091\)，方差 \(10/(11^2\times12)\approx0.0069\)。最大值 \(X_{(10)}\)：\(\E=10/11\approx0.909\)。中位数 \(X_{(5)}\)：\(\E=5/11\approx0.455\)（偏左因为偶数 \(n\) 取第 5 个）。极差 \(R=X_{(10)}-X_{(1)}\sim\mathrm{Beta}(9,2)\)：\(\E[R]=9/11\approx0.818\)，\(\Var(R)=9\times2/(11^2\times12)\approx0.0124\)。
+\end{exbox}
+
+接下来考察经验分布与 DKW 不等式。
+
+\begin{exbox}[DKW 界的数值]
+对 \(n=100\) 样本，DKW 不等式给出
+\[
+P\!\left(\sup_x|F_n(x)-F(x)|>\varepsilon\right)\le2e^{-2\times100\times\varepsilon^2}
+\]
+取 \(\varepsilon=0.1\)：上界 \(2e^{-2}=0.271\)。取 \(\varepsilon=0.15\)：上界 \(2e^{-4.5}=0.022\)。即 100 个样本点足以以 98\% 概率保证经验 CDF 与真实 CDF 的最大偏差不超过 0.15。\(n=1000\) 时 \(\varepsilon=0.05\) 给出上界 \(2e^{-5}=0.013\)——精度显著提升。
+\end{exbox}
+
+接下来考察物理中的概率分布实例。
+
+\begin{exbox}[Maxwell--Boltzmann 分布与 Gamma]
+理想气体分子速率 \(v\) 服从 Maxwell--Boltzmann 分布
+\[
+f(v)=4\pi\left(\frac{m}{2\pi k_BT}\right)^{3/2}v^2 e^{-mv^2/(2k_BT)}
+\]
+即 \(v^2\sim\mathrm{Gamma}(3/2,k_BT/m)\)。对 \(N_2\) 在 \(T=300\,\mathrm{K}\)：最概然速率 \(v_p=\sqrt{2k_BT/m}\approx422\,\mathrm{m/s}\)，平均速率 \(\bar v=\sqrt{8k_BT/(\pi m)}\approx476\,\mathrm{m/s}\)，方均根速率 \(v_{\rm rms}=\sqrt{3k_BT/m}\approx517\,\mathrm{m/s}\)。三者满足 \(v_p<\bar v<v_{\rm rms}\)，是 Gamma 分布偏度的直接体现。
+\end{exbox}

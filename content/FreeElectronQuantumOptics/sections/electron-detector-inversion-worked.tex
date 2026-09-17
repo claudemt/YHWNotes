@@ -1,0 +1,123 @@
+\subsection{有限分辨率、有限窗口与近场复振幅反演}
+\label{sec:electron-detector-inversion-worked}
+
+能谱仪记录的是每个能量区间内的电子数。要由理想 PINEM 边带计算这些计数，需要先加入入射能宽和仪器误差，再对各区间积分。以\eqnrefs{eq:pinem-spatial-detector-forward-dp19}为起点，设入射能量偏差与仪器加性误差为彼此独立的零均值高斯变量，标准差分别是 $\sigma_{E,\rm in}$、$\sigma_{E,\rm inst}$。记 $\varepsilon_d=E_d-E_0$ 为相对于源中心能量的读出偏差，并假设整个建模能区中的探测效率为常数 $\mathcal Q_E^{\rm det}$。在已经探测到电子这一条件下，读出能量的概率密度为
+\begin{equation}
+ p(\varepsilon_d|{\rm click})
+ =\sum_{\ell\in\mathbb Z}J_\ell^2(2|\beta|)
+ \frac{\exp[-(\varepsilon_d-\ell\hbar\omega)^2/(2\sigma_E^2)]}{\sqrt{2\pi}\sigma_E},
+ \qquad \sigma_E^2=\sigma_{E,\rm in}^2+\sigma_{E,\rm inst}^2.
+ \label{eq:electron-detector-gaussian-comb}
+\end{equation}
+这一步还要求源能宽内的 $\beta$ 变化可忽略，并采用经典低反冲 PINEM；如果能量改变会显著改变速度、同步或耦合，应回到含入射能量依赖的积分。$p$ 的量纲为能量的负一次方，不能把它在峰顶的高度当作该边带概率。
+
+对第 $j$ 个读出窗口 $[a_j,b_j]$，先定义标准正态分布函数
+$\Phi_N(x)=(2\pi)^{-1/2}\int_{-\infty}^x\ee^{-u^2/2}\dd u$，再积分得到无量纲概率
+\begin{equation}
+ p_j=\sum_\ell J_\ell^2(2|\beta|)
+ \left[\Phi_N\!\left(\frac{b_j-\ell\hbar\omega}{\sigma_E}\right)
+       -\Phi_N\!\left(\frac{a_j-\ell\hbar\omega}{\sigma_E}\right)\right].
+ \label{eq:electron-detector-bin-probabilities}
+\end{equation}
+若有 $N_{\rm in}$ 个入射电子、背景已扣除，窗口的期望计数为 $N_{\rm in}\mathcal Q_E^{\rm det}p_j$。若窗口未覆盖整个实轴，还应显式保留“点击但在窗外”的概率 $1-\sum_jp_j$；它不同于未点击概率 $1-\mathcal Q_E^{\rm det}$。
+
+\begin{exbox}[由允许误分率解析确定分辨率要求]
+设相邻边带间隔为 $\hbar\omega$、有效高斯标准差为 $\sigma_E$，以两中心的中点划分窗口。求给定真实边带的电子被分到其他窗口的概率。
+
+将中心平移到零，正确窗口为 $[-\hbar\omega/2,\hbar\omega/2]$。左右高斯尾相等，所以
+\begin{equation*}
+ P_{\rm mis}=2\Phi_N\!\left(-\frac{\hbar\omega}{2\sigma_E}\right).
+\end{equation*}
+给定容许值 $0<\varepsilon<1$，利用 $\Phi_N$ 单调递增并反解，得到
+\begin{equation*}
+ P_{\rm mis}\le\varepsilon
+ \ \Longleftrightarrow\ 
+ \sigma_E\le\frac{\hbar\omega}{2\Phi_N^{-1}(1-\varepsilon/2)}.
+\end{equation*}
+这里 $\Phi_N^{-1}(y)$ 是满足 $\Phi_N(x)=y$ 的分位点。若希望避免求反函数，还可由正态尾上界
+$\Phi_N(-x)<\ee^{-x^2/2}/(\sqrt{2\pi}x)$（$x>0$）得到
+\begin{equation*}
+ P_{\rm mis}<\sqrt{\frac8\pi}\frac{\sigma_E}{\hbar\omega}
+ \exp\!\left[-\frac{(\hbar\omega)^2}{8\sigma_E^2}\right].
+\end{equation*}
+尾上界来自在积分中用 $u/x\ge1$ 替代一，再积分 $u\ee^{-u^2/2}$。它显示良好分辨区的误分率随间隔宽度比呈指数下降。$P_{\rm mis}$ 是给定真实边带的条件误差；实际某个窗口的占据还须叠加所有边带的输入权重。
+\end{exbox}
+
+完整能窗内，高斯卷积只增加一个独立方差，因此
+\begin{equation*}
+ \sigma_{E,\rm meas}^2=\sigma_E^2+2(\hbar\omega)^2|\beta|^2.
+\end{equation*}
+若只保留有限读出窗口 $W$，数据却被条件在 $\varepsilon_d\in W$ 上，此时求出的矩是
+\begin{equation}
+ \langle\varepsilon_d^k\rangle_W
+ =\frac{\int_W\varepsilon_d^k p(\varepsilon_d)\dd\varepsilon_d}
+        {\int_Wp(\varepsilon_d)\dd\varepsilon_d}.
+ \label{eq:electron-detector-windowed-moment}
+\end{equation}
+分母与 $\beta$ 有关，而且窗外的高阶边带被更强的 $\varepsilon_d^2$ 权重放大；所以少量丢失概率也可能带来明显方差偏差。应按实际窗口计算前向概率，而不是直接把条件方差代入完整谱的公式。
+
+\figref{fig:electron-detector-forward} 显示仪器展宽和窗口截断如何改变同一个物理谱。
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.92\linewidth]{electron_detector_forward.pdf}
+ \caption{同一 $|\beta|=1.20$ 的电子谱经过不同仪器分辨率与有限能窗。左图保留相同真实边带权重，只改变高斯有效宽度；右图用完整方差公式处理逐渐扩大的截断窗，显示朴素反演的偏差。带宽模糊不等于电子相干已经消失。}
+ \label{fig:electron-detector-forward}
+\end{figure}
+
+即使分辨率无限好，单次经典 PINEM 能谱也只依赖 $|\beta|$，不能给出复近场相位。要读出相位，应增加一个已标定、与待测场相干的参考。若两次作用之间的逐阶反冲相位可忽略，双边平移生成元对易，故
+\begin{equation}
+ S_{\rm tr}(\beta_R\ee^{\ii\varphi_R})S_{\rm tr}(\beta_s)
+ =S_{\rm tr}(\beta_s+\beta_R\ee^{\ii\varphi_R}),\qquad \beta_R>0.
+ \label{eq:electron-nearfield-reference-composition}
+\end{equation}
+这里 $\beta_s$ 是待测的复耦合，$\beta_R$ 是以参考相位原点定义的实正幅度。中间有不可忽略漂移时，应保留 $S_RU_{\rm drift}S_s$ 的顺序；不能继续把两个耦合简单相加。
+
+在完整能窗与已知基线方差下，每个参考相位的能谱给出
+\begin{equation}
+ q_R(\varphi_R)=\frac{\sigma_{E,\rm meas}^2(\varphi_R)-\sigma_E^2}{2(\hbar\omega)^2}
+ =|\beta_s+\beta_R\ee^{\ii\varphi_R}|^2.
+ \label{eq:electron-nearfield-quadrature-data}
+\end{equation}
+$q_R$ 无量纲，是由测得方差构造的数据量，不表示电子电荷。四相位作差给
+\begin{equation}
+ \Re\beta_s=\frac{q_R(0)-q_R(\pi)}{4\beta_R},\qquad
+ \Im\beta_s=\frac{q_R(\pi/2)-q_R(3\pi/2)}{4\beta_R}.
+ \label{eq:electron-nearfield-four-phase-field}
+\end{equation}
+实部和虚部又称为相对于参考的两个\emph{正交分量}；改变共同相位原点会旋转这两个坐标，实验真正确定的是待测场与参考的相对相位。
+
+\begin{exbox}[复近场反演的闭式自检与误差传播]
+令 $q_0,q_{\pi/2},q_\pi,q_{3\pi/2}$ 为四相位方差数据，参考幅度 $\beta_R>0$ 已知，求复耦合并检查四组数据能否来自同一个稳定场。
+
+写 $\beta_s=x_s+\ii y_s$，令 $A_s=x_s^2+y_s^2+\beta_R^2$，则四组理想数据依次为
+\begin{equation*}
+ A_s+2\beta_Rx_s,\quad A_s+2\beta_Ry_s,\quad
+ A_s-2\beta_Rx_s,\quad A_s-2\beta_Ry_s.
+\end{equation*}
+作差给出\eqnrefs{eq:electron-nearfield-four-phase-field}，作和则提供两类自检：
+\begin{align*}
+ q_0+q_\pi&=q_{\pi/2}+q_{3\pi/2},\\
+ \frac{(q_0-q_\pi)^2+(q_{\pi/2}-q_{3\pi/2})^2}{16\beta_R^2}
+ &=\frac{q_0+q_{\pi/2}+q_\pi+q_{3\pi/2}}4-\beta_R^2.
+\end{align*}
+第一式检查相位无关背景是否稳定，第二式检查由干涉差值恢复的 $|\beta_s|^2$ 是否与平均强度一致。其成立条件包括稳定相位、正确基线方差及有效的完整能窗。
+
+若四组 $q$ 的估计误差独立且同方差 $\sigma_q^2$，参考本身视为已知，则线性作差给
+\begin{equation*}
+ \operatorname{Var}\widehat x_s=\operatorname{Var}\widehat y_s
+ =\frac{\sigma_q^2}{8\beta_R^2},\qquad
+ \operatorname{Cov}(\widehat x_s,\widehat y_s)=0.
+\end{equation*}
+这里固定的是 $q$ 的误差，不能据此认为参考越强越好：真实计数下 $\sigma_q$、可收集能窗和参考标定误差都可能随参考幅度变化。参考相位的共同偏移只旋转重建的复平面坐标，所确定的是相对相位。
+\end{exbox}
+
+恢复 $\beta_s(\mathbf R)$ 仍只恢复了\eqnrefs{eq:pinem-spatial-beta-dp19} 中沿轨迹的同步场积分，而不是每个 $z$ 处的 $E_{\omega,z}(\mathbf R,z)$。任何附加场 $h(z)$ 只要满足 $\int h(z)\ee^{-\ii\omega z/v_0}\dd z=0$，就不会改变同一速度下的 $\beta_s$。因此从二维扫描重建完整三维近场，需要额外几何模型、速度或角度扫描；提高同一个设置的计数不能移除这类零空间。
+
+\begin{derivation}[为什么四相位差能去掉强度背景]
+写 $\beta_s=x_s+\ii y_s$，则
+\begin{equation*}
+ q_R(\varphi_R)=x_s^2+y_s^2+\beta_R^2
+ +2\beta_R(x_s\cos\varphi_R+y_s\sin\varphi_R).
+\end{equation*}
+相差 $\pi$ 的设置具有相同的 $x_s^2+y_s^2+\beta_R^2$，差值只留下线性的某一个正交分量，因而得到\eqnrefs{eq:electron-nearfield-four-phase-field}。这与前节重建电子 $\rho_{01}$ 的四相位算法形式相似，但未知对象不同：这里重建的是\emph{作用区的复场积分}，前节重建的是\emph{入射电子的密度矩阵元}，不能混用二者的校准系数。
+\end{derivation}

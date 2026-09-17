@@ -1,0 +1,130 @@
+\chapter{空间群与晶体学速查}
+\label{app:space-group-reference}
+
+\chapref{chap:point-space-groups}已经从平移晶格、点群和 Seitz 乘法建立了空间群的基本结构。本附录把这些内容整理成一套可用于实际计算的检查表，但不把 $230$ 个空间群逐个抄写。空间群的数学信息应由生成元、平移子群、点群商以及非对称平移来组织；逐行罗列一般位置更适合数据库，而不是理论讲义的主线。
+
+\section{七个晶系、十四种 Bravais 晶格与三十二种晶体点群}
+
+\begin{table}[htbp]
+\centering
+\caption{三维 Bravais 晶格与空间群统计。}
+\label{tab:bravais-space-counts}
+\begin{tabular}{cclcc}
+\toprule
+晶系 & 晶体点群数 & Bravais 类型 & 空间群数 & 对称型空间群数\\
+\midrule
+三斜 &2& $P$ &2&2\\
+单斜 &3& $P,C$ &13&6\\
+正交 &3& $P,C,I,F$ &59&13\\
+四方 &7& $P,I$ &68&16\\
+三方 &5& $R$ &25&5\\
+六方 &7& $P$ &27&16\\
+立方 &5& $P,I,F$ &36&15\\
+\midrule
+合计 &32&14 种 &230&73\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+这里“对称型空间群”（symmorphic space group）是指存在一个原点选择，使点群中每个 $R$ 都可由 $\{R\mid0\}$ 在空间群中实现；其余 $157$ 个是非对称型空间群（nonsymmorphic space group），必须包含不能通过原点移动消去的分数平移，例如螺旋轴和滑移面。最朴素的“点群数乘 Bravais 数”只得到 $66$，而真正对称型空间群为 $73$；额外的七个来自同一抽象点群相对于同一 Bravais 晶格的非等价嵌入方式。
+
+\section{Seitz 代数：查表之前先会自己相乘}
+
+空间群元素统一写成
+\[
+g=\{R\mid\vb t\},
+\qquad
+\vb r\mapsto R\vb r+\vb t.
+\]
+复合、逆元分别为
+\begin{align}
+\{R\mid\vb t\}\{S\mid\vb s\}
+&=\{RS\mid R\vb s+\vb t\},\label{eq:seitz-product-app}\\
+\{R\mid\vb t\}^{-1}
+&=\{R^{-1}\mid-R^{-1}\vb t\}.
+\label{eq:seitz-inverse-app}
+\end{align}
+这两式足以完成绝大多数空间群生成元计算。
+
+纯平移元素为 $\{I\mid\vb a\}$，其中 $\vb a$ 属于 Bravais 晶格
+\[
+\Lambda=\left\{n_1\vb a_1+n_2\vb a_2+n_3\vb a_3\mid n_i\in\ZZ\right\}.
+\]
+它们组成正规 Abel 子群 $T$。商群
+\[
+\mathcal G/T\cong P
+\]
+就是晶体点群。这条短正合列
+\[
+1\longrightarrow T\longrightarrow\mathcal G
+\longrightarrow P\longrightarrow1
+\]
+是“空间群 = 平移结构 + 点群结构 + 两者如何拼接”的最紧凑表述。
+
+\section{原点移动与非对称平移}
+
+空间群符号中的平移部分并不完全是绝对量，因为换原点会改变 Seitz 元素中的 $\vb t$。若新原点相对旧原点移动 $\vb d$，即 $\vb r=\vb r'+\vb d$，则
+\[
+R\vb r+\vb t
+=R\vb r'+R\vb d+\vb t.
+\]
+改用新坐标 $\vb r'_{\rm new}=\vb r_{\rm old}-\vb d$ 后得到
+\begin{equation}
+\vb t' = \vb t+(R-I)\vb d.
+\label{eq:origin-shift-seitz-app}
+\end{equation}
+因此某个分数平移若能写成 $(I-R)\vb d$ 加晶格矢量，就可以通过选原点消去；不能这样消去的部分才是螺旋轴或滑移面的本质数据。
+
+\subsection{螺旋轴}
+
+沿 $n$ 重轴的螺旋操作通常记为 $n_m$，其一次操作包含
+\[
+\theta=\frac{2\pi}{n},
+\qquad
+\vb t_{\parallel}=\frac{m}{n}\vb c,
+\]
+其中 $\vb c$ 是轴方向最小晶格周期。连续作用 $n$ 次得到
+\[
+\{C_n\mid \tfrac{m}{n}\vb c\}^n
+=\{I\mid m\vb c\},
+\]
+所以分数平移并不破坏群封闭性；它只是把“转一圈回原位”改成“转一圈同时走过整数个晶格周期”。
+
+\subsection{滑移面}
+
+滑移面是镜面反射 $\sigma$ 与平行于镜面的分数平移组合
+\[
+\{\sigma\mid\boldsymbol\tau\}.
+\]
+在国际符号中，$a,b,c$ glide 分别表示沿对应晶轴半格平移，$n$ glide 表示面对角方向半平移，$d$ glide 常与四分之一格的“diamond glide”有关。其平方一般为纯平移：
+\[
+\{\sigma\mid\boldsymbol\tau\}^2
+=\{I\mid (I+\sigma)\boldsymbol\tau\}.
+\]
+若 $\boldsymbol\tau$ 位于镜面内，则 $\sigma\boldsymbol\tau=\boldsymbol\tau$，从而平方为 $\{I\mid2\boldsymbol\tau\}$。
+
+\section{Hermann--Mauguin 符号怎样读}
+
+Schoenflies 符号适合强调点群的抽象类型；Hermann--Mauguin 符号则同时编码晶格中心化与沿若干晶向的旋转、反射、螺旋、滑移信息，因此空间群必须使用后者更方便。读一个三维空间群符号时，可以按下面的逻辑而不是死记名称：
+
+首先看最左侧的大写字母，它给出 Bravais 中心化：$P$ 为简单、$I$ 为体心、$F$ 为面心、$A/B/C$ 为底心、$R$ 为菱方。随后的位置依晶系代表不同的特征方向；数字 $2,3,4,6$ 是纯旋转轴，$2_1,3_1,4_1,6_3$ 等带下标的是螺旋轴，$m$ 是镜面，而 $a,b,c,n,d$ 是不同滑移面。
+
+例如 $P2_1/c$ 的第一字符 $P$ 表示简单单斜格子；$2_1$ 表示一条二重螺旋轴；$c$ 表示一个带 $c/2$ 平移的滑移面。真正计算一般位置时，应把这些生成元写成 Seitz 形式，再用 \eqnrefs{eq:seitz-product-app} 闭包，而不是只依据名称想象几何图形。
+
+\section{从空间群到 Bloch 表示}
+
+平移子群的一维不可约表示为
+\[
+\chi_{\vb k}(\{I\mid\vb a\})=\ee^{-\ii\vb k\cdot\vb a}.
+\]
+对空间群元素 $g=\{R\mid\vb t\}$，共轭平移满足
+\[
+g\{I\mid\vb a\}g^{-1}=\{I\mid R\vb a\}.
+\]
+因此 $g$ 把波矢特征标 $\vb k$ 送到 $R\vb k$。只有满足
+\[
+R\vb k=\vb k+\vb G
+\]
+的操作才属于 $\vb k$ 的小群。这个结论解释了为什么空间群表示理论不是“把点群表复制到每个 $\vb k$”：一般 $\vb k$ 只保留较小的 little group，而高对称点、线、面才拥有更大的表示结构。非对称型平移还会给表示矩阵附加相位 $\ee^{-\ii\vb k\cdot\boldsymbol\tau}$，从而在 Brillouin 区边界产生点群中不存在的强制简并。
+
+这一层结构已经足以读懂现代能带计算中最常见的空间群标签。若需要某个具体空间群全部一般位置、Wyckoff 位置与小群表示，最可靠的实践方式是使用标准晶体学数据库；讲义需要掌握的是这些表背后的代数规则。

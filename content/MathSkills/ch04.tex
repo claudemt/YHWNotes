@@ -1,0 +1,4545 @@
+\chapter{谱理论与算子方法：自伴扩张、谱测度与含时传播}
+
+谱理论首先研究的是 Hilbert 空间中的闭算子，而不是某一类可解微分方程。一个形式微分表达式只有在 Hilbert 空间、定义域和边界数据同时确定以后，才成为真正可以讨论自伴性、resolvent、谱测度与传播的算子。本章因此先建立闭对称算子的普适母理论：伴随与 deficiency spaces 描述“缺少多少自伴边界数据”，Cayley--von Neumann 理论给出全部自伴扩张，boundary triplet 与 Krein resolvent 公式把扩张参数直接连接到 resolvent。随后才把 Sturm--Liouville 表达式作为这一抽象结构的第一个完整实现，并由 Weyl limit-point/limit-circle 理论处理奇异端点。
+
+一旦自伴算子 $A$ 确定，后半章不再依赖它来自二阶 ODE：投影值谱测度、Borel functional calculus、resolvent、Riesz projection、Stone 公式、闭二次型、Friedrichs 扩张、min--max 原理、谱型与长期传播都属于一般自伴算子理论。Green 核只是 resolvent 在坐标表示中的积分核；离散模态求和只是谱积分在纯点谱上的特例；可解的有限区间、半直线和全线模型则统一放在母理论之后。这样所有特殊计算都沿“抽象精确结构 $\to$ 微分算子实现 $\to$ 可解参数模型”的单向链条出现。
+
+\section{带权 Hilbert 空间、微分表达式与闭算子}
+
+接下来考察Sturm--Liouville 表达式与准导数。
+
+设 $I=(a,b)$，其中端点允许为有限实数或无穷远。取实系数并假设
+\begin{equation}\label{eq:math-sl-coefficients}
+ p(x)>0,\qquad w(x)>0\quad\text{a.e. on }I,
+ \qquad p^{-1},q,w\in L^1_{\mathrm{loc}}(I).
+\end{equation}
+这里的低正则性假设只要求系数在每个紧子区间上具有足够的可积性，因此不应预先使用 $p'(x)$ 或端点处的 $p(a),p(b)$。自然的 Hilbert 空间是
+\begin{equation}\label{eq:math-sl-weighted-space}
+ \mathcal H=L^2(I,w\dd x),\qquad
+ \langle u,v\rangle_w=\int_I u(x)\overline{v(x)}w(x)\dd x,
+\end{equation}
+本章约定内积对第一个变量线性。为适应低正则系数，引入准导数
+\[
+ y^{[1]}:=p y'.
+\]
+Sturm--Liouville 微分表达式写成
+\begin{equation}\label{eq:math-sl-tau-general}
+ \tau y=\frac{1}{w}\left[-\bigl(y^{[1]}\bigr)'+qy\right]
+ =\frac{1}{w}\left[-(py')'+qy\right].
+\end{equation}
+在这一层，$\tau$ 只是一个微分表达式，还不是 Hilbert 空间中的算子。
+
+若采用方程
+\[
+ (py')'+\widetilde q\,y=-\lambda wy+f,
+\]
+则与\eqnrefs{eq:math-sl-tau-general} 的统一约定对应于 $q=-\widetilde q$，并且除以 $w$ 后的算子右端为 $-f/w$。后文始终把齐次谱方程写为
+\begin{equation}\label{eq:math-sl-homogeneous-spectral}
+ -(py')'+qy=zwy,
+\end{equation}
+其中 $z\in\CC$ 用作一般复谱参数，而 $\lambda\in\RR$ 留给自伴算子的实谱值。
+
+接下来考察最大算子、最小算子与 Lagrange 边界型。
+
+在把微分表达式变成算子以前，先固定本章对无界算子的术语。设 $S$ 是 Hilbert 空间 $\mathcal H$ 上的稠密定义线性算子，定义域为 $\Dom(S)$。它的图为
+\[
+ \mathcal G(S):=\{(u,Su):u\in\Dom(S)\}\subset\mathcal H\oplus\mathcal H.
+\]
+若 $\mathcal G(S)$ 在 $\mathcal H\oplus\mathcal H$ 中闭，则称 $S$ 为闭算子；等价地，$\Dom(S)$ 在图范数
+\[
+ \norm{u}_S:=\bigl(\norm{u}^2+\norm{Su}^2\bigr)^{1/2}
+\]
+下完备。伴随算子 $S^*$ 的定义域由
+\[
+ \Dom(S^*)=\left\{v\in\mathcal H:\exists h\in\mathcal H,\ 
+ \langle Su,v\rangle=\langle u,h\rangle\ 
+ \forall u\in\Dom(S)\right\}
+\]
+确定，并令 $S^*v=h$；稠密性保证这样的 $h$ 唯一。$S$ 称为对称算子，若 $S\subset S^*$；称为自伴算子，若 $S=S^*$，这里的等号同时要求作用和定义域完全相同。因而“积分分部后边界项为零”至多先证明对称性；只有再证明定义域已经达到伴随定义域，才能得到自伴性。
+
+微分表达式允许的最大自然定义域为
+\begin{equation}\label{eq:math-sl-maximal-domain}
+\begin{aligned}
+ \Dom(T_{\max})
+ =\{y\in\mathcal H:\;&y,y^{[1]}\in AC_{\mathrm{loc}}(I),\ \tau y\in\mathcal H\},\\
+ T_{\max}y&=\tau y.
+\end{aligned}
+\end{equation}
+这里 $AC_{\mathrm{loc}}$ 表示局部绝对连续。与直接从 $C_c^\infty(I)$ 出发相比，这个定义与\eqnrefs{eq:math-sl-coefficients} 的低正则性假设严格相容，因为它不要求 $p$ 本身可微。
+
+令
+\[
+ \Dom(T_0)=\{y\in\Dom(T_{\max}):\supp y\Subset I\},\qquad T_0=T_{\max}|_{\Dom(T_0)}.
+\]
+$T_0$ 称为预最小算子，其闭包定义最小算子
+\begin{equation}\label{eq:math-sl-minimal-operator}
+ T_{\min}:=\overline{T_0}.
+\end{equation}
+在\eqnrefs{eq:math-sl-coefficients} 的标准 Sturm--Liouville 假设下，$T_0$ 稠密且可闭，并且
+\begin{equation}\label{eq:math-sl-minmax-adjoint}
+ T_{\min}^*=T_{\max},\qquad T_{\max}^*=T_{\min}.
+\end{equation}
+因此任何由 $\tau$ 产生的自伴实现 $A$ 都满足
+\[
+ T_{\min}\subset A=A^*\subset T_{\max}.
+\]
+自伴扩张的问题由此转化成：在 $\Dom(T_{\max})$ 中选择怎样的端点数据，才能使所选定义域恰好等于其伴随定义域。
+
+对 $u,v\in\Dom(T_{\max})$ 定义含共轭的 Lagrange 括号
+\begin{equation}\label{eq:math-sl-bracket}
+ [u,v](x):=u(x)\overline{v^{[1]}(x)}-u^{[1]}(x)\overline{v(x)}.
+\end{equation}
+它与后面不含共轭的 Wronskian 是两个不同对象。由于
+\[
+ \frac{\dd}{\dd x}[u,v](x)
+ =w(x)\bigl((\tau u)\overline v-u\overline{\tau v}\bigr),
+\]
+而 $u,v,\tau u,\tau v\in L^2(I,w\dd x)$，Cauchy--Schwarz 不等式给出真正的全区间估计
+\[
+\begin{aligned}
+ \int_I\lvert w(\tau u)\overline v\rvert\dd x
+ &\le \norm{\tau u}_w\norm{v}_w,\\
+ \int_I\lvert wu\overline{\tau v}\rvert\dd x
+ &\le \norm{u}_w\norm{\tau v}_w.
+\end{aligned}
+\]
+因此 $[u,v]'\in L^1(I)$，而不只是局部可积；绝对连续函数具有可积导数这一事实于是保证 $[u,v](x)$ 在 $a,b$ 两端都有有限单侧极限。这一点在奇异端点尤其关键：端点处未必存在 $u(c)$ 或 $u^{[1]}(c)$，但边界括号本身仍然存在。于是有 Green--Lagrange 恒等式。
+
+\begin{lemma}[Lagrange 恒等式]\label{lem:math-sl-lagrange}
+对任意 $u,v\in\Dom(T_{\max})$，
+\begin{equation}\label{eq:math-sl-lagrange}
+ \langle T_{\max}u,v\rangle_w-\langle u,T_{\max}v\rangle_w
+ =[u,v](b)-[u,v](a),
+\end{equation}
+其中有限或奇异端点都按相应单侧极限理解。
+\end{lemma}
+
+因此定义域上的反 Hermitian 边界型
+\[
+ \mathfrak b(u,v):=[u,v](b)-[u,v](a)
+\]
+完全度量了 $T_{\max}$ 偏离对称算子的程度。最小算子的定义域也可以内在地写成
+\[
+ \Dom(T_{\min})
+ =\{u\in\Dom(T_{\max}):\mathfrak b(u,v)=0\ \forall v\in\Dom(T_{\max})\}.
+\]
+
+\begin{derivation}[自伴扩张的完整理论：从微分表达式经 deficiency indices 到边界条件分类]
+先在任意紧子区间 $[c,d]\Subset I$ 上计算。由\eqnrefs{eq:math-sl-tau-general}，
+\[
+\begin{aligned}
+ w\bigl((\tau u)\overline v-u\overline{\tau v}\bigr)
+ &=-\bigl(u^{[1]}\bigr)'\overline v
+   +u\,\overline{\bigl(v^{[1]}\bigr)'}\\
+ &=\frac{\dd}{\dd x}
+   \left(u\overline{v^{[1]}}-u^{[1]}\overline v\right).
+\end{aligned}
+\]
+积分后得到
+\[
+ \int_c^d \bigl((\tau u)\overline v-u\overline{\tau v}\bigr)w\dd x
+ =[u,v](d)-[u,v](c).
+\]
+令 $c\downarrow a,d\uparrow b$ 即得\eqnrefs{eq:math-sl-lagrange}。
+
+若 $u\in\Dom(T_0)$，其支撑紧含于 $I$，所以端点边界项为零。于是对任意 $v\in\Dom(T_{\max})$，
+\[
+ \langle T_0u,v\rangle_w=\langle u,T_{\max}v\rangle_w,
+\]
+从而 $T_{\max}\subset T_0^*$。
+
+反包含的困难不在积分分部，而在于证明抽象伴随向量自动具有 $v,v^{[1]}\in AC_{\mathrm{loc}}$。这一点可以在每个紧子区间上从 ODE 值域结构直接证明，而不需要额外假设 $p'$ 存在。
+
+固定 $J=[c,d]\Subset I$。记 $S_J$ 为 $T_{\max}$ 在 $J$ 上同时满足四个零迹
+\[
+ u(c)=u^{[1]}(c)=u(d)=u^{[1]}(d)=0
+\]
+的限制。取齐次方程 $\tau y=0$ 的两条基解 $\theta,\phi$，其在 $c$ 的 Cauchy 数据取为
+\[
+ \theta(c)=1,\quad\theta^{[1]}(c)=0,
+ \qquad
+ \phi(c)=0,\quad\phi^{[1]}(c)=1.
+\]
+先证明
+\begin{equation}\label{eq:math-sl-local-min-range}
+ \Ran(S_J)
+ =\operatorname{span}\{\theta,\phi\}^{\perp}
+ \subset L^2(J,w\dd x).
+\end{equation}
+若 $f=S_Ju=\tau u$，Lagrange 恒等式和四个零迹给出
+\[
+ \langle f,\theta\rangle_w
+ =[u,\theta](d)-[u,\theta](c)=0,
+\]
+同理 $\langle f,\phi\rangle_w=0$，所以左边包含于右边。
+
+反过来，设 $f\perp\theta,\phi$。解初值问题
+\[
+ \tau u=f,
+ \qquad u(c)=u^{[1]}(c)=0.
+\]
+它等价于一阶系统
+\[
+ \binom{u}{u^{[1]}}'
+ =\begin{pmatrix}0&p^{-1}\\q&0\end{pmatrix}
+ \binom{u}{u^{[1]}}
+ +\binom{0}{-wf}.
+\]
+矩阵系数属于 $L^1(J)$，而
+\[
+ \int_J|wf|\dd x
+ \le\norm{f}_{L^2_w(J)}\left(\int_Jw\dd x\right)^{1/2}<\infty,
+\]
+故变参数积分方程给出唯一 $u,u^{[1]}\in AC(J)$。对 $\theta$ 与 $\phi$ 分别使用 Lagrange 恒等式，左端 $c$ 的括号因零初值消失，而正交性给出
+\[
+ [u,\theta](d)=\langle f,\theta\rangle_w=0,
+ \qquad
+ [u,\phi](d)=\langle f,\phi\rangle_w=0.
+\]
+由于 $\theta,\phi$ 在 $d$ 的 Cauchy 数据线性无关，两个括号同时为零等价于
+$u(d)=u^{[1]}(d)=0$。于是 $u\in\Dom(S_J)$ 且 $S_Ju=f$，证明\eqnrefs{eq:math-sl-local-min-range}。
+
+现在设 $v,h\in L^2(J,w\dd x)$ 满足局部伴随恒等式
+\[
+ \langle S_Ju,v\rangle_w=\langle u,h\rangle_w
+ \qquad\forall u\in\Dom(S_J).
+\]
+先解一个非齐次初值问题
+\[
+ \tau v_0=h,
+ \qquad v_0(c)=v_0^{[1]}(c)=0.
+\]
+同样的一阶系统论证给出 $v_0,v_0^{[1]}\in AC(J)$。因为 $u$ 的四个边界迹为零，Lagrange 恒等式给出
+\[
+ \langle S_Ju,v_0\rangle_w=\langle u,h\rangle_w.
+\]
+与 $v$ 的伴随恒等式相减，得到
+\[
+ \langle S_Ju,v-v_0\rangle_w=0
+ \qquad\forall u\in\Dom(S_J).
+\]
+故 $v-v_0\in\Ran(S_J)^\perp$。由\eqnrefs{eq:math-sl-local-min-range}，存在常数 $a,b\in\CC$ 使
+\[
+ v-v_0=a\theta+b\phi.
+\]
+右边由齐次一阶系统生成，所以具有绝对连续的函数值与准导数，并满足 $\tau(a\theta+b\phi)=0$。因此
+\[
+ v,v^{[1]}\in AC(J),
+ \qquad \tau v=h.
+\]
+由于 $J\Subset I$ 任意，这就从抽象伴随恒等式直接推出局部 maximal-domain 正则性。
+
+在把 $T_0^*$ 当作单值伴随算子以前，还必须证明 $T_0$ 稠密。设
+$f\in\mathcal H$ 满足
+\[
+ \langle u,f\rangle_w=0
+ \qquad\forall u\in\Dom(T_0).
+\]
+固定任意 $J=[c,d]\Subset I$。若 $u\in\Dom(S_J)$，把它在 $J$ 外延拓为零；由于 $u$ 与 $u^{[1]}$ 在 $c,d$ 同时为零，零延拓后的函数及其准导数都局部绝对连续，而且不会在拼接点产生 delta 项，所以该延拓属于 $\Dom(T_0)$。因此
+\[
+ \langle S_Ju,0\rangle_w
+ =0
+ =\langle u,f|_J\rangle_w
+ \qquad\forall u\in\Dom(S_J).
+\]
+把刚才的局部伴随正则性结论用于 $(v,h)=(0,f|_J)$，得到
+\[
+ f|_J=\tau0=0.
+\]
+因为 $J\Subset I$ 任意，$f=0$ 几乎处处。故
+\begin{equation}\label{eq:math-sl-preminimal-dense}
+ \overline{\Dom(T_0)}^{\mathcal H}=\mathcal H.
+\end{equation}
+于是 $T_0^*$ 确实是单值算子。前面已经由 Lagrange 恒等式证明 $T_0$ 对称；任意稠密定义对称算子都可闭，因为
+$T_0\subset T_0^*$ 蕴含 $T_0^{**}$ 存在并闭。因此这里也同时补出了“$T_0$ 稠密且可闭”的证明，而没有使用低正则情形下未必合法的 $C_c^\infty$ 测试域。
+
+现在若 $v\in\Dom(T_0^*)$，存在 $h\in\mathcal H$ 使
+\[
+ \langle T_0u,v\rangle_w=\langle u,h\rangle_w
+ \qquad \forall u\in\Dom(T_0).
+\]
+把测试函数限制在任意 $J\Subset I$，局部伴随正则性给出
+\[
+ v,v^{[1]}\in AC_{\mathrm{loc}}(I),
+ \qquad
+ \tau v=h\in\mathcal H.
+\]
+所以 $v\in\Dom(T_{\max})$，从而 $T_0^*\subset T_{\max}$。结合前一个包含关系得到 $T_0^*=T_{\max}$。最后取伴随并使用
+\[
+ T_{\min}=\overline{T_0}=T_0^{**},
+\]
+便得到\eqnrefs{eq:math-sl-minmax-adjoint}。
+
+
+
+接下来考察闭对称算子的 Cayley--von Neumann 母结构。
+
+前面的 $T_{\min}\subset T_{\max}=T_{\min}^*$ 是 Sturm--Liouville 表达式给出的具体算子对。为了不把“自伴边界条件”误认为二阶 ODE 的专有技巧，先暂时忘掉微分来源。设 $S$ 是任意复 Hilbert 空间 $\mathcal H$ 上稠密定义的闭对称算子。对 $z\in\CC\setminus\RR$ 定义 defect space
+\[
+ \mathcal N_z(S):=\ker(S^*-zI),
+\]
+并记
+\[
+ n_+(S):=\dim\mathcal N_{\ii}(S),\qquad
+ n_-(S):=\dim\mathcal N_{-\ii}(S).
+\]
+这些维数不依赖于上、下半平面中具体选择的非实点。它们不是“边界条件个数”的经验记号，而是 $S$ 距离自伴算子的精确 Hilbert 空间维数。
+
+闭对称性首先给出正交关系
+\[
+ \Ran(S\pm\ii I)^\perp=\ker(S^*\mp\ii I)=\mathcal N_{\mp}(S).
+\]
+又因为
+\[
+ \norm{(S\pm\ii I)u}^2
+ =\norm{Su}^2+\norm{u}^2,
+\]
+$\Ran(S\pm\ii I)$ 是闭子空间。于是 Cayley 变换
+\begin{equation}\label{eq:math-sl-cayley-symmetric}
+ V_S:\Ran(S+\ii I)\longrightarrow\Ran(S-\ii I),
+ \qquad
+ V_S(S+\ii I)u=(S-\ii I)u
+\end{equation}
+是等距映射。要把 $S$ 扩张成自伴算子，本质上就是把这个部分等距映射补成整个 $\mathcal H$ 上的酉算子；缺少的初空间和终空间恰好分别是 $\mathcal N_-(S)$ 与 $\mathcal N_+(S)$。因此存在自伴扩张当且仅当
+\begin{equation}\label{eq:math-sl-von-neumann-index-condition}
+ n_+(S)=n_-(S).
+\end{equation}
+
+当两者相等时，任取酉映射 $U:\mathcal N_+(S)\to\mathcal N_-(S)$，对应自伴扩张 $A_U$ 的定义域和作用为
+\begin{equation}\label{eq:math-sl-von-neumann-extension}
+\begin{aligned}
+ \Dom(A_U)
+ &=\Dom(S)\mathbin{\dotplus}
+ \{u_++Uu_+:u_+\in\mathcal N_+(S)\},\\
+ A_U(f+u_++Uu_+)
+ &=Sf+\ii u_+-\ii Uu_+.
+\end{aligned}
+\end{equation}
+若 $n_+=n_-=0$，则 $S$ 本质自伴；若公共值为有限整数 $N$，全部自伴扩张由 $U(N)$ 参数化。Sturm--Liouville 问题中的“一个活动端点贡献一个边界自由度”将在后面由 Weyl 理论精确计算成这个 $N$。
+
+
+由 $S$ 对称，
+\[
+\begin{aligned}
+ \norm{(S+\ii I)u}^2
+ &=\norm{Su}^2+\norm{u}^2
+   +\ii\langle u,Su\rangle-\ii\langle Su,u\rangle\\
+ &=\norm{Su}^2+\norm{u}^2,
+\end{aligned}
+\]
+因为 $\langle Su,u\rangle\in\RR$。同理 $\norm{(S-\ii I)u}=\norm{(S+\ii I)u}$，故\eqnrefs{eq:math-sl-cayley-symmetric} 定义良好且等距。若
+$(S+\ii I)u_n\to y$，则上式说明 $u_n$ 在 graph norm 中 Cauchy；$S$ 闭性给出 $u_n\to u\in\Dom(S)$ 且 $(S+\ii I)u=y$，所以值域闭。
+
+伴随定义直接给出
+\[
+ \Ran(S+\ii I)^\perp
+ =\ker((S+\ii I)^*)
+ =\ker(S^*-\ii I)=\mathcal N_+(S),
+\]
+以及
+\[
+ \Ran(S-\ii I)^\perp=\mathcal N_-(S).
+\]
+因此部分等距 $V_S$ 能补成整个 $\mathcal H$ 上的酉算子，当且仅当两个正交补维数相同，这正是\eqnrefs{eq:math-sl-von-neumann-index-condition}。
+
+同一结论也可以直接从 $S^*$ 的定义域看出。闭对称算子的 von Neumann 分解为
+\begin{equation*}
+ \Dom(S^*)=\Dom(S)\mathbin{\dotplus}\mathcal N_+(S)
+ \mathbin{\dotplus}\mathcal N_-(S),
+\end{equation*}
+其中直和在 $S^*$ 的 graph norm 下成立。写
+\[
+ x=f+u_++u_-,\qquad y=g+v_++v_-,
+\]
+利用 $S^*u_+=\ii u_+$、$S^*u_-=-\ii u_-$ 以及 $S\subset S^*$，逐项相减得到边界型
+\[
+\begin{aligned}
+ \langle S^*x,y\rangle-\langle x,S^*y\rangle
+ &=2\ii\langle u_+,v_+\rangle
+   -2\ii\langle u_-,v_-\rangle.
+\end{aligned}
+\]
+因此一个包含 $\Dom(S)$ 的限制要对称，其 defect 坐标必须落在该不定型的零子空间。若令 $u_-=Uu_+$，则边界型变成
+\[
+ 2\ii\left(\langle u_+,v_+\rangle
+ -\langle Uu_+,Uv_+\rangle\right).
+\]
+它恒为零当且仅当 $U$ 等距；定义域要达到最大零子空间、从而限制算子等于自身伴随，还要求 $U$ 的值域为整个 $\mathcal N_-$，即 $U$ 酉。把 $S^*$ 的作用限制到
+$f+u_++Uu_+$ 上立即得到\eqnrefs{eq:math-sl-von-neumann-extension}。这同时证明不存在任何未被酉参数 $U$ 捕获的自伴扩张。
+
+
+von Neumann 参数最适合计数全部扩张，但微分算子计算更需要“边界坐标 $\leftrightarrow$ resolvent”的形式。设仍有 $n_+(S)=n_-(S)=N$。一个 ordinary boundary triplet 是 Hilbert 空间 $\mathcal G$（$\dim\mathcal G=N$）与两个满射边界映射
+\[
+ \Gamma_0,\Gamma_1:\Dom(S^*)\to\mathcal G
+\]
+组成的三元组 $(\mathcal G,\Gamma_0,\Gamma_1)$，满足抽象 Green 恒等式
+\begin{equation}\label{eq:math-sl-abstract-green-triplet}
+ \langle S^*u,v\rangle-\langle u,S^*v\rangle
+ =\langle\Gamma_1u,\Gamma_0v\rangle_{\mathcal G}
+ -\langle\Gamma_0u,\Gamma_1v\rangle_{\mathcal G}.
+\end{equation}
+“满射”指 $u\mapsto(\Gamma_0u,\Gamma_1u)$ 从 $\Dom(S^*)$ 映满 $\mathcal G\oplus\mathcal G$。equal deficiency index 不只保证这种边界坐标存在，而且可以从 von Neumann 分解显式构造。
+
+
+设 $n_+(S)=n_-(S)=N$，取一个 $N$ 维 Hilbert 空间 $\mathcal G$，并任选酉同构
+\[
+ J_+:\mathcal N_+(S)\to\mathcal G,
+ \qquad
+ J_-:\mathcal N_-(S)\to\mathcal G.
+\]
+对任意
+\[
+ u=f+u_++u_-
+ \in\Dom(S)\mathbin{\dotplus}\mathcal N_+(S)
+ \mathbin{\dotplus}\mathcal N_-(S),
+\]
+记
+\[
+ x=J_+u_+,
+ \qquad
+ y=J_-u_-,
+\]
+并定义
+\begin{equation}\label{eq:math-sl-boundary-triplet-explicit}
+ \Gamma_0u=x+y,
+ \qquad
+ \Gamma_1u=\ii(x-y).
+\end{equation}
+先核对 Green 恒等式。若
+$v=g+v_++v_-$，并记 $a=J_+v_+$、$b=J_-v_-$，则 von Neumann 分解给出的边界型为
+\[
+ \langle S^*u,v\rangle-\langle u,S^*v\rangle
+ =2\ii\bigl(\langle x,a\rangle_{\mathcal G}
+ -\langle y,b\rangle_{\mathcal G}\bigr).
+\]
+另一方面，由内积对第一变量线性的约定，
+\begin{align*}
+ &\langle\Gamma_1u,\Gamma_0v\rangle_{\mathcal G}
+ -\langle\Gamma_0u,\Gamma_1v\rangle_{\mathcal G}\\
+ &\quad=\ii\langle x-y,a+b\rangle
+ +\ii\langle x+y,a-b\rangle\\
+ &\quad=2\ii\bigl(\langle x,a\rangle-\langle y,b\rangle\bigr),
+\end{align*}
+恰好得到\eqnrefs{eq:math-sl-abstract-green-triplet}。
+
+再证明满射。给定任意 $(g_0,g_1)\in\mathcal G\oplus\mathcal G$，方程
+\[
+ x+y=g_0,
+ \qquad
+ \ii(x-y)=g_1
+\]
+唯一解为
+\[
+ x=\frac12(g_0-\ii g_1),
+ \qquad
+ y=\frac12(g_0+\ii g_1).
+\]
+取 $u_+=J_+^{-1}x$、$u_-=J_-^{-1}y$、$f=0$，便有
+$(\Gamma_0u,\Gamma_1u)=(g_0,g_1)$。因此边界映射确实映满整个 $\mathcal G\oplus\mathcal G$。
+
+最后，$\Gamma_0u=\Gamma_1u=0$ 等价于 $x=y=0$，也就是
+$u\in\Dom(S)$；故
+\[
+ \Dom(S)=\ker\Gamma_0\cap\ker\Gamma_1.
+\]
+而 $\Gamma_0u=0$ 等价于 $y=-x$，即 defect 坐标满足
+\[
+ u_-=-J_-^{-1}J_+u_+.
+\]
+右端的 $-J_-^{-1}J_+$ 是从 $\mathcal N_+$ 到 $\mathcal N_-$ 的酉映射，所以 von Neumann 定理立即说明
+$A_0=S^*|_{\ker\Gamma_0}$ 自伴。于是 ordinary boundary triplet 不是独立于 deficiency theory 的额外假设，而是 equal deficiency index 的一组辛坐标。
+
+
+于是
+\[
+ A_0:=S^*|_{\ker\Gamma_0}
+\]
+自伴，而更一般的自伴扩张由 $\mathcal G\oplus\mathcal G$ 中的自伴线性关系 $\Theta$ 给出。这里线性关系是线性子空间 $\Theta\subset\mathcal G\oplus\mathcal G$，它把单值算子的图作为特例；其伴随关系定义为
+\[
+ \Theta^*
+ :=\{(v,v'):\langle u',v\rangle_{\mathcal G}
+ =\langle u,v'\rangle_{\mathcal G}
+ \text{ 对所有 }(u,u')\in\Theta\},
+\]
+而“自伴关系”就是 $\Theta=\Theta^*$。对应的自伴扩张写成
+\[
+ \Dom(A_\Theta)
+ =\{u\in\Dom(S^*):(\Gamma_0u,\Gamma_1u)\in\Theta\}.
+\]
+若 $\Theta$ 恰是一个自伴算子的图，上式简化为 $\Gamma_1u=\Theta\Gamma_0u$。允许线性关系而不只允许算子，是为了把 $\Gamma_0u=0$ 这类“无穷 Robin 参数”也包括在同一参数空间。
+
+对 $z\in\rho(A_0)$，$\Gamma_0$ 在 $\mathcal N_z(S)$ 上是双射。定义 gamma field 与 Weyl function
+\begin{equation}\label{eq:math-sl-gamma-weyl-operator}
+ \gamma(z):=(\Gamma_0|_{\mathcal N_z})^{-1}:\mathcal G\to\mathcal H,
+ \qquad
+ M(z):=\Gamma_1\gamma(z):\mathcal G\to\mathcal G.
+\end{equation}
+$M(z)$ 是标量 Weyl--Titchmarsh $m(z)$ 的算子值母结构，而且它的解析与正性并不依赖微分方程。对任意 $z,\zeta\in\rho(A_0)$，有抽象 Weyl 恒等式
+\begin{equation}\label{eq:math-sl-abstract-weyl-identity}
+ M(z)-M(\zeta)^*
+ =(z-\overline\zeta)\gamma(\zeta)^*\gamma(z).
+\end{equation}
+特别地，若 $\Im z>0$，则
+\begin{equation}\label{eq:math-sl-operator-weyl-herglotz}
+ \Im M(z)
+ =(\Im z)\gamma(z)^*\gamma(z)\ge0.
+\end{equation}
+因此 operator-valued Weyl function 本身就是 Nevanlinna/Herglotz 函数；后面的标量 $m(z)$ 正性只是边界空间一维时的特例。
+
+
+先回顾 gamma field 的可定义性。对 $z\in\rho(A_0)$，限制映射
+$\Gamma_0|_{\mathcal N_z}:\mathcal N_z\to\mathcal G$ 是双射：单射性来自
+$\ker\Gamma_0|_{\mathcal N_z}\subset\Dom(A_0)$ 且 $(A_0-z)$ 可逆；满射性来自
+$\Dom(S^*)=\Dom(A_0)\dot+\mathcal N_z$ 与 $\Gamma_0$ 的整体满射。因此
+$\gamma(z)=(\Gamma_0|_{\mathcal N_z})^{-1}$ 良定义，而
+$M(z)=\Gamma_1\gamma(z)$ 是边界空间 $\mathcal G$ 上的算子值函数。
+
+取 $g,h\in\mathcal G$，令
+\[
+ u_z=\gamma(z)g\in\mathcal N_z(S),
+ \qquad
+ v_\zeta=\gamma(\zeta)h\in\mathcal N_\zeta(S).
+\]
+由 $\gamma$ 与 $M$ 的定义直接读出边界数据
+\[
+ \Gamma_0u_z=g,
+ \quad
+ \Gamma_1u_z=M(z)g,
+ \qquad
+ \Gamma_0v_\zeta=h,
+ \quad
+ \Gamma_1v_\zeta=M(\zeta)h.
+\]
+把它们代入抽象 Green 恒等式\eqnrefs{eq:math-sl-abstract-green-triplet}。左边利用
+$u_z\in\mathcal N_z$ 即 $S^*u_z=zu_z$、$v_\zeta\in\mathcal N_\zeta$ 即
+$S^*v_\zeta=\zeta v_\zeta$，得
+\begin{align*}
+ \langle S^*u_z,v_\zeta\rangle
+ -\langle u_z,S^*v_\zeta\rangle
+ &=\langle zu_z,v_\zeta\rangle-\langle u_z,\zeta v_\zeta\rangle\\
+ &=(z-\overline\zeta)\langle u_z,v_\zeta\rangle\\
+ &=(z-\overline\zeta)
+ \langle\gamma(z)g,\gamma(\zeta)h\rangle_{\mathcal H}\\
+ &=(z-\overline\zeta)
+ \langle\gamma(\zeta)^*\gamma(z)g,h\rangle_{\mathcal G},
+\end{align*}
+最后一步把内积改写为 $\gamma(\zeta)^*\gamma(z)$ 的矩阵元。右边由 boundary triplet 的
+Green 映射定义直接展开为
+\begin{align*}
+ &\langle\Gamma_1u_z,\Gamma_0v_\zeta\rangle_{\mathcal G}
+ -\langle\Gamma_0u_z,\Gamma_1v_\zeta\rangle_{\mathcal G}\\
+ &=\langle M(z)g,h\rangle_{\mathcal G}
+ -\langle g,M(\zeta)h\rangle_{\mathcal G}\\
+ &=\langle [M(z)-M(\zeta)^*]g,h\rangle_{\mathcal G}.
+\end{align*}
+因为 $g,h$ 在 $\mathcal G$ 中任意，左右两边作为 $\mathcal G$ 上的 sesquilinear form 相等，
+得到算子恒等式\eqnrefs{eq:math-sl-abstract-weyl-identity}。
+
+令 $\zeta=z$，再除以 $2\ii$，得到
+\[
+ \frac{M(z)-M(z)^*}{2\ii}
+ =(\Im z)\gamma(z)^*\gamma(z),
+\]
+即\eqnrefs{eq:math-sl-operator-weyl-herglotz}。若 $g\ne0$，ordinary boundary triplet
+保证 $\gamma(z)g\ne0$（因 $\gamma(z)$ 单射），所以在 $\Im z>0$ 时甚至有
+$\langle\Im M(z)g,g\rangle>0$，即 $\Im M(z)$ 正定。这说明 Weyl 正性首先来自自伴扩张的
+边界辛结构，而不是二阶 ODE 的特殊代数。
+
+\emph{解析性。}由 resolvent 在 $\rho(A_0)$ 上算子范数解析以及
+$\gamma(z)=\gamma(z_0)+(z-z_0)(A_0-z)^{-1}\gamma(z_0)$，$M(z)$ 在
+$\rho(A_0)$ 上算子范数解析。结合 $\Im M(z)\ge0$（$\Im z>0$）与
+$M(z)^*=M(\overline z)$，$M$ 是算子值 Nevanlinna/Herglotz 函数。
+
+\emph{一维特例。}取 $S=-\dd^2/\dd x^2$ 于 $L^2(0,\infty)$，$0$ 端正则、$\infty$ 端
+limit-point。边界空间 $\mathcal G=\CC$ 一维，$\Gamma_0u=u(0)$、
+$\Gamma_1u=u'(0)$。Dirichlet 扩张 $A_0$ 的 Weyl 解
+$\psi_+(x,z)=\ee^{\ii\sqrt z\,x}$（$\Im\sqrt z>0$）满足 $\psi_+(0,z)=1$，故
+$\gamma(z)g=g\,\psi_+(\cdot,z)$，而
+\[
+ m(z)=\Gamma_1\gamma(z)=\psi_+'(0,z)=\ii\sqrt z,
+\]
+正是经典 Weyl--Titchmarsh $m$ 函数。此时\eqnrefs{eq:math-sl-operator-weyl-herglotz}
+退化为标量恒等式 $\Im m(z)=(\Im z)\int_0^\infty|\psi_+(x,z)|^2\dd x\ge0$。
+
+\emph{物理意义。}在量子散射中，$m(z)$ 的虚部正比于谱测度的密度（Stone 公式），
+$\Im m(E+\ii0)>0$ 标志绝对连续谱的存在性；operator-valued $M(z)$ 的正定性
+则保证多通道散射中每个通道的谱测度非负。正性不等式
+$\langle\Im M(z)g,g\rangle>0$ 还排除隐含谱（hidden spectrum）：边界数据 $g\ne0$
+必产生非零谱质量，这是 boundary triplet 参数化自伴扩张的解析基础。
+
+
+若 $\Theta-M(z)$ 可逆，则 Krein resolvent formula 为
+\begin{equation}\label{eq:math-sl-krein-resolvent-abstract}
+ (A_\Theta-zI)^{-1}
+ =(A_0-zI)^{-1}
+ +\gamma(z)(\Theta-M(z))^{-1}\gamma(\overline z)^*.
+\end{equation}
+因此有限 deficiency index $N$ 时，不同自伴扩张的 resolvent 差秩至多为 $N$。后面一维半线上的秩一公式只是 $N=1$ 的情形。
+
+
+先说明 $\Gamma_0|_{\mathcal N_z}$ 为什么可逆。若 $u_z\in\mathcal N_z$ 且 $\Gamma_0u_z=0$，则 $u_z\in\Dom(A_0)$ 并满足 $(A_0-z)u_z=0$；由于 $z\in\rho(A_0)$，只能有 $u_z=0$，所以它单射。另一方面，对任意 $u\in\Dom(S^*)$，分解
+\[
+ u=u_0+u_z,
+ \qquad
+ u_0:=(A_0-z)^{-1}(S^*-z)u\in\Dom(A_0),
+\]
+则 $(S^*-z)u_z=0$ 且 $\Gamma_0u_z=\Gamma_0u$。边界映射整体满射保证任意 $g\in\mathcal G$ 都可写成某个 $u$ 的 $\Gamma_0u$，故限制映射也满射。
+
+再由\eqnrefs{eq:math-sl-abstract-green-triplet} 计算 $\gamma(\overline z)^*$。取 $f\in\mathcal H$，令
+\[
+ u_0=(A_0-z)^{-1}f,
+ \qquad v_{\overline z}=\gamma(\overline z)g.
+\]
+因为 $\Gamma_0u_0=0$、$S^*v_{\overline z}=\overline z v_{\overline z}$，有
+\[
+\begin{aligned}
+ \langle f,v_{\overline z}\rangle
+ &=\langle(A_0-z)u_0,v_{\overline z}\rangle\\
+ &=\langle S^*u_0,v_{\overline z}\rangle
+   -\langle u_0,S^*v_{\overline z}\rangle\\
+ &=\langle\Gamma_1u_0,g\rangle_{\mathcal G}.
+\end{aligned}
+\]
+故
+\begin{equation*}
+ \gamma(\overline z)^*f=\Gamma_1(A_0-z)^{-1}f.
+\end{equation*}
+
+现在令 $u=(A_\Theta-z)^{-1}f$。把它按 $\Dom(A_0)\dotplus\mathcal N_z$ 分解为
+\[
+ u=(A_0-z)^{-1}f+\gamma(z)g.
+\]
+第一项的 $\Gamma_0$ 为零，所以 $\Gamma_0u=g$；第二个边界坐标则为
+\[
+ \Gamma_1u
+ =\gamma(\overline z)^*f+M(z)g.
+\]
+边界条件 $\Gamma_1u=\Theta\Gamma_0u$ 给出
+\[
+ (\Theta-M(z))g=\gamma(\overline z)^*f.
+\]
+解出 $g$ 并代回 $u$，便得到\eqnrefs{eq:math-sl-krein-resolvent-abstract}。整个推导只使用闭对称算子、boundary triplet 和 resolvent，不依赖任何微分方程结构。
+
+
+接下来考察边界迹与一般自伴扩张。
+
+先看两端都正则的情形。端点 $c$ 称为正则的，是指它有限且在某个端点邻域上
+\[
+ p^{-1},q,w\in L^1.
+\]
+此时每个 $y\in\Dom(T_{\max})$ 都具有有限边界迹 $y(c)$ 与 $y^{[1]}(c)$。确切地说，令 $Y=(y,y^{[1]})^{\mathsf T}$，则
+\[
+ Y'=
+ \begin{pmatrix}0&p^{-1}\\ q&0\end{pmatrix}Y
+ +\begin{pmatrix}0\\-w\tau y\end{pmatrix}.
+\]
+矩阵系数在正则端点邻域属于 $L^1$，并且 $w\tau y\in L^1$ 由 Cauchy--Schwarz 与 $w\in L^1$ 得到；一阶积分方程与 Gronwall 估计因此保证 $Y$ 在端点具有有限极限。在区间 $[a,b]$ 两端都正则时，定义
+\[
+ \Gamma_0y=
+ \begin{pmatrix}y(a)\\y(b)\end{pmatrix},
+ \qquad
+ \Gamma_1y=
+ \begin{pmatrix}y^{[1]}(a)\\-y^{[1]}(b)\end{pmatrix}.
+\]
+则\eqnrefs{eq:math-sl-lagrange} 等价于
+\[
+ \mathfrak b(u,v)
+ =\langle\Gamma_1u,\Gamma_0v\rangle_{\CC^2}
+ -\langle\Gamma_0u,\Gamma_1v\rangle_{\CC^2}.
+\]
+正则情形的完整迹映射
+\[
+ \Gamma:\Dom(T_{\max})\to\CC^2\oplus\CC^2,
+ \qquad
+ \Gamma y=(\Gamma_0y,\Gamma_1y),
+\]
+是满射。这个结论不能在低正则系数下用任意光滑 cutoff 的启发构造替代证明；下面的推导会直接用一阶系统和 $L^2_w$ 源项证明任意四个端点数据都可实现。正因为边界迹没有隐藏约束，自伴扩张才等价于在四维边界空间中选择这个辛型的最大零子空间。这里所谓 Lagrangian 子空间，是指边界型在其上恒为零、且复维数恰为总边界空间一半的子空间；“最大零性”正是这一条件的等价表述。结合最小域的内在刻画与迹映射满射性，还立即得到
+\begin{equation}\label{eq:math-sl-regular-minimal-domain}
+ \Dom(T_{\min})
+ =\{y\in\Dom(T_{\max}):
+ y(a)=y^{[1]}(a)=y(b)=y^{[1]}(b)=0\}.
+\end{equation}
+所以最小算子不是“任选一个常见边界条件”的算子；它在每个正则端点同时把函数值与准导数值置零，而任意自伴扩张则从这些最大允许边界数据中只选择总共两个独立的 Lagrangian 关系。
+
+更具体地，取 $C,D\in\CC^{2\times2}$，定义
+\[
+ \Dom(A_{C,D})
+ =\{y\in\Dom(T_{\max}):C\Gamma_0y+D\Gamma_1y=0\}.
+\]
+则
+\[
+ A_{C,D}=T_{\max}|_{\Dom(A_{C,D})}
+\]
+自伴，当且仅当
+\[
+ \rank(C\;D)=2,
+ \qquad CD^*=DC^*.
+\]
+这给出了正则二端点问题的全部自伴扩张，而不只包含分离边界条件。例如周期条件 $y(a)=y(b)$、$y^{[1]}(a)=y^{[1]}(b)$ 就是合法的 coupled 自伴条件。
+
+最常用的分离边界条件是
+\begin{equation}\label{eq:math-sl-separated-bc}
+ \cos\alpha\,y(a)+\sin\alpha\,y^{[1]}(a)=0,
+ \qquad
+ \cos\beta\,y(b)+\sin\beta\,y^{[1]}(b)=0,
+\end{equation}
+其中 $\alpha,\beta\in[0,\pi)$。Dirichlet、Neumann 与 Robin 条件都包含其中。若 $y$ 与 $y^{[1]}$ 在具体物理模型中具有不同量纲，则\eqnrefs{eq:math-sl-separated-bc} 的角参数化应理解为已经用固定边界尺度把两个坐标无量纲化；不做这种重标度时，应使用一般实系数 $a_1y+a_2y^{[1]}=0$，并让 $a_1,a_2$ 携带相应互补量纲。分离条件的特殊之处不是“更自伴”，而是它们分别在两个端点各选取一条一维 Lagrangian 直线，因此后面的本征值单重性可以利用二阶方程的一维端点适配解直接证明；一般 coupled 自伴条件并不保证谱单重。
+
+
+先证明正文使用的完整迹映射满射性。令 $M_0(x)$ 是齐次一阶系统
+\[
+ Y'=A_0(x)Y,
+ \qquad
+ A_0(x)=\begin{pmatrix}0&p^{-1}(x)\\q(x)&0\end{pmatrix},
+ \qquad
+ M_0(a)=I_2
+\]
+的基本矩阵。对任意 $h\in L^2_w(a,b)$，方程 $\tau y=h$ 等价于
+\[
+ Y'=A_0Y-e_2w h,
+ \qquad e_2=\begin{pmatrix}0\\1\end{pmatrix},
+\]
+所以变参数给出
+\[
+ Y(b)=M_0(b)Y(a)-\int_a^b
+ M_0(b)M_0(t)^{-1}e_2\,h(t)w(t)\dd t.
+\]
+固定左端状态 $Y(a)$ 后，令
+\[
+ v(t):=M_0(b)M_0(t)^{-1}e_2.
+\]
+因为 $A_0\in L^1([a,b])^{2\times2}$，基本矩阵 $M_0$ 与 $M_0^{-1}$ 都在紧区间上连续且有界，所以 $v\in L^\infty(a,b;\CC^2)$。再由 $w\in L^1(a,b)$ 得 $v\in L^2_w(a,b;\CC^2)$。因此
+\[
+ K:L^2_w(a,b)\to\CC^2,
+ \qquad
+ Kh=\int_a^b v(t)h(t)w(t)\dd t
+\]
+确实是有界线性映射，因为 Cauchy--Schwarz 给出
+\[
+ \norm{Kh}_{\CC^2}
+ \le \norm{v}_{L^2_w(\CC^2)}\norm{h}_w.
+\]
+要实现任意右端状态，问题归结为证明 $K$ 满射。它的有限维 Gramian 为
+\[
+ KK^*=\int_a^b v(t)v(t)^*w(t)\dd t.
+\]
+若某个 $\eta\in\CC^2$ 满足 $\eta^*KK^*\eta=0$，则
+\[
+ \eta^*v(t)=0
+ \quad\text{a.e. }t.
+\]
+令行向量
+\[
+ r(t):=\eta^*M_0(b)M_0(t)^{-1}=(r_1(t),r_2(t)).
+\]
+上式就是 $r_2(t)=0$ a.e.，而
+\[
+ r'=-rA_0,
+ \qquad
+ r_2'=-r_1p^{-1}.
+\]
+因为 $r_2$ 绝对连续且几乎处处为零，故 $r_2'=0$ a.e.；再由 $p^{-1}>0$ a.e. 得 $r_1=0$ a.e.，所以 $r\equiv0$。在 $t=b$ 代入得到 $\eta^*=r(b)=0$。因此 $KK^*$ 正定，$K$ 满射。给定任意 $Y(a),Y(b)\in\CC^2$，总能选择 $h\in L^2_w$ 使上面的末端公式成立；相应 $y$ 满足 $y,y^{[1]}\in AC[a,b]$、$\tau y=h\in L^2_w$，故属于 $\Dom(T_{\max})$。这就严格证明了 $\Gamma$ 的满射性。
+
+现在把边界数据写成
+\[
+ X=\begin{pmatrix}x_0\\x_1\end{pmatrix}
+ =\begin{pmatrix}\Gamma_0y\\\Gamma_1y\end{pmatrix}
+ \in\CC^2\oplus\CC^2,
+ \qquad
+ Y=\begin{pmatrix}y_0\\y_1\end{pmatrix}.
+\]
+本章的有限维内积仍对第一个变量线性。由 Green--Lagrange 恒等式，边界型对应于
+\[
+ \Omega(X,Y)
+ =\langle x_1,y_0\rangle_{\CC^2}
+ -\langle x_0,y_1\rangle_{\CC^2}.
+\]
+令
+\[
+ J=\begin{pmatrix}0&I_2\\-I_2&0\end{pmatrix}.
+\]
+则
+\[
+ JX=\begin{pmatrix}x_1\\-x_0\end{pmatrix},
+ \qquad
+ \Omega(X,Y)=\langle JX,Y\rangle_{\CC^4}.
+\]
+这个符号选择与\eqnrefs{eq:math-sl-lagrange} 完全一致；若把 $J$ 的两个非零块同时换号，得到的是 $-\Omega$，不能再把二者混用。
+
+现在令
+\[
+ B=(C\;D)\in\CC^{2\times4},
+ \qquad
+ M:=\ker B.
+\]
+边界条件 $C\Gamma_0y+D\Gamma_1y=0$ 正是要求边界迹属于 $M$。定义域对称的充要条件为
+\[
+ \Omega(X,Y)=0
+ \qquad \forall X,Y\in M,
+\]
+也就是 $JM\subset M^\perp$。若 $\rank B=2$，则
+\[
+ \dim_\CC M=4-\rank B=2,
+ \qquad
+ \dim_\CC M^\perp=2.
+\]
+因此在满秩条件下，对称性已经等价于 $JM=M^\perp$；这正是边界迹子空间为 Lagrangian 子空间，也就是定义域达到自伴所需的最大零性。
+
+还可以把零性条件直接化成 $C,D$ 的矩阵恒等式。由于
+\[
+ M^\perp=\Ran B^*,
+\]
+$JM\subset M^\perp$ 在 $\dim M=2$ 时等价于 $\Ran(JB^*)\subset M$。后者又等价于
+\[
+ BJB^*=0.
+\]
+逐块相乘得到
+\[
+\begin{aligned}
+ BJB^*
+ &=(C\;D)
+ \begin{pmatrix}0&I_2\\-I_2&0\end{pmatrix}
+ \begin{pmatrix}C^*\\D^*\end{pmatrix}\\
+ &=(-D\;C)
+ \begin{pmatrix}C^*\\D^*\end{pmatrix}\\
+ &=CD^*-DC^*.
+\end{aligned}
+\]
+于是
+\[
+ \rank(C\;D)=2,
+ \qquad
+ CD^*=DC^*
+\]
+恰好分别保证边界条件数目正确以及边界辛通量为零。两者缺一都不能得到自伴定义域。
+
+对\eqnrefs{eq:math-sl-separated-bc}，可取
+\[
+ C=\begin{pmatrix}\cos\alpha&0\\0&\cos\beta\end{pmatrix},
+ \qquad
+ D=\begin{pmatrix}\sin\alpha&0\\0&-\sin\beta\end{pmatrix}.
+\]
+这里 $C,D$ 都是实对角矩阵，因此 $CD^*=DC^*$，且每一行至少有一个非零元，从而 $\rank(C\;D)=2$。所以任意实 $\alpha,\beta$ 都给出自伴的分离边界条件。
+
+
+正则端点的边界迹可以直接用函数值和准导数表示；奇异端点则必须改用 Weyl 分类与 deficiency spaces 描述扩张自由度。下面把这一端点问题并入同一个自伴实现框架。
+
+奇异端点首先迫使边界数据从“点值”改写为 Lagrange 边界型的极限。
+
+若端点不是正则端点，就称为奇异端点。此时 $y(c)$ 或 $y^{[1]}(c)$ 未必存在为有限数，因此端点条件不能一般地写成“函数值在无穷远等于零”。真正稳定的端点对象是 Lagrange 括号的单侧极限；它对 $\Dom(T_{\max})$ 中的函数始终存在，并最终决定奇异端点是否还携带自伴扩张自由度。
+
+先只考察齐次非实谱方程。对奇异端点 $c$ 和 $z\in\CC\setminus\RR$，记在 $c$ 的某个邻域中属于 $L^2_w$ 的解空间为
+\[
+ \mathcal L_c(z):=
+ \{y:\tau y=zy,\ y\in L^2_w\text{ 在 }c\text{ 附近}\}.
+\]
+二阶方程的局部解空间为二维，而平方可积性只可能留下下面两种维数。
+
+\begin{definition}[limit-circle 与 limit-point]
+奇异端点 $c$ 称为 \emph{limit-circle}，若对某个 $z\in\CC\setminus\RR$，方程 $\tau y=zy$ 的所有局部解都在 $c$ 附近属于 $L^2_w$；否则称为 \emph{limit-point}。
+\end{definition}
+
+\begin{theorem}[Weyl 端点二择一]\label{thm:math-sl-weyl-alternative}
+对任意奇异端点 $c$ 和任意 $z\in\CC\setminus\RR$，维数
+\[
+ d_c(z):=\dim \mathcal L_c(z)
+\]
+与所选非实参数 $z$ 无关，并且恰有
+\[
+ d_c(z)=
+ \begin{cases}
+ 2,&c\text{ 为 limit-circle},\\
+ 1,&c\text{ 为 limit-point}.
+ \end{cases}
+\]
+因此 limit-circle 端点不通过平方可积性删去局部解方向，而 limit-point 端点恰好删去一个局部方向。这个局部维数如何转化为自伴边界条件的个数，将在 deficiency spaces 中由算子定义域严格完成。
+\end{theorem}
+
+
+只证明右奇异端点 $b$；左端完全同理。固定正则内点 $x_0<b$ 和 $z\in\CC_+$，取基本解
+\[
+ \theta(x_0,z)=1,\quad \theta^{[1]}(x_0,z)=0,
+ \qquad
+ \phi(x_0,z)=0,\quad \phi^{[1]}(x_0,z)=1.
+\]
+对任意截断点 $r\in(x_0,b)$，在 $r$ 处施加实 Robin 条件
+\[
+ \cos\beta\,y(r)+\sin\beta\,y^{[1]}(r)=0,
+ \qquad \beta\in[0,\pi),
+\]
+并把满足该条件且归一化为 $y(x_0)=1$ 的解写成
+\[
+ y_r(x)=\theta(x,z)+m_r\phi(x,z).
+\]
+截断边界条件是实自伴条件，因此 $[y_r,y_r](r)=0$。另一方面，初值给出
+\[
+ [y_r,y_r](x_0)=\overline{m_r}-m_r=-2\ii\Im m_r.
+\]
+把 Lagrange 恒等式用于 $[x_0,r]$，得到
+\[
+ 2\ii\Im m_r
+ =(z-\overline z)\int_{x_0}^r
+ |\theta+m_r\phi|^2w\dd x,
+\]
+即
+\begin{equation}\label{eq:math-sl-weyl-circle-identity}
+ \frac{\Im m_r}{\Im z}
+ =\int_{x_0}^r|\theta(x,z)+m_r\phi(x,z)|^2w(x)\dd x.
+\end{equation}
+把右端关于 $m_r$ 完成平方，可知 $\beta$ 变化时 $m_r$ 描出一个圆。圆和内部统一写成
+\begin{equation}\label{eq:math-sl-weyl-disk-inequality}
+ D_r(z)=\left\{m\in\CC:
+ \int_{x_0}^r|\theta+m\phi|^2w\dd x
+ \le \frac{\Im m}{\Im z}\right\}.
+\end{equation}
+圆周对应等号，严格不等号对应内部。记
+\[
+ A_r(z):=\int_{x_0}^r|\phi(x,z)|^2w(x)\dd x,
+\]
+完成平方同时给出
+\[
+ \operatorname{rad}D_r(z)=\frac{1}{2\Im z\,A_r(z)}.
+\]
+若 $r_2>r_1$，\eqnrefs{eq:math-sl-weyl-disk-inequality} 左端积分只会增加，因此
+\[
+ D_{r_2}(z)\subset D_{r_1}(z).
+\]
+每个 $D_r(z)$ 都是非空紧圆盘，故当 $r\uparrow b$ 时嵌套交集非空。由于半径单调，它只能收敛到一个正半径闭圆盘或一个点。
+
+若极限半径为正，则 $A_r(z)$ 有限极限，从而
+\[
+ \phi(\cdot,z)\in L^2_w(x_0,b).
+\]
+极限圆盘中可取两个不同的 $m_1,m_2$。由\eqnrefs{eq:math-sl-weyl-disk-inequality} 与单调收敛，两个解 $\theta+m_j\phi$ 都属于 $L^2_w(x_0,b)$。相减得到 $\phi\in L^2_w$，再从任一 $\theta+m_j\phi$ 减去 $m_j\phi$ 得 $\theta\in L^2_w$。于是整个二维解空间都平方可积，即为 limit-circle。
+
+若极限圆盘退化为一点 $m(z)$，则
+\[
+ \psi(x,z):=\theta(x,z)+m(z)\phi(x,z)
+\]
+属于 $L^2_w(x_0,b)$。若还有另一条与 $\psi$ 线性无关的平方可积解，则 $\theta$ 与 $\phi$ 都平方可积，迫使 $A_r(z)$ 有界，与圆盘半径趋于零矛盾。因此 $\mathcal L_b(z)$ 恰为一维，即为 limit-point。
+
+这里还可得到后面计算 deficiency indices 所需的一条定量事实。对极限点 $m(z)$ 定义
+\[
+ Q_r(m):=
+ \frac{\Im m}{\Im z}
+ -\int_{x_0}^r|\theta+m\phi|^2w\dd x\ge0.
+\]
+完成平方后，$Q_r$ 在圆盘中心取得最大值，而最大值等于
+\[
+ A_r(z)\bigl(\operatorname{rad}D_r(z)\bigr)^2
+ =\frac{1}{4(\Im z)^2A_r(z)}.
+\]
+limit-point 情形中 $A_r(z)\to\infty$，所以
+\[
+ 0\le Q_r(m(z))
+ \le\frac{1}{4(\Im z)^2A_r(z)}\longrightarrow0.
+\]
+再用 Lagrange 恒等式，
+\[
+ [\psi,\psi](r)
+ =-2\ii\Im m(z)
+ +2\ii\Im z\int_{x_0}^r|\psi|^2w\dd x
+ =-2\ii\Im z\,Q_r(m(z)),
+\]
+故
+\begin{equation*}
+ [\psi,\psi](b)=0
+ .
+\end{equation*}
+注意这里先只证明了 defect 方程平方可积解的自括号消失；对任意 $u,v\in\Dom(T_{\max})$ 的完整端点结论将在 von Neumann 分解之后推出。
+
+最后核验分类与非实谱参数无关。设某个 $z_0\in\CC_+$ 下两个基本解 $u_0,v_0$ 都在 $b$ 附近属于 $L^2_w$，并令其双线性 Wronskian 归一化为 $1$。对另一个 $z\in\CC_+$，任一解 $y$ 的变参数方程可写为
+\[
+ y(x)=a u_0(x)+b v_0(x)
+ +(z-z_0)\int_{x_0}^{x}K_0(x,t)y(t)w(t)\dd t,
+\]
+其中
+\[
+ K_0(x,t)=u_0(x)v_0(t)-v_0(x)u_0(t).
+\]
+由
+\[
+ |K_0(x,t)|^2
+ \le 2|u_0(x)|^2|v_0(t)|^2
+ +2|v_0(x)|^2|u_0(t)|^2
+\]
+可知三角区域 $x_0<t<x<b$ 上的 Volterra 核属于
+$L^2(w(x)w(t)\dd x\dd t)$，故对应 Volterra 算子在 $L^2_w$ 上有界。Volterra 迭代积分被有序单纯形限制，其 Neumann--Volterra 级数对任意固定 $z-z_0$ 收敛，于是任意自由项 $a u_0+b v_0\in L^2_w$ 都产生唯一的 $L^2_w$ 解 $y$。因此某个非实参数若为 limit-circle，则整个上半平面都为 limit-circle；实系数下复共轭把结论传到下半平面。反之，若另一参数是 limit-circle，交换 $z,z_0$ 得到相同结论。故分类与所选非实参数无关，而非 limit-circle 的情形只能是前面已经得到的一维 limit-point 情形。
+
+
+Weyl 分类首先回答局部谱方程还剩多少平方可积解。要把这个信息变成“端点需要多少个自伴边界条件”，还必须进入最小算子与最大算子的定义域商空间；这正是 deficiency indices 的作用。
+
+这一端点分类可等价地组织为 deficiency spaces 与扩张自由度。
+
+定义 deficiency spaces
+\[
+ \mathcal N_z:=\ker(T_{\max}-zI)=\ker(T_{\min}^*-zI),
+ \qquad z\in\CC\setminus\RR,
+\]
+以及 deficiency indices
+\[
+ n_+:=\dim\mathcal N_{\ii},
+ \qquad
+ n_-:=\dim\mathcal N_{-\ii}.
+\]
+由于系数实，复共轭把 $\mathcal N_{\ii}$ 反线性同构到 $\mathcal N_{-\ii}$，故 $n_+=n_-$。一个正则端点和一个 limit-circle 奇异端点都保留一个边界自由度；limit-point 端点不保留边界自由度。下面的定理把这句话变成精确的算子维数计数。
+
+\begin{theorem}[Weyl 分类与自伴扩张自由度]\label{thm:math-sl-weyl-extension-count}
+把正则端点和 limit-circle 奇异端点统称为\emph{边界活动端点}，令其个数为 $N\in\{0,1,2\}$。则
+\[
+ n_+=n_-=N.
+\]
+因此两端均为 limit-point 时 $T_{\min}$ 本质自伴；只有一个边界活动端点时，自伴实现需要一个实边界条件；两个端点都活动时，需要两个独立但允许相互耦合的自伴边界关系。
+\end{theorem}
+
+
+固定 $z\in\CC\setminus\RR$。方程 $\tau y=zy$ 的全局解空间由任一正则内点处的两个初值
+$(y(x_0),y^{[1]}(x_0))$ 唯一决定，因此为二维。一个正则或 limit-circle 端点不对这两个
+初值增加平方可积约束；一个 limit-point 端点则要求解的初值落在一条一维 Weyl 子空间中，
+也就是施加一个独立线性约束。下面分三种情形精确计数。
+
+\emph{情形一：两个端点都活动。}没有局部方向被平方可积性删去，所以
+\[
+ \dim\mathcal N_z=2.
+\]
+此时 $n_+=n_-=2$，自伴扩张需要两个实参数（或一个 $U(2)$ 酉矩阵）。典型例子是有限区间
+$(0,\ell)$ 上的 $-\dd^2/\dd x^2$：两端正则，Dirichlet--Dirichlet、Neumann--Neumann、
+周期、Robin 等均对应 $U(2)$ 中不同参数。
+
+\emph{情形二：恰有一个 limit-point 端点。}全局初值必须落在该端点的一维 Weyl 子空间中，
+而另一活动端点不再增加约束，故
+\[
+ \dim\mathcal N_z=1.
+\]
+此时 $n_+=n_-=1$，自伴扩张需要一个实边界条件。典型例子是半直线 $(0,\infty)$ 上的
+$-\dd^2/\dd x^2$：$\infty$ 端 limit-point，$0$ 端正则，Dirichlet $y(0)=0$ 与
+Robin $y'(0)+\alpha y(0)=0$（$\alpha\in\RR$）给出全部自伴实现。
+
+\emph{情形三：两端均为 limit-point。}两个一维平方可积条件原则上可能相交，也可能不相交，
+因此还需排除非零交。假设 $0\ne y\in\mathcal N_z$。那么 $y$ 在两个端点附近分别是对应唯一
+Weyl 解的常数倍。上一推导已经证明 limit-point Weyl 解满足自括号极限为零，所以
+\[
+ [y,y](a)=[y,y](b)=0.
+\]
+将 $u=v=y$ 代入 Green--Lagrange 恒等式，得到
+\[
+ \langle T_{\max}y,y\rangle_w
+ -\langle y,T_{\max}y\rangle_w=0.
+\]
+而 $T_{\max}y=zy$，故
+\[
+ (z-\overline z)\norm{y}_w^2=0.
+\]
+由于 $z\notin\RR$ 即 $z-\overline z=2\ii\,\Im z\ne0$，只能有 $y=0$，与假设矛盾。因此
+\[
+ \dim\mathcal N_z=0.
+\]
+此时 $T_{\min}$ 本质自伴，无需任何边界条件。典型例子是全线 $(-\infty,\infty)$ 上的
+$-\dd^2/\dd x^2+V(x)$，其中 $V$ 有下界且在无穷远处不衰减过快（如 $V(x)=x^2$ 谐振子势
+或 $V(x)\to+\infty$），两端均 limit-point。
+
+三个情形合并即得 $\dim\mathcal N_z=N$。复共轭把上、下半平面的 defect 空间互换
+（$\overline{\mathcal N_z}=\mathcal N_{\overline z}$），故 $n_+=n_-=N$。
+
+\emph{物理意义。}deficiency index $N$ 等于"缺少的边界数据个数"。$N=0$ 时算子本质自伴，
+Hamiltonian 唯一确定，量子演化 $\ee^{-\ii tH}$ 唯一存在——这是可观测性的数学保证。
+$N>0$ 时存在多个自伴实现，对应不同物理边界条件（如不同自交边界散射相移），必须由
+额外物理输入选定。Coulomb 势 $V(r)=-Z/r$ 于 $L^2(\RR^3)$ 中 $H=-\Delta+V$ 虽在 $r=0$
+奇异，但三维整体仍本质自伴（$N=0$），因 deficiency index 由无穷远行为决定。
+
+
+上面的 Weyl 计数现在可以直接代回前面的 Cayley--von Neumann 母定理。对 $S=T_{\min}$，有 $S^*=T_{\max}$，而\hyperref[thm:math-sl-weyl-extension-count]{Weyl 分类与自伴扩张自由度定理}已经算出公共 deficiency index $N$。因此 $N=0$ 时 $T_{\min}$ 本质自伴；$N=1$ 时\eqnrefs{eq:math-sl-von-neumann-extension} 中的 $U$ 只是相位 $\ee^{\ii\vartheta}$；$N=2$ 时 $U\in U(2)$，分离、周期、反周期以及一般 coupled 条件都属于同一个酉参数族。这里不再需要另立一套“ODE 边界条件分类”；ODE 的工作只是计算 abstract deficiency channel 在端点上具体长什么样。
+
+von Neumann 分解还把 Weyl 分类与端点 Lagrange 边界型严格接起来。这个连接对 limit-point 端点尤其重要，因为它说明“无需边界条件”不是把某个函数值条件省略掉，而是该端点的边界辛空间本身已经退化为零。
+
+\begin{theorem}[limit-point 端点的边界型消失]\label{thm:math-sl-limit-point-boundary-form}
+若 $c$ 是 limit-point 端点，则对任意 $u,v\in\Dom(T_{\max})$ 都有
+\[
+ [u,v](c)=0.
+\]
+若 $c$ 是正则或 limit-circle 端点，则该端点贡献一个二维复边界辛空间，自伴实现必须在其中选择一条一维 Lagrangian 直线；两个活动端点同时存在时，也允许在两端的直和边界空间中选择 coupled Lagrangian 子空间。
+\end{theorem}
+
+
+只处理右端点 $b$。取正则内点 $x_0<b$，把同一个微分表达式限制到 $J=(x_0,b)$，并记相应最小、最大算子为 $S_{\min},S_{\max}$。左端 $x_0$ 是正则端点；若 $b$ 为 limit-point，前述 Weyl 分类与自伴扩张自由度定理给出
+\[
+ n_+(S_{\min})=n_-(S_{\min})=1.
+\]
+von Neumann 分解因此给出
+\[
+ \dim_\CC\bigl(\Dom(S_{\max})/\Dom(S_{\min})\bigr)=2.
+\]
+
+正则端点迹映射
+\[
+ \operatorname{tr}_{x_0}f
+ :=\bigl(f(x_0),f^{[1]}(x_0)\bigr)\in\CC^2
+\]
+在这个商空间上是满射。确切地说，有限正则子区间上的迹满射性允许构造一个在 $b$ 的某个邻域恒为零的 $f\in\Dom(S_{\max})$，并任意指定 $f(x_0),f^{[1]}(x_0)$；而 $\Dom(S_{\min})$ 中的函数在正则端点 $x_0$ 的两个迹都为零。因此 $\operatorname{tr}_{x_0}$ 诱导出满射
+\[
+ \Dom(S_{\max})/\Dom(S_{\min})\longrightarrow\CC^2.
+\]
+定义域商空间本身已经只有二维，所以这个诱导映射是同构。于是
+\[
+ f(x_0)=f^{[1]}(x_0)=0
+ \quad\Longrightarrow\quad
+ f\in\Dom(S_{\min}).
+\]
+
+现在任取 $u,v\in\Dom(S_{\max})$。利用同一个正则迹构造，选择 $u_0,v_0\in\Dom(S_{\max})$，使它们在 $x_0$ 具有与 $u,v$ 相同的两个迹，并且都在 $b$ 的某个邻域恒为零。于是
+\[
+ \widetilde u:=u-u_0,
+ \qquad
+ \widetilde v:=v-v_0
+\]
+在 $x_0$ 的函数值和准导数值都为零，所以 $\widetilde u,\widetilde v\in\Dom(S_{\min})$。最小域中的函数与任意最大域函数的 Green--Lagrange 边界配对都为零；特别地，两个最小域函数之间的配对为零，故
+\[
+ 0=
+ \langle S_{\max}\widetilde u,\widetilde v\rangle_w
+ -\langle \widetilde u,S_{\max}\widetilde v\rangle_w
+ =[\widetilde u,\widetilde v](b)-[\widetilde u,\widetilde v](x_0).
+\]
+左端迹已经全为零，所以 $[\widetilde u,\widetilde v](x_0)=0$；同时 $u_0,v_0$ 在 $b$ 附近恒为零，因此
+\[
+ [u,v](b)=[\widetilde u,\widetilde v](b)=0.
+\]
+这就证明了 limit-point 端点的完整边界型消失。
+
+若 $b$ 为 limit-circle，则同一区间上两个端点都活动，故
+\[
+ \dim_\CC\bigl(\Dom(S_{\max})/\Dom(S_{\min})\bigr)=4.
+\]
+扣除正则端点 $x_0$ 的两个边界坐标后，$b$ 仍留下二维复边界空间。Lagrange 边界型在这个二维空间上非退化；自伴定义域必须选择其中的一维最大零子空间。这正是“一个 limit-circle 端点贡献一个实自伴边界条件”的算子论含义。
+\end{derivation}
+
+在 limit-circle 情形，还可以选取参考解把抽象边界型显式坐标化。
+
+在正则或 limit-circle 端点 $c$，上一节得到的二维边界辛空间可以用一对实参考函数 $u_c,v_c\in\Dom(T_{\max})$ 坐标化，使
+\[
+ [u_c,v_c](c)=1.
+\]
+定义
+\[
+ \gamma_{0,c}(f):=[f,v_c](c),
+ \qquad
+ \gamma_{1,c}(f):=-[f,u_c](c).
+\]
+则
+\[
+ [f,g](c)
+ =\gamma_{0,c}(f)\overline{\gamma_{1,c}(g)}
+ -\gamma_{1,c}(f)\overline{\gamma_{0,c}(g)}.
+\]
+参考对的改变只是在这个二维边界空间中作保持辛型的可逆坐标变换，不改变自伴定义域本身。
+
+若 $c$ 正则，可以取 $u_c(c)=1,u_c^{[1]}(c)=0$ 与
+$v_c(c)=0,v_c^{[1]}(c)=1$，于是
+\[
+ \gamma_{0,c}(f)=f(c),
+ \qquad
+ \gamma_{1,c}(f)=f^{[1]}(c).
+\]
+因此普通函数值与准导数只是一般边界坐标在正则端点的具体实现。
+
+一个分离的自伴端点条件统一写成
+\[
+ \cos\theta\,\gamma_{0,c}(f)
+ +\sin\theta\,\gamma_{1,c}(f)=0,
+ \qquad \theta\in[0,\pi).
+\]
+在 limit-circle 奇异端点，这才是普通 Robin 条件的正确替代物。若两个端点都活动，则把两端边界坐标组成四维边界空间，可以像正则二端点情形一样选择 coupled Lagrangian 子空间。相反，刚得到的 limit-point 边界型消失定理说明该端点已经没有非平凡边界坐标，因此不能再附加一个独立的自伴端点条件。
+
+这一组结论把三种语言完全对应起来：Weyl 分类计算局部平方可积解的维数，deficiency indices 计算最小算子的自伴扩张自由度，Lagrange 边界型则把这些自由度写成具体端点坐标。半直线 Schrödinger 型算子通常只在有限端点指定一个条件，而不在 limit-point 无穷远再写“波函数等于零”，原因就在这里。
+
+
+\section{谱测度、Borel 函数演算与 resolvent}
+
+从这一节起，先暂时忘掉算子的微分来源。设 $A$ 是任意复 Hilbert 空间 $\mathcal H$ 上的自伴算子；前两节的工作只表明，Sturm--Liouville 微分表达式在选择合法端点条件后确实产生这样的 $A$。之后的谱理论只依赖 $A=A^*$。
+
+接下来考察投影值测度与 Borel functional calculus。
+
+投影值测度不是形式上的“带算子积分号”。记 $\mathfrak B(\RR)$ 为实轴的 Borel $\sigma$-代数。一个投影值测度（projection-valued measure, PVM）是映射
+\[
+ E:\mathfrak B(\RR)\longrightarrow\{\mathcal H\text{ 上的正交投影}\}
+\]
+满足 $E(\varnothing)=0$、$E(\RR)=I$、
+\[
+ E(B_1\cap B_2)=E(B_1)E(B_2),
+\]
+并且对两两不交的 $B_n$ 有强算子意义的可列可加性
+\[
+ E\!\left(\bigcup_{n=1}^\infty B_n\right)u
+ =\sum_{n=1}^\infty E(B_n)u
+ \qquad(u\in\mathcal H).
+\]
+于是 $\mu_{u,v}(B):=\langle E(B)u,v\rangle$ 是复测度，特别地 $\mu_u:=\mu_{u,u}$ 是有限正测度。后面的算子积分正是由这些标量测度一致地定义。
+
+谱定理给出唯一的投影值测度 $E_A$，定义在 $\RR$ 的 Borel 集上，使
+\begin{equation}\label{eq:math-sl-spectral-measure}
+ A=\int_{\RR}\lambda\,\dd E_A(\lambda),
+ \qquad
+ f(A)=\int_{\RR}f(\lambda)\,\dd E_A(\lambda).
+\end{equation}
+第二个公式首先对有界 Borel 函数 $f$ 定义有界算子，并满足
+\[
+ \norm{f(A)}\le \norm{f}_{\infty},
+ \qquad
+ f(A)^*=(\overline f)(A),
+ \qquad
+ (fg)(A)=f(A)g(A).
+\]
+对一般可能无界的 Borel 函数，定义域由谱测度本身决定。令
+\[
+ \mu_u(B):=\langle E_A(B)u,u\rangle=\norm{E_A(B)u}^2,
+\]
+则
+\[
+ \Dom(f(A))
+ =\left\{u\in\mathcal H:\int_{\RR}|f(\lambda)|^2\dd\mu_u(\lambda)<\infty\right\},
+\]
+并且
+\[
+ \norm{f(A)u}^2
+ =\int_{\RR}|f(\lambda)|^2\dd\mu_u(\lambda).
+\]
+取 $f(\lambda)=\lambda$ 就恢复 $A$ 自身的定义域；取 $f=\mathbf 1_B$ 得到谱投影 $E_A(B)$。因此“定义域”“谱投影”和“函数作用于算子”不是三个独立规定，而都包含在同一个投影值测度中。
+
+谱测度还精确编码了“某个实数是否真的属于谱”。对任意 $\lambda_0\in\RR$，
+\begin{equation}\label{eq:math-sl-spectrum-support-pvm}
+ \lambda_0\in\sigma(A)
+ \quad\Longleftrightarrow\quad
+ E_A\bigl((\lambda_0-\varepsilon,\lambda_0+\varepsilon)\bigr)\neq0
+ \quad(\varepsilon>0).
+\end{equation}
+若存在某个邻域 $J$ 使 $E_A(J)=0$，则 $(\lambda-\lambda_0)^{-1}$ 在谱测度支撑上有界，Borel 函数演算直接构造 $(A-\lambda_0)^{-1}$；反过来，若 $\lambda_0\in\rho(A)$，取足够小的邻域避开闭集 $\sigma(A)$ 即有相应谱投影为零。特别地，
+\begin{equation}\label{eq:math-sl-eigenprojection-pvm}
+ \Ran E_A(\{\lambda_0\})=\ker(A-\lambda_0I).
+\end{equation}
+所以本征值并不是另外附加给谱定理的概念，而正是谱测度的原子。
+
+若 $A$ 具有纯离散正交本征基 $\{X_n\}$，上述积分退化为求和；若存在连续谱，它保持为真正的 Stieltjes 型谱积分。这是离散模态与连续模态最一般的共同母式。
+
+
+谱定理还可以从前面的 Cayley 思想自然恢复，而不是把无界自伴算子谱积分当成另一个独立黑箱。定义
+\begin{equation}\label{eq:math-sl-cayley-selfadjoint}
+ U_A:=(A-\ii I)(A+\ii I)^{-1}.
+\end{equation}
+$U_A$ 是酉算子，并且 $1$ 不是其本征值。设 $F$ 是 $U_A$ 在单位圆上的 PVM。Cayley 反变换
+\[
+ \lambda=\ii\frac{1+\zeta}{1-\zeta},
+ \qquad
+ \zeta=\frac{\lambda-\ii}{\lambda+\ii}
+\]
+把 $\mathbb T\setminus\{1\}$ 与 $\RR$ 双射对应。将 $F$ 沿这个映射推前便得到 $E_A$，并且无界算子的定义域自动由二阶矩条件恢复，而不是额外规定。
+
+\begin{derivation}[谱定理的完整推导：从 Cayley 变换经 PVM 到谱测度与投影算符]
+先验证\eqnrefs{eq:math-sl-cayley-selfadjoint} 酉。因为 $A=A^*$，有
+\[
+ (A+\ii I)^{-1*}=(A-\ii I)^{-1},
+\]
+且所有 resolvent 都是 $A$ 的 Borel 函数而彼此对易。因此
+\[
+\begin{aligned}
+ U_A^*U_A
+ &=(A-\ii I)^{-1}(A+\ii I)(A-\ii I)(A+\ii I)^{-1}\\
+ &=I.
+\end{aligned}
+\]
+同理 $U_AU_A^*=I$。若 $U_Au=u$，则
+\[
+ (A-\ii I)(A+\ii I)^{-1}u=u.
+\]
+令 $v=(A+\ii I)^{-1}u\in\Dom(A)$，得到 $(A-\ii I)v=(A+\ii I)v$，故 $v=0$、$u=0$，所以 $F(\{1\})=0$。
+
+酉谱定理给出
+\[
+ U_A=\int_{\mathbb T}\zeta\,\dd F(\zeta).
+\]
+定义 Borel 映射
+\[
+ \chi(\zeta)=\ii\frac{1+\zeta}{1-\zeta},
+ \qquad \zeta\in\mathbb T\setminus\{1\},
+\]
+并令
+\[
+ E_A(B):=F(\chi^{-1}(B)),\qquad B\in\mathfrak B(\RR).
+\]
+由于 $F(\{1\})=0$，这确实是 $\RR$ 上的 PVM。由 Borel 函数演算，
+\[
+ \chi(U_A)=\int_{\RR}\lambda\,\dd E_A(\lambda).
+\]
+另一方面，对 $u\in\Dom(A)$，直接作有界 resolvent 代数得到
+\[
+\begin{aligned}
+ I-U_A
+ &=I-(A-\ii)(A+\ii)^{-1}
+ =2\ii(A+\ii)^{-1},\\
+ I+U_A
+ &=2A(A+\ii)^{-1}.
+\end{aligned}
+\]
+因而在 $\Ran(I-U_A)=\Dom(A)$ 上
+\[
+ \ii(I+U_A)(I-U_A)^{-1}=A.
+\]
+这说明 $\chi(U_A)$ 的确就是原来的 $A$。
+
+无界定义域也随谱积分一起出现。对 $u\in\mathcal H$，截断函数
+\[
+ \chi_n(\zeta):=\chi(\zeta)\mathbf1_{\{|\chi(\zeta)|\le n\}}
+\]
+给出有界算子 $\chi_n(U_A)$，并有
+\[
+ \norm{\chi_n(U_A)u-\chi_m(U_A)u}^2
+ =\int_{\RR}|\lambda\mathbf1_{|\lambda|\le n}
+ -\lambda\mathbf1_{|\lambda|\le m}|^2\dd\mu_u(\lambda).
+\]
+因此 $\chi_n(U_A)u$ 在 $\mathcal H$ 中收敛，当且仅当
+\[
+ \int_{\RR}\lambda^2\dd\mu_u(\lambda)<\infty.
+\]
+极限定义的闭算子正是 $A$，于是
+\begin{equation*}
+ \Dom(A)
+ =\left\{u:\int_{\RR}\lambda^2\dd\mu_u(\lambda)<\infty\right\},
+ \qquad
+ Au=\int_{\RR}\lambda\,\dd E_A(\lambda)u.
+\end{equation*}
+这把无界谱定理、定义域和 Cayley 变换闭成同一条推导链。
+
+
+对有界 Borel 函数 $f$，函数演算的精确范数不是一般的上界而是相对于 PVM 的本质上确界。定义
+\[
+ \operatorname*{ess\,sup}_{E_A}|f|
+ :=\inf\{M\ge0:E_A(\{|f|>M\})=0\},
+\]
+则
+\begin{equation}\label{eq:math-sl-functional-calculus-norm}
+ \norm{f(A)}=\operatorname*{ess\,sup}_{E_A}|f|.
+\end{equation}
+若 $f$ 在 $\sigma(A)$ 上连续，则连续谱映射定理给出
+\begin{equation}\label{eq:math-sl-continuous-spectral-mapping}
+ \sigma(f(A))=\overline{f(\sigma(A))},
+\end{equation}
+其中若 $f$ 有界，右端本来就是紧闭集；对无界连续 $f$，公式按相应闭算子函数演算理解。后面的 resolvent 范数、酉传播保范数与热半群衰减率都只是\eqnrefs{eq:math-sl-functional-calculus-norm} 的直接代入。
+
+抽象 PVM 还可以进一步化成真正的“乘法算子模型”。固定 $u\in\mathcal H$，定义其循环子空间
+\begin{equation}\label{eq:math-sl-cyclic-subspace}
+ \mathcal H_u
+ :=\overline{\{f(A)u:f\text{ 为有界 Borel 函数}\}}.
+\end{equation}
+它是 $A$ 的 reducing subspace，也就是对每个 Borel 集 $B$，$E_A(B)$ 同时保持 $\mathcal H_u$ 与 $\mathcal H_u^\perp$。在 $\mathcal H_u$ 上，谱定理可以完全写成一个标量测度空间上的乘法算子；一般可分 Hilbert 空间则由至多可数个这样的循环块正交直和而成。
+
+\begin{theorem}[循环谱表示与谱重数分解]\label{thm:math-sl-cyclic-spectral-representation}
+令 $A$ 自伴，$u\in\mathcal H$，并令
+$\mu_u(B)=\langle E_A(B)u,u\rangle$。存在唯一酉算子
+\[
+ W_u:L^2(\RR,\dd\mu_u)\longrightarrow\mathcal H_u
+\]
+满足 $W_u\mathbf1=u$，且对每个有界 Borel 函数 $f$，
+\begin{equation}\label{eq:math-sl-cyclic-intertwining}
+ W_u M_f W_u^{-1}=f(A)|_{\mathcal H_u},
+\end{equation}
+其中 $M_f$ 表示乘法算子。特别地，
+\begin{equation}\label{eq:math-sl-cyclic-domain}
+ W_u^{-1}\Dom(A|_{\mathcal H_u})
+ =\{g\in L^2(\mu_u):\lambda g(\lambda)\in L^2(\mu_u)\},
+ \qquad
+ W_u^{-1}AW_u=M_\lambda.
+\end{equation}
+若 $\mathcal H$ 可分，则存在至多可数个向量 $u_j$，使
+\begin{equation}\label{eq:math-sl-countable-cyclic-decomposition}
+ \mathcal H=\bigoplus_j\mathcal H_{u_j},
+ \qquad
+ A\simeq\bigoplus_j M_\lambda
+ \text{ on }\bigoplus_jL^2(\RR,\dd\mu_{u_j}).
+\end{equation}
+不同谱重数只表现为同一 $\lambda$ 乘法模型需要多少个独立循环通道。
+\end{theorem}
+
+
+先在有界简单函数上定义
+\[
+ W_u^{(0)}f:=f(A)u.
+\]
+若 $f=\sum_kc_k\mathbf1_{B_k}$，其中 $B_k$ 两两不交，则 PVM 的正交性
+$E_A(B_k)E_A(B_\ell)=\delta_{k\ell}E_A(B_k)$ 给出
+\begin{align*}
+ \norm{W_u^{(0)}f}^2
+ &=\left\langle
+ \sum_kc_kE_A(B_k)u,
+ \sum_\ell c_\ell E_A(B_\ell)u
+ \right\rangle\\
+ &=\sum_{k,\ell}c_k\overline{c_\ell}
+ \langle E_A(B_\ell)E_A(B_k)u,u\rangle\\
+ &=\sum_k|c_k|^2\langle E_A(B_k)u,u\rangle\\
+ &=\sum_k|c_k|^2\mu_u(B_k)
+ =\int_{\RR}|f(\lambda)|^2\dd\mu_u(\lambda).
+\end{align*}
+因此 $W_u^{(0)}$ 是等距映射。简单函数在 $L^2(\mu_u)$ 中稠密，故它唯一延拓为等距算子
+$W_u:L^2(\mu_u)\to\mathcal H$。其值域闭（等距算子值域自动闭）；另一方面，值域包含所有
+简单 Borel 函数 $f(A)u$，再由有界 Borel 函数的简单函数逼近可知其值域在
+\eqnrefs{eq:math-sl-cyclic-subspace} 中稠密，所以恰好等于 $\mathcal H_u$。于是
+$W_u$ 酉到 $\mathcal H_u$。
+
+对简单函数 $f,g$，函数演算乘法律 $f(A)g(A)=(fg)(A)$ 给出
+\[
+ W_u(fg)=(fg)(A)u=f(A)g(A)u=f(A)W_ug.
+\]
+由有界逼近延拓到任意有界 Borel $f$，便得到\eqnrefs{eq:math-sl-cyclic-intertwining}。
+这表明 $W_u$ 把乘法算子 $M_f$ 共轭转化为函数演算 $f(A)$，即循环子空间上 $A$ 的
+谱行为完全等价于 $L^2(\mu_u)$ 上的乘法算子。
+
+再取截断函数
+\[
+ \lambda_N:=\lambda\mathbf1_{[-N,N]}(\lambda),
+\]
+则 $W_uM_{\lambda_N}W_u^{-1}=\lambda_N(A)$。当 $N\to\infty$ 时，左侧对 $g$ 收敛当且仅当
+$\lambda g\in L^2(\mu_u)$；右侧按无界 Borel 函数演算收敛到 $A$。因此定义域与作用同时
+给出\eqnrefs{eq:math-sl-cyclic-domain}。这步把有界函数演算（自动良定义）通过截断
+极限扩展到无界函数 $\lambda$，定义域条件 $\lambda g\in L^2(\mu_u)$ 精确刻画了
+$\Dom(A|_{\mathcal H_u})$。
+
+最后设 $\mathcal H$ 可分。取一个极大的两两正交循环子空间族
+$\{\mathcal H_{u_j}\}$。每个非零循环子空间含有一个单位向量，而可分 Hilbert 空间中的
+正交单位向量族至多可数，所以指标集至多可数。若其正交直和的补空间非零，则补空间因所有
+谱投影都保持它而仍是 reducing subspace；从其中取非零向量又产生一个与原族正交的循环
+子空间，违背极大性。故补空间为零，得到\eqnrefs{eq:math-sl-countable-cyclic-decomposition}。
+这说明标量 Weyl $m$ 函数所对应的 multiplicity-one 情形只是一般谱重数理论的一条循环
+通道；谱重数等于同一 $\lambda$ 处需要多少个独立乘法模型通道。
+
+\emph{物理意义。}谱分解 $\mathcal H=\bigoplus_jL^2(\RR,\dd\mu_{u_j})$ 把抽象自伴算子
+化为若干个乘法算子的直和。在量子力学中，$A$ 是可观测量，$E_A(B)$ 是测量值落在
+$B\subset\RR$ 中的投影；循环分解把测量过程分解为若干独立通道，每个通道由一个谱测度
+$\mu_{u_j}$ 完全描述。纯点 $\mu_{u_j}$ 对应束缚态（离散能级），绝对连续
+$\mu_{u_j}\ll\dd\lambda$ 对应散射态，奇异连续则对应更微妙的谱类型。
+
+
+接下来考察resolvent、Riesz 投影与 Stone 公式。
+
+定义 resolvent 集与谱为
+\[
+ \rho(A)=\left\{z\in\CC:
+ A-zI:\Dom(A)\to\mathcal H\ \text{双射，且 }(A-zI)^{-1}\in\mathcal B(\mathcal H)
+ \right\},
+ \qquad
+ \sigma(A)=\CC\setminus\rho(A).
+\]
+自伴性保证 $\sigma(A)\subset\RR$，所以整个非实平面都属于 $\rho(A)$。记
+\begin{equation}\label{eq:math-sl-resolvent-spectral-measure}
+ R(z):=(A-zI)^{-1}
+ =\int_{\RR}\frac{1}{\lambda-z}\,\dd E_A(\lambda),
+ \qquad z\in\rho(A).
+\end{equation}
+自伴性立即给出
+\[
+ R(z)^*=R(\overline z),
+ \qquad
+ \norm{R(z)}=\frac{1}{\dist(z,\sigma(A))}
+ \le\frac{1}{|\Im z|}
+ \quad(z\notin\RR).
+\]
+两个 resolvent 参数之间满足
+\begin{equation}\label{eq:math-sl-resolvent-identity}
+ R(z)-R(\zeta)=(z-\zeta)R(z)R(\zeta).
+\end{equation}
+这条恒等式只用到逆算子的代数，不依赖谱是离散还是连续。它还说明 $R(z)$ 在 $\rho(A)$ 上是算子范数解析函数，并且
+\[
+ \frac{\dd R}{\dd z}(z)=R(z)^2.
+\]
+因此孤立谱对应 resolvent 的孤立奇点，而连续谱则表现为无法解析延拓穿过实轴的边界行为；Riesz 与 Stone 公式正好分别抽取这两种信息。
+
+
+对任意固定向量 $u\in\mathcal H$，resolvent 的对角矩阵元
+\begin{equation}\label{eq:math-sl-vector-resolvent-herglotz}
+ F_u(z):=\langle R(z)u,u\rangle
+ =\int_{\RR}\frac{1}{\lambda-z}\,\dd\mu_u(\lambda)
+\end{equation}
+是上半平面上的 Herglotz 函数，因为当 $\Im z>0$ 时
+\[
+ \Im F_u(z)
+ =\int_{\RR}\frac{\Im z}{(\lambda-\Re z)^2+(\Im z)^2}\dd\mu_u(\lambda)\ge0.
+\]
+因此“Weyl $m$ 函数是 Herglotz 函数”并不是一维微分方程偶然出现的解析性质，而是一般自伴 resolvent 的标量压缩所必然具有的性质。反过来，Poisson 核极限可以从 $F_u$ 恢复 $\mu_u$，再通过 polarization 恢复全部复测度 $\mu_{u,v}$，最终恢复 PVM。
+
+
+取 $z=x+\ii\varepsilon$，$\varepsilon>0$。由\eqnrefs{eq:math-sl-vector-resolvent-herglotz}，
+\[
+ \frac1\pi\Im F_u(x+\ii\varepsilon)
+ =\int_{\RR}P_\varepsilon(x-\lambda)\dd\mu_u(\lambda),
+\]
+其中
+\[
+ P_\varepsilon(t)=\frac1\pi\frac{\varepsilon}{t^2+\varepsilon^2}
+\]
+是 Poisson 核。它满足 $\int_\RR P_\varepsilon(t)\dd t=1$ 且当 $\varepsilon\downarrow0$ 时
+质量集中于 $t=0$，因此 $\{P_\varepsilon\}$ 是逼近恒等族。对任意
+$\varphi\in C_c(\RR)$，Fubini 定理给出
+\[
+ \begin{aligned}
+ \frac1\pi\int_{\RR}\varphi(x)\Im F_u(x+\ii\varepsilon)\dd x
+ &=\int_{\RR}\int_{\RR}\varphi(x)P_\varepsilon(x-\lambda)\dd x\,\dd\mu_u(\lambda)\\
+ &=\int_{\RR}(P_\varepsilon*\varphi)(\lambda)\dd\mu_u(\lambda).
+ \end{aligned}
+\]
+因为 $P_\varepsilon*\varphi\to\varphi$ 一致收敛（$\varphi$ 一致连续），且
+$|P_\varepsilon*\varphi|\le\norm{\varphi}_\infty\int P_\varepsilon=\norm{\varphi}_\infty$
+提供 $\mu_u$-可积控制，故由控制收敛定理
+\begin{equation}\label{eq:math-sl-stieltjes-vector-weak}
+ \lim_{\varepsilon\downarrow0}
+ \frac1\pi\int_{\RR}\varphi(x)\Im F_u(x+\ii\varepsilon)\dd x
+ =\int_{\RR}\varphi(\lambda)\dd\mu_u(\lambda).
+\end{equation}
+这已经唯一确定有限正测度 $\mu_u$（由 Riesz--Markov 表示定理：$C_c(\RR)$ 上的正线性泛函
+唯一对应 Radon 测度）。这就是 Stieltjes 反演公式。
+
+若要恢复非对角矩阵元，利用复 Hilbert 空间的 polarization identity，
+\[
+ \mu_{u,v}
+ =\frac14\sum_{k=0}^3\ii^k\,
+ \mu_{u+\ii^k v}
+\]
+（按本章内积对第一变量线性的约定）。验证：对任意 Borel 集 $B$，
+\begin{align*}
+ \sum_{k=0}^3\ii^k\langle E_A(B)(u+\ii^k v),(u+\ii^k v)\rangle
+ &=\sum_{k=0}^3\ii^k\bigl[
+ \langle E_A(B)u,u\rangle+\ii^k\langle E_A(B)v,u\rangle\\
+ &\quad+\overline{\ii^k}\langle E_A(B)u,v\rangle
+ +|\ii^k|^2\langle E_A(B)v,v\rangle\bigr]\\
+ &=4\langle E_A(B)u,v\rangle,
+ \end{align*}
+因交叉项中 $\sum_k\ii^k\overline{\ii^k}=\sum_k\ii^{2k}=0$。因此所有 $\mu_{u,v}$ 都由
+对角正测度确定。最后由
+\[
+ \langle E_A(B)u,v\rangle=\mu_{u,v}(B)
+\]
+可恢复每个 Borel 集上的正交投影 $E_A(B)$。所以一个自伴算子的全部谱测度信息已经编码在
+resolvent 的标量矩阵元中；Stone 公式只是这一事实的算子值版本。
+
+\emph{Herglotz 表示。}$F_u$ 在上半平面 Herglotz，故有唯一积分表示
+\[
+ F_u(z)=a+bz+\int_\RR\left(\frac1{\lambda-z}-\frac{\lambda}{1+\lambda^2}\right)
+ \dd\nu_u(\lambda),
+\]
+其中 $a\in\RR$、$b\ge0$、$\nu_u$ 是满足 $\int(1+\lambda^2)^{-1}\dd\nu_u<\infty$ 的正测度。
+比较\eqnrefs{eq:math-sl-vector-resolvent-herglotz} 知 $a=b=0$、$\nu_u=\mu_u$，即 resolvent
+矩阵元本身就是 Herglotz 表示中测度的直接体现。
+
+\emph{物理意义。}$\mu_u$ 是态 $u$ 下可观测量 $A$ 的谱分布：$\mu_u(B)=\norm{E_A(B)u}^2$
+是测量值落在 $B$ 中的概率。Stieltjes 反演说明从 resolvent（可由散射实验探测）能完整恢复
+谱测度，从而恢复量子系统的能谱结构。$\Im F_u(E+\ii0)=\pi\,\dd\mu_u/\dd\lambda$ 给出
+态密度，是散射截面计算的核心输入。
+
+
+若 $\Delta\subset\sigma(A)$ 是与其余谱分离的紧谱簇，取正向闭曲线 $\Gamma$ 围住 $\Delta$ 而不围住其他谱，则相应谱投影由 Riesz 公式恢复：
+\begin{equation}\label{eq:math-sl-riesz-projection}
+ E_A(\Delta)
+ =-\frac{1}{2\pi\ii}\oint_\Gamma R(z)\dd z.
+\end{equation}
+负号来自本章采用 $R(z)=(A-zI)^{-1}$ 而不是 $(zI-A)^{-1}$。当 $\Delta=\{\lambda_n\}$ 是孤立单本征值时，这个投影就是到其一维本征空间的正交投影。
+
+连续谱不能用孤立极点包围，但可以从实轴两侧的 resolvent 边界值恢复。若 $\alpha<\beta$ 且端点不是 $E_A$ 的原子，则 Stone 公式为
+\begin{equation}\label{eq:math-sl-stone-formula}
+ E_A((\alpha,\beta))
+ =\operatorname*{s-lim}_{\varepsilon\downarrow0}
+ \frac{1}{\pi}\int_\alpha^\beta
+ \Im R(x+\ii\varepsilon)\dd x.
+\end{equation}
+若端点本身是本征值，右端极限还各包含端点原子投影的一半。Stone 公式说明 resolvent 在谱附近的边界行为已经携带完整谱测度，而不是只携带本征值位置。
+
+
+首先直接计算
+\[
+\begin{aligned}
+ R(z)-R(\zeta)
+ &=(A-z)^{-1}-(A-\zeta)^{-1}\\
+ &=(A-z)^{-1}\bigl[(A-\zeta)-(A-z)\bigr](A-\zeta)^{-1}\\
+ &=(z-\zeta)R(z)R(\zeta),
+\end{aligned}
+\]
+得到\eqnrefs{eq:math-sl-resolvent-identity}。
+
+对 Riesz 公式，把\eqnrefs{eq:math-sl-resolvent-spectral-measure} 代入围道积分：
+\[
+ -\frac{1}{2\pi\ii}\oint_\Gamma R(z)\dd z
+ =\int_{\RR}
+ \left[-\frac{1}{2\pi\ii}\oint_\Gamma\frac{\dd z}{\lambda-z}\right]
+ \dd E_A(\lambda).
+\]
+括号中的复积分在 $\lambda\in\Delta$ 时等于 $1$，在 $\lambda\notin\Delta$ 时等于 $0$，故结果恰为 $E_A(\Delta)$。
+
+再取 $z=x+\ii\varepsilon$。谱积分给出
+\[
+ \frac{1}{\pi}\Im R(x+\ii\varepsilon)
+ =\int_{\RR}
+ \frac{1}{\pi}\frac{\varepsilon}{(\lambda-x)^2+\varepsilon^2}
+ \dd E_A(\lambda).
+\]
+将 $x$ 从 $\alpha$ 积分到 $\beta$，得到
+\[
+ F_\varepsilon(A)
+ :=\frac{1}{\pi}\int_\alpha^\beta\Im R(x+\ii\varepsilon)\dd x
+ =\int_{\RR}F_\varepsilon(\lambda)\dd E_A(\lambda),
+\]
+其中
+\[
+ F_\varepsilon(\lambda)
+ =\frac{1}{\pi}\int_\alpha^\beta
+ \frac{\varepsilon\dd x}{(\lambda-x)^2+\varepsilon^2}.
+\]
+对固定 $\lambda$，当 $\varepsilon\downarrow0$ 时，$F_\varepsilon(\lambda)$ 在 $(\alpha,\beta)$ 内趋于 $1$，在区间外趋于 $0$，在两个端点趋于 $1/2$，且始终满足 $0\le F_\varepsilon\le1$。于是对任意 $u\in\mathcal H$，谱测度上的支配收敛给出
+\[
+ \norm{\bigl(F_\varepsilon(A)-E_A((\alpha,\beta))\bigr)u}^2
+ =\int_{\RR}|F_\varepsilon-\mathbf1_{(\alpha,\beta)}|^2\dd\mu_u
+ \longrightarrow0,
+\]
+只要端点没有原子。这就是\eqnrefs{eq:math-sl-stone-formula} 的强算子极限。
+\end{derivation}
+
+接下来考察resolvent 的 Green 核与 Sturm--Liouville 特化。
+
+先固定积分核相对于带权测度的归一化。
+
+回到由 $\tau$ 产生的一个自伴实现 $A$。算子方程
+\begin{equation}\label{eq:math-sl-forced-operator}
+ (A-zI)y=g,
+ \qquad z\in\rho(A),
+\end{equation}
+的唯一解是 $y=R(z)g$。对一维 Sturm--Liouville 算子，resolvent 可以写成积分算子
+\begin{equation}\label{eq:math-sl-resolvent-eq}
+ [R(z)g](x)
+ =\int_I G_z(x,\xi)g(\xi)w(\xi)\dd\xi.
+\end{equation}
+这里 $G_z$ 是关于 Hilbert 空间测度 $w(\xi)\dd\xi$ 的 resolvent 核。把 $A=w^{-1}L$ 与
+\[
+ Ly:=-(py')'+qy
+\]
+代回去，可知核必须满足分布方程
+\[
+ \bigl(L_x-z w(x)\bigr)G_z(x,\xi)=\delta(x-\xi).
+\]
+因此在 $x=\xi$ 处有严格归一化
+\[
+ G_z(\xi+0,\xi)=G_z(\xi-0,\xi),
+ \qquad
+ G_z^{[1]}(\xi+0,\xi)-G_z^{[1]}(\xi-0,\xi)=-1.
+\]
+负号来自 $L$ 的最高阶项是 $-(py')'$。
+
+若原问题写成不除权函数的形式
+\begin{equation}\label{eq:math-sl-forced-bvp}
+ Ly=zwy+f,
+\end{equation}
+则 $g=f/w$，所以 $w$ 在积分中抵消：
+\begin{equation}\label{eq:math-sl-green-representation}
+ y(x)=\int_I G_z(x,\xi)f(\xi)\dd\xi.
+\end{equation}
+这两个积分公式使用同一个 $G_z$，区别只在于右端是 Hilbert 空间函数 $g$ 还是未除权函数的微分方程源项 $f$。这一点若不事先固定，Green 核归一化很容易多出或漏掉一个 $w(\xi)$。
+
+自伴性还要求核满足伴随对称关系
+\[
+ G_z(x,\xi)=\overline{G_{\overline z}(\xi,x)}.
+\]
+对实系数与实分离边界条件，由左右解公式还可进一步看出 $G_z(x,\xi)=G_z(\xi,x)$；前一个关系则直接来自 $R(z)^*=R(\overline z)$，适用范围更一般。
+
+分离边界条件允许把 Green 核写成“左解乘右解”，但这不是一般自伴边界条件下的母公式。对两端正则且边界条件为
+\[
+ C\Gamma_0y+D\Gamma_1y=0,
+\]
+可以直接从一阶基本矩阵构造 resolvent。令 $c(x,z),s(x,z)$ 满足
+\[
+ c(a,z)=1,\quad c^{[1]}(a,z)=0,
+ \qquad
+ s(a,z)=0,\quad s^{[1]}(a,z)=1,
+\]
+并写
+\begin{equation}\label{eq:math-sl-fundamental-matrix}
+ M(x,z)=
+ \begin{pmatrix}
+ c(x,z)&s(x,z)\\
+ c^{[1]}(x,z)&s^{[1]}(x,z)
+ \end{pmatrix}.
+\end{equation}
+由于 $\det M(a,z)=1$，而一阶系统的迹为零，故 $\det M(x,z)=1$。对未除权方程
+\[
+ (L-zw)y=f,
+\]
+令 $Y=(y,y^{[1]})^{\mathsf T}$ 与 $e_1=(1,0)^{\mathsf T}$、$e_2=(0,1)^{\mathsf T}$。变参数公式给出
+\begin{equation}\label{eq:math-sl-variation-matrix}
+ Y(x)=M(x,z)\eta
+ -\int_a^x M(x,z)M(\xi,z)^{-1}e_2 f(\xi)\dd\xi,
+ \qquad \eta=Y(a).
+\end{equation}
+因此任意 coupled 自伴边界条件都只是在求解二维初值向量 $\eta$，并不改变局部 Green 机制。
+
+为把这一点写成可直接使用的矩阵，记
+\[
+ T(z):=M(b,z)=
+ \begin{pmatrix}t_{11}&t_{12}\\t_{21}&t_{22}\end{pmatrix},
+\]
+并定义
+\[
+ G_0(z)=
+ \begin{pmatrix}1&0\\ t_{11}&t_{12}\end{pmatrix},
+ \qquad
+ G_1(z)=
+ \begin{pmatrix}0&1\\-t_{21}&-t_{22}\end{pmatrix}.
+\]
+对齐次方程，边界迹正好满足
+\[
+ \Gamma_0y=G_0(z)\eta,
+ \qquad
+ \Gamma_1y=G_1(z)\eta.
+\]
+于是定义边界特征矩阵
+\begin{equation}\label{eq:math-sl-boundary-characteristic-matrix}
+ B_{C,D}(z):=C G_0(z)+D G_1(z).
+\end{equation}
+有
+\begin{equation}\label{eq:math-sl-boundary-det-spectrum}
+ z\in\rho(A_{C,D})
+ \quad\Longleftrightarrow\quad
+ \det B_{C,D}(z)\neq0,
+\end{equation}
+而 $\det B_{C,D}(z)=0$ 正是一般 coupled 边界条件的特征方程。分离条件下后面出现的标量 Wronskian $\omega(z)$，只是这个 $2\times2$ 行列式在适当规范化后的降维写法。
+
+\begin{derivation}[Green 函数与谱密度的完整理论：从基本矩阵经 Lagrange 恒等式到 Herglotz 性]
+先把\eqnrefs{eq:math-sl-variation-matrix} 的源项写成对整个区间的积分。定义 Volterra 核
+\[
+ K_z(x,\xi)
+ :=-\mathbf 1_{\{\xi\le x\}}
+ e_1^{\mathsf T}M(x,z)M(\xi,z)^{-1}e_2.
+\]
+则
+\[
+ y(x)=e_1^{\mathsf T}M(x,z)\eta
+ +\int_a^bK_z(x,\xi)f(\xi)\dd\xi.
+\]
+源点 $\xi$ 对右端点向量 $Y(b)$ 的贡献为
+\[
+ H_z(\xi):=-M(b,z)M(\xi,z)^{-1}e_2.
+\]
+因此它对 $\Gamma_0$ 与 $\Gamma_1$ 的贡献分别是
+\[
+ g_0(\xi)=
+ \begin{pmatrix}0\\e_1^{\mathsf T}H_z(\xi)\end{pmatrix},
+ \qquad
+ g_1(\xi)=
+ \begin{pmatrix}0\\-e_2^{\mathsf T}H_z(\xi)\end{pmatrix}.
+\]
+把齐次部分和源项一起代入边界条件，得到
+\[
+ B_{C,D}(z)\eta
+ +\int_a^b\bigl[Cg_0(\xi)+Dg_1(\xi)\bigr]f(\xi)\dd\xi=0.
+\]
+当 $z\in\rho(A_{C,D})$ 时，\eqnrefs{eq:math-sl-boundary-det-spectrum} 保证 $B_{C,D}(z)$ 可逆，于是
+\[
+ \eta
+ =-\int_a^b B_{C,D}(z)^{-1}
+ \bigl[Cg_0(\xi)+Dg_1(\xi)\bigr]f(\xi)\dd\xi.
+\]
+代回 $y(x)$，得到一般正则自伴边界条件的 Green 核
+\begin{equation}\label{eq:math-sl-green-coupled-matrix}
+\begin{aligned}
+ G_z(x,\xi)
+ ={}&K_z(x,\xi)\\
+ &-e_1^{\mathsf T}M(x,z)B_{C,D}(z)^{-1}
+ \bigl[Cg_0(\xi)+Dg_1(\xi)\bigr].
+\end{aligned}
+\end{equation}
+这个公式没有假设边界条件分离。其第一项是固定左端初值后的因果型 Volterra 核，第二项是为满足全局自伴边界关系而加入的有限秩修正。还需要逐项核验它确实是 resolvent 核。对固定 $\xi$，有限秩修正关于 $x$ 是齐次解，因此不会改变 delta 源；$K_z$ 的 Heaviside 跳变给出
+\[
+ G_z(\xi+0,\xi)=G_z(\xi-0,\xi),
+ \qquad
+ G_z^{[1]}(\xi+0,\xi)-G_z^{[1]}(\xi-0,\xi)=-1.
+\]
+边界条件则由构造 $B_{C,D}(z)\eta+\int(Cg_0+Dg_1)f=0$ 对任意源项 $f$ 成立而得到。若还有另一个核满足同一齐次边界关系、同一连续性和同一准导数跳跃，两者之差对每个 $\xi$ 都属于 $\ker(A_{C,D}-z)$；$z\in\rho(A_{C,D})$ 迫使该差为零。因此\eqnrefs{eq:math-sl-green-coupled-matrix} 不只是一个候选表达式，而是唯一 resolvent 核。
+
+由于 $M$ 在有限正则区间上连续且 $B_{C,D}(z)^{-1}$ 为有限矩阵，$G_z$ 在两个三角区域上有界，并在对角线上连续。最后，算子恒等式 $R(z)^*=R(\overline z)$ 给出
+\[
+ G_z(x,\xi)=\overline{G_{\overline z}(\xi,x)}
+\]
+在 $w(x)w(\xi)\dd x\dd\xi$ 几乎处处成立；连续代表使该关系提升为每个非对角点上的恒等式。这同时检查了 coupled 情形中容易被局部拼接公式掩盖的共轭与变量交换。
+
+
+对分离边界条件，Green 核可进一步由左右适配解与 Wronskian 构造。
+
+左右解乘积公式只适用于边界条件在两个端点分离的情形；一般 coupled 自伴条件仍有 resolvent 核，但要用二维基本解矩阵和边界矩阵联立求系数。先考虑分离自伴实现。固定 $z\in\rho(A)$，选取 $\phi_a(\cdot,z)$ 满足左端的自伴条件，选取 $\psi_b(\cdot,z)$ 满足右端的自伴条件。在正则端点上，若使用\eqnrefs{eq:math-sl-separated-bc}，可以规范化为
+\begin{align}
+ \phi_a(a,z)&=\sin\alpha,
+ &\phi_a^{[1]}(a,z)&=-\cos\alpha,\label{eq:math-sl-left-solution}\\
+ \psi_b(b,z)&=\sin\beta,
+ &\psi_b^{[1]}(b,z)&=-\cos\beta.\label{eq:math-sl-right-solution}
+\end{align}
+若端点为 limit-point，则相应适配解改为该端点除常数倍外唯一的 $L^2_w$ Weyl 解；若为 limit-circle，则取满足已经选定的自伴边界坐标条件的解。
+
+对同一个复参数 $z$ 的两个解，定义不含共轭的双线性 Wronskian
+\begin{equation}\label{eq:math-sl-bilinear-wronskian}
+ \mathcal W[u,v](x):=u^{[1]}(x)v(x)-u(x)v^{[1]}(x).
+\end{equation}
+与含共轭的 Lagrange 括号不同，$\mathcal W$ 的用途是拼接同一个 $z$ 下的局部解。
+
+\begin{corollary}[双线性 Wronskian 常数定理]\label{cor:math-sl-wronskian-constant}
+若 $u,v$ 都满足 $\tau y=zy$，则 $\mathcal W[u,v](x)$ 与 $x$ 无关。两个解线性无关当且仅当该常数不为零。
+\end{corollary}
+
+记
+\begin{equation}\label{eq:math-sl-omega-def}
+ \omega(z):=\mathcal W[\phi_a,\psi_b]
+ =\phi_a^{[1]}\psi_b-\phi_a\psi_b^{[1]}.
+\end{equation}
+若两端边界条件分离，则
+\begin{equation}\label{eq:math-sl-eigen-iff-omega-zero}
+ z\text{ 是该边界问题的本征值}
+ \quad\Longleftrightarrow\quad
+ \omega(z)=0.
+\end{equation}
+特别地，$z\in\rho(A)$ 时 $\omega(z)\neq0$。
+
+\begin{theorem}[分离自伴问题的 Green 核]\label{thm:math-sl-green-regular}
+在上述假设下，resolvent 核为
+\begin{equation}\label{eq:math-sl-green-regular-formula}
+ G_z(x,\xi)=\frac{1}{\omega(z)}
+ \begin{cases}
+ \phi_a(x,z)\psi_b(\xi,z),&x\le\xi,\\
+ \phi_a(\xi,z)\psi_b(x,z),&\xi<x.
+ \end{cases}
+\end{equation}
+该公式同时适用于正则端点、limit-circle 端点和 limit-point 端点，只要 $\phi_a,\psi_b$ 分别采用相应的边界适配解。
+\end{theorem}
+
+
+固定 $\xi$。在 $x\neq\xi$ 时，$G_z$ 满足齐次方程；分离边界条件又迫使左段属于 $\phi_a$ 的一维空间、右段属于 $\psi_b$ 的一维空间，因此
+\[
+ G_z(x,\xi)=
+ \begin{cases}
+ A(\xi)\phi_a(x,z),&x<\xi,\\
+ B(\xi)\psi_b(x,z),&x>\xi.
+ \end{cases}
+\]
+连续性给出
+\[
+ A(\xi)\phi_a(\xi,z)=B(\xi)\psi_b(\xi,z).
+\]
+另一方面，将
+\[
+ \bigl(L_x-z w(x)\bigr)G_z(x,\xi)=\delta(x-\xi)
+\]
+在 $[\xi-\varepsilon,\xi+\varepsilon]$ 上积分。含 $q-zw$ 的项在 $\varepsilon\downarrow0$ 时消失，而最高阶项给出
+\[
+ -G_z^{[1]}(\xi+0,\xi)+G_z^{[1]}(\xi-0,\xi)=1,
+\]
+即
+\[
+ B(\xi)\psi_b^{[1]}(\xi,z)-A(\xi)\phi_a^{[1]}(\xi,z)=-1.
+\]
+把连续性方程和跳跃方程写成矩阵形式，
+\[
+ \begin{pmatrix}
+ \phi_a(\xi,z)&-\psi_b(\xi,z)\\
+ -\phi_a^{[1]}(\xi,z)&\psi_b^{[1]}(\xi,z)
+ \end{pmatrix}
+ \begin{pmatrix}A(\xi)\\B(\xi)\end{pmatrix}
+ =\begin{pmatrix}0\\-1\end{pmatrix}.
+\]
+其行列式为
+\[
+ \phi_a\psi_b^{[1]}-\phi_a^{[1]}\psi_b=-\omega(z).
+\]
+Cramer 法则于是给出
+\[
+ A(\xi)=\frac{\psi_b(\xi,z)}{\omega(z)},
+ \qquad
+ B(\xi)=\frac{\phi_a(\xi,z)}{\omega(z)},
+\]
+从而得到\eqnrefs{eq:math-sl-green-regular-formula}。这个推导同时固定了符号、积分测度与导数跳跃，不能再通过改变 Wronskian 取向而单独修改其中一个符号。
+
+
+半直线和全线情形只需把有限端点适配解替换为 Weyl 解。
+
+在 $I=(a,\infty)$ 上，若 $a$ 正则而 $+\infty$ 为 limit-point，令 $\phi_a(\cdot,z)$ 满足 $a$ 处的自伴边界条件，令 $\psi_\infty(\cdot,z)$ 为无穷远处唯一的 $L^2_w$ Weyl 解，则\eqnrefs{eq:math-sl-green-regular-formula} 直接变成
+\begin{theorem}[半直线 resolvent 核]\label{thm:math-sl-green-halfline}
+对 $z\in\rho(A)$，定义
+\[
+ \omega_a(z)=\mathcal W[\phi_a,\psi_\infty].
+\]
+则
+\begin{equation}\label{eq:math-sl-green-halfline}
+ G_z(x,\xi)=\frac{1}{\omega_a(z)}
+ \begin{cases}
+ \phi_a(x,z)\psi_\infty(\xi,z),&x\le\xi,\\
+ \phi_a(\xi,z)\psi_\infty(x,z),&\xi<x,
+ \end{cases}
+\end{equation}
+并且
+\[
+ [R(z)g](x)=\int_a^\infty G_z(x,\xi)g(\xi)w(\xi)\dd\xi.
+\]
+\end{theorem}
+
+全线 $I=\RR$ 若两端均 limit-point，则分别取在 $-\infty$ 与 $+\infty$ 可积的 Weyl 解 $\psi_-(\cdot,z),\psi_+(\cdot,z)$。记 $\omega_{-+}(z)=\mathcal W[\psi_-,\psi_+]$，便有
+\begin{equation}\label{eq:math-sl-green-line}
+ G_z(x,\xi)=\frac{1}{\omega_{-+}(z)}
+ \begin{cases}
+ \psi_-(x,z)\psi_+(\xi,z),&x\le\xi,\\
+ \psi_-(\xi,z)\psi_+(x,z),&\xi<x.
+ \end{cases}
+\end{equation}
+形式与正则区间完全相同；真正改变的是端点适配条件和谱测度的解析结构，而不是二阶方程的局部拼接机制。
+
+
+端点理论与谱测度之间还缺最后一座桥。考虑半直线 $I=(a,b)$，其中 $a$ 正则、$b$ 为 limit-point，并先取左端 Dirichlet 自伴实现。定义实初值基本解
+\begin{equation}\label{eq:math-sl-theta-phi-initial}
+\begin{aligned}
+ \theta(a,z)&=1,&\theta^{[1]}(a,z)&=0,\\
+ \phi(a,z)&=0,&\phi^{[1]}(a,z)&=1.
+\end{aligned}
+\end{equation}
+对每个 $z\in\CC\setminus\RR$，limit-point 性保证存在唯一标量 $m(z)$，使
+\begin{equation}\label{eq:math-sl-weyl-solution-m}
+ \psi(x,z)=\theta(x,z)+m(z)\phi(x,z)
+\end{equation}
+在 $b$ 附近属于 $L^2_w$。这个 $m$ 就是 Weyl--Titchmarsh 函数。它不是额外引入的谱技巧，而是“哪一个初始斜率能够把左端归一化解送进右端唯一的平方可积子空间”的解析编码。
+
+\begin{theorem}[Weyl--Titchmarsh 函数与谱测度]\label{thm:math-sl-weyl-m-spectral-measure}
+在上述正则--limit-point 设置下，$m$ 在上半平面解析并满足
+\begin{equation}\label{eq:math-sl-m-herglotz}
+ \frac{\Im m(z)}{\Im z}
+ =\int_a^b|\psi(x,z)|^2w(x)\dd x>0,
+ \qquad \Im z>0.
+\end{equation}
+因此 $m$ 是 Herglotz--Nevanlinna 函数，存在唯一的实常数 $c_m$、非负常数 $d_m$ 与正 Borel 测度 $\varrho$，使
+\begin{equation}\label{eq:math-sl-m-herglotz-representation}
+ m(z)=c_m+d_m z+
+ \int_{\RR}\left(
+ \frac{1}{\lambda-z}-\frac{\lambda}{1+\lambda^2}
+ \right)\dd\varrho(\lambda),
+\end{equation}
+其中 $\int_{\RR}(1+\lambda^2)^{-1}\dd\varrho(\lambda)<\infty$。一般 Herglotz 表示中的仿射项 $c_m+d_mz$ 在实轴两侧没有谱跳跃，因此不贡献下面的 Stieltjes 反演测度；真正需要证明的是表示测度 $\varrho$ 与算子 $A$ 的投影值谱测度相容，而不能仅凭 Herglotz 定理把二者直接等同。这个识别将在随后由 Green 核和 Stone 公式完成。若 $\alpha<\beta$ 是 $\varrho$ 的连续点，则
+\begin{equation}\label{eq:math-sl-m-stieltjes-inversion}
+ \varrho((\alpha,\beta))
+ =\lim_{\varepsilon\downarrow0}
+ \frac{1}{\pi}\int_\alpha^\beta
+ \Im m(\lambda+\ii\varepsilon)\dd\lambda.
+\end{equation}
+在相应的谱变换下，
+\begin{equation}\label{eq:math-sl-weyl-transform}
+ \widehat f(\lambda)
+ =\int_a^b\phi(x,\lambda)f(x)w(x)\dd x
+\end{equation}
+先在紧支撑函数上定义，并延拓为从 $L^2_w(a,b)$ 到 $L^2(\RR,\dd\varrho)$ 的酉变换；该变换把自伴算子 $A$ 化为乘法算子
+\[
+ \widehat{Af}(\lambda)=\lambda\widehat f(\lambda).
+\]
+因此离散本征值、绝对连续谱和可能的奇异连续谱都不是三套不同的展开理论，而只是同一个测度 $\varrho$ 的原子、绝对连续部分和奇异连续部分。
+\end{theorem}
+
+
+先补上 $m$ 的解析性。把右端截断在 $r<b$，并在 $r$ 处固定一个实分离边界条件，所得有限区间自伴问题的 Weyl 系数记为 $m_r(z)$。它可由两个关于 $z$ 整解析的基本解之比写出；有限区间自伴算子没有非实本征值，所以分母在 $\CC_+$ 内不为零，$m_r$ 在 $\CC_+$ 解析。前面的截断 Lagrange 恒等式还给出 $\Im m_r(z)>0$。固定 $z=\ii$ 时，$m_r(\ii)$ 始终落在嵌套 Weyl 圆盘 $D_r(\ii)$ 中，因而一致有界；Herglotz 函数的 Schwarz--Pick 估计随即使 $\{m_r\}$ 在上半平面的每个紧集上一致有界。Montel 定理给出局部一致收敛子列，而 limit-point 情形的极限 Weyl 圆盘只有一个点，所以所有子列具有同一极限。故 $m_r\to m$ 局部一致，$m$ 在 $\CC_+$ 解析。
+
+现在取 $z,\zeta\in\CC_+$，分别令 $\psi_z=\psi(\cdot,z)$、$\psi_\zeta=\psi(\cdot,\zeta)$。limit-point 性给出
+\[
+ [\psi_z,\psi_\zeta](b)=0.
+\]
+在正则左端，由\eqnrefs{eq:math-sl-theta-phi-initial} 与\eqnrefs{eq:math-sl-weyl-solution-m}，
+\[
+ \psi_z(a)=1,
+ \qquad
+ \psi_z^{[1]}(a)=m(z),
+\]
+从而
+\[
+ [\psi_z,\psi_\zeta](a)
+ =\overline{m(\zeta)}-m(z).
+\]
+Lagrange 恒等式于是给出更强的两参数恒等式
+\[
+ m(z)-\overline{m(\zeta)}
+ =(z-\overline\zeta)
+ \int_a^b\psi(x,z)\overline{\psi(x,\zeta)}w(x)\dd x.
+\]
+令 $\zeta=z$，立即得到
+\[
+ 2\ii\Im m(z)
+ =2\ii\Im z
+ \int_a^b|\psi(x,z)|^2w(x)\dd x,
+\]
+也就是\eqnrefs{eq:math-sl-m-herglotz}。所以 $\Im z>0$ 时必有 $\Im m(z)>0$，Herglotz 表示定理随即给出\eqnrefs{eq:math-sl-m-herglotz-representation}。
+
+再对表示式取虚部：
+\[
+ \frac{1}{\pi}\Im m(x+\ii\varepsilon)
+ =\frac{d_m\varepsilon}{\pi}
+ +\int_{\RR}
+ \frac{1}{\pi}
+ \frac{\varepsilon}{(\lambda-x)^2+\varepsilon^2}
+ \dd\varrho(\lambda).
+\]
+对 $x\in(\alpha,\beta)$ 积分后，第一项为 $d_m\varepsilon(\beta-\alpha)/\pi\to0$；第二项是 Poisson 核对测度 $\varrho$ 的近似恒等卷积。对 $\varrho$ 的连续端点使用支配收敛，便得到\eqnrefs{eq:math-sl-m-stieltjes-inversion}。这与 Stone 公式的结构完全相同：前者是 Sturm--Liouville 边界数据的标量版本，后者是任意自伴算子的投影值测度版本。
+
+还要说明为什么 Herglotz 表示中的 $\varrho$ 真的是算子 $A$ 的谱测度，而不只是某个解析函数的表示测度。Dirichlet 左端适配解就是 $\phi$，而
+\[
+ \mathcal W[\phi,\psi]
+ =\phi^{[1]}(a,z)\psi(a,z)-\phi(a,z)\psi^{[1]}(a,z)=1.
+\]
+因此 Dirichlet resolvent 核为
+\[
+ G_z(x,\xi)=
+ \begin{cases}
+  \phi(x,z)\psi(\xi,z),&x\le\xi,\\
+  \phi(\xi,z)\psi(x,z),&\xi<x.
+ \end{cases}
+\]
+对实谱参数 $\lambda$，基本解 $\theta(\cdot,\lambda),\phi(\cdot,\lambda)$ 都可取为实值，并且作为谱参数的函数是整解析的，所以实轴上下两侧的谱跳跃只可能来自 $m$。这里不需要假设 $m(\lambda\pm\ii0)$ 在奇异谱支撑上逐点存在：把 $\psi=\theta+m\phi$ 代入 Stone 公式的 $\varepsilon$-积分形式，再使用\eqnrefs{eq:math-sl-m-stieltjes-inversion}，即可直接在测度意义下取极限。先对紧支撑 $f,g$ 计算，得到
+\begin{equation}\label{eq:math-sl-weyl-stone-pairing}
+ \langle E_A(B)f,g\rangle_w
+ =\int_B \widehat f(\lambda)
+ \overline{\widehat g(\lambda)}\dd\varrho(\lambda),
+\end{equation}
+其中
+\[
+ \widehat f(\lambda)=\int_a^b\phi(x,\lambda)f(x)w(x)\dd x.
+\]
+令 $B\uparrow\RR$ 并取 $g=f$，由 $E_A(\RR)=I$ 得 Parseval 恒等式
+\[
+ \norm{f}_w^2
+ =\int_{\RR}|\widehat f(\lambda)|^2\dd\varrho(\lambda).
+\]
+因此该变换先延拓为一个等距算子
+\[
+ \mathcal F:L^2_w(a,b)\longrightarrow L^2(\RR,\dd\varrho),
+\]
+但“等距”本身还不等于“酉”，还需证明值域为整个目标空间。由\eqnrefs{eq:math-sl-weyl-stone-pairing}，对任意 Borel 集 $B$ 与紧支撑 $f,g$，
+\[
+ \langle \mathcal F E_A(B)f,\mathcal Fg\rangle_{L^2(\varrho)}
+ =\langle E_A(B)f,g\rangle_w
+ =\langle \mathbf1_B\mathcal Ff,\mathcal Fg\rangle_{L^2(\varrho)}.
+\]
+再利用
+\[
+ \norm{\mathcal F E_A(B)f}^2
+ =\norm{E_A(B)f}_w^2
+ =\int_B|\mathcal Ff|^2\dd\varrho
+ =\norm{\mathbf1_B\mathcal Ff}^2,
+\]
+而 $\mathcal F E_A(B)f$ 属于闭子空间 $\Ran\mathcal F$，前一个配对恒等式说明
+$\mathbf1_B\mathcal Ff-\mathcal F E_A(B)f$ 与 $\Ran\mathcal F$ 正交。两者范数又相等，Pythagoras 恒等式于是迫使正交余项为零，即
+\[
+ \mathcal F E_A(B)f=\mathbf1_B\mathcal Ff.
+\]
+由稠密性把该恒等式延拓到所有 $f\in L^2_w$，可知闭子空间 $\Ran\mathcal F$ 在所有乘法投影 $M_{\mathbf1_B}$ 下 reducing，也就是它和它的正交补都在这些投影下不变。若 $P$ 是到 $\Ran\mathcal F$ 的正交投影，则这等价于 $P M_{\mathbf1_B}=M_{\mathbf1_B}P$ 对所有 $B$ 成立。标量空间 $L^2(\RR,\dd\varrho)$ 上所有指标函数乘法算子生成整个 $L^\infty$ 乘法代数；与它们全体对易的正交投影只能是某个指标函数乘法投影 $M_{\mathbf1_S}$。因此存在可测集 $S\subset\RR$，使
+\[
+ \Ran\mathcal F=L^2(S,\dd\varrho).
+\]
+若 $\varrho(\RR\setminus S)>0$，取一列在每个紧子区间的 $L^2_w$ 中稠密的紧支撑测试函数 $f_j$。对 $\varrho$-几乎处处的 $\lambda\in\RR\setminus S$，有
+\[
+ 0=(\mathcal Ff_j)(\lambda)
+ =\int_a^b\phi(x,\lambda)f_j(x)w(x)\dd x
+ \qquad(j=1,2,\ldots).
+\]
+稠密性迫使 $\phi(\cdot,\lambda)$ 在每个紧子区间上几乎处处为零，与初值 $\phi(a,\lambda)=0$、$\phi^{[1]}(a,\lambda)=1$ 的非平凡性矛盾。因此 $S$ 的补集为 $\varrho$-零集，$\mathcal F$ 确为酉算子。
+
+满射性一旦建立，前面的谱投影交织关系就可以写成
+\[
+ \mathcal F E_A(B)\mathcal F^{-1}=M_{\mathbf1_B}
+ \qquad(B\in\mathfrak B(\RR)).
+\]
+这里 $M_\lambda$ 表示乘以自变量 $\lambda$ 的无界乘法算子，它的投影值测度正是 $B\mapsto M_{\mathbf1_B}$。由谱定理中 PVM 的唯一性直接得到
+\[
+ \mathcal F A\mathcal F^{-1}=M_\lambda,
+\]
+并且定义域也同步变成
+\[
+ \mathcal F\Dom(A)
+ =\left\{h\in L^2(\RR,\dd\varrho):
+ \int_{\RR}\lambda^2|h(\lambda)|^2\dd\varrho(\lambda)<\infty\right\}.
+\]
+因此 $\widehat{Af}(\lambda)=\lambda\widehat f(\lambda)$ 是 PVM 交织的直接结果，而不是依赖额外微分正则性的形式积分分部。这才完成从端点 $m$ 函数到投影值谱测度的闭环。
+\end{derivation}
+
+$m$ 函数还把“改变左端自伴边界条件”直接转化成 resolvent 的有限秩变化。仍在正则--limit-point 半直线上，令 $A_D$ 表示左端 Dirichlet 条件 $y(a)=0$，令 $A_h$ 表示 Robin 条件
+\[
+ y^{[1]}(a)=h y(a),
+ \qquad h\in\RR.
+\]
+由\eqnrefs{eq:math-sl-theta-phi-initial}，左端 Robin 适配解可取
+\[
+ \chi_h(x,z)=\theta(x,z)+h\phi(x,z).
+\]
+与 Weyl 解\eqnrefs{eq:math-sl-weyl-solution-m} 比较，在 $x=a$ 有
+\[
+ \mathcal W[\chi_h,\psi]
+ =h-m(z).
+\]
+因此 Robin resolvent 的极点条件为
+\begin{equation}\label{eq:math-sl-m-robin-spectrum}
+ m(z)=h,
+\end{equation}
+而 Dirichlet 与 Robin Green 核之差为
+\begin{equation}\label{eq:math-sl-krein-rank-one-kernel}
+ G_{h,z}(x,\xi)-G_{D,z}(x,\xi)
+ =\frac{\psi(x,z)\psi(\xi,z)}{h-m(z)}.
+\end{equation}
+右端是可分离核，所以两个 resolvent 的差至多秩一。这是一维 Krein resolvent 公式最直接的形式：deficiency index 等于一时，自伴扩张只有一个边界自由度，相应的 resolvent 变化也只有一个秩一通道。它把端点参数、Weyl $m$ 函数、离散极点与谱测度放在同一解析对象中。
+
+
+\section{闭二次型、Friedrichs 扩张与谱稳定性}
+
+自伴扩张的定义域方法适合追踪边界自由度，但许多 Hamiltonian、椭圆算子和变分问题首先以能量二次型出现。为了不把 Rayleigh 商局限在正则 Sturm--Liouville 区间，先建立闭半有界 form 的一般理论。设 $\mathfrak a$ 是稠密定义的对称 sesquilinear form，定义域记为 $\mathcal Q(\mathfrak a)\subset\mathcal H$，并假设存在 $m\in\RR$ 使
+\[
+ \mathfrak a[u,u]\ge m\norm{u}^2.
+\]
+取任意 $\alpha>-m$，定义 form 内积
+\begin{equation}\label{eq:math-sl-form-norm}
+ \langle u,v\rangle_{\mathfrak a_\alpha}
+ :=\mathfrak a[u,v]+\alpha\langle u,v\rangle,
+ \qquad
+ \norm{u}_{\mathfrak a_\alpha}^2
+ =\mathfrak a[u,u]+\alpha\norm{u}^2.
+\end{equation}
+若 $\mathcal Q(\mathfrak a)$ 在此范数下完备，则称 $\mathfrak a$ 为闭 form。不同的 $\alpha>-m$ 给出等价范数。
+
+第一表示定理说明：每个稠密、闭、下半有界对称 form 唯一对应一个下半有界自伴算子 $A$，满足
+\begin{equation}\label{eq:math-sl-first-representation-theorem}
+ \Dom(A)\subset\mathcal Q(\mathfrak a),
+ \qquad
+ \mathfrak a[u,v]=\langle Au,v\rangle
+ \quad(u\in\Dom(A),\ v\in\mathcal Q(\mathfrak a)).
+\end{equation}
+反过来，若 $A\ge mI$ 自伴，则
+\[
+ \mathcal Q(\mathfrak a_A)=\Dom((A-mI+I)^{1/2}),
+\]
+并由谱演算定义相应闭 form。因此“能量有限”的 form domain 通常严格大于算子定义域；例如二阶椭圆算子的 form domain 只要求一阶弱导数，而算子域还要满足二阶方程与边界条件。
+
+\begin{derivation}[二次型理论：从闭 form 构造自伴算子与 KLMN 定理]
+固定 $\alpha>-m$。由\eqnrefs{eq:math-sl-form-norm}，$\mathcal Q(\mathfrak a)$ 是 Hilbert 空间，并且嵌入
+\[
+ J:\bigl(\mathcal Q(\mathfrak a),\norm{\cdot}_{\mathfrak a_\alpha}\bigr)
+ \longrightarrow\mathcal H,
+ \qquad Ju=u
+\]
+连续，因为
+\[
+ (m+\alpha)\norm{u}^2
+ \le\norm{u}_{\mathfrak a_\alpha}^2.
+\]
+给定 $f\in\mathcal H$，泛函
+\[
+ v\longmapsto\langle f,v\rangle
+\]
+在 form Hilbert 空间上连续。Riesz 表示定理因此给出唯一 $u=G_\alpha f\in\mathcal Q(\mathfrak a)$ 使
+\begin{equation}\label{eq:math-sl-form-riesz-resolvent}
+ \mathfrak a[u,v]+\alpha\langle u,v\rangle
+ =\langle f,v\rangle
+ \qquad\forall v\in\mathcal Q(\mathfrak a).
+\end{equation}
+估计
+\[
+ \norm{G_\alpha f}_{\mathfrak a_\alpha}
+ \le (m+\alpha)^{-1/2}\norm{f}
+\]
+说明 $G_\alpha:\mathcal H\to\mathcal Q(\mathfrak a)$ 有界，进而作为 $\mathcal H\to\mathcal H$ 的算子也有界。交换 $f,g$ 并使用 form 对称性可得
+\[
+ \langle G_\alpha f,g\rangle
+ =\langle f,G_\alpha g\rangle,
+\]
+所以 $G_\alpha$ 自伴；取 $v=u$ 还得到 $\langle G_\alpha f,f\rangle\ge0$。
+
+若 $G_\alpha f=0$，则\eqnrefs{eq:math-sl-form-riesz-resolvent} 给出
+$\langle f,v\rangle=0$ 对稠密的 $\mathcal Q(\mathfrak a)$ 成立，故 $f=0$。因此 $G_\alpha$ 单射。自伴单射还意味着
+\[
+ \overline{\Ran G_\alpha}=(\ker G_\alpha)^{\perp}=\mathcal H.
+\]
+在 $\Dom(A):=\Ran G_\alpha$ 上定义
+\[
+ A+\alpha I:=G_\alpha^{-1}.
+\]
+有界自伴单射算子的逆在其稠密值域上是自伴算子，所以 $A$ 自伴。若 $u=G_\alpha f$，则 $f=(A+\alpha)u$，代回\eqnrefs{eq:math-sl-form-riesz-resolvent} 得
+\[
+ \mathfrak a[u,v]=\langle Au,v\rangle
+\]
+对所有 $v\in\mathcal Q(\mathfrak a)$ 成立。反过来，任何满足这一恒等式的自伴算子都必须具有同一个 resolvent $G_\alpha=(A+\alpha)^{-1}$，故唯一。这样第一表示定理被直接归结为 Hilbert 空间中的 Riesz 表示。
+
+
+若 $S$ 是稠密定义、对称且下半有界的算子，则其能量 form
+\[
+ \mathfrak s[u,v]=\langle Su,v\rangle,
+ \qquad u,v\in\Dom(S)
+\]
+可闭；闭包 $\overline{\mathfrak s}$ 所对应的自伴算子称为 Friedrichs extension，记为 $S_F$。它是在保持给定下界的意义下最自然的自伴扩张。对微分算子而言，Friedrichs extension 往往把“有限能量 + 零迹”自动转化成 Dirichlet 型边界条件，而不是先猜一个端点条件再验证。
+
+
+设 $S\ge mI$，即 $\langle Su,u\rangle\ge m\norm{u}^2$ 对所有 $u\in\Dom(S)$ 成立。平移
+$T:=S-mI\ge0$，只需证明
+\[
+ q[u,v]:=\langle Tu,v\rangle,
+ \qquad u,v\in\Dom(S),
+\]
+可闭。按定义，form $q$ 可闭意味着：若 $u_n\to0$ 于 $\mathcal H$，并且
+$q[u_n-u_k,u_n-u_k]\to0$（即 $\{u_n\}$ 在 $q$-范数下 Cauchy），就要证明
+$q[u_n,u_n]\to0$。这是 form 闭性的序列刻画。
+
+引入严格正的内积
+\[
+ (u,v)_{q,1}:=q[u,v]+\langle u,v\rangle,
+ \qquad
+ \norm{u}_{q,1}^2=q[u,u]+\norm{u}^2.
+\]
+因 $T\ge0$ 即 $q[u,u]\ge0$，$\norm{\cdot}_{q,1}$ 确为范数。假设中的两项
+$u_n\to0$（$\mathcal H$ 范数）与 $q[u_n-u_k,u_n-u_k]\to0$ 分别说明 $\{u_n\}$ 在
+$\norm{\cdot}_{q,1}$ 范数下 Cauchy，所以它在 $\Dom(S)$ 的 $\norm{\cdot}_{q,1}$ 完备化
+$\widetilde{\mathcal H}$ 中收敛到某个元素 $\xi$。
+
+对任意固定 $v\in\Dom(S)$，由 $T$ 对称（$T\subset T^*$），
+\begin{align*}
+ (u_n,v)_{q,1}
+ &=\langle Tu_n,v\rangle+\langle u_n,v\rangle\\
+ &=\langle u_n,(T+I)v\rangle
+ \longrightarrow0,
+\end{align*}
+因为 $u_n\to0$ 于原 Hilbert 空间 $\mathcal H$，而 $(T+I)v\in\mathcal H$ 固定。于是
+$\xi$ 与完备化中稠密的子空间 $\Dom(S)$ 正交：
+\[
+ (\xi,v)_{q,1}=\lim_n(u_n,v)_{q,1}=0,\qquad\forall v\in\Dom(S).
+\]
+因 $\Dom(S)$ 在 $\widetilde{\mathcal H}$ 中稠密，只能有 $\xi=0$。因此
+\[
+ \norm{u_n}_{q,1}\longrightarrow0,
+ \qquad
+ q[u_n,u_n]\le\norm{u_n}_{q,1}^2\longrightarrow0.
+\]
+这正是 $q$ 的可闭性。把常数 $m$ 平移回来，
+$\mathfrak s[u,v]=\langle Su,v\rangle=q[u,v]+m\langle u,v\rangle$ 同样可闭
+（有界扰动不改变闭性）。其闭包 $\overline{\mathfrak s}$ 再由第一表示定理产生唯一
+自伴算子 $S_F$，这就是 Friedrichs extension。
+
+\emph{Dirichlet Laplacian 实例。}取 $S=-\Delta$ 于 $C_c^\infty(\Omega)\subset L^2(\Omega)$，
+$\Omega\subset\RR^d$ 有界。则 $S\ge0$，能量 form
+$\mathfrak s[u,v]=\int_\Omega\nabla u\cdot\overline{\nabla v}\,\dd x$。
+完备化给出 form domain $H^1_0(\Omega)$（$H^1$ 中零迹函数），Friedrichs extension
+正是 Dirichlet Laplacian $-\Delta_D$。这把"有限能量 + 零迹"自动转化为 Dirichlet 边界
+条件，无需先猜边界条件再验证自伴性。
+
+\emph{Neumann 比较。}同一 form 不要求零迹的完备化给出 $H^1(\Omega)$，对应 Neumann
+Laplacian $-\Delta_N$。因 $H^1_0(\Omega)\subset H^1(\Omega)$，form 单调性
+$\mathfrak s_D\le\mathfrak s_N$ 给出 $\lambda_k(D)\ge\lambda_k(N)$（Dirichlet 本征值
+不低于 Neumann），这是 Poincaré 不等式的算子理论来源。
+
+\emph{物理意义。}能量 form $\mathfrak s[u,u]$ 是态 $u$ 的期望能量。Friedrichs extension
+取最小闭延拓，对应"零边界能"的物理实现——粒子被边界约束而不溢出。form domain
+$\mathcal Q(\mathfrak a)$ 是有限能量态空间，比算子 domain $\Dom(A)$ 更大，允许动能
+有限但二阶导数不存在的态，这在变分法和数值谱计算中至关重要。
+\end{derivation}
+
+若与闭 form 对应的 $A$ 具有 compact resolvent，则其本征值按重数排列为
+\[
+ \lambda_1\le\lambda_2\le\cdots\uparrow+\infty,
+\]
+并满足 Courant--Fischer min--max 原理
+\begin{equation}\label{eq:math-sl-minmax-general}
+ \lambda_k
+ =\inf_{\substack{L\subset\mathcal Q(\mathfrak a)\\\dim L=k}}
+ \ \sup_{0\ne u\in L}
+ \frac{\mathfrak a[u,u]}{\norm{u}^2}.
+\end{equation}
+如果两个闭 form 在同一 form domain 上满足
+$\mathfrak a_1[u,u]\le\mathfrak a_2[u,u]$，则逐项有
+\begin{equation}\label{eq:math-sl-form-monotonicity}
+ \lambda_k(A_1)\le\lambda_k(A_2).
+\end{equation}
+这才是 Rayleigh 商比较、势能单调性和许多本征值估计的普适来源。
+
+\begin{derivation}[谱的几何与分析：min--max 原理、紧嵌入与 Kato--Rellich 扰动]
+先设 $A$ 下半有界且 resolvent 紧。谱定理给出正交本征基 $\{e_j\}$ 与按重数排列的实本征值
+$\lambda_1\le\lambda_2\le\cdots\uparrow+\infty$。对
+$u=\sum_j c_je_j\in\mathcal Q(\mathfrak a)$，
+\[
+ \mathfrak a[u,u]=\sum_j\lambda_j|c_j|^2,
+ \qquad
+ \norm{u}^2=\sum_j|c_j|^2,
+\]
+其中若整体下界不是零，可先平移 $A$ 而不影响变分结构（Rayleigh 商分子分母同加常数
+$m\norm{u}^2$，比值单调平移）。
+
+\emph{上界：取试探子空间。}取 $L_k=\operatorname{span}\{e_1,\ldots,e_k\}$。对任意
+$0\ne u\in L_k$，$u=\sum_{j=1}^kc_je_j$，因 $\lambda_j\le\lambda_k$（$j\le k$），
+\[
+ \frac{\mathfrak a[u,u]}{\norm{u}^2}
+ =\frac{\sum_{j=1}^k\lambda_j|c_j|^2}{\sum_{j=1}^k|c_j|^2}
+ \le\frac{\lambda_k\sum_{j=1}^k|c_j|^2}{\sum_{j=1}^k|c_j|^2}
+ =\lambda_k,
+\]
+故 $\sup_{0\ne u\in L_k}\mathfrak a[u,u]/\norm{u}^2\le\lambda_k$，min--max 右端
+（对所有 $k$ 维 $L$ 取 inf）不超过 $\lambda_k$。
+
+\emph{下界：任意子空间必遇高能方向。}反过来，任取 $k$ 维子空间
+$L\subset\mathcal Q(\mathfrak a)$。因为
+$\operatorname{span}\{e_1,\ldots,e_{k-1}\}$ 只有 $k-1$ 维，而
+$\dim L=k$，必有非零交
+\[
+ L\cap\operatorname{span}\{e_1,\ldots,e_{k-1}\}^\perp\neq\{0\}.
+\]
+取 $0\ne u$ 在此交中。于是 $u=\sum_{j\ge k}c_je_j$（与 $e_1,\ldots,e_{k-1}$ 正交），
+因 $\lambda_j\ge\lambda_k$（$j\ge k$），
+\[
+ \frac{\mathfrak a[u,u]}{\norm{u}^2}
+ =\frac{\sum_{j\ge k}\lambda_j|c_j|^2}{\sum_{j\ge k}|c_j|^2}
+ \ge\frac{\lambda_k\sum_{j\ge k}|c_j|^2}{\sum_{j\ge k}|c_j|^2}
+ =\lambda_k.
+\]
+所以每个 $L$ 的内部上确界都至少为 $\lambda_k$。两边合并即得\eqnrefs{eq:math-sl-minmax-general}。
+
+\emph{form 单调性。}若 $\mathfrak a_1\le\mathfrak a_2$（同一 form domain 上逐点
+$\mathfrak a_1[u,u]\le\mathfrak a_2[u,u]$），对每个相同的 $k$ 维 $L$，
+\[
+ \sup_{0\ne u\in L}\frac{\mathfrak a_1[u,u]}{\norm{u}^2}
+ \le\sup_{0\ne u\in L}\frac{\mathfrak a_2[u,u]}{\norm{u}^2},
+\]
+再分别取 infimum 即得\eqnrefs{eq:math-sl-form-monotonicity}。
+
+\emph{谐振子实例。}取 $A=-\dd^2/\dd x^2+x^2$ 于 $L^2(\RR)$（谐振子 Hamiltonian）。
+本征值 $\lambda_n=2n+1$（$n=0,1,2,\ldots$），本征函数 Hermite 函数。
+min--max 原理给出 $\lambda_k=\inf_{\dim L=k+1}\sup_{u\in L}\mathfrak a[u,u]/\norm{u}^2$。
+取 $L_{k+1}=\operatorname{span}\{H_0,\ldots,H_k\}$ 达到下确界；任何 $k+1$ 维试探空间
+必含与 $H_0,\ldots,H_{k-1}$ 正交的向量，其 Rayleigh 商至少 $\lambda_k=2k+1$。
+
+\emph{物理意义。}min--max 原理把第 $k$ 个能级表述为"在最优 $k$ 维试探空间中的最高能量"。
+这直接给出变分法基础：Ritz 方法在有限维子空间求 Rayleigh 商极值，所得近似本征值从上方
+逼近真值。form 单调性则给出势能单调对能级的影响：加深势阱（$V_1\le V_2$）压低所有
+能级 $\lambda_k(H_1)\le\lambda_k(H_2)$，这是量子力学能级排序的数学基础。
+
+
+compact resolvent 也有一个不依赖具体 Green 核的 form 判据。仍取 $\alpha>-m$，把 $\mathcal Q(\mathfrak a)$ 配以 $\norm{\cdot}_{\mathfrak a_\alpha}$。则
+\begin{equation}\label{eq:math-sl-compact-form-embedding}
+ (A+\alpha I)^{-1}\text{ 紧}
+ \quad\Longleftrightarrow\quad
+ \mathcal Q(\mathfrak a)\hookrightarrow\mathcal H
+ \text{ 的自然嵌入紧}.
+\end{equation}
+这条等价比“某个具体 Green 核恰好平方可积”更普适：Sobolev 的 Rellich 紧嵌入、受限区域椭圆算子、高阶算子和量子 Hamiltonian 都可以通过同一个 form-domain 判据获得离散谱。
+
+
+\emph{思路：}resolvent $(A+\alpha I)^{-1}$ 可分解为嵌入算子 $J$ 与其伴随 $J^*$ 的复合
+$JJ^*$。紧算子的复合仍紧，故 $J$ 紧当且仅当 $JJ^*$ 紧。这一因式分解把算子层的紧性
+完全转化为 form-domain 到 $\mathcal H$ 的嵌入紧性。
+
+\emph{第一步：嵌入算子及其伴随。}沿用第一表示定理证明中的连续嵌入
+\begin{equation*}
+ J:\mathcal Q(\mathfrak a_\alpha)\to\mathcal H.
+\end{equation*}
+$J$ 是恒等嵌入（form domain 中的元素视为 $\mathcal H$ 中的元素），连续性由 form norm
+控制 $\mathcal H$ norm 保证：$\norm{Jv}_{\mathcal H}=\norm{v}_{\mathcal H}\le\norm{v}_{\mathfrak a_\alpha}$
+（因 $\norm{v}_{\mathfrak a_\alpha}^2=\mathfrak a[v,v]+\alpha\norm{v}^2\ge\alpha\norm{v}^2$）。
+其 Hilbert 空间伴随 $J^*:\mathcal H\to\mathcal Q(\mathfrak a_\alpha)$ 由
+\begin{equation*}
+ \langle J^*f,v\rangle_{\mathfrak a_\alpha}
+ =\langle f,Jv\rangle_{\mathcal H}
+\end{equation*}
+定义。$J^*$ 将 $\mathcal H$ 中的向量映射到 form domain 中，是 resolvent 的 form-domain
+版本：对固定 $f$，$J^*f$ 是 form domain 中唯一满足该恒等式的向量，存在性由
+$\mathcal Q(\mathfrak a_\alpha)$ 上 Riesz 表示保证。
+
+\emph{第二步：resolvent 的因式分解。}与\eqnrefs{eq:math-sl-form-riesz-resolvent} 比较可知
+\begin{equation*}
+ J^*f=(A+\alpha I)^{-1}f
+\end{equation*}
+作为 form-domain 中的向量，而再嵌入 $\mathcal H$ 后得到算子恒等式
+\begin{equation*}
+ (A+\alpha I)^{-1}=JJ^*.
+\end{equation*}
+验证：对任意 $f,g\in\mathcal H$，
+$\langle JJ^*f,g\rangle_{\mathcal H}=\langle J^*f,J^*g\rangle_{\mathfrak a_\alpha}
+=\langle f,JJ^*g\rangle_{\mathcal H}$，且 $JJ^*f$ 满足 resolvent 的定义恒等式。
+这是关键因式分解：resolvent 是嵌入与其伴随的复合。
+
+\emph{第三步：方向一 $J$ 紧 $\Rightarrow$ $JJ^*$ 紧。}若 $J$ 紧，则 $J^*$ 紧（紧算子的
+伴随仍紧：若 $f_n\rightharpoonup0$ 则 $J^*f_n\rightharpoonup0$ 且由紧性强收敛到 $0$），
+故 $JJ^*$ 紧（紧算子与有界算子的复合紧：$JJ^*$ 把有界集映为预紧集），即
+$(A+\alpha I)^{-1}$ 紧。
+
+\emph{第四步：方向二 $JJ^*$ 紧 $\Rightarrow$ $J$ 紧。}反过来，若 $JJ^*$ 紧，则正算子
+$(JJ^*)^{1/2}$ 紧（紧正算子的平方根仍紧，由谱定理：$(JJ^*)^{1/2}$ 的谱是
+$\sigma(JJ^*)$ 的平方根，紧性由非零谱有限重且仅聚于 $0$ 保持）。Hilbert 空间极分解给出
+\begin{equation*}
+ J=(JJ^*)^{1/2}W
+\end{equation*}
+其中 $W$ 是从 form Hilbert 空间到 $\overline{\Ran J}$ 的部分等距映射。有界算子 $W$ 与
+紧算子 $(JJ^*)^{1/2}$ 的复合仍紧，所以 $J$ 紧。
+
+\emph{结论。}两个方向合并即证明\eqnrefs{eq:math-sl-compact-form-embedding}。这条等价比
+"某个具体 Green 核恰好平方可积"更普适：Sobolev 的 Rellich 紧嵌入、受限区域椭圆算子、
+高阶算子和量子 Hamiltonian 都可以通过同一个 form-domain 判据获得离散谱。
+
+\emph{Rellich 嵌入应用。}取 $A=-\Delta_D$ 于有界 $\Omega\subset\RR^d$，form domain
+$H^1_0(\Omega)$。Rellich 定理给出 $H^1_0(\Omega)\hookrightarrow L^2(\Omega)$ 紧（当
+$\Omega$ 有界且 Lipschitz），故 $(-\Delta_D+\alpha)^{-1}$ 紧，Dirichlet Laplacian
+有纯离散谱 $\lambda_n\sim C_d\,n^{2/d}\to\infty$（Weyl 渐近律）。Sobolev 指标关系：
+$H^1\hookrightarrow L^2$ 紧要求 $1>d\cdot(1/2-1/2)=0$，即 $s=1>d/2-d/2=0$ 恒成立，
+但紧性需要 $\Omega$ 有界——无界区域上 $H^1(\RR^d)\hookrightarrow L^2(\RR^d)$ 不紧，
+对应连续谱存在。
+
+\emph{物理意义。}紧嵌入 $\mathcal Q(\mathfrak a)\hookrightarrow\mathcal H$ 意味着
+"有限能量态空间在 $L^2$ 中预紧"：任何有界能量序列有 $L^2$ 收敛子列。这排除连续谱
+（连续谱对应弱收敛但不强收敛的 Weyl 序列），保证所有谱点都是有限重本征值，即只有
+束缚态。量子力学中，有界区域或增长势（如谐振子 $V=x^2$）使粒子被"囚禁"，产生
+离散能级；无界区域上自由粒子则连续谱占主导，对应散射态。
+
+
+接下来考察相对扰动与本质谱不变量。
+
+在改变势能、边界条件或有效相互作用以后，首先必须重新保证算子仍然自伴，然后才能谈“谱怎样移动”。最常用的算子级判据是 Kato--Rellich：若 $A=A^*$，$B$ 在 $\Dom(A)$ 上对称，且存在 $0\le a<1$、$b\ge0$ 使
+\begin{equation}\label{eq:math-sl-kato-relative-bound}
+ \norm{Bu}\le a\norm{Au}+b\norm{u},
+ \qquad u\in\Dom(A),
+\end{equation}
+则 $A+B$ 在同一算子域 $\Dom(A)$ 上自伴。若 $A$ 还下半有界，则 $A+B$ 也下半有界；这不是额外假设，而可由同一个 relative-bound 估计在足够负的实 resolvent 参数上证明。
+
+
+取 $z=\ii y$，$y\ne0$。谱演算给出
+\[
+ \norm{(A-\ii y)^{-1}}\le |y|^{-1},
+ \qquad
+ \norm{A(A-\ii y)^{-1}}
+ =\sup_{\lambda\in\sigma(A)}\frac{|\lambda|}{\sqrt{\lambda^2+y^2}}
+ \le1.
+\]
+将\eqnrefs{eq:math-sl-kato-relative-bound} 应用于 $u=(A-\ii y)^{-1}f$，得到
+\[
+ \norm{B(A-\ii y)^{-1}}
+ \le a+\frac{b}{|y|}.
+\]
+因为 $a<1$，可取 $|y|$ 足够大使右端严格小于 $1$。于是 Neumann 级数保证
+\[
+ I+B(A-\ii y)^{-1}
+\]
+有界可逆，而
+\[
+ A+B-\ii y
+ =\bigl[I+B(A-\ii y)^{-1}\bigr](A-\ii y)
+\]
+从 $\Dom(A)$ onto $\mathcal H$。对 $-\ii y$ 同样成立。
+
+$A+B$ 在 $\Dom(A)$ 上对称。一个稠密定义对称算子 $T$ 若对某个 $y>0$ 同时满足
+$\Ran(T-\ii y)=\Ran(T+\ii y)=\mathcal H$，则其两个 deficiency spaces 都为零，故 $T$ 自伴。于是 $A+B$ 自伴。
+
+若再有 $A\ge mI$，取实数 $r>-m$。谱演算给出
+\[
+ \norm{(A+r)^{-1}}\le\frac1{r+m},
+ \qquad
+ \norm{A(A+r)^{-1}}
+ =\sup_{\lambda\ge m}\frac{|\lambda|}{\lambda+r}.
+\]
+当 $r\to\infty$ 时，后一个上确界趋于 $1$。因为 $a<1$，可先取 $\delta>0$ 使 $a(1+\delta)<1$，再取 $r$ 足够大，使
+\[
+ \norm{A(A+r)^{-1}}\le1+\delta,
+ \qquad
+ a(1+\delta)+\frac b{r+m}<1.
+\]
+于是
+\[
+ \norm{B(A+r)^{-1}}<1,
+\]
+从而
+\[
+ A+B+r
+ =\bigl[I+B(A+r)^{-1}\bigr](A+r)
+\]
+可逆。上述估计对所有更大的 $r$ 仍可同时成立，所以存在 $R$ 使
+$(-\infty,-R]\subset\rho(A+B)$；自伴性于是推出 $A+B$ 下半有界。这个证明没有使用微扰级数截断；相对界 $a<1$ 同时控制自伴定义域和谱的下端。
+
+
+form 层允许更奇异的扰动。设 $\mathfrak a$ 闭且下界为 $m$，$\mathfrak b$ 是定义在同一 form domain 上的对称 form，并满足
+\begin{equation}\label{eq:math-sl-klmn-bound}
+ |\mathfrak b[u,u]|
+ \le a\bigl(\mathfrak a[u,u]-m\norm{u}^2\bigr)+c\norm{u}^2,
+ \qquad 0\le a<1.
+\end{equation}
+则 $\mathfrak a+\mathfrak b$ 仍闭且下半有界，因此由第一表示定理唯一生成自伴算子。这是 KLMN 原理的基本形式。它允许某些势能只相对于动能 form 有界，而未必把 $\Dom(A)$ 映回 $\mathcal H$。
+
+
+分三步证明 \(\mathfrak a+\mathfrak b\) 闭且下半有界。核心思想是：相对界 $a<1$ 保证
+扰动 form $\mathfrak b$ 不改变 form domain 的拓扑，即新 form norm 与原 form norm
+等价，从而完备性传递。
+
+\emph{第一步：平移到 \(m=0\)。}若 \(\mathfrak a\) 的下界 \(m\neq0\)，定义
+\(\tilde{\mathfrak a}[u,u]=\mathfrak a[u,u]-m\norm{u}^2\)，则 \(\tilde{\mathfrak a}\ge0\)。
+此时 KLMN 界\eqnrefs{eq:math-sl-klmn-bound} 对 $\tilde{\mathfrak a}$ 仍成立
+（右端 $\mathfrak a[u,u]-m\norm{u}^2=\tilde{\mathfrak a}[u,u]$ 不变）。对
+\(\tilde{\mathfrak a}+\mathfrak b\) 证明闭性后加回 \(m\norm{u}^2\) 不改变闭性
+（有界扰动保持闭性）。故可设 \(m=0\)，即 $\mathfrak a\ge0$。
+
+\emph{第二步：form norm 的双向控制。}取 \(\alpha>c/(1-a)\)（此选择保证
+$\alpha-c>0$ 且 $1-a>0$）。由\eqnrefs{eq:math-sl-klmn-bound}（$m=0$ 情形），
+$|\mathfrak b[u,u]|\le a\,\mathfrak a[u,u]+c\norm{u}^2$，对任意
+\(u\in\mathcal Q(\mathfrak a)\)，
+\[
+ \begin{aligned}
+ (\mathfrak a+\mathfrak b)[u,u]+\alpha\norm{u}^2
+ &\ge \mathfrak a[u,u]-|{\mathfrak b[u,u]}|+\alpha\norm{u}^2\\
+ &\ge \mathfrak a[u,u]-a\,\mathfrak a[u,u]-c\norm{u}^2+\alpha\norm{u}^2\\
+ &= (1-a)\mathfrak a[u,u]+(\alpha-c)\norm{u}^2,\\[4pt]
+ (\mathfrak a+\mathfrak b)[u,u]+\alpha\norm{u}^2
+ &\le \mathfrak a[u,u]+|{\mathfrak b[u,u]}|+\alpha\norm{u}^2\\
+ &\le \mathfrak a[u,u]+a\,\mathfrak a[u,u]+c\norm{u}^2+\alpha\norm{u}^2\\
+ &= (1+a)\mathfrak a[u,u]+(\alpha+c)\norm{u}^2.
+ \end{aligned}
+\]
+左端是新 form norm \(\norm{u}_{\mathfrak a+\mathfrak b+\alpha}^2\)，右端涉及原 form
+norm \(\norm{u}_{\mathfrak a+\alpha}^2=\mathfrak a[u,u]+\alpha\norm{u}^2\)。因
+\(\alpha>c/(1-a)\) 保证 \(\alpha-c>0\)，且 \(1-a>0\)，两个不等式给出
+\[
+ (1-a)\norm{u}_{\mathfrak a+\alpha}^2+(\alpha-c-\alpha(1-a))\norm{u}^2
+ \le \norm{u}_{\mathfrak a+\mathfrak b+\alpha}^2
+ \le (1+a)\norm{u}_{\mathfrak a+\alpha}^2+(\alpha+c-\alpha(1+a))\norm{u}^2.
+\]
+化简后（注意 $\alpha-c-\alpha(1-a)=\alpha a-c$，$\alpha+c-\alpha(1+a)=c-\alpha a$，
+由 $\alpha>c/(1-a)$ 即 $\alpha a>c$ 故左附加项为负、右附加项为正，均可吸收）
+两个 form norm 在同一 \(\mathcal Q(\mathfrak a)\) 上等价。
+
+\emph{第三步：完备性与表示定理。}\(\mathfrak a\) 闭故 \(\mathcal Q(\mathfrak a)\) 在
+form norm \(\norm{\cdot}_{\mathfrak a+\alpha}\) 下完备。由第二步的范数等价，
+\(\mathcal Q(\mathfrak a)\) 在新 form norm \(\norm{\cdot}_{\mathfrak a+\mathfrak b+\alpha}\)
+下也完备（等价范数保持 Cauchy 序列与极限），即 \(\mathfrak a+\mathfrak b\) 闭。
+第一条不等式同时给出新下界 \(-(\alpha-c)/(1-a)\)。最后应用第一表示定理：闭且下半有界
+的 form 唯一生成自伴算子。
+
+\emph{Coulomb 势应用。}取 $A=-\Delta$ 于 $L^2(\RR^3)$，$\mathfrak a[u,u]=\int|\nabla u|^2$，
+form domain $H^1(\RR^3)$。Coulomb 势 $V(r)=-Z/r$ 对应
+$\mathfrak b[u,u]=-\int Z|r|^{-1}|u|^2\dd x$。Hardy 不等式给出
+$|\mathfrak b[u,u]|\le a\,\mathfrak a[u,u]+c\norm{u}^2$（$a$ 可任意小，$c$ 依赖 $Z$），
+故 KLMN 适用，$-\Delta-Z/r$ 自伴。注意 $V\notin L^\infty$，Kato--Rellich 不直接适用
+（$V$ 不把 $\Dom(-\Delta)=H^2$ 映回 $L^2$），但 form 层 KLMN 仍能处理。
+
+\emph{物理意义。}KLMN 允许势能比算子域更奇异，只要相对动能 form 有界。这覆盖了量子力学
+中大多数物理势（Coulomb、Yukawa、极化势），是定义 Hamiltonian 的最实用工具。相对界
+$a<1$ 的物理含义：扰动势能不超过动能的固定比例加常数，保证系统仍有下界能谱。
+\end{derivation}
+
+自伴性稳定以后，还需区分“离散谱移动”和“本质谱改变”。记 $\mathcal K(\mathcal H)$ 为紧算子理想，并采用 Fredholm 定义
+\[
+ \sigma_{\mathrm{ess}}(A)
+ :=\{\lambda\in\RR:A-\lambda I\text{ 不是 Fredholm 算子}\}.
+\]
+若两个自伴算子 $A,B$ 在某个共同 resolvent 点 $z_0\in\rho(A)\cap\rho(B)$ 满足
+\begin{equation}\label{eq:math-sl-resolvent-comparable}
+ (A-z_0I)^{-1}-(B-z_0I)^{-1}\in\mathcal K(\mathcal H),
+\end{equation}
+则
+\begin{equation}\label{eq:math-sl-essential-spectrum-invariance}
+ \sigma_{\mathrm{ess}}(A)=\sigma_{\mathrm{ess}}(B).
+\end{equation}
+这比“$A-B$ 紧”更一般，因为 $A$、$B$ 甚至可以有不同定义域。Krein 公式\eqnrefs{eq:math-sl-krein-resolvent-abstract} 表明有限 deficiency index 下任意两个自伴扩张自动满足有限秩 resolvent 差，因此改变有限维边界通道不会改变本质谱。
+
+\begin{derivation}[本质谱理论与谱分解：Fredholm 扰动、Weyl 判据与离散谱]
+先证明有界 Fredholm 算子的紧扰动稳定性。回忆 $T\in\mathcal B(\mathcal H)$ Fredholm
+意味着 $\Ran T$ 闭、$\dim\ker T<\infty$、$\dim\ker T^*<\infty$。Atkinson 定理给出
+等价刻画：$T$ Fredholm 当且仅当存在有界 parametrix $S$（近似逆）使
+\[
+ ST-I\in\mathcal K(\mathcal H),
+ \qquad
+ TS-I\in\mathcal K(\mathcal H).
+\]
+$S$ 的存在性来自 Fredholm 性给出的 $\Ran T$ 闭与有限维核/余核：在
+$(\ker T)^\perp\to\Ran T$ 上取有界逆，再零延拓。
+
+对任意紧算子 $K$，
+\[
+ S(T+K)-I=(ST-I)+SK,
+\]
+\[
+ (T+K)S-I=(TS-I)+KS
+\]
+仍为紧算子（紧算子理想 $\mathcal K$ 在有界算子代数 $\mathcal B$ 中是双侧理想：
+$SK$、$KS$ 紧），所以 $T+K$ Fredholm（有 parametrix $S$）。反向把 $-K$ 看成紧扰动
+（若 $T+K$ Fredholm，则 $T=(T+K)+(-K)$ Fredholm）即可得到等价性。这建立了
+Fredholm 集在 Calkin 代数 $\mathcal B/\mathcal K$ 中的开性。
+
+现在固定实数 $\lambda$。因为 $z_0\in\rho(A)$，在 graph-norm Hilbert 空间 $\Dom(A)$
+与 $\mathcal H$ 之间，$A-z_0$ 是有界可逆映射，并有分解
+\[
+ A-\lambda
+ =(A-z_0)+(z_0-\lambda)I
+ =\Bigl[I+(z_0-\lambda)(A-z_0)^{-1}\Bigr](A-z_0).
+\]
+因 $A-z_0$ 可逆（Fredholm 指标 $0$），故 $A-\lambda$ Fredholm，当且仅当有界算子
+\[
+ T_A(\lambda):=I+(z_0-\lambda)(A-z_0)^{-1}
+\]
+Fredholm（可逆因子的 Fredholm 性被吸收）。对 $B$ 同理定义 $T_B(\lambda)$。而
+\eqnrefs{eq:math-sl-resolvent-comparable} 给出
+\[
+ T_A(\lambda)-T_B(\lambda)
+ =(z_0-\lambda)\left[(A-z_0)^{-1}-(B-z_0)^{-1}\right]
+ \in\mathcal K(\mathcal H),
+\]
+因 $z_0-\lambda$ 是标量而 resolvent 差紧。由刚证明的紧扰动稳定性，$T_A(\lambda)$
+Fredholm 当且仅当 $T_B(\lambda)$ Fredholm。因此 $A-\lambda$ 与 $B-\lambda$ 的
+Fredholm 性对每个实 $\lambda$ 完全一致，得到\eqnrefs{eq:math-sl-essential-spectrum-invariance}。
+
+\emph{Weyl 定理应用。}若 $B=A+K$ 其中 $K$ 紧（特别地有限秩），取共同 $z_0$ 使
+$z_0\in\rho(A)\cap\rho(B)$，则
+\[
+ (A-z_0)^{-1}-(B-z_0)^{-1}
+ =(A-z_0)^{-1}K(B-z_0)^{-1}\in\mathcal K,
+\]
+故 $\sigma_{\mathrm{ess}}(A)=\sigma_{\mathrm{ess}}(A+K)$。这是经典 Weyl 定理：
+紧扰动不改变本质谱。实例：自由 Hamiltonian $H_0=-\Delta$ 于 $L^2(\RR^3)$ 有
+$\sigma_{\mathrm{ess}}(H_0)=[0,\infty)$；加紧扰动 $V$（如短程势
+$V\in L^2\cap L^1$）后 $H=H_0+V$ 仍 $\sigma_{\mathrm{ess}}(H)=[0,\infty)$，
+负离散本征值（束缚态）可出现但不影响本质谱。
+
+\emph{Krein 公式与边界扰动。}有限 deficiency index $N$ 下，Krein 公式
+\eqnrefs{eq:math-sl-krein-resolvent-abstract} 给出任意两个自伴扩张 $A_\Theta,A_0$ 的
+resolvent 差为有限秩（至多 $N$）：
+$(A_\Theta-z)^{-1}-(A_0-z)^{-1}=\gamma(z)(\Theta-M(z))^{-1}\gamma(\overline z)^*$。
+故改变有限维边界条件不改变本质谱。实例：半直线上 Dirichlet 与 Robin Laplacian
+本质谱同为 $[0,\infty)$，差异仅在离散谱（Robin 可有有限个负本征值）。
+
+\emph{物理意义。}本质谱对应散射态：波包不被囚禁，传播到无穷远。Weyl 定理保证
+"有限秩扰动不改变散射结构"——添加有限个杂质或改变有限维边界条件只产生有限个
+束缚态，连续谱区间不变。这为散射理论的渐进完备性提供算子理论基础：短程势
+散射中，本质谱 $[0,\infty)$ 固定，离散负本征值有限，散射矩阵在本质谱上良定义。
+
+
+接下来考察谱型、compact resolvent 与正则区间特例。
+
+先严格区分点谱、连续谱、残余谱以及离散谱这两套不同分类。
+
+先把两套经常混在一起的分类分开。对稠密定义闭算子 $A$ 和 $\lambda\in\sigma(A)$，采用互斥的三分法：若
+$\ker(A-\lambda I)\neq\{0\}$，则 $\lambda$ 属于点谱 $\sigma_{\mathrm p}(A)$；若
+$A-\lambda I$ 单射、值域稠密但不等于整个 $\mathcal H$，则 $\lambda$ 属于连续谱 $\sigma_{\mathrm c}(A)$；若
+$A-\lambda I$ 单射但值域不稠密，则 $\lambda$ 属于残余谱 $\sigma_{\mathrm r}(A)$。在连续谱情形，$(A-\lambda I)^{-1}$ 定义在稠密真子空间 $\Ran(A-\lambda I)$ 上；若它有有界延拓到整个 $\mathcal H$，闭性会迫使值域闭合并等于 $\mathcal H$，与 $\lambda\in\sigma(A)$ 矛盾，所以其逆必为无界。对自伴算子，
+\[
+ \Ran(A-\lambda I)^\perp
+ =\ker(A-\lambda I)^*=
+ \ker(A-\lambda I),
+\]
+所以只要 $\lambda$ 不是本征值，值域就自动稠密；因此
+\begin{equation}\label{eq:math-sl-selfadjoint-no-residual}
+ \sigma_{\mathrm r}(A)=\varnothing.
+\end{equation}
+
+这套“点谱/连续谱”分类描述 $A-\lambda I$ 的可逆性；下面的 pure-point/absolutely-continuous/singular-continuous 分类则描述谱测度相对于 Lebesgue 测度的测度类型，两者不能逐字等同。对每个 $u\in\mathcal H$，标量谱测度有唯一的 Lebesgue 分解
+\[
+ \dd\mu_u
+ =\dd\mu_u^{\mathrm{pp}}
+ +r_u(\lambda)\dd\lambda
+ +\dd\mu_u^{\mathrm{sc}},
+\]
+其中 $\mu_u^{\mathrm{pp}}$ 是纯原子测度，$r_u\dd\lambda$ 对 Lebesgue 测度绝对连续，而 $\mu_u^{\mathrm{sc}}$ 无原子却集中在某个 Lebesgue 零测集上。称闭子空间 $\mathcal K\subset\mathcal H$ 对 $A$ 是 reducing 的，若 $\mathcal K$ 与 $\mathcal K^\perp$ 都在每个谱投影 $E_A(B)$ 下不变。于是可以直接定义
+\[
+\begin{aligned}
+ \mathcal H_{\mathrm{pp}}&:=\{u:\mu_u\text{ 为纯原子测度}\},\\
+ \mathcal H_{\mathrm{ac}}&:=\{u:\mu_u\ll\dd\lambda\},\\
+ \mathcal H_{\mathrm{sc}}&:=\{u:\mu_u\perp\dd\lambda\text{ 且 }\mu_u\text{ 无原子}\}.
+\end{aligned}
+\]
+这三个闭 reducing 子空间给出唯一正交分解
+\[
+ \mathcal H=\mathcal H_{\mathrm{pp}}\oplus\mathcal H_{\mathrm{ac}}\oplus\mathcal H_{\mathrm{sc}}.
+\]
+其中 $\mathcal H_{\mathrm{pp}}$ 正是本征向量张成空间的闭包。一般谱积分同时包含三部分；所谓“连续谱展开”也不能在没有进一步假设时默认只有绝对连续部分。特别地，$\mathcal H_{\mathrm{ac}}$ 与 $\mathcal H_{\mathrm{sc}}$ 都属于非原子谱测度，却有完全不同的密度性质；而点谱中还可能存在嵌入本质谱的本征值，因此“本征值”和“离散谱”也不是同义词。
+
+
+先记录谱投影给出的基本控制。对任意 Borel 集 $B$，
+\[
+ \mu_u(B)=\norm{E_A(B)u}^2.
+\]
+因此若 $u_n\to u$ 于 $\mathcal H$，则
+$E_A(B)u_n\to E_A(B)u$。这一点足以把标量测度类型的条件提升为闭子空间条件。
+
+先看绝对连续部分。若 $u_n\in\mathcal H_{\mathrm{ac}}$ 且 $u_n\to u$，对任意 Lebesgue 零测集 $N$ 都有
+$E_A(N)u_n=0$，故取极限得到 $E_A(N)u=0$，也就是 $\mu_u\ll\dd\lambda$。所以 $\mathcal H_{\mathrm{ac}}$ 闭。若 $u\in\mathcal H_{\mathrm{ac}}$，则对任意 Borel 集 $C$，
+\[
+ \mu_{E_A(C)u}(B)
+ =\norm{E_A(B\cap C)u}^2
+ =\mu_u(B\cap C),
+\]
+仍对 Lebesgue 测度绝对连续，所以所有谱投影保持 $\mathcal H_{\mathrm{ac}}$；正交补也随之保持，故它 reducing。
+
+奇异连续部分同理。若 $u_n\to u$ 且每个 $u_n$ 的谱测度都集中在 Lebesgue 零测集 $N_n$ 上，令
+$N=\bigcup_nN_n$，仍有 $|N|=0$，并且
+\[
+ E_A(\RR\setminus N)u_n=0
+ \quad\Longrightarrow\quad
+ E_A(\RR\setminus N)u=0.
+\]
+同时对每个 $\lambda$，$E_A(\{\lambda\})u_n=0$，取极限得
+$E_A(\{\lambda\})u=0$，所以极限仍无原子。故 $\mathcal H_{\mathrm{sc}}$ 也闭且 reducing。
+
+对纯点部分，若 $u$ 的谱测度为
+\[
+ \mu_u=\sum_{j=1}^\infty a_j\delta_{\lambda_j},
+ \qquad a_j\ge0,
+ \]
+则
+\[
+ u=\sum_{j=1}^\infty E_A(\{\lambda_j\})u
+\]
+在 Hilbert 空间范数下收敛，因为尾项范数平方正是对应原子质量的尾和。每个非零向量
+$E_A(\{\lambda_j\})u$ 都属于
+$\ker(A-\lambda_jI)$。因此纯点向量属于本征向量张成空间的闭包；反向包含由谱投影对本征向量的作用立即得到。所以
+\begin{equation}\label{eq:math-sl-pp-eigenvector-closure}
+ \mathcal H_{\mathrm{pp}}
+ =\overline{\operatorname{span}
+ \{\ker(A-\lambda I):\lambda\in\RR\}}.
+\end{equation}
+
+最后证明三类彼此正交。若 $u\in\mathcal H_{\mathrm{ac}}$、$v\in\mathcal H_{\mathrm{sc}}$，取 Lebesgue 零测集 $N$ 使
+$E_A(N)v=v$。绝对连续性给出 $E_A(N)u=0$，所以
+\[
+ \langle u,v\rangle
+ =\langle E_A(N)u,v\rangle=0.
+\]
+若 $u$ 为 pure point、$v$ 为连续型，则令 $D$ 为 $u$ 的至多可数原子集合，有
+$E_A(D)u=u$，而连续型向量满足 $E_A(D)v=0$，故同样正交。对任意 $u$，标量测度的 Lebesgue 分解把其原子部分、绝对连续部分和奇异连续部分支撑在互相可分离的 Borel 集上；施加对应谱投影便把 $u$ 唯一分解成上述三个正交分量。由此得到整个 Hilbert 空间的 pp/ac/sc 正交 reducing 分解。
+
+
+还必须区分\emph{点谱}、\emph{离散谱}与\emph{本质谱}。点谱 $\sigma_{\mathrm p}(A)$ 包含所有本征值，其中可能有嵌入连续谱的本征值，也可能有无限重本征值；离散谱 $\sigma_{\mathrm{disc}}(A)$ 指孤立且具有有限重数的本征值。前面采用的是 Fredholm 定义
+\[
+ \sigma_{\mathrm{ess}}(A)
+ =\{\lambda\in\RR:A-\lambda I\text{ 不是 Fredholm 算子}\}.
+\]
+对自伴算子，这一定义恰好等价于
+\begin{equation}\label{eq:math-sl-essential-equals-nondiscrete}
+ \sigma_{\mathrm{ess}}(A)
+ =\sigma(A)\setminus\sigma_{\mathrm{disc}}(A),
+\end{equation}
+但这个等价性需要证明，不能把两种定义直接混用。
+
+\begin{theorem}[Weyl 判据与本质谱的奇异序列判据]\label{thm:math-sl-weyl-sequence-criterion}
+设 $A=A^*$，$\lambda\in\RR$。则
+\begin{equation}\label{eq:math-sl-weyl-spectrum-criterion}
+ \lambda\in\sigma(A)
+ \quad\Longleftrightarrow\quad
+ \exists u_n\in\Dom(A):
+ \norm{u_n}=1,
+ \quad
+ \norm{(A-\lambda I)u_n}\to0.
+\end{equation}
+进一步，
+\begin{equation}\label{eq:math-sl-weyl-essential-criterion}
+ \lambda\in\sigma_{\mathrm{ess}}(A)
+ \quad\Longleftrightarrow\quad
+ \exists u_n\in\Dom(A):
+ \norm{u_n}=1,
+ \quad u_n\rightharpoonup0,
+ \quad
+ \norm{(A-\lambda I)u_n}\to0.
+\end{equation}
+满足后一条件的序列称为 singular Weyl sequence。它把“本质谱”从 Fredholm 语言翻译成可直接构造的近似本征态。
+\end{theorem}
+
+
+先证明\eqnrefs{eq:math-sl-weyl-spectrum-criterion}。若 $\lambda\in\rho(A)$，则
+\[
+ \norm{(A-\lambda)u}
+ \ge\norm{(A-\lambda)^{-1}}^{-1}\norm{u},
+\]
+所以不可能存在单位近似本征序列。反过来，若 $\lambda\in\sigma(A)$，则对每个 $\varepsilon>0$，局部谱投影
+\[
+ P_\varepsilon:=E_A((\lambda-\varepsilon,\lambda+\varepsilon))
+\]
+必非零；否则谱定理会给出
+$|A-\lambda|\ge\varepsilon I$，从而 $\lambda\in\rho(A)$。取单位向量
+$u_\varepsilon\in\Ran P_\varepsilon$。由于谱支撑落在有界区间，$u_\varepsilon\in\Dom(A)$，并且
+\[
+ \norm{(A-\lambda)u_\varepsilon}^2
+ =\int_{|x-\lambda|<\varepsilon}|x-\lambda|^2
+ \dd\mu_{u_\varepsilon}(x)
+ \le\varepsilon^2.
+\]
+令 $\varepsilon=1/n$ 即得普通 Weyl 序列。
+
+再证明本质谱版本。先观察一个局部有限秩判据：若存在 $\varepsilon>0$ 使 $P_\varepsilon$ 有限秩，则按 reducing 分解
+\[
+ \mathcal H=\Ran P_\varepsilon
+ \oplus\Ran(I-P_\varepsilon),
+\]
+在第二个子空间上有
+$|A-\lambda|\ge\varepsilon I$，故 $A-\lambda$ 在该部分有有界逆；在第一个有限维子空间上，核与余核都有限维、值域自动闭。因此 $A-\lambda$ Fredholm。于是
+\[
+ \lambda\in\sigma_{\mathrm{ess}}(A)
+ \quad\Longrightarrow\quad
+ \rank P_\varepsilon=\infty
+ \quad\forall\varepsilon>0.
+\]
+
+取 $P_n:=E_A((\lambda-1/n,\lambda+1/n))$。因为每个 $\Ran P_n$ 无限维，可以递归选取单位向量
+\[
+ u_n\in\Ran P_n,
+ \qquad
+ u_n\perp\operatorname{span}\{u_1,\ldots,u_{n-1}\}.
+\]
+于是 $\{u_n\}$ 正交，从而 $u_n\rightharpoonup0$；同时
+\[
+ \norm{(A-\lambda)u_n}\le\frac1n.
+\]
+这给出 singular Weyl sequence。
+
+反过来，若存在\eqnrefs{eq:math-sl-weyl-essential-criterion} 中的序列，却有某个
+$P_\varepsilon$ 有限秩，则有限秩算子是紧的，$u_n\rightharpoonup0$ 蕴含
+\[
+ \norm{P_\varepsilon u_n}\to0.
+\]
+而在补空间上，谱定理给出
+\[
+ \norm{(A-\lambda)(I-P_\varepsilon)u_n}
+ \ge\varepsilon\norm{(I-P_\varepsilon)u_n}.
+\]
+左端不超过 $\norm{(A-\lambda)u_n}\to0$，所以补空间分量也趋于零，与
+$\norm{u_n}=1$ 矛盾。故每个 $P_\varepsilon$ 都无限秩，因而 $A-\lambda$ 不可能 Fredholm，得到\eqnrefs{eq:math-sl-weyl-essential-criterion}。
+
+最后说明\eqnrefs{eq:math-sl-essential-equals-nondiscrete}。若 $\lambda$ 是孤立有限重本征值，则取足够小的 $\varepsilon$，$P_\varepsilon=E_A(\{\lambda\})$ 有限秩，所以 $\lambda\notin\sigma_{\mathrm{ess}}(A)$。反之，若 $\lambda\in\sigma(A)$ 但不在本质谱，则某个 $P_\varepsilon$ 有限秩；有限维限制的谱只有有限多个本征值，因此 $\lambda$ 必为有限重且可进一步缩小区间使其孤立。故 Fredholm 定义与“去掉离散谱”定义完全一致。
+
+
+若对某个 $z_0\in\rho(A)$，$R(z_0)=(A-z_0I)^{-1}$ 是紧算子，就称 $A$ 具有 compact resolvent；resolvent 恒等式说明此时对每个 $z\in\rho(A)$ 都紧。更一般地有：
+\begin{equation}\label{eq:math-sl-compact-resolvent-spectral-characterization}
+ A\text{ 有 compact resolvent}
+ \quad\Longleftrightarrow\quad
+ \sigma(A)\text{ 由有限重本征值组成，且在 }\RR\text{ 内无有限聚点}.
+\end{equation}
+因此 compact resolvent 自动推出 $\sigma_{\mathrm{ess}}(A)=\varnothing$。正则有限区间的 Sturm--Liouville 算子正属于这一类；在半直线或全线上，离散束缚态与绝对连续散射谱可以同时存在，某些更复杂系数还可能产生奇异连续部分。
+
+
+固定 $z_0\in\rho(A)$，记 $K=R(z_0)$。由 resolvent 是 $A$ 的 Borel 函数
+$R(z_0)=(A-z_0)^{-1}=\int(\lambda-z_0)^{-1}\dd E_A(\lambda)$，$K$ 与 $A$ 强交换
+（两者都是 $A$ 的 Borel 函数），因而 $K$ 仍为 normal 算子（$K^*=R(\overline{z_0})$ 与
+$K$ 交换）。若 $K$ 紧，由紧 normal 算子的谱定理，其非零谱只能由有限重本征值组成，
+且唯一可能的聚点是 $0$：即存在正交基 $\{f_n\}$ 使
+$Kf_n=\mu_n f_n$，$\mu_n\to0$（$|\mu_n|>0$ 时有限重）。
+
+\emph{正向：紧 resolvent $\Rightarrow$ 纯离散谱。}考虑谱映射
+\begin{equation*}
+ \sigma(K)\setminus\{0\}
+ =\Bigl\{\frac1{\lambda-z_0}:\lambda\in\sigma(A)\Bigr\},
+\end{equation*}
+其逆为 $\lambda=z_0+1/\mu$（由 Borel 函数演算 $A=z_0+K^{-1}$ 在 $K$ 非零谱上）。
+由该映射把 $A$ 的有限谱点与 $K$ 的非零谱点一一对应（重数保持），所以 $A$ 的谱只能由
+有限重本征值组成。若 $\{\lambda_n\}\subset\sigma(A)$ 不趋于无穷，则存在有界子列
+$\lambda_{n_k}\to\lambda^\ast\in\RR$（$\sigma(A)\subset\RR$ 因 $A$ 自伴），于是
+\begin{equation*}
+ \mu_{n_k}=\frac1{\lambda_{n_k}-z_0}
+ \longrightarrow\frac1{\lambda^\ast-z_0}\ne0,
+\end{equation*}
+（$z_0\notin\RR$ 保证 $\lambda^\ast-z_0\ne0$），即 $K$ 的非零谱有非零聚点，
+与紧算子谱定理矛盾。故 $|\lambda_n|\to\infty$，正向得证。
+
+\emph{反向：纯离散谱 $\Rightarrow$ 紧 resolvent。}反过来，假设 $\sigma(A)$ 只由
+有限重本征值组成，且在 $\RR$ 内无有限聚点。把不同谱点列为 $\{\lambda_j\}$。由谱测度
+支撑在 $\sigma(A)$ 上，
+\begin{equation*}
+ I=E_A(\sigma(A))=\sum_jE_A(\{\lambda_j\})
+\end{equation*}
+按强算子拓扑成立；每个 $E_A(\{\lambda_j\})$ 的值域正是有限维本征空间
+$\ker(A-\lambda_jI)$。因此这些本征空间自动完备，无需额外假设。按重数选择正交本征基
+$\{e_n\}$，对应本征值仍记 $\{\lambda_n\}$。由无有限聚点，重排后有
+$|\lambda_n|\to\infty$，于是
+\begin{equation*}
+ R(z_0)e_n=(A-z_0I)^{-1}e_n=\frac1{\lambda_n-z_0}e_n,
+ \qquad
+ \frac1{\lambda_n-z_0}\to0.
+\end{equation*}
+
+令 $P_N$ 为前 $N$ 个本征向量的投影，则 $R(z_0)P_N$ 是有限秩算子（值域至多 $N$ 维）。
+由 $\{e_n\}$ 是 $R(z_0)$ 的本征基，对
+$u\perp\operatorname{span}\{e_1,\ldots,e_N\}$、$\norm{u}=1$，
+\begin{equation*}
+ \norm{R(z_0)-R(z_0)P_N}
+ =\sup_{n>N}\frac1{|\lambda_n-z_0|}.
+\end{equation*}
+由 $|\lambda_n|\to\infty$，对任意 $\varepsilon>0$ 存在 $N_0$ 使 $n>N_0$ 时
+$|\lambda_n-z_0|>1/\varepsilon$，从而
+\begin{equation*}
+ \sup_{n>N}\frac1{|\lambda_n-z_0|}<\varepsilon,
+ \qquad N\ge N_0,
+\end{equation*}
+即 $\norm{R(z_0)-R(z_0)P_N}\to0$。因此 $R(z_0)$ 是有限秩算子的范数极限。由有限秩
+算子紧、紧算子在范数拓扑下闭（$\mathcal K$ 是 $\mathcal B$ 中闭理想），$R(z_0)$ 紧。
+这就得到\eqnrefs{eq:math-sl-compact-resolvent-spectral-characterization} 的完整等价。
+
+\emph{谐振子实例。}取 $A=-\dd^2/\dd x^2+x^2$ 于 $L^2(\RR)$（谐振子）。本征值
+$\lambda_n=2n+1$，$|\lambda_n|\to\infty$，故 resolvent 紧。验证：$R(z_0)$ 的
+本征值 $1/(2n+1-z_0)\to0$，有限秩逼近 $R(z_0)P_N$ 的误差
+$\sup_{n>N}1/|2n+1-z_0|\to0$。
+
+\emph{有界区域 Laplacian。}取 $A=-\Delta_D$ 于有界 $\Omega\subset\RR^d$。
+Rellich 紧嵌入给出 resolvent 紧，本征值满足 Weyl 渐近律
+$N(\lambda)\sim(2\pi)^{-d}\omega_d\,|\Omega|\,\lambda^{d/2}$
+（$\omega_d$ 单位球体积），即 $\lambda_n\sim C\,n^{2/d}\to\infty$。
+
+\emph{物理意义。}紧 resolvent $\Leftrightarrow$ 纯离散谱 $\Leftrightarrow$ 全部态为束缚态。
+量子系统中，离散本征值对应束缚态（波函数平方可积，粒子局域化），本征值趋于无穷
+反映能量量子化无上限。连续谱（如自由粒子 $[0,\infty)$）对应散射态，resolvent 非紧。
+紧 resolvent 判据把"离散谱"这一谱性质转化为"resolvent 紧"这一算子性质，后者可通过
+Rellich 嵌入等几何工具验证，无需先解本征方程。
+
+
+Green/resolvent 语言正好区分这些情况。孤立本征值对应 resolvent 的有限秩极点；绝对连续谱通常由 $R(\lambda\pm\ii0)$ 的非平凡边界值和 Stone 公式描述；奇异连续谱没有孤立极点，却仍由谱测度的奇异连续部分保留。
+
+当一般理论下降到正则有限区间时，compact resolvent 把谱积分化为离散级数。
+
+现在才把一般理论特化到 $I=(a,b)$ 两端正则的情形。设 $A$ 是任意自伴边界条件给出的实现，算子方程写成
+\begin{equation}\label{eq:math-sl-operator-eigenproblem}
+ AX=\lambda X,
+ \qquad X\in\Dom(A),
+\end{equation}
+等价于
+\begin{equation}\label{eq:math-sl-regular-eig}
+ -(pX')'+qX=\lambda wX.
+\end{equation}
+若强调具体微分实现，也可记
+\begin{equation}\label{eq:math-sl-A-regular}
+ AX=\tau X=\frac{1}{w}\bigl[-(pX')'+qX\bigr]
+\end{equation}
+并把自伴边界条件纳入 $\Dom(A)$。
+
+\begin{theorem}[正则 Sturm--Liouville 算子的谱结构]\label{thm:math-sl-regular-spectrum}
+在有限正则区间上，任意自伴 Sturm--Liouville 实现 $A$ 都下有界，并且其 resolvent 是紧算子。因此谱由实的孤立本征值组成，每个本征值重数有限，没有有限聚点；按重数排列后可写成
+\[
+ \lambda_1\le\lambda_2\le\cdots,
+ \qquad
+ \lambda_n\longrightarrow+\infty.
+\]
+对应本征函数在 $L^2_w(a,b)$ 中构成完备正交基。若边界条件进一步是分离的，则每个本征值均为单重，并满足 Sturm 振荡定理。
+\end{theorem}
+
+这里“完备”不是二阶常微分方程局部解空间为二维的后果，而是 compact resolvent 与自伴谱定理的后果；“单重”则额外使用分离边界条件。若采用周期等 coupled 自伴条件，可以出现二重本征值，所以两种结论必须分开。
+
+对分离边界条件，若 $X_m,X_n$ 对应不同本征值，自伴性给出
+\begin{equation}\label{eq:math-sl-orthogonality}
+ \langle X_m,X_n\rangle_w
+ =\int_a^bX_m(x)\overline{X_n(x)}w(x)\dd x=0
+ \qquad(m\neq n).
+\end{equation}
+若把本征函数按任意非零范数保留，则任意 $f\in L^2_w$ 都有
+\begin{equation}\label{eq:math-sl-SL-expansion}
+ f=\sum_{n=1}^\infty
+ \frac{\langle f,X_n\rangle_w}{\norm{X_n}_w^2}X_n
+\end{equation}
+在 $L^2_w$ 意义下收敛。逐点收敛、局部一致收敛或逐项微分都需要额外的函数正则性与边界相容条件，不能由 Hilbert 空间完备性自动推出。
+
+
+先说明为什么正则自伴实现不会向 $-\infty$ 产生无界谱。对 $y\in\Dom(A)$ 作一次积分分部，得到
+\[
+ \langle Ay,y\rangle_w
+ =\int_a^b\bigl(p|y'|^2+q|y|^2\bigr)\dd x
+ +\langle\Gamma_1y,\Gamma_0y\rangle_{\CC^2}.
+\]
+任意有限维自伴边界关系都可以在一个正交分解上写成
+\[
+ P\Gamma_0y=0,
+ \qquad
+ Q\Gamma_1y=H_{\partial}Q\Gamma_0y,
+ \qquad
+ Q=I-P,
+\]
+其中 $P$ 是正交投影，$H_{\partial}=H_{\partial}^*$ 作用在 $\Ran Q$ 上。由于 $P\Gamma_0y=0$，
+\[
+ \langle\Gamma_1y,\Gamma_0y\rangle
+ =\langle H_{\partial}Q\Gamma_0y,Q\Gamma_0y\rangle
+ \ge-\norm{H_{\partial}}\,\norm{\Gamma_0y}^2.
+\]
+
+有限正则区间还满足带权一维 trace 估计：对每个 $\varepsilon>0$，存在 $C_\varepsilon$ 使
+\begin{equation}\label{eq:math-sl-weighted-trace-estimate}
+ \norm{y}_{L^\infty(a,b)}^2
+ \le\varepsilon\int_a^bp|y'|^2\dd x
+ +C_\varepsilon\norm{y}_w^2.
+\end{equation}
+其原因是 $p^{-1}\in L^1(a,b)$：把区间分成有限个小段，使每段上的 $\int p^{-1}$ 小于给定阈值；在每一小段内选一个由正权 $w$ 的加权平均控制的点 $x_j$，再用
+\[
+ |y(x)-y(x_j)|
+ \le
+ \left(\int_{J_j}p|y'|^2\dd x\right)^{1/2}
+ \left(\int_{J_j}p^{-1}\dd x\right)^{1/2}
+\]
+即可得到\eqnrefs{eq:math-sl-weighted-trace-estimate}。记 $q_-(x):=\max\{-q(x),0\}$。于是
+\[
+ \int_a^b q|y|^2\dd x
+ \ge-\norm{q_-}_{L^1}\norm{y}_{L^\infty}^2,
+\]
+而边界项同样由 $|y(a)|^2+|y(b)|^2\le2\norm{y}_{L^\infty}^2$ 控制。选取足够小的 $\varepsilon$ 吸收导数能量，便得到某个常数 $C$ 使
+\[
+ \langle Ay,y\rangle_w\ge-C\norm{y}_w^2.
+\]
+这给出正则自伴实现的下半有界性。
+
+再证明 resolvent 紧性。取任意 $z_0\in\rho(A)$。有限正则区间上，基本矩阵\eqnrefs{eq:math-sl-fundamental-matrix} 连续；一般 coupled Green 核\eqnrefs{eq:math-sl-green-coupled-matrix} 因而在两个闭三角区域上有界，并在对角线连续。因此 $G_{z_0}(x,\xi)$ 在 $[a,b]^2$ 上有界。又因为 $w\in L^1(a,b)$，
+\[
+ \int_a^b\int_a^b
+ |G_{z_0}(x,\xi)|^2w(x)w(\xi)\dd x\dd\xi<\infty.
+\]
+平方可积核定义的 $L^2_w$ 积分算子是 Hilbert--Schmidt 算子，因此 $R(z_0)$ 属于 Hilbert--Schmidt 类；Hilbert--Schmidt 算子必为紧算子。
+
+由 $A=A^*$，
+\[
+ R(z_0)^*=R(\overline{z_0}),
+\]
+并由 resolvent 恒等式可知 $R(z_0)$ 与 $R(\overline{z_0})$ 对易，所以 $R(z_0)$ 是紧正常算子。紧正常算子的谱定理给出由其非零本征向量与零空间共同构成的完备正交分解。这里 $R(z_0)=(A-z_0)^{-1}$ 是单射，所以 $\ker R(z_0)=\{0\}$；同时 $\Ran R(z_0)=\Dom(A)$ 在 $\mathcal H$ 中稠密。因此不需要额外的零本征空间，非零本征向量本身已经完备。若
+\[
+ R(z_0)X=\mu X,\qquad \mu\neq0,
+\]
+则
+\[
+ (A-z_0)^{-1}X=\mu X
+ \quad\Longrightarrow\quad
+ AX=\left(z_0+\mu^{-1}\right)X.
+\]
+反过来，$AX=\lambda X$ 蕴含 $R(z_0)X=(\lambda-z_0)^{-1}X$。因此 $A$ 与 $R(z_0)$ 拥有同一组本征向量，compact resolvent 的谱定理便给出 $A$ 的离散谱和完备性。由于前面已经证明 $A$ 下有界，本征值序列不可能向 $-\infty$ 逃逸，所以唯一可能的无界聚集方向是 $+\infty$。
+
+若边界条件分离，固定一个 $\lambda$ 后，满足左端边界条件的齐次解空间是一维。两个本征函数都必须属于这同一维空间，所以它们线性相关；右端条件只筛选允许的 $\lambda$，不能增加第二个线性无关本征函数。这才给出分离情形的单重性。
+\end{derivation}
+
+在纯离散情形，谱表示还可直接读出 resolvent 极点、留数与变分结构。
+
+正则紧区间的谱测度纯原子，因此 resolvent 核的谱表示为
+\begin{equation}\label{eq:math-sl-spectral-green}
+ G_z(x,\xi)
+ =\sum_n
+ \frac{X_n(x)\overline{X_n(\xi)}}{(\lambda_n-z)\norm{X_n}_w^2}.
+\end{equation}
+这里的等式首先应理解为 Hilbert--Schmidt 核在
+$L^2((a,b)^2,w(x)w(\xi)\dd x\dd\xi)$ 中的收敛；在系数与边界数据具有更高正则性时，才可进一步讨论逐点或局部一致收敛。对重本征值，应对该本征空间的一组正交基求和。若 $\lambda_n$ 为单本征值，则
+\begin{equation}\label{eq:math-sl-residue-formula}
+ \Res_{z=\lambda_n}G_z(x,\xi)
+ =-\frac{X_n(x)\overline{X_n(\xi)}}{\norm{X_n}_w^2}.
+\end{equation}
+这正是 Riesz 投影\eqnrefs{eq:math-sl-riesz-projection} 的坐标核版本。Green 核的极点并不是额外的“特征方程技巧”，而是离散谱投影在 resolvent 中的解析表现。
+
+在齐次 Dirichlet 条件下，积分分部没有剩余端点能量，Rayleigh 商为
+\begin{equation}\label{eq:math-sl-rayleigh-dirichlet}
+ \mathscr R[X]
+ =\frac{\displaystyle\int_a^b\bigl(p|X'|^2+q|X|^2\bigr)\dd x}
+ {\displaystyle\int_a^b w|X|^2\dd x}.
+\end{equation}
+若该自伴实现半有界，则最低本征值由相应闭二次型的 min--max 原理得到。一般 Robin 或 coupled 条件需要把与该自伴扩张对应的边界二次型一起纳入，不能无条件沿用\eqnrefs{eq:math-sl-rayleigh-dirichlet}。
+
+若 $\lambda_n$ 是正则紧区间上的本征值，非齐次问题
+\[
+ (A-\lambda_n)y=g
+\]
+的 Fredholm 可解条件是 $g\perp\ker(A-\lambda_n)$。对未除权的源项 $f=wg$，若本征值单且本征函数为 $X_n$，这等价于
+\begin{equation}\label{eq:math-sl-fredholm-regular}
+ \int_a^b f(x)\overline{X_n(x)}\dd x=0.
+\end{equation}
+若重数大于一，则必须对本征空间中的每个基向量同时满足这一条件。
+
+接下来考察谱演算给出的含时传播。
+
+含时问题仍从谱演算给出的精确传播子开始，而不是先假设离散模态。
+
+含时问题最一般的起点不是先假设本征函数离散，而是直接对谱变量上的标量传播因子做函数演算。对任意自伴 $A$，
+\[
+ U(t):=\ee^{-\ii tA}
+ =\int_{\RR}\ee^{-\ii t\lambda}\dd E_A(\lambda)
+\]
+构成强连续酉群，满足 $U(t+s)=U(t)U(s)$、$U(t)^*=U(-t)$。Stone 定理在这里给出的生成元正是 $-\ii A$：对且仅对 $u\in\Dom(A)$，强极限
+\[
+ \lim_{t\to0}\frac{U(t)u-u}{t}=-\ii Au
+\]
+存在。若 $A$ 是物理 Hamiltonian，则时间因子改为 $\ee^{-\ii tA/\hbar}$，生成元相应为 $-\ii A/\hbar$。这就是离散能级相位因子与连续谱 Fourier 相位因子的共同母式。
+
+\begin{derivation}[时间演化理论：从 Stone 定理经谱方程到 RAGE 逸散定理]
+先设 $u\in\Dom(A)$。由无界谱定理，
+\[
+ \int_{\RR}\lambda^2\dd\mu_u(\lambda)<\infty.
+\]
+谱表示下，差商对应标量函数
+\[
+ q_t(\lambda):=\frac{\ee^{-\ii t\lambda}-1}{t}.
+\]
+对每个 $\lambda$，$q_t(\lambda)\to-\ii\lambda$；并且由
+$|\ee^{-\ii x}-1|\le|x|$，有
+\[
+ |q_t(\lambda)|\le|\lambda|.
+\]
+所以
+\[
+ |q_t(\lambda)+\ii\lambda|^2\le4\lambda^2,
+\]
+右端对 $\mu_u$ 可积。支配收敛给出
+\begin{align*}
+ \norm{\frac{U(t)u-u}{t}+\ii Au}^2
+ &=\int_{\RR}|q_t(\lambda)+\ii\lambda|^2
+ \dd\mu_u(\lambda)
+ \longrightarrow0.
+\end{align*}
+因此 $u\in\Dom(A)$ 足以保证强导数存在，并且导数等于 $-\ii Au$。
+
+反过来，假设差商在 $t\to0$ 时于 $\mathcal H$ 中强收敛。强收敛蕴含其范数在某个零邻域内有界：存在 $C$ 使
+\[
+ \norm{\frac{U(t)u-u}{t}}^2
+ =\int_{\RR}
+ \frac{4\sin^2(t\lambda/2)}{t^2}
+ \dd\mu_u(\lambda)
+ \le C^2.
+\]
+取任意序列 $t_n\to0$。对每个固定 $\lambda$，被积函数趋于 $\lambda^2$。Fatou 引理于是给出
+\[
+ \int_{\RR}\lambda^2\dd\mu_u(\lambda)
+ \le\liminf_{n\to\infty}
+ \int_{\RR}
+ \frac{4\sin^2(t_n\lambda/2)}{t_n^2}
+ \dd\mu_u(\lambda)
+ \le C^2<\infty.
+\]
+故 $u\in\Dom(A)$。结合正向证明，得到严格的等价关系
+\begin{equation}\label{eq:math-sl-stone-generator-domain}
+ u\in\Dom(A)
+ \quad\Longleftrightarrow\quad
+ \lim_{t\to0}\frac{\ee^{-\ii tA}u-u}{t}
+ \text{ 在 }\mathcal H\text{ 中存在},
+\end{equation}
+并且该极限必为 $-\ii Au$。这同时解释了为什么生成元的定义域不是整个 Hilbert 空间：它恰好由谱变量的二阶矩有限性控制。
+
+
+对耗散型方程，需要 $A$ 至少下有界。若 $A\ge \lambda_* I$，其中 $\lambda_*\in\RR$，则对 $t\ge0$ 定义
+\[
+ \ee^{-tA}=\int_{\RR}\ee^{-t\lambda}\dd E_A(\lambda),
+ \qquad
+ \norm{\ee^{-tA}}
+ =\ee^{-t\inf\sigma(A)}\le\ee^{-t\lambda_*}.
+\]
+只有在 $\lambda_*=\inf\sigma(A)$ 时最后一个不等式才取等号。由谱测度上的支配收敛，$t\mapsto\ee^{-tA}u$ 对每个 $u\in\mathcal H$ 强连续；其生成元是 $-A$，定义域恰为 $\Dom(A)$。
+于是对 $u_0\in\mathcal H$ 与
+$F\in L^1_{\mathrm{loc}}([0,\infty);\mathcal H)$，抽象 Cauchy 问题
+\begin{equation}\label{eq:math-sl-first-order-abstract}
+ u_t+Au=F(t),\qquad u(0)=u_0
+\end{equation}
+的 mild solution 为
+\begin{equation}\label{eq:math-sl-duhamel-semigroup}
+ u(t)=\ee^{-tA}u_0+
+ \int_0^t\ee^{-(t-s)A}F(s)\dd s.
+\end{equation}
+这里的积分是 Bochner 积分，也就是以 Hilbert 空间范数定义的向量值 Lebesgue 积分；$F\in L^1([0,T];\mathcal H)$ 已足以保证它存在。把满足\eqnrefs{eq:math-sl-duhamel-semigroup} 的连续函数定义为 mild solution，则该公式先于任何模态展开成立，并且在 $C([0,T];\mathcal H)$ 中给出唯一 mild solution。若 $u_0\in\Dom(A)$，并且例如 $F\in W^{1,1}([0,T];\mathcal H)$，则右端具有足够时间正则性，可作强导数并恢复方程本身；更弱的强解条件也可由半群理论给出。没有这些额外条件时，不应把 mild solution 的积分公式误写成逐点可微的经典解。
+
+对二阶抽象方程不必一开始假设非负。先只要求 $A$ 下半有界，$A\ge\lambda_*I$：
+\begin{equation}\label{eq:math-sl-second-order-abstract}
+ u_{tt}+Au=F(t),\qquad u(0)=u_0,\quad u_t(0)=u_1.
+\end{equation}
+对每个固定 $t$，在 $[\lambda_*,\infty)$ 上定义两个实 Borel 函数
+\begin{equation}\label{eq:math-sl-lower-bounded-wave-scalars}
+ c_t(\lambda)=
+ \begin{cases}
+ \cos(t\sqrt\lambda),&\lambda>0,\\
+ 1,&\lambda=0,\\
+ \cosh(t\sqrt{-\lambda}),&\lambda<0,
+ \end{cases}
+ \qquad
+ s_t(\lambda)=
+ \begin{cases}
+ \dfrac{\sin(t\sqrt\lambda)}{\sqrt\lambda},&\lambda>0,\\[1ex]
+ t,&\lambda=0,\\[1ex]
+ \dfrac{\sinh(t\sqrt{-\lambda})}{\sqrt{-\lambda}},&\lambda<0.
+ \end{cases}
+\end{equation}
+负谱只位于有限区间 $[\lambda_*,0)$，所以对固定 $t$，$c_t,s_t$ 在整个 $\sigma(A)$ 上仍有界。定义
+\[
+ \mathcal C_A(t)=c_t(A),\qquad \mathcal S_A(t)=s_t(A).
+\]
+于是对 $u_0,u_1\in\mathcal H$ 与
+$F\in L^1_{\mathrm{loc}}([0,\infty);\mathcal H)$，mild 解的精确表示仍为
+\begin{equation}\label{eq:math-sl-wave-cosine-formula}
+ u(t)=\mathcal C_A(t)u_0+\mathcal S_A(t)u_1+
+ \int_0^t\mathcal S_A(t-s)F(s)\dd s.
+\end{equation}
+当进一步有 $A\ge0$ 时，才出现正定的标准能量空间。此时“能量解”具体指
+\[
+ u\in C\bigl([0,T];\Dom(A^{1/2})\bigr)
+ \cap C^1([0,T];\mathcal H),
+\]
+并以弱意义满足二阶方程；$\Dom(A^{1/2})$ 取 graph norm。对足够正则的强解，取内积并使用 $A=A^*\ge0$，可得到不依赖谱型的能量恒等式
+\begin{equation}\label{eq:math-sl-wave-energy-balance}
+ \frac{\dd}{\dd t}\,
+ \frac12\left(\norm{u_t(t)}^2+\norm{A^{1/2}u(t)}^2\right)
+ =\Re\langle F(t),u_t(t)\rangle.
+\end{equation}
+因此 $F=0$ 时能量严格守恒。这个结论与模态是否离散无关；其本质仍是自伴性把 $\langle Au,u_t\rangle$ 识别为 $\frac12\partial_t\norm{A^{1/2}u}^2$。
+
+更一般的常阻尼问题若满足 $A\ge \lambda_*I$，则对每个固定 $t$，下面的标量传播因子在 $\lambda\in\sigma(A)\subset[\lambda_*,\infty)$ 上有界，从而仍可直接作 Borel 函数演算。考虑
+\[
+ u_{tt}+b u_t+Au=F(t),\qquad b\in\RR.
+\]
+公式在任意实 $b$ 下成立；只有 $b\ge0$ 时才具有耗散“阻尼”的物理含义。若同时 $A\ge0$，强解满足
+\begin{equation}\label{eq:math-sl-damped-energy-balance}
+ \frac{\dd}{\dd t}\,
+ \frac12\left(\norm{u_t}^2+\norm{A^{1/2}u}^2\right)
+ =-b\norm{u_t}^2+\Re\langle F,u_t\rangle.
+\end{equation}
+因此 $F=0$、$b>0$ 时总能量单调不增，而 $b<0$ 对应反阻尼增长。
+先在标量谱参数上定义
+\begin{align}
+ \Psi_\lambda''+b\Psi_\lambda'+\lambda\Psi_\lambda&=0,
+ &\Psi_\lambda(0)&=0,&\Psi_\lambda'(0)&=1,
+ \label{eq:math-sl-psi-lambda-def}\\
+ \Phi_\lambda''+b\Phi_\lambda'+\lambda\Phi_\lambda&=0,
+ &\Phi_\lambda(0)&=1,&\Phi_\lambda'(0)&=0.
+ \label{eq:math-sl-phi-lambda-def}
+\end{align}
+再通过 Borel 函数演算定义 $\Phi_A(t)$ 与 $\Psi_A(t)$。于是
+\begin{equation}\label{eq:math-sl-abstract-second-order-formal}
+ u(t)=\Phi_A(t)u_0+\Psi_A(t)u_1+
+ \int_0^t\Psi_A(t-s)F(s)\dd s.
+\end{equation}
+当 $b^2\neq4\lambda$ 时，令
+\[
+ r_\pm(\lambda)=\frac{-b\pm\sqrt{b^2-4\lambda}}{2},
+\]
+则
+\begin{equation}\label{eq:math-sl-Phi-Psi-explicit}
+ \Psi_\lambda(t)=\frac{\ee^{r_+t}-\ee^{r_-t}}{r_+-r_-},
+ \qquad
+ \Phi_\lambda(t)=\frac{r_+\ee^{r_-t}-r_-\ee^{r_+t}}{r_+-r_-},
+\end{equation}
+在临界点 $b^2=4\lambda$，连续极限为
+\[
+ \Psi_\lambda(t)=t\ee^{-bt/2},
+ \qquad
+ \Phi_\lambda(t)=\left(1+\frac{bt}{2}\right)\ee^{-bt/2}.
+\]
+因此 $\Phi_A(t)$、$\Psi_A(t)$ 在整个谱上由同一组 Borel 函数定义，不要求谱离散，也不需要把欠阻尼、临界阻尼和过阻尼人为拆成三套算子公式。
+
+
+谱演算的核心计算可以直接在每个实谱参数 $\lambda$ 上完成，再由投影值测度重组。先看一阶齐次方程。标量初值问题
+\[
+ \partial_t v(t,\lambda)+\lambda v(t,\lambda)=0,
+ \qquad
+ v(0,\lambda)=1
+\]
+给出 $v(t,\lambda)=\ee^{-t\lambda}$。因此对 $u_0\in\mathcal H$，
+\[
+ u(t)=\int_{\RR}\ee^{-t\lambda}\dd E_A(\lambda)u_0
+ =\ee^{-tA}u_0.
+\]
+若 $F\in L^1_{\mathrm{loc}}([0,\infty);\mathcal H)$，标量变参数公式为
+\[
+ v(t,\lambda)
+ =\ee^{-t\lambda}v_0(\lambda)
+ +\int_0^t\ee^{-(t-s)\lambda}f(s,\lambda)\dd s.
+\]
+对下有界 $A$，$\ee^{-(t-s)\lambda}$ 在谱上一致有界，所以可以用 Bochner 积分与谱积分的有界性互换次序，从而得到\eqnrefs{eq:math-sl-duhamel-semigroup}。
+
+对一般下半有界 $A\ge\lambda_*I$ 的二阶问题，每个谱参数满足
+\[
+ \partial_t^2v+\lambda v=f(t,\lambda).
+\]
+两个基本标量解正是\eqnrefs{eq:math-sl-lower-bounded-wave-scalars} 中的 $c_t(\lambda),s_t(\lambda)$；$\lambda<0$ 时方程从振荡型变为双曲增长型，但仍是同一个整函数初值问题的解析延拓。它们满足
+\[
+ c_\lambda(0)=1,
+ \quad c_\lambda'(0)=0,
+ \qquad
+ s_\lambda(0)=0,
+ \quad s_\lambda'(0)=1.
+\]
+于是
+\[
+ v(t,\lambda)=c_\lambda(t)v_0(\lambda)
+ +s_\lambda(t)v_1(\lambda)
+ +\int_0^ts_\lambda(t-s)f(s,\lambda)\dd s.
+\]
+由于负谱被下界 $\lambda_*$ 截断，固定 $t$ 时 $c_t,s_t$ 在 $[\lambda_*,\infty)$ 上有界，故可直接提升为 $\mathcal C_A(t)$ 与 $\mathcal S_A(t)$，得到\eqnrefs{eq:math-sl-wave-cosine-formula}。零模处的连续延拓不是记号约定，而是保证 $\mathcal S_A(t)$ 为单一有界 Borel 函数的必要一步；只有讨论正定能量时才进一步限制 $A\ge0$。
+
+常阻尼情形同样从标量初值问题出发。齐次特征多项式为
+\[
+ r^2+br+\lambda=0,
+\]
+根为 $r_\pm(\lambda)$。用初值条件解线性方程
+\[
+ A_++A_-=1,
+ \qquad
+ r_+A_++r_-A_-=0
+\]
+得到
+\[
+ A_+=-\frac{r_-}{r_+-r_-},
+ \qquad
+ A_-=\frac{r_+}{r_+-r_-},
+\]
+所以
+\[
+ \Phi_\lambda(t)
+ =\frac{r_+\ee^{r_-t}-r_-\ee^{r_+t}}{r_+-r_-}.
+\]
+同理，由 $B_++B_-=0$、$r_+B_++r_-B_-=1$ 得
+\[
+ \Psi_\lambda(t)
+ =\frac{\ee^{r_+t}-\ee^{r_-t}}{r_+-r_-}.
+\]
+当 $r_+=r_-=-b/2$ 时对根差取极限，正好得到临界阻尼公式。最后把 $\Phi_\lambda(t),\Psi_\lambda(t)$ 通过 Borel 函数演算作用到 $A$，便得到\eqnrefs{eq:math-sl-abstract-second-order-formal}。因此“逐模态求 ODE”不是另一个方法，而只是谱演算在纯点谱时的坐标化。
+
+
+离散模态展开只是这一谱积分在纯点谱情形的特例。
+
+若 $A$ 来自正则有限区间，取本征函数 $X_n$，把
+\begin{equation}\label{eq:math-sl-expand-all}
+ u(t)=\sum_n a_n(t)X_n,
+ \qquad
+ F(t)=\sum_nF_n(t)X_n
+\end{equation}
+代入谱演算，只是把投影值测度的原子积分写成求和。对一阶问题得到
+\begin{equation}\label{eq:math-sl-mode-first-order}
+ a_n'+\lambda_n a_n=F_n(t),
+\end{equation}
+从而
+\begin{equation}\label{eq:math-sl-mode-first-order-solution}
+ a_n(t)=\ee^{-\lambda_n t}a_n(0)
+ +\int_0^t\ee^{-\lambda_n(t-s)}F_n(s)\dd s,
+\end{equation}
+以及
+\begin{equation}\label{eq:math-sl-first-order-series-solution}
+ u(t)=\sum_n
+ \left[\ee^{-\lambda_n t}u_{0,n}
+ +\int_0^t\ee^{-\lambda_n(t-s)}F_n(s)\dd s\right]X_n.
+\end{equation}
+
+对阻尼二阶问题，逐模方程为
+\begin{equation}\label{eq:math-sl-mode-second-order}
+ a_n''+ba_n'+\lambda_n a_n=F_n(t),
+\end{equation}
+其解为
+\begin{equation}\label{eq:math-sl-mode-second-order-solution}
+ a_n(t)=\Phi_{\lambda_n}(t)u_{0,n}
+ +\Psi_{\lambda_n}(t)u_{1,n}
+ +\int_0^t\Psi_{\lambda_n}(t-s)F_n(s)\dd s,
+\end{equation}
+于是
+\begin{equation}\label{eq:math-sl-second-order-series-solution}
+ u(t)=\sum_n
+ \left[\Phi_{\lambda_n}(t)u_{0,n}
+ +\Psi_{\lambda_n}(t)u_{1,n}
+ +\int_0^t\Psi_{\lambda_n}(t-s)F_n(s)\dd s\right]X_n.
+\end{equation}
+连续谱情形没有新的动力学原则；上述离散求和应统一写回对 $E_A(\lambda)$ 的谱积分。
+
+
+不同谱型还直接控制长期动力学。
+
+谱积分不仅给出某个固定时刻的传播子，还把谱型直接翻译成长期动力学。记
+\[
+ \mathcal H_{\mathrm{pp}}
+ :=\overline{\operatorname{span}\{\ker(A-\lambda I):\lambda\in\RR\}},
+ \qquad
+ \mathcal H_{\mathrm c}:=\mathcal H_{\mathrm{pp}}^{\perp},
+\]
+相应正交投影记为 $P_{\mathrm{pp}},P_{\mathrm c}$。这里的 continuous subspace 同时包含绝对连续谱和奇异连续谱，不能把它直接等同于 $\mathcal H_{\mathrm{ac}}$。
+
+若 $u\in\mathcal H_{\mathrm{pp}}$，轨道
+\[
+ \{\ee^{-\ii tA}u:t\in\RR\}
+\]
+在 $\mathcal H$ 中相对紧。若 $u\in\mathcal H_{\mathrm c}$，则对每个紧算子 $K\in\mathcal K(\mathcal H)$ 有 RAGE 型结论
+\begin{equation}\label{eq:math-sl-rage-cesaro}
+ \lim_{T\to\infty}\frac1T\int_0^T
+ \norm{K\ee^{-\ii tA}u}^2\dd t=0.
+\end{equation}
+因此连续谱的普适动力学结论是“任意紧观测下的时间平均局域质量逸散”，而不是未经条件限定的逐时刻衰减。
+
+
+先取秩一算子
+\[
+ Kx=\langle x,\psi\rangle\phi.
+\]
+则
+\[
+ \norm{K\ee^{-\ii tA}u}^2
+ =\norm{\phi}^2
+ \left|\langle\ee^{-\ii tA}u,\psi\rangle\right|^2.
+\]
+由谱定理，令复测度
+\[
+ \mu_{u,\psi}(B):=\langle E_A(B)u,\psi\rangle,
+\]
+便有
+\[
+ \langle\ee^{-\ii tA}u,\psi\rangle
+ =\int_{\RR}\ee^{-\ii t\lambda}\dd\mu_{u,\psi}(\lambda).
+\]
+于是
+\[
+\begin{aligned}
+ &\frac1T\int_0^T
+ \left|\int\ee^{-\ii t\lambda}\dd\mu(\lambda)\right|^2\dd t\\
+ &=\iint_{\RR^2}
+ \left[\frac1T\int_0^T\ee^{-\ii t(\lambda-\nu)}\dd t\right]
+ \dd\mu(\lambda)\dd\overline\mu(\nu).
+\end{aligned}
+\]
+方括号内的核绝对值不超过 $1$，并且当 $T\to\infty$ 时在 $\lambda\ne\nu$ 处趋于 $0$，在对角线 $\lambda=\nu$ 上恒等于 $1$。对有限复测度的全变差使用支配收敛，得到 Wiener 公式
+\begin{equation}\label{eq:math-sl-wiener-atoms}
+ \lim_{T\to\infty}\frac1T\int_0^T
+ |\widehat\mu(t)|^2\dd t
+ =\sum_{\lambda\in\RR}|\mu(\{\lambda\})|^2.
+\end{equation}
+若 $u\in\mathcal H_{\mathrm c}$，则
+\[
+ \mu_{u,\psi}(\{\lambda\})
+ =\langle E_A(\{\lambda\})u,\psi\rangle=0
+\]
+对每个 $\lambda$ 成立，因为 $E_A(\{\lambda\})u$ 正是 $u$ 在本征空间 $\ker(A-\lambda)$ 上的投影。因此\eqnrefs{eq:math-sl-wiener-atoms} 的右端为零，秩一 $K$ 满足\eqnrefs{eq:math-sl-rage-cesaro}。有限秩算子可写成有限个秩一算子之和 $K=\sum_{j=1}^N K_j$。由 Cauchy--Schwarz，
+\[
+ \norm{K\ee^{-\ii tA}u}^2
+ \le N\sum_{j=1}^N
+ \norm{K_j\ee^{-\ii tA}u}^2.
+\]
+对时间平均后逐项使用秩一结论，右端趋于零，所以任意有限秩 $K$ 都满足\eqnrefs{eq:math-sl-rage-cesaro}。
+
+最后令 $K$ 为任意紧算子。存在有限秩 $K_N$ 使 $\norm{K-K_N}\to0$。酉性给出一致估计
+\[
+ \norm{(K-K_N)\ee^{-\ii tA}u}
+ \le\norm{K-K_N}\norm{u},
+\]
+先取 $T\to\infty$ 再取 $N\to\infty$，得到\eqnrefs{eq:math-sl-rage-cesaro}。
+
+纯点情形则反过来使用有限维逼近。给定 $u\in\mathcal H_{\mathrm{pp}}$ 与 $\varepsilon>0$，可取有限个本征向量的线性组合 $u_N$ 使
+$\norm{u-u_N}<\varepsilon$。$u_N$ 的轨道位于有限维空间中的有界环面，闭包紧；而
+\[
+ \sup_t\norm{\ee^{-\ii tA}u-\ee^{-\ii tA}u_N}
+ =\norm{u-u_N}<\varepsilon.
+\]
+因此原轨道全有界，其闭包紧。
+
+
+绝对连续谱给出比 Ces\`aro 平均更强的结论。若 $u\in\mathcal H_{\mathrm{ac}}$，则对任意 $v\in\mathcal H$，复测度 $\mu_{u,v}$ 对 Lebesgue 测度绝对连续，可写
+\[
+ \dd\mu_{u,v}(\lambda)=g_{u,v}(\lambda)\dd\lambda,
+ \qquad g_{u,v}\in L^1(\RR).
+\]
+Riemann--Lebesgue 引理于是给出
+\begin{equation}\label{eq:math-sl-ac-weak-decay}
+ \langle\ee^{-\ii tA}u,v\rangle
+ =\int_{\RR}\ee^{-\ii t\lambda}g_{u,v}(\lambda)\dd\lambda
+ \longrightarrow0,
+ \qquad |t|\to\infty.
+\end{equation}
+所以绝对连续子空间上的传播弱收敛到零。奇异连续谱一般不能由同一论证得到逐时刻弱衰减；这正是 RAGE 只给时间平均结论的原因。
+
+若进一步 $g_{u,v}\in W^{m,1}(\RR)$，则 $g_{u,v},g'_{u,v},\ldots,g_{u,v}^{(m-1)}$ 都有趋于零的绝对连续代表，因此反复积分分部没有无穷远边界项，并给出定量衰减
+\begin{equation}\label{eq:math-sl-ac-decay-rate}
+ |\langle\ee^{-\ii tA}u,v\rangle|
+ \le |t|^{-m}\norm{g_{u,v}^{(m)}}_{L^1},
+ \qquad t\ne0.
+\end{equation}
+这说明具体的长时幂律来自谱密度的正则性，而不是来自“连续谱”三个字本身。
+
+耗散半群的长期尺度则由谱隙控制。若 $A\ge0$，记 $P_0=E_A(\{0\})$，并令
+\[
+ \gamma_*:=\inf\bigl(\sigma(A)\setminus\{0\}\bigr)
+\]
+（当补空间非零时）。由精确函数演算范数\eqnrefs{eq:math-sl-functional-calculus-norm}，
+\begin{equation}\label{eq:math-sl-semigroup-gap}
+ \norm{\ee^{-tA}(I-P_0)}
+ =\ee^{-t\gamma_*},\qquad t\ge0,
+\end{equation}
+只要 $0$ 与其余谱之间确有正距离。反过来，若存在 $\gamma>0$、$C<\infty$ 使
+\[
+ \norm{\ee^{-tA}(I-P_0)}\le C\ee^{-\gamma t}
+ \qquad(t\ge0),
+\]
+则必有 $\sigma(A)\setminus\{0\}\subset[\gamma,\infty)$：否则取任意谱点 $0<\lambda<\gamma$，谱演算范数会产生 $\ee^{-t\lambda}$，与 $t\to\infty$ 时的估计矛盾。于是“指数回到平衡”与“零本征空间上方存在谱隙”是同一个谱事实的动力学表述。
+
+最后，resolvent 与热半群本身也不是两个独立工具。若 $A\ge\lambda_*I$ 且 $\Re s>-\lambda_*$，则 Bochner 积分在算子范数下收敛，并有
+\begin{equation}\label{eq:math-sl-semigroup-resolvent-laplace}
+ (A+sI)^{-1}
+ =\int_0^\infty\ee^{-st}\ee^{-tA}\dd t.
+\end{equation}
+因为谱变量上
+\[
+ \int_0^\infty\ee^{-t(s+\lambda)}\dd t=\frac1{s+\lambda},
+\]
+且 $\Re(s+\lambda)\ge\Re s+\lambda_*>0$ 提供统一可积控制，所以可以把标量 Laplace 积分直接提升为算子恒等式。下一小节的时间 Laplace 变换只是这条基本恒等式对带源初值问题的推广。
+
+时间演化与 resolvent 之间还可通过 Laplace 变换建立精确联系。
+
+Laplace--resolvent 连接并不限于一阶或二阶。设
+\[
+ P(\zeta)=\sum_{j=0}^m a_j\zeta^j,
+ \qquad a_m\ne0,
+\]
+是常系数时间算子多项式，考虑
+\begin{equation}\label{eq:math-sl-operator-pencil-time}
+ P(\partial_t)u(t)+Au(t)=F(t),
+ \qquad u^{(k)}(0)=u_k\quad(0\le k\le m-1).
+\end{equation}
+只要解和源项具有使 Laplace 变换存在的指数界，并且
+$-P(s)\in\rho(A)$，就有统一的 operator-pencil 公式
+\begin{equation}\label{eq:math-sl-operator-pencil-resolvent}
+ \widehat u(s)
+ =R(-P(s))
+ \left[
+ \widehat F(s)
+ +\sum_{j=1}^m a_j\sum_{k=0}^{j-1}
+ s^{j-1-k}u_k
+ \right].
+\end{equation}
+因此时间阶数改变时，空间谱理论并没有改变：所有差别都压缩进复平面上的标量映射 $s\mapsto-P(s)$ 与初值多项式。后面的一阶、波动和常阻尼公式分别是 $P(s)=s$、$P(s)=s^2$、$P(s)=s^2+bs$ 的代入。
+
+
+对 $j\ge1$，逐次积分分部得到 Laplace 变换的导数公式。基础情形 $j=1$：
+\[
+ \mathcal L[u'](s)=\int_0^\infty\ee^{-st}u'(t)\dd t
+ =[\ee^{-st}u(t)]_0^\infty+s\int_0^\infty\ee^{-st}u(t)\dd t
+ =s\widehat u(s)-u(0),
+\]
+其中边界项 $\ee^{-st}u(t)|_{t\to\infty}=0$ 由指数衰减假设保证。归纳步：若公式对 $j$ 成立，
+\[
+ \mathcal L[u^{(j+1)}](s)=s\,\mathcal L[u^{(j)}](s)-u^{(j)}(0)
+ =s^{j+1}\widehat u(s)-\sum_{k=0}^{j}s^{j-k}u_k,
+\]
+故一般公式
+\[
+ \mathcal L[u^{(j)}](s)
+ =s^j\widehat u(s)
+ -\sum_{k=0}^{j-1}s^{j-1-k}u_k.
+\]
+因此由 $P(\partial_t)=\sum_{j=0}^ma_j\partial_t^j$ 的线性，
+\[
+ \begin{aligned}
+ \mathcal L[P(\partial_t)u](s)
+ &=\sum_{j=0}^ma_j\mathcal L[u^{(j)}](s)\\
+ &=P(s)\widehat u(s)
+ -\sum_{j=1}^m a_j\sum_{k=0}^{j-1}s^{j-1-k}u_k,
+ \end{aligned}
+\]
+（$j=0$ 项 $a_0\widehat u(s)$ 已含于 $P(s)\widehat u(s)$）。将其代入
+\eqnrefs{eq:math-sl-operator-pencil-time} 即 $P(\partial_t)u+Au=F$ 的 Laplace 变换，
+得到
+\[
+ [A+P(s)I]\widehat u(s)
+ =\widehat F(s)
+ +\sum_{j=1}^m a_j\sum_{k=0}^{j-1}s^{j-1-k}u_k.
+\]
+而
+\[
+ A+P(s)I=A-[-P(s)]I.
+\]
+只要 $-P(s)\in\rho(A)$，左边可逆，乘以
+$R(-P(s))=(A+P(s)I)^{-1}$ 就得到\eqnrefs{eq:math-sl-operator-pencil-resolvent}。
+整个推导没有要求 $A$ 具有离散谱，也没有要求 $A$ 与任何额外算子对易；这里的 pencil
+只有标量 $P(s)$ 乘单位算子，因此 resolvent 已经给出精确解。
+
+\emph{一阶特例。}取 $P(s)=s$（$m=1$，$a_1=1$，$a_0=0$），对应
+$\partial_tu+Au=F$，$u(0)=u_0$。公式给出
+$\widehat u(s)=(sI+A)^{-1}(u_0+\widehat F(s))$，即\eqnrefs{eq:math-sl-laplace-first-resolvent}。
+resolvent 条件 $-s\in\rho(A)$ 即 $\Re s>-\lambda_*$（$A\ge\lambda_*I$）。
+
+\emph{波动方程特例。}取 $P(s)=s^2$（$m=2$，$a_2=1$，$a_1=a_0=0$），对应
+$\partial_t^2u+Au=F$，$u(0)=u_0$，$u'(0)=u_1$。公式给出
+$\widehat u(s)=(s^2I+A)^{-1}(su_0+u_1+\widehat F(s))=R(-s^2)(su_0+u_1+\widehat F(s))$。
+resolvent 条件 $-s^2\in\rho(A)$：若 $A\ge0$ 则 $\Re s>0$ 即可（$-s^2$ 落在负实轴，
+属于 $\rho(A)$ 因 $\sigma(A)\subset[0,\infty)$）。
+
+\emph{常阻尼特例。}取 $P(s)=s^2+bs$（$m=2$，$a_2=1$，$a_1=b$，$a_0=0$），对应
+$\partial_t^2u+b\partial_tu+Au=F$。公式给出\eqnrefs{eq:math-sl-laplace-second-resolvent}。
+阻尼项 $b\partial_t$ 仅改变标量映射 $s\mapsto-s^2-bs$，空间算子 $A$ 不变。
+
+\emph{物理意义。}operator-pencil 公式把时间演化统一为 resolvent 在复参数
+$z=-P(s)$ 处的取值。时间阶数（一阶 Schrödinger、二阶波动、阻尼 Klein--Gordon 等）
+只影响标量 $P(s)$，空间谱理论不变。这说明 resolvent 是连接时间动力学与空间谱结构
+的普适桥梁：$\widehat u(s)$ 的奇点（$-P(s)\in\sigma(A)$）决定时间演化的指数模式，
+resolvent 的极点对应离散模式（束缚态衰减/振荡），支点对应连续模式（散射传播）。
+\end{derivation}
+
+对\eqnrefs{eq:math-sl-first-order-abstract} 作 Laplace 变换时，还必须先保证时间变换本身存在。若 $A\ge \lambda_*I$，并存在实数 $\sigma$ 使
+$\ee^{-\sigma t}F(t)\in L^1([0,\infty);\mathcal H)$，则由半群估计可在足够靠右的半平面逐项作 Bochner--Laplace 变换。取 $\Re s>\max\{\sigma,-\lambda_*\}$，有 $-s\in\rho(A)$，并且
+\[
+ \norm{(sI+A)^{-1}}\le\frac{1}{\lambda_*+\Re s}.
+\]
+于是
+\begin{equation}\label{eq:math-sl-laplace-first}
+ (sI+A)\widehat u(s)=u_0+\widehat F(s),
+\end{equation}
+所以
+\begin{equation}\label{eq:math-sl-laplace-first-resolvent}
+ \widehat u(s)=(sI+A)^{-1}\bigl(u_0+\widehat F(s)\bigr).
+\end{equation}
+若 $(sI+A)^{-1}$ 的 Green 核记为 $G_{-s}$，则
+\begin{equation}\label{eq:math-sl-laplace-first-kernel}
+ \widehat u(x,s)=\int_I
+ G_{-s}(x,\xi)\bigl(u_0(\xi)+\widehat F(\xi,s)\bigr)w(\xi)\dd\xi.
+\end{equation}
+这说明“时间 Laplace 变换”和“空间 Green 函数”其实通过同一个 resolvent 直接相接。
+
+对常阻尼二阶问题，若 $F$ 与由初值产生的解具有足以保证 Laplace 变换存在的指数界，则在满足后述 resolvent 条件的右半平面同理得到
+\begin{equation}\label{eq:math-sl-laplace-second}
+ (s^2+bs+A)\widehat u(s)=(s+b)u_0+u_1+\widehat F(s).
+\end{equation}
+只要
+\[
+ -s^2-bs\in\rho(A),
+\]
+就有
+\begin{equation}\label{eq:math-sl-laplace-second-resolvent}
+\begin{aligned}
+ \widehat u(s)
+ &=(s^2+bs+A)^{-1}\bigl((s+b)u_0+u_1+\widehat F(s)\bigr)\\
+ &=R(-s^2-bs)\bigl((s+b)u_0+u_1+\widehat F(s)\bigr).
+\end{aligned}
+\end{equation}
+因此积分核不是新的对象，而是同一 resolvent 核在复参数 $z=-s^2-bs$ 处的取值：
+\begin{equation}\label{eq:math-sl-laplace-second-kernel}
+ \widehat u(x,s)=\int_I G_{-s^2-bs}(x,\xi)
+ \bigl((s+b)u_0(\xi)+u_1(\xi)+\widehat F(\xi,s)\bigr)w(\xi)\dd\xi.
+\end{equation}
+
+若边界数据非齐次，则先用 lifting 把问题搬回固定算子定义域。
+
+非齐次边界数据也先从抽象定义域处理。设 $S$ 是闭对称算子，$\mathcal X=\Dom(S^*)$ 配 graph norm，并设
+\[
+ \mathcal B:\mathcal X\to\mathcal G
+\]
+是有界满射，使
+\[
+ \Dom(A)=\ker\mathcal B,
+ \qquad A=S^*|_{\ker\mathcal B}
+\]
+为固定的自伴扩张。因为 $\ker\mathcal B$ 在 Hilbert 空间 $\mathcal X$ 中闭，正交补
+$\mathcal X_1=(\ker\mathcal B)^{\perp_{\mathcal X}}$ 仍为 Hilbert 空间，而且
+$\mathcal B|_{\mathcal X_1}:\mathcal X_1\to\mathcal G$ 是有界双射。开映射定理因此给出一个有界 right inverse
+\begin{equation}\label{eq:math-sl-abstract-boundary-lifting}
+ L_{\mathcal B}:\mathcal G\to\mathcal X,
+ \qquad
+ \mathcal B L_{\mathcal B}=I_{\mathcal G}.
+\end{equation}
+这说明只要边界数据属于允许的 trace 空间，就可以线性、连续地选取 lifting，而不必在每个具体 ODE 中重新猜函数。
+
+\begin{derivation}[算子收敛与谱稳定性：从 strong/norm resolvent 到函数演算与 Riesz 投影]
+回忆 $\mathcal X=\Dom(S^*)$ 配 graph norm
+$\norm{u}_{\mathcal X}^2=\norm{u}_{\mathcal H}^2+\norm{S^*u}_{\mathcal H}^2$，
+$\mathcal B:\mathcal X\to\mathcal G$ 有界满射，$\Dom(A)=\ker\mathcal B$。
+因 $\ker\mathcal B$ 在 Hilbert 空间 $\mathcal X$ 中闭（$\mathcal B$ 连续故核闭），
+有正交分解
+\[
+ \mathcal X=\ker\mathcal B\oplus\mathcal X_1,
+ \qquad
+ \mathcal X_1=(\ker\mathcal B)^{\perp_{\mathcal X}}.
+\]
+$\mathcal X_1$ 作为闭子空间仍是 Hilbert 空间。
+
+\emph{限制映射的双射性。}若 $x\in\mathcal X_1$ 且 $\mathcal Bx=0$，则
+$x\in\ker\mathcal B\cap\mathcal X_1=\{0\}$（正交补与子空间仅交零），故限制映射
+$\mathcal B|_{\mathcal X_1}$ 单射。给定 $g\in\mathcal G$，由 $\mathcal B$ 满射可取
+$x\in\mathcal X$ 使 $\mathcal Bx=g$；正交分解 $x=x_0+x_1$，其中
+$x_0\in\ker\mathcal B$、$x_1\in\mathcal X_1$。由线性，
+$\mathcal Bx_1=\mathcal Bx-\mathcal Bx_0=g-0=g$，故限制映射也满射。
+
+\emph{开映射定理给出有界逆。}有界双射
+\[
+ \mathcal B|_{\mathcal X_1}:\mathcal X_1\to\mathcal G
+\]
+在两个 Banach 空间之间（$\mathcal X_1$ Hilbert 故 Banach，$\mathcal G$ 有限维或
+Hilbert 故 Banach）由开映射定理具有有界逆。定义
+\[
+ L_{\mathcal B}:=(\mathcal B|_{\mathcal X_1})^{-1},
+\]
+立即得到\eqnrefs{eq:math-sl-abstract-boundary-lifting}：
+$\mathcal BL_{\mathcal B}g=\mathcal B(\mathcal B|_{\mathcal X_1})^{-1}g=g$。
+$L_{\mathcal B}$ 有界且 $\norm{L_{\mathcal B}}=\norm{(\mathcal B|_{\mathcal X_1})^{-1}}<\infty$。
+
+\emph{时间依赖边界数据。}若边界数据随时间变化且
+$g\in W^{k,1}_{\mathrm{loc}}([0,\infty);\mathcal G)$，有界线性性还保证
+\[
+ \partial_t^jL_{\mathcal B}g(t)=L_{\mathcal B}\partial_t^jg(t),
+ \qquad j\le k,
+\]
+（有界线性算子与 Bochner 积分/弱导数可交换），所以时间导数产生的新体源项
+$\partial_t^j h_b=L_{\mathcal B}\partial_t^jg$ 也可以在固定自伴定义域中严格控制，
+其正则性完全由 $g$ 的正则性决定。
+
+\emph{非齐次 Robin 实例。}取 $S=-\dd^2/\dd x^2$ 于 $(0,\ell)$，Dirichlet 扩张
+$A_0$（$\Dom(A_0)=\{u\in H^2:u(0)=u(\ell)=0\}$）。边界映射
+$\mathcal B u=(u(0),u(\ell))$，$\mathcal G=\CC^2$。给定非齐次 Dirichlet 数据
+$g=(g_a,g_b)$，lifting $h_b=L_{\mathcal B}g$ 可取为线性函数
+$h_b(x)=g_a+(g_b-g_a)x/\ell$，满足 $h_b(0)=g_a$、$h_b(\ell)=g_b$。令 $v=y-h_b$，
+则 $v$ 满足齐次 Dirichlet 条件，源项 $\widetilde f=f-Lh_b+zwh_b$ 中
+$Lh_b=-h_b''=0$（线性函数二阶导为零），故 $\widetilde f=f+zh_b$。
+
+\emph{物理意义。}bounded lifting 把非齐次边界控制转化为体源项，使问题回到固定自伴
+定义域。这在边界控制理论中至关重要：通过边界输入驱动系统（如热源端温度控制、
+弦端位移驱动），lifting 将边界控制能量转化为内部源，再用 resolvent 或半群公式求解。
+有界性保证边界数据的连续依赖：小边界扰动产生小体源，系统响应稳定。
+
+
+非齐次边界条件不属于某个固定自伴算子的定义域，因此必须先把它们齐次化。考虑未除权的方程
+\begin{equation}\label{eq:math-sl-nonhom-bc-general}
+ Ly=zwy+f
+\end{equation}
+与分离边界数据
+\begin{equation}\label{eq:math-sl-nonhom-bc-general-2}
+ B_ay=g_a,\qquad B_by=g_b.
+\end{equation}
+选取一个足够正则的 lifting $h_b$，满足
+\begin{equation}\label{eq:math-sl-lifting-problem}
+ B_ah_b=g_a,\qquad B_bh_b=g_b,
+\end{equation}
+并令
+\begin{equation}\label{eq:math-sl-y-v-plus-w}
+ y=v+h_b.
+\end{equation}
+此时 $v$ 满足齐次自伴边界条件，而
+\begin{equation}\label{eq:math-sl-v-equation-after-lift}
+ Lv=zwv+\widetilde f,
+ \qquad
+ \widetilde f=f-Lh_b+zwh_b.
+\end{equation}
+这里使用的是微分表达式 $Lh_b$，而不是把不满足齐次边界条件的 $h_b$ 错当成 $\Dom(A)$ 中的向量。
+
+含时边界数据同理。若 $u=v+h_b(x,t)$，则一阶问题的新源项包含 $-\partial_t h_b-\tau h_b$，二阶问题则包含 $-\partial_t^2h_b-b\partial_t h_b-\tau h_b$；完成这一步以后，$v$ 才进入前面固定定义域的传播理论。
+
+
+接下来考察谱近似与 resolvent 收敛。
+
+实际计算中常得到一列近似算子 $A_n$，例如有限维截断、网格离散、正则化 Hamiltonian 或逐步逼近的边界条件。单独比较本征值很危险，因为无界算子的定义域本身也可能随 $n$ 改变。自伴算子最稳健的比较对象是 resolvent。以下均设 $A_n,A$ 是同一个 Hilbert 空间 $\mathcal H$ 上的自伴算子。
+
+strong resolvent convergence 首先保证有界连续函数演算以及传播子的强收敛。
+
+若对某个 $z_0\in\CC\setminus\RR$ 以及每个 $u\in\mathcal H$ 都有
+\begin{equation}\label{eq:math-sl-strong-resolvent-def}
+ (A_n-z_0I)^{-1}u\longrightarrow(A-z_0I)^{-1}u,
+\end{equation}
+则称 $A_n$ strong resolvent 收敛到 $A$，记作 $A_n\xrightarrow{\mathrm{s.r.}}A$。由 resolvent identity 与
+$\norm{(A_n-z)^{-1}}\le|\Im z|^{-1}$，在一个非实点成立便等价于在所有 $z\in\CC\setminus\RR$ 成立。
+
+strong resolvent convergence 的第一层结论是
+\begin{equation}\label{eq:math-sl-strong-resolvent-c0}
+ f(A_n)u\longrightarrow f(A)u
+ \qquad
+ \forall u\in\mathcal H,
+ \quad f\in C_0(\RR),
+\end{equation}
+其中 $C_0(\RR)$ 是无穷远处趋于零的连续函数。由于标量谱测度总质量恒为 $\norm{u}^2$，进一步可得到所有有界连续 $f$ 的强收敛。特别地，对每个 $T<\infty$，
+\begin{equation}\label{eq:math-sl-strong-resolvent-unitary}
+ \sup_{|t|\le T}
+ \norm{\ee^{-\ii tA_n}u-\ee^{-\ii tA}u}
+ \longrightarrow0.
+\end{equation}
+因此 strong resolvent 是自伴生成元收敛与有限时间量子/波相位传播收敛的自然拓扑。
+
+若 $B=(\alpha,\beta)$ 是有界区间，且
+\[
+ E_A(\{\alpha\})=E_A(\{\beta\})=0,
+\]
+则还有谱投影强收敛
+\begin{equation}\label{eq:math-sl-strong-spectral-projection}
+ E_{A_n}(B)u\longrightarrow E_A(B)u
+ \qquad(u\in\mathcal H).
+\end{equation}
+端点“不是 $A$ 的谱原子”是必要的连续集条件；若端点恰穿过本征值，投影可以发生跳跃。
+
+
+先把\eqnrefs{eq:math-sl-strong-resolvent-def} 推广到任意非实 $z$。写
+\[
+ B_n(z):=I-(z-z_0)R_n(z_0),
+ \qquad
+ B(z):=I-(z-z_0)R(z_0).
+\]
+resolvent identity 给出
+\[
+ R_n(z)=R_n(z_0)B_n(z)^{-1},
+ \qquad
+ B_n(z)^{-1}=I+(z-z_0)R_n(z).
+\]
+因此对固定 $z\notin\RR$，
+\[
+ \sup_n\norm{B_n(z)^{-1}}
+ \le1+\frac{|z-z_0|}{|\Im z|}<\infty.
+\]
+另一方面，$B_n(z)\to B(z)$ 强收敛。由恒等式
+\[
+ B_n(z)^{-1}-B(z)^{-1}
+ =B_n(z)^{-1}[B(z)-B_n(z)]B(z)^{-1}
+\]
+以及逆算子的一致有界性，得到 $B_n(z)^{-1}\to B(z)^{-1}$ 强收敛。再乘上强收敛且一致有界的 $R_n(z_0)$，便有
+\[
+ R_n(z)u\to R(z)u
+ \qquad(z\in\CC\setminus\RR).
+\]
+这个论证一次覆盖上下两个半平面，不需要把参数路径人为限制在同一个连通分支中。
+
+令 $\mathscr A$ 为由函数
+\[
+ r_z(\lambda)=\frac1{\lambda-z},\qquad z\notin\RR,
+\]
+及其复共轭通过有限线性组合和乘积生成的 $*$-代数。resolvent 恒等式说明 $r_z(A_n)$ 强收敛，而一致有界算子列的乘积保持强收敛，所以
+\[
+ g(A_n)u\to g(A)u\qquad(g\in\mathscr A).
+\]
+$\mathscr A$ 分离实轴上的点、对复共轭封闭，并且对每个 $\lambda\in\RR$ 都存在 $g\in\mathscr A$ 使 $g(\lambda)\neq0$。局部紧空间版本的 Stone--Weierstrass 定理因此给出：$\mathscr A$ 在 $C_0(\RR)$ 中按一致范数稠密。又有
+\[
+ \norm{f(A_n)}\le\norm{f}_{\infty}
+\]
+一致成立，所以先用 $g\in\mathscr A$ 逼近任意 $f\in C_0$，再作三角估计，便得\eqnrefs{eq:math-sl-strong-resolvent-c0}。
+
+接下来固定 $u$，记正测度
+\[
+ \mu_{n,u}(B)=\langle E_{A_n}(B)u,u\rangle,
+ \qquad
+ \mu_u(B)=\langle E_A(B)u,u\rangle.
+\]
+由 $C_0$ 函数演算强收敛，
+\[
+ \int f\dd\mu_{n,u}\to\int f\dd\mu_u
+ \qquad(f\in C_0(\RR)).
+\]
+两边总质量都恒等于 $\norm{u}^2$，而极限测度 $\mu_u$ 也具有同样总质量。对有限正测度，vague convergence 加总质量收敛等价于 weak convergence；因此质量不能逃向无穷远，并且对任意有界连续 $f$，
+\begin{equation*}
+ \int f\dd\mu_{n,u}\to\int f\dd\mu_u.
+\end{equation*}
+对复测度
+$\mu_{n,u,v}(B)=\langle E_{A_n}(B)u,v\rangle$，使用 polarization identity
+\[
+ \mu_{n,u,v}
+ =\frac14\sum_{k=0}^3\ii^k\mu_{n,u+\ii^kv}
+\]
+便得到同样的有界连续测试函数收敛。
+
+这里还要把“矩阵元收敛”提升为算子对固定向量的强收敛。取有界连续 $f$。第一项由正测度 weak convergence 给出
+\[
+ \norm{f(A_n)u}^2
+ =\int |f|^2\dd\mu_{n,u}
+ \longrightarrow
+ \int |f|^2\dd\mu_u
+ =\norm{f(A)u}^2.
+\]
+另一方面，固定向量 $v=f(A)u$，由刚才的 polarization 结论，
+\[
+ \langle f(A_n)u,v\rangle
+ =\int f\dd\mu_{n,u,v}
+ \longrightarrow
+ \int f\dd\mu_{u,v}
+ =\langle f(A)u,v\rangle
+ =\norm{f(A)u}^2.
+\]
+故
+\[
+ \norm{f(A_n)u-f(A)u}^2
+ =\norm{f(A_n)u}^2+\norm{f(A)u}^2
+ -2\Re\langle f(A_n)u,f(A)u\rangle
+ \longrightarrow0.
+\]
+因此 strong resolvent convergence 实际给出所有有界连续函数演算的逐向量强收敛，而不仅是 $C_0$ 函数演算。
+
+取连续集 $B=(\alpha,\beta)$。假设 $E_A(\{\alpha\})=E_A(\{\beta\})=0$，则对任意向量 $w$ 都有 $\mu_w(\partial B)=0$；特别地，该条件对 polarization 中出现的 $u+\ii^kv$ 也成立。由有限正测度的 Portmanteau 定理，
+\[
+ \mu_{n,u}(B)\to\mu_u(B).
+\]
+对 polarization 后的矩阵元同理，故
+\[
+ \langle E_{A_n}(B)u,v\rangle
+ \to\langle E_A(B)u,v\rangle
+\]
+对任意 $v$ 成立，即 $E_{A_n}(B)u\rightharpoonup E_A(B)u$。同时
+\[
+ \norm{E_{A_n}(B)u}^2=\mu_{n,u}(B)\to\mu_u(B)
+ =\norm{E_A(B)u}^2.
+\]
+Hilbert 空间中“弱收敛 + 范数收敛”推出强收敛，于是得到\eqnrefs{eq:math-sl-strong-spectral-projection}。这里先对正标量测度做连续集极限、再通过 polarization 恢复复矩阵元，避免了对复测度错误使用单调夹逼。
+
+最后取 $f_t(\lambda)=\ee^{-\ii t\lambda}$。对每个固定 $u$，上面的有界连续函数演算结论已经给出固定 $t$ 的强收敛。要在 $|t|\le T$ 上一致，先由测度紧性选 $R$，使对充分大的 $n$，
+\[
+ \mu_{n,u}(\{|\lambda|>R\})+\mu_u(\{|\lambda|>R\})<\varepsilon^2.
+\]
+在紧谱窗 $[-R,R]$ 上，族 $f_t$ 对 $t\in[-T,T]$ 一致 Lipschitz：
+\[
+ |f_t(\lambda)-f_s(\lambda)|\le R|t-s|.
+\]
+用有限时间网格控制窗内部分，再用两侧谱尾的 $L^2$ 范数小于 $\varepsilon$ 控制窗外部分，便得到\eqnrefs{eq:math-sl-strong-resolvent-unitary} 的局部一致强收敛。
+
+
+strong resolvent 并不保证孤立的近似本征值必须靠近 $\sigma(A)$。一个最简单的无限维反例是：在 $\ell^2(\NN)$ 中令 $P_n$ 为到第 $n$ 个标准基向量 $e_n$ 的秩一投影，取
+\[
+ A_n=P_n,
+ \qquad A=0.
+\]
+因为 $P_nu\to0$ 对每个固定 $u\in\ell^2$ 成立，
+\[
+ (A_n-z)^{-1}-(A-z)^{-1}
+ =\left(\frac1{1-z}+\frac1z\right)P_n
+ \xrightarrow{s}0,
+\]
+故 $A_n\xrightarrow{\mathrm{s.r.}}0$。然而
+\[
+ \sigma(A_n)=\{0,1\}
+\]
+中的本征值 $1$ 对所有 $n$ 都存在，却不属于 $\sigma(A)=\{0\}$。相应本征向量 $e_n$ 弱趋于零，谱质量沿无限维方向“逃走”。因此 strong resolvent 适合传播与连续谱投影的强收敛，却不足以单独排除这种谱污染。
+
+更强的 norm resolvent convergence 还能稳定控制孤立谱簇及其重数。
+
+若更强地有
+\begin{equation}\label{eq:math-sl-norm-resolvent-def}
+ \norm{(A_n-z_0I)^{-1}-(A-z_0I)^{-1}}\longrightarrow0
+\end{equation}
+对某个 $z_0\in\CC\setminus\RR$ 成立，则称 norm resolvent convergence。这里括号中的范数是算子范数。由算子范数收敛对每个固定向量立即得到强收敛，所以它蕴含 strong resolvent，但多出的“一致性”正是控制孤立谱位置所需的信息。
+
+令 $K\subset\rho(A)$ 为紧集。norm resolvent convergence 蕴含：对充分大的 $n$，
+\begin{equation}\label{eq:math-sl-norm-resolvent-set-stability}
+ K\subset\rho(A_n),
+ \qquad
+ \sup_{z\in K}\norm{R_n(z)-R(z)}\to0.
+\end{equation}
+因此 limit resolvent 集中的紧区域最终不会出现 $A_n$ 的谱点。若 $\Gamma\subset\rho(A)$ 是包围孤立有限重数谱簇 $\Delta$ 的闭曲线，则相应 Riesz 投影满足
+\begin{equation}\label{eq:math-sl-riesz-projection-norm-convergence}
+ \norm{P_n-P}\to0,
+ \qquad
+ P_n=-\frac1{2\pi\ii}\oint_\Gamma R_n(z)\dd z,
+ \quad
+ P=-\frac1{2\pi\ii}\oint_\Gamma R(z)\dd z.
+\end{equation}
+一旦 $\norm{P_n-P}<1$，两个投影的值域维数相同；因此孤立有限重数谱簇的总代数/几何重数最终稳定。对自伴算子两种重数一致，所以这正是本征值簇稳定性的严格版本。
+
+
+由 resolvent identity $R_n(z)-R_n(z_0)=(z-z_0)R_n(z)R_n(z_0)$，整理得
+\[
+ R_n(z)=R_n(z_0)
+ \bigl[I-(z-z_0)R_n(z_0)\bigr]^{-1},
+\]
+（从 $R_n(z)[I-(z-z_0)R_n(z_0)]=R_n(z_0)$ 右乘逆）。固定 $z\in\rho(A)$。算子
+\[
+ B(z):=I-(z-z_0)R(z_0)
+\]
+可逆：因 $z\in\rho(A)$，$R(z)$ 存在且上述分解对 $A$ 成立，故 $B(z)^{-1}$ 存在。
+由\eqnrefs{eq:math-sl-norm-resolvent-def} 即 $\norm{R_n(z_0)-R(z_0)}\to0$，
+\[
+ B_n(z):=I-(z-z_0)R_n(z_0)
+ \to B(z)
+\]
+按算子范数收敛。可逆算子群 $\mathcal G\mathcal L(\mathcal H)$ 在 $\mathcal B(\mathcal H)$
+中是开集（若 $T$ 可逆且 $\norm{S-T}<1/\norm{T^{-1}}$ 则 $S=T[I+T^{-1}(S-T)]$ 可逆
+由 Neumann 级数），因此 $B_n(z)$ 最终可逆，而且逆连续依赖：
+$B_n(z)^{-1}\to B(z)^{-1}$（由 Neumann 级数 $B_n^{-1}=B^{-1}[I+(B-B_n)B^{-1}]^{-1}$）。
+这给出 $z\in\rho(A_n)$ 以及 $R_n(z)\to R(z)$ 的范数收敛。
+
+若 $K\subset\rho(A)$ 紧，对每个 $z\in K$ 存在可逆邻域 $U_z\ni z$ 使
+$\sup_{\zeta\in U_z}\norm{R_n(\zeta)-R(\zeta)}\to0$。$\{U_z\}_{z\in K}$ 是 $K$ 的
+开覆盖，紧性给出有限子覆盖 $U_{z_1},\ldots,U_{z_M}$。有限个一致收敛取
+$N_0=\max_jN_j$ 即得一致结论\eqnrefs{eq:math-sl-norm-resolvent-set-stability}。
+特别地，在闭曲线 $\Gamma\subset\rho(A)$ 上有一致 resolvent 收敛，于是由
+Riesz 投影的围道积分表示，
+\[
+ \begin{aligned}
+ \norm{P_n-P}
+ &=\norm{-\frac1{2\pi\ii}\oint_\Gamma[R_n(z)-R(z)]\dd z}\\
+ &\le\frac{1}{2\pi}\int_\Gamma\norm{R_n(z)-R(z)}\,|\dd z|\\
+ &\le\frac{\operatorname{length}(\Gamma)}{2\pi}
+ \sup_{z\in\Gamma}\norm{R_n(z)-R(z)}
+ \longrightarrow0,
+ \end{aligned}
+\]
+得到\eqnrefs{eq:math-sl-riesz-projection-norm-convergence}。
+
+\emph{投影重数稳定。}若两个正交投影 $P,Q$ 满足 $\norm{P-Q}<1$，则
+$Q|_{\Ran P}$ 单射：若 $x\in\Ran P$ 且 $Qx=0$，则
+\[
+ \norm{x}=\norm{Px-Qx}\le\norm{P-Q}\norm{x},
+\]
+因 $\norm{P-Q}<1$ 只能有 $x=0$。所以 $\dim\Ran P\le\dim\Ran Q$；交换 $P,Q$ 得
+反向不等式。若 $P$ 有限秩，便有 $\rank P_n=\rank P$ 对充分大的 $n$ 成立。故
+norm resolvent 排除了 strong resolvent 反例中那种固定在 resolvent 区域内的伪本征值
+（谱污染）。
+
+\emph{有限差分实例。}取 $A=-\dd^2/\dd x^2$ 于 $L^2(0,\pi)$ Dirichlet，本征值
+$\lambda_k=k^2$。有限差分逼近 $A_n$（$n$ 内点，步长 $h=\pi/(n+1)$）本征值
+$\lambda_{k,n}=4h^{-2}\sin^2(kh/2)$。因 $A_n\xrightarrow{\mathrm{n.r.}}A$
+（norm resolvent），每个固定 $\lambda_k$ 附近 $\lambda_{k,n}\to\lambda_k$ 且重数
+稳定（单重保持）。但 strong resolvent 不足以保证：反例中 $A_n$ 有本征值 $1$ 对所有
+$n$，而 $1\in\rho(A)$，norm resolvent 排除此谱污染。
+
+\emph{物理与数值意义。}norm resolvent convergence 是谱近似理论的黄金标准：它保证
+近似算子（有限维截断、网格离散、正则化）的孤立本征值位置和重数都收敛到真值。
+这为数值谱计算（有限元、有限差分、Galerkin 方法）提供严格基础：只要近似在 norm
+resolvent 意义下收敛，孤立能级的计算就稳定可靠。strong resolvent 仅保证传播子
+强收敛（量子演化连续依赖），但不足以控制离散谱——谱质量可能"逃逸"到无穷维方向，
+对应数值伪模。norm resolvent 通过一致估计排除这种逃逸，是谱计算收敛性的正确拓扑。
+\end{derivation}
+
+\section{一般理论之后的可解模型}
+
+本节的模型只用于检验前面建立的母结构。每个模型都先明确自伴定义域，再从一般 resolvent 或谱演算公式中取特例，而不反过来由特殊解推断一般理论。
+
+接下来考察有限区间常系数与一般分离边界。
+
+\begin{example}[常系数分离边界的特征方程]\label{ex:math-sl-regular-robin-eigen}
+取 $I=(0,\ell)$，令 $p=p_0>0$、$q=q_0\in\RR$、$w=w_0>0$。在 $L^2((0,\ell),w_0\dd x)$ 上令
+\[
+ AX=\frac{-p_0X''+q_0X}{w_0},
+\]
+并取定义域
+\[
+ \Dom(A)=\left\{X\in H^2(0,\ell):
+ \begin{array}{l}
+ a_1X(0)+a_2X^{[1]}(0)=0,\\
+ b_1X(\ell)+b_2X^{[1]}(\ell)=0
+ \end{array}\right\},
+\]
+其中边界系数取实数，且每端的两个系数不同时为零；这正是一个分离自伴实现。谱方程为
+\[
+ -p_0X''+q_0X=\lambda w_0X.
+\]
+令
+\[
+ k^2=\frac{\lambda w_0-q_0}{p_0},
+ \qquad
+ C_k(x):=\cos(kx),
+ \qquad
+ S_k(x):=
+ \begin{cases}
+ \dfrac{\sin(kx)}{k},&k\neq0,\\[1ex]
+ x,&k=0.
+ \end{cases}
+\]
+$C_k,S_k$ 都只依赖 $k^2$，并在 $k=0$ 处连续，因此不会漏掉阈值情形的线性解。通解写成
+\[
+ X(x)=A C_k(x)+B S_k(x),
+ \qquad
+ X^{[1]}(x)=p_0\bigl[-A k\sin(kx)+B\cos(kx)\bigr].
+\]
+代入两个端点条件得到关于 $(A,B)$ 的齐次线性系统，非零解存在的充要条件是
+\begin{equation}\label{eq:math-sl-general-char-constant}
+ \det\begin{pmatrix}
+ a_1&a_2p_0\\
+ b_1\cos(k\ell)-b_2p_0k\sin(k\ell)&
+ b_1S_k(\ell)+b_2p_0\cos(k\ell)
+ \end{pmatrix}=0.
+\end{equation}
+这个行列式只是一般判据 $\omega(\lambda)=0$ 在常系数模型中的显式形式。
+\end{example}
+
+\begin{example}[同一问题的 Green 核]\label{ex:math-sl-green-robin-constant}
+对 $z\in\rho(A)$，分别求满足左、右分离边界条件的 $\phi_0(x,z),\psi_\ell(x,z)$。它们都是 $\cos(kx),\sin(kx)$ 的线性组合，且
+\[
+ \omega(z)=\mathcal W[\phi_0,\psi_\ell]\neq0.
+\]
+因此 Green 核无需重新推导，直接由\eqnrefs{eq:math-sl-green-regular-formula} 给出。若 $z$ 逼近某个简单本征值，$\omega(z)$ 的简单零点产生\eqnrefs{eq:math-sl-residue-formula} 的秩一极点；这把特征方程和受迫响应放在同一个解析函数中。
+\end{example}
+
+接下来考察半直线常势：Weyl 解与束缚态极点。
+
+\begin{example}[半直线常势算子的 resolvent 核]\label{ex:math-sl-halfline-resolvent}
+在 $L^2(0,\infty)$ 上取
+\[
+ A=-\frac{\dd^2}{\dd x^2}+\nu^2,
+ \qquad \nu>0,
+\]
+其 Robin 自伴定义域为
+\[
+ \Dom(A_h)=\{y\in H^2(0,\infty):y'(0)=hy(0)\},
+ \qquad h\in\RR.
+\]
+无穷远是 limit-point，因此不再施加第二个边界条件。对 $z\in\rho(A_h)$，取
+\[
+ \kappa(z)=\sqrt{\nu^2-z},\qquad \Re\kappa(z)>0.
+\]
+无穷远 Weyl 解为 $\psi_\infty=\ee^{-\kappa x}$，左端适配解可取
+\[
+ \phi_0(x,z)=\cosh(\kappa x)+\frac{h}{\kappa}\sinh(\kappa x).
+\]
+由 $\omega=\phi_0'\psi_\infty-\phi_0\psi_\infty'=h+\kappa$，得到
+\begin{equation}\label{eq:math-sl-halfline-explicit-green}
+ G_z(x,\xi)=\frac{1}{\kappa(z)+h}
+ \begin{cases}
+ \phi_0(x,z)\ee^{-\kappa(z)\xi},&x\le\xi,\\
+ \phi_0(\xi,z)\ee^{-\kappa(z)x},&\xi<x.
+ \end{cases}
+\end{equation}
+自伴算子 $A_h$ 的本质谱（并且是绝对连续谱）为 $[\nu^2,\infty)$。若 $h<0$，方程 $\kappa+h=0$ 还产生一个离散本征值 $\lambda_b=\nu^2-h^2$；因此\eqnrefs{eq:math-sl-halfline-explicit-green} 的适用条件不仅是避开连续谱，还必须避开这个可能存在的离散极点。
+\end{example}
+
+\begin{example}[Laplace--Green 方法作用于半直线演化]\label{ex:math-sl-laplace-green-halfline}
+对同一个 $A$ 求解 $u_t+Au=F$。Laplace 变换给出
+\[
+ \widehat u(s)=(s+A)^{-1}(u_0+\widehat F).
+\]
+在\eqnrefs{eq:math-sl-halfline-explicit-green} 中令 $z=-s$，即 $\kappa=\sqrt{\nu^2+s}$，便得到
+\[
+ \widehat u(x,s)=\int_0^\infty G_{-s}(x,\xi)
+ \bigl(u_0(\xi)+\widehat F(\xi,s)\bigr)\dd\xi.
+\]
+因此时间变换后的空间问题没有产生新 Green 理论，它只是对同一个 resolvent 在参数 $z=-s$ 处取值。
+\end{example}
+
+接下来考察全线自由算子与 Fourier 谱表示。
+
+从这里开始统一采用酉 Fourier 变换
+\begin{equation}\label{eq:math-sl-unitary-fourier-convention}
+ \widehat f(k)=\frac{1}{\sqrt{2\pi}}
+ \int_{\RR}\ee^{-\ii xk}f(x)\dd x,
+ \qquad
+ f(x)=\frac{1}{\sqrt{2\pi}}
+ \int_{\RR}\ee^{\ii xk}\widehat f(k)\dd k.
+\end{equation}
+它把 $L^2(\RR,\dd x)$ 酉地映到 $L^2(\RR,\dd k)$；因此后面所有 Fourier 乘子、谱密度与传播公式都使用同一归一化，不再另外吸收 $2\pi$ 因子。
+
+\begin{example}[全空间自由算子的 Green 核]\label{ex:math-sl-line-free-green}
+取
+\[
+ A=-\frac{\dd^2}{\dd x^2}+\nu^2
+ \quad\text{on }L^2(\RR),
+ \qquad
+ \Dom(A)=H^2(\RR).
+\]
+两端均为 limit-point，所以紧支撑预最小算子的闭包恰好就是上述自伴算子。对 $z\in\CC\setminus[\nu^2,\infty)$，令 $\kappa=\sqrt{\nu^2-z}$ 且 $\Re\kappa>0$。左右 Weyl 解分别为 $\ee^{\kappa x}$ 与 $\ee^{-\kappa x}$，从\eqnrefs{eq:math-sl-green-line} 得
+\begin{equation}\label{eq:math-sl-whole-line-green-explicit}
+ G_z(x,\xi)=\frac{1}{2\kappa(z)}\ee^{-\kappa(z)|x-\xi|}.
+\end{equation}
+不存在 $L^2$ 本征函数，谱 $[\nu^2,\infty)$ 完全为绝对连续谱；若改用能量变量 $\lambda=k^2+\nu^2$ 描述，则除阈值外的谱重数为 $2$，对应 $k=\pm\sqrt{\lambda-\nu^2}$ 两个传播通道。Fourier 变换只是该谱测度的一种显式对角化，实现
+\[
+ \widehat{Af}(k)=(k^2+\nu^2)\widehat f(k).
+\]
+若 $f\in L^2(\RR)$，其标量谱测度因此直接由
+\[
+ \mu_f(B)=\int_{\{k:\,k^2+\nu^2\in B\}}|\widehat f(k)|^2\dd k
+\]
+给出。选取 $\widehat f$ 的任意可测代表，并对 $\lambda>\nu^2$ 作变量代换 $k=\pm\sqrt{\lambda-\nu^2}$，便得到下面的绝对连续密度；等式按 Lebesgue 几乎处处理解：
+\begin{equation}\label{eq:math-sl-free-line-spectral-density}
+ \frac{\dd\mu_f}{\dd\lambda}(\lambda)
+ =\frac{
+ |\widehat f(\sqrt{\lambda-\nu^2})|^2+
+ |\widehat f(-\sqrt{\lambda-\nu^2})|^2}
+ {2\sqrt{\lambda-\nu^2}}.
+\end{equation}
+两个 $k$ 分支正是谱重数 $2$ 的来源，而阈值处的 $1/\sqrt{\lambda-\nu^2}$ Jacobian 是能量变量谱密度的几何因子，并不表示存在离散本征态。
+\end{example}
+
+更一般地，若全线上的平移不变自伴算子在 Fourier 表象中由实可测符号 $\mathfrak a(k)$ 乘法表示，则相应无界自伴算子的定义域本身就是
+\[
+ \Dom(A)=\left\{f\in L^2(\RR):\mathfrak a(k)\widehat f(k)\in L^2(\RR,\dd k)\right\},
+ \qquad
+ \widehat{Af}=\mathfrak a\,\widehat f.
+\]
+谱定理在这里退化为逐 $k$ 的乘法演算。对一阶耗散问题还必须要求 $\mathfrak a$ 本质下有界，否则 $\ee^{-t\mathfrak a(k)}$ 在固定 $t>0$ 也可能无界，不能在 $L^2$ 上定义有界半群。在这一半有界假设下，一阶传播为
+\begin{equation}\label{eq:math-sl-fourier-first}
+ \widehat u(t,k)=\ee^{-t\mathfrak a(k)}\widehat u_0(k)
+ +\int_0^t\ee^{-(t-s)\mathfrak a(k)}\widehat F(s,k)\dd s,
+\end{equation}
+若二阶问题采用前述常阻尼传播，还要求相应的标量因子 $\Phi_{\mathfrak a(k)}(t),\Psi_{\mathfrak a(k)}(t)$ 在 $\mathfrak a(k)$ 的本质值域上有界；例如 $\mathfrak a(k)\ge0$ 时这一条件自动满足。此时二阶常阻尼传播为
+\begin{equation}\label{eq:math-sl-fourier-second}
+ \widehat u(t,k)=\Phi_{\mathfrak a(k)}(t)\widehat u_0(k)
+ +\Psi_{\mathfrak a(k)}(t)\widehat u_1(k)
+ +\int_0^t\Psi_{\mathfrak a(k)}(t-s)\widehat F(s,k)\dd s.
+\end{equation}
+这不是一套平行于谱定理的“Fourier 方法”，而是把抽象谱表示具体实现为乘法算子的特例。
+
+\begin{example}[纯点谱与 Fourier 谱的同一传播子]
+\label{ex:math-sl-first-abstract-general}
+\label{ex:math-sl-second-abstract-general}
+\label{ex:math-sl-fourier-first-general}
+\label{ex:math-sl-fourier-second-general}
+同一个 Borel 函数演算在纯点谱与绝对连续谱中只改变“谱坐标”的写法。若 $A$ 具有 compact resolvent，\eqnrefs{eq:math-sl-duhamel-semigroup} 与\eqnrefs{eq:math-sl-abstract-second-order-formal} 分别成为
+\begin{equation}\label{eq:math-sl-example-first-general-solution}
+ u(t)=\sum_n\left[
+ \ee^{-\lambda_nt}u_{0,n}
+ +\int_0^t\ee^{-\lambda_n(t-s)}F_n(s)\dd s
+ \right]X_n,
+\end{equation}
+以及
+\begin{equation}\label{eq:math-sl-example-second-general-solution}
+ u(t)=\sum_n\left[
+ \Phi_{\lambda_n}(t)u_{0,n}
+ +\Psi_{\lambda_n}(t)u_{1,n}
+ +\int_0^t\Psi_{\lambda_n}(t-s)F_n(s)\dd s
+ \right]X_n.
+\end{equation}
+
+若全线平移不变算子由 Fourier 乘子 $\mathfrak a(k)$ 对角化，则沿用\eqnrefs{eq:math-sl-unitary-fourier-convention} 的酉归一化。一阶传播写成
+\begin{equation}\label{eq:math-sl-fourier-example-first}
+ \widehat u(t,k)=\ee^{-t\mathfrak a(k)}\widehat u_0(k)
+ +\int_0^t\ee^{-(t-s)\mathfrak a(k)}\widehat F(s,k)\dd s,
+\end{equation}
+并在物理空间成为
+\begin{equation}\label{eq:math-sl-fourier-example-first-physical}
+ u(x,t)=\frac{1}{\sqrt{2\pi}}\int_{\RR}\ee^{\ii xk}
+ \left[\ee^{-t\mathfrak a(k)}\widehat u_0(k)
+ +\int_0^t\ee^{-(t-s)\mathfrak a(k)}\widehat F(s,k)\dd s\right]\dd k.
+\end{equation}
+二阶传播则为
+\begin{equation}\label{eq:math-sl-fourier-example-second}
+ \widehat u(t,k)=\Phi_{\mathfrak a(k)}(t)\widehat u_0(k)
+ +\Psi_{\mathfrak a(k)}(t)\widehat u_1(k)
+ +\int_0^t\Psi_{\mathfrak a(k)}(t-s)\widehat F(s,k)\dd s.
+\end{equation}
+对一阶问题取 $\mathfrak a(k)=k^2$ 得到自由扩散；对二阶问题再取 $b=0$、$\mathfrak a(k)=k^2$ 得到自由波动。离散求和与 Fourier 积分的区别因此只来自谱测度是原子测度还是 Lebesgue 型测度。
+\end{example}
+
+\begin{example}[含时非齐次边界条件的齐次化]\label{ex:math-sl-time-lifting-template}
+若一阶方程 $u_t+\tau u=F$ 带有 $B_au=g_a(t)$、$B_bu=g_b(t)$，先选 $h_b(x,t)$ 匹配这两个边界值，并令 $u=v+h_b$。则 $v$ 满足固定齐次自伴边界条件，而
+\[
+ v_t+Av=F-\partial_t h_b-\tau h_b.
+\]
+因此右端投影到谱测度后即可直接使用\eqnrefs{eq:math-sl-duhamel-semigroup}。二阶阻尼问题则把修正项替换为
+\[
+ -\partial_t^2h_b-b\partial_t h_b-\tau h_b.
+\]
+这个例子也说明为什么 lifting 必须发生在谱展开之前：只有齐次化以后，时间演化才由一个固定自伴算子 $A$ 控制。
+\end{example}
+
+本章最终得到一条闭合的算子链。系数与权函数先确定微分表达式；最小/最大算子和 Lagrange 边界型再确定允许的自伴扩张；Weyl 分类判断奇异端点还留下多少边界自由度。自伴算子确定以后，谱测度统一产生 Borel 函数演算、resolvent 与含时传播，Green 核只是 resolvent 的坐标积分核。有限正则区间的特征函数级数与全线 Fourier 积分因此不是两套理论，而是同一谱积分在不同谱型下的具体实现。
+
+接下来考察预解算符恒等式与谱为什么是闭集。
+
+谱的定义不只是分类本征值。真正控制算符在参数 \(z\) 附近如何变化的是预解算符
+\[
+R(z;A)=(A-zI)^{-1},
+\qquad z\in\rho(A).
+\]
+若 \(z,w\in\rho(A)\)，则
+\[
+(A-zI)^{-1}-(A-wI)^{-1}
+=(z-w)(A-zI)^{-1}(A-wI)^{-1}.
+\]
+验证只需把右端通分：
+\[
+\begin{aligned}
+&(A-zI)^{-1}\bigl[(A-wI)-(A-zI)\bigr](A-wI)^{-1}\\
+&\qquad=(z-w)(A-zI)^{-1}(A-wI)^{-1}.
+\end{aligned}
+\]
+因此有第一预解恒等式
+\begin{equation}
+\boxed{
+R(z;A)-R(w;A)=(z-w)R(z;A)R(w;A)
+}.
+\label{eq:resolvent-identity}
+\end{equation}
+
+它立即给出预解集的开性。固定 \(z_0\in\rho(A)\)，写
+\[
+A-zI=(A-z_0I)\bigl[I-(z-z_0)R(z_0;A)\bigr].
+\]
+若
+\[
+|z-z_0|\,\|R(z_0;A)\|<1,
+\]
+第二个因子可用 Neumann 级数求逆：
+\[
+\bigl[I-(z-z_0)R(z_0;A)\bigr]^{-1}
+=\sum_{n=0}^\infty (z-z_0)^nR(z_0;A)^n.
+\]
+所以 \(z\) 仍属于预解集。于是 \(\rho(A)\) 是开集，
+\[
+\boxed{\sigma(A)\text{ 是闭集}.}
+\]
+同时在每个预解集连通分支内，\(R(z;A)\) 是算符值解析函数。这是后面 Fredholm 预解核与解析 Fredholm 理论的算符基础。
+
+对自伴算符还有更强的估计。若 \(z=a+ib\)、\(b\neq0\)，前面已经证明
+\[
+\|(A-zI)\psi\|\ge |b|\,\|\psi\|.
+\]
+因此
+\begin{equation}
+\boxed{
+\|R(z;A)\|\le \frac1{|\operatorname{Im}z|}
+}.
+\label{eq:selfadjoint-resolvent-bound}
+\end{equation}
+这说明当复参数离实轴有固定距离时，自伴算符的逆不会失控；真正可能发生奇异行为的地方只能靠近实谱。
+
+接下来考察连续谱的具体模型：乘法算符。
+
+抽象定义必须通过一个真正没有普通本征矢的例子来理解。取
+\[
+\mathcal H=L^2([0,1]),
+\]
+并定义有界自伴乘法算符
+\[
+(M_xf)(x)=x f(x).
+\]
+因为
+\[
+\langle f|M_xg\rangle
+=\int_0^1 f^*(x)xg(x)\,\dd x
+=\langle M_xf|g\rangle,
+\]
+所以 \(M_x=M_x^\dagger\)，且 \(\|M_x\|=1\)。
+
+先看普通本征值方程
+\[
+x f(x)=\lambda f(x).
+\]
+这等价于
+\[
+(x-\lambda)f(x)=0
+\]
+几乎处处成立。若 \(\lambda\in[0,1]\)，那么 \(f\) 只能支撑在单点 \(x=\lambda\) 上；单点的 Lebesgue 测度为零，所以任何 \(L^2\) 函数都只能是零元。因此
+\[
+\sigma_{\mathrm p}(M_x)=\varnothing.
+\]
+
+但这不意味着谱为空。对 \(z\notin[0,1]\)，有
+\[
+(M_x-zI)^{-1}g(x)=\frac{g(x)}{x-z},
+\]
+并且
+\[
+\left\|\frac1{x-z}\right\|_{L^\infty([0,1])}
+=\frac1{\operatorname{dist}(z,[0,1])}<\infty.
+\]
+所以
+\[
+z\notin[0,1]\quad\Longrightarrow\quad z\in\rho(M_x).
+\]
+反过来，若 $\lambda\in[0,1]$，先逐项核对连续谱定义。方程
+\[
+(M_x-\lambda I)f=0
+\]
+仍只有零解，所以 $M_x-\lambda I$ 是单射。其值域不是整个 $L^2([0,1])$：例如常数函数 $g=1$ 若属于值域，就必须有
+\[
+f(x)=\frac{1}{x-\lambda},
+\]
+但该函数在 $\lambda$ 附近不平方可积。
+
+另一方面值域是稠密的。若 $h$ 与值域正交，则对所有 $f\in L^2([0,1])$ 有
+\[
+0=\langle h|(M_x-\lambda I)f\rangle
+=\langle (M_x-\lambda I)h|f\rangle,
+\]
+从而 $(x-\lambda)h(x)=0$ 几乎处处。由于单点集合测度为零，只能有 $h=0$。故值域正交补为零，值域稠密。
+
+最后取归一化函数列 $f_n$ 集中在 $\lambda$ 附近，例如支撑在长度趋于零的小区间内，则
+\[
+\|(M_x-\lambda I)f_n\|\to0,
+\qquad \|f_n\|=1.
+\]
+因此值域上的逆必无界。于是对每个 $\lambda\in[0,1]$，$M_x-\lambda I$ 都满足“单射、值域稠密但非满射、逆无界”，正是连续谱情形。故
+\[
+\boxed{\sigma(M_x)=[0,1]}
+\]
+而整个谱都是连续谱。
+
+这个例子把形式符号
+\[
+M_x|\lambda\rangle=\lambda|\lambda\rangle
+\]
+的真正含义暴露出来：\(|\lambda\rangle\) 不属于 \(L^2([0,1])\)，而应理解成类似 \(\delta(x-\lambda)\) 的广义本征态。下一章的分布理论正是为这种对象提供严格语言。
+
+接下来考察动量算符、Fourier 变换与连续谱。
+
+在整条实线上取
+\[
+P=-\ii\frac{\dd}{\dd x}
+\]
+并以合适的 Sobolev 空间 \(H^1(\mathbb R)\) 为定义域。Fourier 变换满足
+\[
+\mathcal F(P\psi)(k)=k\widehat\psi(k).
+\]
+因此
+\[
+P=\mathcal F^{-1}M_k\mathcal F,
+\]
+也就是说动量算符与 Fourier 空间中的实变量乘法算符酉等价。由酉等价保持谱，得到
+\[
+\boxed{\sigma(P)=\mathbb R}
+\]
+且没有 \(L^2(\mathbb R)\) 中的普通平面波本征矢。
+
+形式本征方程
+\[
+-\ii\psi_p'(x)=p\psi_p(x)
+\]
+给出
+\[
+\psi_p(x)=C \ee^{\ii px}.
+\]
+它不平方可积，但可以用分布归一化
+\[
+\langle p|p'\rangle=\delta(p-p')
+\]
+以及完备关系
+\[
+\int_{-\infty}^{\infty}|p\rangle\langle p|\,\dd p=I
+\]
+来使用。这些公式不是有限维正交基公式的字面延伸，而是谱测度与分布语言下的连续版本。
+
+接下来考察Stone 定理：自伴算符为什么生成幺正演化。
+
+量子力学把自伴算符与可观测量联系起来，但更深的一层结构是：自伴算符生成一参数幺正群。若 \(A=A^\dagger\)，谱定理允许定义
+\[
+U(t)=\ee^{-\ii tA}
+=\int_{\sigma(A)}\ee^{-\ii t\lambda}\,\dd E_A(\lambda).
+\]
+因为 \(|\ee^{-\ii t\lambda}|=1\)，有
+\[
+U(t)^\dagger U(t)=I,
+\qquad
+U(t+s)=U(t)U(s),
+\qquad
+U(0)=I.
+\]
+所以 \(U(t)\) 是一参数幺正群。
+
+若 \(\psi\in D(A)\)，则可以在强意义下求导：
+\[
+\begin{aligned}
+\frac{U(t+h)\psi-U(t)\psi}{h}
+&=U(t)\frac{\ee^{-\ii hA}-I}{h}\psi\\
+&\longrightarrow -iU(t)A\psi.
+\end{aligned}
+\]
+因此
+\begin{equation}
+\boxed{
+i\frac{\dd}{\dd t}U(t)\psi=A U(t)\psi
+}.
+\label{eq:stone-evolution}
+\end{equation}
+这就是抽象 Schrodinger 方程的 Hilbert 空间版本：动力学不是额外写上去的，而是由自伴生成元的谱函数演算产生。
+
+Stone 定理的反方向同样重要：若 \(U(t)\) 是强连续的一参数幺正群，那么存在唯一自伴算符 \(A\) 使
+\[
+U(t)=\ee^{-\ii tA}.
+\]
+因此“自伴性”不只是保证本征值为实数；它同时是连续幺正时间演化的生成元条件。对无界 Hamiltonian，若只验证形式对称而没有验证真正自伴，就还没有充分保证全局幺正演化。
+
+接下来考察二阶微分算符与边界条件：同一微分表达式的不同谱。
+
+一阶动量算符已经说明定义域的重要性。二阶算符的例子更直观。取
+\[
+A=-\frac{\dd^2}{\dd x^2},
+\qquad 0<x<L.
+\]
+对 \(\psi,\phi\in H^2(0,L)\)，两次分部积分给出 Green 边界型
+\[
+\begin{aligned}
+\langle\psi|A\phi\rangle-\langle A\psi|\phi\rangle
+&=\left[\psi^*{}'\phi-\psi^*\phi'\right]_{0}^{L}.
+\end{aligned}
+\]
+要使算符自伴，必须选择定义域，使这个边界型对定义域内任意 \(\psi,\phi\) 都消失，并且伴算符不再拥有更大的定义域。
+
+Dirichlet 条件
+\[
+\psi(0)=\psi(L)=0
+\]
+给出本征方程
+\[
+-\psi''=\lambda\psi
+\]
+的解
+\[
+\psi_n(x)=\sqrt{\frac2L}\sin\frac{n\pi x}{L},
+\qquad
+\lambda_n=\left(\frac{n\pi}{L}\right)^2,
+\qquad n=1,2,\ldots.
+\]
+而 Neumann 条件
+\[
+\psi'(0)=\psi'(L)=0
+\]
+给出
+\[
+\psi_n(x)=
+\begin{cases}
+L^{-1/2},&n=0,\\[3pt]
+\sqrt{\dfrac2L}\cos\dfrac{n\pi x}{L},&n\ge1,
+\end{cases}
+\]
+\[
+\lambda_n=\left(\frac{n\pi}{L}\right)^2,
+\qquad n=0,1,2,\ldots.
+\]
+同一个形式微分表达式 \(-\dd^2/\dd x^2\)，因为定义域和边界条件不同，谱中是否包含零模已经发生变化。
+
+更一般的 Robin 条件可以写成
+\[
+\psi'(0)=h_0\psi(0),
+\qquad
+\psi'(L)=-h_L\psi(L),
+\]
+其中 \(h_0,h_L\in\mathbb R\)。把两组满足相同 Robin 条件的函数代入边界型，端点项逐一相消，所以得到对称实现；在规则 Sturm--Liouville 情形中这类分离实边界条件给出自伴实现。这里最重要的不是记住几类条件，而是掌握检查方法：
+\[
+\boxed{
+\text{微分表达式}
+\;\longrightarrow\;
+\text{分部积分边界型}
+\;\longrightarrow\;
+\text{允许的自伴定义域}
+}.
+\]
+
+接下来考察紧算符的奇异值分解与极分解。
+
+\chapref{chap:integral-equations}要讨论非自伴积分核。这里先把所需的 Hilbert 空间结构建立起来。对有界算符 \(K\)，正算符
+\[
+K^\dagger K\ge0
+\]
+可以通过谱函数演算定义
+\[
+|K|=(K^\dagger K)^{1/2}.
+\]
+存在部分等距算符 \(U\) 使
+\begin{equation}
+\boxed{K=U|K|},
+\label{eq:polar-decomposition}
+\end{equation}
+这称为极分解。有限维矩阵的 ``相位 \(\times\) 正矩阵'' 分解就是它的特例。
+
+若 \(K\) 还是紧算符，则 \(|K|\) 是紧自伴正算符。由紧自伴谱定理，可以找到正交归一向量 \(\psi_n\) 与非负本征值 \(s_n\to0\)，满足
+\[
+|K|\psi_n=s_n\psi_n.
+\]
+对 \(s_n>0\)，定义
+\[
+\phi_n=\frac{K\psi_n}{s_n}.
+\]
+则
+\[
+\langle\phi_m|\phi_n\rangle
+=\frac{\langle\psi_m|K^\dagger K\psi_n\rangle}{s_ms_n}
+=\delta_{mn}.
+\]
+于是
+\begin{equation}
+\boxed{
+Kf=\sum_{n}s_n\langle\psi_n|f\rangle\phi_n
+}
+\label{eq:compact-svd}
+\end{equation}
+在适当子空间上成立。这就是无限维的奇异值分解。\chapref{chap:integral-equations}第一类积分方程的不适定性，本质上就是 \(s_n\to0\) 使逆问题中的系数 \(1/s_n\) 发散。
+
+接下来考察张量积中的 Schmidt 分解。
+
+有限维双系统中的任意纯态
+\[
+|\Psi\rangle\in\mathcal H_A\otimes\mathcal H_B
+\]
+都可以写成
+\begin{equation}
+\boxed{
+|\Psi\rangle
+=\sum_{r=1}^{R}s_r|a_r\rangle\otimes|b_r\rangle,
+\qquad s_r>0,
+}
+\label{eq:schmidt-decomposition}
+\end{equation}
+其中 \(\{|a_r\rangle\}\)、\(\{|b_r\rangle\}\) 分别正交归一。这不是额外的量子公设，而是矩阵奇异值分解的直接结果。
+
+选定基 \(\{|i\rangle_A\}\)、\(\{|j\rangle_B\}\)，写
+\[
+|\Psi\rangle=\sum_{ij}C_{ij}|i\rangle_A\otimes|j\rangle_B.
+\]
+对系数矩阵作 SVD：
+\[
+C=U\Sigma V^\dagger.
+\]
+若
+\[
+\Sigma=\operatorname{diag}(s_1,\ldots,s_R,0,\ldots),
+\]
+并定义
+\[
+|a_r\rangle=\sum_iU_{ir}|i\rangle_A,
+\qquad
+|b_r\rangle=\sum_jV_{jr}^*|j\rangle_B,
+\]
+立即得到 \cref{eq:schmidt-decomposition}。
+
+若只有一个非零 Schmidt 系数，态就是简单张量；若至少两个 \(s_r\neq0\)，就不可能写成
+\[
+|a\rangle\otimes|b\rangle,
+\]
+即为纠缠态。若 \(\|\Psi\|=1\)，则
+\[
+\sum_rs_r^2=1.
+\]
+因此“简单张量之和一般不能再化成简单张量”可以被精确量化为 Schmidt 秩 \(R\) 大于 1。
+

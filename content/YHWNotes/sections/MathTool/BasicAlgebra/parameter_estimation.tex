@@ -1,0 +1,239 @@
+\chapter{广义最小二乘法}
+\section{基本理论}
+
+设有观测量及线性模型
+\begin{align*}
+	Y=(Y_1,\cdots,Y_n)^\mathrm{T},\quad Y=X\beta+\varepsilon,
+	\quad X\in\mathbb{R}^{n\times p},\quad \beta\in\mathbb{R}^p,
+	\quad \operatorname{rank}(X)=p<n.
+\end{align*}
+记误差满足
+\begin{align*}
+	\mathbb{E}[\varepsilon]=0,
+	\quad \operatorname{Cov}(\varepsilon)=\sigma_0^2 W^{-1},
+	\quad W\in\mathbb{R}^{n\times n},\quad W\succ0.
+\end{align*}
+其中 \(\sigma_0^2\) 表示总体误差尺度，\(W\) 表示相对权重矩阵.
+
+广义最小二乘法（Generalized Least Squares, GLS）最小化加权残差平方和
+\begin{align*}
+	\hat{\beta}=\arg\min_{\beta}Q(\beta),
+	\quad Q(\beta)=(Y-X\beta)^\mathrm{T}W(Y-X\beta).
+\end{align*}
+由
+\begin{align*}
+	\left.\frac{\partial Q}{\partial\beta}\right|_{\beta=\hat{\beta}}=0,
+	\quad \left.\frac{\partial^2 Q}{\partial\beta^2}\right|_{\beta=\hat{\beta}}\succ0
+\end{align*}
+解得
+\begin{align*}
+	\hat{\beta}=(X^\mathrm{T}WX)^{-1}X^\mathrm{T}WY.
+\end{align*}
+不难验证
+\begin{align*}
+	\hat{\beta}-\beta=(X^\mathrm{T}WX)^{-1}X^\mathrm{T}W\varepsilon,
+	\quad \mathbb{E}[\hat{\beta}]=\beta,
+	\quad \operatorname{Cov}(\hat{\beta})=\sigma_0^2(X^\mathrm{T}WX)^{-1}.
+\end{align*}
+
+下面计算 GLS 估计下残差平方和的一些性质.
+定义投影算符
+\begin{align*}
+	M=I_n-X(X^\mathrm{T}WX)^{-1}X^\mathrm{T}W.
+\end{align*}
+则
+\begin{align*}
+	MX=0,
+	\quad M^2=M,
+	\quad M^\mathrm{T}W=WM.
+\end{align*}
+进而残差与加权残差平方和可以写作
+\begin{align*}
+	e=Y-X\hat{\beta}=M\varepsilon,
+	\quad \chi_{\min}^2=Q(\hat{\beta})=e^\mathrm{T}We.
+\end{align*}
+参数估计的偏差与残差向量不相关，因为
+\begin{align*}
+	\operatorname{Cov}(\hat{\beta}-\beta,e)
+	=\sigma_0^2(X^\mathrm{T}WX)^{-1}(MX)^\mathrm{T}=0.
+\end{align*}
+对投影算符做相似变换，得到秩为 \(n-p\) 的对称幂等矩阵 \(A\)
+\begin{align*}
+	A=W^{1/2}MW^{-1/2},
+	\quad A=A^\mathrm{T},\quad A^2=A,
+	\quad \operatorname{rank}(A)=\operatorname{rank}(M)=n-p.
+\end{align*}
+记归一化误差为
+\begin{align*}
+	Z=\frac{1}{\sigma_0}W^{1/2}\varepsilon,
+	\quad \mathbb{E}[Z]=0,
+	\quad \operatorname{Cov}(Z)=I_n,
+\end{align*}
+则加权残差平方和可化简为
+\begin{align*}
+	\chi_{\min}^2=\sigma_0^2Z^\mathrm{T}AZ.
+\end{align*}
+利用
+\begin{align*}
+	\mathbb{E}[Z^\mathrm{T}AZ]
+	=\operatorname{tr}(\operatorname{Cov}(Z)A)+\mathbb{E}[Z]^\mathrm{T}A\mathbb{E}[Z]
+\end{align*}
+得到其期望为
+\begin{align*}
+	\mathbb{E}[\chi_{\min}^2]=\sigma_0^2\operatorname{tr}(A)=\sigma_0^2(n-p).
+\end{align*}
+因此总体误差尺度的无偏估计为
+\begin{align*}
+	\hat{\sigma}_0^2=\frac{\chi_{\min}^2}{n-p}.
+\end{align*}
+
+对于参数任意线性组合 \(a^\mathrm{T}\beta\)，\(a\in\mathbb{R}^p\)，根据上面的结论，有
+\begin{align*}
+	\mathbb{E}[a^\mathrm{T}\hat{\beta}]=a^\mathrm{T}\beta,
+	\quad \operatorname{Var}(a^\mathrm{T}\hat{\beta})
+	=\sigma_0^2a^\mathrm{T}(X^\mathrm{T}WX)^{-1}a,
+\end{align*}
+于是
+\begin{align*}
+	\widehat{\operatorname{Var}}(a^\mathrm{T}\hat{\beta})
+	=\hat{\sigma}_0^2a^\mathrm{T}(X^\mathrm{T}WX)^{-1}a
+	=\frac{\chi_{\min}^2}{n-p}a^\mathrm{T}(X^\mathrm{T}WX)^{-1}a.
+\end{align*}
+
+特别地，若误差服从高斯分布
+\begin{align*}
+	\varepsilon\sim N(0,\sigma_0^2W^{-1}),
+\end{align*}
+则 \(Z\sim N(0,I_n)\). 一方面，对于对称幂等矩阵 \(A\)，总存在正交矩阵 \(R\)，使得
+\begin{align*}
+	RAR^\mathrm{T}=\begin{pmatrix}I_{n-p}&0\\0&0\end{pmatrix},
+	\quad R^{-1}=R^\mathrm{T}.
+\end{align*}
+记 \(U=RZ\)，则 \(U\sim N(0,I_n)\)，且
+\begin{align*}
+	\frac{\chi_{\min}^2}{\sigma_0^2}
+	=U^\mathrm{T}(RAR^\mathrm{T})U
+	=\sum_{i=1}^{n-p}U_i^2\sim\chi^2_{n-p}.
+\end{align*}
+另一方面，易知
+\begin{align*}
+	\frac{a^\mathrm{T}\hat{\beta}-a^\mathrm{T}\beta}
+	{\sigma_0\sqrt{a^\mathrm{T}(X^\mathrm{T}WX)^{-1}a}}\sim N(0,1).
+\end{align*}
+且在高斯假设下，\(\hat{\beta}-\beta\) 与 \(e\) 独立，故与 \(\chi_{\min}^2\) 独立. 于是
+\begin{align*}
+	\frac{a^\mathrm{T}\hat{\beta}-a^\mathrm{T}\beta}
+	{\hat{\sigma}_0\sqrt{a^\mathrm{T}(X^\mathrm{T}WX)^{-1}a}}\sim t_{n-p}.
+\end{align*}
+估计量 \(a^\mathrm{T}\beta\) 的 \(1-\alpha\) 置信区间为
+\begin{align*}
+	a^\mathrm{T}\hat{\beta}\pm
+	\hat{\sigma}_0\sqrt{a^\mathrm{T}(X^\mathrm{T}WX)^{-1}a}\ t_{1-\alpha/2,n-p}.
+\end{align*}
+
+\section{双参量线性拟合}
+
+将以上理论应用于双参量直线拟合 \(y_i=kx_i+b+\varepsilon_i\)，也即
+\begin{align*}
+	Y=\begin{pmatrix}y_1\\ \vdots\\ y_n\end{pmatrix},
+	\quad \beta=\begin{pmatrix}k\\ b\end{pmatrix},
+	\quad X=\begin{pmatrix}x_1&1\\ \vdots&\vdots\\ x_n&1\end{pmatrix},
+	\quad W=\diag(w_1,\cdots,w_n).
+\end{align*}
+定义
+\begin{align*}
+	&W_0=\sum_iw_i,
+	\quad \bar{x}_w=\frac{\sum_iw_ix_i}{W_0},
+	\quad \bar{y}_w=\frac{\sum_iw_iy_i}{W_0},
+	\quad \overline{x^2}_w=\frac{\sum_iw_ix_i^2}{W_0},\\
+	&S_{xx}^{(w)}=\sum_iw_i(x_i-\bar{x}_w)^2,
+	\quad S_{yy}^{(w)}=\sum_iw_i(y_i-\bar{y}_w)^2,\\
+	&S_{xy}^{(w)}=\sum_iw_i(x_i-\bar{x}_w)(y_i-\bar{y}_w),
+	\quad r_w=\frac{S_{xy}^{(w)}}{\sqrt{S_{xx}^{(w)}S_{yy}^{(w)}}}.
+\end{align*}
+代入 GLS 公式得
+\begin{align*}
+	\hat{k}=\frac{S_{xy}^{(w)}}{S_{xx}^{(w)}},
+	\quad \hat{b}=\bar{y}_w-\hat{k}\bar{x}_w,
+	\quad \hat{\sigma}_0^2=\frac{S_{yy}^{(w)}(1-r_w^2)}{n-2},
+\end{align*}
+\begin{align*}
+	\widehat{\operatorname{Cov}}\begin{pmatrix}\hat{k}\\ \hat{b}\end{pmatrix}
+	=\hat{\sigma}_0^2
+	\begin{pmatrix}
+		\dfrac{1}{S_{xx}^{(w)}}&-\dfrac{\bar{x}_w}{S_{xx}^{(w)}}\\[8pt]
+		-\dfrac{\bar{x}_w}{S_{xx}^{(w)}}&\dfrac{1}{W_0}+\dfrac{\bar{x}_w^2}{S_{xx}^{(w)}}
+	\end{pmatrix}.
+\end{align*}
+因此
+\begin{align*}
+	\sigma_k=\sqrt{\widehat{\operatorname{Var}}(\hat{k})}
+	=\frac{\hat{\sigma}_0}{\sqrt{S_{xx}^{(w)}}},
+	\quad
+	\sigma_b=\sqrt{\widehat{\operatorname{Var}}(\hat{b})}
+	=\hat{\sigma}_0\sqrt{\frac{1}{W_0}+\frac{\bar{x}_w^2}{S_{xx}^{(w)}}}
+	=\sigma_k\sqrt{\overline{x^2}_w},\quad
+	\rho_{kb}=\frac{\widehat{\operatorname{Cov}}(\hat{k},\hat{b})}{\sigma_k\sigma_b}
+	=-\frac{\bar{x}_w}{\sqrt{\overline{x^2}_w}}.
+\end{align*}
+当 \(r_w\neq0\) 时，斜率标准差也可写为
+\begin{align*}
+	\sigma_k=|\hat{k}|\sqrt{\frac{r_w^{-2}-1}{n-2}}.
+\end{align*}
+任意 \(x_0\) 处的拟合值为
+\begin{align*}
+	\hat{y}_0=\hat{k}x_0+\hat{b}=a^\mathrm{T}\hat{\beta},
+	\quad a=\begin{pmatrix}x_0\\1\end{pmatrix}.
+\end{align*}
+其标准差为
+\begin{align*}
+	\sigma_{y_0}=\sqrt{\widehat{\operatorname{Var}}(\hat{y}_0)}
+	=\sqrt{a^\mathrm{T}\widehat{\operatorname{Cov}}(\hat{\beta})a}
+	=\hat{\sigma}_0\sqrt{\frac{1}{W_0}+\frac{(x_0-\bar{x}_w)^2}{S_{xx}^{(w)}}}
+	=\sigma_k\sqrt{\overline{x^2}_w+x_0^2-2x_0\bar{x}_w}.
+\end{align*}
+若误差服从高斯分布，则
+\begin{align*}
+	\hat{k}\pm\sigma_k t_{1-\alpha/2,n-2},
+	\quad \hat{b}\pm\sigma_b t_{1-\alpha/2,n-2},
+	\quad \hat{y}_0\pm\sigma_{y_0}t_{1-\alpha/2,n-2}
+\end{align*}
+分别为 \(k,b,kx_0+b\) 的 \(1-\alpha\) 置信区间.
+
+\begin{note}
+
+若用各点误差标准差的相对大小 \(\sigma_i\) 表示权重，则取 \(w_i=\sigma_i^{-2}\)，于是
+\begin{align*}
+	\bar{x}_w=\frac{\sum_ix_i\sigma_i^{-2}}{\sum_i\sigma_i^{-2}},
+	\quad \bar{y}_w=\frac{\sum_iy_i\sigma_i^{-2}}{\sum_i\sigma_i^{-2}},
+\end{align*}
+\begin{align*}
+	\hat{k}=\frac{\sum_i\sigma_i^{-2}(x_i-\bar{x}_w)(y_i-\bar{y}_w)}
+	{\sum_i\sigma_i^{-2}(x_i-\bar{x}_w)^2},
+	\quad \hat{b}=\bar{y}_w-\hat{k}\bar{x}_w,
+\end{align*}
+而 \(r_w,\sigma_k,\sigma_b,\rho_{kb},\sigma_{y_0}\) 仍由上节公式给出.
+
+若各点标准差一致，权重可整体约去. 记
+\begin{align*}
+	\bar{x}=\frac{1}{n}\sum_ix_i,
+	\quad \bar{y}=\frac{1}{n}\sum_iy_i,
+	\quad \overline{x^2}=\frac{1}{n}\sum_ix_i^2,
+	\quad \overline{y^2}=\frac{1}{n}\sum_iy_i^2,
+	\quad \overline{xy}=\frac{1}{n}\sum_ix_iy_i,
+\end{align*}
+则
+\begin{align*}
+	\hat{k}=\frac{\overline{xy}-\bar{x}\bar{y}}{\overline{x^2}-\bar{x}^2},
+	\quad \hat{b}=\frac{\bar{y}\,\overline{x^2}-\bar{x}\,\overline{xy}}{\overline{x^2}-\bar{x}^2},\quad
+	r=\frac{\overline{xy}-\bar{x}\bar{y}}
+	{\sqrt{(\overline{x^2}-\bar{x}^2)(\overline{y^2}-\bar{y}^2)}}.
+\end{align*}
+此时
+\begin{align*}
+	\sigma_k=\frac{\hat{\sigma}_0}{\sqrt{\sum_i(x_i-\bar{x})^2}},
+	\quad \sigma_b=\sigma_k\sqrt{\overline{x^2}},
+\end{align*}
+且当 \(r\neq0\) 时，\(\sigma_k=|\hat{k}|\sqrt{(r^{-2}-1)/(n-2)}\).
+
+\end{note}

@@ -1,0 +1,1890 @@
+\chapter{结合代数、Clifford 代数与旋量结构}
+\label{chap:algebra-number-systems}
+
+上一章把对称性组织成群与表示。本章转向一个不同但紧密相连的问题：当向量空间还带有乘法、二次型或共轭结构时，怎样把这些数据统一编码为代数？复数、四元数和八元数说明“扩张数系”会逐步牺牲交换律与结合律；Clifford 代数则从二次型出发，通过 universal property 构造一个结合代数，并由其可逆元素内部地产生正交群及其二重覆盖。这样，Pauli 矩阵、旋量与 gamma 矩阵都成为一般 Clifford 表示的结果，而不再是先验写下的特殊矩阵。
+
+\section{代数结构、共轭与 composition algebra}
+\label{sec:algebra-composition}
+
+接下来考察结合代数、中心与 involution。
+
+设 \(\mathbb F=\RR\) 或 \(\CC\)。一个含单位的结合 \(\mathbb F\)-代数 \(A\) 同时是 \(\mathbb F\)-向量空间和含单位结合环，并满足
+\[
+\lambda(ab)=(\lambda a)b=a(\lambda b),
+\qquad
+\lambda\in\mathbb F.
+\]
+其中心为
+\[
+Z(A)=\{z\in A:za=az,\ \forall a\in A\}.
+\]
+若 \(Z(A)=\mathbb F1\)，则称代数在标量意义下是中心的。
+
+很多物理与几何代数还带有 involution，即映射 \(a\mapsto a^*\) 满足
+\[
+(a+b)^*=a^*+b^*,
+\qquad
+(ab)^*=b^*a^*,
+\qquad
+(a^*)^*=a.
+\]
+复代数通常还要求 \((\lambda a)^*=\overline\lambda a^*\)。矩阵代数中的 Hermitian 共轭、复数共轭以及四元数共轭都是这一结构的例子。
+
+若代数带有二次型或范数 \(N:A\to\RR_{\ge0}\)，且满足乘法相容性
+\begin{equation}
+N(ab)=N(a)N(b),
+\label{eq:composition-norm}
+\end{equation}
+则称其具有 composition 性。若 \(N(a)>0\) 对所有 \(a\neq0\) 成立，并且 \(a^{-1}=a^*/N(a)\)，则非零元素自动可逆。有限维实数情形中，正定 multiplicative norm 把可能性强烈限制为 \(\RR,\CC,\mathbb H,\mathbb O\) 四类；它们依次展示“交换结合、交换结合、非交换结合、非交换非结合但交替”的层级。
+
+接下来考察四元数：结合但非交换的 composition algebra。
+\label{sec:quaternions}
+
+四元数代数写成
+\[
+\mathbb H
+=\{a+b\mathbf i+c\mathbf j+d\mathbf k:
+a,b,c,d\in\RR\},
+\]
+其中
+\[
+\mathbf i^2=\mathbf j^2=\mathbf k^2=-1,
+\qquad
+\mathbf i\mathbf j=\mathbf k,
+\quad
+\mathbf j\mathbf k=\mathbf i,
+\quad
+\mathbf k\mathbf i=\mathbf j,
+\]
+交换两个不同虚基元会改变符号。共轭定义为
+\[
+\overline q=a-b\mathbf i-c\mathbf j-d\mathbf k,
+\]
+于是
+\[
+q\overline q=\overline q q
+=a^2+b^2+c^2+d^2
+\equiv N(q).
+\]
+直接利用共轭的反自同构性质
+\[
+\overline{pq}=\overline q\,\overline p
+\]
+可得
+\[
+N(pq)
+=pq\overline q\,\overline p
+=pN(q)\overline p
+=N(q)N(p),
+\]
+所以四元数满足\eqnrefs{eq:composition-norm}。
+
+把纯虚四元数与 \(\RR^3\) 识别，若 \(\mathbf a,\mathbf b\in\operatorname{Im}\mathbb H\)，则
+\begin{equation}
+\mathbf a\mathbf b
+=-\mathbf a\cdot\mathbf b
++\mathbf a\times\mathbf b.
+\label{eq:quaternion-dot-cross}
+\end{equation}
+单位四元数
+\[
+q=\cos\frac\theta2+\mathbf n\sin\frac\theta2,
+\qquad
+|\mathbf n|=1,
+\]
+通过共轭作用
+\[
+\mathbf v\longmapsto q\mathbf vq^{-1}
+\]
+给出绕 \(\mathbf n\) 的三维转动。半角不是额外规定，而是因为向量作用同时包含左乘和右乘。这个构造稍后会被包含在一般 \(\Spin(3)\to SO(3)\) 中。
+
+\begin{derivation}[四元数共轭作用给出 Rodrigues 公式]
+记
+\[
+c=\cos\frac\theta2,
+\qquad
+s=\sin\frac\theta2,
+\qquad
+q=c+s\mathbf n,
+\qquad
+q^{-1}=c-s\mathbf n.
+\]
+展开得
+\[
+q\mathbf vq^{-1}
+=c^2\mathbf v
++cs(\mathbf n\mathbf v-\mathbf v\mathbf n)
+-s^2\mathbf n\mathbf v\mathbf n.
+\]
+由\eqnrefs{eq:quaternion-dot-cross}，
+\[
+\mathbf n\mathbf v-\mathbf v\mathbf n
+=2\mathbf n\times\mathbf v.
+\]
+又由 \(|\mathbf n|=1\) 与向量三重积公式，
+\[
+\mathbf n\mathbf v\mathbf n
+=
+\mathbf v-2\mathbf n(\mathbf n\cdot\mathbf v).
+\]
+因此
+\[
+\begin{aligned}
+q\mathbf vq^{-1}
+&=(c^2-s^2)\mathbf v
++2cs\,\mathbf n\times\mathbf v
++2s^2\mathbf n(\mathbf n\cdot\mathbf v)\\
+&=
+\mathbf v\cos\theta
++(\mathbf n\times\mathbf v)\sin\theta
++\mathbf n(\mathbf n\cdot\mathbf v)(1-\cos\theta),
+\end{aligned}
+\]
+这就是 Rodrigues 公式。
+\end{derivation}
+
+接下来考察Cayley--Dickson、八元数与 \(G_2\) 的位置。
+
+Cayley--Dickson doubling 从带 involution 的代数 \(A\) 构造 \(A\oplus A\)。一种常用约定为
+\[
+(a,b)(c,d)
+=
+(ac-d^*b,\ da+bc^*),
+\qquad
+(a,b)^*=(a^*,-b).
+\]
+从 \(\RR\) 出发依次得到 \(\CC\)、\(\mathbb H\)、\(\mathbb O\)。但每次 doubling 并不保持全部性质：八元数 \(\mathbb O\) 已不满足一般结合律，只满足交替律
+\[
+(xx)y=x(xy),
+\qquad
+x(yy)=(xy)y.
+\]
+因此不能把八元数当成普通矩阵代数处理，更不能把任意八元数恒等式无条件搬到结合代数中。
+
+八元数的自同构群是紧致例外 Lie 群 \(G_2\)。固定一个单位虚八元数 \(u\) 后，保持 \(u\) 不变的稳定子同构于 \(SU(3)\)。这给出
+\[
+SU(3)\subset G_2,
+\]
+但其逻辑是“\(SU(3)\) 作为八元数自同构群中的稳定子”，而不是“Gell--Mann 矩阵是八元数乘法表的矩阵化”。\(SU(3)\) 的一般表示论仍属于上一章的 Lie 群框架。
+
+\section{Clifford 代数：由二次型生成的 universal algebra}
+\label{sec:clifford-universal}
+
+接下来考察定义、universal property 与分次。
+
+设 \(V\) 是有限维 \(\mathbb F\)-向量空间，\(Q:V\to\mathbb F\) 是二次型。Clifford 代数 \(\Cl(V,Q)\) 是含单位结合代数，并带线性映射
+\[
+i:V\to\Cl(V,Q)
+\]
+满足
+\begin{equation}
+i(v)^2=Q(v)1,
+\qquad v\in V,
+\label{eq:clifford-defining-relation}
+\end{equation}
+且具有 universal property：若任意含单位结合代数 \(A\) 与线性映射 \(f:V\to A\) 也满足
+\[
+f(v)^2=Q(v)1_A,
+\]
+则存在唯一代数同态
+\[
+\widetilde f:\Cl(V,Q)\to A
+\]
+使 \(\widetilde f\circ i=f\)。因此 Clifford 代数不是“选一组 gamma 矩阵”定义出来的；矩阵只是在 universal algebra 上选择一个表示。
+
+由二次型极化得到对称双线性型
+\[
+B(u,v)=\frac12\bigl(Q(u+v)-Q(u)-Q(v)\bigr).
+\]
+\eqnrefs{eq:clifford-defining-relation} 等价于
+\begin{equation}
+uv+vu=2B(u,v)1.
+\label{eq:clifford-anticommutator}
+\end{equation}
+若 \(\{e_a\}_{a=1}^n\) 为 \(B\)-正交基，则有
+\[
+e_ae_b+e_be_a=2B_{ab}1.
+\]
+每个基元最多出现一次，因而线性空间维数为
+\begin{equation}
+\dim\Cl(V,Q)=2^n.
+\label{eq:clifford-dimension}
+\end{equation}
+
+Clifford 代数具有自然 \(\mathbb Z_2\)-分次
+\[
+\Cl(V,Q)
+=
+\Cl^0(V,Q)
+\oplus
+\Cl^1(V,Q),
+\]
+其中偶数个向量的乘积生成 even subalgebra \(\Cl^0\)。与外代数不同，Clifford 乘积同时包含对称的度量收缩与反对称的外积；对 \(u,v\in V\)，
+\[
+uv=B(u,v)+u\wedge v.
+\]
+这正是 Clifford 代数能够同时编码 metric 与 oriented multivector 的原因。
+
+\begin{derivation}[由二次型关系推出 Clifford 反对易关系与维数上界]
+对任意 \(u,v\in V\)，由\eqnrefs{eq:clifford-defining-relation} 有
+\[
+(u+v)^2=Q(u+v)1.
+\]
+左边展开为
+\[
+u^2+uv+vu+v^2.
+\]
+再代入 \(u^2=Q(u)1\)、\(v^2=Q(v)1\)，得到
+\[
+uv+vu
+=\bigl(Q(u+v)-Q(u)-Q(v)\bigr)1
+=2B(u,v)1,
+\]
+即\eqnrefs{eq:clifford-anticommutator}。
+
+若 \(\{e_a\}\) 是正交基，则对 \(a\neq b\)，
+\[
+e_ae_b=-e_be_a,
+\]
+而
+\[
+e_a^2=B(e_a,e_a)1
+\]
+可化成标量。因此任意单项式都可以重排成
+\[
+e_{a_1}e_{a_2}\cdots e_{a_k},
+\qquad
+a_1<a_2<\cdots<a_k.
+\]
+这类有序单项式共有
+\[
+\sum_{k=0}^n\binom nk=2^n
+\]
+个，所以 \(\dim\Cl(V,Q)\le2^n\)。另一方面，可在外代数 \(\Lambda V\) 上构造 faithful 的左 Clifford 作用
+\[
+c(v)=\varepsilon(v)+\iota_v,
+\]
+其中 \(\varepsilon(v)\) 为外乘、\(\iota_v\) 为由 \(B\) 定义的收缩，且
+\[
+c(u)c(v)+c(v)c(u)=2B(u,v)I.
+\]
+由此有序单项式线性独立，故等号成立，得到\eqnrefs{eq:clifford-dimension}。
+\end{derivation}
+
+接下来考察PBW 型基、外代数模型与 Chevalley 表示。
+
+仅由“所有有序单项式都能化简出来”只能得到维数上界；要真正理解 Clifford 代数的线性结构，还需要说明这些单项式彼此独立。最自然的做法是给张量代数按次数加过滤
+\[
+F^0\subset F^1\subset F^2\subset\cdots,
+\qquad
+F^r\Cl(V,Q)
+=\operatorname{span}\{v_1\cdots v_k:k\le r\}.
+\]
+定义关系
+\[
+uv+vu=2B(u,v)
+\]
+把二次项换成低两阶的标量，因此在 associated graded algebra 中低阶项消失，只留下
+\[
+uv+vu=0.
+\]
+于是存在自然满射
+\[
+\Lambda V\longrightarrow
+\operatorname{gr}\Cl(V,Q).
+\]
+反过来利用有序单项式计数可知两边各次数的维数完全相同，从而得到 PBW 型同构
+\begin{equation}
+\operatorname{gr}\Cl(V,Q)
+\cong \Lambda V.
+\label{eq:clifford-pbw-graded}
+\end{equation}
+这里的同构是分次向量空间意义下的；它绝不意味着 Clifford 乘法等于外积。真正发生的是：Clifford 乘法的最高次数部分就是外积，而较低次数部分记录由度量产生的收缩。
+
+选取基 $e_1,\ldots,e_n$ 后，PBW 结论说明
+\begin{equation}
+1,
+\quad e_{i_1},
+\quad e_{i_1}e_{i_2},
+\quad\ldots,\quad
+e_{i_1}\cdots e_{i_k},
+\qquad i_1<\cdots<i_k,
+\label{eq:clifford-pbw-basis}
+\end{equation}
+确实构成一组基，而不只是生成集。特别地
+\[
+\dim\Cl(V,Q)=\sum_{k=0}^n\binom nk=2^n.
+\]
+
+这个结构可以在外代数上具体实现。令 $\varepsilon(v)$ 表示外乘算子
+\[
+\varepsilon(v)\omega=v\wedge\omega,
+\]
+并用双线性型 $B$ 定义收缩 $\iota_v$，使得在一次向量上
+\[
+\iota_v w=B(v,w).
+\]
+它作为次数 $-1$ 的反导子延拓到整个 $\Lambda V$。于是
+\[
+\varepsilon(u)\varepsilon(v)+\varepsilon(v)\varepsilon(u)=0,
+\]
+\[
+\iota_u\iota_v+\iota_v\iota_u=0,
+\]
+以及最关键的 canonical anticommutation relation
+\begin{equation}
+\iota_u\varepsilon(v)+\varepsilon(v)\iota_u
+=B(u,v)I.
+\label{eq:clifford-wedge-contraction-car}
+\end{equation}
+因此 Chevalley 算子
+\begin{equation}
+c(v)=\varepsilon(v)+\iota_v
+\label{eq:clifford-chevalley-action}
+\end{equation}
+满足
+\[
+c(u)c(v)+c(v)c(u)=2B(u,v)I,
+\]
+由 universal property 唯一延拓为 Clifford 表示。
+
+\begin{derivation}[从过滤到 PBW，再到外积加收缩]
+\emph{策略：}先用次数过滤把 Clifford 乘法的「低阶标量收缩」压掉，让 associated graded 只剩反对易关系而成为外代数；再用过滤的维数守恒把满射升级为同构；最后在最外层验证 Chevalley 作用满足 CAR。
+
+\emph{第一步：过滤与 associated graded。}把张量代数 $T(V)$ 的次数过滤传到商代数
+\[
+\Cl(V,Q)
+=T(V)/\langle v\otimes v-Q(v)1\rangle.
+\]
+定义 \(F^r\Cl=\operatorname{span}\{v_1\cdots v_k:k\le r\}\)。关系 \(v\otimes v-Q(v)1\) 中，二次项 \(v\otimes v\) 与零次项 \(Q(v)1\) 差两个过滤阶；进入 associated graded
+\[
+\operatorname{gr}\Cl=\bigoplus_{r}\frac{F^r}{F^{r-1}}
+\]
+后，零次项落在 \(F^0\) 而消失，只剩二次项的像
+\[
+[v]^2=0.
+\]
+
+\emph{第二步：极化出反对易关系。}把 \([u+v]^2=0\) 展开：
+\begin{equation*}
+  0=[u+v]^2
+  =[u]^2+[u][v]+[v][u]+[v]^2
+  =[u][v]+[v][u],
+\end{equation*}
+其中用了 \([u]^2=[v]^2=0\)。故在 \(\operatorname{gr}\Cl\) 中
+\[
+[u][v]+[v][u]=0.
+\]
+
+\emph{第三步：外代数 universal property 给出满射。}外代数 \(\Lambda V\) 正是「由 \(V\) 生成、且元素反对易」的最一般代数。既然 \(\operatorname{gr}\Cl\) 中向量乘积反对易，就存在唯一代数同态
+\[
+\Lambda V\twoheadrightarrow
+\operatorname{gr}\Cl(V,Q),
+\]
+它满射，因为 \(\operatorname{gr}\Cl\) 由各个 \([v]\) 的乘积生成，而每个反对易乘积都是某个外积的像。
+
+\emph{第四步：维数守恒把满射升级为同构。}满射给出上界
+\[
+\dim\operatorname{gr}\Cl
+\le\dim\Lambda V=2^n.
+\]
+另一方面，有限维过滤空间的 associated graded 保持维数：
+\[
+\dim\operatorname{gr}\Cl
+=\sum_r\dim\Bigl(F^r\big/F^{r-1}\Bigr)
+=\dim\Cl=2^n,
+\]
+其中 \(\dim\Cl=2^n\) 已由\eqnrefs{eq:clifford-dimension} 得到。于是 \(\dim\operatorname{gr}\Cl=2^n=\dim\Lambda V\)，同维有限空间之间的满射必为同构，得到\eqnrefs{eq:clifford-pbw-graded}。据此\eqnrefs{eq:clifford-pbw-basis} 中的有序单项式不只是生成集，而是真正线性独立的一组基。
+
+\emph{第五步：验证 CAR。}对 decomposable $k$-form
+\[
+\omega=w_1\wedge\cdots\wedge w_k,
+\]
+收缩 \(\iota_u\)（次数 \(-1\) 的反导子，满足 \(\iota_u(v)=B(u,v)\)）写为
+\[
+\iota_u\omega
+=\sum_{j=1}^k(-1)^{j-1}B(u,w_j)
+ w_1\wedge\cdots\widehat{w_j}\cdots\wedge w_k.
+\]
+把 \(u\) 作用在 \(v\wedge\omega=v\wedge w_1\wedge\cdots\wedge w_k\) 上，按上述公式逐项收缩（\(v\) 记作第 \(0\) 个因子）：
+\begin{equation*}
+ \iota_u(v\wedge\omega)
+ =B(u,v)\,\omega
+ +\sum_{j=1}^{k}(-1)^{j}B(u,w_j)\,v\wedge w_1\wedge\cdots\widehat{w_j}\cdots\wedge w_k.
+\end{equation*}
+第二项恰为 \(-v\wedge\iota_u\omega\)（把 \(v\) 提出并把 \((-1)^j\) 写成 \(-(-1)^{j-1}\)），故
+\[
+\iota_u(v\wedge\omega)+v\wedge\iota_u\omega
+=B(u,v)\omega.
+\]
+这正是\eqnrefs{eq:clifford-wedge-contraction-car}。因此 Chevalley 算子 \(c(v)=\varepsilon(v)+\iota_v\) 确实满足 Clifford 关系；从向量空间层面看，Clifford 乘法等于
+\[
+\text{外乘} + \text{度量收缩},
+\]
+而 PBW 同构保证这种「外积加收缩」的描述没有丢失任何线性信息。
+\end{derivation}
+
+在复数域、$B$ 非退化时，PBW 结构还与完整矩阵分类兼容：
+\[
+\Cl_{2m}(\CC)\cong M_{2^m}(\CC),
+\qquad
+\Cl_{2m+1}(\CC)
+\cong M_{2^m}(\CC)\oplus M_{2^m}(\CC).
+\]
+偶数维代数为 central simple algebra；奇数维则由归一化体积元的两个本征值分裂成两个 simple block。这个分类说明“gamma 矩阵尺寸”为何由维数强制决定，而不是一种任意表示习惯。
+
+
+接下来考察标准反自同构与范数。
+
+Clifford 代数上有三个常用 involutive operations。grade involution \(\alpha\) 在向量上满足 \(\alpha(v)=-v\)，并按乘法延拓；reversion \(\tau\) 反转乘积次序：
+\[
+\tau(v_1v_2\cdots v_k)
+=v_k\cdots v_2v_1;
+\]
+Clifford conjugation 定义为
+\[
+\overline x=\alpha(\tau(x)).
+\]
+这些操作在定义 Pin/Spin 群、双线性旋量配对和实结构时不可互换。不同教材若把三者都写成“共轭”，往往会造成符号混乱，因此以后明确写出所用操作。
+
+接下来考察复 Clifford 代数的矩阵表示。
+
+在复数域上，非退化二次型的符号差异可以通过基变换吸收，因此复 Clifford 代数只依赖维数。作为非分次代数，有
+\[
+\Cl_{2m}(\CC)
+\cong M_{2^m}(\CC),
+\]
+\[
+\Cl_{2m+1}(\CC)
+\cong M_{2^m}(\CC)\oplus M_{2^m}(\CC).
+\]
+偶数维情形因此有维数 \(2^m\) 的不可约复旋量模。奇数维情形有两个不等价的不可约模，它们由最高次数体积元的本征值区分。
+
+实 Clifford 代数还依赖 signature \((p,q)\)，并表现出 mod-8 periodicity。后续若需要实旋量、实结构或不同 signature 之间的比较，就必须保留这一区别；仅研究复表示时则不应把实分类的 signature 依赖混入复 Clifford 结论。
+
+为了把这句话变成可计算的结构，约定
+\[
+\Cl_{p,q}:=\Cl(\RR^{p+q},Q),
+\qquad
+Q(x)=x_1^2+\cdots+x_p^2-x_{p+1}^2-\cdots-x_{p+q}^2.
+\]
+因此前 \(p\) 个正交基向量平方为 \(+1\)，后 \(q\) 个平方为 \(-1\)。设
+\[
+n=p+q,
+\qquad
+m=\left\lfloor\frac n2\right\rfloor,
+\qquad
+r=p-q\pmod 8.
+\]
+则实 Clifford 代数的非分次分类为
+\begin{equation}
+\begin{array}{c|c}
+r & \Cl_{p,q} \\
+\hline
+0 & M_{2^m}(\RR)\\
+1 & M_{2^m}(\RR)\oplus M_{2^m}(\RR)\\
+2 & M_{2^m}(\RR)\\
+3 & M_{2^m}(\CC)\\
+4 & M_{2^{m-1}}(\mathbb H)\\
+5 & M_{2^{m-1}}(\mathbb H)\oplus M_{2^{m-1}}(\mathbb H)\\
+6 & M_{2^{m-1}}(\mathbb H)\\
+7 & M_{2^m}(\CC)
+\end{array}
+\label{eq:real-clifford-classification}
+\end{equation}
+其中只在相应行确实出现时读取矩阵阶数；例如
+\[
+\Cl_{1,0}\cong\RR\oplus\RR,
+\qquad
+\Cl_{0,1}\cong\CC,
+\qquad
+\Cl_{0,2}\cong\mathbb H,
+\]
+\[
+\Cl_{2,0}\cong M_2(\RR),
+\qquad
+\Cl_{3,0}\cong M_2(\CC),
+\qquad
+\Cl_{1,3}\cong M_2(\mathbb H).
+\]
+这张表不仅给出代数维数，还决定不可约实模的标量交换子究竟是 \(\RR\)、\(\CC\) 还是 \(\mathbb H\)。因此所谓“实型、复型、四元数型”旋量，本质上来自不可约模交换子代数，而不是对 gamma 矩阵额外附加的经验条件。
+
+分类的两个关键递推是
+\begin{equation}
+\Cl_{p+1,q+1}
+\cong M_2\!\left(\Cl_{p,q}\right),
+\label{eq:clifford-pq-recursion}
+\end{equation}
+以及八周期
+\begin{equation}
+\Cl_{p+8,q}
+\cong M_{16}\!\left(\Cl_{p,q}\right),
+\qquad
+\Cl_{p,q+8}
+\cong M_{16}\!\left(\Cl_{p,q}\right).
+\label{eq:clifford-bott-eight-periodicity}
+\end{equation}
+后者正是实 Clifford 理论中的 Bott mod-8 周期在代数层面的有限维影子。与之相对，复 Clifford 代数只有 mod-2 周期：
+\[
+\Cl_{n+2}(\CC)
+\cong M_2\!\left(\Cl_{n}(\CC)\right)
+\]
+在 simple/semisimple block 的意义下递推。
+
+\begin{derivation}[从 \(\Cl_{1,1}\) 到矩阵递推与八周期]
+先看最小的混合 signature。取
+\[
+E_+=
+\begin{pmatrix}
+0&1\\
+1&0
+\end{pmatrix},
+\qquad
+E_-=
+\begin{pmatrix}
+0&1\\
+-1&0
+\end{pmatrix}.
+\]
+则
+\[
+E_+^2=I,
+\qquad
+E_-^2=-I,
+\qquad
+E_+E_-+E_-E_+=0.
+\]
+因此 universal property 给出
+\[
+\Cl_{1,1}\longrightarrow M_2(\RR).
+\]
+两边实维数同为 \(4\)，而 \(I,E_+,E_-,E_+E_-\) 线性独立，故
+\[
+\Cl_{1,1}\cong M_2(\RR).
+\]
+
+对一般 \(\Cl_{p,q}\)，把原二次空间的每个向量 \(v\) 映为
+\[
+v\longmapsto
+\begin{pmatrix}
+v&0\\
+0&-v
+\end{pmatrix},
+\]
+再把新增的正、负两个生成元分别映成 \(E_+\)、\(E_-\)。这些矩阵两两满足正确的 Clifford 反对易关系，于是 universal property 产生
+\[
+\Cl_{p+1,q+1}
+\longrightarrow M_2(\Cl_{p,q}).
+\]
+由生成性与维数
+\[
+2^{p+q+2}=4\cdot2^{p+q}
+\]
+可知它是同构，得到\eqnrefs{eq:clifford-pq-recursion}。
+
+再配合低维种子
+\[
+\Cl_{0,1}\cong\CC,
+\qquad
+\Cl_{0,2}\cong\mathbb H,
+\qquad
+\Cl_{1,0}\cong\RR\oplus\RR,
+\]
+以及 tensor-product 的分次版本反复递推，就得到\eqnrefs{eq:real-clifford-classification}。走完八步后 division-algebra 类型回到原点，而矩阵阶数累积出因子 \(16\)，于是得到\eqnrefs{eq:clifford-bott-eight-periodicity}。这里真正周期的是 Morita 类型；矩阵阶数负责补偿总维数的增长。
+\end{derivation}
+
+偶子代数还把维数递推与 Spin 群直接联系起来。若 \(p\ge1\)，则有自然同构
+\begin{equation}
+\Cl_{p,q}^{0}
+\cong
+\Cl_{q,p-1}.
+\label{eq:clifford-even-subalgebra}
+\end{equation}
+选取一个平方为 \(+1\) 的单位向量 \(e\)。对 \(e^\perp\) 中的向量 \(v\)，令
+\[
+\varphi(v)=ve.
+\]
+由于 \(ve=-ev\)，有
+\[
+(ve)^2=-v^2e^2=-Q(v),
+\]
+所以正负号交换；而所有 \(ve\) 都属于偶子代数。再次由 universal property 与维数比较便得到\eqnrefs{eq:clifford-even-subalgebra}。这解释了为什么 Spin 群虽然定义在 \(\Cl_{p,q}\) 中，却完全生活在偶子代数里；也解释了偶数维手征旋量为何首先是 even Clifford algebra 的不可约表示。
+
+从表示论角度，矩阵分类还有一个直接推论。若
+\[
+A\cong M_N(\mathbb D),
+\qquad
+\mathbb D\in\{\RR,\CC,\mathbb H\},
+\]
+则 simple left module 可取为 \(\mathbb D^N\)，其交换子代数由 Schur 型结论给出
+\[
+\operatorname{End}_{A}(S)\cong\mathbb D^{\mathrm{op}}.
+\]
+当代数分裂成两个 simple blocks 时，则出现两个不等价不可约模。因而“有几个不可约旋量模”“旋量维数是多少”“是否存在额外实或四元数结构”都可以从\eqnrefs{eq:real-clifford-classification} 系统读取，而无需逐个 signature 猜 gamma 矩阵。
+
+\section{Pin/Spin 群与正交群的二重覆盖}
+\label{sec:pin-spin}
+
+接下来考察单位向量产生反射。
+
+设 \(B\) 非退化，\(v\in V\) 且 \(Q(v)\neq0\)。在 Clifford 代数中
+\[
+v^{-1}=\frac{v}{Q(v)}.
+\]
+对 \(x\in V\)，定义 twisted conjugation
+\begin{equation}
+\rho_v(x)=-vxv^{-1}.
+\label{eq:clifford-reflection-action}
+\end{equation}
+利用\eqnrefs{eq:clifford-anticommutator} 可得
+\begin{equation}
+\rho_v(x)
+=x-2\frac{B(v,x)}{Q(v)}v,
+\label{eq:orthogonal-reflection}
+\end{equation}
+这正是关于超平面 \(v^\perp\) 的正交反射。Cartan--Dieudonn\'e 定理说明有限维非退化二次空间中的任意正交变换都可写成有限次此类反射的乘积，因此 Clifford 可逆元足以生成整个正交群。
+
+\begin{derivation}[Clifford 共轭作用严格推出正交反射]
+由 Clifford 基本关系
+\[
+vx+xv=2B(v,x)1
+\]
+得到
+\[
+vx=-xv+2B(v,x)1.
+\]
+右乘 \(v^{-1}=v/Q(v)\)（此处用到 \(v\) 非迷向即 \(Q(v)\neq0\)，故 \(v\) 可逆且 \(v^{-1}=v/Q(v)\) 由 \(v\cdot v/Q(v)=Q(v)/Q(v)=1\) 验证），有
+\[
+vxv^{-1}
+=(-xv+2B(v,x)1)v^{-1}
+=-xvv^{-1}+2B(v,x)v^{-1}
+=-x+2\frac{B(v,x)}{Q(v)}v.
+\]
+第一项用到 \(vv^{-1}=1\)，第二项用到标量与代数元可交换。乘上 twisted conjugation 定义中的负号，便得到\eqnrefs{eq:orthogonal-reflection}：
+\[
+\rho_v(x)=-vxv^{-1}=x-2\frac{B(v,x)}{Q(v)}v.
+\]
+
+再验证它保持二次型。写
+\[
+a=\frac{B(v,x)}{Q(v)},
+\qquad
+\rho_v(x)=x-2av.
+\]
+则由 \(Q\) 与 \(B\) 的关系 \(Q(x)=B(x,x)\) 及 \(B\) 双线性，
+\[
+\begin{aligned}
+Q(\rho_v(x))
+&=Q(x-2av)\\
+&=B(x-2av,x-2av)\\
+&=B(x,x)-2aB(x,v)-2aB(v,x)+4a^2B(v,v)\\
+&=Q(x)-4aB(x,v)+4a^2Q(v)\\
+&=Q(x)
+-4\frac{B(v,x)^2}{Q(v)}
++4\frac{B(v,x)^2}{Q(v)}\\
+&=Q(x).
+\end{aligned}
+\]
+中间用到 \(B(x,v)=B(v,x)\)（对称双线性型）。所以 \(\rho_v\in O(V,Q)\)。
+
+进一步验证 \(\rho_v\) 确为反射：被反射的超平面为 \(v^\perp=\{x:B(v,x)=0\}\)。若 \(x\in v^\perp\)，则 \(a=0\)，\(\rho_v(x)=x\)，即超平面上的点不动；若 \(x=v\)，则 \(a=B(v,v)/Q(v)=1\)，\(\rho_v(v)=v-2v=-v\)，即 \(v\) 方向反向。这正是关于 \(v^\perp\) 的正交反射的几何定义。
+
+\emph{举例：\(\Cl_2(\RR)\) 中的平面反射。}取 \(V=\RR^2\)，\(Q(x)=x_1^2+x_2^2\)，正交基 \(e_1,e_2\) 满足 \(e_1^2=e_2^2=1\)、\(e_1e_2=-e_2e_1\)。取 \(v=e_1\)，对任意 \(x=x_1e_1+x_2e_2\)，\(B(e_1,x)=x_1\)、\(Q(e_1)=1\)，故
+\[
+\rho_{e_1}(x)=x-2x_1e_1=-x_1e_1+x_2e_2,
+\]
+即关于 \(e_2\) 轴的反射。类似地 \(\rho_{e_2}\) 是关于 \(e_1\) 轴的反射。两者复合 \(\rho_{e_1}\rho_{e_2}\) 给出绕原点转 \(\pi\) 的旋转。
+
+\emph{举例：\(\Cl_3(\RR)\) 中的空间反射与旋转。}取 \(V=\RR^3\) Euclidean，\(v=e_1\)，\(\rho_{e_1}\) 是关于 \(e_2e_3\) 平面的反射。两个反射复合 \(\rho_{e_1}\rho_{e_2}\) 是绕 \(e_3\) 轴转 \(\pi\) 的旋转。更一般地，rotor \(R=\exp(-\theta e_1e_2/2)=\cos(\theta/2)-e_1e_2\sin(\theta/2)\) 通过 \(x\mapsto RxR^{-1}\) 实现绕 \(e_3\) 轴转 \(\theta\) 的旋转，半角正来自两个反射的复合。
+
+\emph{物理应用：宇称与时间反演的 Clifford 实现。}在相对论 Clifford 代数 \(\Cl_{1,3}(\RR)\) 中，取 \(v=\gamma^0\)（时间方向），\(\rho_{\gamma^0}\) 把空间分量反向而保持时间分量，正是宇称变换的代数实现。取 \(v=\gamma^1\)，相应反射翻转 \(x^1\) 与时间方向，与其它反射复合可生成 Lorentz 群的离散子群。Pin 群通过 twisted conjugation 实现 O(1,3)，Spin 群实现 SO(1,3) 的双覆盖，这是旋量表示下 Lorentz 变换严格代数化的母结构。
+
+\emph{推广方向。}对退化二次型，\(v^{-1}\) 不存在，反射公式失效，需用广义 Clifford 作用或限制到非迷向锥外。对复 Clifford 代数 \(\Cl_n(\CC)\)，所有非零向量可逆，反射公式全局成立。在 Spin 几何中，此反射公式推广为 Clifford 作用在切丛上的 gauge 变换，是 Dirac 算子协变性的代数基础。Cartan--Dieudonn\'e 定理进一步断言任意正交变换可写为不超过 \(n\) 个反射之积，因此 Clifford 可逆元通过 twisted conjugation 生成整个 \(O(V,Q)\)。
+\end{derivation}
+
+接下来考察Pin 与 Spin 的定义。
+
+由满足 \(Q(v)=\pm1\) 的单位向量在 Clifford 乘法下生成的群称为 Pin 群，记为 \(\operatorname{Pin}(V,Q)\)。其偶数个单位向量乘积构成 Spin 群
+\[
+\Spin(V,Q)
+=\operatorname{Pin}(V,Q)\cap\Cl^0(V,Q).
+\]
+由 twisted conjugation 得到群同态
+\[
+\rho:\operatorname{Pin}(V,Q)\to O(V,Q).
+\]
+限制到 even part 后得到
+\begin{equation}
+1\longrightarrow\{\pm1\}
+\longrightarrow\Spin(V,Q)
+\overset{\rho}{\longrightarrow}SO(V,Q)
+\longrightarrow1,
+\label{eq:spin-double-cover}
+\end{equation}
+在合适的连通分支上它是二重覆盖。旋量不是“普通向量再加几个分量”，而是 Spin 群不可约表示空间中的元素；正交向量表示与旋量表示属于不同表示。
+
+\begin{derivation}[为什么 Spin 映射的核是 \(\{\pm1\}\)]
+分三步证明 \(\ker\rho=\{\pm1\}\)。
+
+\emph{第一步：平凡作用推出中心化。}设 \(a\in\Spin(V,Q)\) 在向量表示上作用平凡，即
+\[
+ axa^{-1}=x,\qquad \forall x\in V.
+\]
+等价地，\(ax=xa\) 对所有 \(x\in V\) 成立，即 \(a\) 与所有向量对易。由于 Clifford 代数 \(\Cl(V,Q)\) 由 \(V\) 作为代数生成（乘积和线性组合反复构造），\(a\) 与整个 \(\Cl(V,Q)\) 对易。因此 \(a\) 属于 Clifford 代数的中心
+\[
+ Z(\Cl(V,Q))=\{c\in\Cl(V,Q):cb=bc,\;\forall b\in\Cl(V,Q)\}.
+\]
+严格地说：若 \(a\) 与所有 \(x\in V\) 对易，则与任意单项式 \(x_1x_2\cdots x_k\) 对易（归纳法：\(a(x_1\cdots x_k)=x_1(a x_2\cdots x_k)=\cdots=(x_1\cdots x_k)a\)），因而与任意线性组合对易，即与整个代数对易。
+
+\emph{第二步：中心的显式结构。}对非退化二次型 \(Q\)，Clifford 代数的中心由维数奇偶性决定：
+\begin{itemize}
+ \item \(\dim V\) 为偶数时，\(Z(\Cl(V,Q))=\R\cdot 1\)（仅标量）；
+ \item \(\dim V\) 为奇数时，\(Z(\Cl(V,Q))=\R\cdot 1\oplus\R\cdot\omega\)（标量加体积元 \(\omega=e_1e_2\cdots e_n\)）。
+\end{itemize}
+但 \(\Spin(V,Q)\subset\Cl^{\rm even}(V,Q)\)，而奇维情形的体积元 \(\omega\) 属于奇子代数，故 \(a\) 作为偶元素只能落在 \(\R\cdot 1\) 中：\(a=\lambda\cdot 1\)，\(\lambda\in\R\)。
+
+\emph{第三步：Clifford norm 限定 \(\lambda=\pm1\)。}Spin 群元素满足 Clifford norm \(N(a)=a\tilde a=\pm1\)（其中 \(\tilde{}\) 是主对合，把每个生成元 \(e_i\mapsto -e_i\)）。对 \(a=\lambda\cdot 1\)，\(\tilde a=\lambda\cdot 1\)（标量被主对合保持），故
+\[
+ N(a)=\lambda^2=1,
+\]
+因此 \(\lambda=\pm 1\)。反过来，\((\pm1)x(\pm1)^{-1}=x\) 对任意 \(x\) 成立，故 \(\pm1\in\ker\rho\)。因此
+\[
+ \ker\rho=\{\pm1\}.
+\]
+结合 Cartan--Dieudonn\'e 定理给出的满射性（每个正交变换是反射之积，而每个反射由 Spin 中元素通过 \(\rho\) 实现），便得到\eqnrefs{eq:spin-double-cover}。
+
+\emph{举例：\(\Spin(2)\to SO(2)\)。}\(\Spin(2)\cong U(1)=\{e^{i\theta/2}\}\)，映射 \(\rho(e^{i\theta/2})\) 给出 \(SO(2)\) 中转 \(\theta\) 角的旋转。核为 \(e^{i\theta/2}=\pm1\) 即 \(\theta=0,2\pi\)，对应 \(SO(2)\) 中恒等。故 \(\Spin(2)\) 是 \(SO(2)\) 的二重覆盖：转 \(2\pi\) 在 \(\Spin(2)\) 中回到 \(-1\) 而非 \(1\)，需转 \(4\pi\) 才回到 \(1\)。
+
+\emph{举例：\(\Spin(3)\to SO(3)\)。}\(\Spin(3)\cong SU(2)=\{a+b\mathbf i+c\mathbf j+d\mathbf k:a^2+b^2+c^2+d^2=1\}\cong S^3\)，映射 \(\rho(q)(\vec x)=q\vec x q^{-1}\)（把 \(\vec x\) 视为纯虚四元数）。核为 \(q=\pm1\)。这是量子力学中自旋 \(1/2\) 粒子转 \(2\pi\) 出负号的代数根源：物理上的 \(2\pi\) 旋转在 \(\Spin(3)\) 中对应 \(-1\)，而非恒等。
+
+\emph{举例：\(\Spin(4)\to SO(4)\)。}\(\Spin(4)\cong SU(2)\times SU(2)\)，核为 \(\{(1,1),(-1,-1)\}\)。这给出 \(SO(4)\cong (SU(2)\times SU(2))/\mathbb Z_2\)，是四维 Riemann 几何与 Yang--Mills 瞬子理论的代数基础。
+
+\emph{物理应用：自旋统计定理的代数前提。}旋量场在 \(\Spin\) 群的核 \(\{\pm1\}\) 中的 \(-1\) 表示下获得负号，正是 Fermi 统计的几何来源。在弯曲时空量子场论中，Spin 结构的存在性（即 \(w_2(TM)=0\)）是定义旋量场的前提；不同 Spin 结构对应不同量子场论。此推导把“旋量表示是 SO 的投影表示”严格归结为 Clifford 代数中心与 Clifford norm 的代数事实。
+
+\emph{推广方向。}对带不定度规的 \(\Spin(p,q)\)，证明相同，但群非紧且可能有更多连通分支。对 Pin 群，核推广为 \(\{\pm1,\pm\omega\}\)（含体积元）。在 String 群与 Fivebrane 群的高阶推广中，二重覆盖升级为高阶 gerbe 结构，是 M 理论与弦论中 spin--string--fivebrane 阶塔的代数起点。
+
+\emph{数学联系：与 Weyl 群的精确序列。}对紧致连通 Lie 群 \(G\)，有精确序列
+\[
+1\to\{\pm1\}\to\Spin(n)\to SO(n)\to1,\qquad
+\Spin(n)/\{\pm1\}=SO(n),
+\]
+且 \(\Spin(n)\) 单连通（\(n\ge3\)），是 \(SO(n)\) 的万有覆盖群。此二重覆盖的代数起源即本推导：Clifford 代数中心限制 Spin 元为标量，Clifford norm 限制标量为 \(\pm1\)。Weyl 群 \(W=N_G(T)/T\) 则是此结构在 maximal torus 上的离散剩余对称性，与二重覆盖共同决定表示的分类。对 \(n=3\)，\(\Spin(3)\cong SU(2)\to SO(3)\) 是物理中最常遇到的实例，旋量表示即 \(SU(2)\) 的二维不可约表示。对 \(n=4\)，\(\Spin(4)\cong SU(2)\times SU(2)\) 的二重覆盖给出四维 Riemann 几何中自旋结构的分类基础，与 Yang--Mills 瞬子的 ADHM 构造直接相关。对一般 \(n\)，\(\Spin(n)\) 的单连通性使其成为 \(SO(n)\) 的万有覆盖群，所有 \(SO(n)\) 的投影表示提升为 \(\Spin(n)\) 的真实表示，这是旋量场数学定义的拓扑基础。在指标定理中，\(\Spin\) 结构的存在性（\(w_2(TM)=0\)）是 Dirac 算子定义与 Atiyah--Singer 指标公式成立的前提，\(\widehat A\) 类与 \(\Spin\) 表示的交互直接给出 Dirac 算子的解析指标。
+
+\emph{总结。}Spin 二重覆盖的核 \(\{\pm1\}\) 完全由 Clifford 代数的代数结构（中心 + norm）决定，不依赖任何具体矩阵实现。此代数事实是旋量表示、Dirac 算子与指标定理的基石，在物理中体现为自旋 \(1/2\) 粒子的 \(4\pi\) 周期性与 Fermi 统计。在规范理论中，Spin 结构的存在性是定义 Dirac 算子与构造作用量 \(\int\bar\psi i\gamma^\mu D_\mu\psi\,\dd^4x\) 的前提，不同 Spin 结构给出不同量子场论。此二重覆盖在物理中是不可消除的：\(4\pi\) 旋转才回到恒等，\(2\pi\) 旋转给出 \(-1\)，这是旋量与张量表示的本质区别。
+
+\emph{尾声。}此核的计算是 Spin 几何的代数起点，后续 Dirac 算子、旋量丛与指标定理都建立在此二重覆盖之上。
+\end{derivation}
+
+接下来考察Spin Lie algebra、bivector 生成元与半角结构。
+
+Spin 群的无穷小结构不是一个额外定义，而是 Clifford 偶子代数中的 bivector 部分。把 $\mathfrak{so}(V,B)$ 视为保持 $B$ 的反对称无穷小变换。对 $u,v\in V$ 定义
+\begin{equation}
+\Sigma(u\wedge v)
+=\frac14(uv-vu)\in\Cl^0(V,Q).
+\label{eq:spin-bivector-generator}
+\end{equation}
+则它对向量的交换子作用为
+\begin{equation}
+[\Sigma(u\wedge v),w]
+=B(v,w)u-B(u,w)v.
+\label{eq:spin-bivector-so-action}
+\end{equation}
+右边正是 $u\wedge v$ 对应的标准 $\mathfrak{so}(V,B)$ 生成元。因此
+\begin{equation}
+\mathfrak{spin}(V,B)
+\cong\Lambda^2V
+\cong\mathfrak{so}(V,B)
+\label{eq:spin-lie-algebra-isomorphism}
+\end{equation}
+作为 Lie algebra 同构；Spin 与 $SO$ 的差异是全局拓扑二重覆盖，而不是局部 Lie algebra 的差异。
+
+\begin{derivation}[bivector 的 Clifford 交换子为何给出正交 Lie algebra，即\eqnrefs{eq:spin-bivector-so-action}]
+\emph{思路：}利用 Clifford 关系 $vw=-wv+2B(v,w)$ 逐步展开 $[uv,w]$，证明 bivector $u\wedge v$ 的 Clifford 交换子恰好是 $\mathfrak{so}(V,B)$ 的标准生成元。
+
+\emph{第一步：计算 $[uv,w]$。}由 Clifford 关系 $vw=-wv+2B(v,w)$ 和 $wv=-vw+2B(v,w)$，
+\begin{align*}
+ [uv,w]
+ &=uvw-wuv\\
+ &=u(-wv+2B(v,w))-(-uw+2B(u,w))v\\
+ &=-uvw+2B(v,w)u+uwv-2B(u,w)v.
+\end{align*}
+对第一、三项再次用 Clifford 关系：$wv=-vw+2B(v,w)$ 给出 $uvw=u(-wv+2B(v,w))=-uwv+2B(v,w)u$，即 $-uvw+uwv=-2B(v,w)u$。代入
+\begin{equation*}
+ [uv,w]
+ =-2B(v,w)u+2B(v,w)u+2B(v,w)u-2B(u,w)v
+ =2B(v,w)u-2B(u,w)v.
+\end{equation*}
+（标量项 $2B(v,w)$ 和 $2B(u,w)$ 从 Clifford 乘积中提出，因标量与代数元可交换。）
+
+\emph{第二步：反对称化。}交换 $u,v$ 后同理有
+\begin{equation*}
+ [vu,w]
+ =2B(u,w)v-2B(v,w)u.
+\end{equation*}
+两式相减再除以 $4$（即取 $u\wedge v=(uv-vu)/2$ 的交换子），
+\begin{equation*}
+ \left[\frac{uv-vu}{2},w\right]
+ =\frac{1}{2}\bigl([uv,w]-[vu,w]\bigr)
+ =\frac{1}{2}\bigl(2B(v,w)u-2B(u,w)v-2B(u,w)v+2B(v,w)u\bigr)
+ =2B(v,w)u-2B(u,w)v,
+\end{equation*}
+再除以 $2$ 得
+\begin{equation*}
+ \left[\frac{uv-vu}{4},w\right]
+ =B(v,w)u-B(u,w)v,
+\end{equation*}
+即\eqnrefs{eq:spin-bivector-so-action}。
+
+\emph{第三步：验证反对称性。}定义 $A_{u,v}(w)=B(v,w)u-B(u,w)v$。对任意 $x,w$，
+\begin{equation*}
+ B(A_{u,v}x,w)+B(x,A_{u,v}w)
+ =B\bigl(B(v,x)u-B(u,x)v,\,w\bigr)+B\bigl(x,\,B(v,w)u-B(u,w)v\bigr)=0,
+\end{equation*}
+展开后
+\[
+B(v,x)B(u,w)-B(u,x)B(v,w)+B(v,w)B(x,u)-B(u,w)B(x,v)=0,
+\]
+其中 $B(v,x)B(u,w)$ 项与 $B(u,w)B(x,v)$ 项配对抵消（用 $B$ 对称性 $B(x,v)=B(v,x)$），$B(u,x)B(v,w)$ 项与 $B(v,w)B(x,u)$ 项配对抵消，故 $A_{u,v}\in\mathfrak{so}(V,B)$（关于 $B$ 的反对称线性变换）。
+
+\emph{第四步：维数匹配。}$\Lambda^2V$ 的维数为 $\binom{n}{2}=n(n-1)/2$，$\mathfrak{so}(V,B)$ 的维数也是 $n(n-1)/2$（反对称矩阵）。非退化 $B$ 下，映射 $u\wedge v\mapsto A_{u,v}$ 是单射（核为零：若 $A_{u,v}=0$，取 $w$ 使 $B(v,w)\neq0$ 则 $u\propto v$，但 $u\wedge v=0$），两个空间维数相同，故为同构，即\eqnrefs{eq:spin-lie-algebra-isomorphism}。
+
+\emph{举例：\(\mathfrak{spin}(3)\) 与角动量。}取 $V=\RR^3$ Euclidean，正交基 $e_1,e_2,e_3$。bivector 基 $e_2e_3,e_3e_1,e_1e_2$ 对应
+\[
+\Sigma_1=\frac{e_2e_3}{2},\quad \Sigma_2=\frac{e_3e_1}{2},\quad \Sigma_3=\frac{e_1e_2}{2}.
+\]
+计算换位子
+\[
+[\Sigma_1,\Sigma_2]=\frac14[e_2e_3,e_3e_1]=\frac14(e_2e_3e_3e_1-e_3e_1e_2e_3)=\frac14(e_2e_1-e_1e_2)=\frac12 e_1e_2=\Sigma_3,
+\]
+循环得 $[\Sigma_i,\Sigma_j]=\varepsilon_{ijk}\Sigma_k$，正是 $\mathfrak{so}(3)$ 标准基的对易关系。乘以 $-i$ 后即角动量对易 $[J_i,J_j]=i\varepsilon_{ijk}J_k$。
+
+\emph{物理应用：旋量表示下的 Lorentz 生成元。}在四维 Minkowski 空间，bivector 基 $\frac14\gamma^\mu\gamma^\nu$（$\mu<\nu$）通过换位子作用给出 Lorentz 生成元 $\Sigma^{\mu\nu}$。具体地，空间旋转生成元 $\Sigma^i=\frac12\varepsilon^{ijk}\Sigma^{jk}$ 与推进生成元 $K^i=\Sigma^{0i}$ 满足
+\[
+[\Sigma^i,\Sigma^j]=\varepsilon^{ijk}\Sigma^k,\quad
+[\Sigma^i,K^j]=\varepsilon^{ijk}K^k,\quad
+[K^i,K^j]=-\varepsilon^{ijk}\Sigma^k,
+\]
+正是 $\mathfrak{so}(1,3)$ 的标准对易关系。Dirac 旋量在 Lorentz 变换下通过 $S=\exp(-\frac{i}{2}\omega_{\mu\nu}\Sigma^{\mu\nu})$ 变换，半角系数正来自 bivector--向量同构中 $1/2$ 因子。
+
+\emph{推广方向。}对伪 Riemann 流形，每点切空间的 bivector 拼成 $\Lambda^2 TM$，对应 $\mathfrak{so}(T_pM)$，整体给出标架丛的 Spin 结构。在 K\"ahler 流形上，复结构把 $\mathfrak{so}(2n)$ 约化为 $\mathfrak u(n)$，bivector 分解为 $(2,0)+(0,2)+(1,1)$ 部分，对应 holomorphic、anti-holomorphic 与 central 部分。在广义几何中，$B$-field 变换把 bivector 推广为 $H\in\Lambda^2 T^*\oplus\Lambda^2 T$，是 Courant algebrot 与 generalized spinor 的母结构。
+\end{derivation}
+
+这一同构也解释旋转的半角。设 Euclidean 二维平面由正交单位向量 $e_1,e_2$ 张成，并令
+\[
+J=e_1e_2,
+\qquad J^2=-1.
+\]
+取 rotor
+\begin{equation}
+R(\theta)=\exp\!\left(-\frac{\theta}{2}J\right)
+=\cos\frac\theta2-J\sin\frac\theta2.
+\label{eq:spin-rotor-half-angle}
+\end{equation}
+向量通过 conjugation 变换
+\[
+x\longmapsto R(\theta)xR(\theta)^{-1}.
+\]
+指数中的参数是 $\theta/2$，但向量空间中得到的实际旋转角是 $\theta$。于是 $R(2\pi)=-1$ 而 $R(4\pi)=1$：这不是三维 Pauli 矩阵的偶然性质，而是二重覆盖在 Lie group 层面的直接表现。
+
+
+接下来考察三维 Euclidean 特例：\(\Spin(3)\cong SU(2)\)。
+
+取 \(V=\RR^3\) 与 Euclidean 二次型。其 even Clifford algebra 与四元数同构：
+\[
+\Cl^0_3(\RR)\cong\mathbb H.
+\]
+单位四元数恰构成 \(S^3\)，并与 \(SU(2)\) 同构。因而
+\[
+\Spin(3)
+\cong SU(2),
+\qquad
+SO(3)\cong SU(2)/\{\pm I\}.
+\]
+上一节四元数半角公式因此不是独立技巧，而是一般 Spin 二重覆盖在三维 Euclidean 空间中的具体实现。
+
+\section{旋量模与 gamma 矩阵作为 Clifford 表示}
+\label{sec:spinor-gamma}
+
+接下来考察旋量不是 Clifford 基元本身。
+
+给定 Clifford 代数 \(\Cl(V,Q)\)，旋量空间 \(S\) 是其某个不可约左模，亦即存在代数表示
+\[
+\pi:\Cl(V,Q)\to\operatorname{End}(S).
+\]
+向量 \(v\in V\) 的像
+\[
+\gamma(v)=\pi(v)
+\]
+满足
+\begin{equation}
+\gamma(u)\gamma(v)+\gamma(v)\gamma(u)
+=2B(u,v)I_S.
+\label{eq:gamma-clifford-relation}
+\end{equation}
+若选基 \(e_\mu\)，记 \(\gamma_\mu=\gamma(e_\mu)\)，便得到熟悉的 gamma 矩阵关系。矩阵维数、实条件和 chirality 都由 \(\Cl(V,Q)\) 的表示理论决定，而不是凭经验猜测。
+
+偶数维 \(n=2m\) 时可定义体积元对应的 chirality operator。对适当归一化的正交基，令
+\[
+\Gamma_*=c_m\gamma_1\gamma_2\cdots\gamma_{2m},
+\qquad
+\Gamma_*^2=I.
+\]
+它与每个 \(\gamma_a\) 反对易，并把旋量空间分解为
+\[
+S=S^+\oplus S^-,
+\qquad
+\Gamma_*\psi_\pm=\pm\psi_\pm.
+\]
+这就是 Weyl 分解的纯代数来源。
+
+接下来考察极化、Fock 模型与 chirality 的代数来源。
+
+偶数维复二次空间的旋量模可以不依赖任何具体 gamma 矩阵显式构造。设
+\[
+V_{\CC}=W\oplus W^*
+\]
+是一个 maximal isotropic polarization，使 $W$ 与 $W^*$ 各自在 $B$ 下全等距为零，而二者通过自然配对耦合。定义
+\begin{equation}
+S=\Lambda^\bullet W^*.
+\label{eq:spinor-fock-space}
+\end{equation}
+对 $\xi\in W^*$ 用 exterior multiplication 作用，对 $w\in W$ 用 contraction 作用：
+\[
+\gamma(\xi)=\sqrt2\,\varepsilon(\xi),
+\qquad
+\gamma(w)=\sqrt2\,\iota_w.
+\]
+因为 creation 与 annihilation operators 满足
+\[
+\{\varepsilon(\xi),\varepsilon(\eta)\}=0,
+\qquad
+\{\iota_w,\iota_z\}=0,
+\]
+\[
+\{\iota_w,\varepsilon(\xi)\}=\xi(w)I,
+\]
+它们正给出 Clifford relation。这就是旋量空间的 fermionic Fock 模型：旋量不是“几何向量的复数版本”，而是 maximal isotropic subspace 上的外代数。
+
+若 $\dim_{\CC}V=2m$，则 $\dim W=m$，从而
+\[
+\dim_{\CC}S=2^m.
+\]
+外代数的奇偶分次进一步给出
+\begin{equation}
+S^+=\Lambda^{\mathrm{even}}W^*,
+\qquad
+S^-=\Lambda^{\mathrm{odd}}W^*,
+\label{eq:spinor-fock-chirality}
+\end{equation}
+且
+\[
+\dim S^+=\dim S^-=2^{m-1}.
+\]
+在偶数维，Clifford 的每个向量作用都会改变 parity，因此
+\[
+\gamma(v):S^\pm\to S^\mp.
+\]
+这正是 chirality operator 与 gamma 矩阵反对易的结构原因。
+
+\begin{derivation}[从 maximal isotropic polarization 构造不可约旋量模]
+选取对偶基
+\[
+w_1,\ldots,w_m\in W,
+\qquad
+\xi^1,\ldots,\xi^m\in W^*,
+\]
+使 $\xi^a(w_b)=\delta^a_b$。在 $S=\Lambda^\bullet W^*$ 上令
+\[
+a_a=\iota_{w_a},
+\qquad
+a_a^\dagger=\varepsilon(\xi^a).
+\]
+它们满足 CAR。具体验证：对任意 $\eta\in\Lambda^\bullet W^*$，
+\[
+\iota_{w_a}\varepsilon(\xi^b)\eta+\varepsilon(\xi^b)\iota_{w_a}\eta
+=\xi^b(w_a)\eta=\delta_{ab}\eta,
+\]
+此为外代数上 contraction--wedge 的标准恒等式。其余两条
+\[
+\{a_a,a_b\}=0,
+\qquad
+\{a_a^\dagger,a_b^\dagger\}=0,
+\qquad
+\{a_a,a_b^\dagger\}=\delta_{ab}I.
+\]
+来自 $\wedge$ 与 $\iota$ 各自的反对易性。真空 $|0\rangle=1\in\Lambda^0W^*$ 被所有 $a_a$ 消去（$\iota_{w_a}1=0$），而
+\[
+a_{i_1}^\dagger\cdots a_{i_k}^\dagger|0\rangle
+=\xi^{i_1}\wedge\cdots\wedge\xi^{i_k}
+\]
+生成整个 $S$。因此 Fock 基恰有
+\[
+\sum_{k=0}^m\binom mk=2^m
+\]
+个元素（二项式定理）。
+
+Clifford 偶子代数由偶数个 creation/annihilation operators 生成，保持 parity；奇部分则交换 parity。具体地：偶元素如 $a_a^\dagger a_b$ 把 $\Lambda^k W^*$ 映到自身（一次 create 一次 annihilate，parity 不变）；奇元素如 $a_a^\dagger$ 把 $\Lambda^k W^*$ 映到 $\Lambda^{k+1} W^*$（parity 翻转）。于是\eqnrefs{eq:spinor-fock-chirality} 不是额外强加的手征分解，而是 Clifford $\mathbb Z_2$ 分次在不可约模上的自然实现。
+
+\emph{举例：$m=1$ 即二维复 Clifford。}$W=\operatorname{span}\{w_1\}$，$S=\Lambda^\bullet W^*=\operatorname{span}\{1,\xi^1\}$，$\dim S=2$。$a_1=\iota_{w_1}$、$a_1^\dagger=\varepsilon(\xi^1)$ 在基 $\{1,\xi^1\}$ 下表示为
+\[
+a_1=\begin{pmatrix}0&1\\0&0\end{pmatrix},\quad
+a_1^\dagger=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+\]
+$\gamma(w_1)=\sqrt2 a_1$、$\gamma(\xi^1)=\sqrt2 a_1^\dagger$ 满足 $\{\gamma(w_1),\gamma(\xi^1)\}=\sqrt2\cdot\sqrt2\cdot\delta_{11}I=2I$，正是二维 Clifford 关系。手征分解 $S^+=\Lambda^0 W^*=\operatorname{span}\{1\}$、$S^-=\Lambda^1 W^*=\operatorname{span}\{\xi^1\}$。
+
+\emph{举例：$m=2$ 即四维复 Clifford。}$S=\Lambda^\bullet W^*=\operatorname{span}\{1,\xi^1,\xi^2,\xi^1\wedge\xi^2\}$，$\dim S=4$。Fock 基按 parity 分组：
+\[
+S^+=\operatorname{span}\{1,\xi^1\wedge\xi^2\},\qquad
+S^-=\operatorname{span}\{\xi^1,\xi^2\},
+\]
+各二维。$\gamma(w_a)$ 把 $S^\pm$ 映到 $S^\mp$，偶子代数保持 $S^\pm$。这正是 Dirac 旋量分解为左右手 Weyl 旋量的代数来源。
+
+\emph{物理应用：自由费米子 Fock 空间。}在量子场论中，自由 Dirac 场的 Fock 空间即由此构造：$a_a^\dagger$ 为产生算子、$a_a$ 为湮灭算子，真空 $|0\rangle$ 为无粒子态。多费米子态
+\[
+a_{i_1}^\dagger\cdots a_{i_k}^\dagger|0\rangle
+\]
+由 Pauli 不相容原理（CAR 的 $\{a_a^\dagger,a_b^\dagger\}=0$）保证每模式最多占一个粒子。旋量场的反对易关系不是额外公理，而是 Clifford 表示在 Fock 模型下的自然结果。
+
+\emph{推广方向。}对超对称理论，bosonic 与 fermionic 振子共同构成超 Clifford 代数，Fock 模型给出超旋量表示。在顶点算子代数中，Fock 空间由 Heisenberg 代数作用于真空生成，是自由玻色子/费米子 VOA 的标准构造。在几何 Langlands 纲领中，旋量 Fock 模型推广为 opers 与 Hecke eigensheaf，连接表示论与几何。
+\end{derivation}
+
+等价地，也可以把不可约旋量模实现为 Clifford 代数的 minimal left ideal
+\[
+S\cong\Cl(V,Q)f,
+\]
+其中 $f$ 为合适的 primitive idempotent。Fock 模型更适合计算，minimal-left-ideal 语言则更接近纯代数分类；两者描述的是同一个不可约表示结构。
+
+
+上述 Fock 构造还可以看出一个容易混淆的事实：\(S^\pm\) 一般不是完整 Clifford 代数的模，而是偶子代数的模。因为任意向量 Clifford 乘法都会交换 parity，
+\[
+\gamma(v):S^+\leftrightarrow S^-.
+\]
+因此在偶数维，完整不可约 Clifford 模通常是
+\[
+S=S^+\oplus S^-,
+\]
+而 Spin 群由于位于偶子代数中，分别保持 \(S^+\) 与 \(S^-\)。这正是“Dirac spinor 可以分成两个 Weyl spinor”背后的表示论语句；它首先是 even-subalgebra 的分解，而不是动力学方程的结果。
+
+体积元把这个结构编码得更紧凑。对复偶数维 \(n=2m\)，取归一化体积元
+\[
+\omega_{\CC}=c_m e_1e_2\cdots e_{2m},
+\qquad
+\omega_{\CC}^2=1.
+\]
+它与每个向量反对易，却与所有偶元素交换。因此
+\[
+P_\pm=\frac12(1\pm\omega_{\CC})
+\]
+是偶子代数作用下的投影，并给出
+\[
+S^\pm=P_\pm S.
+\]
+反过来，如果只保留 \(\Cl_{2m}^0(\CC)\) 的表示，就看不到把 \(S^+\) 与 \(S^-\) 互换的 odd generators；这也是构造 Weyl 模时必须明确“表示的是 Spin/even Clifford，还是完整 Clifford”的原因。
+
+实旋量的情况不能只把复矩阵取实部。设 \(S_\RR\) 是一个不可约实 Clifford 模并复化为
+\[
+S_\CC=S_\RR\otimes_\RR\CC.
+\]
+其复表示是否仍不可约、是否分裂成互为共轭的模、以及是否携带平方为 \(-1\) 的交换子，都由\eqnrefs{eq:real-clifford-classification} 中的 \(\RR/\CC/\mathbb H\) 类型控制。更抽象地，若存在与 Clifford 作用交换的反线性算子 \(J\)，则
+\[
+J^2=+1
+\]
+给出 real structure，而
+\[
+J^2=-1
+\]
+给出 quaternionic structure。这样的 \(J\) 是否存在以及其平方符号不是基选择问题，而是实表示类型的不变量。
+
+\begin{derivation}[chirality 为什么只在偶维给出两个 Spin 不可约分量]
+令 \(n=2m\)，体积元记为 \(\omega=e_1\cdots e_n\)。对任意基向量 \(e_a\)，把 \(e_a\) 积过其余 \(n-1\) 个生成元得到
+\[
+e_a\omega=(-1)^{n-1}\omega e_a=-\omega e_a,
+\]
+最后等号用到 $n=2m$ 偶故 $n-1$ 奇。所以 \(\omega\) 与所有 odd Clifford 元反交换。若 \(x\) 是偶元素，则由两个 odd 因子组成的每一项都贡献两次负号，因此
+\[
+[x,\omega]=0,
+\qquad x\in\Cl^0.
+\]
+归一化后令 \(\omega^2=1\)（取 $\omega_\CC=c_m\omega$，$c_m=i^{-m^2}$ 或相应相位因子使 $\omega_\CC^2=1$），则 $P_\pm=(1\pm\omega_\CC)/2$ 满足
+\[
+P_\pm^2=\tfrac14(1\pm2\omega_\CC+\omega_\CC^2)=\tfrac12(1\pm\omega_\CC)=P_\pm,
+\]
+\[
+P_+P_-=\tfrac14(1-\omega_\CC^2)=0,
+\qquad
+P_++P_-=1.
+\]
+故 $P_\pm$ 是互补正交投影，且
+\[
+S=P_+S\oplus P_-S=S^+\oplus S^-.
+\]
+因为 \(\Spin(p,q)\subset\Cl_{p,q}^0\)，Spin 作用与 \(P_\pm\) 交换，因而分别保持两部分；但任意 \(v\in V\) 满足
+\[
+P_\pm\gamma(v)=\tfrac12(1\pm\omega_\CC)\gamma(v)
+=\tfrac12(\gamma(v)\pm\omega_\CC\gamma(v))
+=\tfrac12(\gamma(v)\mp\gamma(v)\omega_\CC)
+=\gamma(v)P_\mp,
+\]
+中间用到 $\omega_\CC\gamma(v)=-\gamma(v)\omega_\CC$（体积元与向量反交换），所以完整 Clifford 作用把两部分互换。奇数维时 $n-1$ 偶，体积元与每个向量交换而不是反交换，因此它区分的是两个 simple Clifford blocks（中心非平凡），而不产生同样的 Weyl parity 交换结构。
+
+\emph{举例：$n=2$ 的 Weyl 分解。}$\omega_\CC=i e_1e_2$（取 $\omega_\CC^2=1$），$P_\pm=\frac12(1\pm i e_1e_2)$。在二维复旋量表示 $S=\CC^2$ 上，$\omega_\CC$ 可对角化为 $\operatorname{diag}(1,-1)$，$P_+=\operatorname{diag}(1,0)$、$P_-=\operatorname{diag}(0,1)$。$S^+$ 与 $S^-$ 各一维，是 $\Spin(2)\cong U(1)$ 的两个不同权（$+1$ 与 $-1$）表示。
+
+\emph{举例：$n=4$ 的 Weyl 分解。}$\omega_\CC=i\gamma^0\gamma^1\gamma^2\gamma^3=\gamma_5$（物理常用 $\gamma_5$ 记号），$P_\pm=\frac12(1\pm\gamma_5)$。在四维 Dirac 旋量 $S=\CC^4$ 上，$S^\pm$ 各二维。Weyl 旋量 $\psi_L\in S^+$、$\psi_R\in S^-$ 在弱相互作用中分别参与左手与右手耦合，标准模型 V--A 结构的代数根源即此分解。
+
+\emph{物理应用：手征费米子与质量项。}完整 Clifford 作用把 $S^+$ 映到 $S^-$，故向量--旋量耦合 $\bar\psi\gamma^\mu\psi$ 保持手征（$\bar\psi_L\gamma^\mu\psi_L$、$\bar\psi_R\gamma^\mu\psi_R$ 分别合法），而质量项 $m\bar\psi\psi=m(\bar\psi_L\psi_R+\bar\psi_R\psi_L)$ 必须混合左右手。这是弱相互作用破缺手征对称性、中微子质量问题的代数起点。在 QED 与 QCD 中手征对称性 $U(1)_L\times U(1)_R$（或 $SU(N)_L\times SU(N)_R$）的破缺模式都由此结构决定。
+
+\emph{推广方向。}对奇数维 $n=2m+1$，体积元属于中心，复 Clifford 代数分解为两个矩阵代数之积，但旋量空间不再有 Weyl 分解。在超对称理论中，超旋量在超 Clifford 代数上的分解给出超 Poincaré 表示的 R--对称性。在 K--理论中，Weyl 分解对应于拓扑 K--群的 Bott 周期性，是指标定理与 Dirac 算子解析指数的代数基础。
+
+\emph{数学联系：与 Bott 周期性。}Weyl 分解的存在性随维数 mod 8 周期变化，正是实 Clifford 代数的 Bott 周期性在表示论上的体现。复情形周期为 2：偶维有 Weyl 分解，奇维无。实情形周期为 8：\(\Cl_{p,q}\) 的不可约模类型随 \((p-q)\bmod8\) 在 \(\RR,\CC,\mathbb H\) 间循环，决定实旋量、Majorana 条件与 symplectic Majorana 旋量的存在性。此周期性是拓扑 K--理论 \(\widetilde{KO}(S^n)\) 的算子代数实现，是 Atiyah--Bott--Shapiro 构造与指标定理的关键环节。
+
+\emph{物理应用：标准模型中的手征费米子。}标准模型中左旋与右旋费米子分别属于 \(SU(2)_L\) 双重态与单态，Weyl 分解正是此分配的代数基础。弱相互作用顶角 \(\bar\psi_L\gamma^\mu(1-\gamma_5)\psi_L\) 仅耦合左旋 Weyl 旋量，右旋不参与，V--A 结构由 chirality 投影 \(P_-=\frac12(1-\gamma_5)\) 实现。中微子质量问题（Majorana 质量项需混合左右手）与 CP 破缺的代数根源都在此 Weyl 分解结构中。在格点 QCD 中，Wilson 费米子项通过显式破缺手征对称性避免 doubling，连续极限下恢复 Weyl 分解，是格点规范理论离散化与连续对称性协调的关键技术。在超对称理论中，Weyl 旋量是构造超 Poincaré 代数的基本对象，手征超场即 Weyl 旋量的超对称推广，其自由度与 Weyl 分解的代数结构精确对应。在弦论中，世界面费米子分为左移与右移 Weyl 旋量，Type II 弦/弦的区别即左右旋量 Weyl 分解的相对手征性：Type IIA 左右相反（非手征），Type IIB 左右相同（手征）。这给出弦论中类型分类的代数起源，与 Bott 周期性在 10 维（\(10\bmod8=2\)）的复 Clifford 分类直接相关。
+
+\emph{总结。}Weyl 分解的代数根源是体积元与向量的反交换关系，仅在偶维给出非平凡手征投影。此结构贯穿粒子物理（手征费米子、弱相互作用）、弦论（Type IIA/IIB 分类）与指标定理（Bott 周期性），是 Clifford 代数偶维表示论的核心结论。在几何 Langlands 纲领中，Weyl 旋量对应于 Hecke eigensheaf 的局部结构，手征分解与几何 Satake 等价精确对应。在凝聚态物理中，拓扑绝缘体的 \(\mathbb Z_2\) 分类依赖于 time-reversal 对称与 Weyl 分解的交互，是三维拓扑绝缘体与二维拓扑超导体分类的代数基础。在 K--理论中，Weyl 分解给出复 K--群 \(\widetilde K(S^n)\) 的生成元，Bott 周期性 \(\widetilde K(S^{n+2})\cong\widetilde K(S^n)\) 即此分解在 suspension 下的稳定性。在指标定理中，Weyl 分解把 Dirac 算子分为 \(D^+:S^+\to S^-\) 与 \(D^-:S^-\to S^+\)，指标 \(\operatorname{ind}D^+=\dim\ker D^+-\dim\ker D^-\) 即此分解的解析体现。
+
+\emph{尾声。}Weyl 分解是偶维 Clifford 代数的标志性质，把旋量表示从单一不可约分解为两个 Spin 不可约，是手征物理与指标理论的代数根源。此分解在物理中不可消除：左右手费米子耦合不同是弱相互作用的实验事实。在数学中，Weyl 分解给出偶维旋量丛 \(S=S^+\oplus S^-\) 的整体分解，是 Dirac 算子 \(D=\begin{pmatrix}0&D^-\\D^+&0\end{pmatrix}\) 非对角结构的代数来源，直接导致 \(\operatorname{ind}D^+\) 的定义。
+
+\emph{后记。}Weyl 分解在偶维 Clifford 代数中是自然的，但在奇维消失，此差异是 Bott 周期性的代数体现，也是拓扑绝缘体 \(\mathbb Z_2\) 分类的根源。
+\end{derivation}
+
+接下来考察四维复 Clifford 代数的 16 维矩阵基。
+
+四维复 Clifford 代数维数为 \(2^4=16\)。在一个四维不可约复旋量表示中，\(\operatorname{End}(S)\cong M_4(\CC)\) 也有复维数 16，因此 Clifford 基元可以组织成
+\begin{equation}
+I,
+\qquad
+\gamma^\mu,
+\qquad
+\sigma^{\mu\nu}=\frac{\ii}{2}[\gamma^\mu,\gamma^\nu],
+\qquad
+\Gamma_*\gamma^\mu,
+\qquad
+\Gamma_*.
+\label{eq:dirac-matrix-basis}
+\end{equation}
+维数分别为
+\[
+1+4+6+4+1=16.
+\]
+这组对象的存在首先是 Clifford 分次与外代数维数计数的结果；它与任何特定 Dirac 动力学无关。
+
+在标准迹配对
+\[
+(A,B)_{\operatorname{tr}}
+=\operatorname{tr}(AB)
+\]
+下，不同 Clifford grade 的基元具有相应正交性。因而任意 \(4\times4\) 复矩阵都可在\eqnrefs{eq:dirac-matrix-basis} 上唯一展开。Fierz 重排的代数本质正是“在这个完备矩阵基上插入恒等分解”。
+
+\begin{derivation}[四维 Clifford 基的维数与线性完备性]
+从 \(n=4\) 的 Clifford 代数维数公\eqnrefs{eq:clifford-dimension} 出发，按 grade 计数：
+\[
+\dim\Lambda^0V=\binom40=1,
+\qquad
+\dim\Lambda^1V=\binom41=4,
+\]
+\[
+\dim\Lambda^2V=\binom42=6,
+\qquad
+\dim\Lambda^3V=\binom43=4,
+\qquad
+\dim\Lambda^4V=\binom44=1.
+\]
+因此总维数为
+\[
+1+4+6+4+1=16.
+\]
+在四维不可约复旋量模上，
+\[
+\dim_\CC S=4,
+\qquad
+\dim_\CC\operatorname{End}(S)=4^2=16.
+\]
+复 Clifford 代数同构于 \(M_4(\CC)\)（由\eqnrefs{eq:real-clifford-classification} 的复化版本给出），所以忠实不可约表示把上述 16 个独立 Clifford 元映到 \(\operatorname{End}(S)\) 的 16 个独立矩阵。维数相同立即说明它们构成整个矩阵空间的一组基。由此任何 \(M\in M_4(\CC)\) 都有唯一展开
+\[
+M=aI+b_\mu\gamma^\mu
++\frac12 c_{\mu\nu}\sigma^{\mu\nu}
++d_\mu\Gamma_*\gamma^\mu+e\Gamma_*.
+\]
+系数可通过与相应基元取迹逐项投影得到。具体地，由正交性
+\[
+\operatorname{tr}(\gamma^\mu\gamma^\nu)=4\eta^{\mu\nu},\qquad
+\operatorname{tr}(\sigma^{\mu\nu}\sigma^{\rho\sigma})=4(\eta^{\mu\rho}\eta^{\nu\sigma}-\eta^{\mu\sigma}\eta^{\nu\rho}),
+\]
+等，系数为
+\[
+a=\tfrac14\operatorname{tr}M,\qquad
+b_\mu=\tfrac14\operatorname{tr}(\gamma_\mu M),\qquad
+e=\tfrac14\operatorname{tr}(\Gamma_*M),
+\]
+等等。这正是 Fierz 重排恒等式的代数基础：把任意 $4\times4$ 矩阵展开为完备基后，可系统地重排旋量双线性。
+
+\emph{举例：Fierz 恒等式。}考虑旋量双线性 $\bar u\gamma^\mu v\,\bar w\gamma_\mu z$。把 $|v\rangle\langle w|$ 视为 $4\times4$ 矩阵并按 Clifford 基展开，再代入第二个双线性，得到 Fierz 恒等式
+\[
+\bar u\gamma^\mu v\,\bar w\gamma_\mu z
+=-\sum_{\Gamma}\bar u\Gamma z\,\bar w\Gamma v,
+\]
+其中 $\Gamma$ 遍历 $16$ 个 Clifford 基元（带适当系数）。这是计算弱衰变振幅、Muonium 寿命与 B 介子衰变的标准工具。
+
+\emph{物理应用：Dirac 矩阵的完备性与流--流相互作用。}在 QED 中，电子--光子顶角 $\Gamma^\mu=\gamma^\mu$ 的完备性保证任意 Lorentz 协变顶角可写为
+\[
+\Gamma^\mu=a\gamma^\mu+b_\nu\sigma^{\mu\nu}q_\nu+\cdots,
+\]
+其中 $q$ 为动量转移。Gordon 恒等式
+\[
+\bar u(p')\gamma^\mu u(p)=\bar u(p')\Bigl[\frac{p'^\mu+p^\mu}{2m}+\frac{i\sigma^{\mu\nu}q_\nu}{2m}\Bigr]u(p)
+\]
+正是把 $\gamma^\mu$ 在不同运动学基下的重展，由完备性保证唯一。在弱相互作用中，$V-A$ 顶角 $\gamma^\mu(1-\gamma_5)$ 的结构由 Clifford 基中向量与赝向量两部分的组合决定。
+
+\emph{推广方向。}对一般偶维 $n=2m$，复 Clifford 基由 $\Lambda^k V$（$k=0,\ldots,2m$）给出，共 $2^{2m}$ 个元素，与 $\dim M_{2^m}(\CC)=2^{2m}$ 一致。对实 Clifford 代数，需区分 $\Cl_{p,q}(\RR)$ 的矩阵类型（由\eqnrefs{eq:real-clifford-classification}），基元数仍为 $2^n$ 但矩阵规模与实/复/四元数结构随 $(p-q)\bmod 8$ 周期变化（Bott 周期性）。在 K--理论与指标定理中，Clifford 基的完备性是构造 Dirac 算子与计算解析指数的代数前提。
+\end{derivation}
+
+接下来考察与后续几何和物理的接口。
+
+本章得到的对象有清晰的依赖顺序：二次型 \(Q\) 先定义 Clifford 代数，Clifford 可逆元再产生 Pin/Spin 群，Spin 群的不可约模才定义旋量。若把这个顺序倒置，直接从 Pauli 或 Dirac 矩阵开始，就会把“一个具体表示”误认为“母代数本身”。
+
+在微分几何中，把每个切空间的 Clifford 代数拼成 Clifford bundle，并选择 Spin structure 后，才能定义 spinor bundle 与 Dirac-type operator；在相对论量子理论中，gamma 矩阵则是 Lorentzian Clifford algebra 的一个表示。两种应用都建立在同一个代数母结构之上，但它们的 signature、实结构与动力学解释不同，不能在本章提前混为一谈。
+
+
+接下来考察八元数的范数、非结合性与 SU(3) 的真正关系。
+
+上一段用 Cayley--Dickson 乘法
+\[
+(a,b)(c,d)=(ac-\bar d\,b,\;da+b\bar c),
+\qquad a,b,c,d\in\mathbb H
+\]
+定义了八元数。为了看清它与四元数究竟差在哪里，先把共轭和范数补出来。定义
+\[
+\overline{(a,b)}=(\bar a,-b).
+\]
+于是
+\[
+\begin{aligned}
+(a,b)\overline{(a,b)}
+&=(a,b)(\bar a,-b)\\
+&=(a\bar a-\overline{-b}\,b,\;-ba+b\overline{\bar a})\\
+&=(|a|^2+|b|^2,0).
+\end{aligned}
+\]
+因此八元数的范数为
+\begin{equation}
+\boxed{
+N(a,b)=|a|^2+|b|^2
+}
+\label{eq:octonion-norm}
+\end{equation}
+并且非零八元数仍有逆元
+\[
+x^{-1}=\frac{\bar x}{N(x)}.
+\]
+所以失去结合律并不等于失去除法结构；八元数仍然是实数上的赋范可除代数。
+
+更强的是范数具有乘法性。设
+\[
+x=(a,b),\qquad y=(c,d),
+\]
+则
+\[
+xy=(u,v),
+\qquad
+u=ac-\bar d b,
+\qquad
+v=da+b\bar c.
+\]
+于是
+\[
+N(xy)=|u|^2+|v|^2.
+\]
+把四元数范数写成 $|q|^2=q\bar q$，并利用
+\[
+|pq|=|p|\,|q|,
+\qquad
+\overline{pq}=\bar q\,\bar p,
+\]
+展开第一项：
+\[
+\begin{aligned}
+|u|^2
+&=|ac|^2+|\bar d b|^2
+-2\operatorname{Re}\!\left(ac\,\overline{\bar d b}\right)\\
+&=|a|^2|c|^2+|d|^2|b|^2
+-2\operatorname{Re}(ac\bar b d).
+\end{aligned}
+\]
+同理
+\[
+\begin{aligned}
+|v|^2
+&=|da|^2+|b\bar c|^2
++2\operatorname{Re}\!\left(da\,\overline{b\bar c}\right)\\
+&=|d|^2|a|^2+|b|^2|c|^2
++2\operatorname{Re}(da c\bar b).
+\end{aligned}
+\]
+四元数乘积的实部满足循环不变性
+\[
+\operatorname{Re}(q_1q_2q_3q_4)
+=\operatorname{Re}(q_2q_3q_4q_1),
+\]
+所以两个交叉项相消。最终得到
+\begin{equation}
+\boxed{
+N(xy)=N(x)N(y).
+}
+\label{eq:octonion-composition}
+\end{equation}
+这就是八元数仍属于实 composition algebra 的关键性质。
+
+但八元数已经不再结合。取基
+\[
+\begin{aligned}
+e_1&=(\mathbf i,0),&
+ e_2&=(\mathbf j,0),&
+ e_3&=(\mathbf k,0),\\
+e_4&=(0,1),&
+ e_5&=(0,\mathbf i),&
+ e_6&=(0,\mathbf j),&
+ e_7&=(0,\mathbf k).
+\end{aligned}
+\]
+由 Cayley--Dickson 乘法直接算得
+\[
+e_1e_2=e_3,
+\qquad
+e_3e_4=e_7,
+\]
+因此
+\[
+(e_1e_2)e_4=e_7.
+\]
+另一方面
+\[
+e_2e_4=e_6,
+\qquad
+e_1e_6=-e_7,
+\]
+所以
+\begin{equation}
+\boxed{
+(e_1e_2)e_4=-e_1(e_2e_4).
+}
+\label{eq:octonion-nonassociative-example}
+\end{equation}
+这给出了一个完全显式的非结合例子。以后如果没有括号，三个八元数的乘积就没有唯一含义，不能像矩阵或四元数那样任意重新结合。
+
+八元数虽然不结合，却满足交替律
+\[
+(xx)y=x(xy),
+\qquad
+ y(xx)=(yx)x.
+\]
+等价地，结合子
+\[
+[x,y,z]=(xy)z-x(yz)
+\]
+对三个变量是交替的；只要其中两个变量相同，结合子就为零。由 Artin 定理，任意两个八元数生成的子代数仍然结合。正因为如此，包含两个固定元素的许多计算仍可以像四元数一样进行，而真正的非结合性要到三个彼此独立的方向同时出现时才暴露出来。
+
+这也解释了单位八元数与单位四元数的差别。单位四元数在普通乘法下组成群
+\[
+S^3\cong SU(2),
+\]
+而单位八元数虽然组成七维球面 $S^7$，却因为缺少结合律而不能成为通常意义下的群；它构成的是一个 Moufang loop。因而不能从“单位八元数是七维球面”直接推断出一个普通 Lie 群结构。
+
+现在再说明八元数与 $SU(3)$ 的联系究竟在哪里。八元数的实线性自同构群定义为
+\[
+G_2=\operatorname{Aut}(\mathbb O),
+\]
+它由保持八元数乘法的可逆实线性变换组成。因为自同构自动保持单位元和范数，$G_2$ 也保持七维虚八元数空间
+\[
+\operatorname{Im}\mathbb O\cong\mathbb R^7
+\]
+中的内积结构。
+
+固定一个单位虚八元数 $e$，考虑稳定子
+\[
+(G_2)_e
+=\{g\in G_2:g(e)=e\}.
+\]
+在与 $e$ 正交的六维实空间
+\[
+V=e^\perp\cap\operatorname{Im}\mathbb O
+\]
+上，左乘 $e$ 定义
+\[
+Jv=ev.
+\]
+由于 $e^2=-1$，并且由交替律可在只含 $e,v$ 的子代数中重新结合，
+\[
+J^2v=e(ev)=(e^2)v=-v.
+\]
+所以 $J^2=-I$，即 $J$ 给 $V$ 一个复结构；六维实空间因此可看成三维复空间。
+
+若 $g\in(G_2)_e$，则它保持乘法且固定 $e$，于是
+\[
+g(Jv)=g(ev)=g(e)g(v)=e\,g(v)=Jg(v).
+\]
+所以稳定子中的变换都是复线性的。另一方面它们保持八元数范数给出的 Hermitian 内积，并且还保持由八元数乘法诱导的复体积形式。于是这个稳定子不是整个 $U(3)$，而恰好缩小为
+\begin{equation}
+\boxed{(G_2)_e\cong SU(3).}
+\label{eq:g2-su3-stabilizer}
+\end{equation}
+从维数也能看出结构是相容的：$\dim G_2=14$，单位虚八元数构成 $S^6$，若 $G_2$ 在其上传递，则稳定子的维数为
+\[
+14-6=8=\dim SU(3).
+\]
+维数计数本身不是同构证明，但与上面的复结构和体积形式说明完全一致。
+
+因此正确的逻辑链是
+\[
+\mathbb O
+\longrightarrow
+G_2=\operatorname{Aut}(\mathbb O)
+\longrightarrow
+\text{固定一个单位虚八元数的稳定子 }SU(3),
+\]
+而不是
+\[
+\text{“八元数有八个基元”}
+\Longrightarrow
+\text{“八个 Gell--Mann 矩阵就是八元数”}.
+\]
+后者只比较了数字 $8$，忽略了乘法、结合性以及群与代数之间的层级差别。
+
+
+接下来考察Lorentz 协变性与旋量变换。
+
+Dirac 方程只有在 Lorentz 变换下保持形式不变，才真正是相对论方程。设坐标变换为
+\[
+x'^\mu=\Lambda^\mu{}_{\nu}x^\nu,
+\qquad
+\Lambda^Tg\Lambda=g.
+\]
+链式法则给出
+\[
+\partial'_\mu=(\Lambda^{-1})^\nu{}_{\mu}\partial_\nu.
+\]
+若旋量按
+\[
+\psi'(x')=S(\Lambda)\psi(x)
+\]
+变换，则新坐标中的 Dirac 方程为
+\[
+(\ii\hbar\gamma^\mu\partial'_\mu-mc)\psi'(x')=0.
+\]
+代入上式并左乘 \(S^{-1}\)，得到
+\[
+\ii\hbar S^{-1}\gamma^\mu S(\Lambda^{-1})^\nu{}_{\mu}\partial_\nu\psi-mc\,\psi=0.
+\]
+为了与原方程
+\[
+(\ii\hbar\gamma^\nu\partial_\nu-mc)\psi=0
+\]
+完全一致，必须满足
+\begin{equation}
+\boxed{
+S^{-1}(\Lambda)\gamma^\mu S(\Lambda)
+=\Lambda^\mu{}_{\nu}\gamma^\nu
+}.
+\label{eq:spinor-lorentz-intertwiner}
+\end{equation}
+因此旋量变换并不是把四个分量当成普通四矢量变换；它由一个不同的矩阵表示 \(S(\Lambda)\) 实现，并通过上式与 Lorentz 矢量表示相联系。
+
+看无穷小变换最清楚。写
+\[
+\Lambda^\mu{}_{\nu}
+=\delta^\mu{}_{\nu}+\omega^\mu{}_{\nu}+O(\omega^2),
+\]
+其中 Lorentz 条件要求
+\[
+\omega_{\mu\nu}=-\omega_{\nu\mu}.
+\]
+定义
+\[
+\sigma^{\mu\nu}=\frac{\ii}{2}[\gamma^\mu,\gamma^\nu].
+\]
+由 Clifford 关系可以直接算得
+\begin{equation}
+\boxed{
+[\sigma^{\mu\nu},\gamma^\rho]
+=2\ii\bigl(g^{\nu\rho}\gamma^\mu-g^{\mu\rho}\gamma^\nu\bigr)
+}.
+\label{eq:sigma-gamma-commutator}
+\end{equation}
+于是取
+\[
+S(\Lambda)
+=I-\frac{\ii}{4}\omega_{\mu\nu}\sigma^{\mu\nu}+O(\omega^2),
+\]
+便有
+\[
+\begin{aligned}
+S^{-1}\gamma^\rho S
+&=\gamma^\rho
+-\frac{\ii}{4}\omega_{\mu\nu}[\gamma^\rho,\sigma^{\mu\nu}]+O(\omega^2)\\
+&=\gamma^\rho+\omega^\rho{}_{\nu}\gamma^\nu+O(\omega^2),
+\end{aligned}
+\]
+正好满足 \cref{eq:spinor-lorentz-intertwiner}。积分无穷小变换得到
+\[
+\boxed{
+S(\Lambda)
+=\exp\!\left[-\frac{\ii}{4}\omega_{\mu\nu}\sigma^{\mu\nu}\right]
+}.
+\]
+这就是 Dirac 旋量的 Lorentz 表示。
+
+纯空间转动时，生成元可以写成
+\[
+\Sigma^k=\frac12\varepsilon^{kij}\sigma^{ij}
+=\begin{pmatrix}
+\sigma_k&0\\0&\sigma_k
+\end{pmatrix},
+\]
+因此转角 \(\boldsymbol\theta\) 对应
+\[
+S(R)=\exp\!\left(-\frac{\ii}{2}\boldsymbol\theta\cdot\boldsymbol\Sigma\right).
+\]
+这里再次出现半角。这与前面 \(SU(2)\to SO(3)\) 的二重覆盖完全同源：Dirac 旋量中的自旋自由度正是 \(SU(2)\) 基本表示在相对论时空中的延伸。
+
+接下来考察自由 Dirac 方程的平面波解。
+
+取平面波 Ansatz
+\[
+\psi(x)=u(p)\ee^{-\ii p\cdot x/\hbar},
+\qquad p^\mu=(E/c,\mathbf p).
+\]
+代入 Dirac 方程得到
+\begin{equation}
+(\slashed p-mc)u(p)=0,
+\qquad
+\slashed p\equiv\gamma^\mu p_\mu.
+\label{eq:dirac-u-equation}
+\end{equation}
+左乘 \(\slashed p+mc\) 得
+\[
+(\slashed p+mc)(\slashed p-mc)u
+=(p^2-m^2c^2)u=0,
+\]
+所以非零解要求
+\[
+p^2=m^2c^2,
+\qquad
+E=\pm\sqrt{c^2\mathbf p^2+m^2c^4}.
+\]
+这说明 Dirac 方程的一阶结构并没有改变相对论色散关系；它只是把二阶 Klein--Gordon 算符因式分解成矩阵值的一阶算符。
+
+在 Dirac 表示中写
+\[
+u(p)=\begin{pmatrix}\varphi\\\chi\end{pmatrix},
+\]
+其中 \(\varphi,\chi\) 都是二分量旋量。方程 \cref{eq:dirac-u-equation} 等价于
+\[
+(E-mc^2)\varphi-c(\boldsymbol\sigma\cdot\mathbf p)\chi=0,
+\]
+\[
+c(\boldsymbol\sigma\cdot\mathbf p)\varphi-(E+mc^2)\chi=0.
+\]
+对正能量 \(E>0\)，第二式给出
+\[
+\chi=\frac{c\,\boldsymbol\sigma\cdot\mathbf p}{E+mc^2}\varphi.
+\]
+选取归一化二旋量 \(\xi_s\)（\(s=1,2\)），并采用
+\[
+\bar u_s(p)u_{s'}(p)=2mc\,\delta_{ss'},
+\]
+可取
+\begin{equation}
+\boxed{
+u_s(p)
+=\sqrt{\frac{E+mc^2}{c}}
+\begin{pmatrix}
+\xi_s\\[3pt]
+\dfrac{c\,\boldsymbol\sigma\cdot\mathbf p}{E+mc^2}\xi_s
+\end{pmatrix}
+}.
+\label{eq:dirac-positive-spinor}
+\end{equation}
+验证归一化时用到
+\[
+(\boldsymbol\sigma\cdot\mathbf p)^2=\mathbf p^2I
+\]
+以及
+\[
+E^2-c^2\mathbf p^2=m^2c^4.
+\]
+确实，
+\[
+\begin{aligned}
+\bar u u
+&=\frac{E+mc^2}{c}\left[1-\frac{c^2\mathbf p^2}{(E+mc^2)^2}\right]\\
+&=\frac{(E+mc^2)^2-c^2\mathbf p^2}{c(E+mc^2)}\\
+&=2mc.
+\end{aligned}
+\]
+
+负频率支可以写成
+\[
+\psi(x)=v(p)\ee^{+\ii p\cdot x/\hbar},
+\qquad E=+\sqrt{c^2\mathbf p^2+m^2c^4},
+\]
+于是满足
+\[
+(\slashed p+mc)v(p)=0.
+\]
+它在相对论量子论中对应反粒子自由度；Dirac 方程的四个分量并不是四个独立粒子态，而是由两个自旋自由度与正负频率结构共同组成。
+
+接下来考察投影算符与自旋求和。
+
+质量壳上 \(p^2=m^2c^2\) 时，
+\[
+(\slashed p-mc)(\slashed p+mc)=0.
+\]
+因此
+\[
+\Lambda_+(p)=\frac{\slashed p+mc}{2mc},
+\qquad
+\Lambda_-(p)=\frac{-\slashed p+mc}{2mc}
+\]
+满足
+\[
+\Lambda_+^2=\Lambda_+,
+\qquad
+\Lambda_-^2=\Lambda_-,
+\qquad
+\Lambda_+\Lambda_-=0,
+\qquad
+\Lambda_++\Lambda_-=I,
+\]
+其中第二个投影的具体写法随把负能量支写成 \(p^0<0\) 还是用正能量反粒子 \(v(p)\) 的约定而略有变化。对正能量 \(u_s\) 最常用的是
+\[
+\Lambda_+u_s=u_s.
+\]
+
+在归一化 \(\bar u_su_{s'}=2mc\,\delta_{ss'}\) 下，自旋完备关系为
+\begin{equation}
+\boxed{
+\sum_{s=1}^{2}u_s(p)\bar u_s(p)=\slashed p+mc
+}.
+\label{eq:dirac-spin-sum-u}
+\end{equation}
+为什么右端只能是这个形式，可以不靠逐分量计算看出。左端是作用在正能量解空间上的秩二矩阵，且每一项都满足
+\[
+(\slashed p-mc)u_s=0,
+\]
+所以
+\[
+(\slashed p-mc)\sum_su_s\bar u_s=0.
+\]
+Lorentz 协变性又要求它只能由 \(I\) 与 \(\slashed p\) 线性组合而成。结合质量壳条件和迹归一化，就唯一固定为 \(\slashed p+mc\)。同理
+\[
+\boxed{
+\sum_{s=1}^{2}v_s(p)\bar v_s(p)=\slashed p-mc
+}
+\]
+在标准 \(v\) 旋量归一化下成立。
+
+这些完备关系的意义很重要：一旦要对未观测的自旋自由度求和，旋量分量的求和就可以被转化为 \(\gamma\) 矩阵迹运算。这也是 Clifford 代数真正进入相对论计算的地方。
+
+接下来考察手征投影与无质量极限。
+
+由
+\[
+(\gamma^5)^2=I,
+\qquad
+(\gamma^5)^\dagger=\gamma^5
+\]
+可定义两个正交投影
+\[
+P_L=\frac{1-\gamma^5}{2},
+\qquad
+P_R=\frac{1+\gamma^5}{2}.
+\]
+它们满足
+\[
+P_L^2=P_L,
+\qquad
+P_R^2=P_R,
+\qquad
+P_LP_R=0,
+\qquad
+P_L+P_R=I.
+\]
+于是任意 Dirac 旋量都可唯一分解为
+\[
+\psi=\psi_L+\psi_R,
+\qquad
+\psi_{L,R}=P_{L,R}\psi.
+\]
+因为 \(\{\gamma^5,\gamma^\mu\}=0\)，有
+\[
+\gamma^\mu P_L=P_R\gamma^\mu,
+\qquad
+\gamma^\mu P_R=P_L\gamma^\mu.
+\]
+把 Dirac 方程分别投影，得到
+\[
+\ii\hbar\gamma^\mu\partial_\mu\psi_L=mc\,\psi_R,
+\]
+\[
+\ii\hbar\gamma^\mu\partial_\mu\psi_R=mc\,\psi_L.
+\]
+所以质量项把左右手征分量耦合起来；当 \(m=0\) 时两式完全解耦：
+\[
+\ii\hbar\gamma^\mu\partial_\mu\psi_L=0,
+\qquad
+\ii\hbar\gamma^\mu\partial_\mu\psi_R=0.
+\]
+这说明 \(\gamma^5\) 并不是为了凑足 16 个矩阵才引入的，它直接把无质量 Dirac 理论分解成两个互不耦合的 Weyl 旋量。
+
+
+接下来考察Clifford 基与 $\gamma$ 矩阵迹公式。
+
+16 个 Dirac 基元只有在能够把任意 \(4\times4\) 复矩阵重新投影到这组基上时，才真正体现出“基”的意义。设
+\[
+\mathcal B
+=\{I,\gamma^\mu,\sigma^{\mu\nu},\gamma^5\gamma^\mu,\gamma^5\}.
+\]
+它们共有
+\[
+1+4+6+4+1=16
+\]
+个独立方向，而复 \(4\times4\) 矩阵空间本身也是 16 维，所以只要证明线性无关就构成完备基。最方便的工具是矩阵迹。
+
+先证明
+\begin{equation}
+\boxed{
+\operatorname{tr}(\gamma^\mu\gamma^\nu)=4g^{\mu\nu}
+}.
+\label{eq:gamma-trace-two}
+\end{equation}
+由 Clifford 关系
+\[
+\gamma^\mu\gamma^\nu+\gamma^\nu\gamma^\mu
+=2g^{\mu\nu}I
+\]
+取迹，并利用迹的循环性
+\[
+\operatorname{tr}(\gamma^\mu\gamma^\nu)
+=\operatorname{tr}(\gamma^\nu\gamma^\mu),
+\]
+得到
+\[
+2\operatorname{tr}(\gamma^\mu\gamma^\nu)
+=2g^{\mu\nu}\operatorname{tr}I
+=8g^{\mu\nu}.
+\]
+于是 \cref{eq:gamma-trace-two} 成立。
+
+任何奇数个 \(\gamma\) 矩阵的迹都为零。以一个 \(\gamma^\mu\) 为例，由
+\[
+\gamma^5\gamma^\mu\gamma^5=-\gamma^\mu
+\]
+以及 \((\gamma^5)^2=I\)，有
+\[
+\begin{aligned}
+\operatorname{tr}(\gamma^\mu)
+&=\operatorname{tr}(\gamma^5\gamma^5\gamma^\mu)\\
+&=\operatorname{tr}(\gamma^5\gamma^\mu\gamma^5)\\
+&=-\operatorname{tr}(\gamma^\mu),
+\end{aligned}
+\]
+故
+\[
+\operatorname{tr}\gamma^\mu=0.
+\]
+同理，对任意奇数 \(2n+1\)，把一个 \(\gamma^5\) 从乘积左端反对易移动到右端会产生 \((-1)^{2n+1}=-1\)，因此迹等于其负值，只能为零。
+
+四个 \(\gamma\) 的迹也可以完全由 Clifford 关系化简。记
+\[
+T^{\mu\nu\rho\sigma}
+=\operatorname{tr}(\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma).
+\]
+先交换前两个矩阵：
+\[
+\gamma^\mu\gamma^\nu
+=2g^{\mu\nu}I-\gamma^\nu\gamma^\mu.
+\]
+于是
+\[
+T^{\mu\nu\rho\sigma}
+=8g^{\mu\nu}g^{\rho\sigma}
+-\operatorname{tr}(\gamma^\nu\gamma^\mu\gamma^\rho\gamma^\sigma).
+\]
+再利用迹循环性把 \(\gamma^\nu\) 移到末端，并依次用反对易关系把它穿过 \(\gamma^\sigma,\gamma^\rho\)，最终得到
+\begin{equation}
+\boxed{
+\operatorname{tr}(\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma)
+=4\bigl(
+ g^{\mu\nu}g^{\rho\sigma}
+-g^{\mu\rho}g^{\nu\sigma}
++g^{\mu\sigma}g^{\nu\rho}
+\bigr)
+}.
+\label{eq:gamma-trace-four}
+\end{equation}
+
+带 \(\gamma^5\) 的最重要迹是
+\begin{equation}
+\boxed{
+\operatorname{tr}(\gamma^5\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma)
+=-4i\varepsilon^{\mu\nu\rho\sigma}
+}
+\label{eq:gamma5-trace}
+\end{equation}
+在本讲义采用 \(g=\operatorname{diag}(1,-1,-1,-1)\)、\(\varepsilon^{0123}=+1\) 的约定下成立。这个公式的符号会随 \(\gamma^5\) 与 \(\varepsilon^{0123}\) 约定改变，因此全书必须固定约定后再使用。
+
+这些迹公式让自旋求和从“逐分量乘四分量旋量”变成了 Clifford 代数运算。例如出现
+\[
+\sum_su_s(p)\bar u_s(p)=\slashed p+mc
+\]
+后，任何自旋求和的双线性量都会转化为形如
+\[
+\operatorname{tr}
+[(\slashed p'+mc)\Gamma_1(\slashed p+mc)\Gamma_2]
+\]
+的矩阵迹，再用 \cref{eq:gamma-trace-two,eq:gamma-trace-four} 化成 Lorentz 标量。这正是 Dirac 代数在实际计算中的核心价值。
+
+接下来考察Dirac 双线性量的 Lorentz 类型。
+
+16 维 Clifford 基还把旋量双线性量按 Lorentz 变换性质分类。对 Dirac 旋量 \(\psi\)，常见的五类是
+\[
+\bar\psi\psi,
+\qquad
+\bar\psi\gamma^\mu\psi,
+\qquad
+\bar\psi\sigma^{\mu\nu}\psi,
+\qquad
+\bar\psi\gamma^\mu\gamma^5\psi,
+\qquad
+\bar\psi\gamma^5\psi.
+\]
+它们分别对应标量、四矢量、反对称二阶张量、轴矢量和赝标量。
+
+以四矢量流为例。旋量变换为
+\[
+\psi' =S\psi,
+\]
+而由
+\[
+S^\dagger\gamma^0=\gamma^0S^{-1}
+\]
+可得
+\[
+\bar\psi'=\bar\psi S^{-1}.
+\]
+于是
+\[
+\begin{aligned}
+\bar\psi'\gamma^\mu\psi'
+&=\bar\psi S^{-1}\gamma^\mu S\psi\\
+&=\Lambda^\mu{}_{\nu}\bar\psi\gamma^\nu\psi.
+\end{aligned}
+\]
+所以
+\[
+j^\mu=\bar\psi\gamma^\mu\psi
+\]
+确实按 Lorentz 四矢量变换。这样前面由 Dirac 方程推出的连续性方程
+\[
+\partial_\mu j^\mu=0
+\]
+不仅在某个惯性系成立，而是一个 Lorentz 协变的守恒律。
+

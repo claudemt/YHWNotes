@@ -1,209 +1,363 @@
+% ================================================================
+% 0. Unified multi-book loader
+% Inspired by the structure of claudemt/Publication:
+% main.tex chooses one content/<book>/<book>.tex file; the file is read
+% once in the preamble to load metadata/settings and again in the
+% document body to typeset the actual book.
+% ================================================================
+\usepackage{iftex}
+\ifXeTeX\else
+  \errmessage{This repository must be compiled with XeLaTeX}
+\fi
+
+\ExplSyntaxOn
+\cs_new_protected:Npn \physicsnotes_load_book_settings:n #1 { \input{#1} }
+\NewDocumentCommand{\BookLoadSettings}{m}
+  { \physicsnotes_load_book_settings:n {#1} }
+\ExplSyntaxOff
+
+\newcommand{\BookMetadata}[4]{%
+  \ifdefined\BookSettingsProcessed\else
+    \gdef\BookTitle{#1}%
+    \gdef\BookAuthor{#2}%
+    \title{\BookTitle}%
+    \author{\BookAuthor}%
+    \graphicspath{#3}%
+    \InputIfFileExists{#4}{}{}%
+    \global\let\BookSettingsProcessed\relax
+    \expandafter\endinput
+  \fi
+}
+\newcommand{\BookLectureMetadata}[4]{\BookMetadata{#1}{#2}{#3}{#4}}
+
 \usepackage{
-	amsmath,amssymb,graphicx,booktabs,array,siunitx,
-	physics,mathtools,caption,subcaption,float,
-	fancyhdr,lastpage,adjustbox,longtable,bm,diagbox,
-	makecell,multirow,braket,chngcntr,import,
-	tcolorbox,placeins,needspace,etoolbox,environ
+  amsmath,amssymb,amsthm,mathrsfs,graphicx,booktabs,array,siunitx,slashed,
+  physics,mathtools,caption,subcaption,float,
+  fancyhdr,lastpage,adjustbox,longtable,bm,diagbox,
+  makecell,multirow,braket,chngcntr,import,
+  tcolorbox,placeins,needspace,etoolbox,environ,tikz
 }
 \tcbuselibrary{breakable,skins,theorems}
+\usetikzlibrary{arrows.meta,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,positioning,calc,shapes.geometric}
 
 \usepackage[top=1.7cm,bottom=1.5cm,left=1.5cm,right=1.8cm]{geometry}
 \usepackage[unicode]{hyperref}
 \usepackage{bookmark}
+\usepackage{dsfont,microtype,emptypage,upgreek,tikz-cd,setspace}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,filecolor=magenta,urlcolor=blue}
 
-\hypersetup{
-	colorlinks=true,
-	linkcolor=blue,
-	citecolor=blue,
-	filecolor=magenta,
-	urlcolor=blue,
-	hidelinks=true
-}
-
-% ===== 编号与目录 =====
-\counterwithout{section}{chapter}
-\renewcommand{\thechapter}{\chinese{chapter}}
-\renewcommand{\thesection}{\arabic{section}}
-
-\numberwithin{equation}{section}
-\numberwithin{figure}{section}
-\numberwithin{table}{section}
-
-\renewcommand{\thefigure}{\thesection.\arabic{figure}}
-\renewcommand{\thetable}{\thesection.\arabic{table}}
-
+% ===== Numbering =====
+\renewcommand{\thechapter}{\arabic{chapter}}
+\numberwithin{equation}{chapter}
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
 
-% ===== 页面与排版 =====
+% ===== Page and paragraph layout =====
 \raggedbottom
 \allowdisplaybreaks[3]
 \emergencystretch=2em
 \setlength{\headheight}{13pt}
 \setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
 
-% ===== 章节标题页 =====
+% ===== Chapter title page =====
 \makeatletter
 \def\@makechapterhead#1{%
-	\thispagestyle{fancy}%
-	\vspace*{\fill}%
-	{\centering\Huge\bfseries 第\thechapter 章\par\vspace{1.0em}#1\par}%
-	\vspace*{\fill}%
-	\clearpage
+  \thispagestyle{fancy}%
+  \vspace*{\fill}%
+  {\centering\Huge\bfseries 第\thechapter 章\par\vspace{1.0em}#1\par}%
+  \vspace*{\fill}%
+  \clearpage
 }
 \def\@makeschapterhead#1{%
-	\thispagestyle{fancy}%
-	\vspace*{\fill}%
-	{\centering\Huge\bfseries #1\par}%
-	\vspace*{\fill}%
-	\clearpage
+  \thispagestyle{fancy}%
+  \vspace*{\fill}%
+  {\centering\Huge\bfseries #1\par}%
+  \vspace*{\fill}%
+  \clearpage
 }
 \makeatother
 
-% ===== 页眉页脚 =====
+% ===== Headers and footers =====
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage/\pageref{LastPage}}
 \fancyhead[RE]{\nouppercase{\leftmark}}
 \fancyhead[LO]{\nouppercase{\rightmark}}
 \renewcommand{\headrulewidth}{0.4pt}
-
 \renewcommand{\chaptermark}[1]{\markboth{第\thechapter 章\ #1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[LE,RO]{\thepage/\pageref{LastPage}}
+  \fancyhead[RE]{\nouppercase{\leftmark}}
+  \fancyhead[LO]{\nouppercase{\rightmark}}
+  \renewcommand{\headrulewidth}{0.4pt}}
 
-\fancypagestyle{plain}{
-	\fancyhf{}
-	\fancyhead[LE,RO]{\thepage/\pageref{LastPage}}
-	\fancyhead[RE]{\nouppercase{\leftmark}}
-	\fancyhead[LO]{\nouppercase{\rightmark}}
-	\renewcommand{\headrulewidth}{0.4pt}
-}
-
-% ===== 浮动体 =====
+% ===== Floats =====
 \floatplacement{figure}{htbp}
 \floatplacement{table}{htbp}
-
 \captionsetup[figure]{labelfont=bf}
 \captionsetup[table]{labelfont=bf}
-
 \setcounter{topnumber}{5}
 \setcounter{bottomnumber}{3}
 \setcounter{totalnumber}{8}
-
 \renewcommand{\topfraction}{0.92}
 \renewcommand{\bottomfraction}{0.82}
 \renewcommand{\textfraction}{0.06}
 \renewcommand{\floatpagefraction}{0.78}
-
 \setlength{\textfloatsep}{10pt plus 2pt minus 3pt}
 \setlength{\floatsep}{8pt plus 2pt minus 2pt}
 \setlength{\intextsep}{8pt plus 2pt minus 2pt}
-
 \interdisplaylinepenalty=100
 \predisplaypenalty=0
 \postdisplaypenalty=0
-
 \pretocmd{\section}{\FloatBarrier\Needspace{10\baselineskip}}{}{}
 \pretocmd{\subsection}{\Needspace{7\baselineskip}}{}{}
 
-% ===== equation* 自动加 split =====
-\makeatletter
-\expandafter\let\expandafter\orig@equationstar\csname equation*\endcsname
-\expandafter\let\expandafter\orig@endequationstar\csname endequation*\endcsname
-\RenewEnviron{equation*}{%
-	\orig@equationstar
-	\begin{split}
-		\BODY
-	\end{split}
-	\orig@endequationstar
-}
-\renewcommand{\[}{\orig@equationstar}
-\renewcommand{\]}{\orig@endequationstar}
-\makeatother
+% ===== Boxes =====
+\tcbset{mybox/.style={
+  enhanced,breakable,sharp corners,boxrule=0.1pt,width=\dimexpr\linewidth-28pt\relax,
+  enlarge left by=14pt,enlarge right by=14pt,
+  boxsep=0pt,left=12pt,right=12pt,top=10pt,bottom=8pt,before skip=8pt,after skip=8pt,
+  detach title,fonttitle=\bfseries,
+  boxed title style={sharp corners,boxrule=0.35pt,left=8pt,right=8pt,top=2.5pt,bottom=2.5pt},
+  attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2},
+  before upper={\setlength{\parindent}{2em}\setlength{\parskip}{0pt}\indent\ignorespaces}
+}}
+\newcommand{\SpecialBoxTitle}[2]{#1\ifstrempty{#2}{}{：#2}}
+\newtcolorbox{derivation}[1][]{
+  enhanced,breakable,colback=black!1,colframe=black!45,fonttitle=\bfseries,
+  title={\SpecialBoxTitle{推导}{#1}},
+  boxsep=0pt,left=8pt,right=8pt,top=5pt,bottom=5pt,
+  before skip=4pt,after skip=4pt,
+  before upper={\setlength{\parskip}{0pt}%
+    \setlength{\abovedisplayskip}{6pt}\setlength{\belowdisplayskip}{6pt}%
+    \setlength{\abovedisplayshortskip}{4pt}\setlength{\belowdisplayshortskip}{4pt}}}
+\newtcolorbox{exbox}[1][]{enhanced,breakable,colback=green!8,colframe=green!48!black,fonttitle=\bfseries,title={\SpecialBoxTitle{例}{#1}},before skip=8pt,after skip=8pt}
+\newtcolorbox{note}[1][]{enhanced,breakable,colback=yellow!3,colframe=yellow!45!black,fonttitle=\bfseries,title={\SpecialBoxTitle{注}{#1}},before skip=8pt,after skip=8pt}
 
-% ===== tcolorbox 通用样式 =====
-\tcbset{
-	mybox/.style={
-		enhanced,
-		breakable,
-		sharp corners,
-		boxrule=0.1pt,
-		width=\linewidth,
-		enlarge left by=14pt,
-		enlarge right by=14pt,
-		boxsep=0pt,
-		left=12pt,right=12pt,
-		top=10pt,bottom=8pt,
-		before skip=8pt,
-		after skip=8pt,
-		detach title,
-		fonttitle=\bfseries,
-		boxed title style={
-			sharp corners,
-			boxrule=0.35pt,
-			left=8pt,right=8pt,
-			top=2.5pt,bottom=2.5pt
-		},
-		attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2},
-		before upper={
-			\setlength{\parindent}{2em}%
-			\setlength{\parskip}{0pt}%
-			\indent\ignorespaces
-		}
-	}
+% ===== References =====
+\usepackage{tabularx,enumitem,csquotes}
+\usepackage[backend=biber,style=numeric,sorting=none,maxnames=6]{biblatex}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\crefname{equation}{式}{式}
+\Crefname{equation}{式}{式}
+\crefname{figure}{图}{图}
+\Crefname{figure}{图}{图}
+\crefname{table}{表}{表}
+\Crefname{table}{表}{表}
+\crefname{chapter}{章}{章}
+\Crefname{chapter}{章}{章}
+\crefname{section}{节}{节}
+\Crefname{section}{节}{节}
+\ExplSyntaxOn
+\NewDocumentCommand{\eqnrefs}{m}
+ {\group_begin:\color{blue}式~\clist_map_inline:nn {#1} { \hyperref[##1]{(\ref*{##1})} }\group_end:}
+\NewDocumentCommand{\eqnrange}{m m}
+ {\textcolor{blue}{式~\hyperref[#1]{(\ref*{#1})}--\hyperref[#2]{(\ref*{#2})}}}
+\NewDocumentCommand{\figref}{m}
+ {\textcolor{blue}{图~\hyperref[#1]{\ref*{#1}}}}
+\NewDocumentCommand{\tabref}{m}
+ {\textcolor{blue}{表~\hyperref[#1]{\ref*{#1}}}}
+\NewDocumentCommand{\secref}{m}
+ {\textcolor{blue}{第~\hyperref[#1]{\ref*{#1}}~节}}
+\NewDocumentCommand{\chapref}{m}
+  {\textcolor{blue}{第~\hyperref[#1]{\ref*{#1}}~章}}
+\NewDocumentCommand{\appref}{m}
+  {\textcolor{blue}{附录~\hyperref[#1]{\ref*{#1}}}}
+\ExplSyntaxOff
+\sisetup{per-mode=symbol,range-phrase=--,separate-uncertainty=true}
+\DeclareSIUnit{\fm}{fm}
+\DeclareSIUnit{\barn}{barn}
+
+% ===== Feynman/TikZ styles =====
+\tikzset{
+  fermion/.style={draw,line width=0.75pt,postaction={decorate},decoration={markings,mark=at position 0.56 with {\arrow{Stealth[length=2.0mm,width=1.4mm]}}}},
+  antifermion/.style={draw,line width=0.75pt,postaction={decorate},decoration={markings,mark=at position 0.44 with {\arrowreversed{Stealth[length=2.0mm,width=1.4mm]}}}},
+  photon/.style={draw,line width=0.75pt,decorate,decoration={snake,amplitude=1.05pt,segment length=5.0pt}},
+  fvertex/.style={circle,fill,inner sep=1.15pt},
+  momentumlabel/.style={font=\small,inner sep=1.5pt},
+  lecturearrow/.style={-{Stealth[length=2mm,width=1.4mm]},line width=0.75pt},
+  lecturebox/.style={draw,rounded corners=2pt,inner xsep=7pt,inner ysep=4pt,align=center,line width=.75pt,font=\small},
+  lecturewidebox/.style={draw,rounded corners=2pt,inner xsep=7pt,inner ysep=4pt,align=center,line width=.75pt,font=\small,text width=74mm},
+  lecturelabel/.style={font=\small,align=center},
+  line-label/.style={fill=white,fill opacity=.96,text opacity=1,inner sep=1.2pt,font=\small}
 }
 
-\newtcolorbox[auto counter,number within=section]{example}[1][]{%
-	mybox,
-	colback=green!3,
-	colframe=green!45!black,
-	title={例\ \thetcbcounter},
-	boxed title style={colback=green!60!black,colframe=green!60!black},
-	#1
+
+% ===== Shared textbook TikZ environments =====
+% One visual grammar for geometry, circuits, optics, and 3D schematics.
+\usepackage{tikz-3dplot,circuitikz}
+\tikzset{
+  mid arrow/.style={
+    decoration={markings,mark=at position 0.5 with {\arrow{Stealth[length=2mm,width=1.4mm]};}},
+    postaction={decorate},line width=0.75pt
+  },
+  lens/.style={draw,fill=blue!5,minimum width=0.1cm,minimum height=2cm,line width=0.75pt},
+  plane/.style={draw,fill=gray!5,minimum width=0.1cm,minimum height=2.5cm,line width=0.75pt},
+  filter/.style={draw,fill=red!10,minimum width=0.1cm,minimum height=2.5cm,line width=0.75pt},
+  axes/.style={-{Stealth[length=2mm,width=1.4mm]},line width=0.75pt},
+  wfA/.style={line width=0.75pt},
+  wfB/.style={line width=0.75pt},
+  wfC/.style={line width=0.75pt},
+  lab/.style={font=\small,fill=white,fill opacity=0.88,text opacity=1,inner sep=1.2pt}
+}
+\newenvironment{circuitfig}[1][]{%
+  \begin{circuitikz}[line width=0.75pt,>=Stealth,every node/.style={font=\small},line cap=round,line join=round,#1]
+}{%
+  \end{circuitikz}
+}
+\newenvironment{tikzfig}[1][]{%
+  \begin{tikzpicture}[line width=0.75pt,>=Stealth,every node/.style={font=\small},line cap=round,line join=round,#1]
+}{%
+  \path[use as bounding box] (current bounding box.south west) rectangle (current bounding box.north east);
+  \end{tikzpicture}
+}
+\newenvironment{tdplot}[1][]{%
+  \begin{tikzpicture}[tdplot_main_coords,line width=0.75pt,>=Stealth,every node/.style={font=\small},line cap=round,line join=round,#1]
+}{%
+  \path[use as bounding box] (current bounding box.south west) rectangle (current bounding box.north east);
+  \end{tikzpicture}
 }
 
-\newtcolorbox[auto counter,number within=section]{notes}[1][]{%
-	mybox,
-	colback=blue!3,
-	colframe=blue!45!black,
-	title={注\ \thetcbcounter},
-	boxed title style={colback=blue!60!black,colframe=blue!60!black},
-	#1
-}
-
-% ===== 数学命令 =====
+% ===== Common mathematical notation =====
+\newcommand{\PhysicsNotesBoldVector}[1]{%
+  \ifcat\noexpand#1\relax
+    \boldsymbol{#1}% Greek/control-sequence symbols require a math-symbol bold face
+  \else
+    \mathbf{#1}% Latin vectors and tensors use the book-wide upright bold alphabet
+  \fi}
 \ExplSyntaxOn
 \cs_if_exist:NTF \vb
-	{\RenewDocumentCommand{\vb}{m}{\bm{#1}}}
-	{\NewDocumentCommand{\vb}{m}{\bm{#1}}}
-
+  {\RenewDocumentCommand{\vb}{m}{\PhysicsNotesBoldVector{#1}}}
+  {\NewDocumentCommand{\vb}{m}{\PhysicsNotesBoldVector{#1}}}
 \cs_if_exist:NTF \uv
-	{\RenewDocumentCommand{\uv}{m}{\hat{\bm{#1}}}}
-	{\NewDocumentCommand{\uv}{m}{\hat{\bm{#1}}}}
-
-\cs_if_exist:NTF \d
-	{\RenewDocumentCommand{\d}{}{\mathop{}\!\mathrm{d}}}
-	{\NewDocumentCommand{\d}{}{\mathop{}\!\mathrm{d}}}
+  {\RenewDocumentCommand{\uv}{m}{\hat{\PhysicsNotesBoldVector{#1}}}}
+  {\NewDocumentCommand{\uv}{m}{\hat{\PhysicsNotesBoldVector{#1}}}}
 \ExplSyntaxOff
-
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\sinc}{sinc}
 \DeclareMathOperator{\arsinh}{arsinh}
-\DeclareMathOperator{\arcsinh}{arsinh}
 \DeclareMathOperator{\arcosh}{arcosh}
 \DeclareMathOperator{\artanh}{artanh}
-\DeclareMathOperator{\sn}{sn}
-\DeclareMathOperator{\cn}{cn}
-\DeclareMathOperator{\dn}{dn}
+\newcommand{\crossdot}{\mathbin{\vcenter{\offinterlineskip\hbox to 6pt{\hss$\times$\hss}\hbox to 6pt{\hss$\cdot$\hss}}}}
+\newcommand{\dotdotdot}{\mathbin{\vcenter{\offinterlineskip\hbox to 4pt{\hss$\cdot$\hss}\hbox to 4pt{\hss$\cdot$\hss}\hbox to 4pt{\hss$\cdot$\hss}}}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\providecommand{\e}{\ee}
+\providecommand{\id}{\mathbb{I}}
+\providecommand{\Tord}{\mathcal T}
+\providecommand{\comm}[2]{\left[#1,#2\right]}
+\providecommand{\acomm}[2]{\left\{#1,#2\right\}}
+\providecommand{\veps}{\varepsilon}
+\providecommand{\sgn}{\operatorname{sgn}}
+\providecommand{\ImPart}{\operatorname{Im}}
 
-\newcommand{\crossdot}{%
-	\mathbin{\vcenter{\offinterlineskip
-		\hbox to 6pt{\hss$\times$\hss}
-		\hbox to 6pt{\hss$\cdot$\hss}}}
-}
-\newcommand{\dotdotdot}{%
-	\mathbin{\vcenter{\offinterlineskip
-		\hbox to 4pt{\hss$\cdot$\hss}
-		\hbox to 4pt{\hss$\cdot$\hss}
-		\hbox to 4pt{\hss$\cdot$\hss}}}
-}
+% ===== Shared theorem environments =====
+\newtheorem{theorem}{定理}[chapter]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{remark}[theorem]{注}
+\newtheorem{exercise}[theorem]{练习}
+
+% ===== Shared theorem colour palette =====
+% Wrap every semantic theorem environment in a coloured tcolorbox so that
+% definitions, theorems, propositions, lemmas, corollaries and examples are
+% visually distinct across all books.  The palette is owned by the root
+% preamble so that every book compiled through main.tex inherits the same
+% appearance without book-local overrides.
+\tcolorboxenvironment{definition}{
+  enhanced,breakable,colback=blue!2.5,colframe=blue!55!black,
+  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=7pt,after skip=7pt}
+\tcolorboxenvironment{theorem}{
+  enhanced,breakable,colback=red!2.2,colframe=red!58!black,
+  boxrule=0.65pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=7pt,after skip=7pt}
+\tcolorboxenvironment{proposition}{
+  enhanced,breakable,colback=orange!3,colframe=orange!65!black,
+  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=7pt,after skip=7pt}
+\tcolorboxenvironment{lemma}{
+  enhanced,breakable,colback=violet!2.5,colframe=violet!60!black,
+  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=7pt,after skip=7pt}
+\tcolorboxenvironment{corollary}{
+  enhanced,breakable,colback=teal!2.5,colframe=teal!58!black,
+  boxrule=0.55pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=7pt,after skip=7pt}
+\tcolorboxenvironment{example}{
+  enhanced,breakable,colback=green!3,colframe=green!48!black,
+  boxrule=0.50pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=7pt,after skip=7pt}
+\tcolorboxenvironment{remark}{
+  enhanced,breakable,colback=gray!4,colframe=gray!55!black,
+  boxrule=0.50pt,arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=7pt,after skip=7pt}
+\crefname{theorem}{定理}{定理}
+\Crefname{theorem}{定理}{定理}
+\crefname{proposition}{命题}{命题}
+\Crefname{proposition}{命题}{命题}
+\crefname{lemma}{引理}{引理}
+\Crefname{lemma}{引理}{引理}
+\crefname{corollary}{推论}{推论}
+\Crefname{corollary}{推论}{推论}
+\crefname{definition}{定义}{定义}
+\Crefname{definition}{定义}{定义}
+\crefname{example}{例}{例}
+\Crefname{example}{例}{例}
+\crefname{remark}{注}{注}
+\Crefname{remark}{注}{注}
+
+% ===== Shared compatibility notation =====
+\providecommand{\R}{\mathbb R}
+\providecommand{\C}{\mathbb C}
+\providecommand{\Z}{\mathbb Z}
+\providecommand{\Q}{\mathbb Q}
+\providecommand{\N}{\mathbb N}
+\providecommand{\RR}{\mathbb R}
+\providecommand{\CC}{\mathbb C}
+\providecommand{\NN}{\mathbb N}
+\providecommand{\QQ}{\mathbb Q}
+\providecommand{\ZZ}{\mathbb Z}
+\providecommand{\Span}{\operatorname{span}}
+\providecommand{\supp}{\operatorname{supp}}
+\providecommand{\dist}{\operatorname{dist}}
+\providecommand{\Tr}{\operatorname{Tr}}
+\providecommand{\tr}{\operatorname{tr}}
+\providecommand{\PV}{\operatorname{PV}}
+\providecommand{\rank}{\operatorname{rank}}
+\providecommand{\Res}{\operatorname*{Res}}
+\providecommand{\Dom}{\operatorname{Dom}}
+\providecommand{\Ran}{\operatorname{Ran}}
+\providecommand{\Spin}{\operatorname{Spin}}
+\providecommand{\Pin}{\operatorname{Pin}}
+\providecommand{\Cl}{\operatorname{Cl}}
+\providecommand{\HH}{\mathbb{H}}
+\providecommand{\CP}{\mathbb{CP}}
+\providecommand{\Var}{\operatorname{Var}}
+\providecommand{\Cov}{\operatorname{Cov}}
+\providecommand{\Corr}{\operatorname{Corr}}
+\providecommand{\argmax}{\operatorname*{arg\,max}}
+\providecommand{\argmin}{\operatorname*{arg\,min}}
+\providecommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+
+% ================================================================
+% Book-local extension policy
+% ================================================================
+% The root preamble owns page layout, numbering, typography, boxes,
+% references, generic physics/TikZ styles, the shared theorem
+% environments and the coloured theorem palette.  A book may extend
+% TikZ or define specialized notation only in content/<book>/settings.tex.
+% Do not redefine geometry, headers, captions, hyperlink policy, the
+% derivation/exbox/note environments, the theorem environments or
+% their colour boxes, or the shared figure styles there.
