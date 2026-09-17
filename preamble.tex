@@ -43,7 +43,26 @@
 \usepackage[unicode]{hyperref}
 \usepackage{bookmark}
 \usepackage{dsfont,microtype,emptypage,upgreek,tikz-cd,setspace}
-\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,filecolor=magenta,urlcolor=blue}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,filecolor=magenta,urlcolor=blue,bookmarksnumbered=true}
+
+% ===== PDF bookmarks =====
+% bookmarksnumbered makes each bookmark carry the number its \addcontentsline
+% text already has, so chapters read "第一章 群的基本概念" and sections read
+% "1.1 群、群元与循环结构" -- the same strings the printed TOC uses. Without
+% it hyperref \lets \numberline to \@gobble and every number is dropped.
+%
+% The default \Hy@numberline appends a space so that "1.1" does not run into
+% the section title. ctex's chapter/part numberline text already ends in
+% \hspace{.3em}, which \pdfstringdef renders as a space of its own, so those
+% would come out with two. Absorb a trailing \hspace and add the single space
+% ourselves; the appended \hspace\YHW@bm@end also terminates the match when
+% there is nothing to absorb.
+\makeatletter
+\AtBeginDocument{%
+  \def\Hy@numberline#1{\YHW@bm@numberline#1\hspace\YHW@bm@end}%
+  \def\YHW@bm@numberline#1\hspace#2\YHW@bm@end{#1 }%
+}
+\makeatother
 
 % ===== Numbering =====
 \renewcommand{\thechapter}{\arabic{chapter}}
