@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[5]
 sys.path.insert(0, str(ROOT))
 from preamble import figure_style, polish_axes, add_legend, save_pdf_png_pair
 
@@ -24,10 +24,11 @@ with figure_style():
     fig, ax = plt.subplots(figsize=(6.6, 4.5))
     for t in (-3.0, 3.0, 6.0):
         ax.plot(x, u_two(x, t), label=rf'$t={t:g}$')
+    ax.set_xlim(-21, 20)
     ax.set_xlabel(r'$x$')
     ax.set_ylabel(r'$u(x,t)$')
     ax.set_title('KdV two-soliton scattering')
-    add_legend(ax, loc='lower left')
+    add_legend(ax, loc='upper left')
     polish_axes(ax, grid=True)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'kdv_two_soliton', Path(__file__).resolve().parents[1] / 'generated')

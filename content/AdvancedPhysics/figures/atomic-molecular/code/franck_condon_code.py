@@ -2,7 +2,7 @@ from pathlib import Path
 import sys, math
 import numpy as np
 import matplotlib.pyplot as plt
-ROOT = Path(__file__).resolve().parents[4]; sys.path.insert(0, str(ROOT))
+ROOT = Path(__file__).resolve().parents[5]; sys.path.insert(0, str(ROOT))
 from preamble import figure_style, polish_axes, add_legend, save_pdf_png_pair
 with figure_style():
     n=np.arange(0,16); fig,ax=plt.subplots()

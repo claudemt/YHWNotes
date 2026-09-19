@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import brentq
-ROOT = Path(__file__).resolve().parents[4]; sys.path.insert(0, str(ROOT))
+ROOT = Path(__file__).resolve().parents[5]; sys.path.insert(0, str(ROOT))
 from preamble import figure_style, polish_axes, add_legend, save_pdf_png_pair
 
 def F(phi_r,phi_0): return np.cos(phi_r)-np.cos(phi_0)+(phi_r-phi_0)*np.sin(phi_0)
