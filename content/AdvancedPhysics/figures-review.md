@@ -115,3 +115,25 @@
 同类审计：①全书仅这 3 个 tikzpicture（无章节内联），已全部覆盖；②其余 `_code.py` 无第二处 raw-string 字面 `\n`；③未引用的 rabi_dynamics 脚本不进 PDF。
 
 剩余未解决问题：无。
+
+---
+
+## 第二轮视觉精修（standalone 渲染 → Read 亲眼看图 → 改 → 再渲染验证）
+
+本轮方法：每张 TikZ 用 `standalone + xelatex + fitz(220dpi)` 单独编译成 PNG 后 `Read` 逐像素核对 7 项；matplotlib 先 `python *_code.py` 重生成 PNG 再 `Read`。绝不只看代码。公共样式取自 `preamble.tex` 196–243 行。
+
+| # | 文件 | 本轮问题（对应 7 类） | 改了什么 | 修复后确认 |
+|---|---|---|---|---|
+| T1 | tikz/radiation-reaction/dirac-decomposition.tex | 无（重渲染核对：两框间距足够、汇聚箭头分落 self 顶边两点、无文字压线、方向全部向下） | 不改 | ✅ Read PNG：Dirac/Fermi 框无重叠，8 条箭头干净 |
+| T2 | tikz/radiation-reaction/frequency-regime-map.tex | 类 2/4：右上"exact parent formula"圆角框无底色，其左边框压在 x=2.50 竖直虚线右侧，虚线穿框（框内公式背后透出虚线） | 节点加 `fill=white`，中心由 (4.15,4.45) 右移到 (4.45,4.45) | ✅ Read freq2.png：虚线止于框底，白底盖线，框与 general-frequency 标签留白 |
+| T3 | tikz/radiation-reaction/worldtube-geometry.tex | 类 2：`u^μ` 标签离竖直切向量箭头仅 ~3pt 偏挤；`n^μ, n·u=0` 标签右缘贴近右管壁虚线 | `u^μ` 标签由 (-0.05,0.05) 左移到 (-0.20,0.05)；n 水平箭头由 0.78 缩短到 0.62；n 标签中心由 (0.52,-0.45) 移到 (0.36,-0.45) | ✅ Read worldtube2.png：u 标签离箭头 6pt+，n 标签右缘离右墙留白 |
+| M1 | atomic-molecular/code/doppler_limit_code.py | 类 7：annotation 两行文字压在下降段蓝曲线上（xytext=(-95,28) 落点正落在曲线 y≈0.77 处） | xytext 由 (-95,28) 上移到 (-90,52)，文字抬到曲线上方空区，引导箭头全程在曲线上方 | ✅ 重生成 PNG：文字位于 y≈0.95，曲线在其下，箭头不压曲线 |
+| M2 | atomic-molecular/code/fano_lineshape_code.py | 无（legend 左上两列，红峰在中部，不遮挡；轴标签不裁切） | 不改 | ✅ Read PNG 确认 |
+| M3 | atomic-molecular/code/franck_condon_code.py | 无（legend 右上，S=0.5 峰在 n=0 左上，legend 在右上空白） | 不改 | ✅ Read PNG 确认 |
+| M4 | atomic-molecular/code/landau_zener_code.py | 无（legend 已为 center left，落于四曲线间 y≈0 真空白；2\|V\| 标注箭头不压绝热线） | 不改 | ✅ Read PNG 确认 |
+| M5 | atomic-molecular/code/rabi_dynamics_code.py | 类 7：legend 在 upper right，Δ/Ω=0 蓝曲线从 x≈9.5 峰下穿过 legend 框（frameon=False，文字直接压在蓝线上） | legend loc 由 'upper right' 改为 'upper center'，落到两蓝峰之间的低谷空区（y≈0.9，x≈6–8） | ✅ 重生成 PNG：legend 在两峰之间空白，不压任何曲线 |
+| M6 | atomic-molecular/code/strong_field_return_code.py | 无（legend 右上，此时橙曲线已降到近 0；3.17/10.01 极值标注不压线） | 不改 | ✅ Read PNG 确认 |
+| M7 | code/radiation-reaction/form_factor_shell_code.py | 无（legend 右上带框，5 条曲线在左上衰减，右上空白） | 不改 | ✅ Read PNG 确认 |
+| M8 | code/radiation-reaction/order_reduction_error_code.py | 无（log-log 双线重合，legend 左上，曲线从左下上升，不压 legend） | 不改 | ✅ Read PNG 确认 |
+
+本轮实际修改 4 张：T2、T3、M1、M5；其余 7 张重渲染核对后保持原样。

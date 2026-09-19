@@ -189,7 +189,7 @@ with figure_style():
     ax.plot(np.rad2deg(th), geom, color=COLORS[2])
     ax.set_xlabel(r"$\theta$ [deg]")
     ax.set_ylabel(r"soft-photon geometry factor")
-    ax.text(0.04, 0.94, r"$\beta_i=\beta_f=0.8$\ndeflection $25^\circ$", transform=ax.transAxes, va="top")
+    ax.text(0.04, 0.94, r"$\beta_i=\beta_f=0.8$" + "\n" + r"deflection $25^\circ$", transform=ax.transAxes, va="top")
     polish_axes(ax, grid=True)
     save(fig, "soft_brems_angular")
 

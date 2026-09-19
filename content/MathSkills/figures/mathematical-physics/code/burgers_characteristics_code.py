@@ -17,7 +17,7 @@ with figure_style():
     ax.set_xlabel(r'$x$')
     ax.set_ylabel(r'$t$')
     ax.set_title(r'Characteristics for $u_0(\xi)=-\tanh\xi$')
-    add_legend(ax, loc='upper left')
+    add_legend(ax, loc='upper right')
     polish_axes(ax, grid=True)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'burgers_characteristics', Path(__file__).resolve().parents[1] / 'generated')

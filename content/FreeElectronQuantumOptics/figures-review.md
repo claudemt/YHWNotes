@@ -54,3 +54,32 @@
 - 新发现并修复 2 处 inline tikz 标签重叠；
 - 终版 PDF 809 页，0 error / 0 undefined ref / 0 overfull(>15pt)；
 - `example/FreeElectronQuantumOptics.pdf` 已更新。
+
+---
+
+## 七、本轮逐图视觉精修（standalone 渲染闭环，最新）
+
+针对上一轮"读代码改坐标不看图"被批评为无效，本轮改为每张图独立编译→渲染 PNG→Read 肉眼目检→改→再渲染验证。公共样式从根 `preamble.tex` 196–243 行复制，缺省宏 `\ii,\me,\qe,\slashed` 由 amsmath/amssymb/slashed 补齐。检查 7 项：箭头不压顶点/线；标签不压线条/箭头/框；平行边箭头分散在中段；框内不溢出；有向边方向与物理一致；节点不互叠；matplotlib legend 不压曲线、轴 label/tick 不裁切、子标题不重叠。
+
+### 7.1 独立 TikZ 图（figures/tikz/，26 张全部独立编译通过并 Read 目检）
+bhabha-two, breit-wheeler-two, compton-two, ee-gammagamma, ee-mumu, emu-scattering, feynman-poles, lorentz-representation-map-dp8, moller-two, qcd-elementary-vertices-dp10, qcd-tree-processes-dp10, qed-elementary-vertex-dp7, qed-exchange, qed-loop-atlas-dp7, qed-loops, qed-lsz-amputation-dp8, qed-tree-atlas-dp7, qed-vacpol-cut-dp9, qed-vacuum-polarization-dyson-dp7, qft-bubble-cut-dp8, soft-bremsstrahlung, uehling-loop, vertex-correction-detailed, volkov-plane-wave, wigner-little-group-dp9, yukawa-exchange。
+**结论：26 张均无 7 类问题，未改动。**（关键复核：ee-mumu / μ 衰变 / e+e-→ff̄ 的正电子/中微子有向边方向经源码对照 antifermion=arrowreversed 逐根确认正确。）
+
+### 7.2 内联 TikZ（sections/，18 个 tikzpicture 全部抽取独立编译、Read 目检）
+仅 1 处需改：
+- `sections/04c-sm-effective-potential-main-dp43.tex` 的注释节点 "stationary value: gauge independent" 压在有效势左侧上升曲线上 → 给该节点加 `fill=white,fill opacity=.95,inner sep=2pt`；重编译 Read 确认曲线不再穿字。
+其余 17 块（DIS 运动学/因子化、NLO 虚修正实发射、格点 plaquette、qq̄ 劈裂、ee-ww 抵消、Higgs/质量基/CKM/Rξ/SMEFT/W 宽度流程框）均干净。
+
+### 7.3 matplotlib 图（figures/code/ → figures/generated/，50 张输出全部 Read 目检）
+共享 `preamble.py` 已给 legend 近不透明白底。发现并修复 3 处：
+
+| 输出 PNG | 问题 | 改动 | 复验 |
+|---|---|---|---|
+| cherenkov_recoil_angle.png | 注释出现字面 `\n`（raw string） | `cherenkov_recoil_angle_code.py:32` 用 `+ '\n' +` 拼接两段 | 两行正常折行 |
+| soft_brems_angular.png | 同上字面 `\n` | `legacy_quantitative_rebuild_dp43.py:192` 同样拼接 | 两行正常折行 |
+| sm_higgs_potential_dp11.png | "degenerate minima" 放 y=-0.80 超出轴下限，压 x 轴与刻度 | `supplementary_figure_sources.py:30` 移到 (0.62,-0.50) 并加白底 bbox | 文字入轴、脱离底边刻度 |
+
+其余 47 张 legend 均落空角、轴 label/tick 无裁切、子标题无重叠。
+
+### 7.4 整书构建
+改完跑 `python main.py build FreeElectronQuantumOptics`，退出码 0、无 LaTeX error，`example/FreeElectronQuantumOptics.pdf` 更新。

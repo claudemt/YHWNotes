@@ -27,7 +27,7 @@ with figure_style():
     ax.axvline(0.0, color='0.4', linestyle=':', linewidth=1.3)
     ax.axhline(0.0, color='0.4', linestyle=':', linewidth=1.0)
     ax.text(-1.48, 0.28, 'unstable symmetric point')
-    ax.text(0.57, -0.80, 'degenerate minima')
+    ax.text(0.62, -0.50, 'degenerate minima', bbox=dict(facecolor='white', edgecolor='none', alpha=0.85))
     ax.set_xlabel(r'$h/v_E$')
     ax.set_ylabel(r'normalized potential $V/V_0$')
     ax.set_title('Higgs potential')

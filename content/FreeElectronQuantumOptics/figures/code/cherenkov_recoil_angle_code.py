@@ -29,7 +29,7 @@ with figure_style():
     ax.set_ylabel(r'$\theta$ [deg]')
     ax.set_xlim(0, x[-1])
     ax.set_ylim(0, 70)
-    ax.text(0.02, 0.96, r'$\beta_{\rm rel}=0.95$\nsolid: exact; dotted: $x\to0$', transform=ax.transAxes, va='top')
+    ax.text(0.02, 0.96, r'$\beta_{\rm rel}=0.95$' + '\n' + r'solid: exact; dotted: $x\to0$', transform=ax.transAxes, va='top')
     add_legend(ax, frameon=False, ncol=1)
     polish_axes(ax, grid=True)
     fig.subplots_adjust(left=0.12, bottom=0.15, right=0.98, top=0.97)
