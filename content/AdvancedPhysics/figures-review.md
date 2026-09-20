@@ -152,3 +152,97 @@
 
 本轮实际修改 2 张：F2（worldtube 标签压线）、F3（dirac 框网格对齐）；F1 复检后保持原样。
 本轮未触碰 `content/YHWNotes/`，未执行 git commit。
+
+---
+
+## 意思核对（2026-09-20）
+
+本轮只核对"图的物理意思是否和正文一致"，不做视觉精修（视觉轮已在前 1–3 轮完成）。方法：先读 `.tex` 中 `\input`/`\includegraphics` 前后 3–5 段正文，弄清正文声称的关系；TikZ 图按 standalone 模板（复制 preamble.tex 196–207/213–226 公共样式块 + `\providecommand{\ii,\ee,\dd,\vb}`）xelatex 300 dpi 渲 PNG 后 `Read`；matplotlib 图直接 `Read` 现有 `generated/*.png` 并对照 `*_code.py` 与正文公式。重点核对 5 类：箭头/轴方向 vs 正文演化/因果；元素连接（谁连谁/包含/映射）；标签-对象对应；节点/分支数 vs 正文；实线/虚线/箭头/颜色 vs legend。
+
+**范围勘误**：任务说"在 ch*.tex 里 grep `begin{tikzpicture}` 还有 3 张内联图"，但实测 `grep -n "begin{tikzpicture}" content/AdvancedPhysics` 只命中 3 个 `\input` 独立文件（frequency-regime-map / worldtube-geometry / dirac-decomposition），在 `ch*.tex` 内联搜 `tikzpicture|tikzfig|circuitfig` 为 **0**。即全书 TikZ 就是这 3 个，无内联图，前几轮"①全书仅这 3 个 tikzpicture"的结论不变。`rabi_dynamics_code.py` 仍为孤儿脚本，跳过。实际核对 10 张图（3 TikZ + 7 matplotlib）。
+
+逐图记录：
+
+### 图 13.1 frequency-regime-map（参数平面四象限）
+
+- **正文怎么说**（ch13 caption line 123；正文 line 86/96/116）：ε_soft=ωT_sc 控制时间软展开（散射历史），κ_src=ωa_src/c 控制源内空间相位的多极展开；两个小参数相互独立，整个参数平面由精确母式覆盖。
+- **图原来怎么画**：x 轴 κ_src=ωa_src/c（向右增大），y 轴 ε_soft=ωT_sc（向上增大）；竖直虚线 x=2.50，水平虚线 y=1.35。四象限：左上"long-wave region, κ_src≪1, multipole expansion"；左下"overlap, soft multipole limit"；右下"soft-frequency region, ε_soft≪1, asymptotic-state control"；右上"general-frequency region, full spatial phase and trajectory history"；精确母式框在右上。
+- **意思问题**：无。左列=κ 小（长波/多极），底行=ε 小（软频），左下=两近似同时成立（overlap），右上=两者都不展开（general）。轴方向、边界位置、四象限命名与正文"两个独立方向"完全自洽。
+- **改成什么**：不改。
+- **验证**：standalone 渲 freq PNG 300dpi Read：x 向右、y 向上，四象限各居其区，母式框在 general 区，无方向反转。
+
+### 图 13.2 form_factor_shell（形状因子）
+
+- **正文怎么说**（caption line 494；exbox line 142–148）：薄球壳精确强度比 = sinc²κ_src，Gaussian 云 = e^{−κ_src²/2}；虚线是各自低 κ 展开。
+- **图原来怎么画**：shell=(sinκ/κ)²（实线），gaussian=e^{−κ²/2}（实线），shell LW=1−κ²/3（虚线），gaussian LW=1−κ²/2（虚线），竖点线 κ=1；x=κ_src，y=I/I_point。
+- **意思问题**：无。sinc²κ 小 κ 展开 1−κ²/3、e^{−κ²/2} 展开 1−κ²/2，与脚本一致；shell 在 κ=π≈3.14 过零后小回升，Gaussian 单调衰减，均符合。
+- **改成什么**：不改。
+- **验证**：Read generated/form_factor_shell.png：两条实线衰减、两条虚线小 κ 贴合、shell 在 ~3.14 处过零，坐标轴与 legend 对应正确。
+
+### 图 13.3 worldtube-geometry（Fermi 世界管）
+
+- **正文怎么说**（line 861；caption line 868）：在固有时 τ 端面上取单位类空径向量 n^μ，满足 n·u=0、n²=−1；ℓ>0 是沿该端面的局域空间半径；u^μ 是世界线切矢（时间方向）。
+- **图原来怎么画**：世界线 z^μ(τ) 竖直蜿蜒；两虚线管壁平行世界线（竖直）；Σ1/Σ2 水平横截（垂直世界线）；ℓ 箭头水平向右（横向）；u^μ 箭头沿世界线向上（时间方向）；n^μ 箭头水平向右（横向，n·u=0）；T_self dΣ_μ 从右壁径向向外。
+- **意思问题**：无。世界管横向延展方向（ℓ，水平）确实垂直于世界线切方向（u，竖直），管壁平行世界线、端面横截世界线——几何朝向正确，没有反。u 沿世界线向上（τ 增大/未来向），n 与 ℓ 都横向，符合 Fermi 局部标架。
+- **改成什么**：不改。
+- **验证**：standalone 渲 worldtube PNG 300dpi Read：u 箭头沿竖直线向上，ℓ/n 箭头水平，管壁平行竖线，Σ1/Σ2 水平，径向箭头出壁。
+
+### 图 13.4 dirac-decomposition（两支路流程）
+
+- **正文怎么说**（caption line 1034；正文 line 999–1025）：父式 Maxwell+守恒分出有限尺寸支路（保留因果记忆）与点粒子极限支路；点极限中 Dirac 正则分解（F_S=½(F_ret+F_adv)，F_R=½(F_ret−F_adv)）与 Fermi 世界管守恒是两种独立组织，汇聚到同一有限 ALD 自力；LL 是后文的受控降阶。
+- **图原来怎么画**：parent（顶）→ smooth（左）+ point（右）；smooth → memory（左列"history-dependent memory"）；point → dirac + tube；dirac 和 tube 都 → self（ALD）；self → ll（Landau–Lifshitz）。共 8 条箭头，全部向下。
+- **意思问题**：无。分支/汇聚结构与正文"两支独立组织、汇聚同一 ALD"完全一致；dirac 框内 F_S/F_R 公式与正文式(1000)一致；memory 挂在有限尺寸支而非点粒子支，正确。
+- **改成什么**：不改。
+- **验证**：standalone 渲 dirac PNG 300dpi Read：树状连接、汇聚、降阶三级层次清楚，箭头方向全部向下（因果）。
+
+### 图 13.5 order_reduction_error（降阶误差标度）
+
+- **正文怎么说**（caption line 1834；line 1827）：ε_grad=τ_rr/T 的截断误差从二阶 O(ε_LL²) 起。
+- **图原来怎么画**：log-log，"numerical error" 实线 vs O[(τ_rr/T)²] 虚线参考线；x=τ_rr/T，y=relative L² error。
+- **意思问题**：无。两线在 log-log 上几乎重合、斜率=2，证实二次标度。
+- **改成什么**：不改。
+- **验证**：Read generated/order_reduction_error.png：双线平行重合于斜率 2 直线。
+
+### 图 19.1 strong_field_return（强场回碰截止）
+
+- **正文怎么说**（ch19 line 191–212）：K_r/U_p=2(sinφ_r−sinφ_0)²，极值 3.17 U_p（HHG 截止）；回碰后反向弹性散射 K_rescatt/U_p=2[2sinφ_r−sinφ_0]²，极值 10 U_p。
+- **图原来怎么画**：脚本 Kret=2(sinφr−sinφ0)²、Kresc=2(2sinφr−sinφ0)²，brentq 解第一返回支 F=0；标注极值 3.17 / 10.01；x=电离相位 φ_0。
+- **意思问题**：无。两曲线表达式、极值位置、rescatter 曲线恒在 ret 之上均与正文一致。
+- **改成什么**：不改。
+- **验证**：Read generated/strong_field_return.png：蓝(K_ret)峰 3.17、橙(K_resc)峰 10.01，rescatter 包络 ret。
+
+### 图 21.1 doppler_limit（Doppler 冷却极限）
+
+- **正文怎么说**（ch21 line 265–275；caption line 283）：记 x=|2Δ|/Γ_sp，k_BT=(ℏΓ_sp/4)(x+1/x)；AM–GM 不等式最小在 x=1（即 Δ=−Γ_sp/2，红失谐侧），k_BT_D=ℏΓ_sp/2。
+- **图原来怎么画**：脚本 T=0.25(1+(2ξ)²)/|2ξ|，ξ=Δ/Γ；x 轴只画负失谐（红失谐）；散点+注释标在 (ξ=−0.5, T=0.5)，文字 "Δ=−Γ/2, T_D=ℏΓ/(2k_B)"。
+- **意思问题**：无。把脚本式 0.125(1+4ξ²)/|ξ| 代入 x=2|ξ| 恰为 (1/4)(x+1/x)，与正文式严格等价；求导最小在 |ξ|=0.5，T_min=0.5=ℏΓ/(2k_B)，注释位置/表达式全对；只画红失谐（冷却侧）物理正确。
+- **改成什么**：不改。
+- **验证**：Read generated/doppler_limit.png：U 形谷底在 Δ/Γ=−0.5、k_BT/(ℏΓ)=0.5，注释两行、箭头指谷底。
+
+### 图 24.1 franck_condon（Franck–Condon 因子）
+
+- **正文怎么说**（ch24 line 258–275）：|⟨n_e|0_g⟩|²=e^{−S_HR}S_HR^n/n!（Poisson），均值=方差=S_HR；S≪1 零声子线主导，S≫1 分布移到 n~S。
+- **图原来怎么画**：脚本 P(n)=e^{−S}S^n/n!，S∈{0.5,2,5}；x=末振动量子数 n。
+- **意思问题**：无。S=0.5 峰在 n=0（e^{−0.5}=0.607）、S=2 峰在 n≈1–2、S=5 峰在 n≈4–5，均值=S 一致。
+- **改成什么**：不改。
+- **验证**：Read generated/franck_condon.png：三条 Poisson 峰位置随 S 右移、归一化总和合理。
+
+### 图 28.1 fano_lineshape（Fano 线型）
+
+- **正文怎么说**（ch28 line 374–386）：σ/σ_bg=(q+ε)²/(1+ε²)；|q|→∞ 退 Lorentzian，q=0 在 ε=0 反共振零点，q=±1 零点在 ε=∓1 最不对称。
+- **图原来怎么画**：脚本 (q+ε)²/(1+ε²)，q∈{−1,0,1,3}；x=约化失谐 ε。
+- **意思问题**：无。q=0 在 ε=0 为零、q=1 在 ε=−1 为零、q=−1 在 ε=+1 为零、q=3 在 ε=0 处峰≈9（Lorentzian），零点/峰位置与正文 line 380 逐项一致。
+- **改成什么**：不改。
+- **验证**：Read generated/fano_lineshape.png：四条曲线零点与峰位正确，legend 两列对应 q 值。
+
+### 图 28.2 landau_zener（Landau–Zener 能级）
+
+- **正文怎么说**（ch28 line 505–528；caption line 528）：diabatic H=diag(s t/2, −s t/2) 被常数 V 耦合，瞬时绝热能 E_±=±√((s t/2)²+|V|²)，最小间隙 2|V|；图只画 diabatic 与 adiabatic 能级。
+- **图原来怎么画**：脚本 diabatic 虚线 ±a t/2（过原点相交），adiabatic 实线 ±√((a t/2)²+V²)；legend 虚线=Diabatic、实线=Adiabatic；"2|V|" 注释指向中心上方绝热支。
+- **意思问题**：无。两条绝热支在交叉点 **不接触**（中心在 ±V，间隙 2V=2|V|）——正是 avoid crossing，若接触反而错；diabatic 虚线在 (0,0) 相交；label 挂线正确（虚线→Diabatic，实线→Adiabatic）。本图按 caption 仅含能级图、无"非绝热跃迁概率曲线"，任务该项 N/A。
+- **改成什么**：不改。
+- **验证**：Read generated/landau_zener.png：虚线 X 型交于原点，实线 U 型/∩型在中心分开留 2|V| 缺口，legend 落左中空区。
+
+---
+
+**本轮结论**：10 张图的物理意思与正文全部自洽，**未发现需要改源的意思错误**，故未改动任何 `.tikz`/`.py` 源，无需重渲染。唯一需要记录的范围勘误：任务所述"3 张内联 tikzpicture"在 ch*.tex 中实测为 0，全书 TikZ 即 3 个 `\input` 文件。本轮未触碰 `content/YHWNotes/`，未执行 git commit。

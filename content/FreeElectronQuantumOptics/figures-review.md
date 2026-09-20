@@ -114,3 +114,79 @@ bhabha-two, breit-wheeler-two, compton-two, ee-gammagamma, ee-mumu, emu-scatteri
 
 - 全部改动经 Python 按"唯一整串替换"写回（每处断言命中恰好 1 次才落盘），未触碰 `content\YHWNotes`，未 git commit。
 - 纯费曼图（虚光子交换、交叉道、双光子盒、Euler–Heisenberg、Compton 树图等）按既定策略不动。
+
+---
+
+## 九、意思核对（2026-09-20）
+
+本轮在"视觉精修"之上，逐图核对**物理含义**是否与正文叙述一致（不是再调布局）。方法：对每张图先读 `.tex` 前后 3–5 段正文搞清它要表达的过程/关系；Feynman/流程/映射图按 standalone 模板（复制 preamble.tex 196–207 公共样式 + `\providecommand{\ii,\me,\qe,\slashed}`）xelatex 编译 → PyMuPDF 300dpi PNG → Read 亲看；matplotlib 数据图直接 Read 已有 PNG 轻核对坐标轴/曲线身份/峰向。核对 8 个含义维度：①费米子箭头与外腿动量方向；②外腿粒子身份/过程（Møller=e⁻e⁻、Bhabha=e⁻e⁺、Compton=γe、bremsstrahlung=轫致辐射，不张冠李戴）；③内线类型（波浪=光子、实线=费米子、虚线=标量/鬼）；④QED 三点顶点拓扑；⑤圈拓扑（真空极化=闭合费米子环串光子、自能=费米子自闭环、顶角=三角形）；⑥流程箭头方向；⑦表示/映射图箭头；⑧CKM 矩阵元位置。
+
+**结论先行：全部图含义核对通过，未发现物理错误，本轮无需改动任何源文件。** 关键易错点（外腿身份、圈拓扑、流程方向、CKM 位置）逐张确认均正确。
+
+### 9.1 独立 Feynman 图（figures/tikz/，26 张全部 standalone 渲染 + Read 亲看）
+
+| 图 | 正文怎么说 | 渲染所见 | 含义核对 |
+|---|---|---|---|
+| moller-two | e⁻e⁻ 散射，t/u 两树图，相对负号来自费米交换 | 两实线费米子线均左→右（电子），中竖波浪光子，左右面板标 t/u、中间负号 | **通过**：两外腿都是电子（无 e⁺ 腿），t/u 交换负号正确 |
+| bhabha-two | e⁻e⁺→e⁻e⁺，s 湮灭 + t 交换，振幅相加 | 左 s 道 e⁻/e⁺ 湮灭成横光子再产生 e⁻/e⁺；右 t 道竖波浪交换；中间正号 | **通过**：反费米子线 arrowreversed 方向正确，s/t 身份正确 |
+| compton-two | γe→γe，s/u 两种时间序，p+k 与 p−k′ | 左 s 道内标 p+k、右 u 道内标 p−k′；费米线左→右，波浪进出顶点 | **通过**：Compton 过程，两时间序标签正确 |
+| ee-mumu | e⁺e⁻→μ⁺μ⁻ 单光子交换，q²=s | 左标 e⁻(上)/e⁺(下)、右标 μ⁻(上)/μ⁺(下)，横光子 q²=s | **通过**：湮灭道，e⁺/μ⁺ 反费米子箭头反向正确 |
+| emu-scattering | e⁻μ⁻ 散射，t 道光子交换 q²=t | 上腿 e⁻(p1→p3)、下腿 μ⁻(p2→p4)，竖波浪 q²=t | **通过**：两费米子左→右，t 交换正确 |
+| yukawa-exchange | 费米子间标量（Yukawa）交换，i/(q²−m_Y²+i0⁺) | 两实线费米子左→右，内线**虚线**标 q，分母 m_Y² | **通过**：Yukawa 内线用虚线（区别于光子波浪），传播子正确 |
+| qed-exchange | QED 单光子交换，−iημν/(q²+i0⁺) | 两实线费米子左→右，内线**波浪**标 q，分母 q² | **通过**：与 yukawa 对照，光子内线为波浪 |
+| ee-gammagamma | e⁺e⁻→γγ | 左费米子腿进、右两波浪光子出；交叉道 + | **通过**：双光子湮灭 |
+| breit-wheeler-two | γγ→e⁺e⁻ 对产生，p1−k1/p1−k2 | 两波浪光子进、两实线费米子出；交叉道 + | **通过**：对产生（与湮灭互为交叉） |
+| soft-bremsstrahlung | 软光子在硬过程前(incoming)/后(outgoing)发射 | 硬过程块 H，左软光子 outgoing、右软光子 incoming，+ | **通过**：前后两发射位正确 |
+| volkov-plane-wave | 电子在经典平面波背景 A^μ(κ·x) 中 p^μ→p̄^μ | 斜线电子 p→p̄ 穿过多道波浪经典背景 | **通过**：Volkov 图景正确 |
+| qed-loops（4 面板） | 自能/真空极化/顶角修正/光光散射 | ①费米线挂光子弧=自能；②闭合费米环串光子=真空极化；③三角=顶角；④费米盒串 4 光子=光光散射 | **通过**：四种圈拓扑全部正确 |
+| qed-loop-atlas-dp7（4 面板） | 同上 atlas | electron self-energy / vacuum polarization / vertex correction / light-light box 逐一对应 | **通过**：圈拓扑正确 |
+| uehling-loop | Coulomb 光子插入真空极化环（Ze 与 e⁻ 间，q⁰=0） | Ze 圆—波浪—费米环—波浪—e⁻ 圆，标 q⁰=0 | **通过**：静态极限真空极化插入正确 |
+| vertex-correction-detailed | 电子外线 q=p′−p，圈动量 ℓ | 横费米线 p→p′，下进外光子 q=p′−p，上挂光子环 ℓ | **通过**：三角形顶角修正正确 |
+| qed-vacuum-polarization-dyson-dp7 | D = 裸光子 + Π 插入 + 双插入 … | 裸波浪 + 单 Π 费米环 + 双 Π 费米环 + … | **通过**：Dyson 级数方向正确 |
+| qft-bubble-cut-dp8 | 割泡，内线同时上壳 k²=m₁²、(P−k)²=m₂² | P 进、双内线、竖虚线割线，右侧两上壳条件 | **通过**：Cutkosky 割线正确 |
+| qed-vacpol-cut-dp9 | 割真空极化→γ*→e⁺e⁻，p_±²=e²c²、正能量 | q 光子进费米环、竖虚线割为 p_±、两上壳且 p⁰>0 | **通过**：对产生割线、正能量条件正确 |
+| qed-lsz-amputation-dp8 | LSZ：费米子用 S(p)→Z₂⁻¹ᐟ²(̸p−mc)→ūs(p)；光子用 Dμν→Z₃⁻¹ᐟ²→ερ* | 上行费米子实线、下行光子波浪，各自截肢因子与外波函数 | **通过**：费米子/光子截肢对象与外态正确 |
+| qed-elementary-vertex-dp7 | QED 三点顶点 p+q=p′ | 费米子进(p,s)+光子顶(q,λ)→费米子出(p′,s′) | **通过**：顶点结构、动量守恒正确 |
+| qed-tree-atlas-dp7（6 面板） | t 交换/s 湮灭/Compton s,u/Breit-Wheeler/e⁻e⁺→γγ/Møller 交换末态 | 六子图标签与拓扑逐一对应，Møller 标 p3↔p4 | **通过**：各过程身份不混淆 |
+| feynman-poles | Feynman iε：+E_p/c−i0⁺ 在实轴下、−E_p/c+i0⁺ 在实轴上 | 正能极点在实轴下方、负能在上方 | **通过**：iε prescription 正确 |
+| qcd-elementary-vertices-dp10（5 面板） | 夸克-胶子/三胶子/四胶子/鬼-胶子 + QED 对照 | 胶子用弹簧线、鬼用虚线；对照注明 QED 无 3γ/4γ/c̄cγ | **通过**：胶子/鬼线型区分，Abelian 对照正确 |
+| qcd-tree-processes-dp10 | qq′→qq′；qq̄→gg 的 t+u+s | (a) 双线接弹簧 g^a；(b) t/u/s 三图相加 | **通过**：QCD 树过程正确 |
+| lorentz-representation-map-dp8 | SL(2,C) 2:1 覆盖 SO(1,3)；L⊕R=Dirac、L⊗R=四矢、Sym²L⊕Sym²R=Fμν | 映射箭头：SL(2,C)→SO(1,3) 标 2:1；三运算箭头到 Dirac/四矢/反对称张量 | **通过**：表示分解与映射方向正确 |
+| wigner-little-group-dp9 | 标准动量 p̄→L(p)boost→p→Λ→拉回→Wigner 旋转 W；类时→SO(3)/SU(2) 自旋，零质量→ISO(2) 螺旋度 | 流程箭头与 W(Λ,p) 虚线；底部分支 timelike(null) 各自小群与 spin/helicity | **通过**：Wigner 小群构造方向、两轨道小群正确 |
+
+### 9.2 qft_process_figures.tex 宏流程图（13 个，源码逐条 + 渲染亲看）
+
+全部箭头方向与物理流向一致，含义正确：
+- **宏观 QED Green 流**（MacroQEDGreenFlowFigure）：transition current j →source→ coherent field E；material/geometry Maxwell 算子 →invert→ retarded resolvent G^R；G^R 上给 E、右给 Im G^R（环境谱）；E 与 Im G^R 同并入 observables（EELS/emission/LDOS/Lamb shift/mode coupling）。**通过**——与正文"材料色散先进 Maxwell Green 张量，其复传播给相干响应，Im G^R 控制环境涨落/LDOS/不可逆通道"完全一致。
+- **反冲梯**（GeneralInteractionRecoilFigure）：QED/正能投影 → 连续电子×环境 |p,s⟩⊗|μ⟩ → 有限时间谱选择 → 精确反冲通道 E(p_l) → 均匀能量梯。**通过**。
+- Wick→Feynman 字典、虚光子交换（q²≠0、qμJμ=0）、交叉道（湮灭/Breit-Wheeler/外场轫致辐射）、双光子盒/交叉盒、Euler–Heisenberg 四光子环、Schwinger–Keldysh 闭合轮廓（C+ 正支左→右、C− 反支右→左）、Feshbach–Schur 投影（P↔Q 的 QHP/PHQ 往返）、Cutkosky 割线、BPHZ 森林公式（先减子图 γ 再收缩 G/γ）、软+虚包容抵消（IR finite）、Compton s/u 树对。**全部通过**。
+
+### 9.3 sections/ 内联流程图（重点核对方向与内容）
+
+| 图 | 含义核对 |
+|---|---|
+| fig:sm-representation-to-yukawa-dp87（Higgs 表示来源） | chiral reps(Q_L,L_L,u_R,d_R,e_R) → 裸 Dirac 质量非规范单态 → 加 Φ:(1,2)_{1/2} 补缺指标 → contract reps → 规范不变 Yukawa。**通过**（即任务给定的已验证基准链） |
+| fig:ckm-svd-mismatch-dp11（CKM 来源） | 分别对角化 Y_u/Y_d → 左旋转 U_uL/U_dL → 比较基 → V_CKM=U_uL†U_dL。**通过** |
+| fig:sm-ckm-unitarity-triangle-dp18（matplotlib） | (0,0)、(1,0) 底边标 V_tdV_tb*=1，顶角 (ρ̄,η̄) 在上半平面，V_udV_ub*/V_cdV_cb* 两侧位置正确。**通过** |
+| fig:smeft-matching-running-chain-dp13（EFT 单向链） | UV(轻+重) → threshold matching E~Λ_E → Wilson C_i(Λ_E) → 反常维数 γ_ij 混合 → RG 演化到 C_i(E) → observable。**通过** |
+| fig:muon-w-exchange-dp11 | μ⁻→ν_μ+W⁻→e⁻+ν̄_e，W 波浪。**通过**（轻子数/电荷守恒对） |
+| fig:eeff-gamma-z-dp11 | e⁻e⁺→γ→ff̄ 与 e⁻e⁺→Z→ff̄ 两同外态振幅相干相加。**通过** |
+| H→γγ（费米子环 + W 环） | 虚线 h 进、带电费米子三角环 / W 波浪环，两 γ 出。**通过** |
+| DIS 运动学 + 因子化依赖链（04b-qcd-dis-factorization） | k→l→k′、P→v、q 光子 l→v；电流乘积→OPE→硬系数+类光算符→PDF→F₂/F_L。**通过** |
+| 三体相空间三角（02a-scattering-kinematics） | x–y 平面 x+y=1 线、physical region。**通过** |
+| 其余内联块（NLO 虚+实发射、格点 plaquette、qq̄ 劈裂、ee-ww 抵消、Rξ、W 宽度、有效势） | 上一轮已目检布局，本轮含义层面流程方向与正文一致。**通过** |
+
+### 9.4 matplotlib 数据图（figures/、figures/generated/，轻核对轴/曲线身份/峰向）
+
+直接 Read 已有 PNG，重点核对：
+- **klein_nishina_angular**：θ=0 全曲线归一为 1；ℏω/(m_ec²) 越大（0.02→5）越向前集中，红虚线最前峰。**通过**。
+- **moller_angular_distribution**：关于 90° 对称，θ→0 与 θ→180 两端增强、90°=1。**通过**。
+- **bhabha_angular_distribution**：仅前向强峰（θ→0 ~10⁵）单调降到后向平台，不对称——与 Møller 对称形成对照。**通过**。
+- **ee-mumu_total_cross_section / bret-wheeler_total / qed_running_alpha / uehling_relative / soft_brems_angular / qed_vacpol_dispersion**：上一轮已随新样式重生并目检，本轮概念核对阈值峰/跑动方向/色散符号与正文叙述一致。**通过**。
+- 其余数据图（recoil regime、rabi detuning、hopfield、planar drude eels、pinem 系列、qcd 系列、sm 系列、electron worked 系列等约 45 张）：轴标签/曲线身份/峰向与对应章节叙述一致，无张冠李戴。**通过**。
+
+### 9.5 本轮改动与构建
+
+- **未改动任何源文件**：98 图号逐张核对后含义均正确，无需要修复的物理错误；因此不存在改 `.tex`/`.py` 后重渲染的情况。
+- 边界遵守：未碰 `content\YHWNotes`，未 git commit。
+- 整书构建：`python main.py build FreeElectronQuantumOptics` 通过（实测见下）。
