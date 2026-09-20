@@ -422,3 +422,42 @@
 | B 类改动 | **0**（前四轮修复在新渲染中全部成立：无穿字、无挤压、无压框边/节点） |
 | 源 .tex 改动 | **无**（本轮只复渲染核对并记录） |
 | 未改动图清单 | 全部 27 张：1.1 1.2 1.3 2.1 2.2 2.3 3.1 3.2 3.3 3.4 3.5 3.6a 3.6b 3.7 4.1 4.2 4.3 4.4 4.5 4.6 4.7 5.1 5.2 5.3 6.1 6.2 ch08 根图 |
+
+
+---
+
+## 2026-09-20 第六轮：「挪标签不遮线」新原则专项（ch01×3 + ch08×1，4 个内联 tikzpicture）
+
+原则：尽量靠挪元素位置防重叠，而非用 `fill=white` 白底遮线。该留 lecturebox/blockbox/节点圆本身的白底框；不批量删 `fill=white`。
+方法：逐块抽出到 agent workspace `figreview/` 下 standalone（`\documentclass[tikz,border=12pt]{standalone}` + preamble.tex 196–238 用到的 mid arrow/lecturearrow + `\providecommand{\ii}{\mathrm{i}}`、`\cyclic` 占位）→ `xelatex` → PyMuPDF 300/600dpi PNG → Read 亲看。
+
+### 图1.1 fig:d3-symmetry（ch01.tex L242–269）
+- 用法：mid arrow（箭头落边中点）；r 标签在左三角中心 (0,0.05)；s 标签在右三角虚轴右侧 (0.34,0.20)；顶点 1/2/3 用 above/below left/right=7–13pt。
+- Grep + 渲染亲看：全图无 `line-label`/`lab`/`fill=white` 文字标签；r/s 与顶点标签均在空白处，无任何坐标轴/边线/箭头穿字。
+- 结论：**无需改动**。（前几轮已把 r 从底弧移到中心、s 从虚轴移到右侧，本就符合新原则。）
+
+### 图1.2 fig:d3-cayley-graph（ch01.tex L345–360）
+- 用法：六节点 `circle,draw,fill=white`（节点圆白底，属"该留"的节点框背景）；边标签 r 蓝色 (-1.7,0.9)、s 红色 (3.05,0) 均为裸 `\node`（无 fill）。
+- 渲染亲看：边 r 在内三角蓝边与 n1–n3 红虚边之间的空白带；s 在右节点圆右侧空白；边均止于节点圆边框，无穿字。
+- 结论：**无需改动**。节点圆 `fill=white` 保留（节点框背景，非遮线补丁）。
+
+### 图1.3 fig:d3-subgroup-lattice（ch01.tex L451–464）——重点排查①
+- 现状：正交总线扇形走线（top→(0,2.3) 横 bus→`-|` 下引四孩子；孩子 `|-` 收束到 bot.north）。六个节点全为裸 `\node`（无 fill）。
+- Grep + 600dpi 渲染亲看：**已无**第二轮"白底重绘遮穿线"的 `\node[fill=white]` 补丁（该补丁在重写为正交 bus 走线时随陡斜线一并移除）；D3/⟨s⟩/⟨sr⟩/⟨r⟩≅C3/⟨sr²⟩/{e} 全部落在上下两条水平 bus 之间的空白带，竖线止于各标签 .north/.south 缘，无穿字、无白底遮线。
+- 结论：**无需改动**。当前正交走线本身就是"挪位置防重叠"的正解，不依赖白底。
+
+### 图ch08 SU(3) 根图（ch08.tex L410–419）——重点排查②
+- 用法：`scale=0.65`；T3 横轴 `node[right]`、T8 纵轴 `node[above]`；α1 在 (1,0) `below right`、α2 在 (-0.5,0.866) `above left`、α1+α2 在 (0.5,0.866) `above right`，全为裸 node（无 fill）。
+- 600dpi 渲染亲看：α1 在 T3 轴下方空白、α2 在左上顶点左上空白、α1+α2 在右上顶点右上空白；T3/T8 轴标签在箭头尖外；无任何根线/坐标轴穿字，无白底遮线。
+- 结论：**无需改动**。
+
+### 本轮小结
+| 图 | 位置 | 白底遮线? | 改动 | 渲染确认 |
+|----|------|-----------|------|----------|
+| 1.1 d3-symmetry | ch01 L242–269 | 无 | 无 | 300dpi PNG 亲看，r/s/顶点标签均在空白 |
+| 1.2 d3-cayley | ch01 L345–360 | 无（节点圆 fill=white 属该留） | 无 | 300dpi PNG 亲看，边标签空白、边止圆框 |
+| 1.3 子群格 | ch01 L451–464 | 无（旧白底补丁已随正交走线重写移除） | 无 | 600dpi PNG 亲看，竖线止标签南北缘、无穿字 |
+| ch08 SU(3) 根图 | ch08 L410–419 | 无 | 无 | 600dpi PNG 亲看，α1/α2/α1+α2/T3/T8 均在空白 |
+
+- 源 .tex 改动：**0**（四张图本就符合"挪标签不遮线"新原则；唯一 `fill=white` 是 Cayley 节点圆，按原则保留）。
+- 临时 standalone/编译产物：agent workspace `figreview/`（fig1–fig4.tex/.pdf/.png，含 fig3_hi/fig4_hi 600dpi 放大）。

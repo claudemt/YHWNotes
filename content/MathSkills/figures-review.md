@@ -185,3 +185,11 @@ MathSkills 实际图形资产（非 TikZ，不属本轮 A/B 审查范围）：
 - 处理图数：**3 张**（全部 MathSkills 图引用）。
 - 本轮改动：**0 处**。前几轮已完成 legend 移位（burgers upper left→upper right；kdv 图内→轴外）与统一样式重建（三脚本均走 preamble.figure_style）；本轮视觉复核确认 A 类样式一致、B 类无重叠/无裁切，未触发任何 .py 修改或重新生成。
 - 遗留：无。仓库内无内联 TikZ 图（前一轮已 grep 确认），故无 standalone 编译对象。
+
+## 本轮复核记录（2026-09-20，新原则「挪标签不遮线」）
+
+- 范围：content\MathSkills\ 下全部 .tex 文件递归搜索，扩展到全部文件类型（.tex/.py/.pdf/.md/.png/.bib）。
+- 搜索关键字：`begin{tikzpicture}`、`\tikzset`、`fill=white`、`line-label`、`\blab{`（并补一次全文件 `tikzpicture` 子串扫描）。
+- 搜索结果：上述 5 个关键字在全部 30 个 .tex 文件中 **0 命中**；全文件扫描唯一命中 `tikzpicture` 子串的是 `figures-review.md` 自身（历史记录文本，非 TikZ 代码块）。
+- 确认：MathSkills 仓库内 **无 TikZ 内联对象、无 `fill=white` 白底遮线标签**，figures\ 下仅 3 个 matplotlib 脚本（burgers_characteristics_code.py / kdv_two_soliton_code.py / tikhonov_filter_code.py）及其生成的 PDF/PNG。前轮结论仍成立，本轮新原则对 MathSkills 无作用对象。matplotlib 图不在本轮新原则范围内，未改 .py。
+

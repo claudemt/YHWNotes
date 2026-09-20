@@ -248,3 +248,32 @@ bhabha-two, breit-wheeler-two, compton-two, ee-gammagamma, ee-mumu, emu-scatteri
 | 未改动图 | 内联 18、atlas/其他 standalone 14、qft 13、其余 matplotlib（沿用统一重建） |
 
 边界遵守：仅碰 `content/FreeElectronQuantumOptics/`，未碰 `content/YHWNotes`，未 git commit，未跑整书 build；临时渲染/备份文件均在 agent workspace。
+
+
+---
+
+## 本轮：挪标签不遮线（standalone TikZ 逐张闭环，2026-09-20）
+
+新原则：不用 fill=white 白底去"盖住"被压的线，而是把标签真挪到线旁空白处（above/below/left/right 加显式间距），让线不穿过标签。每张均 standalone（xelatex→300dpi PNG→亲看），改后重编译重渲染确认线与标签真不挨着。
+
+### 实际修改（4 个文件）
+
+| 文件 | 原标签压在哪 | 改法 | 渲染确认 |
+|---|---|---|---|
+| tikz/qed-exchange.tex | 动量 p,p',k,k' 用 line-label(白底) midway 贴在四条斜 fermion 线中点，白盒把线截断 | above/below left/right 由无间距改为 =5pt | 重渲染：四线连续，标签在线旁空白，白底仅作衬底 |
+| tikz/yukawa-exchange.tex | p1,p1',p2,p2' 同上贴斜 fermion 线 | 同改为 =5pt | 同上，虚线 q 标签也离线 |
+| tikz/qed-elementary-vertex-dp7.tex | p,s / p',s' 在 y=-0.72，白盒底缘贴两条斜 fermion 腿 | y 由 -0.72 下移到 -0.98（腿下方空白） | 重渲染：两腿线连续，标签离线，与底部 p+q=p' 不撞 |
+| figures/qft_process_figures.tex（MacroQEDGreenFlowFigure） | source/invert 两个箭头标签 above/below=4pt 白盒贴在水平箭头 | 改 above/below=9pt | 重渲染：两标签上移/下移，与箭头间出现可见空隙 |
+
+### 已目检、无需改动（合规）
+
+- Feynman 小图（11）：bhabha-two（s/t 在光子上方、顶点上方空白，无白底）、breit-wheeler-two（p1-k1/p1-k2 above=3pt，紧裁确认白盒与水平 fermion 间有真实空隙、线连续）、compton-two（p+k/p-k' 同上，紧裁确认）、ee-gammagamma（无动量标签）、ee-mumu（q²=s 在光子上方空白）、emu-scattering（q²=t 在竖直光子右侧空白）、moller-two（t/u 在顶点上方）、soft-bremsstrahlung（outgoing/incoming 在 fermion 下方）、uehling-loop（上下文字空白）、vertex-correction-detailed（ell/q=p'-p 在弧/线旁）、volkov-plane-wave（注释明示标签在波包外）。
+- 流程/切割图（8）：lorentz-representation-map-dp8（2:1 covering map/representation/⊕/⊗/Sym² 全部 above/left/right 在箭头旁空白）、feynman-poles、qed-loops（图题在下方）、qed-lsz-amputation-dp8（S(p)/D_{μν}(k) 在线上方有间隙）、qed-vacpol-cut-dp9、qft-bubble-cut-dp8（p_-/p_+/k/P-k 在割线端空白处）、qed-vacuum-polarization-dyson-dp7（Π 在环下方）、wigner-little-group-dp9（L(p)/Λ/L⁻¹/W/左右轨道 全在箭头旁空白）。
+- atlas（4）：qcd-elementary-vertices-dp10（a,μ/a/b/c/cᵃ/cᶜ 均在线旁空白）、qcd-tree-processes-dp10（gᵃ/t/u/s）、qed-tree-atlas-dp7（s/u/p3↔p4）、qed-loop-atlas-dp7（仅图题）。
+- 宏库其余块：QFTFeshbachProjectionFigure（QHP/PHQ 在弯箭头顶/底空白处）、QFTKeldyshContourFigure（C+/C-/括注在线旁）、QFTCutkoskyFigure、QFTForestSubgraphFigure、QFTSoftInclusiveFigure（标签均在线旁）；WickContraction/VirtualPhotonExchange/CrossingChannels/TwoPhotonExchange/EulerHeisenberg/GeneralInteractionRecoil/ComptonTree 用 momentumlabel（无白底），标签均在边旁。
+
+### 判断口径
+- 保留 fill=white：lecturebox/blockbox 正常白底框；以及挪开后线与标签本来就不挨着、白底只作细衬底者。
+- 删除/改动：仅当紧裁 300/4x PNG 确认白盒把线截断（线在标签处消失/断）时，才加显式间距把标签挪离线。
+
+边界遵守：仅改 content/FreeElectronQuantumOptics/ 下文件；未碰 content/YHWNotes；未 git commit；未跑整书 build。standalone 临时编译/渲染在 agent workspace（feqo_review/）。

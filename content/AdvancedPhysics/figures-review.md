@@ -287,3 +287,19 @@
 - 其余 8 张重渲染/Read 后保持原样。
 - 边界：未触碰 `content/YHWNotes/`，未 git commit，未跑整书 build；临时 standalone 文件与 PNG 均在 agent workspace，不污染仓库。
 
+
+
+## 2026-09-20 挪标签不遮线（standalone 闭环，3 张 TikZ）
+
+本轮新原则：尽量靠调整元素位置消除重叠，不用 `fill=white` 白底去"遮"线——白底遮线是视觉欺骗，线其实还在底下被盖住，并非真不重叠。`lecturebox`/`blockbox` 本身的白底框保留；只把压在线上的标签挪到线旁空白处（above/below/left/right/xshift/yshift/anchor）。方法：standalone + xelatex + fitz(300dpi)，`Read` 看图，可疑区域裁剪放大，并用 fitz `get_drawings()` 取矢量坐标精确量位置。
+
+| 图 | 文件 | 原来哪个标签压在哪条线上用白底盖住 | 改成挪到哪 | 渲染确认 |
+|---|---|---|---|---|
+| 13.3 worldtube-geometry | tikz/radiation-reaction/worldtube-geometry.tex | `$n^\mu,\;n\cdot u=0$` 标签（上一轮从 `lecturelabel` 改成 `lab`，白底 fill=white opacity=.88）压在实线世界线 `z^\mu(\tau)` 上——白底矩形 PDF x=39.5–93.5（数据 x≈-0.65–1.25），世界线 x≈0 正穿标签中部、把世界线盖住一截（裁剪放大可见白底带） | 去 `lab` 白底、改回 `lecturelabel`；节点从 `below` 于 (0.30,-0.56) 挪到 `right` 于 (1.12,-0.50)，整体落到右虚线壁外侧空白处（与 `timelike wall $\partial\mathcal W$` 同一右列），世界线不再穿字 | ✅ 重编 standalone 300dpi + 裁剪放大 Read：世界线在标签上下连续无断口，标签在右壁外、无白底 |
+| 13.1 frequency-regime-map | tikz/radiation-reaction/frequency-regime-map.tex | 公式框 fill=white 疑似遮竖直虚线 | 矢量测量：竖直虚线 x=127.0pt，公式框左边缘 x=135.5pt，间隔 8.5pt（≈3mm），白底矩形完全在虚线右侧；水平虚线 y=140.7pt 与框 y=29.7–67.3pt 不相交。框本就不压线，白底是框自身 | 不改 ✅ Read + get_drawings 坐标确认 |
+| 13.4 dirac-decomposition | tikz/radiation-reaction/dirac-decomposition.tex | 疑似节点/标签压框边或箭头用白底盖 | 所有文字标签均在 lecturebox/lecturewidebox 框内部，框体白底系正常外框（保留）；箭头只接 box 的 north/south/east，无独立白底标签压线 | 不改 ✅ Read |
+
+### 本轮小结
+- **实际修改 1 张**：13.3 worldtube-geometry 的 n^μ 标签——撤销上一轮的 `lab` 白底遮线，改为把标签真的挪到右壁外侧空白处（`right,lecturelabel` at (1.12,-0.50)），世界线不穿字。
+- **无需改动 2 张**：13.1 公式框本就与竖直虚线隔开约 3mm（白底是框自身，保留）；13.4 纯框图，无白底标签压线。
+- 边界：未触碰 `content/YHWNotes/`，未 git commit，未跑整书 build；临时 standalone/PNG 在 agent workspace `figreview/`，不污染仓库。
