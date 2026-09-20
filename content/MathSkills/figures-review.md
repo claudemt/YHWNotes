@@ -146,3 +146,42 @@ MathSkills 实际图形资产（非 TikZ，不属本轮 A/B 审查范围）：
 | `kdv_two_soliton_code.py` | 无 |
 
 本轮仅新增本审查记录；三张图的数学意思（箭头方向/特征线疏密/激波位置、孤子追赶与越序、相移方向、滤波曲线峰值与硬截断）均与正文定量一致，未触发任何 .py 修改或重新生成。
+
+---
+
+## 2026-09-20 统一 matplotlib 样式重建（preamble.figure_style）
+
+- **本轮**：python 脚本统一走 `preamble.figure_style`；**3 个入口脚本跑通，全部 exit 0**（burgers_characteristics、kdv_two_soliton、tikhonov_filter）。
+- **重生成**：3 个 PDF（及同名 PNG）落 `mathematical-physics/generated/`。
+- **遗留问题**：无失败、无数据/物理报错。视觉抽查 kdv_two_soliton：serif 字体、四边黑框、外向刻度、虚线浅灰网格、近不透明 legend 框一致；右上 legend 轻微覆盖到 y≈0 平线，但 legend 近不透明白底已干净遮挡，不构成数据误读。
+
+
+---
+
+## 2026-09-20 视觉精修本轮（A 类样式统一 / B 类重叠查重）
+
+**范围**：MathSkills 全部图引用 6 处（3 个 `\includegraphics` + 3 个 `\figref`），对应 3 张 matplotlib 产物；仓库内无内联 tikzpicture（前一轮已递归 grep 确认）。
+
+**闭环方法**：`python <script>.py` 重新生成 PDF/PNG 一对 → Read 渲染出的 PNG 逐图目检（A 类：是否走 preamble.figure_style、字体/边框/刻度/网格/图例风格是否一致；B 类：legend 是否压曲线、annotation 是否压轴/压线、标签是否重叠/裁切）→ 不改则记录，改则改 .py 后重跑再 Read。
+
+### 逐图记录
+
+| 图号/标签 | 脚本 | A 类（样式统一） | B 类（重叠查重） | 改动 | 渲染确认 |
+|-----------|------|------------------|------------------|------|----------|
+| 图 6.1 `fig:tikhonov-filter`（ch06.tex:1622） | `tikhonov_filter_code.py` | ✓ 走 `figure_style()`；serif 字体（Latin Modern Roman）、四边黑框、外向刻度、浅灰虚线网格、`add_legend` 近不透明白框；与另两图风格一致 | ✓ legend upper right 悬空在 s>0.66、q>8 空白角，四条目均不到该区域；蓝 1/s 自 s≈0.08 从顶入图（物理本意）；橙/绿峰分别在 (0.1,5.0)/(0.2,2.5)，远离 legend；红 TSVD 在 s=0.18 竖直跳变后与蓝线重合，衔接清楚；轴标签 singular value s / filter q(s) 无裁切 | 无 | Read PNG 通过 |
+| 图 7.1 `fig:burgers-characteristic-crossing`（ch07.tex:480） | `burgers_characteristics_code.py` | ✓ 走 `figure_style()`；同上样式基线；figsize=(6.4,4.5)；标题 `Characteristics for u_0(xi)=-tanh xi` 用 serif mathtext | ✓ legend upper right 箱体约 x∈[1.5,2.3]、t∈[1.15,1.28]；最右特征线 ξ=2.2 在 t=1.27 时 x≈0.96，远在箱体左缘之外；蓝色虚线 t*=1 横贯画面且在 legend 下方不被遮；中心 x≈0 处特征线自然汇聚是激波形成物理本意；轴标签 x/t、标题无裁切 | 无 | Read PNG 通过 |
+| 图 7.2 `fig:kdv-two-soliton-scattering`（ch07.tex:1311） | `kdv_two_soliton_code.py` | ✓ 走 `figure_style()`；同上样式基线；figsize=(6.6,4.5)；`tight_layout(rect=[0,0,0.83,1])` 为轴外 legend 留右边距 | ✓ legend 用 `bbox_to_anchor=(1.01,1.0)` 放到轴外右侧白边内，与坐标轴 spine 齐平，不压任何数据线；蓝 t=-3 深谷 x≈-13.7、橙 t=3 作用区 x≈6、绿 t=6 双谷 x≈9/x≈16 均在轴内完整可见；绿线右肩在 x≈19 回到 u≈0 基线，未被裁；三个时刻标签蓝/橙/绿清晰分开 | 无 | Read PNG 通过 |
+
+### 本轮改动汇总
+
+| 脚本 | 改动 |
+|------|------|
+| `tikhonov_filter_code.py` | 无 |
+| `burgers_characteristics_code.py` | 无 |
+| `kdv_two_soliton_code.py` | 无 |
+
+### 小结
+
+- 处理图数：**3 张**（全部 MathSkills 图引用）。
+- 本轮改动：**0 处**。前几轮已完成 legend 移位（burgers upper left→upper right；kdv 图内→轴外）与统一样式重建（三脚本均走 preamble.figure_style）；本轮视觉复核确认 A 类样式一致、B 类无重叠/无裁切，未触发任何 .py 修改或重新生成。
+- 遗留：无。仓库内无内联 TikZ 图（前一轮已 grep 确认），故无 standalone 编译对象。

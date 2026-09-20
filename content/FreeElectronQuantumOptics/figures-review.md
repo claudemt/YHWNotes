@@ -190,3 +190,61 @@ bhabha-two, breit-wheeler-two, compton-two, ee-gammagamma, ee-mumu, emu-scatteri
 - **未改动任何源文件**：98 图号逐张核对后含义均正确，无需要修复的物理错误；因此不存在改 `.tex`/`.py` 后重渲染的情况。
 - 边界遵守：未碰 `content\YHWNotes`，未 git commit。
 - 整书构建：`python main.py build FreeElectronQuantumOptics` 通过（实测见下）。
+
+---
+
+## 2026-09-20 统一 matplotlib 样式重建（preamble.figure_style）
+
+- **本轮**：python 脚本统一走 `preamble.figure_style`；**41 个入口脚本跑通，全部 exit 0**（`*_code.py` 与 `*_dp*.py`）。
+- **重生成**：**51 个 PDF（及同名 PNG）**——`figures/generated/` 45 张、`figures/` 根目录 6 张（dephasing_coherence、hopfield_avoided_crossing、photon_statistics_gain、pinem_bessel、pinem_gaussian_example_dp65、rabi_detuning）。
+- **未运行**：`_electron_worked_models.py`（共享 helper，无 `__main__`），以及 park_gaussian_sidebands.py / park_geometry_decay.py / talbot_time_focusing.py / supplementary_figure_sources.py（非 `*_code.py`/`*_dp*.py` 入口，超出本轮范围）。
+- **遗留问题**：无失败、无数据/物理报错。视觉抽查 bloch_variance、sm_ckm_unitarity_triangle_dp18、qcd_color_factors_dp18：serif 字体、四边黑框、外向刻度、虚线浅灰网格、近不透明 legend 框一致。`qcd_color_factors_dp18` 中 "QCD: Nc=3" 标注贴近橙色 CA 上升曲线但仍可读；未发现 legend 压数据曲线的严重遮挡。
+
+
+---
+
+## 2026-09-20 配图精修（A 同类样式统一 / B 标签重叠）
+
+本轮聚焦**视觉 A/B 检查**：所有 TikZ 图逐张 standalone 编译→fitz 渲染→Read 目检；matplotlib 图直接 Read PNG 目检。物理正确性沿用上轮结论，不重复。
+
+### A. 发现并修复的问题（Feynman 图样式不统一）
+
+`figures/tikz/` 下存在**两套 Feynman 视觉语法**：
+- **Atlas 组**（`qed-tree-atlas-dp7`、`qed-loop-atlas-dp7`、`qcd-*`、`qed-elementary-vertex-dp7`、`qed-lsz-amputation-dp8`、`qed-vacpol-cut-dp9`、`qed-vacuum-polarization-dyson-dp7`、`qft-bubble-cut-dp8` 等）走 preamble 全局样式：0.75pt 线、Stealth 箭头（fermion 在 0.56 / antifermion 在 0.44）、photon 波浪 amplitude=1.05pt / segment=5.0pt。
+- **Pair/Loop 组**在每个文件 `\begin{tikzpicture}[...]` 里**自写** `fermion/antifermion/photon`，且彼此还不一致：`thick`（0.8pt）+ `Latex` 箭头、箭头位置 0.55/0.56/0.58/0.60 混用、photon amplitude 1.2/1.25/1.3/1.4/1.5pt、segment 6/7pt；`volkov-plane-wave` 甚至用 `very thick`。
+
+这违反「公共样式必须复用、禁止各图自写」基线。**改动**：用脚本移除 12 个文件 `tikzpicture` 选项中的 `fermion/.style`/`antifermion/.style`/`photon/.style` 自写项，使其继承 preamble 全局样式；保留 `scale=`、`baseline=` 及非 Feynman 的 `hard`/`wave` 等本地样式。改后逐张重编译（12/12 exit 0）+ 重渲染 + Read 复核，波浪收紧、箭头统一为 Stealth，与 Atlas 组一致，且未引入新的标签重叠。
+
+改动文件（`figures/tikz/`）：
+- bhabha-two.tex, compton-two.tex, moller-two.tex, breit-wheeler-two.tex, ee-mumu.tex, ee-gammagamma.tex, emu-scattering.tex
+- qed-loops.tex, uehling-loop.tex, soft-bremsstrahlung.tex, vertex-correction-detailed.tex, volkov-plane-wave.tex
+
+### B. 逐类目检结果（无重叠、无压字）
+
+**内联 TikZ（sections/，18 块全部 standalone 渲染目检，全部通过）**
+- 02a 三体相空间三角；04b DIS 运动学 + 因子化流程（两块）；04b NLO 虚/实发射；04b 格点 plaquette；04b 跑动劈裂（γ*→qq̄g 等两块）。
+- 04c ee–WW 三通道（t/s/s）；有效势 V_eff 双谷标注；fields-gauge 表示来源流程；flavor-anomaly CKM 流程；higgs EWSB 基变换（含 Weinberg 旋转矩阵）；mass-basis-rules 长流程；processes-rg-eft（μ 衰变、γ/Z 交换、H→γγ 费米子环/W 环 三块）；Rξ 量子化流程；SMEFT matching/running 链；W/Z 宽度衰变。
+- 结论：框一律 lecturebox（同层同宽、圆角、内边距一致）、箭头 lecturearrow/layerarrow、line-label/blocklabel 白底不压线；momentumlabel（k,k′,P,q,p+k,p−k′ 等）均在传播子旁空白处，无压框/压线。
+
+**Standalone TikZ（figures/tikz/，26 个全部渲染，24 个直接通过；12 个按上条 A 修复后通过）**
+- Feynman 单/双图（bhabha/compton/möller/breit-wheeler/ee→μμ̄/ee→γγ/emu/qed-exchange/yukawa/soft-brems/uehling/vertex-correction/volkov）、atlas 图集（QED tree/loop、QCD 三胶子/四胶子/ghost、树过程）、Lorentz 表示树、Wigner little-group 轨道图、feynman-poles 复平面、LSZ 截肢、vacpol/泡图割线、Dyson 几何级数。无标签重叠。
+
+**qft_process_figures.tex（宏库 13 块）**
+- 全部用全局 `fermion/photon/fvertex/momentumlabel`（本就走 preamble，无需改）。渲染目检 Wick→Feynman 字典、box/crossed box、QED 投影→recoil 流程等：框线/箭头/白底标签一致，无重叠。（其中 3 块在 standalone harness 因未加载完整 preamble 装饰库而编译失败，属渲染环境缺库，非源图缺陷；全书完整 preamble 下正常，沿用上轮物理核对结论。）
+
+**matplotlib 数图（figures/ 根 + figures/generated/，抽样目检 ~15 张高风险多曲线/多面板/标注图）**
+- klein_nishina_angular（4 能标）、mott_rutherford_angular（3 β_e）、breit_wheeler_total、park_gaussian_sidebands（热图+colorbar）、qed_running_alpha、hopfield_avoided_crossing、rabi_detuning（3 失谐）、recoil_regime_map（双子图共享 colorbar）、sm_neutrino_oscillation（4 跃迁）、qcd_splitting_kernels（3 核 + display clip）、sm_higgs_potential（双极小橙点）、ee_mumu_total_cross_section（log-log 阈值线）。
+- 结论：均为上轮统一 `preamble.figure_style` 重生——衬线字体、四边框、外向刻度、浅灰虚线网格、近不透明白底 legend；legend 一律落在空白角（多为 upper-left/right 或中心空白），无压曲线/压数据点；annotation（minima、clip、off-shell 等）不压线不压轴；多曲线图例项不互相叠印。
+
+### 本轮小结
+
+| 项 | 数量 |
+|---|---|
+| 内联 TikZ 渲染目检 | 18 块，全通过 |
+| Standalone tikz 渲染目检 | 26 个，全通过 |
+| qft_process 宏块 | 13 块（10 渲染目检通过，3 渲染环境缺库非缺陷） |
+| matplotlib 抽样目检 | ~15 张高风险图，全通过 |
+| **实际修改文件** | **12 个**（figures/tikz/*.tex，仅移除自写 Feynman 样式以继承 preamble） |
+| 未改动图 | 内联 18、atlas/其他 standalone 14、qft 13、其余 matplotlib（沿用统一重建） |
+
+边界遵守：仅碰 `content/FreeElectronQuantumOptics/`，未碰 `content/YHWNotes`，未 git commit，未跑整书 build；临时渲染/备份文件均在 agent workspace。

@@ -361,3 +361,64 @@
 | 元素/包含连接 | 1.2 右乘边、1.3 子群包含、4.2 劈裂、6.2 维数闭合均正确 |
 | 标注对应 | 3.1 三类转轴、3.4 三镜面、4.6 高对称点、SU(3) 根均落在正确对象上 |
 | 改动 | **无**（源 .tex 未动；本轮只记录） |
+
+---
+
+## 2026-09-20 统一 matplotlib 样式重建（preamble.figure_style）
+
+- **本轮**：跨书统一 matplotlib 样式重建范围为 AdvancedPhysics / FreeElectronQuantumOptics / MathSkills 三本。
+- **GroupTheory 本轮**：本书配图为 TikZ / `preamble.tex` 体系，无 in-scope 的 `.py` 图脚本，故本轮未重跑、未改动任何源文件，仅登记此范围说明。
+
+
+---
+
+## 2026-09-20 第五轮：A 同类样式统一 + B 图例/标记重叠 逐图视觉闭环（复渲染全部 27 张内联 TikZ）
+
+方法同前：standalone（`\documentclass[tikz,border=12pt]{standalone}` + 复制 preamble.tex 195–249/225–238 全部共享 tikz 样式 + settings.tex 数学宏占位 + `\providecommand{\ii,\ket,\bra}`）→ `xelatex` → PyMuPDF 300dpi PNG → Read 亲眼逐张核对。本轮把 ch01–ch08 全部 27 个 tikzpicture/tikzfig/tikzcd 块重新抽块、重编译、重渲染、亲看。
+
+### A 类（同类样式统一）核查结论
+- **Feynman 类**：全书 27 张图中**无任何** fermion/antifermion/photon/fvertex/momentumlabel 用法（Grep 全文无命中），该类基线 N/A，无需统一。
+- **流程/板块逻辑图**（ch02 两张、ch03 树图、ch05 两张、ch06 一张，共 6 张）：Grep 确认全部框用 `lecturebox`、全部箭头用 `lecturearrow`、箭头旁注用 `lecturelabel`；**无一处**自写 `draw, rounded corners` / `draw, rectangle` 框或内联 `line width=` 箭头。同层框同宽、圆角 2pt、内边距一致，内部自洽。
+  - 备注（不改）：箭头标签用 `lecturelabel`（无白底）而非 `line-label`/`blocklabel`（白底）。逐张亲看确认所有箭头标签均放在箭头**空白侧**（above/below/right），没有任何线穿过字形，故白底不带来可见收益、反而会在干净空白处加白框，本轮保持现状不批量替换。
+- **几何/根图/Young 图**：线宽统一 0.75pt；节点黑点大小一致（1.6–2pt）；字体统一 `font=\small`。ch08 SU(3) 根图用 `thick`（≈0.8pt）与基线 0.75pt 差 0.05pt，目视无差别，且属独立几何图，不改。
+
+### B 类（图例/标记逐个查重叠）逐图记录
+
+| 图号/标签 | A 类 | B 类（穿线/挤压/压框边） | 改动 | 渲染确认 |
+|-----------|------|--------------------------|------|----------|
+| 1.1 fig:d3-symmetry | mid arrow 共用 | 三蓝/两红中箭头在边中点不压顶点黑点；r 在中心空白、s 在虚轴右侧；顶点 1/2/3 标签离线分开 | 无 | f1_1.png 亲看干净 |
+| 1.2 fig:d3-cayley-graph | lecturearrow 共用 | r/s 旁注在空白；六节点圆排开、蓝红边不穿字 | 无 | f1_2.png 亲看干净 |
+| 1.3 fig:d3-subgroup-lattice | 正交 bus 走线 | D3/⟨s⟩/⟨sr⟩/⟨r⟩≅C3/⟨sr²⟩/​{e} 在上下两条水平 bus 之间空白，竖线止于标签南北缘，无穿字 | 无 | f1_3.png 亲看干净 |
+| 2.1 fig:representation-homomorphism | lecturebox+lecturearrow | ρ 在水平箭头上空白、"选定基"在竖箭头右侧空白，不穿线 | 无 | f2_1.png 亲看干净 |
+| 2.2 fig:intertwiner-diagram | tikzcd 标准 | ρ(g)/ρ'(g)/T 标签均在边侧空白，交换方闭合 | 无 | f2_2.png 亲看干净 |
+| 2.3 fig:left-regular-action | lecturebox+lecturearrow | "左乘重排"在箭头上空白，下方说明文字不压线 | 无 | f2_3.png 亲看干净 |
+| 3.1 fig:cube-axes | lecturearrow | C4 在 z 轴右侧空白、C3 在对角箭头尖右侧空白、C2 在左对角尖左上空白；三轴次标签彼此分开不压立方体边 | 无 | f3_1.png 亲看干净 |
+| 3.2 fig:improper-rotation | lecturearrow | reflect 在 x 轴与 σ_h 之间空白、rotate 在右侧空白、σ_h 在虚线右端空白；R r / S_n r / r 标签离线 | 无 | f3_2.png 亲看干净 |
+| 3.3 fig:proper-point-group-classification | lecturebox 同层同宽 | 五框间距 3.6cm 不重叠；下方 (n,n)…(2,3,5) 逐一正对框中心 | 无 | f3_3.png 亲看干净 |
+| 3.4 fig:sigma-hvd | — | σ_d 在对角虚线端点右上方空白、σ_v 在竖矩形右侧空白、σ_h 在水平平行四边形右侧空白；"principal axis Cn"在顶端 | 无 | f3_4.png 亲看干净 |
+| 3.5 fig:schoenflies-family-tree | lecturebox+lecturearrow | 树图两叉扇形展开，叶子 Cn/Cnv/Cnh/S2n/Dn/Dnh/Dnd 彼此分开，箭头不穿字 | 无 | f3_5.png 亲看干净 |
+| 3.6a fig:screw-glide（螺旋轴） | lecturearrow | {C6\|c/6} 在弯曲箭头右侧空白；六点螺旋绕 z 排开 | 无 | f3_6a.png 亲看干净 |
+| 3.6b fig:screw-glide（滑移面） | lecturearrow | {σ\|a/2} 在 σ 虚线上方空白；上下两排点错位半格，箭头不压标签 | 无 | f3_6b.png 亲看干净 |
+| 3.7 fig:stereographic-projection | — | equator 在圆内左下空白、P' 在椭圆下弧下方空白、P 在右上空白；S–P 半径线不穿标签 | 无 | f3_7.png 亲看干净 |
+| 4.1 fig:irrep-degeneracy | — | T/E/A 三能级线与右侧 3/2/1 基态短划线对齐，标签不压线 | 无 | f4_1.png 亲看干净 |
+| 4.2 fig:d-orbital-splitting | lecturearrow | Eg/T2g 在线下空白，右侧分叉箭头从能级右端空白出发，不压标签 | 无 | f4_2.png 亲看干净 |
+| 4.3 fig:c3v-three-sites | lecturearrow | \|1〉在顶点正上、σ_v 在其右上空白、C3 在中心弧右侧空白；\|2〉\|3〉在底角外 | 无 | f4_3.png 亲看干净 |
+| 4.4 fig:ir-raman-schematic | lecturearrow | IR 直箭、Raman ωL 上/ωL−ωv 下折箭标签均在箭头侧空白 | 无 | f4_4.png 亲看干净 |
+| 4.5 fig:bz-wigner-seitz | — | 点阵+虚线中垂线+中央灰方"1st BZ"居中，无穿字 | 无 | f4_5.png 亲看干净 |
+| 4.6 fig:irreducible-bz | — | Γ/X/M 高对称点标签在点外空白；"irreducible wedge"白底细遮 Γ–M 对角线，文字干净 | 无 | f4_6.png 亲看干净 |
+| 4.7 fig:tr-kramers-bands | — | Kramers point 标签在原点下方空白；E+(k)=E−(−k) 在两抛物臂之间空白 | 无 | f4_7.png 亲看干净 |
+| 5.1 fig:euler-axis-angle | axes/mid arrow | β 在 z–n̂ 弧间空白、α 在 x 轴附近弧下空白、n̂ 在箭头尖上；右侧说明块与图分开 | 无 | f5_1.png 亲看干净 |
+| 5.2 fig:su2-double-cover | lecturebox+lecturearrow | 双 π 入单出，π 标签分别在上/下箭身空白；下方说明文字不压线 | 无 | f5_2.png 亲看干净 |
+| 5.3 fig:crystal-spin-orbit-branching | lecturebox+lecturearrow | 三框横排，"晶场降对称"/"乘 Γ1/2 并约化"在箭头上方空白；下方说明不压线 | 无 | f5_3.png 亲看干净 |
+| 6.1 fig:s4-young-diagrams | — | 五个分拆 [4][3,1][2,2][2,1,1][1⁴] 形状正确、下方标签对齐分开 | 无 | f6_1.png 亲看干净 |
+| 6.2 fig:three-spin-s3 | lecturebox+lecturearrow | 左 8 维框分两支到 SU(2)/S3 框再汇到右侧宽框；右框与左列留白充足，箭头斜向连线干净 | 无 | f6_2.png 亲看干净 |
+| ch08 SU(3) 根图 | thick≈0.8pt（不改） | α1 在右顶点右下空白、α2 在左上顶点左上空白、α1+α2 在右上顶点右上空白；T3/T8 轴标签不压根点 | 无 | f8_1.png 亲看干净 |
+
+### 本轮小结
+| 项 | 结果 |
+|----|------|
+| 渲图数 | **27 张**内联 TikZ 全部 standalone 重编译 → 300dpi PNG → Read 亲看（ch01×3, ch02×3, ch03×8, ch04×7, ch05×3, ch06×2, ch08×1；ch07/backmatter/frontmatter 无 tikz 块） |
+| A 类改动 | **0**（板块图已全部共用 lecturebox/lecturearrow/lecturelabel；本书无 Feynman 图；无自写框样式） |
+| B 类改动 | **0**（前四轮修复在新渲染中全部成立：无穿字、无挤压、无压框边/节点） |
+| 源 .tex 改动 | **无**（本轮只复渲染核对并记录） |
+| 未改动图清单 | 全部 27 张：1.1 1.2 1.3 2.1 2.2 2.3 3.1 3.2 3.3 3.4 3.5 3.6a 3.6b 3.7 4.1 4.2 4.3 4.4 4.5 4.6 4.7 5.1 5.2 5.3 6.1 6.2 ch08 根图 |

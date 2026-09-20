@@ -40,7 +40,7 @@ with figure_style():
     ax.set_xlabel(r"$\tau_{\rm rr}/T$")
     ax.set_ylabel(r"relative $L^2$ error")
     polish_axes(ax, grid=False)
-    add_legend(ax, loc="upper left", frameon=True)
+    add_legend(ax, loc="upper left", frameon=False)
     fig.tight_layout()
     save_pdf_png_pair(fig, "order_reduction_error", OUT)
     plt.close(fig)

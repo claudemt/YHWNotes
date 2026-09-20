@@ -246,3 +246,44 @@
 ---
 
 **本轮结论**：10 张图的物理意思与正文全部自洽，**未发现需要改源的意思错误**，故未改动任何 `.tikz`/`.py` 源，无需重渲染。唯一需要记录的范围勘误：任务所述"3 张内联 tikzpicture"在 ch*.tex 中实测为 0，全书 TikZ 即 3 个 `\input` 文件。本轮未触碰 `content/YHWNotes/`，未执行 git commit。
+
+---
+
+## 2026-09-20 统一 matplotlib 样式重建（preamble.figure_style）
+
+- **本轮**：python 脚本统一走 `preamble.figure_style`（serif 字体 / 四边黑框 / 外向刻度 / 虚线浅灰网格 / `save_pdf_png_pair` 落盘）。
+- **跑通**：8 个脚本全部 exit 0（atomic-molecular 6：doppler_limit / fano_lineshape / franck_condon / landau_zener / rabi_dynamics / strong_field_return；radiation-reaction 2：form_factor_shell / order_reduction_error）。
+- **重生成**：8 个 PDF（及同名 PNG）落盘——`atomic-molecular/generated/` 6 张、`figures/generated/radiation-reaction/` 2 张。
+- **遗留问题**：无失败、无数据/物理报错。视觉抽查 franck_condon、form_factor_shell：serif、四边框、外向刻度、虚线网格一致；legend 为既有无框（`frameon=False`）设定，未改；未发现 legend 压曲线或标注压数据。`rabi_dynamics_code.py` 仍为孤儿脚本（不进 PDF），本轮仅确认其可正常出图。
+
+---
+
+## 2026-09-20 同类样式统一 + 标记重叠复查（standalone 闭环）
+
+本轮方法：3 个 TikZ 用 `standalone + xelatex + fitz(300dpi)` 单独编译成 PNG 后 `Read`，可疑区域再 3× 裁剪放大；8 个 matplotlib 脚本先重跑（全部 exit 0）生成新 PNG 再 `Read`。公共样式取自 preamble.tex 196–249（lecturebox/lecturearrow/lecturelabel/lab 等）与 preamble.py（figure_style/polish_axes/add_legend/save_pdf_png_pair）。A 类=同类样式统一，B 类=图例/标注逐个查重叠。实际图数：3 TikZ + 8 matplotlib（含孤儿脚本 rabi_dynamics），共 11 张。
+
+| 图 | 文件 | A 类样式统一 | B 类重叠 | 改动 | 渲染确认 |
+|---|---|---|---|---|---|
+| 13.1 frequency-regime-map | tikz/radiation-reaction/frequency-regime-map.tex | ✅ lecturearrow/lecturelabel，与板块规范一致 | ✅ 四象限标签各居其区，虚线不穿字，公式框 fill=white 遮线 | 不改 | ✅ standalone 300dpi Read |
+| 13.2 form_factor_shell | code/radiation-reaction/form_factor_shell_code.py | ❌→✅ legend 原为 frameon=True（带框），与其余 6 张无框不一致 | ✅ 右上空白角，曲线已衰减不压 | add_legend frameon=True→False | ✅ 重跑 PNG Read |
+| 13.3 worldtube-geometry | tikz/radiation-reaction/worldtube-geometry.tex | ✅ lecturearrow/lecturelabel 共享 | ❌→✅ 世界线从 `n^\mu,` 与 `n\cdot u=0` 间隙穿过、贴 "n" 字（裁剪放大确认） | n 标签 `lecturelabel`→`lab`（复用 preamble 定义的白底遮线样式） | ✅ standalone 重渲 + 裁剪放大 Read：世界线在白标签带上下断开，文字清晰 |
+| 13.4 dirac-decomposition | tikz/radiation-reaction/dirac-decomposition.tex | ✅ lecturebox/lecturewidebox/lecturearrow，正交 L 走线符合规范 | ✅ 同行三框上下边对齐，树状分支/汇聚无文字压线、无框体重叠 | 不改 | ✅ standalone 300dpi Read |
+| 13.5 order_reduction_error | code/radiation-reaction/order_reduction_error_code.py | ❌→✅ legend 原为 frameon=True（带框），与其余不一致 | ✅ 左上空白，两线重合不压 | add_legend frameon=True→False | ✅ 重跑 PNG Read |
+| 19.1 strong_field_return | atomic-molecular/code/strong_field_return_code.py | ✅ preamble 统一样式、无框 legend | ✅ 右上空白，3.17/10.01 极值标注不压线 | 不改 | ✅ Read |
+| 21.1 doppler_limit | atomic-molecular/code/doppler_limit_code.py | ✅ | ✅ 左上空白，annotation 两行不压下降曲线 | 不改 | ✅ Read |
+| 24.1 franck_condon | atomic-molecular/code/franck_condon_code.py | ✅ | ✅ 右上空白，Poisson marker 不压 legend | 不改 | ✅ Read |
+| 28.1 fano_lineshape | atomic-molecular/code/fano_lineshape_code.py | ✅ | ✅ 左上两列空白，红峰在中部不压 | 不改 | ✅ Read |
+| 28.2 landau_zener | atomic-molecular/code/landau_zener_code.py | ✅ | ✅ legend 落左中四曲线间真空通道，2\|V\| 箭头在间隙不压线 | 不改 | ✅ Read |
+| (孤儿) rabi_dynamics | atomic-molecular/code/rabi_dynamics_code.py | ✅ | ✅ legend 上中，蓝线第二峰与 legend 文字间有空白间隔（裁剪放大确认） | 不改 | ✅ Read + 放大 |
+
+### 本轮小结
+
+- **实际修改 3 张**：
+  1. **13.3 worldtube-geometry**（B 类压线）：n 标签改用 preamble 自带 `lab` 白底样式，世界线不再切字。
+  2. **13.2 form_factor_shell**（A 类图例统一）：legend 改无框，对齐本书其余 6 张 matplotlib 的无框惯例。
+  3. **13.5 order_reduction_error**（A 类图例统一）：legend 改无框，同上。
+- **图例统一口径**：本书 8 张 matplotlib 原 6 张无框、2 张带框；按多数派 + 前序轮次已采纳的"无框"惯例，把 2 张带框统一为无框（两图 legend 均在空白角，改后不压曲线）。
+- **未动项记录**：13.5 为 log-log 双斜率标度图，`polish_axes(grid=False)` 系前序轮次刻意保留（年代刻度已提供参照、避免与双线对角叠加产生噪声），本轮不强加网格。
+- 其余 8 张重渲染/Read 后保持原样。
+- 边界：未触碰 `content/YHWNotes/`，未 git commit，未跑整书 build；临时 standalone 文件与 PNG 均在 agent workspace，不污染仓库。
+

@@ -33,7 +33,7 @@ with figure_style():
     ax.set_xlim(0.0, 4.0)
     ax.set_ylim(-0.02, 1.05)
     polish_axes(ax, grid=True)
-    add_legend(ax, loc="upper right", frameon=True)
+    add_legend(ax, loc="upper right", frameon=False)
     fig.tight_layout()
     save_pdf_png_pair(fig, "form_factor_shell", OUT)
     plt.close(fig)

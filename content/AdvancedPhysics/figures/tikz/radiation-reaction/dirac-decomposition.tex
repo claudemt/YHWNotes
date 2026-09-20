@@ -1,39 +1,45 @@
 \begin{tikzpicture}[x=1cm,y=1cm]
-\node[lecturewidebox] (parent) at (0,0)
+% Grid: columns L=0, M=5, R=10 ; rows y=0,-2.5,-5,-7.5,-10
+\node[lecturewidebox] (parent) at (5,0)
   {Maxwell equations + local energy--momentum conservation\\
    arbitrary smooth conserved current $J^\mu$};
 
-\node[lecturebox] (smooth) at (-3.15,-1.45)
+\node[lecturebox,minimum width=4.4cm] (smooth) at (0,-2.5)
   {finite-size source\\causal retarded self-field};
-\node[lecturebox] (point) at (3.15,-1.45)
+\node[lecturebox,minimum width=4.4cm] (point) at (10,-2.5)
   {regulated point-current limit\\
    $J^\mu\to qc\!\int u^\mu\delta^{(4)}\dd\tau$};
 
-\node[lecturebox] (memory) at (-3.15,-3.20)
+\node[lecturebox,minimum width=4.4cm] (memory) at (0,-5.0)
   {finite-size causal response\\history-dependent memory\\
    internal propagation retained};
 
-\node[lecturebox] (dirac) at (1.35,-3.20)
+\node[lecturebox,minimum width=4.4cm] (dirac) at (5,-5.0)
   {Dirac decomposition\\
    $F_{\rm S}=\tfrac12(F_{\rm ret}+F_{\rm adv})$\\
    $F_{\rm R}=\tfrac12(F_{\rm ret}-F_{\rm adv})$};
-\node[lecturebox] (tube) at (5.60,-3.20)
+\node[lecturebox,minimum width=4.4cm] (tube) at (10,-5.0)
   {Fermi worldtube balance\\mass renormalization\\
    Schott + radiated momentum};
 
-\node[lecturebox] (self) at (3.15,-4.95)
+\node[lecturebox,minimum width=4.4cm] (self) at (5,-7.5)
   {same finite point self-force\\Abraham--Lorentz--Dirac};
-\node[lecturebox] (ll) at (3.15,-6.45)
+\node[lecturebox,minimum width=4.4cm] (ll) at (5,-10.0)
   {controlled order reduction\\
    small reaction corrections\\
    Landau--Lifshitz};
 
-\draw[lecturearrow] (parent) -- (smooth);
-\draw[lecturearrow] (parent) -- (point);
-\draw[lecturearrow] (smooth) -- (memory);
-\draw[lecturearrow] (point) -- (dirac);
-\draw[lecturearrow] (point) -- (tube);
-\draw[lecturearrow] (dirac) -- (self);
-\draw[lecturearrow] (tube) -- (self);
-\draw[lecturearrow] (self) -- (ll);
+% orthogonal fan from parent (shared trunk at x=5)
+\draw[lecturearrow] (parent.south) |- (smooth.north);
+\draw[lecturearrow] (parent.south) |- (point.north);
+% left chain
+\draw[lecturearrow] (smooth.south) -- (memory.north);
+% point forks to dirac (left) and tube (vertical)
+\draw[lecturearrow] (point.south) |- (dirac.north);
+\draw[lecturearrow] (point.south) -- (tube.north);
+% converge to self: dirac vertical, tube L-route into self.east
+\draw[lecturearrow] (dirac.south) -- (self.north);
+\draw[lecturearrow] (tube.south) |- (self.east);
+% bottom chain
+\draw[lecturearrow] (self.south) -- (ll.north);
 \end{tikzpicture}

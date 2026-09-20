@@ -1,34 +1,43 @@
-\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
- every node/.style={font=\small},
- box/.style={draw,rounded corners=2pt,inner xsep=7pt,inner ysep=4pt,align=center,line width=.75pt},
- edge/.style={->,line width=.75pt},
- line label/.style={fill=white,fill opacity=.96,text opacity=1,inner sep=1.2pt}]
-% Group-level relation: SL(2,C) maps two-to-one onto the proper orthochronous Lorentz group.
-\node[box] (so) at (-3.7,1.35) {$SO^+(1,3)$\\proper orthochronous\\Lorentz group};
-\node[box] (sl) at (1.8,1.35) {$SL(2,\mathbb C)$};
-\draw[edge] (sl.west)--node[line label,above]{2:1 covering map}(so.east);
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,every node/.style={font=\small}]
+% Block-logic grid: one row per layer, orthogonal arrows only.
+%   row 1 (top) : SO -- SL            (covering map)
+%   row 2       : L , R               (chiral reps of SL(2,C))
+%   row 3       : build               (combine L and R)
+%   row 4 (bot) : D , V , F           (composite reps)
+% Same-layer boxes share one minimum width; arrows are horizontal/vertical or
+% L-shaped via -| .  All labels use blocklabel (= line-label, white backing).
 
-% The two inequivalent fundamental chiral representations are representations of SL(2,C).
-\node[box] (L) at (-1.25,-1.0) {$(\frac12,0)$\\left-handed Weyl spinor $L$};
-\node[box] (R) at (4.85,-1.0) {$(0,\frac12)$\\right-handed Weyl spinor $R$};
-\draw[edge] (sl.south west) --node[line label,left]{representation}(L.north);
-\draw[edge] (sl.south east) --node[line label,right]{representation}(R.north);
+% ---- row 1: covering map ---------------------------------------------
+\node[blockbox,minimum width=48mm] (SO) at (-7.0,3.0)
+  {$SO^+(1,3)$\\proper orthochronous\\Lorentz group};
+\node[blockbox,minimum width=48mm] (SL) at (0,3.0)
+  {$SL(2,\mathbb C)$};
+\draw[layerarrow] (SL.west) -- node[blocklabel,above]{2:1 covering map} (SO.east);
 
-% A separate operation node prevents arrows from falsely suggesting particle conversion.
-\node[box,minimum width=4.0cm] (build) at (1.8,-2.75)
- {build new Lorentz representations\\from $L$ and $R$};
-\draw[edge] (L.south east) -- (build.north west);
-\draw[edge] (R.south west) -- (build.north east);
+% ---- row 2: chiral representations -----------------------------------
+\node[blockbox,minimum width=46mm] (L) at (-3.6,0.0)
+  {$(\tfrac12,0)$\\left-handed Weyl spinor $L$};
+\node[blockbox,minimum width=46mm] (R) at (3.6,0.0)
+  {$(0,\tfrac12)$\\right-handed Weyl spinor $R$};
+% L-shaped: leave SL straight down, run out, then drop into each chiral box.
+\draw[layerarrow] (SL.south) -| node[blocklabel,pos=0.80,left]{representation} (L.north);
+\draw[layerarrow] (SL.south) -| node[blocklabel,pos=0.80,right]{representation} (R.north);
 
-\node[box,minimum width=3.7cm] (D) at (-3.9,-5.15)
+% ---- row 3: build node ------------------------------------------------
+% Separate operation node prevents arrows from falsely suggesting conversion.
+\node[blockbox,minimum width=58mm] (build) at (0,-2.2)
+  {build new Lorentz representations\\from $L$ and $R$};
+\draw[layerarrow] (L.south) -| (build.north west);
+\draw[layerarrow] (R.south) -| (build.north east);
+
+% ---- row 4: composite reps --------------------------------------------
+\node[blockbox,minimum width=50mm] (D) at (-5.0,-4.6)
   {$L\oplus R$\\Dirac spinor};
-\node[box,minimum width=3.7cm] (V) at (1.8,-5.15)
+\node[blockbox,minimum width=50mm] (V) at (0,-4.6)
   {$L\otimes R$\\four-vector $A^\mu$};
-\node[box,minimum width=4.3cm] (F) at (7.2,-5.15)
+\node[blockbox,minimum width=50mm] (F) at (5.0,-4.6)
   {$\mathrm{Sym}^2L\oplus\mathrm{Sym}^2R$\\antisymmetric tensor $F^{\mu\nu}$};
-\draw[edge] (build.south west) to[out=225,in=70]
- node[line label,midway,left]{$\oplus$} (D.north east);
-\draw[edge] (build.south) --node[line label,right]{$\otimes$}(V.north);
-\draw[edge] (build.south east) to[out=-45,in=110]
- node[line label,midway,right]{$\mathrm{Sym}^2$} (F.north west);
+\draw[layerarrow] (build.south west) -| node[blocklabel,pos=0.80,left]{$\oplus$} (D.north);
+\draw[layerarrow] (build.south) -- node[blocklabel,right]{$\otimes$} (V.north);
+\draw[layerarrow] (build.south east) -| node[blocklabel,pos=0.80,right]{$\mathrm{Sym}^2$} (F.north);
 \end{tikzpicture}
