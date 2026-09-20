@@ -83,3 +83,34 @@ bhabha-two, breit-wheeler-two, compton-two, ee-gammagamma, ee-mumu, emu-scatteri
 
 ### 7.4 整书构建
 改完跑 `python main.py build FreeElectronQuantumOptics`，退出码 0、无 LaTeX error，`example/FreeElectronQuantumOptics.pdf` 更新。
+
+
+---
+
+## 八、流程框+箭头关系图精修（standalone 渲染闭环，本轮重点）
+
+针对用户原话"排布太紧密，箭头上的字撑不开、跟框遮挡、不够方方正正"，对所有 box+箭头关系图做 standalone 闭环：在临时目录写 `\documentclass[tikz,border=14pt]{standalone}`（复制 preamble.tex 196–243 行 lecture/process 样式 + amsmath/amssymb + `\providecommand{\ii}`），`xelatex -halt-on-error` 编译 → fitz 300dpi 渲 PNG → Read 肉眼量各框/箭头/标签间隔 → 改坐标再渲，直到干净方正。纯费曼图（fermion/fvertex 线条）标签不压线者不动。
+
+### 8.1 改动清单（5 处）
+
+| 图 / 位置 | 问题类别 | 坐标改动 | 渲染确认 |
+|---|---|---|---|
+| **图6.1 Higgs 表示来源**<br>`sections/04c-sm-fields-gauge-dp11.tex:168-177` | B 标签压框 + 斜边。原 `node distance=1.55cm and 2.0cm` 太挤，"compare L/R reps"压上框顶、"contract reps"压下框底；左 `rep→y` 为斜箭头 | 弃 `right/left/below=of`，改显式矩形网格：rep/mass 在 (±3.2, 2.1)、h/y 在 (±3.2, -2.1)，四框统一 `text width=3.3cm,minimum height=1.3cm`；四边箭头全正交，标签 `above/right/below/left=5pt` | Read PNG：四框等大对齐成矩形，4 个标签白底悬空不压线、与框留白 |
+| **图6.6 CKM 来源**<br>`sections/04c-sm-flavor-anomaly-dp11.tex:238-247` | B 排布紧 + 框位偏。原 `below right=1.7cm and -.15cm of ul` 把 v 框放偏；纵向间距 1.5cm | 显式对称坐标：yu/yd (±3.6,2.6)、ul/dl (±3.6,0)、v (0,-3.0)，框统一 `text width=4.1cm,minimum height=1.25cm`；`diagonalize` 走竖直边，`compare bases` 用 `bend right/left=8` 对称汇入 v 顶两角 | Read PNG：左右对称漏斗，v 居中，标签白底不压框 |
+| **宏观 QED Green 流程**<br>`figures/qft_process_figures.tex:158-177` (MacroQEDGreenFlowFigure) | B 标签"invert"贴 M 框边 + 不方正（G→E、E/R→O 为斜箭头） | 重排为正交网格：E 置于 G 正上方（竖直边），J/M 同列、E/G 同列；E.east/R.east 经直角肘 `(E.east)-|(O.162)`、`(R.east)-|(O.198)` 进 O 左上/左下；框统一 `text width=2.9cm,minimum height=1.35cm`，横向拉开到 ±6.0/2.4/6.6 | Read PNG：无斜箭头，source/invert 白底居水平边中段、与框留白 |
+| **Schwinger–Keldysh 轮廓**<br>`figures/qft_process_figures.tex:126-127` (QFTKeldyshContourFigure) | B 标签碰撞：`midway` 的 "C+: forward branch" 与 "1+" 点标挤成 "C+:1+forward branch"，C- 同理撞 "2-" | 分支标签从 `midway` 移到近 t0：C+ 改 `pos=0.16,above`，C- 改 `pos=0.84,below`（其线向右至左画），避开内部点 | Read PNG：分支标签居左端，1+/2- 点标居中不挤 |
+| **Cutkosky 割线**<br>`figures/qft_process_figures.tex:230,232` (QFTCutkoskyFigure) | B 线穿字：虚线割线 (4.2,-0.8)→(4.2,2.0) 穿到底部公式 $\sum_n\int\!\d\Phi_n...$ 中间 | 虚线缩到只圈环体 `(4.2,0.05)→(4.2,1.6)`；底部公式节点加 `process line label`（白底） | Read PNG：虚线不再穿公式，公式清晰 |
+
+### 8.2 目检确认干净、未改动（6 处）
+
+- **Feshbach–Schur 投影**（qft_process_figures.tex:138 QFTFeshbachProjectionFigure，QHP/PHQ）：两框等高对齐，QHP/PHQ 走白底 `process line label`，已悬空不压框、布局宽松，不改。
+- **连续态→反冲梯**（qft_process_figures.tex:182 GeneralInteractionRecoilFigure）：S 形全正交，无箭头文字标签，框对齐，不改。
+- **Wick→Feynman 字典**（qft_process_figures.tex:7）："Wick contractions" 悬空于箭头上方不压线，D_F/S_F 标注清晰，不改。
+- **BPHZ 森林公式**（qft_process_figures.tex:238 QFTForestSubgraphFigure）："apply $T_\gamma$ first" 白底居箭头中段，子图虚线框规整，不改。
+- **软/虚包容抵消**（qft_process_figures.tex:262 QFTSoftInclusiveFigure）：曲线汇聚箭头的 "sum virtual + unresolved real" 白底不压框，不改。
+- **中性电弱基旋转**（sections/04c-sm-higgs-ewsb-dp11.tex:504）：三框等高、水平箭头、无被压缩标签，不改。
+
+### 8.3 写回方式与边界
+
+- 全部改动经 Python 按"唯一整串替换"写回（每处断言命中恰好 1 次才落盘），未触碰 `content\YHWNotes`，未 git commit。
+- 纯费曼图（虚光子交换、交叉道、双光子盒、Euler–Heisenberg、Compton 树图等）按既定策略不动。

@@ -52,3 +52,35 @@
 ## 5. 旁注（非本次任务范围，仅记录）
 
 - 正文交叉引用 `figreffig:tikhonov-filter` 之类字面量属 LaTeX 宏/引用问题，与三张 matplotlib 图本身无关，本轮不处理。
+
+
+---
+
+## 6. TikZ 内联图专项审计（本轮，A/B 类标准）
+
+**任务**：复查 content/MathSkills/ 各章节 .tex 内联的 	ikzpicture，按 A 类（标注标签几何图：标签不压线、留 5-8pt）、B 类（流程框+箭头：框方正、网格对齐、箭头标签白底不压框）逐图 standalone 编译→渲染→Read 目检→修→复验。
+
+**结论：MathSkills 不存在任何内联 TikZ 图，A/B 类对象为空，本轮无图可修。**
+
+证据（均为本轮实际执行，非推断）：
+
+| 检查 | 命令/方式 | 结果 |
+|------|-----------|------|
+| 顶层章节内联图 | `Select-String -Path content\MathSkills\*.tex -Pattern 'begin\{tikzpicture\}'` | **0 命中** |
+| 全书递归（含 frontmatter、settings、main） | Grep 	ikzpicture over content/MathSkills（29 个 .tex） | **0 命中** |
+| 其他 TikZ 环境 | 	ikzcd / \begin{tikz | **0 命中** |
+| 图引用 | 全文 igures 关键字 | 仅 3 处 \includegraphics，均指向 matplotlib 产物（见下） |
+| igures/tikz/{differential-geometry,mathematical-statistics,sturm-liouville}/ | 列目录 | **空目录** |
+| igures/code/{differential-geometry,mathematical-statistics,sturm-liouville}/ | 列目录 | **空目录** |
+
+MathSkills 实际图形资产（非 TikZ，不属本轮 A/B 审查范围）：
+
+| 位置 | 文件 | 类型 |
+|------|------|------|
+| ch06.tex:1624 | igures/mathematical-physics/generated/tikhonov_filter.pdf | matplotlib |
+| ch07.tex:482 | igures/mathematical-physics/generated/burgers_characteristics.pdf | matplotlib |
+| ch07.tex:1313 | igures/mathematical-physics/generated/kdv_two_soliton.pdf | matplotlib |
+
+> 说明：本轮指令的描述（"MathSkills 的 TikZ 图内联在各章节 .tex、无独立 figures 子目录"）与本仓库现状不符——MathSkills 既无内联 tikzpicture，又确实存在（但为空的）igures/tikz/ 子目录。该描述更贴合同仓库的 GroupTheory / AdvancedPhysics / FreeElectronQuantumOptics（这三本书确有内联 tikzpicture，本轮未触碰）。按任务边界，未改动 content/YHWNotes/，未做 git commit。
+
+**改动文件**：无（章节 .tex 零改动）。**Standalone 编译迭代**：无对象，未生成临时 fig.pdf/fig.png。

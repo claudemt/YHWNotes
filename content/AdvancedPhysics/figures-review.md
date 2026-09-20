@@ -137,3 +137,18 @@
 | M8 | code/radiation-reaction/order_reduction_error_code.py | 无（log-log 双线重合，legend 左上，曲线从左下上升，不压 legend） | 不改 | ✅ Read PNG 确认 |
 
 本轮实际修改 4 张：T2、T3、M1、M5；其余 7 张重渲染核对后保持原样。
+
+---
+
+## 第三轮 TikZ 复查（standalone → xelatex → fitz 300–400dpi → Read 逐图量距）
+
+本轮范围严格限于 AdvancedPhysics 的 3 个内联 tikzpicture（`content/AdvancedPhysics/figures/tikz/radiation-reaction/`，均由 ch13 `\input`）。方法：standalone 复制 preamble.tex 196–243 行公共样式，xelatex 编译后 fitz 300/400dpi 渲染 PNG 并裁切可疑区域 Read 目测量间距，只改确实压线/压框/未对齐的图。
+
+| # | 文件 | 类别 | 本轮问题（实测） | 坐标改动 | 渲染确认干净 |
+|---|---|---|---|---|---|
+| F1 | tikz/radiation-reaction/frequency-regime-map.tex | A | 坐标轴/四象限标签/虚线。复检：竖直虚线 x=2.50 已在前两轮右移到位；"general-frequency region" 与竖直虚线留白 ~8pt；左列 "overlap/soft multipole limit" 右缘距竖直虚线略紧但仍有可见白隙、未接触；公式框已 fill=white | 不改 | ✅ Read 全图+裁切：无标签压线/压框 |
+| F2 | tikz/radiation-reaction/worldtube-geometry.tex | A | 第二轮 T3 把 n 标签移到 (0.36,-0.45) 后，400dpi 裁切确认其右端 `0` 仍与右管壁虚线 $\partial\mathcal W$ 相切（贴线，未达 5–8pt 留白） | 第 24 行 n 标签中心 `(0.36,-0.45)` → `(0.08,-0.53)` | ✅ Read chk0/chk1：`0` 离右壁留白 ≳8pt；中央世界线从 "n^μ," 与 "n·u=0" 词间空隙穿过、不压字形；左缘离左壁留白充足 |
+| F3 | tikz/radiation-reaction/dirac-decomposition.tex | B | 第三层左框 `memory` 中心 `y=-3.10`，同行 `dirac`/`tube` 在 `y=-3.20`，左框上下边比同行高 1mm，未对齐成网格 | 第 12 行 `(memory) at (-3.15,-3.10)` → `(-3.15,-3.20)`（节点箭头自动连接，无需动箭头） | ✅ Read 全图：第三层三框上下边水平对齐；框边横平竖直；树状斜向连接符落点在框边、不压字；无箭头上文字标签 |
+
+本轮实际修改 2 张：F2（worldtube 标签压线）、F3（dirac 框网格对齐）；F1 复检后保持原样。
+本轮未触碰 `content/YHWNotes/`，未执行 git commit。
