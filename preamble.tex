@@ -2,8 +2,9 @@
 % 0. Unified multi-book loader
 % Inspired by the structure of claudemt/Publication:
 % main.tex chooses one content/<book>/<book>.tex file; the file is read
-% once in the preamble to load metadata/settings and again in the
-% document body to typeset the actual book.
+% once in the preamble to load metadata plus book-local settings (which
+% live inline in the book file, guarded by \BookSettingsProcessed) and
+% again in the document body to typeset the actual book.
 % ================================================================
 \usepackage{iftex}
 \ifXeTeX\else
@@ -16,14 +17,13 @@
   { \physicsnotes_load_book_settings:n {#1} }
 \ExplSyntaxOff
 
-\newcommand{\BookMetadata}[4]{%
+\newcommand{\BookMetadata}[3]{%
   \ifdefined\BookSettingsProcessed\else
     \gdef\BookTitle{#1}%
     \gdef\BookAuthor{#2}%
     \title{\BookTitle}%
     \author{\BookAuthor}%
     \graphicspath{#3}%
-    \InputIfFileExists{#4}{}{}%
     \global\let\BookSettingsProcessed\relax
     \expandafter\endinput
   \fi
@@ -82,21 +82,17 @@
 \setlength{\parindent}{2em}
 \setlength{\parskip}{0pt}
 
-% ===== Chapter title page =====
+% ===== Chapter title (inline at top of page) =====
 \makeatletter
 \def\@makechapterhead#1{%
   \thispagestyle{fancy}%
-  \vspace*{\fill}%
   {\centering\Huge\bfseries 第\thechapter 章\par\vspace{1.0em}#1\par}%
-  \vspace*{\fill}%
-  \clearpage
+  \vspace{2em}%
 }
 \def\@makeschapterhead#1{%
   \thispagestyle{fancy}%
-  \vspace*{\fill}%
   {\centering\Huge\bfseries #1\par}%
-  \vspace*{\fill}%
-  \clearpage
+  \vspace{2em}%
 }
 \makeatother
 
@@ -414,7 +410,8 @@
 % The root preamble owns page layout, numbering, typography, boxes,
 % references, generic physics/TikZ styles, the shared theorem
 % environments and the coloured theorem palette.  A book may extend
-% TikZ or define specialized notation only in content/<book>/settings.tex.
+% TikZ or define specialized notation only inline in its own
+% content/<book>/<book>.tex (inside the \BookSettingsProcessed guard).
 % Do not redefine geometry, headers, captions, hyperlink policy, the
 % derivation/exbox/note environments, the theorem environments or
 % their colour boxes, or the shared figure styles there.
