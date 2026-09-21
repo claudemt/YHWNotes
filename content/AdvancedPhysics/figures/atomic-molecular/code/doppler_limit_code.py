@@ -9,4 +9,4 @@ with figure_style():
     fig,ax=plt.subplots(); ax.plot(x,T,label=r'$k_B T/(\hbar\Gamma_{\rm sp})$'); ax.scatter([-0.5],[0.5],zorder=4)
     ax.annotate(r'$\Delta=-\Gamma/2$' + '\n' + r'$T_D=\hbar\Gamma/(2k_B)$',(-0.5,0.5),xytext=(-90,52),textcoords='offset points',arrowprops={'arrowstyle':'->','lw':0.8})
     ax.set_xlabel(r'Detuning $\Delta/\Gamma_{\rm sp}$'); ax.set_ylabel(r'$k_B T/(\hbar\Gamma_{\rm sp})$'); ax.set_ylim(0.42,2.4)
-    add_legend(ax,loc='upper left',frameon=False); polish_axes(ax,grid=True); fig.tight_layout(); save_pdf_png_pair(fig,'doppler_limit',Path(__file__).resolve().parents[1]/'generated')
+    add_legend(ax); polish_axes(ax,grid=True); fig.tight_layout(); save_pdf_png_pair(fig,'doppler_limit',Path(__file__).resolve().parents[1]/'generated')

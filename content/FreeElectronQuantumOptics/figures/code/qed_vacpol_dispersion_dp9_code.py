@@ -31,14 +31,14 @@ d = np.array([direct(v) for v in y])
 s = np.array([dispersive(v) for v in y])
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(9.2, 5.8))
+    fig, ax = plt.subplots()
     ax.plot(y, d, linewidth=3.2, label='Feynman-parameter integral')
     ax.plot(y, s, '--', linewidth=2.5, label='cut + dispersion relation')
     ax.set_xscale('log')
     ax.set_xlabel(r'$Q/(m_e c)$')
     ax.set_ylabel(r'$-\Pi_R(-Q^2)/\alpha$')
     polish_axes(ax, grid=True)
-    add_legend(ax, frameon=False)
+    add_legend(ax)
     fig.subplots_adjust(left=0.18, bottom=0.18, right=0.98, top=0.97)
     save_pdf_png_pair(fig, 'qed_vacpol_dispersion_dp9', output_dir=ROOT/'figures'/'generated')
 

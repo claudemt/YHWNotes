@@ -30,7 +30,7 @@ bare_m = -0.5 * delta
 dressed = np.sqrt(0.25 * delta**2 + 1.0)
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(8.8, 5.6))
+    fig, ax = plt.subplots()
     ax.plot(delta, bare_c, color='0.55', linestyle='--', linewidth=1.5, label='renorm. photon')
     ax.plot(delta, bare_m, color='0.55', linestyle=':', linewidth=1.5, label='bare matter')
     ax.plot(delta, dressed, color=COLORS[0], linestyle=LINE_STYLES[0], label=r'$\omega_+$')
@@ -42,6 +42,6 @@ with figure_style():
     ax.set_xlim(-8.0, 8.0)
     ax.set_ylim(-4.8, 4.8)
     polish_axes(ax, grid=True)
-    add_legend(ax, )
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'hopfield_avoided_crossing', output_dir=OUT)

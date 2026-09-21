@@ -17,7 +17,7 @@ x = np.linspace(1.0, 4.0, 900)
 beta = np.sqrt(np.clip(1.0 - 1.0/x**2, 0.0, None))
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(9.2, 5.8))
+    fig, ax = plt.subplots()
     ax.plot(x, beta, linewidth=3.2)
     ax.axvline(1.0, linestyle='--', linewidth=2.0)
     ax.set_xlabel(r'$x=\sqrt{s}/(2mc)$')

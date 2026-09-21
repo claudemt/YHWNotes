@@ -10,10 +10,10 @@ u=np.linspace(-1,3,500) # t/t*
 # sigma^2=1-1.2u+0.6u^2 -> minimum 0.4 at u=1
 s2=1-1.2*u+0.6*u**2
 with figure_style():
-    fig,ax=plt.subplots(figsize=(8,5))
+    fig,ax=plt.subplots()
     ax.plot(u,np.sqrt(s2),color=COLORS[0])
     ax.axvline(1,linestyle='--',color=COLORS[1],label=r'$t=t_*$')
     ax.set_xlabel(r'$t/t_*$')
     ax.set_ylabel(r'$\sigma_z(t)/\sigma_z(0)$')
-    polish_axes(ax,grid=True); add_legend(ax, frameon=True)
+    polish_axes(ax,grid=True); add_legend(ax)
     fig.tight_layout(); save_pdf_png_pair(fig, 'gaussian_compression', output_dir=ROOT/'figures'/'generated')

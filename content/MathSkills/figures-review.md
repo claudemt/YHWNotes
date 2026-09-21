@@ -22,3 +22,13 @@
 ## 小结
 - 共审：3 张。
 - 修改：1 张（kdv_two_soliton）；其余 2 张初查即合规，未改。
+
+## 2026-09-21 — style unification pass
+- 仅处理 `content/MathSkills/figures/mathematical-physics/code/` 下 3 个脚本（burgers_characteristics、kdv_two_soliton、tikhonov_filter），未触碰其他书，未 git commit，未跑整书 build。
+- 改动：
+  - 三脚本均删除 `plt.subplots(...)` 中硬编码 `figsize=(...)`，改用 preamble 默认 8x5。
+  - burgers 删除 `ax.set_title(...)`；kdv 删除 `ax.set_title(...)`。
+  - kdv 由外置图例（`loc='upper left', bbox_to_anchor=(1.06,1.0), borderaxespad=0.0` + `tight_layout(rect=[0,0,0.80,1])`）改为轴内默认 `add_legend(ax)`（best、frameon=True），tight_layout 去掉 rect；重渲染后 matplotlib 自动选到左下空白角，曲线无明显重叠，无需指定 corner。
+  - 三脚本均删除 add_legend 显式 `loc=`，统一走默认 best。
+  - 标签、数据、save 路径均未改。
+- 运行确认：3 个脚本均 `python` 重跑，退出码 0，无报错；kdv PNG 已 Read 复核，图例位于左下空白区，不压数据。

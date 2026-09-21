@@ -16,7 +16,7 @@ theta_deg = theta * 180.0 / np.pi
 betas = [0.3, 0.7, 0.95]
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(9.0, 5.6))
+    fig, ax = plt.subplots()
     for i, beta in enumerate(betas):
         kernel = np.sin(theta)**2 / (1.0 - beta * np.cos(theta))**5
         kernel /= np.max(kernel)
@@ -25,7 +25,7 @@ with figure_style():
     ax.set_ylabel('normalized angular kernel')
     ax.set_xlim(0, 180)
     ax.set_ylim(0, 1.05)
-    add_legend(ax, frameon=False)
+    add_legend(ax)
     polish_axes(ax, grid=True)
     fig.subplots_adjust(left=0.12, bottom=0.15, right=0.98, top=0.98)
     save_pdf_png_pair(fig, 'lienard_angular_kernel', output_dir=ROOT/'figures'/'generated')

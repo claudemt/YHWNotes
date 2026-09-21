@@ -16,7 +16,7 @@ with figure_style():
             ax.plot(t,np.exp(-d*d*chi),label=label,ls=style)
         ax.set(xlabel=r'Time $t/\tau_\varphi$',ylabel='Coherence factor',title=rf'$|\ell-m|={d}$',ylim=(0,1.05),xlim=(0,12))
         polish_axes(ax)
-        add_legend(ax,loc='lower left' if d==1 else 'upper right')
+        add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig,'electron_colored_noise',out)
     plt.close(fig)

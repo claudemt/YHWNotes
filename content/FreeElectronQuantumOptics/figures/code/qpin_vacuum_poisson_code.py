@@ -11,7 +11,7 @@ from preamble import figure_style, polish_axes, COLORS, save_pdf_png_pair, add_l
 
 n=np.arange(0,13)
 with figure_style():
-    fig,ax=plt.subplots(figsize=(8,5))
+    fig,ax=plt.subplots()
     for j,g in enumerate([0.7,1.4,2.2]):
         lam=g*g
         P=np.exp(-lam+n*np.log(lam+1e-300)-gammaln(n+1))
@@ -20,6 +20,6 @@ with figure_style():
     ax.set_ylabel(r'$P_n$')
     ax.set_xticks(n)
     polish_axes(ax,grid=True,minor_ticks=False)
-    add_legend(ax, frameon=True)
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'qpin_vacuum_poisson', output_dir=ROOT/'figures'/'generated')

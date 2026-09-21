@@ -16,7 +16,7 @@ ns = [1.2, 1.5, 2.0]
 x = np.linspace(0.0, 0.58, 500)
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(9.0, 5.6))
+    fig, ax = plt.subplots()
     for i, n in enumerate(ns):
         cos_theta = (1.0 + 0.5 * x * (n**2 - 1.0)) / (n * beta)
         theta = np.full_like(x, np.nan)
@@ -30,7 +30,7 @@ with figure_style():
     ax.set_xlim(0, x[-1])
     ax.set_ylim(0, 70)
     ax.text(0.02, 0.96, r'$\beta_{\rm rel}=0.95$' + '\n' + r'solid: exact; dotted: $x\to0$', transform=ax.transAxes, va='top')
-    add_legend(ax, frameon=False, ncol=1)
+    add_legend(ax, ncol=1)
     polish_axes(ax, grid=True)
     fig.subplots_adjust(left=0.12, bottom=0.15, right=0.98, top=0.97)
     save_pdf_png_pair(fig, 'cherenkov_recoil_angle', output_dir=ROOT/'figures'/'generated')

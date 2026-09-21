@@ -33,14 +33,14 @@ errors = np.asarray(errors)
 reference = errors[0] * (eps_values / eps_values[0])**2
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(6.4, 4.2))
+    fig, ax = plt.subplots()
     ax.loglog(eps_values, errors, label="numerical error")
     ax.loglog(eps_values, reference, "--",
               label=r"$\mathcal{O}[(\tau_{\rm rr}/T)^2]$")
     ax.set_xlabel(r"$\tau_{\rm rr}/T$")
     ax.set_ylabel(r"relative $L^2$ error")
     polish_axes(ax, grid=False)
-    add_legend(ax, loc="upper left", frameon=False)
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, "order_reduction_error", OUT)
     plt.close(fig)

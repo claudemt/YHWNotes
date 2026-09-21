@@ -17,7 +17,7 @@ beta = 2.5
 P = jv(ell, 2 * beta) ** 2
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+    fig, ax = plt.subplots()
     markerline, stemlines, _ = ax.stem(ell, P, linefmt="k-", markerfmt="ko", basefmt=" ")
     markerline.set_markerfacecolor("white")
     markerline.set_markeredgewidth(0.8)

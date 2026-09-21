@@ -13,7 +13,7 @@ lam=800e-9
 c=299792458.0
 omega=2*np.pi*c/lam
 with figure_style():
-    fig,ax=plt.subplots(figsize=(8,5))
+    fig,ax=plt.subplots()
     for j,sigma_as in enumerate([50,100,250]):
         st=sigma_as*1e-18
         V=np.exp(-0.5*(q*omega*st)**2)
@@ -23,6 +23,6 @@ with figure_style():
     ax.set_ylim(-0.02,1.04)
     ax.set_xticks(q)
     polish_axes(ax,grid=True,minor_ticks=False)
-    add_legend(ax, frameon=True)
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'tomography_jitter_visibility', output_dir=ROOT/'figures'/'generated')

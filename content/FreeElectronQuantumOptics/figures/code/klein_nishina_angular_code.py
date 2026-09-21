@@ -16,7 +16,7 @@ theta_deg = np.degrees(theta)
 epsilons = [0.02, 0.2, 1.0, 5.0]
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(9.0, 5.6))
+    fig, ax = plt.subplots()
     for i, eps in enumerate(epsilons):
         ratio = 1.0 / (1.0 + eps * (1.0 - np.cos(theta)))
         dsdo = 0.5 * ratio**2 * (ratio + 1.0 / ratio - np.sin(theta)**2)
@@ -25,7 +25,7 @@ with figure_style():
     ax.set_ylabel(r'$r_e^{-2}\,d\sigma/d\Omega$')
     ax.set_xlim(0, 180)
     ax.set_ylim(0, 1.26)
-    add_legend(ax, frameon=True, ncol=2, corner="upper right")
+    add_legend(ax, ncol=2, corner="upper right")
     polish_axes(ax, grid=True)
     fig.subplots_adjust(left=0.16, bottom=0.15, right=0.98, top=0.98)
     save_pdf_png_pair(fig, 'klein_nishina_angular', output_dir=ROOT/'figures'/'generated')

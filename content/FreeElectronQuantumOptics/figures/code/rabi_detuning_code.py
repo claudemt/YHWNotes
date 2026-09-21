@@ -15,7 +15,7 @@ x = np.linspace(0, 4 * np.pi, 500)
 styles = ["-", "--", ":"]
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+    fig, ax = plt.subplots()
     for d, ls in zip([0, 1, 2], styles):
         OmR = np.sqrt(1 + d * d)
         Pe = (1 / OmR**2) * np.sin(OmR * x / 2) ** 2

@@ -21,14 +21,13 @@ def u_two(x, t):
     return -2.0*(tau*tau_xx - tau_x**2)/tau**2
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(6.6, 4.5))
+    fig, ax = plt.subplots()
     for t in (-3.0, 3.0, 6.0):
         ax.plot(x, u_two(x, t), label=rf'$t={t:g}$')
     ax.set_xlim(-21, 20)
     ax.set_xlabel(r'$x$')
     ax.set_ylabel(r'$u(x,t)$')
-    ax.set_title('KdV two-soliton scattering')
-    add_legend(ax, loc='upper left', bbox_to_anchor=(1.06, 1.0), borderaxespad=0.0)
+    add_legend(ax)
     polish_axes(ax, grid=True)
-    fig.tight_layout(rect=[0, 0, 0.80, 1])
+    fig.tight_layout()
     save_pdf_png_pair(fig, 'kdv_two_soliton', Path(__file__).resolve().parents[1] / 'generated')

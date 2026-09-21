@@ -29,7 +29,7 @@ with figure_style():
     axes[1].set(xlabel=r'Baseline $L$ (km)',ylabel=r'Conversion probability $P_{e\to x}$',ylim=(0,1.3))
     for ax in axes:
         polish_axes(ax)
-        add_legend(ax,loc='upper right')
+        add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig,'sm_neutrino_matter',out)
     plt.close(fig)

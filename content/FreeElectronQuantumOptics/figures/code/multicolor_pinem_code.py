@@ -17,7 +17,7 @@ def amp(l,phi21):
     m=np.arange(-20,21)
     return np.sum(jv(l-2*m,2*b1)*jv(m,2*b2)*np.exp(1j*m*phi21))
 with figure_style():
-    fig,ax=plt.subplots(figsize=(8,5))
+    fig,ax=plt.subplots()
     width=0.34
     for j,ph in enumerate(phases):
         P=np.array([abs(amp(int(l),ph))**2 for l in ells])
@@ -26,6 +26,6 @@ with figure_style():
     ax.set_ylabel(r'$P_\ell$')
     ax.set_xticks(ells[::2])
     polish_axes(ax,grid=False,minor_ticks=False)
-    add_legend(ax, frameon=True)
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'multicolor_pinem', output_dir=ROOT/'figures'/'generated')

@@ -28,14 +28,14 @@ ratio_as = 1.0 / (1.0 + pi_as)
 mask = q_over_mc >= 5.0
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(9.2, 5.8))
+    fig, ax = plt.subplots()
     ax.plot(q_over_mc, percent, linewidth=3.0, label='one-loop integral')
     ax.plot(q_over_mc[mask], 100.0 * (ratio_as[mask] - 1.0), linestyle='--', linewidth=2.6,
             label='large-$Q$ asymptotic')
     ax.set_xscale('log')
     ax.set_xlabel(r'$Q/(m_e c)$')
     ax.set_ylabel(r'$\Delta\alpha/\alpha$ [\%]')
-    add_legend(ax, frameon=False)
+    add_legend(ax)
     polish_axes(ax, grid=True)
     fig.subplots_adjust(left=0.17, bottom=0.17, right=0.98, top=0.98)
     save_pdf_png_pair(fig, 'qed_running_alpha', output_dir=ROOT/'figures'/'generated')

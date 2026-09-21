@@ -15,7 +15,7 @@ x = np.linspace(0, 2.5, 400)
 styles = ["-", "--", ":"]
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+    fig, ax = plt.subplots()
     for dl, ls in zip([1, 2, 4], styles):
         y = np.exp(-0.5 * dl**2 * x)
         ax.plot(x, y, color="black", linestyle=ls, label=rf"$|\ell-m|={dl}$")

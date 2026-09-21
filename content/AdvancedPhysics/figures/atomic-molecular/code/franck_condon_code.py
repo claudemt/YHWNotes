@@ -9,4 +9,4 @@ with figure_style():
     for S in [0.5,2.0,5.0]:
         P=np.array([math.exp(-S)*S**int(k)/math.factorial(int(k)) for k in n]); ax.plot(n,P,marker='o',label=rf'$S_{{\rm HR}}={S:g}$')
     ax.set_xlabel(r'Final vibrational quantum number $n$'); ax.set_ylabel('Franck--Condon factor'); ax.set_xticks(np.arange(0,16,2))
-    add_legend(ax,loc='upper right',frameon=False); polish_axes(ax,grid=True); fig.tight_layout(); save_pdf_png_pair(fig,'franck_condon',Path(__file__).resolve().parents[1]/'generated')
+    add_legend(ax); polish_axes(ax,grid=True); fig.tight_layout(); save_pdf_png_pair(fig,'franck_condon',Path(__file__).resolve().parents[1]/'generated')

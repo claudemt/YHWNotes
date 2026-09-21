@@ -62,7 +62,7 @@ omega_sync_over_wp = 1.0/np.sqrt(1.0-eps_sync)
 E_sync = hbar_omega_p_eV*omega_sync_over_wp
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(6.8, 4.2))
+    fig, ax = plt.subplots()
     ax.plot(energies, spectrum, linewidth=2.0, label='full Weyl integral')
     ax.axvline(E_sync, linestyle='--', linewidth=1.5, label='lossless pole')
     ax.set_xlabel(r'$\hbar\omega$ [eV]')
@@ -70,7 +70,7 @@ with figure_style():
     ax.set_xlim(energies[0], energies[-1])
     ax.set_ylim(bottom=0)
     polish_axes(ax, grid=True, minor_ticks=True)
-    add_legend(ax, frameon=True)
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'planar_drude_eels', output_dir=ROOT/'figures'/'generated')
 

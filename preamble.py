@@ -56,6 +56,7 @@ _STYLE_KEYS = (
     "mathtext.fontset", "mathtext.rm", "mathtext.it", "mathtext.bf",
     "savefig.dpi", "figure.dpi",
     "figure.facecolor", "axes.facecolor",
+    "figure.figsize",
 )
 
 
@@ -107,6 +108,8 @@ def figure_style():
             "figure.dpi": 110,
             "figure.facecolor": "white",
             "axes.facecolor": "white",
+            # Default canvas size (matches the FEQO baseline figures).
+            "figure.figsize": [8.0, 5.0],
         })
         yield
     finally:

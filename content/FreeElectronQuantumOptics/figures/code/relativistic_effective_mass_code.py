@@ -8,12 +8,12 @@ from preamble import figure_style, polish_axes, COLORS, save_pdf_png_pair, add_l
 K=np.linspace(0,1000,500) # keV
 gamma=1+K/511.0
 with figure_style():
-    fig,ax=plt.subplots(figsize=(8,5))
+    fig,ax=plt.subplots()
     ax.plot(K,gamma,label=r'$m_\perp/m_e=\gamma$',color=COLORS[1])
     ax.plot(K,gamma**3,label=r'$m_\parallel/m_e=\gamma^3$',color=COLORS[0])
     ax.set_xlabel(r'$K$ [keV]')
     ax.set_ylabel('mass ratio')
     polish_axes(ax,grid=True)
-    add_legend(ax, frameon=True)
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'relativistic_effective_mass', output_dir=ROOT/'figures'/'generated')

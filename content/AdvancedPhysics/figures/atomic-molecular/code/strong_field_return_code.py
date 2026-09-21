@@ -22,4 +22,4 @@ with figure_style():
     fig,ax=plt.subplots(); ax.plot(phi0,Kret,label=r'$K_{\rm ret}/U_p$'); ax.plot(phi0,Kresc,label=r'$K_{\rm resc}/U_p$'); ax.scatter([phi0[imax]],[Kret[imax]],zorder=4); ax.scatter([phi0[jmax]],[Kresc[jmax]],zorder=4)
     ax.annotate(f'{Kret[imax]:.2f}',(phi0[imax],Kret[imax]),xytext=(10,10),textcoords='offset points'); ax.annotate(f'{Kresc[jmax]:.2f}',(phi0[jmax],Kresc[jmax]),xytext=(10,-16),textcoords='offset points')
     ax.set_xlabel(r'Ionization phase $\phi_0$ (rad)'); ax.set_ylabel(r'Energy / $U_p$'); ax.set_xlim(phi0.min(),phi0.max()); ax.set_ylim(0,max(Kresc)*1.08)
-    add_legend(ax,loc='upper right',frameon=False); polish_axes(ax,grid=True); fig.tight_layout(); save_pdf_png_pair(fig,'strong_field_return',Path(__file__).resolve().parents[1]/'generated')
+    add_legend(ax); polish_axes(ax,grid=True); fig.tight_layout(); save_pdf_png_pair(fig,'strong_field_return',Path(__file__).resolve().parents[1]/'generated')

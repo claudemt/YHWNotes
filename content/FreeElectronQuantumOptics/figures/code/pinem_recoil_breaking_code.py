@@ -36,7 +36,7 @@ p1 = probs(0.20)
 p2 = probs(0.40)
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(8.2, 5.0))
+    fig, ax = plt.subplots()
     ax.plot(ells, p0, marker='o', label=r'ideal $J_\ell^2(2|\beta|)$', color=COLORS[0])
     ax.plot(ells, p1, marker='s', linestyle='--', label=r'$\chi=\omega_{\rm curv}T=0.20$', color=COLORS[1])
     ax.plot(ells, p2, marker='^', linestyle='-.', label=r'$\chi=0.40$', color=COLORS[2])
@@ -45,6 +45,6 @@ with figure_style():
     ax.set_xlim(-8, 8)
     ax.set_ylim(0, 0.23)
     polish_axes(ax, grid=True, minor_ticks=False)
-    add_legend(ax, frameon=True, corner="upper right")
+    add_legend(ax, corner="upper right")
     fig.tight_layout()
     save_pdf_png_pair(fig, 'pinem_recoil_breaking', output_dir=ROOT/'figures'/'generated')

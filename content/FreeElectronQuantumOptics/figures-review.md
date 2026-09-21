@@ -324,3 +324,17 @@
 | `ch03.tex` | 第 1318 行 z 标签 | above-right 压 x3 斜线 | `above right`->`above=5pt` |
 
 未触碰 `content/YHWNotes`，未运行整书 build，未 git commit。
+
+---
+
+## 2026-09-21 — matplotlib 样式统一 pass（继承 `preamble.py`）
+
+范围：`figures/code/` 下 FEQO 全部 32 张 matplotlib 配图脚本（任务清单所列）。未触碰其他 book，未 git commit，未运行整书 LaTeX build。
+
+- **移除单轴脚本的硬编码 `figsize=(...)`**：25 张单轴脚本改为 `plt.subplots()`，继承 `preamble.figure_style()` 的默认 `figure.figsize=[8.0,5.0]`。
+- **保留 1x2 子图脚本的 `figsize=(...)`**：`electron_bragg_convergence`、`electron_bunching_worked`、`electron_colored_noise`、`electron_detector_forward`、`electron_field_calibration`、`recoil_regime_map`、`sm_neutrino_matter`（需更宽画布）。
+- **移除冗余 `frameon=`**：`add_legend(...)` 中的 `frameon=False` 与 `frameon=True` 一律删除（默认现为 `True`）；`ncol`/`fontsize`/`corner=` 等其余参数保留。
+- **移除显式 `loc=`**：`add_legend(...)` 中的 `loc='...'` 一律删除，改用默认 `'best'`；`corner=` 保留。
+- **移除 `ax.set_title(...)`**：按规则删除；保留两处例外——`hopfield_avoided_crossing` 的 `'RWA avoided crossing'`（图核心信息）与 `recoil_regime_map` 的两个子图标题（标注两个物理区间）。`electron_colored_noise` 子图用 `ax.set(..., title=...)` 标注 `|ℓ-m|` 区间，未改动。
+- **未改动脚本**：`electron_field_calibration`、`recoil_regime_map`（仅需保留子图 figsize / 子图标题，无 frameon/loc/set_title 待清）。
+- 全部 32 个脚本已逐一运行，退出码 0、无报错，PDF/PNG 已重新生成。

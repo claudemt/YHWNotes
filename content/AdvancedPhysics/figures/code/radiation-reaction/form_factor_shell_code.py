@@ -22,7 +22,7 @@ shell_lw = 1.0 - k_small**2 / 3.0
 gaussian_lw = 1.0 - k_small**2 / 2.0
 
 with figure_style():
-    fig, ax = plt.subplots(figsize=(6.6, 4.1))
+    fig, ax = plt.subplots()
     ax.plot(kappa, shell, label=r"thin shell: $\mathrm{sinc}^2\kappa_{\rm src}$")
     ax.plot(kappa, gaussian, label=r"Gaussian: $e^{-\kappa_{\rm src}^2/2}$")
     ax.plot(k_small, shell_lw, "--", label=r"shell LW: $1-\kappa_{\rm src}^2/3$")
@@ -33,7 +33,7 @@ with figure_style():
     ax.set_xlim(0.0, 4.0)
     ax.set_ylim(-0.02, 1.05)
     polish_axes(ax, grid=True)
-    add_legend(ax, loc="upper right", frameon=False)
+    add_legend(ax)
     fig.tight_layout()
     save_pdf_png_pair(fig, "form_factor_shell", OUT)
     plt.close(fig)
