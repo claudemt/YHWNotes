@@ -71,7 +71,7 @@
 \numberwithin{table}{chapter}
 \renewcommand{\thefigure}{\thechapter.\arabic{figure}}
 \renewcommand{\thetable}{\thechapter.\arabic{table}}
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 \setcounter{secnumdepth}{3}
 
 % ===== Page and paragraph layout =====
@@ -143,16 +143,26 @@
   before upper={\setlength{\parindent}{2em}\setlength{\parskip}{0pt}\indent\ignorespaces}
 }}
 \newcommand{\SpecialBoxTitle}[2]{#1\ifstrempty{#2}{}{：#2}}
+% Shared detach-title grammar for derivation / exbox / note: the title is a
+% small pill straddling the top-left border instead of a cramped inline title
+% bar, matching the open feel of the theorem boxes.  Each box supplies only
+% its own colours; the shared spacing lives here so the three stay in sync.
+\tcbset{qmbox/.style={
+  enhanced,breakable,sharp corners,
+  boxsep=0pt,left=8pt,right=8pt,top=9pt,bottom=8pt,
+  before skip=10pt,after skip=10pt,
+  detach title,fonttitle=\bfseries,coltitle=white,
+  boxed title style={sharp corners,boxrule=0.35pt,left=7pt,right=7pt,top=2.5pt,bottom=2.5pt},
+  attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2}
+}}
 \newtcolorbox{derivation}[1][]{
-  enhanced,breakable,colback=black!1,colframe=black!45,fonttitle=\bfseries,
+  qmbox,colback=black!1,colframe=black!45,colbacktitle=black!45,
   title={\SpecialBoxTitle{推导}{#1}},
-  boxsep=0pt,left=8pt,right=8pt,top=5pt,bottom=5pt,
-  before skip=4pt,after skip=4pt,
   before upper={\setlength{\parskip}{0pt}%
     \setlength{\abovedisplayskip}{6pt}\setlength{\belowdisplayskip}{6pt}%
     \setlength{\abovedisplayshortskip}{4pt}\setlength{\belowdisplayshortskip}{4pt}}}
-\newtcolorbox{exbox}[1][]{enhanced,breakable,colback=green!8,colframe=green!48!black,fonttitle=\bfseries,title={\SpecialBoxTitle{例}{#1}},before skip=8pt,after skip=8pt}
-\newtcolorbox{note}[1][]{enhanced,breakable,colback=yellow!3,colframe=yellow!45!black,fonttitle=\bfseries,title={\SpecialBoxTitle{注}{#1}},before skip=8pt,after skip=8pt}
+\newtcolorbox{exbox}[1][]{qmbox,colback=green!8,colframe=green!48!black,colbacktitle=green!48!black,title={\SpecialBoxTitle{例}{#1}}}
+\newtcolorbox{note}[1][]{qmbox,colback=yellow!3,colframe=yellow!45!black,colbacktitle=yellow!45!black,title={\SpecialBoxTitle{注}{#1}}}
 
 % ===== References =====
 \usepackage{tabularx,enumitem}
@@ -285,6 +295,24 @@
 \providecommand{\veps}{\varepsilon}
 \providecommand{\sgn}{\operatorname{sgn}}
 \providecommand{\ImPart}{\operatorname{Im}}
+
+% ===== Generic math/physics notation (moved from per-book settings.tex) =====
+\providecommand{\Reop}{\operatorname{Re}}
+\providecommand{\Imop}{\operatorname{Im}}
+\providecommand{\imop}{\operatorname{im}}
+\providecommand{\kerop}{\operatorname{ker}}
+\providecommand{\ketbra}[2]{\lvert#1\rangle\langle#2\rvert}
+\providecommand{\vect}[1]{\vb{#1}}
+\providecommand{\mat}[1]{\mathbf{#1}}
+\providecommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\providecommand{\norm}[1]{\left\lVert #1\right\rVert}
+\providecommand{\mc}[1]{\mathcal{#1}}
+\providecommand{\mf}[1]{\mathfrak{#1}}
+\providecommand{\ddt}{\frac{\dd}{\dd t}}
+\providecommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\providecommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\providecommand{\kB}{k_{\mathrm B}}
+\providecommand{\kT}{k_{\mathrm B}T}
 
 % ===== Shared theorem environments =====
 \newtheorem{theorem}{定理}[chapter]
