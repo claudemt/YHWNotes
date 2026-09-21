@@ -40,10 +40,10 @@ def finite_or_zero(value, limit=3):
 def main():
     T=np.linspace(0,8,1000)
     with figure_style():
-        fig,ax=plt.subplots(figsize=(12.2,7.4))
+        fig,ax=plt.subplots()
         for i,q in enumerate((3,4,5)):
             y=np.array([finite_or_zero(bethe_values(max(t,5e-2),q)[4]) for t in T])
             ax.plot(T,y,color=COLORS[i],label=rf"$q={q}$")
         ax.set(xlabel=r"$kT/J$",ylabel=r"$\chi$",xlim=(0,8),ylim=(0,1.3)); polish_axes(ax); add_legend(ax, loc="lower right")
-        save_figure(fig,"magnetic_susceptibility.png")
+        save_figure(fig, "magnetic_susceptibility.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

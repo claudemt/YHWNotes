@@ -4,7 +4,8 @@ from scipy.optimize import brentq
 import sys, pathlib
 _repo_root = next(p for p in pathlib.Path(__file__).resolve().parents if (p / "preamble.py").exists())
 sys.path.insert(0, str(_repo_root))
-from preamble import figure_style, polish_axes, save_figure, COLORS, Line2D, add_dual_legend
+from preamble import figure_style, polish_axes, save_figure, COLORS, add_dual_legend
+from matplotlib.lines import Line2D
 
 def gamma_c(q): return 0.5*np.log(q/(q-2))
 def a_order(g,q):
@@ -40,7 +41,7 @@ def finite_or_zero(value, limit=3):
 def main():
     T=np.linspace(0,5.5,1400)
     with figure_style():
-        fig,ax=plt.subplots(figsize=(12.8,7.4))
+        fig,ax=plt.subplots()
         for i,q in enumerate((3,4,5)):
             cb=np.array([finite_or_zero(bethe_values(max(t,5e-2),q)[5]) for t in T])
             cw=np.array([finite_or_zero(bw_values(max(t,5e-2),q)[1]) for t in T])
@@ -51,5 +52,5 @@ def main():
             handles2=[Line2D([0],[0],color=COLORS[i],ls="-",label=rf"$q={q}$") for i,q in enumerate((3,4,5))],
             kw1=dict(loc="upper left"), kw2=dict(loc="upper right"))
         ax.set(xlabel=r"$kT/J$",ylabel=r"$C/(Nk)$",xlim=(0,5.5),ylim=(0,2.5)); polish_axes(ax)
-        save_figure(fig,"heat_capacity.png")
+        save_figure(fig, "heat_capacity.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

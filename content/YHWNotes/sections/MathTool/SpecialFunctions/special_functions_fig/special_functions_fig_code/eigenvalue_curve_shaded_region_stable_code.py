@@ -71,7 +71,7 @@ def main():
     curves_a, curves_b = _characteristic_curves(q)
 
     with figure_style():
-        fig, ax = plt.subplots(figsize=(12.8, 8.3))
+        fig, ax = plt.subplots()
 
         ax.fill_betweenx(
             q, LAM_MIN, curves_a[0],
@@ -93,13 +93,12 @@ def main():
 
         ax.set_xlabel(r"$\lambda$")
         ax.set_ylabel(r"$q$")
-        ax.set_title(r"Mathieu stability chart (instability shaded)")
         ax.set_xlim(LAM_MIN, LAM_MAX)
         ax.set_ylim(Q_MIN, Q_MAX)
         ax.set_xticks(np.arange(-2, 35, 2))
         ax.set_yticks(np.arange(0, 18, 2))
         polish_axes(ax, minor_ticks=False)
-        save_figure(fig, "eigenvalue_curve_shaded_region_stable.png")
+        save_figure(fig, "eigenvalue_curve_shaded_region_stable.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
 if __name__ == "__main__":
     main()

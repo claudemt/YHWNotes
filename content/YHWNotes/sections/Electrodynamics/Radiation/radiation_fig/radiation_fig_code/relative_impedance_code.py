@@ -26,13 +26,13 @@ def relative_impedance(x):
 def main():
     x = np.linspace(1.0e-3, 40.0, 2400)
     with figure_style():
-        fig, ax = plt.subplots(figsize=(11.5, 7.4))
+        fig, ax = plt.subplots()
         ax.plot(x, relative_impedance(x), color=COLORS[1])
         ax.set(xlabel=r"$kd$", ylabel=r"$z_{\mathrm{rad}}$")
         ax.set_xlim(0.0, 40.0)
         ax.set_ylim(0.0, 1.08)
         polish_axes(ax)
-        save_figure(fig, "relative_impedance.png")
+        save_figure(fig, "relative_impedance.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
 
 if __name__ == "__main__":

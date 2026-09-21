@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import sys, pathlib
 _repo_root = next(p for p in pathlib.Path(__file__).resolve().parents if (p / "preamble.py").exists())
 sys.path.insert(0, str(_repo_root))
-from preamble import figure_style, polish_axes, save_figure, COLORS, Line2D, add_legend
+from preamble import figure_style, polish_axes, save_figure, COLORS, add_legend
+from matplotlib.lines import Line2D
 
 def response(F, s, a, zeta, eps=0.025):
     with np.errstate(divide="ignore", invalid="ignore"):
@@ -20,7 +21,7 @@ def main():
     a = np.linspace(1e-3, 5.1, 900)
     S, A = np.meshgrid(s, a)
     with figure_style():
-        fig, ax = plt.subplots(figsize=(12.8, 8.0))
+        fig, ax = plt.subplots()
         handles = []
         for i, zeta in enumerate(zetas):
             ax.contour(S, A, response(force, S, A, zeta, eps), levels=[0],
@@ -28,12 +29,11 @@ def main():
             handles.append(Line2D([0], [0], color=COLORS[i], label=rf"$\zeta={zeta:g}$"))
         ax.set(
             xlabel=r"$s$", ylabel=r"$a_s$",
-            title=rf"Responce curve: $\epsilon={eps:g}$, $F={force:g}$",
             xlim=(0.325, 0.45), ylim=(0, 5.1),
         )
         polish_axes(ax)
         add_legend(ax, handles=handles, loc="upper left")
-        save_figure(fig, "duffing_superharmonic_response_epsilon_negative.png")
+        save_figure(fig, "duffing_superharmonic_response_epsilon_negative.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
 if __name__ == "__main__":
     main()

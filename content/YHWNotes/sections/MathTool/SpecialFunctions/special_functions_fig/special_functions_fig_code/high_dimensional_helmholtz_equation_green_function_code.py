@@ -10,12 +10,12 @@ from preamble import figure_style, polish_axes, save_figure, add_legend, COLORS
 def main():
     x=np.linspace(0.2,1.4,1200)
     with figure_style():
-        fig,ax=plt.subplots(figsize=(12.0,7.4))
+        fig,ax=plt.subplots()
         for i,d in enumerate((1,2,3)):
             y=x**(1-d/2)*kv(d/2-1,x)
             ax.plot(x,y,color=COLORS[i],label=rf"$d={d}$")
         ax.set(xlabel=r"$x$",ylabel=r"$x^{1-d/2}K_{d/2-1}(x)$")
         ax.set_xlim(0.2,1.4)
         polish_axes(ax); add_legend(ax, loc="upper right")
-        save_figure(fig,"high_dimensional_helmholtz_equation_green_function.png")
+        save_figure(fig, "high_dimensional_helmholtz_equation_green_function.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

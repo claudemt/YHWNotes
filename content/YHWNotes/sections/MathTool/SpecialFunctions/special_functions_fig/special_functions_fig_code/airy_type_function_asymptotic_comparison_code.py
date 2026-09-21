@@ -16,11 +16,11 @@ def relative_error(m,x):
 def main():
     x=np.linspace(1e-5,0.2,1800)
     with figure_style():
-        fig,ax=plt.subplots(figsize=(12.2,7.8))
+        fig,ax=plt.subplots()
         for i,m in enumerate((1,10,20)):
             ax.plot(x,relative_error(m,x),color=COLORS[i],label=rf"$m={m}$")
         ax.set(xlabel=r"$x$",ylabel="relative error")
         ax.set_xlim(0,0.2); ax.set_ylim(-0.012,0.095)
         polish_axes(ax); add_legend(ax, loc="upper left")
-        save_figure(fig,"airy_type_function_asymptotic_comparison.png")
+        save_figure(fig, "airy_type_function_asymptotic_comparison.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

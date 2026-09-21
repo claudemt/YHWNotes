@@ -19,7 +19,7 @@ def main():
     x=np.linspace(-2.5,1.18,1300)
     orders=(0.5,1.0,1.5,2.5)
     with figure_style():
-        fig,ax=plt.subplots(figsize=(12.0,7.4))
+        fig,ax=plt.subplots()
         for i,d in enumerate(orders):
             y=np.array([real_polylog(d,v) for v in x])
             y[np.abs(y)>4]=np.nan
@@ -27,5 +27,5 @@ def main():
         ax.set(xlabel=r"$x$",ylabel=r"$\operatorname{Li}_{\nu}(x)$")
         ax.set_xlim(-2.5,1.2); ax.set_ylim(-2.1,3.1)
         polish_axes(ax); add_legend(ax, loc="upper left")
-        save_figure(fig,"polylogarithm_function.png")
+        save_figure(fig, "polylogarithm_function.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

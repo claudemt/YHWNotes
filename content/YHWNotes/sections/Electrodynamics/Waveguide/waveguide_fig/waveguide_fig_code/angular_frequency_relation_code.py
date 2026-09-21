@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import sys, pathlib
 _repo_root = next(p for p in pathlib.Path(__file__).resolve().parents if (p / "preamble.py").exists())
 sys.path.insert(0, str(_repo_root))
-from preamble import figure_style, polish_axes, save_figure, COLORS, Line2D, add_dual_legend
+from preamble import figure_style, polish_axes, save_figure, COLORS, add_dual_legend
+from matplotlib.lines import Line2D
 
 N1, N2 = 2.5, 1.5
 THETA_MAX = np.arccos(N2/N1)
@@ -41,12 +42,12 @@ def add_waveguide_legends(ax, *, loc):
 def main():
     theta=np.linspace(0.035, THETA_MAX-0.018, 1800)
     with figure_style():
-        fig,ax=plt.subplots(figsize=(11.8,7.5))
+        fig,ax=plt.subplots()
         for i,m in enumerate((0,1,2)):
             ax.plot(theta,omega_te(m,theta),color=COLORS[i],ls="-")
             ax.plot(theta,omega_tm(m,theta),color=COLORS[i],ls="--")
-        ax.set(xlabel=r"$\theta\;(\mathrm{rad})$",ylabel=r"$\omega_m a/c$",title=r"Angular-frequency relation")
+        ax.set(xlabel=r"$\theta\;(\mathrm{rad})$",ylabel=r"$\omega_m a/c$")
         ax.set_xlim(0,THETA_MAX); ax.set_ylim(0,17)
         polish_axes(ax); add_waveguide_legends(ax, loc="upper right")
-        save_figure(fig,"angular_frequency_relation.png")
+        save_figure(fig, "angular_frequency_relation.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

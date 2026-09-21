@@ -8,7 +8,8 @@ from scipy.linalg import eigh_tridiagonal
 import sys, pathlib
 _repo_root = next(p for p in pathlib.Path(__file__).resolve().parents if (p / "preamble.py").exists())
 sys.path.insert(0, str(_repo_root))
-from preamble import COLORS, figure_style, polish_axes, save_figure, Line2D, add_dual_legend
+from preamble import COLORS, figure_style, polish_axes, save_figure, add_dual_legend
+from matplotlib.lines import Line2D
 
 Q = 0.2
 X_MAX = 4.0 * np.pi
@@ -113,7 +114,7 @@ def main() -> None:
         )
 
     with figure_style():
-        fig, ax = plt.subplots(figsize=(13.4, 7.8))
+        fig, ax = plt.subplots()
         for order in range(4):
             ce_y, _ = modes[("ce", order)]
             ax.plot(x, ce_y, color=COLORS[order], linestyle="-", label=rf"$m={order}$")
@@ -137,14 +138,13 @@ def main() -> None:
 
         ax.set_xlabel(r"$x$")
         ax.set_ylabel(r"normalized amplitude")
-        ax.set_title(rf"Mathieu functions, $q={Q}$")
         ax.set_xlim(0.0, X_MAX)
         ax.set_xticks(
             np.arange(0.0, X_MAX + 0.1, np.pi),
             [r"$0$", r"$\pi$", r"$2\pi$", r"$3\pi$", r"$4\pi$"],
         )
         polish_axes(ax, grid=False)
-        save_figure(fig, "mathieu_function.png")
+        save_figure(fig, "mathieu_function.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
     print(f"Mathieu periodic closure max error: {max_closure_error:.3e}")
 

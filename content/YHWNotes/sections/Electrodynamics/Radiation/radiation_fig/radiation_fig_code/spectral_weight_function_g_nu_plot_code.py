@@ -26,13 +26,13 @@ def g_nu(nu):
 def main():
     nu = np.linspace(1.0e-3, 20.0, 2200)
     with figure_style():
-        fig, ax = plt.subplots(figsize=(11.5, 7.4))
+        fig, ax = plt.subplots()
         ax.plot(nu, g_nu(nu), color=COLORS[1])
         ax.set(xlabel=r"$\nu_{\max}$", ylabel=r"$G(\nu_{\max})$")
         ax.set_xlim(0.0, 20.0)
         ax.set_ylim(0.0, 1.02)
         polish_axes(ax)
-        save_figure(fig, "spectral_weight_function_g_nu_plot.png")
+        save_figure(fig, "spectral_weight_function_g_nu_plot.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
 
 if __name__ == "__main__":

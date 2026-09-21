@@ -31,7 +31,7 @@ def r_curve(index, phi):
 def main():
     ranges = [(0.1, 8 * np.pi), (-8 * np.pi, 8 * np.pi), (-2.3, 2.3), (0, 8 * np.pi)]
     with figure_style():
-        fig, ax = plt.subplots(figsize=(11.5, 9.7), subplot_kw={"projection": "polar"})
+        fig, ax = plt.subplots(subplot_kw={"projection": "polar"})
         for i, (lo, hi) in enumerate(ranges):
             phi = np.linspace(lo, hi, 6500)
             radius = r_curve(i, phi)
@@ -41,7 +41,7 @@ def main():
         ax.set_rlim(0.0, 10.0)
         polish_polar_axes(ax, radial_grid=True, radial_labels=True)
         add_legend(ax)
-        save_figure(fig, "attractive_orbit_radius_vs_azimuth_examples.png")
+        save_figure(fig, "attractive_orbit_radius_vs_azimuth_examples.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
 
 if __name__ == "__main__":

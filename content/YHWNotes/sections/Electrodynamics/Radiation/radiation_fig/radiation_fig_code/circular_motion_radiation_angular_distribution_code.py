@@ -25,7 +25,7 @@ def main():
     log_floor = -1.0
     log_ticks = np.arange(-1.0, 4.1, 1.0)
     with figure_style():
-        fig, ax = plt.subplots(figsize=(11.2, 9.5), subplot_kw={"projection": "polar"})
+        fig, ax = plt.subplots(subplot_kw={"projection": "polar"})
         for i, beta in enumerate((0.7, 0.8, 0.9)):
             plot_log_curve(
                 ax,
@@ -35,13 +35,12 @@ def main():
                 color=COLORS[i],
                 label=rf"$\beta={beta:.1f}$",
             )
-        ax.set_title(r"Circular-motion radiation", pad=26)
         ax.set_rlim(0.0, 5.1)
         ax.set_yticks(log_ticks - log_floor)
         ax.set_yticklabels([rf"${tick:g}$" for tick in log_ticks])
         polish_polar_axes(ax, radial_grid=True, radial_labels=False)
         add_legend(ax)
-        save_figure(fig, "circular_motion_radiation_angular_distribution.png")
+        save_figure(fig, "circular_motion_radiation_angular_distribution.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,8 @@ from scipy.optimize import brentq
 import sys, pathlib
 _repo_root = next(p for p in pathlib.Path(__file__).resolve().parents if (p / "preamble.py").exists())
 sys.path.insert(0, str(_repo_root))
-from preamble import figure_style, polish_axes, save_figure, COLORS, Line2D, add_dual_legend
+from preamble import figure_style, polish_axes, save_figure, COLORS, add_dual_legend
+from matplotlib.lines import Line2D
 
 def gamma_c(q): return 0.5*np.log(q/(q-2))
 def a_order(g,q):
@@ -41,7 +42,7 @@ def finite_or_zero(values):
 def main():
     T=np.linspace(0,4,900); styles=["-","--",":"]; names=[r"$p_{+-}$",r"$p_{++}$",r"$p_+$"]
     with figure_style():
-        fig,ax=plt.subplots(figsize=(12.8,7.4))
+        fig,ax=plt.subplots()
         for i,q in enumerate((3,4,5)):
             vals=finite_or_zero([bethe_values(max(t,5e-2),q)[:3] for t in T])
             for j in range(3): ax.plot(T,vals[:,j],color=COLORS[i],ls=styles[j],label=rf"$q={q}$" if j==0 else None)
@@ -51,5 +52,5 @@ def main():
             kw1=dict(loc="lower left", bbox_to_anchor=(0.0, 0.36)),
             kw2=dict(loc="lower left"))
         ax.set(xlabel=r"$kT/J$",ylabel="probability",xlim=(0,4),ylim=(0,1.03)); polish_axes(ax)
-        save_figure(fig,"state_probability.png")
+        save_figure(fig, "state_probability.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

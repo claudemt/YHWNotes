@@ -39,10 +39,10 @@ def t_curve(index,r):
 def main():
     r=np.linspace(0,8.5,4000)
     with figure_style():
-        fig,ax=plt.subplots(figsize=(13.0,8.0))
+        fig,ax=plt.subplots()
         for i in range(4): ax.plot(r,t_curve(i,r),color=COLORS[i],label=LABELS[i])
         ax.set(xlabel=r"$\tilde{r}$",ylabel=r"$\tilde{t}$")
         ax.set_xlim(0,8.7); ax.set_ylim(0,52)
         polish_axes(ax); add_legend(ax, loc="upper left")
-        save_figure(fig,"attractive_orbit_time_vs_radius_examples.png")
+        save_figure(fig, "attractive_orbit_time_vs_radius_examples.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 if __name__=="__main__": main()

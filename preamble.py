@@ -190,3 +190,40 @@ def _iter_axes(ax) -> Iterable:
             yield a
     except Exception:
         yield ax
+
+
+LIGHT_BLUE = "#9ecae1"  # 与 COLORS 同风格的辅助色，给 dual-legend 用
+
+
+def polish_polar_axes(ax, radial_grid: bool = True, radial_labels: bool = True) -> None:
+    """Polar 版本的 polish_axes：保持 4 方向 outward ticks，可选 radial 网格/标签。"""
+    ax.set_theta_zero_location("E")
+    ax.set_theta_direction("counterclockwise")
+    ax.tick_params(direction="out", length=3.5, width=0.9)
+    if radial_grid:
+        ax.grid(True, linestyle="--", linewidth=0.7, color="0.85")
+    else:
+        ax.grid(False)
+    if not radial_labels:
+        ax.set_yticklabels([])
+
+
+def add_dual_legend(ax, handles1, handles2, loc="upper right", kw1=None, kw2=None):
+    """双图例：handles1 放第一个图例（默认 loc），handles2 放第二个（kw2 覆盖位置）。
+    两图例都 frameon=True，白色背景，浅灰边框。"""
+    kw1 = dict(frameon=True, framealpha=0.95, edgecolor="0.80", fancybox=True,
+               borderpad=0.55, labelspacing=0.4, fontsize=10.5, loc=loc) | (kw1 or {})
+    kw2 = dict(frameon=True, framealpha=0.95, edgecolor="0.80", fancybox=True,
+               borderpad=0.55, labelspacing=0.4, fontsize=10.5) | (kw2 or {})
+    leg1 = ax.legend(handles=handles1, **kw1)
+    ax.add_artist(leg1)
+    ax.legend(handles=handles2, **kw2)
+    return leg1
+
+
+def save_figure(fig, name, output_dir=None):
+    """兼容旧接口：接受 'name.png' 或 'name'，实际同时存 PDF+PNG。"""
+    from pathlib import Path as _P
+    stem = _P(name).stem
+    out = _P(output_dir) if output_dir is not None else _P.cwd()
+    save_pdf_png_pair(fig, stem, out)

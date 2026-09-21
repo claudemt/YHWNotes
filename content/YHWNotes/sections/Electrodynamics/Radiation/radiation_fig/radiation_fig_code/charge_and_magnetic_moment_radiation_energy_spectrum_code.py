@@ -19,7 +19,7 @@ def main():
     nu = np.linspace(1.0e-5, 8.0, 3000)
 
     with figure_style():
-        fig, ax = plt.subplots(figsize=(11.5, 7.4))
+        fig, ax = plt.subplots()
         ax.plot(
             nu,
             integrand_point_charge(nu),
@@ -37,7 +37,7 @@ def main():
         ax.set_ylim(0.0, 1.0)
         polish_axes(ax)
         add_legend(ax, loc="upper right", framealpha=0.94)
-        save_figure(fig, "charge_and_magnetic_moment_radiation_energy_spectrum.png")
+        save_figure(fig, "charge_and_magnetic_moment_radiation_energy_spectrum.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
 
 
 if __name__ == "__main__":
