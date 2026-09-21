@@ -210,7 +210,7 @@ whitening 后，拟合向量是 $Y^*$ 到 $\mathcal C(X^*)$ 的欧氏正交投�
 
 因此一般 GLS、精确 $t$ 与精确 $F$ 都已经在 $V$ 所诱导的内积中闭合；后面的 OLS、ANOVA 与普通回归只是取 $V=I_n$ 后的坐标简化。
 
-\begin{derivation}[whitening、可估函数、Gauss--Markov 与精确正态分解]
+\begin{derivation}[秩亏设计下的 whitening 与 Gauss--Markov]
 在 whitened 模型
 \[
  Y^*=X^*\beta+\varepsilon^*,
@@ -288,6 +288,7 @@ Gauss--Markov 最优性也不需要先假设 $X$ 满列秩。固定任意可估�
  \ge 0.
 \end{align*}
 因此即使设计秩亏，$c^{\mathsf T}\widehat\beta^+$ 仍是 $c^{\mathsf T}\beta$ 的 BLUE。Gauss--Markov 的真正一般对象是可估函数；只有当整个参数向量可识别时，才可以把这些标量比较合并为参数协方差矩阵的 Loewner 次序。
+\end{derivation}
 
 现在进一步假设 $X^*$ 满列秩，便恢复对整个坐标向量 $\beta$ 的通常矩阵比较。此时 OLS 解为
 \[
@@ -359,7 +360,7 @@ Cochran 投影定理因此同时给出\eqnrefs{eq:math-stat-gls-residual-chi-squ
 \]
 又是秩分别为 $q$ 与 $n-p_1$ 的正交投影，于是两项标准化平方长度独立，取单位维数比值便得到\eqnrefs{eq:math-stat-general-weighted-f}。这说明一般协方差模型中的精确推断没有新增概率定理，全部来自 whitening 后同一个 Gaussian projection 结构。
 
-\textbf{实例。}一元线性回归 $y_i=\beta_0+\beta_1 x_i+\varepsilon_i$：$p=2$，约束 $\beta_1=0$ 给 $q=1$。whitening 把残差标准化后，$\hat\beta_1$ 的标准化平方除以残差平方和给出 $F_{1,n-2}$——这就是回归 $F$ 检验。多元回归中约束 $C\vb\beta=\vb c$（$C$ 为 $q\times p$）给出 $F_{q,n-p}$，whitening 把一般协方差 $\sigma^2(X^\top X)^{-1}$ 化为单位阵，使约束检验化为标准正交投影——这是所有回归推断的统一机制。
+实例。一元线性回归 $y_i=\beta_0+\beta_1 x_i+\varepsilon_i$：$p=2$，约束 $\beta_1=0$ 给 $q=1$。whitening 把残差标准化后，$\hat\beta_1$ 的标准化平方除以残差平方和给出 $F_{1,n-2}$——这就是回归 $F$ 检验。多元回归中约束 $C\vb\beta=\vb c$（$C$ 为 $q\times p$）给出 $F_{q,n-p}$，whitening 把一般协方差 $\sigma^2(X^\top X)^{-1}$ 化为单位阵，使约束检验化为标准正交投影——这是所有回归推断的统一机制。
 
 
 接下来考察球形误差特例：OLS 与有限样本精确分布。
@@ -452,7 +453,7 @@ Cochran 投影定理因此同时给出\eqnrefs{eq:math-stat-gls-residual-chi-squ
 
 如果不假设正态，\eqnrefs{eq:math-stat-ols-beta} 的无偏性与 Gauss--Markov 最优性仍成立，但精确 $t/F$ 分布一般消失。在适当独立、矩与设计条件下，可以利用 \chapref{chap:math-stat-asymptotics} 的渐近线性表示得到大样本正态推断；“BLUE 不需要正态”绝不能被误读为“精确 Student 推断也不需要正态”。
 
-\textbf{过渡：线性假设、嵌套投影与 ANOVA.}\enspace
+线性假设检验可以继续写成嵌套投影；ANOVA 只是同一几何结构在分类设计下的坐标表示。
 
 设简化模型与完整模型的均值子空间分别为
 \[
@@ -536,7 +537,6 @@ F=\frac{\bigl[Y^{\mathsf T}(P_1-P_0)Y/q\bigr]}{\bigl[Y^{\mathsf T}(I-P_1)Y/(n-p_
 \sim\Fdist_{q,n-p_1},
 \end{equation*}
 即得到\eqnrefs{eq:math-stat-general-nested-f-test}。因此 $F$ 分布不是 ANOVA 专属构造，而是两个正交 Gaussian projection 单位维数平方长度的比值。
-\end{derivation}
 
 取 $V=I_n$ 后，前面的一般加权线性假设\eqnrefs{eq:math-stat-general-weighted-linear-hypothesis}化为
 \begin{equation}\label{eq:math-stat-general-linear-hypothesis-f}
@@ -762,6 +762,7 @@ Y^{\mathsf T}P_EY
 \E(Y^{\mathsf T}P_EY)=\sigma^2(\Lambda_E+q).
 \]
 这说明原始效应平方和包含 $q\sigma^2$ 的纯噪声基线；而除以 $\sigma^2$ 后的非中心参数 $\Lambda_E$ 恰好只保留均值在效应子空间中的平方长度。在线性模型的备择功效计算中真正控制非中心 $F$ 的就是这个量。
+\end{derivation}
 
 
 组均值的线性对比
@@ -845,18 +846,14 @@ Y^{\mathsf T}P_EY
 \end{equation*}
 即\eqnrefs{eq:math-stat-scheffe-simultaneous}。因此 Scheff'e 系数不是需要另背的一项常数，而是"所有单位方向中最坏投影"产生的球半径。
 
-\emph{举例：三组比较的 Scheff'e 区间。}设三组等样本量 \(n\)，方差估计 \(\widehat\sigma^2\)，自由度 \(\nu=3(n-1)\)。对 pairwise 对比 \(L=\mu_1-\mu_2\)（即 \(a=(1,-1,0)\)），Scheff'e 半宽
+设三组样本量均为 \(n\)，误差自由度 \(\nu=3(n-1)\)。对 pairwise 对比 \(L=\mu_1-\mu_2\)，Scheff'e 半宽为
 \[
 \sqrt{2F_{1-\alpha,2,\nu}\,\widehat\sigma^2\cdot\frac2n}
 =2\sqrt{\frac{F_{1-\alpha,2,\nu}\widehat\sigma^2}{n}}.
 \]
 对 Tukey 检验，pairwise 半宽为 \(q_{1-\alpha,3,\nu}/\sqrt2\cdot\sqrt{\widehat\sigma^2/n}\)。Scheff'e 对 pairwise 比较稍宽，但对一般对比（如 \(\mu_1-(\mu_2+\mu_3)/2\)）紧；Tukey 对 pairwise 紧但对一般对比不适用。两者覆盖不同对比族，选择由科学问题决定。
 
-\emph{更一般结论：Scheff'e 与 Bonferroni 的对比。}对 \(m\) 个固定对比，Bonferroni 给出同时区间半宽 \(t_{1-\alpha/(2m),\nu}\sqrt{\widehat\sigma^2\sum a_j^2/n_j}\)，对 \(m\) 较小且对比预先指定时优于 Scheff'e。Scheff'e 对所有 \(\sum a_j=0\) 对比（无限族）同时覆盖，且在此族上最优。当对比数 \(m\) 接近或超过 \(g-1\) 时，Scheff'e 反而更紧。这一对比体现了"对固定有限族用 Bonferroni、对参数子空间全体用 Scheff'e"的原则。
-
-\emph{物理建模：多分量能级的同时置信带。}在光谱分析中，\(g\) 个能级 \(\mu_j\) 的同时置信区间对应 Scheff'e 框架：所有线性对比（能级差、加权平均能级）同时覆盖。Tukey 适用于 pairwise 能级差，Scheff'e 适用于任意对比（如 \(\mu_1-2\mu_2+\mu_3\) 检验二次能级结构）。物理建模中若对比族由对称性预先指定（如群论不可约表示），Bonferroni 更紧；若对比族由数据驱动探索产生，Scheff'e 提供事后检验保护。
-
-\emph{举例：四组比较的 Scheff'e 与 Tukey 数值对比。}设 \(g=4\)、\(\nu=20\)、\(\alpha=0.05\)。Scheff'e 临界值 \(\sqrt{3F_{0.95,3,20}}=\sqrt{3\cdot3.10}=3.05\)。Tukey 临界值 \(q_{0.95,4,20}/\sqrt2=3.96/\sqrt2=2.80\)。对 pairwise 对比，Tukey 半宽更小（2.80 vs 3.05）；对一般对比 \(\mu_1-(\mu_2+\mu_3+\mu_4)/3\)，Scheff'e 仍覆盖而 Tukey 不保证。选择由科学问题中对比族是否预先指定决定。
+若科学问题事先只指定了 $m$ 个对比，Bonferroni 校正使用临界值 $t_{1-\alpha/(2m),\nu}$，通常比覆盖整个对比子空间的 Scheff'e 区间更短。反之，若对比由数据检查后才选择，Scheff'e 的同时覆盖才与推断目标匹配。两者的差别来自所覆盖的对比族，而不是哪一种方法在所有问题中都更优。
 
 
 因为
@@ -904,7 +901,6 @@ Kronecker 积保持乘法，故 $P_0,P_A,P_B,P_{AB},P_E$ 都是正交投影，�
  \rank(P_E)&=ab(m-1).
 \end{align*}
 若无 $A$ 主效应，则 $P_A\mu=0$；标准高斯噪声在 $P_A$ 与 $P_E$ 两个正交子空间上的平方长度分别给出独立卡方变量。除以各自秩并取比，就得到\eqnrefs{eq:math-stat-balanced-two-way-anova-f}。因此双因素 ANOVA 表中的每一行都可由“投影矩阵、秩、正交性”三件事从头重建。
-\end{derivation}
 
 \section{回归：连续设计下的同一个投影模型}
 
@@ -1014,19 +1010,20 @@ Frisch--Waugh--Lovell 定理给出
  =X_2^{\mathsf T}M_1X_2\widehat\beta_2,
 \]
 其中 \(M_1=I-P_1\) 是向 \(X_1\) 列空间正交补的投影。从而得到\eqnrefs{eq:math-stat-fwl}。所以 FWL 不是新的估计方法，而是完整投影在块坐标下的 Schur complement 消元。
+\end{derivation}
 
-\emph{举例：控制协变量后的偏回归。}设 \(Y=\beta_0+\beta_1X_1+\beta_2X_2+\varepsilon\)，兴趣在 \(\beta_1\)。FWL 给出 \(\widehat\beta_1\) 等价于两步：(i) 把 \(Y\) 与 \(X_1\) 分别对 \(X_2\) 回归取残差 \(M_2Y\)、\(M_2X_1\)；(ii) 把 \(M_2Y\) 对 \(M_2X_1\) 简单回归。即
+在模型 \(Y=\beta_0+\beta_1X_1+\beta_2X_2+\varepsilon\) 中，若关注 \(\beta_1\)，FWL 先把 \(Y\) 与 \(X_1\) 分别对 \(X_2\) 残差化，再对两个残差作简单回归。因此
 \[
 \widehat\beta_1=\frac{(M_2X_1)^{\mathsf T}(M_2Y)}{(M_2X_1)^{\mathsf T}(M_2X_1)}
 =\frac{\sum\tilde X_{1i}\tilde Y_i}{\sum\tilde X_{1i}^2},
 \]
 其中 \(\tilde X_1=M_2X_1\)、\(\tilde Y=M_2Y\) 是去除 \(X_2\) 线性效应后的残差。这就是"控制 \(X_2\) 后看 \(X_1\) 对 \(Y\) 的效应"的代数实现。
 
-\emph{更一般结论：FWL 与偏相关。}FWL 把偏回归系数解释为残差间简单回归，因此偏相关系数
+同一残差化也给出偏相关系数
 \[
 r_{YX_1\cdot X_2}=\frac{\tilde Y^{\mathsf T}\tilde X_1}{\|\tilde Y\|\,\|\tilde X_1\|}
 \]
-正是去除 \(X_2\) 后 \(Y\) 与 \(X_1\) 残余差的夹角余弦。这把"偏相关"从形式定义还原为几何投影后的简单相关，是 ANCOVA、 mediation analysis 与因果推断中控制混杂的代数基础。
+它是去除 $X_2$ 的线性投影后，$Y$ 与 $X_1$ 两个残差向量夹角的余弦。这里的“控制”只表示线性残差化；若要作因果解释，还需要额外的识别假设。
 
 
 对给定协变量向量 $x_0\in\R^p$，条件均值
@@ -1131,14 +1128,13 @@ Sherman--Morrison 恒等式给出（对秩一修正 \(A-uv^{\mathsf T}\) 的逆�
 \end{align*}
 再除以 $p\,\widehat\sigma^2$ 便得到\eqnrefs{eq:math-stat-cook-distance}。
 
-\emph{举例：高杠杆点的删除影响。}若 \(h_{ii}\to1\)（第 \(i\) 个观测在设计矩阵中杠杆极大），则 \(\widehat\beta_{(-i)}-\widehat\beta\approx(A^{-1}x_i e_i)/(1-h_{ii})\) 发散，删除该点会大幅改变估计。Cook 距离 \(D_i=e_i^2h_{ii}/[p\widehat\sigma^2(1-h_{ii})^2]\) 在 \(h_{ii}\to1\) 时也发散，这正是高杠杆点即使残差不大也可能高影响的代数原因。反之，若 \(h_{ii}\approx0\)（低杠杆点），删除几乎不改变 \(\widehat\beta\)。
+当 \(h_{ii}\to1\) 时，删除更新中的因子 \((1-h_{ii})^{-1}\) 变大，所以高杠杆点即使残差不大，也可能显著改变 \(\widehat\beta\) 并产生较大的 Cook 距离；低杠杆点则没有这种放大。
 
-\emph{更一般结论：PRESS 与留一交叉验证。}由 leave-one-out 公式，留一残差
+同一秩一更新公式还给出留一残差
 \[
 e_{(-i)}=Y_i-x_i^{\mathsf T}\widehat\beta_{(-i)}=\frac{e_i}{1-h_{ii}},
 \]
-PRESS 统计量 \(\sum_i e_{(-i)}^2=\sum_i e_i^2/(1-h_{ii})^2\) 不必重复拟合即可计算。这把交叉验证从计算昂贵的 \(n\) 次回归降为一次拟合加 \(n\) 次代数运算，是线性模型快速模型选择的基石。外部学生化残差 \(t_i=e_i/[\widehat\sigma_{(-i)}\sqrt{1-h_{ii}}]\sim t_{n-p-1}\) 也由此推出，提供不依赖第 \(i\) 个观测的异常点检验。
-\end{derivation}
+因此 PRESS 统计量 $\sum_i e_i^2/(1-h_{ii})^2$ 可以由一次完整拟合直接计算，而无须重新拟合 $n$ 次。
 
 多重共线性也是 Gram 矩阵的几何问题。若 $X^{\mathsf T}X$ 存在很小特征值，则某些参数方向几乎不改变拟合均值，因而
 \[
@@ -1288,6 +1284,7 @@ A=X^{\mathsf T}X.
 \sigma^2\frac{s_j^2}{(s_j^2+\lambda)^2}.
 \]
 当 $s_j$ 很小时，OLS 的方差 $\sigma^2/s_j^2$ 会爆炸，而 ridge 把它压到有限量；代价就是\eqnrefs{eq:ridge-bias} 的系统偏差。正则化的数学本质因此不是“让拟合更平滑”的经验技巧，而是在不可识别或弱识别方向上主动进行 bias--variance tradeoff。
+\end{derivation}
 
 
 更一般的 quadratic regularization 为
@@ -1336,57 +1333,32 @@ z_j\in
 所以 ridge 的几何是连续谱收缩，lasso 的几何则来自 $\ell^1$ 球的尖角，使某些坐标恰好落到零。
 
 
-当 $X^{\mathsf T}X=I$，目标函数
-\begin{equation*}
- \frac12\|Y-Xb\|^2+\lambda\|b\|_1
- =\frac12\|Y\|^2-\langle X^{\mathsf T}Y,b\rangle+\frac12\|Xb\|^2+\lambda\|b\|_1
-\end{equation*}
-中，$\|Y\|^2/2$ 与 $b$ 无关，$\|Xb\|^2=b^{\mathsf T}X^{\mathsf T}Xb=b^{\mathsf T}b=\|b\|^2$，且 $\langle X^{\mathsf T}Y,b\rangle=\langle z,b\rangle$（其中 \(z=X^{\mathsf T}Y\) 是 OLS 估计）。因此目标分解为 $p$ 个独立坐标问题：
-\begin{equation*}
+当 $X^{\mathsf T}X=I$ 时，略去与 $b$ 无关的常数后，目标函数分解为
+\[
  \sum_{j=1}^p
- \left[
- \frac12(b_j-z_j)^2+\lambda|b_j|
- \right].
-\end{equation*}
-正交设计的关键作用是消除坐标耦合：一般设计下 \(\|Xb\|^2=b^{\mathsf T}X^{\mathsf T}Xb\) 含交叉项 \(b_jb_k\)，lasso 不能分坐标求解。逐坐标最小化 $g(b_j)=\frac12(b_j-z_j)^2+\lambda|b_j|$。分三种情形。
+ \left\{\frac12(b_j-z_j)^2+\lambda|b_j|\right\},
+ \qquad z=X^{\mathsf T}Y.
+\]
+第 $j$ 个坐标的一阶条件是
+\[
+ 0\in b_j-z_j+\lambda\,\partial|b_j|,
+ \qquad
+ \partial|b_j|=
+ \begin{cases}
+ \{1\},&b_j>0,\\
+ [-1,1],&b_j=0,\\
+ \{-1\},&b_j<0.
+ \end{cases}
+\]
+于是 $z_j>\lambda$ 时 $b_j=z_j-\lambda$，$z_j<-\lambda$ 时 $b_j=z_j+\lambda$，而 $|z_j|\le\lambda$ 时 $b_j=0$，合并后正是\eqnrefs{eq:lasso-soft-threshold}。正交性消除了坐标耦合；一般设计含有 $b_jb_k$ 交叉项，不能逐坐标得到这条闭式解。
 
-\emph{情形一：$b_j>0$。}此时 $|b_j|=b_j$，$g$ 可微，一阶条件（KKT）
-\begin{equation*}
- 0=g'(b_j)=b_j-z_j+\lambda,
-\end{equation*}
-给出 $b_j=z_j-\lambda$。此解满足 $b_j>0$ 当且仅当 $z_j>\lambda$。
-
-\emph{情形二：$b_j<0$。}此时 $|b_j|=-b_j$，一阶条件
-\begin{equation*}
- 0=g'(b_j)=b_j-z_j-\lambda,
-\end{equation*}
-给出 $b_j=z_j+\lambda$。此解满足 $b_j<0$ 当且仅当 $z_j<-\lambda$。
-
-\emph{情形三：$b_j=0$。}此时需用 subdifferential：\(\partial|0|=[-1,1]\)（凸函数在不可微点的次导数是左右导数之间的闭区间），故 \(0\in\partial g(0)\) 等价于
-\begin{equation*}
- 0\in -(z_j)+\lambda[-1,1],
-\end{equation*}
-即 $|z_j|\le\lambda$。此时 $b_j=0$ 是最优。
-
-三种情形合并：当 $z_j>\lambda$ 时 $b_j=z_j-\lambda>0$；当 $z_j<-\lambda$ 时 $b_j=z_j+\lambda<0$；当 $|z_j|\le\lambda$ 时 $b_j=0$。统一写为
-\begin{equation*}
- \widehat\beta_j=\operatorname{sgn}(z_j)(|z_j|-\lambda)_+,
-\end{equation*}
-即\eqnrefs{eq:lasso-soft-threshold}。几何上，$\ell^1$ 罚在原点处有"尖角"（不可微），使得 $|z_j|\le\lambda$ 的坐标被精确地拉到零；而 $\ell^2$ 罚（ridge）处处可微，只能收缩不能归零。
-
-\emph{举例：正交设计下 lasso 与 ridge 的具体比较。}设 \(p=3\)、\(z=(3,0.5,-2)\)、\(\lambda=1\)。Lasso 给出
+例如取正交设计、\(z=(3,0.5,-2)\) 与 \(\lambda=1\)，lasso 给出
 \[
 \widehat\beta^{\rm lasso}=(\operatorname{sgn}(3)(3-1),\,0,\,\operatorname{sgn}(-2)(2-1))=(2,0,-1),
 \]
 中间坐标被精确归零。Ridge 解 \(\widehat\beta^{\rm ridge}_j=z_j/(1+\lambda)=z_j/2=(1.5,0.25,-1)\)，中间坐标仅收缩不归零。这体现了 lasso 的变量选择能力：通过 \(\ell^1\) 几何产生稀疏解。
 
-\emph{更一般结论：KKT 与 oracle 性质。}一般设计下 lasso 的 KKT 条件为
-\[
-X^{\mathsf T}(Y-X\widehat\beta)=\lambda\,\widehat\kappa,
-\qquad
-\widehat\kappa_j=\operatorname{sgn}(\widehat\beta_j)\text{ 若 }\widehat\beta_j\ne0,\ |\widehat\kappa_j|\le1\text{ 若 }\widehat\beta_j=0.
-\]
-在 restricted eigenvalue 条件与 beta-min \(\min_{j\in S}|\beta_j|>C\lambda\sqrt{|S|/n}\) 下，lasso 满足 oracle 性质：以高概率 \(\widehat S=S\)（真实支持集），且 \(\|\widehat\beta-\beta\|=O_p(\lambda\sqrt{|S|})\)。即 lasso 在稀疏高维模型中达到与已知真实支持集时几乎相同的估计速率。
+一般设计下仍由\eqnrefs{eq:lasso-kkt}刻画最优解。Restricted-eigenvalue 或 compatibility 条件足以控制预测误差与参数估计误差；但精确支持恢复还需要更强的设计条件（典型地 irrepresentable 条件）以及 beta-min 条件。较小的预测误差本身不能推出 $\widehat S=S$。
 
 
 当 $p\ge n$ 时，未正则化参数通常不再唯一可识别，但预测 $X\beta$ 仍可能具有良好定义；正则化实际上选择了众多近似等价参数表示中的一个。必须区分三个问题：
@@ -1397,7 +1369,7 @@ X^{\mathsf T}(Y-X\widehat\beta)=\lambda\,\widehat\kappa,
 \end{itemize}
 三者需要不同条件。尤其 lasso 的变量选择一致性远强于预测一致性，不能因为交叉验证预测误差较小就宣称“真实变量已被识别”。在高维理论中，restricted eigenvalue、compatibility、sparsity 与 beta-min 等条件正是在补偿普通 Gram 矩阵可逆性失效后留下的几何缺口。
 
-\textbf{过渡：非线性模型、失配与稳健协方差.}\enspace
+正则化仍建立在线性均值空间上；当均值空间弯曲或模型失配时，还需要非线性局部化与稳健协方差。
 
 线性回归的本质是均值集合本身就是一个固定线性子空间。若均值由光滑映射
 \[
@@ -1483,63 +1455,6 @@ Gauss--Newton 从一般精确模型作受控局部近似。若 $m$ 二阶连续�
 
 必须注意，这个阻尼只保证\emph{局部二次子问题}条件数更好，并不把非凸的原始 $\mathcal Q_{\rm WLS}(\theta)$ 变成全局凸函数。多极小点、不可识别方向和远离解时的错误切平面仍然可能存在；因此算法稳定性与统计可识别性是两个不同问题。
 
-
-记当前残差 $r(\theta)=Y-m(\theta)$。局部展开给出
-\[
- r(\theta+\delta)
- =r(\theta)-\dot m(\theta)\delta+O(\|\delta\|^2).
-\]
-忽略二阶余项后的局部目标为
-\[
- \mathcal Q_{\rm lin}(\delta)
- =\{r-\dot m\,\delta\}^{\mathsf T}
- V^{-1}\{r-\dot m\,\delta\}.
-\]
-对 $\delta$ 求导，
-\[
- \frac{\partial\mathcal Q_{\rm lin}}{\partial\delta}
- =-2\dot m^{\mathsf T}V^{-1}(r-\dot m\,\delta).
-\]
-令其为零，得到正规方程
-\[
- \dot m^{\mathsf T}V^{-1}\dot m\,\delta
- =\dot m^{\mathsf T}V^{-1}r,
-\]
-若 $\dot m(\theta)$ 满列秩便得到\eqnrefs{eq:math-stat-gauss-newton-step}。在 whitened 坐标中，这一步就是把当前残差投影到 $V^{-1/2}\dot m(\theta)$ 张成的局部切空间。具体地，令 \(\tilde r=V^{-1/2}r\)、\(\tilde J=V^{-1/2}\dot m\)，则
-\[
-\delta=(\tilde J^{\mathsf T}\tilde J)^{-1}\tilde J^{\mathsf T}\tilde r,
-\]
-正是 \(\tilde r\) 到 \(\tilde J\) 列空间的 OLS 投影系数。因此线性回归的固定投影被推广为"沿曲面不断更新切空间的局部投影"。
-
-若加入阻尼项，则
-\[
- \frac{\partial\mathcal Q_{\rm damp}}{\partial\delta}
- =-2\dot m^{\mathsf T}V^{-1}(r-\dot m\,\delta)
- +2\zeta D\delta.
-\]
-令其为零便得到\eqnrefs{eq:math-stat-levenberg-marquardt-step}。由于 $D\succ0$，即使 $\dot m^{\mathsf T}V^{-1}\dot m$ 近奇异，矩阵
-\[
- \dot m^{\mathsf T}V^{-1}\dot m+\zeta D
-\]
-仍正定，从而局部子问题有唯一解。这里正定化的是算法中的局部正规矩阵，而不是原模型的 Fisher 信息或全局 Hessian；这一区分在弱可识别非线性模型中尤其重要。
-
-\emph{举例：指数衰减模型的 Gauss--Newton。}设 \(m_i(\theta)=\theta\ee^{-x_i}\)（单参数），残差 \(r_i=Y_i-\theta\ee^{-x_i}\)，导数 \(\dot m_i=\ee^{-x_i}\)。Gauss--Newton 步
-\[
-\delta=\frac{\sum_i\ee^{-x_i}(Y_i-\theta\ee^{-x_i})}{\sum_i\ee^{-2x_i}}
-=\frac{\sum_i\ee^{-x_i}Y_i}{\sum_i\ee^{-2x_i}}-\theta,
-\]
-一步即收敛到 OLS 解 \(\widehat\theta=\sum\ee^{-x_i}Y_i/\sum\ee^{-2x_i}\)。这是因为模型关于 \(\theta\) 线性，局部切空间不随 \(\theta\) 改变，Gauss--Newton 一步精确。对真正非线性模型（如 \(m_i=\ee^{-\theta x_i}\)），切空间随 \(\theta\) 旋转，需要迭代。
-
-\emph{更一般结论：Gauss--Newton 与 Newton--Raphson 的关系。}对最小二乘目标 \(Q(\theta)=\|r(\theta)\|^2\)，Newton--Raphson 步用完整 Hessian
-\[
-\delta_{\rm NR}=-(J^{\mathsf T}J+\sum_ir_i\nabla^2 r_i)^{-1}J^{\mathsf T}r,
-\]
-Gauss--Newton 步丢弃二阶项 \(\sum_ir_i\nabla^2 r_i\)：
-\[
-\delta_{\rm GN}=-(J^{\mathsf T}J)^{-1}J^{\mathsf T}r.
-\]
-当残差 \(r_i\) 小（模型拟合好）时，二阶项可忽略，两步近似相同；当残差大时，Gauss--Newton 可能不收敛，此时 Levenberg--Marquardt 阻尼保证下降。这一对比解释了为什么 Gauss--Newton 在接近解时收敛快（二次速率），但在初始远离解时可能失败。
-\end{derivation}
 
 对随样本量增长的独立观测非线性回归，写
 \[
@@ -1665,23 +1580,6 @@ Gauss--Newton 步丢弃二阶项 \(\sum_ir_i\nabla^2 r_i\)：
 \]
 右端第一因子趋于 $G_X^{-1}$，第二因子由多元 CLT 收敛到 \(\Normal_p(0,B_X)\)（其中 \(B_X=\E(u^2xx^{\mathsf T})\)），Slutsky 定理遂给出\eqnrefs{eq:math-stat-random-design-sandwich}。这条推导同时解释了 HC 协方差的来源：它只是把 $G_X$ 与 $B_X$ 分别换成样本 Gram 矩阵和残差外积的经验版本。
 
-\emph{举例：异方差下 sandwich 与经典 OLS 协方差的差异。}设单变量回归 \(Y_i=\beta x_i+u_i\)，\(\E(u_i^2\mid x_i)=\sigma^2 x_i^2\)（方差随 \(x\) 增长）。则
-\[
-B_X=\E(u^2x^2)=\sigma^2\E(x^4),
-\qquad
-G_X=\E(x^2),
-\]
-sandwich 协方差 \(\sigma^2\E(x^4)/[\E(x^2)]^2\)。若误用经典公式 \(\sigma^2/\E(x^2)\)（用 \(\E(u^2)=\sigma^2\E(x^2)\) 代入），会低估或高估真实方差，取决于 \(\E(x^4)\) 与 \([\E(x^2)]^2\) 的关系。对 \(x\sim\Normal(0,1)\)，\(\E(x^4)=3\)、\([\E(x^2)]^2=1\)，sandwich 是经典公式的 3 倍——这是重尾设计下忽视异方差的代价。
-
-\emph{更一般结论：HC 估计量的渐近性质。}White 的 HC0 估计量
-\[
-\widehat V_{\rm HC0}=(X^{\mathsf T}X)^{-1}X^{\mathsf T}\operatorname{diag}(\widehat u_i^2)X(X^{\mathsf T}X)^{-1}
-\]
-是 sandwich \(G_X^{-1}B_XG_X^{-1}\) 的一致估计。HC1、HC2、HC3 通过小样本修正进一步降低偏差，其中 HC3 在小样本下最稳健。当误差同方差时，sandwich 退化为 \(\sigma^2G_X^{-1}\)，与经典 OLS 协方差一致；因此 HC 估计量是经典公式的严格推广，在模型设定不确定时提供保护。
-
-\emph{物理建模：测量误差与异方差。}在物理实验中，异方差常来自测量精度随观测值变化（如 Poisson 噪声 \(\Var(Y\mid x)\propto\E(Y\mid x)\)）。Sandwich 协方差正确处理这种"不同 \(x\) 处测量精度不同"的情形，而经典 OLS 公式假设恒定精度。在天文观测（计数数据）、光谱分析（强度依赖噪声）与粒子物理（能量依赖分辨率）中，HC 协方差是标准工具。当异方差形式已知时（如 Poisson），GLS 加权 OLS 比 HC 校正更有效；形式未知时，HC 提供模型无关保护。
-
-\emph{举例：天文测光的异方差校正。}在天文测光中，星体流量测量噪声 \(\sigma_i^2=\sigma_{\rm sky}^2+F_i\)（天光噪声加 Poisson 噪声），随流量 \(F_i\) 增长。若忽略异方差用经典 OLS 拟合流量-星等关系，亮星（高 \(F\)）残差被低估、暗星被高估，导致斜率标准误偏小。HC3 校正给出正确的不确定度，是天文统计的标准实践。
 \end{derivation}
 
 固定设计理论的概率陈述条件于 $X$。若协变量随机且条件均值模型正确，则也可以在给定 $X$ 后使用同样的投影代数；若误差进一步条件正态且协方差结构已知，前面精确 $t/F$ 理论在条件于 $X$ 后仍成立。相反，若
@@ -1839,7 +1737,7 @@ C & 25 & 23 & 26 & 24 \\
 
 组均值：\(\bar Y_A=21.75\)，\(\bar Y_B=27.5\)，\(\bar Y_C=24.5\)，总均值 \(\bar Y=24.58\)。
 
-\textbf{平方和分解：}
+平方和分解：
 \[
 \mathrm{SST}=\sum_{ij}(Y_{ij}-\bar Y)^2=87.83,\quad
 \mathrm{SSA}=\sum_i n_i(\bar Y_i-\bar Y)^2=66.17,\quad
@@ -1850,7 +1748,7 @@ F=\frac{\mathrm{SSA}/(k-1)}{\mathrm{SSE}/(N-k)}=\frac{66.17/2}{21.67/9}=13.74
 \]
 \(F_{0.05,2,9}=4.26\)，\(F=13.74>4.26\)，拒绝 \(H_0\)。\(p\approx0.002\)。三种肥料效果有显著差异。
 
-\textbf{多重比较（Tukey HSD）：}\(\mathrm{HSD}=q_{0.05,3,9}\sqrt{\mathrm{MSE}/n}=3.95\times\sqrt{2.41/4}=3.06\)。\(|\bar Y_B-\bar Y_A|=5.75>3.06\)（显著），\(|\bar Y_B-\bar Y_C|=3.0<3.06\)（不显著），\(|\bar Y_C-\bar Y_A|=2.75<3.06\)（不显著）。B 显著优于 A，但 B 与 C、C 与 A 无显著差异。
+多重比较（Tukey HSD）：\(\mathrm{HSD}=q_{0.05,3,9}\sqrt{\mathrm{MSE}/n}=3.95\times\sqrt{2.41/4}=3.06\)。\(|\bar Y_B-\bar Y_A|=5.75>3.06\)（显著），\(|\bar Y_B-\bar Y_C|=3.0<3.06\)（不显著），\(|\bar Y_C-\bar Y_A|=2.75<3.06\)（不显著）。B 显著优于 A，但 B 与 C、C 与 A 无显著差异。
 \end{exbox}
 
 接下来考察加权最小二乘：异方差修正。
@@ -1867,9 +1765,9 @@ F=\frac{\mathrm{SSA}/(k-1)}{\mathrm{SSE}/(N-k)}=\frac{66.17/2}{21.67/9}=13.74
 \end{tabular}
 \end{center}
 
-\textbf{OLS（忽略异方差）：}\(\hat\beta=0.126\)，\(s_{\beta}=0.003\)。
+OLS（忽略异方差）：\(\hat\beta=0.126\)，\(s_{\beta}=0.003\)。
 
-\textbf{WLS（权重 \(w_i=1/x_i^2\)）：}\(\hat\beta=0.125\)，\(s_{\beta}=0.002\)。
+WLS（权重 \(w_i=1/x_i^2\)）：\(\hat\beta=0.125\)，\(s_{\beta}=0.002\)。
 
 WLS 的斜率估计略低，标准误更小——因为低浓度点（精度高）获得更大权重。若用 OLS 的标准误做推断，置信区间偏宽，检验功效偏低。
 \end{exbox}
