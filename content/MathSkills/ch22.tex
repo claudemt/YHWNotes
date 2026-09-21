@@ -126,18 +126,9 @@ Neyman--Pearson 引理说明，在所有满足给定水平约束的检验中，�
  \le\E_{\theta_0}\phi^*=\alpha.
 \]
 因此它对整个复合原假设保持水平约束，又同时对每个 $\theta_1>\theta_0$ 都是最强检验，故为 UMP。这一论证也说明：若不同备择点的 likelihood-ratio 排序方向不能共用同一拒绝域，就不能仅靠 Neyman--Pearson 得到 UMP。
-
-\emph{举例：正态均值的单边检验。}对 \(X_1,\ldots,X_n\iid\Normal(\theta,\sigma^2)\)（\(\sigma^2\) 已知），检验 \(H_0:\theta\le\theta_0\) 对 \(H_1:\theta>\theta_0\)。似然比
-\[
-\frac{f_{\theta_1}(x)}{f_{\theta_0}(x)}
-=\exp\!\left\{\frac{\theta_1-\theta_0}{\sigma^2}\sum_i x_i-\frac{n(\theta_1^2-\theta_0^2)}{2\sigma^2}\right\}
-\]
-是 \(\sum_i x_i\) 的单调增函数。Karlin--Rubin 立即给出 UMP 检验：拒绝当 \(\bar X>\theta_0+z_{1-\alpha}\sigma/\sqrt n\)。这一检验对每个 \(\theta_1>\theta_0\) 都最强，且对整个 \(\theta\le\theta_0\) 控制水平。
-
-\emph{更一般结论：双边检验无 UMP。}对 \(H_0:\theta=\theta_0\) 对 \(H_1:\theta\ne\theta_0\)，不存在 UMP 水平 \(\alpha\) 检验。若存在，它必须同时是对 \(\theta_1>\theta_0\) 的最强（右尾）和对 \(\theta_1<\theta_0\) 的最强（左尾），二者拒绝域不同，矛盾。这一限制促使引入 UMPU（unbiased）、相似（similar）与不变（invariant）等弱化概念，正态双边 \(t\) 检验在 UMPU 类中最强。
-
-\emph{物理建模：信号检测与恒虚警率。}Karlin--Rubin 的 UMP 性质在雷达信号检测中对应恒虚警率（CFAR）检测器设计。当噪声分布具有单调似然比（如 Gaussian、Rayleigh），阈值检测器在固定虚警概率下使检测概率最大，且阈值不依赖噪声功率参数（因 MLR 保证检验形式不变）。这正是 Karlin--Rubin"拒绝域不随备择改变"的工程价值：单一检测器结构覆盖整个备择空间。
 \end{derivation}
+
+双边备择通常不能共享同一个最强拒绝域：右侧备择要求右尾检验，左侧备择要求左尾检验。因此 Karlin--Rubin 的结论本质上是单边结论；双边问题必须改在无偏、相似或不变检验等较小类别中讨论最优性。
 
 \begin{derivation}[Neyman--Pearson 不等式]
 令 $\phi^*$ 为 likelihood-ratio 检验，阈值为 $c>0$，拒绝域为
@@ -170,26 +161,13 @@ Neyman--Pearson 引理说明，在所有满足给定水平约束的检验中，�
  \E_{\theta_1}(\phi^*-\phi)\ge0,
 \]
 即 $\E_{\theta_1}\phi^*\ge\E_{\theta_1}\phi$。因此 $\phi^*$ 在 $\theta_1$ 下的功效不低于任意同水平检验。注意这个结论只比较一个具体备择点；复合备择需要额外结构。
+\end{derivation}
 
-\emph{举例：简单正态检验的 NP 形式。}对 \(X\sim\Normal(\theta,1)\) 单观测，检验 \(H_0:\theta=0\) 对 \(H_1:\theta=\mu_1>0\)。似然比
-\[
-\frac{p_{\mu_1}(x)}{p_0(x)}
-=\exp\!\left\{\mu_1 x-\frac{\mu_1^2}{2}\right\}
-\]
-是 \(x\) 的单调增函数，拒绝域 \(R=\{x>c'\}\)。水平 \(\alpha\) 选 \(c'=z_{1-\alpha}\)，得 \(\phi^*=\ind\{X>z_{1-\alpha}\}\)。NP 不等式保证：在所有 \(\E_0\phi\le\alpha\) 的检验中，此 \(\phi^*\) 在 \(\theta=\mu_1\) 处功效最大。
-
-\emph{更一般结论：随机化与 NP 引理的完整形式。}当 \(\E_{\theta_0}\phi^*=\alpha\) 不能由非随机检验精确达到（离散分布情形），在边界 \(\{p_{\theta_1}=cp_{\theta_0}\}\) 上引入随机化参数 \(\gamma\in[0,1]\) 使
+在离散模型中，非随机拒绝域未必能恰好达到 size $\alpha$。此时在 likelihood-ratio 边界上以概率 $\gamma\in[0,1]$ 拒绝，并选取 $\gamma$ 使
 \[
 \E_{\theta_0}\phi^*=\Pbb_{\theta_0}(T>c)+\gamma\Pbb_{\theta_0}(T=c)=\alpha.
 \]
-完整 NP 引理断言：随机化 likelihood-ratio 检验在所有水平 \(\alpha\) 检验中功效最强，且这一最强性对每个备择点 \(\theta_1\) 都成立。复合备择下的 UMP 需要似然比方向一致（即 MLR），这正是 Karlin--Rubin 定理的条件。
-
-\emph{物理建模：信号检测与匹配滤波。}Neyman--Pearson 框架在信号检测中对应假设 \(H_0:X=\text{噪声}\) 对 \(H_1:X=\text{signal}+\text{noise}\)。若噪声为白 Gaussian，似然比检验退化为线性内积 \(\langle X,s\rangle>c\)，其中 \(s\) 是已知信号模板——这正是匹配滤波器。NP 最优性因此说明：在固定虚警概率下，匹配滤波器使检测概率最大，这是雷达与通信系统检测理论的基石。
-
-\emph{更一般结论：Neyman--Pearson 与 minimax 检验。}当先验分布放在备择参数上时，Bayes 检验对应加权平均功效最大。Neyman--Pearson 是 Bayes 检验在两点先验（\(\theta_0\) 与 \(\theta_1\)）下的特例。对复合备择，minimax 检验寻找使最坏备择功效最大的检验，其求解通常需要 least favorable prior——使 Bayes 风险最大的先验。这一框架在鲁棒检测（Huber 污染邻域）中给出 clipped likelihood-ratio 检验，是工程鲁棒统计的理论基础。
-
-\emph{举例：简单 vs 简单的似然比阈值。}对 \(H_0:X\sim f_0\) 对 \(H_1:X\sim f_1\)，NP 检验拒绝当 \(f_1(x)/f_0(x)>k\)。阈值 \(k\) 由水平约束 \(\int_{f_1>kf_0}f_0\,\dd\mu=\alpha\) 确定。在通信论中，\(f_0\) 是噪声分布，\(f_1\) 是信号+噪声分布，\(k\) 对应信噪比阈值。NP 最优性保证：在虚警概率 \(\alpha\) 下，此检测器使检测概率最大，且这一最优性对任意 \(f_0,f_1\) 都成立，不依赖 Gaussian 假设。
-\end{derivation}
+同一逐点不等式仍成立，因此随机化版本保持最强性。这里最强性仍只针对指定的简单备择；把它提升到复合备择正是后面需要 MLR 或其他结构的原因。
 
 接下来考察群不变性、交换性与随机化检验。
 
@@ -421,7 +399,7 @@ LAN 主项为
 \]
 而标准高斯向量在 $r$ 维法向子空间上的平方长度服从 $\chiSq_r$，于是得到\eqnrefs{eq:math-stat-lr-wald-score-equivalence}。
 
-\textbf{实例。}正态均值检验 $H_0:\mu=0$ vs $H_1:\mu\neq0$：LR 统计量 $n\bar X_n^2/\sigma^2$，Wald 统计量 $n\bar X_n^2/\sigma^2$，Score 统计量 $n\bar X_n^2/\sigma^2$——三者精确相等。一般模型中三者只在渐近意义下等价，有限样本下 Wald 对参数变换敏感（换 $\theta\to\theta^3$ 后 Wald 变但 LR 不变），Score 对参数化最不敏感——这是实践中偏好 LR 和 Score 检验的原因。
+在已知方差的正态均值检验 $H_0:\mu=0$ 对 $H_1:\mu\neq0$ 中，LR、Wald 与 Score 统计量都等于 $n\bar X_n^2/\sigma^2$，所以三者精确相同。一般模型只保证它们在正则条件下渐近等价；有限样本中，Wald 统计量还会随非线性重参数化改变。
 \end{derivation}
 
 \begin{exbox}[Bernoulli 模型中 LR、Wald 与 Score 的有限样本差异]
@@ -582,14 +560,6 @@ Le Cam 第三引理把测度变化作用到中心序列上，得到在 $P_{\thet
  I_0^{-1}(z-I_0h),
 \]
 因此加权后的 \(Z\) 密度正比于 \(\exp(-\frac12w^{\mathsf T}I_0^{-1}w)\)，分布正是 \(\Normal_d(I_0h,I_0)\)，这就得到\eqnrefs{eq:math-stat-third-lemma-shift}。
-
-\emph{举例：正态位置模型的第三引理。}对 \(X_1,\ldots,X_n\iid\Normal(\theta,1)\)，\(\Delta_n=\sqrt n\bar X\)、\(I_0=1\)。在 \(H_0:\theta=0\) 下 \(\Delta_n\sim\Normal(0,1)\)；在局部备择 \(\theta=h/\sqrt n\) 下，
-\[
-\Delta_n=\sqrt n\bar X\sim\Normal(h,1),
-\]
-均值平移 \(h=I_0h\)，与第三引理一致。这把"局部备择下中心序列均值平移 \(I_0h\)"从抽象 LAN 结论落到具体正态计算。
-
-\emph{更一般结论：Le Cam 三引理的完整版本。}第三引理是 Le Cam 三引理中最常用的一条；第一引理把单点似然比收敛与中心极限定理结合，第二引理处理三角阵情形，第三引理给出局部备择下的联合渐近分布。三者共同构成"实验收敛"理论的核心工具，是 Wald、score、likelihood ratio 三大检验在局部备择下统一为 \(\chi^2\) 非中心分布的推导基础。在半参数与经验过程理论中，第三引理以泛函形式出现，把有限维 LAN 推广到无穷维 tangent space 上的弱收敛。
 \end{derivation}
 
 接下来考察Nuisance parameter 与有效信息。

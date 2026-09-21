@@ -150,26 +150,22 @@
 二者在 \(\kappa_{\rm src}\ll1\) 时都趋于点源，但离开长波区后的振荡与衰减依赖完整电荷分布，而不存在普适的单一有限尺寸修正系数。
 \end{exbox}
 
-\begin{derivation}[从 Maxwell 方程到式~\eqnrefs{eq:phys-rr-exact-radiation-spectrum-current}]
-Lorenz 规范下，
+\begin{derivation}[Maxwell 方程与精确辐射母式]
+Lorenz 规范下的势满足
 \[
- \left(\nabla^2-\frac1{c^2}\partial_t^2\right)\Phi=-\frac{\rho_{\rm e}}{\varepsilon_0},
+ \left(\nabla^2-c^{-2}\partial_t^2\right)\Phi=-\rho_{\rm e}/\varepsilon_0,
  \qquad
- \left(\nabla^2-\frac1{c^2}\partial_t^2\right)\vb A=-\mu_0\vb J.
+ \left(\nabla^2-c^{-2}\partial_t^2\right)\vb A=-\mu_0\vb J .
 \]
-按式~\eqnrefs{eq:phys-rr-fourier-convention} 变换并记 \(k=\omega/c\)，出射 Helmholtz Green 函数为
+对时间作 Fourier 变换，并用出射 Helmholtz 核
+\(G_k(\vb R-\vb x)=e^{\ii k|\vb R-\vb x|}/(4\pi|\vb R-\vb x|)\)。
+在固定 \(\omega>0\) 的远区，
 \[
- G_k(\vb R-\vb x)=\frac{e^{\ii k|\vb R-\vb x|}}{4\pi|\vb R-\vb x|}.
+ G_k(R\vb n-\vb x)
+ =\frac{e^{\ii kR}}{4\pi R}e^{-\ii k\vb n\cdot\vb x}
+ +O(R^{-2}),
 \]
-取 \(\vb R=R\vb n\) 并在固定 \(\omega>0\) 下令 \(R\to\infty\)，
-\begin{align*}
- |\vb R-\vb x|&=R-\vb n\cdot\vb x+O(a_{\rm src}^2/R),\\
- |\vb R-\vb x|^{-1}&=R^{-1}\left[1+O(a_{\rm src}/R)\right],\\
- e^{\ii k|\vb R-\vb x|}
- &=e^{\ii kR}e^{-\ii k\vb n\cdot\vb x}
- \left[1+O(ka_{\rm src}^2/R)\right].
-\end{align*}
-从而
+故
 \[
  \widetilde\Phi_{\rm rad}
  =\frac{e^{\ii kR}}{4\pi\varepsilon_0R}\mathcal C_{\rm e},
@@ -177,283 +173,164 @@ Lorenz 规范下，
  \widetilde{\vb A}_{\rm rad}
  =\frac{\mu_0e^{\ii kR}}{4\pi R}\boldsymbol{\mathcal J}.
 \]
-另一方面，把连续性方程乘以 \(e^{\ii\omega(t-\vb n\cdot\vb x/c)}\) 并对全时空分部积分，得到
+连续性方程在同一质壳 Fourier 分量上给出
+\(-\ii\omega\mathcal C_{\rm e}+\ii k\vb n\cdot\boldsymbol{\mathcal J}=0\)。
+因此 \(\widetilde{\vb E}=\ii\omega\widetilde{\vb A}-\nabla\widetilde\Phi\)
+中的纵向部分抵消，只剩
 \[
- -\ii\omega\mathcal C_{\rm e}
- +\ii\frac{\omega}{c}\vb n\cdot\boldsymbol{\mathcal J}=0,
+ \widetilde{\vb E}_{\rm rad}
+ =\frac{\ii\mu_0\omega e^{\ii kR}}{4\pi R}
+ \vb\Pi_\perp\cdot\boldsymbol{\mathcal J}+O(R^{-2}).
 \]
-即式~\eqnrefs{eq:phys-rr-on-shell-current-conservation}。由于
+再用 \(\widetilde{\vb B}_{\rm rad}=\vb n\times\widetilde{\vb E}_{\rm rad}/c\)
+和正频率 Parseval 关系
+\( \dd^2E/(\dd\omega\dd\Omega)=R^2|\widetilde{\vb E}_{\rm rad}|^2/(\pi\mu_0c)\)，
+即得\eqnrefs{eq:phys-rr-exact-radiation-spectrum-current}。
+\end{derivation}
+
+\begin{derivation}[横向相干核]
+取 \(\widehat{\vb r}\) 为极轴。标量角积分为
 \[
- \widetilde{\vb E}=\ii\omega\widetilde{\vb A}-\nabla\widetilde\Phi,
- \qquad
- \nabla\widetilde\Phi_{\rm rad}
- =\ii k\vb n\widetilde\Phi_{\rm rad}+O(R^{-2}),
+ \int\dd\Omega\,e^{-\ii z\vb n\cdot\widehat{\vb r}}=4\pi j_0(z).
 \]
-纵向分量被连续性方程精确抵消，于是得到式~\eqnrefs{eq:phys-rr-exact-far-field-current}。
-
-远区 \(\widetilde{\vb B}_{\rm rad}=\vb n\times\widetilde{\vb E}_{\rm rad}/c\)，故瞬时径向 Poynting 通量为 \(S_R=|\vb E_{\rm rad}|^2/(\mu_0c)\)。使用正频率 Parseval 关系，
+旋转对称性与对 \(z\) 的两次求导给出
 \[
- \frac{\dd^2E}{\dd\omega\dd\Omega}
- =\frac{R^2}{\pi\mu_0c}|\widetilde{\vb E}_{\rm rad}|^2,
-\]
-代入式~\eqnrefs{eq:phys-rr-exact-far-field-current} 即得正文母公式，包括系数 \(16\pi^3\varepsilon_0c^3\)。
-
-\textbf{物理意义。}此公式把任意源（不必点电荷）的辐射谱完全用其电流 Fourier 变换 \(\tilde{\vb J}(\vb x,\omega)\) 表达。它是 Larmor 公式的非相对论推广：对低速点电荷 \(\vb J=q\vb v\,\delta(\vb x-\vb r(t))\)，积分给出 \(\dd^2E/\dd\omega\dd\Omega\propto|\ddot{\vb d}|^2\)（\(\vb d\) 为电偶极矩），还原经典偶极辐射。在加速器物理中，此公式是计算同步辐射谱的出发点：相对论电子在磁场中做圆周运动，\(\vb J\) 取为世界线电流后代入给出宽带同步辐射谱。
-
-
-取固定单位矢量 \(\widehat{\vb r}\) 与无量纲实数 \(z\)。由旋转对称性，被积函数只依赖 \(\vb n\) 与 \(\widehat{\vb r}\) 的夹角 \(\theta\)，故可取 \(\widehat{\vb r}\) 沿 \(z\) 轴。先算标量相位积分：
-\begin{equation*}
- \int\dd\Omega\,e^{-\ii z\vb n\cdot\widehat{\vb r}}
- =2\pi\int_{-1}^{1}\dd\mu\,e^{-\ii z\mu}
- =4\pi\frac{\sin z}{z}
- =4\pi j_0(z).
-\end{equation*}
-对 \(n_in_j\) 的积分，由对称性结果必为 \(A(z)\widehat r_i\widehat r_j+B(z)(\delta_{ij}-\widehat r_i\widehat r_j)\)。取迹给出 \(A+2B=4\pi j_0(z)\)；取纵向分量 \(i=j=3\) 给出
-\begin{equation*}
- A=\int\dd\Omega\,\cos^2\theta\,e^{-\ii z\cos\theta}
- =-\frac{\dd^2}{\dd z^2}\int\dd\Omega\,e^{-\ii z\cos\theta}
- =-4\pi j_0''(z).
-\end{equation*}
-由球 Bessel 函数递推 \(j_0''=(2j_1/z-j_0)/z\) 与 \(j_2=3j_1/z-j_0\)，得
-\begin{equation*}
- A=\frac{4\pi}{3}(j_0+j_2),
- \qquad
- B=\frac{4\pi}{3}(j_0+j_2)-2\pi j_2,
-\end{equation*}
-整理得
-\begin{equation*}
  \int\dd\Omega\,n_in_j e^{-\ii z\vb n\cdot\widehat{\vb r}}
- =\frac{4\pi}{3}
- \left[(j_0+j_2)\delta_{ij}-3j_2\widehat r_i\widehat r_j\right].
-\end{equation*}
-由横向投影 \(\Pi^{\perp}_{ij}=\delta_{ij}-n_in_j\)，对 \(\vb n\) 积分，于是
-\begin{align*}
- \mathcal K_{ij}
- &=\int\dd\Omega\,(\delta_{ij}-n_in_j)e^{-\ii z\vb n\cdot\widehat{\vb r}}\\
- &=\delta_{ij}\int\dd\Omega\,e^{-\ii z\vb n\cdot\widehat{\vb r}}
- -\int\dd\Omega\,n_in_j\,e^{-\ii z\vb n\cdot\widehat{\vb r}}\\
- &=4\pi j_0\,\delta_{ij}-\frac{4\pi}{3}\left[(j_0+j_2)\delta_{ij}-3j_2\widehat r_i\widehat r_j\right]\\
- &=\frac{4\pi}{3}\left[(2j_0-j_2)\delta_{ij}+3j_2\widehat r_i\widehat r_j\right].
-\end{align*}
-再把电流傅里叶振幅
-\begin{equation*}
- \mathcal J_i\mathcal J_j^*
- =\int\dd t\dd t'\dd^3x\dd^3x'\,
- J_i(\vb x,t)J_j(\vb x',t')
- e^{\ii\omega(t-t')}e^{-\ii(\omega/c)\vb n\cdot(\vb x-\vb x')}
-\end{equation*}
-代入式~\eqnrefs{eq:phys-rr-exact-radiation-spectrum-current}。由被积函数对 \(\vb n\) 的依赖仅通过 \(e^{-\ii(\omega/c)\vb n\cdot(\vb x-\vb x')}\) 与 \(\Pi^\perp_{ij}\)，因此可先做 \(\dd\Omega\) 积分，把 \(z=(\omega/c)|\vb x-\vb x'|\) 与 \(\widehat{\vb r}=(\vb x-\vb x')/|\vb x-\vb x'|\) 代入上式 \(\mathcal K_{ij}\)，即得式~\eqnrefs{eq:phys-rr-exact-angle-integrated-current-spectrum}。
-
-\textbf{物理意义。}角积分消去了辐射方向 \(\vb n\)，把总谱 \(\dd E/\dd\omega\) 用源的空时关联函数表达。横向投影 \(\Pi^\perp\) 确保只有横向电流辐射——纵向分量（如静电场）不贡献。核函数 \(\sin z/z\) 在 \(z\to0\) 时趋于 1，说明波长远大于源尺度时辐射相干叠加；\(z\gg1\) 时振荡衰减，说明短波长时源不同部分辐射不相干。对点电荷，\(\vb x-\vb x'\) 沿世界线取值，\(\sin z/z\) 编码了相对论 beaming 的干涉效应。
-
-
-接下来考察点世界线：一般频率的精确谱。
-
-点电荷不是新的理论层，而是守恒流的一种参数化。第 \(a\) 个电荷 \(q_a\) 的轨道记为 \(\vb r_a(t)\)，并定义
+ =\frac{4\pi}{3}\left[(j_0+j_2)\delta_{ij}
+ -3j_2\widehat r_i\widehat r_j\right].
+\]
+从标量积分中减去这一式，便得到
 \[
- \boldsymbol\beta_a=\frac{\dot{\vb r}_a}{c},
+ \int\dd\Omega\,\Pi^\perp_{ij}e^{-\ii z\vb n\cdot\widehat{\vb r}}
+ =\frac{4\pi}{3}\left[(2j_0-j_2)\delta_{ij}
+ +3j_2\widehat r_i\widehat r_j\right],
+\]
+即\eqnrefs{eq:phys-rr-transverse-coherence-kernel}。把
+\(\mathcal J_i\mathcal J_j^*\) 写成两份源积分后先做角积分，直接得到
+\eqnrefs{eq:phys-rr-exact-angle-integrated-current-spectrum}。
+\end{derivation}
+
+点电荷世界线
+\[
+ \vb J(\vb x,t)=\sum_aq_ac\boldsymbol\beta_a(t)
+ \delta^{(3)}(\vb x-\vb r_a(t)),
  \qquad
- \varphi_a(t,\vb n)=t-\frac{\vb n\cdot\vb r_a(t)}{c}.
+ \varphi_a=t-\frac{\vb n\cdot\vb r_a}{c}
 \]
-其三维电流为
-\[
- \vb J(\vb x,t)
- =\sum_aq_ac\boldsymbol\beta_a(t)\delta^{(3)}(\vb x-\vb r_a(t)).
-\]
-代入一般母式先得到速度形式
-\begin{equation}
- \boxed{
+代入母式后给出两种等价表示：
+\begin{align}
  \frac{\dd^2E}{\dd\omega\dd\Omega}
- =\frac{\omega^2}{16\pi^3\varepsilon_0c}
+ &=\frac{\omega^2}{16\pi^3\varepsilon_0c}
  \left|\sum_aq_a\int\dd t\,
- \vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a
- e^{\ii\omega\varphi_a}\right|^2.}
- \label{eq:phys-rr-point-spectrum-velocity}
-\end{equation}
-对散射轨道，速度在 \(t\to\pm\infty\) 可趋于非零常数，因此更稳定的等价表达只含加速度：
-\begin{equation}
- \boxed{
+ \vb\Pi_\perp\cdot\boldsymbol\beta_a e^{\ii\omega\varphi_a}\right|^2,
+ \label{eq:phys-rr-point-spectrum-velocity}\\
  \frac{\dd^2E}{\dd\omega\dd\Omega}
- =\frac{1}{16\pi^3\varepsilon_0c}
- \left|
- \sum_aq_a\int_{-\infty}^{\infty}\dd t\,
- \frac{\vb n\times[(\vb n-\boldsymbol\beta_a)
- \times\dot{\boldsymbol\beta}_a]}
+ &=\frac{1}{16\pi^3\varepsilon_0c}
+ \left|\sum_aq_a\int\dd t\,
+ \frac{\vb n\times[(\vb n-\boldsymbol\beta_a)\times
+ \dot{\boldsymbol\beta}_a]}
  {(1-\vb n\cdot\boldsymbol\beta_a)^2}
- e^{\ii\omega\varphi_a}
- \right|^2.}
+ e^{\ii\omega\varphi_a}\right|^2.
  \label{eq:phys-rr-exact-point-spectrum}
-\end{equation}
-在轨道亚光速且相应 Fourier 积分按普通积分或绝热开关意义存在时，两式对任意有限频率成立；此处没有软频或非相对论近似。对渐近匀速散射，速度形式应理解为带绝热因子的分布极限，而加速度形式在 \(\omega>0\) 时通常具有更好的收敛性。
+\end{align}
+第一式适合直接代入轨道；第二式把辐射来源明确限制为加速度，并在渐近匀速散射中具有更好的收敛性。二者对有限正频率都不要求非相对论或长波近似。
 
-相位导数
-\[
- \dot\varphi_a=1-\vb n\cdot\boldsymbol\beta_a>0
-\]
-说明实时间轴上没有通常的 stationary point。令 \(\beta=|\boldsymbol\beta|\)、\(\gamma:=(1-\beta^2)^{-1/2}\)。超相对论前向区若观测方向与速度夹角为 \(\theta\ll1\)，则
-\[
- 1-\vb n\cdot\boldsymbol\beta
- \simeq\frac{1}{2\gamma^2}+\frac{\theta^2}{2},
-\]
-相位增长因此在 \(\theta\lesssim\gamma^{-1}\) 内显著变慢，较长的轨道片段可以相干贡献。这是相对论辐射窄束射和高谐波结构的相位根源。
-
-
-空间 \(\delta\) 函数先给出
+\begin{derivation}[点世界线谱的加速度形式]
+对点流，空间积分先给出
 \[
  \boldsymbol{\mathcal J}
  =c\sum_aq_a\int\dd t\,\boldsymbol\beta_a e^{\ii\omega\varphi_a},
  \qquad
- \varphi_a(t):=t-\frac{\vb n\cdot\vb r_a(t)}{c}.
+ \dot\varphi_a=1-\vb n\cdot\boldsymbol\beta_a .
 \]
-引入绝热收敛因子 \(e^{-\varepsilon|t|}\)（\(\varepsilon\downarrow0\)）以保证所有时间积分在分布意义下良定，最终边界项因振荡相位而不贡献。定义
+定义
 \[
- \vb g_a
- :=\frac{\vb n\times(\vb n\times\boldsymbol\beta_a)}
+ \vb g_a=\frac{\vb n\times(\vb n\times\boldsymbol\beta_a)}
  {1-\vb n\cdot\boldsymbol\beta_a}
- =-\frac{\vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a}
- {1-\vb n\cdot\boldsymbol\beta_a},
- \qquad
- \vb{\Pi}_{\perp}:=\vb I-\vb n\vb n^{\mathsf T}.
+ =-\frac{\vb\Pi_\perp\cdot\boldsymbol\beta_a}
+ {1-\vb n\cdot\boldsymbol\beta_a}.
 \]
-该量的物理意义是远场辐射振幅中与速度相关的因子：\(\vb{\Pi}_{\perp}\) 投影到观察方向横向子空间，分母 \(1-\vb n\cdot\boldsymbol\beta_a\) 则是推迟时间 \(\tau\mapsto t\) 的 Jacobian，亦即 Doppler 因数的倒数。又因
+在渐近匀速轨道上用绝热因子消去边界项，分部积分得到
 \[
- \dot\varphi_a
- =1-\frac{\vb n\cdot\dot{\vb r}_a}{c}
- =1-\vb n\cdot\boldsymbol\beta_a,
-\]
-从而
-\[
- \frac{\dd}{\dd t}e^{\ii\omega\varphi_a}
- =\ii\omega(1-\vb n\cdot\boldsymbol\beta_a)e^{\ii\omega\varphi_a}.
-\]
-在绝热因子使边界项消失后，对 \(\vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a e^{\ii\omega\varphi_a}\) 作分部积分：
-\begin{align*}
- \ii\omega\int\dd t\,\vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a\,(1-\vb n\cdot\boldsymbol\beta_a)e^{\ii\omega\varphi_a}
- &=\int\dd t\,\vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a\,\frac{\dd}{\dd t}e^{\ii\omega\varphi_a}\\
- &=-\int\dd t\,\frac{\dd}{\dd t}\bigl(\vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a\bigr)e^{\ii\omega\varphi_a}.
-\end{align*}
-左端因子 \((1-\vb n\cdot\boldsymbol\beta_a)\) 与 \(\vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a\) 合并即 \(-\vb g_a(1-\vb n\cdot\boldsymbol\beta_a)^2\)，但更直接地按 \(\vb g_a\) 定义改写左端为 \(-\ii\omega\int\vb g_a(1-\vb n\cdot\boldsymbol\beta_a)e^{\ii\omega\varphi_a}\dd t\) 并再次分部积分，最终得到
-\[
- \ii\omega\int\dd t\,\vb{\Pi}_{\perp}\cdot\boldsymbol\beta_a e^{\ii\omega\varphi_a}
+ \ii\omega\int\dd t\,
+ \vb\Pi_\perp\cdot\boldsymbol\beta_a e^{\ii\omega\varphi_a}
  =\int\dd t\,\dot{\vb g}_a e^{\ii\omega\varphi_a}.
 \]
-对分子、分母求导并通分，先计算分子的导数（\(\vb n\) 与 \(t\) 无关）
+商法则和三重叉积恒等式给出
 \[
- \frac{\dd}{\dd t}\bigl[\vb n\times(\vb n\times\boldsymbol\beta_a)\bigr]
- =\vb n\times(\vb n\times\dot{\boldsymbol\beta}_a),
-\]
-再计算分母的导数 \(-\vb n\cdot\dot{\boldsymbol\beta}_a\)，按商法则得到
-\begin{align*}
- \dot{\vb g}_a
- &=\frac{\vb n\times(\vb n\times\dot{\boldsymbol\beta}_a)}{1-\vb n\cdot\boldsymbol\beta_a}
- +\frac{\vb n\times(\vb n\times\boldsymbol\beta_a)\,(\vb n\cdot\dot{\boldsymbol\beta}_a)}{(1-\vb n\cdot\boldsymbol\beta_a)^2}\\
- &=\frac{\vb n\times(\vb n\times\dot{\boldsymbol\beta}_a)(1-\vb n\cdot\boldsymbol\beta_a)
- +\vb n\times(\vb n\times\boldsymbol\beta_a)(\vb n\cdot\dot{\boldsymbol\beta}_a)}
- {(1-\vb n\cdot\boldsymbol\beta_a)^2}.
-\end{align*}
-利用三重叉积恒等式 \(\vb a\times(\vb b\times\vb c)=\vb b(\vb a\cdot\vb c)-\vb c(\vb a\cdot\vb b)\) 化简分子：
-\[
- \vb n\times(\vb n\times\dot{\boldsymbol\beta}_a)(1-\vb n\cdot\boldsymbol\beta_a)
- +\vb n\times(\vb n\times\boldsymbol\beta_a)(\vb n\cdot\dot{\boldsymbol\beta}_a)
- =\vb n\times[(\vb n-\boldsymbol\beta_a)\times\dot{\boldsymbol\beta}_a],
-\]
-其中用了叉积的线性性以及 \(\boldsymbol\beta_a\times\dot{\boldsymbol\beta}_a\) 与 \(\vb n\) 点积的轮换。于是
-\[
- \dot{\vb g}_a
- =\frac{\vb n\times[(\vb n-\boldsymbol\beta_a)
- \times\dot{\boldsymbol\beta}_a]}
+ \dot{\vb g}_a=
+ \frac{\vb n\times[(\vb n-\boldsymbol\beta_a)\times
+ \dot{\boldsymbol\beta}_a]}
  {(1-\vb n\cdot\boldsymbol\beta_a)^2}.
 \]
-把这个恒等式代入式~\eqnrefs{eq:phys-rr-point-spectrum-velocity}，\(\omega^2\) 恰好被分部积分产生的 \(1/\omega^2\) 抵消，得到式~\eqnrefs{eq:phys-rr-exact-point-spectrum}。具体地，原谱含 \(\omega^2|\boldsymbol{\mathcal J}|^2\)，而 \(\boldsymbol{\mathcal J}\) 经分部积分后多出 \(1/\omega\)，故 \(|\boldsymbol{\mathcal J}|^2\) 多出 \(1/\omega^2\)，与 \(\omega^2\) 精确相消，剩余表达式只含 \(\dot{\vb g}_a\) 与相位的积分。
+代回速度形式后，振幅中的 \(1/\omega\) 与谱前因子中的 \(\omega^2\)
+相消，得到\eqnrefs{eq:phys-rr-exact-point-spectrum}。这也直接说明匀速段
+\(\dot{\boldsymbol\beta}_a=0\) 不贡献有限频率辐射。
+\end{derivation}
 
-这一形式的关键在于：辐射谱只依赖于加速度 \(\dot{\boldsymbol\beta}_a\)，而不显式依赖于速度本身。当粒子作匀速运动时 \(\dot{\vb g}_a=0\)，辐射谱消失，这正是 Liénard--Wiechert 远场的匀速无辐射性质。在相对论极限 \(\gamma\gg1\) 下，分母 \((1-\vb n\cdot\boldsymbol\beta_a)^2\) 在 \(\vb n\) 接近速度方向时显著放大，形成前向窄束射；分子中 \(\vb n-\boldsymbol\beta_a\) 的横向分量则决定了辐射的偏振方向始终位于由 \(\vb n\) 与 \(\boldsymbol\beta_a\) 张成的平面内。作为应用举例，考虑电子在恒定磁场中作圆周运动（同步辐射）：取 \(\boldsymbol\beta=\beta\vb e_x\)、\(\dot{\boldsymbol\beta}=\omega_c\beta\vb e_y\)，在 \(\vb n=\vb e_x\) 方向辐射振幅由分母 \((1-\beta)^2\approx1/(2\gamma^2)\) 放大，束角 \(\sim1/\gamma\)，这正是同步辐射的特征窄束射结构。更一般地，该加速度形式是后续多极展开与软定理的出发点：长波极限下 \(\dot{\boldsymbol\beta}_a\) 的时间积分给出净动量变化，与软光子定理的 Weinberg 因子直接对应。在多电荷情形，\(\sum_aq_a\dot{\boldsymbol\beta}_a\) 的低频展开首项正比于 \(\sum_aq_a\ddot{\vb r}_a=\ddot{\vb p}\)，恢复经典电偶极公式；若总电偶极矩恒定（如中性系统 \(\sum q_a=0\) 且质心匀速），则首项消失，辐射由磁偶极与电四极主导，与多极展开的宇称选则定则一致。
 
 
-接下来考察周期性与长波多极：两种独立特殊化。
-
-周期性约束时间结构，长波条件约束空间相位；二者逻辑独立。若 \(\vb J(\vb x,t+T)=\vb J(\vb x,t)\)，记基本角频率 \(\omega_0:=2\pi/T\) 并定义
-\[
- \vb J_N(\vb x)=\frac1T\int_0^T\vb J(\vb x,t)e^{\ii N\omega_0 t}\dd t.
-\]
-第 \(N\ge1\) 条正频率谐波的辐射壳振幅为
+周期性只离散时间频率。若
+\(\vb J(\vb x,t+T)=\vb J(\vb x,t)\)、\(\omega_N=N\omega_0\)，定义
 \begin{equation}
  \boldsymbol{\mathcal J}_N(\vb n)
  =\int\dd^3x\,\vb J_N(\vb x)
  e^{-\ii(\omega_N/c)\vb n\cdot\vb x},
- \qquad \omega_N=N\omega_0,
+ \qquad
+ \vb J_N=\frac1T\int_0^T\vb J e^{\ii N\omega_0t}\dd t .
  \label{eq:phys-rr-periodic-current-amplitude}
 \end{equation}
-而精确角向平均功率为
+第 \(N\) 条谱线的精确平均功率为
 \begin{equation}
- \boxed{
  \frac{\dd P_N}{\dd\Omega}
  =\frac{\mu_0\omega_N^2}{8\pi^2c}
- \left|\vb{\Pi}_{\perp}\cdot\boldsymbol{\mathcal J}_N\right|^2.}
+ \left|\vb\Pi_\perp\cdot\boldsymbol{\mathcal J}_N\right|^2 .
  \label{eq:phys-rr-exact-periodic-line-power}
 \end{equation}
-只有在这一步之后才可写 \(\dd\overline P/\dd\omega=\sum_{N\ge1}P_N\delta(\omega-N\omega_0)\)，从而避免无意义的 \(\delta^2\)。
+只有在得到平均功率后才写离散 \(\delta\) 谱，从而避免平方 \(\delta\) 分布。
 
-\textbf{例.}\enspace 相对论圆周运动提供一个不使用长波近似的检验。若电荷 \(q\) 以速率 \(\beta c\) 在半径 \(R_{\rm orb}\) 的圆周上运动，\(\omega_{\rm orb}:=\beta c/R_{\rm orb}\)，并令 \(\theta\) 为观测方向相对轨道平面的夹角；\(J_m\) 表示第一类 Bessel 函数，撇号表示对其完整自变量求导。则
-\[
- \frac{\dd P_m}{\dd\Omega}
- =\frac{q^2m^2\omega_{\rm orb}^2}{8\pi^2\varepsilon_0c}
- \left[
- \beta^2J_m'^2(m\beta\cos\theta)
- +\tan^2\theta\,J_m^2(m\beta\cos\theta)
- \right].
-\]
-对谐波与角度求和得到
-\[
- P=\frac{q^2\gamma^4\beta^4c}{6\pi\varepsilon_0R_{\rm orb}^2}.
-\]
-低速时主要是基频；\(\gamma\gg1\) 时显著谐波扩展到 \(m\sim\gamma^3\)，角宽缩到 \(\Delta\theta\sim\gamma^{-1}\)。因此同步辐射的宽带性属于精确周期点源理论，而不是长波偶极公式的高频外推。
-
-空间多极展开只在
+空间多极展开则另需
 \begin{equation}
- \kappa_{\rm src}=\frac{\omega a_{\rm src}}{c}\ll1
+ \kappa_{\rm src}=\frac{\omega a_{\rm src}}{c}\ll1 .
  \label{eq:phys-rr-multipole-control}
 \end{equation}
-时成立。定义电偶极、磁偶极和无迹电四极矩
+定义
 \begin{align}
- \vb p(t)&=\int\rho_{\rm e}\,\vb x\,\dd^3x,
- &
- \vb m(t)&=\frac12\int\vb x\times\vb J\,\dd^3x,
+ \vb p&=\int\rho_{\rm e}\vb x\,\dd^3x,
+ &\vb m&=\frac12\int\vb x\times\vb J\,\dd^3x,
  \label{eq:phys-rr-dipole-defs}\\
- \mathcal Q^{\rm E}_{ij}(t)&=\int\rho_{\rm e}(3x_ix_j-r^2\delta_{ij})\dd^3x,
- &\mathcal Q^{\rm E}_{ii}&=0.
+ \mathcal Q^{\rm E}_{ij}
+ &=\int\rho_{\rm e}(3x_ix_j-r^2\delta_{ij})\dd^3x,
+ &\mathcal Q^{\rm E}_{ii}&=0 ,
  \label{eq:phys-rr-quadrupole-def}
 \end{align}
-连续性方程还给出第一电流矩恒等式
+并记 \(I_{ij}=\int\rho_{\rm e}x_ix_j\dd^3x\)。连续性方程给出
 \begin{equation}
- \int x_jJ_i\dd^3x
- =\frac12\dot I_{ij}-\epsilon_{ijk}m_k,
- \qquad
- I_{ij}:=\int\rho_{\rm e}x_ix_j\dd^3x.
+ \int x_jJ_i\dd^3x=\frac12\dot I_{ij}-\epsilon_{ijk}m_k .
  \label{eq:phys-rr-first-current-moment}
 \end{equation}
-因此精确电流振幅的长波展开为
+于是
 \begin{equation}
- \boxed{
- \vb{\Pi}_{\perp}\cdot\boldsymbol{\mathcal J}
- =-\ii\omega\vb{\Pi}_{\perp}\cdot\widetilde{\vb p}
+ \vb\Pi_\perp\cdot\boldsymbol{\mathcal J}
+ =-\ii\omega\vb\Pi_\perp\cdot\widetilde{\vb p}
  +\ii k\,\vb n\times\widetilde{\vb m}
- -\frac{k\omega}{6}\vb{\Pi}_{\perp}\cdot(\widetilde{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)
- +\boldsymbol{\mathcal R}_2,}
+ -\frac{k\omega}{6}\vb\Pi_\perp\cdot
+ (\widetilde{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)
+ +\boldsymbol{\mathcal R}_2 .
  \label{eq:phys-rr-multipole-current-amplitude}
 \end{equation}
-其中 \(\boldsymbol{\mathcal R}_2\) 从二次空间矩以后开始，截断由 \(\kappa_{\rm src}\) 控制。时域远场为
+余项从更高空间矩开始，量级由 \(\kappa_{\rm src}\) 控制。逆 Fourier 变换为
 \begin{equation}
  \vb E_{\rm rad}
  =\frac{1}{4\pi\varepsilon_0c^2R}
- \left\{
- \vb n\times(\vb n\times\ddot{\vb p})
+ \left\{\vb n\times(\vb n\times\ddot{\vb p})
  +\frac1c\vb n\times\ddot{\vb m}
- +\frac{1}{6c}\vb n\times[\vb n\times(\dddot{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)]
- \right\}_{t-R/c}
- +\vb E_{\rm rem}.
+ +\frac1{6c}\vb n\times[
+ \vb n\times(\dddot{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)]
+ \right\}_{t-R/c}+\vb E_{\rm rem}.
  \label{eq:phys-rr-multipole-far-field}
 \end{equation}
-其中 \(\vb E_{\rm rem}\) 是 \(\boldsymbol{\mathcal R}_2\) 的逆 Fourier 变换所对应的高多极余项，其截断阶由 \(\kappa_{\rm src}\) 控制。固定方向上不同多极振幅必须先相加再平方，因此可以干涉；完整球面积分后，不同角动量与宇称的交叉项才消失。前三个角积分谱为
+完整角积分后，
 \begin{align}
  \frac{\dd E_{E1}}{\dd\omega}
  &=\frac{\omega^4}{6\pi^2\varepsilon_0c^3}
@@ -465,27 +342,95 @@ Lorenz 规范下，
  \label{eq:phys-rr-m1-spectrum}\\
  \frac{\dd E_{E2}}{\dd\omega}
  &=\frac{\omega^6}{720\pi^2\varepsilon_0c^5}
- \widetilde{\mathcal Q}^{\rm E}_{ij}\left(\widetilde{\mathcal Q}^{\rm E}_{ij}\right)^*.
+ \widetilde{\mathcal Q}^{\rm E}_{ij}
+ (\widetilde{\mathcal Q}^{\rm E}_{ij})^* .
  \label{eq:phys-rr-e2-spectrum}
 \end{align}
-对应时域功率为
+对应的瞬时功率为
 \begin{equation}
  P_{E1}=\frac{|\ddot{\vb p}|^2}{6\pi\varepsilon_0c^3},
- \qquad
+ \quad
  P_{M1}=\frac{|\ddot{\vb m}|^2}{6\pi\varepsilon_0c^5},
- \qquad
- P_{E2}=\frac{\dddot{\mathcal Q}^{\rm E}_{ij}\dddot{\mathcal Q}^{\rm E}_{ij}}{720\pi\varepsilon_0c^5}.
+ \quad
+ P_{E2}=\frac{\dddot{\mathcal Q}^{\rm E}_{ij}
+ \dddot{\mathcal Q}^{\rm E}_{ij}}{720\pi\varepsilon_0c^5}.
  \label{eq:phys-rr-multipole-time-powers}
 \end{equation}
-若源还具有周期性，则每条谱线只需把 \(\omega\) 替换为 \(N\omega_0\)：
+若源同时周期化，则
 \begin{align}
  P_{E1,N}&=\frac{(N\omega_0)^4}{3\pi\varepsilon_0c^3}p_{i,N}p_{i,N}^*,\\
  P_{M1,N}&=\frac{(N\omega_0)^4}{3\pi\varepsilon_0c^5}m_{i,N}m_{i,N}^*,\\
- P_{E2,N}&=\frac{(N\omega_0)^6}{360\pi\varepsilon_0c^5}\mathcal Q^{\rm E}_{ij,N}\left(\mathcal Q^{\rm E}_{ij,N}\right)^*.
+ P_{E2,N}&=\frac{(N\omega_0)^6}{360\pi\varepsilon_0c^5}
+ \mathcal Q^{\rm E}_{ij,N}(\mathcal Q^{\rm E}_{ij,N})^* .
  \label{eq:phys-rr-periodic-multipole-lines}
 \end{align}
-周期化与长波展开可以按任意顺序施加，只要每一步分别满足自己的条件。
+周期化与长波展开彼此独立；两者可交换次序，但必须分别满足各自条件。
 
+散射的软频极限由
+\begin{equation}
+ \epsilon_{\rm soft}=\omega T_{\rm sc}\ll1
+ \label{eq:phys-rr-soft-control}
+\end{equation}
+控制。对入射、出射外线分别取 \(\varsigma_A=-1,+1\)，领先软因子为
+\begin{equation}
+ \boldsymbol{\mathcal S}^{(0)}(\vb n)
+ =\sum_A\varsigma_Aq_A
+ \frac{\vb n\times(\vb n\times\boldsymbol\beta_A)}
+ {1-\vb n\cdot\boldsymbol\beta_A},
+ \label{eq:phys-rr-leading-soft-factor}
+\end{equation}
+并给出
+\begin{equation}
+ \left.\frac{\dd^2E}{\dd\omega\dd\Omega}\right|_{\omega\to0}
+ =\frac{|\boldsymbol{\mathcal S}^{(0)}|^2}
+ {16\pi^3\varepsilon_0c}.
+ \label{eq:phys-rr-soft-angular-spectrum}
+\end{equation}
+若 \(\sum_A\varsigma_Aq_A=0\)，令
+\(\Gamma_{AB}=\gamma_A\gamma_B(1-\boldsymbol\beta_A\cdot\boldsymbol\beta_B)\)、
+\(\beta_{AB}=\sqrt{1-\Gamma_{AB}^{-2}}\)，角积分为
+\begin{equation}
+ \left.\frac{\dd E}{\dd\omega}\right|_{\omega\to0}
+ =-\frac1{4\pi^2\varepsilon_0c}
+ \sum_{A,B}\varsigma_A\varsigma_Bq_Aq_B
+ \left[\frac{\operatorname{artanh}\beta_{AB}}{\beta_{AB}}-1\right].
+ \label{eq:phys-rr-soft-integrated-spectrum}
+\end{equation}
+单电荷非相对论偏转以及与偶极路线的重叠极限分别是
+\begin{align}
+ \left.\frac{\dd E}{\dd\omega}\right|_{\omega\to0}
+ &=\frac{q^2|\Delta\vb v|^2}{6\pi^2\varepsilon_0c^3}+O(c^{-5}),
+ \label{eq:phys-rr-soft-nonrel-limit}\\
+ \left.\frac{\dd E_{E1}}{\dd\omega}\right|_{\omega\to0}
+ &=\frac{|\Delta\dot{\vb p}|^2}{6\pi^2\varepsilon_0c^3}.
+ \label{eq:phys-rr-e1-soft-limit}
+\end{align}
+零频振幅的时域形式是电磁记忆：
+\begin{equation}
+ \int_{-\infty}^{\infty}\vb E_{\rm rad}(R\vb n,u)\dd u
+ =\frac{\boldsymbol{\mathcal S}^{(0)}(\vb n)}
+ {4\pi\varepsilon_0cR}.
+ \label{eq:phys-rr-em-memory-soft-relation}
+\end{equation}
+这些式子只使用时间软极限，不应与固定尺寸源的长波多极展开混为一谈。
+
+\begin{derivation}[软因子的端点来源]
+在点世界线加速度振幅中使用前述 \(\vb g_a\)。当
+\(\omega T_{\rm sc}\ll1\) 时，
+\[
+ \int\dd t\,\dot{\vb g}_a e^{\ii\omega\varphi_a}
+ =\vb g_a(+\infty)-\vb g_a(-\infty)+O(\epsilon_{\rm soft}),
+\]
+相加即得\eqnrefs{eq:phys-rr-leading-soft-factor}。角积分利用
+\[
+ \frac1{AB}=\int_0^1\frac{\dd x}{[xA+(1-x)B]^2},
+ \qquad
+ \int\frac{\dd\Omega}{(1-\vb n\cdot\vb w)^2}
+ =\frac{4\pi}{1-w^2},
+\]
+再由电荷守恒减去与
+\((\sum_A\varsigma_Aq_A)^2\) 成正比的常数项，得到
+\eqnrefs{eq:phys-rr-soft-integrated-spectrum}。
 \end{derivation}
 
 \begin{figure}[htbp]
@@ -496,281 +441,49 @@ Lorenz 规范下，
 \end{figure}
 
 
-空间相位展开为
+\begin{derivation}[多极振幅与角积分]
+在 \(\kappa_{\rm src}\ll1\) 时展开空间相位，
 \[
  e^{-\ii k\vb n\cdot\vb x}
  =1-\ii k n_jx_j+O(\kappa_{\rm src}^2).
 \]
-该展开在长波条件 \(k\kappa_{\rm src}^{-1}\ll1\) 下逐阶有效，其中 \(\kappa_{\rm src}\) 是源的空间尺度。首先由连续性方程 \(\dot\rho_{\rm e}+\nabla\cdot\vb J=0\)，
+连续性方程分部积分给出
 \[
- \dot p_i
- =-\int x_i\partial_jJ_j\dd^3x
- =\int J_i\dd^3x,
+ \int J_i\dd^3x=\dot p_i,\qquad
+ \int x_jJ_i\dd^3x=\frac12\dot I_{ij}-\epsilon_{ijk}m_k .
 \]
-其中第二步用了分部积分与源在无穷远处消失的边界条件。具体地，\(\dot p_i=\int\dot\rho_{\rm e}x_i\dd^3x=-\int(\partial_jJ_j)x_i\dd^3x=\int J_j\partial_jx_i\dd^3x=\int J_i\dd^3x\)。再令 \(I_{ij}=\int\rho_{\rm e}x_ix_j\dd^3x\)，则
+对时间作 Fourier 变换，并用
+\(\mathcal Q^{\rm E}_{ij}=3I_{ij}-\delta_{ij}I_{kk}\) 与
+\(\vb\Pi_\perp\cdot\vb n=0\)，便有
 \[
- \dot I_{ij}=\int(x_iJ_j+x_jJ_i)\dd^3x,
+ \vb\Pi_\perp\cdot\boldsymbol{\mathcal J}
+ =-\ii\omega\vb\Pi_\perp\cdot\widetilde{\vb p}
+ +\ii k\,\vb n\times\widetilde{\vb m}
+ -\frac{k\omega}{6}\vb\Pi_\perp\cdot
+ (\widetilde{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)
+ +O(\kappa_{\rm src}^2),
 \]
-这同样由连续性方程与分部积分得到。具体地，\(\dot I_{ij}=\int\dot\rho_{\rm e}x_ix_j\dd^3x=-\int(\partial_kJ_k)x_ix_j\dd^3x=\int(J_ix_j+J_jx_i)\dd^3x\)。磁偶极矩 \(\vb m=\frac12\int\vb x\times\vb J\dd^3x\) 给出反对称部分
-\[
- \int(x_jJ_i-x_iJ_j)\dd^3x=-2\epsilon_{ijk}m_k,
-\]
-因此 \(\int x_jJ_i\dd^3x=\frac12\dot I_{ij}-\epsilon_{ijk}m_k\)，相加即得式~\eqnrefs{eq:phys-rr-first-current-moment}。该分解的几何意义是：电流积分 \(\int x_jJ_i\dd^3x\) 自然分解为对称部分（电四极时间导数）与反对称部分（磁偶极），对应于辐射场的两个独立自由度。对称与反对称分解为
-\[
- \int x_jJ_i\dd^3x
- =\frac12\underbrace{\int(x_jJ_i+x_iJ_j)\dd^3x}_{\text{对称：电四极}}
- +\frac12\underbrace{\int(x_jJ_i-x_iJ_j)\dd^3x}_{\text{反对称：磁偶极}},
-\]
-于是
-\begin{align*}
- \mathcal J_i
- &=\int\dd t\,e^{\ii\omega t}
- \left[\int J_i\dd^3x-\ii kn_j\int x_jJ_i\dd^3x\right]+O(k^2)\\
- &=-\ii\omega\widetilde p_i
- -\frac{k\omega}{2}n_j\widetilde I_{ij}
- +\ii k(\vb n\times\widetilde{\vb m})_i+O(k^2).
-\end{align*}
-第一项是电偶极贡献，由 \(\dot p_i=\int J_i\dd^3x\) 经 Fourier 变换给出 \(-\ii\omega\widetilde p_i\)；第二项含对称张量 \(I_{ij}\)，与电四极相关；第三项含磁偶极。具体地，Fourier 变换中 \(\int\dd t\,e^{\ii\omega t}\dot p_i=-\ii\omega\widetilde p_i\)（边界项消失），\(\int\dd t\,e^{\ii\omega t}\dot I_{ij}=-\ii\omega\widetilde I_{ij}\)。由 \(\mathcal Q^{\rm E}_{ij}=3I_{ij}-\delta_{ij}I_{kk}\) 和 \(\vb{\Pi}_{\perp}\cdot\vb n=0\)，
-\[
- \vb{\Pi}_{\perp}\cdot(\vb I\cdot\vb n)
- =\frac13\vb{\Pi}_{\perp}\cdot(\vb{\mathcal Q}^{\rm E}\cdot\vb n),
-\]
-其中迹项 \(\delta_{ij}I_{kk}\) 被 \(\vb{\Pi}_{\perp}\) 消去，因为 \(\vb{\Pi}_{\perp}\cdot\vb n=0\)。具体验证：
-\[
- \vb{\Pi}_{\perp}\cdot(\delta_{ij}I_{kk}\vb n)
- =I_{kk}\,\vb{\Pi}_{\perp}\cdot\vb n
- =0.
-\]
-从而得到正文的长波振幅。该展开的前三项分别对应 \(E1\)（电偶极）、\(M1\)（磁偶极）与 \(E2\)（电四极）辐射，其远场功率随 \(k\) 的阶数依次为 \(k^2,k^4,k^4\)，因此长波极限下电偶极主导。当电偶极矩阵元因对称性而消失时（如原子跃迁中宇称守恒禁戒 \(E1\)），磁偶极与电四极成为主导通道，其功率比 \(E1\) 小 \((ka)^2\) 量级（\(a\) 为源尺度），对应原子物理中的禁戒跃迁。选择定则可从多极算符的宇称与角动量性质导出：\(E1\) 算符为奇宇称、秩1，要求初末态宇称相反且 \(\Delta l=\pm1\)；\(M1\) 为偶宇称、秩1，要求宇称相同且 \(\Delta l=0,\pm1\)；\(E2\) 为偶宇称、秩2，要求宇称相同且 \(\Delta l=0,\pm1,\pm2\)。这些选择定则可统一表示为
-\[
- \Delta l\le L,\qquad \pi_i\pi_f=(-1)^L\,\pi_{\rm multipole},
-\]
-其中 \(L\) 为多极阶数，\(\pi_{\rm multipole}\) 为多极算符宇称。作为应用举例，考虑氢原子 \(2p\to1s\) 跃迁：该跃迁的电偶极矩阵元 \(\vb d_{21}=\langle1s|e\vb r|2p\rangle\) 非零，故 \(E1\) 主导；而 \(1s\to1s\) 的电偶极矩为零，需考虑 \(M1\) 或 \(E2\) 贡献，这正是原子物理中跃迁选择定则的多极展开根源。
+即\eqnrefs{eq:phys-rr-multipole-current-amplitude}到所示阶次。
 
-\emph{物理意义。}多极展开的物理本质是"辐射场的空间 Fourier 展开"：长波条件 \(ka\ll1\) 使 \(e^{-ik\mathbf n\cdot\mathbf x}\) 可逐阶展开，每阶对应一个确定的多极辐射通道。连续性方程 \(\dot\rho+\nabla\cdot\mathbf J=0\) 把电荷与电流耦合，使电流积分 \(\int x_j J_i\dd^3x\) 自然分解为对称部分（电四极时间导数）和反对称部分（磁偶极）——这是电荷守恒对辐射自由度的约束。各多极通道的功率按 \((ka)^{2L}\) 递减（\(L\) 为多极阶），物理上反映了"源尺度远小于波长时，更高阶空间结构对远场贡献更小"。当低阶多极因对称性禁戒时（如宇称选择定则），高阶多极成为主导通道，功率被 \((ka)^2\) 压低——这就是原子"禁戒跃迁"的辐射机制，其寿命比允许跃迁长 \((ka)^{-2}\sim(\alpha a_0/\lambda)^{-2}\) 量级。
-
-\begin{derivation}[式~\eqnrefs{eq:phys-rr-e1-spectrum,eq:phys-rr-m1-spectrum,eq:phys-rr-e2-spectrum}：多极角积分与 SI 系数]
-使用各向同性恒等式
+完整球面积分使用
 \[
- \int n_in_j\dd\Omega=\frac{4\pi}{3}\delta_{ij},
- \qquad
+ \int n_in_j\dd\Omega=\frac{4\pi}{3}\delta_{ij},\qquad
  \int n_in_jn_kn_l\dd\Omega
  =\frac{4\pi}{15}
  (\delta_{ij}\delta_{kl}+\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}).
 \]
-第一式来自 \(\vb n\) 在球面上的各向同性，第二式是唯一的四阶各向同性张量。具体验证：\(\int n_in_j\dd\Omega\) 必须是各向同性二阶张量，故正比于 \(\delta_{ij}\)；取 \(i=j\) 并求和给出 \(3C=\int|\vb n|^2\dd\Omega=4\pi\)，故 \(C=4\pi/3\)。电偶极项有
-\[
- \int\dd\Omega\,|\vb{\Pi}_{\perp}\cdot\widetilde{\ddot{\vb p}}|^2
- =\int\dd\Omega\,
- |\widetilde{\ddot{\vb p}}|^2
- -|\vb n\cdot\widetilde{\ddot{\vb p}}|^2
- =4\pi|\widetilde{\ddot{\vb p}}|^2
- -\frac{4\pi}{3}|\widetilde{\ddot{\vb p}}|^2
- =\frac{8\pi}{3}|\widetilde{\ddot{\vb p}}|^2.
-\]
-磁偶极具有同一角因子，只多出远场振幅中的 \(1/c\)，这是因为磁偶极远场 \(\vb B\sim\mu_0\ddot{\vb m}\times\vb n/(4\pi rc)\) 比电偶极远场多一个 \(1/c\) 因子。相应地，\(M1\) 功率比 \(E1\) 多 \(1/c^2\)，在原子跃迁中表现为 \(M1\) 比 \(E1\) 慢 \((a/\lambda)^2\sim\alpha^2\sim10^{-4}\) 量级。对无迹四极张量 \(\mathcal Q^{\rm E}_{ij}\)（满足 \(\mathcal Q^{\rm E}_{ii}=0\)），
-\begin{align*}
- \int\dd\Omega\,
- |\vb{\Pi}_{\perp}\cdot(\widetilde{\dddot{\vb{\mathcal Q}}}^{\rm E}\cdot\vb n)|^2
- &=\int\dd\Omega\left[
- |\widetilde{\dddot{\vb{\mathcal Q}}}^{\rm E}\cdot\vb n|^2
- -|\vb n\cdot\widetilde{\dddot{\vb{\mathcal Q}}}^{\rm E}\cdot\vb n|^2\right]\\
- &=\left(\frac{4\pi}{3}-\frac{8\pi}{15}\right)
- \widetilde{\dddot{\mathcal Q}}^{\rm E}_{ij}\left(\widetilde{\dddot{\mathcal Q}}^{\rm E}_{ij}\right)^*
- =\frac{4\pi}{5}\widetilde{\dddot{\mathcal Q}}^{\rm E}_{ij}\left(\widetilde{\dddot{\mathcal Q}}^{\rm E}_{ij}\right)^*.
-\end{align*}
-其中第二项的 \(8\pi/15\) 来自四阶各向同性张量在无迹条件下的缩并：\(\delta_{ij}\delta_{kl}\mathcal Q_{ij}\mathcal Q_{kl}^*=0\)（无迹），而 \(\delta_{ik}\delta_{jl}\mathcal Q_{ij}\mathcal Q_{kl}^*=\mathcal Q_{ij}\mathcal Q_{ij}^*\) 与 \(\delta_{il}\delta_{jk}\mathcal Q_{ij}\mathcal Q_{kl}^*=\mathcal Q_{ij}\mathcal Q_{ji}^*=\mathcal Q_{ij}\mathcal Q_{ij}^*\)（对称性）。把这些角因子代入 \(R^2|\vb E|^2/(\mu_0c)\)，再用 \(\mu_0\varepsilon_0c^2=1\) 与正频率 Parseval 归一化，就得到正文中 \(E1,M1,E2\) 的全部系数。特别地，采用本章定义 \(\mathcal Q^{\rm E}_{ij}=\int\rho_{\rm e}(3x_ix_j-r^2\delta_{ij})\dd^3x\) 时，四极瞬时功率系数确为 \(1/(720\pi\varepsilon_0c^5)\)。
-
-作为应用举例，考虑经典电偶极辐射：电荷 \(q\) 沿 \(z\) 轴作简谐振动 \(z(t)=z_0\cos\omega t\)，则 \(\ddot{\vb p}=q\ddot z\vb e_z=-q\omega^2z_0\cos\omega t\,\vb e_z\)。代入 \(E1\) 功率公式并取周期平均，得到 Larmor 公式
-\[
- P_{E1}=\frac{q^2\omega^4z_0^2}{12\pi\varepsilon_0c^3},
-\]
-这是从经典辐射通往量子电动力学自发辐射的桥梁：将 \(q^2\omega^4z_0^2/2\) 量子化为跃迁矩阵元 \(\omega_{ij}^4|\vb d_{ij}|^2\)，即得到 Einstein \(A\) 系数 \(A_{ij}=\omega_{ij}^3|\vb d_{ij}|^2/(3\pi\hbar\varepsilon_0c^3)\)。该公式是经典电动力学与量子电动力学的直接对应：经典振子周期平均辐射功率 \(P_{E1}\) 乘以 \(1/\hbar\omega\) 即为量子跃迁率。对应关系可写为
-\[
- P_{E1}^{\rm class}\,\frac{1}{\hbar\omega_{ij}}
- \;\longleftrightarrow\;
- A_{ij}^{\rm QED},
-\]
-其中经典偶极矩 \(qz_0\) 替换为量子矩阵元 \(\vb d_{ij}\)。作为磁偶极辐射举例，考虑电流圈 \(I(t)=I_0\cos\omega t\) 在 \(xy\) 平面上：磁偶极矩 \(\vb m=I_0A\cos\omega t\,\vb e_z\)（\(A\) 为圈面积），代入 \(M1\) 功率公式得到
-\[
- P_{M1}=\frac{\mu_0\omega^4|\vb m_0|^2}{12\pi c^3}
- =\frac{\mu_0\omega^4I_0^2A^2}{12\pi c^3},
-\]
-比同频率电偶极功率多出 \(1/c^2\) 因子，故原子中 \(M1\) 跃迁通常比 \(E1\) 跃迁慢 \(10^{-5}\) 量级。这一比值可从精细结构常数 \(\alpha=e^2/(4\pi\varepsilon_0\hbar c)\approx1/137\) 与原子尺度 \(a_0=\hbar/(\alpha mc)\) 导出：\(P_{M1}/P_{E1}\sim(a_0/\lambda)^2\sim\alpha^4\)。具体估计：
-\[
- \frac{P_{M1}}{P_{E1}}\sim\frac{|\vb m|^2/c^2}{|\vb d|^2}
- \sim\frac{(ea_0)^2/c^2}{(ea_0)^2}
- \sim\frac{a_0^2}{c^2/\omega^2}
- \sim\left(\frac{\omega a_0}{c}\right)^2
- \sim\alpha^4,
-\]
-其中用了 \(\omega\sim\alpha^2 mc^2/\hbar\) 与 \(a_0=\hbar/(\alpha mc)\)。作为电四极举例，考虑两个反向电偶极 \(\vb p_1=p\vb e_z\) 在 \(z=\pm a/2\) 处：电四极矩 \(\mathcal Q_{zz}=2pa\)，代入 \(E2\) 功率公式得到 \(P_{E2}=\omega^6|\mathcal Q_{zz}|^2/(1440\pi\varepsilon_0c^5)\)，比 \(E1\) 多出 \((ka)^2\) 因子。
-
-\emph{物理意义。}多极角积分与 SI 系数的推导给出各多极辐射通道的绝对功率：\(P_{E1}\propto\omega^4|d|^2\)、\(P_{M1}\propto\omega^4|m|^2/c^2\)、\(P_{E2}\propto\omega^6|Q|^2/c^2\)。频率幂次 \(\omega^{2L+2}\) 来自辐射阻尼的 \(L\) 阶空间导数与远场能流的 \(1/r^2\) 衰减；\(c\) 的幂次差反映了电多极（极矢量）与磁多极（轴矢量）在 SI 单位制中的量纲差异。对原子跃迁，\(P_{M1}/P_{E1}\sim\alpha^2\sim5\times10^{-5}\)（精细结构常数平方），\(P_{E2}/P_{E1}\sim(k a_0)^2\sim\alpha^4\)，因此 \(E1\) 允许跃迁总是主导，只有 \(E1\) 禁戒时才需考虑 \(M1\) 或 \(E2\)。这些标度律在天体物理中用于诊断辐射源的尺寸和温度：X 射线源的硬谱尾部由高阶多极贡献，而射电脉冲星的相干曲率辐射则需超出多极展开的完整 Liénard-Wiechert 处理。
-
-
-接下来考察软频端点、记忆与硬频尾。
-
-现在才取散射的频率端点。设各点电荷在 \(t\to\pm\infty\) 趋于匀速，加速度主要集中在持续时间 \(T_{\rm sc}\) 的区域。软展开要求
-\begin{equation}
- \epsilon_{\rm soft}:=\omega T_{\rm sc}\ll1.
- \label{eq:phys-rr-soft-control}
-\end{equation}
-定义每条渐近外线的入射/出射符号 \(\varsigma_A\)：入射线取 \(\varsigma_A=-1\)，出射线取 \(\varsigma_A=+1\)。则精确点世界线谱在领先软阶只保留边界速度：
-\begin{equation}
- \boxed{
- \boldsymbol{\mathcal S}^{(0)}(\vb n)
- =\sum_A\varsigma_Aq_A
- \frac{\vb n\times(\vb n\times\boldsymbol\beta_A)}
- {1-\vb n\cdot\boldsymbol\beta_A}.}
- \label{eq:phys-rr-leading-soft-factor}
-\end{equation}
-因此
-\begin{equation}
- \boxed{
- \left.\frac{\dd^2E}{\dd\omega\dd\Omega}\right|_{\omega\to0}
- =\frac{1}{16\pi^3\varepsilon_0c}
- |\boldsymbol{\mathcal S}^{(0)}(\vb n)|^2.}
- \label{eq:phys-rr-soft-angular-spectrum}
-\end{equation}
-这一极限不要求 \(v/c\ll1\)，也没有独立调用多极展开。对具有固定有限空间尺度的源，\(\omega\to0\) 当然会同时使 \(\kappa_{\rm src}\to0\)；但对散射世界线，粒子位置随 \(|t|\) 无界增长，领先软项仍由渐近速度的边界数据决定，而不是由一个固定“源半径”的多极模型定义。
-
-电荷守恒 \(\sum_A\varsigma_Aq_A=0\) 允许完整角积分写成 Lorentz 不变量形式。定义
-\[
- \Gamma_{AB}=\gamma_A\gamma_B(1-\boldsymbol\beta_A\cdot\boldsymbol\beta_B),
- \qquad
- \beta_{AB}=\sqrt{1-\Gamma_{AB}^{-2}},
-\]
-则
-\begin{equation}
- \boxed{
- \left.\frac{\dd E}{\dd\omega}\right|_{\omega\to0}
- =-\frac{1}{4\pi^2\varepsilon_0c}
- \sum_{A,B}\varsigma_A\varsigma_Bq_Aq_B
- \left[
- \frac{\operatorname{artanh}\beta_{AB}}{\beta_{AB}}-1
- \right].}
- \label{eq:phys-rr-soft-integrated-spectrum}
-\end{equation}
-单个电荷从 \(\boldsymbol\beta_i\) 偏转到 \(\boldsymbol\beta_f\) 时，非相对论极限为
-\begin{equation}
- \left.\frac{\dd E}{\dd\omega}\right|_{\omega\to0}
- =\frac{q^2|\Delta\vb v|^2}{6\pi^2\varepsilon_0c^3}+O(c^{-5}).
- \label{eq:phys-rr-soft-nonrel-limit}
-\end{equation}
-若同时满足长波条件，多极路线必须在重叠区给出同一结果。例如
-\begin{equation}
- \left.\frac{\dd E_{E1}}{\dd\omega}\right|_{\omega\to0}
- =\frac{|\Delta\dot{\vb p}|^2}{6\pi^2\varepsilon_0c^3},
- \label{eq:phys-rr-e1-soft-limit}
-\end{equation}
-而单点电荷的 \(\dot{\vb p}=q\vb v\) 立即恢复式~\eqnrefs{eq:phys-rr-soft-nonrel-limit}。这是两个独立近似路径在共同有效域的交叉校验。
-
-零频振幅还等价于辐射场的时间积分。令 \(u=t-R/c\)，则
-\begin{equation}
- \int_{-\infty}^{\infty}\vb E_{\rm rad}(R\vb n,u)\dd u
- =\frac{1}{4\pi\varepsilon_0cR}
- \boldsymbol{\mathcal S}^{(0)}(\vb n).
- \label{eq:phys-rr-em-memory-soft-relation}
-\end{equation}
-因此经典电磁记忆与领先软因子是同一边界数据的时域和频域表述。
-
-\begin{note}
-若长程库仑相互作用使渐近轨道含 \(\ln|t|\) 项，则加速度具有 \(t^{-2}\) 尾。相应 Fourier 变换产生 \(\omega\ln\omega\) 非解析项，所以领先软因子仍成立，但普通的整数次次领先 Taylor 展开一般失效。
-\end{note}
-
-硬频端没有与式~\eqnrefs{eq:phys-rr-leading-soft-factor} 类似的普适边界定理。考虑实相位 \(\varphi(t)\) 和振幅 \(F(t)\)，并令
-\[
- I(\omega)=\int F(t)e^{\ii\omega\varphi(t)}\dd t,
- \qquad \dot\varphi>0.
-\]
-若 \(F\) 只具有有限阶光滑性，高频尾由最先不连续的导数给出幂律；若 \(F\) 与 \(\varphi\) 可解析延拓，则最近的复奇点或复 saddle 控制指数型或一致渐近截止。超相对论同步辐射的 \(\omega\sim\gamma^3\omega_{\rm orb}\) 正属于后一类结构。因此软端可以由渐近态决定，而硬端必须知道更细的时间历史。
-
-
-在式~\eqnrefs{eq:phys-rr-exact-point-spectrum} 中令
-\[
- \vb g_a
- =\frac{\vb n\times(\vb n\times\boldsymbol\beta_a)}
- {1-\vb n\cdot\boldsymbol\beta_a}.
-\]
-当 \(\omega T_{\rm sc}\ll1\) 时，散射区内
-\[
- \int\dd t\,\dot{\vb g}_a e^{\ii\omega\varphi_a}
- =\vb g_a(+\infty)-\vb g_a(-\infty)+O(\epsilon_{\rm soft}),
-\]
-相加即得软因子。
-
-为做角积分，先利用电荷守恒把模平方化成
-\[
- |\boldsymbol{\mathcal S}^{(0)}|^2
- =-\sum_{A,B}\varsigma_A\varsigma_Bq_Aq_B
- \frac{1-\boldsymbol\beta_A\cdot\boldsymbol\beta_B}
- {(1-\vb n\cdot\boldsymbol\beta_A)(1-\vb n\cdot\boldsymbol\beta_B)}.
-\]
-对两个分母引入 Feynman 参数，
-\[
- \frac1{AB}=\int_0^1\frac{\dd x}{[xA+(1-x)B]^2},
- \qquad
- \vb w=x\boldsymbol\beta_A+(1-x)\boldsymbol\beta_B.
-\]
-因为
-\[
- \int\frac{\dd\Omega}{(1-\vb n\cdot\vb w)^2}
- =\frac{4\pi}{1-w^2},
-\]
-得到
+于是电偶极和磁偶极的横向角因子均为 \(8\pi/3\)。对称无迹四极张量则有
 \[
  \int\dd\Omega\,
- \frac{1-\boldsymbol\beta_A\cdot\boldsymbol\beta_B}
- {(1-\vb n\cdot\boldsymbol\beta_A)(1-\vb n\cdot\boldsymbol\beta_B)}
- =4\pi\frac{\operatorname{artanh}\beta_{AB}}{\beta_{AB}}.
+ |\vb\Pi_\perp\cdot(\vb{\mathcal Q}^{\rm E}\cdot\vb n)|^2
+ =\frac{4\pi}{5}\mathcal Q^{\rm E}_{ij}
+ (\mathcal Q^{\rm E}_{ij})^*.
 \]
-可再减去 \(4\pi\)，因为对应双重求和正比于 \((\sum_A\varsigma_Aq_A)^2=0\)。代入式~\eqnrefs{eq:phys-rr-soft-angular-spectrum} 即得式~\eqnrefs{eq:phys-rr-soft-integrated-spectrum}。当 \(A=B\) 时 \(\operatorname{artanh}\beta/\beta\to1\)，自项连续消失。
-
-\textbf{物理意义。}软定理说明低频辐射谱 \(\sim\omega^{-1}\) 的系数完全由电荷的渐近速度 \(\boldsymbol\beta_A\) 决定，与加速细节无关。这是 Weinberg 软光子定理的经典对应：低能光子不分辨过程的细节，只看入射和出射态。\(\operatorname{artanh}\beta_{AB}\) 中的相对速度 \(\beta_{AB}\) 量化了两段匀速运动之间的「速度跳变」——跳变越大，软辐射越强。对单电荷从静止突然加速到 \(\beta\)，\(\operatorname{artanh}\beta=\tanh^{-1}\beta\) 直接给出软辐射强度，与 Larmor 公式低频极限一致。
-
-
-\emph{第一次分部积分。}式~\eqnrefs{eq:phys-rr-exact-point-spectrum} 中的被积函数具有形式
-\[
- I(\omega)=\int_{-\infty}^{\infty}\dd t\,F(t)\,e^{\ii\omega\varphi(t)},
-\]
-其中 \(F(t)\) 含加速度和速度的代数组合，\(\dot\varphi=1-\vb n\cdot\boldsymbol\beta>0\)。利用
-\[
- e^{\ii\omega\varphi(t)}
- =\frac{1}{\ii\omega\dot\varphi(t)}\frac{\dd}{\dd t}e^{\ii\omega\varphi(t)},
-\]
-分部积分给出
-\[
- I(\omega)
- =\left[\frac{F}{\ii\omega\dot\varphi}e^{\ii\omega\varphi}\right]_{-\infty}^{\infty}
- -\frac{1}{\ii\omega}\int_{-\infty}^{\infty}\dd t\,
- \frac{\dd}{\dd t}\!\left(\frac{F}{\dot\varphi}\right)
- e^{\ii\omega\varphi(t)}.
-\]
-若 \(F/\dot\varphi\) 在 \(t\to\pm\infty\) 消失（散射轨道加速度有限时间支撑或绝热开关保证），边界项为零，故
-\[
- I(\omega)
- =-\frac{1}{\ii\omega}
- \int_{-\infty}^{\infty}\dd t\,
- \frac{\dd}{\dd t}\!\left(\frac{F}{\dot\varphi}\right)
- e^{\ii\omega\varphi(t)}.
-\]
-
-\emph{第 \(k\) 次迭代。}定义 \(F_0=F\)，递推
-\[
- F_{k+1}=\frac{\dd}{\dd t}\!\left(\frac{F_k}{\dot\varphi}\right).
-\]
-每次分部积分要求 \(F_k/\dot\varphi\) 在无穷远消失且 \(F_{k+1}\) 局部可积。在此条件下，
-\[
- I(\omega)=\left(-\frac{1}{\ii\omega}\right)^k
- \int_{-\infty}^{\infty}\dd t\,F_k(t)\,e^{\ii\omega\varphi(t)},
-\qquad k=0,1,2,\ldots
-\]
-因此 \(|I(\omega)|\le C_k\,\omega^{-k}\)，其中 \(C_k=\|F_k\|_{L^1}\)。
-
-\emph{正则性门槛。}\(F_k\) 涉及 \(\varphi\) 和 \(F\) 的直到 \(k\) 阶导数。若轨道仅有 \(C^m\) 正则性（例如有限碰撞后速度有跳变），则 \(F_k\) 在 \(k=m\) 时出现分布导数（\(\delta\) 函数），\(L^1\) 范数发散，分部积分在 \(k=m\) 处终止。此时辐射谱的硬频衰减不超过 \(\omega^{-(m+1)}\)，对应有限光滑性产生的非热辐射尾部。若轨道实解析，则所有 \(F_k\) 存在，但分部积分只给出代数衰减上界；真正的指数衰减或精确渐近需要转入复平面，用鞍点法或最近奇点确定，而不能把分部积分形式无限机械外推。
-
-\emph{物理意义。}硬频衰减定理的物理内容是"辐射谱的高频尾部由轨道光滑性决定"：每次分部积分把 \(\omega\) 的幂从分母提到分子，代价是对轨道多求一阶导数。若轨道 \(C^\infty\) 光滑（如解析周期运动），辐射谱衰减快于任何幂——这是同步辐射的典型行为，其谱在临界频率 \(\omega_c\sim\gamma^3\omega_0\) 后指数截断。若轨道仅有 \(C^m\) 正则性（如有限碰撞后速度跳变），分部积分在 \(k=m\) 处终止，谱衰减不超过 \(\omega^{-(m+1)}\)，产生非热幂律尾部——这正是碰撞等离子体中韧致辐射 \(\omega^{-2}\) 尾部和脉冲星尖脉冲 \(\omega^{-1}\) 尾部的数学根源。物理上，不光滑轨道对应于加速度的突变（碰撞、急转弯），这些"急刹"事件在时间域产生尖锐脉冲，其 Fourier 变换必然有缓慢衰减的高频分量。
+把这些结果代入精确母式，并使用
+\(\mu_0\varepsilon_0c^2=1\)，得到
+\eqnrefs{eq:phys-rr-e1-spectrum,eq:phys-rr-m1-spectrum,eq:phys-rr-e2-spectrum}。
+更高多极来自相位展开的下一阶，余项仍由
+\(\kappa_{\rm src}\) 而不是时间软参数控制。
 \end{derivation}
 
 给定源部分由此闭合：任意频率先用式~\eqnrefs{eq:phys-rr-exact-radiation-spectrum-current}；点世界线用式~\eqnrefs{eq:phys-rr-exact-point-spectrum}；周期源用式~\eqnrefs{eq:phys-rr-exact-periodic-line-power}；只有 \(\kappa_{\rm src}\ll1\) 才进入多极式~\eqnrefs{eq:phys-rr-multipole-current-amplitude}，只有 \(\epsilon_{\rm soft}\ll1\) 才进入软因子~\eqnrefs{eq:phys-rr-leading-soft-factor}。下一步不再把轨道视为外部给定，而是由外场与自场共同决定运动。
@@ -869,161 +582,34 @@ Lorenz 规范下，
 \label{fig:phys-rr-worldtube-geometry}
 \end{figure}
 
-\begin{derivation}[式~\eqnrefs{eq:phys-rr-exact-self-balance,eq:phys-rr-worldtube-general-balance}：局域守恒与世界管]
-由\eqnrefs{eq:phys-rr-em-stress-energy} 求散度，
-\[
-\begin{aligned}
-\partial_\mu T_{\rm em}^{\mu\nu}
-={}&-\frac1{\mu_0}(\partial_\mu F^{\mu\alpha})F^\nu{}_{\alpha}
--\frac1{\mu_0}F^{\mu\alpha}\partial_\mu F^\nu{}_{\alpha}
-+\frac1{4\mu_0}\partial^\nu(F^{\alpha\beta}F_{\alpha\beta}).
-\end{aligned}
-\]
-第一项用 Maxwell 方程 \(\partial_\mu F^{\mu\alpha}=\mu_0J^\alpha\) 化为 \(-J_\alpha F^{\nu\alpha}\)。其余两项利用 Bianchi 恒等式
+\begin{derivation}[局域守恒与世界管平衡]
+对\eqnrefs{eq:phys-rr-em-stress-energy}求散度。第一项用
+\(\partial_\mu F^{\mu\alpha}=\mu_0J^\alpha\) 化为
+\(-F^{\nu\lambda}J_\lambda\)；其余两项在
 \[
  \partial_\mu F_{\alpha\nu}+\partial_\alpha F_{\nu\mu}
  +\partial_\nu F_{\mu\alpha}=0
 \]
-以及 \(F^{\mu\alpha}=-F^{\alpha\mu}\)，化成彼此相消的项。具体地，把 Bianchi 式乘以 \(F^{\mu\alpha}\) 并对 \(\mu,\alpha\) 缩并，第一项给出 \(F^{\mu\alpha}\partial_\mu F_{\alpha\nu}\)，与散度表达式中第二项相关；第二项由反对称性为零；第三项给出 \(F^{\mu\alpha}\partial_\nu F_{\mu\alpha}=\frac12\partial_\nu(F^{\alpha\beta}F_{\alpha\beta})\)，与散度表达式中第三项相消。于是
+与 \(F_{\mu\nu}=-F_{\nu\mu}\) 下相消。因此
 \[
- \partial_\mu T_{\rm em}^{\mu\nu}
- =-F^{\nu\lambda}J_\lambda.
+ \partial_\mu T_{\rm em}^{\mu\nu}=-F^{\nu\lambda}J_\lambda .
 \]
-物质受到相反的 Lorentz 四力密度 \(f^\nu=F^{\nu\lambda}J_\lambda\)，故总能动量 \(T_{\rm tot}^{\mu\nu}=T_{\rm em}^{\mu\nu}+T_{\rm mat}^{\mu\nu}\) 满足 \(\partial_\mu T_{\rm tot}^{\mu\nu}=0\)。这一守恒律是 Noether 定理在电磁场--物质耦合系统中的体现：时空平移不变性给出四动量守恒。具体地，
-\[
- \partial_\mu T_{\rm tot}^{\mu\nu}
- =\partial_\mu T_{\rm em}^{\mu\nu}+\partial_\mu T_{\rm mat}^{\mu\nu}
- =-F^{\nu\lambda}J_\lambda+F^{\nu\lambda}J_\lambda=0.
-\]
-把总场分成外场与自场、把外场视作给定背景，物质与自场的内部交换相消，便得到\eqnrefs{eq:phys-rr-exact-self-balance}。
+物质张量的散度是相反的 Lorentz 四力密度。把总场分为给定外场与自场后，
+内部的物质--自场交换相消，留下
+\eqnrefs{eq:phys-rr-exact-self-balance}。
 
-再在四维区域 \(\mathcal V_4\) 上积分，并用 Gauss 定理
+在由两张类空端面 \(\Sigma_1,\Sigma_2\) 和类时管壁
+\(\partial\mathcal W\) 围成的四维区域上应用 Gauss 定理：
 \[
  \int_{\mathcal V_4}\partial_\mu T^{\mu\nu}\dd^4x
- =\int_{\partial\mathcal V_4}T^{\mu\nu}\dd\Sigma_\mu.
+ =\int_{\Sigma_2-\Sigma_1+\partial\mathcal W}
+ T^{\mu\nu}\dd\Sigma_\mu .
 \]
-把边界分成 \(\Sigma_2-\Sigma_1+\partial\mathcal W\)，其中 \(\Sigma_1,\Sigma_2\) 是两个类空超曲面，\(\partial\mathcal W\) 是连接它们的类时世界管壁。这一分解的几何意义是：四维区域的边界由两个时间切片与世界管壁组成，前者贡献束缚动量差，后者贡献辐射通量。并定义
-\[
- P^\nu[\Sigma]=\frac1c\int_\Sigma T^{\mu\nu}\dd\Sigma_\mu,
-\]
-逐项代回即得到\eqnrefs{eq:phys-rr-worldtube-general-balance}。这一推导没有使用点粒子近似，也没有预设辐射阻尼的形式。世界管壁通量项 \(\int_{\partial\mathcal W}T^{\mu\nu}\dd\Sigma_\mu\) 在管半径趋于零时给出有限自力，其发散部分被质量重整化吸收，有限部分即 Dirac 正则自力。具体地，管壁通量按管半径 \(\ell\) 展开为
-\[
- \int_{\partial\mathcal W}T^{\mu\nu}\dd\Sigma_\mu
- =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^{\mu}
- -\frac{q^2}{6\pi\varepsilon_0c^3}a^{\mu}
- +O(\ell),
-\]
-第一项发散对应经典电子自能，通过裸质量 \(m_0(\ell)\) 的重整化 \(m=m_0+q^2/(8\pi\varepsilon_0c^2\ell)\) 吸收；第二项有限，即 Abraham--Lorentz--Dirac 自力。该自力含 \(a^\mu\) 与 \(\dot a^\mu\) 两部分：\(a^\mu\) 项给出辐射阻尼，\(\dot a^\mu\) 项（Schott 项）是总时间导数，在周期运动下平均为零但瞬时影响轨道。Schott 项的显式形式为
-\[
- F_{\rm Schott}^\mu=\frac{q^2}{6\pi\varepsilon_0c^3}\dot a^\mu,
-\]
-满足 \(\int_{\tau_1}^{\tau_2}F_{\rm Schott}^\mu\dd\tau=\frac{q^2}{6\pi\varepsilon_0c^3}[a^\mu]_{\tau_1}^{\tau_2}\)，在周期运动中积分为零。更一般地，这一守恒结构对任意有限尺寸电荷分布都成立：当电荷半径 \(\ell\) 趋于零时，世界管壁通量按 \(q^2/(8\pi\varepsilon_0c^2\ell)\) 发散，对应于经典电子自能；减去该发散项后，剩余有限项 \(-q^2a^\mu/(6\pi\varepsilon_0c^3)\) 即 Abraham--Lorentz--Dirac 自力。这一从世界管到点粒子的极限过程，是把经典辐射反作用嵌入自洽守恒框架的关键桥梁。
-
-\emph{物理意义。}世界管能量平衡的物理核心是"辐射反作用嵌入四维能动量守恒"：有限尺寸电荷的 Maxwell 应力张量在世界管壁上的通量给出辐射能量、Schott 项和自能发散三部分。点粒子极限 \(\ell\to0\) 中，自能 \(q^2/(8\pi\varepsilon_0 c^2\ell)\) 发散对应于经典电子自能的紫外发散，需质量重整化吸收。剩余有限项给出 Abraham--Lorentz--Dirac 自力 \(F_{\rm ALD}^\mu=\frac{q^2}{6\pi\varepsilon_0 c^3}(\dot a^\mu+a^2u^\mu)\)，其中 \(\dot a^\mu\) 项（Schott 项）是全导数，在周期运动中积分为零——它不耗散能量而是暂存于近场，类似弹簧的弹性储能。\(a^2u^\mu\) 项是真正的辐射阻尼，在非相对论极限下退化为 Larmor 功率 \(P=q^2a^2/(6\pi\varepsilon_0 c^3)\)。这一框架把"加速电荷辐射能量"从 Larmor 公式的纯运动学陈述提升为能量-动量守恒的协变推论。
-
-
-令
-\[
- \Box G(x)=\delta^{(4)}(x),
- \qquad
- G(x)=\int\frac{\dd^4k}{(2\pi)^4}\widetilde G(k)e^{-\ii k\cdot x}.
-\]
-因为 \(\Box e^{-\ii k\cdot x}=-k^2e^{-\ii k\cdot x}\)（其中 \(k^2=k_\mu k^\mu=(k^0)^2-|\vb k|^2\)），故 \(\widetilde G=-1/k^2\)。因果条件通过极点规定实现：
-\[
- G_{\rm ret/adv}(x)
- =-\int\frac{\dd^4k}{(2\pi)^4}
- \frac{e^{-\ii k\cdot x}}{k^2\pm \ii0\,k^0}.
-\]
-推迟解取 \(+\ii0\,k^0\)，把 \(k^0\) 的极点 \(k^0=\pm|\vb k|\mp\ii0\) 分别推到下半与上半平面。超前解取 \(-\ii0\,k^0\)，极点位置相反。对 \(k^0\) 围道积分后，\(x^0<0\) 时上半围道无极点且指数衰减，故积分为零；\(x^0>0\) 时下半围道给出
-\[
- G_{\rm ret}(x)
- =\theta(x^0)\int\frac{\dd^3k}{(2\pi)^3}
- e^{\ii\vb k\cdot\vb x}
- \frac{\sin(|\vb k|x^0)}{|\vb k|}.
-\]
-令 \(r=|\vb x|\)，角向积分给出 \(4\pi\sin(kr)/(kr)\)（由 \(\int e^{\ii\vb k\cdot\vb x}\dd\Omega_{\vb k}=4\pi\sin(kr)/(kr)\)），于是
-\[
-\begin{aligned}
- G_{\rm ret}(x)
- &=\frac{\theta(x^0)}{2\pi^2r}
- \int_0^\infty\sin(kr)\sin(kx^0)\dd k\\
- &=\frac{\theta(x^0)}{4\pi r}
- [\delta(x^0-r)-\delta(x^0+r)]\\
- &=\frac{\delta(x^0-r)}{4\pi r}.
-\end{aligned}
-\]
-其中第二步用了 \(\sin A\sin B=\frac12[\cos(A-B)-\cos(A+B)]\) 与 \(\int_0^\infty\cos(ku)\dd k=\pi\delta(u)\)；第三步中 \(\theta(x^0)\delta(x^0+r)=0\)（因 \(r>0\) 时 \(x^0=-r<0\)）。具体验证第三步：
-\[
- \theta(x^0)[\delta(x^0-r)-\delta(x^0+r)]
- =\delta(x^0-r)-0
- =\delta(x^0-r),
-\]
-因为 \(\theta(x^0)\delta(x^0+r)\) 在 \(x^0=-r<0\) 处取值，而 \(\theta\) 在负半轴为零。超前解同理为 \(\delta(x^0+r)/(4\pi r)\)，其支集在负向光锥上，对应于超前势。再用
-\[
- \delta(x^2)=\frac{\delta(x^0-r)+\delta(x^0+r)}{2r}
-\]
-即可得到正文\eqnrefs{eq:phys-rr-ret-adv-green}。推迟 Green 函数支集在正向光锥 \(x^0=r\) 上，超前 Green 函数支集在负向光锥 \(x^0=-r\) 上，二者之半差为齐次解，对应于 Wheeler--Feynman 吸收子理论中的对称 Green 函数。Feynman 传播子则取 \(\pm\ii0\)（不含 \(k^0\)）的极点规定，把正频模推迟、负频模超前，在量子电动力学中对应于正粒子与反粒子的因果传播。三种 Green 函数的差别完全在极点规定，而微分方程 \(\Box G=\delta^{(4)}\) 相同；这从经典辐射到量子场论的桥梁正是同一 Green 结构的不同因果延拓。作为应用举例，推迟势
-\[
- A^\mu_{\rm ret}(x)=\mu_0\int G_{\rm ret}(x-y)J^\mu(y)\dd^4y
-\]
-把任意源 \(J^\mu\) 的辐射场表示为推迟 Green 函数与源的卷积，支集在源的世界线未来光锥上，保证因果性；超前势则给出源的未来对过去的影响，在吸收子理论中用于消除自能发散。Wheeler--Feynman 吸收子理论使用对称 Green 函数 \(G_{\rm sym}=\frac12(G_{\rm ret}+G_{\rm adv})\)，配合宇宙吸收假设，可避免自能发散而得到与 ALD 等价的辐射反作用。三种 Green 函数的关系可总结为
-\[
- G_{\rm ret}=G_{\rm sym}+\frac12 G_{\rm hom},\qquad
- G_{\rm adv}=G_{\rm sym}-\frac12 G_{\rm hom},
-\]
-其中 \(G_{\rm hom}=\delta(x^0-r)/(4\pi r)-\delta(x^0+r)/(4\pi r)\) 为齐次解。
-
-\emph{物理意义。}推迟与超前 Green 函数的物理区别是因果性的时间方向：推迟 Green 函数 \(G_{\rm ret}\) 只支持 \(x^0>0\)（原因在先、结果在后），给出 retarded 解——电荷在 \(t'<t\) 时刻的状态决定 \(t\) 时刻的场，这是物理可观测的因果解。超前 Green 函数 \(G_{\rm adv}\) 只支持 \(x^0<0\)，给出 advanced 解——未来决定过去，违反宏观因果律但数学上同样满足方程。对称 Green 函数 \(G_{\rm sym}=\frac12(G_{\rm ret}+G_{\rm adv})\) 是时间反演不变的，对应 Wheeler--Feynman 吸收体理论中"半推迟半超前"方案，该理论试图消去辐射反作用而代之以其他吸收体的响应。齐次解 \(G_{\rm hom}\) 是自由波动方程的解（无源），对应于"零入射场"约定下被减去的纯辐射场。推迟解的物理唯一性来自 Sommerberg 辐射条件——远场只含外向波，排除内向波（从无穷远汇聚的波）。
-
-
-接下来考察点世界线、Dirac 正则场与有限自力。
-
-点电荷四流写成
-\begin{equation}
- J^\mu(x)=qc\int u^\mu(\tau')\delta^{(4)}(x-z(\tau'))\dd\tau'.
- \label{eq:phys-rr-point-current}
-\end{equation}
-令 \(R^\mu=x^\mu-z^\mu(\tau')\)。将\eqnrefs{eq:phys-rr-point-current} 代入\eqnrefs{eq:phys-rr-ret-adv-green}，得到 Liénard--Wiechert 四势
-\begin{equation}
- A_{\rm ret}^\mu
- =\frac{\mu_0qc}{4\pi}
- \left.\frac{u^\mu}{R\cdot u}\right|_{\rm ret},
- \qquad
- A_{\rm adv}^\mu
- =-\frac{\mu_0qc}{4\pi}
- \left.\frac{u^\mu}{R\cdot u}\right|_{\rm adv}.
- \label{eq:phys-rr-lw-four-potential}
-\end{equation}
-超前势只在局部奇异结构的对称分解中使用；实际散射的因果边界条件仍由推迟解与给定入射齐次场决定。
-
-Dirac 分解定义为
-\begin{equation}
- F_{\rm S}^{\mu\nu}
- =\frac12(F_{\rm ret}^{\mu\nu}+F_{\rm adv}^{\mu\nu}),
- \qquad
- F_{\rm R}^{\mu\nu}
- =\frac12(F_{\rm ret}^{\mu\nu}-F_{\rm adv}^{\mu\nu}).
- \label{eq:phys-rr-dirac-split}
-\end{equation}
-\(F_{\rm S}^{\mu\nu}\) 含推迟、超前两支共有的局部奇异项；\(F_{\rm R}^{\mu\nu}\) 满足齐次 Maxwell 方程，并在世界线上存在有限极限。对点世界线，严格缩限给出
-\begin{equation}
- \boxed{
- F_{\rm R}^{\mu\nu}(z(\tau))
- =\frac{q}{6\pi\varepsilon_0c^5}
- \left(\dot a^\mu u^\nu-\dot a^\nu u^\mu\right).}
- \label{eq:phys-rr-regular-field-worldline}
-\end{equation}
-于是有限正则场对粒子的 Lorentz 四力为
-\begin{equation}
- \boxed{
- f_{\rm self}^\mu
- =qF_{\rm R}^{\mu\nu}u_\nu
- =\frac{q^2}{6\pi\varepsilon_0c^3}
- \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).}
- \label{eq:phys-rr-ald-self-force}
-\end{equation}
-这一步完成了“retarded/advanced field \(\to\) Dirac regular field \(\to\) self-force”的逻辑链；它还没有使用 Landau--Lifshitz 降阶。
-
+再用
+\(P_X^\nu[\Sigma]=c^{-1}\int_\Sigma T_X^{\mu\nu}\dd\Sigma_\mu\)
+识别两端的物质与束缚场动量，便得到
+\eqnrefs{eq:phys-rr-worldtube-general-balance}。这一步对有限尺寸源是精确的；
+辐射通量、束缚动量与质量重整化只有在随后缩小世界管时才被分开。
 \end{derivation}
 
 \begin{figure}[htbp]
@@ -1035,570 +621,217 @@ Dirac 分解定义为
 \label{fig:phys-rr-dirac-self-force-decomposition}
 \end{figure}
 
-\begin{derivation}[续：式~\eqnrefs{eq:phys-rr-exact-self-balance,eq:phys-rr-worldtube-general-balance}：局域守恒与世界管]
-
-
-由式~\eqnrefs{eq:phys-rr-point-current} 给出点电流 \(J^\mu(x)=qc\int u^\mu(\tau')\delta^{(4)}(x-r(\tau'))\dd\tau'\)。代入推迟势 \(A_{\rm ret}^\mu(x)=\frac{\mu_0}{2\pi}\int\dd^4x'\,\theta(x^0-x'^0)\delta((x-x')^2)J^\mu(x')\)，先对 \(\dd^4x'\) 积分消去 \(\delta^{(4)}\)，把 \(x'\) 钉在世界线 \(r(\tau')\) 上：
-\begin{equation*}
- A_{\rm ret}^\mu(x)
- =\frac{\mu_0qc}{2\pi}
- \int\theta(R^0)\delta(R^2)u^\mu(\tau')\dd\tau',
- \qquad R^\mu=x^\mu-r^\mu(\tau').
-\end{equation*}
-令 \(\chi(\tau')=R^2(\tau')\)。由 \(\dot r^\mu=u^\mu\)，对 \(\tau'\) 求导给出
-\begin{equation*}
- \frac{\dd\chi}{\dd\tau'}
- =\frac{\dd}{\dd\tau'}\bigl[(x-r(\tau'))^2\bigr]
- =-2R_\mu\frac{\dd r^\mu}{\dd\tau'}
- =-2R\cdot u.
-\end{equation*}
-由 \(\delta(\chi(\tau'))\) 的零点分解公式，设光锥方程 \(R^2(\tau')=0\) 的根为 \(\{\tau_i\}\)，
-\begin{equation*}
- \delta(\chi(\tau'))
- =\sum_i\frac{\delta(\tau'-\tau_i)}{|\chi'(\tau_i)|}
- =\sum_i\frac{\delta(\tau'-\tau_i)}{2|R\cdot u|_{\tau_i}}.
-\end{equation*}
-代回原积分，对 \(\tau'\) 积分消去 \(\delta\)，得
-\begin{equation*}
- A_{\rm ret}^\mu(x)
- =\frac{\mu_0qc}{4\pi}\sum_i
- \theta(R^0(\tau_i))\,\frac{u^\mu(\tau_i)}{|R\cdot u|_{\tau_i}}.
-\end{equation*}
-由 \(\theta(R^0)\) 限制 \(x^0-r^0(\tau_i)>0\)，即推迟支只选过去光锥根 \(\tau_{\rm ret}\)。在该根处，未来指向观测点 \(R^\mu\) 与未来指向速度 \(u^\mu\) 同向，故 \(R\cdot u>0\)，绝对值可去：
-\begin{equation*}
+点电荷的协变电流是
+\begin{equation}
+ J^\mu(x)=qc\int u^\mu(\tau')\delta^{(4)}
+ (x-z(\tau'))\dd\tau' .
+ \label{eq:phys-rr-point-current}
+\end{equation}
+它与光锥 Green 函数卷积得到
+\begin{equation}
  A_{\rm ret}^\mu
  =\frac{\mu_0qc}{4\pi}
- \left.\frac{u^\mu}{R\cdot u}\right|_{\rm ret}.
-\end{equation*}
-对超前势 \(A_{\rm adv}^\mu\)，把 \(\theta(R^0)\) 换成 \(\theta(-R^0)\)，选未来光锥根 \(\tau_{\rm adv}\)。该处 \(R^\mu\) 由源指向过去的观测点，与 \(u^\mu\) 反向，故 \(R\cdot u<0\)，于是 \(|R\cdot u|=-R\cdot u\)，整体多出一个负号：
-\begin{equation*}
+ \left.\frac{u^\mu}{R\cdot u}\right|_{\rm ret},
+ \qquad
  A_{\rm adv}^\mu
  =-\frac{\mu_0qc}{4\pi}
  \left.\frac{u^\mu}{R\cdot u}\right|_{\rm adv}.
-\end{equation*}
-合并即得式~\eqnrefs{eq:phys-rr-lw-four-potential} 的两式。
+ \label{eq:phys-rr-lw-four-potential}
+\end{equation}
+超前势只用于提取局部奇异结构；实际边界条件仍取推迟解。Dirac 分解为
+\begin{equation}
+ F_{\rm S}^{\mu\nu}=\frac12(F_{\rm ret}^{\mu\nu}+F_{\rm adv}^{\mu\nu}),
+ \qquad
+ F_{\rm R}^{\mu\nu}=\frac12(F_{\rm ret}^{\mu\nu}-F_{\rm adv}^{\mu\nu}).
+ \label{eq:phys-rr-dirac-split}
+\end{equation}
+两支共有的奇异项全在 \(F_{\rm S}^{\mu\nu}\) 中，半差在世界线上有限：
+\begin{equation}
+ F_{\rm R}^{\mu\nu}(z(\tau))
+ =\frac{q}{6\pi\varepsilon_0c^5}
+ (\dot a^\mu u^\nu-\dot a^\nu u^\mu).
+ \label{eq:phys-rr-regular-field-worldline}
+\end{equation}
+因此点粒子的有限自力是
+\begin{equation}
+ f_{\rm self}^\mu
+ =qF_{\rm R}^{\mu\nu}u_\nu
+ =\frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
+ \label{eq:phys-rr-ald-self-force}
+\end{equation}
+这条等式是局部点粒子极限的结论；有限尺寸源仍应使用前面的因果历史泛函。
 
-\emph{物理意义。}Liénard-Wiechert 四维势的物理意义是"运动点电荷的精确推迟势"：\(A^\mu(x)=\frac{q u^\mu}{4\pi\varepsilon_0 c\,R\cdot u}\big|_{\rm ret}\) 在观察点 \(x\) 处的值完全由推迟时刻 \(\tau_{\rm ret}\) 的电荷位置和速度决定，推迟条件 \(R^\mu R_\mu=0\)、\(R^0>0\) 确保因果性。分母 \(R\cdot u=\gamma c(t-t_{\rm ret})-\gamma\mathbf R\cdot\boldsymbol\beta\) 中的 Lorentz 因子 \(\gamma\) 产生"相对论 beaming"效应：高速运动电荷的场被前向压缩，等效于场强增大 \(\gamma\) 倍。在非相对论极限 \(\beta\to0\) 下，\(A^0\to q/(4\pi\varepsilon_0 R)\) 退化为静态 Coulomb 势，\(\mathbf A\to q\boldsymbol\beta/(4\pi\varepsilon_0 c R)\) 退化为 Biot-Savart 磁矢势。推迟势与超前势的差给出辐射场，差中速度场的 \(1/R^2\) 部分相消，只剩加速度场的 \(1/R\) 部分——这正是辐射携带能量到无穷远的来源。
+\begin{derivation}[光锥 Green 函数与 Liénard--Wiechert 势]
+由 \(\Box G=\delta^{(4)}\) 得
+\[
+ G_{\rm ret/adv}(x)
+ =-\int\frac{\dd^4k}{(2\pi)^4}
+ \frac{e^{-\ii k\cdot x}}{k^2\pm\ii0\,k^0}.
+\]
+按 \(x^0\) 的符号闭合 \(k^0\) 围道，再做径向波数积分，得到
+\[
+ G_{\rm ret/adv}(x)
+ =\frac{\delta(x^0\mp r)}{4\pi r}
+ =\frac1{2\pi}\theta(\pm x^0)\delta(x^2).
+\]
+将点流\eqnrefs{eq:phys-rr-point-current}代入卷积，并对
+\(\chi(\tau')=[x-z(\tau')]^2\) 使用
+\[
+ \delta(\chi)=\sum_i
+ \frac{\delta(\tau'-\tau_i)}{2|R\cdot u|_{\tau_i}},
+\]
+过去、未来光锥根分别给出\eqnrefs{eq:phys-rr-lw-four-potential}。
 
-
-对 Liénard--Wiechert 四势求导时，推迟与超前两支只在光锥根的选择和整体支号上不同，因此可统一写成
+对光锥条件求导有
+\(\partial_\alpha\tau'=R_\alpha/(R\cdot u)\)。据此对势求导并反对称化，
+推迟与超前场可统一写成
 \begin{equation}
  F_\eta^{\mu\nu}(x)
  =\eta\frac{q}{4\pi\varepsilon_0c}
  \left.
- \frac1{R\cdot u}
- \frac{\dd}{\dd\tau'}
- \left(
- \frac{R^\mu u^\nu-R^\nu u^\mu}{R\cdot u}
- \right)
+ \frac1{R\cdot u}\frac{\dd}{\dd\tau'}
+ \left(\frac{R^\mu u^\nu-R^\nu u^\mu}{R\cdot u}\right)
  \right|_{\tau_\eta},
- \qquad \eta=\begin{cases}+1,&\mathrm{ret},\\-1,&\mathrm{adv}.\end{cases}
+ \qquad \eta=\begin{cases}+1,&{\rm ret},\\-1,&{\rm adv}.
+ \end{cases}
  \label{eq:phys-rr-unified-ret-adv-field}
 \end{equation}
-这里 \(\tau_\eta\) 是相应的过去或未来光锥根。这个统一式把随后局域缩限所需的奇异结构全部编码在 \(R\cdot u\) 与光锥根中，而没有预先展开世界线。
+这个公式同时保留 \(R^{-2}\) 的速度场和 \(R^{-1}\) 的加速度场，是局域缩限的起点。
+\end{derivation}
 
+\begin{derivation}[Dirac 正则场的有限项]
+在世界线附近取 Fermi 坐标
+\(x^\mu=z^\mu(\tau)+\ell n^\mu\)，其中
+\(n\cdot u=0\)、\(n^2=-1\)。把过去与未来光锥根以及
+\eqnrefs{eq:phys-rr-unified-ret-adv-field}一致展开到有限阶，可写成
+\[
+ F_{\rm ret/adv}^{\mu\nu}
+ =F_{\rm S}^{\mu\nu}
+ \pm\frac{q}{6\pi\varepsilon_0c^5}
+ (\dot a^\mu u^\nu-\dot a^\nu u^\mu)+O(\ell).
+\]
+其中共同的 \(F_{\rm S}^{\mu\nu}\) 含 \(\ell^{-2}\) 与
+\(\ell^{-1}\) 奇异项；它们在半差中逐项抵消。因此
+\[
+ \frac12(F_{\rm ret}^{\mu\nu}-F_{\rm adv}^{\mu\nu})
+ \xrightarrow[\ell\to0]{}
+ \frac{q}{6\pi\varepsilon_0c^5}
+ (\dot a^\mu u^\nu-\dot a^\nu u^\mu),
+\]
+即\eqnrefs{eq:phys-rr-regular-field-worldline}。有限项的系数也可在瞬时静止系
+\(u^\mu=(c,\vb0)\)、\(a^\mu=0\) 上由
+\(\tfrac12(\vb E_{\rm ret}-\vb E_{\rm adv})
+ =q\vb j/(6\pi\varepsilon_0c^3)\) 校准；协变性随后唯一恢复上式。
+\end{derivation}
 
-先把 Liénard--Wiechert 势对观测点求导。由光锥条件 \(R^2=0\)（其中 \(R^\mu=x^\mu-z^\mu(\tau')\)），
-\begin{equation*}
- 0=\partial_\alpha(R^2)
- =2R_\alpha-2(R\cdot u)\frac{\partial\tau'}{\partial x^\alpha},
-\end{equation*}
-故
-\begin{equation*}
- \frac{\partial\tau'}{\partial x^\alpha}
- =\frac{R_\alpha}{R\cdot u}.
-\end{equation*}
-这里 \(\partial_\alpha R^\mu=\delta^\mu_\alpha-u^\mu\partial_\alpha\tau'/c\)，而 \(R_\alpha R^\alpha=0\) 使 \(R_\alpha u^\alpha\) 项保留。具体地，\(\partial_\alpha(R^2)=2R^\mu\partial_\alpha R_\mu=2R_\alpha-2(R\cdot u)R_\alpha/(R\cdot u)=0\) 给出 \(\partial_\alpha\tau'=R_\alpha/(R\cdot u)\)。该关系的几何意义是：推迟时间 \(\tau'\) 对观测点 \(x^\alpha\) 的变化率由 \(R_\alpha/(R\cdot u)\) 给出，其中分母 \(R\cdot u\) 是光锥条件的 Jacobian，亦即推迟时间映射 \(x\mapsto\tau'(x)\) 的梯度。将上式用于势 \(A^\beta=\mu_0qc\,u^\beta/(4\pi\,R\cdot u)\)。这里必须保留 \(R\cdot u\) 对观测点的显式依赖；链式法则先给出
-\begin{align*}
- \partial_\alpha(R\cdot u)
- &=u_\alpha+{\frac{R_\alpha}{R\cdot u}}(R\cdot a-c^2),\\
- \partial_\alpha A^\beta
- &={\frac{\mu_0qc}{4\pi}}\left[
- {\frac{R_\alpha}{R\cdot u}}{\frac{\dd}{\dd\tau'}}
- \left({\frac{u^\beta}{R\cdot u}}\right)
- -{\frac{u_\alpha u^\beta}{(R\cdot u)^2}}
- \right].
-\end{align*}
-第一式中 \(u_\alpha\) 来自 \(\partial_\alpha R_\beta=u_\alpha\) 对 \(u^\beta\) 的直接作用，\((R\cdot a-c^2)\) 来自 \(\dd R_\beta/\dd\tau'=-u_\beta\) 与 \(\dd u^\beta/\dd\tau'=a^\beta\)。具体展开：
+\begin{derivation}[正则场到 ALD 自力]
+将\eqnrefs{eq:phys-rr-regular-field-worldline}与四速度缩并：
 \[
- \partial_\alpha(R_\beta u^\beta)
- =(\partial_\alpha R_\beta)u^\beta+R_\beta(\partial_\alpha u^\beta)
- =u_\alpha+R_\beta a^\beta\frac{R_\alpha}{R\cdot u},
+ f_{\rm self}^\mu
+ =\frac{q^2}{6\pi\varepsilon_0c^5}
+ \left(c^2\dot a^\mu-u^\mu\,u\cdot\dot a\right).
 \]
-其中 \(\partial_\alpha u^\beta=a^\beta\partial_\alpha\tau'/c=a^\beta R_\alpha/(cR\cdot u)\)。第二式最后一项关于 \(\alpha,\beta\) 对称，因此只在形成 \(F^{\alpha\beta}=\partial^\alpha A^\beta-\partial^\beta A^\alpha\) 后才消失。利用 \(\dd R^\alpha/\dd\tau'=-u^\alpha\)，再把剩余项中的求导转移到 \(R^\alpha u^\beta\) 上：
-\begin{equation*}
- R^\alpha{\frac{\dd}{\dd\tau'}}\left({\frac{u^\beta}{R\cdot u}}\right)
- ={\frac{\dd}{\dd\tau'}}\left({\frac{R^\alpha u^\beta}{R\cdot u}}\right)
- +{\frac{u^\alpha u^\beta}{R\cdot u}},
-\end{equation*}
-其中右端第二项来自 \(\dd R^\alpha/\dd\tau'=-u^\alpha\) 移到求导号外所补的项。组合成反对称后，末项的贡献为 \(u^{[\alpha}u^{\beta]}=0\)。这一步骤的关键在于：虽然 \(\partial_\alpha A^\beta\) 中含对称项 \(u_\alpha u^\beta/(R\cdot u)^2\)，但形成 \(F^{\alpha\beta}\) 时该对称项自动消去。具体地，
+由 \(u^2=c^2\) 两次求导得到
+\(u\cdot a=0\) 与 \(u\cdot\dot a=-a^2\)，因而
 \[
- F^{\alpha\beta}
- =\partial^\alpha A^\beta-\partial^\beta A^\alpha
- =\frac{\mu_0qc}{4\pi}\left[
- \frac{R^{[\alpha}}{R\cdot u}\frac{\dd}{\dd\tau'}
- \left(\frac{u^{\beta]}}{R\cdot u}\right)
- -\frac{u^{[\alpha}u^{\beta]}}{(R\cdot u)^2}
- \right],
+ f_{\rm self}^\mu
+ =\frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
 \]
-其中方括号表示反对称化，第二项因 \(u^{[\alpha}u^{\beta]}=0\) 而消失。再代回 \(\mu_0qc/(4\pi)=q/(4\pi\varepsilon_0c)\)，整理反对称项并恢复 SI 系数后，得到正文\eqnrefs{eq:phys-rr-unified-ret-adv-field}。
-
-该场自然分为两部分：含 \(R^\alpha u^\beta\) 的项在光锥上奇异，对应于 \(1/R^2\) 速度场（近场）；含 \(R^\alpha a^\beta\) 的项对应于 \(1/R\) 加速度场（辐射场），后者在远区主导并给出辐射。具体地，把 \(\dd(u^\beta/(R\cdot u))/\dd\tau'\) 展开：
-\[
- \frac{\dd}{\dd\tau'}\left(\frac{u^\beta}{R\cdot u}\right)
- =\frac{a^\beta}{R\cdot u}
- -\frac{u^\beta(R\cdot a-c^2)}{(R\cdot u)^2},
-\]
-第一项含 \(a^\beta\)，给出 \(1/R\) 加速度场；第二项含 \(u^\beta\)，给出 \(1/R^2\) 速度场。速度场对应于匀速运动电荷的 Coulomb--Biot--Savart 场经 Lorentz 推送后的协变推广，不携带能量到无穷远；加速度场则对应于辐射，其能流密度在远区按 \(1/R^2\) 衰减，总辐射功率有限。在非相对论极限下，速度场退化为静电 Coulomb 场 \(\vb E\sim q\vb R/(4\pi\varepsilon_0R^3)\)，加速度场退化为 Larmor 辐射场 \(\vb E\sim q\vb n\times(\vb n\times\vb a)/(4\pi\varepsilon_0c^2R)\)。这一分解在量子电动力学中对应于虚光子（近场交换）与实光子（辐射）的区分：近场对应于交换虚光子的傅里叶分量，其动量不满足质壳条件 \(k^2=0\)；辐射场对应于实光子发射，\(k^2=0\) 且携带正能量到无穷远。作为应用举例，考虑匀速运动电荷 \(\dot{\boldsymbol\beta}=0\)：加速度场消失，只剩速度场，这正是匀速运动电荷不辐射的协变判据；反之，任意加速运动 \(\dot{\boldsymbol\beta}\neq0\) 必产生非零加速度场，对应于非零辐射功率。
-
-\emph{物理意义。}速度场与加速度场的分解是经典电动力学最深刻的结构之一：速度场（\(1/R^2\)，近场）是匀速运动电荷的"运动学 Coulomb 场"经 Lorentz 推送后的协变推广，它随距离平方衰减，不携带能量到无穷远（总能流在远区为零），物理上对应于虚光子交换——量子电动力学中动量不在质壳上的傅里叶分量。加速度场（\(1/R\)，辐射场）仅由加速度产生，随距离线性衰减，能流密度 \( \propto 1/R^2\) 使总辐射功率有限且非零，对应于实光子发射——质壳条件 \(k^2=0\) 满足的傅里叶分量。这一分解的实验后果包括：匀速电荷不辐射（与等效原理一致——自由下落电荷在固有系中静止）、同步辐射的 \(\gamma^4\) 前向 beaming（加速度场被相对论效应前向聚焦）、以及天线辐射的方向性（加速度场在 \(\mathbf n\parallel\boldsymbol\beta\) 方向为零，在垂直方向最大）。
-
-
-先确定局域有限项允许的协变结构。点 Maxwell 理论在平直时空中没有额外长度或时间尺度；对世界线作局域解析展开时，\(O(\ell^0)\) 的正则场必须是 Lorentz 协变、反对称且宇称偶的二阶张量。由 \(u^\mu\)、\(a^\mu\)、\(\dot a^\mu\) 构造并具有正确导数阶数的最低阶候选只有 \(u^{[\mu}\dot a^{\nu]}\)：\(a^{[\mu}a^{\nu]}=0\)，\(u^{[\mu}a^{\nu]}\) 少一个固有时导数而又没有可补偿的内禀时间尺度，含 Levi--Civita 张量的候选则是宇称奇的伪张量。更高次的 \(a^\mu\)、\(\dot a^\mu\) 乘积属于更高导数阶或非解析结构。因此世界线上的有限正则场必可写成
-\[
- F_{\rm R}^{\mu\nu}=C\,u^{[\mu}\dot a^{\nu]},
-\]
-其中唯一待定的是常数 \(C\)；而 \(u\cdot\dot a=-a^2\) 已自动包含 \(\dot a^\mu\) 的纵向分量。于是可以在一个使代数最简、但仍满足 \(\dot a^\mu\neq0\) 的局域 jet 上确定 \(C\)。
-
-固定事件 \(t=0\)，取其瞬时静止系，并选择该事件满足
-\[
- \vb v(0)=\vb0,
- \qquad
- \vb a(0)=\vb0,
- \qquad
- \vb j:=\left.\frac{\dd\vb a}{\dd t}\right|_{0}\neq\vb0.
-\]
-这个选择只用于定标上面已经由协变性分类出的唯一张量结构，不是把特殊运动推广成一般运动。
-
-在该事件附近，源的位置、速度和加速度分别为
-\[
- \vb z(t')=\frac16\vb j\,t'^3+O(t'^4),
- \qquad
- \vb v(t')=\frac12\vb j\,t'^2+O(t'^3),
- \qquad
- \vb a(t')=\vb j\,t'+O(t'^2).
-\]
-取观测点 \(\vb x=\ell\vb n\)，\(|\vb n|=1\)。令 \(\epsilon=-1\) 表示推迟根、\(\epsilon=+1\) 表示超前根。光锥条件为
-\[
- c^2t'^2
- =\left|\ell\vb n-\frac16\vb j\,t'^3+O(t'^4)\right|^2
- =\ell^2-\frac13\ell(\vb n\cdot\vb j)t'^3+O(\ell^6).
-\]
-作
-\[
- t'_{\epsilon}=\epsilon\frac{\ell}{c}+B\ell^3+O(\ell^4)
-\]
-并代回，上式的 \(O(\ell^4)\) 项给出
-\[
- 2\epsilon cB\ell^4
- =-\epsilon\frac{\vb n\cdot\vb j}{3c^3}\ell^4,
-\]
-故
-\begin{equation*}
- t'_{\epsilon}
- =\epsilon\frac{\ell}{c}
- -\frac{\vb n\cdot\vb j}{6c^4}\ell^3
- +O(\ell^4).
-\end{equation*}
-这里的 \(O(\ell^3)\) 根修正不能省略，因为它与场的 \(O(\ell^{-2})\) Coulomb 项组合后恰好留下有限贡献。
-
-把正文\eqnrefs{eq:phys-rr-unified-ret-adv-field}中的固有时导数先显式完成，可写成
-\[
- F_{\eta}^{\mu\nu}
- =\eta\frac{q}{4\pi\varepsilon_0c}
- \left[
- \frac{R^\mu a^\nu-R^\nu a^\mu}{(R\cdot u)^2}
- +\frac{c^2-R\cdot a}{(R\cdot u)^3}
- (R^\mu u^\nu-R^\nu u^\mu)
- \right]_{\tau_\eta},
-\]
-其中 \(\eta=+1\) 为推迟支，\(\eta=-1\) 为超前支，因此 \(\eta=-\epsilon\)。在当前瞬时静止系中，只需计算 \(F^{i0}\)。由上面的 Taylor 展开，
-\[
-\begin{aligned}
- R\cdot u
- &=-c^2t'-\frac12\ell(\vb n\cdot\vb j)t'^2+O(\ell^4),\\
- R\cdot a
- &=-\ell(\vb n\cdot\vb j)t'+O(\ell^4),
-\end{aligned}
-\]
-并且
-\[
- R^ia^0-R^0a^i
- =c j_i t'^2+O(\ell^4),
-\]
-\[
- R^iu^0-R^0u^i
- =c\ell n_i+\frac{c}{3}j_i t'^3+O(\ell^4).
-\]
-将光锥根 \(t'_{\epsilon}\) 代入并展开到 \(O(\ell^0)\)。第一项给出
-\[
- \eta\frac1c
- \frac{R^ia^0-R^0a^i}{(R\cdot u)^2}
- =-\epsilon\frac{j_i}{c^4}+O(\ell),
-\]
-第二项给出
-\[
- \eta\frac1c
- \frac{c^2-R\cdot a}{(R\cdot u)^3}
- (R^iu^0-R^0u^i)
- =\frac{n_i}{c\ell^2}
- +\epsilon\frac{j_i}{3c^4}+O(\ell).
-\]
-两项相加，因此
-\[
- F_{\epsilon}^{i0}
- =\frac{q}{4\pi\varepsilon_0}
- \left[
- \frac{n_i}{c\ell^2}
- -\epsilon\frac{2j_i}{3c^4}
- \right]+O(\ell).
-\]
-推迟支对应 \(\epsilon=-1\)，超前支对应 \(\epsilon=+1\)，故 Coulomb 奇异项完全相同，而有限分支奇项为
-\[
- \frac12\left(F_{\rm ret}^{i0}-F_{\rm adv}^{i0}\right)
- =\frac{q}{6\pi\varepsilon_0c^4}j_i.
-\]
-在此瞬时静止系，分支奇的有限磁场为零，于是
-\[
- \frac12(\vb E_{\rm ret}-\vb E_{\rm adv})
- =\frac{q}{6\pi\varepsilon_0c^3}\vb j,
- \qquad
- \frac12(\vb B_{\rm ret}-\vb B_{\rm adv})=\vb0.
-\]
-
-最后恢复协变形式。在瞬时静止系中 \(u^\mu=(c,\vb0)\)，而当前选择的局域 jet 有 \(a^\mu=0\)、\(\dot a^\mu=(0,\vb j)\)。唯一与上述分量一致的局域反对称张量是
-\[
- F_{\rm R}^{\mu\nu}(z(\tau))
- =\frac{q}{6\pi\varepsilon_0c^5}
- \left(\dot a^\mu u^\nu-\dot a^\nu u^\mu\right).
-\]
-由于系数已在一个允许的局域 jet 上唯一确定，且末式是 Lorentz 张量等式，它对一般 \(a^\mu\neq0\) 的世界线同样成立。这就是正文\eqnrefs{eq:phys-rr-regular-field-worldline}。
-
-\emph{物理意义。}正则场在 世界线上的值的物理意义是"电荷自身场的有限部分"：点电荷的总场在自身位置发散（\(1/R^2\) Coulomb 自场），但通过 Lorentz 推送和 Hadamard 有限部分（régularisée）可提取出沿世界线的有限残余场 \(F_{\rm reg}^\mu\)。这一正则场正是 Abraham--Lorentz--Dirac 自力的来源：\(f_{\rm ALD}^\mu=qF_{\rm reg}^{\mu\nu}u_\nu\)。推导中"在一个允许的局域 jet 上唯一确定"的物理含义是 Dirac 的辐射反作用定理——正则场的系数被 Lorentz 协变性、规范不变性和远场辐射条件唯一固定，无需假设具体电荷结构。这一唯一性是经典电动力学中"点粒子辐射反作用"的数学基础：不同有限尺寸模型（球壳、Gaussian 云等）在 \(\ell\to0\) 极限下给出同一 ALD 力，正则场是模型无关的普适量。
-
-
-由\eqnrefs{eq:phys-rr-regular-field-worldline}，
-\[
-\begin{aligned}
-f_{\mathrm{self}}^\mu
-&\equiv qF_{\mathrm R}^{\mu\nu}u_\nu\\
-&=\frac{q^2}{6\pi\varepsilon_0c^5}
-\left(
-\dot a^\mu u^\nu u_\nu
--u^\mu\dot a^\nu u_\nu
-\right).
-\end{aligned}
-\]
-由 \(u^2=c^2\) 一次求导，
-\[
-u\cdot a=0,
-\]
-再求导一次，
-\[
-a^2+u\cdot\dot a=0,
-\qquad
-u\cdot\dot a=-a^2.
-\]
-因此
-\[
-\begin{aligned}
-f_{\mathrm{self}}^\mu
-&=\frac{q^2}{6\pi\varepsilon_0c^5}
-\left(c^2\dot a^\mu+a^2u^\mu\right)\\
-&=\frac{q^2}{6\pi\varepsilon_0c^3}
-\left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right),
-\end{aligned}
-\]
-即正文\eqnrefs{eq:phys-rr-ald-self-force}。最后直接缩并可检验
-\[
-\begin{aligned}
-u_\mu f_{\mathrm{self}}^\mu
-&=\frac{q^2}{6\pi\varepsilon_0c^3}
-\left(u\cdot\dot a+\frac{a^2}{c^2}u^2\right)\\
-&=\frac{q^2}{6\pi\varepsilon_0c^3}(-a^2+a^2)=0.
-\end{aligned}
-\]
-这个正交性也固定了 \(a^2u^\mu/c^2\) 项的相对符号。
-
-\textbf{物理意义。}ALD (Abraham--Lorentz--Dirac) 自力 \(f_{\rm self}^\mu=(q^2/6\pi\varepsilon_0c^3)(\dot a^\mu+a^2u^\mu/c^2)\) 的两项各有角色：\(\dot a^\mu\)（变加速）是三阶时间导数项，导致 runaway 解和预加速悖论；\(a^2u^\mu/c^2\) 是 Schott 项（辐射反作用），保证 \(f_{\rm self}\cdot u=0\) 即自力不做功——能量守恒。辐射功率 \(P_{\rm rad}=(q^2/6\pi\varepsilon_0c^3)a^2\)（Larmor 相对论推广）为正，但机械能变化由 \(-P_{\rm rad}\) 加上 Schott 项的时间导数平衡。
-
-
-
-接下来考察世界管缩限、质量重整化、Schott 动量与辐射功率。
-
-正则场方法直接给出有限自力；世界管方法则把同一结果分解成“发散的电磁惯性 + 有限束缚近场动量 + 流向无穷远的辐射动量”。沿用前述 Fermi 管几何：在每个固有时 \(\tau\) 上，端面 \(\Sigma_\tau\) 取为与 \(u^\mu(\tau)\) 正交的类空超平面，管壁由满足
-\[
- x^\mu=z^\mu(\tau)+\ell n^\mu,
- \qquad n\cdot u=0,
- \qquad n^2=-1
-\]
-的二球面随 \(\tau\) 扫出。这个正交切片规定必须和物质应力的定义一起保持一致；若改用任意实验室同时面再单独抽取“电磁质量”，会重新遇到经典的切片依赖问题。
-
-在这一 Fermi 世界管规定下，局部场的通量展开可写成
+这就是\eqnrefs{eq:phys-rr-ald-self-force}，并且
+\(u_\mu f_{\rm self}^\mu=0\)；最后一个正交性同时固定两项的相对符号。
+\end{derivation}
+世界管方法把同一自力分解为束缚近场和远区辐射。Fermi 端面上的束缚四动量为
 \begin{equation}
  P_{\rm bound}^\mu(\ell)
  =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu
- -\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu
- +O(\ell).
+ -\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu+O(\ell).
  \label{eq:phys-rr-bound-momentum-expansion}
 \end{equation}
-第一项与 \(u^\mu\) 平行，可并入裸机械质量；定义有限观测质量
+第一项吸收到观测质量
 \begin{equation}
- m=\lim_{\ell\to0}
- \left[m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}\right].
+ m=\lim_{\ell\to0}\left[
+ m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}\right],
  \label{eq:phys-rr-mass-renormalization}
 \end{equation}
-第二个有限项定义 Schott 四动量
+第二项定义 Schott 四动量
 \begin{equation}
  P_{\rm Schott}^\mu
- =-\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu.
+ =-\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu .
  \label{eq:phys-rr-schott-momentum}
 \end{equation}
 远区辐射携走的四动量率为
 \begin{equation}
  \frac{\dd P_{\rm rad}^\mu}{\dd\tau}
- =-\frac{q^2}{6\pi\varepsilon_0c^5}a^2u^\mu,
+ =-\frac{q^2}{6\pi\varepsilon_0c^5}a^2u^\mu ,
  \label{eq:phys-rr-radiated-four-momentum-rate}
 \end{equation}
-其中 \(a^2<0\)，故未来指向的能量分量为正。有限自力因此具有守恒律分解
+所以
 \begin{equation}
- \boxed{
  f_{\rm self}^\mu
  =-\frac{\dd P_{\rm Schott}^\mu}{\dd\tau}
- -\frac{\dd P_{\rm rad}^\mu}{\dd\tau}.}
+ -\frac{\dd P_{\rm rad}^\mu}{\dd\tau}.
  \label{eq:phys-rr-self-force-momentum-split}
 \end{equation}
-Schott 项是可逆的近场储能/储动量项，并不等于远区辐射损失。只有对适当的周期平均或渐近散射边界，Schott 边界项消失后，机械功率损失才可直接等同于辐射功率。
+Schott 项是可逆的近场储能，只有其边界贡献消失时，机械能损失才逐过程等于远区辐射能。
 
-质量重整化后的点粒子运动方程为 Abraham--Lorentz--Dirac 方程
+质量重整化后的运动方程为
 \begin{equation}
- \boxed{
- ma^\mu
- =qF_{\rm ext}^{\mu\nu}u_\nu
- +\frac{q^2}{6\pi\varepsilon_0c^3}
- \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).}
+ ma^\mu=qF_{\rm ext}^{\mu\nu}u_\nu+
+ \frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
  \label{eq:phys-rr-ald}
 \end{equation}
-它是理想点粒子模型的局部三阶方程；它的额外解空间不是 Maxwell 理论新增加的自由度，而是点极限与局部化之后必须进一步选择的有效动力学分支。
-
-把\eqnrefs{eq:phys-rr-radiated-four-momentum-rate} 的时间分量改写成实验室时间，并记普通三速度、三加速度分别为 \(\vb v:=\dd\vb x/\dd t\)、\(\vb a:=\dd\vb v/\dd t\)，得到 Liénard 功率
+它的实验室时间分量给出 Liénard 功率
 \begin{equation}
- \boxed{
  P_{\rm rad}
  =\frac{q^2\gamma^6}{6\pi\varepsilon_0c^3}
- \left[
- \vb a^2-\frac{|\vb v\times\vb a|^2}{c^2}
- \right].}
+ \left[\vb a^2-\frac{|\vb v\times\vb a|^2}{c^2}\right].
  \label{eq:phys-rr-lienard-power}
 \end{equation}
-低速极限 \(\gamma\to1\) 才退化为 Larmor 公式；因此不能反过来用低速辐射功率猜测协变自力。
+低速时才退化为 Larmor 公式；不能从低速功率反推协变自力。
 
-\textbf{例（Schott 储能与远区辐射并非逐时相等）.}\enspace 取低速一维脉冲，并只在辐射反作用的一阶量中使用零阶运动。令
+\begin{derivation}[Fermi 世界管与质量重整化]
+在 Fermi 端面的瞬时静止系中，近场的唯一
+\(r^{-2}\) 主项是 Coulomb 场，因此
 \[
- a(t)=a_0\frac{t}{T}\exp\!\left(-\frac{t^2}{2T^2}\right),
- \qquad
- v(t)=-a_0T\exp\!\left(-\frac{t^2}{2T^2}\right),
+ U_{\rm div}(\ell)
+ =\int_\ell^{L_{\rm loc}}\frac{\varepsilon_0}{2}
+ \left(\frac{q}{4\pi\varepsilon_0r^2}\right)^2
+ 4\pi r^2\dd r
+ =\frac{q^2}{8\pi\varepsilon_0\ell}+O(\ell^0).
 \]
-于是 \(\dot v=a\)、\(v(\pm\infty)=0\)。这可由零阶外力 \(F_{\rm ext}^{(0)}=ma(t)\) 产生；要求 \(a_0T/c\ll1\) 与 \(\tau_{\rm rr}/T\ll1\)，从而非相对论展开和一阶辐射反作用近似同时受控。记
+同阶没有 Poynting 动量，故协变化后发散四动量平行于 \(u^\mu\)：
 \[
- \mathcal C_{\rm rr}:=\frac{q^2}{6\pi\varepsilon_0c^3}.
+ P_{\rm div}^\mu
+ =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu .
 \]
-在该阶次，Larmor 功率、Schott 能量以及自力对机械能的功率分别为
-\begin{align*}
- P_{\rm rad}(t)
- &=\mathcal C_{\rm rr} a^2
- =\mathcal C_{\rm rr} a_0^2\frac{t^2}{T^2}e^{-t^2/T^2},\\
- E_{\rm Schott}(t)
- &=-\mathcal C_{\rm rr}va
- =\mathcal C_{\rm rr} a_0^2t e^{-t^2/T^2},\\
- P_{\rm self}(t)
- &=\mathcal C_{\rm rr} v\dot a
- =\mathcal C_{\rm rr} a_0^2e^{-t^2/T^2}
- \left(\frac{t^2}{T^2}-1\right).
-\end{align*}
-它们逐时满足
+有限的局域束缚动量只能与 \(a^\mu\) 成正比；由正则场自力与世界管守恒匹配，
+其系数为
 \[
- P_{\rm self}
- =-\frac{\dd E_{\rm Schott}}{\dd t}-P_{\rm rad}.
+ P_{\rm bound}^\mu(\ell)
+ =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu
+ -\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu+O(\ell),
 \]
-特别地，\(t=0\) 时 \(P_{\rm rad}=0\)，但 \(P_{\rm self}=-\mathcal C_{\rm rr}a_0^2\neq0\)：这一时刻自力所做的功全部来自近场 Schott 储能的变化，而不是瞬时流向无穷远的辐射。对整个脉冲，\(E_{\rm Schott}(\pm\infty)=0\)，因此
+即\eqnrefs{eq:phys-rr-bound-momentum-expansion}。把第一项与裸机械动量合并，
 \[
- E_{\rm rad}
- =\int_{-\infty}^{\infty}P_{\rm rad}\dd t
- =\frac{\sqrt\pi}{2}\mathcal C_{\rm rr}a_0^2T,
- \qquad
- \int_{-\infty}^{\infty}P_{\rm self}\dd t=-E_{\rm rad}.
+ m=\lim_{\ell\to0}\left[
+ m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}\right],
 \]
-这个例子把“瞬时近场能量交换”和“净远区辐射损失”明确分开；只有 Schott 边界项消失后的积分关系才能把二者直接对应。
+得到\eqnrefs{eq:phys-rr-mass-renormalization}。
 
-
-在有限管半径 \(\ell\) 下，把裸粒子动量、束缚场动量与已经穿出管壁的辐射四动量放在同一个守恒式中：
+将束缚动量导数和
+\(\dd P_{\rm rad}^\mu/\dd\tau
+ =-q^2a^2u^\mu/(6\pi\varepsilon_0c^5)\)
+代回世界管平衡式并取 \(\ell\to0\)，便得到
 \[
-\frac{\dd}{\dd\tau}
-\left[m_0(\ell)u^\mu+P_{\mathrm{bound}}^\mu(\ell)\right]
-+\frac{\dd P_{\mathrm{rad}}^\mu}{\dd\tau}
-=f_{\mathrm{ext}}^\mu.
+ ma^\mu=f_{\rm ext}^\mu+
+ \frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
 \]
-代入\eqnrefs{eq:phys-rr-bound-momentum-expansion,eq:phys-rr-radiated-four-momentum-rate}，
-\[
-\left[
-m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}
-\right]a^\mu
--\frac{q^2}{6\pi\varepsilon_0c^3}\dot a^\mu
--\frac{q^2}{6\pi\varepsilon_0c^5}a^2u^\mu
-+O(\ell)
-=f_{\mathrm{ext}}^\mu.
-\]
-令
-\[
-m=\lim_{\ell\to0}
-\left[
-m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}
-\right]
-\]
-并把有限近场与辐射项移到右边，得到
-\[
-ma^\mu
-=f_{\mathrm{ext}}^\mu
-+\frac{q^2}{6\pi\varepsilon_0c^3}
-\left(
-\dot a^\mu+\frac{a^2}{c^2}u^\mu
-\right),
-\]
-即 ALD 方程\eqnrefs{eq:phys-rr-ald}。
-
-另一方面，由\eqnrefs{eq:phys-rr-schott-momentum,eq:phys-rr-radiated-four-momentum-rate}，
-\[
-\begin{aligned}
--\frac{\dd P_{\mathrm{Schott}}^\mu}{\dd\tau}
--\frac{\dd P_{\mathrm{rad}}^\mu}{\dd\tau}
-&=\frac{q^2}{6\pi\varepsilon_0c^3}\dot a^\mu
-+\frac{q^2}{6\pi\varepsilon_0c^5}a^2u^\mu\\
-&=f_{\mathrm{self}}^\mu,
-\end{aligned}
-\]
-这正是正文\eqnrefs{eq:phys-rr-self-force-momentum-split}。因此 Dirac 正则场、世界管通量和束缚/辐射四动量三种组织方式给出同一个有限自力。
-
-\textbf{物理意义。}三种推导路径给出同一结果，说明 ALD 力不是特定正则化方案的产物，而是经典电动力学的内在结构。Dirac 正则场用 Maxwell 方程的分解直接分离辐射场；世界管通量从有限厚度 \(\ell\) 的电荷分布取 \(\ell\to0\) 极限，发散项 \(q^2/(4\pi\varepsilon_0\ell)\) 重正化为电磁质量；束缚动量则用 Fermi 管坐标分离近场和远场。三条路径的等价性是经典重正化群的一致性检验。
-\end{derivation}
-\begin{derivation}[式~\eqnrefs{eq:phys-rr-bound-momentum-expansion,eq:phys-rr-mass-renormalization}：Fermi 世界管发散项与有限动量闭合]
-先确定世界管端面动量的发散项。取上一段定义的 Fermi 端面，并在瞬时静止系中选择一个固定的局域匹配尺度 \(L_{\rm loc}\)。它必须满足 \(\ell\ll L_{\rm loc}\)，同时远小于世界线所有非零局域变化长度；其中首先出现的是协变曲率半径
-\[
- L_a:=\frac{c^2}{\sqrt{-a^2}}.
-\]
-当 \(a^\mu=0\) 时，\(L_a\) 不再给出限制，此时改由 \(\dot a^\mu\) 等更高局域 jet 所定义的非零变化尺度限制 \(L_{\rm loc}\)。这种写法不依赖特定实验室切片。在 \(\ell<r<L_{\rm loc}\) 内，场的唯一 \(r^{-2}\) 主项是瞬时 Coulomb 场，故发散能量为
-\[
-\begin{aligned}
-U_{\rm div}(\ell)
-&=\int_{\ell}^{L_{\rm loc}}
-\frac{\varepsilon_0}{2}
-\left(\frac{q}{4\pi\varepsilon_0 r^2}\right)^2
-4\pi r^2\dd r+O(\ell^0)\\
-&=\frac{q^2}{8\pi\varepsilon_0}
-\left(\frac1\ell-\frac1{L_{\rm loc}}\right)+O(\ell^0)\\
-&=\frac{q^2}{8\pi\varepsilon_0\ell}+O(\ell^0).
-\end{aligned}
-\]
-在这个正交端面的瞬时静止系中，\(r^{-2}\) Coulomb 主场没有同阶 Poynting 动量，因此 \(1/\ell\) 发散四动量平行于 \(u^\mu\)。于是
-\[
-P_{\rm div}^{\mu}(\ell)
-=\delta m(\ell)u^{\mu},
-\qquad
-\delta m(\ell)
-=\frac{q^2}{8\pi\varepsilon_0c^2\ell}.
-\]
-这给出正文质量重整化\eqnrefs{eq:phys-rr-mass-renormalization}中的 \(1/\ell\) 系数。
-
-再确定 \(O(\ell^0)\) 的束缚近场动量。平直时空中，对无自旋点电荷作局域世界线展开时，这一阶可用的四矢量只有 \(a^{\mu}\)，故写成
-\[
-P_{\rm bound}^{\mu}(\ell)
-=\delta m(\ell)u^{\mu}+C_{\rm b}a^{\mu}+O(\ell).
-\]
-这里不靠未展示的角积分猜测 \(C_{\rm b}\)，而用前面已经独立得到的两项物理量闭合它。首先，由 Dirac 正则场，有限自力为
-\[
-f_{\rm self}^{\mu}
-=\mathcal C_{\rm rr}\left(\dot a^{\mu}+\frac{a^2}{c^2}u^{\mu}\right),
-\qquad
-\mathcal C_{\rm rr}:=\frac{q^2}{6\pi\varepsilon_0c^3}.
-\]
-其次，远区 Maxwell 通量给出
-\[
-\frac{\dd P_{\rm rad}^{\mu}}{\dd\tau}
-=-\mathcal C_{\rm rr}\frac{a^2}{c^2}u^{\mu}.
-\]
-对已经吸收 \(\delta m\) 的有限世界管守恒式，内部自力等于束缚近场动量与辐射动量的负变化率：
-\[
-\begin{aligned}
-f_{\rm self}^{\mu}
-&=-\frac{\dd}{\dd\tau}
-\left(C_{\rm b}a^{\mu}\right)
--\frac{\dd P_{\rm rad}^{\mu}}{\dd\tau}\\
-&=-C_{\rm b}\dot a^{\mu}
-+\mathcal C_{\rm rr}\frac{a^2}{c^2}u^{\mu}.
-\end{aligned}
-\]
-逐项与 Dirac 自力比较，\(\dot a^{\mu}\) 的系数要求
-\[
--C_{\rm b}=\mathcal C_{\rm rr},
-\qquad
-C_{\rm b}=-\frac{q^2}{6\pi\varepsilon_0c^3}.
-\]
-于是
-\[
-P_{\rm bound}^{\mu}(\ell)
-=\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^{\mu}
--\frac{q^2}{6\pi\varepsilon_0c^3}a^{\mu}
-+O(\ell),
-\]
-从而同时得到正文\eqnrefs{eq:phys-rr-bound-momentum-expansion,eq:phys-rr-schott-momentum}。直接在 Fermi 世界管上积分近场能动量张量会给出同一有限系数；这里采用的闭合方式把所需输入拆成已经分别由局域 Dirac 场与远区 Maxwell 通量验证过的两项，因此不会把未展示的世界管角积分伪装成推导步骤。
-
-\emph{物理意义。}有界能动量展开的物理核心是"经典电子质量重整化"：有限尺寸电荷的近场（Coulomb 自场）能动量 \(p_{\rm bound}^\mu\) 随电荷半径 \(\ell\) 发散为 \(q^2/(8\pi\varepsilon_0 c^2\ell)\cdot u^\mu\)，这是经典紫外发散——点电荷的自能无穷大。质量重整化把发散部分并入"裸质量" \(m_0\) 定义物理质量 \(m=m_0+q^2/(8\pi\varepsilon_0 c^2\ell)\)，剩余有限项给出 Schott 动量 \(-\frac{q^2}{6\pi\varepsilon_0 c^3}a^\mu\)，其时间导数正是 ALD 力中的 Schott 项。Schott 动量是近场的弹性储能——在周期运动中净收支为零（暂存能量在加速时流出、减速时流回），不产生净耗散。真正的耗散来自远场辐射动量 \(p_{\rm rad}^\mu\)，其时间变化率给出 Larmor 辐射功率。这一分解 \(p_{\rm total}=p_{\rm bound}+p_{\rm rad}\) 把"加速电荷损失能量"从运动学公式提升为能动量守恒的协变推论，是经典辐射反作用理论的完整逻辑闭环。
-
-
-四速度为
-\[
- u^\mu=\gamma(c,\vb v),
- \qquad
- \gamma:=(1-v^2/c^2)^{-1/2}.
-\]
-对固有时求导并用 \(\dd/\dd\tau=\gamma\dd/\dd t\)，得到
-\[
- a^0=\frac{\gamma^4}{c}\vb v\cdot\vb a,
- \qquad
- \vb a_{(4)}
- =\gamma^2\vb a
- +\frac{\gamma^4}{c^2}(\vb v\cdot\vb a)\vb v.
-\]
-这里 \(a^0=\dot u^0=\dot\gamma c\)，而 \(\dot\gamma=\gamma^3(\vb v\cdot\vb a)/c^2\)（由 \(\gamma=1/\sqrt{1-v^2/c^2}\) 求导：\(\dot\gamma=\gamma^3\vb v\cdot\dot{\vb v}/c^2=\gamma^3(\vb v\cdot\vb a)/c^2\)）；空间分量 \(\vb a_{(4)}=\dot u=\dot(\gamma\vb v)=\dot\gamma\vb v+\gamma\vb a\)。验证四速度正交性 \(u\cdot a=0\)：
-\[
- u_\mu a^\mu
- =\gamma c\cdot\frac{\gamma^4}{c}(\vb v\cdot\vb a)
- -\gamma\vb v\cdot\left[\gamma^2\vb a+\frac{\gamma^4}{c^2}(\vb v\cdot\vb a)\vb v\right]
- =\gamma^5(\vb v\cdot\vb a)-\gamma^3(\vb v\cdot\vb a)-\gamma^5\frac{v^2}{c^2}(\vb v\cdot\vb a)
- =0,
-\]
-最后一步用了 \(\gamma^5(1-v^2/c^2)=\gamma^3\)。该正交性是固有时参数化的必然结果：由 \(u\cdot u=c^2\) 求导即得 \(u\cdot a=0\)，故四加速度恒位于四速度的正交补空间。直接计算 Minkowski 范数，
-\[
- -a^2
- =\vb a_{(4)}^{\,2}-(a^0)^2
- =\gamma^6
- \left[
- \vb a^2-\frac{(\vb v\times\vb a)^2}{c^2}
- \right].
-\]
-展开时 \(\vb a_{(4)}^{\,2}\) 给出 \(\gamma^4\vb a^2+2\gamma^6(\vb v\cdot\vb a)^2/c^2+\gamma^8(\vb v\cdot\vb a)^2\vb v^2/c^4\)，\((a^0)^2\) 给出 \(\gamma^8(\vb v\cdot\vb a)^2/c^2\)，相减后用 \(\vb v^2/c^2=1-\gamma^{-2}\) 与 \(|\vb v\times\vb a|^2=v^2a^2-(\vb v\cdot\vb a)^2\) 合并即得上式。该不变量的物理意义是：\(-a^2\) 是固有时加速度的 Lorentz 标量，在瞬时静止系中等于 \(|\vb a|^2\)，在任意系中由上式给出。由 \(P^0_{\rm rad}=E_{\rm rad}/c\) 和 \(u^0=\gamma c\)，
-\[
- \frac{\dd E_{\rm rad}}{\dd t}
- =\frac{c}{\gamma}
- \frac{\dd P_{\rm rad}^0}{\dd\tau}
- =-\frac{q^2}{6\pi\varepsilon_0c^3}a^2.
-\]
-这里 \(\dd/\dd t=(1/\gamma)\dd/\dd\tau\) 来自固有时与坐标时的关系 \(\dd t=\gamma\dd\tau\)。该关系由固有时定义 \(\dd\tau=\dd t/\gamma\) 直接给出。代入上面的四加速度不变量即得到正文\eqnrefs{eq:phys-rr-lienard-power}。该式是 Larmor 公式的相对论协变推广，其关键特征是辐射功率由四加速度不变量 \(-a^2\) 决定，因而所有惯性系给出同一功率。在非相对论极限 \(\gamma\to1\)、\(\vb v/c\to0\) 下，该式退化为 Larmor 公式 \(P=q^2|\vb a|^2/(6\pi\varepsilon_0c^3)\)；在极端相对论极限下，\((\vb v\times\vb a)^2/c^2\) 项使沿速度方向的加速度辐射被抑制，而横向加速度辐射被 \(\gamma^6\) 放大，这正是同步辐射的相对论增强因子。作为应用举例，考虑电子在恒定磁场 \(B\) 中作圆周运动：向心加速度 \(a=v^2/\rho\)，其中 \(\rho=\gamma mv/(eB)\) 为回旋半径。代入 Liénard 公式得到同步辐射功率
-\[
- P_{\rm sync}=\frac{e^4B^2\gamma^2v^2}{6\pi\varepsilon_0m^2c^3}
- =\frac{e^4B^2E^2}{6\pi\varepsilon_0m^4c^5},
-\]
-其中 \(E=\gamma mc^2\) 为电子总能量。该功率随 \(\gamma^2\) 增长，是大型同步辐射光源与环形对撞机中束流能量损失的主要来源。另一极限是线性加速器中 \(\vb v\parallel\vb a\)：此时 \(\vb v\times\vb a=0\)，功率为 \(P=q^2a^2\gamma^6/(6\pi\varepsilon_0c^3)\)，但由能量--动量关系 \(a=\dot v/\gamma^3\)，实际功率 \(P=q^2\dot v^2/(6\pi\varepsilon_0c^3)\) 不含 \(\gamma\) 增强，说明线性加速无同步辐射损失。这一对比揭示辐射功率的几何本质：只有横向加速度（改变速度方向）才产生显著相对论辐射增强，纵向加速度（改变速度大小）的 \(\gamma^6\) 因子被能量--动量关系的 \(\gamma^{-6}\) 精确抵消。
+因此发散惯性、Schott 束缚动量和远区辐射通量来自同一个守恒式，
+而不是三个独立假设。
 \end{derivation}
 \section{从 ALD 到受控的 Landau--Lifshitz 有效动力学}
 
@@ -1632,201 +865,100 @@ ALD 已经是从 Maxwell--守恒律点极限得到的局部方程，但它含三
 \end{equation}
 它把 runaway 排除掉，但当前加速度依赖未来宽度 \(O(\tau_{\rm rr})\) 的外力，这就是点粒子 ALD 的预加速。对真实有限尺寸源，基本描述应回到因果记忆核，而不能把\eqnrefs{eq:phys-rr-no-runaway-integral} 当作微观因果律。
 
-\begin{derivation}[从式~\eqnrefs{eq:phys-rr-ald-rapidity} 到式~\eqnrefs{eq:phys-rr-no-runaway-integral}]
-由快度参数化，
+\begin{derivation}[无 runaway 分支]
+快度参数化给出
 \[
- a^\mu=c\dot\psi(\sinh\psi,\cosh\psi,0,0),
- \qquad
- a^2=-c^2\dot\psi^2,
-\]
-并且
-\[
+ a^\mu=c\dot\psi(\sinh\psi,\cosh\psi,0,0),\qquad
  \dot a^\mu+\frac{a^2}{c^2}u^\mu
  =c\ddot\psi(\sinh\psi,\cosh\psi,0,0).
 \]
-一维外力的四力为
-\[
- f_{\rm ext}^\mu
- =F_\parallel(\sinh\psi,\cosh\psi,0,0),
-\]
-三个四矢量均平行于同一类空方向，故\eqnrefs{eq:phys-rr-ald} 化成\eqnrefs{eq:phys-rr-ald-rapidity}。
-
-令 \(w=\dot\psi\)，则
-\[
- \dot w-\frac{w}{\tau_{\rm rr}}
- =-\frac{F_\parallel}{mc\tau_{\rm rr}}.
-\]
-乘积分因子 \(e^{-\tau/\tau_{\rm rr}}\)：
+一维外四力也沿同一类空方向，故 ALD 方程约化为
+\eqnrefs{eq:phys-rr-ald-rapidity}。令 \(w=\dot\psi\)，乘以积分因子后有
 \[
  \frac{\dd}{\dd\tau}
  \left(e^{-\tau/\tau_{\rm rr}}w\right)
- =-\frac{e^{-\tau/\tau_{\rm rr}}}{mc\tau_{\rm rr}}F_\parallel.
+ =-\frac{e^{-\tau/\tau_{\rm rr}}}{mc\tau_{\rm rr}}
+ F_\parallel(\tau).
 \]
-一般解包含一个任意的 \(e^{\tau/\tau_{\rm rr}}\) 齐次项。施加
+一般解包含 \(e^{\tau/\tau_{\rm rr}}\) 齐次模。施加未来无 runaway 边界条件，
+从 \(\tau\) 积分到 \(+\infty\)，得到
 \[
- \lim_{\tau\to\infty}e^{-\tau/\tau_{\rm rr}}w(\tau)=0
-\]
-并从 \(\tau\) 积分到 \(+\infty\)，得到
-\[
- w(\tau)
- =\frac1{mc\tau_{\rm rr}}
- \int_\tau^\infty
+ w(\tau)=\frac1{mc\tau_{\rm rr}}\int_\tau^\infty
  e^{-(s-\tau)/\tau_{\rm rr}}F_\parallel(s)\dd s.
 \]
-最后令 \(r=(s-\tau)/\tau_{\rm rr}\) 即得到\eqnrefs{eq:phys-rr-no-runaway-integral}。积分核只取未来值，预加速由这个未来边界条件直接产生，而不是由 Lorentz 力本身产生。
+令 \(r=(s-\tau)/\tau_{\rm rr}\) 即得
+\eqnrefs{eq:phys-rr-no-runaway-integral}。未来力之所以出现，正是因为这里用
+未来边界条件投影掉增长模。
+\end{derivation}
 
-\textbf{物理意义。}无逃逸解把 ALD 三阶方程降为积分方程，消除了 runaway 解（指数发散的非物理解）。代价是预加速：粒子在力到达前 \(O(\tau_{\rm rr})\) 时间就开始响应，\(\tau_{\rm rr}=q^2/(6\pi\varepsilon_0mc^3)\approx10^{-23}\,\si{\s}\)（电子），远小于任何宏观时间尺度。指数核 \(e^{-r}\) 使未来力的贡献快速衰减，只有 \(\Delta\tau\lesssim\tau_{\rm rr}\) 内的力对当前加速度有显著影响。这是经典电动力学对点电荷因果性的微妙修正，在量子电动力学中由光子传播子的推迟格林函数自然取代。
-
-
-接下来考察Landau--Lifshitz 阶数约化。
-
-若外力在固有时尺度 \(T\) 上光滑变化，令 \(\mathcal F_\star\) 表示所考察轨道段上外力的代表性大小，并定义梯度控制量
-\[
- \epsilon_{\rm grad}:=\frac{\tau_{\rm rr}}{T}\ll1.
-\]
-则无 runaway 积分可在当前固有时附近局域展开：
+若外力在固有时尺度 \(T\) 上光滑变化，无 runaway 积分的局域展开为
 \begin{equation}
- \boxed{
  mc\dot\psi
  =F_\parallel+\tau_{\rm rr}\dot F_\parallel
- +O(\mathcal F_\star\epsilon_{\rm grad}^2).}
+ +O(\mathcal F_\star\epsilon_{\rm grad}^2),
+ \qquad \epsilon_{\rm grad}=\frac{\tau_{\rm rr}}T .
  \label{eq:phys-rr-ll-scalar-local}
 \end{equation}
-这说明 Landau--Lifshitz 方程不是独立的基本自力定律，而是 ALD 无 runaway 分支的低频渐近展开。
-
-
-由上一小节的精确解
-\[
-\dot\psi(\tau)
-=\frac1{mc}
-\int_0^\infty
-\ee^{-r}
-F_\parallel(\tau+\tau_{\rm rr}r)\dd r,
-\]
-对光滑外力作 Taylor 展开：
-\[
-F_\parallel(\tau+\tau_{\rm rr}r)
-=
-\sum_{n=0}^\infty
-\frac{\tau_{\rm rr}^nr^n}{n!}
-\frac{\dd^nF_\parallel}{\dd\tau^n}.
-\]
-该展开要求 \(F_\parallel\) 在 \(\tau_{\rm rr}\) 尺度上解析，即外力变化时间 \(T\) 远大于辐射反作用时间 \(\tau_{\rm rr}\)。这一条件是 Landau--Lifshitz 方程有效性的核心：它要求外场在辐射反作用时间内几乎不变，从而允许 Taylor 展开逐项积分。数学上，该条件保证 Taylor 级数的余项在 \(\tau_{\rm rr}/T\to0\) 时趋于零。具体地，Taylor 余项的 Lagrange 形式给出
-\[
- R_N(r)=\frac{(\tau_{\rm rr}r)^{N+1}}{(N+1)!}
- \frac{\dd^{N+1}F_\parallel}{\dd\tau^{N+1}}\bigg|_{\tau+\xi\tau_{\rm rr}r},
- \qquad 0<\xi<1,
-\]
-乘以 \(\ee^{-r}\) 积分后，\(\int_0^\infty\ee^{-r}r^{N+1}\dd r=(N+1)!\) 与分母相消，余项量级为 \(\tau_{\rm rr}^{N+1}\|F_\parallel^{(N+1)}\|_\infty\sim\mathcal F_\star(\tau_{\rm rr}/T)^{N+1}\)。在导数展开的有效区间内逐项积分，并使用 Gamma 函数积分
-\[
-\int_0^\infty\ee^{-r}r^n\dd r=\Gamma(n+1)=n!,
-\]
-该积分是 Gamma 函数的定义，对 \(n=0,1,2,\ldots\) 给出阶乘。代入 Taylor 展开后，\(r^n/n!\) 与 \(n!\) 相消，得到
-\[
-mc\dot\psi
-=
-\sum_{n=0}^\infty
-\tau_{\rm rr}^n
-\frac{\dd^nF_\parallel}{\dd\tau^n}.
-\]
-该级数的收敛性要求 \(\tau_{\rm rr}/T<1\)，即外力变化时间 \(T\) 大于辐射反作用时间。若特征时间为 \(T\)，则第 \(n\) 阶项相对于零阶项的量级为
-\(O[(\tau_{\rm rr}/T)^n]\)。该展开是渐近展开而非收敛展开：在 \(\tau_{\rm rr}/T\ll1\) 时前几项给出良好近似，但高阶项不一定递减。截断到 \(n=1\) 即得到正文\eqnrefs{eq:phys-rr-ll-scalar-local}，而首个被舍弃项的量级为
-\(\mathcal F_\star\tau_{\rm rr}^2/T^2=\mathcal F_\star\epsilon_{\rm grad}^2\)。这一展开表明 Landau--Lifshitz 方程不是独立的基本自力定律，而是 ALD 无 runaway 分支的低频渐近展开；其有效域由 \(\epsilon_{\rm grad}:=\tau_{\rm rr}/T\ll1\) 控制。对电子，\(\tau_{\rm rr}=2e^2/(3mc^3)\approx6.3\times10^{-24}\,\mathrm s\)，即使在强激光场 \(T\sim10^{-15}\,\mathrm s\) 中仍有 \(\epsilon_{\rm grad}\sim10^{-8}\)，故 Landau--Lifshitz 方程在经典电动力学范围内高度精确。更一般地，Landau--Lifshitz 方程可写成三维形式
-\[
- \vb F_{\rm ext}
- =m\vb a
- -\tau_{\rm rr}m\left[
- \dot{\vb F}_{\rm ext}
- +\frac{(\vb v\cdot\vb F_{\rm ext})\vb v}{c^2(1-v^2/c^2)}
- \right]
- +O(\epsilon_{\rm grad}^2),
-\]
-其中 \(\vb F_{\rm ext}=q(\vb E+\vb v\times\vb B)\) 为外场 Lorentz 力。该形式在数值模拟中常用，因为它只含二阶时间导数，避免了 ALD 方程的三阶导数所带来的 runaway 解与数值不稳定性。Landau--Lifshitz 方程的物理含义是：辐射反作用使外力不再等于 \(m\vb a\)，而是多了正比于 \(\tau_{\rm rr}\dot{\vb F}_{\rm ext}\) 的修正项，对应于辐射阻尼。作为应用举例，在恒定磁场中 \(\vb F_{\rm ext}=e\vb v\times\vb B\)，Landau--Lifshitz 修正项给出辐射阻尼导致的螺旋轨道收缩，能量按 \(E(t)=E_0/(1+t/\tau_{\rm damp})\) 衰减，阻尼时间 \(\tau_{\rm damp}=3m^3c^5/(2e^4B^2E_0)\)，与同步辐射功率一致。另一应用是恒定电场中带电粒子的渐近加速度：Landau--Lifshitz 修正使加速度趋向 \(a_\infty=eE/m-\tau_{\rm rr}e^2E^2/(m^2c)\)，第二项是辐射阻尼对加速效率的修正，在超强场（Schwinger 临界场 \(E_{\rm S}=m^2c^3/(e\hbar)\) 附近）变得显著。
-
-定义到四速度正交子空间 \(u^\perp\) 的投影算符
+这说明 Landau--Lifshitz 方程是 ALD 无 runaway 分支的受控低频展开。定义
 \begin{equation}
- \mathsf P_u^\mu{}_{\nu}
- =\delta^\mu{}_{\nu}-\frac{u^\mu u_\nu}{c^2}.
+ \mathsf P_u^\mu{}_\nu
+ =\delta^\mu{}_\nu-\frac{u^\mu u_\nu}{c^2}.
  \label{eq:phys-rr-orthogonal-projector}
 \end{equation}
-对外 Lorentz 四力 \(f_{\rm ext}^\mu=qF_{\rm ext}^\mu{}_{\nu}u^\nu\)，只在已经显式乘有 \(\tau_{\rm rr}\) 的高阶项中代入零阶 Lorentz 动力学，得到协变 Landau--Lifshitz 方程
+只在已经带有 \(\tau_{\rm rr}\) 的项中代入零阶 Lorentz 动力学，得到
 \begin{equation}
 \begin{split}
- ma^\mu={}&qF_{\rm ext}^\mu{}_{\nu}u^\nu
- +q\tau_{\rm rr}\mathsf P_u^\mu{}_{\rho}
- (\partial_\alpha F_{\rm ext}^\rho{}_{\nu})u^\alpha u^\nu\\
- &+\frac{q^2\tau_{\rm rr}}{m}
- \mathsf P_u^\mu{}_{\rho}
- F_{\rm ext}^\rho{}_{\nu}F_{\rm ext}^\nu{}_{\beta}u^\beta
+ ma^\mu={}&qF_{\rm ext}^\mu{}_\nu u^\nu
+ +q\tau_{\rm rr}\mathsf P_u^\mu{}_\rho
+ (\partial_\alpha F_{\rm ext}^\rho{}_\nu)u^\alpha u^\nu\\
+ &+\frac{q^2\tau_{\rm rr}}m\mathsf P_u^\mu{}_\rho
+ F_{\rm ext}^\rho{}_\nu F_{\rm ext}^\nu{}_\beta u^\beta
  +O(\mathcal F_\star\epsilon_{\rm LL}^2).
 \end{split}
-\label{eq:phys-rr-landau-lifshitz}
+ \label{eq:phys-rr-landau-lifshitz}
 \end{equation}
-一般协变问题还要独立控制零阶 Lorentz 加速度在一个反作用时间内造成的四速度转动。定义
+这里还要控制
 \[
- \epsilon_{\rm acc}
- :=\frac{\tau_{\rm rr}}{c}\sqrt{-a_0^2},
+ \epsilon_{\rm acc}=\frac{\tau_{\rm rr}}c\sqrt{-a_0^2},
  \qquad
- \epsilon_{\rm LL}:=\max(\epsilon_{\rm grad},\epsilon_{\rm acc}),
+ \epsilon_{\rm LL}=\max(\epsilon_{\rm grad},\epsilon_{\rm acc})\ll1,
 \]
-其中 \(a_0^\mu=(q/m)F_{\rm ext}^\mu{}_{\nu}u^\nu\) 是零阶 Lorentz 加速度。Landau--Lifshitz 一阶降阶要求 \(\epsilon_{\rm LL}\ll1\)：\(\epsilon_{\rm grad}\) 控制外场梯度，\(\epsilon_{\rm acc}\) 控制强场中四速度本身在 \(\tau_{\rm rr}\) 内的快速转动。任一参数不小时，都不能把一阶降阶方程视为受控截断。
+其中 \(a_0^\mu=(q/m)F_{\rm ext}^\mu{}_\nu u^\nu\)。前者控制外场梯度，后者控制强场中四速度在一个反作用时间内的转动。
 
+\begin{derivation}[Landau--Lifshitz 阶数约化]
+若 \(\|F_\parallel^{(n)}\|\sim\mathcal F_\star/T^n\)，在无 runaway 积分中展开
+\[
+ F_\parallel(\tau+\tau_{\rm rr}r)
+ =F_\parallel+\tau_{\rm rr}r\,\dot F_\parallel+R_1(r).
+\]
+Taylor 余项与
+\(\int_0^\infty e^{-r}r^2\dd r=2\) 给出
+\[
+ \left|\int_0^\infty e^{-r}R_1(r)\dd r\right|
+ =O\!\left(\mathcal F_\star\frac{\tau_{\rm rr}^2}{T^2}\right).
+\]
+因此得到\eqnrefs{eq:phys-rr-ll-scalar-local}，而首个舍弃项由
+\(\epsilon_{\rm grad}^2\) 控制。
 
-由 \(u^2=c^2\) 逐次求导，
+协变地写
 \[
-u\cdot a=0,
-\qquad
-u\cdot\dot a=-a^2.
+ ma^\mu=f_{\rm ext}^\mu+
+ m\tau_{\rm rr}\mathsf P_u^\mu{}_\nu\dot a^\nu .
 \]
-因此
+只在已经乘有 \(\tau_{\rm rr}\) 的项中代入零阶关系
+\(a^\mu=f_{\rm ext}^\mu/m+O(\tau_{\rm rr})\)。对
+\(f_{\rm ext}^\rho=qF_{\rm ext}^\rho{}_\nu u^\nu\) 沿世界线求导，
 \[
-\mathsf P_u^\mu{}_{\nu}\dot a^\nu
-=
-\dot a^\mu-\frac{u^\mu}{c^2}(u\cdot\dot a)
-=
-\dot a^\mu+\frac{a^2}{c^2}u^\mu,
+ \dot f_{\rm ext}^\rho
+ =q(\partial_\alpha F_{\rm ext}^\rho{}_\nu)u^\alpha u^\nu
+ +\frac{q^2}{m}F_{\rm ext}^\rho{}_\nu
+ F_{\rm ext}^\nu{}_\beta u^\beta+O(\tau_{\rm rr}).
 \]
-ALD 方程可写成
-\[
-ma^\mu
-=f_{\rm ext}^\mu
-+m\tau_{\rm rr}\mathsf P_u^\mu{}_{\nu}\dot a^\nu.
-\]
-因为第二项已经带一个 \(\tau_{\rm rr}\)，其中只需使用零阶关系
-\[
-a^\mu
-=\frac1m f_{\rm ext}^\mu+O(\tau_{\rm rr}).
-\]
-沿世界线求导后
-\[
-\dot a^\mu
-=\frac1m\frac{\dd f_{\rm ext}^\mu}{\dd\tau}
-+O(\tau_{\rm rr}),
-\]
-故
-\[
-ma^\mu
-=f_{\rm ext}^\mu
-+\tau_{\rm rr}\mathsf P_u^\mu{}_{\nu}
-\frac{\dd f_{\rm ext}^\nu}{\dd\tau}
-+O(\mathcal F_\star\epsilon_{\rm LL}^2).
-\]
-对 Lorentz 四力求导，
-\[
-\frac{\dd f_{\rm ext}^\rho}{\dd\tau}
-=
-q(\partial_\alpha F_{\rm ext}^\rho{}_{\nu})u^\alpha u^\nu
-+qF_{\rm ext}^\rho{}_{\nu}a^\nu.
-\]
-第二项中的加速度仍然只需取零阶值
-\[
-a^\nu
-=\frac qmF_{\rm ext}^\nu{}_{\beta}u^\beta
-+O(\tau_{\rm rr}).
-\]
-代回并施加投影\eqnrefs{eq:phys-rr-orthogonal-projector}，逐项得到正文\eqnrefs{eq:phys-rr-landau-lifshitz}。整个降阶只在已经乘有 \(\tau_{\rm rr}\) 的高阶项中使用零阶方程，因此在梯度与强场两个控制量都小时，截断误差从二阶 \(O(\epsilon_{\rm LL}^2)\) 开始。
-
-\textbf{物理意义。}Landau--Lifshitz 方程是 ALD 方程的二阶微扰降阶：用 Lorentz 方程 \(ma=qF\cdot u\) 消去 \(\dot a\) 中的三阶导数，得到只含 \(u,a\) 和外场导数的二阶方程。它消除了 runaway 解和预加速，恢复因果性。LL 方程是加速器物理和等离子体物理中带电粒子辐射反作用的标准方程。适用条件 \(\epsilon_{\rm LL}\ll1\) 要求外场在 \(\tau_{\rm rr}\) 尺度上缓变且 Lorentz 力远大于辐射反作用。对电子在 \(10^{15}\,\si{\V\per\m}\) 以下电场中运动，\(\epsilon_{\rm LL}\sim10^{-8}\)，LL 近似高度精确。
+投影到 \(u^\perp\) 后即得
+\eqnrefs{eq:phys-rr-landau-lifshitz}。梯度展开和零阶四速度在一个
+\(\tau_{\rm rr}\) 内的转动分别由
+\(\epsilon_{\rm grad}\) 与 \(\epsilon_{\rm acc}\) 控制，所以总误差从
+\(O(\epsilon_{\rm LL}^2)\) 开始。
 \end{derivation}
 \begin{figure}[htbp]
 \centering

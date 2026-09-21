@@ -279,6 +279,18 @@ L^2(\mathcal H)\subseteq L^2(\mathcal G)\subseteq L^2(\mathcal F)
 P_{\mathcal H}P_{\mathcal G}=P_{\mathcal H}.
 \]
 
+正交分解还立即给出全方差公式
+\begin{equation}
+\boxed{
+\Var(X)
+=
+\E\{\Var(X\mid\mathcal G)\}
++\Var\{\E(X\mid\mathcal G)\}
+}.
+\label{eq:math-stat-total-variance}
+\end{equation}
+第一项是知道 $\mathcal G$ 后仍无法消除的平均不确定性，第二项是由 $\mathcal G$ 所解释的波动；两项都属于正文所需的概率结构，而不只是证明的末行。
+
 \begin{derivation}[全方差公式来自 Pythagoras]
 令
 \[
@@ -305,47 +317,13 @@ X-\E X
 \[
 \Var\{\E(X\mid\mathcal G)\}.
 \]
-从而得到
-\begin{equation}
-\boxed{
-\Var(X)
-=
-\E\{\Var(X\mid\mathcal G)\}
-+\Var\{\E(X\mid\mathcal G)\}
-}.
-\label{eq:math-stat-total-variance}
-\end{equation}
-所以 total variance 并不是另一个概率恒等式，而是 Hilbert 空间 Pythagoras 定理。
-
-\emph{正交性的显式验证。}要证 $X-M$ 与任何 $\mathcal G$-可测 $Z$ 正交，即 $\E[(X-M)Z]=0$。由条件期望的投影性质，
+这就是\eqnrefs{eq:math-stat-total-variance}。其中所用正交性可直接验证：对任意平方可积的 $\mathcal G$-可测变量 $Z$，
 \begin{equation*}
 \E[(X-M)Z]
 =\E\{Z\,\E[X-M\mid\mathcal G]\}
 =\E\{Z\,(M-M)\}=0.
 \end{equation*}
-关键步骤是把 $Z$ 移进条件期望，这要求 $Z$ 是 $\mathcal G$-可测的。这正是 $L^2(\Omega,\mathcal F,\P)$ 中 $L^2(\Omega,\mathcal G,\P)$ 作为闭子空间的正交补刻画。
-
-\emph{条件期望作为正交投影。}映射 $X\mapsto\E(X\mid\mathcal G)$ 是 $L^2(\mathcal F)\to L^2(\mathcal G)$ 的正交投影，满足幂等性 $P_\mathcal G^2=P_\mathcal G$ 与自伴性 $\E[P_\mathcal GX\cdot Y]=\E[X\cdot P_\mathcal GY]$。全方差公式正是投影算子的 Pythagoras 分解：总能量分解为投影方向能量与正交补能量。这一视角把概率论中的不等式（如 Jensen 不等式 $\Var(X)\geq\Var(\E(X\mid\mathcal G))$）化为 Hilbert 空间几何。
-
-\emph{嵌套信息与 martingale。}若 $(\mathcal F_n)$ 是递增信息族，过程 $M_n=\E(X\mid\mathcal F_n)$ 满足
-\begin{equation*}
-\E(M_{n+1}\mid\mathcal F_n)=\E\{\E(X\mid\mathcal F_{n+1})\mid\mathcal F_n\}=\E(X\mid\mathcal F_n)=M_n,
-\end{equation*}
-即 $(M_n)$ 是 martingale。由全方差公式递推，
-\begin{equation*}
-\Var(X)=\sum_{n=0}^\infty\E\{(M_{n+1}-M_n)^2\}+\lim_{n\to\infty}\Var(M_n),
-\end{equation*}
-当 $\mathcal F_n\uparrow\mathcal F$ 时 $\Var(M_n)\to\Var(X)$，得 $L^2$ martingale 收敛定理：$M_n\to X$ 在 $L^2$ 中。这是 Doob martingale 收敛定理的 Hilbert 空间证明。
-
-\emph{举例：分层抽样与 Rao--Blackwell。}在统计抽样中，总体方差可分解为组间方差与组内方差均值。设总体分为 $K$ 层，第 $k$ 层均值 $\mu_k$、方差 $\sigma_k^2$、比例 $p_k$，则
-\begin{equation*}
-\Var(X)=\sum_kp_k\sigma_k^2+\sum_kp_k(\mu_k-\mu)^2,
-\end{equation*}
-正是全方差公式在分层结构上的应用。Rao--Blackwell 定理给出：对估计量 $T$，$T^*=\E(T\mid\text{充分统计量})$ 满足 $\Var(T^*)\leq\Var(T)$，由全方差公式 $\Var(T)=\E\Var(T\mid S)+\Var(T^*)\geq\Var(T^*)$ 直接得到。
-
-\emph{物理建模：测量与信息获取。}在量子测量中，全方差公式描述测量前后信息的不确定性分解。设 $X$ 为可观测量，$\mathcal G$ 为先前测量结果生成的 $\sigma$-代数，则 $\Var(X)$ 是测量前不确定性，$\E\Var(X\mid\mathcal G)$ 是测量后剩余不确定性（量子噪声），$\Var\E(X\mid\mathcal G)$ 是测量获得的信息。Heisenberg 不确定关系可视为这一分解在非交换可观测量情形的推广，其中非交换性给出额外的 Born--Jordan 修正项。
-
-\emph{更一般结论：条件 Hilbert 空间。}把 $L^2$ 推广到 Hilbert 空间 $\mathcal H$ 上的闭子空间族 $\{\mathcal H_\alpha\}$，投影算子 $P_\alpha$ 满足类似分解。当子空间族形成 lattice 时，全方差公式推广为 Jordan--Hölder 型分解，对应 von Neumann 代数中的条件期望理论。这是量子统计与算子代数中非交换概率论的基础框架。
+这里能够把 $Z$ 提到内层条件期望之外，正是因为 $Z$ 对 $\mathcal G$ 可测。
 \end{derivation}
 
 如果 $(\mathcal F_n)$ 是递增信息族，过程
@@ -567,7 +545,7 @@ M_\infty=P_{L^2(\mathcal F_\infty)}X
 =\E(X\mid\mathcal F_\infty).
 \]
 
-\textbf{实例。}设 $X_n$ 为 iid 且 $\E|X_1|^2<\infty$，$\mathcal F_n=\sigma(X_1,\ldots,X_n)$，则 $M_n=\E(X_1\mid\mathcal F_n)=\bar X_n$（样本均值），$L^2$ 收敛到 $X_1$ 自身——这是 $L^2$ 强大数律的鞅证明。对 Brown 运动 $B_t$ 关于自然滤子 $\mathcal F_t$，$M_t=B_t$ 是鞅，$L^2$ 极限不存在（$B_t$ 不 $L^2$ 收敛），但 Doob 鞅收敛定理给出 a.s. 收敛到 $0$（当 $t\to\infty$ 时 $B_t/t\to0$）。
+实例。设 $X_n$ 为 iid 且 $\E|X_1|^2<\infty$，$\mathcal F_n=\sigma(X_1,\ldots,X_n)$，则 $M_n=\E(X_1\mid\mathcal F_n)=\bar X_n$（样本均值），$L^2$ 收敛到 $X_1$ 自身——这是 $L^2$ 强大数律的鞅证明。对 Brown 运动 $B_t$ 关于自然滤子 $\mathcal F_t$，$M_t=B_t$ 是鞅，$L^2$ 极限不存在（$B_t$ 不 $L^2$ 收敛），但 Doob 鞅收敛定理给出 a.s. 收敛到 $0$（当 $t\to\infty$ 时 $B_t/t\to0$）。
 \end{derivation}
 
 对实值 iid 样本，定义样本均值和无偏样本方差
@@ -937,45 +915,6 @@ $n!$ 不是额外的经验系数，而是把同一个严格有序向量对应的
 即\eqnrefs{eq:math-stat-general-ordered-density}。若坐标 iid，则每一项都等于 $\prod_jf(x_j)$，所以恢复
 \eqnrefs{eq:math-stat-ordered-sample-joint-density}中的 $n!$ 因子。
 
-\emph{排列分解的细节。}事件 $A_j=\{X_{(j)}\in I_j\}$ 要求第 $j$ 大样本落入 $I_j$。原始坐标 $(X_1,\ldots,X_n)$ 落入 $\bigcup_\pi I_{\pi(1)}\times\cdots\times I_{\pi(n)}$，其中 $\pi$ 遍历所有排列。这些区域两两不交（因 $I_j$ 两两不交），故概率按可加性相加。当 $f_X$ 连续时，每个积分在小区间上近似为 $f_X$ 在中心点的值乘以区间体积，除以总体积即得密度。
-
-\emph{Lebesgue 微分定理的应用。}对局部可积函数 $g$，Lebesgue 微分定理给出
-\begin{equation*}
-\lim_{r\to0}\frac{1}{|B_r(x)|}\int_{B_r(x)}g(y)\,\dd y=g(x)\quad\text{a.e.}
-\end{equation*}
-在多元情形下对每个坐标分别应用，得到联合密度在排列点的极限值。严格递增条件 $x_1<\cdots<x_n$ 排除对角线（测度零集），保证密度良定义。
-
-\emph{iid 情形的简化。}当 $X_1,\ldots,X_n$ iid 且密度为 $f$ 时，$f_X(u_1,\ldots,u_n)=\prod_jf(u_j)$，每个排列项都等于 $\prod_jf(x_j)$，与 $\pi$ 无关。求和给出 $n!\prod_jf(x_j)$，恢复经典公式。这正是 iid 样本"对称性"的精确表述：所有排列等概率，密度在排列下不变。
-
-\emph{顺序统计量的边缘密度。}对 iid 情形继续把未固定的有序坐标积分掉。给定 $X_{(r)}=x$、$X_{(s)}=y$ 且 $x<y$，其余点分别有 $r-1$ 个落在 $(-\infty,x)$、$s-r-1$ 个落在 $(x,y)$、$n-s$ 个落在 $(y,\infty)$。对应概率质量分别给出
-\[
- F(x)^{r-1},
- \qquad
- \{F(y)-F(x)\}^{s-r-1},
- \qquad
- \{1-F(y)\}^{n-s},
-\]
-而排列数为
-\[
- \frac{n!}{(r-1)!(s-r-1)!(n-s)!}.
-\]
-乘上固定在 $x,y$ 两点的密度因子 $f(x)f(y)$，便得到正文的两次序统计量联合密度。
-
-\emph{极差分布的推导。}取 $r=1$、$s=n$ 得极差 $R=X_{(n)}-X_{(1)}$ 的联合密度
-\begin{equation*}
-f_{1,n}(x,y)=n(n-1)\{F(y)-F(x)\}^{n-2}f(x)f(y),\quad x<y.
-\end{equation*}
-作变量替换 $(x,y)\mapsto(x,r=y-x)$，对 $x$ 积分得极差密度
-\begin{equation*}
-f_R(r)=n(n-1)\int_{-\infty}^\infty\{F(x+r)-F(x)\}^{n-2}f(x)f(x+r)\,\dd x,\quad r>0.
-\end{equation*}
-对均匀分布 $U[0,1]$，此式简化为 $f_R(r)=n(n-1)r^{n-2}(1-r)$，是 Beta 分布 $\mathrm{Beta}(n-1,2)$。
-
-\emph{举例：指数分布的顺序量。}对 iid 指数分布 $\mathrm{Exp}(\lambda)$，$F(x)=1-\ee^{-\lambda x}$。顺序统计量间距 $Z_j=X_{(j)}-X_{(j-1)}$（$X_{(0)}=0$）独立且 $Z_j\sim\mathrm{Exp}((n-j+1)\lambda)$，这是指数分布的无记忆性给出的特殊结构。由此 $X_{(r)}=\sum_{j=1}^rZ_j$ 是独立指数和，服从 Gamma 分布 $\Gamma(r,(n-r+1)\lambda)$ 的卷积。
-
-\emph{更一般结论：经验过程的联系。}顺序统计量与经验分布 $F_n$ 通过 $F_n(X_{(r)})=r/n$ 关联。Glivenko--Cantelli 定理给出 $F_n\to F$ 一致收敛，DKW 不等式给出收敛速度 $\P(\sup_x|F_n(x)-F(x)|>\varepsilon)\leq2\ee^{-2n\varepsilon^2}$。顺序统计量的渐近理论因此与经验过程一致：$\sqrt n(F_n-F)$ 在 Skorohod 空间 $D[0,1]$ 中收敛到 Brownian bridge $B\circ F$，这是非参数统计的理论基础。
-
-\emph{物理建模：粒子能级与顺序统计。}在统计力学中，$n$ 个无相互作用粒子在势场中的能级经排序后给出顺序统计量。对 Fermi 气体，Pauli 不相容原理要求能级严格递增，顺序统计量分布与费米子占据数一致。对 Bose 气体，对称性允许重复能级，对应可重复顺序统计量。两类统计的差异正是 Fermi--Bose 不对称性的数学表述，与全方差公式中的排列结构形成对偶。
 \end{derivation}
 
 若 $\xi_p=F^{-1}(p)$，则 $X_{(\lceil np\rceil)}$ 是一个自然的样本分位数。这里首先只有有限样本随机对象和分布结构；只有在 $F$ 在 $\xi_p$ 附近足够光滑并且 $f(\xi_p)>0$ 时，才能进一步得到 $\sqrt n$ 渐近正态性。

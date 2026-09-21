@@ -32,7 +32,7 @@
 
 同样，$D_n$ 的下标约定在不同数学教材里并不完全统一。本书按物理和 Schoenflies 文献习惯，把含 $n$ 重主轴和 $n$ 条横向二重轴的纯转动群记作 $D_n$，它有 $2n$ 个元素。某些抽象代数教材会把同一个阶为 $2n$ 的二面体群记成 $D_{2n}$。以后遇到外部资料时，应先看作者把 $|D_n|$ 规定成 $2n$ 还是 $n$，不要只凭字母判断。
 
-有了 Schoenflies 符号的基本约定，接下来澄清两个在晶体学和分子光谱中经常混用的术语——对称操作与对称元素——再进入矩阵计算。，先把两个在晶体学和分子光谱中经常混用的词分开。\emph{对称操作}是一个变换，是群元；\emph{对称元素}则是执行这个变换时依赖的几何对象，例如一条轴、一个平面或一个点。绕 $z$ 轴转动 $2\pi/3$ 是对称操作，而 $z$ 轴本身是对称元素。把二者区分开来十分重要，因为群论计算处理的是操作，而 Schoenflies 符号的直观识别往往依赖对称元素。
+Schoenflies 符号依赖几何对象，而群论计算处理变换本身，因此先区分两个常被混用的术语。\emph{对称操作}是作为群元的变换；\emph{对称元素}是执行变换所依赖的轴、平面或点。例如绕 $z$ 轴转动 $2\pi/3$ 是对称操作，$z$ 轴则是对称元素。
 
 \begin{definition}[对称操作、对称元素与点群]
 设几何对象 $X\subset\mathbb R^3$。若正交变换 $R\in O(3)$ 使得
@@ -141,7 +141,7 @@ O(3)=SO(3)\times\{E,\mathcal I\}.
 
 这一定理对点群分类非常关键。它告诉我们：所有不保手性的点群操作都可以理解为“一个纯转动再乘一个空间反演”。因此只要先理解 $SO(3)$ 的有限子群，第二类点群的构造就有了统一母体。
 
-有了 $O(3)$ 和 $SO(3)$ 的定义，下一个基本事实是：$SO(3)$ 的每个元素都是绕某轴的转动。这个结论看似显然，但它的证明建立了“转角”这个后续反复使用的参数化工具。
+有了 $O(3)$ 和 $SO(3)$ 的定义，下一个基本事实是：$SO(3)$ 的每个元素都是绕某轴的转动。证明将由特征值 $1$ 找到不动轴，并由垂直平面上的二维正交作用定义转角，这也建立了后续反复使用的轴角参数化。
 
 在三维空间里，$SO(3)$ 的元素并不是抽象的三阶正交矩阵，它们都有明确的几何意义：总能找到一条固定轴。这是点群中“旋转轴”概念的数学来源。
 
@@ -672,8 +672,6 @@ T_d,\quad T_h,\quad O_h,\quad I_h.
 
 普通分子只要求在有限范围内保持几何形状，晶体则多出一个全局条件：结构在三个独立方向上周期重复。这个平移周期性会反过来限制允许的旋转。最著名的结果就是晶体制约定理：周期晶格不允许五重旋转，也不允许一般的七重、八重旋转。下面直接由晶格基底下的整数矩阵与旋转迹推出只允许 $1,2,3,4,6$ 重旋转轴。
 
-从分子对称性转向晶体对称性：晶体的平移周期性会反过来限制允许的旋转，由此引出晶格与晶体制约定理。
-
 \begin{definition}[Bravais 晶格]
 取三个线性无关的基矢 $\vb a_1,\vb a_2,\vb a_3$。集合
 \[
@@ -701,55 +699,21 @@ n\in\{1,2,3,4,6\}.
 \]
 因此三维周期晶体不允许五重或一般 $n\ge7$ 的有限旋转轴。
 \label{thm:crystallographic-restriction}
-
 \end{theorem}
 
-\textbf{第一步：晶格基下 $R$ 是整数矩阵.}\enspace
-若 $R$ 保持 Bravais 晶格，则对原胞基矢 $\vb a_j$，必有
+\begin{derivation}[晶体制约定理]
+保持晶格的转动在晶格基底下由 $M\in\GL(3,\ZZ)$ 表示，所以 $\tr M\in\ZZ$。它与正交基底下的 $R$ 相似，而三维转动的本征值为 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$，故
 \[
-R\vb a_j=\sum_i M_{ij}\vb a_i,
-\qquad M_{ij}\in\ZZ,
+\tr M=\tr R=1+2\cos\theta\in\ZZ.
 \]
-因为转动后的晶格矢仍必须是整数格矢组合。因此在晶格基下，$R$ 由 $M\in GL(3,\ZZ)$ 表示。
-
-\textbf{第二步：迹在基变换下不变.}\enspace
-$\tr M(R)=\tr R$，因为迹是基变换不变量。而 $R$ 是三维纯转动，绕轴转角 $\theta$ 的本征值是 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$，所以由 \eqnrefs{eq:rotation-trace}，
+又因 $-1\leq\cos\theta\leq1$，只能有
 \[
-\tr M(R)=\tr R=1+2\cos\theta\in\ZZ.
-\]
-
-\textbf{第三步：离散化.}\enspace
-$-1\le\cos\theta\le1$ 给出 $1+2\cos\theta\in[-1,3]$。结合整数约束：
-\[
-1+2\cos\theta\in\{-1,0,1,2,3\}
-\;\Longrightarrow\;
 \cos\theta\in\left\{-1,-\frac12,0,\frac12,1\right\}.
 \]
-在 $0\le\theta\le\pi$ 内，
-\[
-\theta\in\left\{\pi,\frac{2\pi}{3},\frac{\pi}{2},\frac{\pi}{3},0\right\},
-\]
-对应 $n=2,3,4,6,1$。五重轴（$\theta=2\pi/5$，$\cos\theta=(-1+\sqrt5)/4\notin\QQ$）被排除，因为 $1+2\cos(2\pi/5)=\frac{1+\sqrt5}{2}\notin\ZZ$。类似地，$n\ge7$ 时 $\cos(2\pi/n)$ 不是半整数或整数，均被排除。
+对有限阶转动取 $0\leq\theta\leq\pi$，相应转角为 $\pi,2\pi/3,\pi/2,\pi/3,0$，也就是 $n=2,3,4,6,1$。
+\end{derivation}
 
-\textbf{第四步：物理解读.}\enspace 晶格的离散平移对称性强制旋转矩阵在晶格基下为整数矩阵，而欧氏刚性约束旋转本征值在单位圆上。这两个约束的结合——整数迹与 $|\tr R|\le3$——把连续可能的转角离散化为 5 个值。这不是"画不出五边形铺满平面"的几何直觉，而是严格的算术论证。
-
-\emph{二维晶体制约.}二维情形更简洁：$\tr R\in\{-2,-1,0,1,2\}$，对应转角 $\{180^\circ,120^\circ,90^\circ,60^\circ,0^\circ\}$，给出 5 个二维点群 $C_1,C_2,C_3,C_4,C_6$。注意无 $C_5$（五重旋转不能铺满平面）——这不是"画不出"的直觉，而是 $2\cos(2\pi/5)=\frac{\sqrt5-1}{2}\notin\ZZ$ 的算术排除。二维制约的简洁性使 wallpaper group 分类（17 种）比三维空间群（230 种）更透明。
-
-\emph{准晶的推广.}准晶（如 Penrose 拼接）有五重或十重对称，似乎违反晶体制约。但准晶无周期平移，制约定理的前提不成立。数学上，准晶的对称用高维周期结构的投影描述：五重对称来自四维晶格的二维投影（投影后五重旋转在投影子空间中保持准周期序）。这把晶体制约从"禁止五重对称"精确化为"周期平移禁止五重旋转，但准周期结构允许"——制约的根源是平移对称性，而非旋转本身。
-
-\emph{高维晶体的推广.}四维及更高维晶体允许更多旋转对称：四维有 478 个点群，含五重、八重、十二重对称。制约定理在 $d$ 维给出 $\tr R\in\ZZ$ 且 $|\tr R|\le d$，允许的旋转阶数随维数增加。高维晶体学虽无物理三维对应，但在数学（如 Leech 格、偶幺模格）和理论物理（如紧致化额外维、弦论 Calabi--Yau 流形）中有重要应用。
-\emph{迹公式的推广.}\enspace 制约定理的核心是 $\tr R\in\ZZ$ 且 $|\tr R|\le d$。在 $d$ 维空间中，$R$ 的本征值为 $1$（转轴）和 $\ee^{\pm i\theta_j}$（$j=1,\dots,\lfloor d/2\rfloor$），迹 $\tr R=1+2\sum_j\cos\theta_j\in\ZZ$。对 $d=4$，允许的旋转阶数包括 $5,8,10,12$（因 $\cos(2\pi/5)=\frac{\sqrt5-1}{4}$ 虽非半整数，但四维迹 $2\cos\theta_1+2\cos\theta_2$ 可为整数）。四维晶体学有 478 个点群，远多于三维的 32 个。
-\emph{算术证明的严格性.}\enspace 五重轴排除的关键步骤：$1+2\cos(2\pi/5)=\frac{1+\sqrt5}{2}=\varphi$（黄金比例），$\varphi\notin\ZZ$，故 $n=5$ 被排除。类似地，$n=7$：$1+2\cos(2\pi/7)\approx1.247\notin\ZZ$；$n=8$：$1+2\cos(\pi/4)=1+\sqrt2\notin\ZZ$。一般地，$2\cos(2\pi/n)\in\ZZ$ 仅当 $n\in\{1,2,3,4,6\}$，这是 Chebyshev 多式 $U_{n-1}(\cos\theta/2)$ 整数根的算术性质。具体地，$2\cos(2\pi/n)$ 是 $n$ 次分圆多项式 $\Phi_n(x)$ 的根的代数整数性质决定的：
-\begin{equation*}
-2\cos\frac{2\pi}{n}=\zeta_n+\zeta_n^{-1},\quad \zeta_n=\ee^{2\pi i/n},
-\end{equation*}
-而 $\zeta_n+\zeta_n^{-1}\in\ZZ$ 仅当 $[\QQ(\zeta_n+\zeta_n^{-1}):\QQ]=\varphi(n)/2=1$，即 $\varphi(n)\le2$，给出 $n\in\{1,2,3,4,6\}$。
-\emph{分子点群与晶体点群的对比.}\enspace 分子无平移对称，允许任意阶转轴。正二十面体群 $I_h$（含五重轴，120 元素）描述 $C_{60}$ 富勒烯和病毒衣壳对称。$I_h$ 的不可约表示维数为 $1,3,3,4,5$，满足 $\sum d_i^2=60=|I|$。晶体点群排除 $I_h$，最大群为 $O_h$（48 元素）。这一差异使分子光谱（可用 $I_h$）和晶体能带（必须用 32 个晶体点群之一）的对称分析方法不同。
-\emph{高维推广.}\enspace 在 $d$ 维空间中，晶体制约定理推广为 $\tr R\in\ZZ$ 且 $|\tr R|\le d$，允许的旋转阶数由 $2\cos(2\pi/n)$ 的代数整数性质决定。$d=4$ 时允许 $n\in\{1,2,3,4,5,6,8,10,12\}$，给出 478 个四维晶体点群，远多于三维的 32 个。
-
-
-
-五重轴被排除不是因为画不出漂亮晶格，而是整数晶格表示与转动本征值之间存在严格算术矛盾。这个证明比“在平面上画正五边形无法铺满空间”更一般，因为它没有预设晶格形状，而只使用了两个最基本事实：周期性使旋转在晶格基底下成为整数矩阵；欧氏刚性又使同一个矩阵的特征值受到正交性约束。两者结合，旋转阶数被离散化。
+证明的关键是周期性带来的整数迹，而不是正五边形不能铺满平面的图形直觉。准晶可以具有五重或十重对称，正是因为它没有定理所要求的三维周期平移群；分子也没有这一限制，所以 $I_h$ 可用于描述富勒烯等有限结构。
 
 晶体制约定理排除了五重轴等非晶体学旋转。把允许的旋转阶数 $1,2,3,4,6$ 系统地组合，就得到 32 个晶体点群和 7 个晶系。
 
@@ -838,157 +802,57 @@ G=\operatorname{diag}(a^2,b^2,c^2),
 
 这里 $P$、$I$、$F$、$C$、$R$ 分别表示原始、体心、面心、底心和菱方中心化。点群与 Bravais 晶格并不是任意配对；它们必须共享同一晶系的度量结构。空间群正是进一步把“点操作”和“平移”组合起来的完整群。
 
-上表列出了 14 种 Bravais 晶格但未说明为何恰好 14。关键在于：对每个晶系，分析哪些中心化平移 $\vb t$（满足 $2\vb t\in\mathcal L$ 的非格矢半平移）能与该晶系的点群兼容。中心化格点集 $\{\vb t_1,\dots,\vb t_m\}$ 必须在点群 $P$ 的所有操作下映回自身，即构成 $P$ 的不变集。
+十四种 Bravais 晶格来自两个条件：中心化点集必须在晶体点群下保持不变，而由幺模整数基变换联系的晶胞描述同一晶格。因此某些看似新的中心化会在换基后退化为表中的类型；例如单斜的体心描述可换成底心描述，四方的面心描述可换成体心描述。这个等价关系解释了为何“七晶系乘若干中心化”的朴素计数会重复。
 
+惯用晶胞优先显露对称性，不一定是最小原胞。能带和态密度计算则必须用原胞体积 $\Omega$；相应的倒格原胞体积为 $(2\pi)^3/\Omega$。在实空间取 Wigner--Seitz 原胞，在倒空间便得到第一 Brillouin 区。
 
-\textbf{核心方法.}\enspace 对每个晶系，分析哪些中心化平移 $\vb t$（满足 $2\vb t\in\mathcal L$ 的非格矢半平移）能与该晶系的点群兼容。中心化格点集 $\{\vb t_1,\dots,\vb t_m\}$ 必须在点群 $P$ 的所有操作下映回自身，即构成 $P$ 的不变集。
+有了平移晶格的分类，下一步自然转向其对偶结构——倒格子。它把晶面、衍射条件与 Bloch 波矢统一到同一套语言中。
 
-\textbf{三斜晶系}（$P=C_1$ 或 $C_i$）.\enspace 点群不含任何非平凡旋转，因此对中心化平移无约束。但任何额外中心化点都会改变原胞，使新原胞仍为三斜 $P$。故唯一 Bravais 晶格为 $P$。
-
-\textbf{单斜晶系}（$C_2$，主轴沿 $b$）.\enspace 设 $\vb t=\frac12(n_1\vb a_1+n_2\vb a_2+n_3\vb a_3)$。$C_2$ 绕 $b$ 轴转 $\pi$，作用为 $(x,y,z)\mapsto(-x,y,-z)$。不变性要求 $n_1,n_3$ 同时为偶或同时为奇。若同为偶，$\vb t$ 是格矢，无新中心化。若同为奇，$\vb t=\frac12(\vb a_1+\vb a_3)+\text{格矢}$。取 $\vb t=\frac12(\vb a_1+\vb a_3)$，这恰是底心 $C$（以 $ab$ 面为底）。体心 $I$ 和面心 $F$ 在单斜下都等价于 $C$（通过基矢变换 $\vb a_1'=\vb a_1$，$\vb a_3'=\vb a_1+\vb a_3$ 把体心变为底心）。故单斜有 $P,C$ 两种。
-
-\textbf{正交晶系}（$D_2$，三轴等价独立）.\enspace 三个 $C_2$ 轴分别沿 $a,b,c$。中心化平移 $\vb t=\frac12(n_1\vb a_1+n_2\vb a_2+n_3\vb a_3)$ 必须在所有三个 $\pi$ 转动下不变。沿 $a$ 轴转动：$(x,y,z)\mapsto(x,-y,-z)$，要求 $n_2,n_3$ 同奇偶。沿 $b$ 轴：要求 $n_1,n_3$ 同奇偶。沿 $c$ 轴：要求 $n_1,n_2$ 同奇偶。三条件联立给出四种可能：
-\[
-(n_1,n_2,n_3)\in\{(0,0,0),\,(1,1,0),\,(1,0,1),\,(0,1,1)\}\pmod{2},
-\]
-分别对应 $P$、$C$（$ab$ 面心）、$B$（$ac$ 面心）、$A$（$bc$ 面心）。但 $A,B,C$ 三种底心通过轴标交换等价。此外 $(1,1,1)$ 给体心 $I$，而 $F$ 可由两个底心叠加得到。最终正交有 $P,C,I,F$ 四种。
-
-\textbf{四方晶系}（$C_4$，$a=b\neq c$）.\enspace $C_4$ 转动 $(x,y,z)\mapsto(-y,x,z)$ 把 $\vb a_1\leftrightarrow\vb a_2$。中心化平移在 $C_4$ 下不变要求 $n_1=n_2$（因 $C_4$ 交换 $n_1,n_2$）。在 $C_2=C_4^2$ 下要求 $n_1,n_2$ 同奇偶。故 $(n_1,n_2)$ 只能同为偶或同为奇。同为偶时 $n_3$ 自由，但 $n_3$ 奇给出体心 $I$。同为奇时 $n_3$ 必须为偶（否则 $C_4$ 不变），给出 $\vb t=\frac12(\vb a_1+\vb a_2)$，这是底心 $C$。但四方 $C$ 等价于 $P$（取新基 $\vb a_1'=\vb a_1$，$\vb a_2'=\frac12(\vb a_1+\vb a_2)$，$\vb a_3'=\vb a_3$，新原胞仍为四方原始）。面心 $F$ 等价于 $I$（取新基 $\vb a_1'=\frac12(\vb a_1+\vb a_2)$，$\vb a_2'=\frac12(\vb a_1-\vb a_2)$，$\vb a_3'=\frac12(\vb a_1+\vb a_2+\vb a_3)$）。故四方只有 $P,I$ 两种。
-
-\textbf{三方晶系}（$C_3$，菱方设置）.\enspace 菱方基矢 $\vb a_1,\vb a_2,\vb a_3$ 等长且等角。$C_3$ 循环置换三个基矢。中心化平移在 $C_3$ 下不变要求 $n_1=n_2=n_3$。若全为偶，无新中心化。若全为奇，$\vb t=\frac13(\vb a_1+\vb a_2+\vb a_3)$ 给出菱心 $R$。注意此处中心化因子是 $1/3$ 而非 $1/2$，因为菱方晶格的特殊对称允许三等分中心化。故三方有 $P,R$ 两种（在菱方设置中）。
-
-\textbf{六方晶系}（$C_6$，$a=b\neq c$，$\gamma=120^\circ$）.\enspace 六方在六角设置下只有 $P$。中心化分析类似四方但 $C_6$ 约束更强：$C_6$ 包含 $C_3$ 和 $C_2$，要求 $n_1=n_2$ 且 $n_1,n_2$ 同奇偶。体心 $I$ 和底心 $C$ 都不等价于 $P$，它们会破坏六重对称或改变晶系（体心六方实际是正交底心，底心六方实际是单斜底心）。故六方只有 $P$。
-
-\textbf{立方晶系}（$O$，$a=b=c$）.\enspace 立方对称下三个方向完全等价。中心化平移 $\vb t=\frac12(n_1\vb a_1+n_2\vb a_2+n_3\vb a_3)$ 在所有立方操作下不变。$C_4$ 转动和坐标置换要求 $n_1=n_2=n_3$。故只有全偶（$P$）、全奇（$I$）两种。面心 $F$ 对应 $(n_1,n_2,n_3)$ 取 $(1,1,0),(1,0,1),(0,1,1)$ 的集合，在立方对称下构成不变集（$C_4$ 转动循环置换这三个向量）。故立方有 $P,I,F$ 三种。
-
-\textbf{汇总.}\enspace 合计 $1+2+4+2+2+1+3=15$，但三方 $R$ 在六角设置中可表为六方的 $R$ 中心化，与六方 $P$ 合并后三方+六方共 $2+1=3$ 种（菱方 $R$ + 六方 $P$）。按国际晶体学表的标准计数：三斜 $1$ + 单斜 $2$ + 正交 $4$ + 四方 $2$ + 三方 $1$（$R$）+ 六方 $1$（$P$）+ 立方 $3$ = $14$ 种。
-
-\textbf{等价性判据.}\enspace 两种中心化是否给出相同 Bravais 晶格，判据是是否存在基矢变换 $A'=AM$（$M\in GL(3,\ZZ)$，$\det M=\pm1$）使新基下中心化类型改变。例如单斜中体心 $I$ 的中心化向量 $\vb t_I=\frac12(\vb a_1+\vb a_2+\vb a_3)$，取新基 $\vb a_1'=\vb a_1$，$\vb a_2'=\vb a_2$，$\vb a_3'=\vb a_1+\vb a_3$，则 $\vb t_I=\frac12(\vb a_2'+\vb a_3')$，变为底心 $C$。这种基矢变换保持单斜对称（$C_2$ 轴仍沿 $b$），故 $I\equiv C$。四方中类似变换保持四方对称（$C_4$ 轴不变），使 $C\equiv P$。
-
-\textbf{原胞体积比较.}\enspace 不同中心化类型的原胞体积不同：$P$ 型原胞体积 $\Omega$，$I$ 型 $2\Omega$，$F$ 型 $4\Omega$，$C$ 型 $2\Omega$。但惯用原胞（conventional cell）的选取以对称性清晰为优先，不 necessarily 最小。例如面心立方 $F$ 的惯用原胞是含 4 个格点的立方体，而原胞（primitive cell）是体积为 $\Omega/4$ 的菱面体。在能带计算中必须使用原胞而非惯用原胞，以确保 Brillouin 区体积正确。倒格子原胞体积 $\Omega^*=(2\pi)^3/\Omega$，惯用原胞对应更小的 Brillouin 区但含更多能带，原胞对应更大的 Brillouin 区但每个 $k$ 点只有一条能带。
-
-\textbf{历史注记.}\enspace 14 种 Bravais 晶格由 Bravais (1850) 首先系统推导。三维空间群的完整分类（230 种）由 Fedorov 和 Schönflies 独立完成 (1890)，是群论在晶体学中最早的应用之一。Bravais 晶格的分类方法——用群作用不变性约束中心化平移——至今仍是晶体对称性分析的标准范式。
-
-\textbf{推广.}\enspace 二维 Bravais 晶格只有 5 种（斜方、矩形、中心矩形、四方、六方），分类方法完全类似但更简单。
-
-\emph{Niggli 约化与唯一性.}\enspace Bravais 晶格的等价判据可系统化用 Niggli 约化：对任意晶格，存在唯一的约化基矢使 Niggli 参数 $(a\cdot a, b\cdot b, c\cdot c, b\cdot c, c\cdot a, a\cdot b)$ 满足一组不等式。两个晶格等价当且仅当它们的 Niggli 参数相同。这一约化把 Bravais 晶格的分类从几何直觉转化为算法判定，是计算晶体学的基础。
-
-\emph{Selling 参数与 Delaunay 约化.}\enspace 另一种约化用 Selling 参数 $S_{ij}=a_i\cdot a_j$（$i\ne j$）和 $S_{ii}=-\sum_{j\ne i}S_{ij}$，满足 $S_{ij}\le0$（$i\ne j$）和 $\sum_j S_{ij}\le0$。Delaunay 约化给出 Brillouin 区的唯一 Delaunay 胞腔，用于第一性原理计算中 $k$ 点网格的生成。Niggli 和 Selling 约化是同一晶格的不同参数化，各有计算优势。
-
-\emph{原胞选取与 Wigner--Seitz 胞.}\enspace Wigner--Seitz 胞是围绕原点的最近邻区域：$\{\vb r:|\vb r|\le|\vb r-\vb R|,\forall\vb R\in\Lambda\}$，是原胞的对称化选取。倒格子 Wigner--Seitz 胞即第一 Brillouin 区，具有晶格的全点群对称。Wigner--Seitz 胞的边界面垂直平分格矢，面心位置给出倒格矢方向，是能带计算中 $k$ 空间划分的自然选择。
-
-\emph{非简单空间群与 Bravais 中心化.}\enspace 14 种 Bravais 晶格是简单空间群的平移部分。非简单空间群（含螺旋轴和滑移面）的平移部分仍是 14 种 Bravais 晶格之一，但分数平移 $\vb\tau$ 的选取受点群约束。例如面心立方 $F$ 中的 $2_1$ 螺旋轴方向必须沿面心平移方向，给出 $F d\bar3 m$（金刚石结构）等非简单空间群。230 种空间群 = 14 种 Bravais $\times$ 点群 $\times$ 分数平移组合。
-
-\emph{Bravais 晶格的密度与覆盖.}\enspace 面心立方 $F$ 是三维最密堆积（Kepler 猜想，Hales 2005 证明），密度 $\pi/(3\sqrt2)\approx0.7405$。体心立方 $I$ 的 Voronoi 胞（截角正八面体）给出最优覆盖。这些几何性质与晶格的对称性直接相关，是材料科学中密堆结构的数学基础。高维 Bravais 晶格在编码理论（如 Leech 格，24 维最密堆积）和理论物理（弦论紧致化）中有重要应用。
-
-\emph{计算方法.}\enspace Bravais 晶格的自动识别用 spglib 等库实现：输入原子坐标和容差，算法用 Niggli 约化确定晶系，再检查中心化类型（$P/I/F/C/R$），输出国际表编号。这一自动化使从衍射数据到空间群确定的流程标准化，是晶体结构解析的核心工具。
-
-
-有了 Bravais 晶格的分类，下一步自然转向倒格子——它是 Bravais 晶格的对偶结构，通过 Miller 指数与晶面建立一一对应。
-
-\textbf{定义（Miller 指数）.}\enspace 晶面在晶格基矢 $\vb a_1,\vb a_2,\vb a_3$ 上的截距为 $\frac{a_1}{h},\frac{a_2}{k},\frac{a_3}{l}$（以基矢长度为单位），则 $(hkl)$ 称为该晶面的 Miller 指数。若晶面平行于某轴，截距为 $\infty$，对应指数为 $0$。
-
-\textbf{命题（Miller 指数与倒格矢的一一对应）.}\enspace 每个晶面族 $(hkl)$ 对应一个倒格矢
+晶面在三个晶格方向上的截距倒数化成互素整数 $(h,k,l)$，便得到 Miller 指数；平行于某个基矢的晶面在该方向的指数为零。定义倒格基矢满足 $\vb a_i\cdot\vb b_j=2\pi\delta_{ij}$ 后，每个晶面族对应
 \[
 \vb G_{hkl}=h\vb b_1+k\vb b_2+l\vb b_3,
 \]
-且 $\vb G_{hkl}$ 垂直于该晶面族。晶面间距为
+其中 $\vb G_{hkl}$ 垂直于晶面，且相邻晶面间距为
 \[
 d_{hkl}=\frac{2\pi}{|\vb G_{hkl}|}.
 \]
 
-
-\textbf{第一步：晶面的参数方程.}\enspace Miller 指数为 $(hkl)$ 的晶面中，过原点的那一张在三个轴上的截距为 $a_1/h,a_2/k,a_3/l$。面上任意点 $\vb r=x_1\vb a_1+x_2\vb a_2+x_3\vb a_3$ 满足
+\begin{derivation}[晶面法向与面间距]
+第 $n$ 张平行晶面上的点 $\vb r=x_1\vb a_1+x_2\vb a_2+x_3\vb a_3$ 满足
 \[
-hx_1+kx_2+lx_3=0.
+hx_1+kx_2+lx_3=n,
+\qquad n\in\ZZ.
 \]
-相邻平行晶面满足 $hx_1+kx_2+lx_3=n$（$n\in\ZZ$）。
-
-\textbf{第二步：倒格矢垂直于晶面.}\enspace 取晶面上两个差向量
+任取同一晶面内两点之差 $\Delta\vb r$，上式给出 $\vb G_{hkl}\cdot\Delta\vb r=0$，故 $\vb G_{hkl}$ 是法向。相邻两面的位移 $\Delta\vb r$ 满足 $\vb G_{hkl}\cdot\Delta\vb r=2\pi$；沿单位法向取最短位移便有
 \[
-\Delta\vb r_1=\frac1h\vb a_1-\frac1k\vb a_2,
-\qquad
-\Delta\vb r_2=\frac1k\vb a_2-\frac1l\vb a_3.
+d_{hkl}|\vb G_{hkl}|=2\pi.
 \]
-计算 $\vb G_{hkl}\cdot\Delta\vb r_1$：
-\begin{align*}
-\vb G_{hkl}\cdot\Delta\vb r_1
-&=(h\vb b_1+k\vb b_2+l\vb b_3)\cdot\left(\frac{\vb a_1}{h}-\frac{\vb a_2}{k}\right)\\
-&=h\cdot\frac{2\pi}{h}-k\cdot\frac{2\pi}{k}=2\pi-2\pi=0.
-\end{align*}
-同理 $\vb G_{hkl}\cdot\Delta\vb r_2=0$。故 $\vb G_{hkl}\perp$ 晶面。
+\end{derivation}
 
-\textbf{第三步：面间距.}\enspace 相邻晶面 $n=0$ 与 $n=1$ 的法向距离为原点到 $hx_1+kx_2+lx_3=1$ 的距离。法向单位矢为 $\hat{\vb G}=\vb G_{hkl}/|\vb G_{hkl}|$。取晶面 $n=1$ 上一点 $\vb r_0=\vb a_1/h$（即 $x_1=1/h,x_2=x_3=0$），则
+弹性散射保持晶格平移的特征标，因而要求 $\ee^{\ii(\vb k'-\vb k)\cdot\vb R}=1$ 对所有 $\vb R\in\mathcal L$ 成立，即 Laue 条件 $\vb k'-\vb k\in\mathcal L^*$。衍射峰落在倒格点上，不是额外的经验规则，而是平移群特征标的正交性。
+
+晶格的 Fourier 变换是倒格子上的 Dirac 梳：
 \[
-d_{hkl}=\vb r_0\cdot\hat{\vb G}
-=\frac{\vb a_1}{h}\cdot\frac{\vb G_{hkl}}{|\vb G_{hkl}|}
-=\frac{1}{|\vb G_{hkl}|}\cdot\frac{\vb a_1}{h}\cdot(h\vb b_1)
-=\frac{2\pi}{|\vb G_{hkl}|}.
+\hat\Lambda(\vb k)
+=\sum_{\vb R\in\Lambda}\ee^{-i\vb k\cdot\vb R}
+=\frac{(2\pi)^3}{\Omega}
+\sum_{\vb G\in\Lambda^*}\delta(\vb k-\vb G).
 \]
-最后一步用了 $\vb a_1\cdot\vb b_1=2\pi$。物理意义：倒格矢长度 $|\vb G_{hkl}|$ 反比于晶面间距 $d_{hkl}$，这正是 X 射线衍射 Bragg 条件 $2d\sin\theta=n\lambda$ 中 $d$ 与散射波矢 $\vb G$ 的关系的几何基础。
-\emph{广义 Miller 指数与高阶 Laue 区.}对于非简单晶面（含螺旋轴或滑移面的系统性缺席），需用广义 Miller 指数 $(h,k,l)$ 配合消光条件 $h+k=2n$ 等。高阶 Laue 区（HOLZ）在电子衍射中给出沿晶带轴的投影结构，其倒格矢满足 $\vb G\cdot\hat{\vb u}=N$（$N>1$），对应第 $N$ 层倒格子平面。HOLZ 环半径 $R_N\propto\sqrt{N}$ 给出晶格常数的高精度测量，是 CBED（会聚束电子衍射）技术的物理基础。
-\emph{Bragg 条件的群论表述.}倒格矢 $\vb G_{hkl}$ 是晶面法向的量子化单位，Bragg 条件 $2d\sin\theta=n\lambda$ 等价于 $\vb k'-\vb k=\vb G$（散射波矢差等于倒格矢）。这是晶体平移对称群 $T$ 的特征标条件：$\ee^{\ii(\vb k'-\vb k)\cdot\vb R}=1$ 对所有晶格矢 $\vb R$ 成立，即散射保持平移对称。Laue 条件 $\vb k'-\vb k\in\Lambda^*$ 把衍射从几何光学提升为群论正交性——衍射峰出现在倒格点上，是 Fourier 对偶的物理体现。
+这一 Poisson 求和公式把实空间周期性转化为倒空间离散性，是衍射物理的数学基础。结构因子是电子密度的 Fourier 系数，
+\[
+F(\vb G)=\int\rho(\vb r)\ee^{-i\vb G\cdot\vb r}\,d^3r,
+\]
+因此衍射实验测量的是 $\rho$ 的 Fourier 变换在倒格点上的值。
 
-\emph{晶带定律.}\enspace 属于同一晶带（平行于晶带轴 $[uvw]$）的所有晶面 $(hkl)$ 满足晶带定律 $hu+kv+lw=0$。这来自倒格矢 $\vb G_{hkl}=h\vb b_1+k\vb b_2+l\vb b_3$ 与晶带轴 $\vb r_{uvw}=u\vb a_1+v\vb a_2+w\vb a_3$ 的正交性：$\vb G_{hkl}\cdot\vb r_{uvw}=2\pi(hu+kv+lw)=0$。晶带定律是倒格子正交关系的直接推论，在电子衍射的晶带轴分析中用于从衍射斑点反推晶面指数。
-
-\emph{结构因子与系统消光.}\enspace 结构因子 $F_{hkl}=\sum_j f_j\ee^{-2\pi i(hx_j+ky_j+lz_j)}$（$f_j$ 为原子散射因子，$(x_j,y_j,z_j)$ 为分数坐标）。Bravais 中心化给出系统消光：体心 $I$：$h+k+l=$ 奇时 $F=0$；面心 $F$：$h,k,l$ 混奇偶时 $F=0$。螺旋轴和滑移面给出额外消光（如 $2_1$ 轴沿 $c$：$00l$ 中 $l=$ 奇消光）。系统消光是空间群测定的实验依据。
-
-\emph{Ewald 球作图法.}\enspace Bragg 条件 $\vb k'-\vb k=\vb G$ 的几何表示：在倒空间中画以 $\vb k$ 末端为心、半径 $|\vb k|=1/\lambda$ 的 Ewald 球，球面通过的倒格点给出衍射方向。随晶体转动，倒格子相对球面转动，倒格点穿过球面时产生衍射峰。Ewald 球把衍射条件从代数方程转化为几何作图，是单晶衍射实验设计的可视化工具。对电子衍射（$\lambda$ 小），Ewald 球近似平面，给出近似的二维倒格子截面（Laue 区）。
-
-\emph{倒格子与 Fourier 变换.}\enspace 晶格的 Fourier 变换是倒格子上的 Dirac 梳：$\hat\Lambda(\vb k)=\sum_{\vb R\in\Lambda}\ee^{-i\vb k\cdot\vb R}=\frac{(2\pi)^3}{\Omega}\sum_{\vb G\in\Lambda^*}\delta(\vb k-\vb G)$。这一 Poisson 求和公式把实空间周期性转化为倒空间离散性，是衍射物理的数学基础。结构因子 $F(\vb G)$ 是电子密度 $\rho(\vb r)$ 的 Fourier 系数：$F(\vb G)=\int\rho(\vb r)\ee^{-i\vb G\cdot\vb r}\,d^3r$，衍射实验测量 $\rho$ 的 Fourier 变换在倒格点上的值。
-
-\emph{高阶 Laue 区与 HOLZ.}\enspace 在电子衍射中，沿晶带轴 $[uvw]$ 的衍射花样含零阶 Laue 区（ZOLZ，$\vb G\cdot\hat{\vb u}=0$）和高阶 Laue 区（HOLZ，$\vb G\cdot\hat{\vb u}=N>0$）。HOLZ 环半径 $R_N\propto\sqrt{N\lambda/d_{uvw}}$（$d_{uvw}$ 为晶带轴方向面间距），给出沿轴晶格常数的高精度测量。HOLZ 线的精细结构（含动力学衍射效应）可测量应变和缺陷，是 CBED 技术的理论基础。
-
-
-\textbf{命题（倒格子体积关系）.}\enspace 原胞体积 $\Omega=\vb a_1\cdot(\vb a_2\times\vb a_3)$ 与倒格子原胞体积 $\Omega^*$ 满足
+设 $A=[\vb a_1|\vb a_2|\vb a_3]$ 与 $B=[\vb b_1|\vb b_2|\vb b_3]$。由 $A^{\mathsf T}B=2\pi I_3$ 取行列式，立刻得到实、倒格原胞体积的关系
 \[
 \Omega\,\Omega^*=(2\pi)^3.
 \]
-
-
-\textbf{第一步：矩阵关系.}\enspace 倒格子基矢 $\vb b_i$ 满足 $\vb a_i\cdot\vb b_j=2\pi\delta_{ij}$，即矩阵关系
-\[
-A^{\mathsf T}B=2\pi I_3,
-\]
-其中 $A=[\vb a_1|\vb a_2|\vb a_3]$（列向量为实格基矢），$B=[\vb b_1|\vb b_2|\vb b_3]$（列向量为倒格基矢）。
-
-\textbf{第二步：取行列式.}\enspace 由 $\det(A^{\mathsf T})=\det(A)$ 和 $\det(2\pi I_3)=(2\pi)^3$，
-\[
-\det(A^{\mathsf T})\det(B)=(2\pi)^3.
-\]
-而 $\det(A)=\vb a_1\cdot(\vb a_2\times\vb a_3)=\Omega$（原胞有向体积），$\det(B)=\vb b_1\cdot(\vb b_2\times\vb b_3)=\Omega^*$（倒格原胞有向体积），故
-\[
-\Omega\,\Omega^*=(2\pi)^3.
-\]
-
-\textbf{第三步：几何解读.}\enspace 这个关系有明确的几何意义。实格原胞体积 $\Omega$ 是三个基矢张成的平行六面体体积。倒格基矢 $\vb b_i=2\pi\,\vb a_j\times\vb a_k/\Omega$ 的模正比于实格面间距的倒数，方向垂直于实格面。因此倒格原胞在"频率空间"中占的体积与实格原胞在"位置空间"中占的体积成反比，比例因子 $(2\pi)^3$ 来自 Fourier 变换的约定。
-
-\textbf{第四步：一般维数推广.}\enspace 在 $d$ 维空间中，同样的论证给出
-\[
-\Omega_d\,\Omega_d^*=(2\pi)^d.
-\]
-二维晶体中 $\Omega_2\,\Omega_2^*=(2\pi)^2$，这直接关系到二维能带计算中 $k$ 空间积分测度 $\dd^2k/(2\pi)^2$ 的归一化。一维"晶格"（周期 $a$）的倒格"原胞"长度为 $2\pi/a$，给出 Brillouin 区 $[-\pi/a,\pi/a]$。
-
-\textbf{第五步：物理应用.}\enspace 这个关系在能带论中直接控制 $k$ 空间态密度。Born--von Karman 边界条件下，$N$ 个原胞的晶体有 $N$ 个允许 $k$ 点，每个 $k$ 点在 Brillouin 区中占据体积 $\Omega^*/N=(2\pi)^3/(N\Omega)$。因此求和到积分的换算为
+Born--von Karman 边界条件下，$N$ 个原胞给出 $N$ 个允许波矢，每个波矢在 Brillouin 区占体积 $\Omega^*/N$，所以
 \[
 \frac{1}{N}\sum_{\vb k}\to\frac{\Omega}{(2\pi)^3}\int_{\mathrm{BZ}}\dd^3k,
 \]
-其中 $\Omega/(2\pi)^3=1/\Omega^*$ 正是倒格原胞体积的倒数。这就是为什么电子态密度中出现的因子 $V/(2\pi)^3$（$V=N\Omega$ 为晶体总体积）本质上来自倒格子体积关系。
-\emph{Poisson 对偶与倒格子.}倒格子 $\Lambda^*$ 是晶格 $\Lambda$ 的 Pontryagin 对偶：$\Lambda^*=\mathrm{Hom}(\Lambda,U(1))$，每个倒格矢 $\vb G$ 定义晶格上的特征标 $\chi_{\vb G}(\vb R)=\ee^{\ii\vb G\cdot\vb R}$。体积关系 $\Omega\Omega^*=(2\pi)^d$ 是 Pontryagin 对偶的对偶性度量，在一般局部紧 Abel 群上推广为 Haar 测度的对偶关系。这一对偶性是固体物理中实空间-动量空间对偶的数学基础。
-\emph{高维推广.}在 $d$ 维空间中，晶格 $\Lambda\cong\ZZ^d$ 的倒格子 $\Lambda^*\cong\ZZ^d$ 满足 $\Omega_d\Omega_d^*=(2\pi)^d$。四维晶体（如超晶格、准晶的高维描述）的倒格子体积关系直接控制四维能带结构。在弦论紧致化中，六维 Calabi--Yau 流形的晶格结构及其倒格子决定弦谱的量子化条件，是数学物理中高维倒格的应用实例。
-\emph{Poisson 求和公式.}\enspace 倒格子体积关系的分析基础是 Poisson 求和：$\sum_{n\in\ZZ}f(n)=\sum_{m\in\ZZ}\hat f(m)$（$\hat f$ 为 Fourier 变换）。对晶格 $\Lambda$ 上的求和，
-\begin{equation*}
-\sum_{\vb R\in\Lambda}f(\vb R)=\frac{1}{\Omega}\sum_{\vb G\in\Lambda^*}\hat f(\vb G),
-\end{equation*}
-因子 $1/\Omega$ 来自体积关系。Poisson 求和把实空间求和转化为倒空间求和，在 Ewald 求和（静电势快速计算）和热核渐近分析中起核心作用。
-\emph{Brillouin 区与能带计数.}\enspace 倒格子原胞即 Brillouin 区，体积 $\Omega^*=(2\pi)^3/\Omega$。Born--von Karman 边界条件下，$N$ 个原胞的晶体有 $N$ 个允许 $k$ 点，均匀分布在 Brillouin 区中，每个 $k$ 点占据体积 $\Omega^*/N$。态密度 $\rho(\vb k)=V/(2\pi)^3$（$V=N\Omega$），求和到积分换算 $\frac{1}{N}\sum_{\vb k}\to\frac{\Omega}{(2\pi)^3}\int_{\mathrm{BZ}}d^3k$。这一关系是能带计算中 $k$ 点采样的理论基础。
-\emph{Ewald 求和技术.}\enspace 倒格子体积关系直接用于 Ewald 求和：长程 Coulomb 势 $\frac{1}{|\vb r|}$ 的晶格求和 $\sum_{\vb R}\frac{1}{|\vb r+\vb R|}$ 用 Poisson 求和分裂为实空间部分（短程，快速收敛）和倒空间部分（短程，快速收敛），分裂参数 $\eta$ 的最优选取使两部分计算量平衡。倒空间部分的系数含 $1/\Omega$，直接来自体积关系。Ewald 求和把 $O(N^2)$ 的直接求和降为 $O(N^{3/2})$，是分子动力学中长程相互作用计算的标准方法。
-\emph{倒格子与 Bloch 定理.}\enspace Bloch 定理 $\psi_{\vb k}(\vb r+\vb R)=\ee^{i\vb k\cdot\vb R}\psi_{\vb k}(\vb r)$ 中 $\vb k$ 的取值范围是 Brillouin 区，$\vb k$ 和 $\vb k+\vb G$ 给出同一物理态（差一个相位）。这使 $\vb k$ 空间具有环面结构 $T^3=\RR^3/\Lambda^*$，体积 $\Omega^*$。能带 $E_n(\vb k)$ 在 Brillouin 区上定义，满足 $E_n(\vb k+\vb G)=E_n(\vb k)$，是倒格子上的周期函数。体积关系 $\Omega\Omega^*=(2\pi)^3$ 保证实空间和 $k$ 空间的自由度精确匹配。
-\emph{紧致化与 Kaluza--Klein.}\enspace 在高维紧致化中，额外维的晶格体积决定低维耦合常数。如五维 Kaluza--Klein 理论中，第五维周长 $L=2\pi R$ 决定四维 Newton 常数 $G_4=G_5/(2\pi R)$。倒格子体积 $\Omega^*=(2\pi)^d/\Omega$ 给出 Kaluza--Klein 模的质量量子化 $m_n=2\pi n/R$。这一机制在弦论紧致化中推广：六维 Calabi--Yau 的复结构模和 K\"ahler 模决定四维物理参数，是弦论唯象学的几何基础。
-\emph{Poisson 求和与对偶性.}\enspace 体积关系 $\Omega\Omega^*=(2\pi)^d$ 是 Poisson 求和公式 $\sum_{\vb R\in\Lambda}f(\vb R)=\frac{1}{\Omega}\sum_{\vb G\in\Lambda^*}\hat f(\vb G)$ 的几何基础。Poisson 求和把实空间离散求和与倒空间离散求和联系起来，是信号处理（采样定理）和凝聚态物理（能带理论）的核心工具。
-
-
-\textbf{补充：倒格子体积的物理意义.}\enspace 倒格子原胞体积 $V^*=V_{\text{real}}^{-1}$（归一化后 $(2\pi)^3/V_{\text{real}}$）。在固体物理中，倒格子体积决定了 Brillouin 区的大小：$V_{\text{BZ}}=(2\pi)^3/V_{\text{real}}$。第一 Brillouin 区内的波矢 $\mathbf k$ 标记 Bloch 态，态密度 $\rho(\mathbf k)=V_{\text{real}}/(2\pi)^3$（每个 $\mathbf k$ 态占据倒格子中 $(2\pi)^3/V_{\text{real}}$ 体积）。这给出了电子能带结构计算的基础：在 BZ 内对 $\mathbf k$ 积分时，$\sum_\mathbf k\to\frac{V_{\text{real}}}{(2\pi)^3}\int_{\text{BZ}}\mathrm d^3k$。
+这也是能带积分中测度因子的来源。Bloch 波矢只需取第一 Brillouin 区，因为 $\vb k$ 与 $\vb k+\vb G$ 给出同一平移特征标。
 
 倒格子揭示了晶体的平移对称性，而点群对称性同样对宏观物理性质施加约束。晶体点群不仅约束能级结构，还直接限制物理性质张量的独立分量个数——这是群论在材料科学中最实用的结论之一。
 
@@ -1010,94 +874,34 @@ N_{A_1}=\frac{1}{|G|}\sum_{g\in G}\chi_{\mathrm{Sym}^2}(g),
 \]
 其中 $\chi_{\mathrm{Sym}^2}(g)$ 是二阶对称张量表示的特征标。对三维矢量表示 $R(g)$，$\chi_{\mathrm{Sym}^2}(g)=\frac12[(\tr R)^2+\tr(R^2)]$。
 
-\textbf{三斜}（$C_1$）.\enspace 唯有恒等操作，$\chi_{\mathrm{Sym}^2}(E)=\frac12[3^2+3]=6$。无约束，$\epsilon$ 为一般对称矩阵，6 个独立分量：
-\[
-\epsilon=\begin{pmatrix}\epsilon_{11}&\epsilon_{12}&\epsilon_{13}\\\epsilon_{12}&\epsilon_{22}&\epsilon_{23}\\\epsilon_{13}&\epsilon_{23}&\epsilon_{33}\end{pmatrix}.
-\]
+对称性越高，不变张量空间通常越小。二阶对称张量在三斜、单斜、正交、四方/三方/六方和立方晶系中分别有 $6,4,3,2,1$ 个独立分量。因而单轴晶体有 $\epsilon=\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$，立方晶体则只能有 $\epsilon=\epsilon_0 I_3$。四阶弹性张量还受指标交换对称约束；立方晶体最终只留下 $C_{11},C_{12},C_{44}$ 三个独立常数。
 
-\textbf{单斜}（$C_2$，轴沿 $b$）.\enspace $R=\operatorname{diag}(-1,1,-1)$，$\tr R=-1+1-1=-1$，$\tr R^2=3$，$\chi_{\mathrm{Sym}^2}(C_2)=\frac12[1+3]=2$。$N_{A_1}=\frac12(6+2)=4$。直接验证：$R\epsilon=\epsilon R$ 给出 $\epsilon_{12}=\epsilon_{21}=0$（因 $(-1)\epsilon_{12}=\epsilon_{12}\cdot1$），$\epsilon_{23}=\epsilon_{32}=0$（因 $1\cdot\epsilon_{23}=\epsilon_{23}\cdot(-1)$）。剩 4 个独立分量：
-\[
-\epsilon=\begin{pmatrix}\epsilon_{11}&0&\epsilon_{13}\\0&\epsilon_{22}&0\\\epsilon_{13}&0&\epsilon_{33}\end{pmatrix}.
-\]
+这些特例可统一为张量表示中的不动子空间问题。
 
-\textbf{正交}（$D_2$）.\enspace 三个 $C_2$ 轴沿 $a,b,c$。每个 $C_2$ 消去两个非对角元。三个联合约束使所有非对角元为零。$N_{A_1}=\frac14(6+2+2+2)=3$。3 个独立分量：$\epsilon=\operatorname{diag}(\epsilon_{11},\epsilon_{22},\epsilon_{33})$。物理上，正交晶体的介电主轴沿晶轴方向。
-
-\textbf{四方}（$C_4$，轴沿 $c$）.\enspace $C_4$ 转动矩阵 $R_{C_4}=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&1\end{pmatrix}$。$R\epsilon=\epsilon R$ 的 $(1,1)$ 元给出 $\epsilon_{22}=\epsilon_{11}$，$(1,2)$ 元给出 $\epsilon_{11}=-\epsilon_{22}$（结合前式得 $\epsilon_{11}=0$，但这与 $\epsilon$ 正定矛盾——实际上应检查 $\epsilon_{12}=0$），更精确地：$C_4$ 不变性要求 $\epsilon$ 在 $xy$ 面内各向同性，即 $\epsilon_{11}=\epsilon_{22}$，$\epsilon_{12}=0$。结合 $C_2\subset C_4$ 给出 $\epsilon_{13}=\epsilon_{23}=0$。$N_{A_1}=\frac14(6+0+2+0)=2$。2 个独立分量：$\epsilon=\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$。这就是四方晶体的\emph{单轴光学各向异性}：寻常光折射率 $n_o\propto\sqrt{\epsilon_\perp}$，非常光 $n_e\propto\sqrt{\epsilon_\parallel}$。
-
-\textbf{三方}（$C_3$，轴沿体对角 [111]）.\enspace $C_3$ 转动循环置换 $x,y,z$，要求 $\epsilon_{11}=\epsilon_{22}=\epsilon_{33}$ 且 $\epsilon_{12}=\epsilon_{23}=\epsilon_{13}$。但 $C_3$ 的 $C_2$ 子群（若属于 $D_3$）进一步要求非对角元为零。对纯 $C_3$（无 $C_2$），$N_{A_1}=\frac13(6+0+0)=2$，非对角元可以非零。但对 $D_3$ 及更高对称，$N_{A_1}=\frac16(6+0+0+2+2+2)=2$（$D_3$ 的三个 $C_2$ 使非对角为零）。实际上三方晶系中 $D_3$ 及以上给出 $\epsilon=\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$，与四方同形但主轴方向不同（沿体对角而非晶轴）。
-
-\textbf{立方}（$O$ 或 $O_h$）.\enspace 立方群的四重轴不仅要求 $\epsilon_{11}=\epsilon_{22}=\epsilon_{33}$（来自 $C_4$ 轴），还要求非对角元全部为零（来自不同方向 $C_4$ 的交叉约束）。$N_{A_1}=\frac1{24}(6+0+6+0+12)=1$（对 $O$ 的 5 个共轭类）。1 个独立分量：$\epsilon=\epsilon_0 I_3$。这就是为什么立方晶体在光学上各向同性——尽管其微观结构并非球对称，但宏观介电响应因立方对称性而各向同性。这一结论对弹性张量也成立：立方晶体的弹性常数从一般的 21 个减到 3 个（$C_{11},C_{12},C_{44}$），但不像各向同性那样减到 2 个，因为四阶张量比二阶张量保留更多结构。
-
-\textbf{六方}（$C_6$ 或 $D_6$）.\enspace $C_6$ 轴使 $xy$ 面内各向同性（同四方），但六方晶系的 $C_6$ 包含 $C_3$，三方约束与四方约束叠加仍给出 $\epsilon=\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$。$N_{A_1}=2$。六方晶体与四方晶体在二阶张量层面无法区分，但在三阶张量（如压电）和高阶张量层面可以区分。
-
-\textbf{总结.}\enspace 各晶系二阶对称张量的独立分量数分别为：三斜 $6$、单斜 $4$、正交 $3$、四方/三方/六方 $2$、立方 $1$。对称性越高，独立分量越少。这一系统方法可推广到任意阶张量：只需把张量表示分解为不可约表示，全对称表示 $A_1$ 的重数即为独立分量数。这是 Neumann 原理的群论实现，也是材料科学中晶体物理性质预测的理论基础。在实际计算中，$N_{A_1}$ 公式避免了逐个检验群元作用的繁琐过程，直接从特征标表读出答案。对于高阶张量（如弹性 $C_{ijkl}$，四阶），同样的方法适用但 $\chi_{\mathrm{Sym}^4}(g)$ 的计算更复杂，需用对称幂表示的特征标公式。
-
-\textbf{方法总结.}\enspace 群论方法比直接求解 $R\epsilon=\epsilon R$ 更高效：只需查特征标表，计算 $\mathrm{Sym}^n$ 表示的特征标，再用投影公式
-\begin{equation*}
-N_{A_1}=\frac{1}{|G|}\sum_{g\in G}\chi_{\mathrm{Sym}^n}(g)
-\end{equation*}
-即得独立分量数。投影算符 $\Pi_{A_1}=\frac{1}{|G|}\sum_{g\in G}D(g)$ 可显式构造不变张量。
-\emph{弹性张量的独立分量.}\enspace 四阶弹性张量 $C_{ijkl}$ 满足次对称 $C_{ijkl}=C_{jikl}=C_{ijlk}$ 和 Voigt 对称 $C_{ijkl}=C_{klij}$，一般有 21 个独立分量。各晶系的独立分量数：三斜 21、单斜 13、正交 9、四方 6（$C_{11},C_{12},C_{13},C_{33},C_{44},C_{66}$）、三方 6、六方 5（$C_{11},C_{12},C_{13},C_{33},C_{44}$，$C_{66}=\frac{C_{11}-C_{12}}{2}$）、立方 3（$C_{11},C_{12},C_{44}$）、各向同性 2（$C_{11}=\lambda+2\mu$，$C_{12}=\lambda$，$C_{44}=\mu$，Cauchy 关系 $C_{12}=C_{44}$ 给 1 个）。计算用 $\chi_{\mathrm{Sym}^4}(g)$ 的投影公式。
-\emph{压电张量的独立分量.}\enspace 三阶压电张量 $d_{ijk}$ 满足 $d_{ijk}=d_{ikj}$（应变对称），一般 18 个独立分量。非中心对称点群才有非零压电效应（中心对称使 $d_{ijk}\to-d_{ijk}$，故 $d=0$）。20 个非中心对称点群中，压电独立分量数从 1（$T_d$ 等高对称群）到 18（$C_1$ 三斜）。例如 $C_{3v}$（LiNbO$_3$）有 10 个非零分量，$D_3$（石英）有 2 个。压电张量的群论分析是压电材料设计的理论基础。
-\emph{光学活性与旋光张量.}\enspace 旋光张量 $g_{ij}$（二阶轴张量，在反演下变号）仅在非中心对称点群中非零。11 个对映体点群（不含镜面和反演）允许光学活性。旋光率 $\rho=\frac{\pi}{\lambda n}(g_{11}+g_{22}+g_{33})/3$，$g_{ij}$ 的独立分量由点群对称性约束。例如 $D_3$（石英）有 1 个独立分量 $g_{33}$（沿光轴），给出石英的旋光性。光学活性张量的群论分析区分左旋和右旋晶体，是手性材料分类的数学基础。
-\emph{磁有序与 Shubnikov 群.}\enspace 磁有序结构（铁磁、反铁磁）的对称性用磁空间群（Shubnikov 群）描述，含时间反演操作 $\Theta$（把磁矩 $\vb M\to-\vb M$）。磁点群有 122 种（58 纯磁群 + 32 普通点群 + 32 灰群）。磁有序张量（如磁化率 $\chi_{ij}$、磁电耦合 $\alpha_{ij}$）的独立分量用磁点群的投影公式计算。磁电效应（$\vb M=\alpha\vb E$）仅在破坏时间反演和空间反演的磁群中非零，是多铁性材料的群论判据。
-\emph{热膨胀与对称性.}\enspace 热膨胀张量 $\alpha_{ij}$ 是二阶对称张量，独立分量数与介电张量相同：三斜 6、单斜 4、正交 3、四方/三方/六方 2（$\alpha_\perp,\alpha_\parallel$）、立方 1。各向同性固体 $\alpha_{ij}=\alpha\delta_{ij}$（1 个常数）。热膨胀的各向异性直接影响晶体的热应力：层状材料（如石墨，$\alpha_\perp\approx27\times10^{-6}/K$，$\alpha_\parallel\approx-1.5\times10^{-6}/K$）沿层内膨胀沿层间收缩，是热管理设计的材料参数。
-\emph{高阶张量的系统计算.}\enspace 对任意阶张量，独立分量数的计算步骤：(1) 确定张量的内禀对称（如弹性张量的次对称和 Voigt 对称）；(2) 构造张量表示 $V^{\otimes n}$ 并施加内禀对称投影；(3) 用特征标公式 $N_{A_1}=\frac{1}{|G|}\sum_g\chi_{\text{tensor}}(g)$ 计算全对称表示重数；(4) 用投影算符 $\Pi_{A_1}=\frac{1}{|G|}\sum_g\chi_{A_1}(g)D(g)$ 显式构造不变张量。这一算法已计算机化（如 NIST 的弹性常数数据库），从点群对称直接生成材料物理性质张量的独立分量表。
-\emph{Curie 原理与对称性破缺.}\enspace Curie 原理指出：物理性质张量的对称性 $G_{\text{property}}\supseteq G_{\text{crystal}}\cap G_{\text{cause}}$。外场（如电场 $\vb E$，对称 $C_{\infty v}$）与晶体（对称 $G$）的交集决定响应张量的有效对称性。若 $G\cap C_{\infty v}=C_s$（镜面），则二阶张量在 $C_s$ 下约束，比 $G$ 单独约束更弱——外场降低了有效对称性，增加了允许的独立分量。
-
-
-\textbf{补充：物理应用——弹性张量与介电张量.}\enspace 二阶对称张量的独立分量数直接决定物理性质：弹性张量 $C_{ijkl}$（四阶，但可缩约为 $6\times6$ 矩阵）的独立分量数在各晶系为：立方 $3$、六方 $5$、四方 $6$、三方 $7$、正交 $9$、单斜 $13$、三斜 $21$。介电张量 $\epsilon_{ij}$（二阶对称）的独立分量：立方 $1$（各向同性 $\epsilon\delta_{ij}$）、单轴 $2$（$\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$）、双轴 $3$（$\operatorname{diag}(\epsilon_x,\epsilon_y,\epsilon_z)$）。Neumann 原理保证这些张量在晶体的点群对称下不变，独立分量数由群论（不变张量空间维数）精确给出。
-
-\textbf{例（压电张量的独立分量：$C_{3v}$（LiNbO$_3$））.}\enspace 压电张量 $d_{ijk}$ 是三阶张量，满足 $d_{ijk}=d_{ikj}$（应变对称）。$C_{3v}$ 含 $C_3$ 绕 $z$ 轴和 $\sigma_v$ 镜面。$C_3$ 约束消去大部分分量，$\sigma_v$ 进一步筛选。最终非零独立分量为
-\[
-d_{222}=-d_{211}=-d_{121}=-d_{112},
-\qquad
-d_{311}=d_{322},
-\qquad
-d_{333},
-\qquad
-d_{113}=d_{223}.
-\]
-共 4 个独立常数。这就是 LiNbO$_3$（$3m$ 点群）压电系数表中只有 $d_{22},d_{31},d_{33},d_{15}$ 四个独立值的群论来源。
-
-\textbf{例（弹性张量的独立分量：立方晶系）.}\enspace 弹性张量 $C_{ijkl}$ 是四阶张量，满足 $C_{ijkl}=C_{jikl}=C_{ijlk}=C_{klij}$。立方对称下，Voigt 记号中的 $6\times6$ 矩阵化为
-\[
-\begin{pmatrix}
-C_{11}&C_{12}&C_{12}&0&0&0\\
-C_{12}&C_{11}&C_{12}&0&0&0\\
-C_{12}&C_{12}&C_{11}&0&0&0\\
-0&0&0&C_{44}&0&0\\
-0&0&0&0&C_{44}&0\\
-0&0&0&0&0&C_{44}
-\end{pmatrix},
-\]
-只有 $C_{11},C_{12},C_{44}$ 三个独立弹性常数。各向同性进一步要求 $C_{44}=\frac12(C_{11}-C_{12})$，减为 2 个。
-
-上面处理了二阶、三阶、四阶张量的具体例子，现在将这些特例统一为适用于任意阶张量的一般理论框架——这是 Neumann 原理的完整群论实现。
-
-\textbf{定义（张量表示）.}\enspace 设 $P$ 是晶体点群，$V=\RR^3$ 是自然表示（矢量表示）。rank $n$ 张量 $T_{i_1i_2\cdots i_n}$ 的变换空间是 $V^{\otimes n}$（$n$ 重张量积），$P$ 通过
+设 $V=\RR^3$ 是点群 $P$ 的自然表示。$n$ 阶张量属于 $V^{\otimes n}$，群元 $R$ 的作用为
 \[
 (R\cdot T)_{i_1\cdots i_n}=\sum_{j_1,\dots,j_n}R_{i_1j_1}\cdots R_{i_nj_n}\,T_{j_1\cdots j_n}
 \]
-作用。若张量具有对称性（如弹性张量的指标对称 $C_{ijkl}=C_{jikl}=C_{ijlk}=C_{klij}$），则变换空间是对称子空间 $\mathrm{Sym}^n V$ 或更一般的 Young 对称化子空间。
+若张量具有指标交换对称性，应先把表示空间限制到相应的对称化子空间，再施加点群不变性。
 
-\textbf{定理（张量独立分量的一般计数公式）.}\enspace \label{thm:tensor-count-general}
+\begin{theorem}[张量独立分量的计数]
+\label{thm:tensor-count-general}
 设 $P$ 是晶体点群，$T$ 是 rank $n$ 张量，其对称性由表示 $\rho_T:P\to\GL(W)$ 描述（$W\subseteq V^{\otimes n}$ 是对称性约束后的子空间）。则 $T$ 在 $P$ 对称性下的独立分量数为
 \begin{equation}
 N=\frac1{|P|}\sum_{R\in P}\chi_T(R),
 \label{eq:tensor-count-general}
 \end{equation}
 其中 $\chi_T$ 是 $\rho_T$ 的特征标。等价地，$N$ 是平凡表示 $A_1$ 在 $\rho_T$ 中的重数。
+\end{theorem}
 
-\begin{proof}
-张量 $T$ 在 $P$ 下不变当且仅当 $\rho_T(R)T=T$ 对所有 $R\in P$，即 $T$ 属于 $\rho_T$ 的不动子空间 $W^P=\{T\in W\mid\rho_T(R)T=T,\,\forall R\}$。投影算符 $\hat P=\frac1{|P|}\sum_R\rho_T(R)$ 投影到 $W^P$，其迹给出 $\dim W^P$：
+群平均算符
 \[
-\dim W^P=\tr\hat P=\frac1{|P|}\sum_R\tr\rho_T(R)=\frac1{|P|}\sum_R\chi_T(R).
+\Pi_P=\frac1{|P|}\sum_{R\in P}\rho_T(R)
 \]
-由 Maschke 定理，$\rho_T$ 分解为不可约表示的直和，$A_1$ 的重数恰为不动子空间维数。
-\end{proof}
+满足 $\Pi_P^2=\Pi_P$，像空间正是不变张量空间；取迹便得到 \eqnrefs{eq:tensor-count-general}。这段论证也说明，公式计算的是已有指标对称约束之后的独立分量，而不是未经约束的 $3^n$ 个分量。
 
-\textbf{命题（对称幂表示的特征标公式）.}\enspace \label{prop:sym-power-char}
+\begin{proposition}[对称幂表示的特征标]
+\label{prop:sym-power-char}
 设 $R\in P$ 有本征值 $\lambda_1,\lambda_2,\lambda_3$（作为 $3\times3$ 正交矩阵）。则：
 \begin{enumerate}[label=(\roman*),leftmargin=3em]
 \item 全张量空间 $V^{\otimes n}$ 的特征标：$\chi_{V^{\otimes n}}(R)=(\lambda_1+\lambda_2+\lambda_3)^n=(\tr R)^n$。
@@ -1109,101 +913,21 @@ N=\frac1{|P|}\sum_{R\in P}\chi_T(R),
 即 $(\lambda_1,\lambda_2,\lambda_3)$ 的次数 $n$ 完全齐次对称多项式。
 \item 反对称幂 $\wedge^n V$ 的特征标：$\chi_{\wedge^n}(R)=\sum_{i_1<\cdots<i_n}\lambda_{i_1}\cdots\lambda_{i_n}$（初等对称多项式 $e_n$）。
 \end{enumerate}
+\end{proposition}
 
-\begin{proof}
-\textbf{(i)}\enspace $V^{\otimes n}$ 的基为 $e_{i_1}\otimes\cdots\otimes e_{i_n}$，$R$ 作用后对角元来自 $R_{i_1i_1}\cdots R_{i_ni_n}$，求和为 $(\sum_i R_{ii})^n=(\tr R)^n$。
-
-\textbf{(ii)}\enspace $\mathrm{Sym}^n V$ 的基为对称化后的 $e_{i_1}\cdots e_{i_n}$（$i_1\le\cdots\le i_n$）。$R$ 对角化后（本征值 $\lambda_1,\lambda_2,\lambda_3$），$\mathrm{Sym}^n V$ 的基为本征向量 $\lambda_1^{k_1}\lambda_2^{k_2}\lambda_3^{k_3}$（$k_1+k_2+k_3=n$），特征标为所有本征值之和。
-
-\textbf{(iii)}\enspace $\wedge^n V$ 的基为 $e_{i_1}\wedge\cdots\wedge e_{i_n}$（$i_1<\cdots<i_n$），本征值为 $\lambda_{i_1}\cdots\lambda_{i_n}$。
-\end{proof}
-
-\textbf{例（对称幂特征标的低阶具体公式）.}\enspace 对三维矢量表示，设 $\chi_V=\tr R$，$\chi_V(R^2)=\tr R^2$，$\chi_V(R^3)=\tr R^3$。则：
-\begin{align*}
-\chi_{\mathrm{Sym}^0}(R)&=1,\\
-\chi_{\mathrm{Sym}^1}(R)&=\chi_V(R),\\
-\chi_{\mathrm{Sym}^2}(R)&=\tfrac12[\chi_V(R)^2+\chi_V(R^2)],\\
-\chi_{\mathrm{Sym}^3}(R)&=\tfrac16[\chi_V(R)^3+3\chi_V(R)\chi_V(R^2)+2\chi_V(R^3)],\\
-\chi_{\mathrm{Sym}^4}(R)&=\tfrac1{24}[\chi_V(R)^4+6\chi_V(R)^2\chi_V(R^2)+3\chi_V(R^2)^2+8\chi_V(R)\chi_V(R^3)+6\chi_V(R^4)].
-\end{align*}
-这些公式来自 Newton 恒等式，把幂和对称函数 $p_k=\sum\lambda_i^k=\tr R^k$ 转换为完全齐次对称函数 $h_n=\chi_{\mathrm{Sym}^n}$。在实际计算中，只需查特征标表中 $\tr R$ 和 $\tr R^k$ 的值即可。
-
-\textbf{弹性张量的应用.}\enspace 弹性张量 $C_{ijkl}$ 满足 $C_{ijkl}=C_{jikl}=C_{ijlk}=C_{klij}$，其表示空间不是 $\mathrm{Sym}^4 V$（四阶完全对称张量），而是 $\mathrm{Sym}^2(\mathrm{Sym}^2 V)$（二阶对称张量的对称积）。特征标为
+低阶计算最常用的特例是
 \[
-\chi_{\mathrm{elastic}}(R)=\tfrac12[\chi_{\mathrm{Sym}^2}(R)^2+\chi_{\mathrm{Sym}^2}(R^2)].
+\chi_{\mathrm{Sym}^2}(R)
+=\frac12\bigl[\chi_V(R)^2+\chi_V(R^2)\bigr].
 \]
-对立方群 $O$（24 元素，5 类：$E,8C_3,3C_2,6C_4,6C_2'$），$\chi_V=(3,0,-1,1,-1)$，$\chi_{\mathrm{Sym}^2}=(6,0,2,2,2)$，$\chi_{\mathrm{elastic}}=(21,0,5,5,5)$，独立分量 $N=\frac1{24}(21+0+15+30+30)=\frac{96}{24}=4$。但 Voigt 对称性 $C_{ijkl}=C_{klij}$ 进一步约束到 $3$ 个（$C_{11},C_{12},C_{44}$），这额外的约束来自 Cauchy 关系（$C_{ijkl}=C_{ikjl}$，对中心对称晶体成立），将 $4$ 减为 $3$。
-
-\textbf{命题（张量的不可约分解与物理意义）.}\enspace \label{prop:tensor-irrep-decomposition}
-rank $n$ 张量表示 $\rho_T$ 分解为不可约表示的直和：
+\begin{proposition}[张量表示的不可约分解]
+\label{prop:tensor-irrep-decomposition}
+张量表示分解为
 \[
 \rho_T\simeq\bigoplus_\Gamma\,m_\Gamma\,\Gamma,\qquad m_\Gamma=\frac1{|P|}\sum_{R\in P}\overline{\chi_\Gamma(R)}\,\chi_T(R).
 \]
-每个不可约分量 $\Gamma$ 对应一个独立的物理性质：
-\begin{itemize}
-\item $m_{A_1}$：标量性质（如介电常数、弹性常数），在所有对称操作下不变。
-\item $m_{A_2}$：赝标量性质（如旋光率），在正常转动下不变但在反射下变号。
-\item $m_E$：二维性质（如光学双轴），在面内有两个独立方向。
-\item $m_T$：三维性质（如压电张量的矢量部分），沿三个方向独立。
-\end{itemize}
-
-这个分解给出了张量物理的完整图像：一个 rank $n$ 张量的一般形式被对称性约束为若干"不可约块"的直和，每块对应一个独立的物理效应。例如，压电张量（rank 3）在 $C_{3v}$ 下分解为 $A_1\oplus E\oplus E$（标量部分 + 两个矢量部分），对应 LiNbO$_3$ 的 $d_{33}$（纵向压电）和 $d_{22},d_{31},d_{15}$（切向压电）。
-
-\textbf{例（声子模式的对称性分析）.}\enspace 晶格振动模式（声子）的对称性由表示论完全确定。在 $\vb k=0$（$\Gamma$ 点），振动表示 $\rho_{\mathrm{vib}}$ 的构造方法为：
-\begin{enumerate}
-\item 对每个原子 $s$，赋予三维矢量表示 $V_s$（原子的位移自由度）。
-\item 对所有原子求和：$\rho_{\mathrm{total}}=\bigoplus_s V_s$。
-\item 减去平移和转动模式：$\rho_{\mathrm{vib}}=\rho_{\mathrm{total}}-\rho_{\mathrm{trans}}-\rho_{\mathrm{rot}}$。
-\end{enumerate}
-$\rho_{\mathrm{trans}}$ 是矢量表示 $V$（3 个平移），$\rho_{\mathrm{rot}}$ 是轴矢量表示 $V\otimes\boldsymbol\epsilon$（3 个转动，$\boldsymbol\epsilon$ 是赝标量表示）。
-
-对 $\mathrm{H_2O}$（$C_{2v}$，3 个原子，$3\times3=9$ 个自由度）：$\rho_{\mathrm{total}}=3V=A_1\oplus B_1\oplus B_2\oplus A_1\oplus B_1\oplus B_2\oplus A_1\oplus B_1\oplus B_2$（每个原子的 $V$ 分解为 $A_1\oplus B_1\oplus B_2$）。减去 $\rho_{\mathrm{trans}}=A_1\oplus B_1\oplus B_2$ 和 $\rho_{\mathrm{rot}}=A_2\oplus B_1\oplus B_2$（$C_{2v}$ 中轴矢量的分解），得 $\rho_{\mathrm{vib}}=2A_1\oplus B_2$。三个振动模式：两个 $A_1$（对称伸缩和弯曲）和一个 $B_2$（反对称伸缩），与 $\mathrm{H_2O}$ 的三个红外活性模式一致。
-
-张量表示的一般理论已经就绪，接下来回到点群本身的分类问题。晶体制约定理把无限多个可能的点群压缩到有限候选，由此可以系统推导出全部 32 个晶体点群。
-
-
-\textbf{第一步：允许的旋转阶.}\enspace 由 \Cref{thm:crystallographic-restriction}，晶体中只允许 $1,2,3,4,6$ 重轴。这是因为晶格平移对称性强制旋转矩阵的迹 $\tr R=1+2\cos\theta$ 为整数，给出 $\cos\theta\in\{0,\pm1/2,\pm1\}$，即 $\theta\in\{0,\pi/3,\pi/2,2\pi/3,\pi\}$。这一约束排除了 $C_5$（五重轴）和所有 $n\ge7$ 的旋转轴，把无限多个可能的点群压缩到有限候选。
-
-\textbf{第二步：第一类点群（纯转动）.}\enspace 只用转动操作，群中每个元素都是三维正交矩阵 $\det R=+1$。分类按最高对称轴的数目：
-
-\emph{单轴群}（仅一个 $n$ 重轴）：$C_1,C_2,C_3,C_4,C_6$，共 5 个。$C_n=\{C_n^k\mid k=0,\dots,n-1\}$，同构于 $\ZZ_n$。
-
-\emph{多轴群}（含两个或更多高阶轴）：二面体群 $D_n$ 含一个 $n$ 重主轴和 $n$ 个垂直二重轴，$n=2,3,4,6$ 给出 $D_2,D_3,D_4,D_6$，共 4 个。正四面体群 $T$（12 个元素，4 个三重轴 + 3 个二重轴）和正八面体群 $O$（24 个元素，3 个四重轴 + 4 个三重轴 + 6 个二重轴），共 2 个。
-
-合计 $5+4+2=11$ 个第一类点群。这里排除了 $D_5$（五重轴不允许）和正二十面体群 $I$（含五重轴），它们在分子对称性中可以出现（如 $C_{60}$），但在晶体中不允许。
-
-\textbf{第三步：第二类点群（含反射/反演/旋反射）.}\enspace 对每个第一类群 $G$，加入 $\det R=-1$ 的操作可构造第二类群。关键工具是\emph{商群结构}：若 $G$ 不含反演 $i$，则 $G\times C_i=\{G,iG\}$ 是合法点群（$i$ 与所有转动交换）。若 $G$ 已含某种二阶操作，需要更细致地构造。
-
-系统构造法：
-\begin{itemize}
-\item \emph{$G\times C_i$ 型}（加反演）：$C_1\times C_i=C_i$，$C_2\times C_i=C_{2h}$，$C_3\times C_i=C_{3i}=S_6$，$C_4\times C_i=C_{4h}$，$C_6\times C_i=C_{6h}$，$D_2\times C_i=D_{2h}$，$D_3\times C_i=D_{3d}$，$D_4\times C_i=D_{4h}$，$D_6\times C_i=D_{6h}$，$T\times C_i=T_h$，$O\times C_i=O_h$。共 11 个。
-\item \emph{$G\cup\sigma_h G$ 型}（加水平镜面，$\sigma_h=iC_2$）：$C_1\cup\sigma_h C_1=C_s$，$C_2\cup\sigma_h C_2=C_{2v}$，$C_3\cup\sigma_h C_3=C_{3v}$，$C_4\cup\sigma_h C_4=C_{4v}$，$C_6\cup\sigma_h C_6=C_{6v}$，$D_2\cup\sigma_h D_2=D_{2h}$（与 $G\times C_i$ 重合），$D_3\cup\sigma_h D_3=D_{3h}$，$D_4\cup\sigma_h D_4=D_{4h}$（重合），$D_6\cup\sigma_h D_6=D_{*6h}$（重合）。新增 5 个：$C_s,C_{2v},C_{3v},C_{4v},C_{6v}$，以及 $D_{3h}$。
-\item \emph{旋反射群}（含 $S_n$ 型旋反射轴）：$S_4$（四重旋反射，不含 $C_4$ 子群），$S_6=C_{3i}$（已在 $G\times C_i$ 中）。新增 1 个：$S_4$。
-\item \emph{混合型}：$D_{2d}$（$D_2$ 加 $\sigma_d$ 型镜面，与 $D_{4h}$ 的子群相关），$T_d$（正四面体全对称群，$T$ 加镜面，同构于 $O$ 但不等于 $O_h$）。新增 2 个：$D_{2d},T_d$。
-\end{itemize}
-新增第二类群 $11+6+1+2=20$ 个，但其中 $D_{2h},D_{4h},D_{6h}$ 在 $G\times C_i$ 和 $G\cup\sigma_h G$ 中重复计数。精确计数：$G\times C_i$ 给 11 个（含 $C_i,C_{2h},S_6,C_{4h},C_{6h},D_{2h},D_{3d},D_{4h},D_{6h},T_h,O_h$），非 $G\times C_i$ 型给 10 个（$C_s,C_{2v},C_{3v},C_{4v},C_{6v},D_{3h},S_4,D_{2d},T_d$，加上 $C_{3h}$）。合计 $11+10=21$ 个第二类群。
-
-总计 $11+21=32$ 个晶体点群。
-
-\textbf{第四步：按晶系归类.}\enspace 每个点群的最高阶轴和轴系结构决定它属于哪个晶系。7 个晶系中点群分布为：
-\begin{itemize}
-\item 三斜（$C_1,C_i$）：2 个
-\item 单斜（$C_2,C_s,C_{2h}$）：3 个
-\item 正交（$C_{2v},D_2,D_{2h}$）：3 个
-\item 四方（$C_4,S_4,C_{4h},C_{4v},D_{2d},D_4,D_{4h}$）：7 个
-\item 三方（$C_3,S_6,C_{3v},D_3,D_{3d}$）：5 个
-\item 六方（$C_6,C_{3h},C_{6h},C_{6v},D_{3h},D_6,D_{6h}$）：7 个
-\item 立方（$T,T_h,T_d,O,O_h$）：5 个
-\end{itemize}
-总计 $2+3+3+7+5+7+5=32$。每个晶系中点群按对称性递增排列，最低对称群是该晶系的\emph{全对称群}的子群。一般地，第一类点群（纯转动）共 11 个，第二类点群（含反射/反演/旋反射）共 21 个，总计
-\begin{equation*}
-N_{\text{total}} = N_{\text{proper}} + N_{\text{improper}} = 11 + 21 = 32.
-\end{equation*}
-这一计数与国际晶体学表（ITC）的 32 个晶体学点群完全一致。
-\emph{群-子群关系与相变.}\enspace 32 个点群形成偏序集（按子群关系），相变中对称性破缺对应群-子群链 $G_{\text{高}}\supset G_{\text{低}}$。例如立方到四方：$O_h\supset D_{4h}$（破缺三次轴），四方到正交：$D_{4h}\supset D_{2h}$（破缺四次轴），正交到单斜：$D_{2h}\supset C_{2h}$（破基一个二次轴）。Landau 理论用不可约表示标记序参量，群-子群关系决定允许的相变路径。32 个点群的子群格是结构相变分类的数学基础。
-\emph{Laue 类与衍射对称.}\enspace 11 个 Laue 类是 32 个点群在加入 Friedel 定律（$I(\vb G)=I(-\vb G)$，即衍射强度中心对称）后的等价类。每个 Laue 类含 1-3 个点群，中心对称群自成一类，非中心对称群与其中心对称扩展合并。Laue 类是衍射实验可区分的最高对称性：衍射无法区分 $C_4$ 和 $S_4$（同属 Laue 类 $4/m$），需其他实验（如光学活性）区分。11 个 Laue 类是单晶衍射对称性分析的输出。
-\emph{点群的生成元与展示.}\enspace 每个点群可用少量生成元和关系展示。例如 $D_{4h}=\langle C_4,\sigma_h,i\mid C_4^4=\sigma_h^2=i^2=e,\,\sigma_h C_4=C_4\sigma_h,\,iC_4=C_4i,\,i\sigma_h=\sigma_h i\rangle$。生成元表示便于计算机实现（如 GAP、Sage），也用于构造不可约表示：从生成元的表示矩阵验证群关系即可。32 个点群的标准展示在国际晶体学表 A 卷中给出，是晶体学计算的标准输入。
-\emph{非晶体学点群与准晶.}\enspace 准晶（如 Al--Mn 合金，1984 年 Shechtman 发现）具有 $n=5$ 或 $n=10$ 的对称轴，违反晶体制约定理但非周期有序。准晶的对称用高维周期晶格的投影描述：一维 Fibonacci 链（五重对称）是二维正方晶格的投影，二维 Penrose 拼贴（十重对称）是五维超立方晶格的投影。这把非晶体学对称纳入高维 Bravais 晶格理论，是制约定理边界的自然推广。
+平凡表示的重数 $m_{A_1}$ 给出不变张量数，其他分量则描述在外场或相变中按相应不可约表示变化的响应模式。
+\end{proposition}
 
 32 个点群分类了晶体的旋转对称性，而空间群进一步把点操作与平移组合，产生 Wyckoff 位置——这是描述晶体内原子占位对称性的基本工具。
 
@@ -1571,65 +1295,14 @@ T_{2g}:\quad \{xy,yz,zx\}.
 \label{ex:oh-d-orbitals}
 \end{example}
 
-上面只给出了 $O$ 的特征标表。接下来系统推导凝聚态物理中最常用的几个点群的完整特征标表，每个表都从共轭类结构和正交关系出发推导，而非查表抄录。
-
-先从 $D_4$ 开始。$D_4$ 有 8 个元素，共轭类为 $\{E\},\{C_4,C_4^3\},\{C_2\},\{2C_2'\},\{2C_2''\}$，共 5 类。不可约表示维数满足 $\sum d_i^2=8$，解为 $1,1,1,1,2$。
-
-\textbf{第一步：一维表示.}\enspace $D_4=\langle r,s\mid r^4=s^2=e,\,srs=r^{-1}\rangle$。一维表示中 $r\mapsto\pm1$，$s\mapsto\pm1$，但 $srs=r^{-1}$ 要求 $r^2=1$，故 $r\mapsto\pm1$。四个一维表示：
-\[
-A_1:r\mapsto1,s\mapsto1;\quad A_2:r\mapsto1,s\mapsto-1;\quad B_1:r\mapsto-1,s\mapsto1;\quad B_2:r\mapsto-1,s\mapsto-1.
-\]
-
-\textbf{第二步：二维表示 $E$.}\enspace 自然表示：$r$ 为 $\pi/2$ 转动矩阵，$s$ 为 $x$ 轴反射。各类特征标：
-\[
-\chi(E)=2,\quad\chi(C_4)=0,\quad\chi(C_2)=-2,\quad\chi(C_2')=0,\quad\chi(C_2'')=0.
-\]
-
-\textbf{第三步：正交性验证.}\enspace 需验证行正交（不同不可约表示的特征标内积为零）和列正交（不同共轭类的特征标列内积为零）。
-
-\emph{行正交（逐对验证）.}\enspace 特征标表的行向量为
-\[
-\begin{array}{c|ccccc}
-& E & 2C_4 & C_2 & 2C_2' & 2C_2''\\\hline
-A_1 & 1&1&1&1&1\\
-A_2 & 1&1&1&-1&-1\\
-B_1 & 1&-1&1&1&-1\\
-B_2 & 1&-1&1&-1&1\\
-E & 2&0&-2&0&0
-\end{array}
-\]
-类大小为 $(1,2,1,2,2)$。行内积公式 $\langle\chi_i,\chi_j\rangle=\frac1{|G|}\sum_k|C_k|\chi_i(C_k)\overline{\chi_j(C_k)}$。
-
-逐一计算（$|G|=8$）：
-\begin{align*}
-\langle A_1,A_2\rangle&=\tfrac18(1\cdot1\cdot1+2\cdot1\cdot1+1\cdot1\cdot1+2\cdot1\cdot(-1)+2\cdot1\cdot(-1))=0,\\
-\langle A_1,B_1\rangle&=\tfrac18(1+2\cdot(-1)+1+2+2\cdot(-1))=0,\\
-\langle A_1,B_2\rangle&=\tfrac18(1+2\cdot(-1)+1+2\cdot(-1)+2)=0,\\
-\langle A_1,E\rangle&=\tfrac18(1\cdot2+2\cdot0+1\cdot(-2)+0+0)=0,\\
-\langle A_2,B_1\rangle&=\tfrac18(1+2\cdot(-1)+1+2\cdot(-1)+2)=0,\\
-\langle A_2,B_2\rangle&=\tfrac18(1+2\cdot(-1)+1+2+2\cdot(-1))=0,\\
-\langle A_2,E\rangle&=\tfrac18(2+0+(-2)+0+0)=0,\\
-\langle B_1,B_2\rangle&=\tfrac18(1+2+1+2\cdot(-1)+2\cdot(-1))=0,\\
-\langle B_1,E\rangle&=\tfrac18(2+0+(-2)+0+0)=0,\\
-\langle B_2,E\rangle&=\tfrac18(2+0+(-2)+0+0)=0.
-\end{align*}
-自内积全部为 $1$：例如 $\langle E,E\rangle=\frac18(4+0+4+0+0)=1$。
-
-\emph{列正交（逐对验证）.}\enspace 列正交公式 $\sum_i\chi_i(C_k)\overline{\chi_i(C_l)}=\frac{|G|}{|C_k|}\delta_{kl}$。
-
-$E$ 列与 $C_4$ 列：$1\cdot1+1\cdot1+1\cdot(-1)+1\cdot(-1)+2\cdot0=0$ \checkmark
-$E$ 列与 $C_2$ 列：$1+1+1+1+2\cdot(-2)=0$ \checkmark
-$E$ 列与 $C_2'$ 列：$1+(-1)+1+(-1)+0=0$ \checkmark
-$C_4$ 列自内积：$1+1+1+1+0=4=\frac{8}{2}$ \checkmark
-$C_2$ 列自内积：$1+1+1+1+4=8=\frac{8}{1}$ \checkmark
-
-全部正交关系验证通过，确认特征标表的正确性。
+对 $D_4$，五个共轭类要求五个不可约表示。四个一维表示由生成元 $r\mapsto\pm1$、$s\mapsto\pm1$ 给出，剩余维数平方和只能由一个二维表示补足。二维自然表示在 $C_4,C_2,C_2',C_2''$ 上的特征标分别为 $0,-2,0,0$，于是得到下表。
 
 \begin{table}[htbp]
 
 \centering
 \caption{$D_4$ 的特征标表}
 \label{tab:d4-character}
+\small
 \begin{tabular}{c|ccccc|l}
 \toprule
  & $E$ & $2C_4$ & $C_2$ & $2C_2'$ & $2C_2''$ & 基函数 \\
@@ -1648,65 +1321,7 @@ $E$   & $2$&$0$&$-2$&$0$&$0$ & $(x,y),\,(xz,yz)$ \\
 
 $D_{4h}=D_4\times C_i$，每个表示复制为 $g/u$ 两版，共 10 个不可约表示。
 
-接下来推导 $T_d$ 的特征标表。$T_d$（正四面体全对称群）有 24 个元素，共轭类为 $\{E\},\{8C_3\},\{3C_2\},\{6S_4\},\{6\sigma_d\}$，共 5 类。维数 $\sum d_i^2=24$，解为 $1,1,2,3,3$。
-
-
-\textbf{第一步：一维表示.}\enspace $T_d$ 的换位子群是 $T$（纯转动部分），$T_d/T\simeq C_2$（由 $S_4$ 的奇偶性给出）。故两个一维表示：$A_1$（平凡）和 $A_2$（$S_4\mapsto-1$，$\sigma_d\mapsto-1$，其余 $\mapsto1$）。
-
-\textbf{第二步：二维表示 $E$.}\enspace 取 $l=2$ 球谐表示限制到 $T_d$。$C_3$（绕体对角转 $120^\circ$）的迹为 $1+2\cos(2\cdot120^\circ)=-1$；$C_2$（绕坐标轴转 $\pi$）的迹为 $1+2\cos(2\pi)=-1$；$S_4$（转动 $\pi/2$ 加反演）在 $l=2$ 上的迹为 $(-1)^2(1+2\cos\pi)=-1$；$\sigma_d$（镜面反射）的迹为 $1+2\cos(2\cdot0^\circ)-1=2$（需具体计算，或用 $\sigma_d=S_4^2\cdot C_2$ 的类关系）。由正交性确定 $\chi(E)=2$。
-
-\textbf{第三步：三维表示 $T_1,T_2$.}\enspace $T_1$ 为矢量表示：$\chi(E)=3$，$\chi(C_3)=0$，$\chi(C_2)=-1$，$\chi(S_4)=1$（转动 $\pi/2$ 迹为 $1$，反演乘 $-1$，但 $S_4$ 是 improper rotation $\det=-1$，迹为 $1+2\cos(\pi/2)=1$），$\chi(\sigma_d)=1$（镜面迹为 $1$）。$T_2=T_1\otimes A_2$：将 $T_1$ 特征标乘以 $A_2$ 得 $\chi(T_2)=(3,0,-1,-1,1)$。
-
-\textbf{第四步：正交性验证.}\enspace 类大小 $(1,8,3,6,6)$，$|G|=24$。特征标行向量：
-\[
-\begin{array}{c|ccccc}
-& E & 8C_3 & 3C_2 & 6S_4 & 6\sigma_d\\\hline
-A_1 & 1&1&1&1&1\\
-A_2 & 1&1&1&-1&-1\\
-E & 2&-1&2&0&0\\
-T_1 & 3&0&-1&1&-1\\
-T_2 & 3&0&-1&-1&1
-\end{array}
-\]
-
-\emph{行正交（关键对）.}\enspace
-\begin{align*}
-\langle A_1,A_2\rangle&=\tfrac1{24}(1+8+3-6-6)=0,\\
-\langle A_1,E\rangle&=\tfrac1{24}(2+8\cdot(-1)+3\cdot2+0+0)=0,\\
-\langle A_1,T_1\rangle&=\tfrac1{24}(3+0-3+6-6)=0,\\
-\langle E,T_1\rangle&=\tfrac1{24}(6+0+3\cdot2\cdot(-1)+0+0)=0,\\
-\langle T_1,T_2\rangle&=\tfrac1{24}(9+0+3+6\cdot(-1)+6\cdot(-1))=0,\\
-\langle T_1,T_1\rangle&=\tfrac1{24}(9+0+3+6+6)=1,\\
-\langle T_2,T_2\rangle&=\tfrac1{24}(9+0+3+6+6)=1,\\
-\langle E,E\rangle&=\tfrac1{24}(4+8+12+0+0)=1.
-\end{align*}
-所有行对验证通过。
-
-\emph{列正交（关键对）.}\enspace
-$E$ 列与 $C_3$ 列：$1\cdot1+1\cdot1+2\cdot(-1)+3\cdot0+3\cdot0=0$ \checkmark
-$E$ 列与 $S_4$ 列：$1+(-1)+0+3+(-3)=0$ \checkmark
-$C_3$ 列自内积：$1+1+1+0+0=3=\frac{24}{8}$ \checkmark
-$S_4$ 列自内积：$1+1+0+1+1=4=\frac{24}{6}$ \checkmark
-
-正交性完全验证，确认 $T_d$ 特征标表的正确性。
-
-\textbf{第五步：完备性与维数平方和.}\enspace 验证 $\sum_i d_i^2=|T_d|$：
-\[
-1^2+1^2+2^2+3^2+3^2=1+1+4+9+9=24=|T_d|.
-\]
-这确认五个不可约表示已穷尽全部。此外，正则表示分解为
-\[
-\Gamma_{\mathrm{reg}}=A_1\oplus A_2\oplus 2E\oplus 3T_1\oplus 3T_2,
-\]
-维数 $1+1+4+9+9=24$，与 $|T_d|$ 一致。
-
-\textbf{第六步：显式矩阵表示.}\enspace $T_d$ 由 $S_4$（绕 $z$ 轴转 $\pi/2$ 后反射）和 $C_3$（循环置换 $x\to y\to z\to x$）生成。矢量表示 $T_1$ 的生成元矩阵为
-\[
-D(S_4)=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&-1\end{pmatrix},
-\qquad
-D(C_3)=\begin{pmatrix}0&1&0\\0&0&1\\1&0&0\end{pmatrix},
-\]
-验证 $\tr D(S_4)=1$、$\tr D(C_3)=0$，与特征标表一致。$T_2=T_1\otimes A_2$ 的矩阵为 $D_{T_2}(g)=\sgnperm(g)\,D_{T_1}(g)$，给出 $\tr D_{T_2}(S_4)=-1$、$\tr D_{T_2}(C_3)=0$。二维表示 $E$ 可用 $l=2$ 球谐函数 $Y_{2,m}$（$m=0,\pm2$）在 $T_d$ 下的 $3\times3$ 矩阵限制到不变子空间得到，其生成元矩阵的迹为 $\chi_E(S_4)=0$、$\chi_E(C_3)=-1$。
+$T_d$ 有五个类，维数平方和给出 $1,1,2,3,3$。其中 $A_2$ 记录不保手性操作的符号，$T_1$ 承载轴矢量，$T_2$ 承载极矢量；$E$ 的特征标由正交关系补齐。这样即可读出表格，而无需把所有行、列正交关系逐对重算。
 
 \begin{table}[htbp]
 
@@ -1762,98 +1377,46 @@ $T_{2u}$ & $3$&$0$&$-1$&$-1$&$1$&$-3$&$0$&$1$&$1$&$-1$ \\
 
 
 
-\textbf{第一步：直积分解.}\enspace $O_h=O\times\{E,I\}$，故每个元素唯一写成 $R$ 或 $IR$（$R\in O$）。$O$ 有 24 个元素、5 个共轭类、5 个不可约表示 $A_1,A_2,E,T_1,T_2$（维数 $1,1,2,3,3$）。$C_i=\{E,I\}$ 有 2 个不可约表示（偶 $g$: $I\mapsto+1$，奇 $u$: $I\mapsto-1$）。
+$O_h=O\times C_i$，所以 $O$ 的每个不可约表示只需再标记反演宇称。
 
-\textbf{第二步：直积表示的构造.}\enspace 对 $O$ 的不可约表示 $\Gamma$（特征标 $\chi_\Gamma$），定义
+对 $O$ 的不可约表示 $\Gamma$，偶、奇两种扩展分别满足
 \[
 \Gamma_g(R)=\Gamma(R),\quad\Gamma_g(IR)=\Gamma(R);
 \qquad
 \Gamma_u(R)=\Gamma(R),\quad\Gamma_u(IR)=-\Gamma(R).
 \]
-即 $\Gamma_g=\Gamma\otimes g$（$I$ 作用为 $+1$），$\Gamma_u=\Gamma\otimes u$（$I$ 作用为 $-1$）。
+也就是 $\Gamma_g=\Gamma\otimes g$ 与 $\Gamma_u=\Gamma\otimes u$。
 
-\textbf{第三步：验证不可约性.}\enspace $\Gamma_g$ 的自内积
-\[
-\frac1{48}\sum_{g\in O_h}|\chi_{\Gamma_g}(g)|^2
-=\frac1{48}\left(\sum_{R\in O}|\chi_\Gamma(R)|^2+\sum_{R\in O}|\chi_\Gamma(R)|^2\right)
-=\frac1{48}\cdot2\cdot|O|=\frac{2\cdot24}{48}=1.
-\]
-同理 $\Gamma_u$ 的自内积也为 1，故均不可约。
+两种扩展彼此正交，并继承 $\Gamma$ 的不可约性；五个 $O$ 表示于是加倍成十个 $O_h$ 表示，维数平方和为 $2(1+1+4+9+9)=48$。
 
-\textbf{第四步：验证正交性.}\enspace $\Gamma_g$ 与 $\Gamma_u$ 的内积
-\[
-\frac1{48}\left(\sum_R\chi_\Gamma(R)\overline{\chi_\Gamma(R)}+\sum_R\chi_\Gamma(R)\overline{(-\chi_\Gamma(R))}\right)=\frac1{48}(|O|-|O|)=0.
-\]
-不同 $\Gamma\ne\Gamma'$ 的正交性继承自 $O$ 的正交性。故从 $O$ 的 5 个不可约表示得到 $O_h$ 的 10 个，且 $\sum d_i^2=2(1+1+4+9+9)=48=|O_h|$ \checkmark，完备性得证。
-
-\textbf{第五步：物理意义.}\enspace $g$ 型表示（$A_{1g},A_{2g},E_g,T_{1g},T_{2g}$）描述偶宇称量（如 $x^2,y^2,z^2,xy,yz,zx$），$u$ 型表示（$A_{1u},\dots,T_{2u}$）描述奇宇称量（如 $x,y,z,xyz$）。在晶体场理论中，$d$ 轨道（偶宇称）按 $g$ 型表示变换，$p$ 轨道（奇宇称）按 $u$ 型表示变换，反演对称性使 $d$-$p$ 混合被禁戒。
-
-\textbf{第六步：特征标表的具体构造.}\enspace 对 $O$ 的每个共轭类 $C$，$O_h$ 有两个对应类 $C$ 和 $IC$。$g$ 型表示在两者上取相同值 $\chi_\Gamma(C)$，$u$ 型表示在 $IC$ 上取 $-\chi_\Gamma(C)$。例如 $T_{1g}$：$(3,0,-1,1,-1,3,0,-1,1,-1)$，$T_{1u}$：$(3,0,-1,1,-1,-3,0,1,-1,1)$。反演 $I$ 列的 $g$ 型全 $+1$、$u$ 型全 $-1$，清晰展现宇称分裂。这种 $g/u$ 分裂在八面体晶场（如 $3d$ 过渡金属离子在八面体配位中）的能级劈裂分析中起关键作用。具体地，$O_h$ 晶场把五重 $d$ 轨道劈裂为 $E_g\oplus T_{2g}$，三重 $p$ 轨道保持为 $T_{1u}$ 不可约。
-
-\textbf{完备性检验.}\enspace 10 个不可约表示的维数平方和 $2(1^2+1^2+2^2+3^2+3^2)=48=|O_h|$，确认没有遗漏。
-\emph{Clebsch--Gordan 分解.}\enspace $O_h$ 的张量积分解用特征标内积计算。关键分解：
+$g$ 型二次谐波给出 $d$ 轨道分裂 $E_g\oplus T_{2g}$，极矢量 $(x,y,z)$ 按 $T_{1u}$ 变换。电偶极跃迁必须满足 $\Gamma_f\otimes T_{1u}\otimes\Gamma_i\supset A_{1g}$，所以同宇称态之间的电偶极跃迁禁戒。
+$O_h$ 中常用的张量积分解为
 \begin{align*}
 E_g\otimes E_g &= A_{1g}\oplus A_{2g}\oplus E_g,\\
 T_{1g}\otimes T_{1g} &= A_{1g}\oplus E_g\oplus T_{1g}\oplus T_{2g},\\
 E_g\otimes T_{2g} &= T_{1g}\oplus T_{2g},
 \end{align*}
-这些分解在晶场理论中给出能级耦合规则：$T_{2g}$ 轨道电子的库仑相互作用矩阵元按 $T_{2g}\otimes T_{2g}$ 分解，$A_{1g}$ 分量给出各向同性部分，$E_g$ 和 $T_{2g}$ 分量给出各向异性修正。
-\emph{选择定则与跃迁.}\enspace 电偶极跃迁 $\langle\psi_f|\vb r|\psi_i\rangle$ 的选择定则由不可约表示包含关系决定：$\Gamma_f\otimes\Gamma_{\vb r}\otimes\Gamma_i\supset A_{1g}$。$\vb r$ 按 $T_{1u}$ 变换（奇宇称矢量），故跃迁要求 $\Gamma_f\otimes T_{1u}\otimes\Gamma_i\supset A_{1g}$。例如 $d$-$d$ 跃迁（$E_g\to T_{2g}$）：$T_{2g}\otimes T_{1u}\otimes E_g$，因 $g\otimes u\otimes g=u$，不含 $A_{1g}$，故 $d$-$d$ 电偶极跃迁在 $O_h$ 中禁戒（Laporte 定则）。允许的跃迁需宇称改变（如 $d\to p$，$T_{2g}\to T_{1u}$）。
-\emph{晶场劈裂的详细分析.}\enspace 八面体晶场 $O_h$ 把自由离子 $SO(3)$ 的不可约表示 $D^{(\ell)}$ 限制到 $O_h$ 后分解。$\ell=0$：$A_{1g}$（1 维）；$\ell=1$：$T_{1u}$（3 维）；$\ell=2$：$E_g\oplus T_{2g}$（5 维 = 2+3，$d$ 轨道劈裂）；$\ell=3$：$A_{2u}\oplus T_{1u}\oplus T_{2u}$（7 维 = 1+3+3，$f$ 轨道劈裂）；$\ell=4$：$A_{1g}\oplus E_g\oplus T_{1g}\oplus T_{2g}$（9 维 = 1+2+3+3）。劈裂模式由分支规则 $D^{(\ell)}\downarrow_{O_h}$ 给出，是过渡金属配合物电子结构的理论基础。
-\emph{Tanabe--Sugano 图.}\enspace $O_h$ 晶场中 $d^n$ 组态的能级图（Tanabe--Sugano 图）用 $O_h$ 不可约表示标记能级。横轴 $D_q/B$（晶场强度/电子排斥参数），纵轴 $E/B$。弱场极限（$D_q/B\to0$）回到自由离子 $SO(3)$ 的 ${}^{2S+1}L$ 谱项，强场极限（$D_q/B\to\infty$）给出 $O_h$ 不可约表示标记的晶场能级。能级交叉处对应自旋交叉（高自旋$\to$低自旋转变），是过渡金属配合物磁性的理论解释。
-\emph{Jahn--Teller 效应.}\enspace Jahn--Teller 定理：非线性分子的简并电子态必发生畸变以消除简并。在 $O_h$ 晶场中，$E_g$ 态（如 $d^9$ Cu$^{2+}$ 的 $e_g$ 单电子）的 Jahn--Teller 畸变沿 $E_g$ 表示的方向（即 $z$ 轴伸长或压缩），使 $O_h\to D_{4h}$。畸变模式由 $E_g\otimes E_g=A_{1g}\oplus A_{2g}\oplus E_g$ 中的非全对称分量（$E_g$）决定。$T_{2g}$ 态的 Jahn--Teller 畸变较弱（$T_{2g}\otimes T_{2g}=A_{1g}\oplus E_g\oplus T_{1g}\oplus T_{2g}$，含 $E_g$ 和 $T_{2g}$ 畸变模式），给出三角或四方畸变。
-\emph{振动模式的分析.}\enspace $O_h$ 对称分子（如 SF$_6$）的振动模式用不可约表示分类。3N-6=15 个振动模式分解为 $\Gamma_{\text{vib}}=A_{1g}\oplus E_g\oplus T_{2g}\oplus 2T_{1u}$。红外活性：$T_{1u}$（含 $\vb r$ 分量），2 个红外峰。Raman 活性：$A_{1g},E_g,T_{2g}$（含 $\vb r\vb r$ 分量），3 个 Raman 峰。$T_{2g}$ 既 Raman 活性又静默（无红外），$T_{1u}$ 既红外活性又 Raman 非活性（互补关系）。振动光谱的群论分析从特征标表直接读出活性模式，是分子光谱解析的标准方法。
-\emph{旋轨耦合与双群.}\enspace $O_h$ 的双群 $O_h'$ 把每个旋转 $R$ 对应两个元素 $R,\bar R$（旋量表示的需要），阶数从 $48$ 增至 $96$。双群有额外不可约表示 $\Gamma_8$（四维），对应 $j=\tfrac32$ 态在晶场中的劈裂。$d^1$ 组态（如 Ti$^{3+}$）的 ${}^2D$ 谱项在 $O_h$ 中劈裂为 $E_g+T_{2g}$，在旋轨耦合下进一步劈裂：$E_g$ 保持二重简并（Kramers），$T_{2g}$ 劈裂为 $\Gamma_8$（四重）。双群表示是处理半整数自旋晶场问题的必要工具。
+它们把允许耦合化成直积中是否含有 $A_{1g}$ 的检验。下面再看两个含反演的轴向群，宇称加倍的机制完全相同。
 
 
-\textbf{补充：$O_h$ 的物理应用.}\enspace $O_h$（立方全对称群，$48$ 元素）是立方晶系的最大点群，描述理想立方晶体的对称性。其不可约表示：$A_{1g},A_{2g},E_g,T_{1g},T_{2g}$（偶宇称，$5$ 个）和 $A_{1u},A_{2u},E_u,T_{1u},T_{2u}$（奇宇称，$5$ 个），共 $10$ 个。物理应用：(a) 立方晶场分裂 $d$ 轨道为 $E_g$（$d_{z^2},d_{x^2-y^2}$）和 $T_{2g}$（$d_{xy},d_{yz},d_{zx}$），给出晶体场分裂能 $\Delta=10Dq$；(b) 声子模式分类：立方晶体的光学声子在 $\Gamma$ 点按 $T_{1u}$（红外活性）和 $T_{2g}$（Raman 活性）分类；(c) 选择定则：电偶极跃迁 $\propto T_{1u}$，磁偶极 $\propto T_{1g}$，电四极 $\propto E_g\oplus T_{2g}$。
-
-最后推导六方晶系中常用的 $D_{3d}$ 和 $D_{6h}$ 的特征标表。
-
-
-\textbf{第一步：群结构分析.}\enspace $D_{3d}=D_3\times C_i$（$D_3\cong C_{3v}$，6 元素，3 类，不可约表示 $A_1,A_2,E$ 维数 $1,1,2$）。$D_{3d}$ 共 12 元素，6 类：
+$D_{3d}=D_3\times C_i$，因此 $D_3$ 的 $A_1,A_2,E$ 各自产生一对 $g/u$ 表示。六个共轭类为
 \[
 \{E\},\;\{2C_3\},\;\{3C_2\},\;\{i\},\;\{2S_6\},\;\{3\sigma_d\},
 \]
-其中 $S_6=iC_3$（旋转反射），$\sigma_d=iC_2$（镜面反射）。类大小 $(1,2,3,1,2,3)$，总和 $12$。验证类结构：$C_3$ 的共轭类 $\{C_3,C_3^{-1}\}$ 含 2 个元素（绕主轴正反 $120^\circ$），$C_2$ 的共轭类含 3 个元素（3 个垂直二重轴），$i$ 与所有元素交换故自成一类。
-
-\textbf{第二步：直积表示的构造.}\enspace* 因 $D_{3d}=D_3\times C_i$，每个不可约表示是 $D_3$ 的不可约表示与 $C_i$ 的不可约表示（$g$: $i\mapsto+1$ 或 $u$: $i\mapsto-1$）的张量积。$D_3$ 有 $3$ 个不可约表示，$C_i$ 有 $2$ 个，故 $D_{3d}$ 有 $6$ 个不可约表示，维数 $1,1,2,1,1,2$。维数平方和 $1+1+4+1+1+4=12=|D_{3d}|$ \checkmark。
-
-\textbf{第三步：特征标的构造.}\enspace 对 $\Gamma_g=\Gamma_{D_3}\otimes g$（偶表示），$i$ 作用为 $+1$：
+其中 $S_6=iC_3$、$\sigma_d=iC_2$。特征标由
 \[
 \chi_{\Gamma_g}(R)=\chi_{\Gamma}(R),\quad\chi_{\Gamma_g}(iR)=\chi_{\Gamma}(R).
 \]
-对 $\Gamma_u=\Gamma_{D_3}\otimes u$（奇表示），$i$ 作用为 $-1$：
+与
 \[
 \chi_{\Gamma_u}(R)=\chi_{\Gamma}(R),\quad\chi_{\Gamma_u}(iR)=-\chi_{\Gamma}(R).
 \]
-具体地，$A_{1g}$：$(1,1,1,1,1,1)$；$A_{2g}$：$(1,1,-1,1,1,-1)$；$E_g$：$(2,-1,0,2,-1,0)$；$A_{1u}$：$(1,1,1,-1,-1,-1)$；$A_{2u}$：$(1,1,-1,-1,-1,1)$；$E_u$：$(2,-1,0,-2,1,0)$。
-
-\textbf{第四步：正交性验证.}\enspace 行正交 $\langle A_{1g},A_{2u}\rangle=\frac1{12}(1\cdot1+2\cdot1\cdot1+3\cdot1\cdot(-1)+1\cdot1\cdot(-1)+2\cdot1\cdot(-1)+3\cdot1\cdot1)=\frac1{12}(1+2-3-1-2+3)=0$ \checkmark。$\langle E_g,E_u\rangle=\frac1{12}(4+2+0-4-2+0)=0$ \checkmark。$\langle E_g,E_g\rangle=\frac1{12}(4+2+0+4+2+0)=1$ \checkmark。列正交也可验证，如 $E$ 列与 $i$ 列：$1+1+4-1-1-4=0$ \checkmark。
-
-\textbf{第五步：物理应用.}\enspace $D_{3d}$ 是中心对称点群（含反演 $i$），故所有奇宇称表示（$A_{1u},A_{2u},E_u$）的基函数在反演下变号。在晶场理论中，$d$ 轨道按 $g$ 型表示变换，$p$ 轨道按 $u$ 型变换。反演对称性禁戒 $d$-$p$ 混合，使中心对称晶体的电偶极跃迁需满足宇称改变（Laporte 定则）。
-
-\textbf{第六步：与 $C_{3v}$ 的关系.}\enspace $D_{3d}\cong C_{3v}\times C_i$，但 $D_{3d}$ 也可看作 $C_{3v}$ 的"非共群"扩展：$C_{3v}$ 的三个镜面 $\sigma_v$ 在 $D_{3d}$ 中变为 $iC_2=\sigma_d$。$C_{3v}$ 的不可约表示 $A_1,A_2,E$ 分别扩展为 $D_{3d}$ 的 $(A_{1g},A_{1u})$、$(A_{2g},A_{2u})$、$(E_g,E_u)$，每个 $C_{3v}$ 表示产生一对 $D_{3d}$ 表示（偶/奇宇称）。这种"宇称加倍"是所有中心对称点群 $G\times C_i$ 的普遍特征。
-
-\textbf{第七步：典型应用.}\enspace $D_{3d}$ 是 Corundum 结构（如 $\alpha$-Fe$_2$O$_3$、Al$_2$O$_3$）的点群。$3d$ 过渡金属离子在 $D_{3d}$ 晶场中，五重 $d$ 轨道劈裂为 $E_g\oplus E_g\oplus A_{1g}$（两个二重态和一个单态），总维数 $2+2+1=5$ \checkmark。与八面体 $O_h$ 晶场的 $E_g\oplus T_{2g}$ 劈裂相比，$D_{3d}$ 进一步把 $T_{2g}$ 劈裂为 $E_g\oplus A_{1g}$，因为 $D_{3d}\subset O_h$ 的对称性更低。这种劈裂模式可直接从特征标表的限制分解读出：
+确定，维数平方和为 $12$。当八面体对称性降到 $D_{3d}$ 时，$T_{2g}$ 限制为
 \begin{equation*}
 \chi_{T_{2g}}^{O_h}\downarrow_{D_{3d}}=\chi_{E_g}+\chi_{A_{1g}},\qquad \chi_{E_g}^{O_h}\downarrow_{D_{3d}}=\chi_{E_g},
 \end{equation*}
-后者不劈裂是因为 $D_{3d}$ 的 $E_g$ 维数已与 $O_h$ 的 $E_g$ 相同。
-
-\textbf{完备性检验.}\enspace 6 个不可约表示的维数平方和 $1+1+4+1+1+4=12=|D_{3d}|$，确认完备。特征标表的行正交和列正交均已验证，无遗漏。$D_{3d}$ 的 6 个不可约表示分为 3 对 $(g,u)$，每对来自 $D_3$ 的一个不可约表示与 $C_i$ 的两个表示的张量积。
-
-\textbf{备注.}\enspace $D_{3d}$ 是 32 个晶体点群中最重要的之一，在矿物学和固态化学中频繁出现。
-\emph{Corundum 结构的能级劈裂.}\enspace $\alpha$-Al$_2$O$_3$（刚玉）和 $\alpha$-Fe$_2$O$_3$（赤铁矿）的空间群为 $R\bar3c$（No.167），点群 $D_{3d}$。Cr$^{3+}$ 在 Al$_2$O$_3$ 中（红宝石）的 $3d^3$ 组态在 $D_{3d}$ 晶场中劈裂：八面体 $O_h$ 先把 $d^3$ 劈裂为 $t_{2g}^3$（基态 ${}^4A_{2g}$），三角畸变 $D_{3d}\subset O_h$ 进一步把 $T_{2g}$ 劈裂为 $E_g\oplus A_{1g}$。这一劈裂产生红宝石的 $R$ 线（${}^2E\to{}^4A_2$ 荧光，694.3 nm），是固体激光器的第一个工作物质。
-\emph{选择定则与偏振.}\enspace $D_{3d}$ 的电偶极跃迁选择定则：$\vb r$ 按 $E_u\oplus A_{2u}$ 变换（$x,y$ 按 $E_u$，$z$ 按 $A_{2u}$）。跃迁 $\Gamma_f\otimes(E_u\oplus A_{2u})\otimes\Gamma_i\supset A_{1g}$。$g\to g$ 跃迁禁戒（Laporte），$g\to u$ 允许。偏振选择：$z$ 偏振（$A_{2u}$）要求 $\Gamma_f\otimes A_{2u}\otimes\Gamma_i\supset A_{1g}$，$(x,y)$ 偏振（$E_u$）要求 $\Gamma_f\otimes E_u\otimes\Gamma_i\supset A_{1g}$。这些定则用于偏振吸收光谱的谱线归属。
-\emph{压电与非线性光学.}\enspace $D_{3d}$ 含反演中心，故压电张量 $d_{ijk}=0$（所有三阶极张量在反演下变号，不变性要求为零）。但二阶非线性极化率 $\chi^{(2)}_{ijk}$ 也为零（三阶极张量），故 $D_{3d}$ 晶体无二阶非线性光学效应（倍频、参量振荡）。三阶非线性 $\chi^{(3)}$ 非零（四阶极张量，反演不变），可用作 Kerr 效应和四波混频。要获得二阶非线性光学材料，必须用非中心对称点群（如 $D_3$ 石英、$C_{3v}$ LiNbO$_3$）。
-\emph{磁结构与共线/非共线序.}\enspace $D_{3d}$ 晶格上的磁有序用 Shubnikov 群分析。$\alpha$-Fe$_2$O$_3$（赤铁矿）在 Morin 温度（$T_M\approx260$ K）以上为弱铁磁（非共线自旋倾斜），以下为反铁磁（共线沿 $c$ 轴）。自旋方向由磁各向异性（磁晶能 + 偶极-偶极）决定，对称性分析用 $D_{3d}$ 的磁群（含时间反演）。自旋倾斜模式对应 $E_g$ 表示（面内分量），沿 $c$ 轴模式对应 $A_{2g}$ 表示，群论给出允许的磁结构。
-\emph{声子色散与对称性.}\enspace $D_{3d}$ 晶体的声子模式在 $\Gamma$ 点（布里渊区中心）按 $D_{3d}$ 不可约表示分类。Corundum 结构（10 原子原胞）有 30 个声子模式：$\Gamma_{\text{opt}}=2A_{1g}+5E_g+2A_{2u}+5E_u$（18 个光学模式）+ 声学 $A_{2u}+E_u$。Raman 活性：$A_{1g},E_g$（7 个 Raman 峰），红外活性：$A_{2u},E_u$（7 个红外峰）。声子色散沿高对称方向（$\Gamma\to Z$、$\Gamma\to L$）用小群方法分析，声子支的简并度由路径上各 $k$ 点的小群决定。
-\emph{与 $C_{3v}$ 和 $D_3$ 的子群关系.}\enspace $D_{3d}\supset C_{3v}\supset C_3$ 和 $D_{3d}\supset D_3\supset C_3$ 是两条不同的对称破缺链。$C_{3v}$（非中心对称）允许压电和二阶非线性光学，$D_3$（非镜面对称）允许光学活性。从 $D_{3d}$ 到 $C_{3v}$（加镜面去反演）或 $D_3$（去反演去镜面）的破缺产生相应物理性质。这些子群关系在相变分析中用 Landau 理论：序参量按破缺方向的不可约表示变换，$D_{3d}\to C_{3v}$ 的序参量按 $A_{2u}$ 变换（反演破缺），$D_{3d}\to D_3$ 按 $A_{2u}$ 变换（同时破缺反演和镜面）。
-\emph{$D_{6h}$ 的补充推导.}\enspace $D_{6h}=D_6\times C_i$，$D_6$ 有 $12$ 元素、$6$ 类、$6$ 个不可约表示（维数 $1,1,1,1,2,2$）。$D_6$ 的共轭类为 $\{E\},\{2C_6\},\{2C_3\},\{C_2\},\{3C_2'\},\{3C_2''\}$。一维表示由 $C_6\mapsto\pm1$、$C_2'\mapsto\pm1$ 给出四个组合 $A_1,A_2,B_1,B_2$。二维表示 $E_1$（$C_6$ 的迹 $2\cos60^\circ=1$）和 $E_2$（$C_6$ 的迹 $2\cos120^\circ=-1$）分别对应 $l=1$ 和 $l=2$ 的角动量限制。$D_{6h}$ 的 $12$ 个表示由 $g/u$ 复制给出，$E_{1g}$ 和 $E_{2g}$ 的特征标由此完全确定。
-
-
-\textbf{补充：$D_{3d}$ 的物理应用.}\enspace $D_{3d}$（三角反对称群，$12$ 元素）是三角晶系的重要点群，描述如石英、方解石等三角晶体的对称性。不可约表示：$A_{1g},A_{2g},E_g$（偶宇称）和 $A_{1u},A_{2u},E_u$（奇宇称），共 $6$ 个。$E_g$ 和 $E_u$ 是二维表示。物理应用：(a) 三角晶场的 $d$ 轨道分裂：$E_g$ 不分裂（二重简并保持），$T_{2g}$ 分裂为 $A_{1g}\oplus E_g$（三重简并部分解除）；(b) 石英的光学活性：$D_{3d}$ 缺反演对称的子群 $D_3$ 允许旋光效应（光学活性），石英的旋光率 $\rho\sim\pm17\,^\circ/\text{mm}$（左/右旋石英）；(c) Raman 散射选择定则：$A_{1g}$ 和 $E_g$ 模式 Raman 活性，$A_{2g}$ 非活性。
+所以原来的三重态分成二重态和单态，而 $O_h$ 的 $E_g$ 保持二维。
+反演中心还立即推出所有奇阶极张量为零，例如 $D_{3d}$ 晶体没有压电和二阶非线性光学响应；这一结论不需要逐项检查张量分量。
 
 \begin{table}[htbp]
 
@@ -1888,7 +1451,8 @@ $D_{6h}=D_6\times C_i$，$D_6$ 有 12 元素 6 类，不可约表示维数 $1,1,
 \centering
 \caption{$D_{6h}$ 的特征标表}
 \label{tab:d6h-character}
-\small
+\scriptsize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{c|cccccccccccc}
 \toprule
  & $E$ & $2C_6$ & $2C_3$ & $C_2$ & $3C_2'$ & $3C_2''$ & $i$ & $2S_3$ & $2S_6$ & $\sigma_h$ & $3\sigma_d$ & $3\sigma_v$ \\
@@ -1910,48 +1474,7 @@ $E_{2u}$ & $2$&$-1$&$-1$&$2$&$0$&$0$&$-2$&$1$&$1$&$-2$&$0$&$0$ \\
 
 \end{table}
 
-\textbf{第一步：$D_6$ 的群结构.}\enspace $D_6=\langle r,s\mid r^6=s^2=e,\,srs=r^{-1}\rangle$，$|D_6|=12$。共轭类：$\{E\},\{C_6,C_6^5\},\{C_3,C_3^2\},\{C_2\},\{3C_2'\},\{3C_2''\}$，共 $6$ 类。不可约表示维数 $\sum d_i^2=12$，解为 $1,1,1,1,2,2$。
-
-\textbf{第二步：一维表示.}\enspace $D_6/D_6'\cong C_2\times C_2$（换位子群 $D_6'=\langle r^2\rangle\cong C_3$），故 $4$ 个一维表示：$r\mapsto\pm1$，$s\mapsto\pm1$。给出 $A_1,A_2,B_1,B_2$。
-
-\textbf{第三步：二维表示 $E_1$（基本表示）.}\enspace 取 $r$ 为 $60^\circ$ 转动矩阵：
-\[
-D(r)=\begin{pmatrix}\cos60^\circ&-\sin60^\circ\\\sin60^\circ&\cos60^\circ\end{pmatrix}
-=\begin{pmatrix}1/2&-\sqrt3/2\\\sqrt3/2&1/2\end{pmatrix}.
-\]
-各类特征标：
-\[
-\chi(E)=2,\quad\chi(C_6)=2\cos60^\circ=1,\quad\chi(C_3)=2\cos120^\circ=-1,
-\]
-\[
-\chi(C_2)=2\cos180^\circ=-2,\quad\chi(C_2')=0,\quad\chi(C_2'')=0.
-\]
-反射 $C_2'$ 取为 $x$ 轴反射 $\begin{pmatrix}1&0\\0&-1\end{pmatrix}$，迹 $0$；$C_2''$ 取为 $30^\circ$ 方向反射，迹也为 $0$。
-
-\textbf{第四步：二维表示 $E_2$（二次表示）.}\enspace $E_2$ 是 $E_1$ 的对称平方 $\operatorname{Sym}^2(E_1)$ 去掉 $A_1$：取 $r$ 为 $120^\circ$ 转动矩阵：
-\[
-D(r)=\begin{pmatrix}\cos120^\circ&-\sin120^\circ\\\sin120^\circ&\cos120^\circ\end{pmatrix}
-=\begin{pmatrix}-1/2&-\sqrt3/2\\\sqrt3/2&-1/2\end{pmatrix}.
-\]
-各类特征标：
-\[
-\chi(E)=2,\quad\chi(C_6)=2\cos120^\circ=-1,\quad\chi(C_3)=2\cos240^\circ=-1,
-\]
-\[
-\chi(C_2)=2\cos360^\circ=2,\quad\chi(C_2')=0,\quad\chi(C_2'')=0.
-\]
-
-\textbf{第五步：正交性验证.}\enspace $\langle E_1,E_2\rangle=\frac1{12}(4+2\cdot1\cdot(-1)+2\cdot(-1)\cdot(-1)+(-2)\cdot2+0+0)=\frac1{12}(4-2+2-4)=0$ \checkmark。$\langle E_1,E_1\rangle=\frac1{12}(4+2+2+4+0+0)=1$ \checkmark。$\langle E_2,E_2\rangle=\frac1{12}(4+2+2+4+0+0)=1$ \checkmark。
-
-\textbf{第六步：加反演得到 $D_{6h}=D_6\times C_i$.}\enspace 每个表示复制为 $g/u$ 两版：$g$ 表示中 $i\mapsto+1$，$u$ 表示中 $i\mapsto-1$。共 $12$ 个不可约表示，维数 $1,1,1,1,2,2,1,1,1,1,2,2$，平方和 $12=|D_{6h}|/2$... 实际 $|D_{6h}|=24$，平方和 $2(1+1+1+1+4+4)=24$ \checkmark。
-
-\textbf{物理应用.}\enspace $D_{6h}$ 是石墨烯和苯环的对称群。$E_{1g}$ 对应 $\ell=\pm1$ 的角动量态（如 $p_x,p_y$ 轨道），$E_{2g}$ 对应 $\ell=\pm2$（如 $d_{x^2-y^2},d_{xy}$ 轨道）。苯的 $\pi$ 电子能级分裂模式直接由这些表示的张量积和直和决定。
-\emph{石墨烯的 $\pi$ 电子能带.}\enspace 石墨烯的蜂窝晶格（非 Bravais 晶格，含两个碳子晶格 $A,B$）的 $\pi$ 电子用紧束缚模型 $H=-t\sum_{\langle ij\rangle}(c_i^\dagger c_j+\text{h.c.})$。在 $K,K'$ 点（布里渊区角），能带 $E_\pm(\vb k)=\pm t|f(\vb k)|$ 在 $K$ 点精确为零（Dirac 锥），$f(\vb k)=\sum_{j=1}^3\ee^{i\vb k\cdot\vb\delta_j}$（$\vb\delta_j$ 为最近邻矢）。$D_{6h}$ 对称保证 Dirac 锥的稳定性和自旋简并（含时间反演）。$E_{2g}$ 表示对应 $K$ 点的声子模式（G 带拉曼活性，$\sim1580\,\text{cm}^{-1}$），$E_{1u}$ 对应红外活性声子。
-\emph{苯环的 H\"uckel 理论.}\enspace 苯 $C_6H_6$ 的 6 个 $\pi$ 电子在 $D_{6h}$ 对称下用 H\"uckel 模型分析。$\pi$ 轨道按 $D_6$ 的不可约表示分类：$\Gamma_\pi=A_{2u}\oplus E_{1g}\oplus E_{2u}$（6 个轨道）。能级
-\begin{equation*}
-E_j=\alpha+2\beta\cos\frac{2\pi j}{6},\quad j=0,1,\dots,5,
-\end{equation*}
-（$\alpha$ 为 Coulomb 积分，$\beta$ 为共振积分），给出 $E_0=\alpha+2\beta$（$A_{2u}$，1 重）、$E_{\pm1}=\alpha+\beta$（$E_{1g}$，2 重）、$E_{\pm2}=\alpha-\beta$（$E_{2u}$，2 重）、$E_3=\alpha-2\beta$（$B_{2g}$，1 重）。6 个 $\pi$ 电子填充 $A_{2u}^2 E_{1g}^4$，闭壳层，HOMO $E_{1g}$，LUMO $E_{2u}$，HOMO-LUMO 跃迁 $E_{1g}\to E_{2u}$ 在 $D_{6h}$ 中允许（$E_{2u}\otimes E_{1u}\otimes E_{1g}\supset A_{1g}$，$z$ 偏振禁戒但 $(x,y)$ 偏振允许），给出苯的 $\pi\to\pi^*$ 吸收（$\sim260$ nm）。
+$D_6$ 的四个一维表示由 $r\mapsto\pm1$、$s\mapsto\pm1$ 给出；二维表示 $E_1,E_2$ 在主轴转动 $C_6^k$ 上的特征标分别为 $2\cos(k\pi/3)$ 与 $2\cos(2k\pi/3)$，在横向二重轴上均为零。与 $C_i$ 作直积后得到表中的十二个 $D_{6h}$ 表示，维数平方和为 $24$。这张表主要用于六方体系的轨道、声子与跃迁分类；具体能带模型留到后续应用章节。
 
 从特征标表的应用转入衍射物理：空间群对称性不仅约束能级和振动模式，还直接决定衍射谱中的系统消光——这是群论在结构分析中最直接的实验后果。
 
@@ -1969,7 +1492,7 @@ F(\vb G)=\sum_j f_j\,\ee^{-\ii\vb G\cdot\vb r_j}
 
 
 
-\textbf{第一步：结构因子的对称约束.}\enspace 若 $\{R|\vb\tau\}\in\mathcal G$ 把原子 $\vb r_j$ 映到同类型原子 $\vb r_{j'}$，则 $f_j=f_{j'}$ 且
+先结构因子的对称约束。若 $\{R|\vb\tau\}\in\mathcal G$ 把原子 $\vb r_j$ 映到同类型原子 $\vb r_{j'}$，则 $f_j=f_{j'}$ 且
 \[
 \vb r_{j'}=R\vb r_j+\vb\tau.
 \]
@@ -1983,32 +1506,26 @@ F(\vb G)=\sum_j f_j\,\ee^{-\ii\vb G\cdot\vb r_j}
 F(\vb G)=\ee^{-\ii\vb G\cdot\vb\tau}\sum_j f_j\,\ee^{-\ii(R^{\mathsf T}\vb G)\cdot\vb r_j}.
 \]
 
-\textbf{第二步：$R^{\mathsf T}\vb G=\vb G$ 的情形.}\enspace 若 $\vb G$ 在 $R$ 下不变（即 $R$ 属于 $\vb G$ 的小群），则
+随后$R^{\mathsf T}\vb G=\vb G$ 的情形。若 $\vb G$ 在 $R$ 下不变（即 $R$ 属于 $\vb G$ 的小群），则
 \[
 F(\vb G)=\ee^{-\ii\vb G\cdot\vb\tau}F(\vb G).
 \]
 若 $\vb G\cdot\vb\tau\notin2\pi\ZZ$，则 $\ee^{-\ii\vb G\cdot\vb\tau}\neq1$，故 $F(\vb G)=0$。
 
-\textbf{第三步：逐中心化类型推导.}\enspace
+把这个判据代入常见的非本原平移即可得到中心化规则。体心平移
+$\vb\tau=(\vb a_1+\vb a_2+\vb a_3)/2$ 产生相位 $(-1)^{h+k+l}$，故
+$h+k+l$ 为奇数时消光；面心的三个半格矢平移要求 $h+k$、$k+l$、$h+l$
+同时为偶数，等价于 $h,k,l$ 全奇或全偶；底心平移
+$(\vb a_1+\vb a_2)/2$ 则要求 $h+k$ 为偶数。非对称型操作给出方向相关的条件：
+沿 $c$ 轴的 $2_1$ 螺旋把 $(h,k,l)$ 送到 $(-h,-k,l)$，因而只在 $00l$ 方向
+保持 $\vb G$ 不变，并使奇数 $l$ 的反射消失；垂直于 $b$ 的 $a$ 滑移面同理使
+$h0l$ 中奇数 $h$ 的反射消失。
 
-\emph{体心 $I$：}空间群含 $\{I|\vb a_1/2+\vb a_2/2+\vb a_3/2\}$。$\vb G=h\vb b_1+k\vb b_2+l\vb b_3$，$\vb G\cdot\vb\tau=\pi(h+k+l)$。$R=I$ 不改变 $\vb G$。消光条件 $\ee^{-\ii\pi(h+k+l)}\neq1$，即 $h+k+l$ 为奇数。故 $I$ 心晶格消光 $h+k+l=2n+1$。
-
-\emph{面心 $F$：}含 $\{I|\vb a_1/2+\vb a_2/2\}$，$\{I|\vb a_2/2+\vb a_3/2\}$，$\{I|\vb a_1/2+\vb a_3/2\}$。分别给出 $h+k$、$k+l$、$h+l$ 必须为偶数。三条件联立：$h,k,l$ 必须全奇或全偶。故 $F$ 心消光 $h,k,l$ 混奇偶。
-
-\emph{底心 $C$：}含 $\{I|\vb a_1/2+\vb a_2/2\}$，给出 $h+k$ 必须为偶数。故 $C$ 心消光 $h+k=2n+1$。
-
-\emph{螺旋轴 $2_1$（沿 $c$）：}含 $\{C_{2c}|\vb a_3/2\}$。$C_{2c}$ 作用 $\vb G=(h,k,l)\to(-h,-k,l)$。若 $h=k=0$（即 $\vb G$ 在 $C_{2c}$ 下不变），则 $\vb G\cdot\vb\tau=l\pi$。消光 $l$ 为奇数。故 $00l$ 型反射中 $l=2n+1$ 消光。
-
-\emph{滑移面 $a$（垂直 $b$）：}含 $\{\sigma_b|\vb a_1/2\}$。$\sigma_b$ 作用 $(h,k,l)\to(h,-k,l)$。若 $k=0$，$\vb G\cdot\vb\tau=h\pi$。消光 $h$ 为奇数。故 $h0l$ 型反射中 $h=2n+1$ 消光。
-\emph{空间群测定.}\enspace 系统消光是空间群测定的主要实验依据。从衍射数据识别消光规律：(1) Bravais 中心化消光（$I$：$h+k+l=2n+1$，$F$：混奇偶，$C$：$h+k=2n+1$）确定 Bravais 晶格；(2) 螺旋轴消光（$2_1$ 沿 $c$：$00l$ 中 $l=2n+1$，$4_1$ 沿 $c$：$00l$ 中 $l\ne4n$）确定螺旋对称；(3) 滑移面消光（$a$ 面滑移：$h0l$ 中 $h=2n+1$，$n$ 面滑移：$h0l$ 中 $h+l=2n+1$）确定滑移对称。230 种空间群的消光规律在国际表 A 卷中给出，从消光模式可唯一确定空间群（少数需额外区分）。
-\emph{结构因子的完整计算.}\enspace 对一般位置 $(x_j,y_j,z_j)$，结构因子 $F_{hkl}=\sum_j f_j\ee^{-2\pi i(hx_j+ky_j+lz_j)}$。空间群对称使求和简化：只需对不对称单元中的原子求和，其余由对称操作生成。例如 $P2_1/c$（No.14）的不对称单元含 2 个独立原子，全结构因子 $F_{hkl}=4\cos^2\pi(\frac{h+k+l}{2})\sum_{\text{asym}}f_j\cos[2\pi(hx_j+k y_j+lz_j)]$，直接给出消光条件 $h+k+l=2n+1$（来自 $\cos^2$ 因子）和 $0k0$ 中 $k=2n+1$（来自 $2_1$ 轴）。
-\emph{Friedel 定律与绝对结构.}\enspace 对非中心对称晶体，Friedel 定律 $I(\vb G)=I(-\vb G)$ 在忽略反常散射时成立。反常散射（$f''\ne0$）破坏 Friedel 定律，$I(\vb G)\ne I(-\vb G)$，用于测定绝对结构（手性）。Bijvoet 对 $(\vb G,-\vb G)$ 的强度差 $\Delta I\propto f''\sum_j Z_j\sin[2\pi(hx_j+ky_j+lz_j)]$，符号确定手性。系统消光在反常散射下仍成立（消光是空间群对称的严格结果，不依赖散射因子），故消光分析不受反常散射影响。
-\emph{动力学衍射与消光修正.}\enspace 运动学衍射（单次散射）给出严格消光。动力学衍射（多次散射）在 Bragg 条件附近修正强度，但不改变消光条件（消光来自结构因子为零，动力学效应不恢复零结构因子）。但"偶然消光"（结构因子恰好为零但非对称要求）可被动力学效应或热振动恢复。系统消光（对称要求）与偶然消光的区分需分析消光规律的系统性：系统消光在整个衍射族中规律出现，偶然消光随机出现。
-\emph{粉末衍射与指标化.}\enspace 粉末衍射中，系统消光表现为衍射峰的系统性缺失。从粉末衍射图指标化（确定各峰的 $(hkl)$）需先识别晶系和 Bravais 中心化：立方晶系的衍射峰满足 $1/d^2\propto h^2+k^2+l^2$，结合 $I$ 心消光（$h+k+l=$ 偶）给出 $h^2+k^2+l^2=2,4,6,8,\dots$（不含 1,3,5,7）。面心 $F$ 给出 $h^2+k^2+l^2=3,4,8,11,\dots$（全奇或全偶）。这些数列模式是粉末衍射指标化的判据，配合晶系鉴定从衍射图确定 Bravais 晶格。
-\emph{扩展消光与螺旋轴.}\enspace 螺旋轴 $2_1$（转 $\pi$ 平移 $\vb t/2$）给出额外消光：若 $2_1$ 沿 $c$ 轴，则 $00l$ 衍射仅当 $l=$ 偶时出现。滑移面 $c$（镜面反射加 $\vb c/2$ 平移）给出 $hkl$ 消光：若 $c$ 滑移面垂直 $b$ 轴，则 $0kl$ 衍射仅当 $k=$ 偶时出现。这些扩展消光（extinction conditions）区分具有相同点群但不同空间群的结构，是空间群测定的关键信息。230 个空间群中，许多仅靠扩展消光即可唯一确定。
-
-
-\textbf{补充：系统消光的实验应用.}\enspace 系统消光是晶体结构分析的基石：从 X 射线衍射图谱中缺失的衍射峰直接推断晶格类型。(a) 面心立方 (FCC)：$h,k,l$ 全奇或全偶时衍射，混合奇偶时消光。衍射峰序列 $111,200,220,311,222,\dots$；(b) 体心立方 (BCC)：$h+k+l$ 偶时衍射，奇时消光。序列 $110,200,211,220,310,\dots$；(c) 简单立方 (SC)：无消光，所有 $hkl$ 衍射。序列 $100,110,111,200,\dots$；(d) 金刚石结构：FCC 条件加 $h+k+l=4n$（对 $h,k,l$ 全偶），额外消光 $200,222$ 等。从消光规律直接确定 Bravais 晶格类型，是结构解析的第一步。
+这些缺峰条件把空间群信息直接编码进衍射图。中心化消光先确定 Bravais 晶格，
+螺旋轴和滑移面造成的方向相关消光再区分具有相同点群的空间群。它们来自群作用
+强制的结构因子零点，因此与某些原子散射因子偶然抵消造成的零点不同；后者不在
+整族反射中稳定出现。反常散射能够破坏非中心对称晶体的 Friedel 等强关系
+$I(\vb G)=I(-\vb G)$，但不会解除由空间群强制的系统消光。
 
 \begin{table}[htbp]
 \centering
@@ -2027,35 +1544,30 @@ $R$（菱心） & $-h+k+l=3n\pm1$ \\
 \end{tabular}
 \end{table}
 
-\begin{derivation}[续：系统消光的推导]
-
-系统消光从倒空间给出衍射选择定则，而 Neumann 原理则从正空间给出宏观物性张量的对称约束。两者一正一反，是晶体对称性在实验中最直接的两个应用。
-
-\textbf{定理（Neumann 原理）.}\enspace 晶体的任何宏观物理性质张量在晶体的点群的所有操作下不变。
+系统消光从倒空间给出衍射选择定则。宏观响应的对应结论是 Neumann 原理：
+晶体物性张量必须在点群的每个操作下不变。若 $T$ 描述线性响应
+$\vb Y=T\vb X$，则
+\begin{equation}
+TR=RT,
+\qquad R\in P.
 \label{thm:neumann}
+\end{equation}
+对 $n$ 阶张量，这个条件写成
+\begin{equation}
+T_{i_1\cdots i_n}
+=\sum_{j_1,\dots,j_n}R_{i_1j_1}\cdots R_{i_nj_n}T_{j_1\cdots j_n}.
+\label{eq:neumann-tensor-invariance}
+\end{equation}
+这些线性约束的解空间就是允许的物性张量空间，其维数给出独立材料常数的数目。
 
-
-\textbf{物理前提.}\enspace 设晶体点群 $P$ 中操作 $R$ 把晶体映回自身。物理性质张量 $T$ 描述响应 $\vb Y=T\vb X$（如 $\vb P=\epsilon\vb E$）。若对晶体施加 $R$，因晶体在 $R$ 下不变，响应必须相同。
-
-\textbf{第一步：变换关系.}\enspace 输入 $\vb X$ 在 $R$ 下变为 $R\vb X$，输出 $\vb Y=T\vb X$ 在 $R$ 下变为 $R\vb Y=RT\vb X$。但由对称性，$R\vb X$ 的响应应等于 $R(T\vb X)$，同时也应等于 $T(R\vb X)$（因晶体不变）：
+\begin{derivation}[Neumann 原理的群平均投影]
+输入变为 $R\vb X$ 时，输出一方面应为 $T(R\vb X)$，另一方面应为
+$R(T\vb X)$，故对任意 $\vb X$ 有
 \[
 T(R\vb X)=R(T\vb X).
 \]
-对任意 $\vb X$ 成立，故
-\[
-TR=RT,
-\qquad\forall R\in P.
-\]
-
-\textbf{第二步：张量形式.}\enspace 对 $n$ 阶张量 $T_{i_1\cdots i_n}$，上式展开为
-\[
-T_{i_1\cdots i_n}
-=\sum_{j_1,\dots,j_n}
-R_{i_1 j_1}\cdots R_{i_n j_n}\,T_{j_1\cdots j_n}.
-\]
-这是关于 $T$ 各分量的线性齐次方程组。非零解空间的维数就是独立物理常数的个数。
-
-\textbf{第三步：用投影算符求解.}\enspace 定义群平均投影
+这正是 eqnrefs{thm:neumann}；在各指标上展开便得到
+\eqnrefs{eq:neumann-tensor-invariance}。为直接求这个不变子空间，定义群平均投影
 \[
 \Pi_T=\frac1{|P|}\sum_{R\in P}R^{\otimes n},
 \]
@@ -2069,14 +1581,13 @@ R_{i_1 j_1}\cdots R_{i_n j_n}\,T_{j_1\cdots j_n}.
 \]
 对二阶张量（$n=2$），独立分量个数为 $\frac1{|P|}\sum_{R}(\chi_\text{vec}(R))^2$，其中 $\chi_\text{vec}(R)=\tr R$ 是矢量表示的特征标。对称二阶张量（如介电张量 $\epsilon_{ij}$）则需用 $\chi_{\mathrm{Sym}^2}(R)=\frac{\chi_V(R)^2+\chi_V(R^2)}{2}$。
 
-\emph{Onsager 倒易关系.}\enspace Neumann 原理给出空间对称约束，Onsager 倒易关系给出时间反演对称约束：输运系数 $L_{ij}=L_{ji}$（无磁场时）或 $L_{ij}(B)=L_{ji}(-B)$（有磁场时）。两者结合完全确定输运张量的结构。例如 Seebeck 张量 $\alpha_{ij}$（热电耦合）满足 $\alpha_{ij}=\alpha_{ji}$（Onsager）和 $\alpha_{ij}=R_{ik}\alpha_{kl}R_{lj}$（Neumann），独立分量数由两者共同约束。磁场的 Onsager 修正 $\alpha_{ij}(B)=-\alpha_{ji}(-B)$ 给出 Nernst 效应（反对称部分），是热电输运的群论分析。
-
-\emph{Curie 原理.}\enspace Curie 原理是 Neumann 原理的推广：结果的对称群包含原因对称群和介质对称群的交集，$G_{\text{result}}\supseteq G_{\text{cause}}\cap G_{\text{medium}}$。例如在 $C_{\infty v}$ 介质中施加 $C_s$ 对称的电场，结果的极化对称至少为 $C_s$（交集 $C_{\infty v}\cap C_s=C_s$）。Curie 原理用于预测外场下对称性破缺的模式：序参量的对称群必须是介质群和外场群的子群，确定允许的序参量分量。这是 Landau 相变理论中对称性分析的物理基础。
-
-\emph{张量的不可约分解.}\enspace $n$ 阶张量空间 $V^{\otimes n}$ 在点群 $P$ 下分解为不可约表示直和 $V^{\otimes n}=\bigoplus_\alpha m_\alpha\Gamma_\alpha$。全对称表示 $A_1$ 的重数 $m_{A_1}$ 给出独立不变张量数。其他不可约表示分量对应"对称性允许但非不变"的张量模式，在相变中可作为序参量。例如弹性张量在立方群 $O_h$ 下分解：$A_{1g}$（3 个，$C_{11},C_{12},C_{44}$）+ $E_g$（1 个，各向异性偏离）+ $T_{2g}$（1 个，剪切各向异性）。$E_g$ 和 $T_{2g}$ 分量在立方到四方/正交相变中成为序参量。
-
-\emph{物理性质张量的实验测定.}\enspace Neumann 原理减少独立分量数，简化实验测定。例如弹性张量：一般 21 个常数，立方晶体 3 个（$C_{11},C_{12},C_{44}$），各向同性 2 个（$\lambda,\mu$）。实验测定用超声传播、共振超声谱或非弹性中子散射。群论分析不仅减少测量量，还给出各分量间的约束关系（如六方的 $C_{66}=(C_{11}-C_{12})/2$），用于数据一致性检验。材料数据库中弹性张量的存储和验证都基于 Neumann 原理的群论约束。
 \end{derivation}
+
+空间对称约束还需与时间反演约束结合。Onsager 关系在无磁场时给出
+$L_{ij}=L_{ji}$，有磁场时给出 $L_{ij}(B)=L_{ji}(-B)$；Neumann 原理则要求同一
+输运张量在点群作用下不变。群平均投影因此既可求允许分量，也可检验实验拟合是否
+满足晶体对称性。例如一般弹性张量有 21 个独立常数，立方晶体只剩
+$C_{11},C_{12},C_{44}$，各向同性介质进一步只剩两个 Lam\'e 常数。
 
 \begin{example}[用 Neumann 原理计数：六方晶系 $D_{6h}$ 的对称二阶张量]
 六方晶系的点群 $D_{6h}=D_6\times C_i$（24 元素）。对称二阶张量在反演下不变（$T_{ij}\to(-1)^2T_{ij}=T_{ij}$），故只需对 $D_6$（12 元素）的纯转动部分求和，结果与 $D_{6h}$ 相同。
@@ -2103,24 +1614,16 @@ N=\frac{1}{12}\bigl[1\cdot6+2\cdot2+2\cdot0+1\cdot2+3\cdot2+3\cdot2\bigr]
 \]
 故六方晶系的对称二阶张量只有 2 个独立分量，对应 $\epsilon=\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$——光轴方向（$c$ 轴）与垂直方向独立，这正是六方晶体光学各向异性的群论来源。
 
-\emph{对比立方晶系.}\enspace 对 $O_h$（48 元素，纯转动部分 $O$ 有 24 元素 5 类）：
+对立方晶系 $O_h$，只需对含 24 个元素的纯转动子群 $O$ 求平均：
 \[
 \begin{array}{c|ccccc}
 & E & 8C_3 & 3C_2 & 6C_4 & 6C_2' \\
 \hline
 \chi_V & 3 & 0 & -1 & 1 & -1 \\
 \chi_V(R^2) & 3 & 0 & 3 & -1 & 3 \\
-\chi_{\mathrm{Sym}^2} & 6 & 0 & 1 & 0 & 1
+\chi_{\mathrm{Sym}^2} & 6 & 0 & 2 & 0 & 2
 \end{array}
 \]
-\[
-N=\frac{1}{24}\bigl[6+0+3+0+6\bigr]=\frac{15}{24}\cdot\frac{24}{1}\dots
-\]
-精确计算：$\frac{1}{24}[1\cdot6+8\cdot0+3\cdot1+6\cdot0+6\cdot1]=\frac{6+0+3+0+6}{24}=\frac{15}{24}$——这不是整数！
-
-问题在于 $O$ 有 24 元素但 $O_h$ 有 48。对称张量在反演下不变，故 $O_h$ 贡献翻倍：$\frac{2\times15}{48}=\frac{30}{48}$——仍不对。
-
-\emph{修正.}\enspace 实际上 $C_2$（绕坐标轴转 $\pi$）的 $\chi_V=-1$，$R^2=E$，$\chi_V(R^2)=3$，$\chi_{\mathrm{Sym}^2}=\frac{1+3}{2}=2$。$C_2'$（绕面对角转 $\pi$）的 $\chi_V=-1$，$R^2=E$，$\chi_{\mathrm{Sym}^2}=2$。重算：
 \[
 N=\frac{1}{24}[1\cdot6+8\cdot0+3\cdot2+6\cdot0+6\cdot2]=\frac{6+0+6+0+12}{24}=\frac{24}{24}=1.
 \]
