@@ -21,7 +21,7 @@ C_3=Q_3-Q_1Q_2+\frac13Q_1^3,
 \qquad
 b_3=\frac{\lambda_T^3}{\mathcal V}C_3,
 \]
-并把三体物理 Hilbert 空间分解为内部通道，明确内部简并度、束缚 trimer 简并度、spectator 二体 subtraction 与 connected three-body spectral shift 的计数。高维零能共振、一般维 effective-range expansion、自伴扩张参数与散射长度的对应已经在 ch14 完成；TCL4/NZ 逐阶对应、finite-coarse-graining Kossakowski Gram 正性已经在 ch15 完成；worldtube/Schott 的局域守恒与外力脉冲算例已经在 ch13 完成。因此这些旧清单项目均不再属于未完成 P0。
+并把三体物理 Hilbert 空间分解为内部通道，明确内部简并度、束缚 trimer 简并度、spectator 二体 subtraction 与 connected three-body spectral shift 的计数。高维零能共振、一般维 effective-range expansion、自伴扩张参数与散射长度的对应已经在 ch14 完成；TCL4/NZ 逐阶对应、finite-coarse-graining Kossakowski Gram 正性已经在 ch15 完成；worldtube/Schott 的局域守恒律与 Schott 束缚四动量推导已在 ch13 完成；外力 Gaussian 脉冲的显式 Schott 能量算例在重构中删去，留待决定是否补回为独立 Example。因此这些旧清单项目均不再属于未完成 P0。
 
 ## 后续可选深化
 
