@@ -82,19 +82,35 @@
 \setlength{\parindent}{2em}
 \setlength{\parskip}{0pt}
 
-% ===== Chapter title (inline at top of page) =====
+% ===== Chapter title (one line: 第N章 Title) =====
+% 三号 (16pt) keeps "第13章 辐射反作用" on a single line; chapter titles are
+% held to <=7 Chinese characters (foreign terms count as one word). Body text
+% on a two-line chapter head would need a shorter line length than a4 gives.
 \makeatletter
 \def\@makechapterhead#1{%
   \thispagestyle{fancy}%
-  {\centering\Huge\bfseries 第\thechapter 章\par\vspace{1.0em}#1\par}%
+  {\centering\zihao{3}\bfseries 第\thechapter 章\quad #1\par}%
   \vspace{2em}%
 }
 \def\@makeschapterhead#1{%
   \thispagestyle{fancy}%
-  {\centering\Huge\bfseries #1\par}%
+  {\centering\zihao{3}\bfseries #1\par}%
   \vspace{2em}%
 }
 \makeatother
+
+% ===== Part title (own page, two lines) =====
+% "第N部分" sits on its own line at 二号 (22pt); the part title follows at
+% 一号 (26pt). part/break keeps the page break and \@endpart pushes the first
+% chapter to the next page, so the heading keeps a page to itself.
+\ctexset{
+  part/break      = \clearpage,
+  part/format     = \centering\normalfont,
+  part/hang       = false,
+  part/nameformat = \zihao{2}\bfseries,
+  part/aftername  = \par\vspace{1.2em},
+  part/titleformat = \zihao{1}\bfseries,
+}
 
 % ===== Headers and footers =====
 \pagestyle{fancy}
