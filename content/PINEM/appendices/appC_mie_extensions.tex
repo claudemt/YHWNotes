@@ -1,0 +1,568 @@
+\chapter{Mie 与长波理论的几何扩展}
+\label{app:mie-extensions}
+
+单球已经足够建立正文的精确散射主线。这里再给出同一套基底如何扩展到多层球、多球、无限长圆柱和一般椭球；这些内容都是母理论的几何参数化，而不是新的 PINEM 动力学。
+
+\section{多层球与多球：界面递推和加法定理}
+单一均匀球只是最简单的径向分层问题。若有 $N$ 层同心各向同性介质，第 $j$ 层具有
+$k_j,Z_j$，则每个固定 $(\ell,m_{\Omega})$、每个偏振仍然完全独立。定义
+\begin{equation}
+D_\ell^{(p)}(\rho)
+\equiv
+\frac{[\rho z_\ell^{(p)}(\rho)]'}{\rho}.
+\end{equation}
+在第 $j$ 层写 magnetic/TE 通道
+\begin{equation}
+\bm E_j^{(M)}
+=A_j^{(M)}\bm M_{\ell m_{\Omega}}^{(1)}(k_j\bm r)
++B_j^{(M)}\bm M_{\ell m_{\Omega}}^{(3)}(k_j\bm r),
+\end{equation}
+则在半径 $R$ 的界面上，去掉公共的
+$\bm X,\bm\Psi$ 方向和固定相位后，切向迹可写成矩阵
+\begin{equation}
+\mathbf C_j^{(M)}(R)
+\begin{pmatrix}A_j^{(M)}\\B_j^{(M)}\end{pmatrix},
+\qquad
+\mathbf C_j^{(M)}(R)
+=\begin{pmatrix}
+ z_\ell^{(1)}(k_jR) & z_\ell^{(3)}(k_jR)\\[0.4em]
+ Z_j^{-1}D_\ell^{(1)}(k_jR) & Z_j^{-1}D_\ell^{(3)}(k_jR)
+\end{pmatrix}.
+\label{eq:multilayer-CM}
+\end{equation}
+对 electric/TM 通道则
+\begin{equation}
+\mathbf C_j^{(E)}(R)
+=\begin{pmatrix}
+ D_\ell^{(1)}(k_jR) & D_\ell^{(3)}(k_jR)\\[0.4em]
+ Z_j^{-1}z_\ell^{(1)}(k_jR) & Z_j^{-1}z_\ell^{(3)}(k_jR)
+\end{pmatrix}.
+\label{eq:multilayer-CE}
+\end{equation}
+界面连续性就是
+\begin{equation}
+\mathbf C_j^{(\lambda)}(R_j)
+\bm u_j^{(\lambda)}
+=
+\mathbf C_{j+1}^{(\lambda)}(R_j)
+\bm u_{j+1}^{(\lambda)},
+\qquad
+\lambda\in\{M,E\},
+\end{equation}
+其中
+$\bm u_j^{(\lambda)}=(A_j^{(\lambda)},B_j^{(\lambda)})^T$。于是
+\begin{equation}
+\bm u_{j+1}^{(\lambda)}
+=
+\left[\mathbf C_{j+1}^{(\lambda)}(R_j)\right]^{-1}
+\mathbf C_j^{(\lambda)}(R_j)
+\bm u_j^{(\lambda)}.
+\label{eq:multilayer-transfer-step}
+\end{equation}
+为了看清这个递推不是一个“黑箱矩阵乘法”，先把单个界面矩阵记为
+\begin{equation}
+\mathbf M_j^{(\lambda)}
+\equiv
+\left[\mathbf C_{j+1}^{(\lambda)}(R_j)\right]^{-1}
+\mathbf C_j^{(\lambda)}(R_j)
+=\begin{pmatrix}
+M_{11}&M_{12}\\M_{21}&M_{22}
+\end{pmatrix}.
+\label{eq:multilayer-interface-M}
+\end{equation}
+二维矩阵的逆可以完全写开：
+\begin{equation}
+\left[\mathbf C_{j+1}^{(\lambda)}\right]^{-1}
+=\frac{1}{\det\mathbf C_{j+1}^{(\lambda)}}
+\begin{pmatrix}
+C_{22}&-C_{12}\\-C_{21}&C_{11}
+\end{pmatrix}.
+\end{equation}
+对 TE 通道，利用球 Bessel--Hankel Wronskian，有
+\begin{align}
+\det\mathbf C_j^{(M)}(R)
+&=\frac{1}{Z_j}
+\left[
+ j_\ell(\rho)D_\ell^{(3)}(\rho)
+-h_\ell^{(1)}(\rho)D_\ell^{(1)}(\rho)
+\right]\\
+&=\frac{1}{Z_j\rho}
+\left[j_\ell(\rho)\xi_\ell'(\rho)
+-h_\ell^{(1)}(\rho)\psi_\ell'(\rho)\right]\\
+&=\frac{\ii}{Z_j\rho^2},
+\qquad \rho=k_jR,
+\label{eq:multilayer-det-M}
+\end{align}
+所以只要 $k_jR\neq0$，界面矩阵可逆；TM 通道同理只把两个切向迹的位置交换，行列式只差同一个非零固定因子。也就是说，递推失败不是由于物理边界条件“不够”，而通常只是数值上 Bessel/Hankel 函数尺度差异过大。
+
+计算时比一直乘 $2\times2$ 矩阵更直观的量是每层的“外向/正则振幅比”
+\begin{equation}
+\rho_j^{(\lambda)}
+\equiv\frac{B_j^{(\lambda)}}{A_j^{(\lambda)}}.
+\label{eq:multilayer-rho-def}
+\end{equation}
+由
+\begin{equation}
+\begin{pmatrix}A_{j+1}\\B_{j+1}\end{pmatrix}
+=\mathbf M_j
+\begin{pmatrix}A_j\\B_j\end{pmatrix}
+=A_j
+\begin{pmatrix}
+M_{11}+M_{12}\rho_j\\
+M_{21}+M_{22}\rho_j
+\end{pmatrix},
+\end{equation}
+直接得到 Möbius 递推
+\begin{equation}
+\boxed{
+\rho_{j+1}^{(\lambda)}
+=\frac{M_{21}^{(\lambda)}+M_{22}^{(\lambda)}\rho_j^{(\lambda)}}
+{M_{11}^{(\lambda)}+M_{12}^{(\lambda)}\rho_j^{(\lambda)}}.}
+\label{eq:multilayer-Mobius}
+\end{equation}
+中心正则性给出初值
+\begin{equation}
+\rho_1^{(\lambda)}=0,
+\end{equation}
+因为最内层不允许 $h_\ell^{(1)}$ 在原点发散。逐界面迭代到外宿主后，若把外部正则入射波归一化为
+$A_{N+1}^{(\lambda)}=1$，则
+\begin{equation}
+\rho_{N+1}^{(M)}=-b_\ell,
+\qquad
+\rho_{N+1}^{(E)}=-a_\ell.
+\label{eq:multilayer-final-rho}
+\end{equation}
+因此任意同心多层球的计算链非常明确：
+\begin{equation}
+\boxed{
+(k_j,Z_j,R_j)
+\longrightarrow
+\mathbf C_j^{(\lambda)}
+\longrightarrow
+\mathbf M_j^{(\lambda)}
+\longrightarrow
+\rho_{j+1}^{(\lambda)}
+\longrightarrow
+(a_\ell,b_\ell).}
+\end{equation}
+这既保留了完整 Maxwell 边界条件，又把每一步化成一个显式的二元分式递推；从单层球到多层球并没有引入新的角向物理，只增加了径向界面的连续消元。
+
+单球通道建立后，多球问题不需要新的 Maxwell 母理论；新的数学对象只是不同球心之间的 VSWF 平移算符。
+若存在多个互不重叠的球，第 $i$ 个球在自己的球心
+$\bm R_i$ 附近仍具有对角单球 $T_i$。新的困难只有一个：第 $j$ 个球发出的“关于 $\bm R_j$ 的外向 VSWF”，怎样改写成“关于 $\bm R_i$ 的正则 VSWF”。
+
+令
+\begin{equation}
+\bm d_{ij}\equiv\bm R_i-\bm R_j,
+\qquad
+r_i\equiv|\bm r-\bm R_i|.
+\end{equation}
+只要观察点满足 $r_i<|\bm d_{ij}|$，第 $j$ 个球的外向场在以 $\bm R_i$ 为中心的球内没有奇点，因此按前面的完备性必可展开成正则 VSWF：
+\begin{align}
+\bm M_{\ell m}^{(3)}\!\bigl(k(\bm r-\bm R_j)\bigr)
+={}&\sum_{\nu=1}^{\infty}\sum_{\mu=-\nu}^{\nu}
+\left[
+A_{\nu\mu,\ell m}(\bm d_{ij})
+\bm M_{\nu\mu}^{(1)}\!\bigl(k(\bm r-\bm R_i)\bigr)
+\right.\\
+&\left.\hspace{7em}+
+B_{\nu\mu,\ell m}(\bm d_{ij})
+\bm N_{\nu\mu}^{(1)}\!\bigl(k(\bm r-\bm R_i)\bigr)
+\right],\\
+\bm N_{\ell m}^{(3)}\!\bigl(k(\bm r-\bm R_j)\bigr)
+={}&\sum_{\nu,\mu}
+\left[
+B_{\nu\mu,\ell m}(\bm d_{ij})
+\bm M_{\nu\mu}^{(1)}
++A_{\nu\mu,\ell m}(\bm d_{ij})
+\bm N_{\nu\mu}^{(1)}
+\right].
+\label{eq:VSWF-translation-theorem}
+\end{align}
+第二式中 $A/B$ 的交换不是额外假定，而是对第一式取旋度并使用
+$\nabla\times\bm M=k\bm N$、$\nabla\times\bm N=k\bm M$ 得到的。
+
+平移系数直接用正交投影定义，以固定 $\bm X$ 与 $h_\ell^{(1)}$ 的相位约定。任选
+$0<r_0<|\bm d_{ij}|$，令 $\bm r=\bm R_i+r_0\hat{\bm r}$。由
+$\bm M_{\nu\mu}^{(1)}=-j_\nu(kr_0)\bm X_{\nu\mu}$，有
+\begin{align}
+A_{\nu\mu,\ell m}(\bm d_{ij})
+={}&-\frac{1}{j_\nu(kr_0)}
+\int\dd\Omega\,
+\bm X_{\nu\mu}^*(\hat{\bm r})\cdot
+\bm M_{\ell m}^{(3)}
+\!\left(k[r_0\hat{\bm r}+\bm d_{ij}]\right),
+\label{eq:translation-A-projection}\\
+B_{\nu\mu,\ell m}(\bm d_{ij})
+={}&\frac{kr_0}{\sqrt{\nu(\nu+1)}j_\nu(kr_0)}
+\int\dd\Omega\,
+Y_{\nu\mu}^*(\hat{\bm r})
+\hat{\bm r}\cdot
+\bm M_{\ell m}^{(3)}
+\!\left(k[r_0\hat{\bm r}+\bm d_{ij}]\right).
+\label{eq:translation-B-projection}
+\end{align}
+第一式投影出目标展开中的 $M$ 通道，第二式用 $N$ 波的径向分量投影出交叉通道。因为左边在球 $r_i<|\bm d_{ij}|$ 内满足无源 Maxwell 方程且展开唯一，所得 $A,B$ 与任意允许的 $r_0$ 无关；这也是数值实现时很好的自检。
+
+若进一步把被平移的外向球波先按标量球谐加法定理展开，再把角向三球谐积分写成 Gaunt 系数
+\begin{equation}
+\mathcal G_{\ell m,LM,\nu\mu}
+\equiv
+\int Y_{\ell m}(\Omega)
+Y_{LM}(\Omega)
+Y_{\nu\mu}^*(\Omega)\,\dd\Omega,
+\end{equation}
+则
+\begin{equation}
+\mathcal G_{\ell m,LM,\nu\mu}
+=(-1)^\mu
+\sqrt{\frac{(2\ell+1)(2L+1)(2\nu+1)}{4\pi}}
+\begin{pmatrix}\ell&L&\nu\\0&0&0\end{pmatrix}
+\begin{pmatrix}\ell&L&\nu\\m&M&-\mu\end{pmatrix}.
+\label{eq:Gaunt-3j}
+\end{equation}
+因此平移矩阵的选择规则立刻可见：三角条件
+$|\ell-L|\le\nu\le\ell+L$、磁量子数守恒
+$m+M=\mu$，以及相应宇称条件。把式~\eqref{eq:translation-A-projection}--\eqref{eq:translation-B-projection} 中的角积分用式~\eqref{eq:Gaunt-3j} 解析完成，就得到常用的 Cruzan/Wigner-$3j$ 形式；投影定义与既定 VSH 相位约定严格一致。
+
+把每个球的局域正则系数和外向系数分别记为 $\bm f_i,\bm s_i$，并把上述 $A,B$ 组合成块矩阵 $\mathbf U_{ij}$。于是其他球在第 $i$ 个球心产生的场就可以
+\begin{equation}
+\bm f_i
+=\bm f_i^{\rm ext}
++\sum_{j\ne i}\mathbf U_{ij}\bm s_j,
+\qquad
+\bm s_i=\mathbf T_i\bm f_i,
+\label{eq:multiple-mie-local}
+\end{equation}
+其中 $\mathbf U_{ij}$ 是只由
+$k_{\rm h}(\bm R_i-\bm R_j)$ 决定的 VSWF 平移矩阵。代入第二式得到
+\begin{equation}
+\bm s_i
+-\mathbf T_i\sum_{j\ne i}\mathbf U_{ij}\bm s_j
+=\mathbf T_i\bm f_i^{\rm ext}.
+\end{equation}
+把所有球的系数堆叠成一个大向量即得
+\begin{equation}
+\boxed{
+(\mathbf I-\mathbf T\mathbf U)\bm s
+=\mathbf T\bm f^{\rm ext}.}
+\label{eq:multiple-mie-global}
+\end{equation}
+这就是 generalized multiparticle Mie theory 的算符形式。单球 Mie 的难点被完全封装在对角块
+$\mathbf T_i$ 中，多重散射则由几何平移算符
+$\mathbf U_{ij}$ 反复传播。若展开
+$(\mathbf I-\mathbf T\mathbf U)^{-1}$，还可显式看到
+\begin{equation}
+\bm s
+=\left[
+\mathbf T
++\mathbf T\mathbf U\mathbf T
++\mathbf T\mathbf U\mathbf T\mathbf U\mathbf T
++\cdots
+\right]\bm f^{\rm ext},
+\end{equation}
+依次对应单次散射、两球间一次再散射、两次再散射等路径。
+
+
+\section{无限长圆柱：柱谐通道与二维 Mie 系数}
+设圆柱轴沿 $y$，各场对 $y$ 不变。任一轴向标量分量 $U(r,\theta)$ 都满足
+\begin{equation}
+\left[
+\frac{1}{r}\frac{\partial}{\partial r}
+\left(r\frac{\partial}{\partial r}\right)
++\frac{1}{r^2}\frac{\partial^2}{\partial\theta^2}
++k^2
+\right]U=0,
+\end{equation}
+所以外部每个角向通道可写成
+\begin{equation}
+U_\nu^{\rm out}(r)
+=J_\nu(k_{\rm h}r)+s_\nu H_\nu^{(1)}(k_{\rm h}r),
+\qquad
+U_\nu^{\rm in}(r)=c_\nu J_\nu(m_{\rm r}k_{\rm h}r).
+\end{equation}
+令 $x=k_{\rm h}a$。两种独立偏振都可以统一写成边界条件
+\begin{align}
+J_\nu(x)+s_\nu H_\nu^{(1)}(x)
+&=c_\nu J_\nu(m_{\rm r}x),\\
+J_\nu'(x)+s_\nu H_\nu^{(1)\prime}(x)
+&=\rho\,c_\nu J_\nu'(m_{\rm r}x),
+\label{eq:cylinder-general-bc}
+\end{align}
+其中在 $\mu_{\rm p}=\mu_{\rm h}$ 时
+\begin{equation}
+\rho=
+\begin{cases}
+m_{\rm r}, & U=E_y,\\[0.3em]
+1/m_{\rm r}, & U=H_y.
+\end{cases}
+\label{eq:cylinder-rho}
+\end{equation}
+从第一式先解出内部幅度
+\begin{equation}
+c_\nu
+=\frac{J_\nu(x)+s_\nu H_\nu^{(1)}(x)}{J_\nu(m_{\rm r}x)}.
+\end{equation}
+代入第二式：
+\begin{align}
+J_\nu'(x)+s_\nu H_\nu^{(1)\prime}(x)
+&=\rho\,
+\frac{J_\nu(x)+s_\nu H_\nu^{(1)}(x)}{J_\nu(m_{\rm r}x)}
+J_\nu'(m_{\rm r}x).
+\end{align}
+乘以 $J_\nu(m_{\rm r}x)$，再把含 $s_\nu$ 的项移到左边：
+\begin{align}
+s_\nu\Bigl[
+H_\nu^{(1)\prime}(x)J_\nu(m_{\rm r}x)
+-\rho J_\nu'(m_{\rm r}x)H_\nu^{(1)}(x)
+\Bigr]
+={}&\rho J_\nu'(m_{\rm r}x)J_\nu(x)
+-J_\nu'(x)J_\nu(m_{\rm r}x).
+\end{align}
+因此统一散射系数为
+\begin{equation}
+\boxed{
+s_\nu^{(\rho)}=
+\frac{\rho J_\nu'(m_{\rm r}x)J_\nu(x)
+-J_\nu'(x)J_\nu(m_{\rm r}x)}
+{H_\nu^{(1)\prime}(x)J_\nu(m_{\rm r}x)
+-\rho J_\nu'(m_{\rm r}x)H_\nu^{(1)}(x)}.}
+\label{eq:cylinder-scattering-general}
+\end{equation}
+这一个式子同时包含两种圆柱偏振，避免再用 $a_\nu,b_\nu$ 与球 Mie 的 $a_\ell,b_\ell$ 混淆。任意入射平面波由
+\begin{equation}
+\ee^{\ii k_{\rm h}r\cos\theta}
+=\sum_{\nu=-\infty}^{+\infty}
+\ii^\nu J_\nu(k_{\rm h}r)\ee^{\ii\nu\theta}
+\end{equation}
+展开；重建 $\bm E_{\rm sc}$ 后仍然使用同一个轨迹投影式~\eqref{eq:mie-trajectory-projection-general}。这里仍保留任意尺寸参数 $x$。下一节才对 $|x|\ll1$ 作渐近展开，并从这个精确柱谐系数重新推出二维偶极极限；因此长波结果不会反过来参与当前的精确散射推导。
+
+
+\section{无限长圆柱的 Rayleigh 极限}
+设圆柱轴沿 $y$，电子仍沿 $z$。对横向极化的二维静电边值问题，外部散射势的唯一偶极型项为
+\begin{equation}
+\Phi_{\rm sc}
+=E_{\rm L}\chi_{\rm cyl}\frac{a^2}{r}\cos\theta,
+\qquad
+\boxed{
+\chi_{\rm cyl}
+=\frac{\varepsilon_{\rm p}-\varepsilon_{\rm h}}
+{\varepsilon_{\rm p}+\varepsilon_{\rm h}}.}
+\label{eq:chi-cylinder-general}
+\end{equation}
+沿电子轨迹得到
+\begin{equation}
+E_{\omega,z}^{(\rm cyl)}(b,\varphi,z)
+=2E_{\rm L}\chi_{\rm cyl}a^2\cos\varphi\,
+\frac{bz}{(b^2+z^2)^2}.
+\label{eq:Ez-cylinder-general}
+\end{equation}
+利用
+\begin{equation}
+\frac{2bz}{(b^2+z^2)^2}
+=-b\frac{\dd}{\dd z}\frac{1}{b^2+z^2},
+\end{equation}
+先计算基本积分
+\begin{equation}
+I_{\rm cyl}(b,\kappa)
+=\int_{-\infty}^{+\infty}
+\frac{\ee^{-\ii\kappa z}}{z^2+b^2}\dd z,
+\qquad b>0,\ \kappa>0.
+\end{equation}
+由于 $\ee^{-\ii\kappa z}=\ee^{-\ii\kappa x}\ee^{\kappa y}$ 在下半平面 $y<0$ 衰减，闭合下半平面轮廓。轮廓方向为顺时针，故实轴积分等于 $-2\pi\ii$ 乘以极点 $z=-\ii b$ 的留数：
+\begin{align}
+I_{\rm cyl}
+&=-2\pi\ii\operatorname*{Res}_{z=-\ii b}
+\frac{\ee^{-\ii\kappa z}}{(z-\ii b)(z+\ii b)}\\
+&=-2\pi\ii\frac{\ee^{-\kappa b}}{-2\ii b}
+=\frac{\pi}{b}\ee^{-\kappa b}.
+\label{eq:cylinder-basic-Fourier}
+\end{align}
+再分部积分：
+\begin{align}
+\int_{-\infty}^{+\infty}
+\frac{2bz}{(b^2+z^2)^2}\ee^{-\ii\kappa z}\dd z
+&=-b\int_{-\infty}^{+\infty}
+\frac{\dd}{\dd z}\left(\frac{1}{b^2+z^2}\right)
+\ee^{-\ii\kappa z}\dd z\\
+&=-\ii\kappa b\,I_{\rm cyl}(b,\kappa)\\
+&=-\ii\pi\kappa\ee^{-\kappa b},
+\end{align}
+其中边界项因 $(b^2+z^2)^{-1}\to0$ 消失。因此得到
+\begin{equation}
+\boxed{
+\Ftilde^{(\rm cyl)}(b,\varphi)
+=-\ii\pi E_{\rm L}\chi_{\rm cyl}a^2
+\kappa\ee^{-\kappa b}\cos\varphi.}
+\label{eq:F-cylinder-general}
+\end{equation}
+因此圆柱情形的轨迹耦合衰减长度是
+\begin{equation}
+\boxed{
+\delta_{\rm cyl}
+=-\left(\frac{\partial}{\partial b}\ln|\Ftilde^{(\rm cyl)}|\right)^{-1}
+=\frac{1}{\kappa}
+=\frac{v_0}{\omega}.}
+\label{eq:cylinder-decay-general}
+\end{equation}
+这说明电子端出现的空间选择尺度 $v_0/\omega$ 与光学辐射尺度 $1/|k_{\rm h}|$ 是不同概念：前者来自电子沿轨迹积累相位，后者来自 Maxwell 波动传播。
+
+球和圆柱的弱耦合偏振节点都满足
+\begin{equation}
+\Ftilde\propto\cos\varphi
+\quad\Longrightarrow\quad
+P_{\pm1}\propto|\Ftilde|^2\propto\cos^2\varphi.
+\end{equation}
+这一结论不依赖真空宿主，只依赖偶极极化方向与电子轨迹几何。
+
+
+\section{一般椭球的准静态极化率与动态偶极修正}
+\label{app:ellipsoid-rayleigh}
+
+正文只需要一般定义~\eqref{eq:general-quasistatic-polarizability-def}。本附录证明均匀椭球为何具有均匀内场，并由 Newton 势推导退极化因子；最后说明准静态极化率怎样接到辐射修正。这样一般形状结果被完整保留，但不打断“精确 Mie $\to$ 球/圆柱 Rayleigh $\to$ PINEM”的主线。
+
+在球和圆柱之前，先给出任意椭球的准静态母结果。设椭球三个半轴为 $a_1,a_2,a_3$，主轴方向为 $\hat{\bm e}_i$，体积
+\begin{equation}
+ V=\frac{4\pi}{3}a_1a_2a_3.
+\end{equation}
+均匀外场作用下，椭球内部场之所以仍为均匀场，可以从均匀极化椭球的 Newton 势直接看出。设椭球内部极化为常矢量
+$\bm P=\sum_iP_i\hat{\bm e}_i$。对椭球内部点 $\bm r=\sum_i r_i\hat{\bm e}_i$，有标准积分恒等式
+\begin{equation}
+\int_V\frac{\dd^3r'}{|\bm r-\bm r'|}
+=\pi a_1a_2a_3
+\int_0^\infty\frac{\dd s}{\Delta(s)}
+\left[1-\sum_{i=1}^3\frac{r_i^2}{a_i^2+s}\right],
+\qquad
+\Delta(s)\equiv\sqrt{\prod_{j=1}^3(a_j^2+s)}.
+\label{eq:ellipsoid-newton-potential}
+\end{equation}
+均匀极化只有表面束缚电荷 $\sigma_{\rm b}=\bm P\cdot\hat{\bm n}$。利用散度定理，内部退极化势为
+\begin{align}
+\Phi_{\rm dep}(\bm r)
+&=\frac{1}{4\pi\varepsilon_0\varepsilon_{\rm h}}
+\oint_{\partial V}\frac{\bm P\cdot\hat{\bm n}'}{|\bm r-\bm r'|}\,\dd S'\\
+&=-\frac{1}{4\pi\varepsilon_0\varepsilon_{\rm h}}
+\bm P\cdot\bm\nabla_{\bm r}
+\int_V\frac{\dd^3r'}{|\bm r-\bm r'|}.
+\end{align}
+对式~\eqref{eq:ellipsoid-newton-potential} 求梯度，只有 $r_i^2$ 项贡献：
+\begin{align}
+\Phi_{\rm dep}(\bm r)
+&=\frac{a_1a_2a_3}{2\varepsilon_0\varepsilon_{\rm h}}
+\sum_iP_ir_i
+\int_0^\infty
+\frac{\dd s}{(a_i^2+s)\Delta(s)}\\
+&=\frac{1}{\varepsilon_0\varepsilon_{\rm h}}
+\sum_iL_iP_ir_i,
+\end{align}
+其中定义退极化因子
+\begin{equation}
+ \boxed{
+ L_i=\frac{a_1a_2a_3}{2}
+ \int_0^\infty
+ \frac{\dd s}
+ {(s+a_i^2)
+ \sqrt{(s+a_1^2)(s+a_2^2)(s+a_3^2)}}.}
+ \label{eq:ellipsoid-depolarization}
+\end{equation}
+因此
+\begin{equation}
+\bm E_{\rm dep}=-\bm\nabla\Phi_{\rm dep}
+=-\sum_i\frac{L_iP_i}{\varepsilon_0\varepsilon_{\rm h}}\hat{\bm e}_i,
+\end{equation}
+它与位置无关，所以椭球内部总场确实均匀；其几何信息只通过三个 $L_i$ 进入。
+可以直接证明
+\begin{equation}
+ L_1+L_2+L_3=1.
+ \label{eq:ellipsoid-L-sum}
+\end{equation}
+沿用式~\eqref{eq:ellipsoid-newton-potential} 中的 $\Delta(s)$，则
+\begin{equation}
+ \frac{\dd}{\dd s}\frac{1}{\Delta(s)}
+ =-\frac{1}{2\Delta(s)}
+ \sum_{i=1}^3\frac{1}{s+a_i^2}.
+\end{equation}
+所以
+\begin{align}
+\sum_iL_i
+&=\frac{a_1a_2a_3}{2}
+\int_0^\infty\frac{\dd s}{\Delta(s)}
+\sum_i\frac{1}{s+a_i^2}\\
+&=-a_1a_2a_3
+\int_0^\infty\dd s\,
+\frac{\dd}{\dd s}\frac1{\Delta(s)}\\
+&=-a_1a_2a_3
+\left[\frac1{\Delta(\infty)}-\frac1{\Delta(0)}\right]=1.
+\end{align}
+在各主轴方向上，内部场满足
+\begin{equation}
+ E_{{\rm in},i}
+ =E_{{\rm inc},i}
+ -\frac{L_i}{\varepsilon_0\varepsilon_{\rm h}}P_i,
+ \label{eq:ellipsoid-local-field}
+\end{equation}
+而线性本构给出
+\begin{equation}
+ P_i=\varepsilon_0(\varepsilon_{\rm p}-\varepsilon_{\rm h})E_{{\rm in},i}.
+\end{equation}
+消去 $E_{{\rm in},i}$：
+\begin{align}
+P_i
+&=\varepsilon_0(\varepsilon_{\rm p}-\varepsilon_{\rm h})
+\left(E_{{\rm inc},i}
+-\frac{L_i}{\varepsilon_0\varepsilon_{\rm h}}P_i\right),\\
+P_i\left[1+L_i\frac{\varepsilon_{\rm p}-\varepsilon_{\rm h}}
+{\varepsilon_{\rm h}}\right]
+&=\varepsilon_0(\varepsilon_{\rm p}-\varepsilon_{\rm h})E_{{\rm inc},i}.
+\end{align}
+乘以体积得到偶极矩 $p_i=VP_i$，因此椭球极化率张量在主轴基中为
+\begin{equation}
+ \boxed{
+ \alpha_i
+ =\varepsilon_0\varepsilon_{\rm h}V
+ \frac{\varepsilon_{\rm p}-\varepsilon_{\rm h}}
+ {\varepsilon_{\rm h}+L_i(\varepsilon_{\rm p}-\varepsilon_{\rm h})},
+ \qquad
+ \boldsymbol\alpha=\sum_i\alpha_i\hat{\bm e}_i\hat{\bm e}_i.}
+ \label{eq:ellipsoid-polarizability}
+\end{equation}
+球只是 $a_1=a_2=a_3=a$、$L_i=1/3$ 的特例；无限长圆柱的横向准静态结果则对应二维极限中的 $L_\perp=1/2$。因此 Rayleigh 部分从一开始就可以理解为“几何退极化张量 $\boldsymbol L$ 与材料介电对比的组合”，而不是球形公式的孤立巧合。
+
+对任意小粒子，电子耦合也可先写成极化率张量形式。若宿主的准静态偶极 Green 张量记为
+\begin{equation}
+ \mathbf G_{\rm es}(\bm r,\bm r')
+ =\frac{1}{4\pi\varepsilon_0\varepsilon_{\rm h}}
+ \frac{3\hat{\bm R}\hat{\bm R}-\mathbf I}{R^3},
+ \qquad
+ \bm R=\bm r-\bm r',
+\end{equation}
+则
+\begin{equation}
+ \bm E_{\rm sc}(\bm r)
+ =\mathbf G_{\rm es}(\bm r,\bm r_0)
+ \cdot\boldsymbol\alpha\cdot\bm E_{\rm inc}(\bm r_0),
+\end{equation}
+从而
+\begin{equation}
+ \boxed{
+ \Ftilde
+ =\int\dd s\,
+ \ee^{-\ii\kappa s}
+ \hat{\bm v}_0\cdot
+ \mathbf G_{\rm es}(\bm r_{\rm e}(s),\bm r_0)
+ \cdot\boldsymbol\alpha\cdot\bm E_{\rm inc}(\bm r_0).}
+ \label{eq:rayleigh-general-tensor-trajectory-ellipsoid}
+\end{equation}
+球和圆柱下面的闭式积分只是这个张量母式在高对称几何中的解析计算。
+
+严格说来，准静态 $\boldsymbol\alpha$ 只给出 $k_{\rm h}a\to0$ 的最低阶。对于无损均匀宿主中的电偶极，辐射反作用要求极化率至少满足
+\begin{equation}
+ \boxed{
+ \boldsymbol\alpha_{\rm dyn}^{-1}
+ \simeq\boldsymbol\alpha_0^{-1}
+ -\ii\frac{k_{\rm h}^3}{6\pi\varepsilon_0\varepsilon_{\rm h}}\mathbf I
+ +O\!\left(\frac{k_{\rm h}^2}{\varepsilon_0\varepsilon_{\rm h}a}\right),}
+ \label{eq:dynamic-polarizability-radiative}
+\end{equation}
+其中 $O(k_{\rm h}^2/a)$ 代表依赖具体形状的动态退极化修正。对球体，把完整 Mie 的 $a_1$ 展开到更高阶会自动重现这些修正，因此式~\eqref{eq:dynamic-polarizability-radiative} 只应作为 Rayleigh 与 Mie 之间的过渡展开，而不是替代完整多极理论。
+

@@ -1,0 +1,651 @@
+\chapter{解析级数、Gaussian 积分与空间平均}
+\label{app:analytic-series}
+
+\section{解析推导附录：从 Bessel 主方程到 Taylor--Fourier 双重级数}
+
+正文用 Bessel 形式已经闭合了 PINEM 主线。本附录只在需要有限脉冲、空间平均和高阶边带的解析级数时使用：从同一个指数相位出发，把它按净边带阶数重排，并逐步说明换序、收敛、Fourier 变换和空间积分为何成立。计算从式~\eqref{eq:unified-master-phase} 直接开始。
+
+先记
+\begin{equation}
+\kappa\equiv \Delta k_{\mathrm e}=\frac{\omega}{v_0},
+\qquad
+\mathcal G(z';\tau)\equiv
+\exp\!\left[-\frac{(z'+v_0\tau)^2}{4v_0^2\sigma_{\mathrm L}^2}\right],
+\qquad
+\mathcal A\equiv \frac{q_{\rm e}}{2\hbar\omega}.
+\label{eq:compactdefs}
+\end{equation}
+利用
+\[
+\ii\,\operatorname{Im}X=\frac{X-X^*}{2},
+\]
+式~\eqref{eq:unified-master-phase} 可等价写成
+\begin{align}
+\frac{g(z',+\infty)}{g(z',-\infty)}
+&=\exp\!\left\{
+\mathcal A\mathcal G(z';\tau)
+\left[
+\ee^{\ii\kappa z'}\Ftilde-
+\ee^{-\ii\kappa z'}\Ftilde^*
+\right]\right\}.
+\label{eq:master_exp_form}
+\end{align}
+这里以及以下若未特别写出自变量，均约定
+\(
+\Ftilde\equiv\Ftilde(\kappa)
+\)。由于指数中正、负频两项彼此只是复数乘法，可以先把指数拆成乘积，再分别展开：
+\begin{align}
+\frac{g_+}{g_-}
+&=\exp\!\left(\mathcal A\mathcal G\Ftilde\ee^{\ii\kappa z'}\right)
+  \exp\!\left(-\mathcal A\mathcal G\Ftilde^*\ee^{-\ii\kappa z'}\right)\\
+&=\sum_{r=0}^{\infty}\sum_{s=0}^{\infty}
+\frac{(\mathcal A\mathcal G\Ftilde)^r}{r!}
+\frac{(-\mathcal A\mathcal G\Ftilde^*)^s}{s!}
+\ee^{\ii(r-s)\kappa z'}.
+\label{eq:taylor-double-direct}
+\end{align}
+这里的双重级数可以严格重排，而不只是形式操作。事实上 $0<\mathcal G\le1$，并且
+\begin{align}
+&\sum_{r=0}^{\infty}\sum_{s=0}^{\infty}
+\left|
+\frac{(\mathcal A\mathcal G\Ftilde)^r}{r!}
+\frac{(-\mathcal A\mathcal G\Ftilde^*)^s}{s!}
+\ee^{\ii(r-s)\kappa z'}
+\right|\\
+&\qquad=
+\left[\sum_{r=0}^{\infty}\frac{|\mathcal A\mathcal G\Ftilde|^r}{r!}\right]
+\left[\sum_{s=0}^{\infty}\frac{|\mathcal A\mathcal G\Ftilde|^s}{s!}\right]\\
+&\qquad=\exp\!\left(2|\mathcal A\mathcal G\Ftilde|\right)<\infty.
+\label{eq:taylor-absolute-convergence}
+\end{align}
+因此由 Tonelli/Fubini 定理，按 $(r,s)$ 求和、按净阶数 $n=r-s$ 分组以及后面交换有限宽度 Gaussian 积分与求和，在相应支配收敛条件满足时都是合法的。
+
+这里 $r$、$s$ 只是展开指标，分别计数正、负空间谐波因子的幂次，不再使用会与电子质量 $m$ 或 Mie 多极 $\ell$ 冲突的字母。固定净边带阶数
+\begin{equation}
+n=r-s
+\label{eq:net-sideband-rs}
+\end{equation}
+后即可直接重排双重和。若 $n\ge0$，令
+\begin{equation}
+r=n+j,\qquad s=j,\qquad j=0,1,2,\ldots,
+\end{equation}
+则
+\begin{align}
+\frac{g_+}{g_-}\bigg|_{n\ge0}
+=\sum_{n=0}^{\infty}\ee^{\ii n\kappa z'}
+\sum_{j=0}^{\infty}
+\frac{(\mathcal A\mathcal G)^{n+2j}}{(n+j)!j!}
+(\Ftilde)^{n+j}(-\Ftilde^*)^j.
+\end{align}
+若 $n=-r_0<0$，其中 $r_0>0$，令 $r=j$、$s=r_0+j$，得到
+\begin{align}
+\frac{g_+}{g_-}\bigg|_{n=-r_0}
+=\ee^{-\ii r_0\kappa z'}
+\sum_{j=0}^{\infty}
+\frac{(\mathcal A\mathcal G)^{r_0+2j}}{(r_0+j)!j!}
+(\Ftilde)^j(-\Ftilde^*)^{r_0+j}.
+\end{align}
+因此，一个对正负 \(n\) 都无歧义的写法是
+\begin{equation}
+\boxed{
+\frac{g_+}{g_-}
+=\sum_{n=-\infty}^{\infty}\ee^{\ii n\kappa z'}
+\sum_{j=0}^{\infty}C_j^{(n)}
+\mathcal G(z';\tau)^{|n|+2j}}
+\label{eq:taylor-sideband-coefficient}
+\end{equation}
+其中
+\begin{equation}
+C_j^{(n)}=
+\begin{cases}
+\displaystyle
+\frac{1}{(n+j)!j!}
+\left(\frac{q_{\rm e}\Ftilde}{2\hbar\omega}\right)^{n+j}
+\left(-\frac{q_{\rm e}\Ftilde^*}{2\hbar\omega}\right)^j,
+& n\ge0,\\[1.2em]
+\displaystyle
+\frac{1}{(|n|+j)!j!}
+\left(\frac{q_{\rm e}\Ftilde}{2\hbar\omega}\right)^j
+\left(-\frac{q_{\rm e}\Ftilde^*}{2\hbar\omega}\right)^{|n|+j},
+& n<0.
+\end{cases}
+\label{eq:Cnj_general}
+\end{equation}
+为简化后续高斯积分，先计算增益侧 \(n\ge0\)，损失侧可由对称关系 \(P(-n)=P(n)\) 恢复。此时式~\eqref{eq:Cnj_general} 化为
+\begin{equation}
+\boxed{
+C_j^{n}
+=\frac{1}{(n+j)!j!}
+\left(\frac{q_{\rm e}\Ftilde}{2\hbar\omega}\right)^{n+j}
+\left(-\frac{q_{\rm e}\Ftilde^*}{2\hbar\omega}\right)^j,
+\qquad n\ge0.}
+\label{eq:Cnj-positive}
+\end{equation}
+还可以把这组 Taylor 系数逐项重新求和，直接验证它与 Bessel 表示完全等价。对 $n\ge0$，因为 $\mathcal A=q_{\rm e}/(2\hbar\omega)$ 为实数，
+\begin{align}
+(\mathcal A\Ftilde)^{n+j}(-\mathcal A\Ftilde^*)^j
+&=(-1)^j(\mathcal A\Ftilde)^n
+|\mathcal A\Ftilde|^{2j},
+\end{align}
+所以
+\begin{align}
+\sum_{j=0}^{\infty}C_j^n\mathcal G^{n+2j}
+&=(\mathcal A\Ftilde)^n\mathcal G^n
+\sum_{j=0}^{\infty}
+\frac{(-1)^j(|\mathcal A\Ftilde|\mathcal G)^{2j}}
+{j!(n+j)!}\\
+&=\left(\frac{\mathcal A\Ftilde}{|\mathcal A\Ftilde|}\right)^n
+\sum_{j=0}^{\infty}
+\frac{(-1)^j(|\mathcal A\Ftilde|\mathcal G)^{n+2j}}
+{j!(n+j)!}\\
+&=\left(\frac{\mathcal A\Ftilde}{|\mathcal A\Ftilde|}\right)^n
+J_n\!\left(2|\mathcal A\Ftilde|\mathcal G\right),
+\label{eq:Taylor-to-Bessel-explicit}
+\end{align}
+其中最后一步使用了第一类 Bessel 函数的幂级数定义
+\begin{equation}
+J_n(x)=\sum_{j=0}^{\infty}
+\frac{(-1)^j}{j!(n+j)!}\left(\frac{x}{2}\right)^{n+2j},
+\qquad n=0,1,2,\ldots.
+\label{eq:Bessel-series-definition}
+\end{equation}
+当 $\mathcal A\Ftilde=0$ 时只有 $n=0$ 项且结论平凡；以下假定 $\mathcal A\Ftilde\neq0$。若写 $\mathcal A\Ftilde=|\mathcal A\Ftilde|\ee^{\ii\vartheta}$，则第 $n$ 阶系数就是 $J_n(2|\mathcal A\Ftilde|\mathcal G)\ee^{\ii n\vartheta}$；再结合 $J_{-n}(x)=(-1)^nJ_n(x)$ 即恢复全部正负边带。因此这个复杂级数不是新的动力学近似，而是 Jacobi--Anger/Bessel 解的逐项 Taylor 展开；两种表示在收敛域内逐项相同。
+
+
+\section{高斯脉冲的 Fourier 变换与双重级数逐项计算}
+下面固定 \(n\ge0\)。将初态高斯式~\eqref{eq:gaussian-electron} 与式~\eqref{eq:taylor-sideband-coefficient} 相乘，定义
+\begin{equation}
+s_j\equiv n+2j,
+\end{equation}
+则第 \((n,j)\) 项的实空间指数为
+\begin{align}
+&-\frac{z'^2}{4v_0^2\sigma_{\mathrm e}^2}
+-\frac{s_j(z'+v_0\tau)^2}{4v_0^2\sigma_{\mathrm L}^2}\\
+={}&-\frac{1}{4v_0^2}
+\left[
+\left(\frac{1}{\sigma_{\mathrm e}^2}+\frac{s_j}{\sigma_{\mathrm L}^2}\right)z'^2
++\frac{2s_jv_0\tau}{\sigma_{\mathrm L}^2}z'
++\frac{s_jv_0^2\tau^2}{\sigma_{\mathrm L}^2}
+\right].
+\label{eq:complete_square_start}
+\end{align}
+令
+\begin{equation}
+A_j\equiv \frac{1}{\sigma_{\mathrm e}^2}+\frac{s_j}{\sigma_{\mathrm L}^2}
+=\frac{D_j}{\sigma_{\mathrm e}^2\sigma_{\mathrm L}^2},
+\qquad
+D_j\equiv\sigma_{\mathrm L}^2+s_j\sigma_{\mathrm e}^2.
+\label{eq:Aj-Dj-def}
+\end{equation}
+希望把二次多项式写成 $A_j(z'+c)^2+$ 常数。比较一次项系数，必须有
+\begin{align}
+2A_jc
+&=\frac{2s_jv_0\tau}{\sigma_{\mathrm L}^2},\\
+c
+&=\frac{s_jv_0\tau}{A_j\sigma_{\mathrm L}^2}
+=\frac{s_jv_0\tau\sigma_{\mathrm e}^2}{D_j}.
+\end{align}
+因此
+\begin{align}
+A_j z'^2+\frac{2s_jv_0\tau}{\sigma_{\mathrm L}^2}z'
+&=A_j(z'+c)^2-A_jc^2.
+\end{align}
+把它代回式~\eqref{eq:complete_square_start} 后，$z'$ 的二次项为
+\begin{equation}
+-\frac{A_j}{4v_0^2}(z'+c)^2.
+\end{equation}
+若把这一项标准化为 $-(z'+c)^2/[2\Sigma^2]$，则
+\begin{align}
+\frac{1}{2\Sigma^2}&=\frac{A_j}{4v_0^2},\\
+\Sigma^2&=\frac{2v_0^2}{A_j}
+=\frac{2v_0^2\sigma_{\mathrm L}^2\sigma_{\mathrm e}^2}{D_j}.
+\end{align}
+剩余常数项为
+\begin{align}
+d
+&=\frac{1}{4v_0^2}
+\left[
+\frac{s_jv_0^2\tau^2}{\sigma_{\mathrm L}^2}-A_jc^2
+\right]\\
+&=\frac{\tau^2}{4}
+\left[
+\frac{s_j}{\sigma_{\mathrm L}^2}
+-\frac{s_j^2\sigma_{\mathrm e}^2}{\sigma_{\mathrm L}^2D_j}
+\right]\\
+&=\frac{\tau^2}{4}
+\frac{s_j(D_j-s_j\sigma_{\mathrm e}^2)}{\sigma_{\mathrm L}^2D_j}
+=\frac{s_j\tau^2}{4D_j},
+\end{align}
+因为 $D_j-s_j\sigma_{\mathrm e}^2=\sigma_{\mathrm L}^2$。于是定义
+\begin{equation}
+\boxed{
+c_j^n
+=\frac{v_0\tau\,s_j\sigma_{\mathrm e}^2}{D_j},
+\qquad
+(\Sigma_j^n)^2
+=\frac{2v_0^2\sigma_{\mathrm L}^2\sigma_{\mathrm e}^2}{D_j},
+\qquad
+d_j^n
+=\frac{s_j\tau^2}{4D_j}.}
+\label{eq:cSigmaD}
+\end{equation}
+因此不是“猜测”高斯中心和宽度，而是逐项比较系数后严格得到
+\begin{equation}
+-\frac{z'^2}{4v_0^2\sigma_{\mathrm e}^2}
+-\frac{s_j(z'+v_0\tau)^2}{4v_0^2\sigma_{\mathrm L}^2}
+=-\frac{(z'+c_j^n)^2}{2(\Sigma_j^n)^2}-d_j^n.
+\label{eq:complete_square_verified}
+\end{equation}
+因此
+\begin{equation}
+\boxed{
+g(z',+\infty)
+=\frac{1}{(2\pi)^{1/4}\sqrt{v_0\sigma_{\mathrm e}}}
+\sum_{n=-\infty}^{\infty}\sum_{j=0}^{\infty}
+C_j^n
+\exp\!\left[
+\ii n\kappa z'
+-\frac{(z'+c_j^n)^2}{2(\Sigma_j^n)^2}
+-d_j^n
+\right]}
+\label{eq:gaussian-position-sideband}
+\end{equation}
+其中对 \(n<0\) 使用式~\eqref{eq:Cnj_general} 的对应分支。这给出位置空间中的第 $n$ 阶高斯边带包络。
+
+对每个高斯项做 Fourier 变换。取
+\begin{equation}
+\widehat g(k')=\frac{1}{\sqrt{2\pi}}
+\int_{-\infty}^{\infty}g(z')\ee^{-\ii k'z'}\dd z'.
+\end{equation}
+对任意 \(\Delta k'=k'-n\kappa\)，先作平移
+\begin{equation}
+y=z'+c,
+\qquad z'=y-c,
+\qquad \dd z'=\dd y.
+\end{equation}
+于是
+\begin{align}
+I(\Delta k')
+&\equiv\int_{-\infty}^{\infty}
+\exp\!\left[-\frac{(z'+c)^2}{2\Sigma^2}\right]
+\ee^{-\ii\Delta k'z'}\dd z'\\
+&=\ee^{+\ii c\Delta k'}
+\int_{-\infty}^{\infty}
+\exp\!\left[-\frac{y^2}{2\Sigma^2}-\ii\Delta k'y\right]\dd y.
+\end{align}
+对指数再次配方：
+\begin{align}
+-\frac{y^2}{2\Sigma^2}-\ii\Delta k'y
+&=-\frac{1}{2\Sigma^2}
+\left(y+\ii\Sigma^2\Delta k'\right)^2
+-\frac{\Sigma^2\Delta k'^2}{2}.
+\end{align}
+被积函数为整函数且沿平行于实轴的平移仍高斯衰减，因此可把积分路径平移回实轴，得到
+\begin{align}
+I(\Delta k')
+&=\ee^{+\ii c\Delta k'}
+\ee^{-\Sigma^2\Delta k'^2/2}
+\int_{-\infty}^{\infty}
+\ee^{-y^2/(2\Sigma^2)}\dd y\\
+&=\sqrt{2\pi}\,\Sigma
+\exp\!\left[-\frac{\Sigma^2\Delta k'^2}{2}\right]
+\ee^{+\ii c\Delta k'}.
+\label{eq:gaussian_FT}
+\end{align}
+线性相位的正号由 Fourier 定义
+$\widehat g(k')=(2\pi)^{-1/2}\int g(z')\ee^{-\ii k'z'}\dd z'$ 唯一决定；若改用 $\ee^{+\ii k'z'}$ 定义，所有线性相位同时共轭。采用该约定，式~\eqref{eq:gaussian-position-sideband} 逐项变换得到
+\begin{equation}
+\boxed{
+\widehat g(k',+\infty)
+=\frac{1}{(2\pi)^{1/4}\sqrt{v_0\sigma_{\mathrm e}}}
+\sum_{n=-\infty}^{\infty}\sum_{j=0}^{\infty}
+C_j^n\ee^{-d_j^n}\Sigma_j^n
+\exp\!\left[
++\ii c_j^n(k'-n\kappa)
+-\frac{(\Sigma_j^n)^2(k'-n\kappa)^2}{2}
+\right].}
+\label{eq:gaussian-fourier-term}
+\end{equation}
+由此看出第 \(n\) 个能量边带在空间频率域中以 \(n\kappa\) 为中心，其宽度量级为 \((\Sigma_j^n)^{-1}\)。若所有显著的 \(j\) 项都满足
+\begin{equation}
+(\Sigma_j^n)^{-1}\ll \kappa,
+\label{eq:nonoverlap}
+\end{equation}
+相邻边带基本不重叠，可以将第 \(n\) 个边带的积分区间
+\([
+(n-\tfrac12)\kappa,(n+\tfrac12)\kappa]
+\)
+扩展到整条实轴：
+\begin{equation}
+P_n\simeq
+\int_{-\infty}^{\infty}\dd(\Delta k')
+\left|
+\frac{1}{(2\pi)^{1/4}\sqrt{v_0\sigma_{\mathrm e}}}
+\sum_{j=0}^{\infty}
+C_j^n\ee^{-d_j^n}\Sigma_j^n
+\ee^{+\ii c_j^n\Delta k'}
+\ee^{-\frac12(\Sigma_j^n)^2\Delta k'^2}
+\right|^2.
+\label{eq:gaussian-sideband-momentum}
+\end{equation}
+展开模平方得到双重级数
+\begin{align}
+P_n
+={}&\frac{1}{\sqrt{2\pi}v_0\sigma_{\mathrm e}}
+\sum_{j=0}^{\infty}\sum_{k=0}^{\infty}
+C_j^n C_k^{n*}\,
+\ee^{-d_j^n-d_k^n}\,
+\Sigma_j^n\Sigma_k^n\\
+&\times
+\int_{-\infty}^{\infty}\dd q\,
+\exp\!\left[-\frac{(\Sigma_j^n)^2+(\Sigma_k^n)^2}{2}q^2\right]
+\exp\!\left[+\ii(c_j^n-c_k^n)q\right].
+\label{eq:Pk_gaussian_integral}
+\end{align}
+用高斯积分
+\begin{equation}
+\int_{-\infty}^{\infty}\ee^{-Aq^2-\ii Bq}\dd q
+=\sqrt{\frac{\pi}{A}}\exp\!\left(-\frac{B^2}{4A}\right),
+\qquad \operatorname{Re}A>0,
+\end{equation}
+得到
+\begin{align}
+P_n
+={}&\sum_{j,k\ge0}C_j^nC_k^{n*}
+\frac{\Sigma_j^n\Sigma_k^n}
+{v_0\sigma_{\mathrm e}\sqrt{(\Sigma_j^n)^2+(\Sigma_k^n)^2}}
+\exp\!\left[
+-d_j^n-d_k^n
+-\frac{(c_j^n-c_k^n)^2}
+{2[(\Sigma_j^n)^2+(\Sigma_k^n)^2]}
+\right].
+\label{eq:Pk_before_simplify}
+\end{align}
+现在令
+\begin{equation}
+S_{njk}\equiv n+j+k,
+\qquad
+R_\sigma\equiv\frac{\sigma_{\mathrm e}}{\sigma_{\mathrm L}},
+\qquad
+R_\tau\equiv\frac{\tau}{\sigma_{\mathrm L}},
+\qquad n\ge0.
+\end{equation}
+由于
+\(s_j=n+2j\)、\(s_k=n+2k\)，有
+\begin{equation}
+\frac{s_j+s_k}{2}=n+j+k=S_{njk}.
+\end{equation}
+为了不把关键化简藏在“代入可得”里，记
+\[
+D_j\equiv \sigma_{\mathrm L}^2+s_j\sigma_{\mathrm e}^2,
+\qquad
+D_k\equiv \sigma_{\mathrm L}^2+s_k\sigma_{\mathrm e}^2.
+\]
+由式~\eqref{eq:cSigmaD}，
+\begin{align}
+(\Sigma_j^n)^2&=\frac{2v_0^2\sigma_{\mathrm L}^2\sigma_{\mathrm e}^2}{D_j},
+&
+(\Sigma_k^n)^2&=\frac{2v_0^2\sigma_{\mathrm L}^2\sigma_{\mathrm e}^2}{D_k}.
+\end{align}
+于是前因子的平方为
+\begin{align}
+\left[
+\frac{\Sigma_j^n\Sigma_k^n}
+{v_0\sigma_{\mathrm e}\sqrt{(\Sigma_j^n)^2+(\Sigma_k^n)^2}}
+\right]^2
+&=\frac{(\Sigma_j^n)^2(\Sigma_k^n)^2}
+{v_0^2\sigma_{\mathrm e}^2[(\Sigma_j^n)^2+(\Sigma_k^n)^2]}\\
+&=\frac{2\sigma_{\mathrm L}^2}{D_j+D_k}\\
+&=\frac{\sigma_{\mathrm L}^2}
+{\sigma_{\mathrm L}^2+S_{njk}\sigma_{\mathrm e}^2}\\
+&=\frac{1}{1+S_{njk}(\sigma_{\mathrm e}/\sigma_{\mathrm L})^2}.
+\end{align}
+指数中的位移差也要完整算一次。由
+\[
+c_j^n=\frac{v_0\tau s_j\sigma_{\mathrm e}^2}{D_j},
+\qquad
+c_k^n=\frac{v_0\tau s_k\sigma_{\mathrm e}^2}{D_k},
+\]
+得到
+\begin{align}
+c_j^n-c_k^n
+&=v_0\tau\sigma_{\mathrm e}^2
+\frac{s_jD_k-s_kD_j}{D_jD_k}\\
+&=v_0\tau\sigma_{\mathrm e}^2\sigma_{\mathrm L}^2
+\frac{s_j-s_k}{D_jD_k}.
+\end{align}
+因此
+\begin{align}
+\frac{(c_j^n-c_k^n)^2}{2[(\Sigma_j^n)^2+(\Sigma_k^n)^2]}
+=\frac{\tau^2\sigma_{\mathrm e}^2\sigma_{\mathrm L}^2(s_j-s_k)^2}
+{4D_jD_k(D_j+D_k)}.
+\end{align}
+另一方面
+\begin{equation}
+d_j^n+d_k^n
+=\frac{\tau^2}{4}
+\left(\frac{s_j}{D_j}+\frac{s_k}{D_k}\right).
+\end{equation}
+把两项放到公分母 $4D_jD_k(D_j+D_k)$ 后，不能直接略去中间代数。记 $a=s_j$、$b=s_k$、$L=\sigma_{\mathrm L}^2$、$E=\sigma_{\mathrm e}^2$，则 $D_j=L+aE$、$D_k=L+bE$。有
+\begin{align}
+&d_j^n+d_k^n+
+\frac{(c_j^n-c_k^n)^2}{2[(\Sigma_j^n)^2+(\Sigma_k^n)^2]}\\
+&=\frac{\tau^2}{4D_jD_k(D_j+D_k)}
+\Bigl[(aD_k+bD_j)(D_j+D_k)+EL(a-b)^2\Bigr].
+\label{eq:exp-common-denominator}
+\end{align}
+现在逐项展开括号：
+\begin{align}
+aD_k+bD_j&=(a+b)L+2abE,\\
+D_j+D_k&=2L+(a+b)E,
+\end{align}
+因此
+\begin{align}
+&[(a+b)L+2abE][2L+(a+b)E]+EL(a-b)^2\\
+&=2(a+b)L^2
++\bigl[(a+b)^2+4ab+(a-b)^2\bigr]LE
++2ab(a+b)E^2\\
+&=2(a+b)L^2+2(a+b)^2LE+2ab(a+b)E^2\\
+&=2(a+b)(L+aE)(L+bE)\\
+&=2(a+b)D_jD_k.
+\end{align}
+代回式~\eqref{eq:exp-common-denominator} 后，$D_jD_k$ 严格约掉，得到
+\begin{align}
+&d_j^n+d_k^n+
+\frac{(c_j^n-c_k^n)^2}{2[(\Sigma_j^n)^2+(\Sigma_k^n)^2]}\\
+&\qquad=
+\frac{\tau^2(a+b)}{2(D_j+D_k)}
+=\frac{\tau^2(s_j+s_k)}{2(D_j+D_k)}\\
+&\qquad=\frac{S_{njk}\tau^2}
+{2[\sigma_{\mathrm L}^2+S_{njk}\sigma_{\mathrm e}^2]},
+\end{align}
+其中最后一步用了 $s_j+s_k=2S_{njk}$ 与 $D_j+D_k=2[\sigma_{\mathrm L}^2+S_{njk}\sigma_{\mathrm e}^2]$。
+故两个组合分别严格化简为
+\begin{align}
+\left[
+\frac{\Sigma_j^n\Sigma_k^n}
+{v_0\sigma_{\mathrm e}\sqrt{(\Sigma_j^n)^2+(\Sigma_k^n)^2}}
+\right]^2
+&=\frac{1}{1+S_{njk}R_\sigma^2},
+\label{eq:pref_simplify}\\
+d_j^n+d_k^n+
+\frac{(c_j^n-c_k^n)^2}
+{2[(\Sigma_j^n)^2+(\Sigma_k^n)^2]}
+&=\frac{S_{njk}R_\tau^2}
+{2[1+S_{njk}R_\sigma^2]}.
+\label{eq:exp_simplify}
+\end{align}
+于是得到脉冲情况下的双重级数：
+\begin{equation}
+\boxed{
+P_n(\tau)=
+\sum_{j=0}^{\infty}\sum_{k=0}^{\infty}
+C_j^nC_k^{n*}
+\frac{1}{\sqrt{1+S_{njk}R_\sigma^2}}
+\exp\!\left[
+-\frac{S_{njk}R_\tau^2}
+{2(1+S_{njk}R_\sigma^2)}
+\right],\quad n\ge0.}
+\label{eq:coherent-pulse-double-series}
+\end{equation}
+再由 \(P_{-n}=P_n\) 得到全部边带。式~\eqref{eq:coherent-pulse-double-series} 与直接使用 Bessel 函数的式~\eqref{eq:Pn-gaussian} 是同一个主方程的两种表示：前者适合解析地看出时间宽度、空间平均和高阶系数，后者更紧凑。
+
+
+\subsection{指数型横向近场的空间平均}
+
+现在 $C_j^n$、$S_{njk}$ 和式~\eqref{eq:coherent-pulse-double-series} 都已经建立，才可以进一步把特定横向近场模型代入并解析完成孔径平均。下面的计算只服务于这一特殊模型，不再反向定义正文中的一般探测器平均。
+若粒子外部的局域耦合可以用指数包络近似
+\begin{equation}
+\Ftilde(b,\varphi)
+\simeq \Ftilde(a,0)
+\ee^{-(b-a)/\delta}\cos\varphi.
+\label{eq:F_spatial_model}
+\end{equation}
+在式~\eqref{eq:coherent-pulse-double-series} 的 \((j,k)\) 项中，令
+\begin{equation}
+s\equiv S_{njk}=n+j+k.
+\end{equation}
+因为
+\(
+C_j^nC_k^{n*}\propto|\Ftilde|^{2s}
+\)，空间平均只需计算
+\begin{equation}
+D_s^{(sph)}
+=\frac{1}{\pi(w^2-a^2)}
+\int_0^{2\pi}\cos^{2s}\varphi\,\dd\varphi
+\int_a^w b\,
+\ee^{-2s(b-a)/\delta}\dd b.
+\label{eq:Dfactor_start}
+\end{equation}
+角向积分由 Beta/Gamma 函数给出。先利用四个象限的对称性：
+\begin{equation}
+I_\varphi(s)=\int_0^{2\pi}\cos^{2s}\varphi\,\dd\varphi
+=4\int_0^{\pi/2}\cos^{2s}\varphi\,\dd\varphi.
+\end{equation}
+令 $u=\sin^2\varphi$，则
+\begin{equation}
+\dd u=2\sin\varphi\cos\varphi\,\dd\varphi,
+\qquad
+\dd\varphi=\frac{\dd u}{2\sqrt{u(1-u)}}.
+\end{equation}
+并且 $\cos^{2s}\varphi=(1-u)^s$，故
+\begin{align}
+\int_0^{\pi/2}\cos^{2s}\varphi\,\dd\varphi
+&=\frac12\int_0^1
+u^{-1/2}(1-u)^{s-1/2}\dd u\\
+&=\frac12 B\!\left(\frac12,s+\frac12\right)\\
+&=\frac12\frac{\Gamma(1/2)\Gamma(s+1/2)}{\Gamma(s+1)}.
+\end{align}
+因此
+\begin{align}
+I_\varphi(s)
+&=2\sqrt\pi\,
+\frac{\Gamma(s+\frac12)}{\Gamma(s+1)}.
+\label{eq:angularGamma}
+\end{align}
+该积分要求 $s>-1/2$；这里 $s=n+j+k\ge0$，因此条件自动满足。
+径向积分令 \(x=b-a\)、\(L=w-a\)、\(\lambda=2s/\delta\)，于是 $b=a+x$：
+\begin{align}
+I_b
+&=\int_a^w b\ee^{-2s(b-a)/\delta}\dd b
+=\int_0^L(a+x)\ee^{-\lambda x}\dd x\\
+&=a\int_0^L\ee^{-\lambda x}\dd x
++\int_0^Lx\ee^{-\lambda x}\dd x.
+\end{align}
+第一项直接给出
+\begin{equation}
+\int_0^L\ee^{-\lambda x}\dd x
+=\frac{1-\ee^{-\lambda L}}{\lambda}.
+\end{equation}
+第二项分部积分，取 $u=x$、$\dd v=\ee^{-\lambda x}\dd x$：
+\begin{align}
+\int_0^Lx\ee^{-\lambda x}\dd x
+&=\left[-\frac{x}{\lambda}\ee^{-\lambda x}\right]_0^L
++\frac{1}{\lambda}\int_0^L\ee^{-\lambda x}\dd x\\
+&=-\frac{L}{\lambda}\ee^{-\lambda L}
++\frac{1-\ee^{-\lambda L}}{\lambda^2}\\
+&=\frac{1-\ee^{-\lambda L}(1+\lambda L)}{\lambda^2}.
+\end{align}
+故
+\begin{align}
+I_b
+&=a\frac{1-\ee^{-\lambda L}}{\lambda}
++\frac{1-\ee^{-\lambda L}(1+\lambda L)}{\lambda^2}\\
+&=\frac{\delta}{4s^2}
+\left[
+2sa+\delta-
+\ee^{-2s(w-a)/\delta}(2sw+\delta)
+\right],
+\label{eq:radialIntegral}
+\end{align}
+其中最后一步使用 $L=w-a$，并将指数项中的
+$2sa+2sL=2sw$ 合并。
+因此
+\begin{equation}
+\boxed{
+D_s^{(sph)}=
+\frac{\delta\left[(2sa+\delta)-
+\ee^{-2s(w-a)/\delta}(2sw+\delta)\right]}
+{2\sqrt\pi\,s^2(w^2-a^2)}
+\frac{\Gamma(s+\frac12)}{\Gamma(s+1)}.}
+\label{eq:D_sphere}
+\end{equation}
+式~\eqref{eq:D_sphere} 写成闭式时含有 $s^{-2}$，但 $s=0$ 并不奇异：它对应被积函数 $|\Ftilde|^{0}=1$，故应按原积分定义取连续极限
+\begin{equation}
+\boxed{D_0^{(sph)}=1.}
+\label{eq:D-sphere-s0}
+\end{equation}
+对所有 $s>0$ 使用式~\eqref{eq:D_sphere}。写回 \(s=n+j+k\)，得到空间平均因子
+\(D_{jk}^n\)。于是
+\begin{equation}
+\boxed{
+P_{\rm EEGS}(n)=
+\sum_{j,k\ge0}
+D_{jk}^n C_j^nC_k^{n*}
+\frac{1}{\sqrt{1+S_{njk}R_\sigma^2}}
+\exp\!\left[-\frac{S_{njk}R_\tau^2}
+{2(1+S_{njk}R_\sigma^2)}\right].}
+\label{eq:coherent-spatially-averaged-series}
+\end{equation}
+对无限长圆柱，实验上沿圆柱轴方向做矩形平均；若场在轴向近似均匀，只需保留冲量参数积分并用 \((w-a)^{-1}\) 归一化：
+\begin{align}
+D_s^{(cyl)}
+&=\frac{1}{w-a}\int_a^w
+\ee^{-2s(b-a)/\delta}\dd b\\
+&=\boxed{
+\frac{\delta\left[1-\ee^{-2s(w-a)/\delta}\right]}
+{2s(w-a)}}.
+\label{eq:D_cyl}
+\end{align}
+同样，$s=0$ 时必须回到积分定义而不是直接代入闭式：
+\begin{equation}
+\boxed{D_0^{(cyl)}=1.}
+\end{equation}
+这给出圆柱几何中的对应空间平均因子。
+
+
+弱耦合时
+\begin{equation}
+\eta\equiv \frac{e|\Ftilde|}{\hbar\omega}\ll1,
+\end{equation}
+对 \(n>0\)，双重级数首项 \(j=k=0\) 占主导，故
+\begin{align}
+P_n(\tau)
+&\propto
+\frac{1}{\sqrt{1+n(\sigma_{\mathrm e}/\sigma_{\mathrm L})^2}}
+\exp\!\left[
+-\frac{n(\tau/\sigma_{\mathrm L})^2}
+{2[1+n(\sigma_{\mathrm e}/\sigma_{\mathrm L})^2]}
+\right]\\
+&\equiv \text{const.}\times
+\exp\!\left[-\frac{\tau^2}{2\sigma_{\tau,n}^2}\right],
+\end{align}
+于是
+\begin{equation}
+\boxed{
+\sigma_{\tau,n}^2=\sigma_{\mathrm e}^2+\frac{\sigma_{\mathrm L}^2}{n}.}
+\label{eq:temporal_narrowing}
+\end{equation}
+当 \(\sigma_{\mathrm e}\ll\sigma_{\mathrm L}/\sqrt n\) 时有 \(\sigma_{\tau,n}\simeq\sigma_{\mathrm L}/\sqrt n\)。这就是高阶 PINEM 峰随阶数增加而时间变窄的直接数学来源。
+
+

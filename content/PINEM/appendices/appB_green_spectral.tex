@@ -1,0 +1,192 @@
+\chapter{Green 算符的数学预备与谱表示}
+\label{app:green-spectral}
+
+\section{标量 Helmholtz Green 函数：逆算符思想的数学预备}
+\label{app:scalar-green-prelude}
+
+正文直接从矢量 Maxwell 算符出发。本附录只说明 Green 核为什么就是带指定边界条件的逆算符，以及外向球面波中的 $+\ii kR$ 相位如何由极点处方固定；它不承担建立 Maxwell 理论的职责。
+
+Green 方法可以先由标量 Helmholtz 方程理解。设
+\begin{equation}
+(\nabla^2+k^2)\psi(\bm r)=-s(\bm r).
+\label{eq:scalar-helmholtz-source}
+\end{equation}
+定义 $g_k$ 满足
+\begin{equation}
+(\nabla^2+k^2)g_k(\bm r-\bm r')=-\delta(\bm r-\bm r').
+\label{eq:scalar-green-def}
+\end{equation}
+将上式乘以 $s(\bm r')$ 并对 $\bm r'$ 积分，利用线性算符只作用于 $\bm r$，得到
+\begin{align}
+(\nabla^2+k^2)
+\int \dd^3r'\,g_k(\bm r-\bm r')s(\bm r')
+&=-\int \dd^3r'\,\delta(\bm r-\bm r')s(\bm r')\\
+&=-s(\bm r).
+\end{align}
+因此
+\begin{equation}
+\psi(\bm r)=\int \dd^3r'\,g_k(\bm r-\bm r')s(\bm r')
+\label{eq:scalar-green-solution}
+\end{equation}
+就是源方程的解。
+
+为了求 $g_k$，作三维 Fourier 变换
+\begin{equation}
+g_k(\bm R)=\int\frac{\dd^3q}{(2\pi)^3}\,
+\widetilde g_k(\bm q)\ee^{\ii\bm q\cdot\bm R},
+\qquad \bm R=\bm r-\bm r'.
+\end{equation}
+代入定义式，由 $\nabla^2\to-q^2$ 得
+\begin{equation}
+(-q^2+k^2)\widetilde g_k(\bm q)=-1,
+\qquad
+\widetilde g_k(\bm q)=\frac{1}{q^2-k^2}.
+\end{equation}
+外向辐射条件用 $-\ii0^+$ 规定极点绕行方向：
+\begin{equation}
+g_k^{(+)}(R)
+=\int\frac{\dd^3q}{(2\pi)^3}
+\frac{\ee^{\ii\bm q\cdot\bm R}}{q^2-k^2-\ii0^+}.
+\end{equation}
+取 $\bm R$ 为极轴，角积分为
+\begin{align}
+\int \dd\Omega_{\bm q}\,\ee^{\ii qR\cos\theta}
+&=2\pi\int_{-1}^{1}\ee^{\ii qRu}\dd u\\
+&=4\pi\frac{\sin(qR)}{qR}.
+\end{align}
+故
+\begin{equation}
+g_k^{(+)}(R)
+=\frac{1}{2\pi^2R}
+\int_0^\infty \dd q\,
+\frac{q\sin(qR)}{q^2-k^2-\ii0^+}.
+\end{equation}
+把正弦写成指数并将积分延拓到整条实轴，闭合到上半平面；$-\ii0^+$ 使外向极点贡献 $\ee^{+\ii kR}$，从而
+\begin{equation}
+\boxed{g_k^{(+)}(R)=\frac{\ee^{\ii kR}}{4\pi R}.}
+\label{eq:scalar-green-outgoing}
+\end{equation}
+矢量 Maxwell Green 张量的逻辑相同：先写线性算符，再求其带辐射边界条件的逆核；区别只在于矢量场还包含纵、横投影结构。
+
+
+
+\section{Green 算符的谱表示与准正常模极点}
+
+Lippmann--Schwinger 与 $T$ 算符给出散射场的形式解；谱表示进一步解释共振增强为何对应复频率极点。先从 Hermitian 的封闭无损系统开始，再推广到开放有损系统。
+
+考虑有限体积、无损、无色散介质，并取使边界项消失的封闭边界条件。Maxwell 本征问题写成
+\begin{equation}
+\bm\nabla\times\bm\mu^{-1}\cdot\bm\nabla\times\bm E_\nu
+=\frac{\omega_\nu^2}{c^2}
+\bm\varepsilon\cdot\bm E_\nu.
+\label{eq:maxwell-generalized-eigenproblem}
+\end{equation}
+在 $\bm\varepsilon,\bm\mu$ Hermitian 正定时，不同本征频率的模式可以按介电加权内积正交归一：
+\begin{equation}
+\int_V\dd^3r\,
+\bm E_\nu^*(\bm r)\cdot
+\bm\varepsilon(\bm r)\cdot
+\bm E_{\nu'}(\bm r)
+=\delta_{\nu\nu'}.
+\label{eq:maxwell-mode-normalization}
+\end{equation}
+现在要求解
+\begin{equation}
+\mathcal L(\omega)\bm E=\bm S,
+\qquad
+\mathcal L(\omega)
+=\bm\nabla\times\bm\mu^{-1}\cdot\bm\nabla\times
+-\frac{\omega^2}{c^2}\bm\varepsilon.
+\end{equation}
+把场展开为
+\begin{equation}
+\bm E=\sum_\nu a_\nu\bm E_\nu.
+\end{equation}
+代入后利用式~\eqref{eq:maxwell-generalized-eigenproblem}：
+\begin{equation}
+\mathcal L(\omega)\bm E
+=\sum_\nu a_\nu
+\frac{\omega_\nu^2-\omega^2}{c^2}
+\bm\varepsilon\cdot\bm E_\nu.
+\end{equation}
+左乘 $\bm E_\mu^*$、对体积积分并使用式~\eqref{eq:maxwell-mode-normalization}，逐个模式得到
+\begin{equation}
+ a_\mu
+ \frac{\omega_\mu^2-\omega^2}{c^2}
+ =\int_V\dd^3r'\,
+ \bm E_\mu^*(\bm r')\cdot\bm S(\bm r').
+\end{equation}
+因此
+\begin{equation}
+ a_\mu
+ =\frac{c^2}{\omega_\mu^2-\omega^2}
+ \int_V\dd^3r'\,
+ \bm E_\mu^*(\bm r')\cdot\bm S(\bm r').
+\end{equation}
+与 Green 定义
+\begin{equation}
+\bm E(\bm r)=\int_V\dd^3r'\,
+\mathbf G(\bm r,\bm r';\omega)\cdot\bm S(\bm r')
+\end{equation}
+逐项比较，得到闭系统的谱表示
+\begin{equation}
+\boxed{
+\mathbf G(\bm r,\bm r';\omega)
+=c^2\sum_\nu
+\frac{
+\bm E_\nu(\bm r)\otimes\bm E_\nu^*(\bm r')
+}{\omega_\nu^2-\omega^2}.}
+\label{eq:green-closed-spectral}
+\end{equation}
+这条式子把“共振”变成了一个完全透明的代数事实：当外场频率靠近某个 $\omega_\nu$ 时，该模式分母变小，其投影权重被放大。若源与该模式正交，则即使频率相等也不会被激发；所以共振既需要频率匹配，也需要空间模式重叠。
+
+开放散射体系的情况更一般。外向辐射边界条件使 Maxwell 算符成为非 Hermitian，材料损耗和色散又使 $\bm\varepsilon(\omega),\bm\mu(\omega)$ 本身依赖复频率。此时实频本征展开不再适用，但 resolvent 的解析结构仍然保留：若
+\begin{equation}
+\mathcal L(\widetilde\omega_\nu)\bm f_\nu=0,
+\qquad
+\operatorname{Im}\widetilde\omega_\nu<0
+\end{equation}
+满足纯外向边界条件，则 $\widetilde\omega_\nu$ 是准正常模（quasi-normal mode, QNM）的复频率。对一个孤立简单极点，在其邻域内 Green 算符必有 Laurent 展开
+\begin{equation}
+\boxed{
+\mathbf G(\omega)
+=\mathbf G_{\rm reg}(\omega)
++\frac{\mathbf R_\nu}{\omega-\widetilde\omega_\nu}
++O(\omega-\widetilde\omega_\nu),}
+\label{eq:green-QNM-pole}
+\end{equation}
+其中 $\mathbf R_\nu$ 是由左右本征模及其色散归一化决定的留数算符。开放、频散介质的 QNM 归一化依赖边界正则化与 $\partial_\omega[\omega\varepsilon(\omega)]$ 等色散项；与具体归一化写法相比，极点位置以及完整 Green 算符的留数结构才是这里真正需要的对象。
+
+球对称时，每个 $(\ell,m_\Omega)$ 通道独立，Green/$T$ resolvent 的极点条件与 Mie 通道分母的零点完全一致，即
+\begin{equation}
+D_\ell^{(E)}(\widetilde\omega)=0,
+\qquad
+D_\ell^{(M)}(\widetilde\omega)=0,
+\end{equation}
+见式~\eqref{eq:mie-resonance-denominators}。因此“Mie 共振”“$T$ 矩阵极点”“Green 函数 QNM 极点”不是三套理论，而是同一个 resolvent 奇点在不同基底中的三种写法。
+对球体，式~\eqref{eq:mie-T-diagonal} 已给出 $\mathbf T$ 在 VSWF 基中的对角形式；在固定的散射波相位约定下，其 magnetic/TE 与 electric/TM 对角元分别为 $-b_\ell$ 与 $-a_\ell$。对无限圆柱，在柱谐基中则与式~\eqref{eq:cylinder-scattering-general} 的 $s_\nu^{(\rho)}$ 对应。因此 Mie 是一般 $T$ 算符在高对称几何中的解析部分波表示。
+
+在 $|k_{\rm h}|a\ll1$ 且内部场近似均匀时，球形粒子的最低阶 $T$ 算符退化为电偶极响应
+\begin{equation}
+\bm p=\alpha_{\rm pol}\bm E_{\rm inc},
+\qquad
+\alpha_{\rm pol}
+=4\pi\varepsilon_0\varepsilon_{\rm h}a^3
+\frac{\varepsilon_{\rm p}-\varepsilon_{\rm h}}
+{\varepsilon_{\rm p}+2\varepsilon_{\rm h}},
+\label{eq:alpha-pol-host}
+\end{equation}
+与式~\eqref{eq:sphere-polarizability-general} 一致；其轨迹投影进一步退化为式~\eqref{eq:F-sphere-general}。统一链条因此为
+\begin{equation}
+\boxed{
+\begin{gathered}
+\text{Maxwell/Green}\supset\text{$T$-matrix/Mie}
+\xrightarrow{|k_{\rm h}|a\ll1}\text{Rayleigh 偶极},\\[0.3em]
+\text{近场}\xrightarrow{\mathcal L_{\rm e}}\Ftilde
+\xrightarrow{\displaystyle\beta=-q_{\rm e}\Ftilde/(2\hbar\omega)}\beta
+\xrightarrow{\displaystyle P_n=J_n^2(2|\beta|)}P_n.
+\end{gathered}}
+\label{eq:field-theory-hierarchy}
+\end{equation}
+
+

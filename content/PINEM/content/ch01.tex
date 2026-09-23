@@ -1,0 +1,1043 @@
+\chapter{从 Dirac 方程到正能一阶输运方程}
+\label{chap:electron-reduction}
+
+导读只规定了要计算的对象与依赖顺序，本章开始真正建立电子侧母理论。顺序不能颠倒：先固定最小耦合和自由正负能子空间，再用精确 Schur 补消去负能扇区；只有得到正能闭合理论以后，才围绕中心动量作窄带展开，并在最后一步判断哪些二阶色散和场梯度项可以舍弃。这样一阶 PINEM 方程不是猜出的半经典模型，而是一个具有明确误差来源的受控极限。
+
+本章中有两个彼此不同的小量。第一类控制\emph{跨越正负能隙的带间混合}，典型分母是 $2\mathcal E_0$；第二类控制\emph{同一正能带内的窄带梯度展开}，典型尺度是 $\Delta p/p_0$。后文的“无反冲”“准单色”“Rayleigh”都不属于这里，必须到真正使用它们时再引入。
+
+\section{最小耦合 Dirac 方程与规范协变}
+先不作一维、固定自旋或弱场近似。后面所有 PINEM 有效方程都必须能追溯到同一个三维相对论母方程，因此这里先固定最小耦合、四维号数和规范变换；在这些约定冻结之前，不引入电子轨迹、单色场或边带。从最小耦合 Dirac 方程出发，
+\begin{equation}
+ \ii\hbar\frac{\partial\Psi}{\partial t}
+ =\left[c\bm\alpha\cdot\bigl(-\ii\hbar\bm\nabla-q_{\rm e}\bm A\bigr)
+ +\beta_{\rm D}mc^2+q_{\rm e}\phi\right]\Psi,
+ \label{eq:dirac-3d}
+\end{equation}
+其中在 Dirac 表象中
+\begin{equation}
+ \bm\alpha=
+ \begin{pmatrix}
+ 0&\bm\sigma\\
+ \bm\sigma&0
+ \end{pmatrix},
+ \qquad
+ \beta_{\rm D}=
+ \begin{pmatrix}
+ \mathbf 1_2&0\\
+ 0&-\mathbf 1_2
+ \end{pmatrix},
+ \qquad
+ \bm\sigma=(\sigma_x,\sigma_y,\sigma_z).
+ \label{eq:dirac-matrices}
+\end{equation}
+
+
+在进入自由谱之前，先把最小耦合的协变结构固定下来。采用度规
+\begin{equation}
+ g_{\mu\nu}=\operatorname{diag}(1,-1,-1,-1),
+ \qquad
+ x^\mu=(ct,\bm r),
+ \qquad
+ A^\mu=\left(\frac{\phi}{c},\bm A\right),
+ \qquad
+ A_\mu=\left(\frac{\phi}{c},-\bm A\right),
+ \label{eq:covariant-conventions}
+\end{equation}
+并定义
+\begin{equation}
+ \gamma^0=\beta_{\rm D},
+ \qquad
+ \gamma^i=\beta_{\rm D}\alpha_i,
+ \qquad
+ \{\gamma^\mu,\gamma^\nu\}=2g^{\mu\nu}\mathbf 1_4,
+ \label{eq:gamma-def-clifford}
+\end{equation}
+以及规范协变四动量
+\begin{equation}
+ \pi_\mu\equiv \ii\hbar\partial_\mu-q_{\rm e}A_\mu.
+ \label{eq:covariant-pi}
+\end{equation}
+于是式~\eqref{eq:dirac-3d} 等价于
+\begin{equation}
+ \boxed{\left(\gamma^\mu\pi_\mu-mc\right)\Psi=0.}
+ \label{eq:dirac-covariant}
+\end{equation}
+这套约定与三维规范变换完全一致。若
+\begin{equation}
+ A_\mu' = A_\mu-\partial_\mu\chi,
+ \qquad
+ \Psi'=\ee^{\ii q_{\rm e}\chi/\hbar}\Psi,
+ \label{eq:covariant-gauge-transform}
+\end{equation}
+则
+\begin{align}
+ \pi_\mu'\Psi'
+ &=\left(\ii\hbar\partial_\mu-q_{\rm e}A_\mu+q_{\rm e}\partial_\mu\chi\right)
+ \left(\ee^{\ii q_{\rm e}\chi/\hbar}\Psi\right)\\
+ &=\ee^{\ii q_{\rm e}\chi/\hbar}
+ \left[\ii\hbar\partial_\mu\Psi-q_{\rm e}(\partial_\mu\chi)\Psi
+ -q_{\rm e}A_\mu\Psi+q_{\rm e}(\partial_\mu\chi)\Psi\right]\\
+ &=\ee^{\ii q_{\rm e}\chi/\hbar}\pi_\mu\Psi.
+ \label{eq:pi-gauge-covariance}
+\end{align}
+因此 Dirac 方程逐点规范协变。把式~\eqref{eq:covariant-gauge-transform} 写回三维分量就是
+\begin{equation}
+ \bm A'=\bm A+\bm\nabla\chi,
+ \qquad
+ \phi'=\phi-\partial_t\chi,
+ \qquad
+ \Psi'=\ee^{\ii q_{\rm e}\chi/\hbar}\Psi,
+ \label{eq:gauge-three-components}
+\end{equation}
+势函数在后续推导中均采用这一组号数约定。
+
+到这里已经解决了第一个结构问题：外势以何种组合进入 Dirac 方程，以及不同规范下波函数如何协同变换。下一步仍不做 PINEM 近似，而是先求自由 Dirac 谱与正、负能投影；只有先知道“保留哪个子空间、被消去哪个子空间”，Feshbach--Schur 消元才有明确数学对象。平方 Dirac 方程及其显式自旋--场项只作为附录中的独立复核，不参与正文主线的建立。
+
+
+\section{自由谱、正负能自旋量与投影算符}
+
+这里把 Dirac 的 $\beta$ 矩阵写成 $\beta_{\rm D}$，以避免与速度参数混淆。自由电子取 $\bm A=0$、$\phi=0$，并令
+\begin{equation}
+ \Psi_{\bm p}(\bm r,t)
+ =U(\bm p)\exp\!\left[\frac{\ii}{\hbar}(\bm p\cdot\bm r-Et)\right].
+ \label{eq:dirac-plane-wave-vector}
+\end{equation}
+代入式~\eqref{eq:dirac-3d}，利用
+\[
+ -\ii\hbar\bm\nabla\,
+ \ee^{\ii\bm p\cdot\bm r/\hbar}
+ =\bm p\,\ee^{\ii\bm p\cdot\bm r/\hbar},
+ \qquad
+ \ii\hbar\partial_t\ee^{-\ii Et/\hbar}
+ =E\ee^{-\ii Et/\hbar},
+\]
+得到一般矢量动量下的本征方程
+\begin{equation}
+ \left(c\bm\alpha\cdot\bm p+\beta_{\rm D}mc^2\right)U(\bm p)
+ =E\,U(\bm p).
+ \label{eq:dirac-eigen-vector}
+\end{equation}
+把四分量自旋量写成两个 Pauli 二分量自旋量
+\begin{equation}
+ U(\bm p)=
+ \begin{pmatrix}\varphi\\ \chi\end{pmatrix},
+ \qquad \varphi,\chi\in\mathbb C^2,
+\end{equation}
+则式~\eqref{eq:dirac-eigen-vector} 等价于
+\begin{align}
+ mc^2\varphi+c\,\bm\sigma\cdot\bm p\,\chi&=E\varphi,
+ \label{eq:dirac-block1}\\
+ c\,\bm\sigma\cdot\bm p\,\varphi-mc^2\chi&=E\chi.
+ \label{eq:dirac-block2}
+\end{align}
+即
+\begin{align}
+ (E-mc^2)\varphi&=c\,\bm\sigma\cdot\bm p\,\chi,
+ \label{eq:block-rearr1}\\
+ (E+mc^2)\chi&=c\,\bm\sigma\cdot\bm p\,\varphi.
+ \label{eq:block-rearr2}
+\end{align}
+为消去下分量，式~\eqref{eq:block-rearr2} 会产生 $(\bm\sigma\cdot\bm p)^2$。先把它逐指标展开，并代入 Pauli 恒等式
+\begin{equation}
+ \sigma_i\sigma_j=\delta_{ij}\mathbf 1_2+\ii\epsilon_{ijk}\sigma_k.
+\end{equation}
+于是
+\begin{align}
+ (\bm\sigma\cdot\bm p)^2
+ &=\sum_{ij}p_ip_j\sigma_i\sigma_j\\
+ &=\sum_{ij}p_ip_j\delta_{ij}\mathbf 1_2
+ +\ii\sum_{ijk}p_ip_j\epsilon_{ijk}\sigma_k.
+\end{align}
+第二项中 $p_ip_j$ 对 $i,j$ 对称，而 $\epsilon_{ijk}$ 对 $i,j$ 反对称，因此该项严格为零；于是
+\begin{equation}
+ (\bm\sigma\cdot\bm p)^2=p^2\mathbf 1_2,
+ \qquad p\equiv|\bm p|.
+ \label{eq:sigmap-square}
+\end{equation}
+用式~\eqref{eq:block-rearr2} 消去 $\chi$：
+\begin{align}
+ (E-mc^2)\varphi
+ &=\frac{c^2(\bm\sigma\cdot\bm p)^2}{E+mc^2}\varphi\\
+ &=\frac{c^2p^2}{E+mc^2}\varphi.
+\end{align}
+两边乘以 $E+mc^2$，得到
+\begin{equation}
+ E^2-m^2c^4=c^2p^2.
+\end{equation}
+因此自由 Dirac 谱为
+\begin{equation}
+ \boxed{E_\pm(\bm p)=\pm \mathcal E_p,\qquad
+ \mathcal E_p\equiv\sqrt{m^2c^4+c^2p^2}.}
+ \label{eq:dispersion}
+\end{equation}
+定义
+\begin{equation}
+ \gamma\equiv\frac{\mathcal E_p}{mc^2},
+ \qquad
+ \bm v\equiv\bm\nabla_{\bm p}\mathcal E_p
+ =\frac{c^2\bm p}{\mathcal E_p}
+ =\frac{\bm p}{\gamma m},
+ \label{eq:relrelations-vector}
+\end{equation}
+于是
+\begin{equation}
+ \bm p=\gamma m\bm v,
+ \qquad
+ \mathcal E_p=\gamma mc^2,
+ \qquad
+ \gamma=\frac{1}{\sqrt{1-v^2/c^2}}.
+ \label{eq:relrelations}
+\end{equation}
+
+对正能支 $E=+\mathcal E_p$，取任意归一化 Pauli 自旋基 $\xi_s$（$s=1,2$，$\xi_s^\dagger\xi_{s'}=\delta_{ss'}$）。由式~\eqref{eq:block-rearr2}，
+\begin{equation}
+ \chi=\frac{c\,\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}\varphi.
+\end{equation}
+令 $\varphi=N_p\xi_s$，则
+\begin{equation}
+ u_s(\bm p)
+ =N_p
+ \begin{pmatrix}
+ \xi_s\\[0.35em]
+ \dfrac{c\,\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}\xi_s
+ \end{pmatrix}.
+ \label{eq:u-general-unnorm}
+\end{equation}
+归一化常数由 $u_s^\dagger u_s=1$ 决定。逐项计算
+\begin{align}
+ u_s^\dagger u_s
+ &=N_p^2\left[
+ 1+\frac{c^2\,\xi_s^\dagger(\bm\sigma\cdot\bm p)^2\xi_s}
+ {(\mathcal E_p+mc^2)^2}\right]\\
+ &=N_p^2\left[
+ 1+\frac{c^2p^2}{(\mathcal E_p+mc^2)^2}\right]\\
+ &=N_p^2\frac{(\mathcal E_p+mc^2)^2+(\mathcal E_p^2-m^2c^4)}{(\mathcal E_p+mc^2)^2}\\
+ &=N_p^2\frac{2\mathcal E_p(\mathcal E_p+mc^2)}{(\mathcal E_p+mc^2)^2}\\
+ &=N_p^2\frac{2\mathcal E_p}{\mathcal E_p+mc^2}.
+\end{align}
+所以
+\begin{equation}
+ N_p=\sqrt{\frac{\mathcal E_p+mc^2}{2\mathcal E_p}}
+ =\sqrt{\frac{\gamma+1}{2\gamma}},
+\end{equation}
+并得到一般矢量形式的正能自由解
+\begin{equation}
+ \boxed{
+ u_s(\bm p)=
+ \sqrt{\frac{\mathcal E_p+mc^2}{2\mathcal E_p}}
+ \begin{pmatrix}
+ \xi_s\\[0.45em]
+ \dfrac{c\,\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}\xi_s
+ \end{pmatrix}.}
+ \label{eq:u-general}
+\end{equation}
+
+负能支需要先区分两个常被混用的约定。若固定同一个空间动量 $\bm p$，直接求 $H_0(\bm p)$ 的负本征矢，记为 $w_s(\bm p)$。令本征值为 $-\mathcal E_p$，则
+\begin{align}
+(mc^2+\mathcal E_p)\varphi+c\bm\sigma\cdot\bm p\,\chi&=0,\\
+c\bm\sigma\cdot\bm p\,\varphi+(\mathcal E_p-mc^2)\chi&=0.
+\end{align}
+取下分量 $\chi=N_p\vartheta_s$，第一式给出
+\begin{equation}
+\varphi=-\frac{c\,\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}N_p\vartheta_s,
+\end{equation}
+所以同动量负能本征矢为
+\begin{equation}
+\boxed{
+w_s(\bm p)=
+\sqrt{\frac{\mathcal E_p+mc^2}{2\mathcal E_p}}
+\begin{pmatrix}
+-\dfrac{c\,\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}\vartheta_s\\[0.45em]
+\vartheta_s
+\end{pmatrix},
+\qquad
+H_0(\bm p)w_s(\bm p)=-\mathcal E_p w_s(\bm p).}
+\label{eq:w-negative-same-momentum}
+\end{equation}
+这正是纵向两能带约化中所需的负能基矢。
+
+而在相对论量子力学/QFT 的常用记号中，通常把反粒子自旋量 $v_s(\bm p)$ 与负频平面波
+\begin{equation}
+\Psi_s^{(-)}(\bm r,t)
+=v_s(\bm p)
+\exp\!\left[\frac{\ii}{\hbar}
+(\mathcal E_p t-\bm p\cdot\bm r)\right]
+\label{eq:standard-negative-frequency-wave}
+\end{equation}
+配对。这个平面波的能量和正则动量分别是 $-\mathcal E_p$ 与 $-\bm p$，因此它要求
+\begin{equation}
+H_0(-\bm p)v_s(\bm p)=-\mathcal E_p v_s(\bm p).
+\end{equation}
+故标准 $v$ 自旋量恰为 $w_s(-\bm p)$：
+\begin{equation}
+\boxed{
+v_s(\bm p)=
+\sqrt{\frac{\mathcal E_p+mc^2}{2\mathcal E_p}}
+\begin{pmatrix}
+\dfrac{c\,\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}\vartheta_s\\[0.45em]
+\vartheta_s
+\end{pmatrix}.}
+\label{eq:v-standard}
+\end{equation}
+因此“同一 $\bm p$ 下的负能本征矢”与“标准反粒子 $v_s(\bm p)$”只差一个动量反号，但两种约定不能混写。纵向两能带分解使用 $w_s$ 所对应的一维负能基；标准 Dirac 自由解则使用 $u_s,v_s$ 记号。
+
+利用式~\eqref{eq:sigmap-square} 可逐项验证 $w_s^\dagger w_s=v_s^\dagger v_s=1$。若同动量本征态取同一 Pauli 基 $\vartheta_s=\xi_s$，则
+\begin{align}
+u_s^\dagger(\bm p)w_s(\bm p)
+&\propto
+-\xi_s^\dagger\frac{c\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}\xi_s
++\left(\frac{c\bm\sigma\cdot\bm p}{\mathcal E_p+mc^2}\xi_s\right)^\dagger\xi_s
+=0,
+\end{align}
+与 Hermitian 哈密顿量不同本征值的正交性一致。
+
+自由正、负能子空间也可写成投影算符
+\begin{equation}
+ \boxed{
+ \Lambda_\pm(\bm p)
+ =\frac12\left[
+ \mathbf 1_4\pm
+ \frac{c\bm\alpha\cdot\bm p+\beta_{\rm D}mc^2}{\mathcal E_p}
+ \right],
+ \qquad
+ \Lambda_\pm^2=\Lambda_\pm,
+ \qquad
+ \Lambda_+\Lambda_-=0.}
+ \label{eq:dirac-projectors}
+\end{equation}
+这一步说明正、负能分支是一般三维 Dirac 哈密顿量的两个正交二维子空间。一维两分量模型只能在选定传播方向和固定自旋扇区后作为约化形式出现，不能作为一般 Dirac 理论的起点。
+
+
+
+\section{正、负能分块：先精确剥离载波，再做 Feshbach--Schur 消元}
+
+“忽略负能分量”如果只写成一句近似，后面出现的有效质量、$A^2$ 项和自旋修正就很难追溯来源。这里先做两步完全精确的变换：第一步把中心平面波载波从 Dirac 波函数中剥离；第二步只按自由 Dirac 哈密顿量在中心动量 $\bm p_0$ 处的正、负能子空间作分块。真正的近似只在这两步之后才开始。
+
+先把总波函数写成
+\begin{equation}
+\Psi(\bm r,t)
+=\exp\!\left[\frac{\ii}{\hbar}
+(\bm p_0\cdot\bm r-\mathcal E_0 t)\right]\Phi(\bm r,t),
+\label{eq:carrier-exact-transform}
+\end{equation}
+其中此时的四分量 $\Phi$ 还没有被假定为慢变，也没有删除负能分量。把时间导数逐项作用到式~\eqref{eq:carrier-exact-transform}：
+\begin{align}
+\ii\hbar\partial_t\Psi
+&=\ii\hbar\partial_t\left(
+\ee^{\ii(\bm p_0\cdot\bm r-\mathcal E_0t)/\hbar}\Phi
+\right)\\
+&=\ee^{\ii(\bm p_0\cdot\bm r-\mathcal E_0t)/\hbar}
+\left(\mathcal E_0+\ii\hbar\partial_t\right)\Phi .
+\label{eq:carrier-time-action}
+\end{align}
+同理，正则动量作用为
+\begin{align}
+(-\ii\hbar\bm\nabla)\Psi
+&=\ee^{\ii(\bm p_0\cdot\bm r-\mathcal E_0t)/\hbar}
+\left(\bm p_0-\ii\hbar\bm\nabla\right)\Phi,
+\label{eq:carrier-momentum-action-exact}
+\end{align}
+所以机械动量为
+\begin{equation}
+\left(-\ii\hbar\bm\nabla-q_{\rm e}\bm A\right)\Psi
+=\ee^{\ii(\bm p_0\cdot\bm r-\mathcal E_0t)/\hbar}
+\left(\bm p_0+\bm\Pi\right)\Phi,
+\qquad
+\bm\Pi\equiv-\ii\hbar\bm\nabla-q_{\rm e}\bm A.
+\label{eq:carrier-Pi-exact}
+\end{equation}
+把式~\eqref{eq:carrier-time-action} 与 \eqref{eq:carrier-Pi-exact} 原样代回三维 Dirac 方程~\eqref{eq:dirac-3d}，公共载波因子严格约去，得到
+\begin{equation}
+\boxed{
+\ii\hbar\partial_t\Phi
+=\widehat H_{\rm c}\Phi,
+\qquad
+\widehat H_{\rm c}
+=H_0(\bm p_0)-\mathcal E_0
++\widehat W,}
+\label{eq:carrier-frame-dirac}
+\end{equation}
+其中
+\begin{equation}
+H_0(\bm p_0)=c\bm\alpha\cdot\bm p_0+\beta_{\rm D}mc^2,
+\qquad
+\boxed{
+\widehat W=c\bm\alpha\cdot\bm\Pi+q_{\rm e}\phi.}
+\label{eq:carrier-frame-W}
+\end{equation}
+到这里没有使用窄带、弱场、一维或 eikonal 近似。所谓“包络动量”已经明确为算符 $\bm\Pi$，不再留下任何未定义的“动量偏移项”。
+
+现在才在固定中心动量处定义自由正、负能投影
+\begin{equation}
+P\equiv\Lambda_+(\bm p_0),
+\qquad
+Q\equiv\Lambda_-(\bm p_0),
+\qquad
+P+Q=1,
+\qquad
+PQ=0.
+\label{eq:Feshbach-PQ}
+\end{equation}
+令
+\begin{equation}
+\Phi_+=P\Phi,
+\qquad
+\Phi_-=Q\Phi,
+\qquad
+\Phi=\Phi_++\Phi_-.
+\end{equation}
+因为 $P,Q$ 是由 $H_0(\bm p_0)$ 的谱投影构造的，
+\begin{equation}
+P[H_0(\bm p_0)-\mathcal E_0]P=0,
+\qquad
+Q[H_0(\bm p_0)-\mathcal E_0]Q=-2\mathcal E_0Q,
+\end{equation}
+且自由部分没有 $P$--$Q$ 非对角元。
+
+在真正分块前，先把正能块中的一阶速度算符算清楚。由前面显式正能自旋量~\eqref{eq:u-general-unnorm}，对任意两个 Pauli 自旋指标 $s,s'$，有
+\begin{align}
+ u_s^\dagger(\bm p_0)c\alpha_i u_{s'}(\bm p_0)
+ &=N_0^2\frac{c^2}{\mathcal E_0+mc^2}
+ \xi_s^\dagger
+ \left[\sigma_i(\bm\sigma\cdot\bm p_0)
+ +(\bm\sigma\cdot\bm p_0)\sigma_i\right]\xi_{s'}\\
+ &=N_0^2\frac{2c^2p_{0i}}{\mathcal E_0+mc^2}
+ \delta_{ss'}\\
+ &=\frac{c^2p_{0i}}{\mathcal E_0}\delta_{ss'}
+ =v_{0i}\delta_{ss'}.
+\label{eq:projected-alpha-velocity-explicit}
+\end{align}
+第二行使用 Pauli 反对易关系
+$\{\sigma_i,\sigma_j\}=2\delta_{ij}$，第三行使用
+$N_0^2=(\mathcal E_0+mc^2)/(2\mathcal E_0)$。因此在整个二重简并的正能子空间内
+\begin{equation}
+\boxed{P\,c\alpha_i\,P=v_{0i}P.}
+\label{eq:projected-alpha-velocity}
+\end{equation}
+由于标势 $\phi$ 在 Dirac 自旋空间中只是单位矩阵乘法，$P\phi Q=0$。于是载波框架中四个分块可以明确写成
+\begin{align}
+H_{++}&=P\widehat H_{\rm c}P
+=P\left(c\bm\alpha\cdot\bm\Pi+q_{\rm e}\phi\right)P
+=\left(\bm v_0\cdot\bm\Pi+q_{\rm e}\phi\right)P,
+\label{eq:Hpp-explicit}\\
+H_{+-}&=P\widehat H_{\rm c}Q
+=P\,c\bm\alpha\cdot\bm\Pi\,Q,
+\label{eq:Hpq-explicit}\\
+H_{-+}&=Q\widehat H_{\rm c}P
+=Q\,c\bm\alpha\cdot\bm\Pi\,P,
+\label{eq:Hqp-explicit}\\
+H_{--}&=Q\widehat H_{\rm c}Q
+=-2\mathcal E_0Q+Q\widehat WQ.
+\label{eq:Hqq-explicit}
+\end{align}
+式~\eqref{eq:Hpp-explicit} 已经提前显示出一阶 PINEM 势
+$q_{\rm e}(\phi-\bm v_0\cdot\bm A)$ 的来源；而所有跨带反馈都只来自 $c\bm\alpha\cdot\bm\Pi$ 的 $P$--$Q$ 非对角部分。
+
+把载波框架 Dirac 方程分别左乘 $P,Q$，严格得到
+\begin{align}
+ \ii\hbar\partial_t\Phi_+
+ &=H_{++}\Phi_+ +H_{+-}\Phi_-,\\
+ \ii\hbar\partial_t\Phi_-
+ &=H_{-+}\Phi_+ +H_{--}\Phi_-.
+ \label{eq:Feshbach-coupled}
+\end{align}
+这就是需要消元的真正两块方程。其结构与普通 Schur complement 完全相同。为避免把符号公式当作黑箱，先看一般块矩阵
+\begin{equation}
+\begin{pmatrix}A&B\\ C&D\end{pmatrix}
+\begin{pmatrix}x\\ y\end{pmatrix}
+=
+\begin{pmatrix}f\\ g\end{pmatrix}.
+\label{eq:schur-two-block}
+\end{equation}
+第二行 $Cx+Dy=g$ 在 $D$ 可逆时给出
+\begin{equation}
+y=D^{-1}(g-Cx).
+\end{equation}
+代回第一行：
+\begin{align}
+Ax+BD^{-1}(g-Cx)&=f,\\
+Ax+BD^{-1}g-BD^{-1}Cx&=f,\\
+\left(A-BD^{-1}C\right)x&=f-BD^{-1}g.
+\label{eq:schur-reduced}
+\end{align}
+所以被消去变量并不会简单消失，而是通过“出去再回来”的二阶项 $BD^{-1}C$ 反馈到保留子空间。
+
+对 Dirac 方程，第二个块方程可写成
+\begin{equation}
+ \left(\ii\hbar\partial_t-H_{--}\right)\Phi_-
+ =H_{-+}\Phi_+.
+ \label{eq:Feshbach-Q-equation}
+\end{equation}
+给定与原初值问题相同的因果边界条件，形式上精确地有
+\begin{equation}
+ \boxed{
+ \Phi_-
+ =\left(\ii\hbar\partial_t-H_{--}\right)^{-1}
+ H_{-+}\Phi_+.}
+ \label{eq:Feshbach-exact-resolvent}
+\end{equation}
+把它代回正能块，得到时间域的精确 Schur 补
+\begin{equation}
+ \boxed{
+ \ii\hbar\partial_t\Phi_+
+ =\left[
+ H_{++}
+ +H_{+-}\left(\ii\hbar\partial_t-H_{--}\right)^{-1}H_{-+}
+ \right]\Phi_+.}
+ \label{eq:Feshbach-exact-Heff-time}
+\end{equation}
+若各块不显含时间，或已在 Floquet 扩展空间中变成时间独立算符，才可以令 $\ii\hbar\partial_t\to E$，得到
+\begin{equation}
+H_{\rm eff}(E)
+=H_{++}+H_{+-}(E-H_{--})^{-1}H_{-+}.
+\label{eq:Feshbach-Schur-energy}
+\end{equation}
+对一般含时脉冲，式~\eqref{eq:Feshbach-exact-Heff-time} 才是正确起点；把 $E$ 当成普通代数参数会丢掉频率卷积和时间梯度。
+
+现在才利用正负能隙作近似。由式~\eqref{eq:Hqq-explicit} 写
+\begin{equation}
+H_{--}=-2\mathcal E_0Q+\delta H_{--},
+\qquad
+\delta H_{--}\equiv Q\widehat WQ.
+\end{equation}
+于是
+\begin{align}
+\ii\hbar\partial_t-H_{--}
+&=2\mathcal E_0Q+
+\left(\ii\hbar\partial_t-\delta H_{--}\right)\\
+&=2\mathcal E_0(Q+X),
+\qquad
+X\equiv
+\frac{\ii\hbar\partial_t-\delta H_{--}}{2\mathcal E_0}.
+\label{eq:Feshbach-X-def}
+\end{align}
+为使 resolvent 展开可控，分别定义
+\begin{equation}
+ \epsilon_{\rm mix}\equiv
+ \frac{\|H_{-+}\|}{2\mathcal E_0},
+ \qquad
+ \epsilon_{\rm slow}\equiv
+ \max\left\{
+ \frac{\hbar\Omega_{\rm drv}}{2\mathcal E_0},
+ \frac{\|\delta H_{--}\|}{2\mathcal E_0},
+ \frac{\hbar}{2\mathcal E_0T_+}
+ \right\},
+ \label{eq:Feshbach-smallparameters}
+\end{equation}
+其中 $\Omega_{\rm drv}$ 是外场需要保留的最高典型角频率，$T_+$ 是正能包络的典型变化时间。要求
+$\epsilon_{\rm mix}\ll1$ 且 $\epsilon_{\rm slow}\ll1$。在 $Q$ 子空间上
+\begin{equation}
+(Q+X)^{-1}=Q-X+X^2-X^3+\cdots,
+\end{equation}
+故
+\begin{align}
+\left(\ii\hbar\partial_t-H_{--}\right)^{-1}
+={}&\frac{Q}{2\mathcal E_0}
+-\frac{\ii\hbar\partial_t-\delta H_{--}}{(2\mathcal E_0)^2}
++\frac{(\ii\hbar\partial_t-\delta H_{--})^2}{(2\mathcal E_0)^3}
++\cdots .
+\label{eq:Feshbach-resolvent-series}
+\end{align}
+把这个算符真正作用到 $H_{-+}\Phi_+$ 上，前两阶是
+\begin{align}
+\Phi_-
+={}&\frac{1}{2\mathcal E_0}H_{-+}\Phi_+\\
+&-\frac{1}{(2\mathcal E_0)^2}
+\left(\ii\hbar\partial_t-\delta H_{--}\right)
+\left(H_{-+}\Phi_+\right)
++O(\epsilon^3).
+\label{eq:Feshbach-negative-next}
+\end{align}
+若外场含时，第二行必须继续使用乘积法则
+\begin{equation}
+\partial_t(H_{-+}\Phi_+)
+=(\partial_tH_{-+})\Phi_+ +H_{-+}\partial_t\Phi_+,
+\label{eq:Feshbach-product-rule}
+\end{equation}
+所以高阶有效理论中自然会出现外场时间梯度，而不是把 $\partial_t$ 当成普通数穿过 $H_{-+}$。
+
+最低阶负能重构为
+\begin{equation}
+ \boxed{
+ \Phi_-\simeq\frac{1}{2\mathcal E_0}H_{-+}\Phi_+.}
+ \label{eq:Feshbach-negative-leading}
+\end{equation}
+代回正能方程：
+\begin{align}
+\ii\hbar\partial_t\Phi_+
+&=H_{++}\Phi_+ +H_{+-}\Phi_-\\
+&\simeq
+\left[H_{++}+\frac{1}{2\mathcal E_0}H_{+-}H_{-+}\right]\Phi_+.
+\end{align}
+下一阶则为
+\begin{equation}
+H_{\rm eff}^{(3)}\Phi_+
+=-\frac{H_{+-}}{(2\mathcal E_0)^2}
+\left(\ii\hbar\partial_t-\delta H_{--}\right)
+\left(H_{-+}\Phi_+\right).
+\label{eq:Feshbach-Heff-next}
+\end{equation}
+因此可统一写成
+\begin{equation}
+ \boxed{
+ \ii\hbar\partial_t\Phi_+
+ =\left[
+ H_{++}
+ +\frac{1}{2\mathcal E_0}H_{+-}H_{-+}
+ +R_{\rm F}
+ \right]\Phi_+,}
+ \label{eq:Feshbach-Heff}
+\end{equation}
+其中量纲一致的余项估计为
+\begin{equation}
+ \boxed{
+ \frac{\|R_{\rm F}\|}{2\mathcal E_0}
+ =O\!\left(\epsilon_{\rm mix}^2\epsilon_{\rm slow}\right)
+ +O(\epsilon_{\rm mix}^4).}
+ \label{eq:Feshbach-remainder-estimate}
+\end{equation}
+这一步以后，“正能单带理论”才真正建立。下一节围绕 $\bm p_0$ 展开自由正能色散，并证明它的 Hessian 正好就是式~\eqref{eq:Feshbach-Heff} 二阶虚跃迁的对称轨道部分；这样有效质量不再是另一条独立推导。
+
+
+
+\section{正能窄带展开：群速度、Hessian 与相对论质量张量}
+
+四分量自由解给出了精确色散关系。为了建立窄带电子包络，先在任意传播方向上把正能色散在中心机械动量 $\bm p_0$ 附近系统展开，而不立即作一维约化。记
+\begin{equation}
+\mathcal E(\bm p)=\sqrt{m^2c^4+c^2p^2},
+\qquad
+\bm p=\bm p_0+\delta\bm p.
+\end{equation}
+对 $\delta\bm p$ 作二阶 Taylor 展开：
+\begin{equation}
+\mathcal E(\bm p_0+\delta\bm p)
+=\mathcal E_0
++\left.\frac{\partial\mathcal E}{\partial p_i}\right|_0\delta p_i
++\frac12\left.\frac{\partial^2\mathcal E}{\partial p_i\partial p_j}\right|_0
+\delta p_i\delta p_j
++O(\delta p^3),
+\label{eq:E-taylor-vector}
+\end{equation}
+其中重复 Cartesian 指标求和。第一阶导数逐项为
+\begin{align}
+\frac{\partial\mathcal E}{\partial p_i}
+&=\frac{1}{2\mathcal E}\,2c^2p_i
+=\frac{c^2p_i}{\mathcal E}
+=v_i,
+\label{eq:E-first-derivative}
+\end{align}
+而 Hessian 为
+\begin{align}
+H_{ij}
+\equiv\frac{\partial^2\mathcal E}{\partial p_i\partial p_j}
+&=\frac{c^2}{\mathcal E}\delta_{ij}
+-c^2p_i\frac{1}{\mathcal E^2}
+\frac{\partial\mathcal E}{\partial p_j}\notag\\
+&=\frac{c^2}{\mathcal E}\delta_{ij}
+-\frac{c^4p_ip_j}{\mathcal E^3}\notag\\
+&=\frac{1}{\gamma m}
+\left(\delta_{ij}-\frac{v_iv_j}{c^2}\right).
+\label{eq:rel-hessian}
+\end{align}
+在中心速度 $\bm v_0$ 处定义纵、横投影算符
+\begin{equation}
+\bm P_\parallel=\hat{\bm v}_0\hat{\bm v}_0^{\mathsf T},
+\qquad
+\bm P_\perp=\bm I-\bm P_\parallel.
+\label{eq:projectors-velocity}
+\end{equation}
+由于
+\(
+1-v_0^2/c^2=\gamma_0^{-2}
+\)，式~\eqref{eq:rel-hessian} 可严格分解为
+\begin{equation}
+\boxed{
+\bm H_0
+=\frac{1}{\gamma_0m}\bm P_\perp
++\frac{1}{\gamma_0^3m}\bm P_\parallel
+\equiv\bm M^{-1}.}
+\label{eq:mass-tensor-inverse}
+\end{equation}
+因此相对论窄带波包的二阶色散不是由单一 ``相对论质量'' 控制，而是由质量张量
+\begin{equation}
+\boxed{
+m_\perp=\gamma_0m,
+\qquad
+m_\parallel=\gamma_0^3m}
+\label{eq:transverse-longitudinal-mass}
+\end{equation}
+控制。沿传播方向的二阶色散只看到 $m_\parallel$；横向衍射只看到 $m_\perp$。这正是后面一维推导中 $\gamma_0^3m$ 出现的几何来源，而不是额外假设。
+
+上面的质量张量还可以直接从前一节的 Schur 二阶项恢复，这一步把“色散 Taylor 展开”和“虚跃迁消元”严格接成同一条推导。先只考虑一个自由小动量偏移 $\delta\bm p$，令
+\begin{equation}
+W_p\equiv c\bm\alpha\cdot\delta\bm p.
+\end{equation}
+由式~\eqref{eq:projected-alpha-velocity}，
+\begin{equation}
+PW_pP=(\bm v_0\cdot\delta\bm p)P.
+\end{equation}
+而 Dirac 矩阵满足
+\begin{align}
+W_p^2
+&=c^2\alpha_i\alpha_j\,\delta p_i\delta p_j\\
+&=\frac{c^2}{2}\{\alpha_i,\alpha_j\}\delta p_i\delta p_j
+ +\frac{c^2}{2}[\alpha_i,\alpha_j]\delta p_i\delta p_j\\
+&=c^2\delta p^2\mathbf 1_4,
+\end{align}
+因为 $\delta p_i\delta p_j$ 对 $i,j$ 对称，而 $[\alpha_i,\alpha_j]$ 反对称。再用 $Q=1-P$：
+\begin{align}
+PW_pQW_pP
+&=PW_p(1-P)W_pP\\
+&=PW_p^2P-PW_pPW_pP\\
+&=\left[c^2\delta p^2-(\bm v_0\cdot\delta\bm p)^2\right]P.
+\end{align}
+因此前一节 Schur 补的二阶自由修正为
+\begin{align}
+\frac{1}{2\mathcal E_0}PW_pQW_pP
+&=\frac{c^2\delta p^2-(\bm v_0\cdot\delta\bm p)^2}{2\mathcal E_0}P\\
+&=\frac12\delta p_i
+\frac{1}{\gamma_0m}
+\left(\delta_{ij}-\frac{v_{0i}v_{0j}}{c^2}\right)
+\delta p_j P\\
+&=\frac12\delta p_iH_{ij}^{(0)}\delta p_jP.
+\label{eq:schur-hessian-identity}
+\end{align}
+第二行使用 $\mathcal E_0=\gamma_0mc^2$。这与 Taylor 展开~\eqref{eq:E-taylor-vector} 的二阶项逐项相同。因此 $m_\parallel=\gamma_0^3m$、$m_\perp=\gamma_0m$ 不是另一套“半经典有效质量”假设，而就是负能子空间被消去后留下的二阶轨道反馈。
+
+这个恒等式还告诉我们把 $\delta\bm p$ 升格为机械动量算符 $\bm\Pi$ 时会发生什么：$\Pi_i$ 与 $\Pi_j$ 不再一般对易，
+\begin{equation}
+[\Pi_i,\Pi_j]
+=\ii q_{\rm e}\hbar\epsilon_{ijk}B_k.
+\label{eq:Pi-commutator-B}
+\end{equation}
+所以 Schur 二阶项必须分成对称的 $\{\Pi_i,\Pi_j\}$ 与反对称的 $[\Pi_i,\Pi_j]$ 两部分。前者继续给出质量张量控制的轨道色散，后者产生磁矩以及与空间梯度有关的自旋修正。下一节正是按这个分解建立正能包络方程，而不是重新猜一个有效 Hamiltonian。
+
+
+\section{从 Schur 二阶项到规范协变正能包络方程}
+
+前两节已经把需要的两个数学步骤接起来了：式~\eqref{eq:Hpp-explicit} 给出正能块的一阶传播与线性外场作用，式~\eqref{eq:schur-hessian-identity} 给出 Schur 二阶反馈的对称轨道部分。现在只需把它们在同一个正能自旋扇区内重新组装，而不再引入新的“正能色散假设”。
+
+固定中心正能自旋态 $u_s(\bm p_0)$，在当前精度下写
+\begin{equation}
+\Phi_+(\bm r,t)=f(\bm r,t)u_s(\bm p_0)+\delta\Phi_{+,\perp},
+\label{eq:positive-envelope-decomposition}
+\end{equation}
+其中 $\delta\Phi_{+,\perp}$ 表示正能二重简并子空间内因动量依赖基底产生的高阶随动修正；它与负能重构 $\Phi_-$ 都已经由前面的投影展开控制。正文先保留不翻转自旋的轨道标量包络 $f$。
+
+载波框架中的机械动量偏移仍是已经精确得到的
+\begin{equation}
+\bm\Pi=-\ii\hbar\bm\nabla-q_{\rm e}\bm A(\bm r,t).
+\label{eq:relative-kinetic-momentum}
+\end{equation}
+先计算一阶正能块。由式~\eqref{eq:Hpp-explicit}，
+\begin{align}
+H_{++}\Phi_+
+&=\left(\bm v_0\cdot\bm\Pi+q_{\rm e}\phi\right)
+ f u_s\\
+&=\left[-\ii\hbar\bm v_0\cdot\bm\nabla
+-q_{\rm e}\bm v_0\cdot\bm A+q_{\rm e}\phi\right]f\,u_s.
+\label{eq:Hpp-on-envelope}
+\end{align}
+所以一阶正能理论已经给出
+\begin{equation}
+-\ii\hbar\bm v_0\cdot\bm\nabla f
++q_{\rm e}(\phi-\bm v_0\cdot\bm A)f,
+\end{equation}
+这正是后面 eikonal 方程的传播项与线性相互作用项。
+
+再处理 Schur 二阶反馈。由式~\eqref{eq:Hpq-explicit}--\eqref{eq:Hqp-explicit}，最低阶二阶项是
+\begin{equation}
+\frac{1}{2\mathcal E_0}
+P(c\alpha_i\Pi_i)Q(c\alpha_j\Pi_j)P.
+\label{eq:schur-second-operator-start}
+\end{equation}
+由于 $P,Q,\alpha_i$ 只作用在 Dirac 自旋空间，而 $\Pi_i$ 作用在坐标空间，它们彼此可交换，因此可先把自旋矩阵系数与坐标算符分开。定义
+\begin{equation}
+C_{ij}\equiv
+\frac{1}{2\mathcal E_0}Pc\alpha_iQc\alpha_jP.
+\end{equation}
+把 $C_{ij}$ 分成对称与反对称部分：
+\begin{equation}
+C_{ij}=C_{(ij)}+C_{[ij]},
+\qquad
+C_{(ij)}=\frac{C_{ij}+C_{ji}}{2},
+\qquad
+C_{[ij]}=\frac{C_{ij}-C_{ji}}{2}.
+\end{equation}
+式~\eqref{eq:schur-hessian-identity} 对任意实向量 $\delta\bm p$ 都成立，因此二次型唯一性给出
+\begin{equation}
+\boxed{
+C_{(ij)}=\frac12H_{ij}^{(0)}P
+=\frac12(M^{-1})_{ij}P.}
+\label{eq:Cij-symmetric-mass}
+\end{equation}
+于是对称轨道贡献为
+\begin{align}
+C_{(ij)}\Pi_i\Pi_j
+&=\frac14(M^{-1})_{ij}\{\Pi_i,\Pi_j\}P\\
+&=\frac12\bm\Pi\cdot\bm M^{-1}\cdot\bm\Pi\,P.
+\label{eq:schur-orbital-operator}
+\end{align}
+反对称部分只能与 $\Pi_i\Pi_j$ 的反对称部分耦合：
+\begin{equation}
+C_{[ij]}\Pi_i\Pi_j
+=\frac12C_{[ij]}[\Pi_i,\Pi_j].
+\end{equation}
+利用式~\eqref{eq:Pi-commutator-B}，它显式正比于磁场，并与基底随动项、下一阶 resolvent 梯度共同组成磁矩、自旋--轨道和 Darwin/Berry 型修正。把这些矩阵值项统一记成 $\widehat H_{\rm spin}$，把三阶以上窄带项与更高阶 Schur 余项记成 $R_{\ge3}$。于是固定自旋的轨道包络满足
+\begin{align}
+\ii\hbar\partial_t f
+={}&-\ii\hbar\bm v_0\cdot\bm\nabla f
++q_{\rm e}(\phi-\bm v_0\cdot\bm A)f\\
+&+\frac12\bm\Pi\cdot\bm M^{-1}\cdot\bm\Pi\,f
++\widehat H_{\rm spin}f+R_{\ge3}f.
+\end{align}
+移去左边的一阶平移项，得到本讲义后续所有电子近似的母方程
+\begin{equation}
+\boxed{
+\ii\hbar\left(\partial_t+\bm v_0\cdot\bm\nabla\right)f
+=\left[
+q_{\rm e}(\phi-\bm v_0\cdot\bm A)
++\frac12\bm\Pi\cdot\bm M^{-1}\cdot\bm\Pi
+\right]f
++\widehat H_{\rm spin}f+R_{\ge3}f.}
+\label{eq:rel-envelope-tensor}
+\end{equation}
+这里每一项现在都有唯一来源：第一项来自 $PWP$，质量张量项来自 $PWQWP/(2\mathcal E_0)$ 的对称部分，自旋项来自同一二阶 Schur 结构的反对称部分，$R_{\ge3}$ 来自 resolvent 与窄带展开的更高阶。它们不是几套互相拼接的有效模型。
+
+这一层级的典型充分条件可以分成三组。正负能单带化要求
+\begin{equation}
+\epsilon_{\rm mix}\ll1,
+\qquad
+\epsilon_{\rm slow}\ll1,
+\end{equation}
+窄带展开要求
+\begin{equation}
+\frac{\Delta p_\parallel}{p_0}\ll1,
+\qquad
+\frac{\Delta p_\perp}{p_0}\ll1,
+\label{eq:narrowband-conditions-vector}
+\end{equation}
+而将外场视为在 Compton 尺度上平滑、且不强烈改变中心机械动量的一个简单充分条件是
+\begin{equation}
+\boxed{
+\frac{|q_{\rm e}|\,|\bm A|}{p_0}\ll1,
+\qquad
+\frac{|q_{\rm e}\phi|}{\mathcal E_0}\ll1,
+\qquad
+\frac{\lambda_{\rm C}}{L_{\rm field}}\ll1,
+\qquad
+\lambda_{\rm C}=\frac{\hbar}{mc}.}
+\label{eq:positive-band-conditions}
+\end{equation}
+这些条件的角色不同：$\epsilon_{\rm mix},\epsilon_{\rm slow}$ 控制是否可以消去负能带；$\Delta p/p_0$ 控制同一正能带内的梯度展开；弱场和平滑场条件控制高阶机械动量与自旋梯度项。任一组失效时，应回到它对应的上一层方程，而不是给最末端的一阶 PINEM 方程补经验修正。
+
+式~\eqref{eq:rel-envelope-tensor} 保持机械动量组合 $\bm\Pi=-\ii\hbar\nabla-q_{\rm e}\bm A$，因此在
+\begin{equation}
+\bm A\rightarrow\bm A+\bm\nabla\chi,
+\qquad
+\phi\rightarrow\phi-\partial_t\chi,
+\qquad
+f\rightarrow\ee^{\ii q_{\rm e}\chi/\hbar}f
+\label{eq:gauge-transform-standard}
+\end{equation}
+下，所有保留项按同一个局域相位协同变换。后面为了展示纵向系数可以选 $\phi=0$，但这只是规范选择，不是动力学近似。
+
+若 $\bm v_0=v_0\hat{\bm z}$，要把三维式~\eqref{eq:rel-envelope-tensor} 约化为每条参考轨迹上的一维方程，还需要额外控制横向运动。设横向包络典型宽度为 $w_\perp$，相互作用时间为 $T_{\rm int}$。质量张量的横向本征值是 $(\gamma_0m)^{-1}$，因此自由横向衍射在 $T_{\rm int}$ 内积累的无量纲相位尺度为
+\begin{equation}
+\boxed{
+\epsilon_{\perp,{\rm diff}}
+\equiv
+\frac{\hbar T_{\rm int}}{2\gamma_0m w_\perp^2}
+\ll1.}
+\label{eq:transverse-diffraction-condition}
+\end{equation}
+另一方面，固定直线轨迹还要求场给出的横向机械冲量不能显著转动中心动量。沿未偏转参考轨迹定义
+\begin{equation}
+\Delta\bm p_\perp
+\equiv
+q_{\rm e}\int_{t_i}^{t_f}\!\dd t\,
+\left[
+\bm E+\bm v_0\times\bm B
+\right]_\perp\!\bigl(\bm r_0+\bm v_0t,t\bigr),
+\end{equation}
+则小偏转条件为
+\begin{equation}
+\boxed{
+\epsilon_{\perp,{\rm kick}}
+\equiv\frac{|\Delta\bm p_\perp|}{p_0}\ll1.}
+\label{eq:transverse-kick-condition}
+\end{equation}
+式~\eqref{eq:transverse-diffraction-condition} 控制波包自身的横向扩展，式~\eqref{eq:transverse-kick-condition} 控制外场造成的轨迹弯折；二者物理来源不同，不能用一个“旁轴”条件互相替代。只有在它们同时成立时，才可以把每个横向位置 $\bm R_\perp$ 当作近似固定的轨迹标签，并只保留纵向变化。此时质量张量只取纵向本征值
+\begin{equation}
+\bm M^{-1}\longrightarrow\frac{1}{\gamma_0^3m},
+\qquad
+\Pi_z=-\ii\hbar\partial_z-q_{\rm e}A_z.
+\end{equation}
+忽略本节已经单独归类的显式自旋修正后，式~\eqref{eq:rel-envelope-tensor} 化为
+\begin{equation}
+\boxed{
+\ii\hbar(\partial_t+v_0\partial_z)f
+=\left[
+q_{\rm e}(\phi-v_0A_z)
++\frac{1}{2\gamma_0^3m}
+(-\ii\hbar\partial_z-q_{\rm e}A_z)^2
+\right]f.}
+\label{eq:rel-envelope-1d-covariant}
+\end{equation}
+这里仍没有做 eikonal 截断。若进一步采用 $\phi=0$ 的时间规范，平方算符必须按既定次序完整作用在 $f$ 上：
+\begin{align}
+(-\ii\hbar\partial_z-q_{\rm e}A_z)^2f
+={}&(-\ii\hbar\partial_z)
+\left[-\ii\hbar\partial_zf-q_{\rm e}A_zf\right]
+-q_{\rm e}A_z
+\left[-\ii\hbar\partial_zf-q_{\rm e}A_zf\right]\\
+={}&-\hbar^2\partial_z^2f
++\ii q_{\rm e}\hbar\partial_z(A_zf)
++\ii q_{\rm e}\hbar A_z\partial_zf
++q_{\rm e}^2A_z^2f\\
+={}&-\hbar^2\partial_z^2f
++2\ii q_{\rm e}\hbar A_z\partial_zf
++\ii q_{\rm e}\hbar(\partial_zA_z)f
++q_{\rm e}^2A_z^2f.
+\label{eq:Pi-square-expanded}
+\end{align}
+逐项代回式~\eqref{eq:rel-envelope-1d-covariant}，再除以 $\ii\hbar$，得到
+\begin{equation}
+\boxed{
+\begin{aligned}
+\partial_tf+v_0\partial_zf
+-\frac{\ii\hbar}{2\gamma_0^3m}\partial_z^2f
+={}&\ii\frac{q_{\rm e}v_0}{\hbar}A_zf
++\frac{q_{\rm e}A_z}{\gamma_0^3m}\partial_zf\\
+&+\frac{q_{\rm e}}{2\gamma_0^3m}(\partial_zA_z)f
++\frac{q_{\rm e}^2A_z^2}{2\ii\hbar\gamma_0^3m}f.
+\end{aligned}}
+\label{eq:rel-master}
+\end{equation}
+这条式子是下一节进行一阶 eikonal 截断时真正逐项比较的起点；附录中的固定自旋两带消元只负责独立复核这些系数，而不再承担建立主理论的职责。
+
+
+
+\section{从二阶有效方程到一阶 PINEM 主方程}
+
+为了从式 \eqref{eq:rel-master} 得到一阶 PINEM 输运方程，需要依次控制其余高阶项。设电子包络的典型纵向动量宽度为
+\[
+ \Delta p_{\rm env}\sim\hbar\left|\frac{\partial_z f}{f}\right|,
+\]
+典型包络长度为 $L_f\sim\hbar/\Delta p_{\rm env}$。主传播项和主线性相互作用项分别取量级
+\[
+ v_0\partial_zf,
+ \qquad
+ \ii\frac{q_{\rm e}v_0}{\hbar}A_zf.
+\]
+色散项相对于传播项的比值为
+\begin{align}
+ \epsilon_{\rm disp}
+ &\equiv
+ \frac{\left|\dfrac{\hbar}{2\gamma_0^3m}\partial_z^2f\right|}
+ {\left|v_0\partial_zf\right|}
+ \sim\frac{\Delta p_{\rm env}}{2\gamma_0^3mv_0}
+ =\frac{\Delta p_{\rm env}}{2\gamma_0^2p_0}.
+ \label{eq:eps-disp}
+\end{align}
+因此忽略色散要求
+\begin{equation}
+ \boxed{\epsilon_{\rm disp}\ll1.}
+ \label{eq:disp-condition}
+\end{equation}
+在有限相互作用时间 $T_{\rm int}$ 内，更直接的波包展宽条件是
+\begin{equation}
+ \boxed{
+ \frac{\hbar T_{\rm int}}{2\gamma_0^3mL_f^2}\ll1,}
+ \label{eq:disp-time-condition}
+\end{equation}
+因为自由色散在时间 $T_{\rm int}$ 内产生的相位量级正是左边。
+
+线性梯度相互作用项相对于主线性相互作用项的比值为
+\begin{align}
+ \epsilon_{\rm grad}
+ &\equiv
+ \frac{\left|\dfrac{q_{\rm e}A_z}{\gamma_0^3m}\partial_zf\right|}
+ {\left|\dfrac{q_{\rm e}v_0}{\hbar}A_zf\right|}
+ =\frac{\hbar}{\gamma_0^3mv_0}
+ \left|\frac{\partial_zf}{f}\right|\\
+ &\sim\frac{\Delta p_{\rm env}}{\gamma_0^3mv_0}
+ =\frac{\Delta p_{\rm env}}{\gamma_0^2p_0}.
+ \label{eq:eps-grad}
+\end{align}
+故要求
+\begin{equation}
+ \boxed{\epsilon_{\rm grad}\ll1.}
+ \label{eq:grad-condition}
+\end{equation}
+一个更强但更直观的充分条件是
+\begin{equation}
+ \boxed{\Delta p_{\rm env}\ll p_0
+ \quad\Longleftrightarrow\quad
+ \left|\partial_zf\right|\ll k_0|f|.}
+ \label{eq:slow-envelope-condition}
+\end{equation}
+
+二阶 $A_z^2$ 项相对于主线性相互作用项的比值为
+\begin{align}
+ \epsilon_{A^2}
+ &\equiv
+ \frac{\left|\dfrac{q_{\rm e}^2A_z^2}{2\hbar\gamma_0^3m}f\right|}
+ {\left|\dfrac{q_{\rm e}v_0}{\hbar}A_zf\right|}
+ =\frac{|q_{\rm e}A_z|}{2\gamma_0^3mv_0}
+ =\frac{|q_{\rm e}A_z|}{2\gamma_0^2p_0}.
+ \label{eq:eps-A2}
+\end{align}
+因此弱场条件写为
+\begin{equation}
+ \boxed{\epsilon_{A^2}\ll1.}
+ \label{eq:first-order-gradient-condition}
+\end{equation}
+通常使用更强的充分条件
+\begin{equation}
+ \boxed{|q_{\rm e}A_z|\ll p_0.}
+ \label{eq:weak-field-condition}
+\end{equation}
+对 $\partial_zA_z$ 项还要特别小心：完整三维 Coulomb gauge 只给出 $\bm\nabla\cdot\bm A=0$，在具有横向结构的近场中并不等价于 $\partial_zA_z=0$。因此在当前一维显式方程中，只要没有把横向分量一并保留来实现三维散度抵消，就必须继续保留这一项并要求
+\begin{align}
+ \epsilon_{\nabla A}
+ &\equiv
+ \frac{\left|\dfrac{q_{\rm e}}{2\gamma_0^3m}(\partial_zA_z)f\right|}
+ {\left|\dfrac{q_{\rm e}v_0}{\hbar}A_zf\right|}
+ =\frac{\hbar}{2\gamma_0^3mv_0}
+ \left|\frac{\partial_zA_z}{A_z}\right|
+ \ll1.
+ \label{eq:eps-div}
+\end{align}
+
+在已经满足正能单带化以及式~\eqref{eq:transverse-diffraction-condition}--\eqref{eq:transverse-kick-condition} 的一维固定轨迹条件以后，再要求
+\begin{equation}
+ \boxed{
+ \epsilon_{\rm disp}\ll1,
+ \qquad
+ \epsilon_{\rm grad}\ll1,
+ \qquad
+ \epsilon_{A^2}\ll1,
+ \qquad
+ \epsilon_{\nabla A}\ll1}
+ \label{eq:first-order-allconditions}
+\end{equation}
+才可从二阶纵向包络进一步截断到一阶输运。此时式 \eqref{eq:rel-master} 化为
+\begin{equation}
+ \boxed{
+ \partial_t f
+ +v_0\partial_z f
+ \simeq
+ \ii\frac{q_{\rm e}v_0}{\hbar}A_z(z,t)f.}
+ \label{eq:first-order-pinem}
+\end{equation}
+这给出纵向、$\phi=0$ 约定下的一阶相对论 PINEM 方程。坐标无关的形式则由回到三维式~\eqref{eq:rel-envelope-tensor}，把二阶色散与二阶场项作为一个整体舍去，而不是先选定 $z$ 轴或某个规范。于是得到
+\begin{equation}
+\boxed{
+\ii\hbar\left(\partial_t+\bm v_0\cdot\bm\nabla\right)f
+=q_{\rm e}\left(\phi-\bm v_0\cdot\bm A\right)f.}
+\label{eq:eikonal-master-general}
+\end{equation}
+这就是与坐标选择无关的一阶/eikonal PINEM 主方程。到这里电子动力学已经被约化成沿固定参考速度 $\bm v_0$ 的一阶输运；下一章不再删除任何动力学项，而只沿这条特征线积分，并由实际单色场推出相位匹配与离散边带。
+
+

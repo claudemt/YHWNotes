@@ -1,0 +1,1160 @@
+\chapter{球形散射体：从复杂 VSH 到精确 Mie 近场}
+\label{chap:mie-sphere}
+
+一般 $T$ 算符已经足以描述任意几何，但对球形结构可以进一步把算符问题完全解析化。这里引入 VSH/VSWF 不是为了额外学习一套特殊函数，而是因为球面对称性使 Maxwell 算符按角动量通道分块：每个 $(\ell,m_\Omega)$ 通道都独立满足一个径向边界匹配问题。只要这一点建立起来，Mie 系数就是边界条件对应的有限维线性方程的解。
+
+本章只保留\emph{单个均匀球}这一条精确主线：建立复 VSH/VSWF 基底，展开任意入射场，逐项写出切向 $\bm E,\bm H$ 连续条件并求出 $a_\ell,b_\ell$，最后把散射近场代回式~\eqref{eq:Fparallel-general-def}。多层球、多球和平移加法定理是同一基底上的扩展，统一放在附录中，不打断第一次阅读。
+
+\section{球面波基底：从标量 Helmholtz 到 VSH/VSWF}
+
+VSH 之所以是球散射的自然基底，不应只靠定义接受。先看最简单的标量 Helmholtz 方程
+\begin{equation}
+(\nabla^2+k^2)\psi=0.
+\label{eq:scalar-helmholtz-mie}
+\end{equation}
+在球坐标中
+\begin{equation}
+\nabla^2
+=\frac{1}{r^2}\frac{\partial}{\partial r}
+\left(r^2\frac{\partial}{\partial r}\right)
++\frac{1}{r^2}\nabla_\Omega^2.
+\end{equation}
+令 $\psi(r,\Omega)=R(r)Y(\Omega)$，代入并除以 $RY$：
+\begin{equation}
+\frac{1}{R}\frac{\dd}{\dd r}\left(r^2\frac{\dd R}{\dd r}\right)
++k^2r^2
+=-\frac{1}{Y}\nabla_\Omega^2Y.
+\end{equation}
+左边只依赖 $r$，右边只依赖角变量，因此两边必须等于同一常数。要求角向解在整个球面单值且有限时，这个分离常数只能取 $\ell(\ell+1)$，于是
+\begin{align}
+\nabla_\Omega^2Y_{\ell m_\Omega}
+&=-\ell(\ell+1)Y_{\ell m_\Omega},\\
+\frac{\dd}{\dd r}\left(r^2\frac{\dd R_\ell}{\dd r}\right)
++\left[k^2r^2-\ell(\ell+1)\right]R_\ell&=0.
+\label{eq:spherical-radial-equation}
+\end{align}
+令 $\rho=kr$，径向方程化为
+\begin{equation}
+\rho^2R_\ell''+2\rho R_\ell'
++\left[\rho^2-\ell(\ell+1)\right]R_\ell=0,
+\end{equation}
+其两组独立解就是球 Bessel 函数 $j_\ell(\rho)$ 与 $y_\ell(\rho)$；满足外向辐射条件的组合为
+\begin{equation}
+h_\ell^{(1)}(\rho)=j_\ell(\rho)+\ii y_\ell(\rho).
+\end{equation}
+所以球问题的三个径向角色已经由边界条件唯一决定：原点正则场用 $j_\ell$，一般实基可用 $y_\ell$，外向散射场用 $h_\ell^{(1)}$。Maxwell 场只是在这个标量角动量基上再加入“必须无散度且满足旋度耦合”的矢量结构，这正是 VSH/VSWF 的来源。
+
+从标量角向基底进入矢量 Maxwell 场，需要先建立与球面切空间相适配的三组 VSH。
+取 Condon--Shortley 约定的归一化复球谐函数
+\begin{equation}
+Y_{\ell m_{\Omega}}(\theta,\varphi)
+=\sqrt{\frac{2\ell+1}{4\pi}
+\frac{(\ell-m_{\Omega})!}{(\ell+m_{\Omega})!}}
+P_\ell^{m_{\Omega}}(\cos\theta)\ee^{\ii m_{\Omega}\varphi},
+\qquad
+\ell=0,1,2,\ldots,
+\quad
+-\ell\le m_{\Omega}\le\ell,
+\label{eq:complex-spherical-harmonic}
+\end{equation}
+满足
+\begin{align}
+\int Y_{\ell m_{\Omega}}^*Y_{\ell' m_{\Omega}'}\,\dd\Omega
+&=\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'},
+\\
+Y_{\ell,-m_{\Omega}}
+&=(-1)^{m_{\Omega}} Y_{\ell m_{\Omega}}^*,
+\\
+\nabla_\Omega^2Y_{\ell m_{\Omega}}
+&=-\ell(\ell+1)Y_{\ell m_{\Omega}}.
+\end{align}
+这里
+\begin{equation}
+\nabla_\Omega
+=\hat{\bm\theta}\,\frac{\partial}{\partial\theta}
++\hat{\bm\varphi}\,\frac{1}{\sin\theta}
+\frac{\partial}{\partial\varphi}
+\end{equation}
+是单位球面上的无量纲梯度。为避免后面反复出现
+$\ell(\ell+1)$，记
+\begin{equation}
+\Lambda_\ell\equiv\ell(\ell+1).
+\end{equation}
+对 $\ell\ge1$ 定义三组复 VSH
+\begin{align}
+\bm Y_{\ell m_{\Omega}}
+&\equiv \hat{\bm r}\,Y_{\ell m_{\Omega}},
+\\
+\bm\Psi_{\ell m_{\Omega}}
+&\equiv\frac{1}{\sqrt{\Lambda_\ell}}
+\nabla_\Omega Y_{\ell m_{\Omega}},
+\\
+\bm X_{\ell m_{\Omega}}
+&\equiv\hat{\bm r}\times\bm\Psi_{\ell m_{\Omega}}.
+\label{eq:complex-vsh-def}
+\end{align}
+$\bm X_{\ell m_{\Omega}}$ 统一指式~\eqref{eq:complex-vsh-def} 的定义。若使用无量纲轨道角动量算符
+$\widehat{\bm{\mathcal L}}=-\ii\bm r\times\bm\nabla$，则常见的另一种定义
+$\bm X_{\ell m_{\Omega}}^{(\mathcal L)}=\widehat{\bm{\mathcal L}}Y_{\ell m_{\Omega}}/\sqrt{\Lambda_\ell}$
+与上述定义相差一个固定相位：
+\begin{equation}
+\bm X_{\ell m_{\Omega}}^{(\mathcal L)}=-\ii\bm X_{\ell m_{\Omega}}.
+\label{eq:vsh-phase-relation}
+\end{equation}
+因此不同基底定义中 $\bm M,\bm N$ 前出现的 $\pm\ii$ 只改变固定相位，不改变可观测量。
+
+三组 VSH 在单位球面上两两正交：
+\begin{align}
+\int\bm Y_{\ell m_{\Omega}}^*\cdot\bm Y_{\ell' m_{\Omega}'}\,\dd\Omega
+&=\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'},
+\\
+\int\bm\Psi_{\ell m_{\Omega}}^*\cdot\bm\Psi_{\ell' m_{\Omega}'}\,\dd\Omega
+&=\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'},
+\\
+\int\bm X_{\ell m_{\Omega}}^*\cdot\bm X_{\ell' m_{\Omega}'}\,\dd\Omega
+&=\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'},
+\label{eq:vsh-orthogonality}
+\end{align}
+而任意两种不同类型的积分均为零。例如
+\begin{align}
+\int\bm\Psi_{\ell m_{\Omega}}^*\cdot\bm\Psi_{\ell' m_{\Omega}'}\,\dd\Omega
+&=\frac{1}{\sqrt{\Lambda_\ell\Lambda_{\ell'}}}
+\int(\nabla_\Omega Y_{\ell m_{\Omega}})^*
+\cdot\nabla_\Omega Y_{\ell' m_{\Omega}'}\,\dd\Omega
+\\
+&=-\frac{1}{\sqrt{\Lambda_\ell\Lambda_{\ell'}}}
+\int Y_{\ell m_{\Omega}}^*\nabla_\Omega^2Y_{\ell' m_{\Omega}'}\,\dd\Omega
+\\
+&=\sqrt{\frac{\Lambda_{\ell'}}{\Lambda_\ell}}
+\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'}
+=\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'}.
+\end{align}
+最后一步使用了球面无边界，故分部积分没有边界项。
+
+对任意只依赖 $r$ 的径向函数 $f(r)$，这些旋度关系可以逐分量推出。先把切向 VSH 写开：
+\begin{align}
+\bm\Psi_{\ell m_\Omega}
+&=\frac{1}{\sqrt{\Lambda_\ell}}
+\left(
+\hat{\bm\theta}\,\partial_\theta Y_{\ell m_\Omega}
++\hat{\bm\varphi}\,\frac{1}{\sin\theta}\partial_\varphi Y_{\ell m_\Omega}
+\right),\\
+\bm X_{\ell m_\Omega}
+&=\hat{\bm r}\times\bm\Psi_{\ell m_\Omega}\\
+&=\frac{1}{\sqrt{\Lambda_\ell}}
+\left(
+\hat{\bm\varphi}\,\partial_\theta Y_{\ell m_\Omega}
+-\hat{\bm\theta}\,\frac{1}{\sin\theta}\partial_\varphi Y_{\ell m_\Omega}
+\right).
+\label{eq:vsh-components-explicit}
+\end{align}
+对 $f\bm Y=fY\hat{\bm r}$，球坐标旋度的两个非零分量是
+\begin{align}
+(\nabla\times f\bm Y)_\theta
+&=\frac{f}{r\sin\theta}\partial_\varphi Y,\\
+(\nabla\times f\bm Y)_\varphi
+&=-\frac{f}{r}\partial_\theta Y,
+\end{align}
+与式~\eqref{eq:vsh-components-explicit} 比较，得到
+\begin{equation}
+\nabla\times\bigl[f\bm Y_{\ell m_\Omega}\bigr]
+=-\frac{\sqrt{\Lambda_\ell}}{r}f\bm X_{\ell m_\Omega}.
+\end{equation}
+
+再令 $\bm A=f\bm\Psi$。其径向旋度为
+\begin{align}
+(\nabla\times\bm A)_r
+&=\frac{1}{r\sin\theta}
+\left[\partial_\theta(\sin\theta A_\varphi)-\partial_\varphi A_\theta\right]\\
+&=\frac{f}{r\sqrt{\Lambda_\ell}\sin\theta}
+\left(\partial_\theta\partial_\varphi Y-\partial_\varphi\partial_\theta Y\right)=0,
+\end{align}
+而切向分量为
+\begin{align}
+(\nabla\times\bm A)_\theta
+&=-\frac{1}{r}\partial_r(rA_\varphi)
+=-\frac{1}{r\sqrt{\Lambda_\ell}}
+\frac{\dd(rf)}{\dd r}\frac{1}{\sin\theta}\partial_\varphi Y,\\
+(\nabla\times\bm A)_\varphi
+&=\frac{1}{r}\partial_r(rA_\theta)
+=\frac{1}{r\sqrt{\Lambda_\ell}}
+\frac{\dd(rf)}{\dd r}\partial_\theta Y.
+\end{align}
+这正好组成
+\begin{equation}
+\nabla\times\bigl[f\bm\Psi_{\ell m_\Omega}\bigr]
+=\frac{1}{r}\frac{\dd(rf)}{\dd r}\bm X_{\ell m_\Omega}.
+\end{equation}
+
+最后令 $\bm A=f\bm X$。由式~\eqref{eq:vsh-components-explicit}，径向旋度为
+\begin{align}
+(\nabla\times\bm A)_r
+&=\frac{f}{r\sqrt{\Lambda_\ell}}
+\left[
+\frac{1}{\sin\theta}\partial_\theta(\sin\theta\partial_\theta Y)
++\frac{1}{\sin^2\theta}\partial_\varphi^2Y
+\right]\\
+&=\frac{f}{r\sqrt{\Lambda_\ell}}\nabla_\Omega^2Y
+=-\frac{\sqrt{\Lambda_\ell}}{r}fY,
+\end{align}
+而切向部分为
+\begin{equation}
+(\nabla\times\bm A)_\perp
+=-\frac{1}{r}\frac{\dd(rf)}{\dd r}\bm\Psi_{\ell m_\Omega}.
+\end{equation}
+故三条旋度恒等式合并为
+\begin{align}
+\nabla\times\bigl[f\bm Y_{\ell m_{\Omega}}\bigr]
+&=-\frac{\sqrt{\Lambda_\ell}}{r}f\bm X_{\ell m_{\Omega}},
+\\
+\nabla\times\bigl[f\bm\Psi_{\ell m_{\Omega}}\bigr]
+&=\frac{1}{r}\frac{\dd(rf)}{\dd r}\bm X_{\ell m_{\Omega}},
+\\
+\nabla\times\bigl[f\bm X_{\ell m_{\Omega}}\bigr]
+&=-\frac{\sqrt{\Lambda_\ell}}{r}f\bm Y_{\ell m_{\Omega}}
+-\frac{1}{r}\frac{\dd(rf)}{\dd r}\bm\Psi_{\ell m_{\Omega}}.
+\label{eq:vsh-curl-identities}
+\end{align}
+散度同样可直接代入球坐标公式。第一式只有径向分量：
+\begin{equation}
+\nabla\cdot(fY\hat{\bm r})
+=\frac{1}{r^2}\frac{\dd(r^2f)}{\dd r}Y.
+\end{equation}
+对 $f\bm\Psi$，角向散度正比于球面 Laplacian：
+\begin{align}
+\nabla\cdot(f\bm\Psi)
+&=\frac{f}{r\sqrt{\Lambda_\ell}}\nabla_\Omega^2Y\\
+&=-\frac{\sqrt{\Lambda_\ell}}{r}fY.
+\end{align}
+对 $f\bm X$，两个角向混合偏导严格抵消，因此
+\begin{align}
+\nabla\cdot\bigl[f\bm Y_{\ell m_{\Omega}}\bigr]
+&=\frac{1}{r^2}\frac{\dd(r^2f)}{\dd r}Y_{\ell m_{\Omega}},\\
+\nabla\cdot\bigl[f\bm\Psi_{\ell m_{\Omega}}\bigr]
+&=-\frac{\sqrt{\Lambda_\ell}}{r}fY_{\ell m_{\Omega}},\\
+\nabla\cdot\bigl[f\bm X_{\ell m_{\Omega}}\bigr]
+&=0.
+\label{eq:vsh-div-identities}
+\end{align}
+这些恒等式随后可以作为已经证明的运算规则使用，而不必每次重新展开球坐标分量。
+
+有了 VSH 后，下一步把径向 Bessel/Hankel 函数与角向基底组合成真正满足矢量 Helmholtz 方程的球矢量波。
+令
+\begin{equation}
+\phi_{\ell m_{\Omega}}^{(p)}(\bm r;k)
+=z_\ell^{(p)}(kr)Y_{\ell m_{\Omega}}(\hat{\bm r}),
+\label{eq:scalar-spherical-wave}
+\end{equation}
+其中
+\begin{equation}
+z_\ell^{(1)}=j_\ell,
+\qquad
+z_\ell^{(2)}=y_\ell,
+\qquad
+z_\ell^{(3)}=h_\ell^{(1)},
+\qquad
+z_\ell^{(4)}=h_\ell^{(2)}.
+\end{equation}
+$p=1$ 为原点正则波，$p=3$ 在 $\ee^{-\ii\omega t}$ 约定下为外向波。令
+$\rho=kr$。从标量 Helmholtz 解生成三组矢量球波
+\begin{align}
+\bm M_{\ell m_{\Omega}}^{(p)}(k\bm r)
+&\equiv
+\frac{1}{\sqrt{\Lambda_\ell}}
+\nabla\times\left[\bm r\,
+\phi_{\ell m_{\Omega}}^{(p)}\right],
+\\
+\bm N_{\ell m_{\Omega}}^{(p)}(k\bm r)
+&\equiv\frac{1}{k}\nabla\times
+\bm M_{\ell m_{\Omega}}^{(p)}(k\bm r),
+\\
+\bm L_{\ell m_{\Omega}}^{(p)}(k\bm r)
+&\equiv\frac{1}{k}\nabla
+\phi_{\ell m_{\Omega}}^{(p)}(\bm r;k).
+\label{eq:MNLG-def}
+\end{align}
+利用式~\eqref{eq:vsh-curl-identities}，第一式先化为
+\begin{align}
+\bm M_{\ell m_{\Omega}}^{(p)}
+&=\frac{1}{\sqrt{\Lambda_\ell}}
+\nabla\times
+\left[r z_\ell^{(p)}(kr)\bm Y_{\ell m_{\Omega}}\right]
+\\
+&=-z_\ell^{(p)}(\rho)\bm X_{\ell m_{\Omega}}.
+\label{eq:M-vsh-explicit}
+\end{align}
+再取一次旋度：
+\begin{align}
+\bm N_{\ell m_{\Omega}}^{(p)}
+&=-\frac{1}{k}\nabla\times
+\left[z_\ell^{(p)}(\rho)\bm X_{\ell m_{\Omega}}\right]
+\\
+&=\frac{\sqrt{\Lambda_\ell}}{\rho}
+ z_\ell^{(p)}(\rho)\bm Y_{\ell m_{\Omega}}
++\frac{1}{\rho}
+\frac{\dd[\rho z_\ell^{(p)}(\rho)]}{\dd\rho}
+\bm\Psi_{\ell m_{\Omega}}.
+\label{eq:N-vsh-explicit}
+\end{align}
+对纵向梯度波则直接展开梯度：
+\begin{align}
+\nabla\phi_{\ell m_\Omega}^{(p)}
+&=\hat{\bm r}\,\partial_r[z_\ell^{(p)}(kr)Y]
++\frac{1}{r}z_\ell^{(p)}(kr)\nabla_\Omega Y\\
+&=k z_\ell^{(p)\prime}(\rho)\bm Y_{\ell m_\Omega}
++k\frac{\sqrt{\Lambda_\ell}}{\rho}z_\ell^{(p)}(\rho)\bm\Psi_{\ell m_\Omega}.
+\end{align}
+除以定义中的 $k$ 得
+\begin{equation}
+\bm L_{\ell m_{\Omega}}^{(p)}
+=z_\ell^{(p)\prime}(\rho)\bm Y_{\ell m_{\Omega}}
++\frac{\sqrt{\Lambda_\ell}}{\rho}
+ z_\ell^{(p)}(\rho)\bm\Psi_{\ell m_{\Omega}},
+\label{eq:L-vsh-explicit}
+\end{equation}
+其中撇号始终表示对整个无量纲自变量求导。
+
+由于 $z_\ell^{(p)}$ 满足球 Bessel 方程
+\begin{equation}
+\rho^2 z_\ell''+2\rho z_\ell'
++\left[\rho^2-\ell(\ell+1)\right]z_\ell=0,
+\end{equation}
+式~\eqref{eq:M-vsh-explicit} 只有 $\bm X$ 分量，而 $\nabla\cdot(f\bm X)=0$，所以 $\nabla\cdot\bm M=0$。又因为定义本身给出
+\begin{equation}
+\nabla\times\bm M=k\bm N.
+\end{equation}
+对它再取旋度，并使用矢量恒等式
+\begin{equation}
+\nabla\times\nabla\times\bm M
+=\nabla(\nabla\cdot\bm M)-\nabla^2\bm M,
+\end{equation}
+而由标量 Helmholtz 方程构造出的 $\bm M$ 同样满足 $(\nabla^2+k^2)\bm M=0$，于是
+\begin{align}
+k\nabla\times\bm N
+&=\nabla\times\nabla\times\bm M\\
+&=-\nabla^2\bm M=k^2\bm M,
+\end{align}
+即 $\nabla\times\bm N=k\bm M$。再由 $\nabla\cdot(\nabla\times\bm M)=0$ 得 $\nabla\cdot\bm N=0$。因此完整关系为
+\begin{align}
+\nabla\cdot\bm M_{\ell m_{\Omega}}^{(p)}
+&=0,
+&
+\nabla\cdot\bm N_{\ell m_{\Omega}}^{(p)}
+&=0,
+\\
+\nabla\times\bm M_{\ell m_{\Omega}}^{(p)}
+&=k\bm N_{\ell m_{\Omega}}^{(p)},
+&
+\nabla\times\bm N_{\ell m_{\Omega}}^{(p)}
+&=k\bm M_{\ell m_{\Omega}}^{(p)},
+\label{eq:MN-curl-pair}
+\\
+\nabla\times\bm L_{\ell m_{\Omega}}^{(p)}
+&=0,
+&
+\nabla\cdot\bm L_{\ell m_{\Omega}}^{(p)}
+&=-k\phi_{\ell m_{\Omega}}^{(p)}.
+\end{align}
+因此均匀无源 Maxwell 场只需要两组横向波
+$\bm M$ 与 $\bm N$；$\bm L$ 是纵向梯度波，在无源均匀区被
+$\nabla\cdot\bm E=0$ 排除，但在含源 Green 张量的纵向部分中仍然有用。
+
+这些 VSWF 构成球外无源 Maxwell 场的部分波基底，因此任意入射束都可以先投影到同一组通道系数。
+在均匀介质中，频域 Maxwell 方程按式~\eqref{eq:phasor-convention} 的
+$\ee^{-\ii\omega t}$ 约定写为
+\begin{equation}
+\nabla\times\bm E_\omega=\ii\omega\mu_0\mu\bm H_\omega,
+\qquad
+\nabla\times\bm H_\omega=-\ii\omega\varepsilon_0\varepsilon\bm E_\omega.
+\label{eq:frequency-maxwell-isotropic}
+\end{equation}
+在任一均匀各向同性区域中，先定义该介质的波数和波阻抗
+\begin{equation}
+ k\equiv\frac{\omega}{c}\sqrt{\varepsilon\mu},
+ \qquad
+ Z\equiv Z_0\sqrt{\frac{\mu}{\varepsilon}},
+ \qquad
+ Z_0\equiv\sqrt{\frac{\mu_0}{\varepsilon_0}},
+ \label{eq:isotropic-k-Z-def}
+\end{equation}
+其中被动介质的平方根分支取成 $\operatorname{Im}k\ge0$。于是
+\begin{equation}
+\frac{k}{\omega\mu_0\mu}
+=\frac{1}{Z},
+\end{equation}
+所以若电场某一项为 $A\bm M+B\bm N$，对应磁场一定为
+\begin{equation}
+\bm H
+=-\frac{\ii}{Z}
+\left(A\bm N+B\bm M\right),
+\label{eq:H-from-E-MN}
+\end{equation}
+这里的负号和 $\ii$ 完全由 $\ee^{-\ii\omega t}$ 约定以及式~\eqref{eq:MN-curl-pair} 的旋度关系固定。
+
+对单球问题，从这里开始把宿主量与粒子内部量分别加下标 ${\rm h}$、${\rm p}$：
+\begin{align}
+ k_{\rm h}&=\frac{\omega}{c}\sqrt{\varepsilon_{\rm h}\mu_{\rm h}},
+&
+ Z_{\rm h}&=Z_0\sqrt{\frac{\mu_{\rm h}}{\varepsilon_{\rm h}}},\\
+ k_{\rm p}&=\frac{\omega}{c}\sqrt{\varepsilon_{\rm p}\mu_{\rm p}},
+&
+ Z_{\rm p}&=Z_0\sqrt{\frac{\mu_{\rm p}}{\varepsilon_{\rm p}}}.
+\label{eq:sphere-medium-kZ}
+\end{align}
+同时定义三个无量纲材料比
+\begin{equation}
+ \varepsilon_{\rm rel}\equiv\frac{\varepsilon_{\rm p}}{\varepsilon_{\rm h}},
+ \qquad
+ \mu_{\rm rel}\equiv\frac{\mu_{\rm p}}{\mu_{\rm h}},
+ \qquad
+ m_{\rm r}\equiv\frac{k_{\rm p}}{k_{\rm h}}
+ =\sqrt{\varepsilon_{\rm rel}\mu_{\rm rel}}.
+ \label{eq:sphere-relative-material-def}
+\end{equation}
+由这些定义直接得到后面边界匹配会使用的阻抗恒等式
+\begin{equation}
+ \boxed{
+ \frac{Z_{\rm h}}{Z_{\rm p}}
+ =\sqrt{\frac{\varepsilon_{\rm rel}}{\mu_{\rm rel}}}
+ =\frac{m_{\rm r}}{\mu_{\rm rel}}.}
+ \label{eq:impedance-ratio-mie}
+\end{equation}
+因此 $m_{\rm r}$ 控制内部与外部的径向相位尺度，而 $\mu_{\rm rel}$ 还会独立进入切向磁场连续条件；二者不能在一般磁介质中合并成一个折射率参数。
+
+只要入射场在包围球心的某个球内无源且解析，它就有唯一的正则 VSWF 展开
+\begin{equation}
+\boxed{
+\bm E_{\rm inc}
+=\sum_{\ell=1}^{\infty}
+\sum_{m_{\Omega}=-\ell}^{\ell}
+\left[
+ p_{\ell m_{\Omega}}\bm M_{\ell m_{\Omega}}^{(1)}(k_{\rm h}\bm r)
++q_{\ell m_{\Omega}}\bm N_{\ell m_{\Omega}}^{(1)}(k_{\rm h}\bm r)
+\right].}
+\label{eq:general-inc-vswf}
+\end{equation}
+相应磁场为
+\begin{equation}
+\bm H_{\rm inc}
+=-\frac{\ii}{Z_{\rm h}}
+\sum_{\ell,m_{\Omega}}
+\left[
+ p_{\ell m_{\Omega}}\bm N_{\ell m_{\Omega}}^{(1)}
++q_{\ell m_{\Omega}}\bm M_{\ell m_{\Omega}}^{(1)}
+\right].
+\label{eq:general-inc-vswf-H}
+\end{equation}
+$p_{\ell m_{\Omega}}$ 是 magnetic/TE 型入射多极幅度，
+$q_{\ell m_{\Omega}}$ 是 electric/TM 型入射多极幅度；它们包含了入射方向、偏振、聚焦、涡旋相位以及束腰位置的全部信息，而与球材料本身无关。
+
+这些系数不必依赖“平面波公式”定义。取任意完全位于入射场无源解析域内的球面 $r=r_0$，并令
+$\rho_0=k_{\rm h}r_0$。先把式~\eqref{eq:general-inc-vswf} 分别投影到三组 VSH。由于 $\bm M^{(1)}=-j_\ell\bm X$，而 $\bm N^{(1)}$ 只含 $\bm Y$ 与 $\bm\Psi$，故
+\begin{align}
+\int\bm X_{\ell m_\Omega}^*\cdot\bm E_{\rm inc}\dd\Omega
+&=-p_{\ell m_\Omega}j_\ell(\rho_0),\\
+\int\bm Y_{\ell m_\Omega}^*\cdot\bm E_{\rm inc}\dd\Omega
+&=q_{\ell m_\Omega}\frac{\sqrt{\Lambda_\ell}}{\rho_0}j_\ell(\rho_0),\\
+\int\bm\Psi_{\ell m_\Omega}^*\cdot\bm E_{\rm inc}\dd\Omega
+&=q_{\ell m_\Omega}\frac{\psi_\ell'(\rho_0)}{\rho_0}.
+\end{align}
+逐式解出系数即得
+\begin{align}
+p_{\ell m_{\Omega}}
+&=-\frac{1}{j_\ell(\rho_0)}
+\int\bm X_{\ell m_{\Omega}}^*(\hat{\bm r})
+\cdot\bm E_{\rm inc}(r_0,\hat{\bm r})\,\dd\Omega,
+\label{eq:beam-shape-p-projection}
+\\
+q_{\ell m_{\Omega}}
+&=\frac{\rho_0}
+{\sqrt{\Lambda_\ell}\,j_\ell(\rho_0)}
+\int Y_{\ell m_{\Omega}}^*(\hat{\bm r})
+\hat{\bm r}\cdot\bm E_{\rm inc}(r_0,\hat{\bm r})\,\dd\Omega,
+\label{eq:beam-shape-q-radial}
+\\
+q_{\ell m_{\Omega}}
+&=\frac{\rho_0}
+{\psi_\ell'(\rho_0)}
+\int\bm\Psi_{\ell m_{\Omega}}^*(\hat{\bm r})
+\cdot\bm E_{\rm inc}(r_0,\hat{\bm r})\,\dd\Omega,
+\label{eq:beam-shape-q-tangential}
+\end{align}
+其中
+\begin{equation}
+\psi_\ell(\rho)\equiv\rho j_\ell(\rho).
+\end{equation}
+第二、第三个 $q_{\ell m_{\Omega}}$ 表达式在精确无源场中完全等价；数值计算时若某一分母接近零，可改用另一个投影式，或同时投影 $\bm E$ 与 $\bm H$。因此式~\eqref{eq:general-inc-vswf} 已经包含任意平面波、Gaussian 束、Bessel 束以及由数值 Maxwell 求解器得到的局域入射场。
+
+
+\section{单球散射：对称性、边界匹配与 Mie 系数}
+球的材料参数只依赖 $r$，边界 $r=a$ 也保持完整的 $SO(3)$ 对称性，因此 Maxwell 散射算符与总角动量算符
+$\bm J^2,J_z$ 对易。不同 $\ell$ 或不同 $m_{\Omega}$ 的不可约表示不能彼此混合；同时各向同性、无手性本构不混合 electric/TM 与 magnetic/TE 两种宇称通道。于是每个
+$(\ell,m_{\Omega})$ 都只乘一个与 $m_{\Omega}$ 无关的标量系数。
+
+固定散射场的相位约定为
+\begin{equation}
+\boxed{
+\bm E_{\rm sc}
+=-\sum_{\ell=1}^{\infty}
+\sum_{m_{\Omega}=-\ell}^{\ell}
+\left[
+ b_\ell p_{\ell m_{\Omega}}\bm M_{\ell m_{\Omega}}^{(3)}(k_{\rm h}\bm r)
++a_\ell q_{\ell m_{\Omega}}\bm N_{\ell m_{\Omega}}^{(3)}(k_{\rm h}\bm r)
+\right].}
+\label{eq:general-sc-vswf}
+\end{equation}
+这里
+$b_\ell$ 是 magnetic/TE Mie 系数，
+$a_\ell$ 是 electric/TM Mie 系数。式~\eqref{eq:general-sc-vswf} 前的整体负号由 VSWF 定义
+$\bm M=-z_\ell\bm X$ 与“标准 $a_\ell,b_\ell$”之间的固定约定；从此不再在不同公式中更换。对应磁场由式~\eqref{eq:H-from-E-MN} 得
+\begin{equation}
+\bm H_{\rm sc}
+=\frac{\ii}{Z_{\rm h}}
+\sum_{\ell,m_{\Omega}}
+\left[
+ b_\ell p_{\ell m_{\Omega}}\bm N_{\ell m_{\Omega}}^{(3)}
++a_\ell q_{\ell m_{\Omega}}\bm M_{\ell m_{\Omega}}^{(3)}
+\right].
+\label{eq:general-sc-vswf-H}
+\end{equation}
+粒子内部场写成
+\begin{equation}
+\bm E_{\rm in}
+=\sum_{\ell,m_{\Omega}}
+\left[
+ d_\ell^{(M)}p_{\ell m_{\Omega}}\bm M_{\ell m_{\Omega}}^{(1)}(k_{\rm p}\bm r)
++d_\ell^{(E)}q_{\ell m_{\Omega}}\bm N_{\ell m_{\Omega}}^{(1)}(k_{\rm p}\bm r)
+\right],
+\label{eq:general-int-vswf}
+\end{equation}
+并有
+\begin{equation}
+\bm H_{\rm in}
+=-\frac{\ii}{Z_{\rm p}}
+\sum_{\ell,m_{\Omega}}
+\left[
+ d_\ell^{(M)}p_{\ell m_{\Omega}}\bm N_{\ell m_{\Omega}}^{(1)}(k_{\rm p}\bm r)
++d_\ell^{(E)}q_{\ell m_{\Omega}}\bm M_{\ell m_{\Omega}}^{(1)}(k_{\rm p}\bm r)
+\right].
+\end{equation}
+
+球对称性确定了通道结构以后，具体的散射系数只剩下界面切向场连续条件需要求解。
+令
+\begin{equation}
+x\equiv k_{\rm h}a,
+\qquad
+y\equiv k_{\rm p}a=m_{\rm r}x,
+\qquad
+\psi_\ell(z)=zj_\ell(z),
+\qquad
+\xi_\ell(z)=zh_\ell^{(1)}(z).
+\label{eq:riccati-bessel}
+\end{equation}
+从式~\eqref{eq:M-vsh-explicit}--\eqref{eq:N-vsh-explicit}，在任意球面 $r=a$ 上，两个横向迹分别是
+\begin{align}
+\left.\bm M_{\ell m_{\Omega}}^{(p)}\right|_{t}
+&=-z_\ell^{(p)}(ka)\bm X_{\ell m_{\Omega}},
+\\
+\left.\bm N_{\ell m_{\Omega}}^{(p)}\right|_{t}
+&=\frac{[\rho z_\ell^{(p)}(\rho)]'}{\rho}
+\bm\Psi_{\ell m_{\Omega}}.
+\label{eq:MN-tangential-traces}
+\end{align}
+边界条件是
+\begin{equation}
+\hat{\bm r}\times
+(\bm E_{\rm out}-\bm E_{\rm in})=0,
+\qquad
+\hat{\bm r}\times
+(\bm H_{\rm out}-\bm H_{\rm in})=0.
+\label{eq:maxwell-tangential-bc}
+\end{equation}
+由于 $\bm X_{\ell m_{\Omega}}$ 与 $\bm\Psi_{\ell m_{\Omega}}$ 正交，每个固定
+$(\ell,m_{\Omega})$、每种偏振都独立成为一个 $2\times2$ 线性系统。
+
+先看 magnetic/TE 通道。只保留入射系数
+$p_{\ell m_{\Omega}}$，把公共因子约去。切向电场连续给出
+\begin{equation}
+\frac{\psi_\ell(x)}{x}
+-b_\ell\frac{\xi_\ell(x)}{x}
+=d_\ell^{(M)}\frac{\psi_\ell(y)}{y}.
+\end{equation}
+乘以 $x$ 并使用 $y=m_{\rm r}x$：
+\begin{equation}
+\psi_\ell(x)-b_\ell\xi_\ell(x)
+=\frac{d_\ell^{(M)}}{m_{\rm r}}\psi_\ell(y).
+\label{eq:mie-M-bc-E}
+\end{equation}
+切向磁场连续时还要保留阻抗：
+\begin{equation}
+\frac{1}{Z_{\rm h}}
+\frac{\psi_\ell'(x)-b_\ell\xi_\ell'(x)}{x}
+=
+\frac{d_\ell^{(M)}}{Z_{\rm p}}
+\frac{\psi_\ell'(y)}{y}.
+\end{equation}
+再次使用 $y=m_{\rm r}x$ 以及阻抗恒等式~\eqref{eq:impedance-ratio-mie}，得到
+\begin{equation}
+\psi_\ell'(x)-b_\ell\xi_\ell'(x)
+=\frac{d_\ell^{(M)}}{\mu_{\rm rel}}
+\psi_\ell'(y).
+\label{eq:mie-M-bc-H}
+\end{equation}
+由式~\eqref{eq:mie-M-bc-E}
+\begin{equation}
+d_\ell^{(M)}
+=m_{\rm r}
+\frac{\psi_\ell(x)-b_\ell\xi_\ell(x)}
+{\psi_\ell(y)}.
+\end{equation}
+代入式~\eqref{eq:mie-M-bc-H}：
+\begin{align}
+\psi_\ell'(x)-b_\ell\xi_\ell'(x)
+&=\frac{m_{\rm r}}{\mu_{\rm rel}}
+\frac{\psi_\ell(x)-b_\ell\xi_\ell(x)}
+{\psi_\ell(y)}\psi_\ell'(y).
+\end{align}
+乘以 $\mu_{\rm rel}\psi_\ell(y)$：
+\begin{align}
+\mu_{\rm rel}\psi_\ell(y)\psi_\ell'(x)
+-\mu_{\rm rel}b_\ell\psi_\ell(y)\xi_\ell'(x)
+={}&
+ m_{\rm r}\psi_\ell(x)\psi_\ell'(y)
+-m_{\rm r}b_\ell\xi_\ell(x)\psi_\ell'(y).
+\end{align}
+将所有 $b_\ell$ 项移到左边：
+\begin{align}
+b_\ell\Bigl[
+\mu_{\rm rel}\psi_\ell(y)\xi_\ell'(x)
+-m_{\rm r}\xi_\ell(x)\psi_\ell'(y)
+\Bigr]
+={}&
+\mu_{\rm rel}\psi_\ell(y)\psi_\ell'(x)
+-m_{\rm r}\psi_\ell(x)\psi_\ell'(y).
+\end{align}
+因此
+\begin{equation}
+\boxed{
+b_\ell=
+\frac{
+\mu_{\rm rel}\psi_\ell(y)\psi_\ell'(x)
+-m_{\rm r}\psi_\ell(x)\psi_\ell'(y)
+}{
+\mu_{\rm rel}\psi_\ell(y)\xi_\ell'(x)
+-m_{\rm r}\xi_\ell(x)\psi_\ell'(y)
+}.}
+\label{eq:mie-b-standard}
+\end{equation}
+
+再看 electric/TM 通道，只保留 $q_{\ell m_{\Omega}}$。因为此时电场由
+$\bm N$ 承载，切向电场连续给出
+\begin{equation}
+\psi_\ell'(x)-a_\ell\xi_\ell'(x)
+=\frac{d_\ell^{(E)}}{m_{\rm r}}
+\psi_\ell'(y),
+\label{eq:mie-E-bc-E}
+\end{equation}
+而磁场由 $\bm M$ 承载，切向磁场连续给出
+\begin{equation}
+\psi_\ell(x)-a_\ell\xi_\ell(x)
+=\frac{d_\ell^{(E)}}{\mu_{\rm rel}}
+\psi_\ell(y).
+\label{eq:mie-E-bc-H}
+\end{equation}
+由第一式
+\begin{equation}
+d_\ell^{(E)}
+=m_{\rm r}
+\frac{\psi_\ell'(x)-a_\ell\xi_\ell'(x)}
+{\psi_\ell'(y)}.
+\end{equation}
+代入第二式：
+\begin{align}
+\psi_\ell(x)-a_\ell\xi_\ell(x)
+&=\frac{m_{\rm r}}{\mu_{\rm rel}}
+\frac{\psi_\ell'(x)-a_\ell\xi_\ell'(x)}
+{\psi_\ell'(y)}\psi_\ell(y).
+\end{align}
+乘以 $\mu_{\rm rel}\psi_\ell'(y)$ 并收集 $a_\ell$：
+\begin{align}
+a_\ell\Bigl[
+ m_{\rm r}\psi_\ell(y)\xi_\ell'(x)
+-\mu_{\rm rel}\xi_\ell(x)\psi_\ell'(y)
+\Bigr]
+={}&
+ m_{\rm r}\psi_\ell(y)\psi_\ell'(x)
+-\mu_{\rm rel}\psi_\ell(x)\psi_\ell'(y).
+\end{align}
+于是
+\begin{equation}
+\boxed{
+a_\ell=
+\frac{
+ m_{\rm r}\psi_\ell(y)\psi_\ell'(x)
+-\mu_{\rm rel}\psi_\ell(x)\psi_\ell'(y)
+}{
+ m_{\rm r}\psi_\ell(y)\xi_\ell'(x)
+-\mu_{\rm rel}\xi_\ell(x)\psi_\ell'(y)
+}.}
+\label{eq:mie-a-standard}
+\end{equation}
+若 $\mu_{\rm rel}=1$，式~\eqref{eq:mie-a-standard}--\eqref{eq:mie-b-standard} 立即退化为通常的非磁性球标准结果。这一结果不要求
+$\varepsilon_{\rm p},\mu_{\rm p}$ 为实数；允许它们取满足因果响应的复数、频散函数，因此材料吸收与复折射率都可直接包含在同一组系数中。
+
+为了得到内部系数，可使用 Riccati--Bessel Wronskian
+\begin{equation}
+\psi_\ell(x)\xi_\ell'(x)
+-\psi_\ell'(x)\xi_\ell(x)=\ii.
+\label{eq:riccati-wronskian}
+\end{equation}
+例如 magnetic/TE 通道记
+\begin{equation}
+D_\ell^{(M)}
+\equiv
+\mu_{\rm rel}\psi_\ell(y)\xi_\ell'(x)
+-m_{\rm r}\xi_\ell(x)\psi_\ell'(y).
+\end{equation}
+由
+$d_\ell^{(M)}=m_{\rm r}[\psi-b\xi]/\psi(y)$，代入
+$b_\ell=N_\ell^{(M)}/D_\ell^{(M)}$ 后，分子成为
+\begin{align}
+\psi_\ell(x)D_\ell^{(M)}
+-\xi_\ell(x)N_\ell^{(M)}
+&=\mu_{\rm rel}\psi_\ell(y)
+\left[
+\psi_\ell(x)\xi_\ell'(x)
+-\psi_\ell'(x)\xi_\ell(x)
+\right]
+\\
+&=\ii\mu_{\rm rel}\psi_\ell(y).
+\end{align}
+故
+\begin{equation}
+\boxed{
+d_\ell^{(M)}
+=\frac{\ii m_{\rm r}\mu_{\rm rel}}
+{\mu_{\rm rel}\psi_\ell(y)\xi_\ell'(x)
+-m_{\rm r}\xi_\ell(x)\psi_\ell'(y)}.}
+\label{eq:mie-internal-M}
+\end{equation}
+electric/TM 通道使用式~\eqref{eq:mie-E-bc-H} 更方便：
+\begin{equation}
+d_\ell^{(E)}
+=\mu_{\rm rel}
+\frac{\psi_\ell(x)-a_\ell\xi_\ell(x)}{\psi_\ell(y)}.
+\end{equation}
+记
+\begin{align}
+D_\ell^{(E)}&=m_{\rm r}\psi_\ell(y)\xi_\ell'(x)
+-\mu_{\rm rel}\xi_\ell(x)\psi_\ell'(y),\\
+N_\ell^{(E)}&=m_{\rm r}\psi_\ell(y)\psi_\ell'(x)
+-\mu_{\rm rel}\psi_\ell(x)\psi_\ell'(y),
+\end{align}
+并代入 $a_\ell=N_\ell^{(E)}/D_\ell^{(E)}$。则
+\begin{align}
+\psi_\ell(x)D_\ell^{(E)}-\xi_\ell(x)N_\ell^{(E)}
+&=m_{\rm r}\psi_\ell(y)
+\left[\psi_\ell(x)\xi_\ell'(x)-\psi_\ell'(x)\xi_\ell(x)\right]\\
+&=\ii m_{\rm r}\psi_\ell(y).
+\end{align}
+因此
+\begin{equation}
+\boxed{
+d_\ell^{(E)}
+=\frac{\ii m_{\rm r}\mu_{\rm rel}}
+{m_{\rm r}\psi_\ell(y)\xi_\ell'(x)
+-\mu_{\rm rel}\xi_\ell(x)\psi_\ell'(y)}.}
+\label{eq:mie-internal-E}
+\end{equation}
+当粒子与宿主完全相同，
+$m_{\rm r}=\mu_{\rm rel}=1$，Wronskian 立即给出
+$a_\ell=b_\ell=0$ 且
+$d_\ell^{(E)}=d_\ell^{(M)}=1$，这是一个很直接的符号自检。
+
+得到部分波系数后，远场振幅、功率与截面都可由 VSH 正交性逐通道计算。
+由球 Hankel 函数的远场渐近式
+\begin{equation}
+h_\ell^{(1)}(\rho)
+= (-\ii)^{\ell+1}\frac{\ee^{\ii\rho}}{\rho}
+\left[1+O(\rho^{-1})\right],
+\qquad \rho\to\infty,
+\end{equation}
+有
+\begin{align}
+\bm M_{\ell m_{\Omega}}^{(3)}
+&=-(-\ii)^{\ell+1}
+\frac{\ee^{\ii\rho}}{\rho}
+\bm X_{\ell m_{\Omega}}+O(\rho^{-2}),
+\\
+\bm N_{\ell m_{\Omega}}^{(3)}
+&=\ii(-\ii)^{\ell+1}
+\frac{\ee^{\ii\rho}}{\rho}
+\bm\Psi_{\ell m_{\Omega}}+O(\rho^{-2}).
+\end{align}
+代入式~\eqref{eq:general-sc-vswf}，任意入射束的散射远场直接成为
+\begin{equation}
+\boxed{
+\bm E_{\rm sc}(r,\hat{\bm r})
+=\frac{\ee^{\ii k_{\rm h}r}}{k_{\rm h}r}
+\sum_{\ell,m_{\Omega}}(-\ii)^{\ell+1}
+\left[
+ b_\ell p_{\ell m_{\Omega}}\bm X_{\ell m_{\Omega}}
+-\ii a_\ell q_{\ell m_{\Omega}}\bm\Psi_{\ell m_{\Omega}}
+\right]
++O(r^{-2}).}
+\label{eq:mie-general-far-field}
+\end{equation}
+若宿主无损，使 $k_{\rm h},Z_{\rm h}$ 为实数，则远区有
+$\bm H_{\rm sc}=Z_{\rm h}^{-1}\hat{\bm r}\times\bm E_{\rm sc}+O(r^{-2})$。
+时间平均散射功率因此为
+\begin{align}
+P_{\rm sca}
+&=\lim_{r\to\infty}
+\int \frac{r^2}{2Z_{\rm h}}
+|\bm E_{\rm sc}|^2\,\dd\Omega
+\\
+&=\frac{1}{2Z_{\rm h}k_{\rm h}^2}
+\sum_{\ell=1}^{\infty}
+\sum_{m_{\Omega}=-\ell}^{\ell}
+\left(
+|b_\ell p_{\ell m_{\Omega}}|^2
++|a_\ell q_{\ell m_{\Omega}}|^2
+\right),
+\label{eq:mie-arbitrary-beam-scattered-power}
+\end{align}
+其中第二步只用了式~\eqref{eq:vsh-orthogonality}；不同
+$(\ell,m_{\Omega})$ 以及 $M/E$ 通道在完整球面积分后没有交叉项。
+
+作为校验，取横向偏振平面波
+\begin{equation}
+\bm E_{\rm inc}
+=E_0\hat{\bm e}\,
+\ee^{\ii k_{\rm h}\hat{\bm k}\cdot\bm r},
+\qquad
+\hat{\bm e}\cdot\hat{\bm k}=0.
+\end{equation}
+由标量平面波展开
+\begin{equation}
+\ee^{\ii k\hat{\bm k}\cdot\bm r}
+=4\pi\sum_{\ell,m_{\Omega}}
+\ii^\ell j_\ell(kr)
+Y_{\ell m_{\Omega}}(\hat{\bm r})
+Y_{\ell m_{\Omega}}^*(\hat{\bm k})
+\end{equation}
+
+
+先不要立即写出 $p_{\ell m_{\Omega}},q_{\ell m_{\Omega}}$。把标量展开代入任意球面 $r=r_0$ 上的电场：
+\begin{equation}
+\bm E_{\rm inc}(r_0,\hat{\bm r})
+=4\pi E_0\sum_{\ell',m'}
+\ii^{\ell'}j_{\ell'}(\rho_0)
+Y_{\ell'm'}(\hat{\bm r})
+Y_{\ell'm'}^*(\hat{\bm k})\,\hat{\bm e}.
+\label{eq:plane-wave-scalar-expanded-vector}
+\end{equation}
+要把这个“标量球谐 $\times$ 固定偏振矢量”的形式改写成横向 VSH，最稳妥的做法不是猜系数，而是直接使用前面已经证明的表面投影公式。对 magnetic/TE 系数，
+\begin{align}
+p_{\ell m_{\Omega}}
+&=-\frac{1}{j_\ell(\rho_0)}
+\int\bm X_{\ell m_{\Omega}}^*(\hat{\bm r})\cdot
+\bm E_{\rm inc}(r_0,\hat{\bm r})\,\dd\Omega\\
+&=-4\pi E_0\sum_{\ell',m'}
+\ii^{\ell'}\frac{j_{\ell'}(\rho_0)}{j_\ell(\rho_0)}
+Y_{\ell'm'}^*(\hat{\bm k})
+\int
+\bigl[\bm X_{\ell m_{\Omega}}^*\cdot\hat{\bm e}\bigr]
+Y_{\ell'm'}\,\dd\Omega.
+\label{eq:plane-wave-p-intermediate}
+\end{align}
+式~\eqref{eq:plane-wave-p-intermediate} 看起来仍含双重求和，但它实际上只是球面旋转生成元作用在标量加法定理上的写法。用
+\begin{equation}
+\bm X_{\ell m_{\Omega}}
+=\frac{\ii}{\sqrt{\Lambda_\ell}}
+\widehat{\bm{\mathcal L}}Y_{\ell m_{\Omega}},
+\qquad
+\widehat{\bm{\mathcal L}}=-\ii\bm r\times\bm\nabla,
+\end{equation}
+并在闭合球面上把 $\widehat{\bm{\mathcal L}}$ 分部积分移动到平面波因子，可把整个求和重新求成传播方向 $\hat{\bm k}$ 处的同一个 VSH。其关键恒等式为
+\begin{equation}
+\int\bm X_{\ell m_{\Omega}}^*(\hat{\bm r})
+\ee^{\ii\rho_0\hat{\bm k}\cdot\hat{\bm r}}\,\dd\Omega
+=4\pi\ii^\ell j_\ell(\rho_0)
+\bm X_{\ell m_{\Omega}}^*(\hat{\bm k}).
+\label{eq:vector-plane-wave-X-integral}
+\end{equation}
+这个矢量恒等式也可以从标量积分逐步推出，而不必另作猜测。由
+\begin{equation}
+\bm X_{\ell m_\Omega}
+=\frac{\ii}{\sqrt{\Lambda_\ell}}\widehat{\bm{\mathcal L}}_{\hat r}Y_{\ell m_\Omega},
+\end{equation}
+对每个 Cartesian 分量使用球面角动量算符的 Hermitian 性，有
+\begin{align}
+\int \bm X_{\ell m_\Omega}^*(\hat{\bm r})
+\ee^{\ii\rho_0\hat{\bm k}\cdot\hat{\bm r}}\dd\Omega
+&=\frac{\ii}{\sqrt{\Lambda_\ell}}
+\widehat{\bm{\mathcal L}}_{\hat k}
+\int Y_{\ell m_\Omega}^*(\hat{\bm r})
+\ee^{\ii\rho_0\hat{\bm k}\cdot\hat{\bm r}}\dd\Omega.
+\label{eq:X-integral-angular-momentum-step}
+\end{align}
+这里用到了核函数上的
+\begin{equation}
+\widehat{\bm{\mathcal L}}_{\hat r}
+\ee^{\ii\rho_0\hat{\bm k}\cdot\hat{\bm r}}
+=-\widehat{\bm{\mathcal L}}_{\hat k}
+\ee^{\ii\rho_0\hat{\bm k}\cdot\hat{\bm r}},
+\end{equation}
+负号与复共轭产生的负号相消。标量 Funk--Hecke 积分为
+\begin{equation}
+\int Y_{\ell m_\Omega}^*(\hat{\bm r})
+\ee^{\ii\rho_0\hat{\bm k}\cdot\hat{\bm r}}\dd\Omega
+=4\pi\ii^\ell j_\ell(\rho_0)Y_{\ell m_\Omega}^*(\hat{\bm k}).
+\end{equation}
+将它代入式~\eqref{eq:X-integral-angular-momentum-step}，再用
+$\bm X_{\ell m_\Omega}^*(\hat{\bm k})
+=(\ii/\sqrt{\Lambda_\ell})
+\widehat{\bm{\mathcal L}}_{\hat k}Y_{\ell m_\Omega}^*(\hat{\bm k})$，正好恢复式~\eqref{eq:vector-plane-wave-X-integral}。因此将其与常矢量 $\hat{\bm e}$ 点乘后，$j_\ell(\rho_0)$ 与投影公式分母严格约掉，系数也就与选择哪一个投影球面无关。
+
+electric/TM 系数也不应只用“交换 $M/N$”一句带过。由式~\eqref{eq:general-inc-vswf-H}，磁场展开中 $\bm M_{\ell m_\Omega}^{(1)}$ 的系数是 $-\ii q_{\ell m_\Omega}/Z_{\rm h}$。把已经得到的 $M$ 通道投影式~\eqref{eq:beam-shape-p-projection} 原样用于磁场，得到
+\begin{align}
+-\frac{\ii}{Z_{\rm h}}q_{\ell m_\Omega}
+&=-\frac{1}{j_\ell(\rho_0)}
+\int \bm X_{\ell m_\Omega}^*(\hat{\bm r})
+\cdot\bm H_{\rm inc}(r_0,\hat{\bm r})\,\dd\Omega,\\
+q_{\ell m_\Omega}
+&=-\frac{\ii Z_{\rm h}}{j_\ell(\rho_0)}
+\int \bm X_{\ell m_\Omega}^*\cdot\bm H_{\rm inc}\,\dd\Omega.
+\label{eq:q-from-H-projection}
+\end{align}
+对平面波再代入
+\begin{equation}
+\bm H_{\rm inc}=Z_{\rm h}^{-1}
+(\hat{\bm k}\times\hat{\bm e})E_0
+\ee^{\ii k_{\rm h}\hat{\bm k}\cdot\bm r},
+\end{equation}
+并使用与 TE 通道相同的矢量平面波积分~\eqref{eq:vector-plane-wave-X-integral}，有
+\begin{align}
+q_{\ell m_\Omega}
+&=-\ii\,4\pi\ii^\ell E_0
+(\hat{\bm k}\times\hat{\bm e})\cdot
+\bm X_{\ell m_\Omega}^*(\hat{\bm k})\\
+&=4\pi\ii^{\ell-1}E_0
+(\hat{\bm k}\times\hat{\bm e})\cdot
+\bm X_{\ell m_\Omega}^*(\hat{\bm k}),
+\end{align}
+其中最后一步使用 $-\ii\,\ii^\ell=\ii^{\ell-1}$。于是
+\begin{align}
+p_{\ell m_{\Omega}}
+&=-4\pi\ii^\ell E_0
+\hat{\bm e}\cdot
+\bm X_{\ell m_{\Omega}}^*(\hat{\bm k}),
+\\
+q_{\ell m_{\Omega}}
+&=4\pi\ii^{\ell-1}E_0
+(\hat{\bm k}\times\hat{\bm e})\cdot
+\bm X_{\ell m_{\Omega}}^*(\hat{\bm k}).
+\label{eq:plane-wave-beam-shape-coefficients}
+\end{align}
+第二式也可由平面波关系
+$\bm H_{\rm inc}=Z_{\rm h}^{-1}\hat{\bm k}\times\bm E_{\rm inc}$
+与式~\eqref{eq:H-from-E-MN} 直接推出。VSH 的点态加法定理给出
+\begin{equation}
+\sum_{m_{\Omega}=-\ell}^{\ell}
+\bm X_{\ell m_{\Omega}}(\hat{\bm k})
+\bm X_{\ell m_{\Omega}}^*(\hat{\bm k})
+=\frac{2\ell+1}{8\pi}
+(\mathbf I-\hat{\bm k}\hat{\bm k}),
+\end{equation}
+因此
+\begin{equation}
+\sum_{m_{\Omega}}|p_{\ell m_{\Omega}}|^2
+=\sum_{m_{\Omega}}|q_{\ell m_{\Omega}}|^2
+=2\pi(2\ell+1)|E_0|^2.
+\end{equation}
+把它代入式~\eqref{eq:mie-arbitrary-beam-scattered-power}，再除以平面波入射强度
+$I_0=|E_0|^2/(2Z_{\rm h})$，得到由一般 VSH 公式推出的平面波散射截面
+\begin{equation}
+\boxed{
+C_{\rm sca}
+=\frac{2\pi}{k_{\rm h}^2}
+\sum_{\ell=1}^{\infty}(2\ell+1)
+\left(|a_\ell|^2+|b_\ell|^2\right).}
+\label{eq:mie-Csca}
+\end{equation}
+消光截面需要再多走一步，因为它不是“散射功率再换一个系数”。在半径为 $R$ 的大球面上写
+\[
+ \bm E=\bm E_{\rm inc}+\bm E_{\rm sc},
+ \qquad
+ \bm H=\bm H_{\rm inc}+\bm H_{\rm sc}.
+\]
+时间平均径向功率通量中的交叉项为
+\begin{align}
+P_{\rm int}(R)
+={}&\frac12\operatorname{Re}
+\int_{S_R}
+\Bigl(
+ \bm E_{\rm inc}\times\bm H_{\rm sc}^{*}
+ +\bm E_{\rm sc}\times\bm H_{\rm inc}^{*}
+\Bigr)\cdot\hat{\bm r}\,\dd S .
+\label{eq:mie-interference-power}
+\end{align}
+对闭合球面，纯入射平面波本身的净通量为零；纯散射项给出 $P_{\rm sca}>0$。
+因此由入射束中被移走的功率定义
+\begin{equation}
+ P_{\rm ext}\equiv-\lim_{R\to\infty}P_{\rm int}(R).
+ \label{eq:mie-extinction-power-definition}
+\end{equation}
+把正则入射 VSWF 与外向 VSWF 的大 $R$ 渐近式代入
+式~\eqref{eq:mie-interference-power}，角向积分仍由
+式~\eqref{eq:vsh-orthogonality} 对角化。对于每个
+$(\ell,m_{\Omega})$，$M$ 与 $E$ 两个偏振通道分别留下入射系数与散射系数的实部干涉，因而
+\begin{equation}
+ P_{\rm ext}
+ =\frac{1}{2Z_{\rm h}k_{\rm h}^{2}}
+ \sum_{\ell=1}^{\infty}\sum_{m_{\Omega}=-\ell}^{\ell}
+ \left[
+ \operatorname{Re}(b_\ell)|p_{\ell m_{\Omega}}|^2
+ +\operatorname{Re}(a_\ell)|q_{\ell m_{\Omega}}|^2
+ \right].
+ \label{eq:mie-arbitrary-beam-extinction-power}
+\end{equation}
+这里出现 $\operatorname{Re}a_\ell$、$\operatorname{Re}b_\ell$ 的原因已经明确：消光来自
+\emph{入射场与散射场的相干交叉项}，而散射功率来自散射场模平方，所以后者含
+$|a_\ell|^2,|b_\ell|^2$。
+
+对于上面的平面波，利用
+\[
+ \sum_{m_{\Omega}}|p_{\ell m_{\Omega}}|^2
+ =\sum_{m_{\Omega}}|q_{\ell m_{\Omega}}|^2
+ =2\pi(2\ell+1)|E_0|^2,
+\]
+再除以 $I_0=|E_0|^2/(2Z_{\rm h})$，便得到
+\begin{equation}
+\boxed{
+C_{\rm ext}
+=\frac{2\pi}{k_{\rm h}^2}
+\sum_{\ell=1}^{\infty}(2\ell+1)
+\operatorname{Re}(a_\ell+b_\ell),
+\qquad
+C_{\rm abs}=C_{\rm ext}-C_{\rm sca}.}
+\label{eq:mie-Cext-Cabs}
+\end{equation}
+这正是球形 Mie 理论中的电磁光学定理，但这里它是由功率守恒与 VSH 通道正交性逐步得到的，而不是额外引用的公式。
+因此被动球的每个独立通道满足
+$\operatorname{Re}a_\ell\ge|a_\ell|^2$、
+$\operatorname{Re}b_\ell\ge|b_\ell|^2$；无损球取等号。若宿主本身吸收，不能直接使用式~\eqref{eq:mie-Csca}--\eqref{eq:mie-Cext-Cabs} 的实波数截面定义，而应回到有限曲面上的 Poynting 通量。
+
+同一组系数还可直接解释为球形散射体的对角 $T$ 算符元，从而把 Mie 表示与前一节的一般散射算符接起来。
+定义两个分母
+\begin{align}
+D_\ell^{(E)}(\omega)
+&\equiv
+m_{\rm r}\psi_\ell(y)\xi_\ell'(x)
+-\mu_{\rm rel}\xi_\ell(x)\psi_\ell'(y),
+\\
+D_\ell^{(M)}(\omega)
+&\equiv
+\mu_{\rm rel}\psi_\ell(y)\xi_\ell'(x)
+-m_{\rm r}\xi_\ell(x)\psi_\ell'(y).
+\label{eq:mie-resonance-denominators}
+\end{align}
+在复频率平面上，$D_\ell^{(E)}=0$ 与
+$D_\ell^{(M)}=0$ 给出相应 electric/TM 与 magnetic/TE 球形准正常模的极点条件。真实频率扫描中若材料损耗不为零，这些极点一般离开实轴，因此观测到的是有限线宽的多极增强，而不是实频轴上的真正发散。
+
+如果用“正则入射系数向量”与“外向散射系数向量”定义球的 $T$ 算符
+\begin{equation}
+\bm f
+=\{p_{\ell m_{\Omega}},q_{\ell m_{\Omega}}\},
+\qquad
+\bm s
+=\{s_{\ell m_{\Omega}}^{(M)},s_{\ell m_{\Omega}}^{(E)}\},
+\qquad
+\bm s=\mathbf T\bm f,
+\end{equation}
+那么由式~\eqref{eq:general-sc-vswf} 可知，在上述 VSWF 相位约定下
+\begin{equation}
+\boxed{
+s_{\ell m_{\Omega}}^{(M)}=-b_\ell p_{\ell m_{\Omega}},
+\qquad
+s_{\ell m_{\Omega}}^{(E)}=-a_\ell q_{\ell m_{\Omega}},}
+\label{eq:mie-T-diagonal}
+\end{equation}
+即
+\begin{equation}
+T_{\ell m_{\Omega},\ell' m_{\Omega}'}^{MM}
+=-b_\ell\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'},
+\qquad
+T_{\ell m_{\Omega},\ell' m_{\Omega}'}^{EE}
+=-a_\ell\delta_{\ell\ell'}\delta_{m_{\Omega}m_{\Omega}'},
+\qquad
+T^{ME}=T^{EM}=0.
+\end{equation}
+因此球体 $T$ 算符的对角元与 Mie 系数之间的符号关系被完全固定。
+
+
+\section{从 Mie 多极到 PINEM 轨迹投影}
+对位于 $\bm r_{\rm c}$ 的球，把电子轨迹写成
+\begin{equation}
+\bm r_{\rm e}(s)
+=\bm R_\perp+s\hat{\bm v}_0.
+\end{equation}
+定义每一个外向 VSWF 的电子轨迹核
+\begin{align}
+\mathcal I_{\ell m_{\Omega}}^{(M)}(\bm R_\perp)
+&\equiv
+\int_{-\infty}^{+\infty}\!\dd s\,
+\hat{\bm v}_0\cdot
+\bm M_{\ell m_{\Omega}}^{(3)}
+\!\left[k_{\rm h}
+(\bm r_{\rm e}(s)-\bm r_{\rm c})\right]
+\ee^{-\ii\kappa s},
+\\
+\mathcal I_{\ell m_{\Omega}}^{(E)}(\bm R_\perp)
+&\equiv
+\int_{-\infty}^{+\infty}\!\dd s\,
+\hat{\bm v}_0\cdot
+\bm N_{\ell m_{\Omega}}^{(3)}
+\!\left[k_{\rm h}
+(\bm r_{\rm e}(s)-\bm r_{\rm c})\right]
+\ee^{-\ii\kappa s}.
+\label{eq:mie-trajectory-kernels}
+\end{align}
+将式~\eqref{eq:general-sc-vswf} 逐项投影到式~\eqref{eq:Fparallel-general-def}，得到
+\begin{equation}
+\boxed{
+\mathcal F_{\parallel,{\rm sc}}^{\rm Mie}(\bm R_\perp)
+=-\sum_{\ell=1}^{\infty}
+\sum_{m_{\Omega}=-\ell}^{\ell}
+\left[
+ b_\ell p_{\ell m_{\Omega}}
+\mathcal I_{\ell m_{\Omega}}^{(M)}
++a_\ell q_{\ell m_{\Omega}}
+\mathcal I_{\ell m_{\Omega}}^{(E)}
+\right].}
+\label{eq:mie-trajectory-projection-general}
+\end{equation}
+若需要总场耦合，只需再加上入射场本身的轨迹投影：
+\begin{equation}
+\mathcal F_{\parallel}^{\rm tot}
+=\mathcal F_{\parallel}^{\rm inc}+\mathcal F_{\parallel,{\rm sc}}^{\rm Mie}.
+\end{equation}
+于是任意入射束、任意球材料、任意冲量参数以及任意电子传播方向都被分解为三个彼此独立的线性模块：
+\begin{equation}
+\boxed{
+\bm E_{\rm inc}
+\xrightarrow{\text{VSH 投影}}
+\{p_{\ell m_{\Omega}},q_{\ell m_{\Omega}}\}
+\xrightarrow{\text{Mie }a_\ell,b_\ell}
+\bm E_{\rm sc}
+\xrightarrow{\mathcal L_{\rm e}}
+\Ftilde
+\xrightarrow{\beta=-q_{\rm e}\Ftilde/(2\hbar\omega)}
+P_n.}
+\label{eq:mie-to-pinem-chain}
+\end{equation}
+这比把某个特定平面波的 $E_r,E_\theta,E_\varphi$ 分量逐项抄入 PINEM 公式更一般：球本身只负责
+$a_\ell,b_\ell$，入射场只负责
+$p_{\ell m_{\Omega}},q_{\ell m_{\Omega}}$，电子几何只负责轨迹核
+$\mathcal I_{\ell m_{\Omega}}^{(M/E)}$。三者可以独立改变而无需重推其余部分。
+
+

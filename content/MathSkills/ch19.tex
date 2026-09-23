@@ -1,6 +1,6 @@
 \chapter{大数律、中心极限定理与渐近线性化}\label{chap:math-stat-asymptotics}
 
-统计量的有限样本分布通常依赖整个总体分布，难以写成闭式；渐近理论则把问题分成两个不同尺度。首先，大数律说明经验平均 $P_ng$ 在 $O(1)$ 尺度上趋于确定极限 $Pg$；随后，中心极限定理描述其 $n^{-1/2}$ 量级的随机涨落。连续映射、Slutsky、Delta 方法与渐近线性表示只是把这两个基本极限传递到更复杂的统计量。后面的 $M$-估计、MLE、LAN、Wald、Score 与 BvM 都依赖这一层，因此本章不仅给结论，也明确哪些条件控制一致性、哪些条件只控制一阶正态近似。
+统计量的有限样本分布通常依赖整个总体分布，难以写成闭式；渐近理论则把问题分成两个不同尺度。首先，大数律说明经验平均 $P_ng$ 在 $O(1)$ 尺度上趋于确定极限 $Pg$；随后，中心极限定理描述其 $n^{-1/2}$ 量级的随机涨落。连续映射、Slutsky、Δ 方法与渐近线性表示只是把这两个基本极限传递到更复杂的统计量。后面的 $M$-估计、极大似然估计、局部渐近正态、Wald、得分 与 BvM 都依赖这一层，因此本章不仅给结论，也明确哪些条件控制一致性、哪些条件只控制一阶正态近似。
 
 \section{随机变量列的收敛与概率阶}
 
@@ -71,7 +71,7 @@ P\!\left(
 \right).
 \label{eq:math-stat-hoeffding}
 \end{equation}
-与 Chebyshev 的多项式尾界相比，它揭示 bounded independent sums 的指数集中。
+与 Chebyshev 的多项式尾界相比，它揭示 有界 独立 和 的指数集中。
 
 若只假设 $|X_i-\mathbb E X_i|\le M$ 且总方差
 \[
@@ -103,7 +103,7 @@ P(S_n\ge t)
 \mathbb E\ee^{\lambda S_n}
 =\prod_i\mathbb E\ee^{\lambda Y_i}.
 \]
-Hoeffding lemma 对 $Y_i\in[a_i-\mathbb E X_i,b_i-\mathbb E X_i]$ 给出
+Hoeffding 引理 对 $Y_i\in[a_i-\mathbb E X_i,b_i-\mathbb E X_i]$ 给出
 \[
 \log\mathbb E\ee^{\lambda Y_i}
 \le\frac{\lambda^2(b_i-a_i)^2}{8}.
@@ -122,7 +122,7 @@ Hoeffding lemma 对 $Y_i\in[a_i-\mathbb E X_i,b_i-\mathbb E X_i]$ 给出
 (1-p_i)\ee^{\lambda a_i}+p_i\ee^{\lambda b_i}
 =\ee^{L(\lambda)},
 \]
-其中 $L(\lambda)=\lambda\mathbb E Y_i+\log\{(1-p_i)+p_i\ee^{\lambda(b_i-a_i)}\}$。中心化使 $\mathbb E Y_i=0$，再利用 $\log u\le u-1$ 与 $L''(\lambda)\le(b_i-a_i)^2/4$，对 $L$ 在 $0$ 处 Taylor 展开即得 Hoeffding lemma。
+其中 $L(\lambda)=\lambda\mathbb E Y_i+\log\{(1-p_i)+p_i\ee^{\lambda(b_i-a_i)}\}$。中心化使 $\mathbb E Y_i=0$，再利用 $\log u\le u-1$ 与 $L''(\lambda)\le(b_i-a_i)^2/4$，对 $L$ 在 $0$ 处 Taylor 展开即得 Hoeffding 引理。
 所以
 \[
 P(S_n\ge t)
@@ -155,7 +155,7 @@ P(S_n\ge t)
 \le
 \exp\!\left\{-\frac{t^2}{2(nv+Mt/3)}\right\},
 \]
-当 $t\ll nv/M$ 时退化为 $\exp(-t^2/2nv)$，与 CLT 的 Gaussian 中心区一致；当 $t$ 进入大偏差区时转为 $\exp(-3t/2M)$，体现单项幅度控制。
+当 $t\ll nv/M$ 时退化为 $\exp(-t^2/2nv)$，与 中心极限定理 的 Gaussian 中心区一致；当 $t$ 进入大偏差区时转为 $\exp(-3t/2M)$，体现单项幅度控制。
 
 与统计力学的联系。Chernoff 熵
 \[
@@ -466,9 +466,9 @@ Borel--Cantelli 引理因此给出
  \sup_{0\le u\le1}|G_n(u)-u|
  \xrightarrow{a.s.}0.
 \]
-这个论证不要求 $F$ 连续；原子分布的跳跃已经由广义逆自动处理。因而 Glivenko--Cantelli 是真正的分布无关一致收敛，而不是逐点 LLN 的形式改写。
+这个论证不要求 $F$ 连续；原子分布的跳跃已经由广义逆自动处理。因而 Glivenko--Cantelli 是真正的分布无关一致收敛，而不是逐点 大数律 的形式改写。
 
-独立平均只是遍历平均的一种最简单结构。对 martingale difference $D_k$ 满足
+独立平均只是遍历平均的一种最简单结构。对 鞅 差 $D_k$ 满足
 \[
 \mathbb E(D_k\mid\mathcal F_{k-1})=0,
 \]
@@ -484,15 +484,15 @@ Borel--Cantelli 引理因此给出
 \[
 \sum_{k=1}^\infty\frac{\mathbb E D_k^2}{k^2}<\infty,
 \]
-则 martingale convergence 与 Kronecker lemma 可推出
+则 鞅 收敛 与 Kronecker 引理 可推出
 \[
 \frac1n\sum_{k=1}^nD_k\to0
 \quad\text{a.s.}
 \]
 这提供了一个比 iid 更宽的强大数律模板：关键不是“没有依赖”，而是新信息在给定过去后仍有零条件均值，并且累计二阶涨落受到控制。
 
-\begin{derivation}[martingale difference 的强平均收敛]
-设 $(D_k,\mathcal F_k)$ 是 martingale difference，即 $D_k\in L^2$ 为 $\mathcal F_k$-可测且
+\begin{derivation}[鞅 差 的强平均收敛]
+设 $(D_k,\mathcal F_k)$ 是 鞅 差，即 $D_k\in L^2$ 为 $\mathcal F_k$-可测且
 \[
 \mathbb E(D_k\mid\mathcal F_{k-1})=0.
 \]
@@ -500,13 +500,13 @@ Borel--Cantelli 引理因此给出
 \[
 M_n=\sum_{k=1}^n\frac{D_k}{k}.
 \]
-先验证 $(M_n,\mathcal F_n)$ 是 martingale。由条件期望的线性，
+先验证 $(M_n,\mathcal F_n)$ 是 鞅。由条件期望的线性，
 \[
 \mathbb E(M_n\mid\mathcal F_{n-1})
 =M_{n-1}+\frac1n\mathbb E(D_n\mid\mathcal F_{n-1})
 =M_{n-1}.
 \]
-再计算 $L^2$ 范数。对 $j<k$，用 tower property 与 $D_j$ 的 $\mathcal F_{k-1}$-可测性，
+再计算 $L^2$ 范数。对 $j<k$，用 塔 性质 与 $D_j$ 的 $\mathcal F_{k-1}$-可测性，
 \[
 \mathbb E(D_jD_k)
 =\mathbb E\bigl[D_j\,\mathbb E(D_k\mid\mathcal F_{k-1})\bigr]
@@ -517,12 +517,12 @@ M_n=\sum_{k=1}^n\frac{D_k}{k}.
 \mathbb E M_n^2
 =\sum_{k=1}^n\frac{\mathbb E D_k^2}{k^2}.
 \]
-由假设 $\sum_{k\ge1}\mathbb E D_k^2/k^2<\infty$，$(M_n)$ 为 $L^2$-bounded martingale。由 martingale 收敛定理，存在 $M_\infty\in L^2$ 使
+由假设 $\sum_{k\ge1}\mathbb E D_k^2/k^2<\infty$，$(M_n)$ 为 $L^2$-有界 鞅。由 鞅 收敛定理，存在 $M_\infty\in L^2$ 使
 \[
 M_n\to M_\infty
 \quad\text{a.s.}
 \]
-即级数 $\sum_{k\ge1}D_k/k$ 几乎处处收敛。应用 Kronecker lemma：若 $b_k\uparrow\infty$ 且 $\sum_{k\ge1}a_k/b_k$ 收敛，则
+即级数 $\sum_{k\ge1}D_k/k$ 几乎处处收敛。应用 Kronecker 引理：若 $b_k\uparrow\infty$ 且 $\sum_{k\ge1}a_k/b_k$ 收敛，则
 \[
 \frac1{b_n}\sum_{k=1}^n b_k a_k\to0.
 \]
@@ -581,7 +581,7 @@ M_n\to M_\infty
  \max_{1\le j\le N}|(P_n-P)m_{\theta_j}|
  +P_nw_\delta+Pw_\delta.
 \end{align*}
-有限个固定函数分别由 LLN 得到
+有限个固定函数分别由 大数律 得到
 \[
  \max_j|(P_n-P)m_{\theta_j}|\xrightarrow{\mathbb P}0,
 \]
@@ -592,7 +592,7 @@ M_n\to M_\infty
  \le 2Pw_\delta
  <2\varepsilon
 \]
-以概率趋于 $1$ 成立。再令 $\varepsilon\downarrow0$，得到\eqnrefs{eq:math-stat-ulln}。这个证明清楚区分了两层机制：有限网格上的随机误差由普通 LLN 控制，网格之间的连续参数误差由可积振荡包络控制。
+以概率趋于 $1$ 成立。再令 $\varepsilon\downarrow0$，得到\eqnrefs{eq:math-stat-ulln}。这个证明清楚区分了两层机制：有限网格上的随机误差由普通 大数律 控制，网格之间的连续参数误差由可积振荡包络控制。
 
 经验分布函数 $F_n(t)=\frac1n\sum\mathbf 1_{X_i\le t}$：取 $\mathcal F=\{\mathbf 1_{(-\infty,t]}:t\in\mathbb R\}$，ULLN 给出 $\sup_t|F_n(t)-F(t)|\xrightarrow{\mathbb P}0$——这就是 Glivenko--Cantelli 定理。核密度估计 $\hat f_n(x)=\frac1{nh_n}\sum K((x-X_i)/h_n)$：对函数类 $\{K_h(x-\cdot):x\in\mathbb R\}$ 施加 ULLN 给出逐点一致收敛，是非参数统计的基础。
 
@@ -607,7 +607,7 @@ M_n\to M_\infty
  M_n(\widehat\theta_n)
  \ge \sup_{\theta\in\Theta}M_n(\theta)-o_{\mathbb P}(1)
 \]
-的近似最大化序列都有 $\widehat\theta_n\xrightarrow{\mathbb P}\theta_0$。这就是后面 $M$-估计和 MLE 一致性的基本 argmax 逻辑：先保证经验目标对总体目标的一致逼近，再利用总体目标的可识别极值。
+的近似最大化序列都有 $\widehat\theta_n\xrightarrow{\mathbb P}\theta_0$。这就是后面 $M$-估计和 极大似然估计 一致性的基本 argmax 逻辑：先保证经验目标对总体目标的一致逼近，再利用总体目标的可识别极值。
 
 
 总体目标 $M$ 在 $\theta_0$ 唯一最大，离开邻域后有正间隙 $\Delta_\varepsilon$。统一收敛保证经验目标 $M_n$ 逼近 $M$ 到 $\Delta_\varepsilon/4$ 以内，此时 $\theta_0$ 处的经验值比外部区域高至少 $\Delta_\varepsilon/2$，经验极大点不可能落在外部。
@@ -666,7 +666,7 @@ $\theta_0$ 处下界。同时
 \alpha_n(x_m)
 \bigr)
 \]
-是 iid 向量平均的 $\sqrt n$ 缩放，因此由多元 CLT 收敛到均值为零的 Gaussian vector。协方差可直接算出
+是 iid 向量平均的 $\sqrt n$ 缩放，因此由多元 中心极限定理 收敛到均值为零的 Gaussian 矢量。协方差可直接算出
 \[
 \begin{aligned}
 \Cov\bigl(
@@ -676,7 +676,7 @@ $\theta_0$ 处下界。同时
 &=F(x\wedge y)-F(x)F(y).
 \end{aligned}
 \]
-所以极限过程应具有 covariance kernel
+所以极限过程应具有 协方差 核
 \begin{equation}
 \boxed{
 K_F(x,y)
@@ -684,9 +684,9 @@ K_F(x,y)
 }.
 \label{eq:math-stat-brownian-bridge-covariance}
 \end{equation}
-这正是标准 Brownian bridge $B(t)$ 经 $t=F(x)$ 复合后的协方差。
+这正是标准 Brown 桥 $B(t)$ 经 $t=F(x)$ 复合后的协方差。
 
-Donsker 定理把有限维 CLT 升级成函数空间弱收敛：在适当的有界函数空间中，
+Donsker 定理把有限维 中心极限定理 升级成函数空间弱收敛：在适当的有界函数空间中，
 \begin{equation}
 \boxed{
 \alpha_n
@@ -695,15 +695,15 @@ B\circ F
 }.
 \label{eq:math-stat-donsker-cdf}
 \end{equation}
-其中 $B$ 是 $[0,1]$ 上标准 Brownian bridge，满足
+其中 $B$ 是 $[0,1]$ 上标准 Brown 桥，满足
 \[
 B(0)=B(1)=0,
 \qquad
 \Cov(B(s),B(t))=s\wedge t-st.
 \]
-这里真正困难的部分不是有限维正态性，而是 tightness：必须排除随机函数把质量逃到越来越细的尺度。也正因为如此，functional CLT 不能由“对每个 $x$ 都应用普通 CLT”机械得到。
+这里真正困难的部分不是有限维正态性，而是 tightness：必须排除随机函数把质量逃到越来越细的尺度。也正因为如此，泛函 中心极限定理 不能由“对每个 $x$ 都应用普通 中心极限定理”机械得到。
 
-若 $F$ 连续，则 probability integral transform 使
+若 $F$ 连续，则 概率 积分 变换 使
 \[
 U_i:=F(X_i)\sim\mathrm{Unif}(0,1),
 \]
@@ -713,7 +713,7 @@ U_i:=F(X_i)\sim\mathrm{Unif}(0,1),
 \Longrightarrow
 \sup_{0\le t\le1}|B(t)|.
 \]
-这就是 Kolmogorov--Smirnov 统计量具有 distribution-free 极限的原因：极限中原本的未知 $F$ 被单调时间变换吸收到 $t=F(x)$，只剩同一个 Brownian bridge。
+这就是 Kolmogorov--Smirnov 统计量具有 分布-自由 极限的原因：极限中原本的未知 $F$ 被单调时间变换吸收到 $t=F(x)$，只剩同一个 Brown 桥。
 
 经验过程语言还能统一一大类“对所有函数同时”的涨落。给定函数类 $\mathcal G$，定义
 \[
@@ -721,14 +721,14 @@ U_i:=F(X_i)\sim\mathrm{Unif}(0,1),
 :=\sqrt n(P_ng-Pg),
 \qquad g\in\mathcal G.
 \]
-若 $\mathbb G_n$ 在 $\ell^\infty(\mathcal G)$ 中弱收敛到 tight Gaussian process $\mathbb G_P$，就称 $\mathcal G$ 为 $P$-Donsker class。其 covariance 为
+若 $\mathbb G_n$ 在 $\ell^\infty(\mathcal G)$ 中弱收敛到 tight Gaussian 过程 $\mathbb G_P$，就称 $\mathcal G$ 为 $P$-Donsker 类。其 协方差 为
 \[
 \Cov(\mathbb G_Pf,\mathbb G_Pg)
 =P(fg)-Pf\,Pg.
 \]
-单个函数的 CLT 只对应 $\mathcal G=\{g\}$；有限维多元 CLT 对应有限函数类；真正的 empirical process theory 研究无限函数类在 entropy、covering number 或 VC 维条件下何时仍能获得统一 Gaussian 极限。
+单个函数的 中心极限定理 只对应 $\mathcal G=\{g\}$；有限维多元 中心极限定理 对应有限函数类；真正的 经验过程 理论 研究无限函数类在 熵、covering number 或 VC 维条件下何时仍能获得统一 Gaussian 极限。
 
-\begin{derivation}[Brownian bridge covariance 从 empirical CDF 直接得到]
+\begin{derivation}[Brown 桥 协方差 从 empirical CDF 直接得到]
 记
 \[
 Y_i(x):=\mathds{1}_{\{X_i\le x\}}.
@@ -770,10 +770,10 @@ Y_1(x)Y_1(y)
 \mathbb E[Y_1(x)Y_1(y)]
 =F(x\wedge y),
 \]
-得到\eqnrefs{eq:math-stat-brownian-bridge-covariance}。这个 covariance 对每个 $n$ 都已经成立；Donsker 定理真正新增的是"整个随机函数的联合极限"而非 covariance 计算本身。
+得到\eqnrefs{eq:math-stat-brownian-bridge-covariance}。这个 协方差 对每个 $n$ 都已经成立；Donsker 定理真正新增的是"整个随机函数的联合极限"而非 协方差 计算本身。
 \end{derivation}
 
-Brownian bridge 的零端点结构。由 $F(-\infty)=0$、$F(+\infty)=1$，协方差 $\sigma(x,y)=F(x\wedge y)-F(x)F(y)$ 在两端满足
+Brown 桥 的零端点结构。由 $F(-\infty)=0$、$F(+\infty)=1$，协方差 $\sigma(x,y)=F(x\wedge y)-F(x)F(y)$ 在两端满足
 \[
 \sigma(-\infty,y)=0,
 \qquad
@@ -786,7 +786,7 @@ Brownian bridge 的零端点结构。由 $F(-\infty)=0$、$F(+\infty)=1$，协�
 \sigma(s,t)=s\wedge t-st,
 \qquad 0\le s,t\le1,
 \]
-即标准 Brownian bridge 的协方差。对分位数泛函 $T(F)=F^{-1}(p)$，其 Hadamard 导数为
+即标准 Brown 桥 的协方差。对分位数泛函 $T(F)=F^{-1}(p)$，其 Hadamard 导数为
 \[
 \dot T_F(h)=-\frac{h(F^{-1}(p))}{f(F^{-1}(p))}.
 \]
@@ -796,16 +796,16 @@ Brownian bridge 的零端点结构。由 $F(-\infty)=0$、$F(+\infty)=1$，协�
 \xrightarrow{d}
 -\frac{\mathbb B(p)}{f(F^{-1}(p))},
 \]
-方差为 $p(1-p)/f^2(F^{-1}(p))$，即 Bahadur 量化的渐近方差。可见 Brownian bridge 协方差同时控制经验 CDF 与经验分位数的渐近涨落。
+方差为 $p(1-p)/f^2(F^{-1}(p))$，即 Bahadur 量化的渐近方差。可见 Brown 桥 协方差同时控制经验 CDF 与经验分位数的渐近涨落。
 
 
-functional delta method 进一步把\eqnrefs{eq:math-stat-donsker-cdf}传递给依赖整个分布的统计泛函。若 $T$ 在 $F$ 处具有 Hadamard 导数 $\dot T_F$，则形式上
+泛函 Δ 方法 进一步把\eqnrefs{eq:math-stat-donsker-cdf}传递给依赖整个分布的统计泛函。若 $T$ 在 $F$ 处具有 Hadamard 导数 $\dot T_F$，则形式上
 \[
 \sqrt n\{T(F_n)-T(F)\}
 \Longrightarrow
 \dot T_F(B\circ F).
 \]
-普通有限维 Delta 方法因此只是这一函数空间线性化的特例。分位数、累积分布函数泛函、某些 $M$-估计量和半参数 influence function 都可以放在这一统一框架中。
+普通有限维 Δ 方法因此只是这一函数空间线性化的特例。分位数、累积分布函数泛函、某些 $M$-估计量和半参数 影响函数 都可以放在这一统一框架中。
 
 经验过程给出函数层面的联合涨落；把函数类缩到有限维，便回到中心极限定理与多元随机涨落。
 
@@ -888,7 +888,7 @@ functional delta method 进一步把\eqnrefs{eq:math-stat-donsker-cdf}传递给�
 在此自动成立，因为当 $n>1/\varepsilon^2$ 时指示函数恒为零；这正是"中心区由二阶矩控制、尾部贡献可忽略"的 Lindeberg 哲学。
 
 
-独立同分布不是 CLT 的逻辑必要条件。对三角阵 $\{X_{n,k}:1\le k\le k_n\}$，设每行独立且中心化，记
+独立同分布不是 中心极限定理 的逻辑必要条件。对三角阵 $\{X_{n,k}:1\le k\le k_n\}$，设每行独立且中心化，记
 \[
  s_n^2=\sum_{k=1}^{k_n}\Var(X_{n,k}).
 \]
@@ -935,7 +935,7 @@ Lindeberg 条件还蕴含 Feller infinitesimality：
 \[
 \max_{k\le k_n}\frac{\Var(X_{n,k})}{s_n^2}\to0.
 \]
-它排除了任何单个变量占据总方差的有限比例。反过来，在 Feller 条件下，Lindeberg 条件对三角阵 CLT 接近精确条件；Lindeberg--Feller 定理因此比“有限二阶矩 + iid”更接近中心极限定理真正的结构核心。
+它排除了任何单个变量占据总方差的有限比例。反过来，在 Feller 条件下，Lindeberg 条件对三角阵 中心极限定理 接近精确条件；Lindeberg--Feller 定理因此比“有限二阶矩 + iid”更接近中心极限定理真正的结构核心。
 
 
 设三角阵满足 Lindeberg 条件且每个 $X_{n,k}$ 已中心化，于是 $\Var(X_{n,k})=\mathbb E X_{n,k}^2$。固定 $\varepsilon>0$，对每个 $k$ 用示性函数把全空间划分成 $|X_{n,k}|\le\varepsilon s_n$ 与 $|X_{n,k}|>\varepsilon s_n$ 两段，方差随之分解为
@@ -982,7 +982,7 @@ Lindeberg 条件还蕴含 Feller infinitesimality：
 即 Feller infinitesimality：没有任何单项方差能占据总方差的有限比例。
 
 
-若 $X_i\in\R^m$ iid，$\mathbb E X_i=\mu$，协方差矩阵 $\Sigma$ 有限，则多元 CLT 为
+若 $X_i\in\R^m$ iid，$\mathbb E X_i=\mu$，协方差矩阵 $\Sigma$ 有限，则多元 中心极限定理 为
 \begin{equation*}\sqrt n(\overline X_n-\mu)
  \xrightarrow{d}\mathcal N_m(0,\Sigma).
 \end{equation*}
@@ -1001,9 +1001,9 @@ Lindeberg 条件还蕴含 Feller infinitesimality：
  \right|
  \le C\frac{m_3}{\sigma^3\sqrt n}.
 \]
-这区分了两个问题：CLT 只回答极限是否正态；有限样本近似有多准确，还依赖偏斜、尾部和所关注的概率区域。
+这区分了两个问题：中心极限定理 只回答极限是否正态；有限样本近似有多准确，还依赖偏斜、尾部和所关注的概率区域。
 
-中心极限定理刻画线性平均；一般统计量则要先用 Delta 方法或渐近线性表示化为这种平均。
+中心极限定理刻画线性平均；一般统计量则要先用 Δ 方法或渐近线性表示化为这种平均。
 
 设
 \[
@@ -1026,7 +1026,7 @@ Lindeberg 条件还蕴含 Feller infinitesimality：
  n\{g(T_n)-g(\theta)\}
  \xrightarrow{d}\frac12g''(\theta)Z^2.
 \]
-这说明“先做局部线性化，再对高斯极限取二次函数”会自然产生卡方型极限。Wald 统计量使用的正是后一机制：约束函数先由一阶 Delta 方法得到渐近正态，再把标准化后的高斯向量取平方长度；它并不要求约束函数的一阶导数退化。
+这说明“先做局部线性化，再对高斯极限取二次函数”会自然产生卡方型极限。Wald 统计量使用的正是后一机制：约束函数先由一阶 Δ 方法得到渐近正态，再把标准化后的高斯向量取平方长度；它并不要求约束函数的一阶导数退化。
 
 更有组织力的表述是\emph{渐近线性表示}。若某个 $d$ 维估计量满足
 \begin{equation}\label{eq:math-stat-asymptotically-linear}
@@ -1036,7 +1036,7 @@ Lindeberg 条件还蕴含 Feller infinitesimality：
  \qquad
  \mathbb E_{\theta_0}\mathrm{IF}_{\theta_0}(X)=0,
 \end{equation}
-则 $\mathrm{IF}_{\theta_0}$ 称为一阶影响函数。若其二阶矩有限，则 iid 向量 $\mathrm{IF}_{\theta_0}(X_i)$ 的均值为零、协方差为 $V_{\rm IF}$，多元 CLT 给出
+则 $\mathrm{IF}_{\theta_0}$ 称为一阶影响函数。若其二阶矩有限，则 iid 向量 $\mathrm{IF}_{\theta_0}(X_i)$ 的均值为零、协方差为 $V_{\rm IF}$，多元 中心极限定理 给出
 \[
  \frac1{\sqrt n}\sum_{i=1}^n\mathrm{IF}_{\theta_0}(X_i)
  \xrightarrow{d}\mathcal N_d(0,V_{\rm IF}).
@@ -1048,7 +1048,7 @@ Lindeberg 条件还蕴含 Feller infinitesimality：
  \qquad
  V_{\rm IF}=\mathbb E_{\theta_0}[\mathrm{IF}_{\theta_0}\mathrm{IF}_{\theta_0}^{\mathsf T}].
 \]
-后面估计方程、MLE 与稳健 sandwich 协方差都可以归约到\eqnrefs{eq:math-stat-asymptotically-linear}。
+后面估计方程、极大似然估计 与稳健 三明治 协方差都可以归约到\eqnrefs{eq:math-stat-asymptotically-linear}。
 
 若 $\widehat V_n\xrightarrow{\mathbb P} V_{\rm IF}$，则 Slutsky 定理允许把未知协方差用一致估计替换。例如标量情形令 $V_{\rm IF}=\sigma_{\rm IF}^2>0$，并取 $\widehat\sigma_n^2\xrightarrow{\mathbb P}\sigma_{\rm IF}^2$，则
 \[
@@ -1137,7 +1137,7 @@ Lindeberg 条件还蕴含 Feller infinitesimality：
 \]
 这正是\eqnrefs{eq:math-stat-quantile-asymptotic-normal}。关键操作是把“位置小于某点”反演成一个 Bernoulli 计数事件。
 
-渐近正态性还可以加强为渐近线性表示，但这一步需要比单点 CLT 更强的\emph{局部经验过程控制}。对每个固定 $M<\infty$，若
+渐近正态性还可以加强为渐近线性表示，但这一步需要比单点 中心极限定理 更强的\emph{局部经验过程控制}。对每个固定 $M<\infty$，若
 \begin{equation}\label{eq:math-stat-local-empirical-equicontinuity}
  \sup_{|t|\le M}
  \sqrt n\left|
@@ -1153,7 +1153,7 @@ $\sqrt n(\widehat\xi_p-\xi_p)=O_{\mathbb P}(1)$，再在这个随机 $n^{-1/2}$ 
  =-\frac{\sqrt n\{F_n(\xi_p)-p\}}{f(\xi_p)}
  +o_{\mathbb P}(1).
 \end{equation}
-对半直线指示函数这一 VC 类，\eqnrefs{eq:math-stat-local-empirical-equicontinuity}确实成立；但它是经验过程的局部增量定理，而不是普通一维 Taylor 公式的自动后果。把这项输入单独列出，可以清楚区分两个层次：分位数渐近正态性只需局部计数 CLT，而 Bahadur 线性化还要求随机分布函数在收缩邻域内足够平滑。
+对半直线指示函数这一 VC 类，\eqnrefs{eq:math-stat-local-empirical-equicontinuity}确实成立；但它是经验过程的局部增量定理，而不是普通一维 Taylor 公式的自动后果。把这项输入单独列出，可以清楚区分两个层次：分位数渐近正态性只需局部计数 中心极限定理，而 Bahadur 线性化还要求随机分布函数在收缩邻域内足够平滑。
 
 \begin{derivation}[局部经验过程输入如何产生 Bahadur 表示]
 由连续性与 $f(\xi_p)>0$，样本分位数以概率趋于 $1$ 落在无原子的局部邻域中。因而
@@ -1202,34 +1202,34 @@ $\sqrt n(\widehat\xi_p-\xi_p)=O_{\mathbb P}(1)$，再在这个随机 $n^{-1/2}$ 
 其方差恰为 $p(1-p)/f(\xi_p)^2$，与\eqnrefs{eq:math-stat-quantile-asymptotic-normal}一致。
 \end{derivation}
 
-本章建立了后续统计理论真正反复使用的四个接口：统一 LLN 控制经验准则，一维与多元 CLT 控制随机一阶项，Delta 方法传播光滑变换，渐近线性表示把复杂估计量还原为 iid 平均。下一章暂时离开 $n\to\infty$，研究正态模型中为什么可以在每一个有限 $n$ 下由正交投影得到更强的精确抽样分布。
+本章建立了后续统计理论真正反复使用的四个接口：统一 大数律 控制经验准则，一维与多元 中心极限定理 控制随机一阶项，Δ 方法传播光滑变换，渐近线性表示把复杂估计量还原为 iid 平均。下一章暂时离开 $n\to\infty$，研究正态模型中为什么可以在每一个有限 $n$ 下由正交投影得到更强的精确抽样分布。
 
 \section{CLT 的数值验证与应用实例}\label{sec:clt-examples}
-Berry--Esseen 定理给出 CLT 的收敛速率上界：
+Berry--Esseen 定理给出 中心极限定理 的收敛速率上界：
 \[
 \sup_x\left|F_n(x)-\Phi(x)\right|\le\frac{C\,\mathbb E|X-\mu|^3}{\sigma^3\sqrt n}
 \]
 其中 $C\le0.4748$（Shevtsova 2011）。这给出有限样本下正态近似的最大偏差。
 
-\begin{exbox}[均匀分布的 CLT 收敛]
+\begin{exbox}[均匀分布的 中心极限定理 收敛]
 $X\sim\mathrm{Uniform}(0,1)$，$\mu=1/2$，$\sigma^2=1/12$，$\mathbb E|X-\mu|^3=1/32$。Berry--Esseen 界：
 \[
 \sup_x|F_n(x)-\Phi(x)|\le\frac{0.4748\times1/32}{(1/\sqrt{12})^3\sqrt n}\approx\frac{0.612}{\sqrt n}
 \]
 对 $n=10$：上界 0.194，实际最大偏差约 0.052；$n=100$：上界 0.061，实际约 0.016。Berry--Esseen 界保守约 3--4 倍，但给出了保证收敛的显式速率。
 \end{exbox}
-\begin{exbox}[方差估计的 Delta 方法]
+\begin{exbox}[方差估计的 Δ 方法]
 样本方差 $S^2$ 的渐近分布：$\sqrt{n}(S^2-\sigma^2)\xrightarrow{d} N(0,\mu_4-\sigma^4)$，其中 $\mu_4=\mathbb E(X-\mu)^4$。对正态 $X$，$\mu_4=3\sigma^4$，给出 $\sqrt{n}(S^2-\sigma^2)\xrightarrow{d} N(0,2\sigma^4)$。
 
-对标准差 $S=\sqrt{S^2}$，Delta 方法（$g(x)=\sqrt{x}$，$g'(\sigma^2)=1/(2\sigma)$）：
+对标准差 $S=\sqrt{S^2}$，Δ 方法（$g(x)=\sqrt{x}$，$g'(\sigma^2)=1/(2\sigma)$）：
 \[
 \sqrt{n}(S-\sigma)\xrightarrow{d} N\!\left(0,\frac{\mu_4-\sigma^4}{4\sigma^2}\right)
 \]
 正态情形：$N(0,\sigma^2/2)$。实例：$\sigma=2$，$n=50$ 时 $S$ 的标准误 $\approx\sigma/\sqrt{2n}=2/\sqrt{100}=0.2$。
 \end{exbox}
 
-\begin{exbox}[比值估计的 Delta 方法]
-估计比值 $\theta=\mu_X/\mu_Y$（如平均收入/平均家庭规模）。Delta 方法给出
+\begin{exbox}[比值估计的 Δ 方法]
+估计比值 $\theta=\mu_X/\mu_Y$（如平均收入/平均家庭规模）。Δ 方法给出
 \[
 \sqrt{n}(\hat\theta-\theta)\xrightarrow{d} N(0,\sigma_\theta^2),\qquad
 \sigma_\theta^2=\frac{\sigma_X^2}{\mu_Y^2}-\frac{2\mu_X\sigma_{XY}}{\mu_Y^3}+\frac{\mu_X^2\sigma_Y^2}{\mu_Y^4}

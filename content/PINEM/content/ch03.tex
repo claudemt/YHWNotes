@@ -1,0 +1,509 @@
+\chapter{一般电磁输入：Maxwell 算符、Green 张量与 $T$ 算符}
+\label{chap:maxwell-general}
+
+第~\ref{chap:pinem-core} 章已经把电子端压缩为线性泛函 $\mathcal F_{\parallel}[\bm E_\omega]$。因此这一章不再谈电子边带，只解决一个独立边值问题：给定材料本构、几何和入射场，求 $\bm E_\omega(\bm r)$。最一般的线性框架是
+\[
+\mathcal L\bm E_\omega=\bm S_{\rm ext},\quad \bm S_{\rm ext}\equiv\ii\omega\mu_0\bm J_{\rm ext},\qquad
+\mathbf G=\mathcal L^{-1},\qquad
+\bm E=\bm E_{\rm inc}+\mathbf G_{\rm h}\mathbf T\bm E_{\rm inc}.
+\]
+球、圆柱和 Rayleigh 极限都只能在这套母理论之后出现。
+
+\section{任意线性介质的 Maxwell 算符与 dyadic Green 张量}
+
+这里直接从矢量 Maxwell 方程建立母算符；标量 Helmholtz Green 函数只作为同一逆算符思想的数学预备，不参与电磁母理论的建立，其 Fourier/留数推导集中放在附录~\ref{app:scalar-green-prelude}。
+
+
+先不假定任何几何对称性。把 Maxwell 方程抽象地写成
+\begin{equation}
+\mathcal L\bm E=\bm S,
+\end{equation}
+并找到满足
+\begin{equation}
+\mathcal L\mathbf G(\bm r,\bm r')=\mathbf I\delta(\bm r-\bm r')
+\end{equation}
+的核，那么把第二式乘以 $\bm S(\bm r')$ 并对 $\bm r'$ 积分，就有
+\begin{align}
+\mathcal L\int\mathbf G(\bm r,\bm r')\cdot\bm S(\bm r')\dd^3r'
+&=\int\mathbf I\delta(\bm r-\bm r')\cdot\bm S(\bm r')\dd^3r'\\
+&=\bm S(\bm r).
+\end{align}
+因此
+\begin{equation}
+\bm E(\bm r)=\int\mathbf G(\bm r,\bm r')\cdot\bm S(\bm r')\dd^3r'
+\end{equation}
+只是 $\bm E=\mathcal L^{-1}\bm S$ 的坐标表示。下面所做的 dyadic Green 理论只是把这个初等事实应用到矢量 Maxwell 算符。
+
+对任意形状，把“Maxwell 求场”和“电子沿轨迹取相位匹配分量”写成两个线性算符。母问题允许局域、线性、各向异性的相对介电张量与相对磁导率张量
+\begin{equation}
+ \boldsymbol\varepsilon(\bm r,\omega),
+ \qquad
+ \boldsymbol\mu(\bm r,\omega),
+\end{equation}
+它们都可以是复数和频散的。非局域介质需要把下面的乘法本构张量进一步提升为积分核，但电子探测泛函本身不变。采用 $\ee^{-\ii\omega t}$ 约定，并记
+\begin{equation}
+k_{\rm vac}\equiv\frac{\omega}{c},
+\end{equation}
+以避免与电子中心波数 $k_0$ 冲突。频域 Maxwell 方程为
+\begin{align}
+\nabla\times\bm E
+&=\ii\omega\mu_0\boldsymbol\mu\cdot\bm H,
+\label{eq:maxwell-curl-E-general}\\
+\nabla\times\bm H
+&=\bm J_{\rm ext}
+-\ii\omega\varepsilon_0\boldsymbol\varepsilon\cdot\bm E.
+\label{eq:maxwell-curl-H-general}
+\end{align}
+由第一式
+\begin{equation}
+ \bm H
+ =\frac{1}{\ii\omega\mu_0}
+ \boldsymbol\mu^{-1}\cdot(\bm\nabla\times\bm E).
+\end{equation}
+代入第二式：
+\begin{align}
+\frac{1}{\ii\omega\mu_0}
+\bm\nabla\times
+\boldsymbol\mu^{-1}\cdot(\bm\nabla\times\bm E)
+&=\bm J_{\rm ext}
+-\ii\omega\varepsilon_0\boldsymbol\varepsilon\cdot\bm E.
+\end{align}
+两边乘以 $\ii\omega\mu_0$，并利用 $c^{-2}=\mu_0\varepsilon_0$：
+\begin{equation}
+ \boxed{
+ \left[
+ \bm\nabla\times\boldsymbol\mu^{-1}(\bm r,\omega)\cdot\bm\nabla\times
+ -k_{\rm vac}^2\boldsymbol\varepsilon(\bm r,\omega)
+ \right]\bm E
+ =\ii\omega\mu_0\bm J_{\rm ext}.}
+ \label{eq:Maxwell_general}
+\end{equation}
+这里两个旋度之间的 $\boldsymbol\mu^{-1}$ 是位置依赖算符乘法，不能在一般非均匀磁介质中移到旋度外。定义 Maxwell 算符
+\begin{equation}
+ \mathcal L
+ \equiv
+ \bm\nabla\times\boldsymbol\mu^{-1}\cdot\bm\nabla\times
+ -k_{\rm vac}^2\boldsymbol\varepsilon,
+ \label{eq:general-maxwell-operator}
+\end{equation}
+以及满足相同外向辐射条件的 dyadic Green 张量
+\begin{equation}
+\boxed{
+\mathcal L\,\mathbf G(\bm r,\bm r';\omega)
+=\mathbf I\,\delta(\bm r-\bm r').}
+\label{eq:dyadicGreenDef}
+\end{equation}
+当 $\boldsymbol\mu=\mathbf I$ 时立即退化为通常的
+$\bm\nabla\times\bm\nabla\times-k_{\rm vac}^2\boldsymbol\varepsilon$ 形式。
+则显式外源产生的场为
+\begin{equation}
+\boxed{
+\bm E(\bm r,\omega)
+=\ii\omega\mu_0
+\int\dd^3r'\,\mathbf G(\bm r,\bm r';\omega)\cdot\bm J_{\rm ext}(\bm r',\omega).}
+\label{eq:E_GJ}
+\end{equation}
+
+
+
+\section{均匀宿主：纵横投影反演 Green 张量}
+
+对均匀、各向同性宿主，$\boldsymbol\varepsilon=\varepsilon_{\rm h}\mathbf I$、$\boldsymbol\mu=\mu_{\rm h}\mathbf I$，其中 $\varepsilon_{\rm h},\mu_{\rm h}$ 可以是复数，但在空间中为常数。定义
+\begin{equation}
+ k_{\rm h}^2=k_{\rm vac}^2\varepsilon_{\rm h}\mu_{\rm h},
+ \qquad
+ \mathbf P_{\rm L}(\bm k)=\hat{\bm k}\hat{\bm k},
+ \qquad
+ \mathbf P_{\rm T}(\bm k)=\mathbf I-\mathbf P_{\rm L}(\bm k).
+ \label{eq:LT-projectors}
+\end{equation}
+在 Fourier 空间中 $\bm\nabla\to\ii\bm k$，因而
+\begin{align}
+\bm\nabla\times\bm\nabla\times\bm E
+&\longrightarrow
+-\bm k\times(\bm k\times\widetilde{\bm E})\\
+&=\left(k^2\mathbf I-\bm k\bm k\right)\cdot\widetilde{\bm E}\\
+&=k^2\mathbf P_{\rm T}\cdot\widetilde{\bm E}.
+\end{align}
+把 $\mathbf I=\mathbf P_{\rm T}+\mathbf P_{\rm L}$ 代入
+$\mathcal L_{\rm h}=\mu_{\rm h}^{-1}\bm\nabla\times\bm\nabla\times-k_{\rm vac}^2\varepsilon_{\rm h}$，得到
+\begin{align}
+\widetilde{\mathcal L}_{\rm h}
+&=\left(\frac{k^2}{\mu_{\rm h}}-k_{\rm vac}^2\varepsilon_{\rm h}\right)\mathbf P_{\rm T}
+-k_{\rm vac}^2\varepsilon_{\rm h}\mathbf P_{\rm L}\\
+&=\frac{k^2-k_{\rm h}^2}{\mu_{\rm h}}\mathbf P_{\rm T}
+-\frac{k_{\rm h}^2}{\mu_{\rm h}}\mathbf P_{\rm L}.
+\label{eq:maxwell-LT-decomposition}
+\end{align}
+由于 $\mathbf P_{\rm T}\mathbf P_{\rm L}=0$ 且 $\mathbf P_{\rm T,L}^2=\mathbf P_{\rm T,L}$，令
+$\widetilde{\mathbf G}_{\rm h}=A\mathbf P_{\rm T}+B\mathbf P_{\rm L}$，则
+\begin{equation}
+\widetilde{\mathcal L}_{\rm h}\widetilde{\mathbf G}_{\rm h}
+=\frac{k^2-k_{\rm h}^2}{\mu_{\rm h}}A\mathbf P_{\rm T}
+-\frac{k_{\rm h}^2}{\mu_{\rm h}}B\mathbf P_{\rm L}.
+\end{equation}
+要求它等于 $\mathbf I=\mathbf P_{\rm T}+\mathbf P_{\rm L}$，逐个投影通道比较系数：
+\begin{equation}
+ A=\frac{\mu_{\rm h}}{k^2-k_{\rm h}^2-\ii0^+},
+ \qquad
+ B=-\frac{\mu_{\rm h}}{k_{\rm h}^2}.
+\end{equation}
+所以
+\begin{equation}
+ \boxed{
+ \widetilde{\mathbf G}_{\rm h}(\bm k;\omega)
+ =\mu_{\rm h}\left[
+ \frac{\mathbf P_{\rm T}(\bm k)}{k^2-k_{\rm h}^2-\ii0^+}
+ -\frac{\mathbf P_{\rm L}(\bm k)}{k_{\rm h}^2}
+ \right].}
+ \label{eq:homogeneous-green-k}
+\end{equation}
+其中 $-\ii0^+$ 与 $\ee^{-\ii\omega t}$ 约定对应外向辐射边界条件。第一项包含传播的横向 Maxwell 极点，第二项是纵向约束部分；后者没有光锥极点。非磁宿主只需令 $\mu_{\rm h}=1$，而不是重新建立另一套公式。
+
+实空间形式从标量 Helmholtz Green 函数
+\begin{equation}
+ g_{\rm h}(R)=\frac{\ee^{\ii k_{\rm h}R}}{4\pi R},
+ \qquad
+ (\nabla^2+k_{\rm h}^2)g_{\rm h}=-\delta(\bm R),
+ \qquad
+ \bm R=\bm r-\bm r',
+ \label{eq:scalar-helmholtz-green}
+\end{equation}
+构造为
+\begin{equation}
+ \boxed{
+ \mathbf G_{\rm h}(\bm R)
+ =\mu_{\rm h}\left(\mathbf I+\frac{\bm\nabla\bm\nabla}{k_{\rm h}^2}\right)
+ g_{\rm h}(R).}
+ \label{eq:dyadic-from-scalar}
+\end{equation}
+对 $R\neq0$，径向函数满足
+\begin{equation}
+ \partial_i\partial_j g
+ =\left(g''-\frac{g'}{R}\right)\hat R_i\hat R_j
+ +\frac{g'}{R}\delta_{ij}.
+\end{equation}
+由
+\begin{align}
+ g'&=g\left(\ii k_{\rm h}-\frac1R\right),\\
+ g''&=g\left(-k_{\rm h}^2-\frac{2\ii k_{\rm h}}R+\frac{2}{R^2}\right),
+\end{align}
+代回式~\eqref{eq:dyadic-from-scalar}，得到显式 dyadic Green 张量
+\begin{equation}
+ \boxed{
+ \mathbf G_{\rm h}(\bm R)
+ =\mu_{\rm h}\frac{\ee^{\ii k_{\rm h}R}}{4\pi R}
+ \left\{
+ \left[1+\frac{\ii k_{\rm h}R-1}{k_{\rm h}^2R^2}\right]\mathbf I
+ +\left[-1-\frac{3\ii}{k_{\rm h}R}
+ +\frac{3}{k_{\rm h}^2R^2}\right]
+ \hat{\bm R}\hat{\bm R}
+ \right\}.}
+ \label{eq:homogeneous-green-real}
+\end{equation}
+所以同一个 Green 张量自动包含三个空间尺度：
+\begin{equation}
+ \mathbf G_{\rm h}
+ \sim
+ \begin{cases}
+ R^{-3},&|k_{\rm h}|R\ll1\quad\text{准静态近场},\\
+ R^{-2},&|k_{\rm h}|R\sim1\quad\text{感应区},\\
+ R^{-1},&|k_{\rm h}|R\gg1\quad\text{辐射远场}.
+ \end{cases}
+ \label{eq:green-three-zones}
+\end{equation}
+式~\eqref{eq:homogeneous-green-real} 的 $R^{-3}$ 部分给出准静态偶极近场，而球形 Mie 展开在球对称条件下保留全部 $\ell$ 与全部 $k_{\rm h}R$ 阶数。
+
+在非磁介质特例中，介电散射势也可以从“感生极化电流”角度重新得到。定义
+\begin{equation}
+ \bm P_{\rm ind}
+ =\varepsilon_0\Delta\boldsymbol\varepsilon\cdot\bm E,
+ \qquad
+ \bm J_{\rm ind}
+ =\partial_t\bm P_{\rm ind}
+ \longrightarrow-\ii\omega\bm P_{\rm ind}.
+ \label{eq:induced-current}
+\end{equation}
+代入式~\eqref{eq:E_GJ}：
+\begin{align}
+\bm E_{\rm sc}
+&=\ii\omega\mu_0\mathbf G_{\rm h}\bm J_{\rm ind}\\
+&=\omega^2\mu_0\varepsilon_0
+\mathbf G_{\rm h}\Delta\boldsymbol\varepsilon\bm E\\
+&=k_{\rm vac}^2
+\mathbf G_{\rm h}\Delta\boldsymbol\varepsilon\bm E,
+\end{align}
+这与下面 $\mathbf G_{\rm h}\mathbf V\bm E$ 完全一致。因此 $\mathbf V=k_{\rm vac}^2\Delta\boldsymbol\varepsilon$ 不是形式定义，而是 Maxwell 极化电流重新辐射的紧凑写法。
+
+若介质满足局域互易条件
+\begin{equation}
+ \boldsymbol\varepsilon^{\mathsf T}(\bm r,\omega)
+ =\boldsymbol\varepsilon(\bm r,\omega),
+ \qquad
+ \boldsymbol\mu^{\mathsf T}(\bm r,\omega)
+ =\boldsymbol\mu(\bm r,\omega),
+ \label{eq:reciprocal-epsilon}
+\end{equation}
+则 Maxwell 算符在不含复共轭的双线性 Green 恒等式下是对称的。取两个点源解 $\mathbf G(\cdot,\bm r_1)\cdot\bm a$ 与
+$\mathbf G(\cdot,\bm r_2)\cdot\bm b$，对包围所有散射体的体积应用旋度 Green 恒等式，外向边界项成对抵消，得到
+\begin{equation}
+ \bm a\cdot\mathbf G(\bm r_1,\bm r_2)\cdot\bm b
+ =\bm b\cdot\mathbf G(\bm r_2,\bm r_1)\cdot\bm a.
+\end{equation}
+由于 $\bm a,\bm b$ 任意，
+\begin{equation}
+ \boxed{
+ \mathbf G(\bm r,\bm r';\omega)
+ =\mathbf G^{\mathsf T}(\bm r',\bm r;\omega).}
+ \label{eq:green-reciprocity}
+\end{equation}
+这使“光场激发结构再由电子探测”和“把电子轨迹视作测试源再反向投影到光学激发”成为同一个互易散射核的两种读法。
+
+为了把电子模块写成与坐标选择无关的形式，定义电子探测线性泛函
+\begin{equation}
+\boxed{
+\mathcal L_{\rm e}[\bm E]
+\equiv
+\int_{-\infty}^{+\infty}\dd s\,
+\hat{\bm v}_0\cdot
+\bm E(\bm R_\perp+s\hat{\bm v}_0,\omega)
+\ee^{-\ii\kappa s},
+\qquad
+\kappa\equiv\frac{\omega}{v_0}.}
+\label{eq:electron-detection-functional}
+\end{equation}
+于是式~\eqref{eq:Fparallel-general-def} 简写为
+\begin{equation}
+\boxed{
+\Ftilde^{\rm tot}=\mathcal L_{\rm e}[\bm E_{\rm inc}+\bm E_{\rm sc}]
+=\Ftilde^{\rm inc}+\Ftilde^{\rm sc}.}
+\label{eq:F-as-functional}
+\end{equation}
+电子端只认识最终的 $\Ftilde^{\rm tot}$；具体 Maxwell 求解器的任务只是计算其中的场。若入射场轨迹投影为零，则可把 $\Ftilde^{\rm sc}$ 简写为 $\Ftilde$。
+
+
+\section{从散射势到 Lippmann--Schwinger 与 T 算符}
+
+若从入射场出发，选均匀各向同性宿主 $(\varepsilon_{\rm h},\mu_{\rm h})$，其 Green 张量记为 $\mathbf G_{\rm h}$。先定义
+\begin{equation}
+ \Delta\boldsymbol\varepsilon
+ \equiv\boldsymbol\varepsilon-\varepsilon_{\rm h}\mathbf I,
+ \qquad
+ \Delta\boldsymbol\mu^{-1}
+ \equiv\mu_{\rm h}^{-1}\mathbf I-\boldsymbol\mu^{-1}.
+\end{equation}
+宿主算符为
+\begin{equation}
+ \mathcal L_{\rm h}
+ =\bm\nabla\times\mu_{\rm h}^{-1}\bm\nabla\times
+ -k_{\rm vac}^2\varepsilon_{\rm h}\mathbf I.
+\end{equation}
+为了保持 $\mathcal L=\mathcal L_{\rm h}-\mathbf V$，一般电磁散射势必须写成算符
+\begin{equation}
+ \boxed{
+ \mathbf V
+ =\bm\nabla\times\Delta\boldsymbol\mu^{-1}\cdot\bm\nabla\times
+ +k_{\rm vac}^2\Delta\boldsymbol\varepsilon.}
+ \label{eq:general-electromagnetic-scattering-potential}
+\end{equation}
+第一项描述磁导率对比，第二项描述介电对比。只有在粒子和宿主都非磁、$\boldsymbol\mu=\mu_{\rm h}\mathbf I=\mathbf I$ 时，第一项才严格消失，并退化为常用的局域乘法算符
+\begin{equation}
+ \boxed{\mathbf V=k_{\rm vac}^2\Delta\boldsymbol\varepsilon.}
+ \label{eq:dielectric-scattering-potential}
+\end{equation}
+在没有显式体源、只有给定入射场时，$\mathcal L\bm E=0$，故
+\begin{align}
+(\mathcal L_{\rm h}-\mathbf V)\bm E&=0,\\
+\mathcal L_{\rm h}\bm E&=\mathbf V\bm E.
+\end{align}
+另一方面 $\mathcal L_{\rm h}\bm E_{\rm inc}=0$。因此 $\bm E-\bm E_{\rm inc}$ 满足
+\begin{equation}
+\mathcal L_{\rm h}(\bm E-\bm E_{\rm inc})=\mathbf V\bm E.
+\end{equation}
+左乘宿主 Green 算符 $\mathbf G_{\rm h}=\mathcal L_{\rm h}^{-1}$，并选取相同的外向辐射边界条件，得到 Lippmann--Schwinger 方程
+\begin{equation}
+\boxed{
+\bm E=\bm E_{\rm inc}+\mathbf G_{\rm h}\mathbf V\bm E.}
+\label{eq:LS-operator}
+\end{equation}
+在非磁介电对比特例~\eqref{eq:dielectric-scattering-potential} 下，坐标形式才简化为
+\begin{equation}
+\bm E(\bm r)=\bm E_{\rm inc}(\bm r)
++k_{\rm vac}^2\int_V\dd^3r'\,
+\mathbf G_{\rm h}(\bm r,\bm r';\omega)
+\cdot\Delta\boldsymbol\varepsilon(\bm r',\omega)
+\cdot\bm E(\bm r').
+\label{eq:LS_E}
+\end{equation}
+故 $\bm E_{\rm sc}=\mathbf G_{\rm h}\mathbf V\bm E$，于是任意结构的散射场轨迹投影为
+\begin{equation}
+\boxed{
+\Ftilde^{\rm sc}=\mathcal L_{\rm e}\mathbf G_{\rm h}\mathbf V\bm E,\qquad
+\Ftilde^{\rm tot}=\Ftilde^{\rm inc}+\Ftilde^{\rm sc}.}
+\label{eq:general-green-pinem-operator}
+\end{equation}
+
+为看清非磁介电对比情形的显式空间结构，定义一般传播方向下的投影 Green 核
+\begin{equation}
+\boxed{
+\mathbf K_{\parallel}(\bm R_\perp,\bm r';\kappa,\omega)
+\equiv
+\int_{-\infty}^{+\infty}\dd s\,
+\ee^{-\ii\kappa s}
+\hat{\bm v}_0\cdot
+\mathbf G_{\rm h}(\bm R_\perp+s\hat{\bm v}_0,\bm r';\omega).}
+\label{eq:projectedGreenKernel}
+\end{equation}
+于是
+\begin{equation}
+\boxed{
+\Ftilde^{\rm sc}(\bm R_\perp;\omega,v_0)
+=k_{\rm vac}^2\int_V\dd^3r'\,
+\mathbf K_{\parallel}(\bm R_\perp,\bm r';\omega/v_0,\omega)
+\cdot\Delta\boldsymbol\varepsilon(\bm r',\omega)
+\cdot\bm E(\bm r',\omega).}
+\label{eq:general_green_PINEM}
+\end{equation}
+对均匀宿主，还可以在 Fourier 空间把“只抽取 $k_\parallel=\omega/v_0$”这一说法严格算出来。把位置分解为
+\begin{equation}
+\bm r'=\bm r'_\perp+s'\hat{\bm v}_0,
+\qquad s'=\hat{\bm v}_0\cdot\bm r',
+\end{equation}
+并写平移不变的宿主 Green 张量
+\begin{equation}
+\mathbf G_{\rm h}(\bm r,\bm r')
+=\int\frac{\dd^3k}{(2\pi)^3}\,
+\widetilde{\mathbf G}_{\rm h}(\bm k;\omega)
+\ee^{\ii\bm k\cdot(\bm r-\bm r')}.
+\end{equation}
+将其代入式~\eqref{eq:projectedGreenKernel}：
+\begin{align}
+\mathbf K_\parallel
+&=\int\frac{\dd^3k}{(2\pi)^3}
+\hat{\bm v}_0\cdot\widetilde{\mathbf G}_{\rm h}(\bm k)
+\ee^{\ii\bm k_\perp\cdot(\bm R_\perp-\bm r'_\perp)}
+\ee^{-\ii k_\parallel s'}
+\int_{-\infty}^{+\infty}\dd s\,
+\ee^{\ii(k_\parallel-\kappa)s}\\
+&=\int\frac{\dd^3k}{(2\pi)^3}
+\hat{\bm v}_0\cdot\widetilde{\mathbf G}_{\rm h}(\bm k)
+\ee^{\ii\bm k_\perp\cdot(\bm R_\perp-\bm r'_\perp)}
+\ee^{-\ii k_\parallel s'}
+2\pi\delta(k_\parallel-\kappa)\\
+&=\ee^{-\ii\kappa s'}
+\int\frac{\dd^2k_\perp}{(2\pi)^2}
+\hat{\bm v}_0\cdot
+\widetilde{\mathbf G}_{\rm h}(\bm k_\perp+\kappa\hat{\bm v}_0;\omega)
+\ee^{\ii\bm k_\perp\cdot(\bm R_\perp-\bm r'_\perp)}.
+\label{eq:projected-Green-kspace}
+\end{align}
+这里出现的 $2\pi\delta(k_\parallel-\kappa)$ 是严格的相位匹配选择律，而不是口头上的“动量匹配”近似。由此可见，$\mathbf G_{\rm h}\mathbf V$ 决定材料与几何如何重排电磁空间谱，$\mathcal L_{\rm e}$ 再只抽取电子轨迹方向上 $k_{\parallel}=\omega/v_0$ 的切片。
+
+
+电子为何选择 $k_\parallel=\omega/v_0$、以及在 $v_0<c/n_{\rm h}$ 时这一切片为何必然位于传播光锥之外，已经由电子通道色散在式~\eqref{eq:required-longitudinal-wavevector}--\eqref{eq:evanescent-decay-from-kinematics} 中独立推出。这里的式~\eqref{eq:projected-Green-kspace} 给出同一结论的 Maxwell 表示：结构的作用是通过 $\mathbf G_{\rm h}\mathbf V$ 重排空间谱，而电子泛函只读取其中 $k_\parallel=\omega/v_0$ 的切片。
+
+把式~\eqref{eq:LS-operator} 的含 $\bm E$ 项移到左边：
+\begin{equation}
+(1-\mathbf G_{\rm h}\mathbf V)\bm E=\bm E_{\rm inc}.
+\end{equation}
+若相应 resolvent 存在，则
+\begin{equation}
+\bm E=(1-\mathbf G_{\rm h}\mathbf V)^{-1}\bm E_{\rm inc}.
+\end{equation}
+在 Born/Neumann 级数实际收敛的参数区间，例如谱半径 $\rho(\mathbf G_{\rm h}\mathbf V)<1$ 时，
+\begin{align}
+(1-\mathbf G_{\rm h}\mathbf V)^{-1}
+&=1+\mathbf G_{\rm h}\mathbf V
++(\mathbf G_{\rm h}\mathbf V)^2+\cdots,\\
+\bm E
+&=\bm E_{\rm inc}
++\mathbf G_{\rm h}\mathbf V\bm E_{\rm inc}
++\mathbf G_{\rm h}\mathbf V\mathbf G_{\rm h}\mathbf V\bm E_{\rm inc}+\cdots.
+\end{align}
+超出该收敛区时，$T$ 算符仍可通过 resolvent 定义，而不能把上式无条件当作数值级数。定义
+\begin{equation}
+\boxed{
+\mathbf T
+\equiv\mathbf V(1-\mathbf G_{\rm h}\mathbf V)^{-1}
+=\mathbf V+\mathbf V\mathbf G_{\rm h}\mathbf V
++\mathbf V\mathbf G_{\rm h}\mathbf V\mathbf G_{\rm h}\mathbf V+\cdots.}
+\label{eq:T-operator}
+\end{equation}
+于是
+\begin{equation}
+\boxed{
+\bm E_{\rm sc}=\mathbf G_{\rm h}\mathbf T\bm E_{\rm inc},
+\qquad
+\Ftilde^{\rm sc}=\mathcal L_{\rm e}\mathbf G_{\rm h}\mathbf T\bm E_{\rm inc}.}
+\label{eq:F-T-operator}
+\end{equation}
+
+还可把电子探测泛函写成一个“测试电流”与场的重叠。定义无量纲线源
+\begin{equation}
+ \bm j_{\rm test}(\bm r;\omega)
+ \equiv
+ \hat{\bm v}_0
+ \int_{-\infty}^{+\infty}\dd s\,
+ \delta^{(3)}\!\left(\bm r-\bm R_\perp-s\hat{\bm v}_0\right)
+ \ee^{+\ii\kappa s}.
+ \label{eq:test-current}
+\end{equation}
+则
+\begin{align}
+\int\dd^3r\,
+\bm j_{\rm test}^*(\bm r;\omega)\cdot\bm E(\bm r,\omega)
+&=\int\dd s\,
+\hat{\bm v}_0\cdot\bm E(\bm r_{\rm e}(s),\omega)
+\ee^{-\ii\kappa s}\\
+&=\mathcal L_{\rm e}[\bm E].
+\end{align}
+所以
+\begin{equation}
+ \boxed{
+ \Ftilde^{\rm sc}
+ =\langle j_{\rm test}|\,\mathbf G_{\rm h}\mathbf T\,|E_{\rm inc}\rangle}
+ \label{eq:pinem-bilinear-scattering-form}
+\end{equation}
+就是式~\eqref{eq:F-T-operator} 左乘电子测试泛函后的双线性写法。它尤其适合数值实现：一端是给定光学入射模式，另一端是完全由电子轨迹与速度决定的测试模式，中间只有结构的 Maxwell 散射算符。
+
+完整 Green 算符的 Dyson 关系也可直接由算符恒等式推出：
+\begin{align}
+\mathbf G
+&=(\mathcal L_{\rm h}-\mathbf V)^{-1}\\
+&=(1-\mathbf G_{\rm h}\mathbf V)^{-1}\mathbf G_{\rm h}\\
+&=\left[1+\mathbf G_{\rm h}\mathbf V(1-\mathbf G_{\rm h}\mathbf V)^{-1}\right]\mathbf G_{\rm h}\\
+&=\mathbf G_{\rm h}
++\mathbf G_{\rm h}\mathbf V(1-\mathbf G_{\rm h}\mathbf V)^{-1}\mathbf G_{\rm h}\\
+&=\mathbf G_{\rm h}+\mathbf G_{\rm h}\mathbf T\mathbf G_{\rm h}.
+\end{align}
+因此
+\begin{equation}
+\boxed{
+\mathbf G=\mathbf G_{\rm h}+\mathbf G_{\rm h}\mathbf T\mathbf G_{\rm h}.}
+\label{eq:Dyson_T}
+\end{equation}
+
+
+
+
+\section{把 Maxwell 解代回电子：两个模块只在一个线性泛函处相接}
+由 Lippmann--Schwinger 形式
+\begin{equation}
+\bm E_\omega=\bm E_{\rm inc}+\mathbf G_{\rm h}\mathbf T\bm E_{\rm inc},
+\end{equation}
+逐项代入轨迹泛函~\eqref{eq:Fparallel-general-def}，利用 $\mathcal F_{\parallel}$ 的线性性，得到
+\begin{align}
+\mathcal F_{\parallel}^{\rm tot}
+&=\mathcal F_{\parallel}[\bm E_{\rm inc}]
+ +\mathcal F_{\parallel}[\mathbf G_{\rm h}\mathbf T\bm E_{\rm inc}],\\
+\beta
+&=-\frac{q_{\rm e}}{2\hbar\omega}
+\left\{
+\mathcal F_{\parallel}[\bm E_{\rm inc}]
++\mathcal F_{\parallel}[\mathbf G_{\rm h}\mathbf T\bm E_{\rm inc}]
+\right\}.
+\label{eq:beta-green-T-interface}
+\end{align}
+如果实验几何使自由空间入射光本身与电子不满足纵向动量匹配，第一项可以很小，此时 PINEM 主要测量第二项；但是否可以忽略它必须由实际场积分判断，不能在理论起点直接删除。
+
+式~\eqref{eq:beta-green-T-interface} 是后面所有解析或数值电磁求解器与电子端的统一接口。换几何只会改变 $T$，换材料只会改变 Maxwell 算符，电子端的 Bessel 映射保持不变。

@@ -1,0 +1,121 @@
+\chapter*{导读：唯一问题、输入输出与推导顺序}
+\addcontentsline{toc}{chapter}{导读：唯一问题、输入输出与推导顺序}
+\label{chap:physical-map}
+
+PINEM 的理论内容很多，但主问题只有一个：\emph{给定一个自由电子波包和一个由纳米结构产生的时变近场，如何从基本动力学方程推出电子最终的能量边带概率？} 这句话决定了全书的依赖顺序。电子理论只负责把给定电磁场映射为边带振幅；Maxwell 理论只负责给出该电磁场；脉冲、束流和探测器只在两者都已经闭合以后进入。三类问题不能交叉建立，否则“相位匹配、Mie 系数、Bessel 边带、时间平均”就会像彼此独立的知识点一样同时出现。
+
+这一导读只建立输入、输出和全局约定，不把任何最终公式当作已知结论。真正的推导从 Dirac 方程开始；这里出现的箭头只表示依赖关系。后续推导始终按
+\begin{equation}
+\boxed{
+\text{Dirac 单电子动力学}
+\logicarrow
+\text{正能有效方程}
+\logicarrow
+\text{轨迹相位}
+\logicarrow
+\beta
+\logicarrow
+c_n
+\logicarrow
+P_n
+}
+\label{eq:main-electron-spine}
+\end{equation}
+推进；只有在电子侧得到“给定 $\bm E_\omega$ 如何算 $\beta$”以后，才转去求 $\bm E_\omega$ 本身。
+
+PINEM（photon-induced near-field electron microscopy）的核心不是“电子在光场中吸收或放出若干个光子”这一句话本身，而是一个更具体的相干动力学问题：\emph{一个窄带自由电子波包沿确定轨迹穿过局域、随时间振荡的电磁近场时，外场怎样在电子波函数上写入周期相位，并最终把这一相位调制变成离散能量边带？} 这份讲义只沿这一因果链推进，不把 Bessel 边带、相位匹配或 Rayleigh 近似当作起点。
+
+图~\ref{fig:pinem-physical-picture} 给出整个问题的物理分层。材料与几何首先决定近场；电子随后沿自身轨迹采样这个近场；轨迹上积累的相位再决定能谱。电子侧与电磁侧在“一条轨迹上的场投影”这一处连接，因此电子的窄带、无反冲近似与电磁散射的长波近似是彼此独立的控制步骤。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  >=Latex,
+  every node/.style={font=\small},
+  flow/.style={-Latex,thick},
+  guide/.style={draw=black!55,rounded corners=2pt,minimum height=8mm,align=center},
+  level/.style={thick}
+]
+  % real-space interaction region
+  \draw[flow] (-5.4,0) -- (-0.8,0) node[midway,below=4pt]{electron trajectory};
+  \fill (-4.8,0) circle (2.2pt) node[above=3pt]{\(e^-\)};
+  \draw[fill=black!6] (-2.45,-0.65) rectangle (-1.65,0.65);
+  \node[align=center] at (-2.05,0) {nano-\\structure};
+  \draw[decorate,decoration={snake,amplitude=1.2mm,segment length=4mm},-Latex,thick]
+        (-2.05,2.0) -- (-2.05,0.75);
+  \node at (-2.05,2.25) {optical drive};
+  \draw[decorate,decoration={snake,amplitude=0.8mm,segment length=3.5mm},thick]
+        (-3.25,0.35) -- (-0.95,0.35);
+  \node[above] at (-1.05,0.45) {near field};
+
+  % theory pipeline
+  \node[guide] (proj) at (0.55,0) {trajectory\\projection};
+  \node[guide,right=8mm of proj] (phase) {phase\\modulation};
+  \draw[flow] (-0.65,0) -- (proj.west);
+  \draw[flow] (proj) -- (phase);
+
+  % energy ladder
+  \begin{scope}[xshift=5.5cm]
+    \foreach \j in {-2,-1,0,1,2}{
+      \draw[level] (-0.65,0.42*\j) -- (0.65,0.42*\j);
+    }
+    \node[right] at (0.72,0) {\(\mathcal E_0\)};
+    \node[right] at (0.72,0.84) {\(\mathcal E_0+2\hbar\omega\)};
+    \node[right] at (0.72,-0.84) {\(\mathcal E_0-2\hbar\omega\)};
+    \draw[<->] (-0.92,0) -- (-0.92,0.42) node[midway,left]{\(\hbar\omega\)};
+    \node[above=3pt] at (0,1.05) {energy sidebands};
+  \end{scope}
+  \draw[flow] (phase.east) -- (4.55,0);
+\end{tikzpicture}
+\caption{PINEM 的物理输入输出链。电磁边值问题决定近场，电子沿轨迹选择其中与自身时空运动相匹配的分量；这一分量写入相位，周期相位调制再产生间隔为 \(\hbar\omega\) 的能量边带。}
+\label{fig:pinem-physical-picture}
+\end{figure}
+
+先冻结电子与场的基本记号。电子静质量为 \(m\)，正的基本电荷为 \(e>0\)，电子电荷始终写成
+\begin{equation}
+\boxed{q_{\rm e}=-e<0.}
+\label{eq:electron-charge}
+\end{equation}
+中心机械动量、中心速度和中心总能量定义为
+\begin{equation}
+\bm p_0=\gamma_0m\bm v_0,
+\qquad
+\mathcal E_0=\gamma_0mc^2,
+\qquad
+\gamma_0=\frac{1}{\sqrt{1-v_0^2/c^2}},
+\label{eq:notation-rel}
+\end{equation}
+其中 \(v_0=|\bm v_0|\)。若束轴取为 \(+z\) 方向，则
+\begin{equation}
+\bm v_0=v_0\hat{\bm z},
+\qquad
+p_0=\hbar k_0,
+\qquad
+\Omega_0\equiv\frac{\mathcal E_0}{\hbar}.
+\label{eq:carrier-def}
+\end{equation}
+大写 \(\Omega_0\) 只表示电子载波角频率，小写 \(\omega\) 只表示光学角频率。
+
+频域场统一采用 \(\ee^{-\ii\omega t}\) 约定：
+\begin{equation}
+\bm E(\bm r,t)=\operatorname{Re}\!\left[\bm E_\omega(\bm r)\ee^{-\ii\omega t}\right],
+\qquad
+\bm B(\bm r,t)=\operatorname{Re}\!\left[\bm B_\omega(\bm r)\ee^{-\ii\omega t}\right].
+\label{eq:phasor-convention}
+\end{equation}
+整份讲义最终建立的输入输出链可以压缩为
+\begin{equation}
+\boxed{
+(\varepsilon,\mu,\text{geometry},\bm E_{\rm inc})
+\longrightarrow \bm E_\omega(\bm r)
+\longrightarrow \mathcal F_{\parallel}
+\longrightarrow \beta
+\longrightarrow c_n
+\longrightarrow P_n.}
+\label{eq:pinem-causal-chain}
+\end{equation}
+其中 \(\beta\) 是无量纲复耦合，\(c_n\) 是第 \(n\) 个能量边带的复振幅，\(P_n=|c_n|^2\) 是实验直接读取的边带概率。式~\eqref{eq:pinem-causal-chain} 中的 \(\mathcal F_{\parallel}\) 此时只表示“沿电子参考轨迹对近场作相位匹配投影”这一接口；它的精确定义不会在这里预设，而会在一阶 Dirac 包络方程沿特征线积分之后自然导出。式~\eqref{eq:pinem-causal-chain} 只说明对象之间的依赖关系；每一个箭头都在后文从其母方程中推导，而不是作为经验公式输入。
+
+符号方面，\(n\in\mathbb Z\) 专门表示电子边带阶数；球形多极阶数用 \(\ell\)，球谐方位指标用 \(m_{\Omega}\)；圆柱角向阶数用 \(\nu\)；相对折射率用 \(m_{\rm r}\)；磁导率只用 \(\mu\)；电子中心波数只用 \(k_0\)。电子电荷始终写成 \(q_{\rm e}\)，从而不再与 Maxwell Fourier 积分中的波数变量 \(q\) 或 Mie 入射系数 \(q_{\ell m_\Omega}\) 冲突。
+
+本讲义不在开头预先罗列一长串近似，而是在每一次真正删项时现场定义控制参数，并把被舍弃项与保留项逐项比较。这样读者可以从公式本身看出某个结论究竟依赖“窄带”“弱场”“正负能解耦”“准单色”还是“长波”中的哪一个条件。全文最后再把这些局部条件汇总成一张适用范围表。

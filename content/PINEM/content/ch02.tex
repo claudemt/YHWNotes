@@ -1,0 +1,625 @@
+\chapter{PINEM 核心：轨迹相位、相位匹配与 Bessel 边带}
+\label{chap:pinem-core}
+
+式~\eqref{eq:eikonal-master-general} 是本章唯一动力学起点。先对任意时空外场沿特征线精确积分，再把单色场代入；由电子轨迹 $t=t_c+s/v_0$ 自动产生空间相位 $\exp[-\ii(\omega/v_0)s]$。因此相位匹配波数 $\omega/v_0$ 是轨迹积分的结果，不是预先施加的守恒条件。得到复耦合 $\beta$ 后，离散边带只需要对周期相位作 Fourier 展开；最后再把真实相对论色散代回去检查反冲。整个章节不需要任何具体材料或几何。
+
+\section{一般外场：特征线法给出的精确一阶解}
+
+这是一阶线性输运方程，可以用特征线法精确求解，而不需要预先假设单色场。取任意终点 $(\bm r,t)$，向过去沿自由特征线回溯：
+\begin{equation}
+ \bm r(\tau)=\bm r-\bm v_0(t-\tau),
+ \qquad
+ \frac{\dd\bm r}{\dd\tau}=\bm v_0.
+ \label{eq:characteristic-curve}
+\end{equation}
+定义
+\begin{equation}
+ F(\tau)\equiv f(\bm r(\tau),\tau),
+\end{equation}
+则链式法则给出
+\begin{align}
+ \frac{\dd F}{\dd\tau}
+ &=\partial_t f
+ +\frac{\dd\bm r}{\dd\tau}\cdot\bm\nabla f\\
+ &=\left(\partial_t+\bm v_0\cdot\bm\nabla\right)f.
+\end{align}
+因此式~\eqref{eq:eikonal-master-general} 沿每条特征线严格化为标量常微分方程
+\begin{equation}
+ \ii\hbar\frac{\dd F}{\dd\tau}
+ =U_{\rm eik}(\bm r(\tau),\tau)F,
+ \qquad
+ U_{\rm eik}\equiv q_{\rm e}(\phi-\bm v_0\cdot\bm A).
+ \label{eq:characteristic-ode}
+\end{equation}
+由于 $U_{\rm eik}$ 在当前固定自旋标量层级只是复数乘法算符，不需要时间排序，故
+\begin{equation}
+ \boxed{
+ f(\bm r,t)=
+ f_{\rm in}\!\left(\bm r-\bm v_0(t-t_i)\right)
+ \exp\!\left[
+ -\frac{\ii}{\hbar}
+ \int_{t_i}^{t}\!\dd\tau\,
+ U_{\rm eik}\!\left(\bm r-\bm v_0(t-\tau),\tau\right)
+ \right].}
+ \label{eq:characteristic-exact-solution}
+\end{equation}
+所以一阶 PINEM 中“电子包络形状不变，只获得沿轨迹积累的相位”不是额外假设，而是式~\eqref{eq:eikonal-master-general} 的精确特征线解。只有重新保留二阶色散、横向衍射或矩阵值自旋耦合后，包络形状才会在相互作用区内发生非平凡演化。
+
+一般特征线解已经把电子动力学问题化成“沿参考轨迹积累相位”。但它目前仍依赖势函数 $\phi,\bm A$，还不能直接接收 Maxwell 求出的频域电场。下面只做一次系统参数化：指定单一光学频率和直线参考轨迹，并把势的轨迹积分改写成电场的 Fourier 投影。
+
+
+\section{单色场：从轨迹相位到相位匹配 Fourier 投影}
+
+令电子以恒定中心速度穿过局域近场，并用 $t_c$ 表示电子穿过参考平面 $s=0$ 的时刻：
+\begin{equation}
+\bm r_{\rm e}(s)=\bm R_\perp+s\hat{\bm v}_0,
+\qquad
+t=t_c+\frac{s}{v_0},
+\qquad
+\kappa=\frac{\omega}{v_0}.
+\label{eq:trajectory-tc}
+\end{equation}
+
+这里的 $\kappa=\omega/v_0$ 不是额外施加的动量匹配条件。它来自同一条参考轨迹上的时间--空间关系 $t-t_c=s/v_0$：
+\begin{equation}
+\ee^{-\ii\omega t}
+=\ee^{-\ii\omega t_c}\ee^{-\ii(\omega/v_0)s}.
+\label{eq:time-to-space-phase}
+\end{equation}
+因此电子真正采样的是场沿轨迹方向的一个 Fourier 分量。现在才定义电子与 Maxwell 问题之间唯一需要的接口：
+\begin{equation}
+\boxed{
+\mathcal F_{\parallel}[\bm E_\omega](\bm R_\perp;\omega,v_0)
+\equiv
+\int_{-\infty}^{+\infty}\!\dd s\,
+\hat{\bm v}_0\cdot\bm E_\omega(\bm R_\perp+s\hat{\bm v}_0)
+\ee^{-\ii(\omega/v_0)s}.}
+\label{eq:Fparallel-general-def}
+\end{equation}
+它是从频域矢量场到复数的线性泛函，量纲为电势。若
+$\bm E_\omega=\bm E_{\rm inc}+\bm E_{\rm sc}$，则
+\begin{equation}
+\mathcal F_{\parallel}^{\rm tot}
+=\mathcal F_{\parallel}^{\rm inc}
++\mathcal F_{\parallel}^{\rm sc}.
+\label{eq:F-total-decomposition}
+\end{equation}
+这里没有使用 Mie、Rayleigh 或任何具体几何；这些理论后面只负责计算 $\bm E_\omega$，然后代入同一个泛函。
+沿该轨迹有
+\begin{equation}
+\frac{\dd}{\dd t}
+=\partial_t+\bm v_0\cdot\bm\nabla,
+\end{equation}
+故式~\eqref{eq:eikonal-master-general} 立即化为
+\begin{equation}
+\ii\hbar\frac{\dd f}{\dd t}
+=q_{\rm e}\left[\phi(\bm r_{\rm e}(t),t)-\bm v_0\cdot\bm A(\bm r_{\rm e}(t),t)\right]f.
+\end{equation}
+直接积分得
+\begin{equation}
+\boxed{
+\frac{f(t_f)}{f(t_i)}
+=\exp\left\{-\frac{\ii q_{\rm e}}{\hbar}
+\int_{t_i}^{t_f}\!\dd t\,
+\left[\phi-\bm v_0\cdot\bm A\right]_{\bm r=\bm r_{\rm e}(t)}\right\}.}
+\label{eq:eikonal-phase-general}
+\end{equation}
+在规范变换~\eqref{eq:gauge-transform-standard} 下，方括号只增加沿轨迹的全导数 $-\dd\chi/\dd t$，因而上式只得到端点规范相位；最终能量边带概率不依赖规范。
+
+现在考虑单一光学频率，并沿用式~\eqref{eq:phasor-convention}：
+\begin{equation}
+\phi(\bm r,t)=\operatorname{Re}[\phi_\omega(\bm r)\ee^{-\ii\omega t}],
+\qquad
+\bm A(\bm r,t)=\operatorname{Re}[\bm A_\omega(\bm r)\ee^{-\ii\omega t}].
+\end{equation}
+由于
+\begin{equation}
+\bm E_\omega=-\bm\nabla\phi_\omega+\ii\omega\bm A_\omega,
+\label{eq:E-from-potentials-phasor}
+\end{equation}
+沿 $s$ 方向有
+\begin{equation}
+\hat{\bm v}_0\cdot\bm E_\omega
+=-\frac{\dd\phi_\omega}{\dd s}
++\ii\omega\hat{\bm v}_0\cdot\bm A_\omega.
+\end{equation}
+把上一式代入定义~\eqref{eq:Fparallel-general-def}：先乘以 $\ee^{-\ii\kappa s}$，再从 $s=-\infty$ 积分到 $+\infty$。若近场局域，使
+\begin{equation}
+\left.\phi_\omega(\bm r_{\rm e}(s))\ee^{-\ii\kappa s}\right|_{s=\pm\infty}=0,
+\label{eq:localized-potential-boundary}
+\end{equation}
+则分部积分给出
+\begin{align}
+\mathcal F_{\parallel}
+&=\int_{-\infty}^{+\infty}\!\dd s\,
+\hat{\bm v}_0\cdot\bm E_\omega\,
+\ee^{-\ii\kappa s}\\
+&=\ii\omega\int_{-\infty}^{+\infty}\!\dd s\,
+\left(\hat{\bm v}_0\cdot\bm A_\omega-\frac{\phi_\omega}{v_0}\right)
+\ee^{-\ii\kappa s}.
+\label{eq:F-potential-identity}
+\end{align}
+从这里起为节省篇幅记 $\Ftilde\equiv\mathcal F_{\parallel}$。
+于是势的轨迹积分可完全改写成电场的相位匹配 Fourier 分量。按照式~\eqref{eq:phasor-convention} 的实场约定，定义复 PINEM 耦合
+\begin{equation}
+\boxed{
+\beta(\bm R_\perp;\omega)
+\equiv-\frac{q_{\rm e}}{2\hbar\omega}\Ftilde
+=\frac{e}{2\hbar\omega}\Ftilde.}
+\label{eq:beta-standard}
+\end{equation}
+将 $t=t_c+s/v_0$ 代入式~\eqref{eq:eikonal-phase-general}，并使用式~\eqref{eq:F-potential-identity}，得到纯场形式
+\begin{equation}
+\boxed{
+\frac{f_{\rm out}}{f_{\rm in}}
+=\exp\left[-\beta\ee^{-\ii\omega t_c}
++\beta^*\ee^{+\ii\omega t_c}\right].}
+\label{eq:universal-phase-beta}
+\end{equation}
+若写 $\beta=|\beta|\ee^{\ii\varphi_\beta}$，则指数为
+\begin{equation}
+-2\ii|\beta|\sin(\varphi_\beta-\omega t_c).
+\end{equation}
+因此单色相干 PINEM 的整个电子侧动力学，在一阶 eikonal 层级上只依赖一个复数 $\beta$；Maxwell 问题的全部材料、几何和偏振信息都只通过 $\Ftilde$ 进入。随动坐标形式可把同一结果写成有限光脉冲下的显式一维演化，并保留 Dirac 自旋量修正。
+
+
+同一个 $\Ftilde$ 还直接控制经典能量调制。沿未偏转轨迹，Lorentz 力做功率为
+\begin{equation}
+ \frac{\dd\mathcal E}{\dd t}=q_{\rm e}\bm v_0\cdot\bm E(\bm r_{\rm e}(t),t),
+\end{equation}
+因为磁场不做功。对单色实场，令 $t=t_c+s/v_0$，则
+\begin{align}
+\Delta\mathcal E(t_c)
+&=q_{\rm e}\int_{-\infty}^{+\infty}\!\dd t\,
+\bm v_0\cdot\bm E(\bm r_{\rm e}(t),t)\\
+&=q_{\rm e}\int_{-\infty}^{+\infty}\!\dd s\,
+\hat{\bm v}_0\cdot
+\operatorname{Re}\!\left[
+\bm E_\omega(\bm r_{\rm e}(s))
+\ee^{-\ii\omega(t_c+s/v_0)}
+\right]\\
+&=q_{\rm e}\operatorname{Re}\!\left[
+\ee^{-\ii\omega t_c}\Ftilde
+\right].
+\label{eq:classical-energy-modulation}
+\end{align}
+由 $\Ftilde=-2\hbar\omega\beta/q_{\rm e}$，
+\begin{equation}
+ \boxed{
+ \Delta\mathcal E(t_c)
+ =-2\hbar\omega\,
+ \operatorname{Re}\!\left[
+ \beta\ee^{-\ii\omega t_c}
+ \right].}
+ \label{eq:classical-energy-beta}
+\end{equation}
+因此 $|\beta|$ 同时是量子边带宽度和经典能量调制幅度的自然无量纲尺度；两者不是两套独立理论，而是同一个轨迹 Fourier 投影的不同极限表现。
+
+任意非单色外场并不需要重新建立电子动力学：一般结果已经包含在特征线解~\eqref{eq:characteristic-exact-solution} 中。多个相干频率如何分解成多维能量格点属于单色主线的直接推广，为避免在第一次推导 Bessel 边带之前插入另一套指标体系，将其集中放在附录~\ref{app:multifrequency-coherent}。
+
+
+
+\section{周期相位如何变成离散能量边带}
+
+前一小节已经把任意单色近场压缩成一个复数耦合 $\beta$，并得到
+\begin{equation}
+\frac{f_{\rm out}}{f_{\rm in}}
+=\exp\!\left[-\beta\ee^{-\ii\omega t_c}
++\beta^*\ee^{+\ii\omega t_c}\right].
+\label{eq:phase-beta-start-sideband}
+\end{equation}
+现在只做代数，不再加入新的动力学近似。写
+\begin{equation}
+\beta=|\beta|\ee^{\ii\varphi_\beta},
+\qquad
+\theta\equiv\varphi_\beta-\omega t_c .
+\end{equation}
+则指数中的两项逐项化为
+\begin{align}
+-\beta\ee^{-\ii\omega t_c}
++\beta^*\ee^{+\ii\omega t_c}
+&=-|\beta|\ee^{+\ii\theta}
++|\beta|\ee^{-\ii\theta}\\
+&=-|\beta|\left(\ee^{+\ii\theta}-\ee^{-\ii\theta}\right)\\
+&=-2\ii|\beta|\sin\theta .
+\end{align}
+所以
+\begin{equation}
+\frac{f_{\rm out}}{f_{\rm in}}
+=\ee^{-2\ii|\beta|\sin\theta}.
+\label{eq:phase-sine-sideband}
+\end{equation}
+这里“离散边带”还没有被假设；它将由周期函数的 Fourier 展开自动出现。
+
+第一类 Bessel 函数的生成函数为
+\begin{equation}
+\exp\!\left[\frac{x}{2}\left(t-\frac1t\right)\right]
+=\sum_{m=-\infty}^{+\infty}J_m(x)t^m.
+\label{eq:bessel-generating-function}
+\end{equation}
+令 $t=\ee^{\ii\theta}$，则
+\begin{equation}
+\frac12\left(t-t^{-1}\right)
+=\ii\sin\theta,
+\end{equation}
+于是
+\begin{equation}
+\boxed{
+\ee^{\ii x\sin\theta}
+=\sum_{m=-\infty}^{+\infty}J_m(x)\ee^{\ii m\theta}.}
+\label{eq:JA}
+\end{equation}
+在式~\eqref{eq:phase-sine-sideband} 中取 $x=-2|\beta|$，并使用
+$J_m(-x)=(-1)^mJ_m(x)$：
+\begin{align}
+\frac{f_{\rm out}}{f_{\rm in}}
+&=\sum_{m=-\infty}^{+\infty}
+(-1)^mJ_m(2|\beta|)
+\ee^{\ii m(\varphi_\beta-\omega t_c)}.
+\label{eq:phase-fourier-raw-index}
+\end{align}
+此处的 $m$ 只是数学 Fourier 指标。为了让后文统一采用“$n>0$ 表示电子能量增加”，现在定义能量边带指标 $n\equiv m$，并把与 $t_c$ 无关的系数写成
+\begin{equation}
+\boxed{
+ c_n
+ \equiv (-1)^nJ_n(2|\beta|)\ee^{\ii n\varphi_\beta}
+ =J_n(2|\beta|)\ee^{\ii n\arg(-\beta)}.}
+\label{eq:sideband-amplitude-gain-convention}
+\end{equation}
+于是
+\begin{equation}
+\boxed{
+\frac{f_{\rm out}}{f_{\rm in}}
+=\sum_{n=-\infty}^{+\infty}c_n\ee^{-\ii n\omega t_c},
+\qquad
+P_n=|c_n|^2=J_n^2(2|\beta|).}
+\label{eq:Pn-beta-standard}
+\end{equation}
+这个号数约定可以直接和自由电子相位核对。若参考平面取 $z=0$，沿电子轨迹有
+\begin{equation}
+ t_c=t-\frac{z}{v_0}=-\frac{z'}{v_0},
+ \qquad z'\equiv z-v_0t,
+\end{equation}
+因此
+\begin{equation}
+ \ee^{-\ii n\omega t_c}
+ =\ee^{+\ii n(\omega/v_0)z'}.
+\label{eq:tc-to-comoving-sideband-phase}
+\end{equation}
+把它乘到自由载波
+$\ee^{\ii(k_0z-\Omega_0t)}$ 上，在无反冲线性化层级得到
+\begin{align}
+\ee^{+\ii n(\omega/v_0)z'}
+\ee^{\ii(k_0z-\Omega_0t)}
+&=\ee^{\ii[(k_0+n\omega/v_0)z-(\Omega_0+n\omega)t]}.
+\label{eq:gain-index-carrier-check}
+\end{align}
+所以这里的 $n>0$ 确实对应能量增加 $+n\hbar\omega$；下一小节只需把线性的
+$k_0+n\omega/v_0$ 换成真实相对论色散给出的精确 $k_n$。
+离散间隔 $\hbar\omega$ 的来源现在同时在时间相位和自由载波中得到核对：单色驱动只产生整数 Fourier 谐波，而每个谐波把自由载波频率移动 $n\omega$。Bessel 函数不是额外的经验分布，而是周期相位的 Fourier 系数。
+
+概率归一化也可直接检查。由
+\begin{equation}
+1=\left|\ee^{\ii x\sin\theta}\right|^2
+=\sum_{n,m}J_n(x)J_m(x)\ee^{\ii(n-m)\theta},
+\end{equation}
+在一个周期上积分并使用
+\begin{equation}
+\frac1{2\pi}\int_0^{2\pi}\ee^{\ii(n-m)\theta}\dd\theta=\delta_{nm},
+\end{equation}
+得到
+\begin{equation}
+\boxed{\sum_{n=-\infty}^{+\infty}J_n^2(x)=1.}
+\label{eq:bessel-unitarity-identity}
+\end{equation}
+所以 $\sum_nP_n=1$。
+
+同理，对 Jacobi--Anger 恒等式求 $\theta$ 导数，
+\begin{equation}
+x\cos\theta\,\ee^{\ii x\sin\theta}
+=\sum_n nJ_n(x)\ee^{\ii n\theta},
+\end{equation}
+两边取模平方并对 $\theta$ 平均，得到
+\begin{equation}
+\boxed{\sum_n n^2J_n^2(x)=\frac{x^2}{2}.}
+\label{eq:bessel-second-moment}
+\end{equation}
+又因 $J_{-n}(x)=(-1)^nJ_n(x)$，
+\begin{equation}
+\boxed{\sum_n nJ_n^2(x)=0.}
+\label{eq:bessel-first-moment}
+\end{equation}
+故
+\begin{equation}
+\operatorname{Var}(\Delta\mathcal E)
+=(\hbar\omega)^2\sum_n n^2P_n
+=2(\hbar\omega)^2|\beta|^2.
+\label{eq:pinem-energy-variance}
+\end{equation}
+
+
+\section{精确通道能量、反冲与线性动量梯}
+
+式~\eqref{eq:Pn-beta-standard} 中的 $n$ 首先只是周期相位的 Fourier 指标。要把它解释为中心动量附近的自由电子通道，还必须把真实相对论色散代回去，而不能把等间隔动量梯作为定义。定义真实通道能量
+\begin{equation}
+\boxed{\mathcal E_n\equiv\mathcal E_0+n\hbar\omega.}
+\label{eq:exact-channel-energy}
+\end{equation}
+沿 $+z$ 传播的正能电子满足
+\begin{equation}
+\mathcal E_n^2=m^2c^4+p_n^2c^2,
+\end{equation}
+故
+\begin{equation}
+\boxed{
+p_n=\frac1c\sqrt{(\mathcal E_0+n\hbar\omega)^2-m^2c^4},
+\qquad
+k_n=\frac{p_n}{\hbar}.}
+\label{eq:exact-channel-momentum}
+\end{equation}
+这才是包含反冲的精确通道定义。
+
+为了得到常用的 $k_n\simeq k_0+n\omega/v_0$，令
+\begin{equation}
+\delta p_n\equiv p_n-p_0.
+\end{equation}
+把
+\(
+\mathcal E(p)=\sqrt{m^2c^4+c^2p^2}
+\)
+在 $p_0$ 处展开。前面已经得到
+\(
+\mathcal E'(p_0)=v_0
+\)
+与
+\(
+\mathcal E''(p_0)=1/(\gamma_0^3m)
+\)，因此
+\begin{equation}
+\mathcal E(p_0+\delta p_n)
+=\mathcal E_0
++v_0\delta p_n
++\frac{\delta p_n^2}{2\gamma_0^3m}
++O(\delta p_n^3).
+\label{eq:dispersion-channel-expand}
+\end{equation}
+将左边按式~\eqref{eq:exact-channel-energy} 替换：
+\begin{equation}
+n\hbar\omega
+=v_0\delta p_n
++\frac{\delta p_n^2}{2\gamma_0^3m}
++O(\delta p_n^3).
+\label{eq:channel-energy-balance-expanded}
+\end{equation}
+最低阶先取
+\begin{equation}
+\delta p_n^{(1)}=\frac{n\hbar\omega}{v_0}.
+\end{equation}
+再令
+\(
+\delta p_n=\delta p_n^{(1)}+\delta p_n^{(2)}
+\)
+并只保留二阶量。代回上一式：
+\begin{align}
+n\hbar\omega
+&=v_0\delta p_n^{(1)}
++v_0\delta p_n^{(2)}
++\frac{[\delta p_n^{(1)}]^2}{2\gamma_0^3m}
++O(\delta p^3).
+\end{align}
+第一项已经等于左边，故
+\begin{equation}
+v_0\delta p_n^{(2)}
+=-\frac{[\delta p_n^{(1)}]^2}{2\gamma_0^3m},
+\end{equation}
+即
+\begin{equation}
+\delta p_n^{(2)}
+=-\frac{(n\hbar\omega)^2}{2\gamma_0^3m\,v_0^3}.
+\end{equation}
+于是
+\begin{equation}
+\boxed{
+p_n=p_0+\frac{n\hbar\omega}{v_0}
+-\frac{(n\hbar\omega)^2}{2\gamma_0^3m\,v_0^3}
++O[(n\hbar\omega)^3].}
+\label{eq:channel-momentum-recoil-series}
+\end{equation}
+因此
+\begin{equation}
+k_n\simeq k_0+n\frac{\omega}{v_0}
+\label{eq:linear-channel-k}
+\end{equation}
+只是无反冲线性化。二阶项相对一阶项的比值给出
+\begin{equation}
+\boxed{
+\epsilon_{{\rm rec},n}
+\equiv
+\frac{|n|\hbar\omega}{2\gamma_0^3m v_0^2}\ll1.}
+\label{eq:recoil-small-parameter}
+\end{equation}
+此外，要让所有参与边带仍位于同一个中心动量展开窗口，还需
+\begin{equation}
+\boxed{
+\epsilon_{{\rm bw},n}
+\equiv\frac{|p_n-p_0|}{p_0}
+\simeq
+\frac{|n|\hbar\omega}{\gamma_0m v_0^2}\ll1.}
+\label{eq:sideband-bandwidth-condition}
+\end{equation}
+前者控制色散曲率造成的反冲，后者控制整个边带集合是否仍可由同一个中心动量处的有效理论描述。
+
+固定自旋的一维 Dirac 自旋量如何随 $k_n$ 改变，以及负能小分量怎样重构，不是得到边带概率所必需的主线；为避免在这里切断能量交换逻辑，它们移到附录~\ref{app:dirac-two-band-check} 中逐项复核。
+
+
+到这里，电子侧已经闭合成一个输入--输出映射
+\[
+\bm E_\omega(\bm r)
+\longmapsto
+\mathcal F_{\parallel}
+\longmapsto
+\beta
+\longmapsto
+\{P_n\}.
+\]
+唯一尚未求出的对象是实际结构产生的频域近场 $\bm E_\omega(\bm r)$。因此下一步不再修改电子动力学，而是转向独立的 Maxwell 边值问题；求得场以后只需代回式~\eqref{eq:Fparallel-general-def}，两条理论链就在这里重新汇合。
+
+
+\section{连续波弱耦合：Bessel 分布的单光子极限}
+
+在正频复振幅约定~\eqref{eq:phasor-convention} 下，连续光且
+\begin{equation}
+\boxed{\eta=2|\beta|=\frac{e|\Ftilde|}{\hbar\omega}\ll1}
+\label{eq:weak-coupling-condition}
+\end{equation}
+时，直接从第一类 Bessel 函数在 $x=0$ 附近的幂级数取最低非零幂，得到
+\begin{align}
+J_0(\eta)
+&=\sum_{j=0}^{\infty}\frac{(-1)^j}{(j!)^2}
+\left(\frac{\eta}{2}\right)^{2j}
+=1-\frac{\eta^2}{4}+O(\eta^4),\\
+J_{\pm1}(\eta)&=\pm\frac{\eta}{2}+O(\eta^3),\\
+J_{|n|\ge2}(\eta)&=O(\eta^{|n|}).
+\end{align}
+因此最低阶单光子增益、损失概率均为
+\begin{equation}
+\boxed{
+P_{+1}=P_{-1}
+=|\beta|^2+O(|\beta|^4)
+=\left(\frac{e|\Ftilde|}{2\hbar\omega}\right)^2+O(\eta^4).}
+\label{eq:weak_single}
+\end{equation}
+相应地
+\begin{equation}
+P_0=1-2|\beta|^2+O(|\beta|^4),
+\qquad
+\sum_{n=-\infty}^{\infty}P_n=1.
+\end{equation}
+实场振幅与正频复振幅必须使用同一套归一化；若改变正频场定义，所有数值因子都必须随场定义整体换算。式~\eqref{eq:phasor-convention} 与 \eqref{eq:Fparallel-general-def} 固定了这里使用的归一化。
+
+\section{解析例：Gaussian 纵向近场如何实现 Fourier 选择}
+再取一个可解析的空间近场模型
+\begin{equation}
+E_{\omega,z}(z,0)
+=
+E_{\rm nf}
+\exp\left(-\frac{z^2}{2L_{\rm nf}^2}\right)
+\ee^{\ii\phi_{\rm nf}},
+\label{eq:gaussian-nearfield}
+\end{equation}
+其中 $E_{\rm nf}$ 为复振幅的模，$L_{\rm nf}$ 为纵向近场尺度。由定义
+\[
+\Ftilde(\kappa)
+=
+\int_{-\infty}^{+\infty}
+E_{\omega,z}(z,0)\ee^{-\ii\kappa z}\dd z
+\]
+直接计算：
+\begin{align}
+\Ftilde(\kappa)
+&=
+E_{\rm nf}\ee^{\ii\phi_{\rm nf}}
+\int_{-\infty}^{+\infty}
+\exp\left(
+-\frac{z^2}{2L_{\rm nf}^2}
+-\ii\kappa z
+\right)\dd z\\
+&=
+E_{\rm nf}\ee^{\ii\phi_{\rm nf}}
+\sqrt{2\pi}\,L_{\rm nf}
+\exp\left(-\frac{\kappa^2L_{\rm nf}^2}{2}\right).
+\end{align}
+在 PINEM 相位匹配波数
+\[
+\kappa=\frac{\omega}{v_0}
+\]
+处，
+\begin{equation}
+\boxed{
+\left|
+\Ftilde\!\left(\frac{\omega}{v_0}\right)
+\right|
+=
+\sqrt{2\pi}\,L_{\rm nf}|E_{\rm nf}|
+\exp\left[
+-\frac{\omega^2L_{\rm nf}^2}{2v_0^2}
+\right].}
+\label{eq:F-gaussian-nearfield}
+\end{equation}
+因此
+\begin{equation}
+\boxed{
+\eta
+=
+\frac{|q_{\rm e}|\sqrt{2\pi}\,L_{\rm nf}|E_{\rm nf}|}
+{\hbar\omega}
+\exp\left[
+-\frac{\omega^2L_{\rm nf}^2}{2v_0^2}
+\right].}
+\label{eq:alpha-gaussian-nearfield}
+\end{equation}
+这一特例把相位匹配的物理意义直接写成 Fourier 选择规则：电子只采样近场在空间波数 $\omega/v_0$ 处的纵向 Fourier 分量；若近场在该波数处缺乏空间谱权重，PINEM 耦合指数衰减。
+
+\section{为什么 PINEM 需要结构近场：由电子色散推出光锥外空间谱}
+
+前面的轨迹积分已经给出相位匹配波数 $\kappa=\omega/v_0$，但这个结果还可以从电子自身的能量--动量色散再核对一次。这样可以直接看清“为什么需要纳米结构”并不是实验经验，而是自由电子上壳条件与传播光光锥之间的几何失配。
+
+考虑相邻两个能量边带。由精确通道定义~\eqref{eq:exact-channel-energy}，
+\begin{equation}
+\mathcal E_{n+1}-\mathcal E_n=\hbar\omega.
+\end{equation}
+在无反冲线性化层级，式~\eqref{eq:channel-momentum-recoil-series} 给出
+\begin{equation}
+ p_{n+1}-p_n
+ =\frac{\hbar\omega}{v_0}
+ +O\!\left(\frac{\hbar^2\omega^2}{\gamma_0^3mv_0^3}\right).
+\end{equation}
+因此场若要在一次相干交换中把电子从相邻通道耦合起来，它沿电子传播方向必须提供的主导空间波数正是
+\begin{equation}
+\boxed{
+ k_\parallel^{({\rm req})}
+ =\frac{p_{n+1}-p_n}{\hbar}
+ \simeq\frac{\omega}{v_0}=\kappa.}
+\label{eq:required-longitudinal-wavevector}
+\end{equation}
+这与轨迹 Fourier 投影~\eqref{eq:Fparallel-general-def} 独立得到同一个 $\kappa$：一个来自自由电子上壳色散，一个来自相位沿经典参考轨迹的积累。
+
+现在把它与均匀无损宿主中的传播光比较。若宿主折射率为 $n_{\rm h}$，传播平面波满足
+\begin{equation}
+ k_\parallel^2+k_\perp^2=k_{\rm h}^2,
+\qquad
+ k_{\rm h}=\frac{n_{\rm h}\omega}{c},
+\end{equation}
+所以任何传播分量都必须满足
+\begin{equation}
+ |k_\parallel|\le \frac{n_{\rm h}\omega}{c}.
+\end{equation}
+而电子要求 $k_\parallel\simeq\omega/v_0$。若
+\begin{equation}
+\boxed{v_0<\frac{c}{n_{\rm h}},}
+\label{eq:below-cherenkov-kinematic}
+\end{equation}
+则
+\begin{equation}
+\frac{\omega}{v_0}>\frac{n_{\rm h}\omega}{c},
+\end{equation}
+传播光锥内根本不存在所需的纵向波数。此时与电子匹配的场分量必须满足
+\begin{equation}
+ k_\perp^2=k_{\rm h}^2-\kappa^2<0.
+\end{equation}
+写成 $k_\perp=\ii\chi_\perp$，便有
+\begin{equation}
+\boxed{
+\chi_\perp
+=\sqrt{\kappa^2-k_{\rm h}^2}
+=\frac{\omega}{v_0}
+\sqrt{1-\frac{n_{\rm h}^2v_0^2}{c^2}}.}
+\label{eq:evanescent-decay-from-kinematics}
+\end{equation}
+对应场在横向按 $\exp(-\chi_\perp R_\perp)$ 衰减。这就是 PINEM 对近场、界面模、波导模或材料激元敏感的最基本原因：结构并不是简单“增强电场”，更关键的是它把入射光重新分配到光锥外的大 $k_\parallel$ 空间谱，使 $k_\parallel=\omega/v_0$ 的切片具有非零权重。
+
+若 $v_0>c/n_{\rm h}$，$k_\perp$ 可以为实数，对应 Cherenkov 型传播通道；此时不能把所有电子--光耦合都叫作 evanescent near-field coupling。下一章的 Green/$T$ 算符正是用来回答一个现在已经非常具体的问题：给定材料与几何，它们究竟在 $k_\parallel=\omega/v_0$ 这张空间谱切片上产生多少场幅？
+
+
+\section{电子侧在这里真正闭合}
+到此，任意给定频域场 $\bm E_\omega(\bm r)$ 都能通过式~\eqref{eq:Fparallel-general-def} 映射成 $\beta$，再由式~\eqref{eq:Pn-beta-standard} 得到理想单色相干边带。后文求解 Maxwell、Mie 或 Rayleigh 场时，不再修改电子动力学，只需要把所得场代入同一个轨迹泛函。这个“接口冻结”是后续章节不再互相穿插的关键。
