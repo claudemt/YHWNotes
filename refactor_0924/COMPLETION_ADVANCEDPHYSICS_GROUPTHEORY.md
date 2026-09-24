@@ -16,9 +16,11 @@
 - 分子对称：从水分子的 \(C_{2v}\) 操作矩阵构造特征标表，逐项约化九维位移表示，得到 \(2A_1\oplus B_2\) 而非只陈述结论。
 - 原子与光：先量子化电磁场，再讨论自发辐射和原子—光相互作用。
 - Lie 与粒子物理：由 Lie 代数和最高权推进至 SU(3)、Lorentz/Poincaré 表示和标准模型表示、Yukawa 不变量及反常检验。
+- 多电子原子：由反对称投影与 Slater 行列式的归一化证明进入 Hartree--Fock 变分，并以氦原子的单参数试探轨道完整算出屏蔽和关联能误差。
+- Lie 理论续写：补全闭矩阵群、单参数子群、\(SU(2)\to SO(3)\) 二重覆盖、根串整性、Poincaré Casimir、little group、规范联络和标准模型反常抵消的定义与证明。
 
 ## 最终验证
 
-- `AdvancedPhysics.pdf`：342 页，970 个标记、643 个引用。
-- `GroupTheory.pdf`：281 页，544 个标记、353 个引用。
+- `AdvancedPhysics.pdf`：343 页，971 个标记、643 个引用。
+- `GroupTheory.pdf`：289 页，553 个标记、362 个引用。
 - 两书均为 0 失效引用、0 重复标记、0 编译硬错误、0 overfull、0 missing character、0 `\\boxed`。
