@@ -1,657 +1,408 @@
-\chapter{Franck--Condon 原理、Huang--Rhys 因子与 Duschinsky 变换}\label{ch:franck-condon}
+\chapter{电磁场量子化与自发辐射}
+\label{ch:quantum-optics}
 
-前两章先从精确 Born--Huang 多通道理论降到单一绝热势能面，再把这一单势能面核 Hamiltonian 特殊化为双原子分子的振动--转动问题。本章转而讨论两个不同电子势能面之间的光学跃迁。关键问题是：电子跃迁虽然很快，但核波函数并不会凭空消失；它在两个势能面上的投影决定了振动态谱线强度。单模位移谐振子只是最简单的可解模型，真实多原子分子还会出现频率改变和 正规-模 转动。
+半经典原子--光耦合把电磁场当作给定函数，因此能描述受驱吸收和 Rabi 振荡；可是一旦外场关闭，这个哈密顿量不能让激发原子向真空自发放出光子。缺少的自由度正是电磁场自身的量子涨落。
 
-\section{从电子跃迁矩阵元到 Condon 近似}
+腔中的每个 Maxwell 正常模都具有谐振子的能量形式，因此可以逐模量子化。升降算符定义后立即进入电偶极矩阵元；对连续末态求和便得到自发辐射率，Green 并矢再把自由空间结果推广到非均匀环境。Fock、相干和压缩光场的统计性质留到下一章。
+\section{自伴 Maxwell 正常模与场的 Hilbert 空间}
 
-在 BO 表示中，把初末态写成
+量子化的首要对象不是“平面波光子”，而是经典 Maxwell 方程的正交正常模。先考虑无耗散、非磁性但允许空间非均匀的介质，$\epsilon_r(\mathbf r)>0$，$\mu=\mu_0$。在无自由电荷的广义 Coulomb 条件下，横向正常模满足
+\begin{equation}
+\nabla\times\nabla\times\mathbf f_\lambda(\mathbf r)
+=\frac{\omega_\lambda^2}{c^2}\epsilon_r(\mathbf r)\mathbf f_\lambda(\mathbf r),
+\qquad
+\nabla\cdot[\epsilon_r\mathbf f_\lambda]=0.
+\label{eq:maxwell-normal-mode-eigenproblem}
+\end{equation}
+自然内积是
+\begin{equation}
+\langle\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon
+=\int\dd^3r\,\epsilon_r(\mathbf r)
+\mathbf f_\lambda^*(\mathbf r)\cdot\mathbf f_{\lambda'}(\mathbf r)
+=\delta_{\lambda\lambda'}.
+\label{eq:maxwell-weighted-inner-product}
+\end{equation}
+在使边界通量项消失的边界条件下，$\epsilon_r^{-1}\nabla\times\nabla\times$ 对该加权内积自伴，因此不同 $\omega_\lambda^2$ 的模式正交，场能可以分解为独立谐振子。真空平面波、腔模、光子晶体 Bloch 模和波导离散横模都只是这一本征问题的不同边界条件或材料特例。
+
+\begin{proof}[解]
+取两个满足相同边界条件的横向场 \(\mathbf f,\mathbf g\)。由矢量恒等式
+\begin{equation*}
+ \nabla\cdot(\mathbf A\times\mathbf B)
+ =\mathbf B\cdot(\nabla\times\mathbf A)
+ -\mathbf A\cdot(\nabla\times\mathbf B),
+\end{equation*}
+取 \(\mathbf A=\mathbf f^*\)、\(\mathbf B=\nabla\times\mathbf g\) 与 \(\mathbf A=(\nabla\times\mathbf f)^*\)、\(\mathbf B=\mathbf g\) 分别展开并相减，
+\begin{align*}
+ \mathbf f^*\cdot(\nabla\times\nabla\times\mathbf g)
+ &-(\nabla\times\nabla\times\mathbf f)^*\cdot\mathbf g\\
+ &=\nabla\cdot\left[\mathbf f^*\times(\nabla\times\nabla\times\mathbf g)\right]
+ -\nabla\cdot\left[(\nabla\times\mathbf f)^*\times(\nabla\times\mathbf g)\right]\\
+ &\quad+\nabla\cdot\left[(\nabla\times\nabla\times\mathbf f)^*\times\mathbf g\right]
+ -\nabla\cdot\left[(\nabla\times\mathbf f)^*\times(\nabla\times\mathbf g)\right]\\
+ &=\nabla\cdot\mathbf J_{fg},
+\end{align*}
+对体积积分并由散度定理，
+\begin{equation*}
+ \int\dd^3r\,\mathbf f^*\cdot(\nabla\times\nabla\times\mathbf g)
+ -\int\dd^3r\,(\nabla\times\nabla\times\mathbf f)^*\cdot\mathbf g
+ =\oint\dd\mathbf S\cdot\mathbf J_{fg},
+\end{equation*}
+其中 \(\mathbf J_{fg}\) 是由 \(\mathbf f,\mathbf g\) 及其旋度构成的边界通量。周期边界使切向分量匹配、理想导体边界使切向 \(\mathbf E\) 为零、无穷远足够快衰减使面积分趋于零，三者都使右端为零。
+
+令 \(\mathcal M=\epsilon_r^{-1}\nabla\times\nabla\times\)，加权内积\eqnrefs{eq:maxwell-weighted-inner-product}给出
+\begin{align*}
+ \langle\mathbf f,\mathcal M\mathbf g\rangle_\epsilon
+ &=\int\dd^3r\,\epsilon_r\mathbf f^*\cdot
+ \left(\epsilon_r^{-1}\nabla\times\nabla\times\mathbf g\right)\\
+ &=\int\dd^3r\,\mathbf f^*\cdot(\nabla\times\nabla\times\mathbf g)\\
+ &=\int\dd^3r\,(\nabla\times\nabla\times\mathbf f)^*\cdot\mathbf g\\
+ &=\int\dd^3r\,\epsilon_r
+ \left(\epsilon_r^{-1}\nabla\times\nabla\times\mathbf f\right)^*\cdot\mathbf g\\
+ &=\langle\mathcal M\mathbf f,\mathbf g\rangle_\epsilon,
+\end{align*}
+其中第一步用了 \(\epsilon_r\cdot\epsilon_r^{-1}=1\)，第三步用了边界通量为零的分部积分。因此 \(\mathcal M\) 在加权内积下自伴。
+
+由自伴性，\eqnrefs{eq:maxwell-normal-mode-eigenproblem}的本征值 \(\omega_\lambda^2/c^2\) 为实谱：对 \(\mathcal M\mathbf f_\lambda=\frac{\omega_\lambda^2}{c^2}\mathbf f_\lambda\) 取复共轭并利用 \(\mathcal M^\dagger=\mathcal M\) 即得 \((\omega_\lambda^2)^*=\omega_\lambda^2\)。对不同本征值 \(\omega_\lambda^2\ne\omega_{\lambda'}^2\)，
+\begin{align*}
+ \left(\frac{\omega_\lambda^2}{c^2}-\frac{\omega_{\lambda'}^2}{c^2}\right)
+ \langle\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon
+ &=\langle\mathcal M\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon
+ -\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon\\
+ &=\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon
+ -\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon\\
+ &=0,
+\end{align*}
+第二步用了自伴性 \(\langle\mathcal M\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon=\langle\mathbf f_\lambda,\mathcal M\mathbf f_{\lambda'}\rangle_\epsilon\)。故 \(\langle\mathbf f_\lambda,\mathbf f_{\lambda'}\rangle_\epsilon=0\)，即模式在\eqnrefs{eq:maxwell-weighted-inner-product}下正交。这就是把 Maxwell 场化为独立正则模式所需的谱论基础。
+\end{proof}
+
+上述谱论对任意边界条件均成立，但最便于量子化的特例是真空周期盒——此时本征模取平面波，正交归一化退化为离散 $\delta$，场能直接分解为独立谐振子之和。
+
+先把场限制在体积 \(V\) 的周期边界盒中。横向模式可以取为
 
 \[
-|g,\nu\rangle
-=|\phi_g(\mathbf r;\mathbf Q)\rangle
-|\chi_{g\nu}(\mathbf Q)\rangle,
+\mathbf u_{\mathbf k\lambda}(\mathbf r)
+=\frac{\mathbf e_{\mathbf k\lambda}}{\sqrt V}
+ \ee^{\ii\mathbf k\cdot\mathbf r},
+\qquad
+\mathbf k\cdot\mathbf e_{\mathbf k\lambda}=0,
 \]
 
+且
+
 \[
-|e,\nu'\rangle
-=|\phi_e(\mathbf r;\mathbf Q)\rangle
-|\chi_{e\nu'}(\mathbf Q)\rangle,
+\int_V\!\dd^3 r\,
+\mathbf u_{\mathbf k\lambda}^*\cdot
+\mathbf u_{\mathbf k'\lambda'}
+=\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'}.
 \]
 
-其中 \(\mathbf Q\) 是质量加权正规坐标。电偶极矩阵元为
-
+把 \(\mathbf A\) 在这组模式上展开并代入经典场能
 \[
-M_{\nu'\nu}
-=\int\dd\mathbf Q\,
-\chi_{e\nu'}^*(\mathbf Q)
-\mu_{eg}(\mathbf Q)
-\chi_{g\nu}(\mathbf Q),
+H_{\rm EM}
+=\frac12\int_V\!\dd^3 r\,
+\left(\varepsilon_0\mathbf E^2+\frac{\mathbf B^2}{\mu_0}\right),
 \]
 
-电子跃迁偶极
+可得到彼此独立的正则坐标 \(Q_{\mathbf k\lambda}\) 和共轭动量 \(P_{\mathbf k\lambda}\)：
 
 \[
-\mu_{eg}(\mathbf Q)
+H_{\rm EM}
+=\sum_{\mathbf k\lambda}
+\left[
+\frac{P_{\mathbf k\lambda}^2}{2}
++\frac{\omega_k^2Q_{\mathbf k\lambda}^2}{2}
+\right],
+\qquad \omega_k=c|\mathbf k|.
+\]
+
+因此``光场由谐振子组成''不是类比，而是 Maxwell 场在正交正常模上的正则分解。
+
+\begin{proof}[解]
+将矢势在正交模上展开为
+\begin{equation*}
+\mathbf A(\mathbf r,t)
+=\sum_{\mathbf k\lambda}
+Q_{\mathbf k\lambda}(t)\,\mathbf u_{\mathbf k\lambda}(\mathbf r),
+\end{equation*}
+其中 $Q_{\mathbf k\lambda}$ 是实正则坐标。电场和磁场由
+\begin{equation*}
+\mathbf E=-\frac{\partial\mathbf A}{\partial t}
+=-\sum_{\mathbf k\lambda}\dot Q_{\mathbf k\lambda}\,\mathbf u_{\mathbf k\lambda},
+\qquad
+\mathbf B=\nabla\times\mathbf A
+=\sum_{\mathbf k\lambda}Q_{\mathbf k\lambda}\,(\nabla\times\mathbf u_{\mathbf k\lambda})
+\end{equation*}
+给出。代入场能后，电场部分为
+\begin{equation*}
+\frac{\varepsilon_0}{2}\int_V\dd^3 r\,\mathbf E^2
+=\frac{\varepsilon_0}{2}\sum_{\mathbf k\lambda}\sum_{\mathbf k'\lambda'}
+\dot Q_{\mathbf k\lambda}\dot Q_{\mathbf k'\lambda'}
+\int_V\dd^3 r\,\mathbf u_{\mathbf k\lambda}^*\cdot\mathbf u_{\mathbf k'\lambda'}
+=\frac{\varepsilon_0}{2}\sum_{\mathbf k\lambda}\dot Q_{\mathbf k\lambda}^2,
+\end{equation*}
+其中最后一步用了正交关系 $\int_V\dd^3 r\,\mathbf u_{\mathbf k\lambda}^*\cdot\mathbf u_{\mathbf k'\lambda'}=\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'}$。磁场部分需利用横模满足的方程 $\nabla\times\nabla\times\mathbf u_{\mathbf k\lambda}=(\omega_k^2/c^2)\mathbf u_{\mathbf k\lambda}$，由此
+\begin{equation*}
+\int_V\dd^3 r\,(\nabla\times\mathbf u_{\mathbf k\lambda}^*)\cdot(\nabla\times\mathbf u_{\mathbf k'\lambda'})
+=\int_V\dd^3 r\,\mathbf u_{\mathbf k\lambda}^*\cdot(\nabla\times\nabla\times\mathbf u_{\mathbf k'\lambda'})
+=\frac{\omega_{k'}^2}{c^2}\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'},
+\end{equation*}
+其中第一步用了分部积分（周期边界使面积分消失），第二步用了模方程和正交性。因此磁场部分为
+\begin{equation*}
+\frac{1}{2\mu_0}\int_V\dd^3 rF\,\mathbf B^2
+=\frac{1}{2\mu_0}\sum_{\mathbf k\lambda}
+\frac{\omega_k^2}{c^2}Q_{\mathbf k\lambda}^2
+=\frac{1}{2\mu_0\varepsilon_0 c^2}\sum_{\mathbf k\lambda}\omega_k^2 Q_{\mathbf k\lambda}^2
+=\frac12\sum_{\mathbf k\lambda}\omega_k^2 Q_{\mathbf k\lambda}^2,
+\end{equation*}
+最后一步用了 $c^2=1/(\varepsilon_0\mu_0)$。定义共轭动量 $P_{\mathbf k\lambda}=\varepsilon_0\dot Q_{\mathbf k\lambda}$，电场部分化为 $\frac12\sum P_{\mathbf k\lambda}^2/\varepsilon_0$；若进一步取 $\varepsilon_0=1$ 的约定（或把 $P$ 重标为 $\sqrt{\varepsilon_0}\dot Q$），即得
+\begin{equation*}
+H_{\rm EM}=\sum_{\mathbf k\lambda}\left[\frac{P_{\mathbf k\lambda}^2}{2}+\frac{\omega_k^2 Q_{\mathbf k\lambda}^2}{2}\right],
+\end{equation*}
+即\eqnrefs{eq:maxwell-weighted-inner-product}所引用的谐振子分解。交叉项全部因正交性消失，每个 $(\mathbf k,\lambda)$ 模式独立贡献一个谐振子。
+\end{proof}
+
+经典场分解成独立正常模以后，对每个谐振子施加量子对易关系，就得到场算符；自发辐射率和一般环境中的 Green 并矢表示随后都从这个场算符推出。
+
+\section{正则量子化、Green 张量与自发辐射}
+施加正则对易关系
+\[
+[\hat Q_{\mathbf k\lambda},\hat P_{\mathbf k'\lambda'}]
+=\ii\hbar\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'},
+\]
+并定义升降算符
+\begin{equation}
+\hat a_{\mathbf k\lambda}
+=\sqrt{\frac{\omega_k}{2\hbar}}\left(\hat Q_{\mathbf k\lambda}
++\frac{\ii\hat P_{\mathbf k\lambda}}{\omega_k}\right),
+\qquad
+\hat a_{\mathbf k\lambda}^\dagger
+=\sqrt{\frac{\omega_k}{2\hbar}}\left(\hat Q_{\mathbf k\lambda}
+-\frac{\ii\hat P_{\mathbf k\lambda}}{\omega_k}\right),
+\label{eq:ladder-operator-definition}
+\end{equation}
+其逆变换为 $\hat Q=\sqrt{\hbar/(2\omega)}\,((\hat a+\hat a^\dagger)$，$\hat P=-\ii\sqrt{\hbar\omega/2}\,(\hat a-\hat a^\dagger)$。由 $[\hat Q,\hat P]=\ii\hbar$ 直接验证 $[\hat a,\hat a^\dagger]=1$。将逆变换代入 $H=P^2/2+\omega^2 Q^2/2$：
+\begin{align*}
+\hat H
+&=\frac12\left(-\frac{\hbar\omega}{2}\right)(\hat a-\hat a^\dagger)^2
++\frac{\omega^2}{2}\cdot\frac{\hbar}{2\omega}(\hat a+\hat a^\dagger)^2\\
+&=\frac{\hbar\omega}{4}\left[-(\hat a^2-\hat a\hat a^\dagger-\hat a^\dagger\hat a+\hat a^{\dagger2})
++(\hat a^2+\hat a\hat a^\dagger+\hat a^\dagger\hat a+\hat a^{\dagger2})\right]\\
+&=\frac{\hbar\omega}{4}\cdot 2(\hat a\hat a^\dagger+\hat a^\dagger\hat a)
+=\frac{\hbar\omega}{2}(\hat a^\dagger\hat a+\hat a\hat a^\dagger)
+=\hbar\omega\left(\hat a^\dagger\hat a+\frac12\right),
+\end{align*}
+其中最后一步用了 $[\hat a,\hat a^\dagger]=1$ 即 $\hat a\hat a^\dagger=\hat a^\dagger\hat a+1$。对每个模式独立执行此代换，得到
+\[
+\hat H_{\rm EM}
+=\sum_{\mathbf k\lambda}
+\hbar\omega_k
+\left(
+\hat a_{\mathbf k\lambda}^\dagger
+\hat a_{\mathbf k\lambda}+\frac12
+\right).
+\]
+其中 $\hat a_{\mathbf k\lambda}^\dagger\hat a_{\mathbf k\lambda}$ 是第 $(\mathbf k,\lambda)$ 模的光子数算符，$\frac12\hbar\omega_k$ 是真空零点能——对所有模式求和后形式上发散，但可观测的物理量只涉及差值（如 Lamb 移位、Casimir 力），发散部分在正常序 $\hat H=\sum\hbar\omega\,\hat a^\dagger\hat a$ 中自动消除。
+
+将逆变换 $\hat Q_{\mathbf k\lambda}=\sqrt{\hbar/(2\omega_k)}\,(\hat a+\hat a^\dagger)$ 代入矢势展开 $\hat{\mathbf A}=\sum\hat Q_{\mathbf k\lambda}\mathbf u_{\mathbf k\lambda}$，并利用 $\mathbf u_{\mathbf k\lambda}=\mathbf e_{\mathbf k\lambda}\ee^{\ii\mathbf k\cdot\mathbf r}/\sqrt V$，得到
+\[
+\hat{\mathbf A}(\mathbf r,t)
+=\sum_{\mathbf k\lambda}
+\sqrt{\frac{\hbar}{2\varepsilon_0\omega_kV}}
+\left[
+\mathbf e_{\mathbf k\lambda}
+\hat a_{\mathbf k\lambda}
+ \ee^{\ii(\mathbf k\cdot\mathbf r-\omega_kt)}
++\text{H.c.}
+\right].
+\]
+其中前因子 $\sqrt{\hbar/(2\varepsilon_0\omega_kV)}$ 来自 $\sqrt{\hbar/(2\omega_k)}\cdot 1/\sqrt V$ 再乘 $\varepsilon_0^{-1/2}$（由 $P=\varepsilon_0\dot Q$ 约定引入的 $\varepsilon_0$ 归一化）。
+
+于是正频电场为
+
+\begin{equation}
+\hat{\mathbf E}^{(+)}(\mathbf r,t)
+=\ii\sum_{\mathbf k\lambda}
+\sqrt{\frac{\hbar\omega_k}{2\varepsilon_0V}}
+\mathbf e_{\mathbf k\lambda}
+\hat a_{\mathbf k\lambda}
+ \ee^{\ii(\mathbf k\cdot\mathbf r-\omega_kt)},
+\label{eq:field-expansion}
+\end{equation}
+
+而 \(\hat{\mathbf E}^{(-)}=[\hat{\mathbf E}^{(+)}]^\dagger\)。连续自由空间极限通过 \(V^{-1}\sum_{\mathbf k}\to(2\pi)^{-3}\int\dd^3 k\) 得到。
+
+场算符一旦建立，自发辐射便不再是唯象引入的 Einstein $A$ 系数，而是原子偶极与真空涨落耦合的直接结果。以下从 Fermi 黄金法则出发，将 $A_{eg}$ 完全用偶极矩阵元和频率表达。
+
+Einstein \(A\) 系数在\chapref{ch:time-dependent-perturbation}中是通过热平衡关系引入的。量子化电磁场使之可直接写成偶极矩阵元。考虑初态
+
+\[
+|i\rangle=|e;0\rangle
+\]
+
+和末态
+
+\[
+|f\rangle=|g;1_{\mathbf k\lambda}\rangle.
+\]
+
+在电偶极近似中
+
+\[
+H_I=-\hat{\mathbf d}\cdot\hat{\mathbf E}.
+\]
+
+只有负频部分 \(\hat{\mathbf E}^{(-)}\propto a^\dagger\) 能从真空产生一个光子，因此
+
+\[
+M_{\mathbf k\lambda}
 \equiv
-\langle\phi_e(\mathbf Q)|\hat\mu|\phi_g(\mathbf Q)\rangle_{\mathbf r}.
+\langle g;1_{\mathbf k\lambda}|H_I|e;0\rangle
+=-\ii
+\sqrt{\frac{\hbar\omega_k}{2\varepsilon_0V}}
+\,\mathbf d_{ge}\cdot\mathbf e_{\mathbf k\lambda}^*
+ \ee^{-\ii\mathbf k\cdot\mathbf r_0}.
 \]
 
-在参考构型 \(\mathbf Q=0\) 附近作 Taylor 展开：
+Fermi 黄金法则给出
 
+\[
+\Gamma_{e\to g}
+=\frac{2\pi}{\hbar}
+\sum_{\mathbf k\lambda}
+|M_{\mathbf k\lambda}|^2
+\delta(E_g+\hbar\omega_k-E_e).
+\]
+
+\begin{proof}[解]
+矩阵元。由 $\hat{\mathbf E}^{(-)}=-\ii\sum_{\mathbf k'\lambda'}\sqrt{\hbar\omega_{k'}/(2\varepsilon_0 V)}\,\mathbf e_{\mathbf k'\lambda'}^*\hat a_{\mathbf k'\lambda'}^\dagger\ee^{-\ii(\mathbf k'\cdot\mathbf r-\omega_{k'}t)}$，矩阵元为
+\begin{equation*}
+M_{\mathbf k\lambda}
+=-\langle g;1_{\mathbf k\lambda}|\hat{\mathbf d}\cdot\hat{\mathbf E}^{(-)}|e;0\rangle
+=\ii\sum_{\mathbf k'\lambda'}\sqrt{\frac{\hbar\omega_{k'}}{2\varepsilon_0 V}}\,\mathbf d_{ge}\cdot\mathbf e_{\mathbf k'\lambda'}^*\ee^{-\ii\mathbf k'\cdot\mathbf r_0}\,\langle 1_{\mathbf k\lambda}|\hat a_{\mathbf k'\lambda'}^\dagger|0\rangle,
+\end{equation*}
+其中 $\mathbf d_{ge}=\langle g|\hat{\mathbf d}|e\rangle$ 是原子偶极矩阵元，时间因子在共振频率 $\omega_0=(E_e-E_g)/\hbar$ 处取值。由 $\hat a_{\mathbf k'\lambda'}^\dagger|0\rangle=|1_{\mathbf k'\lambda'}\rangle$ 和正交性 $\langle 1_{\mathbf k\lambda}|1_{\mathbf k'\lambda'}\rangle=\delta_{\mathbf k\mathbf k'}\delta_{\lambda\lambda'}$，求和坍缩为单一项，即 $M_{\mathbf k\lambda}$ 的表达式。
+
+模平方。取 $|M_{\mathbf k\lambda}|^2$，相位因子 $\ee^{-\ii\mathbf k\cdot\mathbf r_0}$ 的模为 1，因此
+\begin{equation*}
+|M_{\mathbf k\lambda}|^2
+=\frac{\hbar\omega_k}{2\varepsilon_0 V}
+|\mathbf d_{ge}\cdot\mathbf e_{\mathbf k\lambda}|^2.
+\end{equation*}
+
+连续极限与偏振求和。把 $\sum_{\mathbf k}\to V/(2\pi)^3\int\dd^3 k$ 代入 Fermi 黄金法则，$V$ 消去：
+\begin{equation*}
+\Gamma=\frac{2\pi}{\hbar}\sum_\lambda\frac{V}{(2\pi)^3}\int\dd^3 k\,\frac{\hbar\omega_k}{2\varepsilon_0 V}|\mathbf d\cdot\mathbf e_{\mathbf k\lambda}|^2\delta(E_g+\hbar\omega_k-E_e).
+\end{equation*}
+利用 $\delta(E_g+\hbar\omega-E_e)=\delta(\omega-\omega_0)/\hbar$，对 $\mathbf k$ 用球坐标 $\dd^3 k=k^2\dd k\dd\Omega$，先做偏振求和
+\begin{equation*}
+\sum_{\lambda=1,2}|\mathbf d\cdot\mathbf e_{\mathbf k\lambda}|^2
+=|\mathbf d|^2-|\mathbf d\cdot\hat{\mathbf k}|^2,
+\end{equation*}
+这是横向偏振完备关系：两个偏振矢量 $\mathbf e_{\mathbf k1},\mathbf e_{\mathbf k2}$ 与 $\hat{\mathbf k}$ 构成三维正交基，$\sum_\lambda|\mathbf d\cdot\mathbf e_{\mathbf k\lambda}|^2=\mathbf d^\dagger(\mathbf I-\hat{\mathbf k}\hat{\mathbf k}^T)\mathbf d$。
+
+角积分。取 $\mathbf d$ 沿 $z$ 轴，则 $|\mathbf d\cdot\hat{\mathbf k}|^2=|\mathbf d|^2\cos^2\theta$，
+\begin{equation*}
+\int\dd\Omega\,(|\mathbf d|^2-|\mathbf d|^2\cos^2\theta)
+=|\mathbf d|^2\cdot 2\pi\int_0^\pi\sin\theta\,\sin^2\theta\,\dd\theta
+=|\mathbf d|^2\cdot 2\pi\cdot\frac{4}{3}
+=\frac{8\pi}{3}|\mathbf d|^2.
+\end{equation*}
+
+径向积分。由 $k=\omega/c$ 得 $k^2\dd k=\omega^2\dd\omega/c^3$，\(\delta\) 函数 $\delta(\omega-\omega_0)$ 将积分锁定在 $\omega_0$：
 \begin{equation}
-\boxed{
-\mu_{eg}(\mathbf Q)
-=\mu_{eg}(0)
-+\sum_\alpha
-\left(\frac{\partial\mu_{eg}}{\partial Q_\alpha}\right)_0Q_\alpha
-+O(Q^2).
-}
-\label{eq:herzberg-teller-expansion}
+\label{eq:spontaneous-emission-rate}
+\Gamma=\frac{2\pi}{\hbar}\cdot\frac{1}{(2\pi)^3}\cdot\frac{\hbar}{2\varepsilon_0}\cdot\frac{8\pi}{3}|\mathbf d|^2\cdot\frac{\omega_0^2}{c^3}\cdot\omega_0\cdot\frac{1}{\hbar}
+=\frac{\omega_0^3|\mathbf d|^2}{3\pi\varepsilon_0\hbar c^3},
 \end{equation}
+即\eqnrefs{eq:spontaneous-emission-rate}。其中 $\omega_0^3$ 的物理来源：一个 $\omega_0$ 来自单光子电场振幅 $\sqrt{\omega}$ 的模平方，两个 $\omega_0^2$ 来自三维态密度 $k^2\dd k=\omega^2\dd\omega/c^3$。
+\end{proof}
 
-Condon 近似是保留第一项：
+这说明自发辐射不是经典外场触发的跃迁，而是原子偶极与真空电磁场连续模耦合的结果。\(\omega_0^3\) 来自单光子场振幅中的 \(\sqrt\omega\) 与三维光子密度 of 态中的 \(\omega^2\) 共同作用。把 \eqnrefs{eq:spontaneous-emission-rate} 与 Planck 谱结合，即可恢复 Einstein \(A\)-\(B\) 关系。
 
+\eqnrefs{eq:spontaneous-emission-rate} 对氢原子 \(2p\to1s\) 跃迁（Lyman-\(\alpha\)，\(\lambda=121.6\,\mathrm{nm}\)，\(\omega_0=1.55\times10^{16}\,\mathrm{rad/s}\)，\(|\mathbf d_{ge}|=ea_0/\sqrt{2}\approx6.0\times10^{-30}\,\mathrm{C\,m}\)）：
 \[
-\mu_{eg}(\mathbf Q)\simeq\mu_{eg}(0).
+A_{2p\to1s}
+=\frac{\omega_0^3|\mathbf d|^2}{3\pi\epsilon_0\hbar c^3}
+\approx6.27\times10^8\,\mathrm{s^{-1}}
 \]
+对应寿命 \(\tau=1/A\approx1.6\,\mathrm{ns}\)，与实验值 \(1.60\,\mathrm{ns}\) 精确吻合。对比钠原子 \(3p\to3s\) 跃迁（D 线，\(\lambda=589\,\mathrm{nm}\)，\(|\mathbf d|\approx2.5\times10^{-29}\,\mathrm{C\,m}\)）：\(A_{3p\to3s}\approx6.1\times10^7\,\mathrm{s^{-1}}\)，\(\tau\approx16\,\mathrm{ns}\)，与实验值 \(16.3\,\mathrm{ns}\) 吻合。\(\omega^3\) 依赖使紫外跃迁的辐射率远大于可见光跃迁。
 
-于是
+自由空间的结果\eqnrefs{eq:spontaneous-emission-rate}依赖逐模求和，但在腔、界面或光子晶体等非均匀环境中，直接求模并不方便。Green 并矢提供了一个统一框架：其虚部编码局域光子态密度，自发辐射率只需在 $\mathbf r_0$ 处求值即可。
 
+在非均匀无耗散环境中，逐个求模并非总是最方便。定义出射 electromagnetic Green 并矢
 \begin{equation}
-\boxed{
-M_{\nu'\nu}
-\simeq
-\mu_{eg}(0)
-\langle\chi_{e\nu'}|\chi_{g\nu}\rangle,
-\qquad
-I_{\nu'\nu}\propto
-|\langle\chi_{e\nu'}|\chi_{g\nu}\rangle|^2.
-}
-\label{eq:franck-condon-factor}
+\left[\nabla\times\nabla\times
+-\frac{\omega^2}{c^2}\epsilon_r(\mathbf r)\right]
+\mathbf G(\mathbf r,\mathbf r';\omega)
+=\mathbf I\,\delta^{(3)}(\mathbf r-\mathbf r').
+\label{eq:maxwell-green-dyadic}
 \end{equation}
-
-若 \(\mu_{eg}(0)=0\) 是由对称性强制的，线性 Herzberg--Teller 项反而成为最低非零阶，此时“谱线强度只等于振动重叠平方”不再成立。因此 Franck--Condon 规则 本身也有明确的截断条件。
-
-Condon 近似把跃迁矩元简化为振动重叠问题，但重叠积分的计算仍需知道两个势能面的几何关系。最简单的情形是单模、等频率位移——此时 Franck--Condon 因子完全由 Huang--Rhys 因子 $S_{HR}$ 决定，且激发态振动真空在基态基底中恰为相干态。
-
-\section{单模位移：Huang--Rhys 与相干态结构}
-接下来考察等频率位移谐振子。
-
-先看一维、两条势能面曲率相同的模型：
-
-\[
-V_g(Q)=\frac12M\omega^2Q^2,
-\]
-
-\[
-V_e(Q)=E_{eg}+\frac12M\omega^2(Q-\Delta Q)^2.
-\]
-
-定义零点涨落
-
-\[
-Q_{\rm zpf}=\sqrt{\frac{\hbar}{2M\omega}},
-\]
-
-以及无量纲位移
-
+其虚部编码局域光子态密度。位于 $\mathbf r_0$ 的电偶极跃迁在弱耦合、马尔可夫极限下具有一般自发辐射率
 \begin{equation}
-\boxed{
-\lambda_{\rm FC}
-\equiv\frac{\Delta Q}{2Q_{\rm zpf}}
-=\sqrt{\frac{M\omega}{2\hbar}}\Delta Q,
-\qquad
-S_{\rm HR}\equiv\lambda_{\rm FC}^2.
-}
-\label{eq:huang-rhys}
+\Gamma(\mathbf r_0)
+=\frac{2\omega_0^2}{\hbar\epsilon_0c^2}
+\mathbf d_{ge}^*\cdot
+\operatorname{Im}\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)
+\cdot\mathbf d_{ge}.
+\label{eq:spontaneous-green-dyadic}
 \end{equation}
-
-\(S_{\rm HR}\) 即 Huang--Rhys 因子。它可以理解为两个势阱平衡位置间位移相对于零点涨落宽度的平方，也等于经典重组能
-
+自由空间有
 \[
-E_{\rm reorg}=\frac12M\omega^2(\Delta Q)^2
+\operatorname{Im}\mathbf G_0(\mathbf r_0,\mathbf r_0;\omega)
+=\frac{\omega}{6\pi c}\mathbf I,
 \]
+故\eqnrefs{eq:spontaneous-green-dyadic}立即退化为\eqnrefs{eq:spontaneous-emission-rate}。腔 Purcell enhancement、界面附近抑制/增强和光子晶体带隙效应，本质上都是 $\operatorname{Im}\mathbf G$ 改变，而不是“原子的 $A$ 系数本身神秘变化”。
 
-与一个振动量子 \(\hbar\omega\) 的比值：
-
-\[
-\boxed{S_{\rm HR}=\frac{E_{\rm reorg}}{\hbar\omega}}.
-\]
-
-Huang--Rhys 因子给出了位移的标度，但 FC 因子的完整结构需用位移算符语言才能看清。以下将激发态振动真空写成基态位移算符作用于基态真空，揭示其相干态本质。
-
-接下来考察位移算符与相干态结构。
-
-谐振子坐标写成
-
-\[
-Q=Q_{\rm zpf}(a+a^\dagger),
-\qquad
-P=-\ii\sqrt{\frac{M\hbar\omega}{2}}(a-a^\dagger).
-\]
-
-平移 \(Q\to Q-\Delta Q\) 的算符为
-
-\[
-\exp\left(-\frac{\ii}{\hbar}\Delta Q\,P\right)
-=\exp[\lambda_{\rm FC}(a^\dagger-a)].
-\]
-
-因此定义 位移 算符
-
-\begin{equation}
-\boxed{
-D(\lambda_{\rm FC})
-=\exp[\lambda_{\rm FC}(a^\dagger-a)]
-}
-\label{eq:displacement-operator-fc}
-\end{equation}
-
-（这里 \(\lambda_{\rm FC}\) 取实数）。Baker--Campbell--Hausdorff 公式因为
-
-\[
-[\lambda_{\rm FC} a^\dagger,-\lambda_{\rm FC} a]=\lambda_{\rm FC}^2
-\]
-
-是 c 数，可精确写成
-
-\begin{equation}
-\boxed{
-D(\lambda_{\rm FC})
-=\ee^{-\lambda_{\rm FC}^2/2}
- \ee^{\lambda_{\rm FC} a^\dagger}
- \ee^{-\lambda_{\rm FC} a}.
-}
-\label{eq:displacement-normal-order}
-\end{equation}
-
-同时
-
-\[
-D^\dagger(\lambda_{\rm FC})aD(\lambda_{\rm FC})=a+\lambda_{\rm FC}.
-\]
-
-因此激发态振动真空相对于基态振动基底就是 displaced vacuum，也就是量子光学意义下的相干态。
-
-\begin{derivation}[位移算符的代数性质]
-位移算符 \(D(\lambda)=\exp[\lambda(a^\dagger-a)]\)。坐标平移 \(Q\to Q-\Delta Q\) 由生成元 \(P\)（与 \(Q\) 共轭，\([Q,P]=\ii\hbar\)）的指数实现：\(T(\Delta Q)=\exp(-\ii\Delta Q\,P/\hbar)\)。由 BCH 公式 \(\ee^A B\ee^{-A}=B+[A,B]+\cdots\)，取 \(A=\ii\Delta Q\,P/\hbar\)：
+\begin{proof}[解]
+对\eqnrefs{eq:maxwell-normal-mode-eigenproblem}的正交本征模 $\{\mathbf f_\lambda\}$，满足 $\int\dd^3r\,\epsilon_r(\mathbf r)\,\mathbf f_\lambda\cdot\mathbf f_{\lambda'}^*=\delta_{\lambda\lambda'}$，Green 并矢的谱表示为
 \begin{equation*}
-T^\dagger Q T=\ee^{\ii\Delta Q\,P/\hbar}\,Q\,\ee^{-\ii\Delta Q\,P/\hbar}=Q+[\tfrac{\ii\Delta Q\,P}{\hbar},Q]+\cdots
+\mathbf G(\mathbf r,\mathbf r';\omega)
+= c^2\sum_\lambda
+ \frac{\mathbf f_\lambda(\mathbf r)\,\mathbf f_\lambda^*(\mathbf r')}
+ {\omega_\lambda^2-(\omega+\ii0^+)^2}.
 \end{equation*}
-计算交换子：\([A,Q]=\frac{\ii\Delta Q}{\hbar}[P,Q]=\frac{\ii\Delta Q}{\hbar}(-\ii\hbar)=\Delta Q\)。高阶交换子 \([A,[A,Q]]=[A,\Delta Q]=0\) 截断。因此 \(T^\dagger Q T=Q+\Delta Q\)。代入 \(P=-\ii\sqrt{M\hbar\omega/2}(a-a^\dagger)\)：
+取 $\mathbf r=\mathbf r'=\mathbf r_0$ 并对分母因式分解，
 \begin{equation*}
-T=\exp\!\left(-\frac{\ii\Delta Q}{\hbar}\cdot(-\ii)\sqrt{\frac{M\hbar\omega}{2}}(a-a^\dagger)\right)
-=\exp\!\left(-\frac{\Delta Q}{\hbar}\sqrt{\frac{M\hbar\omega}{2}}(a-a^\dagger)\right)
-=\exp[\lambda_{\rm FC}(a^\dagger-a)],
+\omega_\lambda^2-(\omega+\ii0^+)^2
+= (\omega_\lambda-\omega-\ii0^+)(\omega_\lambda+\omega+\ii0^+).
 \end{equation*}
-其中 \(\lambda_{\rm FC}=\Delta Q\sqrt{M\omega/(2\hbar)}=\Delta Q/(2Q_{\rm zpf})\)，即\eqnrefs{eq:huang-rhys}的定义。
-
-令 \(A=\lambda a^\dagger\)，\(B=-\lambda a\)，\([A,B]=\lambda^2\) 为 c 数，BCH 公式 \(\ee^{A+B}=\ee^A\ee^B\ee^{-[A,B]/2}\) 给出
+在正频 $\omega_0>0$ 附近，第二因子近似 $2\omega_0$，因此
 \begin{equation*}
-D(\lambda)=\ee^{\lambda(a^\dagger-a)}=\ee^{\lambda a^\dagger}\ee^{-\lambda a}\ee^{-\lambda^2/2},
+\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)
+\approx \frac{c^2}{2\omega_0}\sum_\lambda
+\frac{\mathbf f_\lambda(\mathbf r_0)\,\mathbf f_\lambda^*(\mathbf r_0)}
+{\omega_\lambda-\omega_0-\ii0^+}.
 \end{equation*}
-即\eqnrefs{eq:displacement-normal-order}。
-
-由 \([a,a^\dagger]=1\)，\([a,\lambda a^\dagger]=\lambda\)，\([a,-\lambda a]=0\)。BCH 公式：
+利用 Sokhotski--Plemelj 公式
 \begin{equation*}
-D^\dagger(\lambda)aD(\lambda)=\ee^{-\lambda(a^\dagger-a)}\,a\,\ee^{\lambda(a^\dagger-a)}
-=a+[\lambda(a^\dagger-a),a]+\frac{1}{2}[\lambda(a^\dagger-a),[\lambda(a^\dagger-a),a]]+\cdots
+\operatorname{Im}\frac{1}{x-\ii0^+}=\pi\,\delta(x),
 \end{equation*}
-一阶：\([\lambda(a^\dagger-a),a]=\lambda[a^\dagger,a]-\lambda[a,a]=-\lambda\)。二阶：\([\lambda(a^\dagger-a),-\lambda]=0\) 截断。因此
+取虚部，
 \begin{equation*}
-D^\dagger a D=a+\lambda.
+\operatorname{Im}\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)
+= \frac{\pi c^2}{2\omega_0}\sum_\lambda
+ \mathbf f_\lambda(\mathbf r_0)\,\mathbf f_\lambda^*(\mathbf r_0)\,
+ \delta(\omega_0-\omega_\lambda).
 \end{equation*}
-即 \(a(D|0\rangle)=\lambda(D|0\rangle)\)。位移算符 \(D(\lambda_{\rm FC})\) 把基态振动真空平移到激发态振动真空，\(\lambda_{\rm FC}=\Delta Q/(2Q_{\rm zpf})\) 即两势阱平衡位置之差以零点宽度为单位，FC 因子由 Huang--Rhys 因子 \(S_{\rm HR}=\lambda_{\rm FC}^2\) 决定。综合以上，位移算符的关键代数性质为
+另一方面，量子化后单光子电场矩阵元为
 \begin{equation*}
-D^\dagger(\lambda)\,a\,D(\lambda)=a+\lambda,\qquad D^\dagger(\lambda)\,a^\dagger\,D(\lambda)=a^\dagger+\lambda^*.
+\langle 0|\hat{\mathbf E}(\mathbf r_0)|1_\lambda\rangle
+= \ii\sqrt{\frac{\hbar\omega_\lambda}{2\epsilon_0}}\,
+ \mathbf f_\lambda(\mathbf r_0),
 \end{equation*}
-
-\end{derivation}
-
-有了真空-真空重叠，一般 $m\to n$ 跃迁的 FC 因子只需在位移算符两侧插入升降算符。以下用生成函数方法一次性获得全部 FC 因子的封闭表达式。
-
-接下来考察从 \(|0\rangle\) 到任意振动态的重叠。
-
-设初态为基态势阱的振动真空。由于
-
-\[
-\ee^{-\lambda_{\rm FC} a}|0\rangle=|0\rangle,
-\]
-
-有
-
-\[
-D(\lambda_{\rm FC})|0\rangle
-=\ee^{-\lambda_{\rm FC}^2/2}
-\sum_{n=0}^{\infty}
-\frac{\lambda_{\rm FC}^n}{n!}(a^\dagger)^n|0\rangle.
-\]
-
-利用
-
-\[
-(a^\dagger)^n|0\rangle=\sqrt{n!}|n\rangle,
-\]
-
-得到
-
-\begin{equation}
-\boxed{
-\langle n|D(\lambda_{\rm FC})|0\rangle
-=\ee^{-\lambda_{\rm FC}^2/2}\frac{\lambda_{\rm FC}^n}{\sqrt{n!}}.
-}
-\label{eq:fc-amplitude-ground}
-\end{equation}
-
-因此
-
-\begin{equation}
-\boxed{
-|\langle n_e|0_g\rangle|^2
-=\ee^{-S_{\rm HR}}
-\frac{S_{\rm HR}^n}{n!}.
-}
-\label{eq:fc-poisson}
-\end{equation}
-
-不同 Huang--Rhys 因子下的分布见\figref{fig:franck-condon}。
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=.83\textwidth]{franck_condon.pdf}
-\caption{等频率位移谐振子模型中的 Franck--Condon 因子。Huang--Rhys 因子 \(S_{\rm HR}\) 同时决定 Poisson 分布的均值和方差。}
-\label{fig:franck-condon}
-\end{figure}
-
-\eqnrefs{eq:fc-poisson} 的均值和方差都是 \(S_{\rm HR}\)。因此 \(S_{\rm HR}\ll1\) 时零声子线占主导；\(S_{\rm HR}\gg1\) 时强度分布中心移向 \(n\sim S_{\rm HR}\)，出现明显振动 progression。
-
-\begin{derivation}[一般 \(m\to n\) 位移谐振子矩阵元]
-对任意数态，使用 \eqnrefs{eq:displacement-normal-order}：
+代入 Fermi 黄金法则
 \begin{equation*}
-\langle m|D(\lambda_{\rm FC})|n\rangle
-=\ee^{-\lambda_{\rm FC}^2/2}
-\langle m|\ee^{\lambda_{\rm FC} a^\dagger}\ee^{-\lambda_{\rm FC} a}|n\rangle.
+\Gamma = \frac{2\pi}{\hbar}\sum_\lambda
+ |\mathbf d_{ge}\cdot\langle 0|\hat{\mathbf E}(\mathbf r_0)|1_\lambda\rangle|^2
+ \delta(\hbar\omega_0-\hbar\omega_\lambda),
 \end{equation*}
-先展开右侧的 \(\ee^{-\lambda_{\rm FC} a}\)，利用 \(a^j|n\rangle=\sqrt{n!/(n-j)!}\,|n-j\rangle\) 且 \(a^j|n\rangle=0\) 对 \(j>n\)，级数自动截断：
+展开模平方并把 $\delta(\hbar\omega_0-\hbar\omega_\lambda)=\delta(\omega_0-\omega_\lambda)/\hbar$ 代入，模式求和的结构与 $\operatorname{Im}\mathbf G$ 完全一致，因此
 \begin{equation*}
-\ee^{-\lambda_{\rm FC} a}|n\rangle
-=\sum_{j=0}^{\infty}\frac{(-\lambda_{\rm FC})^j}{j!}a^j|n\rangle
-=\sum_{j=0}^{n}\frac{(-\lambda_{\rm FC})^j}{j!}
-\sqrt{\frac{n!}{(n-j)!}}\,|n-j\rangle.
+\Gamma(\mathbf r_0)
+= \frac{2\omega_0^2}{\hbar\epsilon_0 c^2}\,
+ \mathbf d_{ge}^*\cdot
+ \operatorname{Im}\mathbf G(\mathbf r_0,\mathbf r_0;\omega_0)\cdot
+ \mathbf d_{ge},
 \end{equation*}
-再展开左侧的 \(\ee^{\lambda_{\rm FC} a^\dagger}\) 并利用数态正交性 \(\langle m|a^{\dagger i}|n-j\rangle=\sqrt{m!/(m-i)!}\,\delta_{m-i,n-j}\)，得到
-\begin{align*}
-\langle m|D(\lambda_{\rm FC})|n\rangle
-&=\ee^{-\lambda_{\rm FC}^2/2}
-\sum_{j=0}^{n}\frac{(-\lambda_{\rm FC})^j}{j!}
-\sqrt{\frac{n!}{(n-j)!}}
-\sum_{i=0}^{\infty}\frac{\lambda_{\rm FC}^i}{i!}
-\sqrt{\frac{m!}{(m-i)!}}\,\delta_{m-i,n-j}\\
-&=\ee^{-\lambda_{\rm FC}^2/2}\sqrt{n!\,m!}
-\sum_{j=0}^{n}\frac{(-1)^j\lambda_{\rm FC}^{m-n+2j}}{(m-n+j)!\,j!\,(n-j)!},
-\end{align*}
-其中 Kronecker 记号固定 \(i=m-n+j\)，故求和指标仍为 \(j\)，且要求 \(m\ge n\)。把 \(\lambda_{\rm FC}^{m-n+2j}=\lambda_{\rm FC}^{m-n}\lambda_{\rm FC}^{2j}\) 拆开并提出求和号外，引入关联 Laguerre 多项式
-\begin{equation*}
-L_n^{(\alpha)}(x)
-=\sum_{j=0}^{n}\frac{(-x)^j}{j!}\,
-\frac{\Gamma(n+\alpha+1)}{\Gamma(\alpha+j+1)\,(n-j)!},
-\end{equation*}
-取 \(\alpha=m-n\) 时 \(\Gamma(m+1)=m!\)、\(\Gamma(m-n+j+1)=(m-n+j)!\)，于是求和正好满足
-\begin{equation*}
-\sum_{j=0}^{n}\frac{(-1)^j\lambda_{\rm FC}^{m-n+2j}}{(m-n+j)!\,j!\,(n-j)!}
-=\frac{\lambda_{\rm FC}^{m-n}}{m!}
-L_n^{(m-n)}(\lambda_{\rm FC}^2),
-\end{equation*}
-代回前式并约去 \(m!\)，
-\begin{align*}
-\langle m|D(\lambda_{\rm FC})|n\rangle
-&=\ee^{-\lambda_{\rm FC}^2/2}\sqrt{n!\,m!}\,
-\frac{\lambda_{\rm FC}^{m-n}}{m!}
-L_n^{(m-n)}(\lambda_{\rm FC}^2)\\
-&=\ee^{-\lambda_{\rm FC}^2/2}
-\sqrt{\frac{n!}{m!}}\,\lambda_{\rm FC}^{m-n}
-L_n^{(m-n)}(\lambda_{\rm FC}^2).
-\end{align*}
-因此对于 \(m\ge n\)，
-\begin{equation*}
-\boxed{
-\langle m|D(\lambda_{\rm FC})|n\rangle
-=\ee^{-\lambda_{\rm FC}^2/2}
-\sqrt{\frac{n!}{m!}}
-\lambda_{\rm FC}^{m-n}
-L_n^{(m-n)}(\lambda_{\rm FC}^2),
-}
-\end{equation*}
-而 \(n\ge m\) 时由 厄米 共轭 \(\langle m|D|n\rangle=\langle n|D^\dagger|m\rangle^*\) 或直接交换 \(m,n\) 得到相应表达。这里 \(L_n^{(\alpha)}\) 是 广义 Laguerre 多项式。\(n=0\) 时 \(L_0^{(m)}=1\)，立刻退化为 \eqnrefs{eq:fc-amplitude-ground}。
-\end{derivation}
-
-等频率位移只涉及位移算符 $D(\alpha)$。但实际分子的两个电子态势能面通常频率不同、正规模方向也不一致，分别引入 压缩 和 Duschinsky 旋转。本节处理这一一般情形。
-
-\section{一般二次势能面：squeezing 与 Duschinsky--Doktorov 变换}
-接下来考察频率改变：为什么会出现 压缩。
-
-如果两电子态的振动频率不同，
-
-\[
-\omega_g\neq\omega_e,
-\]
-
-即使平衡位置相同，两组升降算符也不同。用同一组物理 \(Q,P\) 写
-
-\[
-a_g
-=\sqrt{\frac{M\omega_g}{2\hbar}}Q
-+\frac{\ii}{\sqrt{2M\hbar\omega_g}}P,
-\]
-
-\[
-a_e
-=\sqrt{\frac{M\omega_e}{2\hbar}}Q
-+\frac{\ii}{\sqrt{2M\hbar\omega_e}}P.
-\]
-
-消去 \(Q,P\)，得到 Bogoliubov 变换
-
-\[
-a_e
-=u a_g+v a_g^\dagger,
-\]
-
-\[
-u=\frac12\left(
-\sqrt{\frac{\omega_e}{\omega_g}}
-+\sqrt{\frac{\omega_g}{\omega_e}}
-\right),
-\qquad
-v=\frac12\left(
-\sqrt{\frac{\omega_e}{\omega_g}}
--\sqrt{\frac{\omega_g}{\omega_e}}
-\right),
-\]
-
-满足 \(u^2-v^2=1\)。令
-
-\[
-r=\frac12\ln\frac{\omega_e}{\omega_g},
-\]
-
-则 \(u=\cosh r,v=\sinh r\)。所以“频率改变对应 压缩”不是类比，而是两套谐振子正则坐标之间的精确 Bogoliubov 关系。
-
-频率改变只引入对角 压缩。多原子分子中两个电子态的正规坐标方向一般不同，还需一个正交旋转——Duschinsky 变换——来描述模式混合。
-
-接下来考察多模 Duschinsky 变换。
-
-多原子分子的两个电子态一般具有不同 Hessian，因此正规模方向会旋转。采用质量加权正规坐标，最常见的线性关系写成
-
-\begin{equation}
-\boxed{
-\mathbf Q_e
-=\mathbf J\mathbf Q_g+\mathbf K,
-}
-\label{eq:duschinsky}
-\end{equation}
-
-其中 \(\mathbf J\) 是 Duschinsky 转动，\(\mathbf K\) 是平衡构型位移。若两组质量加权坐标都正交归一，则 \(\mathbf J\) 为正交矩阵，并且为保持正则结构
-
-\[
-\mathbf P_e=\mathbf J\mathbf P_g.
-\]
-
-令 \(\boldsymbol\Omega_g\)、\(\boldsymbol\Omega_e\) 分别是由各振动频率组成的对角矩阵，定义多模升降算符
-
-\[
-\mathbf a_s
-=\frac1{\sqrt{2\hbar}}
-\left(
-\boldsymbol\Omega_s^{1/2}\mathbf Q_s
-+\ii\boldsymbol\Omega_s^{-1/2}\mathbf P_s
-\right),
-\qquad s=g,e.
-\]
-
-把 \eqnrefs{eq:duschinsky} 代入后得到一般 Gaussian 仿射 变换
-
-\begin{equation}
-\boxed{
-\mathbf a_e
-=\mathbf X\mathbf a_g
-+\mathbf Y\mathbf a_g^\dagger
-+\mathbf z,
-}
-\label{eq:doktorov-bogoliubov}
-\end{equation}
-
-其中
-
-\[
-\mathbf X
-=\frac12
-\left(
-\boldsymbol\Omega_e^{1/2}\mathbf J\boldsymbol\Omega_g^{-1/2}
-+
-\boldsymbol\Omega_e^{-1/2}\mathbf J\boldsymbol\Omega_g^{1/2}
-\right),
-\]
-
-\[
-\mathbf Y
-=\frac12
-\left(
-\boldsymbol\Omega_e^{1/2}\mathbf J\boldsymbol\Omega_g^{-1/2}
--
-\boldsymbol\Omega_e^{-1/2}\mathbf J\boldsymbol\Omega_g^{1/2}
-\right),
-\]
-
-\[
-\mathbf z
-=\frac1{\sqrt{2\hbar}}
-\boldsymbol\Omega_e^{1/2}\mathbf K.
-\]
-
-因此多模 Franck--Condon 变换不是简单的 \(D S U\) 口号，而是一个保持 bosonic 对易子 的多模 Bogoliubov 变换加位移。\(\mathbf J\) 负责模式混合，\(\mathbf X,\mathbf Y\) 中的频率比负责 压缩，\(\mathbf z\) 负责 位移。它们合起来就是常说的 Doktorov 变换。
-
-实际大分子的 Franck--Condon 因子 因而是多维 Gaussian 波函数之间的重叠问题；模式旋转和 压缩 会让不同 简正模 之间的量子数不再逐模独立守恒。
-
-以上均在零温（初态为振动基态）下讨论。有限温度下初态为热态，FC 因子需对热平均求和，用时间关联函数可以给出紧凑的表达。
-
-\section{有限温度谱与时间关联函数}
-
-在有限温度下，初始振动态不再是单个 $|0_g\rangle$，而是热态
-\[
-\rho_g^{\rm th}=\frac{\ee^{-\beta H_g}}{Z_g},
-\qquad \beta=(k_BT)^{-1}.
-\]
-Condon 近似下，吸收谱可以避免逐个枚举所有初末振动态，而写成偶极关联函数的 Fourier 变换
-\begin{equation}
-I(\omega)\propto
-\int_{-\infty}^{\infty}\dd t\,
-\ee^{\ii\omega t}
-C_{eg}(t),
-\qquad
-C_{eg}(t)=\operatorname{Tr}\!\left[
-ho_g^{\rm th}
-\ee^{\ii H_gt/\hbar}\ee^{-\ii H_et/\hbar}\right].
-\label{eq:franck-condon-thermal-correlation}
-\end{equation}
-对一般二次 $H_g,H_e$，\eqnrefs{eq:doktorov-bogoliubov}保证这个迹仍是 Gaussian 迹，因此可以由协方差矩阵和位移向量闭合计算。零温、等频率、单模位移模型只是在该一般生成函数中取 $T\to0$、$\mathbf J=I$、$\mathbf Y=0$ 后得到的 Poisson 特例。
-
-\begin{derivation}[谱线求和如何化为时间关联函数]
-离散振动态的吸收强度由 Fermi 黄金法则给出
-\begin{equation*}
-I(\omega)\propto
-\sum_{m,n} p_n\,
-|\langle e,m|\hat\mu|g,n\rangle|^2\,
-\delta\!\left(\omega-\frac{E_m^e-E_n^g}{\hbar}\right),
-\end{equation*}
-其中 $p_n=\ee^{-\beta E_n^g}/Z_g$ 为初态 Boltzmann 权重，$|g,n\rangle$、$|e,m\rangle$ 分别为电子基态与激发态势能面上的振动态。记 $\omega_{mn}=(E_m^e-E_n^g)/\hbar$，将矩阵元模平方展开，
-\begin{equation*}
-|\langle e,m|\hat\mu|g,n\rangle|^2
-= \langle e,m|\hat\mu|g,n\rangle\,
- \langle g,n|\hat\mu^\dagger|e,m\rangle.
-\end{equation*}
-利用 $\delta$ 函数的 Fourier 表示
-\begin{equation*}
-\delta(\omega-\omega_{mn})
-= \frac1{2\pi}\int_{-\infty}^{\infty}\dd t\,
- \ee^{\ii(\omega-\omega_{mn})t},
-\end{equation*}
-代回强度公式并交换求和与积分，
-\begin{equation*}
-I(\omega)\propto
-\frac1{2\pi}\int_{-\infty}^{\infty}\dd t\,
-\ee^{\ii\omega t}
-\sum_{m,n} p_n\,
-\langle e,m|\hat\mu|g,n\rangle
-\langle g,n|\hat\mu^\dagger|e,m\rangle
-\ee^{-\ii\omega_{mn}t}.
-\end{equation*}
-由 $H_g|g,n\rangle=E_n^g|g,n\rangle$、$H_e|e,m\rangle=E_m^e|e,m\rangle$，于是
-\begin{equation*}
-\ee^{-\ii\omega_{mn}t}
-= \langle e,m|\ee^{-\ii H_e t/\hbar}|e,m\rangle\,
- \langle g,n|\ee^{+\ii H_g t/\hbar}|g,n\rangle.
-\end{equation*}
-在 Condon 近似下电子偶极与核坐标无关，$\hat\mu=\boldsymbol\mu_{eg}\otimes\hat{\mathbf 1}_{\rm vib}$，可提出电子因子。对 $m$ 与 $n$ 分别插入完备关系 $\sum_m|e,m\rangle\langle e,m|=\mathbf 1$、$\sum_n|g,n\rangle\langle g,n|=\mathbf 1$，双重求和坍缩为
-\begin{equation*}
-\sum_n p_n\,
-\langle g,n|\ee^{+\ii H_g t/\hbar}\ee^{-\ii H_e t/\hbar}|g,n\rangle
-= \operatorname{Tr}\!\left[
- \rho_g^{\rm th}\,
- \ee^{+\ii H_g t/\hbar}\ee^{-\ii H_e t/\hbar}\right],
-\end{equation*}
-其中 $\rho_g^{\rm th}=\sum_n p_n|g,n\rangle\langle g,n|=\ee^{-\beta H_g}/Z_g$。因此
-\begin{equation*}
-I(\omega)\propto
-\int_{-\infty}^{\infty}\dd t\,
-\ee^{\ii\omega t}\,
-C_{eg}(t),
-\qquad
-C_{eg}(t)=\operatorname{Tr}\!\left[
-\rho_g^{\rm th}\,
-\ee^{+\ii H_g t/\hbar}\ee^{-\ii H_e t/\hbar}\right],
-\end{equation*}
-即\eqnrefs{eq:franck-condon-thermal-correlation}。大分子振动谱更自然的母对象是 Gaussian 关联函数，而非数量指数增长的逐态 Franck--Condon 表。
-\end{derivation}
-
-前几节建立了 FC 因子的理论框架。本节给出典型体系的实验参数，将 Huang--Rhys 因子、Duschinsky 旋转与光谱选择定则与具体分子数据对接。
-
-\section{Franck--Condon 因子的实验数值与典型体系}\label{sec:fc-experiments}
-
-接下来考察 Huang--Rhys 因子与 振动电子 进展。
-
-单模位移谐振子的 Huang--Rhys 因子 \(S_{\rm HR}=(\Delta Q)^2/(2\ell_v^2)\) 决定 振动电子 谱线强度分布：\(I_n=e^{-S_{\rm HR}}S_{\rm HR}^{\,n}/n!\)（Poisson 分布）。\(S_{\rm HR}\) 的物理意义是基态到末态振动波包中心的位移（以零点宽度为单位）。
-
-\begin{center}
-\begin{tabular}{lcccc}
-\hline
-体系 & 跃迁 & \(S\) & Stokes 位移 (cm\(^{-1}\)) & \(\lambda_{\rm FC}^2\) \\
-\hline
-H\(_2\) (\(B\,{}^1\Sigma\leftarrow X\,{}^1\Sigma\)) & Lyman & 0.09 & 1700 & 0.18 \\
-I\(_2\) (\(B\,{}^3\Pi\leftarrow X\,{}^1\Sigma\)) & 可见 & 1.5 & 240 & 3.0 \\
-F-center (NaCl) & \(1s\to2p\) & 3.0 & 1800 & 6.0 \\
-聚芴 (有机半导体) & \(S_1\to S_0\) & 2.0 & 2400 & 4.0 \\
-CdSe 量子点 & 带边 & 0.5 & 200 & 1.0 \\
-\hline
-\end{tabular}
-\end{center}
-
-\begin{exbox}[\(I_2\) 的 振动电子 进展]
-I\(_2\) 的 \(B\leftarrow X\) 跃迁 \(S\approx1.5\)，振动电子 峰强分布 \(I_n=e^{-1.5}1.5^n/n!\)：\(I_0=0.22\)，\(I_1=0.34\)，\(I_2=0.25\)，\(I_3=0.13\)，\(I_4=0.05\)。最强峰在 \(n\approx S=1.5\) 附近，进展宽度 \(\Delta n\approx\sqrt{S}\approx1.2\)。对比 H\(_2\) 的 \(S=0.09\)：\(I_0=0.91\)，\(I_1=0.08\)——几乎只有 0-0 带，因为 H\(_2\) 两个电子态的平衡键长几乎相同。
-\end{exbox}
-
-Huang--Rhys 因子决定 振动电子 包络的形状，但光谱中哪些跃迁实际出现还受选择定则约束。大 $S$ 时反射原理将 FC 因子与连续谱阈联系起来。
-
-接下来考察 Franck--Condon 因子与光谱选择定则。
-
-\begin{exbox}[反射原理：\(I_2\) 吸收谱的连续阈]
-当 \(S\gg1\) 且末态势能面显著位移时，FC 因子在 \(v'\approx S\) 处达到峰值，对应经典转折点。\(I_2\) 的 \(B\) 态势能在 \(R\approx3.0\,\text{\AA}\) 处有势阱，而基态 \(R_e=2.67\,\text{\AA}\)。当激发光能量超过 \(B\) 态离解限时，FC 因子给出连续吸收谱——反射原理：核波函数在转折点反射，吸收谱形 \(\sigma(\nu)\propto|\chi_g(R_t)|^2/|V_e'(R_t)-V_g'(R_t)|\)，其中 \(R_t\) 满足 \(V_e(R_t)-V_g(R_t)=h\nu\)。
-\end{exbox}
-
-以上实验体系均为单模或频率一致情形。一般多原子分子中 Duschinsky 旋转使模式混合，FC 因子成为多维重叠积分。
-
-接下来考察 Duschinsky 转动与多模耦合。
-
-当两个电子态的 正规-模 方向不同时，Duschinsky 变换 \(Q'=UQ+\Delta Q\) 引入模式混合。单模 FC 因子推广为多维重叠积分。
-
-\begin{exbox}[\(CO_2\) 的 Duschinsky 效应]
-CO\(_2\) 在 \(S_1\leftarrow S_0\) 跃迁中，弯曲模 \(\nu_2\) 在激发态变为非对称伸缩，Duschinsky 矩阵 \(U\) 非对角。忽略 Duschinsky 转动会使 振动电子 峰强误差达 30\%。正确处理需计算多维 FC 积分，常用 Doktorov 算法（递推生成）或热关联函数方法。
-\end{exbox}
-
-\begin{derivation}[多模 Duschinsky 变换下 Franck--Condon 因子的热关联函数表示，即\eqnrefs{eq:multimode-fc-generating-function}]
-
-设初态 \(g\) 有 \(N\) 个 简正模 \(\{Q_i\}\)，频率 \(\{\omega_i\}\)；末态 \(e\) 有 \(N\) 个 模 \(\{Q'_j\}\)，频率 \(\{\omega'_j\}\)。Duschinsky 变换
-\begin{equation}
-\mathbf Q' = U\,\mathbf Q + \mathbf d,
-\label{eq:duschinsky-general}
-\end{equation}
-其中 \(U\in\mathrm{O}(N)\) 为正交矩阵（模式混合），\(\mathbf d\) 为位移向量。多模 FC 因子是 \(N\) 维重叠积分
-\begin{equation}
-F_{\mathbf n,\mathbf m}
-=\int\!\dd^NQ\;\chi_{g,\mathbf n}(\mathbf Q)\,\chi_{e,\mathbf m}(U\mathbf Q+\mathbf d),
-\label{eq:multimode-fc-integral}
-\end{equation}
-
-
-引入热关联函数
-\begin{equation}
-C(t)=\frac{1}{Z_g}\Tr\!\left[\ee^{-\beta H_g}\,\ee^{\ii H_e t/\hbar}\,\ee^{-\ii H_g t/\hbar}\right],
-\qquad
-Z_g=\Tr\,\ee^{-\beta H_g},
-\label{eq:thermal-correlation}
-\end{equation}
-其中 \(H_g=\sum_i\hbar\omega_i(a_i^\dagger a_i+1/2)\)，\(H_e=\sum_j\hbar\omega'_j(b_j^\dagger b_j+1/2)\)，且末态算符通过 Duschinsky 变换与初态关联。吸收谱强度
-\begin{equation*}
-I(\omega)\propto\int_{-\infty}^{+\infty}\!\dd t\;\ee^{-\ii\omega t}\,C(t),
-\end{equation*}
-
-
-用相干态 \(|\boldsymbol\alpha\rangle\) 表示，\(\boldsymbol\alpha\in\CC^N\)。路径积分中 \(C(t)\) 化为 \(2N\) 维 Gaussian 积分。定义复对称矩阵
-\begin{equation}
-\Sigma(t)_{ij}
-=\frac{\delta_{ij}\,\ee^{-\ii\omega_i t}}{1-\ee^{-\beta\hbar\omega_i-\ii\omega_i t}},
-\label{eq:coherent-state-propagator}
-\end{equation}
-以及 Duschinsky 诱导的频率比矩阵 \(W_{ij}=\sqrt{\omega'_j/\omega_i}\,U_{ij}\)。完成 Gaussian 积分后
-\begin{equation}
-C(t)=\frac{\det{}^{1/2}\!\bigl[\mathbb I-W^\dagger\Sigma(t)W\Sigma(-t)\bigr]}
-{\prod_i\bigl(1-\ee^{-\beta\hbar\omega_i-\ii\omega_i t}\bigr)^{1/2}}
-\,\exp\!\Bigl[-\frac12\mathbf d^\dagger\Lambda(t)\mathbf d\Bigr],
-\label{eq:multimode-fc-generating-function}
-\end{equation}
-其中 \(\Lambda(t)\) 为由 \(W\)、\(\Sigma(t)\) 构成的复对称矩阵。行列式项来自模式混合，指数项来自位移。
-
-正则对易关系 \([Q_i,P_j]=\ii\hbar\delta_{ij}\) 在 Duschinsky 变换下保持，要求
-\begin{equation}
-W^\dagger\Omega_e W=\Omega_g,
-\qquad
-\Omega_{g,ij}=\ii\hbar\omega_i\delta_{ij},
-\qquad
-\Omega_{e,ij}=\ii\hbar\omega'_j\delta_{ij},
-\label{eq:duschinsky-symplectic}
-\end{equation}
-
-
-取单模极限 \(N=1\)、\(U=1\)、\(\mathbf d=d\)。此时 \(W=\sqrt{\omega'/\omega}\)，若进一步 \(\omega'=\omega\)（无频率改变），\eqnrefs{eq:multimode-fc-generating-function} 简化为
-\begin{equation*}
-C(t)=\exp\!\Bigl[-S\bigl(1-\ee^{-\ii\omega t}\bigr)\Bigr],
-\qquad
-S=\frac{\omega d^2}{2\hbar},
-\end{equation*}
-展开 \(\ee^{S\ee^{-\ii\omega t}}=\sum_k(S^k/k!)\ee^{-\ii k\omega t}\)，Fourier 变换给出
-\begin{equation*}
-I_k\propto\ee^{-S}\frac{S^k}{k!},
-\end{equation*}
-即\eqnrefs{eq:fc-poisson} 的 Poisson 分布。
-
-\end{derivation}
-
-多模 Franck--Condon 因子还可直接由 Duschinsky 变换构造。
-
-Duschinsky 变换。电子跃迁改变势能面，初态正则坐标 \(\boldsymbol Q'\) 与末态 \(\boldsymbol Q\) 通过 Duschinsky 变换关联：\(\boldsymbol Q'=D\boldsymbol Q+\boldsymbol d\)（\(D\) 正交矩阵描述模混合，\(\boldsymbol d\) 位移向量）。\(D\) 的非对角元表示初末态正则模不同（频率或力常数矩阵不同），\(\boldsymbol d\) 表示平衡位置偏移。单模 FC（\(D=I\)）只涉及位移，多模 FC 需要处理 \(D\neq I\) 的模混合。
-
-FC 因子的生成函数。多模 FC 因子 \(\langle\boldsymbol v'|D,\boldsymbol d|\boldsymbol v\rangle\) 的计算用生成函数方法：定义 \(G(\boldsymbol z,\boldsymbol z')=\sum_{\boldsymbol v,\boldsymbol v'}\langle\boldsymbol v'|D,\boldsymbol d|\boldsymbol v\rangle\frac{z_1^{v_1}\cdots z_N^{v_N}}{\sqrt{v_1!\cdots v_N!}}\frac{z_1'^{v_1'}\cdots z_N'^{v_N'}}{\sqrt{v_1'!\cdots v_N'!}}\)。Gauss 型生成函数 \(G=\exp(\boldsymbol z^T A\boldsymbol z+\boldsymbol z'^T B\boldsymbol z'+\boldsymbol z^T C\boldsymbol z'+\boldsymbol l^T\boldsymbol z+\boldsymbol l'^T\boldsymbol z')\)（\(A,B,C,l,l'\) 由 \(D,\boldsymbol d\) 和频率确定），FC 因子是 \(G\) 的 Taylor 系数。
-
-Huang--Rhys 因子与电子-声子耦合。单模 FC 因子的位移参数 \(d\) 用 Huang--Rhys 因子 \(S_{\rm HR}=M\omega d^2/(2\hbar)\) 表示：取 \(v'\ge v\)，\(\langle v'|v\rangle=\sqrt{\frac{v!}{v'!}}\,\ee^{-S_{\rm HR}/2}S_{\rm HR}^{(v'-v)/2}L_v^{(v'-v)}(S_{\rm HR})\)（\(L\) 为 Laguerre 多项式；\(v'<v\) 时上下阶乘对调）。\(S_{\rm HR}\) 是电子-声子耦合强度：\(S_{\rm HR}\ll1\) 绝热跃迁（Frank--Condon 原理，\(0\to0\) 主导），\(S_{\rm HR}\gg1\) 强耦合（跃迁峰在 \(v'\approx S_{\rm HR}\)）。Huang--Rhys 因子把 FC 因子从几何量提升为电子-声子耦合的物理参数。
-
-递推算法与大规模计算。多模 FC 因子的直接 Taylor 展开在模数 \(N>10\) 时不可行（指数增长）。Doktorov 等人的递推算法利用 Duschinsky 变换的 Lie 代数结构，把 FC 因子表示为低阶因子的线性递推：\(\sqrt{v_i}\langle\boldsymbol v'|D,\boldsymbol d|\boldsymbol v+\boldsymbol e_i\rangle=\sum_j M_{ij}\sqrt{v_j'+1}\langle\boldsymbol v'+\boldsymbol e_j'|D,\boldsymbol d|\boldsymbol v\rangle+\sum_j N_{ij}\sqrt{v_j'}\langle\boldsymbol v'-\boldsymbol e_j'|D,\boldsymbol d|\boldsymbol v\rangle+P_i\langle\boldsymbol v'|D,\boldsymbol d|\boldsymbol v\rangle\)（\(M,N,P\) 由 \(D,\boldsymbol d\) 确定）。递推算法把计算复杂度从指数降为多项式 \(O(\prod_i(v_i^{\rm max}+1))\)，使 \(N\sim100\) 模的 FC 因子可计算——这是大分子光谱模拟的算法基础。
+即\eqnrefs{eq:spontaneous-green-dyadic}。Green 并矢是"模式密度乘局域场强"的连续谱压缩表示。
+\end{proof}

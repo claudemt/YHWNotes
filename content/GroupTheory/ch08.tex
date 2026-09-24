@@ -1,448 +1,511 @@
-\chapter{李群、李代数与标准模型}
-\label{chap:lie-standard-model}
+\chapter{张量积与 Clebsch--Gordan 分解}
+\label{chap:tensor-product-cg}
 
-有限群表示论适合处理离散对称，Lorentz 群则展示了连续群如何控制时空量子数。粒子物理还需要另一类连续对称：作用在场的内部指标上的规范群。标准模型的内部群为 $SU(3)_c\times SU(2)_L\times U(1)_Y$；要读懂其中的多重态、耦合与选择定则，必须先把根、权、最高权和张量积分解建立起来。
+前几章回答了怎样把一个表示拆成不可约块。组合系统提出相反方向的问题：若两个自由度各自按已知表示变换，它们同时存在时怎样变换？态空间相乘对应张量积，群元在两个因子上同时作用。
 
-本章沿“Lie 代数的一般结构—紧群表示—$SU(3)$—标准模型”的顺序推进。规范反常、拓扑荷和大统一模型放在基本表示结构之后，因为这些结论都依赖前面已经固定的生成元归一化和表示约定。
+张量积通常仍然可以分解。Clebsch--Gordan 分解告诉我们其中出现哪些不可约表示，相应系数则是从直积基到耦合基的换基矩阵。有限群的特征标先给出各不可约块的重数；同一件事到了 \(SU(2)\) 中，就成为两个角动量的耦合。
 
-\section{Lie 代数、根与最高权}
+\section{新表示的构造}
+\label{sec:new-constructions}
 
-Lie 代数 $\mathfrak g$ 是带有双线性反对称括号 $[\,,\,]$ 的向量空间，并满足 Jacobi 恒等式。取基 $T^a$ 后，结构常数由
+前面做的主要工作是“给定一个表示，把它拆开”。物理中还经常遇到相反的问题：已知两个自由度各自怎样变换，合在一起以后怎样变换？两个彼此独立的态空间会产生直接和；两个同时存在的自由度，例如轨道与自旋，会产生张量积；从一个群缩到子群会产生限制表示。理解这些构造以后，后面所谓“轨道表示乘上自旋表示再分解”就不再是一条额外规则，而只是张量积表示的一次不可约分解。
+
+表示论之所以实用，不只是因为已有表示可以被分解，还因为新的表示能够从旧表示系统地构造出来。本节介绍本课程中最常用的几种构造：直接和、张量积、对偶表示、限制与商群提升。它们各自都很自然，而且特征标行为简单明确，因此在应用时非常高效。
+
+
+
+这两个符号第一次同时出现时很容易混淆。直接和 $V_1\oplus V_2$ 描述“系统处在第一块或第二块中的线性叠加”，两个子空间是并排的，因此维数相加；张量积 $V_1\otimes V_2$ 描述“两个自由度同时存在”，每个第一自由度的基都要与每个第二自由度的基配对，因此维数相乘。若
 \[
-[T^a,T^b]=\ii f^{ab}{}_cT^c
+\dim V_1=d_1,\qquad \dim V_2=d_2,
 \]
-定义。伴随表示是 $\operatorname{ad}_X(Y)=[X,Y]$；它把抽象括号变成线性算符。Killing 型
-\begin{equation}
-B(X,Y)=\operatorname{tr}(\operatorname{ad}_X\operatorname{ad}_Y)
-\label{eq:killing-form}
-\end{equation}
-式 \eqnrefs{eq:killing-form} 在半单 Lie 代数上非退化。对紧半单实形式，$-B$ 正定，因而可用来定义根空间中的欧氏内积。
-
-\begin{definition}[Cartan 子代数]
-Cartan 子代数 $\mathfrak h$ 是 $\mathfrak g$ 中最大的可交换半单子代数，其维数 $r$ 称为 $\mathfrak g$ 的秩。复化后，伴随表示可在 $\mathfrak h$ 上同时对角化，按根空间分解为
+则
 \[
-\mathfrak g_{\mathbb C}=\mathfrak h_{\mathbb C}
-\oplus\bigoplus_{\alpha\in\Phi}\mathfrak g_\alpha,
-\qquad [H,E_\alpha]=\alpha(H)E_\alpha .
+\dim(V_1\oplus V_2)=d_1+d_2,
+\qquad
+\dim(V_1\otimes V_2)=d_1d_2.
 \]
-$\alpha\in\mathfrak h^*$ 称为根，$\Phi$ 为根系。
+量子力学里，不同不可约能级块的并列通常用 $\oplus$；轨道与自旋、两个粒子或两个角动量自由度同时存在时通常用 $\otimes$。后面 Clebsch--Gordan 理论所做的事情，正是把一个张量积表示重新分解成不可约表示的直接和。
+
+\begin{definition}[张量积表示]
+设 $(\rho_1,V_1)$ 与 $(\rho_2,V_2)$ 是群 $G$ 的两个表示。在张量积空间 $V_1\otimes V_2$ 上定义
+\[
+(\rho_1\otimes\rho_2)(g)(v_1\otimes v_2)
+=\rho_1(g)v_1\otimes \rho_2(g)v_2,
+\]
+并按线性延拓到整个 $V_1\otimes V_2$。则得到 $G$ 的一个表示，称为 $\rho_1$ 与 $\rho_2$ 的\textbf{张量积表示}。
+\label{def:tensor-product-representation}
 \end{definition}
 
-用 Killing 型把 $\mathfrak h$ 与 $\mathfrak h^*$ 识别后，根的内积记为
+张量积之所以自然，是因为当系统由两个子系统组成时，群往往在总 Hilbert 空间 $\mathcal H_1\otimes \mathcal H_2$ 上按这种方式作用。量子力学中的角动量耦合、晶体中轨道与自旋自由度的耦合，都是这一构造的典型场景。
+
+\begin{proposition}[特征标对直接和与张量积的行为]
+设 $\chi_1,\chi_2$ 分别是表示 $\rho_1,\rho_2$ 的特征标，则
+\[
+\chi_{\rho_1\oplus\rho_2}(g)=\chi_1(g)+\chi_2(g),
+\qquad
+\chi_{\rho_1\otimes\rho_2}(g)=\chi_1(g)\chi_2(g).
+\]
+\label{prop:character-sum-product}
+
+\end{proposition}
+
+\begin{proof}
+在适当基下，直接和表示矩阵为分块对角矩阵，因此迹直接相加。
+
+对张量积表示，在积基 $\{e_i\otimes f_j\}$ 下，若 $A=D_1(g)$、$B=D_2(g)$，则表示矩阵为 Kronecker 积 $A\otimes B$。其迹满足
+\[
+\Tr(A\otimes B)=\Tr(A)\Tr(B),
+\]
+故结论成立。
+\end{proof}
+
+\medskip
+\noindent\emph{用特征标分解 $S_3$ 的张量积。}
+设 $\rho_{\mathrm{std}}$ 是 $S_3$ 的二维标准表示，其特征标为
+\[
+\chi_{\mathrm{std}}=(2,0,-1).
+\]
+则张量积表示 $\rho_{\mathrm{std}}\otimes\rho_{\mathrm{std}}$ 的特征标为逐点平方：
+\[
+\chi_{\mathrm{std}\otimes\mathrm{std}}=(4,0,1).
+\]
+用 \Cref{tab:s3-character-table} 与重数公式计算，得到
+\[
+\rho_{\mathrm{std}}\otimes\rho_{\mathrm{std}}
+\simeq \rho_{\mathrm{triv}}\oplus\rho_{\mathrm{sgn}}\oplus\rho_{\mathrm{std}}.
+\]
+这个例子说明特征标不仅能分析“给定表示如何分解”，还能高效分析从旧表示构造出来的新表示如何分解。
+\par\medskip
+
+进一步分析表示环与 Clebsch--Gordan 级数。
+
+上面的例子把两个不可约表示的张量积分解为不可约表示的直和。这种分解在物理中反复出现：两个角动量耦合（$\vb j_1\otimes\vb j_2$）、两个粒子态空间的组合、轨道与自旋的乘积。现在给出一般理论。
+
+\begin{definition}[Clebsch--Gordan 级数]
+设 $D^{(\alpha)}$ 和 $D^{(\beta)}$ 是有限群 $G$ 的两个不可约表示。张量积 $D^{(\alpha)}\otimes D^{(\beta)}$ 一般可约，可分解为不可约表示的直和：
 \begin{equation}
-(\alpha,\beta)=B(H_\alpha,H_\beta).
-\label{eq:root-inner-product}
+D^{(\alpha)}\otimes D^{(\beta)}
+\simeq\bigoplus_\gamma\,g_{\alpha\beta}^\gamma\,D^{(\gamma)},
+\label{eq:cg-series-finite}
 \end{equation}
-
-\begin{derivation}[在 $su(3)$ 上验证 Killing 型非退化]
-目标：直接验算 $B(X,Y)=\tr(\operatorname{ad}_X\operatorname{ad}_Y)$ 在 $\mathfrak{su}(3)$ 上非退化。取 $\mathfrak h$ 的基 $H_1,H_2$，使其满足 $\alpha_i(H_j)=\delta_{ij}$；$su(3)$ 的六个根为 $\pm\alpha_1,\pm\alpha_2,\pm(\alpha_1+\alpha_2)$。对 $H\in\mathfrak h$，$\operatorname{ad}_H$ 在根空间 $\mathfrak g_\alpha$ 上作用为标量 $\alpha(H)$，而在 $\mathfrak h$ 上作用为零，故
-\[
-B(H,H')=\sum_{\alpha\in\Phi}\alpha(H)\alpha(H')
-=2\sum_{\alpha>0}\alpha(H)\alpha(H').
-\]
-记 $H=(h_1,h_2)$（即 $\alpha_1(H)=h_1,\alpha_2(H)=h_2$）、$H'=(h_1',h_2')$，三个正根贡献
-\[
-B(H,H')=2\bigl[h_1h_1'+h_2h_2'+(h_1+h_2)(h_1'+h_2')\bigr]
-=\begin{pmatrix}h_1&h_2\end{pmatrix}
-\begin{pmatrix}4&2\\2&4\end{pmatrix}
-\begin{pmatrix}h_1'\\h_2'\end{pmatrix}.
-\]
-该矩阵行列式 $4\cdot4-2\cdot2=12>0$，本征值为 $6,2$，故 $B$ 在 $\mathfrak h$ 上正定、非退化。半单性又保证 $B$ 在 $\mathfrak h$ 与根空间 $\mathfrak g_\alpha$ 之间的分块为零（迹只在同一权空间内贡献），故 $B$ 在整个 $su(3)$ 上非退化。这正是可用式 \eqnrefs{eq:root-inner-product} 与式 \eqnrefs{eq:cartan-matrix} 在 $\mathfrak h^*$ 上定义根内积与 Cartan 矩阵的前提。
-\end{derivation}
-
-选择正根后，每个正根都可由简单根 $\alpha_i$ 的非负整数线性组合表示。Cartan 矩阵
+其中 $g_{\alpha\beta}^\gamma$ 是 $D^{(\gamma)}$ 在张量积中的重数，称为\textbf{Clebsch--Gordan 系数}（或 Kronecker 系数）。由重数公式：
 \begin{equation}
-A_{ij}=\frac{2(\alpha_i,\alpha_j)}{(\alpha_j,\alpha_j)}
-\label{eq:cartan-matrix}
+g_{\alpha\beta}^\gamma
+=\langle\chi^{(\alpha)}\chi^{(\beta)},\chi^{(\gamma)}\rangle
+=\frac1{|G|}\sum_{g\in G}\overline{\chi^{(\gamma)}(g)}\,\chi^{(\alpha)}(g)\,\chi^{(\beta)}(g).
+\label{eq:cg-coefficient-formula}
 \end{equation}
-把简单根的相对长度和夹角编码为整数矩阵。有限维复半单 Lie 代数的 Dynkin 图正是由这个矩阵分类的。
-
-\begin{definition}[单根、基本权与 Dynkin 标号]
-选定正根后，每个正根都可写成单根 $\alpha_i$（$i=1,\dots,r$）的非负整线性组合。基本权 $\omega_i\in\mathfrak h^*$ 由
-\[
-\frac{2(\omega_i,\alpha_j)}{(\alpha_j,\alpha_j)}=\delta_{ij}
-\]
-定义。任意有限维表示中 $\mathfrak h$ 的共同本征值 $\mu\in\mathfrak h^*$ 称为权；支配权 $\lambda=\sum_{i=1}^r a_i\omega_i$（$a_i\in\mathbb Z_{\ge0}$）唯一标记一个不可约有限维表示，非负整数 $a_i$ 即 Dynkin 标号。这个结论把不可约表示的分类化为一个离散格点问题，而降算符 $E_{-\alpha_i}$ 从最高权逐层生成全部权。
 \end{definition}
 
-若权 $\mu$ 的重数为 $m(\mu)$，Freudenthal 递推式（式 \eqnrefs{eq:freudenthal}）给出
-\begin{equation}
-\bigl[(\lambda+\rho,\lambda+\rho)-(\mu+\rho,\mu+\rho)\bigr]m(\mu)
-=2\sum_{\alpha>0}\sum_{k\ge1}(\mu+k\alpha,\alpha)m(\mu+k\alpha),
-\label{eq:freudenthal}
-\end{equation}
-其中 $\rho=\frac12\sum_{\alpha>0}\alpha$，右侧只含比 $\mu$ 更高的权，因此递推从 $m(\lambda)=1$ 开始闭合。
+这个公式是计算张量积分解的万能工具：只需三个特征标在各类上的值，逐类相乘再求和，就得到重数。它完全平行于 $SO(3)$ 的 Clebsch--Gordan 分解 $j_1\otimes j_2=\bigoplus_{j=|j_1-j_2|}^{j_1+j_2}j$，但适用于任意有限群。
 
-紧群的有限维幺正不可约表示还满足 Peter--Weyl 定理：矩阵元在 $L^2(G)$ 中构成正交完备系，
+\begin{definition}[表示环（Green 环）]
+有限群 $G$ 的\textbf{表示环} $R(G)$（也称 Green 环）是所有有限形式整系数线性组合 $\sum_\alpha n_\alpha[D^{(\alpha)}]$（$n_\alpha\in\ZZ$）构成的环，加法和乘法定义为
 \[
-L^2(G)\cong\widehat{\bigoplus}_{\pi\in\widehat G}V_\pi\otimes V_\pi^* .
+[D^{(\alpha)}]+[D^{(\beta)}]=[D^{(\alpha)}\oplus D^{(\beta)}],\qquad
+[D^{(\alpha)}]\cdot[D^{(\beta)}]=[D^{(\alpha)}\otimes D^{(\beta)}].
 \]
-这既是有限群正则表示分解的连续版本，也是紧群 Fourier 分析的基础。非紧群一般需要直积分与 Plancherel 测度，不能直接照搬离散直和。
-
-\begin{derivation}[Freudenthal 递推的来源]
-二次 Casimir $C_2=\sum_aT^aT^a$ 在最高权表示 $V_\lambda$ 上取标量 $(\lambda,\lambda+2\rho)$。把生成元分成 Cartan 基与根向量，并在权空间 $V_\mu$ 上取迹，根向量只连接 $\mu$ 与 $\mu\pm\alpha$。用 $[E_\alpha,E_{-\alpha}]=H_\alpha$ 把成对项移到更高权空间，便得到
+不可约表示的等价类 $\{[D^{(\alpha)}]\}_\alpha$ 构成 $R(G)$ 作为 $\ZZ$-模的一组基，乘法结构常数正是 Clebsch--Gordan 系数：
 \[
-\bigl[(\lambda+\rho)^2-(\mu+\rho)^2\bigr]m(\mu)
-=2\sum_{\alpha>0}\sum_{k\ge1}(\mu+k\alpha,\alpha)m(\mu+k\alpha).
+[D^{(\alpha)}]\cdot[D^{(\beta)}]=\sum_\gamma g_{\alpha\beta}^\gamma\,[D^{(\gamma)}].
 \]
-递推之所以终止，是因为有限维最高权表示中，沿每条正根方向只有有限长的权串。
-\end{derivation}
+\end{definition}
 
-\begin{example}[Freudenthal 递推在 $SU(3)$ 八重态 $(1,1)$ 上走一步]
-取最高权表示 $(1,1)$，其最高权 $\lambda=\omega_1+\omega_2=\rho$，已知 $m(\lambda)=1$。递推第一个要算的是次高权 $\mu=\lambda-\alpha_1=\rho-\alpha_1=\alpha_2$。用上面的归一化 $(\alpha_i,\alpha_i)=1$、$(\rho,\alpha_1)=\tfrac12$。
+表示环把群的所有表示及其张量积结构编码为一个代数对象。研究 $R(G)$ 的结构（是否整环、是否唯一分解、类数等）是表示论的重要方向。
 
-\emph{左边}：$\lambda+\rho=2\rho$，$\mu+\rho=2\rho-\alpha_1$，故
+\begin{proposition}[表示环的基本性质]
+\label{prop:rep-ring-properties}
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $R(G)$ 是有限秩自由 $\ZZ$-模，秩等于不可约表示数 $r$。
+\item 特征标映射 $[D]\mapsto\chi_D$ 给出 $R(G)$ 到类函数环的环同态（单射）。
+\item $R(G)$ 有单位元 $[D^{(\mathrm{triv})}]$（平凡表示）。
+\item 对偶表示给出 $R(G)$ 的对合自同构：$[D^{(\alpha)}]\mapsto[D^{(\alpha)*}]$。
+\item 若 $G$ 是 Abel 群，则 $R(G)\cong\ZZ[\hat G]$（$\hat G$ 的群环），乘法由 $\hat G$ 的群乘法给出。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) 不可约表示类构成基，Maschke 定理保证任意表示唯一分解，故 $R(G)$ 是秩 $r$ 的自由 $\ZZ$-模。
+
+(ii) 特征标保持加法（$\chi_{\rho\oplus\sigma}=\chi_\rho+\chi_\sigma$）和乘法（$\chi_{\rho\otimes\sigma}=\chi_\rho\cdot\chi_\sigma$），故是环同态。单射性由特征标完全决定表示（不可约分解的重数唯一）保证。
+
+(iii) $D^{(\mathrm{triv})}\otimes D^{(\alpha)}\cong D^{(\alpha)}$，故平凡表示是乘法单位。
+
+(iv) $(D^{(\alpha)}\otimes D^{(\beta)})^*\cong D^{(\alpha)*}\otimes D^{(\beta)*}$，对合性来自 $(D^*)^*\cong D$。
+
+(v) Abel 群的所有不可约表示都是一维的，$\hat G$ 在张量积下构成群（特征群），$R(G)$ 的乘法化为 $\hat G$ 的群乘法。
+\end{proof}
+
+\medskip
+\noindent\emph{$S_3$ 的表示环。}
+$S_3$ 有三个不可约表示：平凡 $\mathbf{1}$、符号 $\boldsymbol\epsilon$、标准 $\mathbf{2}$。张量积法则：
+\begin{align*}
+\mathbf{1}\otimes\mathbf{1}&=\mathbf{1},&\mathbf{1}\otimes\boldsymbol\epsilon&=\boldsymbol\epsilon,&\mathbf{1}\otimes\mathbf{2}&=\mathbf{2},\\
+\boldsymbol\epsilon\otimes\boldsymbol\epsilon&=\mathbf{1},&\boldsymbol\epsilon\otimes\mathbf{2}&=\mathbf{2},&\mathbf{2}\otimes\mathbf{2}&=\mathbf{1}\oplus\boldsymbol\epsilon\oplus\mathbf{2}.
+\end{align*}
+最后一行用 \cref{eq:cg-coefficient-formula} 验证：$g_{22}^1=\frac16(1\cdot4+3\cdot0+2\cdot1)=1$，$g_{22}^\epsilon=\frac16(1\cdot4+3\cdot0+2\cdot(-1))=1$，$g_{22}^2=\frac16(1\cdot4+3\cdot0+2\cdot(-1)(-1))=\frac16(4+0+2)=1$。
+
+表示环 $R(S_3)=\ZZ[\mathbf{1},\boldsymbol\epsilon,\mathbf{2}]/(\boldsymbol\epsilon^2-\mathbf{1},\,\boldsymbol\epsilon\cdot\mathbf{2}-\mathbf{2},\,\mathbf{2}^2-\mathbf{1}-\boldsymbol\epsilon-\mathbf{2})$。因 $\boldsymbol\epsilon^2=\mathbf{1}$ 和 $\boldsymbol\epsilon\cdot\mathbf{2}=\mathbf{2}$，环由 $\mathbf{2}$ 生成，满足 $\mathbf{2}^2=\mathbf{1}+\boldsymbol\epsilon+\mathbf{2}$。利用 $\boldsymbol\epsilon=\mathbf{2}^2-\mathbf{2}-\mathbf{1}$ 可消去 $\boldsymbol\epsilon$，最终 $R(S_3)\cong\ZZ[x]/(x^3-2x^2-x+2)$（$x=[\mathbf{2}]$），多项式 $x^3-2x^2-x+2=(x-2)(x^2-1)=(x-2)(x-1)(x+1)$ 在 $\ZZ$ 上可约，反映 $S_3$ 的表示环不是整环。
+\par\medskip
+
+\medskip
+\noindent\emph{$C_n$ 的表示环与 Fourier 分析。}
+$C_n=\langle a\mid a^n=e\rangle$ 的不可约表示全是一维的：$\rho_k(a)=\omega^k$（$\omega=\ee^{2\pi\ii/n}$，$k=0,\dots,n-1$）。张量积法则 $\rho_k\otimes\rho_l=\rho_{k+l\bmod n}$ 恰是 $\widehat{C_n}\cong C_n$ 的群乘法。表示环
 \[
-(\lambda+\rho,\lambda+\rho)-(\mu+\rho,\mu+\rho)
-=4(\rho,\alpha_1)-(\alpha_1,\alpha_1)
-=4\cdot\tfrac12-1=1.
+R(C_n)\cong\ZZ[C_n]\cong\ZZ[x]/(x^n-1),
 \]
+乘法由 $x^n=1$ 给出。这与信号处理中的离散 Fourier 变换直接相关：$C_n$ 上的函数 $\hat f(k)$（频域）与 $f(a^j)$（时域）通过 DFT 联系，张量积 $\rho_k\otimes\rho_l$ 对应频率叠加 $k+l\bmod n$——这正是卷积定理的群论表述。
+\par\medskip
 
-\emph{右边}：$\mu=\alpha_2$。逐根检查 $\mu+k\alpha$ 是否落在已知权上：对 $\alpha=\alpha_1$、$k=1$ 得 $\mu+\alpha_1=\rho=\lambda$，$m=1$，贡献 $(\mu+\alpha_1,\alpha_1)m(\lambda)=(\rho,\alpha_1)=\tfrac12$；对 $\alpha=\alpha_2$ 与 $\alpha_1+\alpha_2$，$\mu+k\alpha$ 落到 $\alpha_1+\alpha_2$ 之外，不在八重态权图上，$m=0$。故右边
+\begin{proposition}[Clebsch--Gordan 系数的对称性]
+\label{prop:cg-symmetry}
+Clebsch--Gordan 系数满足：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $g_{\alpha\beta}^\gamma=g_{\beta\alpha}^\gamma$（张量积交换律）。
+\item $g_{\alpha\beta}^\gamma=g_{\alpha^*\gamma}^\beta=g_{\gamma\beta^*}^\alpha$（对偶表示给出的对称性）。
+\item $\sum_\gamma g_{\alpha\beta}^\gamma d_\gamma=d_\alpha d_\beta$（维数守恒）。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) $D^{(\alpha)}\otimes D^{(\beta)}\cong D^{(\beta)}\otimes D^{(\alpha)}$（映射 $v\otimes w\mapsto w\otimes v$ 是同构）。
+
+(ii) 由 \cref{eq:cg-coefficient-formula} 和 $\overline{\chi^{(\gamma)}}=\chi^{(\gamma^*)}$（酉表示的对偶特征标是复共轭）：
 \[
-2\sum_{\alpha>0}\sum_{k\ge1}(\mu+k\alpha,\alpha)m(\mu+k\alpha)
-=2\cdot\tfrac12=1.
+g_{\alpha\beta}^\gamma=\langle\chi^{(\alpha)}\chi^{(\beta)},\chi^{(\gamma)}\rangle
+=\langle\chi^{(\alpha)},\chi^{(\gamma)}\overline{\chi^{(\beta)}}\rangle
+=\langle\chi^{(\alpha)},\chi^{(\gamma)}\chi^{(\beta^*)}\rangle
+=g_{\gamma\beta^*}^\alpha.
 \]
+第二个等式用了类函数内积的定义 $\langle f,h\rangle=\frac1{|G|}\sum\overline{f}\,h$ 和类函数环的交换性。
 
-两边相等，$1\cdot m(\mu)=1$，得 $m(\alpha_2)=1$，与八重态（伴随表示）每个根空间一重的事实一致。其余权可同法递推闭合。
+(iii) 对 \cref{eq:cg-series-finite} 两边取维数：$\dim(D^{(\alpha)}\otimes D^{(\beta)})=d_\alpha d_\beta=\sum_\gamma g_{\alpha\beta}^\gamma d_\gamma$。
+\end{proof}
+
+\begin{example}[$D_3$ 的 Clebsch--Gordan 表]
+$D_3\cong S_3$ 的 Clebsch--Gordan 表（行列为 $\alpha\otimes\beta$，条目为分解）：
+\begin{center}
+\begin{tabular}{c|ccc}
+\toprule
+$\otimes$ & $A_1$ & $A_2$ & $E$ \\
+\midrule
+$A_1$ & $A_1$ & $A_2$ & $E$ \\
+$A_2$ & $A_2$ & $A_1$ & $E$ \\
+$E$ & $E$ & $E$ & $A_1\oplus A_2\oplus E$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+物理应用：在 $D_3$ 对称的分子（如 $\mathrm{NH_3}$，其点群 $C_{3v}\cong D_3$）中，两个 $E$ 型态的直积产生 $A_1\oplus A_2\oplus E$ 型态——这意味着两个二重简并态的乘积态包含一个非简并态、一个赝标量态和一个新的二重简并态。在分子振动光谱中，这决定了哪些振动模式的乘积可以出现在和频光谱中。
 \end{example}
 
-\section{$SU(3)$ 表示与夸克模型}
+除了直接和与张量积，还有一种常用构造：对偶表示。它对应物理中的“左矢”与“右矢”的对偶关系。
 
-$SU(3)$ 的秩为 $2$，不可约表示可用 Dynkin 标号 $(p,q)$ 标记。取归一化 $(\alpha_i,\alpha_i)=1$、$\langle\alpha_1,\alpha_2\rangle=120^\circ$，则两个单根在平面中具体为
+\begin{definition}[对偶表示]
+设 $(\rho,V)$ 是群 $G$ 的表示，$V^*=\operatorname{Hom}(V,\mathbb C)$ 为其对偶空间。定义
 \[
-\alpha_1=(1,0),\qquad \alpha_2=\left(-\tfrac12,\tfrac{\sqrt3}{2}\right),
+\rho^*(g)=\rho(g^{-1})^{\mathsf T}
 \]
-第三个正根 $\alpha_1+\alpha_2=(\tfrac12,\tfrac{\sqrt3}{2})$。按定义 $2(\omega_i,\alpha_j)/(\alpha_j,\alpha_j)=\delta_{ij}$ 解得基本权
-\[
-\omega_1=\left(\tfrac12,\tfrac{\sqrt3}{6}\right),\qquad
-\omega_2=\left(0,\tfrac{\sqrt3}{3}\right),
-\]
-且 $\rho=\omega_1+\omega_2=\alpha_1+\alpha_2$。把 $\pm\alpha_1,\pm\alpha_2,\pm(\alpha_1+\alpha_2)$ 六个根画在平面上构成一个六边形：$\alpha_1$ 指向正东，$\alpha_2$ 指向西北偏上，相邻根夹角 $120^\circ$，对径根相差一个负号；基本权 $\omega_1,\omega_2$ 分别落在两个 Weyl 室内，与相应单根成 $30^\circ$。不可约表示的维数为
-\[
-\dim(p,q)=\frac12(p+1)(q+1)(p+q+2).
-\]
-基本表示 $\mathbf3=(1,0)$，共轭表示 $\bar{\mathbf3}=(0,1)$，伴随表示 $\mathbf8=(1,1)$。夸克味三重态可写作 $q=(u,d,s)^{\mathsf T}$；反夸克处在 $\bar{\mathbf3}$ 中。介子和重子的母分解分别为
-\[
-\mathbf3\otimes\bar{\mathbf3}=\mathbf8\oplus\mathbf1,
-\]
-以及
-\begin{equation}
-\mathbf3\otimes\mathbf3\otimes\mathbf3
-=\mathbf{10}\oplus\mathbf8\oplus\mathbf8\oplus\mathbf1.
-\label{eq:baryon-decomposition}
-\end{equation}
-第一步 $\mathbf3\otimes\mathbf3=\mathbf6_s\oplus\bar{\mathbf3}_a$ 区分前两个指标的对称性；再乘第三个 $\mathbf3$，分别得到 $\mathbf{10}\oplus\mathbf8$ 与 $\mathbf8\oplus\mathbf1$。Young 图同时记录这一置换对称性，因此分解不需要逐个猜测粒子态。
+在 $V^*$ 上作用，则得到 $G$ 的一个表示，称为 $\rho$ 的\textbf{对偶表示}。
+\label{def:dual-representation}
+\end{definition}
 
-\begin{theorem}[Gell--Mann--Okubo 质量公式]
-若 $SU(3)$ 味对称只被夸克质量的一阶八重态扰动破坏，八重态重子质量满足
+之所以要在右边写 $g^{-1}$ 而不是 $g$，是因为我们希望对偶作用满足
+\[
+(\rho^*(g)\varphi)(v)=\varphi(\rho(g^{-1})v),
+\]
+从而保证 $\rho^*(gh)=\rho^*(g)\rho^*(h)$。这与群作用在函数空间上的 pull-back 方式本质相同。
+
+\begin{proposition}[酉表示的对偶特征标]
+若 $\rho$ 为酉表示，特征标为 $\chi$，则对偶表示的特征标满足
+\[
+\chi_{\rho^*}(g)=\overline{\chi(g)}.
+\]
+\label{prop:character-dual}
+
+\end{proposition}
+
+\begin{proof}
+酉表示满足 $D(g^{-1})=D(g)^\dagger$，故
+\[
+D_{\rho^*}(g)=D(g^{-1})^{\mathsf T}=\overline{D(g)}.
+\]
+对角元取和便得
+\[
+\chi_{\rho^*}(g)=\overline{\chi(g)}.
+\]
+\end{proof}
+
+在应用中，群往往同时带有“全局对称群”和“某个子群”两层结构。比如晶体学中，一个点群表示限制到某个子群时会分裂；反之，从子群的表示也可以构造到整个群的表示。
+
+在应用中，群往往同时带有“全局对称群”和“某个子群”两层结构。比如晶体学中，一个点群表示限制到某个子群时会分裂；反之，从子群的表示也可以构造到整个群的表示。这里先介绍课程中最常用的两个基本操作：限制与商群提升。至于更系统的诱导表示，只给出最初印象，留作后续进一步学习的方向。
+
+\begin{definition}[限制表示]
+设 $H\leqslant G$，$\rho:G\to\operatorname{GL}(V)$ 为 $G$ 的表示。把定义域限制到 $H$，得
+\[
+\rho\downarrow_H^G:H\to\operatorname{GL}(V),
+\]
+称为 $\rho$ 限制到 $H$ 的\textbf{限制表示}。
+\label{def:restricted-representation}
+\end{definition}
+
+\begin{definition}[由商群提升的表示]
+设 $N\mathrel{\trianglelefteq} G$，商映射为 $\pi:G\to G/N$。若 $\widetilde\rho:G/N\to\operatorname{GL}(V)$ 是商群的表示，则复合
+\[
+\rho=\widetilde\rho\circ\pi:G\to\operatorname{GL}(V)
+\]
+给出 $G$ 的表示，称为从商群提升而来的表示。等价地，它恰好是那些满足 $N$ 中每个元素都作用为恒等的表示。
+\label{def:quotient-lift}
+\end{definition}
+
+\begin{proposition}[商群表示的判据]
+设 $N\mathrel{\trianglelefteq} G$，表示 $\rho:G\to\operatorname{GL}(V)$ 可由商群 $G/N$ 的表示提升而来，当且仅当
+\[
+\rho(n)=I_V,
+\qquad \forall n\in N.
+\]
+\label{prop:quotient-representation-criterion}
+
+\end{proposition}
+
+\begin{proof}
+若 $\rho=\widetilde\rho\circ\pi$，则对任意 $n\in N$，有 $\pi(n)=N$ 为商群单位元，故
+\[
+\rho(n)=\widetilde\rho(N)=I_V.
+\]
+反之，若 $\rho(n)=I_V$ 对任意 $n\in N$ 成立，则可在商群上定义
+\[
+\widetilde\rho(gN)=\rho(g).
+\]
+需证其良定义。若 $gN=hN$，则 $h^{-1}g\in N$，写成 $g=hn$，于是
+\[
+\rho(g)=\rho(h)\rho(n)=\rho(h).
+\]
+故良定义。乘法相容性由 $\rho$ 的同态性质直接给出。
+\end{proof}
+
+至于诱导表示，从子群 $H$ 的表示构造到整个群 $G$，在物理里非常有用，尤其适合处理"局域对称数据如何在整个群下闭合"的问题。最简单的情形是由子群的平凡表示诱导出陪集上的置换表示；因此置换表示其实已经是诱导思想的雏形。
+
+
+Frobenius 互反律和 Mackey 定理处理一般子群的诱导与限制。但当子群是\emph{正规子群}时，限制表示有更强的结构——这就是 Clifford 理论。它描述 $G$ 的不可约表示限制到正规子群 $N\triangleleft G$ 后如何分解，是理解群扩张表示论的基本工具。
+
+\begin{theorem}[Clifford 定理]
+设 $N\triangleleft G$，$\rho:G\to\operatorname{GL}(V)$ 是不可约表示。则 $\rho\downarrow_N$（$\rho$ 限制到 $N$）的分解为
 \begin{equation}
-\frac{M_N+M_\Xi}{2}=\frac{3M_\Lambda+M_\Sigma}{4},
-\label{eq:gmo-octet}
+\rho\downarrow_N\simeq m\bigoplus_{i=1}^{t}\sigma_i,
+\label{eq:clifford-decomposition}
 \end{equation}
-十重态则给出等间距关系
+其中 $\sigma_1,\dots,\sigma_t$ 是 $N$ 的彼此不等价不可约表示，它们在 $G$ 作用下构成一个\emph{轨道}（轨道），且每个 $\sigma_i$ 出现的重数 $m$ 相同。具体地，$G$ 在 $N$ 的不可约表示上的作用定义为
 \begin{equation}
-M_{\Sigma^*}-M_\Delta
-=M_{\Xi^*}-M_{\Sigma^*}
-=M_\Omega-M_{\Xi^*}.
-\label{eq:gmo-decuplet}
+{}^g\sigma(n)=\sigma(g^{-1}ng),\qquad g\in G,\ n\in N.
+\label{eq:conjugate-representation}
 \end{equation}
-式 \eqnrefs{eq:gmo-octet} 与式 \eqnrefs{eq:gmo-decuplet} 已被强子质量谱定量验证；这些是受控的一阶对称性破缺结论，二阶味破缺会产生可测的小偏离。
+$\{\sigma_1,\dots,\sigma_t\}$ 恰好是 $\sigma_1$ 在此作用下的 $G$-轨道，轨道大小 $t=[G:G_{\sigma_1}]$，其中 $G_{\sigma_1}=\{g\in G\mid{}^g\sigma_1\cong\sigma_1\}$ 是 $\sigma_1$ 的\emph{惯性群}（inertial 群）。
+\label{thm:clifford}
 \end{theorem}
 
-\begin{derivation}[$\mathbf3^{\otimes3}$ 的分解]
-Young 图的形状用行长列表 $[\lambda_1,\lambda_2,\ldots]$ 表示。添盒规则给出
+\begin{derivation}[Clifford 定理]
+取 \(\rho\downarrow_N\) 的一个不可约分量 \(\sigma\)，并令 \(V_\sigma\) 为全部与 \(\sigma\) 同构的 \(N\)-子模之和。由于 \(N\triangleleft G\)，对 \(g\in G\)、\(n\in N\) 有
 \[
-[1]\otimes[1]=[2]\oplus[1,1],
+n(gv)=g(g^{-1}ng)v,
 \]
-对应 $\mathbf6_s\oplus\bar{\mathbf3}_a$。再添一个盒子，
+所以 \(gV_\sigma\) 是 \({}^g\sigma\) 的等型分量。全部 \(G\)-平移之和是非零 \(G\)-不变子空间；\(\rho\) 不可约迫使它等于 \(V\)。因此限制中只出现 \(\sigma\) 的一个 \(G\)-轨道。
+
+若 \(g\) 把 \(\sigma_i\) 送到 \(\sigma_j\)，线性同构 \(v\mapsto gv\) 也把相应等型分量双射地送到彼此，故二者维数相同。轨道中的不可约表示维数相等，于是它们的重数也相等。这就得到\eqnrefs{eq:clifford-decomposition}。轨道--稳定子定理再给出
 \[
-[2]\otimes[1]=[3]\oplus[2,1],
-\qquad
-[1,1]\otimes[1]=[2,1]\oplus[1,1,1].
+t=[G:G_\sigma],\qquad
+G_\sigma=\{g\in G\mid{}^g\sigma\simeq\sigma\},
 \]
-四个图的 $SU(3)$ 维数依次为 $10,8,8,1$，总维数 $27=3^3$，得到\eqnrefs{eq:baryon-decomposition}。两个八重态同构，但来自不同的指标置换对称性。
+以及维数关系
+\[
+\dim\rho=m\,[G:G_\sigma]\,\dim\sigma.
+\]
 \end{derivation}
 
-\section{标准模型的表示结构}
-
-标准模型的局域内部对称群在 Lie 代数层面为（式 \eqnrefs{eq:standard-model-group}）
+Clifford 定理的下一步不是再次展开限制，而是研究 \(\sigma\) 能否扩展到惯性群 \(G_\sigma\)。选取交织算符 \(U_g:{}^g\sigma\to\sigma\) 后，Schur 引理只保证
+\[
+U_gU_h=\omega(g,h)U_{gh},
+\]
+其中 \(\omega\) 是一个 \(U(1)\) 值二上闭链。若其上同调类平凡，\(\sigma\) 可修正为 \(G_\sigma\) 的线性表示；一般情形则需把与 \(\omega^{-1}\) 配对的射影表示一并纳入。完成这一步后，\(G\) 的不可约表示由惯性群诱导：
 \begin{equation}
-G_{\mathrm{SM}}=SU(3)_c\times SU(2)_L\times U(1)_Y,
-\label{eq:standard-model-group}
+\rho\simeq\operatorname{Ind}_{G_\sigma}^G\widetilde\sigma .
+\label{eq:clifford-induction}
 \end{equation}
-严格的全局群还可能除以同时作用平凡的离散中心。用 $(R_3,R_2)_Y$ 表示色、弱同位旋表示和超荷，一代左手 Weyl 场可列为
-\[
-Q_L:(\mathbf3,\mathbf2)_{1/6},\quad
-u_R^c:(\bar{\mathbf3},\mathbf1)_{-2/3},\quad
-d_R^c:(\bar{\mathbf3},\mathbf1)_{1/3},
-\]
-\[
-L_L:(\mathbf1,\mathbf2)_{-1/2},\qquad
-e_R^c:(\mathbf1,\mathbf1)_1 .
-\]
-这里统一把右手粒子写成左手反粒子，便于反常求和。电荷生成元为（式 \eqnrefs{eq:gell-mann-nishijima}）
-\begin{equation}
-Q=T_3+Y.
-\label{eq:gell-mann-nishijima}
-\end{equation}
-例如 $Q_L$ 的两个分量分别有 $Q=2/3,-1/3$。
+\begin{proposition}[Clifford 小群构造]
+在上述设定下，\(\widetilde\sigma\downarrow_N\) 是若干个 \(\sigma\) 的直和；满足相容上闭链条件的惯性群不可约表示诱导到 \(G\) 后不可约。不同 \(G\)-轨道，或同一轨道上不等价的惯性群数据，给出不等价的 \(G\)-表示。
+\label{prop:clifford-little-group}
+\end{proposition}
 
-Higgs 场 $H:(\mathbf1,\mathbf2)_{1/2}$ 的势取
-\[
-V(H)=-\mu^2H^\dagger H+\lambda(H^\dagger H)^2,
-\qquad \lambda>0.
-\]
-当 $\mu^2>0$ 时，真空可选为 $\langle H\rangle=(0,v/\sqrt2)^{\mathsf T}$，从而
-\[
-SU(2)_L\times U(1)_Y\longrightarrow U(1)_{\mathrm{em}},
-\qquad Q\langle H\rangle=0.
-\]
-一般地，若连续群 $G$ 破缺为稳定子群 $H$，在无规范场且无额外约束时
-\begin{equation}
-N_{\mathrm{NG}}=\dim G-\dim H.
-\label{eq:goldstone-counting}
-\end{equation}
-按式 \eqnrefs{eq:goldstone-counting}，破缺前 $G=SU(2)_L\times U(1)_Y$ 的生成元数为 $\dim SU(2)_L+\dim U(1)_Y=3+1=4$，真空只保留下 $H=U(1)_{\mathrm{em}}$ 的一个生成元，$\dim H=1$，故 $N_{\mathrm{NG}}=4-1=3$。这三个方向分别成为 $W^\pm$ 与 $Z$ 的纵向极化。规范理论中这些方向被相应规范玻色子吸收；这不是 Goldstone 模“消失”，而是自由度从标量场重新组织到有质量矢量场。
+对半直积 \(G=N\rtimes H\)，这就是小群方法：先选 \(\widehat N\) 中的 \(H\)-轨道代表，再求稳定子 \(H_\sigma\)，最后把稳定子表示与 \(\sigma\) 合成并诱导到 \(G\)。Poincar\'e 群的动量轨道和空间群的波矢星都是这一结构的连续或晶格版本；具体分类分别留到\chapref{chap:lorentz-poincare}与\chapref{chap:point-space-groups}，避免在此重复推导。
 
-手征规范理论只有在所有局域规范反常抵消时才一致。三角形图的群因子可写成
-\[
-\mathcal M^{abc}_{\triangle}\propto
-\operatorname{tr}_R\!\left(T^a\{T^b,T^c\}\right),
-\]
-它使 Ward 恒等式出现量子修正，示意为
-\[
-(D_\mu J^\mu)^a
-=\frac{g^2}{16\pi^2}\,\mathcal A^{abc}
-F^b_{\mu\nu}\widetilde F^{c\mu\nu},
-\]
-其中总反常系数是所有左手 Weyl 场之和
-\[
-\mathcal A^{abc}=\sum_{f\,\mathrm{left}}
-\operatorname{tr}_{R_f}\!\left(T^a\{T^b,T^c\}\right).
-\]
-以 $[SU(3)]^2U(1)$ 三角形为例，其系数正比于左手场上 $\operatorname{tr}_R(T^a\{T^b,T^c\})$ 对色空间求迹后乘以超荷 $Y$。对 $SU(3)$ 基本表示取 Gell--Mann 归一化 $\operatorname{tr}(T^aT^b)=\tfrac12\delta^{ab}$，反基本表示同号。逐一代入一代左手场：
-\[
-\underbrace{2\cdot 3\cdot\tfrac16\cdot\tfrac12}_{Q_L:\,2\text{ 弱分量}\times 3\text{ 色}}
-+\underbrace{3\cdot(-\tfrac23)\cdot\tfrac12}_{u_R^c}
-+\underbrace{3\cdot\tfrac13\cdot\tfrac12}_{d_R^c}
-=\tfrac12-1+\tfrac12=0.
-\]
-其中 $Q_L$ 的两个弱分量 $(u_L,d_L)$ 都带 $Y=\tfrac16$、各有三色；$u_R^c,d_R^c$ 是反三重态。$[SU(3)]^3$、$[SU(2)]^2U(1)$、$[U(1)]^3$ 和引力--$U(1)$ 反常由同样的逐代求和逐项抵消。抵消是整套表示的性质，不能只检查某一个多重态。
+Clifford 理论在物理中的应用出现在晶场理论的"能级从高对称群限制到低对称子群"过程中。当低对称群是高对称群的正规子群时（如 $O\triangleleft O_h$），Clifford 理论给出限制表示的精确结构，而不需要逐个计算特征标内积。
 
-夸克 Yukawa 矩阵对角化后，带电弱流中出现 CKM 矩阵
+
+特征标理论不仅是计算工具，还能证明深刻的群论定理。Burnside 的 $p^aq^b$ 定理是经典范例：它用特征标理论证明阶为 $p^aq^b$ 的群可解，这个结论纯群论方法至今没有找到简单证明。
+
+\begin{lemma}[Burnside 共轭类引理]
+\label{lem:burnside-class}
+设 $G$ 是有限群，$C$ 是 $G$ 的一个共轭类。若 $|C|$ 是素数幂（$|C|=p^k$，$k\ge1$），则 $G$ 不是非交换单群。
+\end{lemma}
+
+\begin{proof}
+先选取不可约表示。设 $g\in C$（$g\ne e$，因 $|C|>1$）。由列正交关系，存在某个不可约表示 $\rho^{(\alpha)}\ne\rho^{(\mathrm{triv})}$ 使 $\chi^{(\alpha)}(g)\ne0$（否则 $\sum_\alpha\overline{\chi^{(\alpha)}(e)}\chi^{(\alpha)}(g)=0$ 但平凡表示贡献 $1$，矛盾）。
+
+随后整除性论证。由大正交关系，$\frac{|C|}{|G|}\overline{\chi^{(\alpha)}(g)}\chi^{(\alpha)}(g)=\frac{|C|}{|G|}|\chi^{(\alpha)}(g)|^2$ 是代数整数（正交关系给出 $\frac{1}{|G|}\sum_{h\in C}\overline{\chi^{(\alpha)}(h)}\chi^{(\beta)}(h)=\delta_{\alpha\beta}\frac{|C|}{|G|}|\chi^{(\alpha)}(g)|^2$ 是有理数且为代数整数，故是整数）。因 $|C|=p^k$ 与 $|G|/|C|$ 互质（$|C|\bigm||G|$，$|G|/|C|$ 不含 $p$ 因子），若 $|\chi^{(\alpha)}(g)|^2$ 是有理数则 $|G|/|C|\bigm|\chi^{(\alpha)}(g)|^2$。
+
+更精确地：$\frac{|C|\chi^{(\alpha)}(g)}{|G|}$ 是代数整数（由正交关系），$\chi^{(\alpha)}(g)$ 是代数整数（特征标值是单位根之和），故 $\frac{|C|}{|G|}|\chi^{(\alpha)}(g)|^2=\frac{|C|\chi^{(\alpha)}(g)}{|G|}\cdot\overline{\chi^{(\alpha)}(g)}$ 是代数整数。它也是有理数（因 $\frac{1}{|G|}\sum_{h\in C}|\chi^{(\alpha)}(h)|^2$ 是实数），故是整数。
+
+接着推出矛盾。因 $|C|=p^k$ 与 $|G|/|C|$ 互质，$\frac{|G|}{|C|}\bigm|\frac{|C|}{|G|}|\chi^{(\alpha)}(g)|^2$ 蕴含 $\frac{|G|}{|C|}\bigm||\chi^{(\alpha)}(g)|^2$。但 $|\chi^{(\alpha)}(g)|\le d_\alpha$（三角不等式，因 $\chi^{(\alpha)}(g)=\sum_i\lambda_i$，$|\lambda_i|=1$），且 $d_\alpha<\sqrt{|G|}$（因 $\sum_\alpha d_\alpha^2=|G|$ 且 $\alpha$ 非平凡），故 $|\chi^{(\alpha)}(g)|^2<|G|$。若 $|C|<|G|$（即 $C$ 不是全群），则 $\frac{|G|}{|C|}>1$，但 $|\chi^{(\alpha)}(g)|^2<|G|$ 且 $\frac{|G|}{|C|}\bigm||\chi^{(\alpha)}(g)|^2$，只有可能 $\chi^{(\alpha)}(g)=0$。
+
+但若 $\chi^{(\alpha)}(g)=0$ 对所有非平凡 $\alpha$ 成立，则由列正交 $\sum_\alpha d_\alpha\chi^{(\alpha)}(g)=0$（正则表示特征标在 $g\ne e$ 处为零），平凡表示贡献 $1$，故 $1+\sum_{\alpha\ne\mathrm{triv}}d_\alpha\cdot0=1\ne0$，矛盾。
+
+因此存在 $\alpha$ 使 $\chi^{(\alpha)}(g)\ne0$ 且 $\frac{|C|}{|G|}|\chi^{(\alpha)}(g)|^2$ 是正整数。由 $|\chi^{(\alpha)}(g)|^2\le d_\alpha^2<|G|$ 和 $\frac{|G|}{|C|}\bigm||\chi^{(\alpha)}(g)|^2$，必须 $|\chi^{(\alpha)}(g)|^2=d_\alpha^2$，即 $|\chi^{(\alpha)}(g)|=d_\alpha$。这意味着 $\rho^{(\alpha)}(g)=\omega I_{d_\alpha}$（所有本征值相同，都等于某个单位根 $\omega$）。
+
+再$g$ 在核中。若 $\omega=1$，则 $g\in\ker\rho^{(\alpha)}$，$\ker\rho^{(\alpha)}$ 是非平凡正规子群（因 $\alpha$ 非平凡，核不是全群），$G$ 不单。若 $\omega\ne1$，则 $\rho^{(\alpha)}(g^p)=\omega^p I$。取 $p$ 为 $|C|$ 的素因子，$g^p$ 的共轭类大小 $|C'|$ 整除 $|G|/\langle g^p\rangle$。若 $g^p\ne e$，重复论证得 $\rho^{(\alpha)}(g^p)=\omega' I$，最终某次方 $g^{p^m}=e$，此时 $\omega^{p^m}=1$。但 $\rho^{(\alpha)}(g)=\omega I$ 蕴含 $g$ 在 $\rho^{(\alpha)}$ 中的像只差一个标量，$\rho^{(\alpha)}(g)\rho^{(\alpha)}(h)=\omega\rho^{(\alpha)}(h)=\rho^{(\alpha)}(h)\omega I=\rho^{(\alpha)}(h)\rho^{(\alpha)}(g)$，故 $g$ 映到 $\rho^{(\alpha)}(G)$ 的中心。若 $\rho^{(\alpha)}$ 忠实（$G$ 单群的非平凡表示必忠实，因核是正规子群），则 $g\in Z(G)$，但 $Z(G)$ 是正规子群，$G$ 单蕴含 $Z(G)=\{e\}$，矛盾 $g\ne e$。
+\end{proof}
+
+\begin{theorem}[Burnside $p^aq^b$ 定理]
+\label{thm:burnside-pa-qb}
+设 $|G|=p^aq^b$（$p,q$ 为素数，$a,b\ge0$）。则 $G$ 可解。
+\end{theorem}
+
+\begin{proof}
+对 $|G|$ 归纳。$|G|=1$ 平凡。设 $|G|>1$。
+
+先$G$ 非单。若 $G$ 是 Abel 群，则可解（Abel 链 $G\rhd\{e\}$）。设 $G$ 非 Abel。由 Sylow 定理，$G$ 有 Sylow $p$-子群 $P$（$|P|=p^a$）。$P$ 的中心 $Z(P)$ 非平凡（$p$-群的中心非平凡）。取 $g\in Z(P)$，$g\ne e$。$g$ 的共轭类 $C$ 满足 $|C|=[G:C_G(g)]$。因 $g\in Z(P)$，$P\le C_G(g)$，故 $|C|=[G:C_G(g)]$ 整除 $[G:P]=q^b$。若 $|C|>1$，则 $|C|$ 是 $q$ 的幂，由 \cref{lem:burnside-class}，$G$ 不单。若 $|C|=1$，则 $g\in Z(G)$，$Z(G)$ 非平凡正规子群，$G$ 不单。
+
+随后归纳。$G$ 有非平凡正规子群 $N$。$N$ 和 $G/N$ 的阶都是 $p^{a'}q^{b'}$ 形式（$|N|$ 和 $|G/N|$ 都整除 $|G|$），且都严格小于 $|G|$。由归纳假设，$N$ 和 $G/N$ 都可解。由可解群的扩张性质（\cref{prop:nilpotent-properties} 的可解版本），$G$ 可解。
+\end{proof}
+
+\medskip
+\noindent\emph{Burnside 定理的物理关联。}
+Burnside 定理保证阶为 $p^aq^b$ 的群可解，因此其表示可以通过逐步构造 Abel 商来理解。在晶体物理中，所有 32 个晶体点群的阶都是 $2^a3^b$ 形式（如 $|O_h|=48=2^4\cdot3$，$|D_{6h}|=24=2^3\cdot3$），故都可解。这意味着晶体的对称性层级总可以通过有限步 Abel 对称性添加来理解——这正是晶体分类和晶场理论能够系统化的群论基础。
+
+Burnside 定理的边界：$|A_5|=60=2^2\cdot3\cdot5$ 有三个素因子，不在 $p^aq^b$ 范围内，$A_5$ 确实不可解（单群且非 Abel）。$|A_4|=12=2^2\cdot3$ 在范围内，$A_4$ 可解（$A_4\rhd V_4\rhd\{e\}$，$V_4$ 是 Klein 四群）。
+\par\medskip
+
+\section{习题与解答}
+\label{sec:rep-exercises}
+
+本章习题的目的不是额外引入新结论，而是帮助读者把几个核心工具真正算熟：等价表示的基变换、特征标分解、正则表示、以及张量积的运算。解答尽量简洁，但会明确指出每题依赖的定义或定理。
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2.5em]
+
+\item 证明：若 $\rho:G\to\operatorname{GL}(V)$ 是表示，则 $\rho(e)=I_V$ 且 $\rho(g^{-1})=\rho(g)^{-1}$。
+
+\emph{解答.} 由同态性质，$\rho(e)=\rho(e^2)=\rho(e)^2$。由于 $\rho(e)\in \operatorname{GL}(V)$ 可逆，左乘 $\rho(e)^{-1}$ 得 $\rho(e)=I_V$。再由
 \[
-V_{\mathrm{CKM}}=U_{uL}^\dagger U_{dL},
+\rho(g)\rho(g^{-1})=\rho(gg^{-1})=\rho(e)=I_V
 \]
-它是 $3\times3$ 幺正矩阵。三代情形在重相位后保留三个混合角和一个 CP 相位；标准参数化写成
+与反向乘积同理，可知 $\rho(g^{-1})=\rho(g)^{-1}$。
+
+\item 设 $\rho$ 为群 $G$ 的表示，$W_1,W_2\subseteq V$ 都是不变子空间。证明 $W_1\cap W_2$ 与 $W_1+W_2$ 也是不变子空间。
+
+\emph{解答.} 若 $v\in W_1\cap W_2$，则对任意 $g\in G$，有 $\rho(g)v\in W_1$ 且 $\rho(g)v\in W_2$，故 $\rho(g)v\in W_1\cap W_2$。若 $v=v_1+v_2\in W_1+W_2$，则
 \[
-V=
-\begin{pmatrix}
-c_{12}c_{13}&s_{12}c_{13}&s_{13}\ee^{-\ii\delta}\\
--s_{12}c_{23}-c_{12}s_{23}s_{13}\ee^{\ii\delta}&c_{12}c_{23}-s_{12}s_{23}s_{13}\ee^{\ii\delta}&s_{23}c_{13}\\
-s_{12}s_{23}-c_{12}c_{23}s_{13}\ee^{\ii\delta}&-c_{12}s_{23}-s_{12}c_{23}s_{13}\ee^{\ii\delta}&c_{23}c_{13}
-\end{pmatrix}.
+\rho(g)v=\rho(g)v_1+\rho(g)v_2\in W_1+W_2.
 \]
-其中 $s_{ij}=\sin\theta_{ij}$、$c_{ij}=\cos\theta_{ij}$。重相位不变的 CP 测度，即 Jarlskog 不变量（式 \eqnrefs{eq:jarlskog}），定义为（取文献常用约定 $i\!=\!1,k\!=\!3,j\!=\!2,l\!=\!3$ 即 $J=\operatorname{Im}(V_{us}V_{cb}V_{ub}^*V_{cs}^*)$）
-\begin{equation}
-J=\operatorname{Im}(V_{ij}V_{kl}V_{il}^*V_{kj}^*)
-=c_{12}c_{23}c_{13}^2s_{12}s_{23}s_{13}\sin\delta
-\label{eq:jarlskog}
-\end{equation}
-（任取互异 $i\neq k$、$j\neq l$，所得绝对值相同、只差符号约定）。更不依赖基的判据是
+故二者都不变。
+
+\item 设两个矩阵表示 $D$ 与 $D'$ 满足对某可逆矩阵 $S$ 有 $D'(g)=S^{-1}D(g)S$。证明它们特征标相同。
+
+\emph{解答.} 直接利用迹在相似变换下不变：
 \[
-\det[H_u,H_d]
-=2\ii J\prod_{i<j}(m_{u_i}^2-m_{u_j}^2)
-\prod_{k<l}(m_{d_k}^2-m_{d_l}^2),
+\chi_{D'}(g)=\Tr(S^{-1}D(g)S)=\Tr(D(g))=\chi_D(g).
 \]
-其中 $H_u=M_uM_u^\dagger$、$H_d=M_dM_d^\dagger$。于是三代夸克扇区发生 CP 破坏的必要充分条件是
+
+\item 证明：一维表示一定不可约。
+
+\emph{解答.} 一维空间只有两个线性子空间：$\{0\}$ 与整个空间本身，因此不存在非平凡不变子空间，故表示不可约。
+
+\item 设 $G$ 为有限群，$\rho$ 为其酉表示。证明：若 $W\subseteq V$ 为不变子空间，则正交投影 $P_W$ 与所有 $\rho(g)$ 交换，当且仅当 $W^{\perp}$ 也不变。
+
+\emph{解答.} 若 $W$ 与 $W^{\perp}$ 都不变，则对任意 $v=w+w_\perp$，有
 \[
-J\neq0,
+P_W\rho(g)v=P_W\bigl(\rho(g)w+\rho(g)w_\perp\bigr)=\rho(g)w=\rho(g)P_Wv,
+\]
+故交换。反之，若 $P_W\rho(g)=\rho(g)P_W$，取 $v\in W^{\perp}$，则 $P_Wv=0$，从而
+\[
+P_W\rho(g)v=\rho(g)P_Wv=0,
+\]
+故 $\rho(g)v\in W^{\perp}$，于是 $W^{\perp}$ 不变。
+
+\item 设 $G=C_3=\langle a\mid a^3=e\rangle$。求其全部一维复表示。
+
+\emph{解答.} 一维表示由 $\rho(a)$ 决定，且需满足
+\[
+\rho(a)^3=1.
+\]
+因此 $\rho(a)$ 只能取三次单位根 $1,\omega,\omega^2$，其中
+\[
+\omega=\ee^{2\pi \ii/3}.
+\]
+故共有三个一维复表示，分别由 $a\mapsto 1,\omega,\omega^2$ 给出。
+
+\item 求 $C_3$ 的正则表示的不可约分解。
+
+\emph{解答.} 由上一题知 $C_3$ 有三个一维不可约表示。因为它们维数平方和
+\[
+1^2+1^2+1^2=3=|C_3|,
+\]
+故已经给出了全部不可约表示。根据正则表示分解定理，每个不可约表示按其维数出现一次，因此
+\[
+\rho_{\mathrm{reg}}\simeq \rho_0\oplus \rho_1\oplus \rho_2.
+\]
+
+\item 设 $\chi$ 是有限群 $G$ 的某表示特征标。证明 $\chi(e)=\dim V$。
+
+\emph{解答.} 因为 $D(e)=I_V$，所以
+\[
+\chi(e)=\Tr(I_V)=\dim V.
+\]
+这也是特征标表首列给出表示维数的原因。
+
+\item 利用 $S_3$ 的特征标表，分解三维置换表示。
+
+\emph{解答.} 三维置换表示在三类上的特征标为：对 $e$，迹为 $3$；对换位，恰有一个基向量不动，故迹为 $1$；对三循环，无基向量不动，故迹为 $0$。因此
+\[
+\chi_{\mathrm{perm}}=(3,1,0).
+\]
+与 $S_3$ 特征标表比较可知
+\[
+(3,1,0)=(1,1,1)+(2,0,-1),
+\]
+故
+\[
+\rho_{\mathrm{perm}}\simeq \rho_{\mathrm{triv}}\oplus \rho_{\mathrm{std}}.
+\]
+
+\item 利用 $S_3$ 的特征标表，分解 $\rho_{\mathrm{std}}\otimes \rho_{\mathrm{std}}$。
+
+\emph{解答.} 由 \Cref{prop:character-sum-product}，张量积特征标为
+\[
+(2,0,-1)^2=(4,0,1).
+\]
+与各不可约特征标取内积，或直接试配可得
+\[
+(4,0,1)=(1,1,1)+(1,-1,1)+(2,0,-1).
+\]
+故
+\[
+\rho_{\mathrm{std}}\otimes\rho_{\mathrm{std}}
+\simeq \rho_{\mathrm{triv}}\oplus \rho_{\mathrm{sgn}}\oplus \rho_{\mathrm{std}}.
+\]
+
+\item 设 $N\mathrel{\trianglelefteq} G$，$\rho:G\to\operatorname{GL}(V)$ 满足 $\rho(n)=I_V$ 对所有 $n\in N$ 成立。证明：若 $gN=hN$，则 $\rho(g)=\rho(h)$。
+
+\emph{解答.} 由 $gN=hN$ 得 $h^{-1}g\in N$，故存在 $n\in N$ 使 $g=hn$。于是
+\[
+\rho(g)=\rho(hn)=\rho(h)\rho(n)=\rho(h).
+\]
+这正是定义商群表示时良定义性的关键一步。
+
+\item 设 $G$ 为有限群，$\chi_{\mathrm{reg}}$ 为其正则表示特征标。证明
+\[
+\chi_{\mathrm{reg}}(e)=|G|,
 \qquad
-\prod_{i<j}(m_{u_i}^2-m_{u_j}^2)
-\prod_{k<l}(m_{d_k}^2-m_{d_l}^2)\neq0.
-\]
-Wolfenstein 变量常用
-\[
-\bar\rho+\ii\bar\eta
-=-\frac{V_{ud}V_{ub}^*}{V_{cd}V_{cb}^*},
-\]
-相应幺正三角形角定义为
-\[
-\alpha=\arg\!\left(-\frac{V_{td}V_{tb}^*}{V_{ud}V_{ub}^*}\right),\quad
-\beta=\arg\!\left(-\frac{V_{cd}V_{cb}^*}{V_{td}V_{tb}^*}\right),\quad
-\gamma=\arg\!\left(-\frac{V_{ud}V_{ub}^*}{V_{cd}V_{cb}^*}\right).
-\]
-例如中性 $B$ 衰变的时间依赖 CP 不对称可写作
-\[
-A_{CP}(t)=S_f\sin(\Delta m\,t)-C_f\cos(\Delta m\,t),
-\]
-其中 $S_f,C_f$ 由混合与衰变振幅共同决定，不能仅凭 CKM 相位单独指定。
-
-全部 $3\times3$ 幺正矩阵构成 $U(3)$；独立重相位在其上取商后，物理 CKM 参数空间可表示为
-\[
-\mathcal M_{\mathrm{CKM}}
-=U(1)^2\backslash SU(3)/U(1)^2,
-\]
-其四个实维数对应三个角和一个相位。
-
-\section{Weyl 群与特征标公式}
-
-对每个根 $\alpha$，根空间中的反射为
-\[
-s_\alpha(\lambda)=\lambda-
-\frac{2(\lambda,\alpha)}{(\alpha,\alpha)}\alpha.
-\]
-由简单根反射生成的有限群称为 Weyl 群。它保持根系和内积，并把权空间分成 Weyl 室；每条 Weyl 轨道恰有一个支配权落在闭基本室中。
-
-若 $\lambda$ 是支配整权，Weyl 特征标公式（式 \eqnrefs{eq:weyl-character}）为
-\begin{equation}
-\chi_\lambda(\ee^H)=
-\frac{\sum_{w\in W}\det(w)\,
-\ee^{(w(\lambda+\rho),H)}}
-{\sum_{w\in W}\det(w)\,\ee^{(w\rho,H)}}.
-\label{eq:weyl-character}
-\end{equation}
-令 $H\to0$ 时分子分母同时为零，须用行列式展开取最低非零阶。把分子按 $W$ 中元素排成行列式：$\sum_{w\in W}\det(w)\,\ee^{(w(\lambda+\rho),H)}$ 是关于变量 $x_\alpha=\ee^{(\alpha,H)}$ 的斜反对称多项式，在 $H\to0$（即 $x_\alpha\to1$）时其最低非零阶就是 Vandermonde 型
-\[
-\prod_{\alpha>0}\bigl(\ee^{(\lambda+\rho,H)_\alpha/2}-\ee^{-(\lambda+\rho,H)_\alpha/2}\bigr)
-\]
-中首次展开的线性项，比例系数恰为 $\prod_{\alpha>0}(\lambda+\rho,\alpha)$；分母同法给出 $\prod_{\alpha>0}(\rho,\alpha)$。二者相除、公共的二阶小因子抵消，得到 Weyl 维数公式（式 \eqnrefs{eq:weyl-dimension}）
-\begin{equation}
-\dim V_\lambda=
-\prod_{\alpha>0}
-\frac{(\lambda+\rho,\alpha)}{(\rho,\alpha)}.
-\label{eq:weyl-dimension}
-\end{equation}
-以 $(p,q)=(1,1)$ 检验：$\lambda+\rho=2\rho$，三个正根的比值分别为 $2,2,2$，乘积 $8$，与八重态维数一致。
-它给出维数，特征标的乘积则给出张量积分解。例如
-\[
-\mathbf8\otimes\mathbf8
-=\mathbf1\oplus\mathbf8_s\oplus\mathbf8_a
-\oplus\mathbf{10}\oplus\overline{\mathbf{10}}\oplus\mathbf{27},
-\]
-而\eqnrefs{eq:baryon-decomposition}的右边 $\mathbf{10}\oplus\mathbf8\oplus\mathbf8\oplus\mathbf1$ 正是重子十重态、两个八重态与单态。
-
-\section{Yang--Mills 场与拓扑荷}
-
-取厄米生成元 $T^a$，规范势 $A_\mu=A_\mu^aT^a$，协变导数和曲率为
-\[
-D_\mu=\partial_\mu-\ii gA_\mu,
-\qquad
-F_{\mu\nu}=\frac{\ii}{g}[D_\mu,D_\nu]
-=\partial_\mu A_\nu-\partial_\nu A_\mu-\ii g[A_\mu,A_\nu].
-\]
-在局域变换 $U(x)$ 下
-\[
-A_\mu\longmapsto
-UA_\mu U^{-1}+\frac{\ii}{g}(\partial_\mu U)U^{-1},
-\qquad
-F_{\mu\nu}\longmapsto UF_{\mu\nu}U^{-1}.
-\]
-非齐次项使 $D_\mu\psi$ 与 $\psi$ 同样变换，而 $\operatorname{tr}F_{\mu\nu}F^{\mu\nu}$ 因迹的循环性保持不变。
-
-欧氏四维中有限作用量场在无穷远趋于纯规范，边界 $S^3_\infty\to G$ 的同伦类给出整数拓扑荷。$SU(2)$ 的单位 瞬子 可写成
-\[
-A_\mu^a(x)=\frac{2}{g}\frac{\eta_{a\mu\nu}(x-x_0)^\nu}
-{(x-x_0)^2+\rho^2},
-\]
-其中 $x_0$ 与 $\rho$ 分别是中心和尺度。拓扑真空可形式地写为
-\[
-|\theta\rangle=\sum_{n\in\mathbb Z}\ee^{\ii n\theta}|n\rangle,
-\]
-并在作用量中产生
-\[
-S_\theta=\frac{\theta g^2}{32\pi^2}
-\int\dd^4x\,F^a_{\mu\nu}\widetilde F^{a\mu\nu}.
+\chi_{\mathrm{reg}}(g)=0\quad (g\neq e).
 \]
 
-用微分形式 $A=A_\mu\dd x^\mu$、$F=\dd A-\ii gA\wedge A$，第二 Chern 形式和 Chern--Simons 三形式满足
-\begin{align*}
-\operatorname{ch}_2(F)&=\frac{1}{8\pi^2}\operatorname{tr}(F\wedge F),\\
-\omega_3(A)&=\frac{1}{8\pi^2}\operatorname{tr}\!\left(A\wedge\dd A-
-\frac{2\ii g}{3}A\wedge A\wedge A\right),
-\qquad \dd\omega_3=\operatorname{ch}_2(F).
-\end{align*}
-分量形式可写成 $\partial_\mu K^\mu=(g^2/32\pi^2)F^a_{\mu\nu}\widetilde F^{a\mu\nu}$，其中
-\[
-K^\mu=\frac{g^2}{16\pi^2}\epsilon^{\mu\nu\rho\sigma}
-\left(A_\nu^a\partial_\rho A_\sigma^a+
-\frac{g}{3}f^{abc}A_\nu^aA_\rho^bA_\sigma^c\right).
-\]
-拓扑荷
-\[
-Q=\frac{g^2}{32\pi^2}\int\dd^4x\,
-F^a_{\mu\nu}\widetilde F^{a\mu\nu}\in\mathbb Z
-\]
-等于无穷远纯规范映射的绕数。若 $U:S^3\to G$，绕数密度可写为
-\[
-\nu[U]=\frac{1}{24\pi^2}\int_{S^3}
-\operatorname{tr}\bigl[(U^{-1}\dd U)^3\bigr]\in\mathbb Z.
-\]
-大规范变换会使 Chern--Simons 数平移一个整数，
-\[
-N_{\mathrm{CS}}[A^U]=N_{\mathrm{CS}}[A]+\nu[U],
-\]
-而 $\ee^{\ii S_\theta}$ 只依赖 $\theta$ 模 $2\pi$。
+\emph{解答.} 当 $g=e$ 时，正则表示矩阵为单位矩阵，故迹为 $|G|$。当 $g\neq e$ 时，左乘 $x\mapsto gx$ 不可能有不动点，否则 $gx=x$ 推得 $g=e$。因此对应的置换矩阵对角线全零，故迹为 $0$。
 
-\section{统一群与 seesaw 机制}
-
-$SU(5)$ 把一代费米子装入
-\[
-\bar{\mathbf5}\oplus\mathbf{10},
-\]
-并在 $SU(3)_c\times SU(2)_L\times U(1)_Y$ 下分支为标准模型多重态。伴随表示 $\mathbf{24}$ 的真空期望值可把 $SU(5)$ 破缺到标准模型群；余下的重规范玻色子 $X,Y$ 同时携带色与弱量子数，产生夸克--轻子跃迁
-\[
-\mathcal L_{X,Y}\supset g_5X_\mu\,\bar q\gamma^\mu\ell+\mathrm{h.c.}
-\]
-在能量远低于 $M_X$ 时，消去重玻色子得到六维算符
-\[
-\mathcal L_{\mathrm{eff}}\sim\frac{g_5^2}{M_X^2}(qq)(q\ell),
-\]
-所以质子寿命按
-\[
-\tau_p\sim\frac{M_X^4}{\alpha_5^2m_p^5}
-\]
-增长；强子矩阵元和重整化群演化决定精确系数，不能从量纲估计中省略。
-
-规范耦合在一圈近似下满足
-\[
-\mu\frac{\dd g_i}{\dd\mu}=\frac{b_i}{16\pi^2}g_i^3,
-\qquad
-\alpha_i^{-1}(\mu)=\alpha_i^{-1}(\mu_0)-\frac{b_i}{2\pi}\ln\frac{\mu}{\mu_0}.
-\]
-“耦合统一”必须在同一归一化和粒子谱下比较；跨越重粒子阈值时，$b_i$ 与匹配条件都会改变。
-
-$SO(10)$ 的一个手征旋量 $\mathbf{16}$ 已包含一代标准模型费米子和右手中微子，其 $SU(5)$ 分支为
-\[
-\mathbf{16}\longrightarrow\mathbf{10}\oplus\bar{\mathbf5}\oplus\mathbf1.
-\]
-若中微子 Dirac 质量为 $m_D$、右手 Majorana 质量为 $M_R$，质量矩阵为
-\[
-\mathcal M_\nu=
-\begin{pmatrix}0&m_D\\m_D^{\mathsf T}&M_R\end{pmatrix}.
-\]
-当 $\|m_D\|\ll\|M_R\|$ 且 $M_R$ 可逆时，对重块作 Schur 补得到
-\begin{equation}
-m_\nu=-m_DM_R^{-1}m_D^{\mathsf T}
-+O\!\left(\frac{m_D^4}{M_R^3}\right).
-\label{eq:seesaw-mass}
-\end{equation}
-控制小量是 $\|m_DM_R^{-1}\|$；只有在它远小于一时，把重右手态消去才是受控近似。
-
-\begin{derivation}[seesaw 的块消元]
-对轻、重分量 $(\nu_L,N_R^c)$，本征方程的重分量满足
-\[
-(M_R-\lambda)N_R^c=-m_D^{\mathsf T}\nu_L.
-\]
-在 $|\lambda|\ll\|M_R\|$ 的低能支上，
-\[
-N_R^c=-M_R^{-1}m_D^{\mathsf T}\nu_L
-+O(\lambda M_R^{-2}m_D^{\mathsf T}\nu_L).
-\]
-代回轻分量方程即得\eqnrefs{eq:seesaw-mass}；高阶项由 $m_DM_R^{-1}$ 的幂控制。
-\end{derivation}
-
-\section{小结}
-
-根系和最高权把紧半单群的不可约表示化为可计算的离散数据，Weyl 公式给出特征标与维数，张量积分解则决定多重态怎样耦合。$SU(3)$ 的这些结构解释了夸克模型；标准模型的群与表示进一步决定电荷、Higgs 破缺、反常抵消和味混合。Yang--Mills 拓扑展示了局域规范场还具有由大规范变换区分的全局扇区，而 $SU(5)$、$SO(10)$ 与 seesaw 则说明如何在更大群中组织标准模型表示。每一步都从明确的群表示出发，因而对称性结论与动力学假设保持分离。
+\end{enumerate}

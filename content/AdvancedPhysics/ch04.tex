@@ -1,394 +1,429 @@
-\chapter{平面对偶、轮廓与曲面同调}
-\label{chap:phys-sm-planar-duality-contours}
+\chapter{高低温展开、Kramers--Wannier 对偶与 Kac--Ward 表示}
+\label{chap:phys-sm-high-low-temperature-duality}
 
-一般 圈空间 只使用图的关联关系；低温轮廓和 Kramers--Wannier 对偶则需要图真正嵌入二维曲面。先在胞腔平面嵌入上建立对偶图和面边界，再把结论推广到闭可定向曲面。这样可以严格区分三件经常被混写的事实：一般偶子图只是 \(1\)-圈；球面上的 圈 都是面边界；正亏格曲面还保留不能由局部面边界消去的全局同调类。
+上一章的高温展开把配分函数写成偶子图之和，低温侧却由翻转区域的轮廓控制。两种展开看起来使用不同变量，但在平面图上，一条原图边与一条对偶边一一相交；只要逐边比较权重，就能把高温偶子图与低温闭轮廓对应起来。
 
-\section{胞腔平面嵌入与对偶图}
-\label{sec:phys-sm-planar-duality}
+Kramers--Wannier 对偶由这次权重匹配产生，临界自对偶条件也随之出现。要把全部偶子图之和真正化为可计算对象，还需处理闭路相交时的符号；Kac--Ward 行列式正是为这一步服务，而不是另一套独立的抽象结构。
 
-设连通有限多重图 \(G=(\mathsf V,\mathsf E)\) 胞腔嵌入球面 \(S^2\)，等价地可在平面上画成无交叉嵌入并把外部区域视为一个面。记面集合为 \(\mathsf F\)。胞腔条件表示每个面的内部都是开圆盘，此时 Euler 公式为
+\section{平面低温轮廓与 Kramers--Wannier 对偶}
+\label{sec:phys-sm-low-temp}
+
+现在要求图给出平面胞腔嵌入，并取 \(J_e>0\)。先考虑单连通有限区域且外边界固定 \(+\)。以全加组态为基态，每条跨越畴壁的原边使局部能量从 \(-J_e\) 变成 \(+J_e\)，因此一组对偶轮廓 \(\Gamma\) 的能量代价为
 \begin{equation}
- |\mathsf V|-|\mathsf E|+|\mathsf F|=2.
- \label{eq:phys-sm-euler-plane}
+ \Delta E(\Gamma)=2\sum_{e^*\in\Gamma}J_e.
+ \label{eq:phys-sm-contour-energy}
 \end{equation}
-对偶图 \(G^*\) 的顶点对应原图面，每条原边 \(e\) 被唯一一条对偶边 \(e^*\) 横穿。原图桥对应对偶自环，原图平行边也可能产生多重对偶边，所以对偶图仍属于有限多重图范畴。
-
-以 \(\mathbb F_2\) 为系数，引入面链空间
+利用轮廓--组态一一对应，配分函数精确写成
 \begin{equation}
- C_2(G)=\mathbb F_2^{\mathsf F}
- \label{eq:phys-sm-face-chain-space}
+ Z_G^{(+)}
+ =\ee^{\sum_eK_e}
+ \sum_{\Gamma\in\mathcal C_+(G^*)}
+ \prod_{e^*\in\Gamma}\ee^{-2K_e}.
+ \label{eq:phys-sm-low-temp-z}
 \end{equation}
-以及第二边界算子
+这个公式不是一般图恒等式；它依赖平面对偶和固定边界消除整体自旋翻转二重性。
+
+Peierls 估计还需要轮廓数增长可以控制。若 \(J_e\ge J_*>0\)，并且围住给定顶点、长度为 \(\ell\) 的允许对偶轮廓数满足 \(N_\ell\le C\mu^\ell\)，则
 \begin{equation}
- \partial_2:C_2(G)\longrightarrow C_1(G).
- \label{eq:phys-sm-boundary-operator-2}
+ \mathbb P_+(\sigma_0=-1)
+ \le\sum_{\ell\ge\ell_0}
+ C\left(\mu\ee^{-2\beta J_*}\right)^\ell.
+ \label{eq:phys-sm-peierls-bound-general}
 \end{equation}
-一个面的边界由沿该面边界出现奇数次的原边组成。因为一个面边界在每个顶点进入与离开的总次数都是偶数，
+这里真正的几何输入是轮廓增长率，而不是抽象的“有限顶点度”。非平面图需要 cutset 或其他围道 formalism，不能直接套用二维闭轮廓计数。
+
+低温轮廓与高温偶子图描述同一有限系统时，二者的边权必须连同全局简并度一起匹配。下面保留全部有限体积归一化，建立精确的 Kramers--Wannier 对偶恒等式。
+
+高温边权是 \(x_e=\tanh K_e\)，对偶低温边权是 \(\ee^{-2K_e^*}\)。定义
 \begin{equation}
- \partial_1\partial_2=0.
- \label{eq:phys-sm-boundary-boundary}
+ \ee^{-2K_e^*}=\tanh K_e,
+ \qquad\Longleftrightarrow\qquad
+ \sinh(2K_e)\sinh(2K_e^*)=1.
+ \label{eq:phys-sm-dual-coupling}
 \end{equation}
-因此 \(B_1(G):=\imop\partial_2\subseteq Z_1(G)\)。
-
-\begin{theorem}[球面胞腔嵌入中闭链都是面边界]
-\label{thm:phys-sm-plane-cycle-boundary}
-对连通图的球面胞腔嵌入，
+现在取连通图在球面上的胞腔嵌入。高温闭链与对偶自旋畴壁一一对应到整体对偶自旋翻转的二重性：一个给定闭轮廓集合对应两套对偶自旋组态。因此
+\[
+ Z_{G^*}(K^*)
+ =2\ee^{\sum_eK_e^*}
+ \mathcal Z_G(\{\ee^{-2K_e^*}\}).
+\]
+与\eqnrefs{eq:phys-sm-high-temp-z} 合并得到完整有限体积恒等式
 \begin{equation}
- Z_1(G)=B_1(G).
- \label{eq:phys-sm-plane-z1-b1}
+ Z_G(K)
+ =2^{|\mathsf V|-1-|\mathsf E|/2}
+ \left[\prod_{e\in\mathsf E}\sinh(2K_e)\right]^{1/2}
+ Z_{G^*}(K^*).
+ \label{eq:phys-sm-kw-finite-sphere}
 \end{equation}
-等价地，\(\mathrm H_1(S^2;\mathbb F_2)=0\)。
-\end{theorem}
+这里所有边与其对偶边一一配对，且 \(K_e^*\) 由\eqnrefs{eq:phys-sm-dual-coupling} 定义。\eqnrefs{eq:phys-sm-kw-finite-sphere} 明确保留了 \(2^{|\mathsf V|}\)、整体自旋翻转二重性和逐边归一化；它不能直接原样搬到环面。
 
-\begin{derivation}[Euler 计数与面边界独立性]
-分三步证明 \(Z_1(G)=B_1(G)\)。
-
-维数相等。由圈秩公\eqnrefs{eq:phys-sm-cycle-rank}，连通图满足
+\begin{proof}[解]
+由高温展开\eqnrefs{eq:phys-sm-high-temp-z}，
 \[
- \dim Z_1=|\mathsf E|-|\mathsf V|+1.
+ Z_G
+ =2^{|\mathsf V|}\prod_e\cosh K_e\,\mathcal Z_G,
 \]
-由球面胞腔嵌入的 Euler 公式 \(|\mathsf V|-|\mathsf E|+|\mathsf F|=2\)，
+其中 \(\mathcal Z_G\) 是偶子图多项式。在球面胞腔嵌入下，对偶图 \(G^*\) 上的低温展开把每个对偶自旋组态对应到一组跨越原边的畴壁。球面上 \(\mathrm H_1(S^2;\mathbb F_2)=0\)，故没有非平凡同调扇区：每个闭畴壁轮廓集合 \(\Gamma\) 对应恰好两套对偶自旋组态，二者相差整体自旋翻转。因此
 \[
- |\mathsf F|-1=|\mathsf E|-|\mathsf V|+1=\dim Z_1.
+ Z_{G^*}(K^*)
+ =2\ee^{\sum_eK_e^*}
+ \mathcal Z_G(\{\ee^{-2K_e^*}\}),
 \]
-
-\(\rank\partial_2\le|\mathsf F|-1\)。每个面 \(f\) 的边界 \(\partial_2 f\) 是 \(C_1(G)\) 中的闭链。所有面边界的模二和
+其中 \(\ee^{\sum_eK_e^*}\) 来自全加组态基态能，因子 \(2\) 来自整体翻转二重性。把右边解出 \(\mathcal Z_G\)，
 \[
- \sum_{f\in\mathsf F}\partial_2 f=0,
+ \mathcal Z_G
+ =\frac{Z_{G^*}}{2\ee^{\sum_eK_e^*}}.
 \]
-因为每条原边恰好出现在两侧面的边界中，模二抵消。因此 \(\{\partial_2 f:f\in\mathsf F\}\) 线性相关，\(\rank\partial_2\le|\mathsf F|-1\)。
-
-对偶树消元给出下界。取原图一棵生成树 \(T\)。球面对偶中，与非树边 \(e\in\mathsf E\setminus T\) 对应的对偶边 \(e^*\) 组成对偶生成树 \(T^*\)：\(T^*\) 有 \(|\mathsf F|-1\) 条边（因为 \(|\mathsf E\setminus T|=|\mathsf E|-|\mathsf V|+1=|\mathsf F|-1\)），且 \(T^*\) 连通无环（由 \(T\) 的生成树性质对偶保证）。
-
-删去一个参考面 \(f_0\) 后，其余 \(|\mathsf F|-1\) 个面边界 \(\{\partial_2 f:f\ne f_0\}\) 按 \(T^*\) 的叶面递归消元：取 \(T^*\) 的一个叶面 \(f_\ell\)，它通过唯一对偶树边 \(e_\ell^*\) 与其余面对偶连接。在面边界 \(\partial_2 f_\ell\) 中，\(e_\ell^*\) 对应的原边 \(e_\ell\) 恰好出现一次（因为 \(e_\ell\) 只在 \(f_\ell\) 和一个已消去的面之间），而其他待消面的边界不含 \(e_\ell\)。因此 \(\partial_2 f_\ell\) 不能被前面面边界线性表示，枢轴 为 \(1\in\mathbb F_2\)。消去 \(f_\ell\) 和 \(e_\ell^*\) 后，剩余对偶图仍是更小的对偶树，归纳到单面基例。因此 \(\{\partial_2 f:f\ne f_0\}\) 线性无关，\(\rank\partial_2\ge|\mathsf F|-1\)。
-
-结合第二步，\(\dim B_1=\rank\partial_2=|\mathsf F|-1=\dim Z_1\)。再由 \(B_1\subseteq Z_1\)（因为 \(\partial_1\partial_2=0\)），子空间维数相等即得\eqnrefs{eq:phys-sm-plane-z1-b1}。
-
-若把图嵌入环面 \(T^2\)，Euler 公式改为 \(|\mathsf V|-|\mathsf E|+|\mathsf F|=0\)，于是 \(\dim Z_1=|\mathsf E|-|\mathsf V|+1=|\mathsf F|+1\)，而 \(\dim B_1\le|\mathsf F|-1\)，差值 \(\dim Z_1-\dim B_1\ge2\)。这 2 维差正是 \(\mathrm H_1(T^2;\mathbb F_2)\cong\mathbb F_2^2\) 的两个同调生成元（沿环面两个基本 圈 的绕行），它们是闭链但不是任何面集边界。球面 \(g=0\) 时 Euler 特征 \(2\) 恰好抵消这一差值，使 \(Z_1=B_1\)。
-
-\eqnrefs{eq:phys-sm-plane-z1-b1} 保证平面 Ising 的每个偶子图都能解释为某面集的边界，从而低温畴壁与高温偶子图一一对应，Kramers--Wannier 对偶在球面上成立（见\eqnrefs{eq:phys-sm-kw-finite-sphere}）。环面上额外的两个同调类对应周期/反周期边界扭转，配分函数分解为四个 自旋结构 扇区，需用\eqnrefs{eq:phys-sm-torus-character-transform} 的离散 Fourier 变换处理。
-
-给定平面图 \(G\) 的球面嵌入，对偶图 \(G^*\) 构造如下：每个面 \(f\in\mathsf F\) 对应对偶顶点 \(f^*\)；每条原边 \(e\) 分隔两个面 \(f_1,f_2\)（可能 \(f_1=f_2\) 若 \(e\) 是桥），对应对偶边 \(e^*\) 连接 \(f_1^*,f_2^*\)。\(e\) 是桥时 \(e^*\) 是自环；\(e\) 是自环时 \(e^*\) 是桥。这一构造满足 \((G^*)^*=G\)（球面嵌入下），且 \(|\mathsf V^*|=|\mathsf F|\)、\(|\mathsf E^*|=|\mathsf E|\)、\(|\mathsf F^*|=|\mathsf V|\)，Euler 公式自洽。
-球面 \(\mathrm H_1=0\) 给出单一配分函数（Kramers--Wannier 对偶直接成立）；环面 \(\mathrm H_1\cong\mathbb F_2^2\) 给出四扇区分解（需离散 Fourier 变换）；高亏格 \(g\) 给出 \(2^{2g}\) 扇区。每一步的代数结构（圈 秩、Euler 特征、同调维数）都对应物理量（偶子图数、面边界独立数、拓扑扇区数），把抽象代数与具体统计力学严格联系起来。
-\end{derivation}
-
-\section{固定边界下的低温轮廓}
-\label{sec:phys-sm-contours}
-
-考虑单连通平面有限区域中的最近邻 Ising 模型，并把外边界自旋固定为 \(+1\)。对任意自旋组态 \(\sigma\)，若原边 \(e=\{x,y\}\) 满足 \(\sigma_x\neq\sigma_y\)，就在对偶边 \(e^*\) 上放置畴壁。所有畴壁组成 \(\Gamma(\sigma)\subseteq\mathsf E^*\)。沿任意原图面走一周，自旋翻转次数必须为偶数，因此
-\begin{equation}
- \partial_1^*\Gamma(\sigma)=0.
- \label{eq:phys-sm-domain-wall-even}
-\end{equation}
-低温畴壁因此是对偶图上的闭 \(1\)-链。
-
-\begin{theorem}[固定加边界下的轮廓--组态一一对应]
-\label{thm:phys-sm-spin-contour-bijection}
-在单连通平面有限区域上固定外边界为 \(+\) 后，自旋组态与满足局部偶度条件且不违反固定边界的对偶闭链一一对应。
-\end{theorem}
-
-\begin{derivation}[由闭轮廓唯一重建自旋]
-分三步证明自旋组态与对偶闭链的一一对应。
-
-自旋组态产生闭链。给定自旋组态时，\eqnrefs{eq:phys-sm-domain-wall-even} 已说明畴壁 \(\Gamma(\sigma)\) 满足 \(\partial_1^*\Gamma=0\)，必为闭链。
-
-闭链重建自旋（良定性）。给定允许的对偶闭链 \(\Gamma\)，取任意顶点 \(x\)，选择从外边界参考点 \(x_\partial\) 到 \(x\) 的原图路径 \(P_x\)，定义
+代回高温展开，并把 \(2\) 与 \(2^{|\mathsf V|}\) 合并、把 \(\ee^{\sum_eK_e^*}\) 拆成逐边乘积，得
 \[
- \sigma_x=(-1)^{I(P_x,\Gamma)},
+ Z_G
+ =2^{|\mathsf V|-1}
+ \prod_e\left(\cosh K_e\,\ee^{-K_e^*}\right)Z_{G^*}.
 \]
-其中 \(I(P_x,\Gamma)\in\mathbb F_2\) 是路径与对偶轮廓的模二交数，外边界参考自旋取 \(+1\)。
-
-需证 \(\sigma_x\) 与路径选择无关。若 \(P_x\) 与 \(P_x'\) 是两条从 \(x_\partial\) 到 \(x\) 的路径，则它们的模二和
-\[
- C=P_x+P_x'
-\]
-是原图闭链（起点和终点在模二中相消）。在单连通平面区域中，\(C\) 是若干面边界的模二和：\(C=\sum_{f\in S}\partial_2 f\)（某面集 \(S\)）。而闭对偶链 \(\Gamma\) 穿过任意面边界 \(\partial_2 f\) 的模二交数为零，因为 \(\Gamma\) 进入面 \(f\) 的次数等于离开次数。因此
-\[
- I(C,\Gamma)=\sum_{f\in S}I(\partial_2 f,\Gamma)=0\pmod2,
-\]
-故
-\[
- I(P_x,\Gamma)-I(P_x',\Gamma)=I(P_x+P_x',\Gamma)=I(C,\Gamma)=0\pmod2.
-\]
-\(\sigma_x\) 良定。
-
-重建组态产生原来的 \(\Gamma\) 且一一。对原边 \(e=\{x,y\}\)，取路径 \(P_x\) 到 \(x\)，则 \(P_y=P_x+e\) 到 \(y\)。若对偶边 \(e^*\in\Gamma\)，则
-\[
- \sigma_y=(-1)^{I(P_y,\Gamma)}=(-1)^{I(P_x,\Gamma)+1}=-\sigma_x,
- \qquad \sigma_x\sigma_y=-1.
-\]
-若 \(e^*\notin\Gamma\)，则 \(\sigma_y=\sigma_x\)，\(\sigma_x\sigma_y=+1\)。因此重建组态恰好产生原来的 \(\Gamma\)。固定外边界为 \(+\) 去掉了整体自旋翻转 \(\sigma\to-\sigma\) 的二重性（翻转使所有 \(\sigma_x\sigma_y\) 不变），因此对应是一一的。
-
-良定性证明中关键步骤 \(C=\sum_{f\in S}\partial_2 f\) 依赖原图闭链 \(C\) 在球面上都是面边界，即\eqnrefs{eq:phys-sm-plane-z1-b1}。环面上存在非边界的闭链（如沿基本 圈 \(a_x\) 的绕行），若 \(P_x+P_x'\) 恰好是这种同调非平凡闭链，则 \(I(C,\Gamma)\) 可能等于 \(1\)，\(\sigma_x\) 不良定。此时需额外指定同调扇区（绕行数 \((w_x,w_y)\in\mathbb F_2^2\)）才能恢复良定自旋，这正是环面四个 自旋结构 的来源。
-
-对一组闭畴壁 \(\Gamma\)，全加组态 \(\sigma\equiv+1\) 的能量为 \(E_0=-\sum_e J_e\)。每条畴壁边 \(e\) 使 \(\sigma_x\sigma_y=-1\)，局部能量从 \(-J_e\) 变为 \(+J_e\)，增量 \(2J_e\)。总能量
+由对偶耦合\eqnrefs{eq:phys-sm-dual-coupling}，\(\ee^{-2K_e^*}=\tanh K_e\)，故 \(\ee^{-K_e^*}=\sqrt{\tanh K_e}\)，于是逐边因子为
 \begin{equation*}
- E(\Gamma)=E_0+2\sum_{e^*\in\Gamma}J_e
- =-\sum_e J_e+2\sum_{e^*\in\Gamma}J_e,
-\end{equation*}
-故 Boltzmann 权重 \(\ee^{-\beta E(\Gamma)}=\ee^{\sum_e K_e}\prod_{e^*\in\Gamma}\ee^{-2K_e}\)，给出\eqnrefs{eq:phys-sm-low-temp-z}。固定边界消除整体翻转二重性，故求和遍历所有允许闭链而不需额外因子 \(2\)。
-
-\end{derivation}
-
-这个定理的单连通性不能删除。周期边界上闭链可能具有非零绕行数，无法仅靠“从外部区域开始翻转”全局定义自旋；一般非平面图甚至没有对偶轮廓包围区域的概念。
-
-\section{闭可定向曲面上的第一同调}
-\label{sec:phys-sm-homology}
-
-设图给出闭可定向 亏格 \(g\) 曲面 \(\Sigma_g\) 的胞腔分解。仍有链复形
-\[
- C_2\xrightarrow{\partial_2}C_1\xrightarrow{\partial_1}C_0,
- \qquad \partial_1\partial_2=0,
-\]
-第一同调定义为
-\begin{equation}
- \mathrm H_1(\Sigma_g;\mathbb F_2)
- =\kerop\partial_1/\imop\partial_2.
- \label{eq:phys-sm-first-homology}
-\end{equation}
-它把闭链按“只相差局部面边界”分类。
-
-对闭可定向曲面，Euler 特征为 \(\chi(\Sigma_g)=2-2g\)。连通性给出 \(\dim\ker\partial_1=|\mathsf E|-|\mathsf V|+1\)。另一方面，全部面边界只有一条总和为零的关系，因此 \(\rank\partial_2=|\mathsf F|-1\)。于是
-\begin{equation}
- \boxed{
- \dim_{\mathbb F_2}\mathrm H_1(\Sigma_g;\mathbb F_2)=2g.
- }
- \label{eq:phys-sm-genus-h1-dimension}
-\end{equation}
-因此共有 \(2^{2g}\) 个模二同调扇区。球面 \(g=0\) 恢复 \(\mathrm H_1=0\)，环面 \(g=1\) 则给出
-\begin{equation}
- \mathrm H_1(T^2;\mathbb F_2)\cong\mathbb F_2^2.
- \label{eq:phys-sm-torus-h1}
-\end{equation}
-若考虑圆柱 \(S^1\times[0,1]\)，有一个周期方向，因此
-\begin{equation}
- \mathrm H_1(S^1\times[0,1];\mathbb F_2)\cong\mathbb F_2.
- \label{eq:phys-sm-cylinder-h1}
-\end{equation}
-
-\begin{derivation}[由 Euler 特征得到 \eqnrefs{eq:phys-sm-torus-h1} 中的 \(2g\)]
-闭曲面 \(\Sigma_g\) 的亏格 \(g\) 通过 Gauss--Bonnet 编码几何、通过 Euler 特征编码组合。在任意胞腔剖分下，Euler 特征
-\begin{equation*}
- \chi(\Sigma_g)=|\mathsf V|-|\mathsf E|+|\mathsf F|=2-2g
-\end{equation*}
-是拓扑不变量，与剖分选取无关。另一方面，链复形
-\begin{equation*}
- 0\xrightarrow{\partial_2}C_1(G)\xrightarrow{\partial_1}C_0(G)\to 0
-\end{equation*}
-给出两个维数恒等式。第一，闭链空间 \(Z_1=\ker\partial_1\) 的维数由圈秩公\eqnrefs{eq:phys-sm-cycle-rank}给出（连通图 \(c(G)=1\)）：
-\begin{equation*}
- \dim Z_1=|\mathsf E|-|\mathsf V|+1.
-\end{equation*}
-第二，边缘空间 \(B_1=\operatorname{im}\partial_2\) 的维数等于面边界矩阵的秩。每个面的边界是闭 \(1\)-链，但所有面边界的模二和为零（每条内部边恰出现在两个面的边界中），故至少有一个线性关系。球面情形这唯一的关系穷尽了所有依赖，但高亏格面还需要额外的同调生成元。对任意亏格，
-\begin{equation*}
- \dim B_1=|\mathsf F|-1,
-\end{equation*}
-因为面边界张成的空间维数恰好是面数减去这个全局关系。
-
-将两式代入同调定义 \(\mathrm H_1=Z_1/B_1\)，\(\dim\mathrm H_1=\dim Z_1-\dim B_1\)：
-\begin{align*}
- \dim\mathrm H_1
- &=\bigl(|\mathsf E|-|\mathsf V|+1\bigr)-\bigl(|\mathsf F|-1\bigr)\\
- &=|\mathsf E|-|\mathsf V|-|\mathsf F|+2\\
- &=-\bigl(|\mathsf V|-|\mathsf E|+|\mathsf F|\bigr)+2\\
- &=-(2-2g)+2=2g.
-\end{align*}
-因此 \(\mathrm H_1(\Sigma_g;\mathbb F_2)\cong\mathbb F_2^{2g}\)，即\eqnrefs{eq:phys-sm-torus-h1}。球面 \(g=0\) 给出 \(\dim\mathrm H_1=0\)，环面 \(g=1\) 给出 \(\dim\mathrm H_1=2\)（四个同调扇区），双环面 \(g=2\) 给出 \(\dim\mathrm H_1=4\)（十六个扇区）。
-
-\end{derivation}
-
-\begin{derivation}[Poincaré 对偶与曲面上的辛相交形式]
-闭可定向曲面 \(\Sigma_g\) 上，第一同调 \(\mathrm H_1(\Sigma_g;\mathbb F_2)\cong\mathbb F_2^{2g}\) 与第一上同调 \(\mathrm H^1(\Sigma_g;\mathbb F_2)\cong\mathbb F_2^{2g}\) 自然同构。Poincaré 对偶给出更精确的结论：相交配对给出非退化双线性形式，使 \(\mathrm H_1\) 成为辛向量空间。分四步建立。
-
-相交配对的定义与良定性。对两个闭 \(1\)-链 \(\mathscr A,\mathscr B\in Z_1(G)\)，取横截代表元后定义模二交数
-\begin{equation*}
-  I(\mathscr A,\mathscr B)=|\mathscr A\cap\mathscr B|\pmod2.
-\end{equation*}
-先证 \(I\) 只依赖同调类。若 \(\mathscr A'=\mathscr A+\partial_2 f\)（相差一个面边界），则 \(\mathscr A'\) 与 \(\mathscr B\) 比 \(\mathscr A\) 多了 \(\partial_2 f\) 与 \(\mathscr B\) 的交。闭链 \(\mathscr B\) 进入面 \(f\) 的次数等于离开次数，故 \(I(\partial_2 f,\mathscr B)=0\pmod2\)，即 \(I(\mathscr A',\mathscr B)=I(\mathscr A,\mathscr B)\)。同理对第二个变量。因此 \(I\) 诱导
-\begin{equation*}
-  \omega:\mathrm H_1(\Sigma_g;\mathbb F_2)\times\mathrm H_1(\Sigma_g;\mathbb F_2)\longrightarrow\mathbb F_2.
-\end{equation*}
-
-交错性（特征 \(2\) 下的对称性）。在 \(\mathbb F_2\) 上，\(\omega(\alpha,\beta)=|\alpha\cap\beta|\pmod2=|\beta\cap\alpha|\pmod2=\omega(\beta,\alpha)\)，故 \(\omega\) 对称。但曲面的相交形式在整数系数下是交错的：\(I_\mathbb Z(\alpha,\beta)=-I_\mathbb Z(\beta,\alpha)\)。模二化后交错性变为对称性，\(\omega(\alpha,\alpha)=0\)（自交数为偶：闭链可微扰使自交成对出现）。因此 \(\omega\) 是 \(\mathbb F_2\)-辛形式：对称且自交为零。
-
-标准辛基的构造。亏格 \(g\) 曲面有 \(g\) 个环柄，每环柄给出一对基本 圈 \((a_i,b_i)\)，\(i=1,\ldots,g\)。它们的相交数为
-\begin{equation*}
-  \omega(a_i,a_j)=0,\quad\omega(b_i,b_j)=0,\quad\omega(a_i,b_j)=\delta_{ij}.
-\end{equation*}
-前两式因为同类 圈 可取不相交代表；第三式因为 \(a_i\) 与 \(b_i\) 在第 \(i\) 环柄上横截相交一次，不同环柄的 圈 不相交。在基 \(\{a_1,b_1,\ldots,a_g,b_g\}\) 下，\(\omega\) 的矩阵为分块直和
-\begin{equation*}
-  \Omega=\bigoplus_{i=1}^g\begin{pmatrix}0&1\\1&0\end{pmatrix},
-\end{equation*}
-即 \(2g\times2g\) 非退化矩阵（\(\det\Omega=1\)）。因此 \(\omega\) 非退化。
-
-Poincaré 对偶与完美配对。非退化双线性形式 \(\omega\) 诱导线性映射
-\begin{equation*}
-  \mathrm{PD}:\mathrm H_1(\Sigma_g;\mathbb F_2)\longrightarrow\mathrm H^1(\Sigma_g;\mathbb F_2),\quad\mathrm{PD}(\alpha)=\omega(\alpha,\cdot).
-\end{equation*}
-\(\omega\) 非退化等价于 \(\mathrm{PD}\) 为同构。这给出曲面上的 Poincaré 对偶：\(\mathrm H_1\cong\mathrm H^1\)，且对偶由相交形式自然实现。结合\eqnrefs{eq:phys-sm-genus-h1-dimension}，\(\dim\mathrm H^1=2g\)，与 \(\dim\mathrm H_1=2g\) 一致。
-
-\end{derivation}
-
-\section{环面交数、扭转与离散 Fourier 变换}
-
-在环面上选取两个基本 \(1\)-圈 \(a_x,a_y\) 及其横截割线 \(\ell_x,\ell_y\)。对闭链 \(\mathscr A\) 定义模二交数
-\begin{equation}
- w_x(\mathscr A)=I(\mathscr A,\ell_x),
- \qquad
- w_y(\mathscr A)=I(\mathscr A,\ell_y),
- \label{eq:phys-sm-winding-parities}
-\end{equation}
-其中 \(I\in\mathbb F_2\)。面边界与闭割线的交数为零，因此 \((w_x,w_y)\) 只依赖同调类。
-
-\begin{derivation}[交数为何给出完整的环面同调坐标]
-环面 \(T^2\) 的第一同调已由\eqnrefs{eq:phys-sm-torus-h1}给出 \(\mathrm H_1(T^2;\mathbb F_2)\cong\mathbb F_2^2\)，因此任一同调类 \([\mathscr A]\) 可唯一写成基本 圈 \(a_x,a_y\) 的模二线性组合
-\[
- [\mathscr A]=c_x[a_x]+c_y[a_y],
- \qquad c_x,c_y\in\mathbb F_2.
-\]
-取与 \(a_x,a_y\) 横截对偶的割线 \(\ell_x,\ell_y\)，使基本交数为
-\[
- I(a_x,\ell_x)=1,
- \quad I(a_x,\ell_y)=0,
- \quad
- I(a_y,\ell_x)=0,
- \quad I(a_y,\ell_y)=1.
-\]
-由面边界与闭割线的交数为零，交数 \(I(\mathscr A,\ell)\) 只依赖同调类 \([\mathscr A]\) 而不依赖代表元 \(\mathscr A\)。于是定义映射
-\[
- \Phi:\mathrm H_1(T^2;\mathbb F_2)\longrightarrow\mathbb F_2^2,
- \qquad
- \Phi([\mathscr A])=
- \bigl(I(\mathscr A,\ell_x),I(\mathscr A,\ell_y)\bigr).
-\]
-先证 \(\Phi\) 是线性映射。若 \([\mathscr A],[\mathscr B]\in\mathrm H_1(T^2;\mathbb F_2)\)，取代表元使 \(\mathscr A+\mathscr B\) 为模二链和，则
-\[
  \begin{aligned}
- \Phi([\mathscr A]+[\mathscr B])
- &=\bigl(I(\mathscr A+\mathscr B,\ell_x),I(\mathscr A+\mathscr B,\ell_y)\bigr)\\
- &=\bigl(I(\mathscr A,\ell_x)+I(\mathscr B,\ell_x),I(\mathscr A,\ell_y)+I(\mathscr B,\ell_y)\bigr)\\
- &=\Phi([\mathscr A])+\Phi([\mathscr B]),
+ \cosh K_e\,\ee^{-K_e^*}
+ &=\cosh K_e\,\sqrt{\tanh K_e}
+ =\sqrt{\cosh K_e\,\sinh K_e}\\
+ &=\left[\frac12\sinh(2K_e)\right]^{1/2}.
  \end{aligned}
-\]
-其中用到模二交数在第一个变量上的双线性。
-再算 \(\Phi\) 在基本同调类上的值。由 \([a_x]=1\cdot[a_x]+0\cdot[a_y]\)，
+\end{equation*}
+逐边相乘，
 \[
- \Phi([a_x])
- =\bigl(I(a_x,\ell_x),I(a_x,\ell_y)\bigr)
- =(1,0),
+ \prod_e\left[\frac12\sinh(2K_e)\right]^{1/2}
+ =2^{-|\mathsf E|/2}
+ \left[\prod_e\sinh(2K_e)\right]^{1/2},
 \]
-由 \([a_y]=0\cdot[a_x]+1\cdot[a_y]\)，
-\[
- \Phi([a_y])
- =\bigl(I(a_y,\ell_x),I(a_y,\ell_y)\bigr)
- =(0,1).
-\]
-\((1,0),(0,1)\) 是 \(\mathbb F_2^2\) 的标准基，因此 \(\Phi\) 把 \(\mathrm H_1(T^2;\mathbb F_2)\) 的生成元映到 \(\mathbb F_2^2\) 的生成元，必为满射。又由\eqnrefs{eq:phys-sm-torus-h1}两端都是二维 \(\mathbb F_2\)-向量空间，满射在同维有限维向量空间之间必为同构，故 \(\Phi\) 是同构。
-最后把 \(\Phi\) 作用到一般同调类上。由 \([\mathscr A]=c_x[a_x]+c_y[a_y]\) 与 \(\Phi\) 的线性，
-\[
- \Phi([\mathscr A])
- =c_x\Phi([a_x])+c_y\Phi([a_y])
- =c_x(1,0)+c_y(0,1)
- =(c_x,c_y).
-\]
-因此两个交数 \(\bigl(I(\mathscr A,\ell_x),I(\mathscr A,\ell_y)\bigr)\) 恰好给出 \([\mathscr A]\) 在基 \(\{[a_x],[a_y]\}\) 下的坐标，即\eqnrefs{eq:phys-sm-winding-parities}中的 \((w_x,w_y)\) 是 \(\mathrm H_1(T^2;\mathbb F_2)\) 的完整同调坐标，而非附加的方便标签。
-\end{derivation}
+与前置因子 \(2^{|\mathsf V|-1}\) 合并得 \(2^{|\mathsf V|-1-|\mathsf E|/2}\)，即\eqnrefs{eq:phys-sm-kw-finite-sphere}。
 
-沿某个周期方向插入反周期 Ising 割线，等价于把所有穿过该割线的耦合变号。高温闭链每穿过一次割线就获得 \(-1\)，所以边界扭转定义了 \(\mathrm H_1(T^2;\mathbb F_2)\) 上的 特征标，也就是 \(\mathrm H^1(T^2;\mathbb F_2)\) 元素。若 \(Z_{w_x,w_y}\) 是固定同调扇区的图和，\(Z^{\upsilon_x,\upsilon_y}\) 是固定扭转 \(\upsilon_x,\upsilon_y\in\mathbb F_2\) 的配分函数，则二者满足
+\eqnrefs{eq:phys-sm-dual-coupling} \(\sinh(2K)\sinh(2K^*)=1\) 把高温强耦合 \(K\gg1\) 映到低温弱耦合 \(K^*\ll1\)，反之亦然。自对偶点 \(K=K^*\) 满足 \(\sinh(2K_c)=1\)，即 \(K_c=\frac12\log(1+\sqrt2)\approx0.4407\)，对应 \(T_c/J=2/\log(1+\sqrt2)\approx2.269\)。对偶性本身只把高温和低温互换，并不能仅凭代数恒等式排除多个临界点——但结合 Lee--Yang 圆定理（外场方向无奇性）与转移矩阵谱分析（温度方向唯一奇性），可证明临界点唯一。
+
+对各向异性耦合 \((K_h,K_v)\)，对偶 \((K_h^*,K_v^*)\) 满足 \(\sinh(2K_h)\sinh(2K_h^*)=1\) 与 \(\sinh(2K_v)\sinh(2K_v^*)=1\)。自对偶条件 \(\sinh(2K_h)\sinh(2K_v)=1\) 给出候选临界线\eqnrefs{eq:phys-sm-critical-line-duality}。各向同性 \(K_h=K_v=K_c\) 时 \(\sinh^2(2K_c)=1\)，恢复\eqnrefs{eq:phys-sm-square-critical-k}。各向异性极限 \(K_v\to0\)（一维链）时 \(K_h\to\infty\)，临界温度趋于零，与一维无相变一致。
+\end{proof}
+
+对各向异性无限方格，若热相变唯一且对偶不交换额外相，则自对偶条件给出候选临界线
 \begin{equation}
- Z^{\upsilon_x,\upsilon_y}
- =\sum_{w_x,w_y\in\mathbb F_2}
- (-1)^{\upsilon_xw_x+\upsilon_yw_y}
- Z_{w_x,w_y},
- \label{eq:phys-sm-torus-character-transform}
+  \sinh(2K_h)\sinh(2K_v)=1.
+  \label{eq:phys-sm-critical-line-duality}
 \end{equation}
-以及逆变换
+各向同性时
 \begin{equation}
- Z_{w_x,w_y}
- =\frac14\sum_{\upsilon_x,\upsilon_y\in\mathbb F_2}
- (-1)^{\upsilon_xw_x+\upsilon_yw_y}
- Z^{\upsilon_x,\upsilon_y}.
- \label{eq:phys-sm-torus-character-inverse}
+  \sinh(2K_c)=1,
+  \qquad
+  K_c=\frac12\log(1+\sqrt2).
+  \label{eq:phys-sm-square-critical-k}
 \end{equation}
-因此“同调扇区”和“边界 自旋结构”不是逐项相同的对象：前者属于 \(\mathrm H_1\)，后者在选择参考结构后由 \(\mathrm H^1\) 的 特征标 标记，二者通过有限 Fourier 变换相连。后续 Kac--Ward/Pfaffian 与 Jordan--Wigner 两种语言都会再次出现这组四重结构。
+对偶性本身只把高温和低温互换，并不能仅凭代数恒等式排除多个临界点。后续转移谱会独立证明色散只在这条线上闭隙。
 
-\begin{derivation}[Dehn 扭转与映射类群的辛表示]
-曲面的映射类群 \(\mathrm{MCG}(\Sigma_g)=\pi_0\mathrm{Diff}^+(\Sigma_g)\) 作用在 \(\mathrm H_1(\Sigma_g;\mathbb Z)\cong\mathbb Z^{2g}\) 上，保持相交形式不变，给出辛表示 \(\rho:\mathrm{MCG}(\Sigma_g)\to\mathrm{Sp}(2g,\mathbb Z)\)。这一表示是理解 Ising 模型在曲面变换下行为的关键。分四步建立。
+\begin{proof}[解]
+转移矩阵方法把二维 Ising 模型映射为一维量子链的配分函数，Onsager 通过其谱的精确分析得到自由能。分五步建立。
 
-Dehn 扭转的定义与同调作用。沿简单闭曲线 \(\gamma\) 的 Dehn 扭转 \(T_\gamma\) 是曲面微分同胚：在 \(\gamma\) 的管状邻域 \(S^1\times[0,1]\) 上，\(T_\gamma(\theta,t)=(\theta+2\pi t,t)\)，邻域外为恒等。对任意闭链 \(\alpha\)，\(T_\gamma\) 的同调作用为
+转移矩阵的构造。对 \(M\times N\) 方格（周期方向沿 \(N\)，即环面 \(T^2\)），按列分解自旋组态 \(\boldsymbol\sigma=(\sigma_1,\ldots,\sigma_N)\)，每列 \(\sigma_j\in\{\pm1\}^M\)。定义列间转移矩阵
 \begin{equation*}
-  T_{\gamma,*}(\alpha)=\alpha+I_\mathbb Z(\alpha,\gamma)\,\gamma,
+  \mathbf T_{\boldsymbol\sigma,\boldsymbol\sigma'}=\exp\!\left(K_h\sum_{i=1}^M\sigma_i\sigma_i'+K_v\sum_{i=1}^M\sigma_i\sigma_{i+1}\right),
 \end{equation*}
-其中 \(I_\mathbb Z\) 是整数相交数。证明：在 \(\gamma\) 邻域外 \(\alpha\) 不变；在邻域内，\(\alpha\) 每穿过 \(\gamma\) 一次，被扭转 \(T_\gamma\) 沿 \(\gamma\) 方向推一段，净效果是增加 \(I_\mathbb Z(\alpha,\gamma)\) 个 \(\gamma\) 的拷贝。
-
-辛性质的验证。对两个闭链 \(\alpha,\beta\)，
+其中第一项是列间水平耦合，第二项是列内垂直耦合（周期 \(\sigma_{M+1}=\sigma_1\)）。配分函数
 \begin{equation*}
-  \begin{aligned}
-  I_\mathbb Z(T_{\gamma,*}\alpha,T_{\gamma,*}\beta)
-  &=I_\mathbb Z(\alpha+I(\alpha,\gamma)\gamma,\;\beta+I(\beta,\gamma)\gamma)\\
-  &=I(\alpha,\beta)+I(\alpha,\gamma)I(\gamma,\beta)+I(\gamma,\alpha)I(\beta,\gamma)+0\\
-  &=I(\alpha,\beta)+I(\alpha,\gamma)I(\gamma,\beta)-I(\alpha,\gamma)I(\gamma,\beta)\\
-  &=I(\alpha,\beta).
-  \end{aligned}
+  Z_{M\times N}=\Tr\mathbf T^N=\sum_{k}\lambda_k^N,
 \end{equation*}
-第三行用了 \(I(\gamma,\alpha)=-I(\alpha,\gamma)\)，第四行两项抵消。因此 \(T_{\gamma,*}\) 保持相交形式，\(\rho(T_\gamma)\in\mathrm{Sp}(2g,\mathbb Z)\)。
-
-标准生成元与辛矩阵。取标准辛基 \(\{a_1,b_1,\ldots,a_g,b_g\}\)。沿 \(a_i\) 的 Dehn 扭转 \(T_{a_i}\) 的作用为
+\(\{\lambda_k\}\) 是 \(\mathbf T\) 的本征值。热力学极限 \(N\to\infty\) 下自由能由最大本征值主导：
 \begin{equation*}
-  T_{a_i,*}(a_j)=a_j,\qquad T_{a_i,*}(b_j)=b_j+\delta_{ij}a_j,
+  -\beta f=\lim_{M,N\to\infty}\frac{1}{MN}\log Z=\lim_{M\to\infty}\frac{1}{M}\log\lambda_{\max}.
 \end{equation*}
-对应辛矩阵为单位矩阵加上 \(a_i\) 行 \(b_i\) 列的 \(1\)。沿 \(b_i\) 类似。这 \(2g\) 个 Dehn 扭转生成（事实上连同少量额外扭转）整个映射类群（Dehn--Lickorish 定理），其辛表示生成 \(\mathrm{Sp}(2g,\mathbb Z)\)。
 
-表示的核与 Torelli 群。\(\rho\) 的核 \(\ker\rho=\mathrm{I}(\Sigma_g)\) 是 Torelli 群——同调作用下为恒等的微分同胚。\(g\ge2\) 时 Torelli 群非平凡（沿分离曲线的 Dehn 扭转在 \(\mathrm H_1\) 上作用平凡），\(\rho\) 不是单射。但 \(\rho\) 是满射：每个辛矩阵可由 Dehn 扭转实现。因此 \(\mathrm{Sp}(2g,\mathbb Z)\) 是 \(\mathrm{MCG}(\Sigma_g)\) 的同调商。
-
-\end{derivation}
-
-\begin{derivation}[闭可定向曲面的基本群与一阶同调]
-为了把亏格与环路类别联系起来，先用 Van Kampen 定理写出基本群。
-亏格 \(g\) 完全分类闭可定向曲面：\(\Sigma_g\) 与 \(\Sigma_{g'}\) 同胚当且仅当 \(g=g'\)。基本群 \(\pi_1(\Sigma_g)\) 有标准展示，其 Abel 化给出 \(\mathrm H_1\)。分三步建立。
-
-闭可定向曲面 \(\Sigma\) 有三角剖分（Rado 定理）。对剖分做如下化简：(i) 若两个三角形共享一条边且并集是圆盘，合并为一个面，减少面数；(ii) 若一条边只属于一个面（"悬挂边"），删去它和该面，减少边数和面数；(iii) 重复直到每个面边界是 \(4g\) 边形。最终得到标准多边形表示：单个 \(4g\) 边形，边界按
+Jordan--Wigner 变换与自由费米子化。\(\mathbf T\) 不是简单的二次型，因为垂直耦合 \(\ee^{K_v\sigma_i\sigma_{i+1}}\) 含四自旋项。Onsager 的关键洞察：把 \(\mathbf T\) 分解为 \(\mathbf T=\mathbf V_h\mathbf V_v\)，其中 \(\mathbf V_h\)（水平转移）和 \(\mathbf V_v\)（垂直 Boltzmann 因子）各自可由 Pauli 矩阵表示。引入 Jordan--Wigner 变换
 \begin{equation*}
-  a_1b_1a_1^{-1}b_1^{-1}a_2b_2a_2^{-1}b_2^{-1}\cdots a_gb_ga_g^{-1}b_g^{-1}
+  c_i=\frac{1}{2}\left(\prod_{j<i}\sigma_j^z\right)(\sigma_i^x-\ii\sigma_i^y),\qquad c_i^\dagger=\frac{1}{2}\left(\prod_{j<i}\sigma_j^z\right)(\sigma_i^x+\ii\sigma_i^y),
 \end{equation*}
-粘合。亏格 \(g\) 由 Euler 特征 \(\chi=2-2g\) 唯一确定，因此同胚的曲面有相同 \(g\)。反之，相同 \(g\) 给出相同标准多边形，粘合后同胚。
+满足 \(\{c_i,c_j^\dagger\}=\delta_{ij}\)，\(\{c_i,c_j\}=0\)。在此表示下，\(\mathbf V_h\) 和 \(\mathbf V_v\) 都化为 \(c_i,c_i^\dagger\) 的二次型（自由费米子），\(\mathbf T\) 成为 \(2^M\) 维 Fock 空间上自由费米子算符的指数。
 
-标准 \(4g\) 边形 \(P_g\) 是可缩的（圆盘），\(\pi_1(P_g)=\{1\}\)。粘合边界边后，\(\Sigma_g\) 是 \(P_g\) 的商空间。由 Van Kampen 定理（或等价地，CW 复形的基本群公式），\(\pi_1(\Sigma_g)\) 由边界边的代表 回路 \(a_1,b_1,\ldots,a_g,b_g\) 生成，唯一关系来自边界遍历：
-\begin{equation*}
-  \pi_1(\Sigma_g)=\langle a_1,b_1,\ldots,a_g,b_g\mid[a_1,b_1][a_2,b_2]\cdots[a_g,b_g]=1\rangle,
-\end{equation*}
-其中 \([a_i,b_i]=a_ib_ia_i^{-1}b_i^{-1}\) 是换位子。球面 \(g=0\) 给出 \(\pi_1(S^2)=\{1\}\)（空生成元集，空关系）。环面 \(g=1\) 给出 \(\pi_1(T^2)=\mathbb Z^2=\langle a,b\mid ab=ba\rangle\)（单一换位子关系即交换性）。
-
-\(\mathrm H_1(\Sigma_g;\mathbb Z)\) 是 \(\pi_1(\Sigma_g)\) 的 Abel 化。换位子 \([a_i,b_i]\) 在 Abel 化中恒为 \(1\)，因此唯一关系消失，得到
-\begin{equation*}
-  \mathrm H_1(\Sigma_g;\mathbb Z)\cong\mathbb Z^{2g}=\mathbb Z a_1\oplus\mathbb Z b_1\oplus\cdots\oplus\mathbb Z a_g\oplus\mathbb Z b_g.
-\end{equation*}
-模二化给出 \(\mathrm H_1(\Sigma_g;\mathbb F_2)\cong\mathbb F_2^{2g}\)，与\eqnrefs{eq:phys-sm-genus-h1-dimension}一致。高阶同调由 Poincaré 对偶给出：\(\mathrm H_0\cong\mathbb Z\)（连通），\(\mathrm H_2\cong\mathbb Z\)（可定向闭曲面），\(\mathrm H_k=0\)（\(k>2\)）。
-
-对 Ising 扭转而言，真正需要的是 \(\pi_1(\Sigma_g)\) 的模二 Abel 化 \(\mathrm H_1(\Sigma_g;\mathbb F_2)\)，而不是一般基本群的字问题。
-\end{derivation}
-
-同一个 Euler 特征也可由 Gauss--Bonnet 定理写成曲率积分。
-Gauss--Bonnet 定理把曲面的局部几何（曲率）与全局拓扑（Euler 特征）联系起来，是微分几何与拓扑学的核心桥梁。分两步建立。
-
-对可定向曲面 \(\Sigma\) 上的测地三角形 \(T\)（三边为测地线），Gauss 曲率 \(K\) 在 \(T\) 上的积分与三角形内角 \(\alpha_1,\alpha_2,\alpha_3\) 满足
-\begin{equation*}
-  \int_T K\,\dd A=\alpha_1+\alpha_2+\alpha_3-\pi.
-\end{equation*}
-证明：对测地三角形 \(T\)，Stokes 定理给出 \(\int_T K\,\dd A+\int_{\partial T}k_g\,\dd s+\sum(\pi-\alpha_i)=2\pi\chi(T)=2\pi\)。测地线 \(k_g=0\)，\(\chi(T)=1\)（圆盘），故 \(\int_T K\,\dd A=\sum\alpha_i-\pi\)。
-
-对闭可定向曲面 \(\Sigma_g\)，三角剖分为 \(\{T_j\}\)，求和
-\begin{equation*}
-  \int_{\Sigma_g}K\,\dd A=\sum_j\int_{T_j}K\,\dd A=\sum_j(\alpha_{j1}+\alpha_{j2}+\alpha_{j3}-\pi).
-\end{equation*}
-每个顶点处三角形内角和为 \(2\pi\)（共 \(V\) 个顶点），每面贡献 \(-\pi\)（共 \(F\) 个面），每条边被两个三角形共享：
-\begin{equation*}
-  \int_{\Sigma_g}K\,\dd A=2\pi V-\pi F=2\pi(V-\frac{F}{2}).
-\end{equation*}
-由 Euler 公式 \(V-E+F=2-2g\) 和 \(3F=2E\)（三角剖分），
+Bogoliubov 变换与谱对角化。自由费米子哈密顿量可由 Bogoliubov（正则变换）对角化。引入动量空间 \(c_k=M^{-1/2}\sum_j c_j\ee^{-\ii kj}\)（\(k=2\pi n/M\)，周期/反周期对应 \(n\in\mathbb Z\) 或 \(n\in\mathbb Z+1/2\)），每个模式 \(k\) 贡献一个 \(2\times2\) 块，本征值由色散关系
 \begin{equation}
-  \int_{\Sigma_g}K\,\dd A=2\pi(V-E+F)=2\pi\chi(\Sigma_g)=4\pi(1-g).
-  \label{eq:phys-sm-gauss-bonnet}
+  \cosh\gamma_k=\cosh(2K_h)\cosh(2K_v)-\sinh(2K_h)\sinh(2K_v)\cos k
+  \label{eq:phys-sm-transfer-gap}
+\end{equation}
+给出。最大本征值
+\begin{equation*}
+  \lambda_{\max}=\prod_{k>0}2\ee^{\gamma_k/2},
+\end{equation*}
+乘积遍历正动量模式。取对数并 \(M\to\infty\)，乘积化为积分：
+\begin{equation*}
+  -\beta f=\log 2+\frac{1}{2}\int_0^{\pi}\frac{\dd k}{2\pi}\,\gamma(k),
+\end{equation*}
+其中 \(\gamma(k)=\operatorname{arcosh}[\cosh(2K_h)\cosh(2K_v)-\sinh(2K_h)\sinh(2K_v)\cos k]\)。各向同性 \(K_h=K_v=K\) 时
+\begin{equation*}
+  \cosh\gamma(k)=\cosh^2(2K)-\sinh^2(2K)\cos k=\cosh(2K)[\cosh(2K)-\sinh(2K)\cos k],
+\end{equation*}
+给出 Onsager 自由能公式
+\begin{equation}
+  -\beta f=\log 2+\frac{1}{8\pi^2}\int_0^{2\pi}\!\!\int_0^{2\pi}\log\!\left[\cosh(2K)-\sinh(2K)\frac{\cos\theta+\cos\phi}{2}\right]\dd\theta\dd\phi.
+  \label{eq:phys-sm-onsager-free-energy}
 \end{equation}
 
-Gauss--Bonnet 在这里的作用是把亏格依赖换写成总曲率依赖。具体有限尺寸修正还依赖场论、度规与边界条件，不能只由拓扑恒等式推出。
+临界点的谱论确认。\(\gamma(k)\) 在 \(k=0\) 处最小。临界条件 \(\gamma(0)=0\) 给出
+\begin{equation*}
+  \cosh(2K_c)\cosh(2K_c)-\sinh(2K_c)\sinh(2K_c)=1,
+\end{equation*}
+即 \(\cosh(4K_c)-\sinh(4K_c)=1\)，等价于 \(\sinh(2K_c)=1\)，与\eqnrefs{eq:phys-sm-square-critical-k}一致。\(K\neq K_c\) 时 \(\gamma(k)>0\) 对所有 \(k\)，自由能解析；\(K=K_c\) 时 \(\gamma(0)=0\)，色散在 \(k=0\) 处软化（隙闭合），产生奇性。这独立于 Kramers--Wannier 对偶地确认临界点唯一性。
+
+比热奇性与临界指数 \(\alpha=0\)。自由能二阶导数（比热 \(C=-T\partial^2 f/\partial T^2\)）在 \(K_c\) 附近的行为由 \(\gamma(k)\) 的小 \(k\) 展开控制。\(K=K_c+\delta K\) 时
+\begin{equation*}
+  \gamma(k)\approx\sqrt{4\delta K\cdot\sinh(2K_c)\cosh(2K_c)+k^2/2}\propto\sqrt{\delta K+k^2},
+\end{equation*}
+积分 \(\int\gamma(k)\dd k\) 的二阶导数在 \(\delta K=0\) 处对数发散：
+\begin{equation*}
+  C\sim-\frac{2}{\pi}\left(\frac{2K_c}{\cosh 2K_c}\right)^2\log|K-K_c|+\text{const},
+\end{equation*}
+给出 \(\alpha=0\)（对数奇性而非幂律发散）。这是 Onsager 1944 年原始论文的核心结果，首次精确给出二维 Ising 临界指数。
+\end{proof}
+
+有限体积零场 Gibbs 态保持 \(\mathbb Z_2\) 对称，因而单点磁化为零；有序相的自发磁化应取先热力学极限、后撤去外场的次序，等价地可由簇性质 \(m^2=\lim_{r\to\infty}\langle\sigma_0\sigma_r\rangle\) 提取。精确结果为
+\begin{equation}
+  m(T)=\left[1-\sinh^{-4}(2K)\right]^{1/8},\qquad T<T_c.
+  \label{eq:phys-sm-onsager-magnetization}
+\end{equation}
+沿晶格方向的二点函数可化为 Toeplitz 行列式 \(D_M=\det[T_{i-j}]_{i,j=1}^M\)，其中矩阵元 \(T_n=\frac1{2\pi}\int_0^{2\pi}e^{-\ii n\theta}\phi(\theta)\,\dd\theta\) 是符号 \(\phi(\theta)\) 的第 \(n\) 个 Fourier 系数。有序相（\(T<T_c\)，即 \(k<1\)）的零环绕数符号为 \(\phi(\theta)=[1-k^2\sin^2(\theta/2)]^{1/2}\)，\(k=\sinh^{-2}(2K)\)。强 Szegő 定理给出
+\begin{equation*}
+  \lim_{M\to\infty}\frac{D_M}{\exp\!\left[M\frac{1}{2\pi}\int_0^{2\pi}\log\phi(\theta)\dd\theta\right]}=\exp\!\left[\sum_{n=1}^\infty n(\log\phi)_n(\log\phi)_{-n}\right],
+\end{equation*}
+其中 \((\log\phi)_n\) 是 \(\log\phi\) 的 Fourier 系数。对 Ising 符号直接积分得
+\[
+ (\log\phi)_n=-\frac1{2n}\left(\frac{1-\sqrt{1-k^2}}{k}\right)^{|n|},
+\]
+代入常数项求和（体积项对长程极限为常数，长程关联取其几何尺度）：
+\[
+ \sum_{n=1}^\infty n(\log\phi)_n(\log\phi)_{-n}=\frac14\log(1-k^2),
+\]
+故长程极限
+\begin{equation*}
+  \lim_{M\to\infty}D_M=(1-k^2)^{1/4}=m^2,
+  \qquad k=\sinh^{-2}(2K).
+\end{equation*}
+取非负平方根即得\eqnrefs{eq:phys-sm-onsager-magnetization}。这一步说明磁化来自二点函数的长程极限，而不是把不可解的有限外场转移矩阵当作微扰问题。
+
+当 \(T\to T_c^-\) 时 \(K\to K_c^+\)。令 \(t=1-T/T_c>0\)，则
+\begin{equation*}
+  1-\sinh^{-4}(2K)=O(t),
+\end{equation*}
+故 \(m\propto t^{1/8}\)，给出 \(\beta=1/8\)。结合 \(\alpha=0\)（Onsager）与标度关系 \(\alpha+2\beta+\gamma=2\)（Rushbrooke），得 \(\gamma=7/4\)。再由 Widom 标度关系 \(\gamma=\beta(\delta-1)\) 得 \(\delta=15\)。关联长度由 \(\gamma(k)\) 的小 \(k\) 行为给出 \(\nu=1\)，Fisher 标度 \(\gamma=\nu(2-\eta)\) 给出 \(\eta=1/4\)。至此全部 Ising 临界指数由 Onsager 自由能 + Yang 磁化 + 标度关系精确确定：
+\begin{equation*}
+  (\alpha,\beta,\gamma,\delta,\nu,\eta)=\left(0,\frac18,\frac74,15,1,\frac14\right).
+\end{equation*}
+这些指数在所有二维 \(\mathbb Z_2\)-对称模型中普适（普适类原则），与具体晶格无关。
+
+环面情况不同。闭链有四个 \(\mathrm H_1(T^2;\mathbb F_2)\) 扇区，而四种周期/反周期扭转属于相应特征标。物理周期配分函数与四个扭转对象之间必须使用\eqnrefs{eq:phys-sm-torus-character-transform,eq:phys-sm-torus-character-inverse} 的 \(4\times4\) 离散 Fourier 关系，不能把球面公\eqnrefs{eq:phys-sm-kw-finite-sphere} 逐项照搬。
+
+\section{Kac--Ward 行列式的适用域}
+\label{sec:phys-sm-kac-ward}
+
+Kac--Ward 定理把平面偶子图多项式编码为定向边空间上的行列式。若图含自环，先令自环集合为 \(L\)。由于每个自环本身满足偶度约束且可独立选择，
+\begin{equation}
+ \mathcal Z_G(\{x_e\})
+ =\left[\prod_{e\in L}(1+x_e)\right]
+ \mathcal Z_{G\setminus L}(\{x_e\}).
+ \label{eq:phys-sm-loop-factorization}
+\end{equation}
+因此标准 Kac--Ward 转角定义只需施加在无自环平面核 \(G\setminus L\) 上。
+
+以下设平面嵌入图无自环。把每条无向边拆成两个定向边 \(\vec e,\bar{\vec e}\)。若 \(t(\vec e)=s(\vec f)\) 且 \(\vec f\neq\bar{\vec e}\)，记有向转角为 \(\angle(\vec e,\vec f)\in(-\pi,\pi]\)。定义 Kac--Ward 转移矩阵
+\begin{equation}
+ (\mathsf K_{\rm KW})_{\vec e,\vec f}
+ =\begin{cases}
+ x_e\exp\!\left[\dfrac{\ii}{2}
+ \angle(\vec e,\vec f)\right],
+ &t(\vec e)=s(\vec f),\ \vec f\neq\bar{\vec e},\\[0.7em]
+ 0,&\text{otherwise}.
+ \end{cases}
+ \label{eq:phys-sm-kw-matrix}
+\end{equation}
+\begin{theorem}[平面 Kac--Ward--Feynman--Sherman 恒等式]
+\label{thm:phys-sm-kac-ward}
+对有限无自环平面嵌入图，
+\begin{equation}
+ \det(\mathbb I-\mathsf K_{\rm KW})
+ =\mathcal Z_G(\{x_e\})^2.
+ \label{eq:phys-sm-kac-ward}
+\end{equation}
+\end{theorem}
+闭无回溯行走的迹-对数展开可由有限维行列式恒等式直接算出；把所有自交和重复走边的闭行走精确重组为偶子图平方，则使用 Feynman--Sherman 消去定理。这是一个独立组合恒等式，而不是由“简单闭曲线总转角为 \(2\pi\)”单独推出。
+\begin{proof}[解]
+在谱半径 \(\rho(\mathsf K_{\rm KW})<1\) 时，\(\mathbb I-\mathsf K_{\rm KW}\) 可逆，且 \(-\log(1-t)=\sum_{n\ge1}t^n/n\) 在算子范数意义下逐项收敛，于是
+\[
+ \log\det(\mathbb I-\mathsf K_{\rm KW})
+ =\Tr\log(\mathbb I-\mathsf K_{\rm KW})
+ =-\sum_{n\ge1}\frac1n
+ \Tr\mathsf K_{\rm KW}^{\,n}.
+\]
+把迹按定向边基显式写出，矩阵乘法展开为
+\[
+ \Tr\mathsf K_{\rm KW}^{\,n}
+ =\sum_{\vec e_1}
+ (\mathsf K_{\rm KW}^{\,n})_{\vec e_1,\vec e_1}
+ =\sum_{\vec e_1,\ldots,\vec e_n}
+ \prod_{j=1}^n
+ (\mathsf K_{\rm KW})_{\vec e_j,\vec e_{j+1}},
+ \qquad \vec e_{n+1}:=\vec e_1.
+\]
+由\eqnrefs{eq:phys-sm-kw-matrix} 中转角矩阵元的支撑条件 \(t(\vec e_j)=s(\vec e_{j+1})\) 且 \(\vec e_{j+1}\neq\bar{\vec e}_j\)，相邻定向边必须首尾相接且不能立即反向回溯，闭合条件 \(\vec e_{n+1}=\vec e_1\) 把首尾粘接。因此每个非零乘积恰好对应一条长度 \(n\) 的闭无回溯定向行走
+\[
+ \gamma=(\vec e_1,\ldots,\vec e_n),
+ \qquad \vec e_{n+1}=\vec e_1,
+\]
+把矩阵元\eqnrefs{eq:phys-sm-kw-matrix} 逐个代入乘积，边权与相位分离，
+\[
+ \prod_{j=1}^n
+ (\mathsf K_{\rm KW})_{\vec e_j,\vec e_{j+1}}
+ =\prod_{j=1}^n x_{e_j}
+ \cdot
+ \prod_{j=1}^n
+ \exp\!\left[
+ \frac{\ii}{2}
+ \angle(\vec e_j,\vec e_{j+1})
+ \right],
+\]
+故行走权重为
+\[
+ w(\gamma)
+ =\prod_{j=1}^n x_{e_j}
+ \exp\!\left[
+ \frac{\ii}{2}\sum_{j=1}^n
+ \angle(\vec e_j,\vec e_{j+1})
+ \right].
+\]
+对简单平面闭曲线，由 Whitney 转角公式总转角为 \(\pm2\pi\)，故半角相位之和为 \(\pm\pi\)，相位因子为 \(-1\)。但一般迹中还含自交、多次绕行和重复边；这些项如何按偶子图精确消去并产生平方结构，是 Feynman--Sherman 定理的内容。在该定理中，每条闭行走被分解为若干不相交的简单闭曲线，每条简单闭曲线贡献因子 \(-1\)，而行走的自交数与分解后简单闭曲线条数之和恰好给出偶子图平方中应有的符号。定理一旦建立，\eqnrefs{eq:phys-sm-kac-ward} 两侧都是有限边权多项式，因此从小权重邻域延拓到全部有限边权。
+\end{proof}
+前一个 Derivation 只把行列式变成闭行走；真正的局部组合问题是：同一个偶子图在高阶顶点处可以用许多不同方式“穿过”顶点，为什么这些回路分解的带符号和恰好等于一个无符号偶子图。这个步骤可以完全局域化。
+\begin{lemma}[Feynman--Sherman 局部交叉消去]\label{lem:phys-sm-feynman-sherman-local}
+在一个小圆盘内放置按逆时针循环排列的 \(2m\) 个端点，并把它们两两配对。对配对 \(\pi\) 用直弦连接各对端点，记 \(c(\pi)\) 为弦的交叉对数。则
+\begin{equation}\label{eq:phys-sm-local-pairing-cancellation}
+ \sum_{\pi\in\mathfrak P_{2m}}
+ (-1)^{c(\pi)}=1,
+\end{equation}
+其中 \(\mathfrak P_{2m}\) 是全部 perfect 配对的集合。
+\end{lemma}
+\begin{proof}[解]
+定义 \(2m\times2m\) 反对称矩阵
+\[
+ A^{(m)}_{ij}
+ =\begin{cases}
+ +1,&i<j,\\
+ -1,&i>j,\\
+ 0,&i=j.
+ \end{cases}
+\]
+Pfaffian 的组合展开为
+\[
+ \operatorname{Pf}A^{(m)}
+ =\sum_{\pi\in\mathfrak P_{2m}}
+ \operatorname{sgn}(\pi)
+ \prod_{\{i,j\}\in\pi,\ i<j}A^{(m)}_{ij}.
+\]
+所有乘积因子都等于 \(1\)。对圆周上按循环序编号的端点，Pfaffian 匹配的符号正是
+\[
+ \operatorname{sgn}(\pi)=(-1)^{c(\pi)},
+\]
+因为每交换一次交叉弦的端点次序恰改变一次置换宇称。因此左端就是\eqnrefs{eq:phys-sm-local-pairing-cancellation}中的带符号和。
+现在沿第一行展开 Pfaffian。令
+\(
+P_m:=\operatorname{Pf}A^{(m)}
+\)，则删去第 \(1,j\) 行列后的矩阵在保持剩余循环次序后仍是同一型的 \(A^{(m-1)}\)，所以
+\[
+\begin{aligned}
+ P_m
+ &=\sum_{j=2}^{2m}(-1)^j
+ A^{(m)}_{1j}\,P_{m-1}\\
+ &=\left(\sum_{j=2}^{2m}(-1)^j\right)P_{m-1}
+ =P_{m-1}.
+\end{aligned}
+\]
+基例 \(P_1=1\)，归纳即得 \(P_m=1\) 对所有 \(m\ge1\) 成立。
+把这个局部恒等式放回平面偶子图 \(H\subseteq\mathsf E\)。在每个顶点 \(v\) 的小圆盘内，\(H\) 给出偶数个占据半边；选一个局部配对 \(\pi_v\) 就决定这些边如何穿过 \(v\)。对全部顶点同时选择配对后，整个 \(H\) 被唯一分解成一组边不交闭回路。把每条通道在顶点圆盘内轻微平滑后，平面中的交叉只发生在这些互不相交的顶点圆盘内，因此总交叉数模二满足
+\[
+ c_{\rm tot}(\{\pi_v\})
+ \equiv\sum_vc(\pi_v)\pmod2.
+\]
+Whitney 转角奇偶关系把 Kac--Ward 的半角相位与行列式圈 sign 的乘积化成
+\(
+(-1)^{c_{\rm tot}}
+\)。于是固定偶子图 \(H\) 的全部回路分解的总系数因子化为
+\[
+\begin{aligned}
+ \sum_{\{\pi_v\}}
+ (-1)^{c_{\rm tot}(\{\pi_v\})}
+ &=\prod_{v\in\mathsf V}
+ \left[
+ \sum_{\pi_v\in\mathfrak P_{\deg_H(v)}}
+ (-1)^{c(\pi_v)}
+ \right]\\
+ &=1.
+\end{aligned}
+\]
+这就是 Feynman--Sherman “局部交通堵塞消去”的严格组合核心：高阶顶点处大量不同的穿线方式不会留下额外重数，每个偶子图最终只留下系数 \(+1\)。迹--对数展开中含重复覆盖边的非多线性项，先由标准的回路反向与重复边配对成对消去；剩下的边不交部分再由这里的局部恒等式精确压成偶子图生成函数，从而得到\eqnrefs{eq:phys-sm-kac-ward}。
+\end{proof}
+与\eqnrefs{eq:phys-sm-high-temp-z} 合并；若自环集合为 \(L\)，并令 \(\mathsf K_{\rm KW}[G\setminus L]\) 表示无自环核上的 Kac--Ward 矩阵，则
+\begin{equation}
+ Z_G
+ =2^{|\mathsf V|}\left(\prod_{e\in\mathsf E}\cosh K_e\right)
+ \left(\prod_{e\in L}(1+x_e)\right)
+ \sqrt{\det\!\left(\mathbb I-\mathsf K_{\rm KW}[G\setminus L]\right)}.
+ \label{eq:phys-sm-kac-ward-ising}
+\end{equation}
+平方根取在全部非自环边权 \(x_e=0\) 时等于 \(1\) 的解析支。若 \(L=\varnothing\)，自环乘积按空积约定等于 \(1\)。
+\section{环面上的四个自旋结构}
+标准平面 Kac--Ward 定理不能通过“把图画到环面上”直接推广。环面闭行走除了局部转角还携带两个非平凡同调绕行数，单个行列式无法同时给四个同调类赋予正确符号。严格曲面推广需要选择自旋结构，并得到四个扭转的 Kac--Ward/Pfaffian 对象；物理 Ising 配分函数是它们按 Arf/特征标规则组成的线性组合。这一曲面版定理属于独立数学输入。Jordan--Wigner 有限环分析则从转移算符侧独立地产生 NS/R 与奇偶插入的四个有限迹，并与这组 \(\mathrm H^1\) 扭转结构对应。
+\begin{proof}[解]
+环面上 Ising 配分函数需要四个 Kac--Ward Pfaffian，并按 Arf 不变量组合。先区分四种边界扭转，再逐一计算相应 Pfaffian，最后用有限 Fourier 变换恢复各同调扇区。
+环面闭行走的同调分解。环面上闭无回溯行走 \(\gamma\) 除局部转角外还携带绕行数 \((w_x,w_y)\in\mathbb Z^2\)（沿两个基本圈的整数绕行）。Whitney 转角公式推广为
+\begin{equation*}
+  \sum_{j}\angle(\vec e_j,\vec e_{j+1})=2\pi\bigl(\mathrm{rot}(\gamma)+w_xw_y\bigr),
+\end{equation*}
+其中 \(\mathrm{rot}(\gamma)\) 是正则旋转数（平面部分），\(w_xw_y\) 是同调交叉修正——绕行 \((1,1)\) 的行走比 \((1,0)+(0,1)\) 多转 \(2\pi\)。半角相位因此含额外因子 \((-1)^{w_xw_y}\)，使单一 Kac--Ward 行列式无法同时给四个同调扇区正确赋号。
+扭转 Kac--Ward 矩阵。对每个扭转 \(\boldsymbol\upsilon=(\upsilon_x,\upsilon_y)\in\mathbb F_2^2\)，定义扭转 Kac--Ward 矩阵 \(\mathsf K_{\rm KW}^{\boldsymbol\upsilon}\)：在跨越 \(x\)-割线的定向边上乘 \((-1)^{\upsilon_x}\)，跨越 \(y\)-割线乘 \((-1)^{\upsilon_y}\)。这等价于在转移矩阵中施加周期（\(\upsilon=0\)）或反周期（\(\upsilon=1\)）边界条件。四个行列式
+\begin{equation*}
+  D^{\boldsymbol\upsilon}:=\det(\mathbb I-\mathsf K_{\rm KW}^{\boldsymbol\upsilon}),\qquad\boldsymbol\upsilon\in\mathbb F_2^2,
+\end{equation*}
+各自统计固定扭转的闭行走，同调交叉修正被边界条件吸收。
+Arf 不变量与配分函数组合。四个扭转对应四个自旋结构，由 Arf 不变量 \(\operatorname{Arf}:\mathrm{Spin}(\Sigma_1)\to\mathbb F_2\) 分类。环面上 Arf 值为
+\begin{equation*}
+  \operatorname{Arf}(0,0)=0,\quad\operatorname{Arf}(1,0)=0,\quad\operatorname{Arf}(0,1)=0,\quad\operatorname{Arf}(1,1)=1.
+\end{equation*}
+三个偶自旋结构（Arf=0）和一个奇自旋结构（Arf=1）。环面 Ising 配分函数为
+\begin{equation}
+  Z_{T^2}=\frac{1}{2}\left(-\sqrt{D^{00}}+\sqrt{D^{10}}+\sqrt{D^{01}}+\sqrt{D^{11}}\right),
+  \label{eq:phys-sm-torus-ising-arf}
+\end{equation}
+符号模式 \((-1,+,+,+)\) 正是 \((-1)^{\operatorname{Arf}(\boldsymbol\upsilon)+1}\)。一般亏格 \(g\) 曲面推广为
+\begin{equation*}
+  Z_{\Sigma_g}=2^{g-1}\sum_{\boldsymbol\upsilon\in\mathbb F_2^{2g}}(-1)^{\operatorname{Arf}(\boldsymbol\upsilon)+1}\sqrt{D^{\boldsymbol\upsilon}},
+\end{equation*}
+求和遍历 \(2^{2g}\) 个自旋结构，Arf 不变量由辛基 \(\{a_i,b_i\}\) 上的二次型计算。
+与离散 Fourier 变换的一致性。由\eqnrefs{eq:phys-sm-torus-character-transform,eq:phys-sm-torus-character-inverse}，物理配分函数 \(Z=\sum_{\mathbf w}Z_{\mathbf w}\) 与扭转配分函数 \(Z^{\boldsymbol\upsilon}=\sum_{\mathbf w}(-1)^{\boldsymbol\upsilon\cdot\mathbf w}Z_{\mathbf w}\) 由 \(4\times4\) Fourier 变换联系。Kac--Ward Pfaffian 直接计算 \(Z^{\boldsymbol\upsilon}\)（而非 \(Z_{\mathbf w}\)），因此\eqnrefs{eq:phys-sm-torus-ising-arf} 中的组合是\eqnrefs{eq:phys-sm-torus-character-inverse} 在 Kac--Ward 表示下的实现。奇自旋结构 \((1,1)\) 前的负号来自 Arf 不变量，等价于 Fourier 逆变换中 \((-1)^{\upsilon_x w_x+\upsilon_y w_y}\) 在 \((w_x,w_y)=(1,1)\) 处的 \(-1\) 因子。
+Onsager 1944 年原始解本质上使用了环面四个自旋结构的区分（通过 Jordan--Wigner 变换的 NS/R 边界条件），但未明确表述为 Arf 不变量。Kac--Ward 框架把 Onsager 的特设处理系统化为拓扑不变量：临界行为由色散 \(\gamma(k)\) 的零点决定，而色散的周期/反周期选择正是自旋结构的物理实现。这把 Onsager 精确解从"巧妙技巧"提升为"拓扑必然"——二维 Ising 的精确可解性根植于 \(\mathrm H_1(T^2;\mathbb F_2)\cong\mathbb F_2^2\) 的有限维代数。配分函数的 Arf 不变量分解为
+\begin{equation*}
+Z_{\Sigma_g}=\sum_{\boldsymbol\upsilon}(-1)^{\operatorname{Arf}(\boldsymbol\upsilon)}\,\mathrm{Pf}[K(\boldsymbol\upsilon)],
+\end{equation*}
+其中求和遍及 \(2^{2g}\) 个自旋结构，\(\operatorname{Arf}\in\{0,1\}\) 区分偶/奇自旋结构。
+\end{proof}
+另一条可积性路线由星--三角关系组织，并可改写成 Yang--Baxter 型一致性条件。
+星--三角关系（star--triangle 关系）是 Ising 模型可积性的代数核心。下面直接比较星形与三角形对三个外部自旋产生的 Boltzmann 权重，再消去公共归一化因子。
+对三个 Ising 自旋 \(\sigma_1,\sigma_2,\sigma_3\) 在中心自旋 \(\sigma_0\) 处交汇，"星"图（中心 \(\sigma_0\) 连到三个外自旋）与"三角"图（三个外自旋直接两两耦合）的配分函数相等条件给出
+\begin{equation*}
+  \sum_{\sigma_0=\pm1}\ee^{K_1\sigma_0\sigma_1+K_2\sigma_0\sigma_2+K_3\sigma_0\sigma_3}=A\,\ee^{K_1'\sigma_2\sigma_3+K_2'\sigma_1\sigma_3+K_3'\sigma_1\sigma_2},
+\end{equation*}
+对所有 \((\sigma_1,\sigma_2,\sigma_3)\in\{\pm1\}^3\) 成立。展开左端 \(2\cosh(K_1\sigma_1+K_2\sigma_2+K_3\sigma_3)\)，比较 \((+,+,+)\) 和 \((+,+,-)\) 两个独立构型，得到
+\begin{equation}
+  \cosh(K_1+K_2+K_3)=A\cosh(K_1'+K_2'+K_3'),\qquad\cosh(K_1+K_2-K_3)=A\cosh(K_1'+K_2'-K_3').
+  \label{eq:phys-sm-star-triangle}
+\end{equation}
+消去 \(A\) 并利用双曲恒等式，等价条件化为
+\begin{equation*}
+  \sinh(2K_1)\sinh(2K_2)\sinh(2K_3)=\sinh(2K_1')\sinh(2K_2')\sinh(2K_3'),
+\end{equation*}
+且 \(K_i'\) 由 \(K_j\) 通过 \(\sinh(2K_i')\sinh(2K_j)\sinh(2K_k)=1\)（\(\{i,j,k\}=\{1,2,3\}\)）给出。
+各向同性 \(K_1=K_2=K_3=K\)，\(K_1'=K_2'=K_3'=K'\) 时，星--三角关系化为 \(\sinh^3(2K)=\sinh^3(2K')\)，即 \(K=K'\)。更精确地，各向同性的自对偶条件是 \(\sinh(2K_c)=1\)（Kramers--Wannier），而星--三角给出的可积点满足 \(\sinh(2K)\sinh(2K')\sinh(2K'')=1\)。对三角格 Ising，星--三角关系把三角格映射到六角格（对偶），给出精确临界温度 \(\sinh(2K_c^{\rm tri})=2/\sqrt3\)。
+星--三角关系可重写为 \(R\)-矩阵的 Yang--Baxter 方程。定义 \(R\)-矩阵（作用在 \((\mathbb C^2)^{\otimes3}\) 上）
+\begin{equation*}
+  R_{ijk}(K_1,K_2,K_3)=\sum_{\sigma_0}\ee^{K_1\sigma_0\sigma_i+K_2\sigma_0\sigma_j+K_3\sigma_0\sigma_k}\,|\sigma_i\sigma_j\sigma_k\rangle\langle\sigma_i\sigma_j\sigma_k|,
+\end{equation*}
+星--三角关系 \(R_{123}R_{213}R_{132}=A\cdot R_{231}R_{312}R_{123}\)（适当指标排列）即 Yang--Baxter 方程的 braid 形式。这一代数方程保证转移矩阵的不同构造方式给出相同谱（可积性），是精确可解模型的统一判据。

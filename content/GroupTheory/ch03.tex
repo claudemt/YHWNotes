@@ -1,1749 +1,954 @@
-\chapter{点群与空间群}
-\label{chap:point-space-groups}
+\chapter{同态、正规子群与商群}
+\label{chap:homomorphism-quotient}
 
-\chapref{chap:group-basics}和\chapref{chap:representation-theory}已经完成了两层抽象：\chapref{chap:group-basics}把“可逆操作的复合”整理成群的语言，\chapref{chap:representation-theory}又把抽象群送到线性空间上，使群元能够以矩阵和线性算符的形式参与实际计算。从这一章开始，我们第一次把这套语言系统地放回物理对象中。这里的对象是分子、团簇与晶体；我们不再只问一个群有哪些子群、类和不可约表示，而要问一个更具体的问题：\emph{一个三维物体究竟允许哪些空间对称操作，这些操作为什么只能以某些固定的组合出现？}
+两个群的元素名称和外观可以完全不同，却可能具有相同的复合规律。同态只保留乘法结构，因此可以把一个复杂群压缩到较简单的像；被压缩成单位元的那部分构成核。
 
-这一步是后续量子力学应用真正的几何基础。一个分子的振动模式为什么会被标成 $A_1$、$E$ 或 $T_2$，一个晶体为什么只有某些旋转轴而不可能具有五重周期旋转，一个空间群的螺旋轴和滑移面为什么会导致布里渊区边界上的额外简并——这些问题都来自本章建立的结构。因此本章依次从点群的母体 $O(3)$ 出发，分类第一类与第二类点群，再把平移周期性加入进来建立晶体点群、Bravais 晶格和空间群，最后回到不可约表示。点群与空间群由此成为描述分子、晶体结构、电子结构和振动谱的统一语言。
+若想把核中的元素视为彼此不可区分，必须保证等价类的乘法不依赖代表元。这个要求正是正规性。商群不是把符号 $G/H$ 写出来就自动存在，而是乘法良定义后才得到的新群；第一同构定理随后说明，按核取商与直接看像其实是同一结构。
 
-本章默认三维欧氏空间为 $\mathbb R^3$，内积写作 $\vb r\cdot\vb s$。对一个正交变换 $R$，其矩阵仍记作 $R$；单位矩阵记作 $I_3$。为了避免与正二十面体旋转群 $I$ 混淆，空间反演记作 $\mathcal I$：
+\section{共轭、类与正规子群}
+\label{sec:conjugacy-normal}
+
+群论里一个看似奇怪、但物理意义非常直接的组合是
 \[
-\mathcal I:\vb r\longmapsto-\vb r,
-\qquad [\mathcal I]=-I_3.
+xgx^{-1}.
 \]
-点群的命名采用 Schoenflies 符号。正二十面体纯转动群在部分中文文献中记作 $Y$，这里统一采用现代文献中更常见的 $I$；两者指同一个群。
+如果 $g$ 是某个操作，而 $x$ 表示“改变观察坐标或重新标记对象”，那么先用 $x^{-1}$ 把问题搬到旧标记下，做 $g$，再用 $x$ 搬回来，得到的正是同一个几何或代数结构在新标记下的表达。因此 $g$ 与 $xgx^{-1}$ 应被视为同一种操作的不同位置或不同坐标表达。这个关系叫共轭。
 
-\section{点群基础：从 \texorpdfstring{$O(3)$}{O(3)} 到有限对称群}
-\label{sec:point-group-foundation}
+例如在正方形对称群中，绕一条对角线反射和绕另一条对角线反射可以通过整体转动 $90^\circ$ 相互变换，所以它们属于同一个共轭类。后面特征标为什么在一整个共轭类上取同一个值，本质上就是因为表示矩阵在共轭下只发生相似变换，而迹不随相似变换改变。
 
-前两章的群元是抽象的。从这一章开始，我们第一次让群元变成可以画出来的空间操作。设三维空间中一个位置向量写成
+
+\begin{definition}[共轭]
+若 $x,y\in G$，并且存在 $g\in G$ 使
 \[
-\vb r=(x,y,z)^{\mathsf T}.
+y=gxg^{-1},
 \]
-一个保持原点不动的刚性对称操作把它变成另一个向量 $\vb r'=R\vb r$。这里 $R$ 是 $3\times3$ 实矩阵；上标 $\mathsf T$ 表示转置。若操作保持任意两点间距离，就必须有
-\[
-|R\vb r|^2=|\vb r|^2\qquad\forall\vb r,
-\]
-从而得到 $R^{\mathsf T}R=I_3$。这就是正交矩阵出现的原因，而不是先规定“点群元素必须是正交矩阵”。
-
-此后经常出现的 $C_n$、$\sigma$、$i$、$S_n$ 也都只是几何操作的简写。$C_n$ 表示绕某条轴转 $2\pi/n$；$\sigma$ 表示镜面反射；$i$ 表示空间反演 $\vb r\mapsto-\vb r$；$S_n$ 表示“先转 $2\pi/n$ 再关于垂直于轴的平面反射”的转动反射。第一次看到这些符号时，先把它们翻译成一句几何动作，再去做群乘法。
-
-
-这里有一个全书必须提前消除的符号冲突：本章 Schoenflies 记号中的 $S_n$ 指\emph{转动反射操作或由它生成的点群}，而\chapref{chap:permutation-group}中的 $S_n$ 指 $n$ 个对象的\emph{对称置换群}。两者没有任何“同一个 $S$”的数学关系，只是历史上恰好用了相同字母。本章若写 $S_4$ 并同时出现旋转轴、镜面等几何语言，指的是四重转动反射；第六章若写 $S_4$ 并讨论 $(12)$、循环和 Young 图，指的是四阶对称群。
-
-同样，$D_n$ 的下标约定在不同数学教材里并不完全统一。本书按物理和 Schoenflies 文献习惯，把含 $n$ 重主轴和 $n$ 条横向二重轴的纯转动群记作 $D_n$，它有 $2n$ 个元素。某些抽象代数教材会把同一个阶为 $2n$ 的二面体群记成 $D_{2n}$。以后遇到外部资料时，应先看作者把 $|D_n|$ 规定成 $2n$ 还是 $n$，不要只凭字母判断。
-
-Schoenflies 符号依赖几何对象，而群论计算处理变换本身，因此先区分两个常被混用的术语。\emph{对称操作}是作为群元的变换；\emph{对称元素}是执行变换所依赖的轴、平面或点。例如绕 $z$ 轴转动 $2\pi/3$ 是对称操作，$z$ 轴则是对称元素。
-
-\begin{definition}[对称操作、对称元素与点群]
-设几何对象 $X\subset\mathbb R^3$。若正交变换 $R\in O(3)$ 使得
-\[
-R X=X,
-\]
-则称 $R$ 为 $X$ 的一个\textbf{对称操作}。执行某一类对称操作时保持不动或作为几何参照的轴、平面或点称为相应的\textbf{对称元素}。
-
-若所有保持 $X$ 不变且保持某一固定点不动的正交变换形成有限群 $G$，则称 $G$ 为 $X$ 的\textbf{点群}。等价地，点群是 $O(3)$ 的有限子群。
-\label{def:point-group}
+则称 $x$ 与 $y$ 共轭，记为 $x\sim y$。
+\label{def:conjugacy}
 \end{definition}
 
-这里把点群定义为 $O(3)$ 的有限子群，等价于把“至少有一个公共固定点”平移到原点。之后所有操作都可写成过原点的线性正交变换，这样几何问题就可以进入矩阵语言。接下来还要区分只含纯转动的群与含有非纯转动操作的群，因为两类点群的分类策略不同。
-
-最直观的例子是立方体。它的纯转动对称操作共有 $24$ 个：绕四条体对角线作 $\pm 2\pi/3$ 转动给出 $8$ 个，绕三条四重轴作 $\pi/2,\pi,3\pi/2$ 转动给出 $9$ 个，绕六条穿过相对棱中点的二重轴作 $\pi$ 转动给出 $6$ 个，再加恒等操作。把空间反演与这 $24$ 个操作相乘，又得到 $24$ 个不保手性的操作，于是完整立方体点群 $O_h$ 有 $48$ 个元素。这个计数不是本章的最终目的，但它提示我们：点群不是任意堆起来的几何操作，而是受到 $O(3)$ 群结构严密约束的有限集合。
-
-在进入矩阵计算之前，先用几个具体分子把“完整点群”的判定方法校准清楚。
-
-抽象定义真正变成课堂上可用的工具，需要练习如何从一个具体结构中找出完整点群。最容易犯的错误有两个：第一，只找到一个显眼的高阶轴就停止；第二，把“某个投影看起来重合”误当成三维物体真的重合。判定对称操作时必须检查\emph{所有}原子或结构点在三维空间中的位置，而不是只看某个二维投影。
-
-以水分子为例，把分子平面取为 $yz$ 平面，氧原子在原点，两条 O--H 键关于 $z$ 轴对称。绕 $z$ 轴转 $\pi$ 会交换两个氢原子，因此有一个 $C_2$；分子平面本身是一个镜面，垂直于分子平面且包含 $z$ 轴的平面也是镜面。于是完整点群为
-\[
-C_{2v}=\{E,C_2,\sigma_v,\sigma_v'\}.
-\]
-这里不存在水平镜面，因为关于垂直主轴的平面反射会把两个氢原子送到并不存在的位置；也不存在反演中心。
-
-再看氨分子 $\mathrm{NH_3}$。三个氢原子构成近似等边三角形，氮原子偏离氢原子平面。穿过氮原子和三角形中心的轴是 $C_3$ 主轴，三个包含主轴与一条 N--H 键的平面都是竖直镜面，因此点群为 $C_{3v}$。这里没有 $\sigma_h$，因为水平反射会把氮原子翻到三角形另一侧。
-
-这个 $C_{3v}$ 正是\chapref{chap:group-basics} 中系统分析过的二面体群 $D_3$ 的物理实现：$C_3$ 主轴对应旋转 $r$，三个 $\sigma_v$ 镜面对应反射 $s,sr,sr^2$。两个群同构 $C_{3v}\cong D_3\cong S_3$，\chapref{chap:group-basics} 中算出的共轭类 $\{e\}$、$\{r,r^2\}$、$\{s,sr,sr^2\}$ 分别对应这里的 $\{E\}$、$\{2C_3\}$、$\{3\sigma_v\}$。后续遇到 $C_{3v}$ 的特征标表、对称性适配线性组合 投影、振动模分解时，都可以直接复用 $D_3$ 的全部代数结果。
-
-苯分子则展示了为什么“先找主轴，再检查附加元素”的流程有效。垂直分子平面的轴是 $C_6$；分子平面本身是 $\sigma_h$；平面内还有六条二重轴，并存在多组 $\sigma_v/\sigma_d$ 与反演中心。因此其点群是 $D_{6h}$。如果只看到 $C_6$ 就写成 $C_6$，会丢掉几乎全部真正有用的选择定则。
-
-这些例子并不是为了提前背分子点群，而是为了强调一个方法论：\emph{点群是完整对称操作的集合，识别任务是找全群，而不是找一个代表性操作。} 后面的 Schoenflies 判定树正是把这个搜索过程标准化。
-
-立方体纯转动群 O 中三类典型转轴如图 \figref{fig:cube-axes} 所示。
-\begin{figure}[htbp]
-\centering
-\begin{tikzfig}[scale=0.95]
-  \coordinate (O) at (0,0);
-  \draw[axes] (-3,0)--(3,0) node[right] {$x$};
-  \draw[axes] (0,-2.3)--(0,2.5) node[above] {$z$};
-  \draw[line width=.85pt] (-1.5,-1.2) rectangle (1.5,1.2);
-  \draw[line width=.85pt] (-0.8,-1.8) rectangle (2.2,.6);
-  \draw[line width=.65pt] (-1.5,-1.2)--(-.8,-1.8) (1.5,-1.2)--(2.2,-1.8)
-                         (-1.5,1.2)--(-.8,.6) (1.5,1.2)--(2.2,.6);
-  \draw[lecturearrow] (0,0) -- (0,2.0);
-  \node[lecturelabel] at (1.0,2.05) {$C_4$};
-  \draw[lecturearrow] (0,0) -- (1.75,1.55);
-  \node[lecturelabel] at (2.35,1.55) {$C_3$};
-  \draw[lecturearrow] (0,0) -- (-2.1,.85);
-  \node[lecturelabel] at (-2.5,1.3) {$C_2$};
-\end{tikzfig}
-\caption{立方体纯转动群 $O$ 中三类典型转轴。四重轴、三重轴与二重轴分别穿过面心、顶点和相对棱中点。}
-\label{fig:cube-axes}
-\end{figure}
-
-为什么所有点群都自然地嵌在 $O(3)$ 中？因为空间中的刚性对称操作必须保持长度和夹角，而长度与夹角都由内积决定。于是最一般的线性刚性变换就是保内积变换。
-
-\begin{definition}[三维正交群与特殊正交群]
-三维实正交群定义为
-\[
-O(3)=\{R\in \operatorname{GL}(3,\mathbb R)\mid R^{\mathsf T}R=I_3\}.
-\]
-其行列式为 $+1$ 的子群
-\[
-SO(3)=\{R\in O(3)\mid \det R=1\}
-\]
-称为三维特殊正交群或转动群。
-\label{def:o3-so3}
-\end{definition}
-
-由 $R^{\mathsf T}R=I_3$ 立刻得到
-\[
-1=\det(R^{\mathsf T}R)=(\det R)^2,
-\]
-因此 $O(3)$ 中每个元素的行列式只能是 $\pm1$。这个简单的二值量已经把全部正交变换分成两类：$\det R=+1$ 的变换保手性，$\det R=-1$ 的变换反手性。更重要的是，行列式本身构成群同态
-\[
-\det:O(3)\longrightarrow\{+1,-1\}\simeq C_2,
-\]
-其核恰好是 $SO(3)$。于是\chapref{chap:group-basics}的同态核定理立即给出
-\[
-SO(3)\mathrel{\trianglelefteq} O(3),
-\qquad
-O(3)/SO(3)\simeq C_2.
-\]
-这说明“保手性/反手性”不是几何上的偶然分类，而是一个标准的商群结构。
-
-\begin{proposition}[$O(3)$ 的直积分解]
-空间反演 $\mathcal I=-I_3$ 与 $O(3)$ 中所有元素交换，且 $\det\mathcal I=-1$。因此
-\[
-O(3)=SO(3)\times\{E,\mathcal I\}.
-\]
-换言之，每个反手性的正交变换都可以唯一写成
-\[
-\mathcal I R,
-\qquad R\in SO(3).
-\]
-\label{prop:o3-direct-product}
+\begin{proposition}[共轭是等价关系]
+群上的共轭关系满足自反性、对称性和传递性，因此把 $G$ 分割成若干互不相交的共轭类。
+\label{prop:conjugacy-equivalence}
 
 \end{proposition}
 
 \begin{proof}
-任取 $Q\in O(3)$。若 $\det Q=1$，则 $Q\in SO(3)$；若 $\det Q=-1$，则
+自反性来自 $x=exe^{-1}$。若 $y=gxg^{-1}$，则
 \[
-\det(\mathcal I Q)=(-1)^3\det Q=1,
+x=g^{-1}yg,
 \]
-故 $R=\mathcal I Q\in SO(3)$，于是 $Q=\mathcal I R$。又因为 $\mathcal I$ 是标量矩阵 $-I_3$，与任意 $R$ 交换，并且 $SO(3)\cap\{E,\mathcal I\}=\{E\}$，故得到内直积。
+故有对称性。若 $y=gxg^{-1}$ 且 $z=hyh^{-1}$，则
+\[
+z=(hg)x(hg)^{-1},
+\]
+故有传递性。
 \end{proof}
 
-这一定理对点群分类非常关键。它告诉我们：所有不保手性的点群操作都可以理解为“一个纯转动再乘一个空间反演”。因此只要先理解 $SO(3)$ 的有限子群，第二类点群的构造就有了统一母体。
-
-有了 $O(3)$ 和 $SO(3)$ 的定义，下一个基本事实是：$SO(3)$ 的每个元素都是绕某轴的转动。证明将由特征值 $1$ 找到不动轴，并由垂直平面上的二维正交作用定义转角，这也建立了后续反复使用的轴角参数化。
-
-在三维空间里，$SO(3)$ 的元素并不是抽象的三阶正交矩阵，它们都有明确的几何意义：总能找到一条固定轴。这是点群中“旋转轴”概念的数学来源。
-
-\begin{theorem}[三维转动轴定理]
-对任意 $R\in SO(3)$，存在单位向量 $\uv n\in\mathbb R^3$ 使
+\begin{definition}[共轭类、中心与中心化子]
+元素 $x\in G$ 的共轭类为
 \[
-R\uv n=\uv n.
+\operatorname{Cl}(x)=\{gxg^{-1}\mid g\in G\}.
 \]
-因此 $R$ 必为绕轴 $\mathbb R\uv n$ 的某个转动。
-\label{thm:rotation-axis}
+$G$ 的中心定义为
+\[
+Z(G)=\{z\in G\mid zg=gz,\ \forall g\in G\}.
+\]
+$x$ 的中心化子定义为
+\[
+C_G(x)=\{g\in G\mid gx=xg\}.
+\]
+\label{def:center-centralizer}
+\end{definition}
+
+\begin{proposition}[中心化子是子群]
+对任意 $x\in G$，$C_G(x)\leqslant G$；并且
+\[
+x\in Z(G)
+\quad\Longleftrightarrow\quad
+C_G(x)=G
+\quad\Longleftrightarrow\quad
+\operatorname{Cl}(x)=\{x\}.
+\]
+\label{prop:centralizer-subgroup}
+
+\end{proposition}
+
+\begin{proof}
+若 $a,b\in C_G(x)$，则 $ax=xa$、$bx=xb$，从而
+\[
+(ab^{-1})x=a(b^{-1}x)=a(xb^{-1})=(ax)b^{-1}=x(ab^{-1}).
+\]
+故 $ab^{-1}\in C_G(x)$，由一步子群判据得到 $C_G(x)\leqslant G$。其余等价关系直接由定义得到。
+\end{proof}
+
+\begin{theorem}[共轭类大小公式]
+若 $G$ 为有限群，则
+\[
+\lvert\operatorname{Cl}(x)\rvert=[G:C_G(x)]
+=\frac{\lvert G\rvert}{\lvert C_G(x)\rvert}.
+\label{eq:class-size}
+\]
+特别地，每个共轭类的大小都整除 $\lvert G\rvert$。
+\label{thm:class-size}
 
 \end{theorem}
 
 \begin{proof}
-由于 $R$ 为实正交矩阵，$R^{-1}=R^{\mathsf T}$。考虑
+定义从左陪集集合到共轭类的映射
 \[
-\det(R-I_3).
+\Phi:\{gC_G(x)\mid g\in G\}\longrightarrow \operatorname{Cl}(x),
+\qquad
+\Phi(gC_G(x))=gxg^{-1}.
 \]
-利用转置不改行列式，
+中心化子 $C_G(x)$ 一般并不正规，因此此处需要的只是它的\emph{左陪集集合}。即使很多文献仍把这个集合简写为 $G/C_G(x)$，也不应误以为它自动带有商群乘法。
+先证良定义。若 $gC_G(x)=hC_G(x)$，则 $h^{-1}g\in C_G(x)$，所以
 \[
-\det(R-I_3)
-=\det(R^{\mathsf T}-I_3)
-=\det(R^{-1}-I_3).
+(h^{-1}g)x=x(h^{-1}g).
 \]
-而
+左右适当乘以 $h$ 与 $g^{-1}$ 得
 \[
-R^{-1}-I_3
-=R^{-1}(I_3-R)
-=-R^{-1}(R-I_3),
+gxg^{-1}=hxh^{-1}.
 \]
-故
+因此同一陪集给出同一共轭元。任意 $y\in\operatorname{Cl}(x)$ 都按定义可写为 $y=gxg^{-1}$，故映射满射。若
 \[
-\det(R^{-1}-I_3)
-=\det(-I_3)\det(R^{-1})\det(R-I_3)
-=-\det(R-I_3),
+gxg^{-1}=hxh^{-1},
 \]
-其中用到了 $\det R=1$。于是
-\[
-\det(R-I_3)=-\det(R-I_3),
-\]
-只能有 $\det(R-I_3)=0$。因此 $R-I_3$ 有非零核。任取非零核向量并归一化，便得到单位向量 $\uv n$，满足 $R\uv n=\uv n$。
+则 $h^{-1}g\in C_G(x)$，故 $gC_G(x)=hC_G(x)$，所以 $\Phi$ 单射。于是共轭类与左陪集一一对应，结合 Lagrange 定理即得\eqnrefs{eq:class-size}。
 \end{proof}
 
-这个证明可以用本征值一步步看清。实正交矩阵 $R$ 的所有复本征值都满足 $|\lambda|=1$，而实系数特征多项式的非实根成共轭对。三维只有三个本征值，所以至少有一个本征值是实数；单位圆上的实数只有 $+1$ 与 $-1$。又因为三个本征值的乘积是 $\det R=+1$，如果那个实本征值是 $-1$，剩余一对共轭本征值的乘积为 $1$，总乘积就会是 $-1$，矛盾。因此必有本征值 $+1$。
+这个公式其实就是轨道--稳定子定理的一个特例。让 $G$ 作用在自己上，作用定义为
+\[
+x\cdot g=xgx^{-1}.
+\]
+那么 $g$ 的轨道正是共轭类 $\operatorname{Cl}(g)$；使 $g$ 不动的那些 $x$ 满足 $xgx^{-1}=g$，等价于 $xg=gx$，所以稳定子正是中心化子 $C_G(g)$。于是
+\[
+|\operatorname{Cl}(g)|=\frac{|G|}{|C_G(g)|}.
+\]
 
-取对应单位本征向量 $\uv n$，有 $R\uv n=\uv n$，所以这条方向在转动下保持不动，就是转轴。与 $\uv n$ 垂直的二维平面也被 $R$ 保持，在这个平面上 $R$ 是一个二维行列式为 $+1$ 的正交变换，只能是普通平面转动。于是任意三维纯转动都由“轴 + 角”完全描述。
+这给出一个非常有用的物理直觉：一个操作与“越多”的群元交换，它的中心化子越大，它的共轭类就越小；反之，一个操作越特殊、越少有别的操作与它兼容，它在群作用下会产生越大的等价轨道。
 
+在分子对称性中，这条公式的直接读法是：共轭类大小恰好等于“与某类对称操作等价的操作的个数”。以 $D_3$（即 $C_{3v}$ 分子，如 $\mathrm{NH_3}$）为例，三个反射 $\sigma_v$ 在群作用下彼此等价（旋转把一条镜面转到另一条），共轭类大小为 $3$；而两个旋转 $C_3,C_3^2$ 也彼此等价（反射把逆时针转成顺时针），共轭类大小为 $2$。后续用特征标投影算符构造对称适配线性组合（对称性适配线性组合）时，每个共轭类贡献一个独立的投影通道，因此共轭类的个数等于不可约表示的个数——这正是为什么本章必须把共轭类结构算清楚：它直接决定了下一章特征标表的行数和列数。
 
-取该单位向量 $\uv n$ 作为新坐标系的 $z'$ 轴，再在其正交平面中取正交单位向量 $\vb e_1',\vb e_2'$，则在基 $\mathcal B'=(\vb e_1',\vb e_2',\uv n)$ 下，转动矩阵必为
+\begin{corollary}[类方程]
+设 $G$ 为有限群，从每个非平凡共轭类中取一个代表元 $x_1,\dots,x_r$，则
 \[
-R_{\uv n}(\theta)\big|_{\mathcal B'}=
-\begin{pmatrix}
-\cos\theta&-\sin\theta&0\\
-\sin\theta&\cos\theta&0\\
-0&0&1
-\end{pmatrix}.
+\lvert G\rvert
+=
+\lvert Z(G)\rvert
++
+\sum_{i=1}^{r}[G:C_G(x_i)].
+\label{eq:class-equation}
 \]
-若 $Q$ 的列向量就是这组三个新基在旧基下的坐标，则在旧基中
-\[
-R_{\uv n}(\theta)=Q
-\begin{pmatrix}
-\cos\theta&-\sin\theta&0\\
-\sin\theta&\cos\theta&0\\
-0&0&1
-\end{pmatrix}
-Q^{-1}.
-\label{eq:axis-angle-similarity}
-\]
-这立即给出一个后面反复使用的结论：
-\[
-\tr R_{\uv n}(\theta)=1+2\cos\theta.
-\label{eq:rotation-trace}
-\]
-迹与轴的方向无关，只取决于转角。也正因为如此，特征标表中三维矢量表示的特征标往往可以直接从转角读出。
+\label{cor:class-equation}
 
-若 $S\in SO(3)$，则
-\[
-S R_{\uv n}(\theta)S^{-1}=R_{S\uv n}(\theta).
-\label{eq:rotation-conjugation}
-\]
-也就是说，共轭变换只把转轴转到新的方向，不改变转角。因此在整个 $SO(3)$ 中，具有相同转角的转动彼此共轭；但在一个有限点群中，只有当群里真的存在把两条轴联系起来的元素时，这两个转动才在该点群中共轭。这个区别会直接决定点群的类结构和特征标表。
+\end{corollary}
 
-\eqnrefs{eq:axis-angle-similarity} 已经说明任意轴转动都与标准 $z$ 轴转动相似，但实际计算时更方便直接用轴的单位向量 $\uv n$ 写出矩阵。把任意向量分解成平行与垂直两部分，
+\begin{proof}
+共轭关系把 $G$ 分割成互不相交的共轭类。中心中的每个元素 $z\in Z(G)$ 都满足 $gzg^{-1}=z$，所以其共轭类只有一个元素；反过来，若某元素的共轭类只有一个元素，则它与所有 $g\in G$ 交换，因此属于 $Z(G)$。于是所有单元素共轭类恰好组成 $Z(G)$。其余共轭类取代表 $x_i$，由类大小定理
 \[
-\vb r=(\uv n\cdot\vb r)\uv n+
-\bigl[\vb r-(\uv n\cdot\vb r)\uv n\bigr].
+|\operatorname{Cl}(x_i)|=[G:C_G(x_i)].
 \]
-平行分量不变；垂直平面内的分量按二维转动旋转 $\theta$。由此得到 Rodrigues 公式
+把所有互不相交共轭类的大小相加，便得到
 \[
-R_{\uv n}(\theta)\vb r
-=\vb r\cos\theta
-+(\uv n\times\vb r)\sin\theta
-+\uv n(\uv n\cdot\vb r)(1-\cos\theta).
-\label{eq:rodrigues-vector}
+|G|=|Z(G)|+\sum_{i=1}^r[G:C_G(x_i)].
 \]
-若定义反对称矩阵 $[\uv n]_\times$ 使
+\end{proof}
+
+类方程把整个群拆成"中心"与"非中心共轭类"两部分，是分析有限群结构最基本的计数工具。它的一个直接推论是：若 $|G|$ 是素数幂 $p^n$（$n\ge1$），则 $Z(G)$ 非平凡。理由是每个非中心共轭类的大小 $[G:C_G(x_i)]$ 既整除 $|G|=p^n$ 又大于 $1$，故都是 $p$ 的倍数；于是类方程右端除 $|Z(G)|$ 外各项都被 $p$ 整除，而左端 $p^n$ 也被 $p$ 整除，因此 $|Z(G)|$ 必须被 $p$ 整除，特别 $|Z(G)|\ge p>1$。这一结论是 $p$ 群结构定理的起点，也是后续证明有限 $p$ 群必有非平凡正规子群的基石。对 $D_3$ 而言，类方程 $6=1+2+3$ 中 $|Z(D_3)|=1$ 不被任何素数整除，这与 $6$ 不是素数幂一致。
+
+\medskip
+\noindent\emph{$D_3$ 共轭类的几何解读。}
+在 $D_3$ 中，共轭的几何含义是"换一个观察角度后，同一个操作长什么样"。用生成元 $r,s$ 可以把三个共轭类完全读出来，而不必依赖置换的循环型。
+
+旋转类 $\{r,r^2\}$。
+关系 $srs^{-1}=r^2$（即\eqnrefs{eq:d3-srs-relation}）直接说明 $r$ 与 $r^2$ 共轭。几何上，先反射、再转 $120^\circ$、再反射回去，等于转 $240^\circ$：反射把逆时针转角翻成了顺时针转角。因此 $r$ 与 $r^2$ 是同一种操作（"转 $120^\circ$"）在镜像观察下的两种写法，必须归入同一共轭类。中心化子 $C_{D_3}(r)=\left\langle r\right\rangle$（只有旋转与旋转交换），故由\cref{thm:class-size}
 \[
-[\uv n]_\times\vb r=\uv n\times\vb r,
+\lvert\operatorname{Cl}(r)\rvert=\frac{6}{3}=2,
+\]
+恰好容纳 $r$ 与 $r^2$。
+
+反射类 $\{s,sr,sr^2\}$。
+三个反射分别对应三条反射轴（过顶点 $1$、过顶点 $2$、过顶点 $3$ 的中线）。旋转 $r$ 把一条轴转到下一条，因此用 $r$ 做共轭就在三个反射之间循环：
+\[
+rsr^{-1}=r s r^2=(r s)r^2=(sr^2)r^2=sr^4=sr.
+\]
+于是 $s$ 与 $sr$ 共轭；再共轭一次得 $sr$ 与 $sr^2$ 共轭，三个反射同属一类。中心化子 $C_{D_3}(s)=\left\langle s\right\rangle$（只有 $e$ 和 $s$ 本身与 $s$ 交换），故
+\[
+\lvert\operatorname{Cl}(s)\rvert=\frac{6}{2}=3,
+\]
+恰好容纳三个反射。
+
+单位元类 $\{e\}$。
+$e$ 与所有群元交换，故 $geg^{-1}=e$，自成一类。
+
+于是 $D_3$ 的三个共轭类为 $\{e\}$、$\{r,r^2\}$、$\{s,sr,sr^2\}$，大小 $1,2,3$，中心 $Z(D_3)=\{e\}$。类方程验证：
+\[
+6=1+2+3.
+\]
+这个例子揭示了一条贯穿全书的物理直觉：\emph{同一共轭类中的操作在物理上不可区分}——换一个对称操作作为观察基准，一个旋转就变成它的逆，一条反射轴就变成另一条。后面特征标之所以在整类上取同一个值，正是因为特征标度量的是"操作的物理痕迹"，而物理痕迹不依赖观察角度。
+\par\medskip
+
+陪集已经把群切成若干块，于是一个很自然的想法是：能不能把"每一个陪集"当成一个新的群元，并定义
+\[
+(gH)(kH)=(gk)H?
+\]
+如果这件事可行，我们就把原群中属于同一个陪集的细节全部压缩掉，得到一个更小的群。这就是商群思想。
+
+难点在于，一个陪集可以用很多不同代表元来写。例如 $gH=g'H$、$kH=k'H$ 时，我们希望无论选 $g,k$ 还是 $g',k'$，乘积陪集都一样；否则上式不是一个真正的二元运算。恰恰在这里，普通子群不够，必须要求 $H$ 在所有共轭下保持自己，也就是正规性。换句话说，“正规子群”不是为了多记一种子群，而是为了让陪集乘法良定义。
+
+\begin{definition}[正规子群]
+若 $N\leqslant G$ 且对任意 $g\in G$ 都有
+\[
+gNg^{-1}=N,
+\]
+则称 $N$ 为 $G$ 的正规子群，记作
+\[
+N\mathrel{\trianglelefteq} G.
+\]
+\label{def:normal-subgroup}
+\end{definition}
+
+“正规”并不是额外的闭合条件，而是说子群在整个群的共轭作用下保持不变。因此正规子群恰好是能够被压缩成“商群中的一个单位元”的子群。
+
+\begin{theorem}[正规性的等价刻画]
+设 $N\leqslant G$。下列条件等价：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+  \item $N\mathrel{\trianglelefteq} G$；
+  \item 对任意 $g\in G$，$gN=Ng$；
+  \item 对任意 $g\in G$，$gNg^{-1}\subseteq N$。
+\end{enumerate}
+\label{thm:normal-equivalences}
+
+\end{theorem}
+
+\begin{proof}
+$(\mathrm{i})\Rightarrow(\mathrm{ii})$：由 $gNg^{-1}=N$ 右乘 $g$ 得 $gN=Ng$。
+
+$(\mathrm{ii})\Rightarrow(\mathrm{iii})$：由 $gN=Ng$ 右乘 $g^{-1}$ 得 $gNg^{-1}=N$，因而当然包含于 $N$。
+
+$(\mathrm{iii})\Rightarrow(\mathrm{i})$：把条件用于 $g^{-1}$ 得
+\[
+g^{-1}Ng\subseteq N.
+\]
+左右分别乘以 $g$ 与 $g^{-1}$，得到
+\[
+N\subseteq gNg^{-1}.
+\]
+与原包含关系合并即为相等。
+\end{proof}
+
+\begin{proposition}[两个基本正规子群]
+对任意群 $G$，有
+\[
+\{e\}\mathrel{\trianglelefteq} G,
+\qquad
+G\mathrel{\trianglelefteq} G,
+\qquad
+Z(G)\mathrel{\trianglelefteq} G.
+\]
+若 $G$ 为 Abel 群，则每个子群都正规。
+\label{prop:basic-normal-subgroups}
+
+\end{proposition}
+
+\begin{proof}
+对子群 $\{e\}$，任意 $g\in G$ 都有
+\[
+g\{e\}g^{-1}=\{geg^{-1}\}=\{e\},
+\]
+故其正规。对 $G$ 本身，共轭映射 $x\mapsto gxg^{-1}$ 是 $G$ 到自身的双射，所以 $gGg^{-1}=G$。若 $z\in Z(G)$，则 $gzg^{-1}=z\in Z(G)$，因此
+\[
+gZ(G)g^{-1}\subseteq Z(G).
+\]
+把同一论证用于 $g^{-1}$ 得反向包含，故 $Z(G)\mathrel{\trianglelefteq} G$。
+
+若 $G$ 为 Abel 群，任取子群 $H\leqslant G$ 与 $g\in G$，对每个 $h\in H$ 有
+\[
+ghg^{-1}=hgg^{-1}=h,
+\]
+所以 $gHg^{-1}=H$。因此每个子群都正规。
+\end{proof}
+
+\begin{definition}[商群]
+设 $N\mathrel{\trianglelefteq} G$。所有陪集组成的集合
+\[
+G/N=\{gN\mid g\in G\}
+\]
+在乘法
+\[
+(gN)(hN)=(gh)N
+\label{eq:quotient-product}
+\]
+下构成群，称为 $G$ 对 $N$ 的商群。
+\label{def:quotient-group}
+\end{definition}
+
+上式最需要证明的并不是结合律，而是\textbf{良定义性}：同一陪集可以选不同代表元，结果必须与代表元的选择无关。
+
+\begin{theorem}[商群乘法的良定义性]
+若 $N\mathrel{\trianglelefteq} G$，且
+\[
+gN=g'N,
+\qquad
+hN=h'N,
 \]
 则
 \[
-R_{\uv n}(\theta)
-=I_3\cos\theta
-+(1-\cos\theta)\uv n\uv n^{\mathsf T}
-+[\uv n]_\times\sin\theta.
-\label{eq:rodrigues-matrix}
+(gh)N=(g'h')N.
 \]
-这两个公式在后面构造具体点群的三维矢量表示时非常实用。它们还使几个性质一眼可见：$R_{\uv n}(\theta)\uv n=\uv n$；$R^{\mathsf T}R=I$；$\det R=1$；以及 $\tr R=1+2\cos\theta$。
-
-\begin{example}[绕 $\lbrack 111\rbrack$ 轴转 $2\pi/3$]
-立方体的一条三重轴沿
-\[
-\uv n=\frac1{\sqrt3}(1,1,1).
-\]
-把 $\theta=2\pi/3$ 代入 Rodrigues 公式可得
-\[
-R_{[111]}(2\pi/3)
-=\begin{pmatrix}
-0&0&1\\
-1&0&0\\
-0&1&0
-\end{pmatrix}.
-\]
-因此
-\[
-(x,y,z)\longmapsto(z,x,y),
-\]
-它正好把立方体的三个坐标轴循环置换。这说明几何上“绕体对角线转 $120^\circ$”与代数上“三个坐标方向的循环置换”是同一个群元的两种表述。
-\end{example}
-
-纯转动的几何结构清楚以后，还要把几个最常用的不保手性操作放回同一套语言中。
-
-
-根据 \Cref{prop:o3-direct-product}，所有 $\det=-1$ 的正交操作都可以写成 $\mathcal I R_{\uv n}(\theta)$。其中几个特殊角度对应实验文献里最熟悉的对称元素。
-
-当 $\theta=0$ 时，得到纯反演 $\mathcal I$。当 $\theta=\pi$ 时，$\mathcal I R_{\uv n}(\pi)$ 等价于关于垂直于 $\uv n$ 的平面反射，通常记作 $\sigma_h$。一般的 $\mathcal I R_{\uv n}(\theta)$ 称为\textbf{转动反演}。在化学文献和 Schoenflies 命名中还经常使用\textbf{转动反射} $S_n$：先绕轴转动 $2\pi/n$，再关于垂直于该轴的平面反射。转动反演与转动反射只是同一类不保手性操作的不同参数化，并不是两种独立的基本结构。
-
-转动反射 $S_n$ 的几何构造（先转后反射）如图 \figref{fig:improper-rotation} 所示。
-\begin{figure}[htbp]
-\centering
-\begin{tikzfig}[scale=0.95]
-  \draw[axes] (-3,0)--(3,0) node[right] {$x$};
-  \draw[axes] (0,-2.5)--(0,2.6) node[above] {$z$};
-  \draw[dashed,line width=.7pt] (-2.6,-.7)--(2.6,-.7) node[right,lecturelabel] {$\sigma_h$};
-  \coordinate (p) at (1.6,1.4);
-  \fill (p) circle (1.5pt) node[above right,lecturelabel] {$\vb r$};
-  \draw[lecturearrow] (p) arc[start angle=41,end angle=130,radius=2.13];
-  \coordinate (q) at (-1.37,1.63);
-  \fill (q) circle (1.5pt) node[above left,lecturelabel] {$R_{\uv n}(\theta)\vb r$};
-  \coordinate (qr) at (-1.37,-3.03);
-  \draw[lecturearrow] (q)--(qr);
-  \fill (qr) circle (1.5pt) node[below left,lecturelabel] {$S_n\vb r$};
-  \node[lecturelabel] at (1.8,.45) {rotate};
-  \node[lecturelabel] at (-2.0,-0.38) {reflect};
-\end{tikzfig}
-\caption{转动反射 $S_n$ 的几何意义：先绕主轴转动，再关于垂直于主轴的镜面反射。}
-\label{fig:improper-rotation}
-\end{figure}
-
-到这里，点群的母体已经清楚：所有群元都来自 $O(3)$，纯转动来自 $SO(3)$，不保手性的操作则来自 $\mathcal I SO(3)$。接下来真正困难的问题不再是“操作有哪些”，而是“有限性要求允许哪些组合”。这正是第一类点群分类要解决的问题。
-
-这里补充一组最常用的 Schoenflies 符号读法。$C_n$ 中的字母 $C$ 表示 cyclic，说明只有一条主 $n$ 重轴及其幂；$D_n$ 中的 $D$ 来自 dihedral，除了主 $C_n$ 轴，还含有 $n$ 条与主轴垂直的二重轴。下标 $h$ 表示存在与主轴垂直的 水平 镜面，$v$ 表示存在包含主轴的 竖直 镜面，$d$ 表示存在对角 对角 镜面。$T,O,I$ 分别与正四面体、正八面体/立方体、正二十面体/十二面体的纯转动群相关。
-
-这些字母不是用来替代几何理解的。看到 $C_{4v}$ 时，应该先把它读成：“有一条四重主轴，并有竖直镜面”；看到 $D_{3h}$ 时，应读成：“有一条三重主轴、三条水平二重轴，并有水平镜面”。只有能把符号翻译回几何操作，后面的乘法和特征标表才有意义。
-
-\section{第一类点群：有限旋转群的分类}
-\label{sec:proper-point-groups}
-
-第一类点群是 $SO(3)$ 的有限子群，只含纯转动。直接凭空间想象枚举所有可能的多面体很容易漏掉情况；更可靠的方法是把\chapref{chap:group-basics}的群作用与轨道--稳定子定理应用到单位球面上。球面极点与其轨道会把几何分类问题转化成一个严格的计数方程。
-
-要把这个思路严格化，需要引入极点与稳定子的语言，将几何分类问题转化为一个计数方程。
-
-要分类所有有限旋转群，直接把可能的转轴一个个猜出来会非常困难。更有效的方法是只统计“具有非平凡稳定子的球面点”。如果某个非单位转动固定一条轴，那么单位球面上这条轴的两个端点会被固定；我们把这些特殊点称为极点。群会把极点变到极点，因此全部极点自动分成若干轨道。
-
-这里会同时用到两个计数方式。第一种按群元数：一个 $n$ 重轴上除单位元外有 $n-1$ 个非平凡转动，而每个转动对应一条轴的两个端点。第二种按极点轨道数：若某极点的稳定子阶为 $n_i$，轨道--稳定子定理告诉我们这一轨道有 $|G|/n_i$ 个点。把同一批“极点--非单位稳定操作”分别按这两种方式计数，就会得到限制所有有限旋转群的核心方程。这个证明本质上就是一个双重计数，不需要预先知道正多面体。设 $G\leqslant SO(3)$ 为有限群，阶为 $N=|G|$。每个非恒等转动都有唯一旋转轴，该轴与单位球面 $S^2$ 交于一对对跖点；这两个点称为该转动的\textbf{极点}。取所有非恒等群元的极点并集，得到有限集合 $P\subset S^2$，群 $G$ 自然作用在 $P$ 上。
-
-对极点 $p\in P$，其稳定子
-\[
-G_p=\{g\in G\mid gp=p\}
-\]
-恰好由绕轴 $\mathbb Rp$ 的全部群内转动组成，因此是循环群。记
-\[
-n_p=|G_p|\ge2.
-\]
-在同一轨道上的极点稳定子共轭，故阶数相同。假设 $P$ 被分成 $r$ 个轨道，选择代表元 $p_i$，并记
-\[
-n_i=|G_{p_i}|.
-\]
-轨道--稳定子定理给出
-\[
-|G\cdot p_i|=\frac{N}{n_i}.
-\]
-
-现在做一次双重计数。考虑所有二元组
-\[
-(g,p),\qquad g\neq e,\quad gp=p.
-\]
-从群元一侧计数：每个非恒等三维转动恰好固定两个极点，因此总数是
-\[
-2(N-1).
-\]
-从极点轨道一侧计数：第 $i$ 个轨道有 $N/n_i$ 个点，每个点被稳定子中的 $n_i-1$ 个非恒等元素固定，因此总数为
-\[
-\sum_{i=1}^r \frac{N}{n_i}(n_i-1).
-\]
-令两种计数相等，得到有限旋转群分类的核心方程。
-
-\begin{theorem}[有限旋转群的基本方程]
-设 $G\leqslant SO(3)$ 为非平凡有限群，$|G|=N$。若所有非恒等旋转轴的极点在 $S^2$ 上分成 $r$ 个 $G$-轨道，代表点稳定子阶数为 $n_1,\dots,n_r$，则
-\[
-2(N-1)=N\sum_{i=1}^r\left(1-\frac1{n_i}\right),
-\label{eq:finite-rotation-counting}
-\]
-等价地，
-\[
-\sum_{i=1}^r\frac1{n_i}=r-2+\frac2N.
-\label{eq:finite-rotation-master}
-\]
-并且必有 $r=2$ 或 $r=3$。
-\label{thm:finite-rotation-master}
+因此\eqnrefs{eq:quotient-product} 不依赖代表元的选择。
+\label{thm:quotient-well-defined}
 
 \end{theorem}
 
 \begin{proof}
-前两式已经由上述双重计数得到。现在证明 $r$ 的可能值。因为 $n_i\ge2$，故
+由陪集相等判据，存在 $n_1,n_2\in N$ 使
 \[
-\sum_{i=1}^r\frac1{n_i}\le \frac r2.
+g'=gn_1,
+\qquad
+h'=hn_2.
 \]
-与 \eqnrefs{eq:finite-rotation-master} 合并，得到
+于是
+\begin{align*}
+g'h'
+&=gn_1hn_2\\
+&=gh\,(h^{-1}n_1h)n_2.
+\end{align*}
+因 $N\mathrel{\trianglelefteq} G$，有 $h^{-1}n_1h\in N$，从而
 \[
-r-2+\frac2N\le\frac r2,
+(h^{-1}n_1h)n_2\in N.
 \]
-从而 $r<4$。另一方面 $r=1$ 不可能，因为 \eqnrefs{eq:finite-rotation-master} 的右边为 $-1+2/N\le0$，左边严格为正。故只能有 $r=2$ 或 $3$。
+故 $g'h'\in ghN$，即 $(g'h')N=(gh)N$。
 \end{proof}
 
-把双重计数写得更具体。设所有特殊极点轨道编号为 $i=1,\dots,r$，第 $i$ 类极点的稳定子阶为 $n_i$。由轨道--稳定子定理，第 $i$ 个轨道有 $|G|/n_i$ 个极点。每个这样的极点被稳定子中的 $n_i-1$ 个非单位转动固定，因此按“极点”来数配对
+这里“良定义”三个字必须真正理解。一个陪集不是一个单独元素，而是一整组代表元。例如 $gN=gnN$ 对任意 $n\in N$ 都成立。如果我们写
 \[
-(p,g),\qquad g\neq e,\quad g\cdot p=p,
+(gN)(hN)=ghN,
 \]
-总数是
+就必须保证把 $g$ 换成同一陪集里的 $gn_1$、把 $h$ 换成 $hn_2$ 后，结果仍是同一个陪集。计算
 \[
-\sum_{i=1}^r \frac{|G|}{n_i}(n_i-1)
-=|G|\sum_{i=1}^r\left(1-\frac1{n_i}\right).
+(gn_1)(hn_2)=gh\,(h^{-1}n_1h)n_2.
 \]
-另一方面，每个非单位三维转动恰有一条转轴，因此在单位球面上固定两个极点，所以按“群元”数同一批配对得到 $2(|G|-1)$。两种计数相等，就有
-\[
-2(|G|-1)=|G|\sum_i\left(1-\frac1{n_i}\right).
-\]
-除以 $|G|$ 后才得到基本方程。这个推导中没有用任何正多面体知识，因而它真正限制了所有有限旋转群。
+若 $N\mathrel{\trianglelefteq} G$，则 $h^{-1}n_1h\in N$，于是括号中的两个因子都在 $N$，它们的乘积也在 $N$，最终仍得到 $ghN$。正规性正是在这一步被使用的。
+
+如果 $N$ 不是正规子群，这一步可能失败：不同代表元会给出不同“乘积陪集”，那么所谓商群乘法根本不是函数。由此可以看到，正规子群的定义并不是形式上的附加条件，而是商结构能够存在的必要机制。
 
 
-这个方程的威力在于，它把一个三维几何分类问题压缩成几个正整数的丢番图方程。接下来的分类不再依赖“想到哪些多面体”，而是从方程的全部整数解出发，再把每个解解释成几何对象。
+\begin{corollary}[有限商群的阶]
+若 $G$ 有限且 $N\mathrel{\trianglelefteq} G$，则
+\[
+\lvert G/N\rvert=[G:N]=\frac{\lvert G\rvert}{\lvert N\rvert}.
+\]
+\label{cor:quotient-order}
 
-若 $r=2$，则
-\[
-\frac1{n_1}+\frac1{n_2}=\frac2N.
-\]
-由于每个 $n_i\le N$，左边至少是 $2/N$，要取等号只能有
-\[
-n_1=n_2=N.
-\]
-两个轨道各只有一个极点，它们是一条共同 $N$ 重轴的两个方向。于是得到循环群 $C_N$。
-
-若 $r=3$，把 $n_1\le n_2\le n_3$ 排序，则
-\[
-\frac1{n_1}+\frac1{n_2}+\frac1{n_3}=1+\frac2N>1.
-\]
-因此 $n_1=2$。若 $n_2=2$，则
-\[
-\frac1{n_3}=\frac2N,
-\qquad N=2n_3.
-\]
-这给出二面体旋转群 $D_{n_3}$：一条 $n_3$ 重主轴，加上 $n_3$ 条与其垂直的二重轴，群阶为 $2n_3$。
-
-\begin{example}[$D_n$ 为什么有 $n$ 条水平二重轴]
-基本方程只告诉我们稳定子阶数为 $(2,2,n)$，但几何图像还需要补出来。取 $n$ 重主轴为 $z$ 轴，再取其中一条水平二重轴为 $x$ 轴。主轴生成元 $C_n$ 会把 $x$ 轴依次转到
-\[
-C_n^k x,
-\qquad k=0,1,\dots,n-1,
-\]
-于是得到 $n$ 条等角分布的水平二重轴。它们并不是额外假设出来的，而是同一条二重轴在主轴循环子群作用下的轨道。
-\end{example}
-
-循环群和二面体群只有一条主轴。要获得更丰富的有限旋转群，必须允许多条不同方向的旋转轴同时存在——这就是正多面体旋转群。
-
-剩下的情况是 $r=3$ 且 $n_2\ge3$。因为 $n_1=2$，有
-\[
-\frac1{n_2}+\frac1{n_3}=\frac12+\frac2N>\frac12.
-\]
-于是 $n_2$ 只能是 $3$。再由
-\[
-\frac13+\frac1{n_3}>\frac12
-\]
-可知 $n_3<6$，所以只剩 $n_3=3,4,5$。代回基本方程得到
-\[
-(2,3,3;N=12),\qquad
-(2,3,4;N=24),\qquad
-(2,3,5;N=60).
-\]
-它们分别对应正四面体、立方体/正八面体、正二十面体/正十二面体的纯转动群。
-
-\begin{theorem}[有限子群 $SO(3)$ 的分类]
-任意非平凡有限旋转群 $G\leqslant SO(3)$ 必且只可能属于以下五族之一：
-\[
-C_n,\qquad D_n,\qquad T,\qquad O,\qquad I.
-\]
-其中
-\[
-|C_n|=n,
-\quad |D_n|=2n,
-\quad |T|=12,
-\quad |O|=24,
-\quad |I|=60.
-\]
-对应的极点稳定子阶数组分别是
-\[
-(n,n),\qquad(2,2,n),\qquad(2,3,3),\qquad(2,3,4),\qquad(2,3,5).
-\]
-\label{thm:finite-so3-classification}
-
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-由 \Cref{thm:finite-rotation-master} 已经穷尽了基本方程的全部整数解，因此代数上没有其他可能。对每一组解，均存在相应几何实现：$C_n$ 与 $D_n$ 由轴系直接构造；$(2,3,3)$、$(2,3,4)$、$(2,3,5)$ 分别由正四面体、立方体（或其对偶正八面体）、正二十面体（或其对偶正十二面体）的旋转对称性实现。故分类完备。
+商群 $G/N$ 的元素就是 $N$ 在 $G$ 中的左陪集，因此其元素个数按定义等于指数 $[G:N]$。Lagrange 定理给出
+\[
+|G|=[G:N]|N|,
+\]
+两边除以 $|N|$ 即得
+\[
+|G/N|=[G:N]=\frac{|G|}{|N|}.
+\]
 \end{proof}
 
-分类的整数约束来自
+\begin{example}[$D_3$ 的正规子群与商群：旋转子群为何特殊]
+\label{ex:d3-normal-subgroup-geometry}
+$D_3$ 的旋转子群 $\left\langle r\right\rangle=\{e,r,r^2\}$ 是正规的，而三个反射子群 $\left\langle s\right\rangle,\left\langle sr\right\rangle,\left\langle sr^2\right\rangle$ 都不正规。这两件事的几何原因都可以从共轭直接读出。
+
+$\left\langle r\right\rangle$ 正规。反射共轭旋转给出其逆：$srs^{-1}=r^2\in\left\langle r\right\rangle$，$sr^2s^{-1}=r\in\left\langle r\right\rangle$。几何上，"先反射、转 $120^\circ$、再反射回去"等于反向转 $120^\circ$，仍是旋转。旋转共轭旋转当然仍是旋转。因此 $\left\langle r\right\rangle$ 在所有共轭下保持自身，$g\left\langle r\right\rangle g^{-1}=\left\langle r\right\rangle$。
+
+$\left\langle s\right\rangle$ 不正规。旋转共轭反射给出另一个反射：$rsr^{-1}=sr\neq s$，而 $sr\notin\left\langle s\right\rangle=\{e,s\}$。几何上，旋转把过顶点 $1$ 的反射轴转到过顶点 $2$ 的反射轴，因此共轭把 $\left\langle s\right\rangle$ 里的反射 $s$ 送到属于另一个子群 $\left\langle sr\right\rangle$ 的反射 $sr$。于是 $r\left\langle s\right\rangle r^{-1}=\left\langle sr\right\rangle\neq\left\langle s\right\rangle$。
+
+因为 $\left\langle r\right\rangle\mathrel{\trianglelefteq} D_3$，可以构造商群。两个陪集为
 \[
-\sum_{i=1}^{r}\frac1{n_i}=r-2+\frac2{|G|},\qquad n_i\ge2.
-\]
-左边至多为 $r/2$，右边严格大于 $r-2$。因此若 $r\ge4$，就会要求 $r/2>r-2$，只在 $r<4$ 时可能，故 $r$ 只能是 $2$ 或 $3$。
-
-若 $r=2$，方程对应一个主轴的两类极点，得到循环群 $C_n$。若 $r=3$，把 $n_1\le n_2\le n_3$。因为三项倒数和大于 $1$，必须 $n_1=2$；若 $n_2\ge4$，则总和不超过 $1/2+1/4+1/4=1$，不行，所以 $n_2=2$ 或 $3$。$n_2=2$ 给 $(2,2,n)$，即二面体旋转群 $D_n$；$n_2=3$ 时再要求
-\[
-\frac12+\frac13+\frac1{n_3}>1,
-\]
-所以 $n_3=3,4,5$，分别给 $T,O,I$。这就是五族分类穷尽的算术核心。
-
-
-第一类点群的分类树如图 \figref{fig:proper-point-group-classification} 所示。
-\begin{figure}[htbp]
-\centering
-\begin{tikzfig}[scale=0.84]
-  \node[lecturebox] (C) at (-7.2,0) {$C_n$\\一条 $n$ 重轴};
-  \node[lecturebox] (D) at (-3.6,0) {$D_n$\\$n$ 重轴+$n$ 条 $C_2$};
-  \node[lecturebox] (T) at (0,0) {$T$\\tetrahedral};
-  \node[lecturebox] (O) at (3.6,0) {$O$\\octahedral};
-  \node[lecturebox] (I) at (7.2,0) {$I$\\icosahedral};
-  \node[lecturelabel] at (-7.2,-1.5) {$(n,n)$};
-  \node[lecturelabel] at (-3.6,-1.5) {$(2,2,n)$};
-  \node[lecturelabel] at (0,-1.5) {$(2,3,3)$};
-  \node[lecturelabel] at (3.6,-1.5) {$(2,3,4)$};
-  \node[lecturelabel] at (7.2,-1.5) {$(2,3,5)$};
-\end{tikzfig}
-\caption{有限旋转群的五种可能。分类来自基本方程的全部整数解，而不是经验枚举。}
-\label{fig:proper-point-group-classification}
-\end{figure}
-
-这个分类还有一个后面表示论非常有用的副产品：每种群的共轭类都可以通过“转角相同且转轴能否被群元联系起来”判断。比如 $O$ 中绕四重轴转 $\pi$ 与绕二重轴转 $\pi$ 虽然转角相同，但两类轴在群作用下不是同一轨道，因此它们属于不同共轭类。这一点会直接反映在 $O$ 与 $O_h$ 的特征标表中。
-
-前面的分类方程给出了五个代数可能性。为了把这些解与真正的三维几何对应起来，可以把各类旋转轴、轴数与群阶并排比较。
-
-基本方程给出了抽象分类，但要在后续特征标表中真正使用，还应当知道每类轴各有多少条。这个信息可以由轨道大小直接读出。对稳定子阶为 $n_i$ 的极点轨道，极点数为 $N/n_i$；若一条无向轴的两个极点属于同一轨道，则轴数为极点数的一半。对正多面体群，相对极点都能由群中转动联系，因此得到下表。
-
-\begin{table}[htbp]
-\centering
-\caption{三个正多面体旋转群的轴结构}
-\label{tab:polyhedral-axis-count}
-\begin{tabular}{c|c|c|c|c}
-\toprule
-群 & 阶 $N$ & 二重轴 & 三重轴 & 更高阶轴 \\
-\midrule
-$T$ & $12$ & $3$ & $4$ & -- \\
-$O$ & $24$ & $6$ & $4$ & $3$ 条四重轴 \\
-$I$ & $60$ & $15$ & $10$ & $6$ 条五重轴 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-以 $O$ 为例，$(2,3,4)$ 三类极点轨道大小分别为
-\[
-\frac{24}{2}=12,
+\left\langle r\right\rangle=\{e,r,r^2\},
 \qquad
-\frac{24}{3}=8,
+s\left\langle r\right\rangle=\{s,sr,sr^2\},
+\]
+分别代表"纯旋转"与"含反射"。商群乘法
+\[
+(s\left\langle r\right\rangle)^2=s^2\left\langle r\right\rangle=\left\langle r\right\rangle
+\]
+说明两个反射合成一个旋转，因此
+\[
+D_3/\left\langle r\right\rangle\cong C_2.
+\]
+物理上，这个商群把 $C_{3v}$ 的六操作压缩成"真转动"与"含镜面反射"两类，恰好对应行列式 $\det R=\pm1$ 的区分。在分子光谱中，这种"偶/奇"分类决定了某些跃迁选择定则的符号：真转动保持手性，含反射的操作翻转手性。
+\end{example}
+
+
+正规子群与商群也最好通过一个具体计算消化。$S_3$ 中的偶置换组成
+\[
+A_3=\{e,(123),(132)\}.
+\]
+它是指数为 $2$ 的子群，因此自动正规。商群只有两个陪集：
+\[
+A_3,\qquad (12)A_3=\{(12),(13),(23)\}.
+\]
+把第二个陪集记作 $xA_3$，则
+\[
+(xA_3)^2=x^2A_3=A_3,
+\]
+因为任意换位 $x$ 都满足 $x^2=e$。所以 $S_3/A_3$ 只有单位元和一个二阶元素，因而
+\[
+S_3/A_3\cong C_2.
+\]
+物理上可以把这个商群理解为：如果我们完全忽略“具体是哪一个偶置换”的区别，只保留“偶/奇”两类信息，$S_3$ 就被压缩成了 $C_2$。
+
+\section{同态、同构与自同构}
+\label{sec:homomorphism-isomorphism}
+
+前面一直在同一个群内部研究子群、陪集和共轭。现在要比较两个不同的群。比较群不能只比较“元素长什么样”，因为同一个抽象结构可能用完全不同的对象实现：正三角形的六个几何对称与三个对象的六个置换就是典型例子。真正应该保留的是乘法规律。
+
+因此我们研究映射
+\[
+\varphi:G\longrightarrow H
+\]
+时，最基本的要求不是它把某个特定元素送到哪里，而是它必须满足
+\[
+\varphi(g_1g_2)=\varphi(g_1)\varphi(g_2).
+\]
+左边是“先在 $G$ 中相乘再映射”，右边是“先分别映射到 $H$ 再相乘”。二者一致意味着映射没有破坏群结构，这就是同态。若映射还一一且满，就说明两个群只是元素名字不同，结构完全相同，这就是同构。
+
+
+\begin{definition}[群同态]
+设 $G,H$ 为群。映射
+\[
+\varphi:G\longrightarrow H
+\]
+若满足
+\[
+\varphi(g_1g_2)=\varphi(g_1)\varphi(g_2),
 \qquad
-\frac{24}{4}=6.
+\forall g_1,g_2\in G,
+\label{eq:homomorphism}
 \]
-因此分别对应 $6$ 条二重轴、$4$ 条三重轴和 $3$ 条四重轴。这个计数比对着立方体逐条找轴更可靠，而且立刻解释了为什么立方体与正八面体拥有同一个旋转群：两者互为对偶，多面体顶点与面中心互换，但同一组空间转轴并没有改变。
+则称 $\varphi$ 为群同态。
+\label{def:homomorphism}
+\end{definition}
 
-对 $T$ 也类似。四条三重轴穿过正四面体的四个顶点与对面中心，三条二重轴穿过三对相对棱的中点。对 $I$，六条五重轴、十条三重轴和十五条二重轴分别对应正二十面体的顶点、面中心和棱中点方向。以后看到 $T/O/I$ 的类结构时，应该先在脑中恢复这些轴轨道，而不是把类大小当成无来源的数字。
+同态的定义\textbf{不要求}单射或满射。满射同态称为满同态；双射同态才是同构。这样定义的好处是核、像与商群之间的结构关系可以在最一般的情形下统一表述。
 
-分类得到群以后，下一步自然是理解其共轭类，因为\chapref{chap:point-space-groups}后半的特征标表正以共轭类为列。
-
-\eqnrefs{eq:rotation-conjugation} 告诉我们，共轭操作会把转轴按群元素搬运。因此在一个有限旋转群里，同一类的转动必须具有相同转角，而且它们的转轴属于同一个 $G$-轨道。反过来，如果两条轴能被群元联系起来，相同转角的转动就互相共轭。
-
-这条原则可以快速分析 $D_n$。绕主轴的 $C_n^k$ 与 $C_n^{-k}$ 通过任意一条横向 $C_2$ 轴共轭，所以它们成对进入同一类。横向二重轴在 $n$ 为奇数时全部属于一个轨道；在 $n$ 为偶数时则分成两类相间的轴轨道。因此
+\begin{proposition}[同态保持单位元、逆元与整数次幂]
+若 $\varphi:G\to H$ 为同态，则
 \[
-\#\operatorname{Cl}(D_n)=
-\begin{cases}
-(n+3)/2,&n\ \text{odd},\\
-n/2+3,&n\ \text{even}.
-\end{cases}
+\varphi(e_G)=e_H,
+\qquad
+\varphi(g^{-1})=\varphi(g)^{-1},
+\qquad
+\varphi(g^n)=\varphi(g)^n,
+\quad n\in\ZZ.
 \]
-这恰好与后面 $D_n$ 不可约表示个数一致。也就是说，“为什么偶数阶二面体群多出两个一维表示”在几何上已经可以从横向二重轴分裂成两个共轭类看出来。
-
-\section{第二类点群与 Schoenflies 符号}
-\label{sec:improper-point-groups}
-
-
-上一节只允许 $\det R=+1$ 的纯转动。真实分子和晶体还可能有镜面、反演或转动反射，这些操作的矩阵满足 $\det R=-1$，会改变空间取向的手性。一个含有这类操作的有限点群可以先取出其中全部纯转动，形成
-\[
-G^+=G\cap SO(3).
-\]
-因为行列式满足 $\det(RS)=\det R\det S$，映射 $\det:G\to\{+1,-1\}$ 是群同态；只要群里确实存在一个 $\det=-1$ 的元素，它的核 $G^+$ 就是指数为 $2$ 的正规子群。于是第二类点群并不是完全从头分类，而是在第一类旋转群上加入一个反转取向的陪集。这一步把看似繁杂的 Schoenflies 列表与第一章的正规子群、陪集直接连了起来。
-
-第一类点群已经完全分类。现在加入 $\det=-1$ 的操作。最自然的组织方式不是重新从零枚举，而是利用行列式同态。设 $G\leqslant O(3)$ 为有限点群，并定义
-\[
-K=G\cap SO(3).
-\]
-若 $G$ 只含纯转动，则 $G=K$，已经属于上一节。若存在不保手性的元素，则 $K$ 是 $G$ 的指数二正规子群，$|G|=2|K|$。这就把第二类点群的问题变成：\emph{如何在一个有限旋转群 $K$ 上添加一个不保手性的陪集？}
-
-\begin{proposition}[点群的纯转动部分]
-设 $G\leqslant O(3)$ 为有限点群，$K=G\cap SO(3)$。则 $K\mathrel{\trianglelefteq} G$。若 $G\neq K$，则
-\[
-G=K\sqcup qK,
-\qquad \det q=-1,
-\]
-且 $G/K\simeq C_2$。
-\label{prop:proper-subgroup-index-two}
+\label{prop:homomorphism-basic}
 
 \end{proposition}
 
 \begin{proof}
-把行列式同态限制到 $G$：
+由
 \[
-\det|_G:G\to\{\pm1\}.
+\varphi(e_G)=\varphi(e_Ge_G)=\varphi(e_G)^2
 \]
-其核正是 $K$。若 $G$ 中有 $\det=-1$ 的元素，则该同态满射。由第一同构定理，$G/K\simeq C_2$，于是 $K$ 的指数为 $2$，并且任取 $q\notin K$ 都有 $G=K\sqcup qK$。
+在 $H$ 中左消去 $\varphi(e_G)$，得 $\varphi(e_G)=e_H$。再由
+\[
+e_H=\varphi(e_G)=\varphi(gg^{-1})=\varphi(g)\varphi(g^{-1})
+\]
+得到 $\varphi(g^{-1})=\varphi(g)^{-1}$。幂公式随后由归纳法及逆元公式得到。
 \end{proof}
 
-若空间反演 $\mathcal I\in G$，情况最简单。因为 $\mathcal I$ 与所有正交变换交换，得到
+\begin{definition}[核与像]
+对群同态 $\varphi:G\to H$，定义
 \[
-G=K\times C_i,
-\qquad C_i=\{E,\mathcal I\}.
+\operatorname{Ker}\varphi
+=\{g\in G\mid \varphi(g)=e_H\},
 \]
-这种直积分解只适用于确实含反演中心的点群。例如 $C_{2h},C_{4h},C_{6h}$、$D_{2h},D_{4h},D_{6h}$ 以及 $T_h,O_h,I_h$ 都属于这一情形；但 $C_{3h}$、$D_{3h}$ 等虽然带水平镜面，却不含反演，不能写成 $K\times C_i$。若 $\mathcal I\notin G$，不保手性的陪集仍然存在，但不能把 $\mathcal I$ 单独抽出来；这时会出现镜面、转动反射以及 $T_d,D_{nd}$ 等结构。
-
-有了中心对称群的直积分解，现在按 Schoenflies 符号系统梳理轴向点群 $C$、$D$ 与 $S$ 三个系列。
-
-Schoenflies 符号最容易从“主轴+附加对称元素”来理解。先选最高阶旋转轴为主轴，约定其方向为竖直方向。然后再看是否存在水平镜面 $\sigma_h$、包含主轴的竖直镜面 $\sigma_v$、或者平分相邻水平二重轴夹角的对角镜面 $\sigma_d$。
-
-\begin{definition}[常见轴向 Schoenflies 点群]
-以下记号按其生成对称元素定义：
-\begin{align*}
-C_n &: \text{仅含一条 $n$ 重主轴};\\
-C_{nv} &: C_n \text{ 加入包含主轴的竖直镜面};\\
-C_{nh} &: C_n \text{ 加入垂直主轴的水平镜面};\\
-D_n &: C_n \text{ 加入 $n$ 条垂直主轴的二重轴};\\
-D_{nh} &: D_n \text{ 再加入水平镜面};\\
-D_{nd} &: D_n \text{ 再加入 $n$ 个对角镜面};\\
-S_{2n} &: \text{由一个 $2n$ 重转动反射生成的循环型点群}.
-\end{align*}
-低阶特殊情形包括 $C_1$、$C_s$ 与 $C_i$。
-\label{def:schoenflies-axial}
+\[
+\operatorname{Im}\varphi
+=\{\varphi(g)\mid g\in G\}\subseteq H.
+\]
+\label{def:kernel-image}
 \end{definition}
 
-这里 $v,h,d$ 不是额外的群论操作名称，而是镜面相对主轴的几何位置。尤其 $\sigma_d$ 仍然是竖直镜面，只是它还平分两条相邻水平 $C_2$ 轴的夹角。很多初学者第一次看 $D_{nd}$ 时会误以为 $d$ 表示另一种反射；实际上它只是在几何上进一步限定了镜面的位置。
-
-$\sigma_h$、$\sigma_v$ 与 $\sigma_d$ 镜面的取向如图 \figref{fig:sigma-hvd} 所示。
-\begin{figure}[htbp]
-\centering
-\begin{tikzfig}[scale=0.92]
-  \draw[axes] (0,-2.5)--(0,2.8) node[above] {principal axis $C_n$};
-  \draw[line width=.7pt,fill=gray!8] (-3,-.45)--(3,-.45)--(2.3,.45)--(-2.3,.45)--cycle;
-  \node[lecturelabel] at (2.4,.8) {$\sigma_h$};
-  \draw[line width=.7pt,fill=blue!4,fill opacity=.6] (-.45,-2.2)--(.45,-2.2)--(.45,2.2)--(-.45,2.2)--cycle;
-  \node[lecturelabel] at (.95,1.75) {$\sigma_v$};
-  \draw[line width=.75pt,dashed] (-2.2,-1.5)--(2.2,1.5);
-  \node[lecturelabel] at (2.75,1.75) {$\sigma_d$};
-\end{tikzfig}
-\caption{Schoenflies 记号中的三类镜面。$\sigma_v$ 与 $\sigma_d$ 都包含主轴，区别在于 $\sigma_d$ 平分相邻横向二重轴的夹角。}
-\label{fig:sigma-hvd}
-\end{figure}
-
-轴向点群只含一条主轴。立方和正四面体对称性引入多条等价高阶轴，产生多面体点群。
-
-对正多面体的纯转动群 $T,O,I$，加入不保手性的操作后得到的常用群是
+\begin{theorem}[核与像的结构]
+若 $\varphi:G\to H$ 为群同态，则
 \[
-T_d,\quad T_h,\quad O_h,\quad I_h.
+\operatorname{Ker}\varphi\mathrel{\trianglelefteq} G,
+\qquad
+\operatorname{Im}\varphi\leqslant H.
 \]
-其中 $T_d$ 是正四面体的完整点群，阶为 $24$；$T_h=T\times C_i$；$O_h=O\times C_i$，阶为 $48$；$I_h=I\times C_i$，阶为 $120$。这些群的名字并不是新的“第六类、第七类”有限旋转群，而是上一节五种纯转动群在 $O(3)$ 中加入不保手性陪集后的扩展。
-
-把这些家族组织起来，比逐项死记具体元素更重要。\figref{fig:schoenflies-family-tree} 给出一个适合实际识别的逻辑树：先找最高阶轴，再看是否有与之垂直的 $C_2$ 轴，最后检查镜面、反演或转动反射。
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzfig}[node distance=12mm and 17mm]
-  \node[lecturebox] (start) {highest-order axis};
-  \node[lecturebox,below left=of start,xshift=-16mm] (cyc) {no perpendicular $C_2$};
-  \node[lecturebox,below right=of start,xshift=16mm] (dih) {perpendicular $C_2$ axes};
-  \node[lecturebox,below=of cyc,xshift=-18mm] (cn) {$C_n$};
-  \node[lecturebox,below=of cyc] (cnv) {$C_{nv}$};
-  \node[lecturebox,below=of cyc,xshift=18mm] (cnh) {$C_{nh}$/$S_{2n}$};
-  \node[lecturebox,below=of dih,xshift=-12mm] (dn) {$D_n$};
-  \node[lecturebox,below=of dih,xshift=12mm] (dnh) {$D_{nh}$/$D_{nd}$};
-  \draw[lecturearrow] (start)--(cyc);
-  \draw[lecturearrow] (start)--(dih);
-  \draw[lecturearrow] (cyc)--(cn);
-  \draw[lecturearrow] (cyc)--(cnv);
-  \draw[lecturearrow] (cyc)--(cnh);
-  \draw[lecturearrow] (dih)--(dn);
-  \draw[lecturearrow] (dih)--(dnh);
-\end{tikzfig}
-\caption{轴向点群的识别逻辑。真正的判断顺序是“主轴结构 $\to$ 横向二重轴 $\to$ 镜面/反演/转动反射”，而不是背诵符号表。}
-\label{fig:schoenflies-family-tree}
-\end{figure}
-
-后面做分子或晶体对称性识别时，最重要的技巧就是把一个复杂形状的几何细节暂时忘掉，只问几件稳定的问题：最高阶轴是什么？是否有一圈垂直的二重轴？是否有水平镜面、竖直镜面、反演中心或转动反射轴？一旦这些问题回答清楚，Schoenflies 符号往往已经唯一确定。
-
-把这些家族真正用于分子或团簇时，最有效的做法不是背表，而是按一个稳定的判定次序逐步排除。
-
-面对一个新的分子或团簇，推荐按下面的顺序判断，而不是在全部符号中凭印象匹配。
-
-先问是否存在多条彼此等价的高阶轴。如果有正四面体、立方/八面体或二十面体型的多轴结构，应优先考虑 $T$、$O$、$I$ 家族；它们不是“有一条主轴”的轴向群。若没有，再寻找唯一最高阶主轴 $C_n$。随后检查是否存在与主轴垂直的 $n$ 条 $C_2$ 轴：存在则进入 $D_n$ 家族，不存在则进入 $C_n$ 家族。最后检查 $\sigma_h$、$\sigma_v$、$\sigma_d$、反演中心或转动反射。
-
-这个流程的好处是，每一步都对应一个群结构分叉。以甲烷 $\mathrm{CH_4}$ 为例，它有四条三重轴和三条二重轴，没有唯一主轴，因此一开始就应进入多面体群；完整对称群为 $T_d$。六氟化硫 $\mathrm{SF_6}$ 具有三条四重轴、四条三重轴、六条二重轴并有反演中心，因此为 $O_h$。足球形 $\mathrm{C_{60}}$ 的理想结构具有二十面体型五重、三重、二重轴以及反演，属于 $I_h$。
-
-反过来，若一个分子只有一条 $C_3$ 主轴和三个竖直镜面，没有横向 $C_2$，它一定落在 $C_{3v}$，而不是 $D_3$；若再出现三条横向 $C_2$，则至少升级为 $D_3$ 家族。这个判定方法将在\chapref{chap:group-theory-quantum}读光谱特征标表时反复使用，因为只有先确定完整点群，后续的不可约表示标签才有意义。
-
-从分子点群走到晶体时，还要增加一个最基本对象：Bravais 晶格。选三条线性无关的原始基矢 $\vb a_1,\vb a_2,\vb a_3$，所有晶格点写成
+并且
 \[
-\vb R=n_1\vb a_1+n_2\vb a_2+n_3\vb a_3,
-\qquad n_i\in\ZZ.
+\varphi\text{ 为单射}
+\quad\Longleftrightarrow\quad
+\operatorname{Ker}\varphi=\{e_G\}.
 \]
-注意 $\vb R$ 在这里是一个格矢，不是点群矩阵 $R$；本书用粗体区别向量 $\vb R$，普通斜体 $R$ 留给空间变换。晶体结构还可以在每个格点附上一个基元，但 Bravais 晶格只描述平移周期本身。
+\label{thm:kernel-image}
 
-\section{晶体点群与空间群}
-\label{sec:crystallographic-point-space}
-
-普通分子只要求在有限范围内保持几何形状，晶体则多出一个全局条件：结构在三个独立方向上周期重复。这个平移周期性会反过来限制允许的旋转。最著名的结果就是晶体制约定理：周期晶格不允许五重旋转，也不允许一般的七重、八重旋转。下面直接由晶格基底下的整数矩阵与旋转迹推出只允许 $1,2,3,4,6$ 重旋转轴。
-
-\begin{definition}[Bravais 晶格]
-取三个线性无关的基矢 $\vb a_1,\vb a_2,\vb a_3$。集合
-\[
-\mathcal L=
-\left\{
- n_1\vb a_1+n_2\vb a_2+n_3\vb a_3
- \mid n_i\in\mathbb Z
-\right\}
-\]
-称为三维 Bravais 晶格。若点群操作 $R$ 满足 $R\mathcal L=\mathcal L$，则称 $R$ 为晶格的点对称操作。
-\label{def:bravais-lattice}
-\end{definition}
-
-如果 $R$ 保持晶格，则每个基矢的像仍是晶格矢量，因此存在整数矩阵 $M(R)\in\operatorname{GL}(3,\mathbb Z)$，使
-\[
-R\vb a_j=\sum_{i=1}^3 M_{ij}(R)\vb a_i.
-\label{eq:lattice-integer-representation}
-\]
-这个矩阵其实就是同一个线性变换在晶格基底下的表示。它与正交基下的旋转矩阵相似，因此具有相同的迹。
-
-\begin{theorem}[晶体制约定理]
-若周期晶格允许有限阶纯转动 $R$，设其转角为 $\theta=2\pi/n$，则
-\[
-n\in\{1,2,3,4,6\}.
-\]
-因此三维周期晶体不允许五重或一般 $n\ge7$ 的有限旋转轴。
-\label{thm:crystallographic-restriction}
 \end{theorem}
 
-\begin{derivation}[晶体制约定理]
-保持晶格的转动在晶格基底下由 $M\in\operatorname{GL}(3,\ZZ)$ 表示，所以 $\tr M\in\ZZ$。它与正交基底下的 $R$ 相似，而三维转动的本征值为 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$，故
+\begin{proof}
+若 $a,b\in\operatorname{Ker}\varphi$，则
 \[
-\tr M=\tr R=1+2\cos\theta\in\ZZ.
+\varphi(ab^{-1})
+=\varphi(a)\varphi(b)^{-1}
+=e_H,
 \]
-又因 $-1\leq\cos\theta\leq1$，只能有
+故 $ab^{-1}\in\operatorname{Ker}\varphi$，所以核为子群。进一步，对 $g\in G$、$k\in\operatorname{Ker}\varphi$，
 \[
-\cos\theta\in\left\{-1,-\frac12,0,\frac12,1\right\}.
+\varphi(gkg^{-1})
+=\varphi(g)e_H\varphi(g)^{-1}
+=e_H,
 \]
-对有限阶转动取 $0\leq\theta\leq\pi$，相应转角为 $\pi,2\pi/3,\pi/2,\pi/3,0$，也就是 $n=2,3,4,6,1$。
-\end{derivation}
+故 $gkg^{-1}\in\operatorname{Ker}\varphi$，核正规。
 
-证明的关键是周期性带来的整数迹，而不是正五边形不能铺满平面的图形直觉。准晶可以具有五重或十重对称，正是因为它没有定理所要求的三维周期平移群；分子也没有这一限制，所以 $I_h$ 可用于描述富勒烯等有限结构。
-
-晶体制约定理排除了五重轴等非晶体学旋转。把允许的旋转阶数 $1,2,3,4,6$ 系统地组合，就得到 32 个晶体点群和 7 个晶系。
-
-“分子点群”允许任意有限阶转轴，但晶体不同。晶体包含平移周期性，一个点群操作不仅要保持局域几何，还必须把整套晶格点重新映回晶格点。这个额外要求会排除五重轴等许多几何上完全合法的旋转。所谓“32 个晶体点群”，就是所有与三维晶格兼容的有限点群，而不是人为选出的 32 个常用例子。
-
-七个晶系则是进一步按最高阶旋转轴和整体轴系结构来组织这 32 个群。初学时不要把“晶系”“点群”“Bravais 晶格”当成同义词：点群只描述保持某一点不动的转动/反射部分；Bravais 晶格描述纯平移周期；晶系则是根据点群对晶格度量的约束形成的分类。把 \Cref{thm:crystallographic-restriction} 应用于上一节的 Schoenflies 家族，就得到三维晶体允许的 $32$ 个点群。它们进一步按照宏观轴系的共同特征归入 $7$ 个晶系。与其把 $32$ 个名字看成一张要背的表，不如把晶系理解成“晶胞度量约束 + 最高阶轴类型”的联合分类。
-
-\begin{table}[htbp]
-\centering
-\caption{七个晶系、常用晶胞约束与 32 个晶体点群}
-\label{tab:32-crystal-point-groups}
-\small
-\begin{tabularx}{\textwidth}{>{\bfseries}l l X}
-\toprule
-晶系 & 常用晶胞约束 & Schoenflies 点群 \\
-\midrule
-三斜 & $a\neq b\neq c$，角度一般 & $C_1,C_i$ \\
-单斜 & $a\neq b\neq c$，两角为 $90^\circ$ & $C_2,C_s,C_{2h}$ \\
-正交 & $a\neq b\neq c$，$\alpha=\beta=\gamma=90^\circ$ & $D_2,C_{2v},D_{2h}$ \\
-四方 & $a=b\neq c$，三角皆 $90^\circ$ & $C_4,S_4,C_{4h},D_4,C_{4v},D_{2d},D_{4h}$ \\
-三方 & 菱方或六角设置 & $C_3,S_6,D_3,C_{3v},D_{3d}$ \\
-六方 & $a=b\neq c$，$\gamma=120^\circ$ & $C_6,C_{3h},C_{6h},D_6,C_{6v},D_{3h},D_{6h}$ \\
-立方 & $a=b=c$，三角皆 $90^\circ$ & $T,T_h,O,T_d,O_h$ \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-例如，四方晶系的核心不是“名字里出现 4”，而是存在唯一的四重主轴，同时基面两个方向等价而与主轴方向不等价；这正对应 $a=b\neq c$。立方晶系则有多条三重轴与四重/二重轴，使三个笛卡尔方向在宏观上完全等价，因此 $a=b=c$。这种几何理解在判断张量物性的独立分量时比死记点群名字更有用。
-
-只知道允许的旋转阶数还不够；晶体点群还必须保持具体晶格的度量结构。把这一点写成矩阵方程后，七个晶系的来源会更清楚。
-
-晶胞参数 $a,b,c,\alpha,\beta,\gamma$ 可以统一编码进晶格基底的 Gram 矩阵
+若 $x=\varphi(a)$、$y=\varphi(b)$ 属于像，则
 \[
-G_{ij}=\vb a_i\cdot\vb a_j.
+xy^{-1}
+=\varphi(a)\varphi(b)^{-1}
+=\varphi(ab^{-1})\in\operatorname{Im}\varphi,
 \]
-如果晶格点操作在这组基下由整数矩阵 $M$ 表示，那么保持内积等价于
+故像为子群。
+
+若 $\operatorname{Ker}\varphi=\{e_G\}$ 且 $\varphi(a)=\varphi(b)$，则
 \[
-M^{\mathsf T}GM=G.
-\label{eq:lattice-metric-invariance}
+\varphi(b^{-1}a)=e_H,
 \]
-因此一个给定晶格的点群可以理解为满足 \eqnrefs{eq:lattice-metric-invariance} 的有限整数矩阵群。这个表达把“晶胞长什么样”与“允许哪些点群操作”直接联系起来。
+于是 $b^{-1}a=e_G$，即 $a=b$，故 $\varphi$ 单射。反之，若 $\varphi$ 单射且 $k\in\operatorname{Ker}\varphi$，则 $\varphi(k)=e_H=\varphi(e_G)$，从而 $k=e_G$，故核平凡。
+\end{proof}
 
-例如立方晶格有
+\begin{theorem}[第一同构定理]
+对任意群同态 $\varphi:G\to H$，存在自然同构
 \[
-G=a^2 I_3,
+G/\operatorname{Ker}\varphi
+\cong
+\operatorname{Im}\varphi.
+\label{eq:first-isomorphism}
 \]
-因此三个坐标方向完全等价，允许大量置换和符号翻转；四方晶格则有
+若 $\varphi$ 满射，则特别有
 \[
-G=\operatorname{diag}(a^2,a^2,c^2),
-\qquad a\neq c,
+G/\operatorname{Ker}\varphi\cong H.
 \]
-只有 $x,y$ 两方向等价，$z$ 方向被区分出来，因此最多保留唯一四重主轴。正交晶格的
-\[
-G=\operatorname{diag}(a^2,b^2,c^2),
-\qquad a,b,c\ \text{互异},
-\]
-则进一步把三方向全部区分，只留下相互垂直的二重轴结构。这样，七晶系的参数限制就不再只是表格，而是晶格度量张量稳定子的不同可能。
+\label{thm:first-isomorphism}
 
-这里尤其要解释一个容易混淆的问题：三方与六方晶系都常用六方坐标描述，但它们不是同一个晶系。
-
-三方和六方经常让初学者困惑，因为它们都可以采用六角轴系来画晶胞。关键区别不是“晶胞画法”，而是最高允许旋转阶数。六方晶系存在六重轴；三方晶系的最高主轴是三重轴。三方晶体可以用菱方原胞，也可以嵌入六角常规晶胞描述，因此在晶胞参数层面会出现两套常见设置。真正不变的是点群与晶格的对称结构，而不是某一种画法。
-
-点群分类完成以后，还要把平移骨架的可能性组织起来，这就引出十四种 Bravais 晶格。
-
-
-点群描述“允许哪些旋转”，晶格描述“平移骨架怎样重复”。同一个晶系还可能有不同的中心化方式。将七个晶系与允许的中心化方式结合，得到十四种 Bravais 晶格。
-
-\begin{table}[htbp]
-\centering
-\caption{三维十四种 Bravais 晶格}
-\label{tab:14-bravais}
-\begin{tabular}{c|c}
-\toprule
-晶系 & Bravais 晶格类型 \\
-\midrule
-三斜 & $P$ \\
-单斜 & $P,C$ \\
-正交 & $P,C,I,F$ \\
-四方 & $P,I$ \\
-三方 & $R$ \\
-六方 & $P$ \\
-立方 & $P,I,F$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-这里 $P$、$I$、$F$、$C$、$R$ 分别表示原始、体心、面心、底心和菱方中心化。点群与 Bravais 晶格并不是任意配对；它们必须共享同一晶系的度量结构。空间群正是进一步把“点操作”和“平移”组合起来的完整群。
-
-十四种 Bravais 晶格来自两个条件：中心化点集必须在晶体点群下保持不变，而由幺模整数基变换联系的晶胞描述同一晶格。因此某些看似新的中心化会在换基后退化为表中的类型；例如单斜的体心描述可换成底心描述，四方的面心描述可换成体心描述。这个等价关系解释了为何“七晶系乘若干中心化”的朴素计数会重复。
-
-惯用晶胞优先显露对称性，不一定是最小原胞。能带和态密度计算则必须用原胞体积 $\Omega$；相应的倒格原胞体积为 $(2\pi)^3/\Omega$。在实空间取 Wigner--Seitz 原胞，在倒空间便得到第一 Brillouin 区。
-
-有了平移晶格的分类，下一步自然转向其对偶结构——倒格子。它把晶面、衍射条件与 Bloch 波矢统一到同一套语言中。
-
-晶面在三个晶格方向上的截距倒数化成互素整数 $(h,k,l)$，便得到 Miller 指数；平行于某个基矢的晶面在该方向的指数为零。定义倒格基矢满足 $\vb a_i\cdot\vb b_j=2\pi\delta_{ij}$ 后，每个晶面族对应
-\[
-\vb G_{hkl}=h\vb b_1+k\vb b_2+l\vb b_3,
-\]
-其中 $\vb G_{hkl}$ 垂直于晶面，且相邻晶面间距为
-\[
-d_{hkl}=\frac{2\pi}{|\vb G_{hkl}|}.
-\]
-
-\begin{derivation}[晶面法向与面间距]
-第 $n$ 张平行晶面上的点 $\vb r=x_1\vb a_1+x_2\vb a_2+x_3\vb a_3$ 满足
-\[
-hx_1+kx_2+lx_3=n,
-\qquad n\in\ZZ.
-\]
-任取同一晶面内两点之差 $\Delta\vb r$，上式给出 $\vb G_{hkl}\cdot\Delta\vb r=0$，故 $\vb G_{hkl}$ 是法向。相邻两面的位移 $\Delta\vb r$ 满足 $\vb G_{hkl}\cdot\Delta\vb r=2\pi$；沿单位法向取最短位移便有
-\[
-d_{hkl}|\vb G_{hkl}|=2\pi.
-\]
-\end{derivation}
-
-弹性散射保持晶格平移的特征标，因而要求 $\ee^{\ii(\vb k'-\vb k)\cdot\vb R}=1$ 对所有 $\vb R\in\mathcal L$ 成立，即 Laue 条件 $\vb k'-\vb k\in\mathcal L^*$。衍射峰落在倒格点上，不是额外的经验规则，而是平移群特征标的正交性。
-
-晶格的 Fourier 变换是倒格子上的 Dirac 梳：
-\[
-\hat\Lambda(\vb k)
-=\sum_{\vb R\in\Lambda}\ee^{-i\vb k\cdot\vb R}
-=\frac{(2\pi)^3}{\Omega}
-\sum_{\vb G\in\Lambda^*}\delta(\vb k-\vb G).
-\]
-这一 Poisson 求和公式把实空间周期性转化为倒空间离散性，是衍射物理的数学基础。结构因子是电子密度的 Fourier 系数，
-\[
-F(\vb G)=\int\rho(\vb r)\ee^{-i\vb G\cdot\vb r}\,\dd^3r,
-\]
-因此衍射实验测量的是 $\rho$ 的 Fourier 变换在倒格点上的值。
-
-设 $A=[\vb a_1|\vb a_2|\vb a_3]$ 与 $B=[\vb b_1|\vb b_2|\vb b_3]$。由 $A^{\mathsf T}B=2\pi I_3$ 取行列式，立刻得到实、倒格原胞体积的关系
-\[
-\Omega\,\Omega^*=(2\pi)^3.
-\]
-Born--von Karman 边界条件下，$N$ 个原胞给出 $N$ 个允许波矢，每个波矢在 Brillouin 区占体积 $\Omega^*/N$，所以
-\[
-\frac{1}{N}\sum_{\vb k}\to\frac{\Omega}{(2\pi)^3}\int_{\mathrm{BZ}}\dd^3k,
-\]
-这也是能带积分中测度因子的来源。Bloch 波矢只需取第一 Brillouin 区，因为 $\vb k$ 与 $\vb k+\vb G$ 给出同一平移特征标。
-
-倒格子揭示了晶体的平移对称性，而点群对称性同样对宏观物理性质施加约束。晶体点群不仅约束能级结构，还直接限制物理性质张量的独立分量个数——这是群论在材料科学中最实用的结论之一。
-
-\begin{theorem}[张量不变性原理]
-设晶体点群为 $P$。物理性质张量 $T_{i_1\cdots i_n}$（$n$ 阶）在 $P$ 的所有操作 $R$ 下不变：
-\[
-T_{i_1\cdots i_n}
-=\sum_{j_1,\dots,j_n}
-R_{i_1 j_1}\cdots R_{i_n j_n}\,T_{j_1\cdots j_n},
-\qquad\forall R\in P.
-\]
-此方程组确定 $T$ 的独立分量个数。
-\label{thm:tensor-invariance}
 \end{theorem}
 
-二阶对称张量（如介电张量 $\epsilon_{ij}$、电导率 $\sigma_{ij}$）在转动 $R$ 下变换为 $\epsilon'=R\epsilon R^{\mathsf T}$。不变性要求 $R\epsilon=\epsilon R$，即 $\epsilon$ 与所有点群操作对易。等价地，$\epsilon$ 属于算符表示空间中的全对称表示 $A_1$ 分量。独立分量数等于
+\begin{proof}
+令 $K=\operatorname{Ker}\varphi$。定义
 \[
-N_{A_1}=\frac{1}{|G|}\sum_{g\in G}\chi_{\mathrm{Sym}^2}(g),
+\overline{\varphi}:G/K\longrightarrow\operatorname{Im}\varphi,
+\qquad
+\overline{\varphi}(gK)=\varphi(g).
 \]
-其中 $\chi_{\mathrm{Sym}^2}(g)$ 是二阶对称张量表示的特征标。对三维矢量表示 $R(g)$，$\chi_{\mathrm{Sym}^2}(g)=\frac12[(\tr R)^2+\tr(R^2)]$。
-
-对称性越高，不变张量空间通常越小。二阶对称张量在三斜、单斜、正交、四方/三方/六方和立方晶系中分别有 $6,4,3,2,1$ 个独立分量。因而单轴晶体有 $\epsilon=\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$，立方晶体则只能有 $\epsilon=\epsilon_0 I_3$。四阶弹性张量还受指标交换对称约束；立方晶体最终只留下 $C_{11},C_{12},C_{44}$ 三个独立常数。
-
-这些特例可统一为张量表示中的不动子空间问题。
-
-设 $V=\RR^3$ 是点群 $P$ 的自然表示。$n$ 阶张量属于 $V^{\otimes n}$，群元 $R$ 的作用为
+若 $gK=g'K$，则 $g'^{-1}g\in K$，于是
 \[
-(R\cdot T)_{i_1\cdots i_n}=\sum_{j_1,\dots,j_n}R_{i_1j_1}\cdots R_{i_nj_n}\,T_{j_1\cdots j_n}
+\varphi(g'^{-1}g)=e_H
+\Longrightarrow
+\varphi(g')^{-1}\varphi(g)=e_H
+\Longrightarrow
+\varphi(g)=\varphi(g'),
 \]
-若张量具有指标交换对称性，应先把表示空间限制到相应的对称化子空间，再施加点群不变性。
+故 $\overline{\varphi}$ 良定义。它保持乘法：
+\[
+\overline{\varphi}((gK)(hK))
+=\varphi(gh)
+=\varphi(g)\varphi(h).
+\]
+它按像的定义满射。若 $\overline{\varphi}(gK)=e_H$，则 $g\in K$，所以 $gK=K$，从而核平凡，故 $\overline{\varphi}$ 单射。于是得到\eqnrefs{eq:first-isomorphism}。
+\end{proof}
 
-\begin{theorem}[张量独立分量的计数]
-\label{thm:tensor-count-general}
-设 $P$ 是晶体点群，$T$ 是 秩 $n$ 张量，其对称性由表示 $\rho_T:P\to\operatorname{GL}(W)$ 描述（$W\subseteq V^{\otimes n}$ 是对称性约束后的子空间）。则 $T$ 在 $P$ 对称性下的独立分量数为
+第一同构定理可以用“压缩信息”的图像理解。同态 $\varphi:G\to H$ 会把若干不同的 $G$ 中元素映到同一个像。哪些元素被识别在一起？如果 $\varphi(g_1)=\varphi(g_2)$，则
+\[
+\varphi(g_2^{-1}g_1)=e_H,
+\]
+所以 $g_2^{-1}g_1\in\operatorname{Ker}\varphi$，也就是 $g_1$ 与 $g_2$ 位于同一个核陪集。换言之，同态丢失的信息恰好由核描述。
+
+因此先把 $G$ 按核的陪集压缩成 $G/\operatorname{Ker}\varphi$，就已经把所有会被 $\varphi$ 识别的元素合并了；压缩后不再有额外信息损失，于是得到的群与实际像 $\operatorname{Im}\varphi$ 同构：
+\[
+G/\operatorname{Ker}\varphi\cong\operatorname{Im}\varphi.
+\]
+这条定理以后会反复解释“为什么某个群除掉一个冗余子群后变成另一个群”，例如 $SU(2)/\{\pm I\}\cong SO(3)$。
+
+第一同构定理有两个同样重要的同伴——第二和第三同构定理，它们描述商群的"约化"和"嵌入"规则，在分析群结构时与第一同构定理配合使用。
+
+\begin{theorem}[第二同构定理]
+\label{thm:second-isomorphism}
+设 $H\le G$，$N\mathrel{\trianglelefteq} G$。则 $HN\le G$，$H\cap N\mathrel{\trianglelefteq} H$，且
 \begin{equation}
-N=\frac1{|P|}\sum_{R\in P}\chi_T(R),
-\label{eq:tensor-count-general}
+HN/N\cong H/(H\cap N).
+\label{eq:second-isomorphism}
 \end{equation}
-其中 $\chi_T$ 是 $\rho_T$ 的特征标。等价地，$N$ 是平凡表示 $A_1$ 在 $\rho_T$ 中的重数。
+
 \end{theorem}
 
-群平均算符
+\begin{proof}
+对 $h_1n_1,h_2n_2\in HN$，因 $N\mathrel{\trianglelefteq} G$，有 $n_1h_2=h_2 n'$（$n'=h_2^{-1}n_1h_2\in N$），故
 \[
-\Pi_P=\frac1{|P|}\sum_{R\in P}\rho_T(R)
+(h_1n_1)(h_2n_2)=h_1h_2 n'n_2\in HN.
 \]
-满足 $\Pi_P^2=\Pi_P$，像空间正是不变张量空间；取迹便得到 \eqnrefs{eq:tensor-count-general}。这段论证也说明，公式计算的是已有指标对称约束之后的独立分量，而不是未经约束的 $3^n$ 个分量。
+逆元 $(hn)^{-1}=n^{-1}h^{-1}=h^{-1}(h n^{-1}h^{-1})\in HN$（因 $h n^{-1}h^{-1}\in N$）。故 $HN\le G$。
 
-\begin{proposition}[对称幂表示的特征标]
-\label{prop:sym-power-char}
-设 $R\in P$ 有本征值 $\lambda_1,\lambda_2,\lambda_3$（作为 $3\times3$ 正交矩阵）。则：
+为比较两个商群，定义
+\[
+\varphi:H\to HN/N,\qquad\varphi(h)=hN.
+\]
+这是包含映射 $H\hookrightarrow HN$ 后取商的复合，故是同态。它满射：对 $hnN\in HN/N$，因 $n\in N$ 故 $hnN=hN=\varphi(h)$。
+
+其核为
+\[
+\operatorname{Ker}\varphi=\{h\in H\mid hN=N\}=\{h\in H\mid h\in N\}=H\cap N.
+\]
+$H\cap N\mathrel{\trianglelefteq} H$ 因 $N\mathrel{\trianglelefteq} G$ 限制到 $H$ 上仍正规。
+
+由第一同构定理 $H/\operatorname{Ker}\varphi\cong\operatorname{Im}\varphi$，即 $H/(H\cap N)\cong HN/N$。
+\end{proof}
+
+\begin{theorem}[第三同构定理]
+\label{thm:third-isomorphism}
+设 $N\mathrel{\trianglelefteq} G$，$K\mathrel{\trianglelefteq} G$，且 $N\le K$。则 $K/N\mathrel{\trianglelefteq} G/N$，且
+\begin{equation}
+(G/N)/(K/N)\cong G/K.
+\label{eq:third-isomorphism}
+\end{equation}
+
+\end{theorem}
+
+\begin{proof}
+对 $gN\in G/N$，$kN\in K/N$，
+\[
+(gN)(kN)(gN)^{-1}=gkg^{-1}N\in K/N,
+\]
+因 $gkg^{-1}\in K$（$K\mathrel{\trianglelefteq} G$）。
+
+再定义
+\[
+\varphi:G/N\to G/K,\qquad\varphi(gN)=gK.
+\]
+良定义性来自 $gN=g'N\Rightarrow g'^{-1}g\in N\le K\Rightarrow gK=g'K$。同态性由 $\varphi(gN\cdot hN)=ghK=(gK)(hK)$ 得到；任意 $gK$ 都是 $\varphi(gN)$，故映射满射。
+
+这个满同态的核为
+\[
+\operatorname{Ker}\varphi=\{gN\mid gK=K\}=\{gN\mid g\in K\}=K/N.
+\]
+
+第一同构定理于是给出 $(G/N)/\operatorname{Ker}\varphi\cong\operatorname{Im}\varphi$，即 $(G/N)/(K/N)\cong G/K$。
+\end{proof}
+
+\begin{theorem}[对应定理（子群对应）]
+\label{thm:correspondence}
+设 $N\mathrel{\trianglelefteq} G$，$\pi:G\to G/N$ 为自然投影。则映射
+\[
+\Phi:\{H\mid N\le H\le G\}\longrightarrow\{H'\mid H'\le G/N\},
+\qquad
+\Phi(H)=H/N=\pi(H)
+\]
+是子群格之间的保序双射，且保持正规性和商群结构：
 \begin{enumerate}[label=(\roman*),leftmargin=3em]
-\item 全张量空间 $V^{\otimes n}$ 的特征标：$\chi_{V^{\otimes n}}(R)=(\lambda_1+\lambda_2+\lambda_3)^n=(\tr R)^n$。
-\item 对称幂 $\mathrm{Sym}^n V$ 的特征标：
-\begin{equation}
-\chi_{\mathrm{Sym}^n}(R)=\sum_{\substack{k_1+k_2+k_3=n\\k_i\ge0}}\lambda_1^{k_1}\lambda_2^{k_2}\lambda_3^{k_3},
-\label{eq:sym-power-char}
-\end{equation}
-即 $(\lambda_1,\lambda_2,\lambda_3)$ 的次数 $n$ 完全齐次对称多项式。
-\item 反对称幂 $\wedge^n V$ 的特征标：$\chi_{\wedge^n}(R)=\sum_{i_1<\cdots<i_n}\lambda_{i_1}\cdots\lambda_{i_n}$（初等对称多项式 $e_n$）。
+\item $H_1\le H_2\iff\Phi(H_1)\le\Phi(H_2)$；
+\item $H\mathrel{\trianglelefteq} G\iff\Phi(H)\mathrel{\trianglelefteq} G/N$，此时 $(G/N)/\Phi(H)\cong G/H$；
+\item $[G:H]=[G/N:\Phi(H)]$（有限指数）。
 \end{enumerate}
-\end{proposition}
 
-低阶计算最常用的特例是
+\end{theorem}
+
+\begin{proof}
+定义候选逆映射
 \[
-\chi_{\mathrm{Sym}^2}(R)
-=\frac12\bigl[\chi_V(R)^2+\chi_V(R^2)\bigr].
+\Psi:\{H'\le G/N\}\to\{H\mid N\le H\le G\},
+\qquad
+\Psi(H')=\pi^{-1}(H').
 \]
-\begin{proposition}[张量表示的不可约分解]
-\label{prop:tensor-irrep-decomposition}
-张量表示分解为
+需验证 $\pi^{-1}(H')$ 含 $N$：因 $N=\operatorname{Ker}\pi$，$e_{G/N}\in H'$，故 $N=\pi^{-1}(e_{G/N})\subseteq\pi^{-1}(H')$。
+
+直接计算可得
 \[
-\rho_T\simeq\bigoplus_\Gamma\,m_\Gamma\,\Gamma,\qquad m_\Gamma=\frac1{|P|}\sum_{R\in P}\overline{\chi_\Gamma(R)}\,\chi_T(R).
+\Psi(\Phi(H))=\pi^{-1}(H/N)=\{g\in G\mid gN\in H/N\}=H,
 \]
-平凡表示的重数 $m_{A_1}$ 给出不变张量数，其他分量则描述在外场或相变中按相应不可约表示变化的响应模式。
-\end{proposition}
+因 $gN=hN$（某 $h\in H$）等价于 $g\in hN\subseteq H$（因 $N\le H$）。
+\[
+\Phi(\Psi(H'))=\pi(\pi^{-1}(H'))=H',
+\]
+因 $\pi$ 满射。
 
-32 个点群分类了晶体的旋转对称性，而空间群进一步把点操作与平移组合，产生 Wyckoff 位置——这是描述晶体内原子占位对称性的基本工具。
+商映射保持包含关系，所以 $H_1\le H_2\Rightarrow H_1/N\le H_2/N$；反过来由逆对应 $\Psi$ 得 $H_1/N\le H_2/N\Rightarrow H_1\le H_2$。
 
-\begin{definition}[Wyckoff 位置]
-空间群 $\mathcal G$ 作用下，空间中一般位置 $\vb r$ 的轨道 $|\mathcal G\cdot\vb r|$ 大小等于 $|\mathcal G/T|$（点群阶数）。若 $\vb r$ 位于对称元素上，其稳定子 $G_{\vb r}$ 非平凡，轨道变小。具有相同稳定子共轭类的位置集合称为一个 Wyckoff 位置，用字母 $a,b,c,\dots$ 标记（多重度递增）。
+$H\mathrel{\trianglelefteq} G\Rightarrow H/N\mathrel{\trianglelefteq} G/N$：对 $gN\in G/N$，$(gN)(H/N)(gN)^{-1}=gHg^{-1}/N=H/N$。反过来用 $\Psi$ 拉回。
+
+商群同构 $(G/N)/(H/N)\cong G/H$ 是第三同构定理。指数公式由 $[G:H]=|G/H|=|(G/N)/(H/N)|=[G/N:H/N]$ 得到。
+\end{proof}
+
+\medskip
+\noindent\emph{对应定理的应用：$D_4$ 的子群格。}
+$D_4=\langle r,s\mid r^4=s^2=e,\,srs=r^{-1}\rangle$，$|D_4|=8$。取 $N=\langle r^2\rangle=\{e,r^2\}\mathrel{\trianglelefteq} D_4$（$r^2$ 与所有元素交换），则 $D_4/N\cong V_4$（Klein 四群，因 $D_4/N$ 是 $4$ 阶 Abel 群且非循环）。
+
+$V_4$ 有 $5$ 个子群：$\{e\}$、三个 $C_2$、$V_4$ 本身。由对应定理，$D_4$ 中含 $N$ 的子群恰好 $5$ 个：$N$ 本身、三个 $4$ 阶子群 $\langle r\rangle$、$\langle r^2,s\rangle$、$\langle r^2,rs\rangle$、以及 $D_4$。$D_4$ 的其余子群（不含 $N$ 的）有 $\{e\}$、$\langle s\rangle$、$\langle rs\rangle$、$\langle r^2s\rangle$、$\langle r^3s\rangle$，共 $4$ 个。故 $D_4$ 共有 $9$ 个子群。
+
+对应定理还给出正规性信息：$V_4$ 的三个 $C_2$ 子群都正规（因 $V_4$ 是 Abel 群），故 $D_4$ 中对应的三个 $4$ 阶子群都正规。这与 $D_4$ 的几何一致：$\langle r\rangle$（纯转动）、$\langle r^2,s\rangle$（含水平反射）、$\langle r^2,rs\rangle$（含对角反射）都是正规子群。
+\par\medskip
+
+
+当同态 $\varphi:G\to H$ 为双射时，称 $\varphi$ 为\emph{同构}，记作 $G\cong H$。同构的两个群在代数上完全相同，只是元素名称不同。
+
+\begin{definition}[同构]
+若群同态 $\varphi:G\to H$ 为双射，则称 $\varphi$ 为同构，并称 $G$ 与 $H$ 同构，记作
+\[
+G\cong H.
+\]
+\label{def:isomorphism}
 \end{definition}
 
-\begin{example}[空间群 $Pm\bar3m$（$O_h^1$，No.221）的 Wyckoff 位置]
-立方 $Pm\bar3m$ 的部分 Wyckoff 位置：
-\[
-\begin{array}{c|c|c|l}
-\text{Wyckoff} & \text{多重度} & \text{点对称} & \text{坐标}\\\hline
-a&1&m\bar3m&(0,0,0)\\
-b&1&m\bar3m&(\tfrac12,\tfrac12,\tfrac12)\\
-c&3&4mm&(0,\tfrac12,\tfrac12)\\
-d&6&mmm&(\tfrac12,0,0)\\
-e&12&\bar42m&(\tfrac14,\tfrac14,0)
-\end{array}
-\]
-位置 $a$（角点）和 $b$（体心）具有完整 $O_h$ 对称，适合放完全对称的原子（如 CsCl 中 Cs 在 $a$、Cl 在 $b$）。位置 $c$（面心）有 $C_{4v}$ 对称，适合放面心原子。Wyckoff 位置直接决定原子在晶体中的对称环境和可能的局部模式。
-\end{example}
+同构表示两个群具有相同的群论结构，只是群元的“具体实现”不同。群的阶、交换性、群元阶的分布、子群格结构以及共轭类结构等均在同构下保持。
 
-Wyckoff 位置描述了原子在空间群作用下的对称环境，而空间群本身的结构则需要用 Seitz 记号来系统刻画。
-
-点群只记录 $\vb r\mapsto R\vb r$。晶体的完整对称操作还允许在转动之后附加平移，因此一般形式必须写成
+\begin{proposition}[共轭子群同构]
+若 $K=gHg^{-1}$，则映射
 \[
-\vb r\longmapsto R\vb r+\vb t.
+c_g:H\to K,
+\qquad
+c_g(h)=ghg^{-1}
 \]
-Seitz 记号 $\{R\mid\vb t\}$ 只是把这一仿射变换紧凑地记下来。竖线左边是线性部分 $R$，右边是平移部分 $\vb t$。特别地，$\{I\mid\vb a\}$ 是纯平移，而 $\{R\mid\vb 0\}$ 是过原点的纯点群操作。
-
-乘法公式不能凭记忆写。若先做 $\{S\mid\vb s\}$ 再做 $\{R\mid\vb t\}$，位置依次变为
-\[
-\vb r\xmapsto{\{S\mid\vb s\}}S\vb r+\vb s
-\xmapsto{\{R\mid\vb t\}}R(S\vb r+\vb s)+\vb t
-=RS\vb r+(R\vb s+\vb t),
-\]
-所以
-\[
-\{R\mid\vb t\}\{S\mid\vb s\}=\{RS\mid R\vb s+\vb t\}.
-\]
-注意第二个平移 $\vb s$ 会先被前面的转动 $R$ 旋转，这正是空间群通常不是点群与平移群简单直积的原因。一个空间群操作写成 Seitz 记号
-\[
-\{R\mid\vb t\}:\vb r\longmapsto R\vb r+\vb t.
-\]
-这里 $R\in O(3)$ 是点操作，$\vb t$ 是平移。重要的是，$\vb t$ 不一定本身就是晶格矢量；在螺旋轴和滑移面中，它可以是晶格周期的分数倍。
-
-\begin{proposition}[Seitz 乘法与逆元]
-空间操作满足
-\[
-\{R\mid\vb t\}\{S\mid\vb s\}
-=\{RS\mid R\vb s+\vb t\},
-\label{eq:seitz-product}
-\]
-以及
-\[
-\{R\mid\vb t\}^{-1}
-=\{R^{-1}\mid- R^{-1}\vb t\}.
-\label{eq:seitz-inverse}
-\]
-\label{prop:seitz-algebra}
+是同构。
+\label{prop:conjugate-subgroups-isomorphic}
 
 \end{proposition}
 
 \begin{proof}
-连续作用到任意点 $\vb r$：
-\begin{align*}
-\{R\mid\vb t\}\{S\mid\vb s\}\vb r
-&=\{R\mid\vb t\}(S\vb r+\vb s)\\
-&=RS\vb r+R\vb s+\vb t,
-\end{align*}
-因此得到 \eqnrefs{eq:seitz-product}。要求逆操作满足
+对 $h_1,h_2\in H$，有
 \[
-\{R\mid\vb t\}\{R^{-1}\mid\vb u\}=
-\{I_3\mid\vb0\},
+c_g(h_1h_2)=gh_1h_2g^{-1}
+=(gh_1g^{-1})(gh_2g^{-1})
+=c_g(h_1)c_g(h_2),
 \]
-由乘法式知 $R\vb u+\vb t=0$，故 $\vb u=-R^{-1}\vb t$，得到 \eqnrefs{eq:seitz-inverse}。
+所以 $c_g$ 是同态。它按 $K=gHg^{-1}$ 的定义满射。若 $c_g(h_1)=c_g(h_2)$，左右分别乘以 $g^{-1}$ 与 $g$ 得 $h_1=h_2$，所以单射。等价地，其逆映射就是
+\[
+c_{g^{-1}}:K\to H,
+\qquad k\mapsto g^{-1}kg.
+\]
+故 $c_g$ 是同构。
 \end{proof}
 
-所有纯平移
+\begin{definition}[自同构与内自同构]
+群 $G$ 到自身的同构称为自同构。所有自同构在映射复合下构成群
 \[
-T=\{\{I_3\mid\vb R\}\mid \vb R\in\mathcal L\}
+\operatorname{Aut}(G).
 \]
-构成空间群 $\mathcal G$ 的正规 Abel 子群。把平移部分“商掉”以后，剩下的就是有限的晶体点群：
+对固定 $g\in G$，映射
 \[
-\mathcal G/T\simeq P,
-\]
-其中 $P$ 是空间群的点群。这一短正合结构
-\[
-1\longrightarrow T\longrightarrow\mathcal G
-\longrightarrow P\longrightarrow1
-\]
-是理解空间群最干净的代数框架。\chapref{chap:group-theory-quantum}讲 Bloch 定理和小群时会不断使用它。
-
-如果通过选择适当原点，可以让每个点群元素 $R$ 都在空间群中以 $\{R\mid0\}$ 出现，那么空间群可以看成平移群与点群的半直积，称为\textbf{对称型空间群}（symmorphic 空间 群；传统教材也常称“简单空间群”）。三维共有 $73$ 个。若某些点操作只能与分数平移绑在一起存在，就得到\textbf{非对称型空间群}（nonsymmorphic 空间 群；传统教材也常称“非简单空间群”），共有 $157$ 个。两类合计 $230$ 个空间群。
-
-非对称型空间群最典型的几何元素是螺旋轴与滑移面。它们的关键不是“多做了一次平移”，而是点操作 $R$ 与分数平移 $\vb t$ \emph{不可拆开分别成为对称操作}。
-
-螺旋轴与滑移面的几何如图 \figref{fig:screw-glide} 所示。
-\begin{figure}[htbp]
-\centering
-\begin{minipage}{0.47\textwidth}
-\centering
-\begin{tikzfig}[scale=0.86]
-  \draw[axes] (0,-2.5)--(0,2.8) node[above] {$z$};
-  \foreach \k in {0,...,5}{
-    \pgfmathsetmacro{\ang}{60*\k}
-    \pgfmathsetmacro{\yy}{-2+0.72*\k}
-    \pgfmathsetmacro{\xx}{0.95*cos(\ang)}
-    \fill (\xx,\yy) circle (1.5pt);
-  }
-  \draw[lecturearrow] (1.1,-1.9) to[out=25,in=-35] (0.65,-.9);
-  \node[lecturelabel] at (2.05,-1.05) {$\{C_6\mid c/6\}$};
-\end{tikzfig}
-\small screw axis
-\end{minipage}\hfill
-\begin{minipage}{0.47\textwidth}
-\centering
-\begin{tikzfig}[scale=0.86]
-  \draw[dashed,line width=.75pt] (-2.6,0)--(2.6,0) node[right,lecturelabel] {$\sigma$};
-  \foreach \x in {-2,-.8,.4,1.6}{\fill (\x,1.0) circle (1.5pt);}
-  \foreach \x in {-1.4,-.2,1.0,2.2}{\fill (\x,-1.0) circle (1.5pt);}
-  \draw[lecturearrow] (-1.9,.75)--(-1.42,-.75);
-  \node[lecturelabel] at (.25,.55) {$\{\sigma\mid \vb a/2\}$};
-\end{tikzfig}
-\small glide plane
-\end{minipage}
-\caption{非简单空间群的两种基本元素：螺旋轴与滑移面。点操作和分数平移必须作为一个整体出现。}
-\label{fig:screw-glide}
-\end{figure}
-
-这类“不可拆分的分数平移”在纯几何分类中看似只是记号上的麻烦，但到了能带理论里会产生实质后果：在布里渊区边界，螺旋轴或滑移面的表示可能平方到一个非平凡的 Bloch 相位，从而强制某些能带粘连。\chapref{chap:group-theory-quantum}会把这个现象作为点群思维向空间群思维升级的例子。
-
-Seitz 记号还揭示了一个重要事实：平移部分会随原点改变，因此判断一个空间群是否能“拆成点群与整格平移”必须考察哪些分数平移能够通过移动原点消去。
-
-Seitz 记号中的平移部分依赖原点选择。若把原点从 $O$ 移到 $O'=O+\vb d$，同一个几何操作
-\[
-\{R\mid\boldsymbol\tau\}
-\]
-在新原点下的平移部分变为
-\[
-\boldsymbol\tau'
-=\boldsymbol\tau+(R-I_3)\vb d.
-\label{eq:origin-shift-seitz}
-\]
-因此看到一个分数平移时，不能立刻断言它是“真正的”螺旋或滑移成分；有些分数部分可以通过移动原点消掉。简单空间群之所以称为 symmorphic，就是因为存在某个原点使所有点操作都能选成 $\{R\mid0\}$ 的代表。
-
-真正的非对称型空间群操作所含的本征分数平移则无法通过任何原点移动消去。例如绕轴的螺旋平移分量沿着旋转轴，而 $(R-I_3)\vb d$ 总垂直于固定轴方向，因此轴向分数平移不可能靠移原点去掉。同理，滑移面中平行镜面的分数平移也具有不可消除部分。这一几何事实正是“非简单空间群不是糟糕原点选择造成的”最直接的解释。
-
-\begin{example}[一维链上的半格矢滑移类比]
-虽然真正的滑移面需要二维或三维空间，但一维类比很有助于理解。设两个子晶格 $A_n$ 与 $B_n$ 分别位于 $na$ 与 $na+a/2$。单独平移 $a/2$ 会交换 $A$、$B$，如果两者是不同原子就不是对称操作；但若同时伴随一个内部交换操作，组合可能恢复整个结构。空间群中的螺旋与滑移正是“点操作修正了分数平移造成的不匹配”的几何版本。
-\end{example}
-
-进入晶体文献以后还会遇到另一套命名体系。Schoenflies 与 Hermann--Mauguin 符号并非互相竞争，而是承担不同的信息任务。
-
-Schoenflies 符号特别适合分子光谱与点群表示，因为它突出主轴、镜面和多面体类型；晶体学更常用 Hermann--Mauguin 国际符号，因为后者同时编码晶格中心化以及沿特定晶向的旋转、螺旋和滑移信息。例如符号开头的 $P,I,F,C,R$ 直接告诉我们 Bravais 中心化类型，后续的数字与字母则描述相应方向上的轴或面。
-
-因此，当文献给出一个空间群时，常见工作流是：先从 Hermann--Mauguin 符号或空间群编号确定完整的 $\{R\mid\boldsymbol\tau\}$ 操作；再把平移部分商掉得到点群；最后根据具体 $\vb k$ 取小群并查相应不可约表示。\chapref{chap:group-theory-quantum}的能带部分会沿这条链继续下去。
-
-在实际识别点群时，三维对称元素常用极射赤面投影压缩到二维图上。
-
-
-极射赤面投影并不引入新的群论定理，它的任务是把三维对称元素压缩到二维图上，使我们能够在同一张平面图上同时看见多个旋转轴与镜面。基本方法是：把旋转轴与单位球面的交点看成极点，再从球极向赤道平面作立体投影。上半球与下半球的点用不同符号区分。
-
-立体投影把球面方向映射到赤道平面，如图 \figref{fig:stereographic-projection} 所示。
-\begin{figure}[htbp]
-\centering
-\begin{tikzfig}[scale=1.0]
-  \draw[line width=.75pt] (0,0) circle (2.2);
-  \draw[dashed] (-2.2,0)--(2.2,0);
-  \node[lecturelabel] at (-1.2,-0.62) {equator};
-  \coordinate (N) at (0,2.2);
-  \coordinate (S) at (0,-2.2);
-  \coordinate (P) at (1.4,1.25);
-  \fill (P) circle (1.5pt) node[above right,lecturelabel] {$P$};
-  \coordinate (Pp) at (0.89,0);
-  \draw[line width=.65pt] (S)--(P)--(Pp);
-  \fill (Pp) circle (1.5pt);
-  \node[lecturelabel] at (0.89,-0.62) {$P'$};
-  \draw[line width=.6pt] (0,0) ellipse (2.2 and .38);
-  \node[lecturelabel] at (-1.0,-2.65) {stereographic projection};
-\end{tikzfig}
-\caption{极射赤面投影的基本几何。实际晶体学图中会用约定符号标出不同阶数的轴、镜面与上下半球极点。}
-\label{fig:stereographic-projection}
-\end{figure}
-
-对于本课程，掌握投影的几何思想和常见符号足够；真正分析量子态时，更重要的是从图中读出点群，再调用其不可约表示。于是本章最后一节转向这一层表示论结构。
-
-\section{晶体点群的不可约表示}
-\label{sec:crystal-point-group-irreps}
-
-本节不把三十二张特征标表当成孤立数字表来背，而是解释这些表怎样由点群结构组织出来，以及为什么表中会出现 $A,B,E,T$、$g/u$ 这些标签。这样才能自然过渡到下一章的量子力学应用。
-
-从点群的结构分类转入表示论：先从最简单的循环群和二面体群开始，它们是不可约表示的基石。
-
-对循环群 $C_n=\langle r\mid r^n=e\rangle$，群是 Abel 的，因此所有不可约复表示都是一维。它们由生成元的像决定：
-\[
-D_m(r)=\exp\!\left(\frac{2\pi\ii m}{n}\right),
-\qquad m=0,1,\dots,n-1.
-\label{eq:cn-irreps}
-\]
-这已经给出全部 $n$ 个不可约表示。若希望使用实表示，则复共轭的一维表示往往会合并成二维实表示，这正是特征标表里 $E$ 型表示频繁出现的原因之一。
-
-对 $D_n$，可取群表示
-\[
-D_n=\langle r,s\mid r^n=e,\ s^2=e,\ srs=r^{-1}\rangle.
-\]
-其中 $r$ 对应绕主轴的 $2\pi/n$ 转动，$s$ 对应一条横向二重轴。二维不可约表示可以写成
-\[
-D_m(r)=
-\begin{pmatrix}
-\cos\frac{2\pi m}{n}&-\sin\frac{2\pi m}{n}\\
-\sin\frac{2\pi m}{n}&\cos\frac{2\pi m}{n}
-\end{pmatrix},
+c_g:G\to G,
 \qquad
-D_m(s)=
-\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+c_g(x)=gxg^{-1}
 \]
-因此
+称为由 $g$ 诱导的内自同构。所有内自同构构成 $\operatorname{Aut}(G)$ 的子群，记为 $\operatorname{Inn}(G)$。
+\label{def:automorphism-inner}
+\end{definition}
+
+\begin{theorem}[内自同构群的结构]
+映射
 \[
-\chi_m(r^k)=2\cos\frac{2\pi mk}{n},
+\Psi:G\longrightarrow\operatorname{Inn}(G),
 \qquad
-\chi_m(sr^k)=0.
+\Psi(g)=c_g
 \]
-当 $n$ 为奇数时有两个一维不可约表示和 $(n-1)/2$ 个二维不可约表示；当 $n$ 为偶数时有四个一维不可约表示和 $n/2-1$ 个二维不可约表示。维数平方和分别验证
+是满同态，且
 \[
-2\cdot1^2+\frac{n-1}{2}\cdot2^2=2n,
+\operatorname{Ker}\Psi=Z(G).
 \]
-以及
+因此由第一同构定理，
 \[
-4\cdot1^2+\left(\frac n2-1\right)2^2=2n.
+\operatorname{Inn}(G)\cong G/Z(G).
+\label{eq:inner-aut-quotient}
 \]
-这比逐个 $D_2,D_3,D_4,D_6$ 单独重算更有普适性。
-
-循环群与二面体群之后，再看多面体群的不可约表示维数怎样由类数和平方和条件限制。
-
-
-对 $T,O,I$，共轭类数和维数平方和已经把不可约表示的维数强烈限制住。标准结果为
-\[
-T:\quad 1,1,1,3,
-\]
-\[
-O:\quad 1,1,2,3,3,
-\]
-\[
-I:\quad 1,3,3,4,5.
-\]
-例如 $O$ 的群阶为 $24$，五个共轭类意味着五个不可约表示，而
-\[
-1^2+1^2+2^2+3^2+3^2=24.
-\]
-两个三维表示并不是“因为空间是三维所以必然有两个”，而是共轭类结构、正交关系与维数平方和共同决定的。
-
-若群包含中心反演且分解成
-\[
-G=K\times C_i,
-\]
-则 $C_i$ 的两个一维不可约表示分别给出反演本征值 $+1$ 与 $-1$。于是 $K$ 的每个不可约表示都复制成一对：偶宇称记作 $g$（gerade），奇宇称记作 $u$（ungerade）。例如 $O_h=O\times C_i$，因此 $O$ 的五个不可约表示变成 $O_h$ 的十个不可约表示。
-
-在分子与晶体文献中，最常见的是 Mulliken 符号。其结构应当按“维数 + 附加对称量子数”理解：$A$、$B$ 表示一维不可约表示，$E$ 表示二维，$T$（有些文献写 $F$）表示三维；下标 $1,2$ 区分同维表示在某些 $C_2$ 或镜面下的不同特征标；$g/u$ 标记反演偶奇；撇号 $' / ''$ 则常用来标记相对于水平镜面的偶奇。
-
-因此，看到 $T_{2g}$ 时不要把它当作一个不可分解的名字。它至少告诉我们三件事：表示维数为 $3$；它属于第二种 $T$ 型；在中心反演下为偶。\chapref{chap:group-theory-quantum}讨论 $d$ 轨道的晶场劈裂时，这三个信息都会直接使用。
-
-\begin{table}[htbp]
-\centering
-\caption{$C_{3v}$ 的特征标表与常见基函数}
-\label{tab:c3v-character}
-\begin{tabular}{c|ccc|l}
-\toprule
- & $E$ & $2C_3$ & $3\sigma_v$ & 常见基函数 \\
-\midrule
-$A_1$ & $1$ & $1$ & $1$ & $z;\ x^2+y^2,z^2$ \\
-$A_2$ & $1$ & $1$ & $-1$ & $R_z$ \\
-$E$   & $2$ & $-1$ & $0$ & $(x,y);\ (R_x,R_y);\ (x^2-y^2,2xy)$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-这张表与\chapref{chap:representation-theory} 中 $D_3$ 的特征标表\cref{tab:d3-character-table} 完全相同，只差记号：$E\leftrightarrow e$、$C_3\leftrightarrow r$、$\sigma_v\leftrightarrow s$。三个不可约表示 $A_1$、$A_2$、$E$ 分别对应 $D_3$ 的两个一维表示和二维表示。基函数列则给出了每个不可约表示在分子坐标上的具体载体——例如 $z$ 在 $A_1$ 中（$C_3$ 轴方向不变）、$(x,y)$ 在 $E$ 中（垂直于主轴的平面被 $C_3$ 转动），这些信息在\chapref{chap:group-theory-quantum} 构造 对称性适配线性组合 和判断光谱选择定则时将直接使用。
-
-\begin{table}[htbp]
-\centering
-\caption{$C_{4v}$ 的特征标表与常见基函数}
-\label{tab:c4v-character}
-\begin{tabular}{c|ccccc|l}
-\toprule
- & $E$ & $2C_4$ & $C_2$ & $2\sigma_v$ & $2\sigma_d$ & 常见基函数 \\
-\midrule
-$A_1$ & $1$&$1$&$1$&$1$&$1$ & $z,\ x^2+y^2,z^2$ \\
-$A_2$ & $1$&$1$&$1$&$-1$&$-1$ & $R_z$ \\
-$B_1$ & $1$&$-1$&$1$&$1$&$-1$ & $x^2-y^2$ \\
-$B_2$ & $1$&$-1$&$1$&$-1$&$1$ & $xy$ \\
-$E$   & $2$&$0$&$-2$&$0$&$0$ & $(x,y);\ (R_x,R_y);\ (xz,yz)$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-这些“基函数”并不是表格的附属装饰，而是把表示论与物理变量连接起来的桥梁。例如 $(x,y,z)$ 告诉我们电偶极矩或位移矢量如何变换；$(x^2-y^2,xy,xz,yz,2z^2-x^2-y^2)$ 告诉我们 $d$ 轨道和 Raman 张量如何分解。下一章所有选择定则几乎都可以追溯到这些变换性质。
-
-特征标表不应被当作只能查阅的黑箱。对许多几何表示，特征标可以直接从“不动对象贡献多少迹”算出来。
-
-在具体点群中，很多表示并不需要逐个写矩阵才能求特征标。最常见的是三维矢量表示。若纯转动角为 $\theta$，由 \eqnrefs{eq:rotation-trace} 直接有
-\[
-\chi_{\mathrm{vec}}(R)=1+2\cos\theta.
-\]
-若是不保手性操作 $\mathcal I R$，三维矢量表示矩阵多一个整体负号，因此
-\[
-\chi_{\mathrm{vec}}(\mathcal I R)=-(1+2\cos\theta).
-\]
-这使得点群特征标表中的矢量基函数 $(x,y,z)$ 一栏可以从几何立刻验证。
-
-对原子位移、等价轨道或等价原子构成的置换表示，还有另一条非常实用的规则：\emph{特征标等于在该操作下保持在原位置的基对象数，乘以每个对象内部自由度的迹。} 如果基对象只是标量轨道标签，置换表示的特征标就是固定点数；如果每个固定原子还带三维位移矢量，就再乘相应局域旋转矩阵的迹。\chapref{chap:group-theory-quantum}推导振动表示时会直接使用这一点。
-
-有了置换表示的特征标计算规则，接下来以立方群 $O$ 为范例，看一张完整的特征标表怎样从群结构中自然生长出来，再通过直积扩展到 $O_h$。
-
-立方群是凝聚态物理里最常见的高对称点群之一。$O$ 有五个共轭类，可以按
-\[
-E,\quad 8C_3,\quad 3C_2(C_4^2),\quad 6C_4,\quad 6C_2'
-\]
-排列。其五个不可约表示的维数为 $1,1,2,3,3$。一组常用特征标表为
-
-\begin{table}[htbp]
-\centering
-\caption{纯立方旋转群 $O$ 的特征标表}
-\label{tab:o-character}
-\begin{tabular}{c|ccccc|l}
-\toprule
- & $E$ & $8C_3$ & $3C_2$ & $6C_4$ & $6C_2'$ & 常见基函数 \\
-\midrule
-$A_1$ & $1$&$1$&$1$&$1$&$1$ & $x^2+y^2+z^2$ \\
-$A_2$ & $1$&$1$&$1$&$-1$&$-1$ & $xyz(x^2-y^2)(y^2-z^2)(z^2-x^2)$ \\
-$E$   & $2$&$-1$&$2$&$0$&$0$ & $(2z^2-x^2-y^2,\ x^2-y^2)$ \\
-$T_1$ & $3$&$0$&$-1$&$1$&$-1$ & $(x,y,z)$ \\
-$T_2$ & $3$&$0$&$-1$&$-1$&$1$ & $(xy,yz,zx)$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-这张表并不是凭记忆写出的。$T_1$ 行由三维矢量表示的转角迹公式直接得到；二次函数空间的五维无迹部分是 $l=2$ 球谐表示限制到 $O$ 后的结果，它由基函数直接分成 $E\oplus T_2$；剩余两个一维表示再由正交性补齐。加入反演后，$O_h=O\times C_i$，每一行复制为 $g/u$ 两个宇称版本。这就得到 $O_h$ 的十个不可约表示，而不必从头重算十行。
-
-最后还要处理一个在循环群与晶体学表格之间经常造成困惑的问题：复数域上的两个共轭一维表示，在实数域上常合并成一个二维表示。
-
-循环群 $C_n$ 的复不可约表示全是一维，但当 $m$ 与 $n-m$ 不同时，两个表示
-\[
-\ee^{2\pi\ii m/n},
-\qquad
-\ee^{-2\pi\ii m/n}
-\]
-互为复共轭。若物理问题要求使用实基函数，例如 $\cos m\phi$ 与 $\sin m\phi$，这对复一维表示会合并成一个二维实表示。很多化学特征标表中的 $E$ 标签正是在实表示约定下出现的。
-
-这个区别到\chapref{chap:group-theory-quantum}时间反演部分尤其重要：反酉时间反演会把复表示 $D$ 送到 $D^*$。因此两个在纯空间点群下彼此独立的复共轭表示，可能被时间反演配对成简并态。提前区分“复不可约维数”和“实基下合并后的维数”，可以避免把特征标表中的符号机械地当作能级简并度。
-
-\begin{example}[$O_h$ 中 $d$ 轨道为什么分成 $E_g\oplus T_{2g}$]
-五个实 $d$ 轨道可以取为
-\[
-\{2z^2-x^2-y^2,\ x^2-y^2,\ xy,\ yz,\ zx\}.
-\]
-它们都是二次齐次函数并且在反演下为偶，因此只能落在 $g$ 型表示中。立方群 $O_h$ 的五维二次谐波表示不是不可约的，而是分解成
-\[
-\Gamma_{d}=E_g\oplus T_{2g}.
-\]
-其中
-\[
-E_g:\quad \{2z^2-x^2-y^2,\ x^2-y^2\},
-\]
-\[
-T_{2g}:\quad \{xy,yz,zx\}.
-\]
-这个分解不是为了“给轨道贴标签”，而是直接预言：在理想立方晶场中，五重简并的 $d$ 轨道只能劈裂成二重与三重两组。\chapref{chap:group-theory-quantum}会从哈密顿量对称性与微扰理论重新推导这一结论。
-\label{ex:oh-d-orbitals}
-\end{example}
-
-对 $D_4$，五个共轭类要求五个不可约表示。四个一维表示由生成元 $r\mapsto\pm1$、$s\mapsto\pm1$ 给出，剩余维数平方和只能由一个二维表示补足。二维自然表示在 $C_4,C_2,C_2',C_2''$ 上的特征标分别为 $0,-2,0,0$，于是得到下表。
-
-\begin{table}[htbp]
-
-\centering
-\caption{$D_4$ 的特征标表}
-\label{tab:d4-character}
-\small
-\begin{tabular}{c|ccccc|l}
-\toprule
- & $E$ & $2C_4$ & $C_2$ & $2C_2'$ & $2C_2''$ & 基函数 \\
-\midrule
-$A_1$ & $1$&$1$&$1$&$1$&$1$ & $x^2+y^2,\,z^2$ \\
-$A_2$ & $1$&$1$&$1$&$-1$&$-1$ & $R_z$ \\
-$B_1$ & $1$&$-1$&$1$&$1$&$-1$ & $x^2-y^2$ \\
-$B_2$ & $1$&$-1$&$1$&$-1$&$1$ & $xy$ \\
-$E$   & $2$&$0$&$-2$&$0$&$0$ & $(x,y),\,(xz,yz)$ \\
-\bottomrule
-\end{tabular}
-
-\end{table}
-
-
-
-$D_{4h}=D_4\times C_i$，每个表示复制为 $g/u$ 两版，共 10 个不可约表示。
-
-$T_d$ 有五个类，维数平方和给出 $1,1,2,3,3$。其中 $A_2$ 记录不保手性操作的符号，$T_1$ 承载轴矢量，$T_2$ 承载极矢量；$E$ 的特征标由正交关系补齐。这样即可读出表格，而无需把所有行、列正交关系逐对重算。
-
-\begin{table}[htbp]
-
-
-
-\centering
-\caption{$T_d$ 的特征标表}
-\label{tab:td-character}
-\begin{tabular}{c|ccccc|l}
-\toprule
- & $E$ & $8C_3$ & $3C_2$ & $6S_4$ & $6\sigma_d$ & 基函数 \\
-\midrule
-$A_1$ & $1$&$1$&$1$&$1$&$1$ & $x^2+y^2+z^2$ \\
-$A_2$ & $1$&$1$&$1$&$-1$&$-1$ & $xyz$ \\
-$E$   & $2$&$-1$&$2$&$0$&$0$ & $(2z^2-x^2-y^2,\,x^2-y^2)$ \\
-$T_1$ & $3$&$0$&$-1$&$1$&$-1$ & $(R_x,R_y,R_z)$ \\
-$T_2$ & $3$&$0$&$-1$&$-1$&$1$ & $(x,y,z),\,(xy,yz,zx)$ \\
-\bottomrule
-\end{tabular}
-
-\end{table}
-
-
-
-有了 $T_d$ 的特征标表，转向立方晶系中最重要的 $O_h$。$O_h=O\times C_i$，$O$ 的特征标表已给出（\Cref{tab:o-character}）。每个 $O$ 的不可约表示 $\Gamma$ 产生两个 $O_h$ 表示 $\Gamma_g$（偶宇称）和 $\Gamma_u$（奇宇称），反演 $I$ 在 $g$ 型上取 $+1$，$u$ 型上取 $-1$。
-
-\begin{table}[htbp]
-
-
-
-\centering
-\caption{$O_h$ 的特征标表（$O\times C_i$，10 个不可约表示）}
-\label{tab:oh-character}
-\small
-\begin{tabular}{c|cccccccccc}
-\toprule
- & $E$ & $8C_3$ & $3C_2$ & $6C_4$ & $6C_2'$ & $I$ & $8IC_3$ & $3IC_2$ & $6IC_4$ & $6IC_2'$ \\
-\midrule
-$A_{1g}$ & $1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$ \\
-$A_{2g}$ & $1$&$1$&$1$&$-1$&$-1$&$1$&$1$&$1$&$-1$&$-1$ \\
-$E_g$   & $2$&$-1$&$2$&$0$&$0$&$2$&$-1$&$2$&$0$&$0$ \\
-$T_{1g}$ & $3$&$0$&$-1$&$1$&$-1$&$3$&$0$&$-1$&$1$&$-1$ \\
-$T_{2g}$ & $3$&$0$&$-1$&$-1$&$1$&$3$&$0$&$-1$&$-1$&$1$ \\
-$A_{1u}$ & $1$&$1$&$1$&$1$&$1$&$-1$&$-1$&$-1$&$-1$&$-1$ \\
-$A_{2u}$ & $1$&$1$&$1$&$-1$&$-1$&$-1$&$-1$&$-1$&$1$&$1$ \\
-$E_u$   & $2$&$-1$&$2$&$0$&$0$&$-2$&$1$&$-2$&$0$&$0$ \\
-$T_{1u}$ & $3$&$0$&$-1$&$1$&$-1$&$-3$&$0$&$1$&$-1$&$1$ \\
-$T_{2u}$ & $3$&$0$&$-1$&$-1$&$1$&$-3$&$0$&$1$&$1$&$-1$ \\
-\bottomrule
-\end{tabular}
-
-\end{table}
-
-
-
-$O_h=O\times C_i$，所以 $O$ 的每个不可约表示只需再标记反演宇称。
-
-对 $O$ 的不可约表示 $\Gamma$，偶、奇两种扩展分别满足
-\[
-\Gamma_g(R)=\Gamma(R),\quad\Gamma_g(IR)=\Gamma(R);
-\qquad
-\Gamma_u(R)=\Gamma(R),\quad\Gamma_u(IR)=-\Gamma(R).
-\]
-也就是 $\Gamma_g=\Gamma\otimes g$ 与 $\Gamma_u=\Gamma\otimes u$。
-
-两种扩展彼此正交，并继承 $\Gamma$ 的不可约性；五个 $O$ 表示于是加倍成十个 $O_h$ 表示，维数平方和为 $2(1+1+4+9+9)=48$。
-
-$g$ 型二次谐波给出 $d$ 轨道分裂 $E_g\oplus T_{2g}$，极矢量 $(x,y,z)$ 按 $T_{1u}$ 变换。电偶极跃迁必须满足 $\Gamma_f\otimes T_{1u}\otimes\Gamma_i\supset A_{1g}$，所以同宇称态之间的电偶极跃迁禁戒。
-$O_h$ 中常用的张量积分解为
-\begin{align*}
-E_g\otimes E_g &= A_{1g}\oplus A_{2g}\oplus E_g,\\
-T_{1g}\otimes T_{1g} &= A_{1g}\oplus E_g\oplus T_{1g}\oplus T_{2g},\\
-E_g\otimes T_{2g} &= T_{1g}\oplus T_{2g},
-\end{align*}
-它们把允许耦合化成直积中是否含有 $A_{1g}$ 的检验。下面再看两个含反演的轴向群，宇称加倍的机制完全相同。
-
-
-$D_{3d}=D_3\times C_i$，因此 $D_3$ 的 $A_1,A_2,E$ 各自产生一对 $g/u$ 表示。六个共轭类为
-\[
-\{E\},\;\{2C_3\},\;\{3C_2\},\;\{i\},\;\{2S_6\},\;\{3\sigma_d\},
-\]
-其中 $S_6=iC_3$、$\sigma_d=iC_2$。特征标由
-\[
-\chi_{\Gamma_g}(R)=\chi_{\Gamma}(R),\quad\chi_{\Gamma_g}(iR)=\chi_{\Gamma}(R).
-\]
-与
-\[
-\chi_{\Gamma_u}(R)=\chi_{\Gamma}(R),\quad\chi_{\Gamma_u}(iR)=-\chi_{\Gamma}(R).
-\]
-确定，维数平方和为 $12$。当八面体对称性降到 $D_{3d}$ 时，$T_{2g}$ 限制为
-\begin{equation*}
-\chi_{T_{2g}}^{O_h}\downarrow_{D_{3d}}=\chi_{E_g}+\chi_{A_{1g}},\qquad \chi_{E_g}^{O_h}\downarrow_{D_{3d}}=\chi_{E_g},
-\end{equation*}
-所以原来的三重态分成二重态和单态，而 $O_h$ 的 $E_g$ 保持二维。
-反演中心还立即推出所有奇阶极张量为零，例如 $D_{3d}$ 晶体没有压电和二阶非线性光学响应；这一结论不需要逐项检查张量分量。
-
-\begin{table}[htbp]
-
-
-
-\centering
-\caption{$D_{3d}$ 的特征标表}
-\label{tab:d3d-character}
-\begin{tabular}{c|cccccc}
-\toprule
- & $E$ & $2C_3$ & $3C_2$ & $i$ & $2S_6$ & $3\sigma_d$ \\
-\midrule
-$A_{1g}$ & $1$&$1$&$1$&$1$&$1$&$1$ \\
-$A_{2g}$ & $1$&$1$&$-1$&$1$&$1$&$-1$ \\
-$E_g$   & $2$&$-1$&$0$&$2$&$-1$&$0$ \\
-$A_{1u}$ & $1$&$1$&$1$&$-1$&$-1$&$-1$ \\
-$A_{2u}$ & $1$&$1$&$-1$&$-1$&$-1$&$1$ \\
-$E_u$   & $2$&$-1$&$0$&$-2$&$1$&$0$ \\
-\bottomrule
-\end{tabular}
-
-\end{table}
-
-
-
-$D_{6h}=D_6\times C_i$，$D_6$ 有 12 元素 6 类，不可约表示维数 $1,1,1,1,2,2$，故 $D_{6h}$ 有 12 个不可约表示。
-
-\begin{table}[htbp]
-
-
-
-\centering
-\caption{$D_{6h}$ 的特征标表}
-\label{tab:d6h-character}
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{c|cccccccccccc}
-\toprule
- & $E$ & $2C_6$ & $2C_3$ & $C_2$ & $3C_2'$ & $3C_2''$ & $i$ & $2S_3$ & $2S_6$ & $\sigma_h$ & $3\sigma_d$ & $3\sigma_v$ \\
-\midrule
-$A_{1g}$ & $1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$&$1$ \\
-$A_{2g}$ & $1$&$1$&$1$&$1$&$-1$&$-1$&$1$&$1$&$1$&$1$&$-1$&$-1$ \\
-$B_{1g}$ & $1$&$-1$&$1$&$-1$&$1$&$-1$&$1$&$-1$&$1$&$-1$&$1$&$-1$ \\
-$B_{2g}$ & $1$&$-1$&$1$&$-1$&$-1$&$1$&$1$&$-1$&$1$&$-1$&$-1$&$1$ \\
-$E_{1g}$ & $2$&$1$&$-1$&$-2$&$0$&$0$&$2$&$1$&$-1$&$-2$&$0$&$0$ \\
-$E_{2g}$ & $2$&$-1$&$-1$&$2$&$0$&$0$&$2$&$-1$&$-1$&$2$&$0$&$0$ \\
-$A_{1u}$ & $1$&$1$&$1$&$1$&$1$&$1$&$-1$&$-1$&$-1$&$-1$&$-1$&$-1$ \\
-$A_{2u}$ & $1$&$1$&$1$&$1$&$-1$&$-1$&$-1$&$-1$&$-1$&$-1$&$1$&$1$ \\
-$B_{1u}$ & $1$&$-1$&$1$&$-1$&$1$&$-1$&$-1$&$1$&$-1$&$1$&$-1$&$1$ \\
-$B_{2u}$ & $1$&$-1$&$1$&$-1$&$-1$&$1$&$-1$&$1$&$-1$&$1$&$1$&$-1$ \\
-$E_{1u}$ & $2$&$1$&$-1$&$-2$&$0$&$0$&$-2$&$-1$&$1$&$2$&$0$&$0$ \\
-$E_{2u}$ & $2$&$-1$&$-1$&$2$&$0$&$0$&$-2$&$1$&$1$&$-2$&$0$&$0$ \\
-\bottomrule
-\end{tabular}
-
-\end{table}
-
-$D_6$ 的四个一维表示由 $r\mapsto\pm1$、$s\mapsto\pm1$ 给出；二维表示 $E_1,E_2$ 在主轴转动 $C_6^k$ 上的特征标分别为 $2\cos(k\pi/3)$ 与 $2\cos(2k\pi/3)$，在横向二重轴上均为零。与 $C_i$ 作直积后得到表中的十二个 $D_{6h}$ 表示，维数平方和为 $24$。这张表主要用于六方体系的轨道、声子与跃迁分类；具体能带模型留到后续应用章节。
-
-从特征标表的应用转入衍射物理：空间群对称性不仅约束能级和振动模式，还直接决定衍射谱中的系统消光——这是群论在结构分析中最直接的实验后果。
-
-\begin{theorem}[系统消光定理]
-
-
-
-设空间群 $\mathcal G$ 含操作 $\{R|\vb\tau\}$。结构因子
-\[
-F(\vb G)=\sum_j f_j\,\ee^{-\ii\vb G\cdot\vb r_j}
-\]
-满足：若对某倒格矢 $\vb G$，$\vb G\cdot\vb\tau\notin2\pi\ZZ$ 且 $R$ 不改变原子类型，则 $F(\vb G)=0$。这给出系统消光规则。
+\label{thm:inner-aut-quotient}
 
 \end{theorem}
 
-
-
-结构因子的对称约束如下。若 $\{R|\vb\tau\}\in\mathcal G$ 把原子 $\vb r_j$ 映到同类型原子 $\vb r_{j'}$，则 $f_j=f_{j'}$ 且
+\begin{proof}
+由
 \[
-\vb r_{j'}=R\vb r_j+\vb\tau.
+c_g\circ c_h(x)
+=g(hxh^{-1})g^{-1}
+=(gh)x(gh)^{-1}
+=c_{gh}(x)
 \]
-结构因子
+知 $\Psi(gh)=\Psi(g)\Psi(h)$，所以 $\Psi$ 为同态；其像按定义就是 $\operatorname{Inn}(G)$，故满射。又
 \[
-F(\vb G)=\sum_j f_j\,\ee^{-\ii\vb G\cdot\vb r_j}
-=\sum_j f_j\,\ee^{-\ii\vb G\cdot(R\vb r_j+\vb\tau)}
+c_g=\id(G)
+\quad\Longleftrightarrow\quad
+gxg^{-1}=x,\ \forall x\in G
+\quad\Longleftrightarrow\quad
+g\in Z(G).
 \]
-（第二个等号是对求和指标做置换 $j\to j'$，因求和遍历所有原子）。提取公共因子：
+故核为 $Z(G)$，再用第一同构定理得\eqnrefs{eq:inner-aut-quotient}。
+\end{proof}
+
+第一同构定理也可以立刻用整数群看懂。定义
 \[
-F(\vb G)=\ee^{-\ii\vb G\cdot\vb\tau}\sum_j f_j\,\ee^{-\ii(R^{\mathsf T}\vb G)\cdot\vb r_j}.
+\varphi:\ZZ\to C_n,\qquad \varphi(k)=a^k,
 \]
-
-现在考虑 $R^{\mathsf T}\vb G=\vb G$ 的情形。若 $\vb G$ 在 $R$ 下不变（即 $R$ 属于 $\vb G$ 的小群），则
+其中 $C_n=\langle a\mid a^n=e\rangle$。这是同态，因为
 \[
-F(\vb G)=\ee^{-\ii\vb G\cdot\vb\tau}F(\vb G).
+\varphi(k+\ell)=a^{k+\ell}=a^ka^\ell=\varphi(k)\varphi(\ell).
 \]
-若 $\vb G\cdot\vb\tau\notin2\pi\ZZ$，则 $\ee^{-\ii\vb G\cdot\vb\tau}\neq1$，故 $F(\vb G)=0$。
-
-把这个判据代入常见的非本原平移即可得到中心化规则。体心平移
-$\vb\tau=(\vb a_1+\vb a_2+\vb a_3)/2$ 产生相位 $(-1)^{h+k+l}$，故
-$h+k+l$ 为奇数时消光；面心的三个半格矢平移要求 $h+k$、$k+l$、$h+l$
-同时为偶数，等价于 $h,k,l$ 全奇或全偶；底心平移
-$(\vb a_1+\vb a_2)/2$ 则要求 $h+k$ 为偶数。非对称型操作给出方向相关的条件：
-沿 $c$ 轴的 $2_1$ 螺旋把 $(h,k,l)$ 送到 $(-h,-k,l)$，因而只在 $00l$ 方向
-保持 $\vb G$ 不变，并使奇数 $l$ 的反射消失；垂直于 $b$ 的 $a$ 滑移面同理使
-$h0l$ 中奇数 $h$ 的反射消失。
-
-这些缺峰条件把空间群信息直接编码进衍射图。中心化消光先确定 Bravais 晶格，
-螺旋轴和滑移面造成的方向相关消光再区分具有相同点群的空间群。它们来自群作用
-强制的结构因子零点，因此与某些原子散射因子偶然抵消造成的零点不同；后者不在
-整族反射中稳定出现。反常散射能够破坏非中心对称晶体的 Friedel 等强关系
-$I(\vb G)=I(-\vb G)$，但不会解除由空间群强制的系统消光。
-
-\begin{table}[htbp]
-\centering
-\caption{Bravais 中心化的系统消光规则}
-\label{tab:extinction-rules}
-\begin{tabular}{c|l}
-\toprule
-中心化 & 消光条件 \\
-\midrule
-$P$（原始） & 无系统消光 \\
-$I$（体心） & $h+k+l=2n+1$ \\
-$F$（面心） & $h,k,l$ 混奇偶 \\
-$C$（底心） & $h+k=2n+1$ \\
-$R$（菱心） & $-h+k+l=3n\pm1$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-系统消光从倒空间给出衍射选择定则。宏观响应的对应结论是 Neumann 原理：
-晶体物性张量必须在点群的每个操作下不变。若 $T$ 描述线性响应
-$\vb Y=T\vb X$，则
-\begin{equation}
-TR=RT,
-\qquad R\in P.
-\label{thm:neumann}
-\end{equation}
-对 $n$ 阶张量，这个条件写成
-\begin{equation}
-T_{i_1\cdots i_n}
-=\sum_{j_1,\dots,j_n}R_{i_1j_1}\cdots R_{i_nj_n}T_{j_1\cdots j_n}.
-\label{eq:neumann-tensor-invariance}
-\end{equation}
-这些线性约束的解空间就是允许的物性张量空间，其维数给出独立材料常数的数目。
-
-\begin{derivation}[Neumann 原理的群平均投影]
-输入变为 $R\vb X$ 时，输出一方面应为 $T(R\vb X)$，另一方面应为
-$R(T\vb X)$，故对任意 $\vb X$ 有
+哪些整数被映到单位元？恰好是 $n$ 的整数倍：
 \[
-T(R\vb X)=R(T\vb X).
+\operatorname{Ker}\varphi=n\ZZ.
 \]
-这正是 \eqnrefs{thm:neumann}；在各指标上展开便得到
-\eqnrefs{eq:neumann-tensor-invariance}。为直接求这个不变子空间，定义群平均投影
+而像就是整个 $C_n$。第一同构定理因此给出
 \[
-\Pi_T=\frac1{|P|}\sum_{R\in P}R^{\otimes n},
+\ZZ/n\ZZ\cong C_n.
 \]
-其中 $R^{\otimes n}$ 是 $R$ 在 $n$ 阶张量空间上的诱导作用。则
+这里左边的商群把所有相差 $n$ 的整数视为同一个剩余类；右边则把这些剩余类写成 $e,a,\dots,a^{n-1}$。这正是模 $n$ 算术与循环群之间的结构等价。
+
+
+\cref{thm:inner-aut-quotient} 告诉我们 $\operatorname{Inn}(G)\cong G/Z(G)$，但 $\operatorname{Aut}(G)$ 通常比 $\operatorname{Inn}(G)$ 大。商群 $\operatorname{Aut}(G)/\operatorname{Inn}(G)$ 称为\textbf{外自同构群} $\operatorname{Out}(G)$，它衡量 $G$ 有多少"非内"的对称性。
+
+\begin{proposition}[$\operatorname{Inn}(G)\mathrel{\trianglelefteq}\operatorname{Aut}(G)$]
+内自同构群 $\operatorname{Inn}(G)$ 是 $\operatorname{Aut}(G)$ 的正规子群。
+\end{proposition}
+
+\begin{proof}
+对任意 $\varphi\in\operatorname{Aut}(G)$ 和内自同构 $c_g\in\operatorname{Inn}(G)$，需证 $\varphi\circ c_g\circ\varphi^{-1}\in\operatorname{Inn}(G)$。对任意 $x\in G$：
 \[
-\Pi_T^2=\frac1{|P|^2}\sum_{R,S}(RS)^{\otimes n}=\frac1{|P|}\sum_{R}R^{\otimes n}=\Pi_T,
+(\varphi\circ c_g\circ\varphi^{-1})(x)=\varphi(g\varphi^{-1}(x)g^{-1})=\varphi(g)\,x\,\varphi(g)^{-1}=c_{\varphi(g)}(x).
 \]
-故 $\Pi_T$ 是投影。不变张量空间即 $\operatorname{im}\Pi_T$，其维数
+故 $\varphi\circ c_g\circ\varphi^{-1}=c_{\varphi(g)}\in\operatorname{Inn}(G)$。
+\end{proof}
+
+\begin{theorem}[循环群的自同构群]
+\label{thm:cyclic-aut}
+设 $C_n=\langle a\rangle$ 是 $n$ 阶循环群。则
 \[
-\dim\operatorname{im}\Pi_T=\tr\Pi_T=\frac1{|P|}\sum_{R\in P}(\tr R)^n.
+\operatorname{Aut}(C_n)\cong(\ZZ/n\ZZ)^\times,
 \]
-对二阶张量（$n=2$），独立分量个数为 $\frac1{|P|}\sum_{R}(\chi_\text{vec}(R))^2$，其中 $\chi_\text{vec}(R)=\tr R$ 是矢量表示的特征标。对称二阶张量（如介电张量 $\epsilon_{ij}$）则需用 $\chi_{\mathrm{Sym}^2}(R)=\frac{\chi_V(R)^2+\chi_V(R^2)}{2}$。
+其中 $(\ZZ/n\ZZ)^\times$ 是模 $n$ 的乘法可逆元群（Euler $\varphi$ 函数给出其阶 $|\operatorname{Aut}(C_n)|=\varphi(n)$）。具体地，每个自同构形如 $\sigma_k:a\mapsto a^k$，其中 $\gcd(k,n)=1$。
+\end{theorem}
 
-\end{derivation}
+\begin{proof}
+先自同构的形式。设 $\sigma\in\operatorname{Aut}(C_n)$。因 $a$ 生成 $C_n$，$\sigma$ 由 $\sigma(a)$ 完全确定。设 $\sigma(a)=a^k$（$0\le k<n$），则 $\sigma(a^m)=a^{km}$。
 
-空间对称约束还需与时间反演约束结合。Onsager 关系在无磁场时给出
-$L_{ij}=L_{ji}$，有磁场时给出 $L_{ij}(B)=L_{ji}(-B)$；Neumann 原理则要求同一
-输运张量在点群作用下不变。群平均投影因此既可求允许分量，也可检验实验拟合是否
-满足晶体对称性。例如一般弹性张量有 21 个独立常数，立方晶体只剩
-$C_{11},C_{12},C_{44}$，各向同性介质进一步只剩两个 Lam\'e 常数。
+随后满射条件。$\sigma$ 是自同构当且仅当 $a^k$ 也生成 $C_n$，即 $\langle a^k\rangle=C_n$。这等价于 $\gcd(k,n)=1$：若 $\gcd(k,n)=d>1$，则 $a^k$ 的阶为 $n/d<n$，不能生成 $C_n$；若 $\gcd(k,n)=1$，由 Bézout 等式存在 $u,v$ 使 $uk+vn=1$，故 $a=(a^k)^u\cdot(a^n)^v=(a^k)^u\in\langle a^k\rangle$。
 
-\begin{example}[用 Neumann 原理计数：六方晶系 $D_{6h}$ 的对称二阶张量]
-六方晶系的点群 $D_{6h}=D_6\times C_i$（24 元素）。对称二阶张量在反演下不变（$T_{ij}\to(-1)^2T_{ij}=T_{ij}$），故只需对 $D_6$（12 元素）的纯转动部分求和，结果与 $D_{6h}$ 相同。
+接着群结构。$\sigma_k\circ\sigma_l(a)=\sigma_k(a^l)=(a^k)^l=a^{kl}=\sigma_{kl}(a)$，故 $\sigma_k\circ\sigma_l=\sigma_{kl}$。映射 $k\mapsto\sigma_k$ 是 $(\ZZ/n\ZZ)^\times$ 到 $\operatorname{Aut}(C_n)$ 的同构。
+\end{proof}
 
-$D_6$ 的共轭类、矢量表示特征标 $\chi_V(R)=1+2\cos\theta$（$\theta$ 为绕主轴转角）及 $\chi_{\mathrm{Sym}^2}(R)$：
+\medskip
+\noindent\emph{小阶循环群的自同构。}
+\begin{itemize}
+\item $n=2$：$(\ZZ/2\ZZ)^\times=\{1\}$，$\operatorname{Aut}(C_2)$ 平凡（$C_2$ 只有唯一的非单位元，必须映到自身）。
+\item $n=3$：$(\ZZ/3\ZZ)^\times=\{1,2\}\cong C_2$，$\operatorname{Aut}(C_3)\cong C_2$（唯一非平凡自同构 $a\mapsto a^2=a^{-1}$）。
+\item $n=4$：$(\ZZ/4\ZZ)^\times=\{1,3\}\cong C_2$，$\operatorname{Aut}(C_4)\cong C_2$。
+\item $n=5$：$(\ZZ/5\ZZ)^\times=\{1,2,3,4\}\cong C_4$（$2$ 是模 $5$ 的原根）。
+\item $n=8$：$(\ZZ/8\ZZ)^\times=\{1,3,5,7\}\cong C_2\times C_2$（Klein 四元群），因 $3^2\equiv5^2\equiv7^2\equiv1\pmod{8}$。
+\end{itemize}
+\par\medskip
 
-\[
-\begin{array}{c|cccccc}
-& E & 2C_6 & 2C_3 & C_2 & 3C_2' & 3C_2'' \\
-\hline
-\chi_V & 3 & 2 & 0 & -1 & -1 & -1 \\
-\chi_V(R^2) & 3 & 0 & 0 & 3 & 3 & 3 \\
-\chi_{\mathrm{Sym}^2} & 6 & 2 & 0 & 2 & 2 & 2
-\end{array}
-\]
+\begin{definition}[特征子群]
+子群 $H\leqslant G$ 称为\textbf{特征子群}（记 $H\operatorname{char}G$），若对所有 $\varphi\in\operatorname{Aut}(G)$ 都有 $\varphi(H)=H$。
+\end{definition}
 
-其中 $C_6^2=C_3$（$\chi_V=0$），$C_3^2=C_3^{-1}$（$\chi_V=0$），$C_2^2=E$（$\chi_V=3$），$C_2'^2=E$（$\chi_V=3$）。
+特征子群比正规子群更强：正规子群只对内自同构不变，特征子群对所有自同构不变。
 
-独立分量数：
-\[
-N=\frac{1}{12}\bigl[1\cdot6+2\cdot2+2\cdot0+1\cdot2+3\cdot2+3\cdot2\bigr]
-=\frac{6+4+0+2+6+6}{12}
-=\frac{24}{12}=2.
-\]
-故六方晶系的对称二阶张量只有 2 个独立分量，对应 $\epsilon=\operatorname{diag}(\epsilon_\perp,\epsilon_\perp,\epsilon_\parallel)$——光轴方向（$c$ 轴）与垂直方向独立，这正是六方晶体光学各向异性的群论来源。
-
-对立方晶系 $O_h$，只需对含 24 个元素的纯转动子群 $O$ 求平均：
-\[
-\begin{array}{c|ccccc}
-& E & 8C_3 & 3C_2 & 6C_4 & 6C_2' \\
-\hline
-\chi_V & 3 & 0 & -1 & 1 & -1 \\
-\chi_V(R^2) & 3 & 0 & 3 & -1 & 3 \\
-\chi_{\mathrm{Sym}^2} & 6 & 0 & 2 & 0 & 2
-\end{array}
-\]
-\[
-N=\frac{1}{24}[1\cdot6+8\cdot0+3\cdot2+6\cdot0+6\cdot2]=\frac{6+0+6+0+12}{24}=\frac{24}{24}=1.
-\]
-立方晶系对称二阶张量只有 1 个独立分量 $\epsilon_0 I_3$——光学各向同性。这与已知物理一致：立方晶体在光学上表现为各向同性介质。
-\end{example}
-
-至此，\chapref{chap:point-space-groups}的几何分类与\chapref{chap:representation-theory}的表示论已经真正接上。后续物理不再需要把特征标表视为独立知识点，而是把它当作对称子空间的坐标表。
-
-到这里，本章的几何链条已经闭合：有限旋转群的分类告诉我们点群有哪些；晶体制约定理把它缩成 32 个晶体点群；空间群把点操作与平移统一起来；特征标表则把这些几何对称性转成线性空间中的不可约表示。\chapref{chap:group-theory-quantum}要做的事情，就是把具体量子态、跃迁算符、振动模和 Bloch 波函数放进这些不可约表示中。届时，“对称性决定简并”“某个矩阵元必为零”“某个声子是 Raman 主动”都不再是经验规则，而会从表示的直和与张量积中自动推出。
-
-\section{习题与解答}
-\label{sec:point-space-exercises}
-
-下面习题覆盖本章真正需要掌握的主线：从 $O(3)$ 到点群，从轨道--稳定子到有限旋转群分类，再从晶格整数结构到晶体制约，最后过渡到 Schoenflies 识别与不可约表示。解答紧随题目，便于自检。
-
-\begin{enumerate}[label=\arabic*.,leftmargin=2.5em]
-
-\item 证明 $SO(3)$ 是 $O(3)$ 的正规子群，并求商群 $O(3)/SO(3)$。
-
-\emph{解答.} 行列式给出满同态 $\det:O(3)\to\{\pm1\}$，其核为 $SO(3)$。故由第一同构定理
-\[
-O(3)/SO(3)\simeq\{\pm1\}\simeq C_2,
-\]
-从而 $SO(3)\mathrel{\trianglelefteq} O(3)$。
-
-\item 证明任意 $R\in SO(3)$ 的特征值必可写为 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$。
-
-\emph{解答.} 由 \Cref{thm:rotation-axis}，$1$ 是一个特征值。正交矩阵的复特征值模长为 $1$，且实矩阵的非实特征值成共轭对出现。又因为行列式为 $1$，其余两个特征值乘积为 $1$，故必为 $\ee^{\pm\ii\theta}$。
-
-\item 用双重计数重新推导 \eqnrefs{eq:finite-rotation-counting}。
-
-\emph{解答.} 统计集合
-\[
-\Omega=\{(g,p)\mid g\in G\setminus\{e\},\ p\in P,\ gp=p\}.
-\]
-按 $g$ 计数，每个非恒等转动固定两个极点，故 $|\Omega|=2(N-1)$。按极点轨道计数，第 $i$ 个轨道有 $N/n_i$ 个点，每点被 $n_i-1$ 个非恒等稳定子元素固定，故
-\[
-|\Omega|=\sum_i\frac{N}{n_i}(n_i-1).
-\]
-令二者相等即得。
-
-\item 由基本方程证明三种多面体旋转群的阶分别为 $12,24,60$。
-
-\emph{解答.} 对 $(2,3,m)$，基本方程给出
-\[
-\frac12+\frac13+\frac1m=1+\frac2N.
-\]
-当 $m=3,4,5$ 时分别解得 $N=12,24,60$。
-
-\item 为什么五重旋转可以出现在孤立分子或准晶结构中，却不能成为普通三维周期晶格的点群操作？
-
-\emph{解答.} 点群本身只要求是 $O(3)$ 的有限子群，因此 $I$ 群中的五重轴完全允许。周期晶格还要求旋转在晶格基底下由整数矩阵表示，故其迹必须为整数。五重转动的迹为
-\[
-1+2\cos\frac{2\pi}{5},
-\]
-不是整数，违反 \Cref{thm:crystallographic-restriction}，所以普通周期晶格不能有五重轴。
-
-\item 写出 $C_{3v}$ 中矢量表示 $(x,y,z)$ 的不可约分解。
-
-\emph{解答.} 由 \Cref{tab:c3v-character}，$z$ 按 $A_1$ 变换，而 $(x,y)$ 共同按二维表示 $E$ 变换，因此
-\[
-\Gamma_{\mathrm{vec}}=A_1\oplus E.
-\]
-
-\item 写出 $C_{4v}$ 中二次函数空间 $\operatorname{span}\{x^2+y^2,z^2,x^2-y^2,xy,xz,yz\}$ 的不可约分解。
-
-\emph{解答.} 由 \Cref{tab:c4v-character}，$x^2+y^2$ 与 $z^2$ 各承载 $A_1$，$x^2-y^2$ 承载 $B_1$，$xy$ 承载 $B_2$，$(xz,yz)$ 承载 $E$。故
-\[
-2A_1\oplus B_1\oplus B_2\oplus E.
-\]
-
-\item 证明空间群中的平移子群 $T$ 是正规子群。
-
-\emph{解答.} 对任意 $\{R\mid\vb t\}\in\mathcal G$ 和平移 $\{I_3\mid\vb R_0\}$，用 Seitz 乘法得
-\begin{align*}
-\{R\mid\vb t\}\{I_3\mid\vb R_0\}\{R\mid\vb t\}^{-1}
-&=\{I_3\mid R\vb R_0\}.
-\end{align*}
-由于点操作 $R$ 保持晶格，$R\vb R_0$ 仍是晶格矢量，所以共轭结果仍属于 $T$，故 $T\mathrel{\trianglelefteq}\mathcal G$。
-
-\item 设 $g=\{C_2\mid\vb a/2\}$，其中 $C_2\vb a=\vb a$。求 $g^2$。
-
-\emph{解答.} 由 Seitz 乘法
-\[
-g^2=\{C_2^2\mid C_2(\vb a/2)+\vb a/2\}
-=\{I_3\mid\vb a\}.
-\]
-这说明二重螺旋轴的平方不是恒等操作，而是一个整格矢平移。
-
-\item 解释 $O_h$ 中下标 $g/u$ 的来源。
-
-\emph{解答.} 因为 $O_h=O\times C_i$，而 $C_i$ 有两个一维不可约表示，分别把反演 $\mathcal I$ 映到 $+1$ 和 $-1$。将 $O$ 的任一不可约表示与这两个一维表示做张量积，就得到偶宇称 $g$ 与奇宇称 $u$ 两个版本。
-
-\item 利用维数平方和验证 $I$ 群不可约表示维数 $1,3,3,4,5$ 与群阶 $60$ 相容。
-
-\emph{解答.}
-\[
-1^2+3^2+3^2+4^2+5^2=1+9+9+16+25=60.
-\]
-
-\item 对正四面体完整点群 $T_d$，说明为什么它不是 $T\times C_i$。
-
-\emph{解答.} $T_d$ 不包含空间反演 $\mathcal I$，其不保手性操作主要由镜面和 $S_4$ 型操作组成，因此不存在中央的独立 $C_i$ 因子。包含反演并与 $T$ 构成直积的是 $T_h=T\times C_i$，不是 $T_d$。
-
+\begin{proposition}[特征子群的性质]
+\label{prop:characteristic-subgroup}
+\begin{enumerate}
+\item 若 $H\operatorname{char}G$，则 $H\mathrel{\trianglelefteq} G$。
+\item 若 $H\operatorname{char}K$ 且 $K\operatorname{char}G$，则 $H\operatorname{char}G$（传递性）。
+\item 若 $H\operatorname{char}K$ 且 $K\mathrel{\trianglelefteq} G$，则 $H\mathrel{\trianglelefteq} G$。
+\item $Z(G)\operatorname{char}G$，$G'\operatorname{char}G$（导群是特征子群）。
 \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) 内自同构是自同构的特例，故 $\varphi(H)=H$ 对所有 $\varphi\in\operatorname{Aut}(G)$ 成立蕴含 $c_g(H)=H$ 对所有 $g\in G$ 成立，即 $gHg^{-1}=H$，故 $H\mathrel{\trianglelefteq} G$。
+
+(2) 对任意 $\varphi\in\operatorname{Aut}(G)$，$\varphi|_K\in\operatorname{Aut}(K)$（因 $K\operatorname{char}G$ 保证 $\varphi(K)=K$），故 $\varphi(H)=\varphi|_K(H)=H$（因 $H\operatorname{char}K$）。
+
+(3) 对任意 $g\in G$，$c_g\in\operatorname{Inn}(G)\subseteq\operatorname{Aut}(G)$，$c_g(K)=K$（因 $K\mathrel{\trianglelefteq} G$），故 $c_g|_K\in\operatorname{Aut}(K)$，$c_g(H)=c_g|_K(H)=H$（因 $H\operatorname{char}K$）。
+
+(4) 对任意 $\varphi\in\operatorname{Aut}(G)$ 和 $z\in Z(G)$：$\varphi(z)x\varphi(z)^{-1}=\varphi(z\varphi^{-1}(x)z^{-1})=\varphi(\varphi^{-1}(x))=x$，故 $\varphi(z)\in Z(G)$，即 $\varphi(Z(G))\subseteq Z(G)$；同理论 $\varphi^{-1}$ 得反向包含。导群 $G'=[G,G]$ 由换位子生成，$\varphi([x,y])=[\varphi(x),\varphi(y)]$，故 $\varphi(G')=G'$。
+\end{proof}
+
+\begin{theorem}[$N/C$ 定理]
+\label{thm:nc-theorem}
+设 $H\leqslant G$，则 $N_G(H)/C_G(H)$ 同构于 $\operatorname{Aut}(H)$ 的一个子群：
+\[
+N_G(H)/C_G(H)\hookrightarrow\operatorname{Aut}(H),
+\]
+其中 $N_G(H)=\{g\in G\mid gHg^{-1}=H\}$ 是正规化子，$C_G(H)=\{g\in G\mid gh=hg,\forall h\in H\}$ 是中心化子。特别地，$|N_G(H)/C_G(H)|\bigm||\operatorname{Aut}(H)|$。
+\end{theorem}
+
+\begin{proof}
+定义映射 $\Phi:N_G(H)\to\operatorname{Aut}(H)$，$\Phi(g)=c_g|_H$（$h\mapsto ghg^{-1}$）。对 $g\in N_G(H)$，$c_g(H)=gHg^{-1}=H$，故 $c_g|_H$ 是 $H$ 到自身的同构，即 $\Phi(g)\in\operatorname{Aut}(H)$。
+
+同态性。$\Phi(gh)(x)=ghxh^{-1}g^{-1}=g(hxh^{-1})g^{-1}=\Phi(g)\circ\Phi(h)(x)$。
+
+核。$\Phi(g)=\id(H)$ 当且仅当 $ghg^{-1}=h$ 对所有 $h\in H$，即 $g\in C_G(H)$。故 $\operatorname{Ker}\Phi=C_G(H)$。
+
+由第一同构定理，$N_G(H)/C_G(H)\cong\operatorname{Im}\Phi\leqslant\operatorname{Aut}(H)$。
+\end{proof}
+
+$N/C$ 定理在有限群论中极为有用：它把正规化子/中心化子的商群嵌入 $\operatorname{Aut}(H)$，给出了群结构的强约束。例如，若 $H$ 的自同构群很小（如 $H$ 是循环群且 $\varphi(|H|)$ 小），则 $N_G(H)/C_G(H)$ 也很小，这限制了 $H$ 在 $G$ 中的"非中心"部分。
+
+\medskip
+\noindent\emph{$N/C$ 定理应用于 Sylow 子群。}
+设 $P$ 是 $G$ 的 Sylow $p$-子群。由 Sylow 定理，$N_G(P)$ 控制 $P$ 的共轭类。$N/C$ 定理给出 $N_G(P)/C_G(P)\hookrightarrow\operatorname{Aut}(P)$。若 $P\cong C_p$（$p$ 阶循环群），则 $|\operatorname{Aut}(P)|=p-1$，故 $|N_G(P)/C_G(P)|\bigm|(p-1)$。又 $P\leqslant C_G(P)$（$P$ 是 Abel 群时 $P$ 中心化自身），故 $|N_G(P)/P|\bigm|(p-1)$。这限制了 Sylow $p$-子群的正规化子的大小。
+
+特别地，若 $p$ 是 $|G|$ 的最高次幂且 $p\nmid(p-1)$（总是如此），则 $N_G(P)/C_G(P)$ 的阶既整除 $p-1$ 又是 $p$ 的幂（因 $N_G(P)/P$ 的阶整除 $|G|/|P|$ 与 $p$ 互质），故 $N_G(P)=C_G(P)$，即 Sylow $p$-子群在自身正规化子中是中心的——这就是 Burnside 正规 $p$-补定理的一个关键推论。
+\par\medskip
+
+\begin{theorem}[Frattini 论证]
+\label{thm:frattini-argument}
+设 $G$ 是有限群，$N\mathrel{\trianglelefteq} G$，$P$ 是 $N$ 的 Sylow $p$-子群。则
+\[
+G=N\cdot N_G(P)=\{ng\mid n\in N,\,g\in N_G(P)\}.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 $g\in G$，$gPg^{-1}\leqslant gNg^{-1}=N$（因 $N\mathrel{\trianglelefteq} G$），且 $|gPg^{-1}|=|P|$，故 $gPg^{-1}$ 也是 $N$ 的 Sylow $p$-子群。由 Sylow 定理（在 $N$ 中应用），存在 $n\in N$ 使 $n(gPg^{-1})n^{-1}=P$，即 $(ng)P(ng)^{-1}=P$，故 $ng\in N_G(P)$，即 $g=n^{-1}\cdot ng\in N\cdot N_G(P)$。
+\end{proof}
+
+Frattini 论证看似简单，但它是有限群论中最常用的技巧之一。它的典型用法是：若 $N\mathrel{\trianglelefteq} G$ 且 $N$ 的 Sylow 子群 $P$ 的正规化子 $N_G(P)$ 已知（例如 $P$ 是 $N$ 的特征子群，则 $N_G(P)\geqslant N$），则可以分解 $G$ 并推导结构信息。
+
+\medskip
+\noindent\emph{Frattini 论证的应用：$p$-群的作用。}
+设 $P$ 是 $G$ 的正规 Sylow $p$-子群（即 $P\mathrel{\trianglelefteq} G$）。在 Frattini 论证中取 $N=P$，$P$ 自身是 $P$ 的唯一 Sylow $p$-子群，故 $N_G(P)=G$。论证给出 $G=P\cdot G$（平凡），但更有趣的是取 $N=P$ 的某个正规子群 $K\mathrel{\trianglelefteq} G$，$K\leqslant P$：$G=K\cdot N_G(Q)$，其中 $Q$ 是 $K$ 的 Sylow $p$-子群。若 $K$ 是 $p$-群，$Q=K$，$N_G(Q)\geqslant N_G(K)=G$，故 $G=K\cdot G$（仍平凡）。真正的力量体现在 $K$ 不是 $p$-群时：Frattini 论证把 $G$ 分解为 $K$ 和一个可能更小的群 $N_G(Q)$，可以用于归纳证明。
+\par\medskip
+
+\begin{proposition}[中心化子的正规化子性质]
+\label{prop:centralizer-normalizer}
+设 $H\leqslant G$。则：
+\begin{enumerate}
+\item $C_G(H)\mathrel{\trianglelefteq} N_G(H)$。
+\item 若 $H$ 是 Abel 群，则 $H\leqslant C_G(H)$，且 $H\mathrel{\trianglelefteq} N_G(H)$。
+\item 若 $H\mathrel{\trianglelefteq} G$ 且 $H$ 是 Abel 群，则 $H\leqslant Z(G)$ 当且仅当 $C_G(H)=G$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) 对 $n\in N_G(H)$ 和 $c\in C_G(H)$，需证 $ncn^{-1}\in C_G(H)$。对任意 $h\in H$：
+\[
+ncn^{-1}h(ncn^{-1})^{-1}=nc(n^{-1}hn)c^{-1}n^{-1}.
+\]
+因 $n\in N_G(H)$，$n^{-1}hn\in H$，而 $c\in C_G(H)$ 与 $H$ 的所有元素交换，故 $c(n^{-1}hn)c^{-1}=n^{-1}hn$。于是上式 $=n(n^{-1}hn)n^{-1}=h$。
+
+(2) $H$ Abel 蕴含 $H$ 的元素彼此交换，故 $H\leqslant C_G(H)$。由 (1) $C_G(H)\mathrel{\trianglelefteq} N_G(H)$，故 $H\leqslant C_G(H)\mathrel{\trianglelefteq} N_G(H)$，特别 $H\mathrel{\trianglelefteq} N_G(H)$（子群的正规子群不一定正规于更大的群，但这里 $H\leqslant C_G(H)\mathrel{\trianglelefteq} N_G(H)$ 且 $H\mathrel{\trianglelefteq} C_G(H)$（因 $C_G(H)$ 中 $H$ 是中心的），由正规性的传递性不成立的一般警告，需直接验证：对 $n\in N_G(H)$，$nHn^{-1}=H$，这正是 $N_G(H)$ 的定义）。
+
+(3) $H\leqslant Z(G)$ 当且仅当 $G$ 的每个元素与 $H$ 的每个元素交换，即 $G\leqslant C_G(H)$，即 $C_G(H)=G$。
+\end{proof}
+
+\begin{theorem}[对称群的自同构群]
+\label{thm:symmetric-aut}
+对 $n\geqslant7$，$n\neq6$，
+\[
+\operatorname{Aut}(S_n)=\operatorname{Inn}(S_n)\cong S_n,
+\]
+即 $S_n$ 的所有自同构都是内自同构（$\operatorname{Out}(S_n)=1$）。唯一的例外是 $n=6$：$\operatorname{Out}(S_6)\cong C_2$，$S_6$ 有外自同构。
+\end{theorem}
+
+这个定理的证明较长（关键是证明每个自同构把对换映到对换，然后利用对换生成 $S_n$），但结论极为重要：$S_n$（$n\neq6$）的对称性"全部来自自身"——没有外部对称。$n=6$ 的外自同构是有限群论中最著名的例外之一，它与 $S_6$ 的特殊结构有关（$S_6$ 有 12 个 Sylow $5$-子群而非"通常"的 6 个，导致额外的对称性）。
+
+\medskip
+\noindent\emph{$S_6$ 的外自同构。}
+$S_6$ 的外自同构 $\sigma\in\operatorname{Aut}(S_6)\setminus\operatorname{Inn}(S_6)$ 把对换（2-循环）映到\emph{三对对换的乘积}（即 $(ab)\mapsto(a'b')(c'd')(e'f')$，将 6 个字母分成三对）。这种映射不来自 $S_6$ 的任何共轭，但保持了 $S_6$ 的乘法结构。$S_6$ 的外自同构与数学中许多"偶然例外"现象相关，如 Cremona 变换、正二十面体的特殊对称等。
+\par\medskip

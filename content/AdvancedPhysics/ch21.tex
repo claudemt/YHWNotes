@@ -1,722 +1,328 @@
-\chapter{激光冷却、Sisyphus 冷却、原子钟与磁阱}\label{ch:laser-cooling-clock}
+\chapter{角动量表示与不可约张量}
+\label{ch:angular-momentum}
 
-\section{散射力、摩擦与反冲扩散}
+原子结构中的角动量规则并不是一组需要背诵的 Clebsch--Gordan 表格。单电子轨道和自旋都承载旋转群表示；把两个自由度组合起来，就是分解一个张量积。
 
-冷却操纵的是原子质心自由度。下文用 $M$ 表示\emph{整颗原子}的质量；电子质量 $m_e$ 不出现在质心 Fokker--Planck 方程中。内部两能级稳态则直接继承\eqnrefs{eq:two-level-saturation}。
+两个角动量同时存在时，直积基 \(|j_1m_1\rangle|j_2m_2\rangle\) 便不再是总角动量的本征基。Clebsch--Gordan 系数只是这两组正交基之间的换基矩阵。更进一步，算符本身也能按旋转群分解成不可约张量；Wigner--Eckart 定理于是把每个矩阵元拆成纯粹的几何系数与一个约化矩阵元。选择定则不是附加口诀，而是表示张量积中哪些不可约分量根本不存在。
+\section{旋转群表示与角动量耦合}
 
-接下来考察两能级稳态散射力。
+三维空间的有限转动组成 \(SO(3)\)。量子态允许在转过 \(2\pi\) 后多一个不可观测的负号，因此真正作用在态矢量上的群是它的双覆盖 \(SU(2)\)。两者有相同的无穷小交换关系，但全局性质不同；半整数自旋是 \(SU(2)\) 的表示，不是 \(SO(3)\) 的普通单值表示。
 
-原子吸收一个沿 \(\mathbf k\) 方向的光子，动量改变
+\begin{definition}[表示、不可约性与张量积]
+群 \(G\) 在 Hilbert 空间 \(\mathcal H\) 上的酉表示，是满足
+\(U(g_1g_2)=U(g_1)U(g_2)\) 的酉算符族。若除了
+\(\{0\}\) 与 \(\mathcal H\) 以外，没有对全部群作用保持不变的闭子空间，则表示不可约。
 
+若 \(U_1,U_2\) 分别作用在 \(\mathcal H_1,\mathcal H_2\) 上，它们的张量积表示定义为
 \[
-\Delta\mathbf p=\hbar\mathbf k.
+(U_1\otimes U_2)(g)(\psi_1\otimes\psi_2)
+=U_1(g)\psi_1\otimes U_2(g)\psi_2,
 \]
+再按线性延拓到整个 \(\mathcal H_1\otimes\mathcal H_2\)。
+\end{definition}
 
-自发辐射方向随机，长时间平均动量接近零。因此平均散射力
-
+表示的定义仍然有些抽象。对普通无自旋波函数，它可以从熟悉的空间转动直接算出来。若把物理系统主动转过 \(R\in SO(3)\)，转动后的波函数在位置 \(\mathbf r\) 处等于转动前波函数在 \(R^{-1}\mathbf r\) 处的值：
+\begin{equation}
+[U(R)\psi](\mathbf r)=\psi(R^{-1}\mathbf r).
+\label{eq:am-orbital-rotation-representation}
+\end{equation}
+逆矩阵的出现保证两次主动转动的次序正确。事实上，
 \[
-\boxed{
-\mathbf F_{sc}=\hbar\mathbf k\,R_{sc}
-}
+[U(R_1)U(R_2)\psi](\mathbf r)
+=\psi(R_2^{-1}R_1^{-1}\mathbf r)
+=\psi((R_1R_2)^{-1}\mathbf r),
 \]
-
-其中散射率
-
+所以 \(U(R_1)U(R_2)=U(R_1R_2)\)。变量替换
+\(\mathbf r'=R^{-1}\mathbf r\) 的 Jacobian 为一，因此
 \[
-R_{sc}=\Gamma_{\rm sp}\rho_{ee}^{(\rm ss)}.
+\int\!\dd^3r\,|U(R)\psi(\mathbf r)|^2
+=\int\!\dd^3r'\,|\psi(\mathbf r')|^2;
 \]
+这就证明了 \(U(R)\) 是酉算符，而不是额外假设。
 
-于是
-
+现在只转一个很小的角度。绕单位向量 \(\mathbf n\) 转过
+\(\delta\theta\) 时，
 \[
-\boxed{
-\mathbf F_{sc}
-=\hbar\mathbf k\frac{\Gamma_{\rm sp}}2
-\frac{s_0}{1+s_0+[2(\Delta-\mathbf k\cdot\mathbf v)/\Gamma_{\rm sp}]^2}
-}.
+R^{-1}\mathbf r
+=\mathbf r-\delta\theta\,\mathbf n\times\mathbf r
++O(\delta\theta^2).
 \]
-
-Doppler 位移 通过
-
+对波函数作一阶 Taylor 展开，
 \[
-\Delta\rightarrow\Delta-\mathbf k\cdot\mathbf v
+\begin{aligned}
+[U(R)\psi](\mathbf r)
+&=\psi(\mathbf r)
+-\delta\theta(\mathbf n\times\mathbf r)\cdot\nabla\psi(\mathbf r)
++O(\delta\theta^2)\\
+&=\left[I-\frac{\ii}{\hbar}\delta\theta\,
+\mathbf n\cdot\mathbf L\right]\psi(\mathbf r)
++O(\delta\theta^2),
+\end{aligned}
 \]
-
-进入。
-
-接下来考察 光学 molasses：从散射力得到线性摩擦。
-
-取两束等强、相向传播的红失谐激光。对低饱和 \(s_0\ll1\)，两束光的饱和效应可以在首阶分别处理。沿 \(x\) 方向的总力为
-
-\begin{derivation}[从双向散射力到线性摩擦]
-记 Lorentz 线型
-\begin{equation*}
-f(\delta)=\frac{1}{1+(2\delta/\Gamma_{\rm sp})^2}.
-\end{equation*}
-沿 $+x$ 与 $-x$ 两束等强红失谐光，原子所受单束散射力分别为
-\begin{equation*}
-F_\pm(v)=\frac{\hbar k\Gamma_{\rm sp}s_0}{2}\,f(\Delta\mp kv),
-\end{equation*}
-其中 $\mp kv$ 来自 Doppler 失谐 $\Delta\mp kv$。总力为
-\begin{equation*}
-F(v)=F_+(v)-F_-(v)
-=\frac{\hbar k\Gamma_{\rm sp}s_0}{2}\bigl[f(\Delta-kv)-f(\Delta+kv)\bigr].
-\end{equation*}
-在 $kv\ll\Gamma_{\rm sp}$ 的低速区对 $kv$ 作一阶 Taylor 展开，
-\begin{equation*}
-f(\Delta\mp kv)=f(\Delta)\mp kv\,f'(\Delta)+\frac{(kv)^2}{2}\,f''(\Delta)+O(v^3).
-\end{equation*}
-代入总力，偶次项相消而奇次项相加，
-\begin{equation*}
-F(v)=\frac{\hbar k\Gamma_{\rm sp}s_0}{2}\bigl[-2kv\,f'(\Delta)+O(v^3)\bigr]
-=-\hbar k^2\Gamma_{\rm sp}s_0\,f'(\Delta)\,v+O(v^3).
-\end{equation*}
-为求 $f'(\Delta)$，把 $f$ 写成 $f(\delta)=[1+u(\delta)]^{-1}$，$u(\delta)=(2\delta/\Gamma_{\rm sp})^2$，于是
-\begin{equation*}
-f'(\delta)=-\frac{u'(\delta)}{[1+u(\delta)]^2},
-\qquad
-u'(\delta)=\frac{8\delta}{\Gamma_{\rm sp}^2},
-\end{equation*}
-因此
-\begin{equation*}
-f'(\Delta)
-=-\frac{8\Delta/\Gamma_{\rm sp}^2}{\bigl[1+(2\Delta/\Gamma_{\rm sp})^2\bigr]^2}.
-\end{equation*}
-代回 $F(v)$ 并整理，
-\begin{equation*}
-F(v)=-\eta\,v+O(v^3),
-\qquad
-\eta=-\frac{8\hbar k^2 s_0\,(\Delta/\Gamma_{\rm sp})}{\bigl[1+(2\Delta/\Gamma_{\rm sp})^2\bigr]^2}.
-\end{equation*}
-故阻尼系数 $\eta$ 的符号由谱线斜率 $f'(\Delta)$ 决定：红失谐 $\Delta<0$ 给出 $f'(\Delta)>0$，于是 $\eta>0$，恢复性摩擦；蓝失谐反向。即正文的 $F=-\eta v$。
-\end{derivation}
-
-\[
-F(v)=\frac{\hbar k\Gamma_{\rm sp}}{2}s_0
-\left[
-\frac{1}{1+[2(\Delta-kv)/\Gamma_{\rm sp}]^2}
--\frac{1}{1+[2(\Delta+kv)/\Gamma_{\rm sp}]^2}
-\right].
-\]
-
-若
-
-\[
-|kv|\ll\Gamma_{\rm sp},|\Delta|,
-\]
-
-对速度展开到一阶，常数项因两束光对称而相消，得到
-
-\[
-\boxed{F(v)=-\eta v+O(v^3)}
-\]
-
 其中
-
-\[
-\boxed{
-\eta
-=-\frac{8\hbar k^2s_0(\Delta/\Gamma_{\rm sp})}
-{[1+(2\Delta/\Gamma_{\rm sp})^2]^2}.
-}
-\]
-
-红失谐 \(\Delta<0\) 时 \(\eta>0\)，所以速度受到线性阻尼。蓝失谐会改变符号并导致反阻尼。
-
-接下来考察动量扩散与 Doppler 极限。
-
-散射力虽然提供阻尼，每次自发辐射却带来随机反冲。低饱和近似下，可以把速度分布的慢演化写成 Fokker--Planck 方程
-
-\[
-\partial_t W(p,t)
-=\frac{\eta}{M}\partial_p[pW]
-+D_p\partial_p^2W,
-\]
-
-其中 \(D_p\) 是动量扩散系数。稳态为 Gaussian，满足 Einstein 型关系
-
-\[
-k_BT=\frac{D_p}{\eta}.
-\]
-
-本讲义采用 Fokker--Planck 形式
-
-\[
-\partial_tW=-\partial_p(AW)+D_p\partial_p^2W,
-\]
-
-所以随机过程满足
-
-\[
-\frac{\dd}{\dd t}\langle(\Delta p)^2\rangle=2D_p.
-\]
-
-在最简单的一维反冲模型中，每次散射事件包含一次定向吸收和一次随机自发辐射。两束光在 \(v=0\) 附近的总散射率为
-
-\[
-R_{\rm tot}
-=\frac{\Gamma_{\rm sp}s_0}
-{1+(2\Delta/\Gamma_{\rm sp})^2}
-+O(s_0^2).
-\]
-
-若把自发辐射也简化成沿 \(\pm x\) 等概率反冲，则单次完整散射循环对 \(p_x\) 方差的平均贡献是 \(2(\hbar k)^2\)。Poisson 统计给出
-
-\[
-\frac{\dd}{\dd t}\langle(\Delta p_x)^2\rangle
-=2(\hbar k)^2R_{\rm tot},
-\]
-
-因此
-
 \begin{equation}
-\boxed{
-D_p
-=(\hbar k)^2
-\frac{\Gamma_{\rm sp}s_0}
-{1+(2\Delta/\Gamma_{\rm sp})^2}
-}
-\label{eq:doppler-diffusion}
+\mathbf L=\mathbf r\times\mathbf p
+=-\ii\hbar\,\mathbf r\times\nabla.
+\label{eq:am-orbital-generator}
+\end{equation}
+所以轨道角动量不是根据经典公式猜出的量子算符；它正是空间转动在波函数空间中的生成元。有限转动由许多无穷小转动相乘得到，因而
+\begin{equation}
+U(R_{\mathbf n}(\theta))
+=\exp\!\left(-\frac{\ii}{\hbar}\theta\,\mathbf n\cdot\mathbf L\right).
+\label{eq:am-finite-rotation}
 \end{equation}
 
-在三维真实偶极辐射中，自发发射的角分布会改变数值系数，但不会改变 \(D_p\propto(\hbar k)^2R_{\rm sc}\) 的结构，也不改变 Doppler 极限来自“摩擦与反冲扩散平衡”的物理机制。
-
-把吸收与自发辐射的反冲扩散和上一节的摩擦系数代入，在一维、低饱和二能级模型中得到
-
+坐标和动量的正则对易关系足以推出角动量代数。以第一项为例，
 \[
-\boxed{
-k_BT(\Delta)
-=\frac{\hbar\Gamma_{\rm sp}}{4}
-\frac{1+(2\Delta/\Gamma_{\rm sp})^2}
-{|2\Delta|/\Gamma_{\rm sp}}.
-}
-\]
-
-确实，把 \eqnrefs{eq:doppler-diffusion} 与上一节
-
-\[
-\eta
-=-\frac{8\hbar k^2s_0(\Delta/\Gamma_{\rm sp})}
-{[1+(2\Delta/\Gamma_{\rm sp})^2]^2}
-\]
-
-代入 \(k_BT=D_p/\eta\)，所有 \(k^2\) 和低饱和强度因子 \(s_0\) 消去，便得到上式。温度在低饱和极限与激光强度无关，正是因为增大强度会同比增大阻尼和反冲噪声。
-
-令 \(x=|2\Delta|/\Gamma_{\rm sp}\)，右端正比于 \(x+x^{-1}\)，所以极小值在 \(x=1\)，即
-
-\[
-\Delta=-\frac{\Gamma_{\rm sp}}{2}.
-\]
-
-由此得到 Doppler 极限
-
-\[
-\boxed{
-T_D=\frac{\hbar\Gamma_{\rm sp}}{2k_B}.
-}
-\]
-
-温度关于失谐的无量纲曲线以及最优红失谐位置见\figref{fig:doppler-limit}。
-
-\begin{derivation}[从反冲 Poisson 过程到 Doppler 极限]
-在时间 $\dd t$ 内发生一次散射的概率为 $R_{\rm tot}\dd t+O(\dd t^2)$，散射事件近似 Poisson 过程。记 $W(p,t)$ 为纵向动量分布，单步跳变 $p\to p+\delta p$ 的主方程为
-\begin{equation*}
-\partial_t W(p,t)
-= R_{\rm tot}\!\int\! \dd(\delta p)\,
- \bigl[W(p-\delta p,t)-W(p,t)\bigr]\,P(\delta p),
-\end{equation*}
-其中 $P(\delta p)$ 为单次反冲分布。对 $W(p-\delta p,t)$ 在 $p$ 处 Taylor 展开，
-\begin{equation*}
-W(p-\delta p,t)
-= W - \delta p\,\partial_p W
- + \frac{(\delta p)^2}{2}\,\partial_p^2 W + O\bigl((\delta p)^3\bigr).
-\end{equation*}
-代回主方程并按矩 $\langle\delta p\rangle=0$、$\langle(\delta p)^2\rangle=2(\hbar k)^2$ 截断到二阶（Kramers--Moyal），因此
-\begin{equation*}
-\partial_t W
-= -\partial_p(AW)+\frac12\,\partial_p^2(BW),
+L_x=y p_z-zp_y,
 \qquad
-A=\langle\delta p\rangle R_{\rm tot}=0,
-\quad
-B=\langle(\delta p)^2\rangle R_{\rm tot}=2(\hbar k)^2 R_{\rm tot}.
-\end{equation*}
-扩散系数 $D_p=B/2=(\hbar k)^2 R_{\rm tot}$，即\eqnrefs{eq:doppler-diffusion}。低速摩擦 $F=-\eta v=-\eta p/M$ 给出漂移 $A(p)=-\eta p/M$，于是 Fokker--Planck 方程化为
-\begin{equation*}
-\partial_t W
-= \frac{\eta}{M}\,\partial_p(pW)+D_p\,\partial_p^2 W.
-\end{equation*}
-稳态零概率流 $J=(\eta/M)pW+D_p\,\partial_p W=0$，分离变量，
-\begin{equation*}
-\frac{\partial_p W}{W}
-= -\frac{\eta}{M D_p}\,p,
-\end{equation*}
-积分得
-\begin{equation*}
-W_{\rm ss}(p)\propto
-\exp\!\left[-\frac{\eta\,p^2}{2 M D_p}\right]
-=\exp\!\left[-\frac{p^2}{2 M k_B T}\right],
+L_y=z p_x-xp_z.
+\]
+展开交换子，只保留同一坐标与同一方向动量的非零对易项，得到
+\[
+\begin{aligned}
+[L_x,L_y]
+&=[yp_z,zp_x]+[-zp_y,-xp_z]\\
+&=-\ii\hbar\,y p_x+\ii\hbar\,x p_y
+=\ii\hbar L_z.
+\end{aligned}
+\]
+循环置换便得到
+\([L_i,L_j]=\ii\hbar\epsilon_{ijk}L_k\)。这个不对易性有清楚的几何来源：绕 \(x\) 轴再绕 \(y\) 轴，与反过来做，差一个二阶小量的 \(z\) 轴转动。
+
+轨道波函数在转过 \(2\pi\) 后必须回到自身，所以只给出整数角动量。实验还显示电子具有半整数自旋，这要求在态空间上使用 \(SO(3)\) 的双覆盖 \(SU(2)\)。任意 \(SU(2)\) 矩阵可写成
+\begin{equation}
+U(\mathbf n,\theta)
+=\exp\!\left(-\frac{\ii\theta}{2}\mathbf n\cdot\boldsymbol\sigma\right)
+=\cos\frac\theta2\,I
+-\ii\sin\frac\theta2\,\mathbf n\cdot\boldsymbol\sigma.
+\label{eq:am-su2-axis-angle}
+\end{equation}
+这里使用了
+\((\mathbf n\cdot\boldsymbol\sigma)^2=I\)，因而指数级数的偶次项与奇次项分别求和为余弦和正弦。代入
+\(\theta=2\pi\) 得到 \(U=-I\)，代入 \(4\pi\) 才得到 \(I\)。态矢量整体负号不改变射线和任何期望值，所以 \(SU(2)\) 的这两个元素对应同一个三维空间转动；这就是“双覆盖”的具体含义。
+
+Pauli 矩阵满足
+\([\sigma_i,\sigma_j]=2\ii\epsilon_{ijk}\sigma_k\)。因此
+\(J_i=\hbar\sigma_i/2\) 给出最小的非平凡 \(SU(2)\) 表示。一般表示的生成元仍满足同一交换关系；不同表示只改变矩阵维数和 Casimir \(J^2\) 的本征值。
+
+量子角动量生成元满足
+\begin{equation}
+[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k,
 \qquad
-k_B T=\frac{D_p}{\eta}.
-\end{equation*}
-代入 $D_p=(\hbar k)^2 R_{\rm tot}$ 与 $\eta=-8\hbar k^2 s_0(\Delta/\Gamma_{\rm sp})/[1+(2\Delta/\Gamma_{\rm sp})^2]^2$，$k^2$ 与 $s_0$ 消去，记 $x=|2\Delta|/\Gamma_{\rm sp}$，整理得
-\begin{equation*}
-k_B T
-= \frac{\hbar\Gamma_{\rm sp}}{4}\left(x+\frac1x\right).
-\end{equation*}
-由 AM--GM 不等式 $x+x^{-1}\ge2$，等号在 $x=1$ 取得，因此最优失谐 $\Delta=-\Gamma_{\rm sp}/2$（红失谐侧），于是
-\begin{equation*}
-k_B T_D=\frac{\hbar\Gamma_{\rm sp}}{2},
+[J^2,J_i]=0.
+\label{eq:am-su2-algebra}
+\end{equation}
+不可约表示以 $j=0,\tfrac12,1,\ldots$ 标记，标准基满足
+\[
+J^2|jm\rangle=\hbar^2j(j+1)|jm\rangle,
 \qquad
-T_D=\frac{\hbar\Gamma_{\rm sp}}{2 k_B}.
-\end{equation*}
-\end{derivation}
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=.83\textwidth]{doppler_limit.pdf}
-\caption{低饱和二能级 Doppler 模型中的平衡温度随失谐的变化。极小值出现在\(\Delta=-\Gamma_{\rm sp}/2\)。}
-\label{fig:doppler-limit}
-\end{figure}
-
-这个极限依赖``二能级、低饱和、仅 Doppler 摩擦与单光子反冲扩散''的模型。存在 Zeeman 简并和偏振梯度时，额外的亚 Doppler 机制可以把温度继续降到 \(T_D\) 以下。
-
-\section{内部简并与亚 Doppler 冷却}
-接下来考察 Sisyphus 冷却的核心机制。
-
-Doppler 极限并不是绝对下限。具有简并 Zeeman 子能级的原子在偏振梯度场中会发生位置依赖的 light 位移。
-
-例如两束正交线偏振光反向传播：
-
-\[
-\mathbf E^{(+)}(z)
-=\frac{E_0}{2}
-(\hat x \ee^{\ii kz}+\hat y \ee^{-\ii kz}).
+J_z|jm\rangle=\hbar m|jm\rangle.
 \]
+升降算符 $J_\pm=J_x\pm\ii J_y$ 的作用为
+\begin{equation}
+J_\pm|jm\rangle
+=\hbar\sqrt{j(j+1)-m(m\pm1)}\,|j,m\pm1\rangle.
+\label{eq:am-ladder-action}
+\end{equation}
 
-重新选取正交线偏振基，可看出偏振随 \(z\) 周期变化：
+\begin{theorem}[\(SU(2)\) 有限维不可约表示]
+每个有限维不可约酉表示由一个
+\(j\in\{0,\tfrac12,1,\ldots\}\) 唯一标记，维数为 \(2j+1\)。其中
+\(J^2=\hbar^2j(j+1)I\)，而 \(J_z\) 的本征值依次为
+\(\hbar j,\hbar(j-1),\ldots,-\hbar j\)。
+\end{theorem}
 
+\begin{proof}
+因为 \(J^2\) 与三个 \(J_i\) 都对易，Schur 引理说明它在不可约空间上等于某个常数。取 \(J_z\) 的最大本征值 \(\hbar j\) 及归一化本征态 \(|j,j\rangle\)。最大性迫使 \(J_+|j,j\rangle=0\)。由
 \[
-\text{linear}\rightarrow \sigma^-\rightarrow\text{linear}\rightarrow\sigma^+\rightarrow\cdots
+J_-J_+=J^2-J_z^2-\hbar J_z
 \]
+取期望值，得到 \(J^2=\hbar^2j(j+1)\)。
 
-不同 \(m_F\) 子态由于 CG 系数不同，得到不同的 AC Stark 势 \(U_{m_F}(z)\)。
-
-以最简单的 \(J_g=1/2\to J_e=3/2\) 模型为例。对基态 \(m_g=+1/2\)，\(\sigma^+\) 跃迁到 \(m_e=+3/2\) 的 CG 强度为 1，而 \(\sigma^-\) 到 \(m_e=-1/2\) 的强度为 \(1/3\)；对 \(m_g=-1/2\) 两者交换。因此在远失谐、低饱和条件下，若局域圆偏振分量强度为 \(I_\pm(z)\)，两条基态 light 位移 具有结构
-
+反复作用 \(J_-\) 使磁量子数每次减一。有限维性要求下降链在某个最低态 \(|j,m_{\min}\rangle\) 停止，即
+\(J_-|j,m_{\min}\rangle=0\)。再由
 \[
-U_+(z)=C\left[I_+(z)+\frac13 I_-(z)\right],
-\qquad
-U_-(z)=C\left[I_-(z)+\frac13 I_+(z)\right],
+J_+J_-=J^2-J_z^2+\hbar J_z
 \]
+取期望值，得到
+\((j+m_{\min})(j-m_{\min}+1)=0\)。最低态不可能满足
+\(m_{\min}=j+1\)，故 \(m_{\min}=-j\)。从 \(j\) 逐次减一能够到达 \(-j\)，所以 \(2j\) 必为非负整数，共有 \(2j+1\) 个态。升降系数由上述两个恒等式的期望值开平方得到
+\eqnrefs{eq:am-ladder-action}。
+\end{proof}
 
-其中 \(C\propto1/\Delta\) 包含共同的偶极矩和失谐因子。lin\(\perp\)lin 场中 \(I_+\) 与 \(I_-\) 在空间上错相振荡，因此 \(U_+\) 与 \(U_-\) 也是相互错位的周期势。光抽运率又在局域圆偏振最强处最大，恰好使原子更容易在“爬到某一势能山顶”附近跳到另一条较低势曲线。Sisyphus 图像由此从“偏振变化”定量落到“CG 加权的两条位置依赖光移”。
+若 Hilbert 空间含两个独立角动量 $\mathbf J_1$、$\mathbf J_2$，总生成元 $\mathbf J=\mathbf J_1+\mathbf J_2$ 在张量积表示 $\mathcal H_{j_1}\otimes\mathcal H_{j_2}$ 上作用。其不可约分解为
+\begin{equation}
+\mathcal H_{j_1}\otimes\mathcal H_{j_2}
+=\bigoplus_{j=|j_1-j_2|}^{j_1+j_2}\mathcal H_j,
+\label{eq:am-cg-decomposition}
+\end{equation}
+每个 $j$ 恰出现一次。直积基与耦合基之间的酉变换定义 Clebsch--Gordan 系数：
+\begin{equation}
+|jm\rangle
+=\sum_{m_1,m_2}
+C^{jm}_{j_1m_1,j_2m_2}
+|j_1m_1\rangle|j_2m_2\rangle,
+\qquad m=m_1+m_2.
+\label{eq:am-cg-definition}
+\end{equation}
 
-原子沿势坡上爬，动能转化为势能；在接近势顶时被 光学 pumping 到另一个更低的子态，再次开始爬坡。重复这一过程就像希腊神话中的 Sisyphus 不断推石上山，因此称 Sisyphus cooling。
+\begin{proof}[分解公式的证明]
+直积态的最大磁量子数是 \(j_1+j_2\)，且只有
+\(|j_1,j_1\rangle|j_2,j_2\rangle\) 一个态，因此它必是一个
+\(j=j_1+j_2\) 不可约分量的最高权态。用总降算符
+\(J_-=J_{1-}+J_{2-}\) 生成这一分量的全部状态。
 
-接下来考察超精细结构与内部态标记。
-
-原子电子总角动量
-
+在总磁量子数 \(m=j_1+j_2-1\) 的子空间中，与刚生成的态正交的方向若存在，便是下一分量 \(j=j_1+j_2-1\) 的最高权态。继续“取正交补、再用 \(J_-\) 下降”，依次得到
+\(j_1+j_2,j_1+j_2-1,\ldots,|j_1-j_2|\)。最后核对维数：
 \[
-\mathbf J=\mathbf L+\mathbf S,
+\sum_{j=|j_1-j_2|}^{j_1+j_2}(2j+1)
+=(2j_1+1)(2j_2+1)
+=\dim(\mathcal H_{j_1}\otimes\mathcal H_{j_2}).
 \]
+这些彼此正交的不可约分量已经占满张量积空间，因此没有遗漏，也没有重数。
+\end{proof}
 
-与核自旋 \(\mathbf I\) 耦合形成
-
+\begin{proof}[最高支的第一次下降]
+最大总角动量 \(j=j_1+j_2\) 的最高权态只能是
 \[
-\mathbf F=\mathbf I+\mathbf J.
+|j,j\rangle=|j_1,j_1\rangle|j_2,j_2\rangle.
 \]
-
-磁偶极超精细 Hamiltonian
-
+作用一次总降算符 \(J_-=J_{1-}+J_{2-}\)。左边为
+\(\hbar\sqrt{2(j_1+j_2)}\,|j,j-1\rangle\)，右边为
 \[
-H_{hf}=A_{\rm hf}\mathbf I\cdot\mathbf J.
+\hbar\sqrt{2j_1}\,
+|j_1,j_1-1\rangle|j_2,j_2\rangle
++\hbar\sqrt{2j_2}\,
+|j_1,j_1\rangle|j_2,j_2-1\rangle .
 \]
-
-利用
-
+两边相除得到
 \[
-\mathbf I\cdot\mathbf J
-=\frac12(\mathbf F^2-\mathbf I^2-\mathbf J^2),
+|j,j-1\rangle
+=\sqrt{\frac{j_1}{j_1+j_2}}\,
+|j_1,j_1-1\rangle|j_2,j_2\rangle
++\sqrt{\frac{j_2}{j_1+j_2}}\,
+|j_1,j_1\rangle|j_2,j_2-1\rangle .
 \]
+这就是最高支最靠上的两个 Clebsch--Gordan 系数。其余系数由同一降算符递推，并在每个固定 \(m\) 子空间中与已经得到的支正交化。
+\end{proof}
 
-得到
-
-\[
-\boxed{
-E_F
-=\frac{A_{\rm hf}}2
-[F(F+1)-I(I+1)-J(J+1)]
-}.
-\]
-
-例如 \(^{133}\mathrm{Cs}\) 基态 \(6S_{1/2}\)：
-
-\[
-I=\frac72,\qquad J=\frac12,
-\]
-
-所以
-
-\[
-F=3,4.
-\]
-
-这两个超精细态之间的跃迁频率定义了 SI 秒的基础。
-
-\section{Ramsey 干涉、频率基准与相对论修正}
-接下来考察 Ramsey 干涉与原子钟。
-
-Ramsey 方法把``连续长时间驱动''改写为两个短 \(\pi/2\) 脉冲，中间留出自由相位积累时间 \(T\)。在理想瞬时脉冲近似下，取第一脉冲相位为零，\(\pi/2\) 操作可写为
-
-\[
-U_{\pi/2}=\frac1{\sqrt2}
-\begin{pmatrix}
-1&-\ii\\
--\ii&1
-\end{pmatrix}.
-\]
-
-旋转表象中自由演化传播子为
-
-\[
-U_0(T)=
-\begin{pmatrix}
- \ee^{+\ii\Delta T/2}&0\\
-0&\ee^{-\ii\Delta T/2}
-\end{pmatrix}.
-\]
-
-从基态 \((1,0)^T\) 出发，完整序列
-
-\[
-|\psi_f\rangle
-=U_{\pi/2}U_0(T)U_{\pi/2}|g\rangle
-\]
-
-给出
-
-\[
-\boxed{
-P_e(T)=\frac12[1+\cos(\Delta T)]
-}
-\]
-
-（改变第二脉冲相位只会平移 fringe）。因此中央条纹的频率尺度由 \(1/T\) 决定，而不是由短脉冲宽度决定。
-
-\begin{derivation}[Ramsey 序列作为两次 SU(2) 旋转]
-记基态与激发态列向量 $|g\rangle=(1,0)^T$、$|e\rangle=(0,1)^T$。第一束同相位 $\pi/2$ 脉冲的 SU(2) 作用为
-\begin{equation*}
-U_{\pi/2}=\frac1{\sqrt2}
-\begin{pmatrix}1&-\ii\\-\ii&1\end{pmatrix},
-\end{equation*}
-作用在 $|g\rangle$ 上，
-\begin{equation*}
-U_{\pi/2}|g\rangle
-=\frac1{\sqrt2}
-\begin{pmatrix}1&-\ii\\-\ii&1\end{pmatrix}
-\begin{pmatrix}1\\0\end{pmatrix}
-=\frac1{\sqrt2}\begin{pmatrix}1\\-\ii\end{pmatrix}.
-\end{equation*}
-在旋转表象中，自由演化对角传播子为
-\begin{equation*}
-U_0(T)=
-\begin{pmatrix}\ee^{+\ii\Delta T/2}&0\\0&\ee^{-\ii\Delta T/2}\end{pmatrix},
-\end{equation*}
-作用后
-\begin{equation*}
-U_0(T)U_{\pi/2}|g\rangle
-=\frac1{\sqrt2}
-\begin{pmatrix}\ee^{+\ii\Delta T/2}&0\\0&\ee^{-\ii\Delta T/2}\end{pmatrix}
-\begin{pmatrix}1\\-\ii\end{pmatrix}
-=\frac1{\sqrt2}
-\begin{pmatrix}\ee^{+\ii\Delta T/2}\\-\ii\ee^{-\ii\Delta T/2}\end{pmatrix}.
-\end{equation*}
-再作用第二束同相位 $\pi/2$ 脉冲，
+\begin{proof}[解]
+对任意已知的 $|j,m\rangle$，再作用一次降算符给出 $|j,m-1\rangle$。把 $J_-=J_{1-}+J_{2-}$ 分别作用到展开式 \eqnrefs{eq:am-cg-definition} 的两端，
 \begin{align*}
-|\psi_f\rangle
-&=U_{\pi/2}\,U_0(T)\,U_{\pi/2}|g\rangle \\
-&=\frac1{\sqrt2}
-\begin{pmatrix}1&-\ii\\-\ii&1\end{pmatrix}
-\cdot\frac1{\sqrt2}
-\begin{pmatrix}\ee^{+\ii\Delta T/2}\\-\ii\ee^{-\ii\Delta T/2}\end{pmatrix} \\
-&=\frac12
-\begin{pmatrix}
-\ee^{+\ii\Delta T/2}-\ee^{-\ii\Delta T/2}\\
--\ii\bigl(\ee^{+\ii\Delta T/2}+\ee^{-\ii\Delta T/2}\bigr)
-\end{pmatrix}.
+ \hbar\sqrt{j(j+1)-m(m-1)}\,|j,m-1\rangle
+ &=\sum_{m_1,m_2}C^{jm}_{j_1m_1,j_2m_2}
+ \Bigl[
+ \hbar\sqrt{j_1(j_1+1)-m_1(m_1-1)}
+ \times|j_1,m_1-1\rangle|j_2m_2\rangle
+ \\
+ &\qquad+\hbar\sqrt{j_2(j_2+1)-m_2(m_2-1)}
+ \times|j_1m_1\rangle|j_2,m_2-1\rangle
+ \Bigr].
 \end{align*}
-由 Euler 公式 $\ee^{\ii x}+\ee^{-\ii x}=2\cos x$、$\ee^{\ii x}-\ee^{-\ii x}=2\ii\sin x$，于是
-\begin{equation*}
-|\psi_f\rangle
-=\begin{pmatrix}
-\ii\sin(\Delta T/2)\\
--\ii\cos(\Delta T/2)
-\end{pmatrix},
-\end{equation*}
-激发态振幅
-\begin{equation*}
-c_e=-\ii\cos\frac{\Delta T}{2}.
-\end{equation*}
-取模平方，
-\begin{equation*}
-P_e=|c_e|^2=\cos^2\frac{\Delta T}{2}
-=\frac12\bigl[1+\cos(\Delta T)\bigr].
-\end{equation*}
-自由演化时间 $T$ 把微小失谐放大为相位 $\Delta T$，这正是 Ramsey spectroscopy 的分辨率由 $1/T$ 而非脉冲宽度决定的来源。
-\end{derivation}
+在右端作换元 $m_1\to m_1+1$（第一项）和 $m_2\to m_2+1$（第二项），合并 $|j_1m_1\rangle|j_2m_2\rangle$ 的系数，得到一般递推关系
+\begin{align*}
+ &\sqrt{j(j+1)-m(m-1)}\,
+ C^{j,m-1}_{j_1m_1,j_2m_2}
+ \\
+ &\quad=\sqrt{j_1(j_1+1)-m_1(m_1+1)}\,
+ C^{jm}_{j_1,m_1+1;\,j_2m_2}
+ \\
+ &\qquad{}+\sqrt{j_2(j_2+1)-m_2(m_2+1)}\,
+ C^{jm}_{j_1m_1;\,j_2,m_2+1}.
+\end{align*}
+给定最高权态 $C^{jj}_{j_1m_1,j_2m_2}$，沿 $m$ 递降即可确定该 $j$ 支的全部系数。
 
-若一次测量包含 \(N\) 个互不纠缠原子，在最敏感工作点上二项分布投影噪声给出 \(\Delta P\sim1/(2\sqrt N)\)，而 \(|\partial P/\partial\phi|=1/2\)，所以
+递归降 $j$。对每个新最高权态重复"降算符 + 正交化"：降算符生成当前 $j$ 支的 $|j,m-1\rangle$，正交化从剩余维度提取下一支 $j-1$ 的最高权态。如此递归降 $j$ 直到 $|j_1-j_2|$（最低支）。因此 CG 表不是额外输入，而是 SU(2) 代数与内积归一化的结果。
 
-\[
-\Delta\phi\sim\frac1{\sqrt N},
+以两个自旋 $1/2$ 为例，$|1,1\rangle=|\tfrac12,\tfrac12\rangle|\tfrac12,\tfrac12\rangle$，降算符给出
+\begin{equation*}
+ |1,0\rangle=\frac1{\sqrt2}\Bigl|\tfrac12,\tfrac12\Bigr\rangle\Bigl|\tfrac12,-\tfrac12\Bigr\rangle
+ +\frac1{\sqrt2}\Bigl|\tfrac12,-\tfrac12\Bigr\rangle\Bigl|\tfrac12,\tfrac12\Bigr\rangle,
+\end{equation*}
+再降一次得 $|1,-1\rangle=|\tfrac12,-\tfrac12\rangle|\tfrac12,-\tfrac12\rangle$。第三步给出单重态
+\begin{equation*}
+ |0,0\rangle=\frac1{\sqrt2}\Bigl|\tfrac12,\tfrac12\Bigr\rangle\Bigl|\tfrac12,-\tfrac12\Bigr\rangle
+ -\frac1{\sqrt2}\Bigl|\tfrac12,-\tfrac12\Bigr\rangle\Bigl|\tfrac12,\tfrac12\Bigr\rangle.
+\end{equation*}
+三重态（$j=1$）在粒子交换下对称、单重态（$j=0$）反对称，正对应于 $\mathcal H_{1/2}\otimes\mathcal H_{1/2}=\mathcal H_1\oplus\mathcal H_0$ 的对称/反对称分解。
+
+CG 系数也可重新归一化为 Wigner 3-j 符号：
+\begin{equation*}
+  \begin{pmatrix}j_1&j_2&j\\m_1&m_2&-m\end{pmatrix}
+  =\frac{(-1)^{j_1-j_2+m}}{\sqrt{2j+1}}\,C^{jm}_{j_1m_1,j_2m_2},
+\end{equation*}
+3-j 符号在三列任意置换下满足简单的对称/反对称律（偶置换不变，奇置换乘以 $(-1)^{j_1+j_2+j}$），并把三角选择定则和 $m_1+m_2+m=0$ 直接编码进其非零条件。三个不可约表示的逐次耦合 $(j_1\otimes j_2)\otimes j_3$ 与 $j_1\otimes(j_2\otimes j_3)$ 之间的重耦变换由 6-j 符号给出，其正交关系来自重耦变换的酉性。
+\end{proof}
+
+\section{不可约张量与 Wigner--Eckart 定理}
+
+秩-$k$ 球张量 $T_q^{(k)}$ 的定义是它在旋转下按 $j=k$ 不可约表示变换。等价的无穷小条件为
+\begin{equation}
+[J_z,T_q^{(k)}]=\hbar qT_q^{(k)},
 \qquad
-\boxed{
-\Delta\omega\sim\frac1{T\sqrt N}.
-}
-\]
-
-这就是标准量子极限的尺度。有限脉冲时间、局域振荡器噪声、原子数涨落和 decoherence 会改变实际 Allan deviation，但不会改变这里展示的基本干涉机制。
-
-接下来考察从频率基准到导航测距。
-
-GPS 接收机要解四个未知量：
-
-\[
-(x,y,z,\delta t).
-\]
-
-每颗卫星给出一个伪距方程
-
-\[
-\rho_i
-=c(t_{rec}-t_i)
-=\sqrt{(x-x_i)^2+(y-y_i)^2+(z-z_i)^2}+c\delta t.
-\]
-
-因此至少需要四颗卫星。
-
-时间误差 \(\delta t\) 会直接转化为空间误差
-
-\[
-\delta r\sim c\delta t.
-\]
-
-例如
-
-\[
-1\,\text{ns}\Rightarrow 0.30\,\text{m}.
-\]
-
-所以卫星导航本质上是一项高精度时间测量技术。
-
-接下来考察重力红移。
-
-弱场极限中，不同重力势 \(\Phi\) 下时钟频率满足
-
-\[
-\frac{\Delta\nu}{\nu}
-\approx\frac{\Delta\Phi}{c^2}.
-\]
-
-在均匀重力场中，高度差 \(H\)：
-
-\[
-\Delta\Phi=gH,
-\]
-
-所以
-
-\[
-\boxed{
-\frac{\Delta\nu}{\nu}\approx\frac{gH}{c^2}
-}.
-\]
-
-这既可从广义相对论理解，也可借助等效原理在加速电梯中用 Doppler 位移 得到。
-
-\section{磁俘获、绝热内部态与合成规范场}
-接下来考察磁阱与低场趋向态。
-
-Zeeman 相互作用
-
-\[
-H_Z=-\boldsymbol\mu\cdot\mathbf B.
-\]
-
-绝热情况下，某个内部态的能量近似为
-
-\[
-U(\mathbf r)=\mu_{eff}|\mathbf B(\mathbf r)|.
-\]
-
-若 \(\mu_{eff}>0\)，能量在弱磁场处更低，称 low-场-seeking 态，可被 \(|B|\) 的极小值束缚。
-
-在无电流区域
-
-\[
-\nabla\cdot\mathbf B=0,
-\qquad
-\nabla\times\mathbf B=0,
-\]
-
-因此各分量满足 Laplace 方程。静态自由空间磁场不能产生稳定的 \(|B|\) 局域极大值，因此 high-场-seeking 态 不能通过普通静态磁场极大值稳定俘获。
-
-这个结论可以直接从 \(|\mathbf B|\) 的 拉普拉斯算子 算出来。记 \(B=|\mathbf B|\)，则
-
-\[
-\partial_iB=\frac{B_j\partial_iB_j}{B},
-\]
-
-进一步
-
-\[
-\partial_i^2B
-=\frac{(\partial_iB_j)^2+B_j\partial_i^2B_j}{B}
--\frac{(B_j\partial_iB_j)^2}{B^3}.
-\]
-
-对空间指标 \(i\) 求和，并在无源区使用 \(\nabla^2B_j=0\)：
-
-\[
-\nabla^2B
-=\frac{\sum_{ij}(\partial_iB_j)^2}{B}
--\frac{\sum_i(B_j\partial_iB_j)^2}{B^3}.
-\]
-
-Cauchy--Schwarz 不等式给出
-
-\[
-(B_j\partial_iB_j)^2
-\le B^2\sum_j(\partial_iB_j)^2,
-\]
-
-因此
-
-\begin{equation}
-\boxed{\nabla^2|\mathbf B|\ge0}
-\label{eq:magnetic-field-subharmonic}
+[J_\pm,T_q^{(k)}]
+=\hbar\sqrt{k(k+1)-q(q\pm1)}\,T_{q\pm1}^{(k)}.
+\label{eq:am-tensor-commutators}
 \end{equation}
-
-只要 \(B\neq0\)，\(|\mathbf B|\) 是 subharmonic 函数，因而不能在无源区有严格局域极大值。这就是静态磁阱版的 Earnshaw 限制。极小值则不被禁止，所以 low-场 seeker 可以被 Ioffe--Pritchard 等非零极小值磁阱稳定束缚；保持非零偏置场还能避免零场处的 Majorana 自旋-flip 损失。
-
-这不是说``超精细态不能被磁阱束缚''，相反，磁阱实验中正是选择合适的低场趋向超精细态。
-
-接下来考察绝热基与合成规范场。
-
-若内部 Hamiltonian 随位置变化：
-
-\[
-H_{int}(\mathbf r)|\chi_n(\mathbf r)\rangle
-=\varepsilon_n(\mathbf r)|\chi_n(\mathbf r)\rangle,
-\]
-
-展开总波函数
-
-\[
-|\Psi\rangle
-=\sum_n\psi_n(\mathbf r)|\chi_n(\mathbf r)\rangle.
-\]
-
-动量作用时会打到位置依赖的内部基，产生 Berry 联络：
-
-\[
-\boxed{
-\mathbf A_{mn}
-=\ii\hbar\langle\chi_m|\nabla\chi_n\rangle
-}.
-\]
-
-绝热投影到单个能带后
-
-\[
-H_{eff}
-=\frac1{2M}[\mathbf p-\mathbf A_n(\mathbf r)]^2
-+\varepsilon_n(\mathbf r)+\Phi_n(\mathbf r).
-\]
-
-其中单带几何标量势来自被绝热消去的其他内部态：
-
-\[
-\boxed{
-\Phi_n(\mathbf r)
-=\frac{\hbar^2}{2M}
-\sum_{m\neq n}
-|\langle\chi_m|\nabla\chi_n\rangle|^2.
-}
-\]
-
-Berry 曲率 则为
-
-\[
-\mathbf B_{\rm syn}=\nabla\times\mathbf A_n.
-\]
-
-因此“合成磁场”并不是把真实磁场直接替换成另一个实验旋钮，而是原子质心在位置依赖内部本征基中绝热运动时积累的几何相位所产生的有效 Lorentz 结构。这与\chapref{ch:born-huang}中的分子核几何规范势是同一个数学机制。
-
-这就是冷原子中 synthetic 规范场 的基本来源。
-
-\begin{derivation}[偏振梯度冷却的线性响应与温度标度]
-以 \(J_g=1/2\to J_e=3/2\) 的 lin\(\perp\)lin 简化模型为例（\(U_0\) 为最大光位移深度，\(\Omega\) 为共振 Rabi 频率，\(\Gamma=\Gamma_{\rm sp}\) 为自然自发辐射线宽，\(\Delta\) 为光失谐），两条绝热光位移势和代表性抽运率写成
-\begin{align}
- U_\pm(z)&=\frac{U_0}{2}[1\pm\cos(2kz)],
- \label{eq:sisyphus-light-shift}\\
- \Gamma_{\rm pump}(z)&=\Gamma'\sin^2(2kz),\qquad
- \Gamma'\simeq\frac{\Gamma\Omega^2}{4\Delta^2}
- \quad(|\Delta|\gg\Gamma).
- \label{eq:sisyphus-pump-rate}
-\end{align}
-式 \eqnrefs{eq:sisyphus-light-shift} 与式 \eqnrefs{eq:sisyphus-pump-rate} 中，具体 Clebsch--Gordan 系数会改变数值前因子，但不改变下面的尺度关系。
-
-令 \(p_\pm(z)\) 为原子沿 \(z=vt\) 运动时的局域内态布居。它们满足速率方程
-\[
- v\partial_z
- \begin{pmatrix}p_+\\p_-\end{pmatrix}
- =\mathsf W(z)
- \begin{pmatrix}p_+\\p_-\end{pmatrix},
- \qquad p_++p_-=1,
-\]
-其中 \(\mathsf W\) 由局域 \(\sigma^\pm\) 分量的抽运率决定。在
-\(kv\ll\Gamma'\) 时作绝热响应展开
-\[
- \vb p(z)=\vb p^{(0)}(z)+v\,\vb p^{(1)}(z)+O(v^2),\qquad
- \mathsf W\vb p^{(1)}=\partial_z\vb p^{(0)} .
-\]
-周期平均偶极力
-\[
- \overline F=-\frac{k}{\pi}\int_0^{\pi/k}
- \sum_{\sigma=\pm}p_\sigma(z)\,\partial_zU_\sigma(z)\dd z
-\]
-的零阶项为零，一阶项给出 \(\overline F=-\alpha_{\rm Sis}v+O(v^2)\)，其中
+对任意两个角动量不可约子空间 $\mathcal H_j$、$\mathcal H_{j'}$，Wigner--Eckart 定理把全部磁量子数依赖分离：
 \begin{equation}
- \alpha_{\rm Sis}
- =\frac{k}{\pi}\int_0^{\pi/k}
- \sum_{\sigma=\pm}p_\sigma^{(1)}(z)\,\partial_zU_\sigma(z)\dd z
- =C_\alpha\,\frac{k^2|U_0|}{\Gamma'} .
- \label{eq:sisyphus-friction}
+\langle \alpha'j'm'|T_q^{(k)}|\alpha jm\rangle
+=(-1)^{j'-m'}
+\begin{pmatrix}
+ j'&k&j\\
+ -m'&q&m
+\end{pmatrix}
+\langle \alpha'j'||T^{(k)}||\alpha j\rangle .
+\label{eq:wigner-eckart}
 \end{equation}
-\(C_\alpha>0\) 是由跃迁角动量和偏振几何决定的无量纲常数。这个结果来自布居对移动光势的滞后；不能用“每个周期固定损失 \(U_0\)”的常功率估计替代线性响应。
+额外量子数统一收进 $\alpha,\alpha'$；约化矩阵元不依赖 $m,m',q$。
 
-动量扩散同时来自自发发射反冲和随机切换光势造成的偶极力涨落：
-\[
- D_p=C_{\rm sp}(\hbar k)^2\Gamma'
- +C_{\rm dip}\frac{k^2U_0^2}{\Gamma'}.
-\]
-这些无量纲系数由发射角分布和内态结构决定。在典型偏振梯度冷却区
-\(|U_0|\gg\hbar\Gamma'\)，偶极力涨落项主导。Fokker--Planck 稳态的
-\(k_BT=D_p/\alpha_{\rm Sis}\) 此时给出
-\begin{equation}
- k_BT_{\rm Sis}=C_T|U_0|,\qquad
- C_T=\frac{C_{\rm dip}}{C_\alpha}=O(1).
- \label{eq:sisyphus-temperature}
-\end{equation}
-所以亚 Doppler 标度由可调光位移而不是自然线宽控制；数值系数必须由完整多能级光学 Bloch 方程或实验几何确定。继续降低 \(|U_0|\) 最终会触及反冲能、非绝热跃迁和俘获效率等限制，不能由上式推出任意低温。
+\begin{proof}[解]
+把张量算符包装成交织子。固定初态不可约表示 $\mathcal H_j$ 与末态 $\mathcal H_{j'}$。把秩-$k$ 张量算符 $T_q^{(k)}$ 视为线性映射
+\begin{equation*}
+ \mathcal T:\mathcal H_j\longrightarrow
+ \mathcal H_{j'}\otimes\mathcal H_k^*,
+\end{equation*}
+其分量定义为
+\begin{equation*}
+ |jm\rangle\mapsto
+ \sum_{m',q}\langle j'm'|T_q^{(k)}|jm\rangle
+ |j'm'\rangle\otimes|kq\rangle^*.
+\end{equation*}
+由\eqnrefs{eq:am-tensor-commutators} 给出的张量算符与角动量对易关系 $[J_\pm,T_q^{(k)}]=\hbar\sqrt{k(k+1)-q(q\pm1)}\,T_{q\pm1}^{(k)}$ 与 $[J_z,T_q^{(k)}]=\hbar q\,T_q^{(k)}$，正好保证 $\mathcal T$ 与旋转作用可交换。具体地，对无穷小旋转，由对易关系
+\begin{equation*}
+ J_\pm\mathcal T|jm\rangle=\mathcal T J_\pm|jm\rangle,
+ \qquad
+ J_z\mathcal T|jm\rangle=\mathcal T J_z|jm\rangle,
+\end{equation*}
+积分到有限旋转，即对任意 $g\in\mathrm{SU}(2)$，
+\begin{equation*}
+ \mathcal T\,D^{(j)}(g)=\bigl[D^{(j')}(g)\otimes D^{(k)*}(g)\bigr]\,\mathcal T,
+\end{equation*}
+所以 $\mathcal T$ 是交织子。
 
-作为对照，二能级 Doppler 模型在弱饱和、最优失谐
-\(\Delta=-\Gamma_{\rm sp}/2\) 下给出
-\begin{equation}
- k_BT_D=\frac{\hbar\Gamma_{\rm sp}}{2}.
- \label{eq:phys-lc-doppler-limit}
-\end{equation}
-偏振梯度冷却能够低于这一数值，正因为其摩擦来自内态相关的光位移，而扩散仍由随机反冲决定。
-\end{derivation}
+用 CG 分解与 Schur 引理定维数。另一方面，由 Clebsch--Gordan 分解
+\begin{equation*}
+ \mathcal H_{j'}\otimes\mathcal H_k^*
+ \cong\bigoplus_{J=|j'-k|}^{j'+k}\mathcal H_J.
+\end{equation*}
+若 $\mathcal H_j$ 不在右侧直和出现，即 $j\notin\{|j'-k|,\ldots,j'+k\}$，由 Schur 引理：不同不可约表示之间的交织子恒为零，故 $\mathcal T=0$，这就是三角选择定则。若出现，由于 SU(2) 二重张量积分解无重数，每个 $\mathcal H_J$ 在直和中只出现一次。由 Schur 引理的另一形式：同一不可约表示到自身的交织子空间为一维（仅由恒等算子的标量倍组成），$\mathcal H_j$ 到该同构分量的交织子空间是一维的，故 $\mathcal T$ 只差一个标量倍数。因此
+\begin{equation*}
+ \langle j'm'|T_q^{(k)}|jm\rangle
+ =\mathcal N_{j'jk}\,C^{j'm'}_{jm,kq},
+\end{equation*}
+其中 $\mathcal N_{j'jk}$ 与 $m,m',q$ 无关，$C^{j'm'}_{jm,kq}$ 为 CG 系数。
+
+约定 3-j 形式与约化矩阵元。把 CG 系数改写为 3-j 符号
+\begin{equation*}
+ C^{j'm'}_{jm,kq}
+ =(-1)^{j-k+m'}\sqrt{2j+1}
+ \begin{pmatrix} j&k&j'\\ m&q&-m'\end{pmatrix},
+\end{equation*}
+并把唯一的比例常数定义为约化矩阵元 $\langle j'||T^{(k)}||j\rangle$，即得\eqnrefs{eq:wigner-eckart}。定理的核心是不可约表示之间交织子的唯一性，而不是逐个积分矩阵元。
+\end{proof}
+
+例：秩-$2$ 电四极算符满足三角条件 $|j-2|\le j'\le j+2$，并在特定磁量子数组合下受到 3-j 符号的附加奇偶约束。同一分离也适用于超精细结构：磁偶极与电四极常数包含动力学信息，全部 $F,m_F$ 依赖由角动量耦合系数承担。
+
+电偶极算符 $\mathbf d=\sum_aq_a\mathbf r_a$ 是奇宇称秩-$1$ 张量；电四极矩是偶宇称秩-$2$ 张量；磁偶极矩也是秩-$1$，但空间反演宇称与电偶极不同。因而光谱选择定则首先由张量秩和宇称给出，具体径向积分只决定允许跃迁的强度。下一章以后所有光学跃迁都沿用这一分离方式。

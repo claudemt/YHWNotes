@@ -1,0 +1,134 @@
+\chapter{Lie 群、Lie 代数与指数映射}
+\label{chap:lie-groups-algebras}
+
+有限群可以逐个列出元素和乘法表，旋转群却含有连续无穷多个元素。若仍试图逐个研究群元，连“从单位元附近稍微转动一下”都无法与有限转动联系起来。连续性提供了更有效的入口：沿群中的一条曲线从单位元出发，只保留它在起点的切向量。有限维的切空间记录了群在单位元附近的全部无穷小方向。
+
+无穷小方向本身还不够，因为两个方向依次走一小步通常与反向次序不同。这个二阶差异产生 Lie 括号；把同一方向反复复合则产生指数映射。于是连续群的局部乘法被转化为有限维向量空间、双线性括号和常微分方程。$SO(3)$ 与 $SU(2)$ 会贯穿本章，使每个抽象定义都能立刻落到矩阵运算上。
+
+\section{从一参数子群到生成元}
+
+先取矩阵 Lie 群 $G\subseteq GL(n,\mathbb C)$。一条经过单位元的光滑曲线写作 $g(t)$，满足 $g(0)=I$。它在 $t=0$ 的速度
+\[
+X=\left.\frac{\dd g(t)}{\dd t}\right|_{t=0}
+\]
+是矩阵空间中的向量。所有这类速度组成单位元处的切空间 $T_IG$，记为 $\mathfrak g$。例如 $SO(3)$ 的约束 $R^{\mathsf T}R=I$ 对 $t$ 求导给出
+\[
+X^{\mathsf T}+X=0,
+\]
+所以 $\mathfrak{so}(3)$ 恰好由实反对称 $3\times3$ 矩阵组成。类似地，$U(t)^\dagger U(t)=I$ 给出 $X^\dagger=-X$；再加 $\det U=1$，便得到
+\[
+\mathfrak{su}(n)=\{X\in M_n(\mathbb C)\mid X^\dagger=-X, \Tr X=0\}.
+\]
+约束群元素的非线性方程在单位元处因此变成生成元满足的线性条件。
+
+若曲线还满足 $g(t+s)=g(t)g(s)$，它是一参数子群。令 $X=g'(0)$，对 $s$ 在零点求导可得
+\[
+g'(t)=g(t)X=Xg(t),\qquad g(0)=I.
+\]
+这个初值问题的唯一解为
+\begin{equation}
+g(t)=\exp(tX)=\sum_{k=0}^{\infty}\frac{t^kX^k}{k!}.
+\label{eq:one-parameter-exponential}
+\end{equation}
+式 \eqnrefs{eq:one-parameter-exponential} 把一个无穷小生成元恢复成有限群变换。指数映射不必在整个群上一一对应，但在单位元附近总能把足够小的切向量送到群元。
+
+\begin{example}[$SO(2)$ 的指数映射]
+取
+\[
+J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad J^2=-I.
+\]
+把指数级数的偶次幂与奇次幂分开，得到
+\[
+\exp(\theta J)=I\cos\theta+J\sin\theta
+=\begin{pmatrix}\cos\theta&-\sin\theta\\
+\sin\theta&\cos\theta\end{pmatrix}.
+\]
+生成元 $J$ 决定转动开始时的速度，指数映射则把这条局部方向延伸为任意角度的转动；周期性也说明指数映射不是单射。
+\end{example}
+
+\section{Lie 括号来自复合次序}
+
+两个生成元 $X,Y$ 的线性组合仍是切向量，但群乘法还留下一个仅靠向量加法看不见的信息。比较两条小变换的不同次序，Baker--Campbell--Hausdorff 展开给出
+\begin{align*}
+\ee^{tX}\ee^{tY}
+&=\exp\!\left[t(X+Y)+\frac{t^2}{2}[X,Y]+O(t^3)\right],\\
+\ee^{tY}\ee^{tX}
+&=\exp\!\left[t(X+Y)-\frac{t^2}{2}[X,Y]+O(t^3)\right].
+\end{align*}
+这里
+\begin{equation}
+[X,Y]=XY-YX
+\label{eq:matrix-lie-bracket}
+\end{equation}
+正是次序交换后最先出现的差异。矩阵交换子仍满足群的切空间约束；它是双线性、反对称的，并满足 Jacobi 恒等式
+\[
+[X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0.
+\]
+带有这种括号的向量空间称为 Lie 代数。对一般 Lie 群，括号可由左不变向量场的交换子定义；矩阵群的式 \eqnrefs{eq:matrix-lie-bracket} 是最直接的实现。
+
+取一组基 $T_a$，括号可写为
+\begin{equation}
+[T_a,T_b]=f_{ab}{}^{c}T_c.
+\label{eq:structure-constants}
+\end{equation}
+结构常数 $f_{ab}{}^c$ 依赖基的选择，而括号本身不依赖。Jacobi 恒等式变成
+\[
+f_{ab}{}^d f_{dc}{}^e+f_{bc}{}^d f_{da}{}^e+f_{ca}{}^d f_{db}{}^e=0.
+\]
+它保证无穷小复合的结合律与原群的结合律相容。
+
+\begin{derivation}[$SO(3)$ 的交换关系]
+令 $(L_i)_{jk}=-\epsilon_{ijk}$。直接相乘并使用
+$\epsilon_{i\ell m}\epsilon_{jmk}=\delta_{ik}\delta_{\ell j}-\delta_{ij}\delta_{\ell k}$，得到
+\[
+[L_i,L_j]_{\ell k}
+=\epsilon_{ijm}(L_m)_{\ell k}.
+\]
+若改用量子力学中常见的厄米生成元 $J_i=\ii L_i$，同一关系写成
+\[
+[J_i,J_j]=\ii\epsilon_{ijk}J_k.
+\]
+括号中的 $J_k$ 表明绕两个不同轴的微小转动交换次序后，会多出绕第三个轴的微小转动；结构常数在这里就是 Levi--Civita 符号。
+\end{derivation}
+
+\section{平移、伴随表示与 Killing 形式}
+
+切向量最初只位于单位元处。若 $g\in G$，左平移 $L_g(h)=gh$ 把 $T_IG$ 送到 $T_gG$；因此一个 $X\in\mathfrak g$ 决定整个群上的左不变向量场。共轭映射 $C_g(h)=ghg^{-1}$ 保持单位元，对它求微分得到伴随表示
+\begin{equation}
+\operatorname{Ad}_g:T_IG\longrightarrow T_IG.
+\label{eq:group-adjoint}
+\end{equation}
+对矩阵群，$\operatorname{Ad}_gX=gXg^{-1}$。再沿 $g(t)=\ee^{tX}$ 求导，得到 Lie 代数的伴随表示
+\begin{equation}
+\operatorname{ad}_X(Y)=[X,Y].
+\label{eq:algebra-adjoint}
+\end{equation}
+这两个层次不能混淆：$\operatorname{Ad}$ 是群表示，$\operatorname{ad}$ 是其无穷小表示。
+
+伴随表示还给出一个不随基变换改变的双线性型，
+\begin{equation}
+B(X,Y)=\Tr\!\left(\operatorname{ad}_X\operatorname{ad}_Y\right),
+\label{eq:killing-form-lie}
+\end{equation}
+称为 Killing 形式。它满足
+\[
+B([Z,X],Y)+B(X,[Z,Y])=0,
+\]
+所以在伴随作用下不变。半单 Lie 代数的 Killing 形式非退化；下一章会用它在 Cartan 子代数的对偶空间上比较根的长度与夹角。
+
+\section{\texorpdfstring{$SU(2)$：局部代数与全局群并不相同}{SU(2)：局部代数与全局群并不相同}}
+
+取 Pauli 矩阵 $\sigma_i$，并令 $T_i=-\ii\sigma_i/2$。它们反厄米且无迹，满足
+\[
+[T_i,T_j]=\epsilon_{ijk}T_k.
+\]
+任意 $X\in\mathfrak{su}(2)$ 可写成 $X=-\ii\boldsymbol\theta\cdot\boldsymbol\sigma/2$，利用
+$(\hat{\vb n}\cdot\boldsymbol\sigma)^2=I$ 可把指数算到底：
+\begin{equation}
+\exp\!\left(-\frac{\ii\theta}{2}\hat{\vb n}\cdot\boldsymbol\sigma\right)
+=I\cos\frac\theta2-\ii\hat{\vb n}\cdot\boldsymbol\sigma\sin\frac\theta2.
+\label{eq:su2-axis-angle-exp}
+\end{equation}
+当 $\theta=2\pi$ 时结果为 $-I$，到 $4\pi$ 才回到 $I$。$\mathfrak{su}(2)$ 与 $\mathfrak{so}(3)$ 有相同的局部交换关系，却对应不同的全局群；Lie 代数控制单位元附近的结构，不能单独恢复群的拓扑。
+
+本章把连续群压缩到了生成元、交换关系和指数映射。下一步的困难来自高秩代数：生成元不能全部同时对角化，而表示中的态仍需要一组可同时测量的量子数。为此要在代数中选出最大的可交换部分，并研究其余生成元怎样搬运这些共同本征值。

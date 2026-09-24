@@ -1,0 +1,682 @@
+\chapter{点群与 Schoenflies 符号}
+\label{chap:point-space-groups}
+
+\chapref{chap:group-basics}和\chapref{chap:representation-theory}已经完成了两层抽象：\chapref{chap:group-basics}把“可逆操作的复合”整理成群的语言，\chapref{chap:representation-theory}又把抽象群送到线性空间上，使群元能够以矩阵和线性算符的形式参与实际计算。从这一章开始，我们第一次把这套语言系统地放回物理对象中。这里的对象是分子、团簇与晶体；我们不再只问一个群有哪些子群、类和不可约表示，而要问一个更具体的问题：\emph{一个三维物体究竟允许哪些空间对称操作，这些操作为什么只能以某些固定的组合出现？}
+
+点群的任务是判断哪些正交变换把一个有限结构映回自身。先从转轴、镜面、反演中心和反旋转的实际几何动作出发，才能读懂 Schoenflies 符号为何这样组合。晶格平移会带来新的无限群结构，留到下一章再加入。
+
+本章默认三维欧氏空间为 $\mathbb R^3$，内积写作 $\vb r\cdot\vb s$。对一个正交变换 $R$，其矩阵仍记作 $R$；单位矩阵记作 $I_3$。为了避免与正二十面体旋转群 $I$ 混淆，空间反演记作 $\mathcal I$：
+\[
+\mathcal I:\vb r\longmapsto-\vb r,
+\qquad [\mathcal I]=-I_3.
+\]
+点群的命名采用 Schoenflies 符号。正二十面体纯转动群在部分中文文献中记作 $Y$，这里统一采用现代文献中更常见的 $I$；两者指同一个群。
+\section{点群基础：从 \texorpdfstring{$O(3)$}{O(3)} 到有限对称群}
+\label{sec:point-group-foundation}
+
+前两章的群元是抽象的。从这一章开始，我们第一次让群元变成可以画出来的空间操作。设三维空间中一个位置向量写成
+\[
+\vb r=(x,y,z)^{\mathsf T}.
+\]
+一个保持原点不动的刚性对称操作把它变成另一个向量 $\vb r'=R\vb r$。这里 $R$ 是 $3\times3$ 实矩阵；上标 $\mathsf T$ 表示转置。若操作保持任意两点间距离，就必须有
+\[
+|R\vb r|^2=|\vb r|^2\qquad\forall\vb r,
+\]
+从而得到 $R^{\mathsf T}R=I_3$。这就是正交矩阵出现的原因，而不是先规定“点群元素必须是正交矩阵”。
+
+此后经常出现的 $C_n$、$\sigma$、$i$、$S_n$ 也都只是几何操作的简写。$C_n$ 表示绕某条轴转 $2\pi/n$；$\sigma$ 表示镜面反射；$i$ 表示空间反演 $\vb r\mapsto-\vb r$；$S_n$ 表示“先转 $2\pi/n$ 再关于垂直于轴的平面反射”的转动反射。第一次看到这些符号时，先把它们翻译成一句几何动作，再去做群乘法。
+
+
+这里有一个全书必须提前消除的符号冲突：本章 Schoenflies 记号中的 $S_n$ 指\emph{转动反射操作或由它生成的点群}，而\chapref{chap:permutation-group}中的 $S_n$ 指 $n$ 个对象的\emph{对称置换群}。两者没有任何“同一个 $S$”的数学关系，只是历史上恰好用了相同字母。本章若写 $S_4$ 并同时出现旋转轴、镜面等几何语言，指的是四重转动反射；第六章若写 $S_4$ 并讨论 $(12)$、循环和 Young 图，指的是四阶对称群。
+
+同样，$D_n$ 的下标约定在不同数学教材里并不完全统一。本书按物理和 Schoenflies 文献习惯，把含 $n$ 重主轴和 $n$ 条横向二重轴的纯转动群记作 $D_n$，它有 $2n$ 个元素。某些抽象代数教材会把同一个阶为 $2n$ 的二面体群记成 $D_{2n}$。以后遇到外部资料时，应先看作者把 $|D_n|$ 规定成 $2n$ 还是 $n$，不要只凭字母判断。
+
+Schoenflies 符号依赖几何对象，而群论计算处理变换本身，因此先区分两个常被混用的术语。\emph{对称操作}是作为群元的变换；\emph{对称元素}是执行变换所依赖的轴、平面或点。例如绕 $z$ 轴转动 $2\pi/3$ 是对称操作，$z$ 轴则是对称元素。
+
+\begin{definition}[对称操作、对称元素与点群]
+设几何对象 $X\subset\mathbb R^3$。若正交变换 $R\in O(3)$ 使得
+\[
+R X=X,
+\]
+则称 $R$ 为 $X$ 的一个\textbf{对称操作}。执行某一类对称操作时保持不动或作为几何参照的轴、平面或点称为相应的\textbf{对称元素}。
+
+若所有保持 $X$ 不变且保持某一固定点不动的正交变换形成有限群 $G$，则称 $G$ 为 $X$ 的\textbf{点群}。等价地，点群是 $O(3)$ 的有限子群。
+\label{def:point-group}
+\end{definition}
+
+这里把点群定义为 $O(3)$ 的有限子群，等价于把“至少有一个公共固定点”平移到原点。之后所有操作都可写成过原点的线性正交变换，这样几何问题就可以进入矩阵语言。接下来还要区分只含纯转动的群与含有非纯转动操作的群，因为两类点群的分类策略不同。
+
+最直观的例子是立方体。它的纯转动对称操作共有 $24$ 个：绕四条体对角线作 $\pm 2\pi/3$ 转动给出 $8$ 个，绕三条四重轴作 $\pi/2,\pi,3\pi/2$ 转动给出 $9$ 个，绕六条穿过相对棱中点的二重轴作 $\pi$ 转动给出 $6$ 个，再加恒等操作。把空间反演与这 $24$ 个操作相乘，又得到 $24$ 个不保手性的操作，于是完整立方体点群 $O_h$ 有 $48$ 个元素。这个计数不是本章的最终目的，但它提示我们：点群不是任意堆起来的几何操作，而是受到 $O(3)$ 群结构严密约束的有限集合。
+
+在进入矩阵计算之前，先用几个具体分子把“完整点群”的判定方法校准清楚。
+
+抽象定义真正变成课堂上可用的工具，需要练习如何从一个具体结构中找出完整点群。最容易犯的错误有两个：第一，只找到一个显眼的高阶轴就停止；第二，把“某个投影看起来重合”误当成三维物体真的重合。判定对称操作时必须检查\emph{所有}原子或结构点在三维空间中的位置，而不是只看某个二维投影。
+
+以水分子为例，把分子平面取为 $yz$ 平面，氧原子在原点，两条 O--H 键关于 $z$ 轴对称。绕 $z$ 轴转 $\pi$ 会交换两个氢原子，因此有一个 $C_2$；分子平面本身是一个镜面，垂直于分子平面且包含 $z$ 轴的平面也是镜面。于是完整点群为
+\[
+C_{2v}=\{E,C_2,\sigma_v,\sigma_v'\}.
+\]
+这里不存在水平镜面，因为关于垂直主轴的平面反射会把两个氢原子送到并不存在的位置；也不存在反演中心。
+
+再看氨分子 $\mathrm{NH_3}$。三个氢原子构成近似等边三角形，氮原子偏离氢原子平面。穿过氮原子和三角形中心的轴是 $C_3$ 主轴，三个包含主轴与一条 N--H 键的平面都是竖直镜面，因此点群为 $C_{3v}$。这里没有 $\sigma_h$，因为水平反射会把氮原子翻到三角形另一侧。
+
+这个 $C_{3v}$ 正是\chapref{chap:group-basics} 中系统分析过的二面体群 $D_3$ 的物理实现：$C_3$ 主轴对应旋转 $r$，三个 $\sigma_v$ 镜面对应反射 $s,sr,sr^2$。两个群同构 $C_{3v}\cong D_3\cong S_3$，\chapref{chap:group-basics} 中算出的共轭类 $\{e\}$、$\{r,r^2\}$、$\{s,sr,sr^2\}$ 分别对应这里的 $\{E\}$、$\{2C_3\}$、$\{3\sigma_v\}$。后续遇到 $C_{3v}$ 的特征标表、对称性适配线性组合投影、振动模分解时，都可以直接复用 $D_3$ 的全部代数结果。
+
+苯分子则展示了为什么“先找主轴，再检查附加元素”的流程有效。垂直分子平面的轴是 $C_6$；分子平面本身是 $\sigma_h$；平面内还有六条二重轴，并存在多组 $\sigma_v/\sigma_d$ 与反演中心。因此其点群是 $D_{6h}$。如果只看到 $C_6$ 就写成 $C_6$，会丢掉几乎全部真正有用的选择定则。
+
+这些例子并不是为了提前背分子点群，而是为了强调一个方法论：\emph{点群是完整对称操作的集合，识别任务是找全群，而不是找一个代表性操作。} 后面的 Schoenflies 判定树正是把这个搜索过程标准化。
+
+立方体纯转动群 O 中三类典型转轴如图 \figref{fig:cube-axes} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.95]
+  \coordinate (O) at (0,0);
+  \draw[axes] (-3,0)--(3,0) node[right] {$x$};
+  \draw[axes] (0,-2.3)--(0,2.5) node[above] {$z$};
+  \draw[line width=.85pt] (-1.5,-1.2) rectangle (1.5,1.2);
+  \draw[line width=.85pt] (-0.8,-1.8) rectangle (2.2,.6);
+  \draw[line width=.65pt] (-1.5,-1.2)--(-.8,-1.8) (1.5,-1.2)--(2.2,-1.8)
+                         (-1.5,1.2)--(-.8,.6) (1.5,1.2)--(2.2,.6);
+  \draw[lecturearrow] (0,0) -- (0,2.0);
+  \node[lecturelabel] at (1.0,2.05) {$C_4$};
+  \draw[lecturearrow] (0,0) -- (1.75,1.55);
+  \node[lecturelabel] at (2.35,1.55) {$C_3$};
+  \draw[lecturearrow] (0,0) -- (-2.1,.85);
+  \node[lecturelabel] at (-2.5,1.3) {$C_2$};
+\end{tikzfig}
+\caption{立方体纯转动群 $O$ 中三类典型转轴。四重轴、三重轴与二重轴分别穿过面心、顶点和相对棱中点。}
+\label{fig:cube-axes}
+\end{figure}
+
+为什么所有点群都自然地嵌在 $O(3)$ 中？因为空间中的刚性对称操作必须保持长度和夹角，而长度与夹角都由内积决定。于是最一般的线性刚性变换就是保内积变换。
+
+\begin{definition}[三维正交群与特殊正交群]
+三维实正交群定义为
+\[
+O(3)=\{R\in \operatorname{GL}(3,\mathbb R)\mid R^{\mathsf T}R=I_3\}.
+\]
+其行列式为 $+1$ 的子群
+\[
+SO(3)=\{R\in O(3)\mid \det R=1\}
+\]
+称为三维特殊正交群或转动群。
+\label{def:o3-so3}
+\end{definition}
+
+由 $R^{\mathsf T}R=I_3$ 立刻得到
+\[
+1=\det(R^{\mathsf T}R)=(\det R)^2,
+\]
+因此 $O(3)$ 中每个元素的行列式只能是 $\pm1$。这个简单的二值量已经把全部正交变换分成两类：$\det R=+1$ 的变换保手性，$\det R=-1$ 的变换反手性。更重要的是，行列式本身构成群同态
+\[
+\det:O(3)\longrightarrow\{+1,-1\}\simeq C_2,
+\]
+其核恰好是 $SO(3)$。于是\chapref{chap:group-basics}的同态核定理立即给出
+\[
+SO(3)\mathrel{\trianglelefteq} O(3),
+\qquad
+O(3)/SO(3)\simeq C_2.
+\]
+这说明“保手性/反手性”不是几何上的偶然分类，而是一个标准的商群结构。
+
+\begin{proposition}[$O(3)$ 的直积分解]
+空间反演 $\mathcal I=-I_3$ 与 $O(3)$ 中所有元素交换，且 $\det\mathcal I=-1$。因此
+\[
+O(3)=SO(3)\times\{E,\mathcal I\}.
+\]
+换言之，每个反手性的正交变换都可以唯一写成
+\[
+\mathcal I R,
+\qquad R\in SO(3).
+\]
+\label{prop:o3-direct-product}
+
+\end{proposition}
+
+\begin{proof}
+任取 $Q\in O(3)$。若 $\det Q=1$，则 $Q\in SO(3)$；若 $\det Q=-1$，则
+\[
+\det(\mathcal I Q)=(-1)^3\det Q=1,
+\]
+故 $R=\mathcal I Q\in SO(3)$，于是 $Q=\mathcal I R$。又因为 $\mathcal I$ 是标量矩阵 $-I_3$，与任意 $R$ 交换，并且 $SO(3)\cap\{E,\mathcal I\}=\{E\}$，故得到内直积。
+\end{proof}
+
+这一定理对点群分类非常关键。它告诉我们：所有不保手性的点群操作都可以理解为“一个纯转动再乘一个空间反演”。因此只要先理解 $SO(3)$ 的有限子群，第二类点群的构造就有了统一母体。
+
+有了 $O(3)$ 和 $SO(3)$ 的定义，下一个基本事实是：$SO(3)$ 的每个元素都是绕某轴的转动。证明将由特征值 $1$ 找到不动轴，并由垂直平面上的二维正交作用定义转角，这也建立了后续反复使用的轴角参数化。
+
+在三维空间里，$SO(3)$ 的元素并不是抽象的三阶正交矩阵，它们都有明确的几何意义：总能找到一条固定轴。这是点群中“旋转轴”概念的数学来源。
+
+\begin{theorem}[三维转动轴定理]
+对任意 $R\in SO(3)$，存在单位向量 $\uv n\in\mathbb R^3$ 使
+\[
+R\uv n=\uv n.
+\]
+因此 $R$ 必为绕轴 $\mathbb R\uv n$ 的某个转动。
+\label{thm:rotation-axis}
+
+\end{theorem}
+
+\begin{proof}
+由于 $R$ 为实正交矩阵，$R^{-1}=R^{\mathsf T}$。考虑
+\[
+\det(R-I_3).
+\]
+利用转置不改行列式，
+\[
+\det(R-I_3)
+=\det(R^{\mathsf T}-I_3)
+=\det(R^{-1}-I_3).
+\]
+而
+\[
+R^{-1}-I_3
+=R^{-1}(I_3-R)
+=-R^{-1}(R-I_3),
+\]
+故
+\[
+\det(R^{-1}-I_3)
+=\det(-I_3)\det(R^{-1})\det(R-I_3)
+=-\det(R-I_3),
+\]
+其中用到了 $\det R=1$。于是
+\[
+\det(R-I_3)=-\det(R-I_3),
+\]
+只能有 $\det(R-I_3)=0$。因此 $R-I_3$ 有非零核。任取非零核向量并归一化，便得到单位向量 $\uv n$，满足 $R\uv n=\uv n$。
+\end{proof}
+
+这个证明可以用本征值一步步看清。实正交矩阵 $R$ 的所有复本征值都满足 $|\lambda|=1$，而实系数特征多项式的非实根成共轭对。三维只有三个本征值，所以至少有一个本征值是实数；单位圆上的实数只有 $+1$ 与 $-1$。又因为三个本征值的乘积是 $\det R=+1$，如果那个实本征值是 $-1$，剩余一对共轭本征值的乘积为 $1$，总乘积就会是 $-1$，矛盾。因此必有本征值 $+1$。
+
+取对应单位本征向量 $\uv n$，有 $R\uv n=\uv n$，所以这条方向在转动下保持不动，就是转轴。与 $\uv n$ 垂直的二维平面也被 $R$ 保持，在这个平面上 $R$ 是一个二维行列式为 $+1$ 的正交变换，只能是普通平面转动。于是任意三维纯转动都由“轴 + 角”完全描述。
+
+
+取该单位向量 $\uv n$ 作为新坐标系的 $z'$ 轴，再在其正交平面中取正交单位向量 $\vb e_1',\vb e_2'$，则在基 $\mathcal B'=(\vb e_1',\vb e_2',\uv n)$ 下，转动矩阵必为
+\[
+R_{\uv n}(\theta)\big|_{\mathcal B'}=
+\begin{pmatrix}
+\cos\theta&-\sin\theta&0\\
+\sin\theta&\cos\theta&0\\
+0&0&1
+\end{pmatrix}.
+\]
+若 $Q$ 的列向量就是这组三个新基在旧基下的坐标，则在旧基中
+\[
+R_{\uv n}(\theta)=Q
+\begin{pmatrix}
+\cos\theta&-\sin\theta&0\\
+\sin\theta&\cos\theta&0\\
+0&0&1
+\end{pmatrix}
+Q^{-1}.
+\label{eq:axis-angle-similarity}
+\]
+这立即给出一个后面反复使用的结论：
+\[
+\tr R_{\uv n}(\theta)=1+2\cos\theta.
+\label{eq:rotation-trace}
+\]
+迹与轴的方向无关，只取决于转角。也正因为如此，特征标表中三维矢量表示的特征标往往可以直接从转角读出。
+
+若 $S\in SO(3)$，则
+\[
+S R_{\uv n}(\theta)S^{-1}=R_{S\uv n}(\theta).
+\label{eq:rotation-conjugation}
+\]
+也就是说，共轭变换只把转轴转到新的方向，不改变转角。因此在整个 $SO(3)$ 中，具有相同转角的转动彼此共轭；但在一个有限点群中，只有当群里真的存在把两条轴联系起来的元素时，这两个转动才在该点群中共轭。这个区别会直接决定点群的类结构和特征标表。
+
+\eqnrefs{eq:axis-angle-similarity} 已经说明任意轴转动都与标准 $z$ 轴转动相似，但实际计算时更方便直接用轴的单位向量 $\uv n$ 写出矩阵。把任意向量分解成平行与垂直两部分，
+\[
+\vb r=(\uv n\cdot\vb r)\uv n+
+\bigl[\vb r-(\uv n\cdot\vb r)\uv n\bigr].
+\]
+平行分量不变；垂直平面内的分量按二维转动旋转 $\theta$。由此得到 Rodrigues 公式
+\[
+R_{\uv n}(\theta)\vb r
+=\vb r\cos\theta
++(\uv n\times\vb r)\sin\theta
++\uv n(\uv n\cdot\vb r)(1-\cos\theta).
+\label{eq:rodrigues-vector}
+\]
+若定义反对称矩阵 $[\uv n]_\times$ 使
+\[
+[\uv n]_\times\vb r=\uv n\times\vb r,
+\]
+则
+\[
+R_{\uv n}(\theta)
+=I_3\cos\theta
++(1-\cos\theta)\uv n\uv n^{\mathsf T}
++[\uv n]_\times\sin\theta.
+\label{eq:rodrigues-matrix}
+\]
+这两个公式在后面构造具体点群的三维矢量表示时非常实用。它们还使几个性质一眼可见：$R_{\uv n}(\theta)\uv n=\uv n$；$R^{\mathsf T}R=I$；$\det R=1$；以及 $\tr R=1+2\cos\theta$。
+
+\begin{example}[绕 $\lbrack 111\rbrack$ 轴转 $2\pi/3$]
+立方体的一条三重轴沿
+\[
+\uv n=\frac1{\sqrt3}(1,1,1).
+\]
+把 $\theta=2\pi/3$ 代入 Rodrigues 公式可得
+\[
+R_{[111]}(2\pi/3)
+=\begin{pmatrix}
+0&0&1\\
+1&0&0\\
+0&1&0
+\end{pmatrix}.
+\]
+因此
+\[
+(x,y,z)\longmapsto(z,x,y),
+\]
+它正好把立方体的三个坐标轴循环置换。这说明几何上“绕体对角线转 $120^\circ$”与代数上“三个坐标方向的循环置换”是同一个群元的两种表述。
+\end{example}
+
+纯转动的几何结构清楚以后，还要把几个最常用的不保手性操作放回同一套语言中。
+
+
+根据 \Cref{prop:o3-direct-product}，所有 $\det=-1$ 的正交操作都可以写成 $\mathcal I R_{\uv n}(\theta)$。其中几个特殊角度对应实验文献里最熟悉的对称元素。
+
+当 $\theta=0$ 时，得到纯反演 $\mathcal I$。当 $\theta=\pi$ 时，$\mathcal I R_{\uv n}(\pi)$ 等价于关于垂直于 $\uv n$ 的平面反射，通常记作 $\sigma_h$。一般的 $\mathcal I R_{\uv n}(\theta)$ 称为\textbf{转动反演}。在化学文献和 Schoenflies 命名中还经常使用\textbf{转动反射} $S_n$：先绕轴转动 $2\pi/n$，再关于垂直于该轴的平面反射。转动反演与转动反射只是同一类不保手性操作的不同参数化，并不是两种独立的基本结构。
+
+转动反射 $S_n$ 的几何构造（先转后反射）如图 \figref{fig:improper-rotation} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.95]
+  \draw[axes] (-3,0)--(3,0) node[right] {$x$};
+  \draw[axes] (0,-2.5)--(0,2.6) node[above] {$z$};
+  \draw[dashed,line width=.7pt] (-2.6,-.7)--(2.6,-.7) node[right,lecturelabel] {$\sigma_h$};
+  \coordinate (p) at (1.6,1.4);
+  \fill (p) circle (1.5pt) node[above right,lecturelabel] {$\vb r$};
+  \draw[lecturearrow] (p) arc[start angle=41,end angle=130,radius=2.13];
+  \coordinate (q) at (-1.37,1.63);
+  \fill (q) circle (1.5pt) node[above left,lecturelabel] {$R_{\uv n}(\theta)\vb r$};
+  \coordinate (qr) at (-1.37,-3.03);
+  \draw[lecturearrow] (q)--(qr);
+  \fill (qr) circle (1.5pt) node[below left,lecturelabel] {$S_n\vb r$};
+  \node[lecturelabel] at (1.8,.45) {rotate};
+  \node[lecturelabel] at (-2.0,-0.38) {reflect};
+\end{tikzfig}
+\caption{转动反射 $S_n$ 的几何意义：先绕主轴转动，再关于垂直于主轴的镜面反射。}
+\label{fig:improper-rotation}
+\end{figure}
+
+到这里，点群的母体已经清楚：所有群元都来自 $O(3)$，纯转动来自 $SO(3)$，不保手性的操作则来自 $\mathcal I SO(3)$。接下来真正困难的问题不再是“操作有哪些”，而是“有限性要求允许哪些组合”。这正是第一类点群分类要解决的问题。
+
+这里补充一组最常用的 Schoenflies 符号读法。$C_n$ 中的字母 $C$ 表示 cyclic，说明只有一条主 $n$ 重轴及其幂；$D_n$ 中的 $D$ 来自 dihedral，除了主 $C_n$ 轴，还含有 $n$ 条与主轴垂直的二重轴。下标 $h$ 表示存在与主轴垂直的水平镜面，$v$ 表示存在包含主轴的竖直镜面，$d$ 表示存在对角对角镜面。$T,O,I$ 分别与正四面体、正八面体/立方体、正二十面体/十二面体的纯转动群相关。
+
+这些字母不是用来替代几何理解的。看到 $C_{4v}$ 时，应该先把它读成：“有一条四重主轴，并有竖直镜面”；看到 $D_{3h}$ 时，应读成：“有一条三重主轴、三条水平二重轴，并有水平镜面”。只有能把符号翻译回几何操作，后面的乘法和特征标表才有意义。
+
+\section{第一类点群：有限旋转群的分类}
+\label{sec:proper-point-groups}
+
+第一类点群是 $SO(3)$ 的有限子群，只含纯转动。直接凭空间想象枚举所有可能的多面体很容易漏掉情况；更可靠的方法是把\chapref{chap:group-basics}的群作用与轨道--稳定子定理应用到单位球面上。球面极点与其轨道会把几何分类问题转化成一个严格的计数方程。
+
+要把这个思路严格化，需要引入极点与稳定子的语言，将几何分类问题转化为一个计数方程。
+
+要分类所有有限旋转群，直接把可能的转轴一个个猜出来会非常困难。更有效的方法是只统计“具有非平凡稳定子的球面点”。如果某个非单位转动固定一条轴，那么单位球面上这条轴的两个端点会被固定；我们把这些特殊点称为极点。群会把极点变到极点，因此全部极点自动分成若干轨道。
+
+这里会同时用到两个计数方式。第一种按群元数：一个 $n$ 重轴上除单位元外有 $n-1$ 个非平凡转动，而每个转动对应一条轴的两个端点。第二种按极点轨道数：若某极点的稳定子阶为 $n_i$，轨道--稳定子定理告诉我们这一轨道有 $|G|/n_i$ 个点。把同一批“极点--非单位稳定操作”分别按这两种方式计数，就会得到限制所有有限旋转群的核心方程。这个证明本质上就是一个双重计数，不需要预先知道正多面体。设 $G\leqslant SO(3)$ 为有限群，阶为 $N=|G|$。每个非恒等转动都有唯一旋转轴，该轴与单位球面 $S^2$ 交于一对对跖点；这两个点称为该转动的\textbf{极点}。取所有非恒等群元的极点并集，得到有限集合 $P\subset S^2$，群 $G$ 自然作用在 $P$ 上。
+
+对极点 $p\in P$，其稳定子
+\[
+G_p=\{g\in G\mid gp=p\}
+\]
+恰好由绕轴 $\mathbb Rp$ 的全部群内转动组成，因此是循环群。记
+\[
+n_p=|G_p|\ge2.
+\]
+在同一轨道上的极点稳定子共轭，故阶数相同。假设 $P$ 被分成 $r$ 个轨道，选择代表元 $p_i$，并记
+\[
+n_i=|G_{p_i}|.
+\]
+轨道--稳定子定理给出
+\[
+|G\cdot p_i|=\frac{N}{n_i}.
+\]
+
+现在做一次双重计数。考虑所有二元组
+\[
+(g,p),\qquad g\neq e,\quad gp=p.
+\]
+从群元一侧计数：每个非恒等三维转动恰好固定两个极点，因此总数是
+\[
+2(N-1).
+\]
+从极点轨道一侧计数：第 $i$ 个轨道有 $N/n_i$ 个点，每个点被稳定子中的 $n_i-1$ 个非恒等元素固定，因此总数为
+\[
+\sum_{i=1}^r \frac{N}{n_i}(n_i-1).
+\]
+令两种计数相等，得到有限旋转群分类的核心方程。
+
+\begin{theorem}[有限旋转群的基本方程]
+设 $G\leqslant SO(3)$ 为非平凡有限群，$|G|=N$。若所有非恒等旋转轴的极点在 $S^2$ 上分成 $r$ 个 $G$-轨道，代表点稳定子阶数为 $n_1,\dots,n_r$，则
+\[
+2(N-1)=N\sum_{i=1}^r\left(1-\frac1{n_i}\right),
+\label{eq:finite-rotation-counting}
+\]
+等价地，
+\[
+\sum_{i=1}^r\frac1{n_i}=r-2+\frac2N.
+\label{eq:finite-rotation-master}
+\]
+并且必有 $r=2$ 或 $r=3$。
+\label{thm:finite-rotation-master}
+
+\end{theorem}
+
+\begin{proof}
+前两式已经由上述双重计数得到。现在证明 $r$ 的可能值。因为 $n_i\ge2$，故
+\[
+\sum_{i=1}^r\frac1{n_i}\le \frac r2.
+\]
+与 \eqnrefs{eq:finite-rotation-master} 合并，得到
+\[
+r-2+\frac2N\le\frac r2,
+\]
+从而 $r<4$。另一方面 $r=1$ 不可能，因为 \eqnrefs{eq:finite-rotation-master} 的右边为 $-1+2/N\le0$，左边严格为正。故只能有 $r=2$ 或 $3$。
+\end{proof}
+
+把双重计数写得更具体。设所有特殊极点轨道编号为 $i=1,\dots,r$，第 $i$ 类极点的稳定子阶为 $n_i$。由轨道--稳定子定理，第 $i$ 个轨道有 $|G|/n_i$ 个极点。每个这样的极点被稳定子中的 $n_i-1$ 个非单位转动固定，因此按“极点”来数配对
+\[
+(p,g),\qquad g\neq e,\quad g\cdot p=p,
+\]
+总数是
+\[
+\sum_{i=1}^r \frac{|G|}{n_i}(n_i-1)
+=|G|\sum_{i=1}^r\left(1-\frac1{n_i}\right).
+\]
+另一方面，每个非单位三维转动恰有一条转轴，因此在单位球面上固定两个极点，所以按“群元”数同一批配对得到 $2(|G|-1)$。两种计数相等，就有
+\[
+2(|G|-1)=|G|\sum_i\left(1-\frac1{n_i}\right).
+\]
+除以 $|G|$ 后才得到基本方程。这个推导中没有用任何正多面体知识，因而它真正限制了所有有限旋转群。
+
+
+这个方程的威力在于，它把一个三维几何分类问题压缩成几个正整数的丢番图方程。接下来的分类不再依赖“想到哪些多面体”，而是从方程的全部整数解出发，再把每个解解释成几何对象。
+
+若 $r=2$，则
+\[
+\frac1{n_1}+\frac1{n_2}=\frac2N.
+\]
+由于每个 $n_i\le N$，左边至少是 $2/N$，要取等号只能有
+\[
+n_1=n_2=N.
+\]
+两个轨道各只有一个极点，它们是一条共同 $N$ 重轴的两个方向。于是得到循环群 $C_N$。
+
+若 $r=3$，把 $n_1\le n_2\le n_3$ 排序，则
+\[
+\frac1{n_1}+\frac1{n_2}+\frac1{n_3}=1+\frac2N>1.
+\]
+因此 $n_1=2$。若 $n_2=2$，则
+\[
+\frac1{n_3}=\frac2N,
+\qquad N=2n_3.
+\]
+这给出二面体旋转群 $D_{n_3}$：一条 $n_3$ 重主轴，加上 $n_3$ 条与其垂直的二重轴，群阶为 $2n_3$。
+
+\medskip
+\noindent\emph{$D_n$ 为什么有 $n$ 条水平二重轴。}
+基本方程只告诉我们稳定子阶数为 $(2,2,n)$，但几何图像还需要补出来。取 $n$ 重主轴为 $z$ 轴，再取其中一条水平二重轴为 $x$ 轴。主轴生成元 $C_n$ 会把 $x$ 轴依次转到
+\[
+C_n^k x,
+\qquad k=0,1,\dots,n-1,
+\]
+于是得到 $n$ 条等角分布的水平二重轴。它们并不是额外假设出来的，而是同一条二重轴在主轴循环子群作用下的轨道。
+\par\medskip
+
+循环群和二面体群只有一条主轴。要获得更丰富的有限旋转群，必须允许多条不同方向的旋转轴同时存在——这就是正多面体旋转群。
+
+剩下的情况是 $r=3$ 且 $n_2\ge3$。因为 $n_1=2$，有
+\[
+\frac1{n_2}+\frac1{n_3}=\frac12+\frac2N>\frac12.
+\]
+于是 $n_2$ 只能是 $3$。再由
+\[
+\frac13+\frac1{n_3}>\frac12
+\]
+可知 $n_3<6$，所以只剩 $n_3=3,4,5$。代回基本方程得到
+\[
+(2,3,3;N=12),\qquad
+(2,3,4;N=24),\qquad
+(2,3,5;N=60).
+\]
+它们分别对应正四面体、立方体/正八面体、正二十面体/正十二面体的纯转动群。
+
+\begin{theorem}[有限子群 $SO(3)$ 的分类]
+任意非平凡有限旋转群 $G\leqslant SO(3)$ 必且只可能属于以下五族之一：
+\[
+C_n,\qquad D_n,\qquad T,\qquad O,\qquad I.
+\]
+其中
+\[
+|C_n|=n,
+\quad |D_n|=2n,
+\quad |T|=12,
+\quad |O|=24,
+\quad |I|=60.
+\]
+对应的极点稳定子阶数组分别是
+\[
+(n,n),\qquad(2,2,n),\qquad(2,3,3),\qquad(2,3,4),\qquad(2,3,5).
+\]
+\label{thm:finite-so3-classification}
+
+\end{theorem}
+
+\begin{proof}
+由 \Cref{thm:finite-rotation-master} 已经穷尽了基本方程的全部整数解，因此代数上没有其他可能。对每一组解，均存在相应几何实现：$C_n$ 与 $D_n$ 由轴系直接构造；$(2,3,3)$、$(2,3,4)$、$(2,3,5)$ 分别由正四面体、立方体（或其对偶正八面体）、正二十面体（或其对偶正十二面体）的旋转对称性实现。故分类完备。
+\end{proof}
+
+分类的整数约束来自
+\[
+\sum_{i=1}^{r}\frac1{n_i}=r-2+\frac2{|G|},\qquad n_i\ge2.
+\]
+左边至多为 $r/2$，右边严格大于 $r-2$。因此若 $r\ge4$，就会要求 $r/2>r-2$，只在 $r<4$ 时可能，故 $r$ 只能是 $2$ 或 $3$。
+
+若 $r=2$，方程对应一个主轴的两类极点，得到循环群 $C_n$。若 $r=3$，把 $n_1\le n_2\le n_3$。因为三项倒数和大于 $1$，必须 $n_1=2$；若 $n_2\ge4$，则总和不超过 $1/2+1/4+1/4=1$，不行，所以 $n_2=2$ 或 $3$。$n_2=2$ 给 $(2,2,n)$，即二面体旋转群 $D_n$；$n_2=3$ 时再要求
+\[
+\frac12+\frac13+\frac1{n_3}>1,
+\]
+所以 $n_3=3,4,5$，分别给 $T,O,I$。这就是五族分类穷尽的算术核心。
+
+
+第一类点群的分类树如图 \figref{fig:proper-point-group-classification} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.84]
+  \node[lecturebox] (C) at (-7.2,0) {$C_n$\\一条 $n$ 重轴};
+  \node[lecturebox] (D) at (-3.6,0) {$D_n$\\$n$ 重轴+$n$ 条 $C_2$};
+  \node[lecturebox] (T) at (0,0) {$T$\\tetrahedral};
+  \node[lecturebox] (O) at (3.6,0) {$O$\\octahedral};
+  \node[lecturebox] (I) at (7.2,0) {$I$\\icosahedral};
+  \node[lecturelabel] at (-7.2,-1.5) {$(n,n)$};
+  \node[lecturelabel] at (-3.6,-1.5) {$(2,2,n)$};
+  \node[lecturelabel] at (0,-1.5) {$(2,3,3)$};
+  \node[lecturelabel] at (3.6,-1.5) {$(2,3,4)$};
+  \node[lecturelabel] at (7.2,-1.5) {$(2,3,5)$};
+\end{tikzfig}
+\caption{有限旋转群的五种可能。分类来自基本方程的全部整数解，而不是经验枚举。}
+\label{fig:proper-point-group-classification}
+\end{figure}
+
+这个分类还有一个后面表示论非常有用的副产品：每种群的共轭类都可以通过“转角相同且转轴能否被群元联系起来”判断。比如 $O$ 中绕四重轴转 $\pi$ 与绕二重轴转 $\pi$ 虽然转角相同，但两类轴在群作用下不是同一轨道，因此它们属于不同共轭类。这一点会直接反映在 $O$ 与 $O_h$ 的特征标表中。
+
+前面的分类方程给出了五个代数可能性。为了把这些解与真正的三维几何对应起来，可以把各类旋转轴、轴数与群阶并排比较。
+
+基本方程给出了抽象分类，但要在后续特征标表中真正使用，还应当知道每类轴各有多少条。这个信息可以由轨道大小直接读出。对稳定子阶为 $n_i$ 的极点轨道，极点数为 $N/n_i$；若一条无向轴的两个极点属于同一轨道，则轴数为极点数的一半。对正多面体群，相对极点都能由群中转动联系，因此得到下表。
+
+\begin{table}[htbp]
+\centering
+\caption{三个正多面体旋转群的轴结构}
+\label{tab:polyhedral-axis-count}
+\begin{tabular}{c|c|c|c|c}
+\toprule
+群 & 阶 $N$ & 二重轴 & 三重轴 & 更高阶轴 \\
+\midrule
+$T$ & $12$ & $3$ & $4$ & -- \\
+$O$ & $24$ & $6$ & $4$ & $3$ 条四重轴 \\
+$I$ & $60$ & $15$ & $10$ & $6$ 条五重轴 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+以 $O$ 为例，$(2,3,4)$ 三类极点轨道大小分别为
+\[
+\frac{24}{2}=12,
+\qquad
+\frac{24}{3}=8,
+\qquad
+\frac{24}{4}=6.
+\]
+因此分别对应 $6$ 条二重轴、$4$ 条三重轴和 $3$ 条四重轴。这个计数比对着立方体逐条找轴更可靠，而且立刻解释了为什么立方体与正八面体拥有同一个旋转群：两者互为对偶，多面体顶点与面中心互换，但同一组空间转轴并没有改变。
+
+对 $T$ 也类似。四条三重轴穿过正四面体的四个顶点与对面中心，三条二重轴穿过三对相对棱的中点。对 $I$，六条五重轴、十条三重轴和十五条二重轴分别对应正二十面体的顶点、面中心和棱中点方向。以后看到 $T/O/I$ 的类结构时，应该先在脑中恢复这些轴轨道，而不是把类大小当成无来源的数字。
+
+分类得到群以后，下一步自然是理解其共轭类，因为\chapref{chap:point-space-groups}后半的特征标表正以共轭类为列。
+
+\eqnrefs{eq:rotation-conjugation} 告诉我们，共轭操作会把转轴按群元素搬运。因此在一个有限旋转群里，同一类的转动必须具有相同转角，而且它们的转轴属于同一个 $G$-轨道。反过来，如果两条轴能被群元联系起来，相同转角的转动就互相共轭。
+
+这条原则可以快速分析 $D_n$。绕主轴的 $C_n^k$ 与 $C_n^{-k}$ 通过任意一条横向 $C_2$ 轴共轭，所以它们成对进入同一类。横向二重轴在 $n$ 为奇数时全部属于一个轨道；在 $n$ 为偶数时则分成两类相间的轴轨道。因此
+\[
+\#\operatorname{Cl}(D_n)=
+\begin{cases}
+(n+3)/2,&n\ \text{odd},\\
+n/2+3,&n\ \text{even}.
+\end{cases}
+\]
+这恰好与后面 $D_n$ 不可约表示个数一致。也就是说，“为什么偶数阶二面体群多出两个一维表示”在几何上已经可以从横向二重轴分裂成两个共轭类看出来。
+
+\section{第二类点群与 Schoenflies 符号}
+\label{sec:improper-point-groups}
+
+
+上一节只允许 $\det R=+1$ 的纯转动。真实分子和晶体还可能有镜面、反演或转动反射，这些操作的矩阵满足 $\det R=-1$，会改变空间取向的手性。一个含有这类操作的有限点群可以先取出其中全部纯转动，形成
+\[
+G^+=G\cap SO(3).
+\]
+因为行列式满足 $\det(RS)=\det R\det S$，映射 $\det:G\to\{+1,-1\}$ 是群同态；只要群里确实存在一个 $\det=-1$ 的元素，它的核 $G^+$ 就是指数为 $2$ 的正规子群。于是第二类点群并不是完全从头分类，而是在第一类旋转群上加入一个反转取向的陪集。这一步把看似繁杂的 Schoenflies 列表与第一章的正规子群、陪集直接连了起来。
+
+第一类点群已经完全分类。现在加入 $\det=-1$ 的操作。最自然的组织方式不是重新从零枚举，而是利用行列式同态。设 $G\leqslant O(3)$ 为有限点群，并定义
+\[
+K=G\cap SO(3).
+\]
+若 $G$ 只含纯转动，则 $G=K$，已经属于上一节。若存在不保手性的元素，则 $K$ 是 $G$ 的指数二正规子群，$|G|=2|K|$。这就把第二类点群的问题变成：\emph{如何在一个有限旋转群 $K$ 上添加一个不保手性的陪集？}
+
+\begin{proposition}[点群的纯转动部分]
+设 $G\leqslant O(3)$ 为有限点群，$K=G\cap SO(3)$。则 $K\mathrel{\trianglelefteq} G$。若 $G\neq K$，则
+\[
+G=K\sqcup qK,
+\qquad \det q=-1,
+\]
+且 $G/K\simeq C_2$。
+\label{prop:proper-subgroup-index-two}
+
+\end{proposition}
+
+\begin{proof}
+把行列式同态限制到 $G$：
+\[
+\det|_G:G\to\{\pm1\}.
+\]
+其核正是 $K$。若 $G$ 中有 $\det=-1$ 的元素，则该同态满射。由第一同构定理，$G/K\simeq C_2$，于是 $K$ 的指数为 $2$，并且任取 $q\notin K$ 都有 $G=K\sqcup qK$。
+\end{proof}
+
+若空间反演 $\mathcal I\in G$，情况最简单。因为 $\mathcal I$ 与所有正交变换交换，得到
+\[
+G=K\times C_i,
+\qquad C_i=\{E,\mathcal I\}.
+\]
+这种直积分解只适用于确实含反演中心的点群。例如 $C_{2h},C_{4h},C_{6h}$、$D_{2h},D_{4h},D_{6h}$ 以及 $T_h,O_h,I_h$ 都属于这一情形；但 $C_{3h}$、$D_{3h}$ 等虽然带水平镜面，却不含反演，不能写成 $K\times C_i$。若 $\mathcal I\notin G$，不保手性的陪集仍然存在，但不能把 $\mathcal I$ 单独抽出来；这时会出现镜面、转动反射以及 $T_d,D_{nd}$ 等结构。
+
+有了中心对称群的直积分解，现在按 Schoenflies 符号系统梳理轴向点群 $C$、$D$ 与 $S$ 三个系列。
+
+Schoenflies 符号最容易从“主轴+附加对称元素”来理解。先选最高阶旋转轴为主轴，约定其方向为竖直方向。然后再看是否存在水平镜面 $\sigma_h$、包含主轴的竖直镜面 $\sigma_v$、或者平分相邻水平二重轴夹角的对角镜面 $\sigma_d$。
+
+\begin{definition}[常见轴向 Schoenflies 点群]
+以下记号按其生成对称元素定义：
+\begin{align*}
+C_n &: \text{仅含一条 $n$ 重主轴};\\
+C_{nv} &: C_n \text{ 加入包含主轴的竖直镜面};\\
+C_{nh} &: C_n \text{ 加入垂直主轴的水平镜面};\\
+D_n &: C_n \text{ 加入 $n$ 条垂直主轴的二重轴};\\
+D_{nh} &: D_n \text{ 再加入水平镜面};\\
+D_{nd} &: D_n \text{ 再加入 $n$ 个对角镜面};\\
+S_{2n} &: \text{由一个 $2n$ 重转动反射生成的循环型点群}.
+\end{align*}
+低阶特殊情形包括 $C_1$、$C_s$ 与 $C_i$。
+\label{def:schoenflies-axial}
+\end{definition}
+
+这里 $v,h,d$ 不是额外的群论操作名称，而是镜面相对主轴的几何位置。尤其 $\sigma_d$ 仍然是竖直镜面，只是它还平分两条相邻水平 $C_2$ 轴的夹角。很多初学者第一次看 $D_{nd}$ 时会误以为 $d$ 表示另一种反射；实际上它只是在几何上进一步限定了镜面的位置。
+
+$\sigma_h$、$\sigma_v$ 与 $\sigma_d$ 镜面的取向如图 \figref{fig:sigma-hvd} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=0.92]
+  \draw[axes] (0,-2.5)--(0,2.8) node[above] {principal axis $C_n$};
+  \draw[line width=.7pt,fill=gray!8] (-3,-.45)--(3,-.45)--(2.3,.45)--(-2.3,.45)--cycle;
+  \node[lecturelabel] at (2.4,.8) {$\sigma_h$};
+  \draw[line width=.7pt,fill=blue!4,fill opacity=.6] (-.45,-2.2)--(.45,-2.2)--(.45,2.2)--(-.45,2.2)--cycle;
+  \node[lecturelabel] at (.95,1.75) {$\sigma_v$};
+  \draw[line width=.75pt,dashed] (-2.2,-1.5)--(2.2,1.5);
+  \node[lecturelabel] at (2.75,1.75) {$\sigma_d$};
+\end{tikzfig}
+\caption{Schoenflies 记号中的三类镜面。$\sigma_v$ 与 $\sigma_d$ 都包含主轴，区别在于 $\sigma_d$ 平分相邻横向二重轴的夹角。}
+\label{fig:sigma-hvd}
+\end{figure}
+
+轴向点群只含一条主轴。立方和正四面体对称性引入多条等价高阶轴，产生多面体点群。
+
+对正多面体的纯转动群 $T,O,I$，加入不保手性的操作后得到的常用群是
+\[
+T_d,\quad T_h,\quad O_h,\quad I_h.
+\]
+其中 $T_d$ 是正四面体的完整点群，阶为 $24$；$T_h=T\times C_i$；$O_h=O\times C_i$，阶为 $48$；$I_h=I\times C_i$，阶为 $120$。这些群的名字并不是新的“第六类、第七类”有限旋转群，而是上一节五种纯转动群在 $O(3)$ 中加入不保手性陪集后的扩展。
+
+把这些家族组织起来，比逐项死记具体元素更重要。\figref{fig:schoenflies-family-tree} 给出一个适合实际识别的逻辑树：先找最高阶轴，再看是否有与之垂直的 $C_2$ 轴，最后检查镜面、反演或转动反射。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[node distance=12mm and 17mm]
+  \node[lecturebox] (start) {highest-order axis};
+  \node[lecturebox,below left=of start,xshift=-16mm] (cyc) {no perpendicular $C_2$};
+  \node[lecturebox,below right=of start,xshift=16mm] (dih) {perpendicular $C_2$ axes};
+  \node[lecturebox,below=of cyc,xshift=-18mm] (cn) {$C_n$};
+  \node[lecturebox,below=of cyc] (cnv) {$C_{nv}$};
+  \node[lecturebox,below=of cyc,xshift=18mm] (cnh) {$C_{nh}$/$S_{2n}$};
+  \node[lecturebox,below=of dih,xshift=-12mm] (dn) {$D_n$};
+  \node[lecturebox,below=of dih,xshift=12mm] (dnh) {$D_{nh}$/$D_{nd}$};
+  \draw[lecturearrow] (start)--(cyc);
+  \draw[lecturearrow] (start)--(dih);
+  \draw[lecturearrow] (cyc)--(cn);
+  \draw[lecturearrow] (cyc)--(cnv);
+  \draw[lecturearrow] (cyc)--(cnh);
+  \draw[lecturearrow] (dih)--(dn);
+  \draw[lecturearrow] (dih)--(dnh);
+\end{tikzfig}
+\caption{轴向点群的识别逻辑。真正的判断顺序是“主轴结构 $\to$ 横向二重轴 $\to$ 镜面/反演/转动反射”，而不是背诵符号表。}
+\label{fig:schoenflies-family-tree}
+\end{figure}
+
+后面做分子或晶体对称性识别时，最重要的技巧就是把一个复杂形状的几何细节暂时忘掉，只问几件稳定的问题：最高阶轴是什么？是否有一圈垂直的二重轴？是否有水平镜面、竖直镜面、反演中心或转动反射轴？一旦这些问题回答清楚，Schoenflies 符号往往已经唯一确定。
+
+把这些家族真正用于分子或团簇时，最有效的做法不是背表，而是按一个稳定的判定次序逐步排除。
+
+面对一个新的分子或团簇，推荐按下面的顺序判断，而不是在全部符号中凭印象匹配。
+
+先问是否存在多条彼此等价的高阶轴。如果有正四面体、立方/八面体或二十面体型的多轴结构，应优先考虑 $T$、$O$、$I$ 家族；它们不是“有一条主轴”的轴向群。若没有，再寻找唯一最高阶主轴 $C_n$。随后检查是否存在与主轴垂直的 $n$ 条 $C_2$ 轴：存在则进入 $D_n$ 家族，不存在则进入 $C_n$ 家族。最后检查 $\sigma_h$、$\sigma_v$、$\sigma_d$、反演中心或转动反射。
+
+这个流程的好处是，每一步都对应一个群结构分叉。以甲烷 $\mathrm{CH_4}$ 为例，它有四条三重轴和三条二重轴，没有唯一主轴，因此一开始就应进入多面体群；完整对称群为 $T_d$。六氟化硫 $\mathrm{SF_6}$ 具有三条四重轴、四条三重轴、六条二重轴并有反演中心，因此为 $O_h$。足球形 $\mathrm{C_{60}}$ 的理想结构具有二十面体型五重、三重、二重轴以及反演，属于 $I_h$。
+
+反过来，若一个分子只有一条 $C_3$ 主轴和三个竖直镜面，没有横向 $C_2$，它一定落在 $C_{3v}$，而不是 $D_3$；若再出现三条横向 $C_2$，则至少升级为 $D_3$ 家族。这个判定方法将在\chapref{chap:group-theory-quantum}读光谱特征标表时反复使用，因为只有先确定完整点群，后续的不可约表示标签才有意义。
+
+从分子点群走到晶体时，还要增加一个最基本对象：Bravais 晶格。选三条线性无关的原始基矢 $\vb a_1,\vb a_2,\vb a_3$，所有晶格点写成
+\[
+\vb R=n_1\vb a_1+n_2\vb a_2+n_3\vb a_3,
+\qquad n_i\in\ZZ.
+\]
+注意 $\vb R$ 在这里是一个格矢，不是点群矩阵 $R$；本书用粗体区别向量 $\vb R$，普通斜体 $R$ 留给空间变换。晶体结构还可以在每个格点附上一个基元，但 Bravais 晶格只描述平移周期本身。

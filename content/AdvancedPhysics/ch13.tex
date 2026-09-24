@@ -1,1036 +1,866 @@
-\chapter{电磁辐射与辐射反作用}
-\label{chap:phys-rr-radiation-reaction}
+\chapter{薄板谱、受迫响应与 Chladni 节线}
+\label{chap:phys-sm-thin-plate-chladni}
 
-前两章以变分二次型、边界 Green 配对和谱分解组织机械连续场；电磁场的基本方程虽然降为 Maxwell 的一阶守恒系统，但同样必须先固定源、Green 函数和守恒律，再谈远区谱与有效动力学。本章因此把经典电磁场的两个问题放进同一条守恒链。若四流 \(J^\mu\) 已知，Maxwell 方程决定远区辐射谱；若源的运动也要由电磁场决定，就必须把自场的能动量重新计入物质方程。逻辑顺序因此固定为
+薄板方程已经把三维弹性约化为二维四阶边值问题。真正可见的图样却由边界条件和本征函数决定：同一块板怎样选出共振频率，节线又为什么正好落在本征函数的零集上？
+
+\section{环板：谱、Green 与动态响应}
+\label{sec:phys-sm-eigenvalue}
+
+前面的母理论允许位置依赖的 \(\mathsf D(\vb r)\) 与 \(\mu_A(\vb r)\)。从这里开始才同时施加材料与几何特例：取均匀各向同性板，使弯曲刚度退化为常数 \(D\)、面质量退化为常数 \(\rho_{\rm m} h\)，再把中面区域取为环域
+\[
+ \mathcal A=\{(r,\theta):R_0<r<R\},
+ \qquad
+ \xi=\frac rR,
+ \qquad
+ \xi_0=\frac{R_0}{R}.
+\]
+这一节的目的不是为每一种边界分别建立一套公式，而是把同一个自伴四阶算子在圆对称坐标中的谱、Green 算子和受迫响应写成直接联系。
+
+自由振动取 \(f_\perp=0\)，并令
+\[
+ w(r,\theta,t)=\Re\{\Psi(r,\theta)e^{-\ii\omega t}\}.
+\]
+均匀各向同性板的空间本征方程为
+\begin{equation}
+ (\nabla_t^4-k^4)\Psi=0,
+ \qquad
+ k^4=\frac{\rho_{\rm m} h\omega^2}{D}.
+ \label{eq:phys-sm-annulus-eigenproblem}
+\end{equation}
+圆对称使角向 Fourier 扇区彼此独立。写
+\[
+ \Psi(r,\theta)=\mathcal R_m(r)e^{\ii m\theta},
+ \qquad m\in\mathbb Z,
+\]
+并定义 \(\beta=kR\)。下式中的 \(J_m,Y_m\) 是第一、第二类 Bessel 函数，\(I_m,K_m\) 是相应的修正 Bessel 函数。径向齐次解空间由
+\begin{equation}
+ \vb b_m(\xi;\beta)
+ :=\bigl(J_m(\beta\xi),\,Y_m(\beta\xi),\,I_m(\beta\xi),\,K_m(\beta\xi)\bigr)
+ \label{eq:phys-sm-annulus-radial-basis}
+\end{equation}
+张成。于是 \(\mathcal R_m=\vb b_m\vb c\)，其中 \(\vb c\in\mathbb C^4\) 是待定系数列向量。
+
+边界条件最好直接用变分共轭迹表示，而不是把 Bessel 恒等式提前展开。对 \(\mathcal R_m(r)e^{\ii m\theta}\)，定义
+\begin{align*}
+ M_{rr}[\mathcal R_m]
+ &=-D\left[\mathcal R_m''
+ +\nu\left(\frac1r\mathcal R_m'-\frac{m^2}{r^2}\mathcal R_m\right)\right],\\
+ V_r[\mathcal R_m]
+ &=-D\left[\mathcal R_m'''
+ +\frac1r\mathcal R_m''
+ -\frac{1+(2-\nu)m^2}{r^2}\mathcal R_m'
+ +\frac{(3-\nu)m^2}{r^3}\mathcal R_m\right].
+\end{align*}
+三类经典边界迹因此统一为
+\[
+ \mathcal B_{\mathrm C}[\mathcal R]=(\mathcal R,\mathcal R'),
+ \qquad
+ \mathcal B_{\mathrm S}[\mathcal R]=(\mathcal R,M_{rr}),
+ \qquad
+ \mathcal B_{\mathrm F}[\mathcal R]=(M_{rr},V_r).
+\]
+若外缘类型为 \(X\in\{\mathrm C,\mathrm S,\mathrm F\}\)，内缘类型为 \(Y\in\{\mathrm C,\mathrm S,\mathrm F\}\)，则九种有序边界组合全部由同一个 \(4\times4\) 矩阵表示：
+\begin{equation}
+ \vb Z_m^{XY}(\beta,\xi_0)
+ :=\begin{pmatrix}
+ \mathcal B_X[\vb b_m](R)\\
+ \mathcal B_Y[\vb b_m](R_0)
+ \end{pmatrix},
+ \qquad
+ \det\vb Z_m^{XY}(\beta,\xi_0)=0.
+ \label{eq:phys-sm-annulus-characteristic}
+\end{equation}
+这里每个 \(\mathcal B\) 产生两行，作用在行向量 \(\vb b_m\) 的每个分量上；当边界算子作用于 \(\vb b_m(\xi;\beta)\) 时，径向导数均按 \(\partial_r=R^{-1}\partial_\xi\) 还原为物理导数。内缘外法向与 \(+\vb e_r\) 相反，但齐次条件中的整体符号不影响零空间。\eqnrefs{eq:phys-sm-annulus-characteristic} 的正根按从小到大记为 \(\beta_{m,s}^{XY}\)，其中 \(s=1,2,\ldots\) 是径向根序号，于是
+\begin{equation}
+ \omega_{m,s}^{XY}
+ =\frac{(\beta_{m,s}^{XY})^2}{R^2}
+ \sqrt{\frac{D}{\rho_{\rm m} h}}.
+ \label{eq:phys-sm-annulus-frequency}
+\end{equation}
+实心圆板只是 \(\xi_0\to0\) 并要求中心正则的极限，此时 \(Y_m\) 与 \(K_m\) 分支自动排除。
+
+对 \(m\ge1\)，实本征函数可取 \(\mathcal R_{m,s}\cos m\theta\) 与 \(\mathcal R_{m,s}\sin m\theta\)，二者具有相同频率。任意实线性组合只会旋转这组节径；理想圆对称下其方向并不唯一，实验中的微弱几何或驱动不对称才会选定具体组合。径向零点给出节圆，因此 Chladni 图样并不是额外模型，而是被实际激发本征子空间中某个线性组合的节点集。用单一指标 \(j\) 统摄 \((m,s)\) 与角向简并指标，并定义质量加权模态范数
+\[
+ \mathcal N_j
+ :=\int_{\mathcal A}\rho_{\rm m} h\,|\Psi_j|^2\dd a.
+\]
+这里的 \(j\) 只是离散模态标签，不与材料的 Poisson 比 \(\nu\) 混用。一般载荷下的模态坐标满足
+\begin{equation}
+ \ddot W_j+\omega_j^2W_j
+ =\frac{1}{\mathcal N_j}
+ \int_{\mathcal A}f_\perp(\vb r,t)\Psi_j^*(\vb r)\dd a.
+ \label{eq:phys-sm-annulus-modal-dynamics}
+\end{equation}
+
+\label{sec:phys-sm-green-dynamic}
+
+谱分解立即把静态、点载和谐响应放进同一个预解式。若所选边界实现没有零模，静态 Green 核满足
+\[
+ D\nabla_t^4G^{XY}(\vb r,\vb r_*)
+ =\delta^{(2)}(\vb r-\vb r_*),
+\]
+并对第一个变量满足 \(XY\) 边界条件。由\eqnrefs{eq:phys-sm-annulus-modal-dynamics} 的本征系可写成
+\begin{equation}
+ G^{XY}(\vb r,\vb r_*)
+ =\sum_j
+ \frac{\Psi_j(\vb r)\Psi_j^*(\vb r_*)}
+ {\mathcal N_j\omega_j^2}.
+ \label{eq:phys-sm-annulus-static-green-spectral}
+\end{equation}
+因此任意静载都由
+\[
+ w(\vb r)=\int_{\mathcal A}G^{XY}(\vb r,\vb r_*)f_\perp(\vb r_*)\dd a_*
+\]
+给出，集中力只是在积分中取 \(\delta\) 源。对驱动角频率为 \(\omega_{\rm d}\) 的谐载，避开无阻尼共振极点时相应动态核为
+\begin{equation}
+ G_{\omega_{\rm d}}^{XY}(\vb r,\vb r_*)
+ =\sum_j
+ \frac{\Psi_j(\vb r)\Psi_j^*(\vb r_*)}
+ {\mathcal N_j(\omega_j^2-\omega_{\rm d}^2)}.
+ \label{eq:phys-sm-annulus-dynamic-green-spectral}
+\end{equation}
+这两个式子分别是前一章 \(\mathsf L_X^{-1}\) 与动态预解式的环板实现；几何只决定本征根与本征函数，不改变 Green 理论本身。
+
+若两条边都是自由边界，完整二维问题含 \(1,x,y\) 三个刚体零模，静态普通逆不存在。取关于质量内积
+\[
+ \langle f,g\rangle_\mu
+ :=\int_{\mathcal A}\rho_{\rm m} h\,f^*g\,\dd a
+\]
+相互正交的刚体基 \(\{\Psi_{0,\ell}\}_{\ell=1}^3\)，并记
+\(
+ \mathcal N_{0,\ell}=\langle\Psi_{0,\ell},\Psi_{0,\ell}\rangle_\mu
+\)。严格静态问题必须把这三个模投影掉并使用 Moore--Penrose 逆；这正对应净横向力和两个倾覆力矩的兼容条件。可是对 \(\omega_{\rm d}\neq0\) 的谐驱动，刚体模并没有消失，而是给出真实的整体惯性响应：
+\begin{equation}
+ G_{\omega_{\rm d}}^{\mathrm{FF}}(\vb r,\vb r_*)
+ =-\sum_{\ell=1}^{3}
+ \frac{\Psi_{0,\ell}(\vb r)\Psi_{0,\ell}^*(\vb r_*)}
+ {\mathcal N_{0,\ell}\omega_{\rm d}^2}
+ +\sum_{j:\,\omega_j>0}
+ \frac{\Psi_j(\vb r)\Psi_j^*(\vb r_*)}
+ {\mathcal N_j(\omega_j^2-\omega_{\rm d}^2)}.
+ \label{eq:phys-sm-annulus-ff-dynamic-zero-modes}
+\end{equation}
+因此“投影掉零模”只属于静态伪逆，不属于一般动态预解式。轴对称扇区只保留常数刚体模，下面可把静态投影写得完全显式。
+
+\label{sec:phys-sm-eight-green}
+
+取 \(m=0\)。这里的轴对称 Green 核按环向平均测度 \(2\pi\xi\,\dd\xi\) 归一化，因此源项 \(\delta(\xi-\eta)/(2\pi\eta)\) 表示总力为一的均匀环载，而不是固定方位角处的二维点力。若物理环载总力为 \(P\)、作用半径为 \(r_*=R\eta\)，则
+\[
+ f_\perp(r)=\frac{P}{2\pi r_*}\delta(r-r_*),
+ \qquad
+ w(r)=\frac{PR^2}{D}\,\mathcal G(\xi,\eta).
+\]
+无量纲轴对称算子和两个自然边界迹定义为
+\[
+ \mathcal L_0
+ :=\left(\frac{\dd^2}{\dd\xi^2}
+ +\frac1\xi\frac{\dd}{\dd\xi}\right)^2,
+ \qquad
+ \mathcal M[f]:=f''+\frac{\nu}{\xi}f',
+ \qquad
+ \mathcal V[f]:=f'''+\frac1\xi f''-\frac1{\xi^2}f'.
+\]
+物理量分别满足 \(M_{rr}=-(D/R^2)\mathcal M\)、\(V_r=-(D/R^3)\mathcal V\)。对无零模的边界组合，令 \(\{u_1^Y,u_2^Y\}\) 为自动满足内缘 \(Y\) 条件的齐次基，\(\{v_1^X,v_2^X\}\) 为自动满足外缘 \(X\) 条件的齐次基，则
+\begin{equation}
+ \mathcal G_{XY}(\xi,\eta)=
+ \begin{cases}
+  c_{-,1}\,u_1^Y(\xi)+c_{-,2}\,u_2^Y(\xi), & \xi_0<\xi<\eta,\\[2pt]
+  c_{+,1}\,v_1^X(\xi)+c_{+,2}\,v_2^X(\xi), & \eta<\xi<1,
+ \end{cases}
+ \label{eq:phys-sm-axisym-green-piecewise}
+\end{equation}
+并满足
+\[
+ \mathcal L_0\mathcal G_{XY}(\xi,\eta)
+ =\frac{\delta(\xi-\eta)}{2\pi\eta}.
+\]
+位移、斜率和弯矩连续，只有有效剪力跳跃：
+\begin{equation}
+ \mathcal V[\mathcal G](\eta^+)
+ -\mathcal V[\mathcal G](\eta^-)
+ =\frac{1}{2\pi\eta}.
+ \label{eq:phys-sm-axisym-green-jump}
+\end{equation}
+于是令
+\[
+ \vb c_{XY}:=(c_{-,1},c_{-,2},c_{+,1},c_{+,2})^{\mathsf T},
+\]
+四个局域系数由统一界面系统
+\begin{equation}
+ \vb H_{XY}(\eta)\vb c_{XY}(\eta)
+ =\begin{pmatrix}0\\0\\0\\(2\pi\eta)^{-1}\end{pmatrix},
+ \label{eq:phys-sm-green-interface-system}
+\end{equation}
+决定，其中
+\begin{equation}
+\vb H_{XY}(\eta)=
+\left.
+\begin{pmatrix}
+ u_1^Y & u_2^Y & -v_1^X & -v_2^X\\
+ (u_1^Y)' & (u_2^Y)' & -(v_1^X)' & -(v_2^X)'\\
+ \mathcal M[u_1^Y] & \mathcal M[u_2^Y] & -\mathcal M[v_1^X] & -\mathcal M[v_2^X]\\
+ -\mathcal V[u_1^Y] & -\mathcal V[u_2^Y] & \mathcal V[v_1^X] & \mathcal V[v_2^X]
+\end{pmatrix}
+\right|_{\xi=\eta}.
+\label{eq:phys-sm-green-interface-matrix}
+\end{equation}
+因此所有轴对称 \(\mathrm C/\mathrm S/\mathrm F\) 组合只是在改变两端二维齐次子空间；源点跳跃是同一个四阶 Green 结构。
+自由--自由情形中，轴对称扇区只剩常数零模。Moore--Penrose 核必须把 \(\delta\) 源投影到常数的正交补，而不是任意指定某一点的位移：
+\begin{equation}
+ \mathcal L_0\mathcal G_{\mathrm{FF}}^{+}(\xi,\eta)
+ =\frac{\delta(\xi-\eta)}{2\pi\eta}
+ -\frac{1}{\pi(1-\xi_0^2)},
+ \qquad
+ \int_{\xi_0}^{1}2\pi\xi\,
+ \mathcal G_{\mathrm{FF}}^{+}(\xi,\eta)\dd\xi=0.
+ \label{eq:phys-sm-axisym-ff-pseudoinverse}
+\end{equation}
+这正是\chapref{chap:phys-cont-biharmonic}自由边界伪逆的轴对称实现。
+\begin{exbox}[外缘固支、内缘自由环板的均匀横载]
+一般 Green 理论建立以后，均匀载荷才作为特例出现。令 \(f_\perp(r)=f_0\)，外缘 \(\xi=1\) 固支、内缘 \(\xi=\xi_0\) 自由。轴对称静力方程为 \(\mathcal L_0f=1\)，且
+\[
+ w(r)=\frac{f_0R^4}{D}f(\xi).
+\]
+定义
+\[
+ \Delta=(1-\nu)+(1+\nu)\xi_0^2.
+\]
+满足 \(f(1)=f'(1)=0\)、\(\mathcal M[f](\xi_0)=\mathcal V[f](\xi_0)=0\) 的解为
+\begin{equation}
+ f(\xi)=\frac{\xi^4}{64}
+ -\frac{\xi_0^2}{8}\xi^2\ln\xi
+ +b_{\mathrm{CF}}\xi^2+c_{\mathrm{CF}}\ln\xi+d_{\mathrm{CF}},
+ \label{eq:phys-sm-cf-uniform-deflection}
+\end{equation}
+其中
+\begin{align*}
+ b_{\mathrm{CF}}
+ &=\frac{(\nu+3)\xi_0^4+2(1-\nu)\xi_0^2+(\nu-1)
+ +4(1+\nu)\xi_0^4\ln\xi_0}{32\Delta},\\
+ c_{\mathrm{CF}}
+ &=\frac{\xi_0^2\bigl[(\nu-1)\xi_0^2-(1+\nu)
+ -4(1+\nu)\xi_0^2\ln\xi_0\bigr]}{16\Delta},\\
+ d_{\mathrm{CF}}
+ &=\frac{(1-\nu)+(3\nu-5)\xi_0^2-2(\nu+3)\xi_0^4
+ -8(1+\nu)\xi_0^4\ln\xi_0}{64\Delta}.
+\end{align*}
+当 \(\xi_0\to0\) 时，对数奇异分支自动消失，得到实心固支圆板
+\[
+ w(r)=\frac{f_0R^4}{64D}
+ \left(1-\frac{r^2}{R^2}\right)^2.
+\]
+这个极限同时检查了载荷归一化、边界条件和 \(R^4/D\) 的量纲。
+\end{exbox}
+\begin{proof}[解]
+定义径向 Bessel 算子
+\begin{equation*}
+ \Delta_m:=\frac{\dd^2}{\dd r^2}
+ +\frac1r\frac{\dd}{\dd r}-\frac{m^2}{r^2}.
+\end{equation*}
+由角向本征关系 \(\partial_\theta^2 e^{\ii m\theta}=-m^2 e^{\ii m\theta}\)，面内拉普拉斯算子对分离变量 \(\Psi=\mathcal R_m(r)e^{\ii m\theta}\) 的作用为
+\begin{equation*}
+ \nabla_t^2\Psi
+ =e^{\ii m\theta}
+ \left(\mathcal R_m''+\frac1r\mathcal R_m'-\frac{m^2}{r^2}\mathcal R_m\right)
+ =e^{\ii m\theta}\Delta_m\mathcal R_m,
+\end{equation*}
+由于 \(e^{\ii m\theta}\) 仍是 \(\partial_\theta^2\) 的本征函数，再作用一次得 \(\nabla_t^4\Psi=e^{\ii m\theta}\Delta_m^2\mathcal R_m\)。把分离变量代入\eqnrefs{eq:phys-sm-annulus-eigenproblem}，约去公因子 \(e^{\ii m\theta}\) 后得到
+\begin{equation*}
+ (\Delta_m^2-k^4)\mathcal R_m=0.
+\end{equation*}
+由于 \(\Delta_m\) 与常数 \(k^2\) 可换，算子多项式可因式分解为
+\begin{equation*}
+ \Delta_m^2-k^4
+ =(\Delta_m-k^2)(\Delta_m+k^2)
+ =(\Delta_m+k^2)(\Delta_m-k^2).
+\end{equation*}
+于是齐次解空间是两个二阶算子核的直和。\(\Delta_m+k^2\) 的核满足
+\begin{equation*}
+ \mathcal R_m''+\frac1r\mathcal R_m'
+ +\left(k^2-\frac{m^2}{r^2}\right)\mathcal R_m=0,
+\end{equation*}
+两端乘 \(r^2\) 并作变量替换 \(z=kr\)，即化为标准 Bessel 方程 \(z^2 R''+zR'+(z^2-m^2)R=0\)，其两个线性无关解为 \(J_m(kr),Y_m(kr)\)。同理 \(\Delta_m-k^2\) 的核满足把 \(k^2\) 换成 \(-k^2\) 的方程，作同一替换得到修正 Bessel 方程 \(z^2 R''+zR'-(z^2+m^2)R=0\)，两个线性无关解为 \(I_m(kr),K_m(kr)\)。四个解在 \(r>0\) 上线性无关，因此径向齐次解空间即\eqnrefs{eq:phys-sm-annulus-radial-basis}。
+设 \(\mathcal R_m=\vb b_m\vb c\)，其中 \(\vb c=(c_1,c_2,c_3,c_4)^{\mathsf T}\)。边界迹 \(\mathcal R\)、\(\mathcal R'\)、\(M_{rr}\)、\(V_r\) 中每一个都是 \(\mathcal R_m\) 的常系数线性微分算子，因而对 \(\vb c\) 线性。具体地，外缘 \(r=R\) 上的边界算子 \(\mathcal B_X\) 作用在基向量 \(\vb b_m\) 上得到一个 \(2\times4\) 行块
+\begin{equation*}
+ \mathcal B_X[\vb b_m](R)
+ =\begin{pmatrix}
+  \mathcal B_{X,1}[b_{m,1}](R)&\cdots&\mathcal B_{X,1}[b_{m,4}](R)\\
+  \mathcal B_{X,2}[b_{m,1}](R)&\cdots&\mathcal B_{X,2}[b_{m,4}](R)
+ \end{pmatrix},
+\end{equation*}
+内缘 \(r=R_0\) 上同理得到 \(\mathcal B_Y[\vb b_m](R_0)\)。把两个行块上下堆叠，便得到 \(4\times4\) 矩阵 \(\vb Z_m^{XY}\) 和齐次线性系统
+\begin{equation*}
+ \vb Z_m^{XY}(\beta,\xi_0)\vb c=0.
+\end{equation*}
+非零 \(\vb c\) 存在当且仅当 \(\vb Z_m^{XY}\) 的秩小于四，即其行列式为零
+\begin{equation*}
+ \det\vb Z_m^{XY}(\beta,\xi_0)=0.
+\end{equation*}
+此即\eqnrefs{eq:phys-sm-annulus-characteristic}。因此 \(\mathrm C,\mathrm S,\mathrm F\) 在外缘和内缘的九种有序组合只是 \(X,Y\) 的九个取值，而不是九条独立推导链。
+\end{proof}
+\begin{proof}[解]
+轴对称双调和齐次方程 \(\mathcal L_0 f=0\) 中，\(\mathcal L_0=(\dd_\xi^2+\xi^{-1}\dd_\xi)^2\)。先解一阶因子 \((\dd_\xi^2+\xi^{-1}\dd_\xi)g=0\)，即 \((\xi g')'=0\)，得 \(g=A\ln\xi+B\)；再解 \((\dd_\xi^2+\xi^{-1}\dd_\xi)g=\ln\xi\) 与 \(=1\) 两类非齐次方程，得到基本解空间
+\[
+ \operatorname{span}\{1,\xi^2,\ln\xi,\xi^2\ln\xi\}.
+\]
+在该四维空间中施加任一端点的两个边界条件，就得到二维齐次子空间。例如可取内缘基
 \[
 \begin{aligned}
- \text{Maxwell + conserved current}
- &\longrightarrow \text{exact spectrum}
- \longrightarrow \text{worldline/multipole/soft limits}\\
- &\longrightarrow \text{retarded/advanced field}
- \longrightarrow \text{Dirac regular field}
- \longrightarrow \text{self-force}\\
- &\longrightarrow \text{ALD}
- \longrightarrow \text{Landau--Lifshitz}.
+ u_1^{\mathrm C}&=1-\frac{\xi^2}{\xi_0^2}+2\ln\frac{\xi}{\xi_0},&
+ u_2^{\mathrm C}&=1-\frac{\xi^2}{\xi_0^2}
+ +2\frac{\xi^2}{\xi_0^2}\ln\frac{\xi}{\xi_0},\\
+ u_1^{\mathrm S}&=2(1+\nu)\ln\frac{\xi}{\xi_0}
+ +(1-\nu)\left(\frac{\xi^2}{\xi_0^2}-1\right),&
+ u_2^{\mathrm S}&=(\nu+3)\left(1-\frac{\xi^2}{\xi_0^2}\right)
+ +2(1+\nu)\frac{\xi^2}{\xi_0^2}\ln\frac{\xi}{\xi_0},\\
+ u_1^{\mathrm F}&=1,&u_2^{\mathrm F}&=u_1^{\mathrm S}.
 \end{aligned}
 \]
-前半章把源视为给定，先得到任意有限频率的精确母式，再施加周期、长波或软频条件；后半章从局域能动量守恒和因果 Green 函数开始，最后才取点粒子极限。这样，任何近似都能明确回到上一层精确方程。
-
-除特别说明外使用真空 SI 制。时间 Fourier 约定为
-\begin{equation}
- \widetilde f(\omega)=\int_{-\infty}^{\infty}f(t)e^{\ii\omega t}\dd t,
+对应外缘基由 \(\xi_0\to1\) 得到。以 \(\mathrm C\) 内缘为例验证：在 \(\xi=\xi_0\) 处 \(u_1^{\mathrm C}\) 的值为 \(1-1+2\ln1=0\)，导数为 \(-2\xi/\xi_0^2+2/\xi|_{\xi_0}=-2/\xi_0+2/\xi_0=0\)；\(u_2^{\mathrm C}\) 同样有 \(1-1+2\cdot1\cdot\ln1=0\) 与 \(-2/\xi_0+2/\xi_0+4\ln1/\xi_0=0\)。对 \(\mathrm S\) 内缘，利用 \(\mathcal M[f]=f''+\nu(f'+f/\xi)/\xi\)，在 \(\xi=\xi_0\) 处 \(u_1^{\mathrm S}\) 给出 \(f=0\) 且 \(\mathcal M[f]=0\)；\(\mathrm F\) 内缘则由 \(u_1^{\mathrm F}=1\) 给出 \(\mathcal M[1]=0\)、\(\mathcal V[1]=0\)。逐项代入可验证 \(\mathrm C:(f,f')=(0,0)\)、\(\mathrm S:(f,\mathcal M[f])=(0,0)\)、\(\mathrm F:(\mathcal M[f],\mathcal V[f])=(0,0)\)。
+另一方面，利用 Kelvin 恒等式可将四阶算子写成散度形式
+\[
+ \mathcal L_0f
+ =\frac1\xi\frac{\dd}{\dd\xi}\!\left[\xi\mathcal V[f]\right],
+\]
+其中 \(\mathcal V[f]=f'''+\xi^{-1}f''-\xi^{-2}f'\) 是有效剪力算子。把 Green 方程 \(\mathcal L_0\mathcal G=\delta(\xi-\eta)/(2\pi\eta)\) 乘 \(\xi\) 后在 \((\eta-\varepsilon,\eta+\varepsilon)\) 上积分，左端由散度定理给出
+\[
+ \int_{\eta-\varepsilon}^{\eta+\varepsilon}
+ \frac{\dd}{\dd\xi}\!\left[\xi\mathcal V[\mathcal G]\right]\dd\xi
+ =\left[\xi\mathcal V[\mathcal G]\right]_{\eta^-}^{\eta^+},
+\]
+右端为
+\[
+ \int_{\eta-\varepsilon}^{\eta+\varepsilon}
+ \frac{\delta(\xi-\eta)}{2\pi\eta}\,\xi\,\dd\xi
+ =\frac1{2\pi}.
+\]
+令 \(\varepsilon\downarrow0\) 即得到\eqnrefs{eq:phys-sm-axisym-green-jump}。物理上，源点处有效剪力的跳跃对应于作用在环 \(\xi=\eta\) 上的单位环向线载荷；位移、斜率与弯矩连续则保证板在该处没有嵌入裂纹或扭折。
+再把分段解\eqnrefs{eq:phys-sm-axisym-green-piecewise} 代入三条连续条件 \(f(\eta^-)=f(\eta^+)\)、\(f'(\eta^-)=f'(\eta^+)\)、\(\mathcal M[f](\eta^-)=\mathcal M[f](\eta^+)\) 与跳跃条件 \(\mathcal V[f](\eta^+)-\mathcal V[f](\eta^-)=1/(2\pi\eta)\)，把四个未知系数 \(\vb c_{XY}=(c_{-,1},c_{-,2},c_{+,1},c_{+,2})^{\mathsf T}\) 排成列向量，逐行得到矩阵\eqnrefs{eq:phys-sm-green-interface-matrix} 和系统\eqnrefs{eq:phys-sm-green-interface-system}。具体地，前两行来自位移与斜率连续：
+\[
+ c_{-,1}u_1^Y(\eta)+c_{-,2}u_2^Y(\eta)
+ =c_{+,1}v_1^X(\eta)+c_{+,2}v_2^X(\eta),
+\]
+\[
+ c_{-,1}(u_1^Y)'(\eta)+c_{-,2}(u_2^Y)'(\eta)
+ =c_{+,1}(v_1^X)'(\eta)+c_{+,2}(v_2^X)'(\eta),
+\]
+第三行来自弯矩连续，第四行来自剪力跳跃。矩阵 \(\vb H_{XY}(\eta)\) 的行列式恰为两端齐次子空间在源点处的 Wronski 型组合，当 \(\eta\in(\xi_0,1)\) 时非零，故系数唯一可解。
+\end{proof}
+应用举例：取 $\mathrm{CC}$ 组合（内外缘均固支），内缘基 $\{u_1^{\mathrm C},u_2^{\mathrm C}\}$ 与外缘基 $\{v_1^{\mathrm C},v_2^{\mathrm C}\}$ 均已满足各自固支条件，Green 函数在源点处由四个系数唯一确定，所得挠度即圆环板在环向线载荷下的轴对称响应。
+\begin{proof}[解]
+轴对称方程 \(\mathcal L_0 f=1\) 中，\(\mathcal L_0=(\dd_\xi^2+\xi^{-1}\dd_\xi)^2\)。对 \(\xi^4/64\) 直接求导，
+\[
+ \left(\dd_\xi^2+\frac1\xi\dd_\xi\right)\frac{\xi^4}{64}
+ =\frac{12\xi^2}{64}+\frac{4\xi^2}{64}
+ =\frac{\xi^2}{4},
+\]
+再作用一次，
+\[
+ \left(\dd_\xi^2+\frac1\xi\dd_\xi\right)\frac{\xi^2}{4}
+ =\frac{2}{4}+\frac{2}{4}
+ =1,
+\]
+故 \(\mathcal L_0(\xi^4/64)=1\)，\(\xi^4/64\) 是一个特解。齐次解空间为 \(\operatorname{span}\{1,\xi^2,\ln\xi,\xi^2\ln\xi\}\)，因此一般解可写成
+\[
+ f(\xi)=\frac{\xi^4}{64}
+ +a_{\mathrm{CF}}\xi^2\ln\xi
+ +b_{\mathrm{CF}}\xi^2+c_{\mathrm{CF}}\ln\xi+d_{\mathrm{CF}}.
+\]
+对这一形式逐项求导并代入 \(\mathcal V[f]=f'''+\xi^{-1}f''-\xi^{-2}f'\)。常数项与 \(\ln\xi\) 项在 \(\mathcal V\) 下分别为 \(0\)；\(\xi^2\) 项给出 \(4\xi\)；\(\xi^2\ln\xi\) 项给出 \(8/\xi\)；特解 \(\xi^4/64\) 给出 \(\xi/2\)。合并得
+\[
+ \mathcal V[f]
+ =\frac{8a_{\mathrm{CF}}}{\xi}+\frac{\xi}{2}
+ =\frac{8a_{\mathrm{CF}}+\xi^2}{2\xi}.
+\]
+内缘自由条件 \(\mathcal V[f](\xi_0)=0\) 给出 \(8a_{\mathrm{CF}}+\xi_0^2=0\)，即
+\[
+ a_{\mathrm{CF}}=-\frac{\xi_0^2}{8}.
+\]
+剩余三条件
+\[
+ \mathcal M[f](\xi_0)=0,
+ \qquad f(1)=0,
+ \qquad f'(1)=0
+\]
+是关于 \(b_{\mathrm{CF}},c_{\mathrm{CF}},d_{\mathrm{CF}}\) 的三元线性系统。把 \(a_{\mathrm{CF}}=-\xi_0^2/8\) 代入后显式展开：\(\mathcal M[f]=f''+\nu\xi^{-1}f'\) 在 \(\xi=\xi_0\) 处给出一条方程，\(f(1)=0\) 与 \(f'(1)=0\) 各给出一条方程。具体地，由 \(\ln 1=0\)，\(f(1)=0\) 化为 \(1/64+b_{\mathrm{CF}}+d_{\mathrm{CF}}=0\)，把 \(d_{\mathrm{CF}}\) 用 \(b_{\mathrm{CF}}\) 表出，
+\[
+ d_{\mathrm{CF}}=-\frac1{64}-b_{\mathrm{CF}},
+\]
+由 \(f'(1)=0\) 再把 \(c_{\mathrm{CF}}\) 用 \(b_{\mathrm{CF}}\) 表出，最后 \(\mathcal M[f](\xi_0)=0\) 解出 \(b_{\mathrm{CF}}\)。三条方程的系数矩阵行列式为 \(16\Delta\)，\(\Delta=(1-\nu)+(1+\nu)\xi_0^2\)，在 \(\xi_0\in(0,1)\)、\(\nu\in(-1,1)\) 时非零，故解唯一。回代即得正文给出的三个系数。
+\end{proof}
+\section{长方形板的解析解}
+\label{sec:phys-sm-rectangular}
+继续保持上一节的均匀各向同性材料特例，只把中面区域改为长方形
+\[
+ \mathcal A=\{(x,y):0<x<a,\ 0<y<b\}.
+\]
+对长方形板而言，真正能够完全用分离变量处理的情形只有两类。其一是四边简支，此时可以用 Navier 双重正弦级数把本征函数、格林函数和静载响应全部写成显式双重级数。其二是 L\'evy 类边界，即取一对对边，例如 \(x=0,a\)，为简支，而另一对对边 \(y=0,b\) 各自从 \(\mathrm C\)、\(\mathrm S\)、\(\mathrm F\) 三类边界条件中任意选取。这样共有九种有序边界组合；它们的本征值问题都能化成一维常微分方程与一个 \(4\times4\) 特征行列式，因此同样属于解析可解的范围。除此之外的一般四边边界条件虽然仍可数值求解，但不再具有同样简单的分离变量结构，故这里不再展开。
+四边简支时，边界条件写成
+\[
+ w|_{x=0,a}=0,
  \qquad
- f(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty}\widetilde f(\omega)e^{-\ii\omega t}\dd\omega .
- \label{eq:phys-rr-fourier-convention}
-\end{equation}
-于是 \(\widetilde{\dot f}=-\ii\omega\widetilde f\)。对实函数，\(\widetilde f(-\omega)=\widetilde f(\omega)^*\)，后文连续频谱均以 \(\omega>0\) 的正频率表示。对实矢量场，
-\[
- \int_{-\infty}^{\infty}|\vb E(t)|^2\dd t
- =\frac1\pi\int_0^\infty|\widetilde{\vb E}(\omega)|^2\dd\omega .
-\]
-周期运动必须单独使用 Fourier 级数；连续变换中的 \(\delta\) 谱线不能当普通函数平方。观测方向的立体角元统一记为 \(\dd\Omega\)，周期源的基本角频率记为 \(\omega_0\)。
-
-后文会出现多类彼此独立的小参数。固定 \(\omega>0\) 取远区极限时需要 \(a_{\rm src}/R\to0\)；若在有限探测距离使用平面波远区式，还需 \(kR\gg1\) 与 \(ka_{\rm src}^2/R\ll1\)。对空间上局域的有限尺寸源，若电流在所考虑的时间区间内具有紧支撑，可取 \(a_{\rm src}\) 使 \(J^\mu(\vb x,t)=0\) 于 \(|\vb x|>a_{\rm src}\)；对快速衰减但非紧支撑的源，则用相应空间矩的特征尺度代替，并必须另外控制尾部余项。统一定义结构长波参数
-\begin{equation}
- \kappa_{\rm src}:=\frac{\omega a_{\rm src}}{c}.
- \label{eq:phys-rr-source-size-control}
-\end{equation}
-它既控制给定源的空间多极展开，也控制平稳有限尺寸自作用核的低频结构展开；同一个物理尺度不再另造第二个符号。散射的软频展开则由 \(\epsilon_{\rm soft}:=\omega T_{\rm sc}\) 控制，辐射反作用降阶的外场梯度部分由 \(\epsilon_{\rm grad}:=\tau_{\rm rr}/T\) 控制。协变 Landau--Lifshitz 近似还要另行检查强场加速度参数。不同小参数不能互相替代：例如 \(\omega T_{\rm sc}\ll1\) 并不推出 \(\kappa_{\rm src}\ll1\)。
-
-\section{从 Maxwell 方程到一般频率的精确辐射谱}
-
-本节始终先固定 \(\omega>0\)，再取 \(R\to\infty\) 的 \(R^{-1}\) 辐射系数；只有母式建立以后才讨论 \(\omega\to0\)。因此“软频”“长波”和“周期”都是不同方向的后续特殊化，而不是一般辐射公式的前提。
-
-接下来考察辐射壳上的守恒四流。
-
-设局域四流 \(J^\mu=(c\rho_{\rm e},\vb J)\) 满足
-\begin{equation}
- \partial_t\rho_{\rm e}+\nabla\cdot\vb J=0.
- \label{eq:phys-rr-continuity}
-\end{equation}
-对观测方向 \(\vb n\)（\(|\vb n|=1\)）定义光锥上的时空 Fourier 振幅
-\begin{align}
- \mathcal C_{\rm e}(\omega,\vb n)
- &:=\int\dd t\dd^3x\,
- \rho_{\rm e}(\vb x,t)e^{\ii\omega(t-\vb n\cdot\vb x/c)},\\
- \boldsymbol{\mathcal J}(\omega,\vb n)
- &:=\int\dd t\dd^3x\,
- \vb J(\vb x,t)e^{\ii\omega(t-\vb n\cdot\vb x/c)}.
- \label{eq:phys-rr-exact-current-amplitude}
-\end{align}
-把辐射壳上的四流振幅记为
-\[
- \mathcal J^\mu(\omega,\vb n):=
- \bigl(c\mathcal C_{\rm e}(\omega,\vb n),\boldsymbol{\mathcal J}(\omega,\vb n)\bigr).
-\]
-连续性方程在光子四动量 \(k^\mu=(\omega/c,(\omega/c)\vb n)\) 上给出
-\begin{equation}
- \boxed{\vb n\cdot\boldsymbol{\mathcal J}=c\mathcal C_{\rm e},}
- \label{eq:phys-rr-on-shell-current-conservation}
-\end{equation}
-即 \(k_\mu\mathcal J^\mu=0\)。因此远区电场只依赖电流的横向投影。令
-\[
- \Pi^{\perp}_{ij}(\vb n)=\delta_{ij}-n_in_j,
+ w|_{y=0,b}=0,
  \qquad
- \vb{\Pi}_\perp(\vb n):=(\Pi^{\perp}_{ij})_{i,j=1}^{3},
-\]
-则固定 \(\omega\) 的精确远区振幅为
-\begin{equation}
- \boxed{
- \widetilde{\vb E}_{\rm rad}(R\vb n,\omega)
- =\frac{\ii\mu_0\omega e^{\ii\omega R/c}}{4\pi R}
- \vb{\Pi}_{\perp}(\vb n)\cdot\boldsymbol{\mathcal J}(\omega,\vb n)
- +O(R^{-2}).}
- \label{eq:phys-rr-exact-far-field-current}
-\end{equation}
-\eqnrefs{eq:phys-rr-exact-far-field-current} 对任意亚光速运动、任意源尺寸参数 \(\omega a_{\rm src}/c\) 和非周期源都成立；低速、长波与周期性只在后续特殊化时施加。正频率角分辨能谱因此为
-\begin{equation}
- \boxed{
- \frac{\dd^2E}{\dd\omega\dd\Omega}
- =\frac{\mu_0\omega^2}{16\pi^3c}
- \Pi^{\perp}_{ij}\mathcal J_i\mathcal J_j^*
- =\frac{\omega^2}{16\pi^3\varepsilon_0c^3}
- \left|\vb{\Pi}_{\perp}\cdot\boldsymbol{\mathcal J}\right|^2.}
- \label{eq:phys-rr-exact-radiation-spectrum-current}
-\end{equation}
-这是本章给定源辐射理论的母公式。非周期、有限总辐射能量的过程可直接使用它；无限持续的周期源必须改用后面的周期平均功率。
-
-对角度积分，可把源的空间相干性写成一个不依赖具体几何的双点核。令 \(\Delta\vb x=\vb x-\vb x'\)、\(r=|\Delta\vb x|\)、\(\widehat{\vb r}=\Delta\vb x/r\)、\(z=\omega r/c\)，记 \(j_\ell(z)\) 为第一类球 Bessel 函数。定义
-\begin{equation}
- \mathcal K_{ij}(z,\widehat{\vb r})
- :=\int\dd\Omega\,\Pi^{\perp}_{ij}(\vb n)e^{-\ii z\vb n\cdot\widehat{\vb r}}
- =\frac{4\pi}{3}
- \left[(2j_0-j_2)\delta_{ij}+3j_2\widehat r_i\widehat r_j\right].
- \label{eq:phys-rr-transverse-coherence-kernel}
-\end{equation}
-于是
-\begin{equation}
- \frac{\dd E}{\dd\omega}
- =\frac{\mu_0\omega^2}{16\pi^3c}
- \int\dd t\dd t'\dd^3x\dd^3x'\,
- e^{\ii\omega(t-t')}
- J_i(\vb x,t)J_j(\vb x',t')
- \mathcal K_{ij}\!\left(\frac{\omega r}{c},\widehat{\vb r}\right).
- \label{eq:phys-rr-exact-angle-integrated-current-spectrum}
-\end{equation}
-当 \(\omega r/c\ll1\) 时核近似同相；当 \(\omega r/c\gtrsim1\) 时，不同位置之间出现振荡相消。空间长波展开因此只是这个精确相干核的低频空间极限。
-
-\begin{figure}[htbp]
-\centering
-\begin{adjustbox}{max width=0.90\linewidth}
-\input{figures/tikz/frequency-regime-map.tex}
-\end{adjustbox}
-\caption{时间软展开与空间长波展开是两个独立方向。\(\epsilon_{\rm soft}=\omega T_{\rm sc}\) 控制散射历史的软频极限，\(\kappa_{\rm src}=\omega a_{\rm src}/c\) 控制源内空间相位的多极展开；整个参数平面都由精确母\eqnrefs{eq:phys-rr-exact-radiation-spectrum-current} 覆盖。}
-\label{fig:phys-rr-frequency-regime-map}
-\end{figure}
-
-\begin{exbox}
-有限尺寸相干性可以直接从母式计算。若球对称静态分布 \(\rho_{{\rm e},0}(\vb x)\) 作小振幅、非相对论刚性平移（\(|\dot{\vb X}|/c\ll1\)），精确密度是 \(\rho_{\rm e}(\vb x,t)=\rho_{{\rm e},0}(\vb x-\vb X(t))\)。在线性阶，\(\delta\rho_{\rm e}=-\vb X\cdot\nabla\rho_{{\rm e},0}\)、\(\vb J=\rho_{{\rm e},0}\dot{\vb X}\)，二者逐阶满足连续性方程。于是
-\[
- \boldsymbol{\mathcal J}(\omega,\vb n)
- =\widetilde{\dot{\vb X}}(\omega)
- \widetilde\rho_{{\rm e},0}\!\left(\frac{\omega}{c}\vb n\right).
-\]
-若总电荷为 \(Q\)，取半径 \(a_{\rm src}\) 的均匀薄球壳
-\[
- \rho_{{\rm e},{\rm shell}}(r)=\frac{Q}{4\pi a_{\rm src}^2}\delta(r-a_{\rm src})
-\]
-以及以 \(a_{\rm src}\) 为径向尺度的 Gaussian 云
-\[
- \rho_{{\rm e},{\rm G}}(r)=\frac{Q}{\pi^{3/2}a_{\rm src}^3}e^{-r^2/a_{\rm src}^2}.
-\]
-二者的归一化 Fourier 形状因子分别为 \(\sin\kappa_{\rm src}/\kappa_{\rm src}\) 与 \(e^{-\kappa_{\rm src}^2/4}\)，故强度比为
-\[
- \frac{I_{\rm shell}}{I_{\rm point}}
- =\left(\frac{\sin\kappa_{\rm src}}{\kappa_{\rm src}}\right)^2,
+ M_{nn}|_{x=0,a}=0,
  \qquad
- \frac{I_{\rm G}}{I_{\rm point}}=e^{-\kappa_{\rm src}^2/2},
- \qquad \kappa_{\rm src}=\frac{\omega a_{\rm src}}{c}.
+ M_{nn}|_{y=0,b}=0.
 \]
-二者在 \(\kappa_{\rm src}\ll1\) 时都趋于点源，但离开长波区后的振荡与衰减依赖完整电荷分布，而不存在普适的单一有限尺寸修正系数。
-\end{exbox}
-
-\begin{derivation}[Maxwell 方程与精确辐射母式]
-Lorenz 规范下的势满足
+由于边界本身已经强制正弦基，最自然的本征函数就是
 \[
- \left(\nabla^2-c^{-2}\partial_t^2\right)\Phi=-\rho_{\rm e}/\varepsilon_0,
+ \Psi_{m,s}^{\mathrm{SSSS}}(x,y)=\sin\frac{m\pi x}{a}\,\sin\frac{s\pi y}{b},
+ \qquad m,s=1,2,\dots.
+\]
+它们满足
+\[
+ \nabla_t^2\Psi_{m,s}^{\mathrm{SSSS}}=-\gamma_{m,s}^2\Psi_{m,s}^{\mathrm{SSSS}},
  \qquad
- \left(\nabla^2-c^{-2}\partial_t^2\right)\vb A=-\mu_0\vb J .
+ \gamma_{m,s}^2=\left(\frac{m\pi}{a}\right)^2+\left(\frac{s\pi}{b}\right)^2,
 \]
-对时间作 Fourier 变换，并用出射 Helmholtz 核
-\(G_k(\vb R-\vb x)=e^{\ii k|\vb R-\vb x|}/(4\pi|\vb R-\vb x|)\)。
-在固定 \(\omega>0\) 的远区，
+从而
 \[
- G_k(R\vb n-\vb x)
- =\frac{e^{\ii kR}}{4\pi R}e^{-\ii k\vb n\cdot\vb x}
- +O(R^{-2}),
-\]
-故
-\[
- \widetilde\Phi_{\rm rad}
- =\frac{e^{\ii kR}}{4\pi\varepsilon_0R}\mathcal C_{\rm e},
+ \nabla_t^4\Psi_{m,s}^{\mathrm{SSSS}}=\gamma_{m,s}^4\Psi_{m,s}^{\mathrm{SSSS}},
  \qquad
- \widetilde{\vb A}_{\rm rad}
- =\frac{\mu_0e^{\ii kR}}{4\pi R}\boldsymbol{\mathcal J}.
+ \omega_{m,s}^{\mathrm{SSSS}}=\gamma_{m,s}^2\sqrt{\frac{D}{\rho_{\rm m} h}}.
 \]
-连续性方程在同一质壳 Fourier 分量上给出
-\(-\ii\omega\mathcal C_{\rm e}+\ii k\vb n\cdot\boldsymbol{\mathcal J}=0\)。
-因此 \(\widetilde{\vb E}=\ii\omega\widetilde{\vb A}-\nabla\widetilde\Phi\)
-中的纵向部分抵消，只剩
+若模态质量按
 \[
- \widetilde{\vb E}_{\rm rad}
- =\frac{\ii\mu_0\omega e^{\ii kR}}{4\pi R}
- \vb\Pi_\perp\cdot\boldsymbol{\mathcal J}+O(R^{-2}).
+ \mathcal M_{m,s}^{\mathrm{SSSS}}=\int_{\mathcal A}\rho_{\rm m} h\,\bigl(\Psi_{m,s}^{\mathrm{SSSS}}\bigr)^2\,\dd a=\frac{\rho_{\rm m} hab}{4}
 \]
-再用 \(\widetilde{\vb B}_{\rm rad}=\vb n\times\widetilde{\vb E}_{\rm rad}/c\)
-和正频率 Parseval 关系
-\( \dd^2E/(\dd\omega\dd\Omega)=R^2|\widetilde{\vb E}_{\rm rad}|^2/(\pi\mu_0c)\)，
-即得\eqnrefs{eq:phys-rr-exact-radiation-spectrum-current}。
-\end{derivation}
-
-\begin{derivation}[横向相干核]
-取 \(\widehat{\vb r}\) 为极轴。标量角积分为
+归一，则四边简支板的静力格林函数便可直接写成显式双重级数
 \[
- \int\dd\Omega\,e^{-\ii z\vb n\cdot\widehat{\vb r}}=4\pi j_0(z).
+ G^{\mathrm{SSSS}}(x,y;\xi,\eta)=\frac{4}{abD}\sum_{m=1}^{\infty}\sum_{s=1}^{\infty}
+ \frac{\sin\dfrac{m\pi x}{a}\sin\dfrac{m\pi \xi}{a}\sin\dfrac{s\pi y}{b}\sin\dfrac{s\pi \eta}{b}}{\left[\left(\dfrac{m\pi}{a}\right)^2+\left(\dfrac{s\pi}{b}\right)^2\right]^2}.
 \]
-旋转对称性把二阶角矩锁成 \(I_{ij}=A(z)\delta_{ij}+B(z)\hat r_i\hat r_j\)。
+因此任意静载 \(f_\perp(x,y)\) 下的挠度都是
 \[
- I_{ii}=\int\dd\Omega\,(\vb n\cdot\vb n)e^{-\ii z\vb n\cdot\hat{\vb r}}=\int\dd\Omega\,e^{-\ii z\vb n\cdot\hat{\vb r}}=4\pi j_0(z),
+ w(x,y)=\int_0^a\int_0^b G^{\mathrm{SSSS}}(x,y;\xi,\eta)f_\perp(\xi,\eta)\,\dd \xi\,\dd \eta.
 \]
-故 \(3A+B=4\pi j_0\)。再沿极轴取分量。记 \(\mu=\vb n\cdot\hat{\vb r}\)，注意到
+若载荷是作用在 \((\xi_*,\eta_*)\) 的点力 \(P\)，即 \(f_\perp=P\delta(x-\xi_*)\delta(y-\eta_*)\)，则得到
 \[
- \frac{\dd^2}{\dd z^2}e^{-\ii z\mu}=(-\ii\mu)^2e^{-\ii z\mu}=-\mu^2 e^{-\ii z\mu},
+ w(x,y)=P\,G^{\mathrm{SSSS}}(x,y;\xi_*,\eta_*).
 \]
-于是
+若载荷是均匀横向负载 \(f_\perp=f_0\)，则只有奇数项留下，直接积分可得经典 Navier 级数
 \[
- I_{rr}=\hat r_i\hat r_j I_{ij}=\int\dd\Omega\,\mu^2 e^{-\ii z\mu}
- =-\frac{\dd^2}{\dd z^2}\int\dd\Omega\,e^{-\ii z\mu}=-4\pi j_0''(z).
+ w(x,y)=\frac{16f_0}{D\pi^6}\sum_{\substack{m,s=1\\ m,s\text{ odd}}}^{\infty}
+ \frac{\sin\dfrac{m\pi x}{a}\sin\dfrac{s\pi y}{b}}{ms\left(\dfrac{m^2}{a^2}+\dfrac{s^2}{b^2}\right)^2}.
 \]
-球 Bessel 递推 \(j_0'=-j_1\)、\(j_1'=j_0-\frac{2}{z}j_1\) 与 \(j_0+j_2=\frac{3}{z}j_1\) 联立得 \(j_0''=\frac13(2j_2-j_0)\)，故 \(I_{rr}=A+B=\frac{4\pi}{3}(j_0-2j_2)\)。与 \(3A+B=4\pi j_0\) 联立解出 \(A=\frac{4\pi}{3}(j_0+j_2)\)、\(B=-4\pi j_2\)，即
+从本征函数、格林函数到点载与均布载荷的全部公式，在四边简支情形下都已经完全显式了。
+固定 \(x=0,a\) 为简支边后，\(x\) 向正弦基自动满足这对边界条件：
 \[
- \int\dd\Omega\,n_in_j e^{-\ii z\vb n\cdot\hat{\vb r}}
- =\frac{4\pi}{3}\left[(j_0+j_2)\delta_{ij}
- -3j_2\hat r_i\hat r_j\right].
+ \Psi(x,y)=\sum_{m=1}^{\infty}Y_m(y)\sin(\alpha_m x),
+ \qquad \alpha_m=\frac{m\pi}{a}.
 \]
-从标量积分中减去这一式，便得到
+于是二维双调和本征值问题对每个 \(m\) 约化为同一个一维四阶算子。对时间因子 \(e^{-\ii\omega t}\)，令
 \[
- \int\dd\Omega\,\Pi^\perp_{ij}e^{-\ii z\vb n\cdot\widehat{\vb r}}
- =\frac{4\pi}{3}\left[(2j_0-j_2)\delta_{ij}
- +3j_2\widehat r_i\widehat r_j\right],
+ k^4=\frac{\rho_{\rm m} h\omega^2}{D},
 \]
-即\eqnrefs{eq:phys-rr-transverse-coherence-kernel}。把
-\(\mathcal J_i\mathcal J_j^*\) 写成两份源积分后先做角积分，直接得到
-\eqnrefs{eq:phys-rr-exact-angle-integrated-current-spectrum}。
-\end{derivation}
-
-点电荷世界线
+则
+\begin{equation}
+ \left(\frac{\dd^2}{\dd y^2}-\alpha_m^2\right)^2Y_m=k^4Y_m.
+ \label{eq:phys-sm-levy-dynamic-ode}
+\end{equation}
+这一步体现了 L\'evy 方法的真正内容：几何只通过 \(a,b\) 和 \(\alpha_m\) 进入，另一对边的边界类型只决定同一个四阶算子的自伴实现。
+对 \(y=\mathrm{const}\) 的边，去掉不影响齐次条件的公共因子后，可用四个边界迹
 \[
- \vb J(\vb x,t)=\sum_aq_ac\boldsymbol\beta_a(t)
- \delta^{(3)}(\vb x-\vb r_a(t)),
+ \mathcal W_m[Y]=Y,
  \qquad
- \varphi_a=t-\frac{\vb n\cdot\vb r_a}{c}
+ \Theta_m[Y]=Y',
 \]
-其中 $\boldsymbol\beta_a=\vb v_a/c$ 是粒子 $a$ 的速度矢量（以 $c$ 为单位，三维速度空间中的矢量），$\vb r_a(t)$ 为其世界线，$\varphi_a$ 为推迟时刻。
-代入母式后给出两种等价表示：
-\begin{align}
- \frac{\dd^2E}{\dd\omega\dd\Omega}
- &=\frac{\omega^2}{16\pi^3\varepsilon_0c}
- \left|\sum_aq_a\int\dd t\,
- \vb\Pi_\perp\cdot\boldsymbol\beta_a e^{\ii\omega\varphi_a}\right|^2,
- \label{eq:phys-rr-point-spectrum-velocity}\\
- \frac{\dd^2E}{\dd\omega\dd\Omega}
- &=\frac{1}{16\pi^3\varepsilon_0c}
- \left|\sum_aq_a\int\dd t\,
- \frac{\vb n\times[(\vb n-\boldsymbol\beta_a)\times
- \dot{\boldsymbol\beta}_a]}
- {(1-\vb n\cdot\boldsymbol\beta_a)^2}
- e^{\ii\omega\varphi_a}\right|^2.
- \label{eq:phys-rr-exact-point-spectrum}
-\end{align}
-第一式适合直接代入轨道；第二式把辐射来源明确限制为加速度，并在渐近匀速散射中具有更好的收敛性。二者对有限正频率都不要求非相对论或长波近似。
-
-\begin{derivation}[点世界线谱的加速度形式]
-对点流，空间积分先给出
 \[
- \boldsymbol{\mathcal J}
- =c\sum_aq_a\int\dd t\,\boldsymbol\beta_a e^{\ii\omega\varphi_a},
+ \mathcal M_m[Y]=Y''-\nu\alpha_m^2Y,
  \qquad
- \dot\varphi_a=1-\vb n\cdot\boldsymbol\beta_a .
+ \mathcal V_m[Y]=Y'''-(2-\nu)\alpha_m^2Y'
 \]
-定义
+统一表示固支、简支和自由边界：
 \[
- \vb g_a=\frac{\vb n\times(\vb n\times\boldsymbol\beta_a)}
- {1-\vb n\cdot\boldsymbol\beta_a}
- =-\frac{\vb\Pi_\perp\cdot\boldsymbol\beta_a}
- {1-\vb n\cdot\boldsymbol\beta_a}.
+ \mathrm C:(\mathcal W_m,\Theta_m)=(0,0),\qquad
+ \mathrm S:(\mathcal W_m,\mathcal M_m)=(0,0),\qquad
+ \mathrm F:(\mathcal M_m,\mathcal V_m)=(0,0).
 \]
-在渐近匀速轨道上用绝热因子消去边界项，分部积分得到
-\[
- \ii\omega\int\dd t\,
- \vb\Pi_\perp\cdot\boldsymbol\beta_a e^{\ii\omega\varphi_a}
- =\int\dd t\,\dot{\vb g}_a e^{\ii\omega\varphi_a}.
-\]
-对 \(\vb g_a\) 求导，商法则与三重叉积恒等式给出
-\[
- \dot{\vb g}_a=
- \frac{\vb n\times[(\vb n-\boldsymbol\beta_a)\times
- \dot{\boldsymbol\beta}_a]}
- {(1-\vb n\cdot\boldsymbol\beta_a)^2}.
-\]
-代回速度形式后，振幅中的 \(1/\omega\) 与谱前因子中的 \(\omega^2\)
-相消，得到\eqnrefs{eq:phys-rr-exact-point-spectrum}。这也直接说明匀速段
-\(\dot{\boldsymbol\beta}_a=0\) 不贡献有限频率辐射。
-\end{derivation}
-
-周期性只离散时间频率。若
-\(\vb J(\vb x,t+T)=\vb J(\vb x,t)\)、\(\omega_N=N\omega_0\)，定义
+令 \(\boldsymbol\varphi_m(y;k)\) 是\eqnrefs{eq:phys-sm-levy-dynamic-ode}的任意基本解行向量，并把下边 \(X\) 与上边 \(Y\) 的四个边界条件作用在该基本解上，得到 \(4\times4\) 特征矩阵 \(\vb Z_{m,\mathrm L}^{XY}(k)\)。非零本征函数存在当且仅当
 \begin{equation}
- \boldsymbol{\mathcal J}_N(\vb n)
- =\int\dd^3x\,\vb J_N(\vb x)
- e^{-\ii(\omega_N/c)\vb n\cdot\vb x},
+ \det\vb Z_{m,\mathrm L}^{XY}(k)=0.
+ \label{eq:phys-sm-levy-characteristic}
+\end{equation}
+若其正根记为 \(k_{m,s}^{XY}\)，则
+\[
+ \omega_{m,s}^{XY}
+ =(k_{m,s}^{XY})^2\sqrt{\frac{D}{\rho_{\rm m} h}},
  \qquad
- \vb J_N=\frac1T\int_0^T\vb J e^{\ii N\omega_0t}\dd t .
- \label{eq:phys-rr-periodic-current-amplitude}
-\end{equation}
-第 \(N\) 条谱线的精确平均功率为
-\begin{equation}
- \frac{\dd P_N}{\dd\Omega}
- =\frac{\mu_0\omega_N^2}{8\pi^2c}
- \left|\vb\Pi_\perp\cdot\boldsymbol{\mathcal J}_N\right|^2 .
- \label{eq:phys-rr-exact-periodic-line-power}
-\end{equation}
-只有在得到平均功率后才写离散 \(\delta\) 谱，从而避免平方 \(\delta\) 分布。
-
-空间多极展开则另需
-\begin{equation}
- \kappa_{\rm src}=\frac{\omega a_{\rm src}}{c}\ll1 .
- \label{eq:phys-rr-multipole-control}
-\end{equation}
-定义
-\begin{align}
- \vb p&=\int\rho_{\rm e}\vb x\,\dd^3x,
- &\vb m&=\frac12\int\vb x\times\vb J\,\dd^3x,
- \label{eq:phys-rr-dipole-defs}\\
- \mathcal Q^{\rm E}_{ij}
- &=\int\rho_{\rm e}(3x_ix_j-r^2\delta_{ij})\dd^3x,
- &\mathcal Q^{\rm E}_{ii}&=0 ,
- \label{eq:phys-rr-quadrupole-def}
-\end{align}
-并记 \(I_{ij}=\int\rho_{\rm e}x_ix_j\dd^3x\)。连续性方程给出
-\begin{equation}
- \int x_jJ_i\dd^3x=\frac12\dot I_{ij}-\epsilon_{ijk}m_k .
- \label{eq:phys-rr-first-current-moment}
-\end{equation}
-于是
-\begin{equation}
- \vb\Pi_\perp\cdot\boldsymbol{\mathcal J}
- =-\ii\omega\vb\Pi_\perp\cdot\widetilde{\vb p}
- +\ii k\,\vb n\times\widetilde{\vb m}
- -\frac{k\omega}{6}\vb\Pi_\perp\cdot
- (\widetilde{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)
- +\boldsymbol{\mathcal R}_2 .
- \label{eq:phys-rr-multipole-current-amplitude}
-\end{equation}
-余项从更高空间矩开始，量级由 \(\kappa_{\rm src}\) 控制。逆 Fourier 变换为
-\begin{equation}
- \vb E_{\rm rad}
- =\frac{1}{4\pi\varepsilon_0c^2R}
- \left\{\vb n\times(\vb n\times\ddot{\vb p})
- +\frac1c\vb n\times\ddot{\vb m}
- +\frac1{6c}\vb n\times[
- \vb n\times(\dddot{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)]
- \right\}_{t-R/c}+\vb E_{\rm rem}.
- \label{eq:phys-rr-multipole-far-field}
-\end{equation}
-完整角积分后，
-\begin{align}
- \frac{\dd E_{E1}}{\dd\omega}
- &=\frac{\omega^4}{6\pi^2\varepsilon_0c^3}
- \widetilde p_i\widetilde p_i^*,
- \label{eq:phys-rr-e1-spectrum}\\
- \frac{\dd E_{M1}}{\dd\omega}
- &=\frac{\omega^4}{6\pi^2\varepsilon_0c^5}
- \widetilde m_i\widetilde m_i^*,
- \label{eq:phys-rr-m1-spectrum}\\
- \frac{\dd E_{E2}}{\dd\omega}
- &=\frac{\omega^6}{720\pi^2\varepsilon_0c^5}
- \widetilde{\mathcal Q}^{\rm E}_{ij}
- (\widetilde{\mathcal Q}^{\rm E}_{ij})^* .
- \label{eq:phys-rr-e2-spectrum}
-\end{align}
-对应的瞬时功率为
-\begin{equation}
- P_{E1}=\frac{|\ddot{\vb p}|^2}{6\pi\varepsilon_0c^3},
- \quad
- P_{M1}=\frac{|\ddot{\vb m}|^2}{6\pi\varepsilon_0c^5},
- \quad
- P_{E2}=\frac{\dddot{\mathcal Q}^{\rm E}_{ij}
- \dddot{\mathcal Q}^{\rm E}_{ij}}{720\pi\varepsilon_0c^5}.
- \label{eq:phys-rr-multipole-time-powers}
-\end{equation}
-若源同时周期化，则
-\begin{align}
- P_{E1,N}&=\frac{(N\omega_0)^4}{3\pi\varepsilon_0c^3}p_{i,N}p_{i,N}^*,\\
- P_{M1,N}&=\frac{(N\omega_0)^4}{3\pi\varepsilon_0c^5}m_{i,N}m_{i,N}^*,\\
- P_{E2,N}&=\frac{(N\omega_0)^6}{360\pi\varepsilon_0c^5}
- \mathcal Q^{\rm E}_{ij,N}(\mathcal Q^{\rm E}_{ij,N})^* .
- \label{eq:phys-rr-periodic-multipole-lines}
-\end{align}
-周期化与长波展开彼此独立；两者可交换次序，但必须分别满足各自条件。
-
-散射的软频极限由
-\begin{equation}
- \epsilon_{\rm soft}=\omega T_{\rm sc}\ll1
- \label{eq:phys-rr-soft-control}
-\end{equation}
-控制。对入射、出射外线分别取 \(\varsigma_A=-1,+1\)，领先软因子为
-\begin{equation}
- \boldsymbol{\mathcal S}^{(0)}(\vb n)
- =\sum_A\varsigma_Aq_A
- \frac{\vb n\times(\vb n\times\boldsymbol\beta_A)}
- {1-\vb n\cdot\boldsymbol\beta_A},
- \label{eq:phys-rr-leading-soft-factor}
-\end{equation}
-并给出
-\begin{equation}
- \left.\frac{\dd^2E}{\dd\omega\dd\Omega}\right|_{\omega\to0}
- =\frac{|\boldsymbol{\mathcal S}^{(0)}|^2}
- {16\pi^3\varepsilon_0c}.
- \label{eq:phys-rr-soft-angular-spectrum}
-\end{equation}
-若 \(\sum_A\varsigma_Aq_A=0\)，令
-\(\gamma_A=1/\sqrt{1-\beta_A^2}\)（\(\beta_A=|\boldsymbol\beta_A|\)）、\(\Gamma_{AB}=\gamma_A\gamma_B(1-\boldsymbol\beta_A\cdot\boldsymbol\beta_B)\)、
-\(\beta_{AB}=\sqrt{1-\Gamma_{AB}^{-2}}\)，角积分为
-\begin{equation}
- \left.\frac{\dd E}{\dd\omega}\right|_{\omega\to0}
- =-\frac1{4\pi^2\varepsilon_0c}
- \sum_{A,B}\varsigma_A\varsigma_Bq_Aq_B
- \left[\frac{\operatorname{artanh}\beta_{AB}}{\beta_{AB}}-1\right].
- \label{eq:phys-rr-soft-integrated-spectrum}
-\end{equation}
-单电荷非相对论偏转以及与偶极路线的重叠极限分别是
-\begin{align}
- \left.\frac{\dd E}{\dd\omega}\right|_{\omega\to0}
- &=\frac{q^2|\Delta\vb v|^2}{6\pi^2\varepsilon_0c^3}+O(c^{-5}),
- \label{eq:phys-rr-soft-nonrel-limit}\\
- \left.\frac{\dd E_{E1}}{\dd\omega}\right|_{\omega\to0}
- &=\frac{|\Delta\dot{\vb p}|^2}{6\pi^2\varepsilon_0c^3}.
- \label{eq:phys-rr-e1-soft-limit}
-\end{align}
-零频振幅的时域形式是电磁记忆：
-\begin{equation}
- \int_{-\infty}^{\infty}\vb E_{\rm rad}(R\vb n,u)\dd u
- =\frac{\boldsymbol{\mathcal S}^{(0)}(\vb n)}
- {4\pi\varepsilon_0cR}.
- \label{eq:phys-rr-em-memory-soft-relation}
-\end{equation}
-这些式子只使用时间软极限，不应与固定尺寸源的长波多极展开混为一谈。
-
-\begin{derivation}[软因子的端点来源]
-在点世界线加速度振幅中使用前述 \(\vb g_a\)。当
-\(\omega T_{\rm sc}\ll1\) 时，
-\[
- \int\dd t\,\dot{\vb g}_a e^{\ii\omega\varphi_a}
- =\vb g_a(+\infty)-\vb g_a(-\infty)+O(\epsilon_{\rm soft}),
+ \Psi_{m,s}^{XY}(x,y)
+ =\sin(\alpha_m x)Y_{m,s}^{XY}(y).
 \]
-相加即得\eqnrefs{eq:phys-rr-leading-soft-factor}。角积分利用
-\[
- \frac1{AB}=\int_0^1\frac{\dd x}{[xA+(1-x)B]^2},
+因此九种 \(XY\in\{\mathrm C,\mathrm S,\mathrm F\}^2\) 并不是九套理论，只是同一四阶算子的九种边界实现。四边简支对应 \(XY=\mathrm{SS}\)，并进一步退化为前面的 Navier 双正弦谱。
+动态本征值问题已经由边界行列式 $\det Z=0$ 解决。静力 Green 核取 $k=0$，用同一一维算子构造显式响应函数。
+静力时 \(k=0\)，第 \(m\) 个 Fourier 分量满足
+\begin{equation}
+ \mathscr L_mY_m
+ :=\left(\frac{\dd^2}{\dd y^2}-\alpha_m^2\right)^2Y_m
+ =\frac{f_{\perp,m}(y)}{D},
  \qquad
- \int\frac{\dd\Omega}{(1-\vb n\cdot\vb w)^2}
- =\frac{4\pi}{1-w^2},
-\]
-其中 \(\vb w=\vb v/c\) 为辐射电荷的速度（以 \(c\) 为单位），\(w^2=|\vb w|^2\)。
-再由电荷守恒减去与
-\((\sum_A\varsigma_Aq_A)^2\) 成正比的常数项，得到
-\eqnrefs{eq:phys-rr-soft-integrated-spectrum}。
-\end{derivation}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.68\linewidth]{form_factor_shell.pdf}
-\caption{精确有限尺寸形状因子与长波展开。薄球壳的精确强度比为 \(\sinc^2\kappa_{\rm src}\)，Gaussian 云为 \(e^{-\kappa_{\rm src}^2/2}\)；虚线是各自的低 \(\kappa_{\rm src}\) 展开。同一个控制参数 \(\kappa_{\rm src}=\omega a_{\rm src}/c\) 并不意味着离开长波区后具有相同修正。}
-\label{fig:phys-rr-form-factor-shell}
-\end{figure}
-
-\begin{derivation}[多极振幅与角积分]
-在 \(\kappa_{\rm src}\ll1\) 时展开空间相位，
-\[
- e^{-\ii k\vb n\cdot\vb x}
- =1-\ii k n_jx_j+O(\kappa_{\rm src}^2).
-\]
-连续性方程分部积分给出
-\[
- \int J_i\dd^3x=\dot p_i,\qquad
- \int x_jJ_i\dd^3x=\frac12\dot I_{ij}-\epsilon_{ijk}m_k .
-\]
-把空间相位在源尺度上展开到二阶，\(\ee^{-\ii k\vb n\cdot\vb x}=1-\ii k(\vb n\cdot\vb x)-\frac{k^2}{2}(\vb n\cdot\vb x)^2+\cdots\)，代入上述矩。零阶项 \(\int J_i\dd^3x=\dot p_i\) 经时间 Fourier 变换即电偶极 \(-\ii\omega\widetilde p_i\)。一阶项 \(-\ii k n_j\int x_j\widetilde J_i\dd^3x\) 中，\(-\epsilon_{ijk}m_k\) 部分给出磁偶极 \(\ii k\,\vb n\times\widetilde{\vb m}\)；\(\frac12\dot I_{ij}\) 部分经 \(\dot I_{ij}\to-\ii\omega\widetilde I_{ij}\) 后给出四极 \(-\frac{k\omega}{2}n_j\widetilde I_{ij}\)。
-
-四极只有无迹部分存活。由 \(\mathcal Q^{\rm E}_{ij}=3I_{ij}-\delta_{ij}I_{kk}\) 得 \(I_{ij}=\frac13(\mathcal Q^{\rm E}_{ij}+\delta_{ij}I_{kk})\)，而横向投影 \(\Pi_{\perp,il}=\delta_{il}-n_in_l\) 满足 \(\Pi_\perp\cdot\vb n=0\)，故迹项 \(\delta_{ij}I_{kk}\) 在投影下整项消失：
-\[
- \Pi_\perp\cdot(\vb I\cdot\vb n)
- =\frac13\Pi_\perp\cdot(\mathcal Q^{\rm E}\cdot\vb n).
-\]
-于是四极振幅 \(-\frac{k\omega}{2}\cdot\frac13=-\frac{k\omega}{6}\)。合并偶极、磁偶极与四极，并仍保留 \(O(\kappa_{\rm src}^2)\) 余项，便有
-\[
- \vb\Pi_\perp\cdot\boldsymbol{\mathcal J}
- =-\ii\omega\vb\Pi_\perp\cdot\widetilde{\vb p}
- +\ii k\,\vb n\times\widetilde{\vb m}
- -\frac{k\omega}{6}\vb\Pi_\perp\cdot
- (\widetilde{\vb{\mathcal Q}}^{\rm E}\cdot\vb n)
- +O(\kappa_{\rm src}^2),
-\]
-即\eqnrefs{eq:phys-rr-multipole-current-amplitude}到所示阶次。
-
-完整球面积分使用
-\[
- \int n_in_j\dd\Omega=\frac{4\pi}{3}\delta_{ij},\qquad
- \int n_in_jn_kn_l\dd\Omega
- =\frac{4\pi}{15}
- (\delta_{ij}\delta_{kl}+\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}).
-\]
-于是电偶极和磁偶极的横向角因子均为 \(8\pi/3\)。对对称无迹四极 \(\mathcal Q^{\rm E}_{ij}\)（以下记作 \(Q_{ij}\)），先把被积函数展开
-\[
- |\Pi_\perp\cdot(\vb Q\cdot\vb n)|^2
- =Q_{ij}Q_{ik}n_jn_k-(\vb n\cdot\vb Q\cdot\vb n)^2,
-\]
-其中用了 \(n_in_i=1\) 与 \(Q_{ij}n_in_j=\vb n\cdot\vb Q\cdot\vb n\)。代入二阶、四阶角矩，
-\[
- \int n_jn_k\dd\Omega=\frac{4\pi}{3}\delta_{jk},\qquad
- \int n_jn_kn_ln_m\dd\Omega=\frac{4\pi}{15}(\delta_{jk}\delta_{ln}+\delta_{jl}\delta_{kn}+\delta_{jn}\delta_{kl}).
-\]
-第一项为 \(\int Q_{ij}Q_{ik}n_jn_k=\frac{4\pi}{3}Q_{ij}Q_{ij}\)；第二项因 \(Q_{jj}=0\)，\(\int(\vb n\cdot\vb Q\cdot\vb n)^2=\frac{4\pi}{15}(Q_{jl}Q_{jl}+Q_{jj}Q_{kk}+Q_{jl}Q_{lj})=\frac{8\pi}{15}Q_{ij}Q_{ij}\)。相减得
-\[
- \int\dd\Omega\,|\vb\Pi_\perp\cdot(\vb{\mathcal Q}^{\rm E}\cdot\vb n)|^2
- =\left(\frac{4\pi}{3}-\frac{8\pi}{15}\right)\mathcal Q^{\rm E}_{ij}(\mathcal Q^{\rm E}_{ij})^*
- =\frac{4\pi}{5}\mathcal Q^{\rm E}_{ij}(\mathcal Q^{\rm E}_{ij})^*.
-\]
-把这些结果代入精确母式，并使用
-\(\mu_0\varepsilon_0c^2=1\)，得到
-\eqnrefs{eq:phys-rr-e1-spectrum,eq:phys-rr-m1-spectrum,eq:phys-rr-e2-spectrum}。
-更高多极来自相位展开的下一阶，余项仍由
-\(\kappa_{\rm src}\) 而不是时间软参数控制。
-\end{derivation}
-多极展开的物理后果集中在选择定则与宇称上。电 $2^L$ 极辐射 $E_L$ 带宇称 $(-1)^L$，磁多极 $M_L$ 带宇称 $(-1)^{L+1}$；故电偶极 $E1$（$L=1$）连接宇称相反的态，而 $M1$、$E2$ 连接宇称相同的态，二者不可混淆。源尺度 $a_{\rm src}$ 满足 $ka_{\rm src}\ll1$ 时，第 $L$ 阶多极功率相对 $E1$ 被压低 $(ka_{\rm src})^{2(L-1)}$：偶极主导、更高阶为禁戒。这解释了原子光谱中电偶极线远强于磁偶极与四极线——后两者只能经 $M1/E2$ 或更高阶跃迁，且自带 $(ka)^{2L}$ 的幂次抑制。
-
-给定源部分由此闭合：任意频率先用\eqnrefs{eq:phys-rr-exact-radiation-spectrum-current}；点世界线用\eqnrefs{eq:phys-rr-exact-point-spectrum}；周期源用\eqnrefs{eq:phys-rr-exact-periodic-line-power}；只有 \(\kappa_{\rm src}\ll1\) 才进入多极\eqnrefs{eq:phys-rr-multipole-current-amplitude}，只有 \(\epsilon_{\rm soft}\ll1\) 才进入软因子\eqnrefs{eq:phys-rr-leading-soft-factor}。下一步不再把轨道视为外部给定，而是由外场与自场共同决定运动。
-
-\section{因果自场、Dirac 分解与点粒子极限}
-
-给定源的辐射谱把世界线当作已知函数；辐射反作用则必须同时决定场与源。因此一般起点不是某个点粒子阻尼项，而是 Maxwell 方程、守恒电流与总能动量守恒。只有在平滑有限尺寸源的因果自场已经定义之后，才能讨论点粒子极限中的奇异场、质量重整化与有限自力。
-
-采用度规
-\[
- g_{\mu\nu}=\diag(1,-1,-1,-1),
- \qquad x^\mu=(ct,\vb x),
- \qquad J^\mu=(c\rho_{\rm e},\vb J),
-\]
-令四势 \(A^\mu=(\Phi/c,\vb A)\)，场强张量 \(F^{\mu\nu}:=\partial^\mu A^\nu-\partial^\nu A^\mu\)，并定义 d'Alembert 算子 \(\Box:=\partial_\mu\partial^\mu=c^{-2}\partial_t^2-\nabla^2\)。再令 \(u^\mu=\dd z^\mu/\dd\tau\)、\(a^\mu=\dd u^\mu/\dd\tau\)。由于 \(x^0=ct\)，后文四维积分测度统一记作 \(\dd^4x:=\dd x^0\,\dd^3x=c\,\dd t\,\dd^3x\)，相应的 \(\delta^{(4)}(x)\) 对这一测度归一化。于是
-\[
- u^2=c^2,
- \qquad u\cdot a=0,
- \qquad u\cdot\dot a=-a^2.
-\]
-这些运动学恒等式将在 ALD 正交性和 Landau--Lifshitz 降阶中反复使用。
-
-接下来考察局域守恒、世界管与因果 Green 函数。
-
-电磁能动量张量取
-\begin{equation}
- T_{\rm em}^{\mu\nu}
- =\frac1{\mu_0}
- \left[-F^{\mu\alpha}F^\nu{}_{\alpha}
- +\frac14g^{\mu\nu}F^{\alpha\beta}F_{\alpha\beta}\right].
- \label{eq:phys-rr-em-stress-energy}
+ f_{\perp,m}(y)=\frac{2}{a}\int_0^a f_\perp(x,y)\sin(\alpha_mx)\dd x.
+ \label{eq:phys-sm-levy-static-ode}
 \end{equation}
-由 Maxwell 方程与 Bianchi 恒等式可得
-\[
- \partial_\mu T_{\rm em}^{\mu\nu}=-F^{\nu\lambda}J_\lambda.
-\]
-若 \(T_{\rm mat}^{\mu\nu}\) 包含物质的机械动量以及维持有限尺寸结构所需的非电磁应力，并把场分成外场和自场，定义 \(T_{\rm self}^{\mu\nu}:=T_{\rm em}^{\mu\nu}[F_{\rm self}]\)。对任意类空截面 \(\Sigma\)，对 \(X\in\{\mathrm{mat},\mathrm{self}\}\) 分别定义
-\[
- P_X^{\nu}[\Sigma]
- :=\frac1c\int_{\Sigma}T_X^{\mu\nu}\,\dd\Sigma_\mu,
-\]
-其中 \(\dd\Sigma_\mu\) 是定向三维超曲面元。因此 \(P_{\rm mat}^{\nu}\) 与 \(P_{\rm self}^{\nu}\) 分别是该截面上的物质四动量和自场四动量。于是内部 Lorentz 力在物质与自场之间相消，留下
+相应 Green 核由
 \begin{equation}
- \boxed{
- \partial_\mu\!
- \left(T_{\rm mat}^{\mu\nu}+T_{\rm self}^{\mu\nu}\right)
- =F_{\rm ext}^{\nu\lambda}J_\lambda .}
- \label{eq:phys-rr-exact-self-balance}
+ \mathscr L_m g_m^{XY}(y,\eta)=\delta(y-\eta)
+ \label{eq:phys-sm-levy-green-ode}
 \end{equation}
-这是一切自力公式的母守恒律。把它在由两张类空端面和一段世界管侧壁围成的四维区域内积分，得到
-\begin{align}
- &P_{\rm mat}^\nu[\Sigma_2]-P_{\rm mat}^\nu[\Sigma_1]
- +P_{\rm self}^\nu[\Sigma_2]-P_{\rm self}^\nu[\Sigma_1]\notag\\
- &\qquad
- +\frac1c\int_{\partial\mathcal W}T_{\rm self}^{\mu\nu}\dd\Sigma_\mu
- =\frac1c\int_{\mathcal V_4} F_{\rm ext}^{\nu\lambda}J_\lambda\dd^4x .
- \label{eq:phys-rr-worldtube-general-balance}
-\end{align}
-大世界管把侧壁通量解释为远区辐射；缩小世界管时，端面还包含随粒子运动的束缚近场动量。Schott 项与辐射动量正是这一同一守恒式的不同有限部分，而不是额外施加的耗散模型。
-
-对平滑有限尺寸电流，取 Lorenz 规范 \(\partial_\mu A^\mu=0\)，因果自场由
+以及两端的 \(XY\) 边界条件唯一决定。由于 \(\mathscr L_m\) 的最高导数系数为一、源只含 \(\delta\) 而不含其导数，源点条件是
 \[
- \Box A_{\rm self}^\mu=\mu_0J^\mu,
- \qquad
- A_{\rm self}^\mu(x)
- =\mu_0\int G_{\rm ret}(x-x')J^\mu(x')\dd^4x'
+[g_m]_{\eta}=0,
+\quad[g_m']_{\eta}=0,
+\quad[g_m'']_{\eta}=0,
+\quad[g_m''']_{\eta}=1.
 \]
-唯一确定。这里 \(G_{\rm ret}\) 是满足 \(\Box G=\delta^{(4)}\) 且支撑在未来光锥上的基本解；相应的过去支撑基本解记为 \(G_{\rm adv}\)。显式地
-\begin{equation}
- G_{\rm ret/adv}(x)
- =\frac1{2\pi}\theta(\pm x^0)\delta(x^2)
- =\frac{\delta(x^0\mp r)}{4\pi r},
- \qquad r=|\vb x|.
- \label{eq:phys-rr-ret-adv-green}
-\end{equation}
-因此平滑源的自力密度是有限而因果的历史泛函
-\begin{equation}
- \mathfrak f_{\rm self}^\mu(x)
- =\mu_0J_\nu(x)\int\dd^4x'\,
- \left[
- \partial^\mu G_{\rm ret}(x-x')J^\nu(x')
- -\partial^\nu G_{\rm ret}(x-x')J^\mu(x')
- \right].
- \label{eq:phys-rr-general-self-force-functional}
-\end{equation}
-其中 \(\mathfrak f_{\rm self}^\mu\) 是自场 Lorentz 四力密度。有限尺寸理论可直接使用\eqnrefs{eq:phys-rr-general-self-force-functional}。点粒子理论则只能把同一 Maxwell--源体系作为受调节的极限起点：一旦把 \(J^\mu\) 换成世界线分布，式中自场与源的乘积就变得奇异，必须先做局域分解与重整化，不能把分布形式直接代回并当作普通函数计算。
-
-为固定后续缩管极限的几何记号，图~\figref{fig:phys-rr-worldtube-geometry} 采用 Fermi 管：在固有时 \(\tau\) 的端面上取单位类空径向量 \(n^\mu\)，满足 \(n\cdot u=0\)、\(n^2=-1\)，并用 \(\ell>0\) 表示沿该端面的局域空间半径。后文点粒子极限取 \(\ell\to0\)。
-
-\begin{figure}[htbp]
-\centering
-\begin{adjustbox}{max width=0.96\linewidth}
-\input{figures/tikz/worldtube-geometry.tex}
-\end{adjustbox}
-\caption{世界管守恒的几何结构。管壁通量与端面束缚动量必须同时保留；只有把管半径缩小并完成质量重整化以后，才得到点粒子的有限自力。}
-\label{fig:phys-rr-worldtube-geometry}
-\end{figure}
-
-\begin{derivation}[局域守恒与世界管平衡]
-对\eqnrefs{eq:phys-rr-em-stress-energy}求散度。第一项用
-\(\partial_\mu F^{\mu\alpha}=\mu_0J^\alpha\) 化为
-\(-F^{\nu\lambda}J_\lambda\)；其余两项在
+这与“位移、斜率、弯矩连续而剪力跳跃”的板论表述完全等价。
+令
 \[
- \partial_\mu F_{\alpha\nu}+\partial_\alpha F_{\nu\mu}
- +\partial_\nu F_{\mu\alpha}=0
+ \boldsymbol\phi_m(y)
+ =\bigl(\cosh\alpha_my,\ \sinh\alpha_my,\ y\cosh\alpha_my,\ y\sinh\alpha_my\bigr)
 \]
-与 \(F_{\mu\nu}=-F_{\nu\mu}\) 下相消。因此
+为 \(\ker\mathscr L_m\) 的一组基。则
 \[
- \partial_\mu T_{\rm em}^{\mu\nu}=-F^{\nu\lambda}J_\lambda .
-\]
-物质张量的散度是相反的 Lorentz 四力密度。把总场分为给定外场与自场后，
-内部的物质--自场交换相消，留下
-\eqnrefs{eq:phys-rr-exact-self-balance}。
-
-在由两张类空端面 \(\Sigma_1,\Sigma_2\) 和类时管壁
-\(\partial\mathcal W\) 围成的四维区域上应用 Gauss 定理：
-\[
- \int_{\mathcal V_4}\partial_\mu T^{\mu\nu}\dd^4x
- =\int_{\Sigma_2-\Sigma_1+\partial\mathcal W}
- T^{\mu\nu}\dd\Sigma_\mu .
-\]
-再用
-\(P_X^\nu[\Sigma]=c^{-1}\int_\Sigma T_X^{\mu\nu}\dd\Sigma_\mu\)
-识别两端的物质与束缚场动量，便得到
-\eqnrefs{eq:phys-rr-worldtube-general-balance}。这一步对有限尺寸源是精确的；
-辐射通量、束缚动量与质量重整化只有在随后缩小世界管时才被分开。
-\end{derivation}
-
-\begin{figure}[htbp]
-\centering
-\begin{adjustbox}{max width=0.96\linewidth}
-\input{figures/tikz/dirac-decomposition.tex}
-\end{adjustbox}
-\caption{有限尺寸源与点粒子极限的两条自作用支路。有限尺寸源保留完整的因果记忆；点粒子极限中，Dirac 正则场与 Fermi 世界管守恒是两种独立组织方式，并汇聚到同一个有限 ALD 自力。Landau--Lifshitz 只在后文建立相应控制参数后才作为受控降阶出现。}
-\label{fig:phys-rr-dirac-self-force-decomposition}
-\end{figure}
-
-点电荷的协变电流是
-\begin{equation}
- J^\mu(x)=qc\int u^\mu(\tau')\delta^{(4)}
- (x-z(\tau'))\dd\tau' .
- \label{eq:phys-rr-point-current}
-\end{equation}
-它与光锥 Green 函数卷积得到
-\begin{equation}
- A_{\rm ret}^\mu
- =\frac{\mu_0qc}{4\pi}
- \left.\frac{u^\mu}{R\cdot u}\right|_{\rm ret},
- \qquad
- A_{\rm adv}^\mu
- =-\frac{\mu_0qc}{4\pi}
- \left.\frac{u^\mu}{R\cdot u}\right|_{\rm adv}.
- \label{eq:phys-rr-lw-four-potential}
-\end{equation}
-超前势只用于提取局部奇异结构；实际边界条件仍取推迟解。Dirac 分解为
-\begin{equation}
- F_{\rm S}^{\mu\nu}=\frac12(F_{\rm ret}^{\mu\nu}+F_{\rm adv}^{\mu\nu}),
- \qquad
- F_{\rm R}^{\mu\nu}=\frac12(F_{\rm ret}^{\mu\nu}-F_{\rm adv}^{\mu\nu}).
- \label{eq:phys-rr-dirac-split}
-\end{equation}
-两支共有的奇异项全在 \(F_{\rm S}^{\mu\nu}\) 中，半差在世界线上有限：
-\begin{equation}
- F_{\rm R}^{\mu\nu}(z(\tau))
- =\frac{q}{6\pi\varepsilon_0c^5}
- (\dot a^\mu u^\nu-\dot a^\nu u^\mu).
- \label{eq:phys-rr-regular-field-worldline}
-\end{equation}
-因此点粒子的有限自力是
-\begin{equation}
- f_{\rm self}^\mu
- =qF_{\rm R}^{\mu\nu}u_\nu
- =\frac{q^2}{6\pi\varepsilon_0c^3}
- \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
- \label{eq:phys-rr-ald-self-force}
-\end{equation}
-这条等式是局部点粒子极限的结论；有限尺寸源仍应使用前面的因果历史泛函。
-
-\begin{derivation}[光锥 Green 函数与 Liénard--Wiechert 势]
-由 \(\Box G=\delta^{(4)}\) 得
-\[
- G_{\rm ret/adv}(x)
- =-\int\frac{\dd^4k}{(2\pi)^4}
- \frac{e^{-\ii k\cdot x}}{k^2\pm\ii0\,k^0}.
-\]
-按 \(x^0\) 的符号闭合 \(k^0\) 围道，再做径向波数积分，得到
-\[
- G_{\rm ret/adv}(x)
- =\frac{\delta(x^0\mp r)}{4\pi r}
- =\frac1{2\pi}\theta(\pm x^0)\delta(x^2).
-\]
-将点流\eqnrefs{eq:phys-rr-point-current}代入卷积，并对
-\(\chi(\tau')=[x-z(\tau')]^2\) 使用
-\[
- \delta(\chi)=\sum_i
- \frac{\delta(\tau'-\tau_i)}{2|R\cdot u|_{\tau_i}},
-\]
-过去、未来光锥根分别给出\eqnrefs{eq:phys-rr-lw-four-potential}。
-
-对光锥条件求导有
-\(\partial_\alpha\tau'=R_\alpha/(R\cdot u)\)。据此对势求导并反对称化，
-推迟与超前场可统一写成
-\begin{equation}
- F_\eta^{\mu\nu}(x)
- =\eta\frac{q}{4\pi\varepsilon_0c}
- \left.
- \frac1{R\cdot u}\frac{\dd}{\dd\tau'}
- \left(\frac{R^\mu u^\nu-R^\nu u^\mu}{R\cdot u}\right)
- \right|_{\tau_\eta},
- \qquad \eta=\begin{cases}+1,&{\rm ret},\\-1,&{\rm adv}.
+ g_m^{XY}(y,\eta)=
+ \begin{cases}
+ \boldsymbol\phi_m(y)\vb c_{m,-}^{XY}(\eta),&y<\eta,\\[2pt]
+ \boldsymbol\phi_m(y)\vb c_{m,+}^{XY}(\eta),&y>\eta,
  \end{cases}
- \label{eq:phys-rr-unified-ret-adv-field}
-\end{equation}
-这个公式同时保留 \(R^{-2}\) 的速度场和 \(R^{-1}\) 的加速度场，是局域缩限的起点。
-\end{derivation}
-
-\begin{derivation}[Dirac 正则场的有限项]
-在世界线附近取 Fermi 坐标
-\(x^\mu=z^\mu(\tau)+\ell n^\mu\)，其中
-\(n\cdot u=0\)、\(n^2=-1\)。把过去与未来光锥根以及
-\eqnrefs{eq:phys-rr-unified-ret-adv-field}一致展开到有限阶，可写成
-\[
- F_{\rm ret/adv}^{\mu\nu}
- =F_{\rm S}^{\mu\nu}
- \pm\frac{q}{6\pi\varepsilon_0c^5}
- (\dot a^\mu u^\nu-\dot a^\nu u^\mu)+O(\ell).
 \]
-其中共同的 \(F_{\rm S}^{\mu\nu}\) 含 \(\ell^{-2}\) 与
-\(\ell^{-1}\) 奇异项；它们在半差中逐项抵消。因此
+其中八个系数由“四个端点条件 + 四个源点匹配条件”组成的 \(8\times8\) 线性系统确定。二维 Green 核因此统一为
+\begin{equation}
+ G^{XY}(x,y;\xi,\eta)
+ =\frac{2}{aD}\sum_{m=1}^{\infty}
+ g_m^{XY}(y,\eta)
+ \sin(\alpha_mx)\sin(\alpha_m\xi).
+ \label{eq:phys-sm-levy-2d-green}
+\end{equation}
+对任意静载，\(w=G^{XY}*f_\perp\)；点力则直接取对应源点的 Green 核。这里的解析性来自一对简支边所提供的正弦分解，而不是来自某个特定的载荷形状。
+均布横向载荷 $f_\perp=f_0$ 是上述 Green 核最直接的统一特例。
+\begin{exbox}[L\'evy 类板的均匀横向负载]
+令 \(f_\perp(x,y)=f_0\)。由\eqnrefs{eq:phys-sm-levy-static-ode}，
 \[
- \frac12(F_{\rm ret}^{\mu\nu}-F_{\rm adv}^{\mu\nu})
- \xrightarrow[\ell\to0]{}
- \frac{q}{6\pi\varepsilon_0c^5}
- (\dot a^\mu u^\nu-\dot a^\nu u^\mu),
+ f_{\perp,m}=\frac{2f_0}{a}\int_0^a\sin\frac{m\pi x}{a}\dd x
+ =\begin{cases}
+ \dfrac{4f_0}{m\pi},&m\ \text{为奇数},\\[4pt]
+ 0,&m\ \text{为偶数}.
+ \end{cases}
 \]
-即\eqnrefs{eq:phys-rr-regular-field-worldline}。该系数并非由最终自力反拟合，而是 Fermi 喷流展开的唯一结果：把 \(F_{\rm ret/adv}^{\mu\nu}\) 在世界线附近按 \(n^\mu,u^\mu\) 及其协变导数逐阶分类，\(F_{\rm S}^{\mu\nu}\) 的 \(\ell^{-2}\)、\(\ell^{-1}\) 奇异项在半差中逐项抵消，正则部分唯一幸存且横向于 \(u^\mu\) 的结构即 \(\dot a^\mu u^\nu-\dot a^\nu u^\mu\)，系数由该展开的几何数值固定。两支光锥根的高阶修正不能整体丢弃：ret/adv 根在 \(O(\ell^3)\) 阶有不对称偏移，成对略去便会在正则场中引入伪有限项；Dirac 处方要求在同一 \(O(\ell^3)\) 精度上保留两支，这不同于随意取某个有限部分。
-\end{derivation}
-
-\begin{derivation}[正则场到 ALD 自力]
-将\eqnrefs{eq:phys-rr-regular-field-worldline}与四速度缩并：
+所以只有奇数 \(m\) 被激发。对每个奇数 \(m\)，常数
 \[
- f_{\rm self}^\mu
- =\frac{q^2}{6\pi\varepsilon_0c^5}
- \left(c^2\dot a^\mu-u^\mu\,u\cdot\dot a\right).
+ Y_m^{(\mathrm p)}=\frac{4f_0}{Dm\pi\alpha_m^4}
 \]
-由 \(u^2=c^2\) 两次求导得到
-\(u\cdot a=0\) 与 \(u\cdot\dot a=-a^2\)，因而
+是一个特解，因为 \(\mathscr L_m1=\alpha_m^4\)。于是
+\begin{equation}
+ Y_m^{XY}(y)
+ =\frac{4f_0}{Dm\pi\alpha_m^4}
+ +\boldsymbol\phi_m(y)\vb d_m^{XY},
+ \qquad m\ \text{为奇数},
+ \label{eq:phys-sm-levy-uniform-mode}
+\end{equation}
+而 \(\vb d_m^{XY}\) 只需用两端的四个边界条件确定。最终得到单重级数
 \[
- f_{\rm self}^\mu
- =\frac{q^2}{6\pi\varepsilon_0c^3}
- \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
+ w^{XY}(x,y)
+ =\sum_{\substack{m=1\\m\,\mathrm{odd}}}^{\infty}
+ Y_m^{XY}(y)\sin\frac{m\pi x}{a}.
 \]
-这就是\eqnrefs{eq:phys-rr-ald-self-force}，并且
-\(u_\mu f_{\rm self}^\mu=0\)；最后一个正交性同时固定两项的相对符号。
-\end{derivation}
-世界管方法把同一自力分解为束缚近场和远区辐射。Fermi 端面上的束缚四动量为
-\begin{equation}
- P_{\rm bound}^\mu(\ell)
- =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu
- -\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu+O(\ell).
- \label{eq:phys-rr-bound-momentum-expansion}
-\end{equation}
-第一项吸收到观测质量
-\begin{equation}
- m=\lim_{\ell\to0}\left[
- m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}\right],
- \label{eq:phys-rr-mass-renormalization}
-\end{equation}
-第二项定义 Schott 四动量
-\begin{equation}
- P_{\rm Schott}^\mu
- =-\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu .
- \label{eq:phys-rr-schott-momentum}
-\end{equation}
-远区辐射携走的四动量率为
-\begin{equation}
- \frac{\dd P_{\rm rad}^\mu}{\dd\tau}
- =-\frac{q^2}{6\pi\varepsilon_0c^5}a^2u^\mu ,
- \label{eq:phys-rr-radiated-four-momentum-rate}
-\end{equation}
-所以
-\begin{equation}
- f_{\rm self}^\mu
- =-\frac{\dd P_{\rm Schott}^\mu}{\dd\tau}
- -\frac{\dd P_{\rm rad}^\mu}{\dd\tau}.
- \label{eq:phys-rr-self-force-momentum-split}
-\end{equation}
-Schott 项是可逆的近场储能，只有其边界贡献消失时，机械能损失才逐过程等于远区辐射能。
-
-质量重整化后的运动方程为
-\begin{equation}
- ma^\mu=qF_{\rm ext}^{\mu\nu}u_\nu+
- \frac{q^2}{6\pi\varepsilon_0c^3}
- \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
- \label{eq:phys-rr-ald}
-\end{equation}
-它的实验室时间分量给出 Liénard 功率（\(\gamma=1/\sqrt{1-v^2/c^2}\) 为粒子洛伦兹因子）
-\begin{equation}
- P_{\rm rad}
- =\frac{q^2\gamma^6}{6\pi\varepsilon_0c^3}
- \left[\vb a^2-\frac{|\vb v\times\vb a|^2}{c^2}\right].
- \label{eq:phys-rr-lienard-power}
-\end{equation}
-低速时才退化为 Larmor 公式；不能从低速功率反推协变自力。
-
-\begin{derivation}[Fermi 世界管与质量重整化]
-在 Fermi 端面的瞬时静止系中，近场的唯一
-\(r^{-2}\) 主项是 Coulomb 场，因此
+当 \(XY=\mathrm{SS}\) 时，这一表示可再化为四边简支的 Navier 双重级数；其他边界组合只改变边界代数系统，而不改变一维母算子 \(\mathscr L_m\)。
+\end{exbox}
+\begin{proof}[解]
+将\eqnrefs{eq:phys-sm-levy-dynamic-ode}因式分解：
 \[
- U_{\rm div}(\ell)
- =\int_\ell^{L_{\rm loc}}\frac{\varepsilon_0}{2}
- \left(\frac{q}{4\pi\varepsilon_0r^2}\right)^2
- 4\pi r^2\dd r
- =\frac{q^2}{8\pi\varepsilon_0\ell}+O(\ell^0).
+\left(\frac{\dd^2}{\dd y^2}-\alpha_m^2-k^2\right)
+\left(\frac{\dd^2}{\dd y^2}-\alpha_m^2+k^2\right)Y_m=0.
 \]
-其中 \(\ell\) 为世界管内半径，\(L_{\rm loc}\) 为 Coulomb 近场近似仍成立的外截断，发散仅来自 \(\ell\) 端。
-同阶没有 Poynting 动量，故协变化后发散四动量平行于 \(u^\mu\)：
+定义
 \[
- P_{\rm div}^\mu
- =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu .
+ p_m^2=\alpha_m^2+k^2,
+ \qquad \chi_m^2=k^2-\alpha_m^2,
 \]
-有限的局域束缚动量只能与 \(a^\mu\) 成正比。由世界管平衡，束缚近场动量的变化率为 \(\dd P_{\rm bound}^\mu/\dd\tau=-f_{\rm self}^\mu-\dd P_{\rm rad}^\mu/\dd\tau\)。代入正则自力与 Larmor 辐射流 \(\dd P_{\rm rad}^\mu/\dd\tau=-q^2a^2u^\mu/(6\pi\varepsilon_0c^5)\)，两个 \(a^2u^\mu\) 项相消，得 \(\dd P_{\rm bound}^\mu/\dd\tau=-q^2\dot a^\mu/(6\pi\varepsilon_0c^3)\)。对 \(\tau\) 积分并把发散 Coulomb 项 \(\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu\) 单列，即
+其中当 \(k<\alpha_m\) 时 \(\chi_m\) 为纯虚数，下面的三角函数按解析延拓理解；这不会改变四维解空间。临界点 \(k=\alpha_m\) 时 \(\chi_m=0\)，应把第四列按非奇异重标度 \(\sin(\chi_my)/\chi_m\to y\) 取极限，而不能把 \(\sin(\chi_my)\) 直接当成零列。其所有边界迹也必须按同一列重标度取极限。除这一可去退化外，一组基本解为
 \[
- P_{\rm bound}^\mu(\ell)
- =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu
- -\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu+O(\ell),
+\boldsymbol\varphi_m
+=(\cosh p_my,\ \sinh p_my,\ \cos \chi_my,\ \sin \chi_my).
 \]
-即\eqnrefs{eq:phys-rr-bound-momentum-expansion}。把第一项与裸机械动量合并，
+对它逐项作用四个边界迹，得到
 \[
- m=\lim_{\ell\to0}\left[
- m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}\right],
+\begin{aligned}
+\vb R_W&=(\cosh p_my,\ \sinh p_my,\ \cos \chi_my,\ \sin \chi_my),\\
+\vb R_{\theta}&=(p_m\sinh p_my,\ p_m\cosh p_my,\ -\chi_m\sin \chi_my,\ \chi_m\cos \chi_my),
+\end{aligned}
 \]
-得到\eqnrefs{eq:phys-rr-mass-renormalization}。
-
-将束缚动量导数和
-\(\dd P_{\rm rad}^\mu/\dd\tau
- =-q^2a^2u^\mu/(6\pi\varepsilon_0c^5)\)
-代回世界管平衡式并取 \(\ell\to0\)，便得到
 \[
- ma^\mu=f_{\rm ext}^\mu+
- \frac{q^2}{6\pi\varepsilon_0c^3}
- \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
+\begin{aligned}
+\vb R_M=(& (p_m^2-\nu\alpha_m^2)\cosh p_my,
+(p_m^2-\nu\alpha_m^2)\sinh p_my,\\
+&-(\chi_m^2+\nu\alpha_m^2)\cos \chi_my,
+-(\chi_m^2+\nu\alpha_m^2)\sin \chi_my),
+\end{aligned}
 \]
-因此发散惯性、Schott 束缚动量和远区辐射通量来自同一个守恒式，
-而不是三个独立假设。
-\end{derivation}
-\section{从 ALD 到受控的 Landau--Lifshitz 有效动力学}
-
-ALD 已经是从 Maxwell--守恒律点极限得到的局部方程，但它含三阶世界线导数。为了得到实际计算中常用的二阶方程，必须先识别 ALD 的额外解模态，再在辐射反作用时间远短于外场变化时间时做受控的阶数约化。
-
-定义电子之外任意电荷 \(q\)、质量 \(m\) 的辐射反作用时间
-\begin{equation}
- \tau_{\rm rr}=\frac{q^2}{6\pi\varepsilon_0mc^3}.
- \label{eq:phys-rr-reaction-time}
-\end{equation}
-它不是新的基本常数，而是点粒子自力相对于机械惯性的时间尺度。
-
-接下来考察 失控、无 失控 分支与预加速。
-
-一维相对论运动可用快度 \(\psi(\tau)\) 精确参数化：
 \[
- u^\mu=c(\cosh\psi,\sinh\psi,0,0).
+\begin{aligned}
+\vb R_V=(&p_m[p_m^2-(2-\nu)\alpha_m^2]\sinh p_my,
+ p_m[p_m^2-(2-\nu)\alpha_m^2]\cosh p_my,\\
+&\chi_m[\chi_m^2+(2-\nu)\alpha_m^2]\sin \chi_my,
+-\chi_m[\chi_m^2+(2-\nu)\alpha_m^2]\cos \chi_my).
+\end{aligned}
 \]
-若 \(F_\parallel=\dd p/\dd t\) 是沿运动方向的普通三维外力，则 ALD 方程严格化为
-\begin{equation}
- mc\left(\dot\psi-\tau_{\rm rr}\ddot\psi\right)=F_\parallel(\tau).
- \label{eq:phys-rr-ald-rapidity}
-\end{equation}
-齐次方程含 \(\dot\psi\propto e^{\tau/\tau_{\rm rr}}\) 的 失控 模态。若要求外力在未来关闭后加速度不指数增长，就必须选取特殊的无 失控 分支
-\begin{equation}
- \boxed{
- \dot\psi(\tau)
- =\frac1{mc}\int_0^\infty e^{-r}
- F_\parallel(\tau+\tau_{\rm rr}r)\dd r .}
- \label{eq:phys-rr-no-runaway-integral}
-\end{equation}
-它把 失控 排除掉，但当前加速度依赖未来宽度 \(O(\tau_{\rm rr})\) 的外力，这就是点粒子 ALD 的预加速。对真实有限尺寸源，基本描述应回到因果记忆核，而不能把\eqnrefs{eq:phys-rr-no-runaway-integral} 当作微观因果律。
-
-\begin{derivation}[无 失控 分支]
-快度参数化给出
+若 \(\vb c_m=(c_{m,1},c_{m,2},c_{m,3},c_{m,4})^{\mathsf T}\)，则边界量就是相应行向量乘 \(\vb c_m\)。在 \(y=0\) 按 \(X\) 选两行，在 \(y=b\) 按 \(Y\) 选两行，即得正文的 \(\vb Z_{m,\mathrm L}^{XY}(k)\)。四个齐次边界方程存在非零系数向量，当且仅当其行列式为零，从而得到\eqnrefs{eq:phys-sm-levy-characteristic}。
+\end{proof}
+\begin{proof}[解]
+对\eqnrefs{eq:phys-sm-levy-green-ode}，左右两侧分别写成
 \[
- a^\mu=c\dot\psi(\sinh\psi,\cosh\psi,0,0),\qquad
- \dot a^\mu+\frac{a^2}{c^2}u^\mu
- =c\ddot\psi(\sinh\psi,\cosh\psi,0,0).
-\]
-一维外四力也沿同一类空方向，故 ALD 方程约化为
-\eqnrefs{eq:phys-rr-ald-rapidity}。令 \(w=\dot\psi\)，乘以积分因子后有
-\[
- \frac{\dd}{\dd\tau}
- \left(e^{-\tau/\tau_{\rm rr}}w\right)
- =-\frac{e^{-\tau/\tau_{\rm rr}}}{mc\tau_{\rm rr}}
- F_\parallel(\tau).
-\]
-一般解包含 \(e^{\tau/\tau_{\rm rr}}\) 齐次模。施加未来无 失控 边界条件，
-从 \(\tau\) 积分到 \(+\infty\)，得到
-\[
- W(\tau)=\frac1{mc\tau_{\rm rr}}\int_\tau^\infty
- e^{-(s-\tau)/\tau_{\rm rr}}F_\parallel(s)\dd s.
-\]
-令 \(r=(s-\tau)/\tau_{\rm rr}\) 即得
-\eqnrefs{eq:phys-rr-no-runaway-integral}。未来力之所以出现，正是因为这里用
-未来边界条件投影掉增长模。
-\end{derivation}
-
-若外力在固有时尺度 \(T\) 上光滑变化，无 失控 积分的局域展开为
-\begin{equation}
- mc\dot\psi
- =F_\parallel+\tau_{\rm rr}\dot F_\parallel
- +O(\mathcal F_\star\epsilon_{\rm grad}^2),
- \qquad \epsilon_{\rm grad}=\frac{\tau_{\rm rr}}T,\qquad \mathcal F_\star\text{ 为外力在尺度 }T\text{ 上的典型幅值}.
- \label{eq:phys-rr-ll-scalar-local}
-\end{equation}
-这说明 Landau--Lifshitz 方程是 ALD 无 失控 分支的受控低频展开。定义
-\begin{equation}
- \mathsf P_u^\mu{}_\nu
- =\delta^\mu{}_\nu-\frac{u^\mu u_\nu}{c^2}.
- \label{eq:phys-rr-orthogonal-projector}
-\end{equation}
-只在已经带有 \(\tau_{\rm rr}\) 的项中代入零阶 Lorentz 动力学，得到
-\begin{equation}
-\begin{split}
- ma^\mu={}&qF_{\rm ext}^\mu{}_\nu u^\nu
- +q\tau_{\rm rr}\mathsf P_u^\mu{}_\rho
- (\partial_\alpha F_{\rm ext}^\rho{}_\nu)u^\alpha u^\nu\\
- &+\frac{q^2\tau_{\rm rr}}m\mathsf P_u^\mu{}_\rho
- F_{\rm ext}^\rho{}_\nu F_{\rm ext}^\nu{}_\beta u^\beta
- +O(\mathcal F_\star\epsilon_{\rm LL}^2).
-\end{split}
- \label{eq:phys-rr-landau-lifshitz}
-\end{equation}
-这里还要控制
-\[
- \epsilon_{\rm acc}=\frac{\tau_{\rm rr}}c\sqrt{-a_0^2},
+ g_- =\boldsymbol\phi_m\vb c_-,
  \qquad
- \epsilon_{\rm LL}=\max(\epsilon_{\rm grad},\epsilon_{\rm acc})\ll1,
+ g_+ =\boldsymbol\phi_m\vb c_+.
 \]
-其中 \(a_0^\mu=(q/m)F_{\rm ext}^\mu{}_\nu u^\nu\)。前者控制外场梯度，后者控制强场中四速度在一个反作用时间内的转动。
-
-\begin{derivation}[Landau--Lifshitz 阶数约化]
-若 \(\|F_\parallel^{(n)}\|\sim\mathcal F_\star/T^n\)，在无 失控 积分中展开
+在 \(y=0\) 对 \(\vb c_-\) 施加下边 \(X\) 的两个条件，在 \(y=b\) 对 \(\vb c_+\) 施加上边 \(Y\) 的两个条件；源点再施加
 \[
- F_\parallel(\tau+\tau_{\rm rr}r)
- =F_\parallel+\tau_{\rm rr}r\,\dot F_\parallel+R_1(r).
+ g_--g_+=0,\quad
+ g_-' -g_+'=0,\quad
+ g_-''-g_+''=0,\quad
+ g_+'''-g_-'''=1.
 \]
-Taylor 余项与
-\(\int_0^\infty e^{-r}r^2\dd r=2\) 给出
+前三个条件保证位移、斜率与弯矩在源点连续，第四个则来自 \(\mathscr L_m\) 的最高阶系数为一时 \(\delta\) 源对应的剪力跳跃。把八个方程按 \((\vb c_-,\vb c_+)\) 的分量排成矩阵 \(\vb M_m^{XY}(\eta)\)，其行列式恰为两个二维齐次子空间在源点处的 Wronski 型组合，当 \(\eta\in(0,b)\) 时非零。这八个方程组成唯一的 \(8\times8\) 匹配系统，并给出正文\eqnrefs{eq:phys-sm-levy-2d-green}。具体地，\(\vb M_m^{XY}\) 可按 \(\eta\) 分块为
 \[
- \left|\int_0^\infty e^{-r}R_1(r)\dd r\right|
- =O\!\left(\mathcal F_\star\frac{\tau_{\rm rr}^2}{T^2}\right).
+ \vb M_m^{XY}(\eta)=
+ \begin{pmatrix}
+  \vb B_X(0) & \vb 0\\
+  \vb 0 & \vb B_Y(b)\\
+  \boldsymbol\phi_m(\eta) & -\boldsymbol\phi_m(\eta)\\
+  \boldsymbol\phi_m'(\eta) & -\boldsymbol\phi_m'(\eta)\\
+  \boldsymbol\phi_m''(\eta) & -\boldsymbol\phi_m''(\eta)\\
+  -\boldsymbol\phi_m'''(\eta) & \boldsymbol\phi_m'''(\eta)
+ \end{pmatrix},
 \]
-因此得到\eqnrefs{eq:phys-rr-ll-scalar-local}，而首个舍弃项由
-\(\epsilon_{\rm grad}^2\) 控制。
-
-协变地写
+其中 \(\vb B_X,\vb B_Y\) 是两端边界算子对基向量 \(\boldsymbol\phi_m\) 的作用矩阵。
+对均布载荷取常数特解 \(Y_m^{(\mathrm p)}=Y_{m,0}\)，其中
 \[
- ma^\mu=f_{\rm ext}^\mu+
- m\tau_{\rm rr}\mathsf P_u^\mu{}_\nu\dot a^\nu .
+ Y_{m,0}=\frac{4f_0}{Dm\pi\alpha_m^4}.
 \]
-只在已经乘有 \(\tau_{\rm rr}\) 的项中代入零阶关系
-\(a^\mu=f_{\rm ext}^\mu/m+O(\tau_{\rm rr})\)。对
-\(f_{\rm ext}^\rho=qF_{\rm ext}^\rho{}_\nu u^\nu\) 沿世界线求导，
+该特解的选取依据是 \(\mathscr L_m1=\alpha_m^4\)，故常数 \(Y_{m,0}\) 恰使 \(\mathscr L_mY_{m,0}=4f_0/(Dm\pi)\) 等于强迫项。于是
 \[
- \dot f_{\rm ext}^\rho
- =q(\partial_\alpha F_{\rm ext}^\rho{}_\nu)u^\alpha u^\nu
- +\frac{q^2}{m}F_{\rm ext}^\rho{}_\nu
- F_{\rm ext}^\nu{}_\beta u^\beta+O(\tau_{\rm rr}).
+\mathcal W_m[Y_{m,0}]=Y_{m,0},
+\quad
+\Theta_m[Y_{m,0}]=0,
+\quad
+\mathcal M_m[Y_{m,0}]=-\nu\alpha_m^2Y_{m,0},
+\quad
+\mathcal V_m[Y_{m,0}]=0.
 \]
-投影到 \(u^\perp\) 后即得
-\eqnrefs{eq:phys-rr-landau-lifshitz}。梯度展开和零阶四速度在一个
-\(\tau_{\rm rr}\) 内的转动分别由
-\(\epsilon_{\rm grad}\) 与 \(\epsilon_{\rm acc}\) 控制，所以总误差从
-\(O(\epsilon_{\rm LL}^2)\) 开始。
-\end{derivation}
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.82\linewidth]{order_reduction_error.pdf}
-\caption{低频梯度方向的阶数约化误差标度。图中只展示 \(\epsilon_{\rm grad}=\tau_{\rm rr}/T\) 的截断层级；协变强场情形还需同时满足正文定义的 \(\epsilon_{\rm acc}\ll1\)。}
-\label{fig:phys-rr-order-reduction-error}
-\end{figure}
-
-接下来考察有限尺寸源：两时因果核与局域极限。
-
-平滑扩展电荷的基本自作用仍由\eqnrefs{eq:phys-rr-general-self-force-functional}定义。若用集体坐标 \(\Xi_A(t)\) 参数化整体运动或内部形变，其中离散指标 \(A,B\) 只枚举所选集体自由度而不是 Lorentz 指标；在一条给定背景解 \(\Xi_A^{(0)}(t)\) 附近线性化，记 \(\delta\Xi_A=\Xi_A-\Xi_A^{(0)}\)、\(\delta F_A^{\rm self}=F_A^{\rm self}-F_{A,(0)}^{\rm self}\)，则最一般的一阶因果响应是两时 Volterra 算子
+这里 \(\mathcal W_m,\Theta_m,\mathcal M_m,\mathcal V_m\) 分别为位移、斜率、弯矩与有效剪力算子。因此齐次修正项在一条 \(\mathrm C,\mathrm S,\mathrm F\) 边上分别需要抵消的残量为
+\[
+\vb r_{\mathrm C}=(-Y_{m,0},0)^{\mathsf T},\qquad
+\vb r_{\mathrm S}=(-Y_{m,0},\nu\alpha_m^2Y_{m,0})^{\mathsf T},\qquad
+\vb r_{\mathrm F}=(\nu\alpha_m^2Y_{m,0},0)^{\mathsf T}.
+\]
+以 \(\mathrm C\) 边为例：固支要求位移与斜率同时为零，故残量第一分量为 \(-Y_{m,0}\)（抵消特解位移），第二分量为 \(0\)（特解斜率已为零）。\(\mathrm S\) 边需同时抵消位移与弯矩 \(-\nu\alpha_m^2Y_{m,0}\)；\(\mathrm F\) 边则需抵消弯矩，而特解剪力已为零。把下、上两边相应的两个残量块叠成四维右端，就得到 \(\vb d_m^{XY}\) 的 \(4\times4\) 边界系统
+\[
+ \vb Z_{m,\mathrm L}^{XY}(k)\,\vb d_m^{XY}
+ =\begin{pmatrix}\vb r_X\\\vb r_Y\end{pmatrix},
+\]
+代回\eqnrefs{eq:phys-sm-levy-uniform-mode}即可。这一处理对任意 \(XY\in\{\mathrm C,\mathrm S,\mathrm F\}^2\) 都适用，只是 \(\vb Z_{m,\mathrm L}^{XY}\) 的行选取不同。
+\end{proof}
+四边简支与 L\'evy 类边界因此都只是前面一般 Kirchhoff--Love 双调和算子的几何特例：前者把两个方向都谱对角化，后者只对一个方向谱对角化，再用一维自伴边界问题处理另一个方向。具体几何没有改变变分结构、Green 跳跃或谱理论，只改变了实现这些一般结构所用的基函数。
+\section{Chladni 图形：节线的一般理论与实例}
+\label{sec:phys-sm-chladni-general}
+前两节分别把环板和长方形的谱显式写出。本节回到本章标题中的核心物理对象：Chladni 图形。1787 年 Chladni 用琴弓拉振金属板并在其上撒沙，观察到沙粒聚集到振动为零的节线上，形成对称而优美的图案。这些图案并非额外模型，而是双调和算子本征函数的\emph{节点集}。本节目的不是罗列具体图形，而是给出适用于任意有界区域 \(\mathcal A\subset\mathbb R^2\) 和任意自伴边界实现 \(X\in\{\mathrm C,\mathrm S,\mathrm F\}\) 的一般理论，再把环板和长方形作为特例代入。
+设 \(\{\Psi_j,\omega_j\}_{j=1}^\infty\) 是双调和算子在区域 \(\mathcal A\) 上对应边界实现 \(X\) 的本征系，按质量内积
+\[
+ \langle f,g\rangle_\mu=\int_{\mathcal A}\rho_{\rm m} h\,f^*g\,\dd a
+\]
+归一。第 \(j\) 个 Chladni 图形定义为\emph{节点集}
 \begin{equation}
- \delta F_A^{\rm self}(t)
- =\sum_B\int_{-\infty}^{t}
- K_{AB}(t,t')\,\delta\Xi_B(t')\dd t'.
- \label{eq:phys-rr-finite-size-memory}
+ \mathcal N_j
+ :=\{\vb r\in\mathcal A:\Psi_j(\vb r)=0\}.
+ \label{eq:phys-sm-chladni-nodal-set}
 \end{equation}
-核 \(K_{AB}(t,t')\) 同时记录源的内部传播、背景运动以及推迟 Green 函数；积分上限 \(t\) 就是因果性。一般非平稳背景下，核依赖两个时间，不能预先写成只依赖时间差的卷积。
-
-只有当线性化背景具有时间平移不变性时，才有
+在实验中，板面撒布的细沙在驻波腹点处被垂直加速度 \(-\omega_j^2\Psi_j\) 抛起、在节点处静止，因此沙粒沿 \(\mathcal N_j\) 聚集。Chladni 图形因此完全由谱理论决定，不需要在板方程之外引入任何新物理。
+节点集的普适结构由以下几条给出。
+(i) Courant 节域定理。把节点集 \(\mathcal N_j\) 在 \(\mathcal A\) 中截出的连通开区域称为\emph{节域}，其数目记为 \(\mu(\Psi_j)\)。将本征值按重数排序 \(\omega_1\le\omega_2\le\cdots\)，则
 \begin{equation}
- K_{AB}(t,t')=K_{AB}(t-t'),
- \qquad K_{AB}(s)=0\quad(s<0),
- \label{eq:phys-rr-stationary-memory-kernel}
+ \mu(\Psi_j)\le j.
+ \label{eq:phys-sm-courant-nodal-domain}
 \end{equation}
-此时\eqnrefs{eq:phys-rr-finite-size-memory}退化为因果卷积，并可在频域写成
+这一结论对任意自伴椭圆算子成立，不限于双调和或特定边界。它说明第 \(j\) 个模态最多把板面分成 \(j\) 块振动相位互不连通的区域。对基态 \(j=1\)，\(\mu\le1\) 意味着基态无内节线——板面整体同相振动。
+(ii) 节线光滑性与交叉。对双调和算子 \(\nabla_t^4\)，本征函数 \(\Psi_j\) 是实解析的（因为 \(\nabla_t^4\Psi_j=\omega_j^2(\rho_{\rm m}h/D)\Psi_j\) 右端光滑，由椭圆正则性逐次提升可得任意阶可导，再用解析椭圆估计得到实解析）。因此 \(\mathcal N_j\) 是 \(\Psi_j\) 的零水平集。由隐函数定理，在梯度非零处 \(\nabla_t\Psi_j\neq0\)，节线是光滑曲线。在临界点 \(\nabla_t\Psi_j=0\) 处，\(\Psi_j\) 的 Taylor 展开主导项为二次型，节线在该处可形成交叉或孤立点。
+(iii) 双调和与 Laplace 节线的区别。对 Laplace 算子 \(-\nabla_t^2\)，节线在内部不相交（Pleijel 定理的推论），两条节线只会在边界相遇。但对双调和算子 \(\nabla_t^4\)，节线\emph{可以在内部交叉}。这是因为 \(\nabla_t^4=(\nabla_t^2)^2\)，若 \(\Psi\) 同时是 Laplace 本征函数 \(-\nabla_t^2\Psi=\lambda\Psi\)，则它自动是双调和本征函数 \(\nabla_t^4\Psi=\lambda^2\Psi\)，而两个 Laplace 本征函数的线性组合 \(\Psi=\Psi_a+c\,\Psi_b\)（若 \(\lambda_a=\lambda_b\) 即简并）的零集正是两条节线的交叉图案。方形板的经典十字形 Chladni 图就是这一机制的产物。
+(iv) 边界行为。在边界 \(\partial\mathcal A\) 上，节线与边界的交角受边界条件约束。对固支边 \(\mathrm C\)，\(\Psi_j|_{\partial\mathcal A}=0\) 意味着整条边界都是节点，节线从边界出发的方向由 \(\partial_n\Psi_j=0\) 进一步约束。对简支边 \(\mathrm S\)，\(\Psi_j|_{\partial\mathcal A}=0\) 同样使边界属于节点集，但 \(\partial_n\Psi_j\) 自由，节线以非零角度与边界相遇。对自由边 \(\mathrm F\)，边界一般不属于节点集，节线只在特定点与边界相遇，这些点由 \(M_{nn}=0\) 与 \(V_n=0\) 的额外约束决定。
+\begin{proof}[解]
+策略：用节域上的 Rayleigh 商构造 \(j-1\) 个试探函数，由极小极大原理推出矛盾。
+设 \(\Psi_j\) 的节域为 \(\Omega_1,\ldots,\Omega_\mu\)，其中 \(\mu=\mu(\Psi_j)\)。在每个节域 \(\Omega_\ell\) 上，\(\Psi_j|_{\Omega_\ell}\) 满足 Dirichlet 边界条件（因为在 \(\partial\Omega_\ell\) 上 \(\Psi_j=0\)），且
 \[
- \widetilde{\delta F}_A^{\rm self}(\omega)
- =\sum_B\widetilde K_{AB}(\omega)\widetilde{\delta\Xi}_B(\omega).
+ \nabla_t^4\Psi_j=\omega_j^2\frac{\rho_{\rm m}h}{D}\Psi_j
+ \quad\text{在 }\Omega_\ell\text{ 内}.
 \]
-若结构尺度为 \(a_{\rm src}\)，局域导数展开仍由前面同一个结构参数
+因此 \(\omega_j^2\) 是双调和算子在 \(\Omega_\ell\) 上带 Dirichlet 边界的本征值。由 Rayleigh 商，
 \[
- \kappa_{\rm src}=\frac{\omega a_{\rm src}}{c}\ll1
+ \omega_j^2
+ =\frac{D\int_{\Omega_\ell}|\nabla_t^2\Psi_j|^2\dd a}
+ {\int_{\Omega_\ell}\rho_{\rm m}h\,|\Psi_j|^2\dd a}
+ \ge\lambda_1(\Omega_\ell),
 \]
-控制，
-并要求 \(\widetilde K_{AB}(\omega)\) 在所考察频带内远离内部极点、阈值和分支切口而可作解析展开。于是
+其中 \(\lambda_1(\Omega_\ell)\) 是 \(\Omega_\ell\) 上带 Dirichlet 边界的双调和算子第一本征值。
+现在构造 \(\mu-1\) 个试探函数。在每个节域上令
 \[
-\widetilde K_{AB}(\omega)
-=K^{(0)}_{AB}
-+(-\ii\omega)K^{(1)}_{AB}
-+(-\ii\omega)^2K^{(2)}_{AB}+\cdots,
+ \phi_\ell(\vb r)=
+ \begin{cases}
+  \displaystyle\frac{\Psi_j|_{\Omega_\ell}}{\|\Psi_j\|_{L^2(\Omega_\ell)}},& \vb r\in\Omega_\ell,\\[6pt]
+  0,& \vb r\notin\Omega_\ell.
+ \end{cases}
 \]
-其逆 Fourier 变换才产生“附加质量”“阻尼”和更高导数等局域项。若内部模、共振或有限传播时延被解析地分辨出来，就必须保留完整两时核或平稳情形下的完整频率响应，而不能继续截断成有限阶局域方程。
-
-这一区分也固定了 ALD 与有限尺寸理论的逻辑关系：ALD 是理想点粒子缩限中经过质量重整化后留下的局域有限项；扩展源还保留结构尺度 \(a_{\rm src}/c\) 以及可能的内部模时间尺度。只有在点粒子近似、低频结构展开和 \(\tau_{\rm rr}/T\ll1\) 同时成立时，Landau--Lifshitz 才是最终受控的二阶有效方程。
-
-\section{从守恒律到谱与反作用的闭合链}
-
-本章现在形成一条单向依赖关系。首先，Maxwell 方程和 \(\partial_\mu J^\mu=0\) 给出任意守恒源的辐射壳振幅与一般频谱；世界线表示、多极展开和软极限都只是该精确频谱的后续特化。其次，当源的运动不再预先给定时，总能动量守恒与推迟 Green 函数定义平滑源的因果自作用。点粒子极限要求 Dirac 推迟/超前分解和世界管质量重整化，由此得到有限 ALD 自力；Schott 动量和 Liénard 辐射则是同一四动量守恒的近场与远场两部分。最后，在 \(\epsilon_{\rm LL}\ll1\) 时，ALD 的无 失控 分支才可约化为 Landau--Lifshitz 方程。
-
-因此，任何具体辐射反作用模型都应按以下次序判断适用性：先确定电流是否可视为给定源；若不可，判断是否需要有限尺寸记忆；只有在点粒子近似成立后才使用 ALD；只有在辐射反作用时间相对于外部时间尺度足够小时才进一步使用 Landau--Lifshitz。这个层级把频谱、守恒、Green 函数和有效动力学放在同一经典场论框架中。下一部分转入量子理论时，Green/谱方法仍被保留，但动力学对象改为具有自伴定义域的 Hamiltonian；随后开放系统再把封闭量子演化推广为约化动力学。
+每个 \(\phi_\ell\) 在 \(\mathcal A\) 上 \(H_0^2\)（因为在节域边界上函数值和法向导数都连续为零），且彼此正交：
+\[
+ \int_{\mathcal A}\rho_{\rm m}h\,\phi_\ell^*\phi_m\dd a=0,
+ \qquad \ell\neq m.
+\]
+取这 \(\mu-1\) 个函数张成的 \((\mu-1)\) 维子空间 \(V_{\mu-1}=\operatorname{span}\{\phi_1,\ldots,\phi_{\mu-1}\}\)。对任意 \(\phi\in V_{\mu-1}\)，其 Rayleigh 商满足
+\[
+ \mathcal R[\phi]
+ =\frac{D\int_{\mathcal A}|\nabla_t^2\phi|^2\dd a}
+ {\int_{\mathcal A}\rho_{\rm m}h\,|\phi|^2\dd a}
+ =\frac{D\sum_{\ell=1}^{\mu-1}|c_\ell|^2\int_{\Omega_\ell}|\nabla_t^2\Psi_j|^2\dd a/\|\Psi_j\|_{L^2(\Omega_\ell)}^2}
+ {\sum_{\ell=1}^{\mu-1}|c_\ell|^2}
+ \le\omega_j^2,
+\]
+因为每个节域上的 Rayleigh 商都等于 \(\omega_j^2\)（\(\Psi_j\) 在每个节域上都是本征函数）。由极小极大原理的第 \((\mu-1)\) 个本征值刻画，
+\[
+ \omega_{\mu}^2\le\sup_{\phi\in V_{\mu-1}\setminus\{0\}}\mathcal R[\phi]\le\omega_j^2.
+\]
+由于本征值按递增排列，\(\omega_\mu\le\omega_j\) 蕴含 \(\mu\le j\)。若 \(\mu>j\)，则 \(\omega_\mu>\omega_j\)（严格不等号来自本征值排序），矛盾。故 \(\mu(\Psi_j)\le j\)，即\eqnrefs{eq:phys-sm-courant-nodal-domain}。
+\end{proof}
+节点集的普适结构确定以后，区域对称群便可用来分类 Chladni 图形。圆板和方形板给出两组可直接计算的实例。
+Chladni 图形的丰富程度直接由本征值的简并结构决定。设区域 \(\mathcal A\) 的对称群为 \(G_{\mathcal A}\subset O(2)\)，则双调和算子与 \(G_{\mathcal A}\) 交换，本征空间自动携带 \(G_{\mathcal A}\) 的表示。
+(i) 连续对称——圆板。圆板的对称群 \(G_{\mathcal A}=O(2)\) 连续。对 \(m\ge1\)，角向表示 \(e^{\pm\ii m\theta}\) 是二维不可约表示，因此每个径向量子数 \(s\) 对应一个二重简并本征值 \(\omega_{m,s}\)。实本征函数
+\[
+ \Psi_{m,s}^{(\cos)}=\mathcal R_{m,s}(r)\cos m\theta,
+ \qquad
+ \Psi_{m,s}^{(\sin)}=\mathcal R_{m,s}(r)\sin m\theta
+\]
+的节线分别为 \(m\) 条等角节径和 \(m\) 条旋转 \(\pi/(2m)\) 的节径，加上由 \(\mathcal R_{m,s}\) 的径向零点给出的节圆。任意实线性组合
+\[
+ \Psi_{m,s}^{(\alpha)}=\mathcal R_{m,s}(r)\cos m(\theta-\alpha)
+\]
+只是把节径整体旋转角度 \(\alpha\)。因此在理想圆对称下，Chladni 图形不是一个离散集合而是一个连续族，参数 \(\alpha\in[0,\pi/m)\)。实验中板的微小不对称（质量分布偏差、驱动点位置）会破缺这一连续简并，选定特定 \(\alpha\)。对 \(m=0\)，无角向简并，节线只有节圆。
+(ii) 离散对称——方形板。方形板 \(\mathcal A=(0,a)\times(0,a)\) 的对称群为二面体群 \(D_4\)（四阶旋转和反射，共 8 个元素）。四边简支时本征函数
+\[
+ \Psi_{m,s}^{\mathrm{SSSS}}=\sin\frac{m\pi x}{a}\sin\frac{s\pi y}{a}
+\]
+的本征值为
+\[
+ \omega_{m,s}^2=\frac{D}{\rho_{\rm m}h}\left[\left(\frac{m\pi}{a}\right)^2+\left(\frac{s\pi}{a}\right)^2\right]^2.
+\]
+当 \(m\neq s\) 时，\(\Psi_{m,s}\) 与 \(\Psi_{s,m}\) 共享同一本征值（\emph{偶然简并}），因为 \(m^2+s^2=s^2+m^2\)。此时任意线性组合
+\[
+ \Psi=c_1\sin\frac{m\pi x}{a}\sin\frac{s\pi y}{a}
+ +c_2\sin\frac{s\pi x}{a}\sin\frac{m\pi y}{a}
+\]
+都是本征函数，其 Chladni 图随 \((c_1:c_2)\in\mathbb{RP}^1\) 变化。两个极端情形给出截然不同的图案：
+\begin{itemize}
+ \item \(c_2=0\)：节线为 \(x=k\pi/m\) 或 \(y=l\pi/s\) 的直网格，把板面分成 \(m\times s\) 个矩形节域。
+ \item \(c_1=c_2\)：节线方程 \(\sin(m\pi x/a)\sin(s\pi y/a)+\sin(s\pi x/a)\sin(m\pi y/a)=0\)，一般给出弯曲的对角节线，具有 \(D_4\) 对称性。
+\end{itemize}
+当 \(m=s\) 时无偶然简并，节线为 \(m\times m\) 正交直网格。更高阶的偶然简并（如 \((m,s)=(1,7)\) 与 \((5,5)\) 因 \(1^2+7^2=5^2+5^2=50\) 而简并）会产生更复杂的 Chladni 图，这正是方形板实验中高阶图案丰富多变的数学根源。
+(iii) 一般矩形板。矩形板 \(\mathcal A=(0,a)\times(0,b)\)，\(a/b\notin\mathbb Q\) 时，\(m^2/a^2+s^2/b^2\) 几乎不会有非平凡简并（由 Weyl 谱渐近和数论结果，有理比 \(a/b\) 才可能产生偶然简并）。因此一般矩形的 Chladni 图形远不如方形丰富，几乎每个本征值都是单重的，节线为单一模式 \(\sin(m\pi x/a)\sin(s\pi y/b)\) 的直网格。
+(iv) 一般区域的 Pleijel 渐近。对任意有界光滑区域，节域数 \(\mu(\Psi_j)\) 的渐近上界由 Pleijel 定理给出：
+\begin{equation}
+ \limsup_{j\to\infty}\frac{\mu(\Psi_j)}{j}
+ \le\frac{4\pi j_{\nu,1}^2}{\operatorname{Area}(\mathcal A)\cdot C_{\mathrm{Weyl}}},
+ \label{eq:phys-sm-pleijel-asymptotic}
+\end{equation}
+其中 \(j_{\nu,1}\) 是相应 Bessel 函数的第一个正零点，\(C_{\mathrm{Weyl}}\) 是 Weyl 谱密度常数。对二维双调和算子，这一常数比 Laplace 情形更小，因此 Pleijel 商严格小于 1，说明 Courant 界 \(\mu\le j\) 在高阶模态上远非紧致——绝大多数高阶模态的节域数显著少于 \(j\)。
+上述分类理论在圆板和方形板中有完全显式的实例。
+\begin{exbox}[圆板 Chladni 图形的完整分类]
+实心圆板 (\(\xi_0\to0\)) 的本征函数为
+\[
+ \Psi_{m,s}(r,\theta)=\mathcal R_{m,s}(r)\cos m\theta
+ \quad\text{或}\quad
+ \mathcal R_{m,s}(r)\sin m\theta,
+\]
+其中径向函数
+\[
+ \mathcal R_{m,s}(r)=J_m(\beta_{m,s}\xi)I_m(\beta_{m,s}\xi_0)
+ -I_m(\beta_{m,s}\xi)J_m(\beta_{m,s}\xi_0)
+\]
+（\(\xi_0\to0\) 时退化为 \(J_m(\beta_{m,s}\xi)\)，因为 \(I_m(0)=0\) 对 \(m\ge1\)，\(I_0(0)=1\) 对 \(m=0\) 需单独处理）。节线由两个独立因子决定：
+角向节径。\(\cos m\theta=0\) 给出 \(m\) 条等角节径 \(\theta=(2k+1)\pi/(2m)\)，\(k=0,\ldots,m-1\)。对 \(\sin m\theta\) 则旋转 \(\pi/(2m)\)。
+径向节圆。\(\mathcal R_{m,s}(r)=0\) 的正零点给出 \(s-1\) 个同心节圆（由 Sturm 振荡定理，第 \(s\) 个径向本征函数恰有 \(s-1\) 个内部零点）。
+因此第 \((m,s)\) 模态的 Chladni 图形由 \(m\) 条节径和 \(s-1\) 条节圆组成，把圆板分成 \(m\cdot s\) 个节域（满足 Courant 界 \(\mu=m\cdot s\le j\)，其中 \(j\) 是 \((m,s)\) 在排序谱中的位置）。
+具体低阶图案：
+\begin{itemize}
+ \item \((m,s)=(0,1)\)：无节径、无节圆，整板同相振动（基态，\(\mu=1\)）。
+ \item \((m,s)=(1,1)\)：1 条节径把圆板分成 2 个半圆 (\(\mu=2\))。
+ \item \((m,s)=(2,1)\)：2 条正交节径分成 4 个扇形 (\(\mu=4\))。
+ \item \((m,s)=(0,2)\)：1 条节圆分成内圆和外环 (\(\mu=2\))。
+ \item \((m,s)=(1,2)\)：1 条节径加 1 条节圆，分成 4 个区域 (\(\mu=4\))。
+ \item \((m,s)=(3,1)\)：3 条等角节径分成 6 个扇形 (\(\mu=6\))。
+\end{itemize}
+\end{exbox}
+\begin{exbox}[方形板 SSSS 的 Chladni 图形与偶然简并]
+四边简支方形板 (\(a=b\)) 的本征函数 \(\Psi_{m,s}=\sin(m\pi x/a)\sin(s\pi y/a)\) 的节线为直网格
+\[
+ x=\frac{ka}{m},\quad k=1,\ldots,m-1;
+ \qquad
+ y=\frac{la}{s},\quad l=1,\ldots,s-1.
+\]
+节域数为 \(\mu=m\cdot s\)。
+无简并情形 （\(m\neq s\) 且 \(m^2+s^2\) 无其他分解）：节线为 \(m\times s\) 矩形直网格。例如 \((1,2)\)：1 条水平节线 \(y=a/2\)，\(\mu=2\)。\((2,3)\)：1 条竖线 \(x=a/2\) 加 2 条横线 \(y=a/3,2a/3\)，\(\mu=6\)。
+偶然简并情形 （\(m\neq s\) 且存在 \((p,q)\neq(m,s)\) 使 \(m^2+s^2=p^2+q^2\)）：本征值二重简并，Chladni 图为连续族。最简单的例子是 \((1,7)\) 与 \((5,5)\)：
+\[
+ 1^2+7^2=5^2+5^2=50.
+\]
+本征函数
+\[
+ \Psi=c_1\sin\frac{\pi x}{a}\sin\frac{7\pi y}{a}
+ +c_2\sin\frac{5\pi x}{a}\sin\frac{5\pi y}{a}
+\]
+的节线随 \(c_1/c_2\) 从直网格连续变形为对角弯曲节线。\(c_2=0\) 时有 \(1\times7=7\) 个矩形节域；\(c_1=0\) 时有 \(5\times5=25\) 个正方形节域；中间比值给出过渡图案。这正是 Chladni 实验中方形板高阶图案极为丰富的数学原因。
+对称组合。取 \(c_1=c_2=1\)，节线方程
+\[
+ \sin\frac{\pi x}{a}\sin\frac{7\pi y}{a}
+ +\sin\frac{5\pi x}{a}\sin\frac{5\pi y}{a}=0
+\]
+具有 \(D_4\) 全对称性（关于 \(x=y\)、\(x=a-y\)、\(x=a/2\)、\(y=a/2\) 对称），图案呈四重旋转对称。取 \(c_1=1,c_2=-1\) 则关于对角线反对称，节线必过方形中心。
+\end{exbox}
+Chladni 图形不仅是正问题（给定区域求节线）的输出，还自然引出反问题。
+(i) Kac 问题：「能否听出板的形状？」 板的振动谱 \(\{\omega_j\}\) 决定了 Weyl 谱渐近
+\[
+ N(\omega)=\#\{j:\omega_j\le\omega\}
+ \sim\frac{\operatorname{Area}(\mathcal A)}{4\pi}\left(\frac{\rho_{\rm m}h}{D}\right)^{1/2}\omega,
+\]
+因此从谱可读出面积 \(\operatorname{Area}(\mathcal A)\)。更高阶热迹展开可读出周长、Euler 示性数等。但 Kac 的反问题「谱 \(\{\omega_j\}\to\mathcal A\) 是否一一」的答案是否定的：存在等谱不同构的区域（Milnor 的 16 维反例；二维平面的等谱不 congruent 反例由 Gordon--Wilson--Webb 构造）。因此仅凭 Chladni 图形的频率序列不能唯一反推板的形状。
+(ii) 节线反问题。比谱更强的问题是：给定所有 Chladni 图形 \(\{\mathcal N_j\}_{j=1}^\infty\) 的完整集合（不只是频率），能否反推 \(\mathcal A\)？Uhlenbeck 证明了对通有（generic）区域，谱和节点集共同唯一确定算子，从而确定区域。但「通有」排除了等谱反例所在的零测集，因此反问题在可操作意义下的完全回答仍开放。
+(iii) Berry 随机波猜想。高阶模态 \(j\gg1\) 的本征函数在局部尺度上趋于高斯随机场（Berry 猜想）。若成立，则高阶 Chladni 图形的节线统计性质（节线长度密度、交叉点密度）由高斯随机场的统计量决定，与具体区域无关。对二维双调和算子，数值实验支持这一猜想在典型区域上成立，但在可积区域（如矩形）上因简并结构而失效——矩形的高阶 Chladni 图形保持直网格，远非随机。
+Chladni 原始实验。在金属板下方用琴弓以频率 \(\omega\) 驱动板面振动，板面撒布细沙。沙粒在腹点处被垂直加速度 \(\omega^2|\Psi|\) 抛起、在节线处静止，最终聚集成 \(\mathcal N_j\)。驱动频率连续扫过本征频率 \(\omega_j\) 时，沙图案在共振处突然清晰。这一方法的分辨率受限于沙粒惯性和板阻尼，通常只观察到前几十个模态。
+典型实验用黄铜板：密度 \(\rho\approx8.5\times10^3\,\mathrm{kg/m^3}\)，杨氏模量 \(E\approx1.1\times10^{11}\,\mathrm{Pa}\)，泊松比 \(\nu\approx0.34\)，厚度 \(h\approx1.5\,\mathrm{mm}\)。板的抗弯刚度 \(D=Eh^3/[12(1-\nu^2)]\) 决定本征频率的整体尺度：同几何下 \(\omega_j\propto\sqrt{D/(\rho h)}\)，故频率对厚度 \(h\) 极敏感（\(\omega\propto h\)）。
+全息干涉法。用激光全息术记录板面驻波的振幅分布 \(|\Psi_j(\vb r)|\)，节线为零等高线。分辨率远高于沙法，可观测数百个模态。
+数值方法。给定区域 \(\mathcal A\) 和边界条件 \(X\)，数值生成 Chladni 图形的标准流程为：
+\begin{enumerate}
+ \item 用有限元或谱方法离散双调和算子，施加边界条件 \(X\)。
+ \item 求解广义本征值问题 \(\vb K\vb c=\omega^2\vb M\vb c\)，得到本征对 \((\omega_j,\vb c_j)\)。
+ \item 由 \(\vb c_j\) 重建本征函数 \(\Psi_j(\vb r)\)（有限元插值或谱展开）。
+ \item 绘制零等高线 \(\Psi_j(\vb r)=0\)，即 Chladni 图形 \(\mathcal N_j\)。
+\end{enumerate}
+对解析可解区域（圆板、矩形板），步骤 1--3 由前两节的显式公式直接给出，只需绘制零等高线。对一般区域，有限元离散是唯一可行途径，Courant 节域定理可用于验证数值正确性：若数值得到的节域数 \(\mu>j\)，则必有离散或求根错误。
+\begin{proof}[解]
+Courant 节域定理给出 \(\mu_j\le j\)，但高阶本征函数的节域数远小于 \(j\)。Pleijel 定理给出精确渐近上界。
+Pleijel 常数。定义 Pleijel 常数
+\begin{equation*}
+  \gamma_{\rm Pl}=\frac{4\pi j_0^2}{2\pi}=\frac{2}{j_0^2}\approx0.691,
+\end{equation*}
+其中 \(j_0\approx2.4048\) 是 \(J_0\) 的第一个正零点。Pleijel 定理（1956）：对有界区域 \(\mathcal D\subset\mathbb R^2\) 上 Dirichlet 拉普拉斯算子，
+\begin{equation*}
+  \limsup_{j\to\infty}\frac{\mu_j}{j}\le\gamma_{\rm Pl}\approx0.691.
+\end{equation*}
+因 \(\gamma_{\rm Pl}<1\)，高阶本征函数的节域数严格小于 Courant 上界 \(j\)。
+证明骨架。设 \(\mu_j\) 是 \(\phi_j\) 的节域数。每个节域 \(\Omega_k\) 上 \(\phi_j\) 是第一本征函数（Dirichlet，因 \(\phi_j|_{\partial\Omega_k}=0\)），故 \(\lambda_j\ge\lambda_1(\Omega_k)\)。由 Faber--Krahn 不等式（\(\lambda_1(\Omega)\ge\pi j_0^2/|\Omega|\)），\(\lambda_j\ge\pi j_0^2/|\Omega_k|\)，即 \(|\Omega_k|\ge\pi j_0^2/\lambda_j\)。节域互斥：\(\sum_k|\Omega_k|\le|\mathcal D|\)，故
+\begin{equation*}
+  \mu_j\cdot\frac{\pi j_0^2}{\lambda_j}\le|\mathcal D|,\qquad\mu_j\le\frac{|\mathcal D|\lambda_j}{\pi j_0^2}.
+\end{equation*}
+由 Weyl 定律 \(j\sim\frac{|\mathcal D|}{4\pi}\lambda_j\)（二维拉普拉斯算子），\(\frac{\mu_j}{j}\le\frac{4\pi}{\pi j_0^2}=\frac{4}{j_0^2}=\gamma_{\rm Pl}\)。
+双调和算子的推广。对双调和算子 \(\Delta^2\)（板振动），本征值 \(\lambda_j=\omega_j^2\)，Weyl 定律 \(j\sim\frac{|\mathcal D|}{2\pi}\sqrt{\lambda_j}\)。Faber--Krahn 型不等式对 \(\Delta^2\) 给出 \(\lambda_1(\Omega)\ge C/|\Omega|^2\)（Talenti 型），代入得
+\begin{equation*}
+  \frac{\mu_j}{j}\le\gamma_{\rm Pl}^{(4)}<1,
+\end{equation*}
+其中 \(\gamma_{\rm Pl}^{(4)}\) 是四阶 Pleijel 常数（精确值依赖四阶 Faber--Krahn 常数，目前只有数值估计）。因此板的 Chladni 图形在高频时节域数也严格小于 Courant 上界。
+\end{proof}

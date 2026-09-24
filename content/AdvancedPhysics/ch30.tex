@@ -1,0 +1,936 @@
+\chapter{Born--Huang 展开、Born--Oppenheimer 近似与几何势}
+\label{ch:born-huang}
+
+
+分子光谱中最熟悉的图像，是电子几乎瞬间适应缓慢移动的原子核，于是原子核仿佛在一张电子势能面上运动。这个图像很有用，却悄悄掩盖了一个问题：不同核构型处的电子波函数属于不同本征空间，怎样比较它们的相位，甚至怎样判断“同一个电子态”已经沿核坐标移动了一小步？
+
+答案并不在某个特别巧妙的相位约定里。随核构型变化的电子本征空间组成一个向量丛，局部电子本征态只是这个丛的一组标架。标架变化产生联络，绕闭路移动产生整体回转，投影子空间向环境 Hilbert 空间弯曲则产生量子度量和 Born--Huang 标量势。Born--Oppenheimer 近似只有在这套几何结构建立以后，才能被准确地表述为一个受能隙保护的通道截断。
+
+完整电子--核哈密顿量是所有这些结构的起点。几何量将由电子谱投影算符直接推出；它们不是附加在分子动力学上的比喻，而是精确 Born--Huang 方程的另一种写法。
+
+\section{从曲线坐标走到流形}
+
+在分析力学里，我们已经会用广义坐标 \(q^1,\ldots,q^n\) 描述约束系统。微分几何首先只是把这件熟悉的事说严谨：坐标是给点贴上的数字，点本身并不等于这组数字；换坐标以后，真正的几何对象必须按照确定规则变换。
+
+以二维球面为例。球面上的点 \(p\) 是三维空间中满足
+\(x^2+y^2+z^2=a^2\) 的点。除去两极后，可以用
+\((\theta,\varphi)\) 标记它：
+\[
+\mathbf r(\theta,\varphi)
+=a(\sin\theta\cos\varphi,
+\sin\theta\sin\varphi,
+\cos\theta).
+\]
+经纬度不是球面本身，因为同一个点可以换用别的坐标，极点处的
+\(\varphi\) 甚至没有定义。流形的坐标图正是把“每一小块可用若干实数描述，但未必存在一套全局坐标”抽象出来。
+
+若两套坐标 \(R^\mu\) 与 \(R'^{\alpha}\) 描述同一片区域，链式法则给出
+\begin{equation}
+\frac{\partial}{\partial R'^\alpha}
+=\frac{\partial R^\mu}{\partial R'^\alpha}
+\frac{\partial}{\partial R^\mu}.
+\label{eq:bh-tangent-basis-transform}
+\end{equation}
+所以切向量
+\(X=X^\mu\partial_\mu=X'^\alpha\partial'_\alpha\)
+的分量必须满足
+\begin{equation}
+X'^\alpha
+=\frac{\partial R'^\alpha}{\partial R^\mu}X^\mu.
+\label{eq:bh-vector-component-transform}
+\end{equation}
+基向量与分量使用互逆 Jacobian，二者相乘以后 \(X\) 才不依赖坐标。
+
+切向量也可以不借助嵌入空间来定义。过点 \(p\) 的曲线
+\(\gamma(t)\) 对每个光滑函数 \(f\) 给出方向导数
+\[
+X_\gamma[f]
+=\left.\frac{\dd}{\dd t}f(\gamma(t))\right|_{t=0}.
+\]
+若两条曲线对所有 \(f\) 给出同一个导数，就把它们看作同一个切向量。这个定义说明切向量的任务是“沿某个方向对函数求导”，并不要求流形先放进更高维欧氏空间。
+
+与切向量配对得到数的线性对象叫余切向量。坐标函数的微分
+\(\dd R^\mu\) 由
+\begin{equation}
+\dd R^\mu(\partial_\nu)=\delta^\mu_{\ \nu}
+\label{eq:bh-dual-basis}
+\end{equation}
+定义。对标量函数 \(f\)，
+\(
+\dd f=(\partial_\mu f)\dd R^\mu
+\)，并且
+\(\dd f(X)=X[f]\)。由
+\(\dd R'^\alpha=(\partial R'^\alpha/\partial R^\mu)\dd R^\mu\)
+可见，余切基与切基的变换方向相反。上标和下标的区分由此产生，不是排版习惯。
+
+\begin{definition}[张量]
+在点 \(p\) 处，一个 \((r,s)\) 型张量是以 \(r\) 个余切向量和
+\(s\) 个切向量为输入、对每个输入都线性的多重线性映射。等价地，它属于
+\[
+(T_p\mathcal M)^{\otimes r}\otimes
+(T_p^*\mathcal M)^{\otimes s}.
+\]
+张量的坐标分量按每个上指标乘一个 Jacobian、每个下指标乘一个逆 Jacobian 变换。
+\end{definition}
+
+最常用的 \((0,2)\) 型张量是度量。它给两个切向量指定内积，局部写成
+\begin{equation}
+\dd s^2=g_{\mu\nu}\dd R^\mu\dd R^\nu.
+\label{eq:bh-metric-line-element}
+\end{equation}
+同一条无穷小位移的长度不能依赖坐标，所以
+\begin{equation}
+g'_{\alpha\beta}
+=\frac{\partial R^\mu}{\partial R'^\alpha}
+\frac{\partial R^\nu}{\partial R'^\beta}
+g_{\mu\nu}.
+\label{eq:bh-metric-transform}
+\end{equation}
+球面嵌入给出
+\(
+\partial_\theta\mathbf r\cdot\partial_\theta\mathbf r=a^2
+\)、
+\(
+\partial_\varphi\mathbf r\cdot\partial_\varphi\mathbf r
+=a^2\sin^2\theta
+\)
+以及交叉项为零，因此
+\begin{equation}
+\dd s^2=a^2\dd\theta^2+a^2\sin^2\theta\dd\varphi^2.
+\label{eq:bh-sphere-metric}
+\end{equation}
+因子 \(\sin\theta\) 说明同样的经度差在赤道对应较长距离，在极点附近对应较短距离。
+
+普通偏导数可以作用在标量上，却不能直接把不同点的向量相减。原因可以从坐标展开看出：
+\[
+\partial_\mu(X^\nu\partial_\nu)
+=(\partial_\mu X^\nu)\partial_\nu
++X^\nu\partial_\mu\partial_\nu.
+\]
+第二项记录基向量随位置变化。只保留
+\(\partial_\mu X^\nu\) 会漏掉它，而且所得结果不按张量变换。于是定义协变导数
+\begin{equation}
+\nabla_\mu X^\rho
+=\partial_\mu X^\rho
++\Gamma^\rho_{\mu\nu}X^\nu,
+\label{eq:bh-covariant-derivative-vector}
+\end{equation}
+其中联络系数 \(\Gamma^\rho_{\mu\nu}\) 正好补偿基向量变化。它本身不是张量；若它像张量那样齐次变换，就无法抵消坐标变换的二阶导数。
+
+仅有度量时，还需要说明选哪一条联络。要求它保持内积
+\(\nabla_\lambda g_{\mu\nu}=0\)，并且没有挠率
+\(\Gamma^\rho_{\mu\nu}=\Gamma^\rho_{\nu\mu}\)，便唯一确定 Levi--Civita 联络。
+
+\begin{theorem}[Levi--Civita 联络的坐标公式]
+满足度量相容和无挠条件的联络系数为
+\begin{equation}
+\Gamma^\rho_{\mu\nu}
+=\frac12g^{\rho\sigma}
+\left(
+\partial_\mu g_{\sigma\nu}
++\partial_\nu g_{\sigma\mu}
+-\partial_\sigma g_{\mu\nu}
+\right).
+\label{eq:bh-christoffel-formula}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+把度量相容条件分别写成
+\[
+\begin{aligned}
+\partial_\mu g_{\nu\sigma}
+&=\Gamma^\lambda_{\mu\nu}g_{\lambda\sigma}
++\Gamma^\lambda_{\mu\sigma}g_{\nu\lambda},\\
+\partial_\nu g_{\mu\sigma}
+&=\Gamma^\lambda_{\nu\mu}g_{\lambda\sigma}
++\Gamma^\lambda_{\nu\sigma}g_{\mu\lambda},\\
+\partial_\sigma g_{\mu\nu}
+&=\Gamma^\lambda_{\sigma\mu}g_{\lambda\nu}
++\Gamma^\lambda_{\sigma\nu}g_{\mu\lambda}.
+\end{aligned}
+\]
+前两式相加再减第三式。利用下标 \(\mu,\nu\) 对称，后四项两两抵消，只剩
+\[
+\partial_\mu g_{\nu\sigma}
++\partial_\nu g_{\mu\sigma}
+-\partial_\sigma g_{\mu\nu}
+=2\Gamma^\lambda_{\mu\nu}g_{\lambda\sigma}.
+\]
+再乘逆度量 \(g^{\rho\sigma}\) 即得
+\eqnrefs{eq:bh-christoffel-formula}。推导同时说明了唯一性。
+\end{proof}
+
+把球面度量 \eqnrefs{eq:bh-sphere-metric} 代入，非零联络系数只有
+\begin{equation}
+\Gamma^\theta_{\varphi\varphi}
+=-\sin\theta\cos\theta,
+\qquad
+\Gamma^\varphi_{\theta\varphi}
+=\Gamma^\varphi_{\varphi\theta}
+=\cot\theta.
+\label{eq:bh-sphere-christoffel}
+\end{equation}
+例如赤道曲线 \(\theta=\pi/2\)、\(\varphi=vt\) 满足测地线方程
+\begin{equation}
+\ddot R^\rho
++\Gamma^\rho_{\mu\nu}\dot R^\mu\dot R^\nu=0,
+\label{eq:bh-geodesic-equation}
+\end{equation}
+因为此时
+\(\Gamma^\theta_{\varphi\varphi}=0\)。纬度不等于赤道的圆不满足该方程：若没有外力把运动限制在那条纬线上，最短路径会偏离它。
+
+沿两个方向先后平行移动，次序一般不能交换。对向量场直接展开两个协变导数可得
+\begin{equation}
+[\nabla_\mu,\nabla_\nu]X^\rho
+=R^\rho_{\ \sigma\mu\nu}X^\sigma,
+\label{eq:bh-riemann-commutator}
+\end{equation}
+其中
+\begin{equation}
+R^\rho_{\ \sigma\mu\nu}
+=\partial_\mu\Gamma^\rho_{\nu\sigma}
+-\partial_\nu\Gamma^\rho_{\mu\sigma}
++\Gamma^\rho_{\mu\lambda}\Gamma^\lambda_{\nu\sigma}
+-\Gamma^\rho_{\nu\lambda}\Gamma^\lambda_{\mu\sigma}.
+\label{eq:bh-riemann-components}
+\end{equation}
+这就是曲率张量。平面上可以选笛卡尔坐标使所有联络系数在整个区域消失，所以曲率为零；球面联络虽然能在一个点通过选坐标消去，曲率却不能在整个邻域消去。联络描述“怎样比较相邻点的向量”，曲率描述这种比较绕小闭路以后是否回到原向量。
+
+分子中的电子态并不是构型空间的切向量，因此稍后使用的 Berry 联络不是上面的 Levi--Civita 联络。不过两者的逻辑完全相同：都先规定怎样比较相邻基点上方的向量，再用协变导数的交换子测量曲率。区别只在纤维是什么，以及允许怎样换局部基。
+
+\section{核构型空间与电子态向量丛}
+
+分子的核坐标最初是
+\((\mathbf R_1,\ldots,\mathbf R_{N_N})\in\mathbb R^{3N_N}\)。去掉整体平移、整体转动、核碰撞点，并辨认全同核置换以后，剩下的空间一般不再是一整个欧氏空间。为避免把局部坐标误当成空间本身，先给出这里真正需要的几何定义。
+
+\begin{definition}[坐标图与光滑流形]
+设 \(\mathcal M\) 是一个集合。若它能由若干子集
+\(\mathcal U_\alpha\) 覆盖，并且每个
+\(\mathcal U_\alpha\) 都能用一组实数坐标
+\[
+R_\alpha:\mathcal U_\alpha\longrightarrow
+R_\alpha(\mathcal U_\alpha)\subseteq\mathbb R^n
+\]
+一一描述，而且重叠区上的坐标变换
+\(R_\beta\circ R_\alpha^{-1}\) 光滑，则
+\(\mathcal M\) 称为 \(n\) 维光滑流形，\((\mathcal U_\alpha,R_\alpha)\) 称为坐标图。
+\end{definition}
+
+流形的定义只说每个小邻域像 \(\mathbb R^n\)，不要求一套坐标覆盖全空间。球面的经纬度在两极失效，正是最熟悉的例子。
+
+\begin{definition}[切向量与余切向量]
+过 \(R\in\mathcal M\) 的光滑曲线 \(\gamma(t)\) 给出方向导数
+\[
+X[f]=\left.\frac{\dd}{\dd t}f(\gamma(t))\right|_{t=0}.
+\]
+若两条曲线对每个光滑函数 \(f\) 都给出相同方向导数，就定义同一个切向量 \(X\)。所有切向量构成 \(T_R\mathcal M\)。它的对偶空间
+\(T_R^*\mathcal M\) 由线性函数 \(T_R\mathcal M\to\mathbb R\) 组成，称为余切空间。
+\end{definition}
+
+在局部坐标 \(R^\mu\) 中，切空间基为
+\(\partial_\mu=\partial/\partial R^\mu\)，余切基为
+\(\dd R^\mu\)。曲线速度写成
+\(\dot R^\mu\partial_\mu\)，函数微分写成
+\(\dd f=(\partial_\mu f)\dd R^\mu\)。上下指标不是装饰：一个是切向量分量，一个是余切向量分量。
+
+\begin{definition}[向量丛、截面与局部标架]
+若每个 \(R\in\mathcal M\) 上方放置一个 \(r\) 维复向量空间
+\(\mathcal E_R\)，并且在每个足够小的
+\(\mathcal U_\alpha\) 上都能光滑地选出一组基
+\((e_{\alpha1},\ldots,e_{\alpha r})\)，这些空间合在一起称为秩
+\(r\) 的复向量丛 \(\mathcal E\to\mathcal M\)。给每个 \(R\) 选一个
+\(s(R)\in\mathcal E_R\) 的光滑规则称为截面；上述逐点基称为局部标架。
+\end{definition}
+
+两组局部标架在重叠区表示同一个纤维，因此必由可逆矩阵连接；若每个纤维带有内积并且标架正交归一，连接矩阵就是酉矩阵。不能在全空间选出单值光滑标架，并不意味着向量丛不存在，只意味着这张丛不是全局直积
+\(\mathcal M\times\mathbb C^r\)。
+
+设分子含有 \(N_N\) 个原子核。去掉整体质心以后，核坐标局部地落在 \(\mathbb R^{3N_N-3}\) 中；再删去核碰撞点以及电子哈密顿量失去定义的构型，得到核构型空间 \(\mathcal M\)。若还要消去整体转动或辨认全同核，\(\mathcal M\) 可能需要再取商。商空间在高对称构型处未必是一张普通欧氏坐标图，因此以下论证只使用局部坐标 \(R^\mu\)，不假定整个构型空间能由一套坐标覆盖。
+
+每个 \(R\in\mathcal M\) 决定电子 Hilbert 空间上的一个自伴算符 \(H_e(R)\)。假设一簇 \(r\) 个电子能级与其余谱之间始终隔着非零能隙，并令 \(\Gamma\) 是复能量平面中只包围这簇谱的闭曲线。相应谱投影为
+\begin{equation}
+P(R)=\frac{1}{2\pi\ii}\oint_\Gamma
+[z-H_e(R)]^{-1}\,\dd z .
+\label{eq:riesz-electronic-projector}
+\end{equation}
+只要能隙不闭合，预解式随 \(R\) 光滑变化，\(P(R)\) 的秩保持为 \(r\)。于是
+\begin{equation}
+\mathcal E
+=\{(R,\psi)\mid R\in\mathcal M,
+\ \psi\in\operatorname{Ran}P(R)\}
+\longrightarrow\mathcal M
+\label{eq:electronic-vector-bundle}
+\end{equation}
+构成一个秩为 \(r\) 的厄米向量丛。这里“丛”只表达一件事：每个核构型上方都有一个 \(r\) 维电子空间；这些空间局部可以平滑地排成 \(\mathcal U\times\mathbb C^r\)，却未必能在整个 \(\mathcal M\) 上同时选出一组单值光滑基。
+
+在坐标邻域 \(\mathcal U_\alpha\) 中选正交标架
+\[
+\Phi_\alpha(R)
+=\bigl(|\phi_{\alpha1}(R)\rangle,\ldots,
+|\phi_{\alpha r}(R)\rangle\bigr),
+\qquad
+\Phi_\alpha^\dagger\Phi_\alpha=I_r .
+\]
+若两个邻域重叠，同一个子空间的两组标架必由幺正矩阵联系：
+\begin{equation}
+\Phi_\beta=\Phi_\alpha U_{\alpha\beta},
+\qquad U_{\alpha\beta}(R)\in U(r).
+\label{eq:electronic-transition-function}
+\end{equation}
+三重重叠区上的一致性要求
+\(U_{\alpha\beta}U_{\beta\gamma}=U_{\alpha\gamma}\)。这些过渡函数而不是某一组本征矢，才是电子态丛的全局资料。若 \(r=1\)，它们只是相位；锥形交叉周围无法选取全局单值实本征态，正是非平凡过渡函数的物理表现。
+
+总分子态在局部标架中写作
+\[
+|\Psi(R)\rangle=\Phi_\alpha(R)\boldsymbol\chi_\alpha(R).
+\]
+在重叠区保持 \(|\Psi\rangle\) 不变，便有
+\begin{equation}
+\boldsymbol\chi_\beta
+=U_{\alpha\beta}^\dagger\boldsymbol\chi_\alpha .
+\label{eq:nuclear-amplitude-transition}
+\end{equation}
+因此核通道振幅不是一组彼此无关的普通函数，而是按照过渡函数 \eqnrefs{eq:nuclear-amplitude-transition} 拼接的局部坐标。普通导数不尊重这种拼接规律；联络正是为比较相邻纤维而引入的修正。
+
+\section{精确 Born--Huang 多通道展开}
+
+设电子坐标集合为 \(\mathbf r\equiv\{\mathbf r_i\}\)，核坐标集合为 \(\mathbf R\equiv\{\mathbf R_A\}\)。除去整体质心平动后，非相对论分子哈密顿量可以写为
+
+\[
+\hat H
+=\hat T_N+\hat H_e(\mathbf r;\mathbf R),
+\]
+
+\[
+\hat T_N
+=-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2.
+\]
+
+固定核构型 \(\mathbf R\) 时，定义 clamped-nuclei 电子本征问题
+
+\begin{equation}
+\hat H_e(\mathbf R)|\phi_n(\mathbf R)\rangle
+=E_n(\mathbf R)|\phi_n(\mathbf R)\rangle,
+\qquad
+\langle\phi_m(\mathbf R)|\phi_n(\mathbf R)\rangle=\delta_{mn}.
+\label{eq:clamped-electronic-problem}
+\end{equation}
+
+注意 \(\mathbf R\) 在这里是电子问题的参数，而在完整分子问题中仍然是量子坐标。只要所用电子基在目标子空间内完备，总波函数就可以形式精确地展开为
+
+\begin{equation}
+|\Psi\rangle
+=\sum_n\chi_n(\mathbf R)|\phi_n(\mathbf R)\rangle.
+\label{eq:born-huang-expansion}
+\end{equation}
+
+这个式子本身不是 BO 近似；它只是一个随 \(\mathbf R\) 移动的基底展开。
+
+让 \(\hat T_N\) 作用到 \eqnrefs{eq:born-huang-expansion}。对任意一个核坐标 \(\mathbf R_A\)，
+
+\[
+\nabla_A^2(\chi_n\phi_n)
+=(\nabla_A^2\chi_n)\phi_n
++2(\nabla_A\chi_n)\cdot(\nabla_A\phi_n)
++\chi_n\nabla_A^2\phi_n.
+\]
+
+定义一阶和二阶导数耦合
+
+\begin{equation}
+\mathbf d_{mn}^{(A)}
+\equiv\langle\phi_m|\nabla_A\phi_n\rangle,
+\qquad
+D_{mn}^{(A)}
+\equiv\langle\phi_m|\nabla_A^2\phi_n\rangle.
+\label{eq:derivative-couplings}
+\end{equation}
+
+把完整 Schr\"odinger 方程左乘 \(\langle\phi_m|\)，得到精确耦合通道方程
+
+\begin{equation}
+\begin{aligned}
+E\chi_m
+=&\left[-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2+E_m(\mathbf R)\right]\chi_m
+\\
+&-\sum_{A,n}\frac{\hbar^2}{2M_A}
+\left[
+2\mathbf d_{mn}^{(A)}\cdot\nabla_A
++D_{mn}^{(A)}
+\right]\chi_n.
+\end{aligned}
+\label{eq:born-huang-coupled}
+\end{equation}
+
+\begin{proof}[解]
+代入 Born--Huang 展开 \(|\Psi\rangle=\sum_n\chi_n|\phi_n\rangle\)，核动能算符 \(\hat T_N=-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2\) 同时作用于核坐标依赖的 \(\chi_n(\mathbf R)\) 和 \(|\phi_n(\mathbf R)\rangle\)（电子态也隐含依赖核坐标）。Leibniz 公式给出
+\begin{equation*}
+\hat T_N(\chi_n|\phi_n\rangle)
+=-\sum_A\frac{\hbar^2}{2M_A}\left[(\nabla_A^2\chi_n)\phi_n+2(\nabla_A\chi_n)\cdot(\nabla_A\phi_n)+\chi_n\nabla_A^2\phi_n\right].
+\end{equation*}
+三项分别为对角动能、一阶非绝热交叉项、二阶耦合。
+
+电子哈密顿量 \(\hat H_e(\mathbf R)\) 只作用于电子坐标，满足 \(\hat H_e|\phi_n\rangle=E_n(\mathbf R)|\phi_n\rangle\)。因此
+\begin{equation*}
+\hat H_e\sum_n\chi_n|\phi_n\rangle=\sum_n E_n(\mathbf R)\chi_n|\phi_n\rangle.
+\end{equation*}
+电子能量 \(E_n(\mathbf R)\) 成为核运动绝热势能面。左乘 \(\langle\phi_m|\) 并利用正交性 \(\langle\phi_m|\phi_n\rangle=\delta_{mn}\)：
+\begin{itemize}
+\item 第一项（核动能作用在 \(\chi_n\) 上）：\(\langle\phi_m|(\nabla_A^2\chi_n)\phi_n\rangle=(\nabla_A^2\chi_m)\delta_{mn}\)，只保留 \(n=m\) 项，给出对角动能 \(-\sum_A\frac{\hbar^2}{2M_A}\nabla_A^2\chi_m\)。
+\item 第二项（交叉项）：\(\langle\phi_m|2(\nabla_A\chi_n)\cdot(\nabla_A\phi_n)\rangle=2\mathbf d_{mn}^{(A)}\cdot(\nabla_A\chi_n)\)，给出非绝热一阶耦合，\(\mathbf d_{mn}^{(A)}=\langle\phi_m|\nabla_A\phi_n\rangle\) 是非绝热耦合矢量。
+\item 第三项（核动能作用在 \(\phi_n\) 上）：\(\langle\phi_m|\chi_n\nabla_A^2\phi_n\rangle=D_{mn}^{(A)}\chi_n\)，给出二阶耦合，\(D_{mn}^{(A)}=\langle\phi_m|\nabla_A^2\phi_n\rangle\)。
+\end{itemize}
+电子部分给出 \(E_m(\mathbf R)\chi_m\)，合并即得\eqnrefs{eq:born-huang-coupled}。绝热近似忽略 \(m\neq n\) 耦合，在大质量极限 \(M_A\to\infty\) 下成立；两绝热面简并时 \(\mathbf d_{mn}\) 发散，绝热近似失效（锥形交叉）。
+
+\end{proof}
+
+在完备电子基中，\eqnrefs{eq:born-huang-coupled} 与原始分子 Schrödinger 方程严格等价；通道截断和大质量展开属于后续彼此独立的近似。
+
+对正交归一关系求导：
+
+\[
+\nabla_A\delta_{mn}
+=\langle\nabla_A\phi_m|\phi_n\rangle
++\langle\phi_m|\nabla_A\phi_n\rangle=0,
+\]
+
+所以
+
+\begin{equation}
+\mathbf d_{nm}^{(A)*}
+=-\mathbf d_{mn}^{(A)}.
+\label{eq:d-antihermitian}
+\end{equation}
+
+也就是说 \(\mathbf d^{(A)}\) 是反厄米矩阵。再对 \(\mathbf d_{mn}^{(A)}\) 求散度：
+
+\[
+\nabla_A\cdot\mathbf d_{mn}^{(A)}
+=\langle\nabla_A\phi_m|\nabla_A\phi_n\rangle
++\langle\phi_m|\nabla_A^2\phi_n\rangle.
+\]
+
+在第一项中插入完备关系
+
+\[
+\sum_l|\phi_l\rangle\langle\phi_l|=\mathbb I,
+\]
+
+并使用 \eqnrefs{eq:d-antihermitian}：
+
+\[
+\langle\nabla_A\phi_m|\nabla_A\phi_n\rangle
+=-\sum_l
+\mathbf d_{ml}^{(A)}\cdot\mathbf d_{ln}^{(A)}.
+\]
+
+因此
+
+\begin{equation}
+D_{mn}^{(A)}
+=\nabla_A\cdot\mathbf d_{mn}^{(A)}
++\sum_l\mathbf d_{ml}^{(A)}\cdot\mathbf d_{ln}^{(A)}.
+\label{eq:d-from-d}
+\end{equation}
+
+所以在完备基中，二阶导数耦合可以完全由一阶联络构造；把 \(D_{mn}\) 当成与 \(d_{mn}\) 无关的经验项会隐藏真正的几何结构。
+
+完备基下的展开是精确的，但实际计算必须截断到有限电子子空间。截断引入的遗漏通道会产生几何标量势（Born--Huang 势），其结构由协变导数和有限子空间投影决定。
+
+\section{协变核动力学与有限子空间几何}
+
+
+\begin{definition}[联络]
+向量丛上的联络是一条求导规则：它把切向量 \(X\) 和截面 \(s\) 送到新截面 \(\nabla_Xs\)，并满足
+\[
+\nabla_{fX+gY}s=f\nabla_Xs+g\nabla_Ys,\qquad
+\nabla_X(fs)=X[f]s+f\nabla_Xs.
+\]
+第二式说明，联络与普通导数一样满足 Leibniz 法则；区别是它还能比较不同基点上方、原本属于不同纤维的向量。
+\end{definition}
+
+若 \(s(R)\) 是电子态丛的局部截面，\(X=X^\mu\partial_\mu\) 是构型空间上的切向量，电子 Hilbert 空间中的普通导数 \(X[s]\) 未必仍落在保留子空间。把它投影回来便得到
+\begin{equation}
+\nabla_X^{\mathcal E}s=P(R)\,X[s].
+\label{eq:projected-bundle-connection}
+\end{equation}
+由 \(P(fs)=fPs\) 可直接验证 Leibniz 法则；由 \(P=P^\dagger\) 可验证它保持电子内积。选定局部标架后，这条抽象求导规则才变成矩阵。
+
+定义矩阵值联络
+
+\begin{equation}
+\mathbf A_{mn}^{(A)}
+\equiv\ii\hbar\mathbf d_{mn}^{(A)}.
+\label{eq:nonabelian-connection}
+\end{equation}
+
+由于 \(\mathbf d\) 反厄米，\(\mathbf A\) 是厄米。把 \eqnrefs{eq:d-from-d} 代回 \eqnrefs{eq:born-huang-coupled}，核动能恰好可以重组为
+
+\begin{equation}
+\hat T_N^{\rm ch}
+=\sum_A\frac1{2M_A}
+\left[-\ii\hbar\nabla_A\,\mathbb I-\mathbf A^{(A)}\right]^2.
+\label{eq:covariant-nuclear-kinetic}
+\end{equation}
+
+这个等式可以直接展开核对：
+
+\begin{align*}
+[-\ii\hbar\nabla-\mathbf A]^2
+=&-\hbar^2\nabla^2
++\ii\hbar(\nabla\cdot\mathbf A)
++2\ii\hbar\mathbf A\cdot\nabla
++\mathbf A^2
+\\
+=&-\hbar^2
+\left[
+\nabla^2
++2\mathbf d\cdot\nabla
++\nabla\cdot\mathbf d
++\mathbf d^2
+\right],
+\end{align*}
+
+正好恢复 \(\nabla^2+2\mathbf d\cdot\nabla+D\)。
+
+电子基并不唯一。令
+
+\[
+|\phi_n'\rangle
+=\sum_m|\phi_m\rangle U_{mn}(\mathbf R),
+\qquad U(\mathbf R)\in U(N).
+\]
+
+为了保持总波函数不变，核通道振幅必须变换为
+
+\[
+\boldsymbol\chi'=U^\dagger\boldsymbol\chi.
+\]
+
+由定义直接计算得到
+
+\begin{equation}
+\mathbf A_A'
+=U^\dagger\mathbf A_AU
++\ii\hbar U^\dagger(\nabla_AU).
+\label{eq:berry-gauge-transform}
+\end{equation}
+
+因此
+
+\[
+[-\ii\hbar\nabla_A-\mathbf A_A']\boldsymbol\chi'
+=U^\dagger
+[-\ii\hbar\nabla_A-\mathbf A_A]\boldsymbol\chi.
+\]
+
+这就是标准的非 Abelian 规范协变变换。导数耦合不是某个坐标选择造成的“多余项”，而是随核坐标移动的电子标架必然带来的联络。
+
+联络能否在一个邻域内通过选基完全消去，由曲率决定。把 \(\mathbf A=A_\mu\dd R^\mu\) 看作矩阵值一形式，定义
+\begin{equation}
+\mathbf F
+=\dd\mathbf A-\frac{\ii}{\hbar}\mathbf A\wedge\mathbf A,
+\qquad
+F_{\mu\nu}
+=\partial_\mu A_\nu-\partial_\nu A_\mu
+-\frac{\ii}{\hbar}[A_\mu,A_\nu].
+\label{eq:nonabelian-berry-curvature}
+\end{equation}
+在标架变换 \eqnrefs{eq:berry-gauge-transform} 下，曲率没有非齐次项，而是按
+\begin{equation}
+\mathbf F'=U^\dagger\mathbf F U
+\label{eq:curvature-covariance}
+\end{equation}
+共轭变换。令协变动量
+\(\Pi_\mu=-\ii\hbar\partial_\mu-A_\mu\)，直接展开交换子得到
+\begin{equation}
+[\Pi_\mu,\Pi_\nu]=\ii\hbar F_{\mu\nu}.
+\label{eq:covariant-momentum-curvature}
+\end{equation}
+因此曲率测量的是沿两个坐标方向作无穷小平行移动时，交换次序所留下的差异。这与 Lie 括号测量无穷小群变换的次序差完全相同，只是现在比较的是不同基点上方的电子空间。
+
+曲率也可以完全摆脱局部标架，用谱投影写成
+\begin{equation}
+F_{\mu\nu}
+=\ii\hbar\,P[\partial_\mu P,\partial_\nu P]P
+\big|_{\operatorname{Ran}P}.
+\label{eq:projector-berry-curvature}
+\end{equation}
+式 \eqnrefs{eq:projector-berry-curvature} 显示，只要孤立谱子空间 \(P(R)\) 光滑，Berry 曲率就有定义；某一组本征矢是否在坐标图边缘变得奇异并不影响它。反过来，若能隙闭合，Riesz 投影 \eqnrefs{eq:riesz-electronic-projector} 不能继续保持固定秩，原来的向量丛本身便在那里失效。
+
+给定构型空间中的路径 \(C:t\mapsto R(t)\)，平行截面满足
+\begin{equation}
+\frac{\dd\mathbf v}{\dd t}
+-\frac{\ii}{\hbar}
+\dot R^\mu A_\mu(R(t))\mathbf v=0.
+\label{eq:berry-parallel-transport}
+\end{equation}
+从起点到终点的平行移动算符为路径有序指数
+\begin{equation}
+W[C]=\mathcal P\exp\!\left[
+\frac{\ii}{\hbar}\int_C\mathbf A
+\right].
+\label{eq:berry-wilson-line}
+\end{equation}
+闭路时 \(W[C]\) 称为整体回转。它在基变换下只在基点处被共轭，所以其本征值和迹与标架无关。秩一时路径排序消失，\(W[C]=\ee^{\ii\gamma(C)}\) 就是 Berry 相位；秩大于一时，不同闭路可以得到不对易的矩阵，这才是非 Abelian 几何相位的确切含义。
+
+同一投影还给出比曲率更丰富的局部几何。对非简并态定义量子几何张量
+\begin{equation}
+Q_{\mu\nu}
+=\langle\partial_\mu\phi|
+(I-|\phi\rangle\langle\phi|)
+|\partial_\nu\phi\rangle .
+\label{eq:quantum-geometric-tensor}
+\end{equation}
+它的实部
+\(g_{\mu\nu}=\operatorname{Re}Q_{\mu\nu}\)
+是量子度量，描述相邻电子射线的 Fubini--Study 距离；虚部给出曲率，按本章约定
+\begin{equation}
+F_{\mu\nu}=-2\hbar\operatorname{Im}Q_{\mu\nu}.
+\label{eq:qgt-curvature-relation}
+\end{equation}
+稍后出现的 Born--Huang 标量势正是量子度量沿核动能度量的加权迹。曲率控制平行移动的转动，度量控制子空间离开自身的快慢；二者是同一个量子几何张量的反对称与对称部分。
+
+\begin{proof}[解]
+把局部电子标架写成列矩阵 \(\Phi=(|\phi_1\rangle,\ldots,|\phi_N\rangle)\)，则
+\[
+\Phi^\dagger\Phi=I,\qquad
+\mathbf d_A=\Phi^\dagger\nabla_A\Phi .
+\]
+换标架 \(\Phi'=\Phi U\) 后，
+\begin{align*}
+\mathbf d_A'
+&=(\Phi U)^\dagger\nabla_A(\Phi U)\\
+&=U^\dagger\Phi^\dagger(\nabla_A\Phi)U
++U^\dagger(\Phi^\dagger\Phi)(\nabla_AU)\\
+&=U^\dagger\mathbf d_AU+U^\dagger\nabla_AU .
+\end{align*}
+乘以 \(\ii\hbar\) 就得到 \eqnrefs{eq:berry-gauge-transform}。矩阵写法同时固定了左右指标的位置，避免把标架指标与电子 Hilbert 空间指标混在一起。
+
+核振幅的逆变换。总波函数不变要求
+\[
+ \sum_n\chi_n'\phi_n'=\sum_m\chi_m\phi_m,
+\]
+代入 \(\phi_n'=\sum_m\phi_mU_{mn}\) 并利用 \(\{\phi_m\}\) 线性无关，
+\[
+ \chi_m=\sum_nU_{mn}\chi_n',
+ \qquad\text{即}\quad
+ \boldsymbol\chi=U\boldsymbol\chi',
+ \qquad \boldsymbol\chi'=U^\dagger\boldsymbol\chi.
+\]
+
+协变导数的规范不变性。将 \(\mathbf A_A'=\ii\hbar\mathbf d_A'\) 与 \(\boldsymbol\chi'=U^\dagger\boldsymbol\chi\) 代入，
+\[
+ \begin{aligned}
+ (-\ii\hbar\nabla_A-\mathbf A_A')\boldsymbol\chi'
+ &=(-\ii\hbar\nabla_A-\ii\hbar U^\dagger\mathbf d_AU-\ii\hbar U^\dagger\nabla_AU)\,U^\dagger\boldsymbol\chi\\
+ &=(-\ii\hbar U^\dagger\nabla_A-\ii\hbar U^\dagger\mathbf d_A)\boldsymbol\chi\\
+ &\quad +\ii\hbar U^\dagger(\nabla_AU)U^\dagger\boldsymbol\chi-\ii\hbar U^\dagger(\nabla_AU)U^\dagger\boldsymbol\chi\\
+ &=U^\dagger(-\ii\hbar\nabla_A-\ii\hbar\mathbf d_A)\boldsymbol\chi\\
+ &=U^\dagger(-\ii\hbar\nabla_A-\mathbf A_A)\boldsymbol\chi.
+ \end{aligned}
+\]
+这里使用了 \(U^\dagger U=\mathbb I\) 求导得到的
+\((\nabla_AU^\dagger)U=-U^\dagger(\nabla_AU)\)。因此
+\(\nabla_AU\) 产生的非齐次项严格相消，协变导数按
+\(U^\dagger\) 左乘变换。平方后矩阵核哈密顿量满足
+\(H^{\rm nuc}\to U^\dagger H^{\rm nuc}U\)，其谱和总波函数都不依赖局部电子基的相位或简并子空间中的幺正混合。
+\end{proof}
+
+\eqnrefs{eq:d-from-d} 把 \(D\) 完全写成 \(\mathbf d\) 的关系依赖\emph{完整电子完备关系}。实际计算常只保留有限个电子态。设
+\[
+P_e(\mathbf R)=\sum_{a=1}^{N}|\phi_a(\mathbf R)\rangle\langle\phi_a(\mathbf R)|,
+\qquad
+Q_e=I-P_e.
+\]
+在保留子空间内部，矩阵联络仍由局部标架给出
+\(\mathbf A_A=\ii\hbar\Phi^\dagger\nabla_A\Phi\)。不能把它误写成
+\(\ii\hbar P_e(\nabla_AP_e)P_e\)，因为投影恒等式求导后有
+\(P_e(\nabla_AP_e)P_e=0\)。被删去的 \(Q_e\) 通道不会凭空消失，而留下正半定的量子几何标量矩阵
+\begin{equation}
+[\boldsymbol\Phi_A]_{mn}
+=\frac{\hbar^2}{2M_A}
+\langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle,
+\qquad m,n\in P_e.
+\label{eq:born-huang-finite-subspace-scalar}
+\end{equation}
+因此有限电子子空间中的有效核哈密顿量应写成
+\begin{equation}
+H_{P_e}^{\rm nuc}
+=\sum_A\frac{[-\ii\hbar\nabla_A I-\mathbf A_A]^2}{2M_A}
++\mathbf E(\mathbf R)+\sum_A\boldsymbol\Phi_A,
+\label{eq:born-huang-finite-subspace-hamiltonian}
+\end{equation}
+其中 $\mathbf E$ 是保留电子态的势能矩阵。只有当 $P_e$ 扩展到完整电子空间时 $Q_e\to0$，\eqnrefs{eq:born-huang-finite-subspace-scalar}才消失并恢复纯协变平方\eqnrefs{eq:covariant-nuclear-kinetic}。这一区分对于有限态非绝热动力学非常重要：不能把完整基中的 $D=\nabla\!\cdot d+d^2$ 机械套到截断基后便宣称所有二阶几何修正已经包含。
+
+\begin{proof}[解]
+设保留电子子空间投影 \(P_e=\sum_{a=1}^N|\phi_a\rangle\langle\phi_a|\)，正交补 \(Q_e=I-P_e\)。对任一保留态的导数插入完备关系 \(I=P_e+Q_e\)，
+\begin{equation*}
+ \langle\nabla_A\phi_m|\nabla_A\phi_n\rangle
+ =\langle\nabla_A\phi_m|P_e|\nabla_A\phi_n\rangle
+ +\langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle.
+\end{equation*}
+把 \(P_e\) 的定义代入第一项，
+\begin{align*}
+ \langle\nabla_A\phi_m|P_e|\nabla_A\phi_n\rangle
+ &=\sum_{a=1}^N
+ \langle\nabla_A\phi_m|\phi_a\rangle
+ \langle\phi_a|\nabla_A\phi_n\rangle\\
+ &=-\sum_{a=1}^N
+ \mathbf d_{ma}^{(A)}\cdot\mathbf d_{an}^{(A)},
+\end{align*}
+其中第二步用了\eqnrefs{eq:d-antihermitian}：对正交关系 \(\langle\phi_m|\phi_a\rangle=\delta_{ma}\) 求导得
+\begin{equation*}
+ \langle\nabla_A\phi_m|\phi_a\rangle
+ +\langle\phi_m|\nabla_A\phi_a\rangle=0
+ \quad\Longrightarrow\quad
+ \langle\nabla_A\phi_m|\phi_a\rangle=-\mathbf d_{ma}^{(A)}.
+\end{equation*}
+由\eqnrefs{eq:d-from-d}，
+\begin{equation*}
+ D_{mn}^{(A)}
+ =\nabla_A\cdot\mathbf d_{mn}^{(A)}
+ +\sum_{a=1}^N\mathbf d_{ma}^{(A)}\cdot\mathbf d_{an}^{(A)},
+\end{equation*}
+故 \(\nabla_A\cdot\mathbf d+\mathbf d^2\) 恰重组为协变动能平方\eqnrefs{eq:covariant-nuclear-kinetic}。第二项
+\begin{equation*}
+ \langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle
+\end{equation*}
+无法由有限维内部联络重建，乘以 \(\hbar^2/(2M_A)\) 后正好给出\eqnrefs{eq:born-huang-finite-subspace-scalar}。
+
+为证正定性，对任意保留子空间列向量 \(\mathbf c\)，由\eqnrefs{eq:born-huang-finite-subspace-scalar}展开，
+\begin{align*}
+ \mathbf c^\dagger\boldsymbol\Phi_A\mathbf c
+ &=\frac{\hbar^2}{2M_A}\sum_{m,n}c_m^*c_n
+ \langle\nabla_A\phi_m|Q_e|\nabla_A\phi_n\rangle\\
+ &=\frac{\hbar^2}{2M_A}
+ \left\langle \sum_m c_m\nabla_A\phi_m\middle|Q_e\middle|\sum_n c_n\nabla_A\phi_n\right\rangle\\
+ &=\frac{\hbar^2}{2M_A}
+ \left\langle Q_e\nabla_A\sum_n c_n\phi_n\middle|
+ Q_e\nabla_A\sum_m c_m\phi_m\right\rangle\\
+ &=\frac{\hbar^2}{2M_A}
+ \left\|Q_e\nabla_A\sum_n c_n\phi_n\right\|^2\ge0,
+\end{align*}
+第二步交换求和与内积，第三步用了 \(Q_e^\dagger=Q_e\)，第四步用了 \(Q_e^2=Q_e\)。等号成立当且仅当 \(\nabla_A\sum_n c_n\phi_n\) 完全落在 \(P_e\) 子空间内。当 \(P_e\) 扩展到完整电子空间时 \(Q_e\to0\)，\eqnrefs{eq:born-huang-finite-subspace-scalar}消失并恢复纯协变平方\eqnrefs{eq:covariant-nuclear-kinetic}。因此 \(\boldsymbol\Phi_A\) 测量的是保留电子子空间随核坐标移动时向其正交补空间弯曲的程度。
+\end{proof}
+
+对 clamped-nuclei 本征方程关于 \(\mathbf R_A\) 求导：
+
+\[
+(\nabla_AH_e)|\phi_n\rangle
++H_e|\nabla_A\phi_n\rangle
+=(\nabla_AE_n)|\phi_n\rangle
++E_n|\nabla_A\phi_n\rangle.
+\]
+
+左乘 \(\langle\phi_m|\)。当 \(m\neq n\) 时，正交性消去 \(\nabla_AE_n\) 项，得到
+
+\begin{equation}
+\mathbf d_{mn}^{(A)}
+=\frac{\langle\phi_m|\nabla_AH_e|\phi_n\rangle}
+{E_n-E_m},
+\qquad m\neq n.
+\label{eq:hellmann-feynman-offdiagonal}
+\end{equation}
+
+这条式子说明导数耦合会在小能隙处增强。对于真正简并点，绝热单态基甚至会变得奇异，必须保留整个简并子空间并使用矩阵值联络。
+
+能隙分母给出了非绝热耦合的定量判据。核运动足够慢且能隙足够大时，通道间跃迁才会受抑制；这才是 Born--Oppenheimer 近似中“电子跟得上原子核”的定量内容。
+
+\section{绝热极限与单势能面有效理论}
+
+若核波包中心沿一条经典轨道 \(\mathbf R(t)\) 缓慢运动，电子瞬时本征态之间的非绝热混合频率尺度为
+
+\[
+\left|
+\sum_A\dot{\mathbf R}_A\cdot\mathbf d_{mn}^{(A)}
+\right|.
+\]
+
+与 Bohr 频率 \(|E_m-E_n|/\hbar\) 比较，得到局部绝热参数
+
+\begin{equation}
+\epsilon_{mn}
+\equiv
+\frac{\hbar\left|
+\sum_A\dot{\mathbf R}_A\cdot\mathbf d_{mn}^{(A)}
+\right|}
+{|E_m-E_n|}.
+\label{eq:bo-adiabatic-parameter}
+\end{equation}
+
+当所有相关 \(m\neq n\) 都满足 \(\epsilon_{mn}\ll1\)，通道间人口转移才被压低。利用 \eqnrefs{eq:hellmann-feynman-offdiagonal} 可进一步看到
+
+\[
+\epsilon_{mn}
+\sim
+\frac{\hbar|\dot R|\,|\langle m|\partial_RH_e|n\rangle|}
+{|E_m-E_n|^2},
+\]
+
+这就是绝热定理常见的“矩阵元除以能隙平方”结构。
+
+“核很重”为什么通常有利？在相似势能曲率下，振动频率 \(\omega_{vib}\sim\sqrt{k/M}\) 随 \(M^{-1/2}\) 下降，典型核速度也随质量增大而减小；与此同时电子能隙仍保持电子伏量级。因此质量比为绝热性提供了基础尺度分离。但在避免交叉、锥形交叉或高速碰撞中，能隙可以变小到足以抵消这一质量优势，BO 近似随即失效。
+
+假设目标电子态 \(n\) 非简并且与其他态保持有限能隙，只保留该通道。有效核哈密顿量为
+
+\begin{equation}
+\hat H_n^{\rm eff}
+=\sum_A\frac{1}{2M_A}
+[-\ii\hbar\nabla_A-\mathbf A_n^{(A)}]^2
++E_n(\mathbf R)+\Phi_n(\mathbf R).
+\label{eq:berry-scalar}
+\end{equation}
+
+其中
+
+\[
+\mathbf A_n^{(A)}
+=\ii\hbar\langle\phi_n|\nabla_A\phi_n\rangle
+\]
+
+是 Abelian Berry 联络。标量 Born--Huang 修正为
+
+\begin{equation}
+\Phi_n
+=\sum_A\frac{\hbar^2}{2M_A}
+\left[
+\langle\nabla_A\phi_n|\nabla_A\phi_n\rangle
+-|\langle\phi_n|\nabla_A\phi_n\rangle|^2
+\right].
+\label{eq:born-huang-scalar}
+\end{equation}
+
+若把核坐标指标展开为 \(R^{Aa}\)，式 \eqnrefs{eq:born-huang-scalar} 正是量子度量的质量加权迹：
+\begin{equation}
+\Phi_n
+=\sum_{A,a}\frac{\hbar^2}{2M_A}\,
+g^{(n)}_{Aa,Aa}.
+\label{eq:born-huang-qgt-trace}
+\end{equation}
+
+插入电子完备关系后
+
+\[
+\Phi_n
+=\sum_A\sum_{m\neq n}
+\frac{\hbar^2}{2M_A}
+|\mathbf d_{mn}^{(A)}|^2\ge0.
+\]
+
+\begin{proof}[解]
+由\eqnrefs{eq:born-huang-scalar}，标量势含 \(\langle\nabla_A\phi_n|\nabla_A\phi_n\rangle\) 项。利用电子本征态完备性 \(\sum_m|\phi_m\rangle\langle\phi_m|=\mathbb I\) 插入：
+\begin{equation*}
+\langle\nabla_A\phi_n|\nabla_A\phi_n\rangle
+=\langle\nabla_A\phi_n|\mathbb I|\nabla_A\phi_n\rangle
+=\sum_m\langle\nabla_A\phi_n|\phi_m\rangle\langle\phi_m|\nabla_A\phi_n\rangle
+=\sum_m|\mathbf d_{mn}^{(A)}|^2,
+\end{equation*}
+
+
+求和中 \(m=n\) 项恰为 \(|\langle\phi_n|\nabla_A\phi_n\rangle|^2=|\mathbf d_{nn}^{(A)}|^2\)，与\eqnrefs{eq:born-huang-scalar}中被减去的项抵消。因此
+\begin{equation*}
+\Phi_n=\sum_A\frac{\hbar^2}{2M_A}\sum_{m\neq n}|\mathbf d_{mn}^{(A)}|^2.
+\end{equation*}
+故 \(\Phi_n\ge0\)。
+
+在局部相位 \(|\phi_n\rangle\to\ee^{\ii\theta_n(\mathbf R)}|\phi_n\rangle\) 下，非对角耦合变换为
+\begin{equation*}
+\mathbf d_{mn}^{(A)}=\langle\phi_m|\nabla_A\phi_n\rangle
+\to\langle\phi_m|\ee^{-\ii\theta_m}\nabla_A(\ee^{\ii\theta_n}|\phi_n\rangle)
+=\ee^{\ii(\theta_n-\theta_m)}\mathbf d_{mn}^{(A)},
+\end{equation*}
+模 \(|\mathbf d_{mn}^{(A)}|\) 不变（相位因子模为 1）。因此 \(\Phi_n=\sum_A\frac{\hbar^2}{2M_A}\sum_{m\neq n}|\mathbf d_{mn}^{(A)}|^2\) 不依赖电子态的相位约定，并且 \(\Phi_n\ge0\)。在单面描述逼近锥形交叉时，能隙闭合使 \(\mathbf d_{mn}\) 增大，标量势也暴露出单通道截断的失效。
+
+\end{proof}
+
+\(\mathbf A_n\) 会随局部相位
+
+\[
+|\phi_n\rangle\to \ee^{\ii\theta_n(\mathbf R)}|\phi_n\rangle
+\]
+
+变为
+
+\[
+\mathbf A_n\to\mathbf A_n-\hbar\nabla\theta_n,
+\]
+
+而 \(\Phi_n\) 不变。相应 Berry 曲率
+
+\begin{equation}
+\mathbf F_{AB}^{(n)}
+=\partial_A\mathbf A_B^{(n)}
+-\partial_B\mathbf A_A^{(n)}
+\label{eq:berry-curvature}
+\end{equation}
+
+是局部规范不变量。若围绕锥形交叉的闭合核路径使电子态获得非平庸几何相位，核波函数必须相应补偿，从而改变振转能级与干涉图样。
+
+同一个锥形交叉在绝热表示中表现为很大的导数耦合，在非绝热表示中则化为光滑的非对角势能矩阵。两种写法描述同一个多通道动力学。
+
+\section{绝热表示、diabatic 表示与局部两态模型}
+
+绝热基把电子哈密顿量对角化，却通常产生很大的导数耦合；非绝热基试图通过位置依赖幺正变换减小导数耦合，代价是电子势能矩阵出现显式非对角耦合。两者是同一多通道理论的不同规范表示，并不存在一个对所有核构型都唯一的“严格非绝热基”。
+
+当只有两个电子态在局部小能隙区域显著耦合时，可以把 \eqnrefs{eq:born-huang-coupled} 投影到二维子空间。若核波包足够窄，可以进一步把主反应坐标近似成经典轨道 \(R(t)\)。在交叉附近对非绝热能差线性化
+
+\[
+E_1(R)-E_2(R)
+\simeq \left.\frac{\dd(E_1-E_2)}{\dd R}\right|_{R_c}
+\dot R_c(t-t_c),
+\]
+
+并把局部耦合近似为常数，就得到\chapref{ch:resonance-lz}的 Landau--Zener 哈密顿量。由此可见，Landau--Zener 不是与 BO 理论分离的经验公式，而是精确 Born--Huang 多通道动力学在局部二态、经典核轨道和线性交叉三个近似之后得到的可解极限。
+
+\begin{proof}[解]
+对正文定义的有量纲 Berry 联络
+\(\vb A_n=\ii\hbar\langle\phi_n|\nabla_{\vb R}\phi_n\rangle\)，闭路几何相位为
+\begin{equation}
+ \gamma_n(C)=\frac1\hbar\oint_C\vb A_n\cdot\dd\vb R .
+ \label{eq:berry-phase-circuit}
+\end{equation}
+若 \(C=\partial S\) 且曲面上能带非简并，Stokes 定理给出
+\begin{equation}
+ \gamma_n(C)=\frac1\hbar\int_S\vb F_n\cdot\dd\vb S,
+ \qquad \vb F_n=\nabla_{\vb R}\times\vb A_n .
+ \label{eq:berry-stokes}
+\end{equation}
+在闭合二维参数流形 \(\mathcal M\) 上，
+\begin{equation}
+ \mathcal C_n=\frac1{2\pi\hbar}\int_{\mathcal M}F_n
+ \label{eq:chern-number-definition}
+\end{equation}
+与局部相位选择无关。
+
+以 \(H(\vb R)=\vb R\cdot\boldsymbol\sigma\) 的下能带为例。取北极规范后直接计算
+\[
+ A_\theta=0,\qquad A_\varphi=-\frac{\hbar}{2}(1+\cos\theta),
+\]
+因此
+\begin{equation}
+ F_{\theta\varphi}=\partial_\theta A_\varphi
+ =\frac{\hbar}{2}\sin\theta .
+ \label{eq:two-level-berry-curvature}
+\end{equation}
+由式 \eqnrefs{eq:two-level-berry-curvature}，包围简并点的球面通量为
+\begin{equation}
+ \mathcal C_-=\frac1{2\pi\hbar}
+ \int_0^{2\pi}\!\dd\varphi\int_0^\pi
+ \frac{\hbar}{2}\sin\theta\,\dd\theta=1 .
+ \label{eq:chern-number-quantization}
+\end{equation}
+式 \eqnrefs{eq:chern-number-quantization} 的整数性不是某个规范中的偶然积分：球面需要南、北两个局部本征矢，二者在赤道重叠区的过渡函数
+\(g_{NS}:S^1\to U(1)\) 具有整数绕数；由 Stokes 定理，曲率总通量正等于
+\(2\pi\hbar\) 乘以该绕数。锥形交叉的两态线性化正是这一局部模型；在只包围交叉点的平面回路上，它表现为 \(\pi\) 几何相位。
+\end{proof}
+
+把 Born--Huang 方程投影到单个非简并电子带后，核的有效哈密顿量为
+\begin{equation}
+ H_{\rm eff}^{(n)}
+ =\sum_A\frac{[-\ii\hbar\nabla_A-\vb A_n^{(A)}]^2}{2M_A}
+ +E_n(\vb R)+\Phi_n(\vb R).
+ \label{eq:phys-bh-bo-effective}
+\end{equation}
+式 \eqnrefs{eq:phys-bh-bo-effective} 的这一定义同时保留 Berry 联络与非负 Born--Huang 标量势；忽略带间耦合的误差只有在电子能隙相对于核动能尺度保持非零时才受控，靠近锥形交叉时必须回到多通道方程。
