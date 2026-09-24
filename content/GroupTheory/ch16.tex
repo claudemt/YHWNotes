@@ -1,0 +1,2163 @@
+\chapter{置换群、Young 方法与全同粒子}
+\label{chap:permutation-group}
+
+前五章讨论的对称性大多作用在“一个物体放在空间中的方式”上：点群改变分子或晶体的取向，空间群还允许平移，转动群作用在一个粒子的轨道和自旋自由度上。多体量子力学带来另一种不同的对称性。若系统含 $n$ 个全同粒子，交换粒子标签并没有改变物理系统本身；因此粒子标签的全部置换形成对称群 $S_n$，多体 Hilbert 空间自然承载 $S_n$ 的表示。费米子和玻色子的统计规律，就是这个表示问题中两个最特殊的一维不可约表示。
+
+置换群还具有更普遍的数学意义。\chapref{chap:group-basics}的 Cayley 定理说明任何有限群都同构于某个置换群的子群，所以 $S_n$ 并不是物理应用中的偶然对象。更重要的是，$S_n$ 的不可约表示可以被整数分拆、Young 图与 Young 对称化算符系统分类。这一套方法既能处理全同粒子，也会在张量对称化、原子项符号、晶场理论乃至连续群表示中反复出现。
+
+本章不把 Young 图当作记号表来背，而从置换的循环结构开始，解释为什么共轭类由整数分拆分类；再从群代数构造行对称化和列反对称化，说明为什么一个 Young 图恰好对应一个不可约表示；随后用钩长公式计算维数，并以 $S_3,S_4$ 为具体例子。最后回到量子力学，把对称化算符、Slater 行列式、两电子与三电子态系统地放进 $S_n$ 表示框架。这样，数学结构与物理应用之间的连接是连续的，而不是在章末突然添加一个“应用例子”。
+\section{置换、循环结构与共轭类}
+\label{sec:sn-cycle-conjugacy}
+
+
+置换群研究的是“标签怎样互换”。如果有 $n$ 个彼此可区分的位置 $1,2,\dots,n$，一个置换 $\pi$ 就是一一映射
+\[
+\pi:\{1,2,\dots,n\}\to\{1,2,\dots,n\}.
+\]
+例如循环 $(123)$ 表示 $1\mapsto2$、$2\mapsto3$、$3\mapsto1$，而没有写出的标签保持不动。两个置换相乘仍遵守本书统一约定：右边先作用。因此 $(12)(23)$ 必须逐个追踪标签，不能把两个括号当普通代数因子交换。
+
+为什么物理需要这种看似离散的标签游戏？对全同粒子来说，粒子编号本身没有物理意义。把电子 1 与电子 2 的标签交换以后，哈密顿量不应改变。于是 $S_n$ 自然作用在 $n$ 粒子 Hilbert 空间上，而玻色/费米统计就是对这种置换表示的特殊要求。
+
+
+设
+\[
+X_n=\{1,2,\dots,n\}.
+\]
+所有双射 $\pi:X_n\to X_n$ 在函数复合下构成群 $S_n$。本讲义继续采用“右边先作用”的乘法约定，
+\[
+(\sigma\pi)(i)=\sigma(\pi(i)).
+\]
+阶数为
+\[
+|S_n|=n!,
+\]
+因为一个置换等价于把 $n$ 个不同元素排成一个有序序列。
+
+\begin{definition}[循环与循环类型]
+若置换 $\pi$ 依次把
+\[
+a_1\mapsto a_2,\quad a_2\mapsto a_3,\quad\dots,\quad a_k\mapsto a_1,
+\]
+并固定其余元素，则记为
+\[
+(a_1a_2\cdots a_k),
+\]
+称为一个 $k$-循环。若两个循环涉及的数字集合不相交，则称它们不交。
+
+若一个置换的不交循环分解中恰有 $m_k$ 个 $k$-循环，则称
+\[
+1^{m_1}2^{m_2}\cdots n^{m_n}
+\]
+为该置换的循环类型，其中
+\begin{equation}
+\sum_{k=1}^n k m_k=n.
+\label{eq:partition-cycle-type}
+\end{equation}
+\label{def:cycle-type}
+\end{definition}
+
+任意置换都能唯一地分解成不交循环的乘积，唯一性只差各循环的先后顺序和每个循环内部的循环移位。这个结论可以直接从轨道理解：由子群 $\langle\pi\rangle$ 作用在 $X_n$ 上，每个轨道恰好形成一个循环，不同轨道互不相交。
+
+\begin{proposition}[不交循环分解的唯一性]
+任意 $\pi\in S_n$ 都可写成若干两两不交循环的乘积；若忽略 $1$-循环，则这种分解在循环因子次序以及循环内部循环移位之外唯一。
+
+\end{proposition}
+
+\begin{proof}
+固定 $a\in X_n$，考虑序列
+\[
+a,\pi(a),\pi^2(a),\dots.
+\]
+因为 $X_n$ 有限，必有最小正整数 $r$ 使 $\pi^r(a)=a$。于是轨道
+\[
+\{a,\pi(a),\dots,\pi^{r-1}(a)\}
+\]
+给出循环
+\[
+(a\ \pi(a)\ \cdots\ \pi^{r-1}(a)).
+\]
+对不在该轨道中的元素重复此过程，有限步后覆盖 $X_n$，不同轨道天然不交。
+
+若有另一组不交循环分解，则包含 $a$ 的循环必须精确包含 $a$ 在 $\langle\pi\rangle$ 下的轨道，否则不能实现同一个映射。因此每个循环对应的支持集合被 $\pi$ 唯一决定，循环内部的次序也由 $a\mapsto\pi(a)$ 唯一决定，只允许改变起点。故唯一性成立。
+\end{proof}
+
+不交循环彼此交换，因此置换的许多性质只由循环长度决定。例如一个 $k$-循环的阶是 $k$，从而若
+\[
+\pi=c_1c_2\cdots c_r
+\]
+是不交循环分解，循环长度分别为 $\ell_1,\dots,\ell_r$，则
+\begin{equation}
+\operatorname{ord}(\pi)=\operatorname{lcm}(\ell_1,\dots,\ell_r).
+\label{eq:permutation-order-lcm}
+\end{equation}
+
+二循环 $(ab)$ 称为对换。任意 $k$-循环可写成 $k-1$ 个对换的乘积，例如
+\begin{equation}
+(a_1a_2\cdots a_k)
+=(a_1a_k)(a_1a_{k-1})\cdots(a_1a_2).
+\label{eq:cycle-as-transpositions}
+\end{equation}
+因此任意置换都能写成对换的乘积。不同分解所需的对换数并不唯一，但奇偶性却是唯一的。
+
+\begin{theorem}[置换奇偶性的良定义性]
+若一个置换 $\pi\in S_n$ 可写成 $r$ 个对换的乘积，也可写成 $s$ 个对换的乘积，则
+\[
+r\equiv s\pmod 2.
+\]
+因此可以定义符号同态
+\begin{equation}
+\operatorname{sgn}:S_n\to\{\pm1\},
+\qquad
+\operatorname{sgn}(\pi)=(-1)^r,
+\label{eq:sign-homomorphism}
+\end{equation}
+其中 $r$ 是任意一个对换分解的长度。
+
+\end{theorem}
+
+\begin{proof}
+考虑多项式
+\[
+\Delta(x_1,\dots,x_n)=\prod_{1\le i<j\le n}(x_i-x_j),
+\]
+即 Vandermonde 反对称多项式。置换 $\pi$ 作用在变量标签上，定义
+\[
+(\pi\Delta)(x_1,\dots,x_n)
+=\Delta(x_{\pi^{-1}(1)},\dots,x_{\pi^{-1}(n)}).
+\]
+一个对换只交换两个变量，因此使 $\Delta$ 变号。若 $\pi$ 是 $r$ 个对换的乘积，就有
+\[
+\pi\Delta=(-1)^r\Delta.
+\]
+若另一个分解长度为 $s$，同一个线性作用又必须满足
+\[
+\pi\Delta=(-1)^s\Delta.
+\]
+由于 $\Delta\neq0$，只能有 $(-1)^r=(-1)^s$，故 $r,s$ 同奇偶。
+
+乘积 $\sigma\pi$ 的对换分解可以直接串接，因此
+\[
+\operatorname{sgn}(\sigma\pi)=\operatorname{sgn}(\sigma)\operatorname{sgn}(\pi),
+\]
+故 \eqnrefs{eq:sign-homomorphism} 是群同态。
+\end{proof}
+
+符号同态的核
+\[
+A_n=\operatorname{Ker}(\operatorname{sgn})
+\]
+称为交错群，由全部偶置换组成，是 $S_n$ 的指数二正规子群。这个例子把\chapref{chap:group-basics}的同态核理论和本章联系了起来。
+
+有了循环分解和奇偶性，现在推导 $S_n$ 的共轭类分类：两个置换共轭当且仅当它们有相同的循环类型，因此共轭类与 $n$ 的整数分拆一一对应。
+
+对一般有限群，找共轭类往往是主要困难；对 $S_n$，答案极其整齐。共轭的几何意义只是“重新命名被置换的标签”，所以它不会改变循环长度。
+
+\begin{theorem}[$S_n$ 的共轭类分类]
+两个置换 $\sigma,\pi\in S_n$ 共轭，当且仅当它们具有相同的循环类型。因而 $S_n$ 的共轭类与 $n$ 的整数分拆一一对应。
+
+\end{theorem}
+
+\begin{proof}
+先设
+\[
+\pi=(a_1\cdots a_k)
+\]
+是一个循环。任取 $\tau\in S_n$，直接作用于任意标签即可验证
+\begin{equation}
+\tau(a_1\cdots a_k)\tau^{-1}
+=(\tau(a_1)\cdots\tau(a_k)).
+\label{eq:cycle-conjugation}
+\end{equation}
+因此共轭只重新命名循环中的数字，不改变循环长度。对不交循环乘积逐个应用 \eqnrefs{eq:cycle-conjugation}，可知共轭置换循环类型相同。
+
+反过来，若
+\[
+\pi=(a_1\cdots a_{k_1})(b_1\cdots b_{k_2})\cdots,
+\]
+\[
+\sigma=(a'_1\cdots a'_{k_1})(b'_1\cdots b'_{k_2})\cdots
+\]
+具有相同循环类型，就定义一个置换 $\tau$ 把每个 $a_i\mapsto a'_i$、$b_i\mapsto b'_i$，并对所有循环逐一对应。它是 $X_n$ 的双射。由 \eqnrefs{eq:cycle-conjugation}，$\tau\pi\tau^{-1}=\sigma$。故充分性也成立。
+\end{proof}
+
+这一定理的核心公式是
+\[
+\tau(a_1a_2\cdots a_m)\tau^{-1}
+=(\tau(a_1)\tau(a_2)\cdots\tau(a_m)).
+\]
+也就是说，共轭只是在循环记号里把每个标签统一重新命名，并不会改变循环长度。因此循环类型在共轭下不变。
+
+反过来，若两个置换拥有完全相同的循环长度列表，就可以把第一个置换每个循环里的标签依次送到第二个对应循环里的标签，从而构造一个双射 $\tau$。上式随后保证第二个置换等于 $\tau\sigma\tau^{-1}$。所以“同一共轭类”与“同一循环类型”完全等价。
+
+
+所谓整数分拆，就是把 $n$ 写成非增正整数之和
+\[
+\lambda=(\lambda_1,\lambda_2,\dots,\lambda_r),
+\qquad
+\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_r>0,
+\qquad
+\sum_i\lambda_i=n.
+\]
+它与循环类型 $1^{m_1}2^{m_2}\cdots$ 是同一信息的两种写法：$\lambda_i$ 直接列出每个循环的长度，$m_k$ 则记录长度为 $k$ 的循环有多少个。
+
+\begin{proposition}[给定循环类型的共轭类大小]
+循环类型为
+\[
+1^{m_1}2^{m_2}\cdots n^{m_n},
+\qquad \sum_k km_k=n
+\]
+的共轭类大小为
+\begin{equation}
+|C_{(m_1,\dots,m_n)}|
+=\frac{n!}{\displaystyle\prod_{k=1}^n k^{m_k}m_k!}.
+\label{eq:sn-class-size}
+\end{equation}
+
+\end{proposition}
+
+\begin{proof}
+先把 $n$ 个数字按某种顺序填入所有循环位置，总共有 $n!$ 种填法。但同一个 $k$-循环
+\[
+(a_1a_2\cdots a_k)
+=
+(a_2\cdots a_ka_1)
+\]
+有 $k$ 种循环移位写法，所以每个 $k$-循环带来一个 $k$ 倍重复；共有 $m_k$ 个这样的循环，给出 $k^{m_k}$。另外，同长度的 $m_k$ 个互不相交循环彼此交换，交换它们的先后顺序不产生新置换，又有 $m_k!$ 倍重复。对所有 $k$ 相乘，得到分母
+\[
+\prod_k k^{m_k}m_k!,
+\]
+于是得到 \eqnrefs{eq:sn-class-size}。
+\end{proof}
+
+\medskip
+\noindent\emph{$S_4$ 的五个共轭类。}
+$4$ 的分拆为
+\[
+4,
+\quad 3+1,
+\quad 2+2,
+\quad 2+1+1,
+\quad1+1+1+1.
+\]
+对应循环类型依次是 $4^1$、$3^11^1$、$2^2$、$2^11^2$、$1^4$。用 \eqnrefs{eq:sn-class-size} 得类大小
+\[
+6,\quad 8,\quad3,\quad6,\quad1,
+\]
+总和为 $24=|S_4|$。因此 $S_4$ 恰有五个不等价复不可约表示。下一节将看到，它们同样由五个 Young 图标记。
+\par\medskip
+
+\section{Young 图、Young 盘与不可约表示}
+\label{sec:young-representation}
+
+
+前面已经知道 $S_n$ 的共轭类由循环类型决定，而循环类型恰好由整数 $n$ 的分拆标记。例如
+\[
+4=4=3+1=2+2=2+1+1=1+1+1+1
+\]
+对应 $S_4$ 的五个共轭类。第二章又告诉我们，有限群的不等价复不可约表示个数等于共轭类个数。因此“整数分拆”不仅分类群元，也应该能够给不可约表示贴标签。Young 图就是把一个分拆画成方格图，从而把这种一一对应变成可操作的组合工具。
+
+但 Young 图本身只告诉我们“有哪一种对称类型”，还没有给出表示空间。为了构造具体空间，需要把粒子标签 $1,\dots,n$ 填进方格得到 Young 盘，然后规定同一行做对称化、同一列做反对称化。行对称与列反对称的结合，正好制造出一种不可再分的混合置换对称性。Young 对称算符和 Specht 模就是把这句话精确化。
+
+既然 $S_n$ 的共轭类由 $n$ 的分拆分类，而有限群中“不等价不可约表示数 = 共轭类数”，很自然地会猜测：同一组分拆也应当能够标记 $S_n$ 的不可约表示。Young 图正是把分拆画成几何图形的方法。
+
+\begin{definition}[Young 图与共轭分拆]
+设 $\lambda=(\lambda_1,\dots,\lambda_r)\vdash n$。Young 图 $[\lambda]$ 由 $n$ 个方格组成，第 $i$ 行有 $\lambda_i$ 个方格，各行左对齐。把图沿主对角线转置得到的 Young 图对应分拆 $\lambda'$，称为共轭分拆。
+\label{def:young-diagram}
+\end{definition}
+
+例如 $n=4$ 的五个 Young 图分别对应
+\[
+[4],\quad[3,1],\quad[2,2],\quad[2,1,1],\quad[1,1,1,1].
+\]
+这五个图既与五个共轭类一一对应，也将与五个不可约表示一一对应，但这两个“一一对应”不是说某个循环类直接对应某个同形 Young 图；它们只是恰好由同一个分拆集合分别标记。
+
+$S_4$ 的 Young 图如图 \figref{fig:s4-young-diagrams} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=.95]
+\foreach \x/\rows/\lab in {0/{4}/{$[4]$},3/{3,1}/{$[3,1]$},6/{2,2}/{$[2,2]$},9/{2,1,1}/{$[2,1,1]$},12/{1,1,1,1}/{$[1^4]$}}{
+  \node[lecturelabel] at (\x+1.0,-2.3) {\lab};
+}
+% [4]
+\foreach \i in {0,...,3}{\draw (\i*.48,0) rectangle ++(.48,-.48);}
+% [3,1]
+\foreach \i in {0,...,2}{\draw (3+\i*.48,0) rectangle ++(.48,-.48);} \draw (3,-.48) rectangle ++(.48,-.48);
+% [2,2]
+\foreach \r in {0,1}{\foreach \i in {0,1}{\draw (6+\i*.48,-\r*.48) rectangle ++(.48,-.48);}}
+% [2,1,1]
+\foreach \i in {0,1}{\draw (9+\i*.48,0) rectangle ++(.48,-.48);} \draw (9,-.48) rectangle ++(.48,-.48); \draw (9,-.96) rectangle ++(.48,-.48);
+% [1^4]
+\foreach \r in {0,...,3}{\draw (12,-\r*.48) rectangle ++(.48,-.48);}
+\end{tikzfig}
+\caption{$S_4$ 的五个 Young 图，对应 $4$ 的五个整数分拆。}
+\label{fig:s4-young-diagrams}
+\end{figure}
+
+\begin{definition}[Young 盘与标准 Young 盘]
+把数字 $1,2,\dots,n$ 各填入 Young 图的一个方格，得到 Young 盘 $T$。若每一行从左到右严格递增、每一列从上到下严格递增，则称为标准 Young 盘（标准 Young tableau）。
+\label{def:young-tableau}
+\end{definition}
+
+同一个形状有 $n!$ 种带标签填法，但绝大多数彼此包含大量冗余。标准盘的数目最终正好等于对应不可约表示的维数。
+
+整数分拆给出 Young 图，但 Young 图本身只是几何对象。要把它变成表示论的工具，需要在张量空间上构造 Young 算符：行方向对称化、列方向反对称化。
+
+先不要急着看公式。若两个标签位于 Young 盘同一行，我们希望交换它们时状态保持不变；若两个标签位于同一列，我们希望交换它们时状态变号。于是对一整行里的所有置换求和会产生“完全对称化”，而对一整列的所有置换按奇偶性带符号求和会产生“完全反对称化”。
+
+设 $R_T$ 是只在各行内部重新排列数字的置换集合，$C_T$ 是只在各列内部重新排列数字的置换集合。它们都是 $S_n$ 的子群。于是定义
+\[
+a_T=\sum_{p\in R_T}p,
+\qquad
+b_T=\sum_{q\in C_T}\operatorname{sgn}(q)q.
+\]
+这里这些求和不是普通数字求和，而是在群代数 $\CC[S_n]$ 中把置换当作一组基向量做线性组合。$a_T$ 负责行对称，$b_T$ 负责列反对称；二者相乘 $e_T=a_Tb_T$ 就是 Young 对称算符。下面的证明要说明，$e_T$ 虽然通常还不是归一化投影，但它平方以后只差一个常数，因此本质上就是投影到一个不可约对称性块。Young 方法的关键不是“画格子”，而是让图的行与列分别编码两种相反的置换对称性。给定 Young 盘 $T$，定义两个子群：
+\[
+R_T=\{\text{只在每一行内部置换数字的置换}\},
+\]
+\[
+C_T=\{\text{只在每一列内部置换数字的置换}\}.
+\]
+由定义可知 $R_T,C_T\leqslant S_n$，并且
+\[
+R_T\cap C_T=\{e\},
+\]
+因为一个非平凡置换不可能同时只在行内和只在列内移动数字。
+
+在群代数 $\mathbb C[S_n]$ 中定义
+\begin{align}
+a_T&=\sum_{r\in R_T}r,\label{eq:row-symmetrizer}\\
+b_T&=\sum_{c\in C_T}\operatorname{sgn}(c)c,\label{eq:column-antisymmetrizer}\\
+e_T&=a_Tb_T.\label{eq:young-symmetrizer}
+\end{align}
+$a_T$ 对行内置换做完全对称化，$b_T$ 对列内置换做完全反对称化。它们不是抽象的形式和；当群代数通过某个置换表示作用在张量空间上时，$a_T$ 和 $b_T$ 就变成具体的对称化算符。
+
+对任意 $r_0\in R_T$，由重排定理
+\[
+r_0a_T=\sum_{r\in R_T}r_0r=a_T.
+\]
+对任意 $c_0\in C_T$，
+\[
+b_Tc_0=\operatorname{sgn}(c_0)b_T.
+\]
+于是 $e_T=a_Tb_T$ 同时把“行对称、列反对称”编码进一个群代数元素。
+
+\medskip
+\noindent\emph{{$S_3$ 的形状 $\left[2,1\right]$}。}
+取标准盘
+\[
+T=\begin{array}{|c|c|}\hline 1&2\\\hline 3\\\cline{1-1}\end{array}.
+\]
+则
+\[
+R_T=\{e,(12)\},
+\qquad
+C_T=\{e,(13)\}.
+\]
+因此
+\[
+a_T=e+(12),
+\qquad
+b_T=e-(13),
+\]
+\[
+e_T=(e+(12))(e-(13))
+=e+(12)-(13)-(132).
+\]
+这个显式展开同时展示了每一项怎样来自“先行对称，再列反对称”的结构。
+\par\medskip
+
+
+如果只看群代数中的 $(12)$、$(13)$ 仍然觉得抽象，可以让它真正作用在三粒子张量积上。写一个未对称化乘积态
+\[
+\Psi(1,2,3)=\phi_a(1)\phi_b(2)\phi_c(3).
+\]
+采用本书“置换粒子标签”的约定，Young 算符给出
+\begin{align*}
+e_T\Psi
+&=[e+(12)-(13)-(132)]\Psi\\
+&=\phi_a(1)\phi_b(2)\phi_c(3)
+ +\phi_a(2)\phi_b(1)\phi_c(3)\\
+&\quad-\phi_a(3)\phi_b(2)\phi_c(1)
+ -\phi_a(2)\phi_b(3)\phi_c(1).
+\end{align*}
+现在可以直接检查：交换盘中同一行的标签 $1,2$ 不改变这一组合，而交换同一列的标签 $1,3$ 会改变符号。Young 图里的“同行对称、同列反对称”因此不是图形比喻，而是一个可以逐项作用到多体波函数上的线性算符规则。
+
+投影算符满足 $P^2=P$。Young 算符通常没有恰好归一化成投影，但它满足“平方等于自身的常数倍”，这就是本质幂等性。
+
+\begin{theorem}[Young 算符的本质幂等性]
+对 Young 盘 $T$，存在只依赖其形状 $\lambda$ 的非零常数 $c_\lambda$，使
+\begin{equation}
+e_T^2=c_\lambda e_T.
+\label{eq:young-quasi-idempotent}
+\end{equation}
+因此
+\[
+p_T=\frac{1}{c_\lambda}e_T
+\]
+是幂等元。常数 $c_\lambda$ 的具体数值暂不预设；在得到 Specht 模维数与钩长公式以后，我们会反过来算出它恰好等于所有钩长的乘积。
+
+\end{theorem}
+
+\begin{proof}
+先注意 $e_T\neq0$：在展开
+\[
+e_T=\sum_{r\in R_T}\sum_{c\in C_T}\operatorname{sgn}(c)rc
+\]
+时，不同的 $(r,c)$ 不会给出同一个乘积。若 $rc=r'c'$，则
+\[
+r^{-1}r'=cc'^{-1}\in R_T\cap C_T=\{e\},
+\]
+所以 $r=r',c=c'$。特别地，单位元只由 $r=c=e$ 产生，其系数为 $1$，不会在展开中抵消。
+
+接着考察任意 $x\in\mathbb C[S_n]$ 对应的 $e_Txe_T$。对 $r_0\in R_T$，重排求和指标给出 $r_0a_T=a_T$；对 $c_0\in C_T$，有 $b_Tc_0=\operatorname{sgn}(c_0)b_T$。所以
+\[
+r_0(e_Txe_T)c_0
+=\operatorname{sgn}(c_0)e_Txe_T.
+\]
+也就是说，$e_Txe_T$ 与 $e_T$ 具有完全相同的“左行不变、右列反对称”变换律。\appref{app:young-proofs} 的 Young 一维性引理逐项比较群代数基系数并证明：满足这组变换律的元素必为 $e_T$ 的标量倍数。因此存在标量函数 $\lambda_T(x)$ 使
+\[
+e_Txe_T=\lambda_T(x)e_T.
+\]
+取 $x=e$ 得 $e_T^2=c_Te_T$。若 $T'=\pi T$ 与 $T$ 同形，则 $e_{T'}=\pi e_T\pi^{-1}$，故
+\[
+e_{T'}^2=\pi e_T^2\pi^{-1}=c_Te_{T'},
+\]
+所以常数只依赖形状，可记为 $c_\lambda$。还需排除 $c_\lambda=0$。在群代数 $A=\mathbb C[S_n]$ 上考虑右乘算符
+\[
+R_{e_T}:A\to A,\qquad x\mapsto xe_T.
+\]
+在群元基 $\{g\}_{g\in S_n}$ 中，$R_{e_T}g=ge_T$ 的 $g$ 分量等于 $e_T$ 的单位元系数，而该系数刚才已经证明为 $1$。因此
+\[
+\Tr R_{e_T}=n!\neq0.
+\]
+若 $c_\lambda=0$，则 $e_T^2=0$，从而 $R_{e_T}^2=0$；幂零算符的迹必须为零，与上式矛盾。故 $c_\lambda\neq0$，于是 $p_T=c_\lambda^{-1}e_T$ 确为幂等元。
+\end{proof}
+
+由此定义左理想
+\begin{equation}
+S^\lambda=\mathbb C[S_n]e_T.
+\label{eq:specht-module}
+\end{equation}
+它称为形状 $\lambda$ 的 Specht 模。不同盘但相同形状只是在群代数中被共轭置换重新标记，因此给出等价表示；不同形状则给出不等价表示。
+
+\begin{theorem}[Young--Specht 分类定理]
+在复数域上，$S_n$ 的不等价不可约表示与 $n$ 的整数分拆 $\lambda\vdash n$ 一一对应。对任意形状为 $\lambda$ 的 Young 盘 $T$，Specht 模
+\[
+S^\lambda=\mathbb C[S_n]e_T
+\]
+是一个不可约表示空间；同形状不同 Young 盘得到等价表示，不同形状得到不等价表示。其维数将在下面的标准盘基定理中确定。
+
+\end{theorem}
+
+\begin{proof}
+下面先在正文中给出分类定理的完整逻辑链；其中涉及行列冲突与本原幂等元的一组技术引理，在\appref{app:young-proofs} 中逐式证明。
+
+首先，若 $T'=\pi T$，则行群和列群分别满足
+\[
+R_{T'}=\pi R_T\pi^{-1},
+\qquad
+C_{T'}=\pi C_T\pi^{-1},
+\]
+从而
+\[
+e_{T'}=\pi e_T\pi^{-1}.
+\]
+由 $e_{T'}=\pi e_T\pi^{-1}$ 可知
+\[
+\mathbb C[S_n]e_{T'}=\mathbb C[S_n]e_T\pi^{-1}.
+\]
+因此右乘 $\pi^{-1}$ 定义
+\[
+\Phi_\pi(xe_T)=xe_T\pi^{-1}=x\pi^{-1}e_{T'},
+\]
+它与左正则作用交换，并由右乘 $\pi$ 给出逆映射，所以同形状表示等价。
+
+其次，若两个形状 $\lambda,\mu$ 不同，就按行长的字典序把较大的记为 $\lambda$。Young 行列冲突引理说明：对形状 $\lambda$ 的任意盘与形状 $\mu$ 的任意盘，必能找到两个数字在前者同行、在后者同列；于是相应的“列反对称子 $\times$ 行对称子”必为零。对任意置换重标号仍成立，因此一个方向上的全部交织映射都被迫为零。若两个 Specht 模等价，则其同构的逆映射会给出该方向上的非零交织映射，矛盾，所以不同形状给出不等价表示。\appref{app:young-proofs} 把这一论证逐步展开。
+
+第三，幂等元 $p_T=c_\lambda^{-1}e_T$ 对应左正则表示中的一个不变子空间。若这个子空间还能进一步约化，则 $p_T$ 可以分裂成两个非零正交幂等元；但 Young 基本引理给出
+\[
+p_T x p_T=\lambda(x)p_T
+\]
+对所有 $x\in\mathbb C[S_n]$ 成立，这正是本原幂等元判据，因此不能再分，故 $S^\lambda$ 不可约。
+
+最后，分拆数 $p(n)$ 等于 $S_n$ 共轭类数，也等于复不可约表示等价类数。上面已经为每个分拆构造出一个两两不等价不可约表示，因此这些表示已经穷尽全部不可约表示。
+\end{proof}
+
+\begin{theorem}[标准 Young 盘基定理]
+设 $\lambda\vdash n$，记 $f^\lambda$ 为形状 $\lambda$ 的标准 Young 盘个数。则 Specht 模满足
+\begin{equation}
+\dim S^\lambda=f^\lambda.
+\label{eq:specht-dimension-standard-tableaux}
+\end{equation}
+更具体地，固定一个形状为 $\lambda$ 的参考盘 $T_0$ 后，可以选取由标准盘标记的一组向量作为 $S^\lambda$ 的基。
+
+\end{theorem}
+
+\begin{proof}
+先在经典 tabloid 模型中证明标准基定理。把只记每一行包含哪些数字、而忽略同行内部次序的对象记为 $\{T\}$；这些 tabloids 张成置换模 $M^\lambda$。对每个盘 $T$ 定义列反对称的 polytabloid
+\[
+\varepsilon_T
+=\sum_{c\in C_T}\operatorname{sgn}(c)\{cT\}.
+\]
+若盘先在每一行内按递增顺序排列，而某一列仍出现逆序，就在第一次逆序处构造 Garnir belt。Garnir 关系把 $\varepsilon_T$ 表成若干个严格更高序的 polytabloids；由于同形盘只有有限多个，反复使用该关系必在有限步后终止，最终只留下行、列都递增的标准盘。因此标准 polytabloids 张成经典 Specht 模。
+
+线性无关性需要一个比“首项不同”更精确的三角性。对 tabloid $X$ 定义
+\[
+N_{k,r}(X)
+=\#\{1,\dots,k\}\text{ 中位于前 }r\text{ 行的数字数}.
+\]
+若 $T$ 标准，则每一列中的小数字已经尽可能靠上，所以任意列置换 $c\in C_T$ 都满足
+\[
+N_{k,r}(\{cT\})\le N_{k,r}(\{T\})
+\qquad \forall k,r,
+\]
+且 $c\neq e$ 时至少有一处严格不等。按照这些整数定义的支配偏序排列标准 tabloids 后，$\varepsilon_T$ 在 $\{T\}$ 上的系数为 $1$，而其中可能出现的其他标准 tabloids 全部严格位于它的一侧。于是标准 polytabloids 到标准 tabloids 的坐标矩阵是单位三角矩阵，因此它们线性无关。经典 Specht 模的维数正好是 $f^\lambda$。
+
+最后把这件事与正文采用的群代数左理想 $S^\lambda=Aa_Tb_T$ 联系起来。令
+\[
+\omega(g)=\operatorname{sgn}(g)g,
+\qquad g\in S_n,
+\]
+并线性延拓为群代数自同构。若 $T^{\mathsf T}$ 是转置盘，则
+\[
+\omega(a_T)=b_{T^{\mathsf T}},
+\qquad
+\omega(b_T)=a_{T^{\mathsf T}},
+\]
+因此
+\[
+\omega(a_Tb_T)=b_{T^{\mathsf T}}a_{T^{\mathsf T}},
+\]
+右端正是经典 tabloid 构造对应的 Young 对称化子。用 $\omega$ 扭曲模作用不改变向量空间维数，而转置又给出标准 $\lambda$-盘与标准 $\lambda^{\mathsf T}$-盘的一一对应，所以
+\[
+\dim Aa_Tb_T=f^{\lambda^{\mathsf T}}=f^\lambda.
+\]
+Garnir 关系和上述三角性在\appref{app:young-proofs} 中逐式展开，从而得到 \eqnrefs{eq:specht-dimension-standard-tableaux}。
+\end{proof}
+
+Specht 模给出了 $S_n$ 的全部不可约表示，但它们的维数需要另行计算。钩长公式提供一个纯组合的闭式表达式。
+
+上一理论告诉我们“标准 Young 盘个数 = 不可约表示维数”。逐个枚举标准盘在 $n$ 大时很慢。钩长公式把维数变成一个局部乘积。
+
+\begin{theorem}[钩长公式]
+设 $\lambda\vdash n$，对每个方格 $u$ 定义钩长
+\[
+h(u)=1+(u\text{ 右侧方格数})+(u\text{ 下方方格数}).
+\]
+则
+\begin{equation}
+f^\lambda
+=\frac{n!}{\displaystyle\prod_{u\in\lambda}h(u)}.
+\label{eq:hook-length-formula}
+\end{equation}
+
+\end{theorem}
+
+\begin{proof}
+标准 Young 盘中的最大数字 $n$ 必须放在图的一个可移去角格，否则它右边或下边还存在格子就会违反递增性。删去 $n$ 所在角格，得到某个 $\mu\vdash n-1$ 的标准盘；反之，对任意可移去角格，把 $n$ 放回去都会得到标准盘。因此
+\begin{equation}
+f^\lambda=\sum_{\mu\nearrow\lambda}f^\mu,
+\label{eq:young-branching-count}
+\end{equation}
+其中求和遍历所有从 $\lambda$ 删除一个角格得到的 $\mu$。
+
+对 $n$ 作归纳。假设所有 $n-1$ 阶图满足钩长公式，把
+\[
+f^\mu=\frac{(n-1)!}{\prod_{v\in\mu}h_\mu(v)}
+\]
+代入 \eqnrefs{eq:young-branching-count}。删除一个角格只会使它左侧同一行与上方同一列的钩长各减少 $1$。把各项通分后，得到组合恒等式
+\[
+\sum_{\mu\nearrow\lambda}
+\frac{1}{\prod_{v\in\mu}h_\mu(v)}
+=\frac{n}{\prod_{u\in\lambda}h_\lambda(u)},
+\]
+从而推出 \eqnrefs{eq:hook-length-formula}。\appref{app:young-proofs} 给出这个通分恒等式的一种逐因子证明。
+\end{proof}
+
+钩长公式看起来像一个神奇乘积，最好先理解每个钩是什么。对 Young 图中的一个方格 $u$，它的钩包含该格本身、同一行右边所有格以及同一列下方所有格；钩长度 $h(u)$ 就是这些格子的总数。例如形状 $(3,2)$ 左上角方格的钩长度为 $4$：它自己、右边两个格、下面一个格。
+
+公式
+\[
+f^\lambda=\frac{n!}{\prod_{u\in\lambda}h(u)}
+\]
+给出标准 Young 盘数，也就是对应 Specht 模的维数。分子 $n!$ 是把 $1,\dots,n$ 任意填入 $n$ 个格子的总排列数；分母的钩乘积精确扣除了“必须沿行和列递增”带来的约束。正文证明通过分支递推建立这个结果，而不是把分母解释成简单的独立除法因子；上面的计数图像只用于帮助记忆结构。
+
+
+\begin{corollary}[Young 算符的标准归一化]
+前面本质幂等关系中的常数为
+\begin{equation}
+c_\lambda=\prod_{u\in\lambda}h(u).
+\label{eq:hook-product}
+\end{equation}
+因此标准归一化的本原幂等元可以写成
+\[
+p_T=\frac{e_T}{\displaystyle\prod_{u\in\lambda}h(u)}.
+\]
+
+\end{corollary}
+
+\begin{proof}
+考虑群代数 $A=\mathbb C[S_n]$ 上的右乘算符
+\[
+R_{p_T}:A\to A,
+\qquad x\longmapsto xp_T.
+\]
+因为 $p_T^2=p_T$，它是投影，像空间正是 $Ap_T=S^\lambda$，故
+\[
+\Tr R_{p_T}=\dim S^\lambda=f^\lambda.
+\]
+在群元基 $\{g\}_{g\in S_n}$ 中，$R_{p_T}g=gp_T$ 的 $g$ 分量总等于 $p_T$ 的单位元系数。$e_T$ 的单位元系数为 $1$，所以 $p_T=c_\lambda^{-1}e_T$ 的单位元系数为 $c_\lambda^{-1}$，从而
+\[
+\Tr R_{p_T}=\frac{n!}{c_\lambda}.
+\]
+结合标准盘基定理与钩长公式
+\[
+f^\lambda=\frac{n!}{\prod_{u\in\lambda}h(u)}
+\]
+立即得到 \eqnrefs{eq:hook-product}。这也说明钩乘积并不是先验塞进 Young 算符的归一化常数，而是由“群代数投影的迹 = 不可约空间维数”强制确定的。
+\end{proof}
+
+\medskip
+\noindent\emph{$S_4$ 的不可约表示维数。}
+对 $[4]$，钩长为 $4,3,2,1$，故
+\[
+f^{[4]}=\frac{4!}{4\cdot3\cdot2\cdot1}=1.
+\]
+对 $[3,1]$，钩长为 $4,2,1,1$，故
+\[
+f^{[3,1]}=\frac{24}{8}=3.
+\]
+对 $[2,2]$，钩长为 $3,2,2,1$，故
+\[
+f^{[2,2]}=\frac{24}{12}=2.
+\]
+共轭图 $[2,1,1]$ 与 $[1^4]$ 的维数分别为 $3,1$。于是
+\[
+1^2+3^2+2^2+3^2+1^2=24=|S_4|,
+\]
+与正则表示维数平方和公式完全吻合。
+\par\medskip
+
+Young 方法到这里已经给出一般结构，但第一次接触时最好先手算一个最小例子。对 $S_3$，分拆只有
+\[
+(3),\qquad(2,1),\qquad(1,1,1).
+\]
+前两个极端形状分别意味着完全行对称和完全列反对称，因此必然给出平凡表示与符号表示。中间形状 $(2,1)$ 既要求部分对称又要求部分反对称，所以不可能是一维；钩长公式给出
+\[
+f^{(2,1)}=\frac{3!}{3\cdot1\cdot1}=2.
+\]
+维数平方和 $1^2+2^2+1^2=6=|S_3|$，说明三种表示已经完备。这样 Young 图、钩长度和 Burnside 维数平方和第一次在同一个例子里闭合。
+
+
+Specht 模给出了不可约表示的存在性，但还没有给出显式矩阵。Young--Yamanouchi 基提供了一组\emph{正交基}，使得每个相邻对换 $(i,i+1)$ 的表示矩阵有极简单的有理函数形式。这在实际计算 $S_n$ 表示矩阵时极为方便，也是量子化学中组态相互作用程序的基础工具。
+
+\begin{definition}[轴向距离]
+设 $T$ 是标准 Young 盘，数字 $i$ 位于第 $r_i$ 行第 $c_i$ 列。记其 content 为 $q_T(i)=c_i-r_i$，并定义从 $i$ 到 $j$ 的\textbf{轴向距离}为
+\begin{equation}
+d_T(i,j)=q_T(j)-q_T(i)=c_j-r_j-c_i+r_i.
+\label{eq:axial-distance}
+\end{equation}
+若相邻数字 $i,i+1$ 在同一行，则 $d_T(i,i+1)=1$；若在同一列，则 $d_T(i,i+1)=-1$。
+\label{def:axial-distance}
+\end{definition}
+
+\begin{theorem}[Young--Yamanouchi 正交表示]
+对形状 $\lambda\vdash n$ 的标准 Young 盘 $T$，以 $\{T\}$ 为基。相邻对换 $s_i=(i,i+1)$ 的作用为：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item 若 $s_iT$ 仍为标准盘，且 $d=d_T(i,i+1)\neq0$：
+\begin{equation}
+\rho_\lambda(s_i)\ket{T}
+=\frac{1}{d}\ket{T}+\sqrt{1-\frac{1}{d^2}}\,\ket{s_iT}.
+\label{eq:young-yamanouchi-matrix}
+\end{equation}
+\item 若 $s_iT$ 不是标准盘（即交换 $i,i+1$ 后违反行或列递增）：
+\begin{equation}
+\rho_\lambda(s_i)\ket{T}=\frac{1}{d}\ket{T},
+\label{eq:young-yamanouchi-diagonal}
+\end{equation}
+其中 $d=d_T(i,i+1)$。
+\end{enumerate}
+这组基是正交的，且 $\rho_\lambda$ 是\emph{实正交表示}。
+\label{thm:young-yamanouchi}
+\end{theorem}
+
+\begin{derivation}[Young--Yamanouchi 表示的推导]
+在群代数 $\CC[S_n]$ 中引入 Jucys--Murphy 算子
+\[
+X_k=\sum_{r<k}(r\,k),\qquad k=1,\dots,n.
+\]
+它们彼此对易，并在标准盘基上对角化：$X_k\ket T=q_T(k)\ket T$。群代数恒等式
+\[
+s_iX_{i+1}-X_is_i=I,
+\qquad
+s_iX_k=X_ks_i\quad(k\ne i,i+1)
+\]
+说明 $s_i\ket T$ 只能落在 $\ket T$ 与 $\ket{s_iT}$ 张成的空间中。对第一式取 $\bra T$ 矩阵元，得到
+\[
+\bigl(q_T(i+1)-q_T(i)\bigr)\braket{T}{s_i}{T}=1,
+\]
+故对角元为 $1/d$。若 $s_iT$ 标准，则 $s_i^2=I$ 与实正交性把二维块唯一确定为
+\[
+\begin{pmatrix}
+1/d&\sqrt{1-d^{-2}}\\
+\sqrt{1-d^{-2}}&-1/d
+\end{pmatrix}.
+\]
+若 $s_iT$ 不标准，则 $i,i+1$ 同行或同列，分别有 $d=1$ 或 $d=-1$，于是作用分别为 $+1$ 或 $-1$。由于这些算子就是 Specht 模中相邻对换的作用，Coxeter 关系随群代数表示自动成立。
+\end{derivation}
+
+\begin{example}[\texorpdfstring{$S_3$ 的 {[2,1]} Young--Yamanouchi 表示}{S3 的 [2,1] Young-Yamanouchi 表示}]
+形状 $[2,1]$ 有两个标准盘：
+\[
+T_1=\begin{array}{|c|c|}\hline1&2\\\hline3\\\cline{1-1}\end{array},
+\qquad
+T_2=\begin{array}{|c|c|}\hline1&3\\\hline2\\\cline{1-1}\end{array}.
+\]
+在 $T_1$ 中，$1,2$ 同行；在 $T_2$ 中，$1,2$ 同列。因此 $s_1$ 的本征值分别为 $+1,-1$。又有 $s_2T_1=T_2$，且 $d_{T_1}(2,3)=-2$、$d_{T_2}(2,3)=2$。所以在基 $(T_1,T_2)$ 中
+\[
+\rho(s_1)=\begin{pmatrix}1&0\\0&-1\end{pmatrix},
+\qquad
+\rho(s_2)=\begin{pmatrix}-1/2&\sqrt3/2\\\sqrt3/2&1/2\end{pmatrix}.
+\]
+直接相乘可验证 $\rho(s_i)^2=I$ 与 $\rho(s_1)\rho(s_2)\rho(s_1)=\rho(s_2)\rho(s_1)\rho(s_2)$。这就是 $S_3\cong D_3$ 的二维不可约表示。
+\end{example}
+
+\begin{example}[\texorpdfstring{$S_4$ 的 {[3,1]} Young--Yamanouchi 表示}{S4 的 [3,1] Young-Yamanouchi 表示}]
+形状 $[3,1]$ 有三个标准盘：
+\[
+T_1=\begin{array}{|c|c|c|}\hline1&2&3\\\hline4\\\cline{1-3}\end{array},\quad
+T_2=\begin{array}{|c|c|c|}\hline1&2&4\\\hline3\\\cline{1-3}\end{array},\quad
+T_3=\begin{array}{|c|c|c|}\hline1&3&4\\\hline2\\\cline{1-3}\end{array}.
+\]
+对 $s_1=(12)$，$T_1,T_2$ 中 $1,2$ 同行，$T_3$ 中二者同列。对 $s_2=(23)$，$T_1$ 给出本征值 $+1$，而 $T_2,T_3$ 形成轴向距离为 $\mp2$ 的二维块。对 $s_3=(34)$，$T_1,T_2$ 形成轴向距离为 $\mp3$ 的二维块，$T_3$ 给出本征值 $+1$。因此
+\begin{align*}
+\rho(s_1)&=\operatorname{diag}(1,1,-1),\\
+\rho(s_2)&=\begin{pmatrix}1&0&0\\0&-1/2&\sqrt3/2\\0&\sqrt3/2&1/2\end{pmatrix},\\
+\rho(s_3)&=\begin{pmatrix}-1/3&2\sqrt2/3&0\\2\sqrt2/3&1/3&0\\0&0&1\end{pmatrix}.
+\end{align*}
+三个矩阵都是实正交的，满足 $S_4$ 的 Coxeter 关系，并生成三维不可约表示 $[3,1]$。
+\end{example}
+
+Young--Yamanouchi 表示的关键优势是：所有矩阵元素都是\emph{有理数或其平方根}，不需要复数运算；基向量由标准盘直接标记，不需要求解特征方程；相邻对换矩阵只在一个二维（或一维）子空间上非平凡，矩阵极其稀疏。这使得它在计算机实现中极为高效。
+
+\section{低阶置换群的不可约表示}
+\label{sec:low-sn-irreps}
+
+抽象的 Young 方法只有在低阶例子中真正算一遍，才能看清它与\chapref{chap:representation-theory}的一般表示理论如何接上。这里重点算 $S_3$，再把 $S_4$ 的结构列出作为后续多电子问题的参考。
+
+
+$S_3$ 的三个分拆是
+\[
+[3],\qquad[2,1],\qquad[1,1,1].
+\]
+钩长公式给维数
+\[
+1,\qquad2,\qquad1.
+\]
+$[3]$ 的行对称化意味着所有置换都作用为 $+1$，所以是平凡表示；$[1^3]$ 的列反对称化意味着置换按奇偶性作用，所以是符号表示。剩余 $[2,1]$ 给二维标准表示。
+
+一个更透明的二维实现来自三维置换表示。$S_3$ 置换 $\CC^3$ 的标准基，向量
+\[
+\vb u_0=(1,1,1)
+\]
+张成平凡子表示，而平面
+\[
+W=\{(z_1,z_2,z_3)\mid z_1+z_2+z_3=0\}
+\]
+承载二维不可约表示。取正交基
+\[
+\vb e_1=\frac1{\sqrt2}(1,-1,0),
+\qquad
+\vb e_2=\frac1{\sqrt6}(1,1,-2),
+\]
+则可以直接算出
+\[
+D_{[2,1]}((12))=
+\begin{pmatrix}-1&0\\0&1\end{pmatrix},
+\]
+以及三循环
+\[
+D_{[2,1]}((123))=
+\begin{pmatrix}
+-\tfrac12&-\tfrac{\sqrt3}{2}\\
+\tfrac{\sqrt3}{2}&-\tfrac12
+\end{pmatrix}.
+\]
+它恰好是平面内正三角形的二维几何表示。其特征标为
+\[
+\chi_{[2,1]}=(2,0,-1)
+\]
+对应恒等类、换位类与三循环类。
+
+这里出现了贯穿全书的三重同构
+\[
+S_3\cong D_3\cong C_{3v},
+\qquad
+(123)\leftrightarrow r\leftrightarrow C_3,
+\qquad
+(12)\leftrightarrow s\leftrightarrow\sigma_v.
+\]
+\chapref{chap:group-basics} 从正三角形对称操作出发系统分析了 $D_3$ 的乘法表、共轭类、子群格和半直积结构；\chapref{chap:representation-theory} 算出了 $D_3$ 的二维不可约表示 $E$ 的显式矩阵\cref{eq:d3-E-matrices} 和特征标表\cref{tab:d3-character-table}；\chapref{chap:point-space-groups} 把同一个群实现为氨分子点群 $C_{3v}$。现在从置换群 $S_3$ 和 Young 图 $[2,1]$ 出发又到达了同一组矩阵。\emph{四个视角——几何对称、抽象群、分子点群、置换表示——给出同一个不可约表示}，这正是群论统一性的体现：同一个数学对象在不同物理语境中反复出现，每次都带着不同的物理含义但共享相同的代数骨架。
+
+把同样的方法推进到 $S_4$，可以看到 Young 图怎样与熟悉的几何表示对应。
+
+
+$S_4$ 的五个不可约表示维数为
+\[
+1,\ 3,\ 2,\ 3,\ 1.
+\]
+其中 $[4]$ 是平凡表示，$[1^4]$ 是符号表示；$[3,1]$ 是四维置换表示去掉平凡方向后的三维标准表示；$[2,1,1]$ 等于 $[3,1]$ 与符号表示张量积；$[2,2]$ 是二维不可约表示。
+
+这与正四面体的置换图像有直接联系：$S_4$ 作用于四个顶点，而纯转动四面体群 $T\cong A_4$ 只包含偶置换。\chapref{chap:point-space-groups}中“正四面体的纯转动群为何只有 $12$ 个元素”现在可以用一个非常简洁的群论句子重述：
+\[
+T\cong A_4=\operatorname{Ker}(\operatorname{sgn}:S_4\to\{\pm1\}),
+\qquad |A_4|=12.
+\]
+因此\chapref{chap:point-space-groups}的几何点群与本章的置换群并不是两个互不相关的专题，它们通过“群对几何顶点集合的作用”自然连接起来。
+
+\section{全同粒子的置换对称性}
+\label{sec:identical-particles}
+
+现在把组合数学重新翻译回量子力学。设有 $n$ 个同种粒子，每个粒子的单粒子 Hilbert 空间为 $\mathcal H_1$。暂时给粒子编号后，总空间写成
+\[
+\mathcal H_1^{\otimes n}
+=\underbrace{\mathcal H_1\otimes\cdots\otimes\mathcal H_1}_{n\text{ 个因子}}.
+\]
+一个简单张量
+\[
+|\phi_1\rangle\otimes\cdots\otimes|\phi_n\rangle
+\]
+表示“标签为 1 的粒子处在 $\phi_1$，标签为 2 的粒子处在 $\phi_2$，以此类推”。置换 $\pi\in S_n$ 只重新排列这些粒子标签，因此自然得到 $S_n$ 在多体空间上的表示。
+
+全同粒子的关键物理要求是：编号不是可观测量。对玻色子，交换任意两粒子后态不变；对费米子，交换任意两粒子后态变号。用表示论语言说，玻色子选取 $S_n$ 的全对称一维表示 $[n]$，费米子选取全反对称一维表示 $[1^n]$。当空间、自旋、味、色等自由度同时存在时，总波函数只需要整体满足这一要求，各个自由度本身可以承载更一般的 Young 对称类型，而不同部分必须组合成最终所需的总交换对称性。
+
+
+设单粒子 Hilbert 空间为 $\mathcal H$，$n$ 个可区分标签的张量积空间为
+\[
+\mathcal H^{\otimes n}.
+\]
+对任意 $\pi\in S_n$，定义置换算符
+\begin{equation}
+P(\pi)
+\ket{\psi_1}\otimes\cdots\otimes\ket{\psi_n}
+=
+\ket{\psi_{\pi^{-1}(1)}}\otimes\cdots\otimes\ket{\psi_{\pi^{-1}(n)}}.
+\label{eq:particle-permutation-operator}
+\end{equation}
+采用 $\pi^{-1}$ 是为了保证
+\[
+P(\sigma)P(\pi)=P(\sigma\pi),
+\]
+使 $P$ 真正成为 $S_n$ 的表示。
+
+两个最重要的中央投影算符是完全对称化与完全反对称化：
+\begin{align}
+\mathcal S
+&=\frac1{n!}\sum_{\pi\in S_n}P(\pi),\label{eq:symmetrizer}\\
+\mathcal A
+&=\frac1{n!}\sum_{\pi\in S_n}\operatorname{sgn}(\pi)P(\pi).
+\label{eq:antisymmetrizer}
+\end{align}
+
+\begin{proposition}[完全对称化与反对称化确为投影]
+有
+\[
+\mathcal S^2=\mathcal S,
+\qquad
+\mathcal A^2=\mathcal A,
+\qquad
+\mathcal S\mathcal A=0\quad(n\ge2).
+\]
+并且对任意 $\sigma\in S_n$，
+\[
+P(\sigma)\mathcal S=\mathcal S,
+\qquad
+P(\sigma)\mathcal A=\operatorname{sgn}(\sigma)\mathcal A.
+\]
+
+\end{proposition}
+
+\begin{proof}
+对 $\mathcal S$，
+\begin{align*}
+\mathcal S^2
+&=\frac1{(n!)^2}\sum_{\pi,\sigma}P(\pi\sigma).
+\end{align*}
+固定 $\tau=\pi\sigma$ 后，对每个 $\pi$ 都有唯一 $\sigma=\pi^{-1}\tau$，所以每个 $P(\tau)$ 恰出现 $n!$ 次。故
+\[
+\mathcal S^2=\frac1{n!}\sum_\tau P(\tau)=\mathcal S.
+\]
+对 $\mathcal A$ 同理，但使用
+\[
+\operatorname{sgn}(\pi)\operatorname{sgn}(\sigma)=\operatorname{sgn}(\pi\sigma),
+\]
+得到 $\mathcal A^2=\mathcal A$。
+
+左乘固定 $P(\sigma)$ 只是重排求和指标，因此 $P(\sigma)\mathcal S=\mathcal S$。对反对称化，令 $\tau=\sigma\pi$，则
+\[
+P(\sigma)\mathcal A
+=\frac1{n!}\sum_\tau
+\operatorname{sgn}(\sigma^{-1}\tau)P(\tau)
+=\operatorname{sgn}(\sigma)\mathcal A.
+\]
+最后取任意一个奇置换 $\sigma$，有
+\[
+P(\sigma)\mathcal S\mathcal A=\mathcal S\mathcal A,
+\]
+但也有
+\[
+P(\sigma)\mathcal S\mathcal A
+=\mathcal S P(\sigma)\mathcal A
+=-\mathcal S\mathcal A,
+\]
+故 $\mathcal S\mathcal A=0$。
+\end{proof}
+
+归一化因子 $1/n!$ 不是随意选取的。未归一化对称化和
+\[
+A_+=\sum_{\pi\in S_n}P(\pi)
+\]
+平方时，每个固定置换 $\sigma$ 会出现恰好 $n!$ 次：对任意第一因子 $\pi$，第二因子必须取 $\pi^{-1}\sigma$。因此
+\[
+A_+^2=n!\,A_+.
+\]
+除以 $n!$ 后才得到 $\mathcal S^2=\mathcal S$。反对称化同理，因为符号函数是群同态，
+\[
+\operatorname{sgn}(\pi)\operatorname{sgn}(\pi^{-1}\sigma)=\operatorname{sgn}(\sigma).
+\]
+所以 $\mathcal A^2=\mathcal A$。这与 Young 算符“本质幂等”的结构完全平行。
+
+
+玻色子多体态位于 $\operatorname{Im}\mathcal S$，承载 $[n]$ 平凡表示；费米子多体态位于 $\operatorname{Im}\mathcal A$，承载 $[1^n]$ 符号表示。对于含有额外自由度的费米子，空间、自旋、味、色等每个部分本身未必完全反对称，但它们的张量积必须在总置换下落入符号表示。
+
+设 $n$ 个单粒子正交轨道为 $\phi_1,\dots,\phi_n$。对简单张量
+\[
+\Phi(1,\dots,n)=\phi_1(1)\phi_2(2)\cdots\phi_n(n)
+\]
+施加反对称化，得到
+\begin{equation}
+\Psi_F(1,\dots,n)
+=\frac1{\sqrt{n!}}
+\det\!\begin{pmatrix}
+\phi_1(1)&\phi_2(1)&\cdots&\phi_n(1)\\
+\phi_1(2)&\phi_2(2)&\cdots&\phi_n(2)\\
+\vdots&\vdots&\ddots&\vdots\\
+\phi_1(n)&\phi_2(n)&\cdots&\phi_n(n)
+\end{pmatrix}.
+\label{eq:slater-determinant}
+\end{equation}
+这就是 Slater 行列式。
+
+若两个费米子占据完全相同的单粒子态，行列式有两列相同，因此
+\[
+\Psi_F=0.
+\]
+所以 Pauli 不相容原理并不是额外添加的“电子规则”，而是总波函数必须承载 $S_n$ 符号表示的直接代数后果。
+
+多体 Hilbert 空间上的置换表示给出了框架，但真正的物理应用从两电子开始：交换对称性直接决定总自旋，进而给出原子项符号。
+
+两个自旋 $1/2$ 的自旋空间为
+\[
+\CC^2\otimes\CC^2.
+\]
+\chapref{chap:rotation-group}已经由 CG 分解得到
+\[
+\frac12\otimes\frac12=1\oplus0.
+\]
+其三个 $S=1$ 三重态为
+\begin{align*}
+\chi_{1,1}&=\alpha(1)\alpha(2),\\
+\chi_{1,0}&=\frac{\alpha(1)\beta(2)+\beta(1)\alpha(2)}{\sqrt2},\\
+\chi_{1,-1}&=\beta(1)\beta(2),
+\end{align*}
+在 $S_2$ 交换下对称；$S=0$ 单态
+\[
+\chi_{0,0}
+=\frac{\alpha(1)\beta(2)-\beta(1)\alpha(2)}{\sqrt2}
+\]
+交换反对称。
+
+若两个电子占据不同空间轨道 $a,b$，则空间部分也分为
+\begin{align*}
+\Phi_+(1,2)
+&=\frac{\phi_a(1)\phi_b(2)+\phi_b(1)\phi_a(2)}{\sqrt2},\\
+\Phi_-(1,2)
+&=\frac{\phi_a(1)\phi_b(2)-\phi_b(1)\phi_a(2)}{\sqrt2}.
+\end{align*}
+总波函数必须反对称，所以允许组合只有
+\[
+\Phi_+\chi_{0,0}
+\qquad\text{和}\qquad
+\Phi_-\chi_{1,M_S}.
+\]
+这就是“空间对称配自旋单态、空间反对称配自旋三重态”的群论来源。
+
+当两个电子都具有相同轨道角动量 $\ell$ 时，还可以把空间交换对称性直接写成总轨道角动量 $L$ 的函数。
+
+\begin{proposition}[两个等价轨道角动量态的交换相位]
+两个相同 $\ell$ 的角动量耦合态满足
+\begin{equation}
+P_{12}\ket{(\ell\ell)LM}
+=(-1)^{2\ell-L}\ket{(\ell\ell)LM}.
+\label{eq:exchange-coupled-orbital}
+\end{equation}
+对电子轨道 $\ell\in\NN$，简化为 $(-1)^L$。因此两个等价电子的允许项必须满足
+\begin{equation}
+L+S\ \text{为偶数}.
+\label{eq:equivalent-electron-rule}
+\end{equation}
+
+\end{proposition}
+
+\begin{proof}
+耦合态展开为
+\[
+\ket{(\ell\ell)LM}
+=\sum_{m_1,m_2}
+C^{LM}_{\ell m_1,\ell m_2}
+\ket{\ell m_1}\ket{\ell m_2}.
+\]
+交换两个粒子后得到
+\[
+P_{12}\ket{(\ell\ell)LM}
+=\sum_{m_1,m_2}
+C^{LM}_{\ell m_1,\ell m_2}
+\ket{\ell m_2}\ket{\ell m_1}.
+\]
+把求和指标 $m_1,m_2$ 互换，并使用 CG 系数的交换对称性
+\[
+C^{LM}_{\ell m_2,\ell m_1}
+=(-1)^{2\ell-L}C^{LM}_{\ell m_1,\ell m_2},
+\]
+得到 \eqnrefs{eq:exchange-coupled-orbital}。
+
+自旋耦合态在交换下的相位为 $-1$ 对 $S=0$、$+1$ 对 $S=1$，即 $(-1)^{S+1}$。总费米波函数要求两者乘积为 $-1$：
+\[
+(-1)^L(-1)^{S+1}=-1,
+\]
+等价于 $(-1)^{L+S}=1$，故 $L+S$ 为偶数。
+\end{proof}
+
+在使用原子物理的项符号之前，先把 $^{2S+1}L_J$ 的每一部分读清楚。总自旋量子数为 $S$ 时，$M_S=-S,-S+1,\dots,S$，共有 $2S+1$ 个自旋投影，因此左上角的 $2S+1$ 称为\textbf{自旋多重度}；$1,2,3,4,\dots$ 分别常读作单重态、doublet、三重态、quartet。总轨道角动量量子数 $L=0,1,2,3,\dots$ 按历史约定依次写成
+\[
+S,P,D,F,G,\dots.
+\]
+若进一步考虑自旋--轨道耦合，总角动量
+\[
+\vb J=\vb L+\vb S
+\]
+的量子数 $J$ 写在右下角。因此 $^3P_2$ 的意思不是“三个 $P_2$ 态”，而是“$S=1$ 的三重态、总轨道角动量 $L=1$、总角动量 $J=2$”。本节先关注置换对称性，很多地方暂不写右下角 $J$，于是只用 $^{2S+1}L$。
+
+\medskip
+\noindent\emph{$p^2$ 构型为什么只有 $^1S,^1D,^3P$。}
+\label{ex:p2-config}
+$p$ 电子有 $\ell=1$。两个 $p$ 轨道角动量耦合允许
+\[
+L=0,1,2.
+\]
+两个自旋 $1/2$ 允许 $S=0,1$。若不考虑 Pauli 原理，似乎有六种 $^{2S+1}L$ 组合；但等价电子要求 $L+S$ 为偶数。因此
+\[
+(L,S)=(0,0),(2,0),(1,1)
+\]
+被保留，对应
+\[
+{}^1S,
+\qquad{}^1D,
+\qquad{}^3P.
+\]
+其总微观态数为
+\[
+1\times1+1\times5+3\times3=15.
+\]
+另一方面，单电子 $p$ 壳层含 $3$ 个 $m_\ell$ 与 $2$ 个自旋方向，共 $6$ 个自旋-轨道；放两个电子的 Slater 行列式数为
+\[
+\binom62=15.
+\]
+两种计数完全一致，说明项符号分解既没有遗漏也没有重复。
+\par\medskip
+
+三个电子的自旋空间维数为 $2^3=8$。从 $SU(2)$ 角度，逐步耦合给出
+\[
+\frac12\otimes\frac12\otimes\frac12
+=\frac32\oplus\frac12\oplus\frac12.
+\]
+从 $S_3$ 角度，同一空间必须同时承载粒子置换表示。最对称的 $S=3/2$ 四重态在置换下属于 $[3]$；剩余四维由两个 $S=1/2$ 双重态组成，它们的置换结构是二维不可约表示 $[2,1]$。更精确地，作为 $SU(2)\times S_3$ 的表示，
+\begin{equation}
+(\CC^2)^{\otimes3}
+\cong
+V_{3/2}\otimes S^{[3]}
+\oplus
+V_{1/2}\otimes S^{[2,1]},
+\label{eq:three-spin-schur-weyl}
+\end{equation}
+维数检查为
+\[
+4\times1+2\times2=8.
+\]
+这是一类最简单的 Schur--Weyl 对偶现象：总自旋分类和置换对称分类不是互相竞争的两套记号，而是在同一个张量空间中彼此配对。
+
+具体地，$M_S=3/2$ 的态只有
+\[
+\alpha\alpha\alpha,
+\]
+它必属于完全对称 $[3]$。连续作用总降阶算符得到四个完全对称的 $S=3/2$ 态。对 $M_S=1/2$，三维空间由
+\[
+\alpha\alpha\beta,
+\quad\alpha\beta\alpha,
+\quad\beta\alpha\alpha
+\]
+张成，其中对称组合
+\[
+\frac1{\sqrt3}
+(\alpha\alpha\beta+\alpha\beta\alpha+\beta\alpha\alpha)
+\]
+已经属于 $S=3/2$；与它正交的二维子空间就是 $[2,1]$，承载 $S=1/2$。
+
+对三个电子，总波函数必须落在符号表示 $[1,1,1]$。因此若自旋部分具有 $[3]$ 完全对称性，轨道部分必须完全反对称；若自旋部分为 $[2,1]$，轨道部分也要选择能够与它张量后含 $[1^3]$ 的混合对称成分。Young 图提供了比逐个交换波函数更系统的记账工具。
+
+\medskip
+\noindent\emph{为什么 $1s^3$ 禁止而 $1s^22s$ 允许。}
+下面用一次完整的表示计算比较两个三电子构型。若三个电子都占同一空间轨道 $a=1s$，空间波函数
+\[
+\phi_a(1)\phi_a(2)\phi_a(3)
+\]
+在任意置换下都不变，因此空间部分承载 $S_3$ 的 $[3]$ 平凡表示。三个自旋 $1/2$ 的自旋空间由 \eqnrefs{eq:three-spin-schur-weyl} 分成 $[3]$ 与 $[2,1]$，其中没有完全反对称的 $[1^3]$。于是
+\[
+[3]_{\rm space}\otimes
+\bigl([3]_{\rm spin}\oplus[2,1]_{\rm spin}\bigr)
+=[3]\oplus[2,1]
+\]
+不含总费米波函数要求的 $[1^3]$，故 $1s^3$ 构型被 Pauli 原理禁止。
+
+现在考虑两个电子在 $a=1s$、一个电子在 $b=2s$。忽略自旋时，空间构型由三个基
+\[
+|aab\rangle,
+\qquad |aba\rangle,
+\qquad |baa\rangle
+\]
+张成。它们在 $S_3$ 的三个共轭类 $E$、三个对换、两个三循环上的表示特征标分别为
+\[
+\chi_{\rm orb}=(3,1,0):
+\]
+恒等操作固定三个基；任一对换恰固定一个；三循环不固定任何一个。与 $S_3$ 特征标表取内积，得到
+\[
+\Gamma_{\rm orb}=[3]\oplus[2,1].
+\]
+自旋的 $S=1/2$ 部分具有 $[2,1]$ 对称性。利用
+\[
+[2,1]\otimes[2,1]=[3]\oplus[2,1]\oplus[1^3],
+\]
+可见空间的 $[2,1]$ 分量与自旋的 $[2,1]$ 分量能够组合出唯一的完全反对称 $[1^3]$。因此 $1s^22s$ 构型允许，而且允许态具有 $S=1/2$，即原子项符号中的双重态。这里 Pauli 原理不再表现为“某两个电子不能相同”这种口头规则，而是总 $S_3$ 表示必须含符号表示这一精确条件。
+\par\medskip
+
+三个自旋 $1/2$ 与 $S_3$ 的 Schur--Weyl 对应如图 \figref{fig:three-spin-s3} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}
+  \node[lecturebox] (tensor) at (0,1.7) {三个自旋 $1/2$\\$2^3=8$ 维};
+  \node[lecturebox] (su2) at (5.0,2.5) {$SU(2)$ 分类\\$4\oplus2\oplus2$};
+  \node[lecturebox] (s3) at (5.0,.7) {$S_3$ 分类\\$4[3]\oplus2[2,1]$};
+  \node[lecturewidebox] (pair) at (11.8,1.6) {$V_{3/2}\otimes[3]\ \oplus\ V_{1/2}\otimes[2,1]$};
+  \draw[lecturearrow] (tensor)--(su2);
+  \draw[lecturearrow] (tensor)--(s3);
+  \draw[lecturearrow] (su2)--(pair);
+  \draw[lecturearrow] (s3)--(pair);
+\end{tikzfig}
+\caption{三个自旋 $1/2$ 的角动量分类与置换分类必须同时满足。}
+\label{fig:three-spin-s3}
+\end{figure}
+
+两、三电子只是最小例子；一般 $n$ 电子时，Young 图继续承担“允许哪些交换对称性”的统一分类。
+
+
+对一般 $n$，直接写所有 $n!$ 个交换项很快就失去可操作性。Young 方法的价值就在这里：一个形状 $\lambda$ 指定某种混合交换对称性，行方向表示对称化，列方向表示反对称化。对电子，最终总波函数必须属于单列图
+\[
+[1^n].
+\]
+若把总波函数因子化成若干自由度，例如
+\[
+\Psi_{\text{total}}
+=\Psi_{\text{space}}\otimes
+\Psi_{\text{spin}}\otimes
+\Psi_{\text{other}},
+\]
+每一部分可以承载不同 Young 对称类型，但它们的 Kronecker 积必须含符号表示 $[1^n]$。这正是多电子原子、核模型以及夸克色自由度中“不同自由度的置换对称性彼此补偿”的统一数学语言。
+
+对于只含自旋 $1/2$ 的 $n$ 个粒子，Young 图最多有两行，因为单粒子自旋空间只有二维；若图中出现三格同列，列完全反对称化会在二维空间中自动为零。若两行长度为
+\[
+\lambda_1\ge\lambda_2,
+\qquad
+\lambda_1+\lambda_2=n,
+\]
+则对应总自旋
+\begin{equation}
+S=\frac{\lambda_1-\lambda_2}{2}.
+\label{eq:young-spin-relation}
+\end{equation}
+这把 Young 图与熟悉的总自旋量子数直接联系起来。例如 $n=3$ 时，[3] 给 $S=3/2$，[2,1] 给 $S=1/2$；$n=4$ 时，[4]、[3,1]、[2,2] 分别给 $S=2,1,0$。
+
+前面用 $L+S$ 偶数规则处理了 $p^2$。现在做两个更实质的例子：三电子 $p^3$ 和二电子 $d^2$。前者需要 $S_3$ 而非 $S_2$，后者展示更高 $\ell$ 时的项符号完整列表。
+
+\medskip
+\noindent\emph{$p^3$ 构型：$S_3$ 约束给出 $^4S,{}^2D,{}^2P$。}
+三个等价 $p$ 电子（$\ell=1$）。单粒子 $p$ 壳层有 $3\times2=6$ 个自旋-轨道（$m_\ell=-1,0,+1$ 各配自旋 $\alpha,\beta$），所以微观态总数为
+\[
+\binom63=20.
+\]
+若暂不考虑 Pauli 原理，$L$ 可取 $0,1,2,3$（三个 $\ell=1$ 耦合），$S$ 可取 $1/2,3/2$，组合远超 20。需要用 $S_3$ 表示论精确筛选。下面分四步完成严格推导：轨道空间的 $S_3$ 特征标计算、$S_3$ 不可约分解、各分量的 $SO(3)$ 内容、与自旋配对。
+
+三个 $p$ 电子的未反对称轨道空间由
+\[
+\ket{m_1,m_2,m_3},\qquad m_i\in\{-1,0,+1\}
+\]
+张成，共 $3^3=27$ 维。$S_3$ 通过置换三个位置自然作用。为求特征标，需计算每个共轭类中元素的不动点数：
+\begin{itemize}
+\item 恒等元 $e$：固定所有 $27$ 个基向量，$\chi_{\rm orb}(e)=27$。
+\item 对换 $(12)$：$\ket{m_1,m_2,m_3}$ 被固定当且仅当 $m_1=m_2$。此时 $m_1=m_2\in\{-1,0,+1\}$（$3$ 种），$m_3\in\{-1,0,+1\}$（$3$ 种），共 $9$ 个不动点，$\chi_{\rm orb}((12))=9$。
+\item 三循环 $(123)$：被固定当且仅当 $m_1=m_2=m_3$，共 $3$ 个不动点，$\chi_{\rm orb}((123))=3$。
+\end{itemize}
+因此
+\[
+\chi_{\rm orb}=(27,\,9,\,3),
+\]
+分别对应 $S_3$ 的三个共轭类 $\{e\}$、$\{(12),(13),(23)\}$、$\{(123),(132)\}$。
+
+利用 $S_3$ 特征标表（\cref{tab:d3-character-table}，通过 $S_3\cong D_3$）作不可约分解，
+\[
+\begin{array}{c|ccc}
+& e & (12) & (123) \\\hline
+\chi_{[3]} & 1 & 1 & 1 \\
+\chi_{[2,1]} & 2 & 0 & -1 \\
+\chi_{[1^3]} & 1 & -1 & 1
+\end{array}
+\]
+和特征标正交关系逐分量投影：
+\begin{align*}
+n_{[3]}&=\frac1{6}\bigl(27\cdot1+3\cdot9\cdot1+2\cdot3\cdot1\bigr)=\frac{60}{6}=10,\\
+n_{[2,1]}&=\frac1{6}\bigl(27\cdot2+3\cdot9\cdot0+2\cdot3\cdot(-1)\bigr)=\frac{48}{6}=8,\\
+n_{[1^3]}&=\frac1{6}\bigl(27\cdot1+3\cdot9\cdot(-1)+2\cdot3\cdot1\bigr)=\frac{6}{6}=1.
+\end{align*}
+因此轨道空间在 $S_3$ 下分解为
+\begin{equation}
+V_1^{\otimes3}\big|_{S_3}
+=10\,[3]\;\oplus\;8\,[2,1]\;\oplus\;1\,[1^3],
+\label{eq:p3-orbital-s3-decomp}
+\end{equation}
+维数检查 $10\cdot1+8\cdot2+1\cdot1=27$。这里 $10,8,1$ 是各 $S_3$ 不可约分量的\emph{重数}，也就是对应 Schur 函子 $\mathbb{S}_\lambda(V_1)$ 的维数。
+
+再把各 Schur 函子限制到 $SO(3)$：需要确定 $10$ 维
+$\mathbb{S}_{[3]}(V_1)$、$8$ 维 $\mathbb{S}_{[2,1]}(V_1)$ 与 $1$ 维
+$\mathbb{S}_{[1^3]}(V_1)$ 各自包含哪些 $L$。
+
+先看全对称幂 $\mathbb{S}_{[3]}(V_1)=\operatorname{Sym}^3(V_1)$。若 $\chi_{V_1}(\theta)=1+2\cos\theta$，三阶完全对称幂的特征标由 Newton 恒等式给出
+\[
+\chi_{\operatorname{Sym}^3 V_1}
+=\frac16\bigl(\chi_{V_1}^3+3\chi_{V_1}\chi_{V_1^{(2)}}+2\chi_{V_1^{(3)}}\bigr),
+\]
+其中 $\chi_{V_1^{(k)}}(\theta)=\chi_{V_1}(k\theta)$。代入后化简得
+\[
+\chi_{\operatorname{Sym}^3 V_1}(\theta)=\chi_{L=3}(\theta)+\chi_{L=1}(\theta),
+\]
+即
+\begin{equation}
+\operatorname{Sym}^3(V_1)=V_3\oplus V_1,
+\qquad L=3\oplus L=1,
+\label{eq:sym3-v1-decomp}
+\end{equation}
+维数 $7+3=10$。物理上，$L=3$ 对应三个 $p$ 轨道全对称耦合的最高权态，$L=1$ 是混合对称的较低权成分。
+
+全反对称幂 $\mathbb{S}_{[1^3]}(V_1)=\wedge^3 V_1$ 只有一维，由行列式给出。$SO(3)$ 的行列式表示是平凡的（$\det R=1$），故
+\begin{equation}
+\wedge^3 V_1=V_0,
+\qquad L=0.
+\label{eq:wedge3-v1-decomp}
+\end{equation}
+这个全反对称轨道态就是 $L=0$ 的 $S$ 态，它正是 $p^3$ 中轨道部分全反对称的唯一态。
+
+混合对称部分 $\mathbb{S}_{[2,1]}(V_1)$ 可由总张量积扣除前两部分得到。由 Schur--Weyl 分解 \eqnrefs{eq:schur-weyl}，
+\[
+V_1^{\otimes3}=(V_0\oplus V_1\oplus V_2)\otimes V_1=V_0\oplus 3V_1\oplus 2V_2\oplus V_3,
+\]
+维数 $1+9+10+7=27$。减去 \eqnrefs{eq:sym3-v1-decomp} 和 \eqnrefs{eq:wedge3-v1-decomp} 的贡献：
+\[
+\bigl(V_0\oplus 3V_1\oplus 2V_2\oplus V_3\bigr)
+-\bigl(V_3\oplus V_1\bigr)-V_0
+=2V_1\oplus 2V_2.
+\]
+这是 $\mathbb{S}_{[2,1]}(V_1)\otimes\mathrm{Sp}_{[2,1]}$ 的内容，而 $\mathrm{Sp}_{[2,1]}$ 是 $2$ 维，所以
+\begin{equation}
+\mathbb{S}_{[2,1]}(V_1)=V_2\oplus V_1,
+\qquad L=2\oplus L=1,
+\label{eq:schur21-v1-decomp}
+\end{equation}
+维数 $5+3=8$。
+
+再与自旋配对并施加 Pauli 约束。三个自旋 $1/2$ 的空间由 \eqnrefs{eq:three-spin-schur-weyl} 分解为
+\[
+(\CC^2)^{\otimes3}\big|_{SU(2)\times S_3}
+=V_{3/2}\otimes[3]\;\oplus\;V_{1/2}\otimes[2,1].
+\]
+总波函数必须落在 $S_3$ 的符号表示 $[1^3]$。需要 $S_3$ 的 Clebsch--Gordan 乘法表（见下文 \cref{ex:s3-cg-table} 的推导）：
+\begin{align}
+[3]\otimes[3]&=[3],\notag\\
+[3]\otimes[2,1]&=[2,1],\notag\\
+[3]\otimes[1^3]&=[1^3],\notag\\
+[2,1]\otimes[2,1]&=[3]\oplus[2,1]\oplus[1^3],\label{eq:s3-cg-21-21}\\
+[2,1]\otimes[1^3]&=[2,1],\notag\\
+[1^3]\otimes[1^3]&=[3].\notag
+\end{align}
+从 \eqnrefs{eq:p3-orbital-s3-decomp} 可知轨道部分含 $[3]$、$[2,1]$、$[1^3]$ 三种对称类型。要使轨道 $\otimes$ 自旋含 $[1^3]$，只有两种配对：
+\begin{itemize}
+\item 轨道 $[1^3]$（$L=0$，来自 \eqnrefs{eq:wedge3-v1-decomp}）$\otimes$ 自旋 $[3]$（$S=3/2$）：由 $[3]\otimes[1^3]=[1^3]$ 给出 $^4S$。
+\item 轨道 $[2,1]$（$L=2\oplus L=1$，来自 \eqnrefs{eq:schur21-v1-decomp}）$\otimes$ 自旋 $[2,1]$（$S=1/2$）：由 \eqnrefs{eq:s3-cg-21-21} 中 $[2,1]\otimes[2,1]$ 含 $[1^3]$ 给出 $^2D$ 和 $^2P$。
+\end{itemize}
+轨道 $[3]$ 分量无法与任何自旋分量配出 $[1^3]$（$[3]\otimes[3]=[3]$、$[3]\otimes[2,1]=[2,1]$，都不含 $[1^3]$），故被 Pauli 原理排除。最终
+\[
+p^3:\quad{}^4S,\quad{}^2D,\quad{}^2P.
+\]
+微观态计数验证：
+\[
+\underbrace{4\times1}_{^4S}+\underbrace{2\times5}_{^2D}+\underbrace{2\times3}_{^2P}=4+10+6=20=\binom63.
+\]
+完全吻合。注意 $^4S$ 项的轨道部分全反对称（$[1^3]$），自旋部分全对称（$[3]$），正是氮原子基态 $1s^22s^22p^3\,{}^4S_{3/2}$ 的群论来源。
+\par\medskip
+
+\medskip
+\noindent\emph{$S_3$ 的 Clebsch--Gordan 乘法表。}
+\label{ex:s3-cg-table}
+$S_3$ 有三个不可约表示 $[3]$、$[2,1]$、$[1^3]$，维数 $1,2,1$。两个表示 $\lambda,\mu$ 的张量积 $\lambda\otimes\mu$ 仍是一个 $S_3$ 表示，可按特征标乘法分解。逐项计算：
+
+因为 $[3]$ 是平凡表示，所以对任意 $\nu$ 都有 $[3]\otimes[\nu]=[\nu]$，特别地
+\[
+[3]\otimes[3]=[3],\quad[3]\otimes[2,1]=[2,1],\quad[3]\otimes[1^3]=[1^3].
+\]
+
+$[1^3]$ 是符号表示，$\chi_{[1^3]}(\pi)=\operatorname{sgn}(\pi)$。其平方恒为 \(1\)，所以
+\[
+[1^3]\otimes[1^3]=[3].
+\]
+
+另一方面，$\chi_{[1^3]}\chi_{[2,1]}=(1\cdot1,\,(-1)\cdot0,\,1\cdot(-1))=(1,0,-1)=\chi_{[2,1]}$，故
+\[
+[1^3]\otimes[2,1]=[2,1].
+\]
+
+最后对关键的 $[2,1]\otimes[2,1]$，特征标逐类相乘：
+\[
+\chi_{[2,1]}^2=(2^2,\,0^2,\,(-1)^2)=(4,0,1).
+\]
+用正交投影分解：
+\begin{align*}
+n_{[3]}&=\frac16(4\cdot1+3\cdot0\cdot1+2\cdot1\cdot1)=1,\\
+n_{[2,1]}&=\frac16(4\cdot2+3\cdot0\cdot0+2\cdot1\cdot(-1))=1,\\
+n_{[1^3]}&=\frac16(4\cdot1+3\cdot0\cdot(-1)+2\cdot1\cdot1)=1.
+\end{align*}
+维数检查 $1\cdot1+1\cdot2+1\cdot1=4=2\times2$。因此
+\[
+[2,1]\otimes[2,1]=[3]\oplus[2,1]\oplus[1^3].
+\]
+这正是 \eqnrefs{eq:s3-cg-21-21}。这个分解的物理意义是：两个混合对称表示的张量积恰好包含全部三种对称类型，因此两个 $[2,1]$ 自由度可以组合出完全反对称的总态。
+\par\medskip
+
+\medskip
+\noindent\emph{$d^2$ 构型：$L+S$ 偶数规则的完整列表。}
+两个等价 $d$ 电子（$\ell=2$）。单电子 $d$ 壳层有 $5\times2=10$ 个自旋-轨道，微观态总数为
+\[
+\binom{10}{2}=45.
+\]
+两个 $d$ 电子的轨道角动量耦合允许
+\[
+L=0,1,2,3,4,
+\]
+自旋允许 $S=0,1$。等价电子约束 $L+S$ 为偶数（\eqnrefs{eq:equivalent-electron-rule}），逐一筛选：
+\[
+\begin{array}{c|ccccc}
+& L=0&L=1&L=2&L=3&L=4\\\hline
+S=0&\checkmark&\times&\checkmark&\times&\checkmark\\
+S=1&\times&\checkmark&\times&\checkmark&\times
+\end{array}
+\]
+保留的项为
+\[
+d^2:\quad{}^1S,\quad{}^3P,\quad{}^1D,\quad{}^3F,\quad{}^1G.
+\]
+微观态计数：
+\[
+\underbrace{1\times1}_{^1S}+\underbrace{3\times3}_{^3P}+\underbrace{1\times5}_{^1D}+\underbrace{3\times7}_{^3F}+\underbrace{1\times9}_{^1G}=1+9+5+21+9=45.
+\]
+完全吻合。$d^2$ 是过渡金属离子（如 $\text{Ti}^{2+}$）的典型构型，其项符号在晶体场理论中直接决定能级分裂模式：自由离子的 $^3F$ 基态在八面体场中分裂为 $^3A_{2g}$ 和 $^3T_{2g}$、$^3T_{1g}$，这正是 \chapref{chap:point-space-groups} 点群方法在原子物理中的直接应用。
+\par\medskip
+
+因此，对 $n$ 个等价 $\ell$ 电子的构型 $\ell^n$，计算可归纳为：
+\begin{enumerate}[label=(\arabic*),leftmargin=2.5em]
+\item 计算微观态总数 $\binom{2(2\ell+1)}{n}$ 作为校验。
+\item 确定 $n$ 个 $\ell$ 耦合允许的 $L$ 值和 $n$ 个自旋 $1/2$ 耦合允许的 $S$ 值。
+\item 用 $S_n$ 表示论（Young 图）确定哪些 $(L,S)$ 组合满足 Pauli 原理：轨道和自旋的置换对称性张量积必须含 $[1^n]$。
+\item 对 $n=2$，简化为 $L+S$ 偶数规则；对 $n\ge3$，需要完整的 $S_n$ CG 分解。
+\item 用微观态计数验证无遗漏。
+\end{enumerate}
+
+前面在 \eqnrefs{eq:three-spin-schur-weyl} 中已经看到 $(\CC^2)^{\otimes3}$ 同时被 $SU(2)$ 和 $S_3$ 作用，且两者互相决定对方的不可约分量。这不是巧合，而是一个精确的数学结构——Schur--Weyl 对偶。
+
+\begin{theorem}[Schur--Weyl 对偶]
+设 $V=\CC^d$，$n$ 个张量因子的空间 $V^{\otimes n}$ 上同时作用：
+\begin{itemize}
+\item $GL(V)$（或其子群 $SU(V)$、$U(V)$）按\emph{对角作用}：$g\cdot(v_1\otimes\cdots\otimes v_n)=(gv_1)\otimes\cdots\otimes(gv_n)$；
+\item $S_n$ 按\emph{位置置换}：$\pi\cdot(v_1\otimes\cdots\otimes v_n)=v_{\pi^{-1}(1)}\otimes\cdots\otimes v_{\pi^{-1}(n)}$。
+\end{itemize}
+两个作用交换，且互为对方的中心化子。$V^{\otimes n}$ 作为 $GL(V)\times S_n$ 的表示完全约化为
+\begin{equation}
+V^{\otimes n}
+\cong\bigoplus_{\substack{\lambda\vdash n\\\ell(\lambda)\le d}}
+\mathbb{S}_\lambda(V)\otimes\mathrm{Sp}_\lambda,
+\label{eq:schur-weyl}
+\end{equation}
+其中求和遍历 $n$ 的所有分拆 $\lambda$ 且 Young 图行数 $\ell(\lambda)\le d$；$\mathbb{S}_\lambda(V)$ 是 $GL(V)$ 的不可约表示（Schur 函子），$\mathrm{Sp}_\lambda$ 是 $S_n$ 的不可约表示（Specht 模）。
+\label{thm:schur-weyl}
+\end{theorem}
+
+\begin{proof}[证明思路]
+Schur--Weyl 对偶的完整证明分三个层次：作用的交换性、双交换子定理、分解的无重数性。下面逐层展开。
+
+先验证两个作用交换。对 $g\in GL(V)$ 和 $\pi\in S_n$，
+\begin{align*}
+g\cdot\pi\cdot(v_1\otimes\cdots\otimes v_n)
+&=g\cdot(v_{\pi^{-1}(1)}\otimes\cdots\otimes v_{\pi^{-1}(n)})\\
+&=(gv_{\pi^{-1}(1)}\otimes\cdots\otimes gv_{\pi^{-1}(n)})\\
+&=\pi\cdot(gv_1\otimes\cdots\otimes gv_n)
+=\pi\cdot g\cdot(v_1\otimes\cdots\otimes v_n).
+\end{align*}
+因此 $GL(V)$ 的像 $\rho_{GL}(GL(V))$ 和 $S_n$ 的像 $\rho_{S}(S_n)$ 在 $\operatorname{End}(V^{\otimes n})$ 中互相交换：
+\[
+\rho_{GL}(g)\rho_S(\pi)=\rho_S(\pi)\rho_{GL}(g).
+\]
+从而 $\rho_S(S_n)\subset\operatorname{Comm}(\rho_{GL}(GL(V)))$，反之亦然。这里 $\operatorname{Comm}(A)=\{B\mid AB=BA,\forall A\in A\}$ 是交换子代数。
+
+令 $A$ 为 $GL(V)$ 的对角作用生成的代数，$B=\rho_S(\CC[S_n])$ 为群代数的置换像。上式说明 $A\subset\operatorname{Comm}(B)$ 和 $B\subset\operatorname{Comm}(A)$。
+
+有限维双交换子定理断言：若 $A$ 是 $\operatorname{End}(V^{\otimes n})$ 的半单子代数，$A$ 在 $V^{\otimes n}$ 上的表示完全约化为 $\bigoplus_i U_i\otimes W_i$，其中 $U_i$ 是 $A$ 的互不等价不可约表示，$W_i$ 是重数空间，则
+\[
+\operatorname{Comm}(A)\cong\bigoplus_i\operatorname{End}(W_i),
+\]
+且 $\operatorname{Comm}(\operatorname{Comm}(A))=A$。特别地，$\operatorname{Comm}(A)$ 在每个重数空间 $W_i$ 上不可约地作用，而 $A$ 在 $U_i$ 上不可约地作用。
+
+对这个证明来说，关键事实是 $\operatorname{End}(V)$ 的对角作用 $A$ 与 $S_n$ 的置换作用 $B$ 恰好互为对方的交换子：
+\begin{equation}
+\operatorname{Comm}(A)=B,
+\qquad
+\operatorname{Comm}(B)=A.
+\label{eq:double-commutant}
+\end{equation}
+第一个等式的证明：$\operatorname{End}(V^{\otimes n})$ 由纯张量算符 $E_{i_1j_1}\otimes\cdots\otimes E_{i_nj_n}$ 张成。一个与 $S_n$ 交换的算符必须对所有置换 $\pi$ 满足 $\pi T\pi^{-1}=T$，因此只能是对各因子"对称化"后的算符，即 $A$ 中元素。更精确地说，$S_n$ 在张量指标上的作用把 $\operatorname{End}(V)^{\otimes n}$ 分成 $S_n$ 轨道，与 $S_n$ 交换的算符在每个轨道上取常系数，而这些恰好是 $\operatorname{End}(V)$ 对角作用的多项式。第二个等式由 $A$ 的半单性和双交换子定理的一般理论给出。
+
+由双中心化子定理，$V^{\otimes n}$ 作为 $A$-模完全约化为
+\[
+V^{\otimes n}\cong\bigoplus_\lambda U_\lambda\otimes W_\lambda,
+\]
+其中 $U_\lambda$ 是 $A\cong\operatorname{End}(V)$ 的不可约表示（因而也是 $GL(V)$ 的不可约表示），$W_\lambda$ 是重数空间。由 \eqnrefs{eq:double-commutant}，$B=\operatorname{Comm}(A)$ 在 $W_\lambda$ 上不可约地作用，且不同 $\lambda$ 给出不等价的 $B$-表示。
+
+现在需要确定哪些 $\lambda$ 出现。$GL(V)$ 的多项式不可约表示由分拆 $\lambda$ 标记，行数 $\ell(\lambda)\le d=\dim V$。在 $V^{\otimes n}$ 中出现的恰好是 $\deg\lambda=n$（即 $|\lambda|=n$）的那些。对应的 Schur 函子 $\mathbb{S}_\lambda(V)$ 可用 Young 对称化算符显式构造：对形状 $\lambda$ 的 Young 盘 $T$，
+\[
+\mathbb{S}_\lambda(V)=\operatorname{Im}(e_T:V^{\otimes n}\to V^{\otimes n}),
+\]
+其中 $e_T=a_Tb_T$ 是 \eqnrefs{eq:young-symmetrizer} 的 Young 对称算符，现在理解为 $V^{\otimes n}$ 上的线性算符。
+
+行数约束 $\ell(\lambda)\le d$ 的来源：若 $\lambda$ 有 $d+1$ 行，则 Young 图含 $d+1$ 格高的列。在 $d$ 维空间 $V$ 上，$d+1$ 个向量的完全反对称化恒为零，故 $\mathbb{S}_\lambda(V)=0$。
+
+最后，$W_\lambda$ 作为 $B=\rho_S(\CC[S_n])$ 的不可约表示，恰好是 Specht 模 $\mathrm{Sp}_\lambda$。这可以通过维数验证：$A$ 在 $U_\lambda=\mathbb{S}_\lambda(V)$ 上的不可约表示维数由钩-内容公式给出
+\begin{equation}
+\dim\mathbb{S}_\lambda(V)=\prod_{(i,j)\in\lambda}\frac{d+j-i}{h(i,j)},
+\label{eq:hook-content-formula}
+\end{equation}
+其中 $h(i,j)$ 是 $(i,j)$ 格的钩长。而 $W_\lambda$ 的维数由
+\[
+\dim W_\lambda=\frac{\dim V^{\otimes n}\text{ 中 }\lambda\text{ 分量的总维数}}{\dim\mathbb{S}_\lambda(V)}
+\]
+确定，恰好等于 $f^\lambda$（标准 Young 盘数），即 Specht 模维数。因此 $W_\lambda\cong\mathrm{Sp}_\lambda$，得到 \eqnrefs{eq:schur-weyl}。
+\end{proof}
+
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $GL(V)$ 和 $S_n$ 的不可约表示以\emph{同一组分拆} $\lambda$ 为标签，形成精确的一一配对。
+\item 在每个直和项 $\mathbb{S}_\lambda(V)\otimes\mathrm{Sp}_\lambda$ 中，$GL(V)$ 只看到 $\mathbb{S}_\lambda(V)$，$S_n$ 只看到 $\mathrm{Sp}_\lambda$。固定 $GL(V)$ 的一个不可约分量后，$S_n$ 的作用被完全锁定，反之亦然。
+\item 行数约束 $\ell(\lambda)\le d$ 有明确的物理意义：若单粒子空间只有 $d$ 维，则 $d+1$ 个粒子的全反对称态自动为零（列长超过 $d$ 的 Young 图在 $V$ 上消失）。
+\end{enumerate}
+
+\medskip
+\noindent\emph{回到三个自旋 $1/2$。}
+取 $V=\CC^2$（自旋向上/向下），$n=3$。$3$ 的分拆中行数 $\le2$ 的只有 $[3]$ 和 $[2,1]$（$[1^3]$ 有 3 行，被排除）。Schur--Weyl 分解给出
+\[
+(\CC^2)^{\otimes3}
+\cong\mathbb{S}_{[3]}(\CC^2)\otimes\mathrm{Sp}_{[3]}
+\;\oplus\;
+\mathbb{S}_{[2,1]}(\CC^2)\otimes\mathrm{Sp}_{[2,1]}.
+\]
+$\mathbb{S}_{[3]}(\CC^2)=\mathrm{Sym}^3(\CC^2)$ 是 $SU(2)$ 的 $j=3/2$ 表示（4 维），$\mathrm{Sp}_{[3]}$ 是 $S_3$ 的平凡表示（1 维）；$\mathbb{S}_{[2,1]}(\CC^2)$ 是 $SU(2)$ 的 $j=1/2$ 表示（2 维），$\mathrm{Sp}_{[2,1]}$ 是 $S_3$ 的标准表示（2 维）。这正是 \eqnrefs{eq:three-spin-schur-weyl}，现在它不再是孤立的观察，而是 Schur--Weyl 对偶 $d=2,n=3$ 的特例。
+\par\medskip
+
+\medskip
+\noindent\emph{$p^3$ 的 Schur--Weyl 视角。}
+取 $V=\CC^6$（$p$ 壳层的 6 个自旋-轨道），$n=3$。$3$ 的分拆中行数 $\le6$ 的全部保留：$[3]$、$[2,1]$、$[1^3]$。Schur--Weyl 给出
+\[
+(\CC^6)^{\otimes3}
+\cong\mathbb{S}_{[3]}(\CC^6)\otimes\mathrm{Sp}_{[3]}
+\oplus\mathbb{S}_{[2,1]}(\CC^6)\otimes\mathrm{Sp}_{[2,1]}
+\oplus\mathbb{S}_{[1^3]}(\CC^6)\otimes\mathrm{Sp}_{[1^3]}.
+\]
+费米子要求只取 $\mathrm{Sp}_{[1^3]}$（符号表示）分量，即 $\mathbb{S}_{[1^3]}(\CC^6)=\wedge^3\CC^6$，维数 $\binom63=20$，正是 $p^3$ 的微观态总数。在 $\wedge^3\CC^6$ 上进一步分解 $SU(2)\times SO(3)$（自旋--轨道部分），就得到 $^4S\oplus{}^2D\oplus{}^2P$。Schur--Weyl 对偶把“为什么取完全反对称”和“剩下哪些角动量”统一在一个分解中。
+\par\medskip
+
+Schur--Weyl 对偶说明，单粒子空间的连续变换与粒子标签的置换并非两套独立分类，而是在张量积空间中按同一 Young 图彼此配对。自旋与交换对称性的配对正是 \eqnrefs{eq:schur-weyl} 在多体量子力学中的直接内容。
+
+Schur--Weyl 对偶中出现的 Schur 函子 $\mathbb{S}_\lambda(V)$ 的维数有一个类似钩长公式的闭式表达，称为钩-内容公式。它在 $p^3$ 推导中已用于验证各分量的维数。
+
+\begin{proposition}[Schur 函子的钩-内容维数公式]
+\label{prop:hook-content}
+设 $V=\CC^d$，$\lambda\vdash n$ 且 $\ell(\lambda)\le d$。Schur 函子 $\mathbb{S}_\lambda(V)$ 的维数为
+\begin{equation}
+\dim\mathbb{S}_\lambda(\CC^d)
+=\prod_{(i,j)\in\lambda}\frac{d+j-i}{h(i,j)},
+\label{eq:hook-content-full}
+\end{equation}
+其中 $(i,j)$ 遍历 Young 图 $\lambda$ 的所有方格（$i$ 为行号、$j$ 为列号），$h(i,j)$ 为该格的钩长。
+
+\par\smallskip\noindent\textbf{证明思路.}\enspace
+$\mathbb{S}_\lambda(V)$ 的特征标由 Schur 多项式 $s_\lambda(x_1,\dots,x_d)$ 给出，其中 $x_i$ 是 $g\in GL(V)$ 的本征值。令 $g=t\cdot I$（纯量矩阵），则 $\chi_{\mathbb{S}_\lambda}(g)=t^n\dim\mathbb{S}_\lambda(V)$。另一方面，Schur 多项式在 $x_1=\cdots=x_d=t$ 处的值由钩-内容公式给出
+\[
+s_\lambda(t,\dots,t)=t^n\prod_{(i,j)\in\lambda}\frac{d+j-i}{h(i,j)},
+\]
+此即 \eqnrefs{eq:hook-content-full}。该公式的严格证明用对称多项式的半标准盘模型：$s_\lambda$ 是半标准 Young 盘的生成函数，纯赋值 $x_i=t$ 使每个盘贡献 $t^n$，而半标准盘的计数恰好给出右端的乘积。
+\end{proposition}
+
+\medskip
+\noindent\emph{钩-内容公式验证。}
+\label{ex:hook-content-check}
+对 $d=3$（$p$ 轨道）、$n=3$：
+
+对一行图 $\lambda=[3]$，方格 $(1,1),(1,2),(1,3)$ 的 content 为 $0,1,2$，钩长度为 $3,2,1$：
+\[
+\dim\mathbb{S}_{[3]}(\CC^3)=\frac{3}{3}\cdot\frac{4}{2}\cdot\frac{5}{1}=1\cdot2\cdot5=10.
+\]
+这正是 $\dim(V_3\oplus V_1)=7+3=10$，与 \eqnrefs{eq:sym3-v1-decomp} 一致。
+
+对 $\lambda=[2,1]$，三个方格的 content 为 $0,1,-1$，钩长度为 $3,1,1$，因而
+\[
+\dim\mathbb{S}_{[2,1]}(\CC^3)
+=\frac{3}{3}\cdot\frac{4}{1}\cdot\frac{2}{1}=8.
+\]
+这与 \eqnrefs{eq:schur21-v1-decomp} 的 \(V_2\oplus V_1\) 一致。Schur--Weyl 分解中的整个 $[2,1]$ 同型分量还要乘以二维 Specht 模：
+\[
+\dim V_1^{\otimes3}=\sum_\lambda\dim\mathbb{S}_\lambda(V_1)\cdot f^\lambda
+\]
+其中 $f^\lambda$ 是 Specht 模维数。对 $[2,1]$，$f^{[2,1]}=2$，故该同型分量的总维数为 $8\times2=16$。
+
+对一列图 $\lambda=[1^3]$，content 为 $0,-1,-2$，钩长度为 $3,2,1$：
+\[
+\dim\mathbb{S}_{[1^3]}(\CC^3)=\frac{3}{3}\cdot\frac{2}{2}\cdot\frac{1}{1}=1.
+\]
+这正是 $\dim\wedge^3\CC^3=1$。
+\par\medskip
+
+Schur--Weyl 对偶还自然导出 $S_n$ 表示的\emph{分支法则}，它描述从 $n$ 粒子到 $n+1$ 粒子时表示如何分裂，在多电子原子中直接对应"添加一个电子"的过程。
+
+\begin{proposition}[$S_n$ 表示的分支法则]
+\label{prop:branching-rule}
+将 $S_n$ 的不可约表示 $\mathrm{Sp}_\lambda$ 限制到子群 $S_{n-1}$（固定第 $n$ 个粒子），其分解为
+\begin{equation}
+\mathrm{Sp}_\lambda\big\downarrow_{S_{n-1}}^{S_n}
+=\bigoplus_{\mu}\mathrm{Sp}_\mu,
+\label{eq:sn-branching-rule}
+\end{equation}
+其中 $\mu$ 遍历从 Young 图 $\lambda$ 删除一个可移去角格得到的所有 Young 图。
+
+\end{proposition}
+
+\begin{proof}
+Specht 模 $S^\lambda=\CC[S_n]e_T$ 的一组基由标准 Young 盘标记（标准盘基定理）。$S_{n-1}$ 作用在标签 $\{1,\dots,n-1\}$ 上，固定标签 $n$。一个标准 $\lambda$-盘中，数字 $n$ 必须出现在某个可移去角格（因为标准性要求 $n$ 右方和下方都没有数字）。删除含 $n$ 的角格后，剩余数字 $1,\dots,n-1$ 仍按标准方式填入一个 $(n-1)$-分拆 $\mu$ 的 Young 图。因此
+\[
+\{\text{标准 }\lambda\text{-盘}\}
+=\bigsqcup_{\mu}\{\text{标准 }\mu\text{-盘}\},
+\]
+其中 $\mu$ 遍历从 $\lambda$ 删除一个角格的所有可能。这给出 \eqnrefs{eq:sn-branching-rule}。
+\end{proof}
+
+\medskip
+\noindent\emph{分支法则的物理应用：$p^2\to p^3$。}
+从 $p^2$ 到 $p^3$ 相当于添加一个 $p$ 电子。$p^2$ 的项符号为 ${}^1S,{}^1D,{}^3P$（\cref{ex:p2-config}），$p^3$ 为 ${}^4S,{}^2D,{}^2P$。
+
+从 $S_2$ 到 $S_3$，分支法则给出。Young 图 $[3]$ 只有右端一个可移去角格，因此限制到 $S_2$ 只得到 $[2]$。各不可约表示分别有如下分支：
+\[
+[3]\big\downarrow_{S_2}^{S_3}=[2],
+\qquad
+[2,1]\big\downarrow_{S_2}^{S_3}=[2]\oplus[1,1],
+\qquad
+[1^3]\big\downarrow_{S_2}^{S_3}=[1,1].
+\]
+$[2,1]$ 有两个可移去角格（第一行右端和第二行末端），删除后分别得到 $[2]$ 和 $[1,1]$。维数检查：$f^{[2,1]}=2=f^{[2]}+f^{[1,1]}=1+1$。
+
+物理上，添加一个 $p$ 电子到 $p^2$ 构型时，新的 $S_3$ 对称类型由分支法则决定：$p^2$ 中 $S_2$ 对称类型 $[2]$（空间对称）可以来自 $S_3$ 的 $[3]$ 或 $[2,1]$；$[1,1]$（空间反对称）可以来自 $[2,1]$ 或 $[1^3]$。这与 $p^3$ 的结果 ${}^4S,{}^2D,{}^2P$ 一致：$^4S$ 的轨道 $[1^3]$ 限制到 $S_2$ 给 $[1,1]$，$^2D$ 和 $^2P$ 的轨道 $[2,1]$ 限制到 $S_2$ 给 $[2]\oplus[1,1]$。
+\par\medskip
+
+\section{对称函数、Frobenius 特征标与 Littlewood--Richardson 规则}
+\label{sec:symmetric-functions-lr}
+
+前面的理论给出了 $S_n$ 不可约表示的存在性、维数和显式矩阵，但还没有系统方法计算特征标 $\chi^\lambda(\mu)$（形状 $\lambda$ 的不可约表示在循环类型 $\mu$ 处的特征标值）。Frobenius 特征标公式通过对称函数理论给出了闭式表达。它同时连接 $S_n$ 表示论与 $GL(V)$ 表示论，而 Littlewood--Richardson 规则则给出张量积分解的组合算法。
+
+
+\begin{definition}[对称函数与 Schur 函数]
+设 $x_1,x_2,\dots,x_d$ 为变量。\textbf{对称函数}是在变量置换下不变的多项式。齐次 $n$ 次对称函数空间记为 $\Lambda_n^d$。
+
+对分拆 $\lambda\vdash n$，\textbf{Schur 函数}定义为
+\begin{equation}
+s_\lambda(x_1,\dots,x_d)
+=\sum_T x_1^{w_1(T)}x_2^{w_2(T)}\cdots x_d^{w_d(T)},
+\label{eq:schur-function}
+\end{equation}
+其中求和遍历形状 $\lambda$ 的所有\emph{半标准 Young 盘} $T$（填入 $1,\dots,d$，行弱递增、列严格递增），$w_j(T)$ 是 $j$ 在 $T$ 中出现的次数。
+\label{def:schur-function}
+\end{definition}
+
+Schur 函数构成 $\Lambda_n^d$ 的一组基，且与 $GL(d)$ 的不可约表示紧密相关。
+
+\begin{theorem}[Schur 函数与 $GL(d)$ 特征标]
+设 $g\in GL(d)$ 的本征值为 $x_1,\dots,x_d$。则 $GL(d)$ 的不可约表示 $\mathbb{S}_\lambda(\CC^d)$ 的特征标为
+\begin{equation}
+\chi_{\mathbb{S}_\lambda}(g)=s_\lambda(x_1,\dots,x_d).
+\label{eq:schur-gl-character}
+\end{equation}
+特别地，$\dim\mathbb{S}_\lambda(\CC^d)=s_\lambda(1,1,\dots,1)$，这正是钩-内容公式 \eqnrefs{eq:hook-content-full}。
+\label{thm:schur-gl-character}
+\end{theorem}
+
+\begin{derivation}[Schur 函数公式的推导]
+第一步，半标准盘与权重。
+Schur 函数 $s_\lambda$ 是半标准盘的生成函数：
+\[
+s_\lambda(x_1,\dots,x_d)=\sum_{T\in\mathrm{SSYT}(\lambda,d)}x_1^{w_1(T)}\cdots x_d^{w_d(T)},
+\]
+其中 $\mathrm{SSYT}(\lambda,d)$ 是形状 $\lambda$、数字取自 $\{1,\dots,d\}$ 的半标准盘（行弱递增、列严格递增），$w_i(T)$ 记录数字 $i$ 在 $T$ 中出现的次数。由于半标准盘的条件只依赖数字的相对大小（$i<j$），对变量 $x_1,\dots,x_d$ 做任意置换 $\sigma\in S_d$ 等价于重标数字，不改变盘的计数，故 $s_\lambda$ 在变量置换下不变，确为对称函数。
+
+随后，$GL(d)$ 的特征标。
+取 $g=\operatorname{diag}(x_1,\dots,x_d)\in GL(d)$。$\mathbb{S}_\lambda(\CC^d)$ 由 Young 对称算符 $e_T=\frac{\dim\mathbb{S}_\lambda}{n!}\sum_{\pi\in R_T}\sum_{\sigma\in C_T}\mathrm{sgn}(\sigma)\,\pi\sigma$ 作用在 $(\CC^d)^{\otimes n}$ 上得到，其基由半标准盘 $T$ 标记。基向量 $v_T=e_T(v_{i_1}\otimes\cdots\otimes v_{i_n})$ 的权重为 $\mathrm{wt}(T)=(w_1,\dots,w_d)$。对角矩阵 $g$ 作用：
+\[
+g\cdot v_T=g\cdot e_T(v_{i_1}\otimes\cdots\otimes v_{i_n})=e_T(gv_{i_1}\otimes\cdots\otimes gv_{i_n})=x_1^{w_1}\cdots x_d^{w_d}\,v_T,
+\]
+即 $v_T$ 是 $g$ 的本征向量，本征值为 $x_1^{w_1(T)}\cdots x_d^{w_d(T)}$。特征标（迹）等于所有基向量本征值之和：
+\[
+\chi_{\mathbb{S}_\lambda}(g)=\sum_T x_1^{w_1(T)}\cdots x_d^{w_d(T)}=s_\lambda(x_1,\dots,x_d).
+\]
+可对角化矩阵在 $GL(d)$ 中稠密，而等式两边都是矩阵元的多项式，因此公式延拓到任意 $g\in GL(d)$。
+
+接着，维数公式。
+令 $g=I$（即所有 $x_i=1$），$\chi_{\mathbb{S}_\lambda}(I)=\dim\mathbb{S}_\lambda(\CC^d)$。此时 $s_\lambda(1,\dots,1)$ 等于半标准盘总数。用钩-内容公式计算：
+\[
+s_\lambda(1,\dots,1)=\prod_{(i,j)\in\lambda}\frac{d+j-i}{h(i,j)},
+\]
+其中 $(i,j)$ 遍历 Young 图 $\lambda$ 的所有方格，$h(i,j)=\lambda_i+\lambda_j'-i-j+1$ 为钩长度，$j-i$ 为方格的 content。
+
+\end{derivation}
+
+Specht 模的钩长公式给出 $S_n$ 不可约表示维数
+\[
+f^\lambda=\frac{n!}{\prod_{(i,j)\in\lambda}h(i,j)},\qquad
+h(i,j)=\lambda_i+\lambda_j'-i-j+1
+\]
+（核心思路：$n!$ 个字按对称群作用轨道分解，每个轨道大小恰为各格钩长度之积，主证明见附录 \appref{app:young-proofs}）。Hook-content 公式与该公式描述不同对象：前者随 $d$ 增长，后者只依赖分拆 $\lambda\vdash n$。它们由 Schur--Weyl 分解联系起来，取维数得到
+\[
+d^n=\sum_{\lambda\vdash n,\,\ell(\lambda)\le d}
+\dim\mathbb S_\lambda(\CC^d)\,f^\lambda.
+\]
+Schur 函数还构成 Hall 内积下的正交基；后面的 Frobenius 公式与 Littlewood--Richardson 规则分别描述它在幂和基中的展开及其乘法结构。
+
+
+\begin{definition}[幂和对称函数与特征标映射]
+对循环类型 $\mu=(\mu_1,\mu_2,\dots,\mu_r)\vdash n$，定义\textbf{幂和对称函数}
+\begin{equation}
+p_\mu=p_{\mu_1}p_{\mu_2}\cdots p_{\mu_r},
+\qquad
+p_k=x_1^k+x_2^k+\cdots+x_d^k.
+\label{eq:power-sum-symmetric}
+\end{equation}
+Frobenius 特征标映射 $\mathrm{ch}:\mathcal R(S_n)\to\Lambda_n$（从 $S_n$ 类函数到齐次对称函数）定义为
+\begin{equation}
+\mathrm{ch}(\chi^\lambda)=\frac{1}{n!}\sum_{\pi\in S_n}\chi^\lambda(\pi)\,p_{\mathrm{cycle}(\pi)}
+=\sum_{\mu\vdash n}\frac{\chi^\lambda(\mu)}{z_\mu}\,p_\mu,
+\label{eq:frobenius-character-map}
+\end{equation}
+其中 $z_\mu=\prod_k k^{m_k}m_k!$（$m_k$ 是 $\mu$ 中 $k$ 的重数），求和遍历所有分拆 $\mu\vdash n$。
+\label{def:frobenius-character-map}
+\end{definition}
+
+\begin{theorem}[Frobenius 特征标公式]
+Frobenius 特征标映射是 $S_n$ 类函数空间到 $\Lambda_n$ 的同构，且
+\begin{equation}
+\mathrm{ch}(\chi^\lambda)=s_\lambda.
+\label{eq:frobenius-formula}
+\end{equation}
+因此，Schur 函数 $s_\lambda$ 在幂和基 $\{p_\mu\}$ 下的展开系数恰好给出 $S_n$ 的特征标：
+\begin{equation}
+s_\lambda=\sum_{\mu\vdash n}\frac{\chi^\lambda(\mu)}{z_\mu}\,p_\mu.
+\label{eq:schur-power-sum-expansion}
+\end{equation}
+等价地，特征标值可从 Schur 函数读出：
+\begin{equation}
+\chi^\lambda(\mu)=\bigl\langle s_\lambda,p_\mu\bigr\rangle_{\mathrm{Hall}},
+\label{eq:character-from-schur}
+\end{equation}
+其中 $\langle\cdot,\cdot\rangle_{\mathrm{Hall}}$ 是 Hall 内积（定义使 $\{s_\lambda\}$ 正交、$\{p_\mu\}$ 满足 $\langle p_\lambda,p_\mu\rangle=z_\mu\,\delta_{\lambda\mu}$）。
+\label{thm:frobenius-formula}
+\end{theorem}
+
+\begin{derivation}[Frobenius 公式的推导]
+先特征标映射是同构。
+$S_n$ 的类函数空间维数等于分拆数 $p(n)$，齐次 $n$ 次对称函数空间 $\Lambda_n$ 的维数也等于 $p(n)$（由幂和基 $\{p_\mu\}_{\mu\vdash n}$ 张成）。映射 $\mathrm{ch}$ 把类函数基 $\{\delta_\mu\}$ 送到 $\{p_\mu/z_\mu\}$，后者是 $\Lambda_n$ 的一组基，故 $\mathrm{ch}$ 是同构。
+
+随后$\mathrm{ch}(\chi^\lambda)=s_\lambda$。
+这是 Frobenius 公式的核心。证明用 Schur--Weyl 对偶：
+
+在 $V^{\otimes n}$ 上，$GL(V)$ 的特征标为
+\[
+\tr_{V^{\otimes n}} g^n=\bigl(\tr g\bigr)^n=p_1^n.
+\]
+更一般地，$\pi\in S_n$ 的循环类型为 $\mu$ 时，需要计算 $\tr_{V^{\otimes n}}(g^n\circ\pi)$。设 $\pi$ 的不交循环分解为 $\pi=c_1\cdots c_r$，循环长度分别为 $\mu_1,\dots,\mu_r$。在纯张量基 $\{v_{i_1}\otimes\cdots\otimes v_{i_n}\}$ 上，$g^n\circ\pi$ 的作用为
+\[
+(g^n\circ\pi)(v_{i_1}\otimes\cdots\otimes v_{i_n})
+=(gv_{i_{\pi^{-1}(1)}})\otimes\cdots\otimes(gv_{i_{\pi^{-1}(n)}}).
+\]
+基向量被映射到自身（从而贡献迹）当且仅当 $i_k=i_{\pi(k)}$ 对所有 $k$ 成立，即同一循环中的所有指标相等。设第 $s$ 个循环中指标取值为 $j_s$，则该基向量贡献本征值 $x_{j_1}^{\mu_1}\cdots x_{j_r}^{\mu_r}$。对所有可能的 $j_1,\dots,j_r\in\{1,\dots,d\}$ 求和：
+\begin{align*}
+\tr_{V^{\otimes n}}(g^n\circ\pi)
+&=\sum_{j_1,\dots,j_r}x_{j_1}^{\mu_1}\cdots x_{j_r}^{\mu_r}
+=\Big(\sum_{j_1}x_{j_1}^{\mu_1}\Big)\cdots\Big(\sum_{j_r}x_{j_r}^{\mu_r}\Big) \\
+&=p_{\mu_1}\cdots p_{\mu_r}=p_\mu(x_1,\dots,x_d).
+\end{align*}
+由 Schur--Weyl 分解 $V^{\otimes n}\cong\bigoplus_\lambda\mathbb{S}_\lambda(V)\otimes\mathrm{Sp}_\lambda$，$g^n\circ\pi$ 在 $\mathbb{S}_\lambda(V)\otimes\mathrm{Sp}_\lambda$ 上的迹为 $\chi_{\mathbb{S}_\lambda}(g)\,\chi^\lambda(\pi)$（因 $GL(V)$ 和 $S_n$ 作用交换，迹因子化），故
+\[
+\tr_{V^{\otimes n}}(g^n\circ\pi)=\sum_\lambda\chi_{\mathbb{S}_\lambda}(g)\,\chi^\lambda(\pi)=\sum_\lambda s_\lambda(x)\,\chi^\lambda(\pi).
+\]
+另一方面，$\tr(g^n\circ\pi)=p_\mu$。因此
+\[
+p_\mu=\sum_\lambda\chi^\lambda(\mu)\,s_\lambda.
+\]
+由 Hall 内积 $\langle s_\lambda,s_\nu\rangle=\delta_{\lambda\nu}$，得到
+\[
+\chi^\lambda(\mu)=\langle p_\mu,s_\lambda\rangle.
+\]
+这正是 \eqnrefs{eq:character-from-schur}。等价地，$s_\lambda=\sum_\mu\chi^\lambda(\mu)p_\mu/z_\mu$，即 \eqnrefs{eq:schur-power-sum-expansion}。
+
+接着，Hall 内积的来源。
+Hall 内积定义为 $\langle p_\lambda,p_\mu\rangle=z_\mu\delta_{\lambda\mu}$，其中 $z_\mu=\prod_k k^{m_k}m_k!$（$m_k$ 为 $\mu$ 中 $k$ 的重数）。在此内积下 Schur 函数正交：$\langle s_\lambda,s_\mu\rangle=\delta_{\lambda\mu}$。这来自 $S_n$ 特征标的正交关系
+\[
+\frac{1}{n!}\sum_{\pi}\chi^\lambda(\pi)\overline{\chi^\mu(\pi)}=\delta_{\lambda\mu}
+\]
+通过 Frobenius 映射翻译到对称函数语言。具体地，把类函数内积
+\[
+\langle\chi^\lambda,\chi^\mu\rangle_{S_n}
+=\frac{1}{n!}\sum_{\pi\in S_n}\chi^\lambda(\pi)\overline{\chi^\mu(\pi)}
+=\sum_{\nu\vdash n}\frac{\chi^\lambda(\nu)\overline{\chi^\mu(\nu)}}{z_\nu}
+\]
+与 Frobenius 映射 $\mathrm{ch}(\chi^\lambda)=s_\lambda=\sum_\nu\frac{\chi^\lambda(\nu)}{z_\nu}p_\nu$ 结合，得到
+\[
+\langle s_\lambda,s_\mu\rangle_{\mathrm{Hall}}
+=\sum_{\nu}\frac{\chi^\lambda(\nu)\overline{\chi^\mu(\nu)}}{z_\nu}
+=\delta_{\lambda\mu}.
+\]
+因 $S_n$ 的特征标为实数（所有表示可定义在 $\QQ$ 上），复共轭可省略。这一正交性使 Hall 内积成为对称函数空间上最自然的内积，与 $S_n$ 特征标正交完全对应。
+
+\end{derivation}
+
+实际计算特征标时，Murnaghan--Nakayama 规则把 $\chi^\lambda(\mu)$ 写成从 $\lambda$ 依次移除指定长度 border 条的带符号计数；它正是 Frobenius 公式的组合递推形式。
+
+\medskip
+\noindent\emph{$S_3$ 特征标的 Frobenius 公式计算。}
+对 $\lambda=[2,1]$，Schur 函数为
+\[
+s_{[2,1]}=\frac{1}{3}(p_1^3-p_3).
+\]
+展开为幂和基：直接用 Newton 恒等式与 $z_\mu$ 归一化。在三个变量的情况：
+\[
+s_{[2,1]}=\frac{1}{3}p_1^3-\frac{1}{3}p_3.
+\]
+与 \eqnrefs{eq:schur-power-sum-expansion} 比较：$z_{(1^3)}=1^3\cdot3!=6$，$z_{(2,1)}=2\cdot1\cdot1!\cdot1!=2$，$z_{(3)}=3\cdot1!=3$。故
+\[
+s_{[2,1]}=\frac{\chi^{[2,1]}(1^3)}{6}p_{(1^3)}+\frac{\chi^{[2,1]}(2,1)}{2}p_{(2,1)}+\frac{\chi^{[2,1]}(3)}{3}p_{(3)}.
+\]
+从 $s_{[2,1]}=\frac{1}{3}p_1^3-\frac{1}{3}p_3$（其中 $p_1^3=p_{(1^3)}$ 即幂和基 $p_{(1^3)}$）得
+\[
+s_{[2,1]}=\frac{1}{3}p_{(1^3)}+0\cdot p_{(2,1)}-\frac{1}{3}p_{(3)}.
+\]
+因此 $\chi^{[2,1]}(1^3)/6=1/3$，$\chi^{[2,1]}(2,1)/2=0$，$\chi^{[2,1]}(3)/3=-1/3$，给出
+\[
+\chi^{[2,1]}=(2,0,-1),
+\]
+与已知 $S_3$ 特征标表完全一致。
+\par\medskip
+
+
+Frobenius 公式把 $S_n$ 特征标与对称函数联系起来，而 Littlewood--Richardson 规则则给出对称函数乘积 $s_\lambda\cdot s_\mu$ 的 Schur 函数展开，等价地给出 $GL(V)$ 表示张量积 $\mathbb{S}_\lambda\otimes\mathbb{S}_\mu$ 的不可约分解。
+
+\begin{definition}[Littlewood--Richardson 系数]
+对分拆 $\lambda\vdash m$、$\mu\vdash n$、$\nu\vdash m+n$，\textbf{Littlewood--Richardson 系数} $c_{\lambda\mu}^\nu$ 由 Schur 函数乘积展开定义：
+\begin{equation}
+s_\lambda\cdot s_\mu=\sum_\nu c_{\lambda\mu}^\nu\,s_\nu.
+\label{eq:lr-product-rule}
+\end{equation}
+\label{def:lr-coefficient}
+\end{definition}
+
+\begin{theorem}[Littlewood--Richardson 规则]
+$c_{\lambda\mu}^\nu$ 等于形状为 $\nu/\lambda$（从 $\nu$ 删除 $\lambda$ 后的斜 Young 图）、内容为 $\mu$ 的\textbf{Littlewood--Richardson 盘}（LR 盘）的个数。
+
+LR 盘是填入 $\nu/\lambda$ 的正整数，满足：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{半标准性}：行弱递增，列严格递增；
+\item \textbf{格字条件}（lattice word / Yamanouchi word）：从右往左读时，任意前缀中 $i$ 出现次数不少于 $i+1$ 出现次数。
+\end{enumerate}
+\label{thm:lr-rule}
+\end{theorem}
+
+\begin{derivation}[Littlewood--Richardson 规则的推导思路]
+先看 $GL(V)$ 张量积分解。
+由 \cref{thm:schur-gl-character}，$\mathbb{S}_\lambda(V)\otimes\mathbb{S}_\mu(V)$ 的特征标为 $s_\lambda\cdot s_\mu$。Schur 函数构成对称函数空间的正交基，故乘积可按 Schur 基展开：
+\[
+s_\lambda\cdot s_\mu=\sum_\nu c_{\lambda\mu}^\nu\,s_\nu,
+\]
+系数 $c_{\lambda\mu}^\nu$ 就是 $\mathbb{S}_\nu(V)$ 在张量积 $\mathbb{S}_\lambda(V)\otimes\mathbb{S}_\mu(V)$ 中的重数。问题归结为：如何组合地计算 $c_{\lambda\mu}^\nu$？
+
+随后LR 盘的组合解释。
+$s_\lambda\cdot s_\mu$ 是两个半标准盘生成函数的乘积。几何上，这对应把形状 $\mu$ 的半标准盘"贴"到形状 $\lambda$ 的半标准盘上，得到形状 $\nu$ 的半标准盘。具体操作：取形状 $\lambda$ 的半标准盘 $T_1$（填数字 $1,\dots,d$）和形状 $\mu$ 的半标准盘 $T_2$（填数字 $1,\dots,d$），把 $T_2$ 的方格按某种方式添加到 $T_1$ 上，使合并后的形状为 $\nu$。但并非所有贴法都合法——合并后的盘必须保持半标准性（行弱递增、列严格递增）。
+
+合法贴法恰好由 LR 盘的格字条件筛选。格字条件的来源：Schur 函数 $s_\mu$ 的半标准盘展开中，数字 $i$ 的出现受列严格递增约束。当把 $\mu$ 盘贴到 $\lambda$ 盘上时，新填入的数字必须保持整体半标准性。格字条件——从右往左读时，任意前缀中 $i$ 出现次数不少于 $i+1$ 出现次数——正是这一约束的组合翻译。
+
+更严格地，设 $T$ 是形状 $\nu/\lambda$ 的半标准盘，数字 $i$ 出现 $\mu_i$ 次。对每个 $k$，令 $T_{\le k}$ 为 $T$ 中只含数字 $1,\dots,k$ 的方格组成的子盘。半标准性要求 $T_{\le k}$ 是一个合法的 Young 图（因列严格递增，数字 $k+1$ 必须在 $T_{\le k}$ 的右下方）。格字条件等价于：对每个 $k$，$T_{\le k}$ 的形状 $\nu^{(k)}$ 满足 $\nu^{(k)}/\nu^{(k-1)}$ 是水平条（无两格同列），其中 $\nu^{(0)}=\lambda$。这恰好是 Pieri 规则的条件：$s_{\mu_k}\cdot s_{\nu^{(k-1)}}=\sum s_{\nu^{(k)}}$，$\nu^{(k)}/\nu^{(k-1)}$ 为水平条。逐层剥离给出 LR 盘与 Pieri 链的一一对应，从而 $c_{\lambda\mu}^\nu$ 等于合法 LR 盘数。
+\end{derivation}
+
+交换两个张量因子立即给出 $c_{\lambda\mu}^{\nu}=c_{\mu\lambda}^{\nu}$。最简单的特例是 Pieri 规则：与一行或一列对应的 Schur 函数相乘，分别等价于添加水平条或垂直条。一般情形则由定理中的 LR 盘计数。
+
+\medskip
+\noindent\emph{\texorpdfstring{{$s_{{[1]}}\cdot s_\lambda$} 的 LR 分解}{s_[1] * s_lambda 的 LR 分解}。}
+取 $\lambda=[1]$（单个方格），$s_{[1]}=p_1=h_1=e_1$（完备齐次 = 基本对称 = 幂和）。LR 规则给出
+\[
+s_{[1]}\cdot s_\lambda=\sum_{\nu:\nu/\lambda\text{ 为单个可加角格}}s_\nu.
+\]
+即 $c_{[1],\lambda}^\nu=1$ 若 $\nu$ 从 $\lambda$ 添加一个角格得到，否则为 $0$。这就是 $GL(V)$ 表示的\emph{分支法则}：$\mathbb{S}_\lambda\otimes V=\bigoplus_\nu\mathbb{S}_\nu$，$\nu$ 遍历 $\lambda$ 的所有加角格结果。
+
+例如 $\lambda=[2,1]$，可加角格在第一行右端（得 $[3,1]$）、第二行右端（得 $[2,2]$）、第三行（得 $[2,1,1]$）：
+\[
+s_{[1]}\cdot s_{[2,1]}=s_{[3,1]}+s_{[2,2]}+s_{[2,1,1]}.
+\]
+维数验证（$d=3$）：$\dim\mathbb{S}_{[2,1]}(\CC^3)=8$，$\dim V=3$，$8\times3=24$；$\dim\mathbb{S}_{[3,1]}=15$，$\dim\mathbb{S}_{[2,2]}=6$，$\dim\mathbb{S}_{[2,1,1]}=3$，$15+6+3=24$。
+\par\medskip
+
+\medskip
+\noindent\emph{$V\otimes V$ 的 LR 分解与对称/反对称幂。}
+取 $\lambda=\mu=[1]$，$s_{[1]}^2=s_{[2]}+s_{[1,1]}$。这对应
+\[
+V\otimes V=\operatorname{Sym}^2(V)\oplus\wedge^2(V),
+\]
+即张量积分解为对称幂与外幂。LR 盘验证：$\nu=[2]$ 时 $\nu/[1]$ 是一个方格，填入 $1$，格字条件自动满足；$\nu=[1,1]$ 时填入 $2$，也满足。
+
+更一般地，$s_\lambda\cdot s_\lambda$ 总含 $s_{2\lambda}$（全对称）和 $s_{\lambda^2}$（全反对称，$\lambda^2$ 是各格加倍的分拆），对应 $\operatorname{Sym}^2\mathbb{S}_\lambda$ 和 $\wedge^2\mathbb{S}_\lambda$ 的最高权分量。
+\par\medskip
+
+\medskip
+\noindent\emph{$SU(3)$ 张量积 $\mathbf{3}\otimes\mathbf{3}$ 的 LR 分解。}
+$SU(3)$ 的基础表示 $\mathbf{3}$ 对应 $GL(3)$ 的 $\mathbb{S}_{[1]}(\CC^3)$。LR 规则给出
+\[
+\mathbf{3}\otimes\mathbf{3}=\mathbf{6}\oplus\bar{\mathbf{3}},
+\]
+其中 $\mathbf{6}=\operatorname{Sym}^2\CC^3=\mathbb{S}_{[2]}(\CC^3)$（六维对称表示），$\bar{\mathbf{3}}=\wedge^2\CC^3=\mathbb{S}_{[1,1]}(\CC^3)$（三维反对称表示，对 $SU(3)$ 等价于共轭表示）。这就是夸克模型中 $qq=\mathbf{6}\oplus\bar{\mathbf{3}}$ 的群论来源：两个夸克可以组合成六重态（对称）或反三重态（反对称）。
+
+进一步，$\mathbf{3}\otimes\mathbf{3}\otimes\mathbf{3}=(\mathbf{6}\oplus\bar{\mathbf{3}})\otimes\mathbf{3}=\mathbf{10}\oplus\mathbf{8}\oplus\mathbf{8}\oplus\mathbf{1}$，其中 $\mathbf{10}=\mathbb{S}_{[3]}$（十重态，全对称），$\mathbf{8}=\mathbb{S}_{[2,1]}$（八重态，混合对称，出现两次），$\mathbf{1}=\mathbb{S}_{[1^3]}$（单态，全反对称）。这正是重子十重态（$\Delta,\Sigma^*,\Xi^*,\Omega^-$）和八重态（$N,\Sigma,\Lambda,\Xi$）的群论分类。
+\par\medskip
+
+LR 系数还通过 Frobenius 公式与 $S_n$ 的诱导表示联系。
+
+\begin{proposition}[LR 系数与诱导表示]
+设 $\lambda\vdash m$、$\mu\vdash n$。$S_{m+n}$ 的诱导表示 $\operatorname{Ind}_{S_m\times S_n}^{S_{m+n}}(\mathrm{Sp}_\lambda\boxtimes\mathrm{Sp}_\mu)$ 分解为
+\begin{equation}
+\operatorname{Ind}_{S_m\times S_n}^{S_{m+n}}(\mathrm{Sp}_\lambda\boxtimes\mathrm{Sp}_\mu)
+=\bigoplus_\nu c_{\lambda\mu}^\nu\,\mathrm{Sp}_\nu.
+\label{eq:lr-induction}
+\end{equation}
+\label{prop:lr-induction}
+\end{proposition}
+
+\begin{derivation}[诱导表示公式的推导]
+先Frobenius 映射的诱导性质。Frobenius 映射 $\mathrm{ch}:\mathcal R(S_n)\to\Lambda_n$ 满足关键的\emph{诱导性质}：若 $\chi$ 是 $S_m$ 的类函数、$\psi$ 是 $S_n$ 的类函数，则
+\[
+\mathrm{ch}\bigl(\operatorname{Ind}_{S_m\times S_n}^{S_{m+n}}(\chi\boxtimes\psi)\bigr)=\mathrm{ch}(\chi)\cdot\mathrm{ch}(\psi).
+\]
+证明：由诱导特征标公式，
+\[
+\operatorname{Ind}_{H}^{G}(\theta)(g)=\frac{1}{|H|}\sum_{\substack{x\in G\\xgx^{-1}\in H}}\theta(xgx^{-1}),
+\]
+取 $G=S_{m+n}$，$H=S_m\times S_n$（$S_m$ 作用在 $\{1,\dots,m\}$ 上，$S_n$ 作用在 $\{m+1,\dots,m+n\}$ 上），$\theta=\chi\boxtimes\psi$。
+
+关键计算：$g\in S_{m+n}$ 共轭到 $H$ 中某元素当且仅当 $g$ 的每个循环要么完全在 $\{1,\dots,m\}$ 中，要么完全在 $\{m+1,\dots,m+n\}$ 中。设 $g$ 的循环类型为 $\nu\vdash(m+n)$，则 $\nu$ 分解为 $\nu=\lambda\sqcup\mu$，其中 $\lambda\vdash m$ 是前 $m$ 个位置的循环类型，$\mu\vdash n$ 是后 $n$ 个位置的循环类型。此时 $\theta(xgx^{-1})=\chi(\lambda)\cdot\psi(\mu)$。
+
+共轭元 $xgx^{-1}\in H$ 的个数等于 $|C_G(g)|\cdot|H\cap C_G(g)|^{-1}\cdot|H|$（$C_G(g)$ 为 $g$ 在 $G$ 中的中心化子），但更直接的计数是：$g$ 的循环类型 $\nu$ 在 $S_{m+n}$ 中的共轭类大小为 $|C_\nu|=(m+n)!/z_\nu$，其中能分解为 $\lambda\sqcup\mu$ 的那些贡献 $\chi(\lambda)\psi(\mu)$。代入 Frobenius 映射定义：
+\begin{align*}
+\mathrm{ch}(\operatorname{Ind}(\chi\boxtimes\psi))
+&=\sum_{\nu\vdash(m+n)}\frac{\operatorname{Ind}(\chi\boxtimes\psi)(\nu)}{z_\nu}p_\nu \\
+&=\sum_{\lambda\vdash m}\sum_{\mu\vdash n}\frac{\chi(\lambda)\psi(\mu)}{z_\lambda z_\mu}p_\lambda p_\mu.
+\end{align*}
+利用 $z_{\lambda\sqcup\mu}=z_\lambda z_\mu$（因 $z_\nu=\prod_k k^{m_k}m_k!$ 只依赖各循环长度的重数）和 $p_{\lambda\sqcup\mu}=p_\lambda p_\mu$（幂和乘积），求和分离：
+\[
+=\Big(\sum_{\lambda\vdash m}\frac{\chi(\lambda)}{z_\lambda}p_\lambda\Big)\Big(\sum_{\mu\vdash n}\frac{\psi(\mu)}{z_\mu}p_\mu\Big)=\mathrm{ch}(\chi)\cdot\mathrm{ch}(\psi).
+\]
+这一因子化是 Frobenius 映射成为\emph{环同态}的关键：它把表示的诱导（$S_m\times S_n$ 到 $S_{m+n}$）转化为对称函数的乘法。
+
+随后代入不可约特征标。取 $\chi=\chi^\lambda$（$S_m$ 不可约特征标）、$\psi=\chi^\mu$（$S_n$ 不可约特征标），由 Frobenius 公式 $\mathrm{ch}(\chi^\lambda)=s_\lambda$、$\mathrm{ch}(\chi^\mu)=s_\mu$，故
+\[
+\mathrm{ch}\bigl(\operatorname{Ind}(\chi^\lambda\boxtimes\chi^\mu)\bigr)=s_\lambda\cdot s_\mu=\sum_\nu c_{\lambda\mu}^\nu s_\nu.
+\]
+
+接着反推表示分解：Frobenius 映射是同构（可逆），故从
+\[
+\mathrm{ch}\bigl(\operatorname{Ind}(\mathrm{Sp}_\lambda\boxtimes\mathrm{Sp}_\mu)\bigr)=\sum_\nu c_{\lambda\mu}^\nu\,\mathrm{ch}(\mathrm{Sp}_\nu)
+\]
+得到 \eqnrefs{eq:lr-induction}。这把 LR 系数同时实现为 $GL(V)$ 张量积重数和 $S_n$ 诱导表示重数，是 Schur--Weyl 对偶的核心体现。
+
+\end{derivation}
+
+这个结果把 $GL(V)$ 张量积分解与 $S_n$ 诱导表示统一在同一个组合量 $c_{\lambda\mu}^\nu$ 上。这是 Schur--Weyl 对偶的深层体现：连续群和离散群的表示论通过对称函数理论和 LR 系数精确对应。
+
+
+前面建立了 Young 盘与不可约表示的联系：形状 $\lambda$ 的标准盘个数 $f^\lambda$ 等于 Specht 模 $\mathrm{Sp}_\lambda$ 的维数，维数平方和 $\sum_\lambda(f^\lambda)^2=n!$ 等于 $|S_n|$。但这个等式来自正则表示分解，是抽象的。Robinson--Schensted 对应给出一个\textbf{显式组合双射}，把每个置换 $\pi\in S_n$ 对应到一对同形状标准 Young 盘 $(P,Q)$，从而直接解释为什么 $\sum(f^\lambda)^2=n!$。
+
+\begin{definition}[行插入算法]
+给定半标准 Young 盘 $P$ 和数字 $x$，\textbf{行插入} $x$ 到 $P$（记 $P\leftarrow x$）按以下步骤进行：
+\begin{enumerate}
+\item 从第一行开始，找到该行中第一个严格大于 $x$ 的元素 $y$（若存在）。用 $x$ 替换 $y$，然后对 $y$ 重复此过程到下一行。
+\item 若某行中没有大于当前待插入元素的值，则添加到该行末尾，插入完成。
+\end{enumerate}
+每次插入在某行末尾添加一个方格，最终得到一个比 $P$ 多一个方格的盘。
+\end{definition}
+
+\begin{theorem}[Robinson--Schensted 对应]
+\label{thm:rs-correspondence}
+对每个置换 $\pi\in S_n$，存在唯一的同形状标准 Young 盘对 $(P(\pi),Q(\pi))$，使得：
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $P(\pi)$（\textbf{插入盘}）由依次行插入 $\pi(1),\pi(2),\dots,\pi(n)$ 得到。
+\item $Q(\pi)$（\textbf{记录盘}）记录每步新增方格的位置：第 $k$ 步新增的方格填入 $k$。
+\item $P(\pi)$ 和 $Q(\pi)$ 形状相同，记为 $\lambda(\pi)\vdash n$。
+\end{enumerate}
+映射 $\pi\mapsto(P(\pi),Q(\pi))$ 是 $S_n$ 到 $\{(P,Q)\mid P,Q\text{ 同形状标准盘}\}$ 的双射。
+\end{theorem}
+
+\begin{proof}
+良定义性。行插入保持半标准性（行弱递增、列严格递增），每步添加一个方格到某个角格。$P$ 始终是标准盘（因插入 $\pi(1),\dots,\pi(k)$ 后 $P$ 含 $\{\pi(1),\dots,\pi(k)\}$，而 $Q$ 记录位置用 $1,\dots,k$，故 $Q$ 是标准盘）。
+
+单射性。给定 $(P,Q)$，可以逆向恢复 $\pi$：$Q$ 中最大数字 $n$ 所在方格是最后插入的位置，从 $P$ 中该方格\textbf{逆向行插入}（reverse 行 bumping）恢复被插入的 $\pi(n)$ 和前一步的 $P$。逐步逆推得到 $\pi(n),\pi(n-1),\dots,\pi(1)$，即 $\pi$。
+
+满射性。对任意同形状标准盘对 $(P,Q)$，上述逆过程给出一个置换 $\pi$ 使 $P(\pi)=P$，$Q(\pi)=Q$。
+
+计数验证。形状 $\lambda$ 的标准盘对数为 $(f^\lambda)^2$，所有形状求和 $\sum_\lambda(f^\lambda)^2=n!=|S_n|$，与双射一致。
+\end{proof}
+
+\medskip
+\noindent\emph{RSK 对应的逐步计算。}
+取 $\pi=(3,1,2)\in S_3$（即 $\pi(1)=3,\pi(2)=1,\pi(3)=2$）。
+
+第 1 步。插入 $3$：$P=[3]$（单格），$Q=[1]$。
+
+第 2 步。插入 $1$：第一行 $[3]$ 中 $3>1$，替换得 $[1]$，$3$ 下移到第二行。$P=\begin{smallmatrix}1\\3\end{smallmatrix}$，$Q=\begin{smallmatrix}1\\2\end{smallmatrix}$。
+
+第 3 步。插入 $2$：第一行 $[1]$ 中无大于 $2$ 的元素，添加到末尾。$P=\begin{smallmatrix}1&2\\3&\end{smallmatrix}$，$Q=\begin{smallmatrix}1&3\\2&\end{smallmatrix}$。
+
+最终形状 $\lambda=(2,1)$。验证：$f^{(2,1)}=2$，$(f^{(2,1)})^2=4$，$S_3$ 中形状 $(2,1)$ 的置换有 4 个（恰为 $S_3\setminus\{e,(123),(132)\}$，即非单调的 4 个置换）。
+\par\medskip
+
+\begin{proposition}[RSK 对应的基本性质]
+\label{prop:rsk-properties}
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item \textbf{对合性}：$\pi\mapsto(P,Q)$ 蕴含 $\pi^{-1}\mapsto(Q,P)$（交换插入盘与记录盘）。
+\item \textbf{最长递增子序列}：$\lambda_1(\pi)$（形状第一行长度）等于 $\pi$ 中最长递增子序列的长度。
+\item \textbf{最长递减子序列}：$\lambda_1'(\pi)$（形状第一列长度，即行数）等于 $\pi$ 中最长递减子序列的长度。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) 这是 RSK 对应最深刻的性质之一。证明思路：行插入的对偶操作是列插入，而 $\pi^{-1}$ 的 RSK 对应恰好交换 $P$ 和 $Q$ 的角色。形式证明通过验证插入算法的对偶性完成。
+
+(ii) 这是 Schensted 定理。关键观察：行插入 $\pi(1),\dots,\pi(k)$ 后，$P$ 的第一行始终是 $\pi$ 的某个递增子序列。更精确地，$P$ 的第 $j$ 行末尾元素是 $\pi$ 中长度为 $j$ 的递增子序列的最小可能末尾。故最终第一行长度 $\lambda_1$ 恰为最长递增子序列长度。
+
+(iii) 由对偶性（行插入与列插入的对称），第一列长度等于最长递减子序列长度。
+\end{proof}
+
+\medskip
+\noindent\emph{Erd\H{o}s--Szekeres 定理的 RSK 证明。}
+经典组合定理：任意 $n$ 个不同数的序列含长度 $\ge\lceil\sqrt n\rceil$ 的递增或递减子序列。RSK 对应给出简洁证明：
+
+对 $\pi\in S_n$，RSK 给出形状 $\lambda\vdash n$，$\lambda_1=$ 最长递增子序列长度，$\lambda_1'=$ 最长递减子序列长度。因 $\lambda$ 是 Young 图，$\lambda_1\cdot\lambda_1'\ge n$（Young 图包含 $\lambda_1\times\lambda_1'$ 矩形）。故 $\max(\lambda_1,\lambda_1')\ge\sqrt n$，即递增或递减子序列长度 $\ge\lceil\sqrt n\rceil$。
+\par\medskip
+
+\begin{proposition}[RSK 与正则表示分解]
+\label{prop:rsk-regular}
+RSK 对应给出正则表示分解 $\rho_{\mathrm{reg}}\simeq\bigoplus_\lambda f^\lambda\,\mathrm{Sp}_\lambda$ 的显式组合实现：形状 $\lambda$ 的标准盘对 $(P,Q)$ 恰好标记 $\mathrm{Sp}_\lambda$ 在正则表示中的 $f^\lambda$ 个副本。$P$ 标记 Specht 模内的基向量，$Q$ 标记哪个副本。
+\end{proposition}
+
+\begin{proof}
+正则表示空间 $\CC[S_n]$ 以 $\{\pi\}_{\pi\in S_n}$ 为基。RSK 双射 $\pi\mapsto(P,Q)$ 重新标记基为 $\{(P,Q)\}$。按形状分组：形状 $\lambda$ 的基向量 $\{(P,Q)\mid\text{shape}=\lambda\}$ 张成 $f^\lambda\times f^\lambda$ 维子空间，同构于 $\mathrm{Sp}_\lambda\otimes\mathrm{Sp}_\lambda^*\cong\mathrm{End}(\mathrm{Sp}_\lambda)\cong\mathrm{Sp}_\lambda^{\oplus f^\lambda}$（$f^\lambda$ 个 $\mathrm{Sp}_\lambda$ 副本）。$P$ 是 $\mathrm{Sp}_\lambda$ 的基向量指标，$Q$ 是副本指标。左乘 $\pi$ 作用于 $Q$（置换副本），右乘作用于 $P$（Specht 模内部作用），这正是双中心作用的结构。
+\end{proof}
+
+置换群解释了全同粒子的交换约束，却没有涉及连续时空变换。惯性系之间的关系由 Lorentz 与 Poincar\'e 群控制，基本相互作用的内部自由度则承载规范群 \(SU(3)_c\times SU(2)_L\times U(1)_Y\) 的表示。要进入这些问题，有限群的求和与特征标表必须让位给 Lie 代数、根系和非紧群的小群方法。
+
+\section{习题与解答}
+\label{sec:permutation-exercises}
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2.5em]
+\item 把置换
+\[
+\pi=\begin{pmatrix}
+1&2&3&4&5&6&7\\
+3&5&4&7&2&1&6
+\end{pmatrix}
+\]
+分解为不交循环，并求其阶与奇偶性。
+
+\emph{解答.} 从 $1$ 出发，$1\to3\to4\to7\to6\to1$，得到 $(13476)$；$2\to5\to2$，得到 $(25)$。故
+\[
+\pi=(13476)(25).
+\]
+阶为 $\operatorname{lcm}(5,2)=10$。五循环需要 $4$ 个对换，二循环需要 $1$ 个，总计奇数个，因此 $\operatorname{sgn}(\pi)=-1$。
+
+\item 证明两个不交循环交换。
+
+\emph{解答.} 设 $c,d$ 支持集合不交。对任意 $x$：若 $x$ 不在两个支持中，两者都固定；若只在 $c$ 支持中，$d$ 固定 $x$ 及 $c(x)$，故 $cd(x)=c(x)=dc(x)$；若只在 $d$ 支持中同理。因此 $cd$ 与 $dc$ 对每个 $x$ 作用相同。
+
+\item 求 $S_5$ 中循环类型 $2^11^3$ 与 $3^11^2$ 的类大小。
+
+\emph{解答.} 用 \eqnrefs{eq:sn-class-size}：
+\[
+|C_{2,1^3}|=\frac{5!}{2^1 1!\,1^3 3!}=10,
+\]
+\[
+|C_{3,1^2}|=\frac{5!}{3^1 1!\,1^2 2!}=20.
+\]
+
+\item 列出 $S_5$ 的全部共轭类类型，并验证类数等于 $5$ 的分拆数 $p(5)=7$。
+
+\emph{解答.} 分拆为
+\[
+5,
+4+1,
+3+2,
+3+1+1,
+2+2+1,
+2+1+1+1,
+1^5.
+\]
+对应七种循环类型，故七个共轭类，也有七个不等价复不可约表示。
+
+\item 对 Young 图 $[3,2]$ 计算每个方格的钩长，并求不可约表示维数。
+
+\emph{解答.} Hook 长度为
+\[
+\begin{array}{|c|c|c|}\hline
+4&3&1\\\hline
+2&1\\\cline{1-2}
+\end{array}
+\]
+所以乘积为 $24$，
+\[
+f^{[3,2]}=\frac{5!}{24}=5.
+\]
+
+\item 求 $S_5$ 全部不可约表示维数，并验证平方和为 $120$。
+
+\emph{解答.} 对七个分拆用钩长公式得到
+\[
+1,4,5,6,5,4,1.
+\]
+于是
+\[
+1+16+25+36+25+16+1=120=5!.
+\]
+
+\item 对 $S_3$ 的盘
+\[
+T=\begin{array}{|c|c|}\hline1&2\\\hline3\\\cline{1-1}\end{array}
+\]
+计算 $a_T,b_T,e_T$。
+
+\emph{解答.}
+\[
+R_T=\{e,(12)\},\qquad C_T=\{e,(13)\},
+\]
+故
+\[
+a_T=e+(12),\qquad b_T=e-(13),
+\]
+\[
+e_T=e+(12)-(13)-(132).
+\]
+
+\item 证明共轭 Young 图对应的 Specht 模维数相同。
+
+\emph{解答.} 共轭图把行与列互换，但钩长只是“右边格数 + 下边格数 +1”，转置后右、下互换，所有钩长的多重集合不变。因此由钩长公式
+\[
+f^{\lambda'}=f^\lambda.
+\]
+
+\item 证明反对称化算符作用在两个相同单粒子态上给零。
+
+\emph{解答.} 对 $n=2$，
+\[
+\mathcal A=\frac12(I-P_{12}).
+\]
+若态为 $\phi\otimes\phi$，则 $P_{12}(\phi\otimes\phi)=\phi\otimes\phi$，所以
+\[
+\mathcal A(\phi\otimes\phi)=0.
+\]
+一般 $n$ 中只要两个列向量相同，Slater 行列式为零。
+
+\item 写出两个不同轨道 $a,b$ 上两电子的全部交换反对称自旋--空间态。
+
+\emph{解答.} 空间对称态 $\Phi_+$ 只能乘自旋单态 $\chi_{00}$；空间反对称态 $\Phi_-$ 可乘三个自旋三重态 $\chi_{1M}$。因此共有四个独立总态：
+\[
+\Phi_+\chi_{00},
+\qquad
+\Phi_-\chi_{1,1},
+\quad
+\Phi_-\chi_{1,0},
+\quad
+\Phi_-\chi_{1,-1}.
+\]
+
+\item 用交换选择规则求 $d^2$ 等价电子允许的 $LS$ 项。
+
+\emph{解答.} $d$ 轨道 $\ell=2$，两轨道耦合允许 $L=0,1,2,3,4$，自旋允许 $S=0,1$。费米条件要求 $L+S$ 为偶数，所以
+\[
+S=0:\ L=0,2,4\Rightarrow {}^1S,{}^1D,{}^1G,
+\]
+\[
+S=1:\ L=1,3\Rightarrow {}^3P,{}^3F.
+\]
+微观态数为
+\[
+1+5+9+9+21=45=\binom{10}{2},
+\]
+因为 $d$ 壳层有 $5\times2=10$ 个自旋-轨道。
+
+\item 对三个自旋 $1/2$，写出 $S=3/2,M=1/2$ 的归一化态，并给出两个与其正交的 $M=1/2$ 态的一组选择。
+
+\emph{解答.}
+\[
+\ket{\tfrac32,\tfrac12}
+=\frac1{\sqrt3}
+(\alpha\alpha\beta+\alpha\beta\alpha+\beta\alpha\alpha).
+\]
+正交补可取
+\[
+\chi_1=\frac1{\sqrt2}(\alpha\beta\alpha-\beta\alpha\alpha),
+\]
+\[
+\chi_2=\frac1{\sqrt6}(2\alpha\alpha\beta-\alpha\beta\alpha-\beta\alpha\alpha).
+\]
+它们共同张成 $S_3$ 的二维 $[2,1]$ 对称类型，同时在 $SU(2)$ 下属于 $S=1/2$。
+
+\item 解释为什么三个电子不可能全部占据同一个自旋-orbital。
+
+\emph{解答.} 任何两个电子已经不能占据同一个自旋-orbital；从群论看，三个完全相同的单粒子因子在任何置换下都完全对称，属于 $[3]$，而费米总态必须属于 $[1^3]$。对其施加完全反对称化算符得到零，故这样的三电子态不存在。
+\end{enumerate}

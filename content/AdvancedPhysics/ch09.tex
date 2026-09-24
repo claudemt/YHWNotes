@@ -1,458 +1,412 @@
-\chapter{Yang 自发磁化、Toeplitz 极限与 Lee--Yang 汇合}
-\label{chap:phys-sm-yang-magnetization}
+\chapter{Mayer 团簇展开与位力方程}
+\label{chap:mayer-virial}
 
-Onsager 自由能确定了临界线和 转移质量，却不能通过“在有限体积零场自由能上求一次场导数”得到自发磁化。原因首先是极限次序：任意有限零场 Ising 系统都保持全局自旋翻转对称，单点磁化严格为零；低温纯相只有在先取热力学极限、再令外场趋零时才被选择。长距离二点函数给出 Yang 磁化，其中需要两个独立输入：Kaufman--Onsager 的 Toeplitz 相关函数表示和 强 Szegő 定理。给定这两个输入之后，Fourier 系数、行列式极限和 \(1/8\) 指数都可由显式求和得到。
+巨配分函数 \(\Xi\) 把所有粒子数的正则配分函数汇在一起，而它的对数 \(\log\Xi\) 会精确消去彼此不连通的贡献。这个简单事实是低密度展开的核心：经典气体中它表现为连通 Mayer 图，量子气体中则表现为正则配分函数的累积量。把所得级数从逸度反演到粒子数密度，便得到位力状态方程。热波长、质心质量和内部简并度必须从一开始固定，否则第二位力系数很容易因归一化约定不同而相差一个整体因子。
 
-\section{自发对称破缺与极限次序}
+\section{Mayer 展开与量子团簇的归一化}
 
-对有限区域 \(\Lambda\) 和零外场，变量替换 \(\sigma_x\mapsto-\sigma_x\) 保持 Boltzmann 权重不变，所以
+对质量为 \(m\) 的三维单组分气体定义热德布罗意波长
 \begin{equation}
- \langle\sigma_x\rangle_{\Lambda,h=0}=0
- \qquad\text{for every finite }\Lambda.
- \label{eq:phys-sm-finite-zero-field-magnetization}
-\end{equation}
-因此如果先令 \(h\to0\)，再取体积极限，结果只能是零。真正的正相自发磁化定义为
-\begin{equation}
- \mathfrak m_{\rm sp}(T)
- =\lim_{h\downarrow0}
- \lim_{\Lambda\nearrow\mathbb Z^2}
- \langle\sigma_0\rangle_{\beta,h}.
- \label{eq:phys-sm-yang-m-definition}
-\end{equation}
-在低温有序相，两个极限不交换：
-\begin{equation}
- \lim_{\Lambda\nearrow\mathbb Z^2}
- \lim_{h\to0}\langle\sigma_0\rangle_{\beta,h}=0,
+ \lambda_T(m)
+ =\sqrt{\frac{2\pi\hbar^2\beta}{m}},
  \qquad
- \lim_{h\downarrow0}
- \lim_{\Lambda\nearrow\mathbb Z^2}
- \langle\sigma_0\rangle_{\beta,h}=\mathfrak m_{\rm sp}(T)>0.
- \label{eq:phys-sm-symmetry-breaking-order-limits}
+ \lambda_T:=\lambda_T(m).
+ \label{eq:phys-sm-thermal-wavelength}
 \end{equation}
-这不是符号选择，而是 热力学极限 产生多个极端 Gibbs 态后的非一致极限。
-
-在所选正纯相中，团簇性质 给出
+单组分逸度仍为 \(z=\ee^{\beta\mu}\)。无量纲量子团簇系数 \(b_n\) 定义为
 \begin{equation}
- \mathfrak m_{\rm sp}(T)^2
- =\lim_{|r|\to\infty}
- \langle\sigma_0\sigma_r\rangle_{+}.
- \label{eq:phys-sm-yang-correlation-limit}
+ \frac{1}{\mathcal V}\log\Xi(z)
+ =\frac{1}{\lambda_T^3}
+ \sum_{n=1}^{\infty}b_n z^n.
+ \label{eq:phys-sm-cluster-convention}
 \end{equation}
-因此可以绕开有限体积一阶导数为零的问题，转而计算长距离二点函数。
+因此 \(b_n\) 无量纲。后面出现的位力系数 \(B_n\) 则以粒子数密度为变量，量纲为 \(\mathrm{length}^{3(n-1)}\)；两套系数不能混称为同一个“第二位力系数”。
 
-\section{Toeplitz determinant：各向异性对角相关的精确输入}
+先从经典可积稳定势说明连通图为何进入 \(\log\Xi\)。这一结构随后迁移到量子正则累积量；二者共享的是“对数抽取连通贡献”，而不是相同的微观积分。
 
-先不取各向同性极限。设水平、竖直 约化 耦合 分别为 \(K_h,K_v>0\)，并记
+经典对势气体提供最透明的连通组合结构原型。设
+\[
+ U_N(\mathbf r_1,\ldots,\mathbf r_N)
+ =\sum_{1\le i<j\le N}u(\mathbf r_i-\mathbf r_j).
+\]
+假设势稳定，即存在 \(B_{\rm stab}\ge0\) 使任意 \(N\) 和任意构型都满足
 \begin{equation}
- \kappa
- :=\frac{1}{\sinh(2K_h)\sinh(2K_v)},
+ U_N\ge-B_{\rm stab}N,
+ \label{eq:phys-sm-stable-potential}
+\end{equation}
+并假设 Mayer 键可积。定义
+\begin{equation}
+ \mathfrak f_{ij}=\ee^{-\beta u(\mathbf r_i-\mathbf r_j)}-1,
  \qquad
- 0<\kappa<1\quad(T<T_c).
- \label{eq:phys-sm-yang-k-parameter}
+ \mathcal C_{\rm M}(\beta)=\int_{\mathbb R^3}|\mathfrak f(\mathbf r)|\dd^3r<\infty.
+ \label{eq:phys-sm-mayer-f}
 \end{equation}
-Kramers--Wannier 临界条件
-\[
- \sinh(2K_h)\sinh(2K_v)=1
-\]
-正好对应 \(\kappa=1\)。各向同性只是 \(K_h=K_v=K\) 的特例，此时 \(\kappa=\sinh^{-2}(2K)\)。
-
-Kaufman--Onsager 关联 定理 对各向异性方格的对角相关给出
+用有量纲经典活度 \(\zeta\) 写巨配分函数
 \begin{equation}
- \langle\sigma_{0,0}\sigma_{N,N}\rangle_+
- =D_N[\varphi]
- =\det(\varphi_{j-k})_{j,k=0}^{N-1},
- \label{eq:phys-sm-yang-toeplitz}
+ \Xi_{\rm cl}(\zeta)
+ =\sum_{N=0}^{\infty}\frac{\zeta^N}{N!}
+ \int_{\mathcal V^N}
+ \prod_{i=1}^N\dd^3r_i
+ \prod_{i<j}(1+\mathfrak f_{ij}).
+ \label{eq:phys-sm-mayer-grand}
 \end{equation}
-其中 Toeplitz 符号 可以直接写成
+展开最后的乘积，任意标号图 \(G\) on \(\{1,\ldots,N\}\) 贡献所有所选边的 \(\mathfrak f_{ij}\) 乘积。指数公式说明取对数以后只留下连通图：
 \begin{equation}
- \boxed{
- \varphi(\ee^{\ii\theta})
- =\left(
- \frac{\sinh(2K_h)\sinh(2K_v)-\ee^{-\ii\theta}}
- {\sinh(2K_h)\sinh(2K_v)-\ee^{\ii\theta}}
- \right)^{1/2}
- =\left(
- \frac{1-\kappa\ee^{-\ii\theta}}
- {1-\kappa\ee^{\ii\theta}}
- \right)^{1/2}.}
- \label{eq:phys-sm-yang-symbol}
+ \log\Xi_{\rm cl}
+ =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}
+ \int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
+ \sum_{G\in\mathcal C_n}
+ \prod_{(ij)\in\mathsf E(G)}\mathfrak f_{ij},
+ \label{eq:phys-sm-general-mayer}
 \end{equation}
-Fourier 系数定义为
+其中 \(\mathcal C_n\) 是 \(n\) 个标号顶点上的连通简单图。
+
+\begin{proof}[解]
+要说明对配分函数 \(\Xi\) 取对数为何只留下连通图，先把图按连通块分解，再写连通权重的指数生成函数，最后取对数。
+
+图的连通块分解。任意标号图 \(G\) on \(\{1,\ldots,N\}\) 唯一分解为若干连通块 \(G_1\sqcup\cdots\sqcup G_k\)，各块顶点集互斥且无跨块边。若块 \(G_i\) 有 \(n_i\) 个顶点，则 \(\sum_i n_i=N\)，且 Mayer 键乘积因子化：
 \[
- \varphi_n=\frac{1}{2\pi}
- \int_{-\pi}^{\pi}
- \varphi(\ee^{\ii\theta})\ee^{-\ii n\theta}\dd\theta.
+ \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}
+ =\prod_{i=1}^k\prod_{(j,l)\in\mathsf E(G_i)}\mathfrak f_{jl}.
 \]
-因此对角相关的各向异性并不是“最后把 \(K\) 换成两个耦合”得到的经验推广：它已经在精确 关联 定理 的 符号 中只通过乘积
-\(
-\sinh(2K_h)\sinh(2K_v)
-\)
-进入。沿其他晶格方向的 行/列 关联 会保留更丰富的各向异性信息，不能与这里的 对角 符号 混为一谈。
+对位置的积分也因此因子化为各块独立积分。这里 \(\mathfrak f_{jl}=\ee^{-\beta V(\mathbf r_j-\mathbf r_l)}-1\) 是 Mayer \(f\)-函数，满足 \(\mathfrak f_{jl}\to0\)（\(|\mathbf r_j-\mathbf r_l|\to\infty\)），保证短程势下积分收敛。
 
-从局域自旋到\eqnrefs{eq:phys-sm-yang-toeplitz} 仍需要把非局域 Jordan--Wigner string/disorder 算符 的 Wick--Pfaffian 关联重新组织成 Toeplitz 行列式；这是独立的 Kaufman--Onsager 相关函数定理，而不是自由能对角化的直接推论。
+连通块权重的指数生成函数。令 \(W_n\) 表示所有 \(n\)-点连通图的积分权重和：
+\[
+ W_n=\int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
+ \sum_{G\in\mathcal C_n}
+ \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}.
+\]
+一个一般 \(N\)-点图由连通块 \(G_1,\ldots,G_k\) 组成，块大小 \(n_1,\ldots,n_k\) 满足 \(\sum n_i=N\)。\(N\) 个 label 分配到各块有 \(N!/(n_1!\cdots n_k!)\) 种方式，但块内部已按标号图求和，且块之间无顺序。因此全部图（连通与非连通）的配分函数为
+\[
+ \Xi_{\rm cl}
+ =\sum_{N=0}^{\infty}\frac{\zeta^N}{N!}
+ \sum_{\substack{k\ge0\\n_1+\cdots+n_k=N}}
+ \frac{N!}{n_1!\cdots n_k!}
+ \prod_{i=1}^k W_{n_i}
+ =\prod_{n=1}^{\infty}\sum_{k_n=0}^{\infty}
+ \frac{1}{k_n!}\left(\frac{\zeta^nW_n}{n!}\right)^{k_n}
+ =\exp\!\left(\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}W_n\right),
+\]
+其中 \(k_n\) 是大小为 \(n\) 的连通块个数，最后一步用了 \(\sum_{k=0}^\infty x^k/k!=\ee^x\)。这一步的代数本质是指数公式（指数公式）：集合分拆的指数生成函数等于其连通分量的指数生成函数的指数。
 
-第二个输入是 强 Szeg\H{o} 定理。若非零、零绕数 符号 满足所需正则性，并写成
+取对数。对上式取对数立即得到\eqnrefs{eq:phys-sm-general-mayer}：
+\[
+ \log\Xi_{\rm cl}
+ =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}W_n
+ =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}
+ \int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
+ \sum_{G\in\mathcal C_n}
+ \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}.
+\]
+非连通图并未被"忽略"：它们由连通块权重的指数自动重建。取对数的效果恰好剥离了这一指数结构，只留下连通扇区。
+
+对 \(n=2\)，连通简单图只有一条边，\(\mathcal C_2=\{(12)\}\)，故
+\begin{equation*}
+ W_2=\int_{\mathcal V^2}\dd^3r_1\dd^3r_2\,\mathfrak f_{12}
+ \xrightarrow{\mathcal V\to\infty}
+ \mathcal V\int_{\mathbb R^3}\dd^3r\,\bigl(\ee^{-\beta V(r)}-1\bigr),
+\end{equation*}
+代入 \(\log\Xi=\zeta W_1+\zeta^2W_2/2+\cdots\) 并与位力展开比较，得经典第二位力系数
+\begin{equation*}
+ B_2^{\rm cl}=-\frac12\int_{\mathbb R^3}\dd^3r\,\bigl(\ee^{-\beta V(r)}-1\bigr),
+\end{equation*}
+即 Mayer 第二位力积分。对硬球势 \(V(r)=\infty\,(r<d)\)、\(0\,(r>d)\)，积分给出 \(B_2=2\pi d^3/3\)，即四倍硬球体积。
+
+量子气体中 Mayer 键被正则迹 \(Q_n\) 替代，连通性由累积量结构保证：\(\log\Xi=\sum b_nz^n\) 中 \(b_n\) 是 \(Q_1,\ldots,Q_n\) 的多项式，恰好删除所有非连通分拆。此结构在量子场论中对应 Feynman 图的连通图定理：\(\log Z[J]\) 的生成泛函只含连通图，是统计力学与 QFT 共用的组合骨架。
+\end{proof}
+
+稳定性和可积性还给出团簇展开的一个充分收敛域。例如 Penrose--Ruelle 型估计可写成
 \begin{equation}
- \log\varphi(\ee^{\ii\theta})
- =\sum_{n\in\mathbb Z}\ell_n\ee^{\ii n\theta},
- \label{eq:phys-sm-log-symbol-fourier}
+ |\zeta|\mathcal C_{\rm M}(\beta)\ee^{2\beta B_{\rm stab}+1}<1.
+ \label{eq:phys-sm-mayer-sufficient-condition}
 \end{equation}
-则在当前 \(\ell_0=0\) 情形
+这个条件保证低活度解析性，但只是充分条件，不等于真实相变边界。
+
+量子气体中不再使用经典 Mayer 键，而从已经施加交换统计的正则迹出发。巨配分函数的对数仍按累积量组合抽取连通部分，因此前三阶系数可以直接由 \(Q_1,Q_2,Q_3\) 得到。
+
+量子体系固定粒子数的正则配分函数定义为
 \begin{equation}
- \lim_{N\to\infty}D_N[\varphi]
- =\exp\!\left(
- \sum_{n=1}^{\infty}n\ell_n\ell_{-n}
- \right).
- \label{eq:phys-sm-szego-special}
-\end{equation}
-Strong Szeg\H{o} 定理 的一般证明属于 Toeplitz 算子理论，因此作为独立数学输入。当前低温区 \(|\kappa|<1\) 时 符号 非零且可选连续零绕数支；由后面的显式系数还可直接检查
-\[
- \sum_{n\ge1}n|\ell_n|^2
- =\frac14\sum_{n\ge1}\frac{|\kappa|^{2n}}{n}<\infty,
-\]
-所以所需 Szeg\H{o} 正则性在整个各向异性低温域内都满足。
-
-\section{由各向异性 symbol 算出 Yang 磁化}
-
-\begin{derivation}[各向异性 Toeplitz Fourier 系数与 \(1/8\) 指数]
-当 \(|\kappa|<1\) 时，
-\[
- \log(1-\kappa\ee^{\pm\ii\theta})
- =-\sum_{n=1}^{\infty}
- \frac{\kappa^n}{n}\ee^{\pm\ii n\theta}
-\]
-绝对收敛。由\eqnrefs{eq:phys-sm-yang-symbol}，
-\[
- \begin{aligned}
- \log\varphi
- &=\frac12\left[
- \log(1-\kappa\ee^{-\ii\theta})
- -\log(1-\kappa\ee^{\ii\theta})
- \right]\\
- &=\frac12\sum_{n=1}^{\infty}
- \frac{\kappa^n}{n}
- \left(\ee^{\ii n\theta}-\ee^{-\ii n\theta}\right).
- \end{aligned}
-\]
-所以
-\[
- \ell_n=\frac{\kappa^n}{2n},
+ Q_N=\Tr_{\mathscr H_N^{(\eta)}}\ee^{-\beta H_N},
  \qquad
- \ell_{-n}=-\frac{\kappa^n}{2n}.
-\]
-代入\eqnrefs{eq:phys-sm-szego-special}，
-\[
- \begin{aligned}
- \sum_{n\ge1}n\ell_n\ell_{-n}
- &=-\frac14\sum_{n\ge1}\frac{\kappa^{2n}}{n}\\
- &=\frac14\log(1-\kappa^2).
- \end{aligned}
-\]
-因此
-\[
- \lim_{N\to\infty}D_N[\varphi]
- =(1-\kappa^2)^{1/4}.
-\]
-与 团簇性质\eqnrefs{eq:phys-sm-yang-correlation-limit} 比较并取正相平方根，得到一般各向异性方格的 Yang 自发磁化
-\begin{equation}
- \boxed{
- \mathfrak m_{\rm sp}(T)
- =\left[
- 1-\frac{1}{\sinh^2(2K_h)\sinh^2(2K_v)}
- \right]^{1/8},
- \qquad T<T_c.}
- \label{eq:phys-sm-yang-mag-anisotropic}
+ \eta=+1\ \text{(boson)},\quad
+ \eta=-1\ \text{(fermion)},
+ \label{eq:phys-sm-canonical-qn}
 \end{equation}
-整个 \(1/8\) 指数来自 Szeg\H{o} 指数中
-\(
-\sum n\ell_n\ell_{-n}
-\)
-的对数求和；各向异性只改变 \(\kappa\) 与温度的关系，并不改变这个指数结构。
-\end{derivation}
-
-若进一步取各向同性 \(K_h=K_v=K\)，\eqnrefs{eq:phys-sm-yang-mag-anisotropic} 立即化为
+其中 \(\mathscr H_N^{(\eta)}\) 已经是完全对称或反对称的 \(N\)-粒子子空间，因此不能再额外除以 \(N!\)。巨配分函数为
 \begin{equation}
- \boxed{
- \mathfrak m_{\rm sp}(T)
- =\left[1-\sinh^{-4}(2K)\right]^{1/8},
- \qquad T<T_c,}
- \label{eq:phys-sm-yang-mag}
+ \Xi(z)=\sum_{N=0}^{\infty}z^NQ_N,
+ \qquad Q_0=1.
+ \label{eq:phys-sm-quantum-grand}
 \end{equation}
-这才是一般各向异性结果的一个参数特例，而不是建立一般公式的起点。
-
-\section{临界指数、transfer spectrum 与 Lee--Yang 闭合}
-
-令
-\[
- t=\frac{T_c-T}{T_c}>0.
-\]
-由于 \(K=J/(\kB T)=K_c(1+t+O(t^2))\)，而
-\[
- \kappa=\sinh^{-2}(2K),
- \qquad
- \left.\frac{\dd\log\kappa}{\dd K}\right|_{K_c}
- =-4\coth(2K_c)=-4\sqrt2,
-\]
-所以
+由 \(z\Xi'(z)=\Xi(z)\,z\partial_z\log\Xi(z)\) 可先得到任意阶正则配分函数与团簇系数之间的递推。把\eqnrefs{eq:phys-sm-quantum-grand} 与\eqnrefs{eq:phys-sm-cluster-convention} 代入并比较 \(z^N\) 系数，
 \begin{equation}
- 1-\kappa^2=C_t t+O(t^2),
- \qquad
- C_t=8\sqrt2\,K_c
- =4\sqrt2\log(1+\sqrt2)>0.
- \label{eq:phys-sm-yang-kappa-slope}
+ NQ_N=\frac{\mathcal V}{\lambda_T^3}
+ \sum_{n=1}^{N}n b_n Q_{N-n},
+ \qquad Q_0=1.
+ \label{eq:phys-sm-general-cluster-recurrence}
 \end{equation}
-\eqnrefs{eq:phys-sm-yang-mag} 给出
-\begin{equation}
- \mathfrak m_{\rm sp}(T)
- =C_t^{1/8}t^{1/8}[1+O(t)],
- \qquad
- \beta_{\rm mag}=\frac18.
- \label{eq:phys-sm-yang-beta-exponent}
-\end{equation}
-这个 \(1/8\) 来自自旋算符的长距离 Toeplitz 结构，而不是单粒子 转移质量 的幂次。转移 谱的 \(\Delta_{\rm tr}=|a_T|\,|T-T_c|+O((T-T_c)^2)\) 给出 \(\nu=1\)，Toeplitz 长距离结构给出 \(\beta_{\rm mag}=1/8\)；不同指数对应同一临界点上不同 标度 算符。
-
-临界指数得到以后，还可以回到外场复平面检验同一有序参数。Lee--Yang 跳跃关系把自发磁化直接转换为物理点处的零点密度，从而把零场精确解与外场零点几何闭合。
-
-Lee--Yang 圆上的 Cauchy 边界值已经给出
-\[
- \mathfrak m(0^+)-\mathfrak m(0^-)=4\pi\rho_{\rm LY}(0).
-\]
-低温两个纯相由全局自旋翻转互换，因此
-\[
- \mathfrak m(0^+)=\mathfrak m_{\rm sp},
- \qquad
- \mathfrak m(0^-)=-\mathfrak m_{\rm sp}.
-\]
 于是
 \begin{equation}
- \boxed{
- \rho_{\rm LY}(0;T)
- =\frac{\mathfrak m_{\rm sp}(T)}{2\pi}
- =\frac{1}{2\pi}
- \left[1-\sinh^{-4}(2K)\right]^{1/8}.
- }
- \label{eq:phys-sm-2d-g0}
+ b_N=\frac{\lambda_T^3}{\mathcal V}Q_N
+ -\frac1N\sum_{n=1}^{N-1}n b_n Q_{N-n}.
+ \label{eq:phys-sm-cluster-recurrence-solved}
 \end{equation}
-这使 Ising 主线首尾闭合：有限 Gibbs 解析性把相变约束为热力学极限中的非一致解析极限；Lee--Yang 确定外场零点几何；圈空间 与平面对偶组织零场组合展开；转移--Clifford 谱给出 Onsager 自由能与临界线；Toeplitz--Szegő 输入再给出 Yang 磁化，并反过来确定物理点处的 Lee--Yang 零点密度。
+这说明每个 \(b_N\) 都是正则迹中恰好去除所有低阶非连通分拆后的累积量。前三阶特殊化为
+\begin{align}
+ b_1&=\frac{\lambda_T^3}{\mathcal V}Q_1,
+ \label{eq:phys-sm-b1-canonical}\\
+ b_2&=\frac{\lambda_T^3}{\mathcal V}
+ \left(Q_2-\frac{Q_1^2}{2}\right),
+ \label{eq:phys-sm-b2-canonical}\\
+ b_3&=\frac{\lambda_T^3}{\mathcal V}
+ \left(Q_3-Q_1Q_2+\frac{Q_1^3}{3}\right).
+ \label{eq:phys-sm-b3-canonical}
+\end{align}
+这些是巨-正则累积量。\(b_3\) 已经含真正的三体连通扇区，因此不能由二体 Beth--Uhlenbeck 相移公式简单延拓得到。
 
-\section{2D Ising 模型的物理实现与临界数值}\label{sec:ising-experiments}
-
-前几节完成了 2D Ising 模型的精确解。本节给出临界温度和临界指数的数值、与实验和数值模拟的对接、以及 Ising 普适类的物理实现。
-
-接下来考察临界温度与临界指数总表。
-
-各向同性 2D Ising 模型的 Kramers--Wannier 临界条件 \(\sinh(2K_c)=1\) 给出
-\[
-K_c=\frac{J}{\kB T_c}=\frac12\ln(1+\sqrt2)\approx0.4407,
-\qquad
-\kB T_c/J=\frac{2}{\ln(1+\sqrt2)}\approx2.269.
-\]
-2D Ising 的全部临界指数（Onsager 1944, Yang 1952, 及后续工作）：
-
-\begin{center}
-\begin{tabular}{lccl}
-\hline
-指数 & 定义 & 2D Ising 精确值 & 来源 \\
-\hline
-\(\beta\) & \(M\sim(-t)^\beta\) & \(1/8\) & Yang (1952), Toeplitz--Szegő \\
-\(\gamma\) & \(\chi\sim|t|^{-\gamma}\) & \(7/4\) & Onsager (1949) / Wu--McCoy--Tracy--Barouch \\
-\(\alpha\) & \(C\sim|t|^{-\alpha}\) & \(0\) (对数发散) & Onsager (1944) \\
-\(\nu\) & \(\xi\sim|t|^{-\nu}\) & \(1\) & transfer matrix gap \\
-\(\eta\) & \(G(r)\sim r^{-(d-2+\eta)}\) & \(1/4\) & Wu--McCoy--Tracy--Barouch \\
-\(\delta\) & \(M\sim h^{1/\delta}\) (\(T=T_c\)) & \(15\) & scaling relation \\
-\hline
-\end{tabular}
-\end{center}
-
-这些指数满足所有 标度 关系：\(\alpha+2\beta+\gamma=0+1/4+7/4=2\)（Rushbrooke），\(\gamma=\beta(\delta-1)=\frac18\times14=\frac74\)（Widom），\(\gamma=\nu(2-\eta)=1\times\frac74=\frac74\)（Fisher），\(\nu d=2\)（hyperscaling, \(d=2\)）。
-
-\begin{exbox}[比热的对数发散]
-Onsager 自由能在 \(T_c\) 处的比热
-\[
-C\sim-\frac{2}{\pi}\left(\frac{2K_c}{\sinh(2K_c)}\right)^2\ln|t|
-\approx-0.4945\ln|t|
-\]
-对应 \(\alpha=0\)（对数发散而非幂律发散）。这与 3D Ising 的 \(\alpha\approx0.110\) 形成对比：2D 的对数发散是精确可解模型的特殊结构，3D 的正 \(\alpha\) 则需重正化群处理。
-\end{exbox}
-
-接下来考察 Ising 普适类的物理实现。
-
-2D Ising 临界指数属于 \(\mathbb Z_2\) 对称破缺普适类。多种物理系统在临界点附近呈现相同的指数：
-
-\begin{center}
-\begin{tabular}{lcccc}
-\hline
-系统 & \(T_c\) (K) & \(\beta\) (测量) & \(\gamma\) (测量) & \(\nu\) (测量) \\
-\hline
-2D Ising (精确) & --- & 0.125 & 1.750 & 1.000 \\
-Rb\(_2\)CoF\(_4\) (二维反铁磁) & 101.0 & 0.119(8) & 1.67(9) & 0.97(5) \\
-K\(_2\)NiF\(_4\) (二维铁磁) & 97.23 & 0.138(6) & 1.75(7) & 1.03(5) \\
-单层石墨烯 (Ising 转变) & --- & 0.125(1) & --- & --- \\
-液氦表面皱褶 (Pokrovsky--Talapov) & --- & \multicolumn{3}{c}{不同普适类} \\
-\hline
-\end{tabular}
-\end{center}
-
-Rb\(_2\)CoF\(_4\) 是近似完美的 2D Ising 实现：Co\(^{2+}\) 离子的单离子各向异性使自旋强烈锁定在面内 \(\pm z\) 方向，层间耦合极弱。中子散射测得的临界指数与精确值在误差范围内吻合。
-
-接下来考察 Kramers--Wannier 对偶的物理图像。
-
-Kramers--Wannier 对偶 \(K\leftrightarrow K^*\) 满足 \(\sinh(2K)\sinh(2K^*)=1\)，将高温展开与低温展开联系起来。物理图像：
-
-\begin{itemize}
-\item \textbf{高温相}（\(K<K_c\)）：自旋近似无序，畴壁密集且弥散。对偶变量 \(K^*>K_c\) 处于有序相。
-\item \textbf{低温相}（\(K>K_c\)）：自旋长程有序，畴壁稀疏且被 Peierls 围道 论证 约束。对偶变量 \(K^*<K_c\) 处于无序相。
-\item \textbf{临界点} \(K=K^*=K_c\)：自对偶点，畴壁的线张力与线熵恰好平衡。
-\end{itemize}
-
-Peierls 围道 论证 给出低温有序的严格下界：在 \(d=2\) 方格上，长度 \(l\) 的闭合畴壁数量上界为 \(3^l\)（每步 3 个方向选择），每条畴壁的 Boltzmann 权重为 \(e^{-2Kl}\)。当 \(3e^{-2K}<1\) 即 \(K>\frac12\ln3\approx0.549\) 时，畴壁被压制，长程有序。注意此下界 \(0.549\) 略高于精确 \(K_c\approx0.441\)，Peierls 论证给出的是充分条件而非精确值。
-
-接下来考察自发磁化的数值曲线。
-
-\eqnrefs{eq:phys-sm-yang-mag} 给出各向同性 2D Ising 的自发磁化精确公式。取若干代表性温度：
-
-\begin{center}
-\begin{tabular}{cccc}
-\hline
-\(T/T_c\) & \(K/K_c\) & \(\kappa=\sinh^{-2}(2K)\) & \(\mathfrak m_{\rm sp}=(1-\kappa^2)^{1/8}\) \\
-\hline
-0.50 & 2.000 & 0.0037 & 0.9998 \\
-0.80 & 1.250 & 0.179 & 0.969 \\
-0.90 & 1.111 & 0.390 & 0.910 \\
-0.95 & 1.053 & 0.562 & 0.841 \\
-0.99 & 1.010 & 0.781 & 0.648 \\
-0.999 & 1.001 & 0.937 & 0.453 \\
-1.00 & 1.000 & 1.000 & 0 (临界) \\
-\hline
-\end{tabular}
-\end{center}
-
-在 \(T_c\) 附近，\(\mathfrak m_{\rm sp}\sim(1-T/T_c)^{1/8}\) 的 \(1/8\) 指数使磁化在临界点附近异常缓慢地趋零——对比平均场 \(\beta=1/2\)，Ising 的 \(\beta=1/8\) 意味着涨落远强于平均场估计。
-
-接下来考察与平均场和 3D Ising 的对比。
-
-\begin{center}
-\begin{tabular}{lcccc}
-\hline
- & 2D Ising (精确) & 平均场 & 3D Ising (数值) & 3D Heisenberg (数值) \\
-\hline
-\(\beta\) & 1/8 = 0.125 & 1/2 & 0.3264 & 0.365 \\
-\(\gamma\) & 7/4 = 1.750 & 1 & 1.2371 & 1.386 \\
-\(\nu\) & 1 & 1/2 & 0.6300 & 0.711 \\
-\(\eta\) & 1/4 = 0.250 & 0 & 0.0363 & 0.0375 \\
-\(\alpha\) & 0 (对数) & 0 (跳变) & 0.110 & --- \\
-\hline
-\end{tabular}
-\end{center}
-
-平均场在 \(d=2\) 处严重偏离精确值（\(\beta: 1/2\) vs \(1/8\)），因为平均场忽略了涨落。Ginzburg 判据给出平均场有效的下临界维数 \(d_c=4\)：对 \(d<4\) 的 Ising 普适类，涨落修正不可忽略。3D Ising 的指数介于 2D 精确值和平均场之间，反映了涨落随维数增加而减弱的趋势。
-
-平均场近似的失效范围可由 Ginzburg 判据定量界定。取 Landau 自由能
-\(F=\int\dd^d x\,[r m^2/2+u m^4/4+K(\nabla m)^2/2]\)，其中
-\(r=a(T-T_c)\)。在有序侧 \(r<0\)，平均场序参量满足
-\(m_{\rm MF}^2=-r/u\)。只保留波数 \(k\lesssim\xi^{-1}\) 的临界长波涨落，
-\(\xi=(K/|r|)^{1/2}\)，于是
+\begin{proof}[解]
+巨配分函数的 Taylor 展开为
 \begin{equation*}
-  \langle(\delta m)^2\rangle_{k\lesssim\xi^{-1}}
-  \sim \int_0^{\xi^{-1}}\frac{k^{d-1}\dd k}{|r|+Kk^2}
-  \sim K^{-d/2}|r|^{(d-2)/2}.
+ u(z)=zQ_1+z^2Q_2+z^3Q_3+O(z^4),
+ \qquad \Xi=1+u.
 \end{equation*}
-紫外模只重整化 Landau 参数，不进入 Ginzburg 比较。平均场自洽要求
+累积量生成函数是 $\log\Xi=\log(1+u)$。对 $|u|<1$ 使用 Taylor 展开
 \begin{equation*}
-  \frac{\langle(\delta m)^2\rangle_{k\lesssim\xi^{-1}}}{m_{\rm MF}^2}
-  \sim uK^{-d/2}|r|^{(d-4)/2}\ll1.
+ \log(1+u)=u-\frac{u^2}{2}+\frac{u^3}{3}+O(u^4).
 \end{equation*}
-当 \(|r|\to0\) 时，这个比值在 \(d>4\) 趋于零，在 \(d<4\) 发散，因此
-\(d_c=4\) 是上临界维数。在 \(d=4-\epsilon\) 维，Wilson--Fisher 不动点给出
-\begin{equation*}
-  \nu=\frac12+\frac{\epsilon}{12}+O(\epsilon^2),\qquad
-  \eta=\frac{\epsilon^2}{54}+O(\epsilon^3),\qquad
-  \beta=\frac12-\frac{\epsilon}{6}+O(\epsilon^2).
-\end{equation*}
-一级 \(\epsilon\) 展开在三维已经给出偏离平均场的正确方向，但在二维
-\(\epsilon=2\) 并不小，不能替代本章精确解给出的 \(\beta=1/8\)。
+此展开的收敛半径为 1，对应 $|z|<z_0$ 的小逸度区；在相变处收敛半径触及奇点，累积量展开失效。
 
-外场复平面中的 Lee--Yang 零点则给出另一种临界机制表述。
-Lee--Yang 圆定理保证 Ising 配分函数零点在外场复平面上位于单位圆上，是证明相变严格性的关键工具。分四步建立。
+由 $u(z)$ 的展开式，
+\begin{align*}
+ u^2
+ &=\bigl(zQ_1+z^2Q_2+O(z^3)\bigr)^2
+ =z^2Q_1^2+2z^3Q_1Q_2+O(z^4),\\
+ u^3
+ &=\bigl(zQ_1+O(z^2)\bigr)^3
+ =z^3Q_1^3+O(z^4).
+\end{align*}
+交叉项 $2z^3Q_1Q_2$ 来自 $(zQ_1)(z^2Q_2)+(z^2Q_2)(zQ_1)$。$u^3$ 中 $z^3Q_1^3$ 来自 $(zQ_1)^3$，其余项至少含一个 $O(z^2)$ 因子故为 $O(z^4)$。
 
-对有限图 \(G\) 上 Ising 模型，配分函数 \(Z(z)=\sum_\sigma z^{N_+(\sigma)}\ee^{\sum_e K_e\sigma_x\sigma_y}\)，\(z=\ee^{-2\beta h}\in\mathbb C\)，\(N_+\) 是正自旋数。\(Z(z)\) 是 \(z\) 的 \(|V|\) 次多项式，零点 \(\{z_j\}\) 编码相变位置：热力学极限下零点聚积到正实轴 \(z=1\)（\(h=0\)）即相变。
+把 $u=zQ_1+z^2Q_2+z^3Q_3$ 代入 $\log\Xi=\log(1+u)$，展开到 $z^3$ 阶：
+\begin{align*}
+ \log\Xi
+ &=\bigl(zQ_1+z^2Q_2+z^3Q_3\bigr)
+  -\frac{1}{2}\bigl(z^2Q_1^2+2z^3Q_1Q_2\bigr)
+  +\frac{1}{3}\bigl(z^3Q_1^3\bigr)+O(z^4)\\
+ &=zQ_1
+  +z^2\left(Q_2-\frac{Q_1^2}{2}\right)
+  +z^3\left(Q_3-Q_1Q_2+\frac{Q_1^3}{3}\right)
+  +O(z^4).
+\end{align*}
 
-Asano--Ruelle 引理：若多项式 \(P(z_1,z_2)=a_0+a_1z_1+a_2z_2+a_{12}z_1z_2\) 的零点满足 \(|z_1|<1\Rightarrow|z_2|>1\) 且 \(|z_2|<1\Rightarrow|z_1|>1\)（"零点对分离"），则收缩 \(P(z,z)=a_0+(a_1+a_2)z+a_{12}z^2\) 的零点满足 \(|z|\le1\) 或 \(|z|\ge1\)。证明：若 \(P(z_0,z_0)=0\) 且 \(|z_0|<1\)，则 \(z_1=z_2=z_0\) 是 \(P\) 的零点对，违反分离条件。
+由\eqnrefs{eq:phys-sm-cluster-convention}，$\log\Xi=\sum_{n\ge1}b_nz^n$，逐次比较 $z$、$z^2$、$z^3$ 的系数即得到\eqnrefs{eq:phys-sm-b1-canonical}--\eqnrefs{eq:phys-sm-b3-canonical}。
+\end{proof}
 
-对两个 Ising 自旋耦合到外场 \(h_1,h_2\) 和相互耦合 \(J\)，配分函数
-\begin{equation*}
-  Z_2=\ee^{K}\ee^{-\beta(h_1+h_2)}+\ee^{-K}\ee^{-\beta(h_1-h_2)}+\ee^{-K}\ee^{-\beta(-h_1+h_2)}+\ee^{K}\ee^{\beta(h_1+h_2)}.
-\end{equation*}
-令 \(z_i=\ee^{-2\beta h_i}\)，\(Z_2=\ee^{K}(1+z_1z_2)+\ee^{-K}(z_1+z_2)\)。零点条件 \(Z_2=0\) 给出
-\begin{equation*}
-  z_1=-\frac{\ee^{-K}+\ee^{K}z_2}{\ee^{K}+\ee^{-K}z_2}.
-\end{equation*}
-若 \(|z_2|=1\)（\(z_2=\ee^{\ii\theta}\)），则
-\begin{equation*}
-  |z_1|=\left|\frac{\ee^{-K}+\ee^{K}\ee^{\ii\theta}}{\ee^{K}+\ee^{-K}\ee^{\ii\theta}}\right|=\frac{|\ee^{-K}+\ee^{K}\ee^{\ii\theta}|}{|\ee^{K}+\ee^{-K}\ee^{\ii\theta}|}=1,
-\end{equation*}
-因为分子分母互为复共轭（\(\ee^{K}+\ee^{-K}\ee^{\ii\theta}=\ee^{\ii\theta}\overline{(\ee^{-K}+\ee^{K}\ee^{\ii\theta})}\)）。因此 \(|z_2|=1\Rightarrow|z_1|=1\)，零点对在单位圆上分离，满足 Asano--Ruelle 条件。
-
-对一般有限图，逐顶点应用 Asano--Ruelle 收缩：每次消去一个自旋，把两变量多项式收缩为单变量，零点保持在单位圆上。归纳到单自旋给出 Lee--Yang 圆定理：所有配分函数零点 \(|z_j|=1\)（在单位圆上）。热力学极限下，零点在单位圆上聚积，聚积点到 \(z=1\)（\(h=0\)）的距离决定相变。二维 Ising 中零点在 \(z=1\) 处聚积，给出 \(h=0\) 相变；一维 Ising 中零点不聚积到 \(z=1\)（只在 \(T=0\) 极限聚积），与一维无有限温度相变一致。Lee--Yang 定理因此把相变存在性转化为复零点的拓扑性质——零点"逼近"实轴的物理温度区域才有相变，这是 Yang--Lee 理论的深刻洞察。
-
-Lee--Yang 圆定理对铁磁 Ising（\(J_{ij}\ge0\)）成立，反铁磁（\(J_{ij}\le0\)）不适用——反铁磁零点分布更复杂，一般不在单位圆上。对连续自旋模型（如 XY 模型），零点分布由不同的对称性约束，Lee--Yang 方法需推广到多变量多项式。尽管如此，Asano--Ruelle 收缩的核心思想——通过局部零点分离保证全局零点位置——在所有有限自由度模型中有效，是复配分函数零点理论的基础工具。
-
-固定外场 \(h=0\)，将温度 \(T\) 复化，配分函数零点在复 \(T\) 平面上的分布由 Fisher 首先研究。对二维 Ising，Fisher 零点在热力学极限下聚积到两条线段 \(\cosh(2\beta J)=\pm1\)（即 \(T=\pm\ii\infty\) 方向的虚轴线段），与 Onsager 临界点 \(T_c\) 通过 Kramers--Wannier 对偶联系。Fisher 零点与 Lee--Yang 零点的联合分布（复 \(T\) 和复 \(h\)）给出相变的完整复相图：零点聚积到实轴的点的并集就是相变集，是 Yang--Lee 理论的推广。
-
-Lee--Yang 圆定理保证铁磁 Ising 零点在 \(|z|=1\) 上，但零点密度 \(\rho(\theta)\)（\(z=\ee^{\ii\theta}\)）在 \(\theta=0\)（\(z=1\)，\(h=0\)）附近的行为决定相变性质。对 \(T>T_c\)，\(\rho(\theta)\sim|\theta|^\sigma\)（\(\sigma>0\)），无聚积，自由能解析；对 \(T=T_c\)，\(\rho(\theta)\sim|\theta|^{-1/2}\)，聚积给出 \(\delta=15\) 磁化指数；对 \(T<T_c\)，\(\rho(\theta)\) 有 \(\delta\)-函数分量（自发磁化）。这一密度行为是 Yang--Lee 边缘奇点分析的核心，把相变分类转化为复零点密度的渐近分析。
-
-Lee--Yang 圆定理在所有维数对铁磁 Ising 成立（证明不依赖维数，只依赖 Asano--Ruelle 收缩），但零点聚积行为随维数变化：一维零点只在 \(T=0\) 聚积（无有限温度相变），二维在 \(T_c\) 聚积（Onsager 相变），三维及以上聚积密度由重整化群确定（非精确）。Asano--Ruelle 方法对连续对称（如 O(\(n\)) 模型 \(n\ge2\)）失效：连续对称的零点分布在更高维复空间中，需要多变量多项式零点理论，目前只有部分结果（如 XY 模型的 Lee--Yang 型定理需推广到圆环而非单位圆）。
-
-\begin{derivation}[Toeplitz 行列式渐近、Fisher--Hartwig 奇点与 Painleve 超越性]
-Yang 自发磁化的精确值依赖 Toeplitz 行列式 \(D_N(\varphi)=\det(T_N(\varphi))\) 的 \(N\to\infty\) 渐近。下面按 弱 Szegő、强 Szegő、Fisher--Hartwig 的顺序建立渐近理论，再导出临界 Ising 关联函数的 Painleve 方程，并论证其超越性。
-
-对单位圆上函数 \(\varphi(\theta)=\sum_{k\in\mathbb Z}\varphi_k\ee^{\ii k\theta}\)，\(N\times N\) Toeplitz 矩阵 \((T_N)_{jk}=\varphi_{j-k}\)（\(0\le j,k<N\)）。Ising 二点函数的 Kaufman--Onsager 表示给出 \(\varphi(\theta)=\varphi_+(\theta)\varphi_-(\theta)\)，其中
-\begin{equation*}
-  \varphi_+(z)=\exp\!\left(\sum_{n=1}^{\infty}\ell_n z^n\right),\qquad \varphi_-(z)=\exp\!\left(\sum_{n=1}^{\infty}\ell_{-n} z^{-n}\right),
-\end{equation*}
-\(\varphi_+\) 在 \(|z|<1\) 内解析非零，\(\varphi_-\) 在 \(|z|>1\) 外解析非零，\(\ell_n\) 是 \(\log\varphi\) 的 Fourier 系数。这一因子分解的存在性由 \(\varphi\) 无零点且 环绕数 零保证（Wiener--Hopf 引理），唯一性由归一化 \(\varphi_+(0)=1\) 确定。对 Ising 符号\eqnrefs{eq:phys-sm-yang-symbol}，\(\ell_n=\kappa^n/(2n)\)，\(\ell_{-n}=-\kappa^n/(2n)\)，因子分解显式给出
-\begin{equation*}
-  \varphi_+(z)=(1-\kappa z)^{1/2},\qquad \varphi_-(z)=(1-\kappa z^{-1})^{-1/2},
-\end{equation*}
-在 \(|\kappa|<1\)（低温）时 \(\varphi_+\) 在圆内、\(\varphi_-\) 在圆外分别解析非零。
-
-若 \(\varphi\) 连续且无零点（环绕数 零），则
-\begin{equation*}
-  \lim_{N\to\infty}\frac{D_N(\varphi)}{\exp(N\ell_0)}=1,\qquad \ell_0=(\log\varphi)_0=\frac{1}{2\pi}\int_0^{2\pi}\log\varphi(\theta)\dd\theta.
-\end{equation*}
-证明梗概：\(\varphi=\varphi_+\varphi_-\)，\(T_N(\varphi)=T_N(\varphi_+)T_N(\varphi_-)+R_N\)（\(R_N\) 是有限秩修正）。因 \(\varphi_+\) 只含正 Fourier 模、\(\varphi_-\) 只含负模，\(T_N(\varphi_+)\) 是上三角、\(T_N(\varphi_-)\) 是下三角，行列式 \(\det T_N(\varphi_+)=\varphi_+(0)^N=1\)，\(\det T_N(\varphi_-)=\varphi_-(\infty)^N=\ee^{N\ell_0}\)。修正 \(R_N\) 的迹范数 \(\to0\)，给出 弱 Szegő。但 弱 Szegő 只给出主导指数项 \(\ee^{N\ell_0}\)，对 Ising 磁化 \(\ell_0=0\)（符号 的几何平均为 1），需要 subleading 常数项——这就是 强 Szegő 定理。
-
-若 \(\varphi\) 属于 Wiener 代数且 Besov 条件 \(\sum_{k}|k||\ell_k|^2<\infty\) 满足，则
+设单粒子内部 Hilbert 空间维数为 \(d_{\rm int}\)，且所有内部态等能。理想气体满足
 \begin{equation}
-  D_N(\varphi)\sim\exp\!\left(N\ell_0+\sum_{k=1}^{\infty}k\,\ell_k\ell_{-k}\right)\quad(N\to\infty).
-  \label{eq:phys-sm-strong-szego}
+ b_n^{(0)}
+ =\frac{d_{\rm int}\,\eta^{n+1}}{n^{5/2}}.
+ \label{eq:phys-sm-ideal-cluster}
 \end{equation}
-证明的关键步骤：(a) Wiener--Hopf 分解 \(T_N(\varphi)=T_N(\varphi_+)T_N(\varphi_-)(I+K_N)\)，其中 \(K_N=T_N(\varphi_+)^{-1}R_N T_N(\varphi_-)^{-1}\) 是迹类算子。(b) \(K_N\) 的矩阵元 \((K_N)_{jk}=\sum_{m\ge N}\ell_{j+m}\ell_{-m-k}\)（\(j,k<N\)），在 Besov 条件下 \(\operatorname{tr}|K_N|<\infty\)。(c) 迹类行列式连续性：\(\det(I+K_N)\to\det(I+K_\infty)\)，其中 \(K_\infty\) 是 \(K_N\) 的 \(N\to\infty\) 极限算子。(d) 迹公式 \(\log\det(I+K_\infty)=\operatorname{tr}\log(I+K_\infty)=\sum_{k=1}^{\infty}k\,\ell_k\ell_{-k}\)——这一步用 \(\log(I+K_\infty)=\sum_{n=1}^{\infty}(-1)^{n+1}K_\infty^n/n\) 的 Neumann 级数和迹的循环性 \(\operatorname{tr}(K_\infty^n)=\sum k\,\ell_k\ell_{-k}\)（\(n=1\) 主导，高阶在 Besov 条件下收敛）。对 Ising 符号，\(\sum k\,\ell_k\ell_{-k}=-\frac{1}{4}\sum\kappa^{2n}/n=\frac{1}{4}\log(1-\kappa^2)\)，给出 \(D_N\to(1-\kappa^2)^{1/4}\)，即 Yang 磁化 \(\mathfrak m_{\rm sp}=(1-\kappa^2)^{1/8}\)。
+这里不从压力级数整体提出 \(d_{\rm int}\)。因此若另一约定定义“每个自旋分量的 \(\bar b_n\)”，两套系数会相差相应的整体内部简并度。
 
-临界点 \(\kappa\to1\) 时 \(\varphi\) 在 \(\theta=0\) 有零点（\(\varphi(1)=0\)），环绕数 非零，弱/强 Szegő 不适用。Fisher--Hartwig 推广：符号分解为
+\begin{proof}[解]
+理想巨配分函数。单粒子色散 $\varepsilon_{\mathbf p}=p^2/(2m)$，内部 Hilbert 空间维数 $d_{\rm int}$。理想巨配分函数（$\eta=+1$ Bose，$\eta=-1$ Fermi）满足
 \begin{equation*}
-  \varphi(\theta)=\prod_{j=1}^{M}\varphi_{\alpha_j,\beta_j}(\theta)\cdot\psi(\theta),\qquad \varphi_{\alpha,\beta}(\theta)=|2\sin(\theta/2)|^{2\alpha}\ee^{\ii\beta(\theta-\pi)},
+ \log\Xi_0
+ =-\eta d_{\rm int}
+ \sum_{\mathbf p}
+ \log\left(1-\eta z\,\ee^{-\beta\varepsilon_{\mathbf p}}\right).
 \end{equation*}
-其中 \(\psi\) 光滑非零（环绕数 零），\(\alpha_j\) 是幂奇点（\(\varphi\sim|\theta|^{2\alpha}\)），\(\beta_j\) 是跳跃奇点（相位 \(\ee^{\ii\beta\theta}\)）。Fisher--Hartwig 渐近给出
+此式来自巨配分函数的乘积形式 \(\Xi_0=\prod_{\mathbf p,\sigma}(1-\eta z\ee^{-\beta\varepsilon_{\mathbf p}})^{-\eta}\)，取对数后对内部态 \(\sigma\) 求和给出 \(d_{\rm int}\) 因子。Bose 情形 \(\eta=+1\) 要求 \(|z|<1\) 以保证收敛；Fermi 情形 \(\eta=-1\) 对任意 \(z\) 解析。
+
+展开对数。利用 Taylor 展开
+\begin{equation*}
+ -\eta\log(1-\eta x)
+ =\sum_{n=1}^{\infty}\frac{\eta^{n+1}}{n}\,x^n,
+\end{equation*}
+（Bose 时 $\eta=+1$，得 $-\log(1-x)=\sum x^n/n$；Fermi 时 $\eta=-1$，得 $\log(1+x)=\sum(-1)^{n+1}x^n/n$），代入第一步，
+\begin{equation*}
+ \log\Xi_0
+ =d_{\rm int}\sum_{n=1}^{\infty}\frac{\eta^{n+1}}{n}\,z^n
+ \sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}.
+\end{equation*}
+注意指数中 \(n\beta\) 而非 \(\beta\)：第 \(n\) 项对应 \(n\) 个粒子在同一动量态的"环图"贡献，等效温度 \(T/n\)。
+
+热力学极限。动量和在热力学极限下化为积分，
+\begin{equation*}
+ \sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}
+ \xrightarrow{\mathcal V\to\infty}
+ \frac{\mathcal V}{(2\pi\hbar)^3}\int\ee^{-n\beta p^2/(2m)}\dd^3p
+ =\frac{\mathcal V}{\lambda_T^3\,n^{3/2}},
+\end{equation*}
+其中 $\lambda_T=(2\pi\hbar^2\beta/m)^{1/2}$ 是热波长，$n^{-3/2}$ 来自三维 Gauss 积分
+\begin{equation*}
+ \int_{\mathbb R^3}\ee^{-n\beta p^2/(2m)}\dd^3p
+ =\left(\frac{2\pi m}{n\beta}\right)^{3/2}
+ =\frac{(2\pi\hbar)^3}{\lambda_T^3\,n^{3/2}}.
+\end{equation*}
+
+合并。
+\begin{equation*}
+ \log\Xi_0
+ =\frac{\mathcal V}{\lambda_T^3}
+ \sum_{n=1}^{\infty}
+ \frac{d_{\rm int}\,\eta^{n+1}}{n^{5/2}}\,z^n.
+\end{equation*}
+与团簇展开 $\log\Xi=\sum_n b_n z^n$ 比较，$b_n=d_{\rm int}\,\eta^{n+1}/n^{5/2}$，即\eqnrefs{eq:phys-sm-ideal-cluster}。$n^{-5/2}=n^{-1}\cdot n^{-3/2}$ 中，$n^{-1}$ 来自对数展开，$n^{-3/2}$ 来自动量积分。
+
+Bose 气体 \(\eta^{n+1}=+1\)，所有 \(b_n>0\)，对应有效吸引（聚束倾向）；Fermi 气体 \(\eta^{n+1}=(-1)^{n+1}\)，\(b_n\) 交替变号，对应有效排斥（Pauli 不相容）。第二位力系数 \(B_2=-\lambda_T^3 b_2/b_1^2=-\eta\,\lambda_T^3/(2^{5/2})\)：Bose 为负（吸引修正），Fermi 为正（排斥修正），与经典 \(B_2=0\) 的差异即交换效应。
+
+若单粒子色散改为 \(\varepsilon_p=\sqrt{p^2c^2+m^2c^4}-mc^2\)，Gauss 积分被 Bessel 函数 \(K_2(n\beta mc^2)\) 替代，团簇系数不再是简单的 \(n^{-5/2}\) 而含相对论修正因子。在非相对论极限 \(\beta mc^2\gg1\) 下 \(K_2(x)\sim\sqrt{\pi/(2x)}\ee^{-x}\) 退化为经典结果。
+\end{proof}
+
+\section{位力展开与一般二体团簇}
+
+粒子数密度记为 \(\varrho\)。由巨势
 \begin{equation}
-  D_N(\varphi)\sim N^{\sum_j(\alpha_j^2-\beta_j^2)}\,\ee^{N(\log\psi)_0}\,E(\{\alpha_j,\beta_j\})\quad(N\to\infty),
-  \label{eq:phys-sm-fisher-hartwig}
+ \varrho
+ =\frac{z}{\mathcal V}\frac{\partial\log\Xi}{\partial z}
+ =\frac{1}{\lambda_T^3}
+ \sum_{j\ge1}j b_jz^j.
+ \label{eq:phys-sm-density-cluster}
 \end{equation}
-其中 \(E\) 是广义 Szegő 常数（含 Barnes \(G\)-函数和 \(\psi\) 的 Fourier 系数）。证明路线：每个 \(\varphi_{\alpha,\beta}\) 的 Toeplitz 行列式用 Barnes \(G\)-函数的渐近精确计算（\(G\)-函数满足 \(G(z+1)=\Gamma(z)G(z)\)，\(G(1)=1\)），乘积的行列式用 Sylvester--Fisher 恒等式分解。对临界 Ising 二点函数，符号 在 \(\theta=0\) 有 \(\alpha=0\) 但关联函数本身引入 \(\alpha=1/16\)（来自 Ising 共形场论 的 \(\sigma\) 主 的 共形 权 \(h_\sigma=1/16\)），代入\eqnrefs{eq:phys-sm-fisher-hartwig} 给出 \(D_N\sim N^{-1/4}\)，即 \(\langle\sigma_0\sigma_N\rangle_{T_c}\sim N^{-1/4}\)。由标度律 \(\eta=2\Delta_\sigma=2\times2h_\sigma=1/4\)（\(\Delta_\sigma=h_\sigma+\bar h_\sigma=1/8\)），再由 \(\beta=\nu\eta/2=1\times(1/4)/2=1/8\)，与 Yang 精确磁化一致。
+压力满足 \(\beta P=\mathcal V^{-1}\log\Xi\)。令 \(x=\varrho\lambda_T^3\)，则由\eqnrefs{eq:phys-sm-density-cluster} 有 \(x(z)=b_1z+O(z^2)\)。只要 \(b_1\neq0\)，解析逆函数定理保证原点附近存在唯一解析反函数 \(z=z(x)\)，因此位力级数并不是额外假设，而是团簇级数在局部可逆条件下的重参数化。位力展开以物理密度为变量：
+\begin{equation}
+ \beta P
+ =\varrho+B_2\varrho^2+B_3\varrho^3+\cdots.
+ \label{eq:phys-sm-virial-definition}
+\end{equation}
+逐阶反演逸度级数得到
+\begin{align}
+ B_2&=-\lambda_T^3\frac{b_2}{b_1^2},
+ \label{eq:phys-sm-virial-b2}\\
+ B_3&=\lambda_T^6
+ \left(
+ \frac{4b_2^2}{b_1^4}
+ -\frac{2b_3}{b_1^3}
+ \right).
+ \label{eq:phys-sm-virial-b3}
+\end{align}
+因此 \(b_n\) 无量纲，而 \([B_n]=\text{length}^{3(n-1)}\)。
 
-上述渐近只给出 \(N\to\infty\) 的 主导 行为。Wu--McCoy--Tracy--Barouch (1976) 发现临界 Ising 二点关联 \(C_N=\langle\sigma_0\sigma_N\rangle_{T_c}\) 满足\emph{精确}的离散递推关系，连续极限给出 Painleve III 方程。具体推导路线：(a) Kaufman--Onsager 的 Toeplitz 表示 \(C_N=D_N(\varphi_{\rm crit})\) 在临界点 符号 有 Fisher--Hartwig 奇点。(b) Toeplitz 行列式满足 Jacobi 恒等式 \(D_{N+1}D_{N-1}-D_N^2=D_N^{(1)}D_N^{(1)}\)（\(D_N^{(1)}\) 是一阶修正行列式），这是离散 Toda 方程。(c) 连续极限 \(N\to\infty\)，\(t=N/\xi\)，\(D_N\to\sigma(t)\)，离散 Toda 方程变为连续 Toda 方程 \(\sigma''=\frac{(\sigma')^2}{2\sigma}+\frac{4\sigma^2-4t\sigma+1}{8t^2}\)——这正是 Painleve III 方程。(d) Painleve III 的解由初始条件 \(\sigma(0)=1\)（归一化）和 \(\sigma'(0)\)（由 \(C_1\) 确定）唯一确定，给出任意距离 \(N\) 的精确关联值，不限于渐近区域。
+\begin{proof}[解]
+定义 \(x=\varrho\lambda_T^3\)，则
+\[
+ x=b_1z+2b_2z^2+3b_3z^3+O(z^4).
+\]
+此式来自 \(\varrho=z\partial_z\log\Xi/\mathcal V=\lambda_T^{-3}\sum_{j\ge1}jb_jz^j\)，乘以 \(\lambda_T^3\) 即得 \(x\)。设
+\[
+ z=A_1x+A_2x^2+A_3x^3+O(x^4).
+\]
+逐阶比较给出
+\[
+ A_1=\frac1{b_1},
+ \qquad
+ A_2=-\frac{2b_2}{b_1^3},
+ \qquad
+ A_3=\frac{8b_2^2}{b_1^5}-\frac{3b_3}{b_1^4}.
+\]
+具体推导：把 \(z=A_1x+A_2x^2+A_3x^3\) 代入 \(x=b_1z+2b_2z^2+3b_3z^3\)，
+\begin{align*}
+ x &= b_1(A_1x+A_2x^2+A_3x^3)
+ +2b_2(A_1^2x^2+2A_1A_2x^3)\\
+ &\quad+3b_3A_1^3x^3+O(x^4),
+\end{align*}
+比较 \(x\) 系数：\(1=b_1A_1\)，得 \(A_1=1/b_1\)；比较 \(x^2\)：\(0=b_1A_2+2b_2A_1^2\)，得 \(A_2=-2b_2/b_1^3\)；比较 \(x^3\)：\(0=b_1A_3+4b_2A_1A_2+3b_3A_1^3\)，代入前两式得 \(A_3=8b_2^2/b_1^5-3b_3/b_1^4\)。代回
+\[
+ \beta P\lambda_T^3=b_1z+b_2z^2+b_3z^3+O(z^4)
+\]
+后，
+\[
+ \beta P\lambda_T^3
+ =x-\frac{b_2}{b_1^2}x^2
+ +\left(
+ \frac{4b_2^2}{b_1^4}
+ -\frac{2b_3}{b_1^3}
+ \right)x^3+O(x^4),
+\]
+恢复 \(x=\varrho\lambda_T^3\) 即得\eqnrefs{eq:phys-sm-virial-b2}--\eqnrefs{eq:phys-sm-virial-b3}。
 
-一般 \(n\) 点关联函数 \(C_n(t_1,\ldots,t_n)\) 满足 Painleve VI 方程——六个 Painleve 方程中最一般的：
-\begin{equation*}
-\begin{aligned}
-y''={}&\frac12\left(\frac1y+\frac1{y-1}+\frac1{y-t}\right)(y')^2
--\left(\frac1t+\frac1{t-1}+\frac1{y-t}\right)y'\\
-&+\frac{y(y-1)(y-t)}{t(t-1)}
-\left(\alpha+\frac{\beta}{y^2}+\frac{\gamma}{(y-1)^2}
-+\frac{\delta}{(y-t)^2}\right).
-\end{aligned}
-\end{equation*}
-Ising 关联对应特定参数 \((\alpha,\beta,\gamma,\delta)=(1/8,-1/8,1/2,1-1/2)\)。Painleve VI 的解由 单值性 表示唯一确定：给定 \(t\) 平面上四个正则奇点 \(\{0,1,\infty,t\}\) 的 单值性 数据，Riemann--Hilbert 问题唯一确定解 \(y(t)\)。Ising 关联的 单值性 由 Ising 共形场论 的 共形 块 给出——\(n\) 个 \(\sigma\) 主 的 共形 块 在模空间上的 单值性 恰好匹配 Painleve VI 的 单值性 表示。这建立了格点关联 \(\to\) Painleve VI \(\to\) 共形场论 共形 块 的三方对应，每一方都给出同一函数的不同表示。
+反演的解析性由隐函数定理保证：只要 \(b_1\neq0\)（理想气体 \(b_1=d_{\rm int}\neq0\) 满足），\(\varrho(z)\) 在 \(z=0\) 附近局部可逆，位力级数收敛半径由最近的团簇级数奇点决定。相变处位力级数发散，对应 \(\varrho(z)\) 的多值性或支点。
+\end{proof}
 
-Painleve VI 的解（除 Riccati 特例外）是 Painleve 超越函数——不能表示为已知古典函数（指数、代数、椭圆、超几何）的有限组合。这一超越性由 Picard (1889) 和 Painleve (1906) 建立：Painleve 方程的解没有 movable 临界点（Painleve 性质），但一般不是古典函数。对 Ising 关联，这意味着 \(C_n(t_1,\ldots,t_n)\)（\(n\ge2\)）是真正的新超越函数，其"精确值"只能通过 Painleve 方程的初值问题数值求解——但解的存在性、解析性、渐近行为都由 ODE 严格控制。这一结果把 Ising 精确可解性提升到微分代数几何：关联函数的"精确"含义从"闭式表达"扩展为"满足已知 ODE 的唯一解析解"。
-\end{derivation}
+位力系数只依赖低阶团簇数据。为了把二阶相互作用部分写成散射信息而不在人为的参考热波长上做选择，先使用有量纲的多组分连通系数，并完成质心--相对运动分离。若组分 \(a\) 的粒子数 \(N_a\) 各自守恒，才可以给每个守恒荷引入独立逸度 \(z_a\)，并写
+\begin{equation}
+ \frac1{\mathcal V}\log\Xi(\{z_a\})
+ =\sum_{\mathbf n\neq0}
+ \mathfrak c_{\mathbf n}
+ \prod_a z_a^{n_a},
+ \qquad
+ [\mathfrak c_{\mathbf n}]=\text{length}^{-3}.
+ \label{eq:phys-sm-multicomponent-cluster}
+\end{equation}
+若存在 Rabi 耦合、自旋转换或其他使单独 \(N_a\) 不守恒的项，就不能先赋予每个内部标签独立化学势；此时应直接按真正的守恒荷组织巨 ensemble。
+
+若各内部组分分别守恒、等质量且等能，把所有逸度最后统一设为 \(z_a=z\)，则
+\[
+ \frac1{\mathcal V}\log\Xi(z,\ldots,z)
+ =\sum_{n\ge1}
+ \left(\sum_{|\mathbf n|=n}\mathfrak c_{\mathbf n}\right)z^n.
+\]
+与单逸度约定 \eqnrefs{eq:phys-sm-cluster-convention} 比较得到
+\begin{equation}
+ \frac{b_n}{\lambda_T^3}
+ =\sum_{|\mathbf n|=n}\mathfrak c_{\mathbf n}.
+ \label{eq:phys-sm-multicomponent-to-single}
+\end{equation}
+特别在二阶，\(a=b\) 的系数来自 \(\mathfrak c_{2\mathbf e_a}\)，而 \(a\neq b\) 来自 \(\mathfrak c_{\mathbf e_a+\mathbf e_b}\)；后者没有额外的 \(1/2!\)，因为多变量 Taylor 单项式本身已经区分了两个守恒组分。
+
+考虑一个 \(a\)-粒子和一个 \(b\)-粒子的二体扇区。定义总质量和约化质量
+\begin{equation}
+ m_{ab}^{\rm tot}=m_a+m_b,
+ \qquad
+ m_{r,ab}=\frac{m_am_b}{m_a+m_b}.
+ \label{eq:phys-sm-two-body-masses}
+\end{equation}
+平移不变二体哈密顿量分离为
+\begin{equation}
+ H_{ab}
+ =\frac{\mathbf P^2}{2m_{ab}^{\rm tot}}
+ +H_{{\rm rel},ab},
+ \qquad
+ H_{{\rm rel},ab}
+ =\frac{\mathbf p^2}{2m_{r,ab}}+V_{ab}.
+ \label{eq:phys-sm-two-body-separation}
+\end{equation}
+质心热迹为
+\begin{equation}
+ Q_{{\rm CM},ab}
+ =\frac{\mathcal V}
+ {\lambda_T(m_{ab}^{\rm tot})^3}.
+ \label{eq:phys-sm-qcm}
+\end{equation}
+记二体单项式对应的系数为
+\[
+ \mathfrak c_{ab}^{(2)}:=
+ \begin{cases}
+ \mathfrak c_{2\mathbf e_a},&a=b,\\
+ \mathfrak c_{\mathbf e_a+\mathbf e_b},&a\neq b.
+ \end{cases}
+\]
+因此相互作用引起的二体连通系数改变量满足
+\begin{equation}
+ \Delta\mathfrak c_{ab}^{(2)}
+ =\frac{1}{\lambda_T(m_{ab}^{\rm tot})^3}
+ \Delta\mathcal T_{{\rm rel},ab},
+ \label{eq:phys-sm-multicomponent-bu-prefactor}
+\end{equation}
+其中 \(\Delta\mathcal T_{{\rm rel},ab}\) 是相对运动 interacting/自由热迹差，并已经在正确的内部与交换子空间中取迹。
+
+对单组分等质量气体，\(m_{aa}^{\rm tot}=2m\)，而
+\[
+ \lambda_T(2m)=\frac{\lambda_T}{\sqrt2}.
+\]
+又有 \(\mathfrak c_2=b_2/\lambda_T^3\)，所以\eqnrefs{eq:phys-sm-multicomponent-bu-prefactor} 特殊化为
+\begin{equation}
+ \Delta b_2
+ =2^{3/2}\Delta\mathcal T_{\rm rel}.
+ \label{eq:phys-sm-delta-b2-delta-q2}
+\end{equation}
+所有常见的 \(\sqrt2\) 因子都来自这个质心高斯归一化，而不是额外的统计简并度。

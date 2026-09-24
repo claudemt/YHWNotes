@@ -1,7 +1,157 @@
-\chapter{四阶经典场：变分、自伴边界与 Green 谱}
+\chapter{四阶变分问题、自伴边界与 Green 算子}
 \label{chap:phys-cont-biharmonic}
 
-前十章从配分函数、转移算子与散射数据组织平衡统计体系；从这里开始，研究对象转为确定性的连续场。方法上的主线并未改变：先把决定问题的算子、定义域和守恒/变分结构完整确定， Green 函数、谱与可解几何。薄板、二维弹性有效理论以及许多连续介质模型都会产生四阶空间算子，而只写出 \(\Delta^2u=f\) 仍不足以定义一个物理问题：四阶算子必须连同二次型、边界配对和算子定义域一起给出；自由边界还存在刚体零模，使普通逆算子失效。本章先建立与具体材料和几何无关的四阶变分母结构，再把均匀各向同性双调和算子作为其重要特例。下一章才从三维线弹性推出相应二维构成张量。
+一根弦的方程是二阶的，在每个边界端给一个条件通常已经足够；薄板的弯曲方程却是四阶的，每段边界需要两类条件。只写 \(\Delta^2u=f\) 因而远没有把问题说完：夹持、简支和自由边界对应不同的算子定义域，自由边界还允许整体平移与倾斜这样的零能运动，普通 Green 逆算子甚至不存在。
+
+最稳妥的起点不是猜边界条件，而是弯曲能的二次型。对它作两次分部积分，体方程、边界配对和自然边界条件会同时出现；二次型的正定性给出椭圆性，零模则决定何时必须使用伪逆。这个一般论证不依赖具体材料，均匀各向同性双调和算子只是其中最透明的例子。
+
+\section{先在一根梁上看清四阶方程}
+
+先暂时不讨论二维薄板，只研究长度为 \(L\) 的细梁。设 \(x\in[0,L]\) 是梁的轴向坐标，\(u(x)\) 是横向挠度。在小挠度近似下，梁的曲率为 \(u''(x)\)。若抗弯刚度 \(D>0\) 为常数、横向分布载荷为 \(f(x)\)，则总势能取为
+\begin{equation}
+ \Pi[u]
+ =\frac{D}{2}\int_0^L\bigl(u''(x)\bigr)^2\dd x
+ -\int_0^L f(x)u(x)\dd x.
+ \label{eq:phys-cont-beam-energy}
+\end{equation}
+第一项是弯曲储能：曲率加倍，储能变为四倍；第二项是外力势能。平衡位置不是凭空满足某个微分方程，而是使 \(\Pi[u]\) 对所有允许的小变动都没有一阶变化。
+
+取任意允许的试探函数 \(\eta(x)\)，令
+\[
+ u_\varepsilon(x)=u(x)+\varepsilon\eta(x).
+\]
+把它代入\eqnrefs{eq:phys-cont-beam-energy}并对 \(\varepsilon\) 求导，在 \(\varepsilon=0\) 处得到一阶变分
+\[
+ \delta\Pi[u;\eta]
+ =D\int_0^L u''\eta''\dd x-\int_0^L f\eta\dd x.
+\]
+这里出现了 \(\eta''\)，而要让任意的 \(\eta\) 直接乘在方程上，必须连续做两次分部积分：
+\begin{align}
+ D\int_0^L u''\eta''\dd x
+ &=D\bigl[u''\eta'\bigr]_0^L-D\int_0^L u'''\eta'\dd x\notag\\
+ &=D\bigl[u''\eta'-u'''\eta\bigr]_0^L
+ +D\int_0^L u^{(4)}\eta\dd x.
+ \label{eq:phys-cont-beam-two-integrations}
+\end{align}
+因而
+\begin{equation}
+ \delta\Pi[u;\eta]
+ =\int_0^L\bigl(Du^{(4)}-f\bigr)\eta\dd x
+ +D\bigl[u''\eta'-u'''\eta\bigr]_0^L.
+ \label{eq:phys-cont-beam-first-variation}
+\end{equation}
+
+现在可以逐项读出物理内容。在区间内部选取支集远离端点的 \(\eta\)，边界项自动为零。由于这样的 \(\eta\) 任意，微积分基本引理给出
+\begin{equation}
+ Du^{(4)}(x)=f(x),\qquad 0<x<L.
+ \label{eq:phys-cont-euler-bernoulli-static}
+\end{equation}
+这就是静态 Euler--Bernoulli 梁方程。它是四阶而不是二阶，并非人为选择，而是因为能量依赖位移的二阶导数。
+
+\eqnrefs{eq:phys-cont-beam-first-variation}还告诉我们为什么每个端点需要两项边界数据。端点处 \(\eta\) 与 \(\eta'\) 可以独立变化，它们的共轭量分别是剪力 \(-Du'''\) 与弯矩 \(Du''\)。于是常见的三类边界条件如下：
+\begin{itemize}
+ \item 固支端固定位置和转角，故 \(u=0\)、\(u'=0\)；相应地 \(\eta=0\)、\(\eta'=0\)，边界变分自动消失。
+ \item 简支端固定位置但允许转动，故 \(u=0\)、\(\eta=0\)。因为 \(\eta'\) 仍任意，平衡要求自然条件 \(u''=0\)，即端弯矩为零。
+ \item 自由端既不固定位置也不固定转角，故 \(\eta\)、\(\eta'\) 都任意。平衡要求 \(u''=0\)、\(u'''=0\)，即弯矩和剪力同时为零。
+\end{itemize}
+这番推导也解释了“本质边界条件”和“自然边界条件”的区别：前者先限制允许位移，后者是令剩余边界变分为零后由力学自动给出的。
+
+\begin{proposition}[固支梁平衡解的唯一性]
+若梁的两端都固支，则给定载荷 \(f\) 至多对应一个满足\eqnrefs{eq:phys-cont-euler-bernoulli-static}的平衡解。
+\end{proposition}
+
+\begin{proof}
+假设 \(u_1,u_2\) 都是解，令 \(w=u_1-u_2\)。于是
+\[
+ Dw^{(4)}=0,
+ \qquad
+ w(0)=w'(0)=w(L)=w'(L)=0.
+\]
+方程乘以 \(w\) 并积分，再按\eqnrefs{eq:phys-cont-beam-two-integrations}分部积分两次。固支条件消去全部边界项，得到
+\[
+ 0=\int_0^L Dw^{(4)}w\dd x
+ =D\int_0^L(w'')^2\dd x.
+\]
+因为被积函数非负且 \(D>0\)，必有 \(w''=0\)。所以 \(w=ax+b\)，再用任意一端的 \(w=w'=0\) 得 \(a=b=0\)。故 \(u_1=u_2\)。
+\end{proof}
+
+\subsection{一个从方程算到底的例子}
+
+考虑两端简支、承受均匀载荷 \(f(x)=q_0\) 的梁。方程和四个边界条件是
+\[
+ Du^{(4)}=q_0,
+ \qquad
+ u(0)=u(L)=0,
+ \qquad
+ u''(0)=u''(L)=0.
+\]
+连续积分四次可写成
+\[
+ u(x)=\frac{q_0x^4}{24D}
+ +\frac{C_1x^3}{6}+\frac{C_2x^2}{2}+C_3x+C_4.
+\]
+由 \(u(0)=u''(0)=0\) 先得 \(C_4=C_2=0\)。再由 \(u''(L)=0\) 得
+\[
+ C_1=-\frac{q_0L}{2D},
+\]
+最后由 \(u(L)=0\) 得
+\[
+ C_3=\frac{q_0L^3}{24D}.
+\]
+因此完整解为
+\begin{equation}
+ u(x)=\frac{q_0}{24D}
+ \bigl(x^4-2Lx^3+L^3x\bigr).
+ \label{eq:phys-cont-uniform-simply-supported-beam}
+\end{equation}
+这个结果关于中点对称。由 \(u'(L/2)=0\) 可知最大挠度出现在中点，并且
+\[
+ u_{\max}=u(L/2)=\frac{5q_0L^4}{384D}.
+\]
+这里的 \(L^4\) 标度非常重要：尺寸加倍而材料与截面不变，挠度会增大十六倍。这也是薄结构对尺度极其敏感的最简单例子。
+
+\subsection{Green 函数不是新方程，而是点载荷的解}
+
+线性方程的叠加原理允许我们先解单位点载荷。定义简支梁的 Green 函数 \(G(x,\xi)\) 为
+\begin{equation}
+ D\frac{\partial^4G}{\partial x^4}(x,\xi)=\delta(x-\xi),
+ \qquad
+ G(0,\xi)=G(L,\xi)=G_{xx}(0,\xi)=G_{xx}(L,\xi)=0.
+ \label{eq:phys-cont-beam-green-definition}
+\end{equation}
+固定载荷位置 \(\xi\) 后，\(x\ne\xi\) 处满足 \(G_{xxxx}=0\)，所以源点左右各是一段三次多项式。位移、转角和弯矩不能在有限点力下突跳，因此
+\[
+ [G]_{\xi}=[G_x]_{\xi}=[G_{xx}]_{\xi}=0.
+\]
+把方程在 \((\xi-\epsilon,\xi+\epsilon)\) 上积分并令 \(\epsilon\to0\)，得到剪力跳跃
+\[
+ D[G_{xxx}]_{\xi}=1.
+\]
+把四个端点条件、三个连续条件和一个跳跃条件依次代入左右两段三次多项式，解得
+\begin{equation}
+G(x,\xi)=
+\begin{cases}
+\displaystyle
+\frac{x(L-\xi)}{6LD}
+\left[2L\xi-\xi^2-x^2\right],&0\le x\le\xi,\\[8pt]
+\displaystyle
+\frac{\xi(L-x)}{6LD}
+\left[L^2-\xi^2-(L-x)^2\right],&\xi\le x\le L.
+\end{cases}
+\label{eq:phys-cont-beam-green-explicit}
+\end{equation}
+这个式子满足 \(G(x,\xi)=G(\xi,x)\)。对自伴算子而言，这种对称性正是 Maxwell--Betti 互易定理：在 \(\xi\) 处施加单位力后 \(x\) 处的位移，等于在 \(x\) 处施加单位力后 \(\xi\) 处的位移。
+
+一般载荷可以看作连续分布的点载荷，所以
+\begin{equation}
+ u(x)=\int_0^L G(x,\xi)f(\xi)\dd\xi.
+ \label{eq:phys-cont-beam-green-superposition}
+\end{equation}
+对上式作用 \(D\partial_x^4\)，利用\eqnrefs{eq:phys-cont-beam-green-definition}便得
+\[
+ Du^{(4)}(x)=\int_0^L\delta(x-\xi)f(\xi)\dd\xi=f(x),
+\]
+而每个 \(G(\cdot,\xi)\) 都满足简支边界条件，因此积分后的 \(u\) 也满足同一边界条件。取 \(f=q_0\) 并完成分段积分，恰好返回\eqnrefs{eq:phys-cont-uniform-simply-supported-beam}。至此，变分法、四阶边界条件和 Green 函数已经在一个只需常微分方程知识的例子里连成了同一件事；下面再把这些结构推广到二维区域与一般构成张量。
 
 \section{一般四阶变分算子}
 
@@ -23,7 +173,7 @@
  \le c_1|\mathsf S|^2.
  \label{eq:phys-cont-fourth-ellipticity}
 \end{equation}
-这里以及下文重复的希腊指标 \(\alpha,\beta,\gamma,\delta\in\{1,2\}\) 求和。记 Hessian 为 \((\nabla^2u)_{\alpha\beta}:=\partial_\alpha\partial_\beta u\)，拉普拉斯算子 为 \(\Delta u:=\partial_\alpha\partial_\alpha u\)；二者在本章中严格区分。对 \(u\in H^2(\mathcal D)\) 定义广义曲率应力张量
+这里以及下文重复的希腊指标 \(\alpha,\beta,\gamma,\delta\in\{1,2\}\) 求和。记 Hessian 为 \((\nabla^2u)_{\alpha\beta}:=\partial_\alpha\partial_\beta u\)，拉普拉斯算子为 \(\Delta u:=\partial_\alpha\partial_\alpha u\)；二者在本章中严格区分。对 \(u\in H^2(\mathcal D)\) 定义广义曲率应力张量
 \begin{equation}
  \mathsf M_{\mathsf C}[u]
  :=\mathsf C:\nabla^2u,
@@ -32,7 +182,7 @@
  =C_{\alpha\beta\gamma\delta}\partial_\gamma\partial_\delta u,
  \label{eq:phys-cont-general-moment}
 \end{equation}
-以及 半双线性 二次型
+以及半双线性二次型
 \begin{equation}
  a_{\mathsf C}[u,v]
  :=\int_\mathcal D
@@ -102,7 +252,7 @@
 \]
 这给出了比“给四阶 PDE 补两个条件”更精确的自伴性判据：算子定义域的允许边界数据 \((\Gamma_0u,\Gamma_1u)\) 必须构成该边界辛型的极大零化子空间（Lagrangian 子空间），即辛型在该子空间内恒为零，而且再加入任何独立边界方向都会破坏这一性质。固支、简支、自由边界只是这一母条件的三个坐标型特例；Robin 型或不同边段上的混合条件也必须满足同一辛正交要求。分段光滑边界还会从 \(\partial_s\) 的一维分部积分产生角点项；其物理解释将在下一章由薄板虚功给出。
 
-均匀各向同性情形是上述母结构的特例。取无量纲构成张量使
+均匀各向同性情形是上述一般结构的特例。取无量纲构成张量使
 \begin{equation}
  \mathsf H_\nu[u]
  =(1-\nu)\nabla^2u+\nu(\Delta u)\mathsf I_2,
@@ -146,7 +296,7 @@
  \label{eq:phys-cont-biharmonic-green-first}
 \end{equation}
 
-\begin{derivation}[\eqnrefs{eq:phys-cont-general-green-first}：一般张量算子的两次分部积分]
+\begin{proof}[解]
 记 \(M_{\alpha\beta}=(\mathsf M_{\mathsf C}[u])_{\alpha\beta}\)。第一次分部积分为
 \begin{align*}
  a_{\mathsf C}[u,v]
@@ -183,11 +333,11 @@
  [M_{n\tau}]_{P_j}\overline v(P_j)
 \)，这就是角点自然条件的来源。
 
-\end{derivation}
+\end{proof}
 
 \section{自伴实现、零模与加权动力学}
 
-先考虑三类经典纯边界。相应的 形式定义域 为
+先考虑三类经典纯边界。相应的形式定义域为
 \[
  V_{\mathrm C}=H_0^2(\mathcal D),
  \qquad
@@ -211,7 +361,7 @@
 
 \begin{theorem}[经典边界下的离散谱与自由零模]
 \label{thm:phys-cont-biharmonic-spectrum}
-设 \(\mathcal D\) 有界连通，\(\mathsf C\) 满足\eqnrefs{eq:phys-cont-fourth-ellipticity}，并具有足以保证相应迹定理和椭圆正则性的边界与系数。则 \(\mathsf L_{\mathrm C},\mathsf L_{\mathrm S},\mathsf L_{\mathrm F}\) 非负自伴且 预解式 紧。固支与简支没有零模；自由边界的核为
+设 \(\mathcal D\) 有界连通，\(\mathsf C\) 满足\eqnrefs{eq:phys-cont-fourth-ellipticity}，并具有足以保证相应迹定理和椭圆正则性的边界与系数。则 \(\mathsf L_{\mathrm C},\mathsf L_{\mathrm S},\mathsf L_{\mathrm F}\) 非负自伴且预解式紧。固支与简支没有零模；自由边界的核为
 \begin{equation}
  \ker \mathsf L_{\mathrm F}
  =\mathcal P_1(\mathcal D)
@@ -249,10 +399,10 @@
  \sum_n\frac{\psi_n(\vb x)\overline{\psi_n(\vb y)}}{\omega_n^2-\omega^2}.
  \label{eq:phys-cont-weighted-dynamic-green}
 \end{equation}
-这就是非均匀面质量下的形式精确 Green/预解式 解。对自由边界，\(\omega_n=0\) 的三个刚体模也属于这个动力学谱：只要驱动频率 \(\omega\neq0\)，它们在分母中给出有限的 \(-\omega^{-2}\) 惯性响应，不能像静态 伪逆 那样删除；只有严格静态极限才需要先施加净力和净力矩兼容条件。只有当 \(\mu_A\) 是常数时，动态算子才退化为简单的 \((\mathsf L_X-\mu_A\omega^2I)^{-1}\)；非均匀质量不能被一个常数谱参数吸收。
+这就是非均匀面质量下的形式精确 Green/预解式解。对自由边界，\(\omega_n=0\) 的三个刚体模也属于这个动力学谱：只要驱动频率 \(\omega\neq0\)，它们在分母中给出有限的 \(-\omega^{-2}\) 惯性响应，不能像静态伪逆那样删除；只有严格静态极限才需要先施加净力和净力矩兼容条件。只有当 \(\mu_A\) 是常数时，动态算子才退化为简单的 \((\mathsf L_X-\mu_A\omega^2I)^{-1}\)；非均匀质量不能被一个常数谱参数吸收。
 
-\begin{derivation}[\eqnrefs{eq:phys-cont-form-operator,eq:phys-cont-free-kernel}：闭二次型与紧 预解式]
-对三种边界分别建立 强制性（能量范数控制 Sobolev 范数），再用 Rellich 紧嵌入得到紧 预解式，最后由谱定理给出离散谱。
+\begin{proof}[解]
+对三种边界分别建立强制性（能量范数控制 Sobolev 范数），再用 Rellich 紧嵌入得到紧预解式，最后由谱定理给出离散谱。
 
 椭圆上下界。\eqnrefs{eq:phys-cont-fourth-ellipticity} 给出 Hessian 层面的夹逼
 \begin{equation*}
@@ -262,7 +412,7 @@
 \end{equation*}
 这是所有后续估计的出发点：能量二次型与 \(H^2\) 半范数等价，只差低阶项 \(\|u\|_{L^2}\)。此估计来自 \(\mathsf M_{\mathsf C}[u]\) 作为 Hessian 的线性变换，其特征值被 \(c_0,c_1\) 控制。
 
-固支与简支的 强制性。在 \(H_0^2(\mathcal D)\)（固支）与 \(H^2(\mathcal D)\cap H_0^1(\mathcal D)\)（简支）上，二阶 Poincar\'e 不等式
+固支与简支的强制性。在 \(H_0^2(\mathcal D)\)（固支）与 \(H^2(\mathcal D)\cap H_0^1(\mathcal D)\)（简支）上，二阶 Poincar\'e 不等式
 \begin{equation*}
  \|u\|_{H^2}^2\le C\bigl(\|\nabla^2u\|_{L^2}^2+\|u\|_{L^2}^2\bigr)
 \end{equation*}
@@ -270,26 +420,26 @@
 \begin{equation*}
  \|u\|_{H^2}\le C''\|\nabla^2u\|_{L^2}\le C''c_0^{-1/2}\,a_{\mathsf C}[u,u]^{1/2}.
 \end{equation*}
-故二次型 强制，零能量只能由 \(u=0\) 实现——没有零模。Poincar\'e 不等式的常数 \(C'\) 依赖区域直径与边界正则性，但对有界连通区域始终有限。
+故二次型强制，零能量只能由 \(u=0\) 实现——没有零模。Poincar\'e 不等式的常数 \(C'\) 依赖区域直径与边界正则性，但对有界连通区域始终有限。
 
-自由边界的核与正交补上的 强制性。自由边界时，\(a_{\mathsf C}[u,u]=0\) 与强椭圆性共同推出 \(\nabla^2u=0\) 几乎处处。连通性因此给出 \(u=a+bx+cy\in\mathcal P_1(\mathcal D)\)，即\eqnrefs{eq:phys-cont-free-kernel}。这三个函数有明确几何意义：常数是横向平移，\(x,y\) 是无曲率刚体倾斜。
+自由边界的核与正交补上的强制性。自由边界时，\(a_{\mathsf C}[u,u]=0\) 与强椭圆性共同推出 \(\nabla^2u=0\) 几乎处处。连通性因此给出 \(u=a+bx+cy\in\mathcal P_1(\mathcal D)\)，即\eqnrefs{eq:phys-cont-free-kernel}。这三个函数有明确几何意义：常数是横向平移，\(x,y\) 是无曲率刚体倾斜。
 
 在正交补 \(\mathcal P_1(\mathcal D)^\perp\) 上，存在模仿射函数的二阶 Poincar\'e 不等式
 \begin{equation*}
  \|u\|_{H^2}\le C\|\nabla^2u\|_{L^2},
  \qquad u\perp\mathcal P_1(\mathcal D),
 \end{equation*}
-其证明思路是反证法：若不等式不成立，存在序列 \(\|u_n\|_{H^2}=1\)、\(u_n\perp\mathcal P_1\)、\(\|\nabla^2u_n\|_{L^2}\to0\)。由 Rellich 紧嵌入取弱收敛子列 \(u_n\rightharpoonup u\)，极限满足 \(\nabla^2u=0\) 故 \(u\in\mathcal P_1\)，但 \(u\perp\mathcal P_1\) 又强制 \(u=0\)，与 \(\|u_n\|_{H^2}=1\) 矛盾。故自由二次型在正交补上重新 强制。
+其证明思路是反证法：若不等式不成立，存在序列 \(\|u_n\|_{H^2}=1\)、\(u_n\perp\mathcal P_1\)、\(\|\nabla^2u_n\|_{L^2}\to0\)。由 Rellich 紧嵌入取弱收敛子列 \(u_n\rightharpoonup u\)，极限满足 \(\nabla^2u=0\) 故 \(u\in\mathcal P_1\)，但 \(u\perp\mathcal P_1\) 又强制 \(u=0\)，与 \(\|u_n\|_{H^2}=1\) 矛盾。故自由二次型在正交补上重新强制。
 
-紧 预解式 与谱定理。三种情形的 形式 范数
+紧预解式与谱定理。三种情形的形式范数
 \begin{equation*}
  \|u\|_a^2=a_{\mathsf C}[u,u]+\|u\|_{L^2}^2
 \end{equation*}
-与相应 形式定义域 上的 \(H^2\) 范数等价（由前三步的 强制性）。有界区域上 Sobolev 嵌入 \(H^2(\mathcal D)\hookrightarrow\hookrightarrow L^2(\mathcal D)\) 是紧的（Rellich 定理），因此 形式定义域 到 \(L^2\) 的嵌入也紧。由 Kato--Rellich 或直接用紧算子谱定理，表示定理生成的自伴算子具有紧 预解式，谱定理便给出离散谱 \(\{\lambda_n\}_{n=1}^\infty\)（有限重数，\(\lambda_n\to\infty\)）与完备正交本征系 \(\{\phi_n\}\)。
+与相应形式定义域上的 \(H^2\) 范数等价（由前三步的强制性）。有界区域上 Sobolev 嵌入 \(H^2(\mathcal D)\hookrightarrow\hookrightarrow L^2(\mathcal D)\) 是紧的（Rellich 定理），因此形式定义域到 \(L^2\) 的嵌入也紧。由 Kato--Rellich 或直接用紧算子谱定理，表示定理生成的自伴算子具有紧预解式，谱定理便给出离散谱 \(\{\lambda_n\}_{n=1}^\infty\)（有限重数，\(\lambda_n\to\infty\)）与完备正交本征系 \(\{\phi_n\}\)。
 
-\end{derivation}
+\end{proof}
 
-\section{Green 算子、pseudoinverse 与 resolvent}
+\section{Green 算子、伪逆与预解式}
 
 若 \(0\notin\sigma(\mathsf L_X)\)，静态问题 \(\mathsf L_Xu=f\) 有唯一解。取普通 \(L^2\)-归一化本征函数 \(\{\phi_n\}\)，Green 算子具有谱表示
 \begin{equation}
@@ -329,7 +479,7 @@
  =\sum_n\frac{|\phi_n\rangle\langle\phi_n|}{\lambda_n-z}.
  \label{eq:phys-cont-biharmonic-resolvent}
 \end{equation}
-当面质量密度为常数 \(\mu_A\) 时，\eqnrefs{eq:phys-cont-weighted-dynamics} 的频域响应就是 \(\mathscr R_X(\mu_A\omega^2)\)；质量非均匀时则应使用 \(\widetilde{\mathsf L}_X\) 的 预解式。静态 Green 函数、模态展开和共振极点因此是同一自伴谱理论的不同切片。
+当面质量密度为常数 \(\mu_A\) 时，\eqnrefs{eq:phys-cont-weighted-dynamics} 的频域响应就是 \(\mathscr R_X(\mu_A\omega^2)\)；质量非均匀时则应使用 \(\widetilde{\mathsf L}_X\) 的预解式。静态 Green 函数、模态展开和共振极点因此是同一自伴谱理论的不同切片。
 
 分离变量后常遇到一维常系数算子
 \[
@@ -344,7 +494,7 @@
 \end{equation}
 其中 \([f]_\eta=f(\eta^+)-f(\eta^-)\)。若最高阶项前有常数 \(D\)，最后一式变为 \([g''']_\eta=1/D\)。变系数或曲线坐标下应直接对守恒型算子积分；不能把这条笛卡尔常系数跳跃律机械搬到极坐标。
 
-\begin{derivation}[\eqnrefs{eq:phys-cont-fourth-order-green-jump}：分布阶数匹配]
+\begin{proof}[解]
 设 \(g_\pm(y)\) 在 \(\eta\) 两侧分别光滑，把 \(g\) 写为分段函数
 \[
  g(y)=g_-(y)\Theta(\eta-y)+g_+(y)\Theta(y-\eta),
@@ -402,7 +552,7 @@
  [g''']_\eta=1,
 \]
 连同前述三个连续条件，即\eqnrefs{eq:phys-cont-fourth-order-green-jump}。若最高阶项前有常数 \(D\)，则 \(Dg^{(4)}\) 给出 \(D[g''']_\eta\delta\)，比较系数得 \([g''']_\eta=1/D\)。
-\end{derivation}
+\end{proof}
 
 \section{主符号与 Weyl 高频谱}
 
@@ -413,7 +563,7 @@
  \xi_\alpha\xi_\beta\xi_\gamma\xi_\delta,
  \label{eq:phys-cont-general-principal-symbol}
 \end{equation}
-它由\eqnrefs{eq:phys-cont-fourth-ellipticity} 保证正定。若系数与边界具有满足经典谱渐近所需的正则性，并且所选自伴边界实现满足四阶椭圆边值问题的补条件（正则 椭圆/complementing 条件），则二维 Weyl 首项为
+它由\eqnrefs{eq:phys-cont-fourth-ellipticity} 保证正定。若系数与边界具有满足经典谱渐近所需的正则性，并且所选自伴边界实现满足四阶椭圆边值问题的补条件（正则椭圆/complementing 条件），则二维 Weyl 首项为
 \begin{equation}
  N(\lambda)
  \sim\frac{1}{(2\pi)^2}
@@ -460,8 +610,8 @@
 \end{equation}
 式 \eqnrefs{eq:phys-cont-isotropic-frequency-weyl} 才是下一章薄板振动真正使用的高频结论；把刚度谱的 \(\lambda_n\) 与物理频率 \(\omega_n\) 区分开，可以避免在非均匀质量下误用常系数换元。
 
-\begin{derivation}[\eqnrefs{eq:phys-cont-general-weyl,eq:phys-cont-weighted-frequency-weyl}：刚度谱与物理频率 Weyl 计数]
-分三步进行——(1) 对四阶刚度算子直接做相空间计数得到 \(\lambda_n\) 渐近；(2) 通过酉变换把质量加权本征问题化为标准形式并提取主符号；(3) 对变换后算子做相空间计数得到 \(\omega_n\) 渐近。
+\begin{proof}[解]
+先对四阶刚度算子作相空间计数得到 \(\lambda_n\) 渐近，再用酉变换把质量加权本征问题化为标准形式；变换后主符号的相空间体积直接给出 \(\omega_n\) 渐近。
 
 刚度谱 Weyl 计数。先证一般齐次标度：\(p_4\) 是 \(\boldsymbol\xi\) 的四次齐次函数，\(p_4(t\boldsymbol\xi)=t^4p_4(\boldsymbol\xi)\)。令 \(p_4(t\boldsymbol\xi)=\lambda\) 得 \(t=\lambda^{1/4}\)，故子水平集按 \(\boldsymbol\xi\to\lambda^{1/4}\boldsymbol\xi\) 缩放，其 \(d=2\) 维动理体积为
 \begin{equation*}
@@ -481,7 +631,7 @@
  \sim\frac{|\mathcal D|}{(2\pi)^2}\,\pi\sqrt\lambda
  =\frac{|\mathcal D|}{4\pi}\sqrt\lambda.
 \end{equation*}
-再令 \(N(\lambda_n)\sim n\)，解出 \(\lambda_n\sim(4\pi n/|\mathcal D|)^2\)，即正文的 \(\lambda_n\) 渐近式。相空间计数 \(N(\lambda)\sim(2\pi)^{-d}\int_{p\le\lambda}\dd x\dd\xi\) 是 半经典 分析的标准结果，对椭圆算子由 Helffer--Robert 或热迹 Tauberian 方法严格证明：先证热迹 \(\Tr\ee^{-t\mathsf L}\sim(4\pi t)^{-d/2}\sum_{j}a_j t^j\) 的渐近展开，再由 Karamata Tauberian 定理反推 \(N(\lambda)\) 的幂律渐近。
+再令 \(N(\lambda_n)\sim n\)，解出 \(\lambda_n\sim(4\pi n/|\mathcal D|)^2\)，即正文的 \(\lambda_n\) 渐近式。相空间计数 \(N(\lambda)\sim(2\pi)^{-d}\int_{p\le\lambda}\dd x\dd\xi\) 是半经典分析的标准结果，对椭圆算子由 Helffer--Robert 或热迹 Tauberian 方法严格证明：先证热迹 \(\Tr\ee^{-t\mathsf L}\sim(4\pi t)^{-d/2}\sum_{j}a_j t^j\) 的渐近展开，再由 Karamata Tauberian 定理反推 \(N(\lambda)\) 的幂律渐近。
 
 质量加权算子的主符号。广义本征问题 \(\mathsf L_X\phi_n=\omega_n^2\mu_A\phi_n\) 通过酉变换 \(\psi_n=\mu_A^{1/2}\phi_n\) 化为普通本征问题 \(\widetilde{\mathsf L}_X\psi_n=\omega_n^2\psi_n\)，其中 \(\widetilde{\mathsf L}_X=\mu_A^{-1/2}\mathsf L_X\mu_A^{-1/2}\)。乘法算子 \(\mu_A^{-1/2}\) 是零阶 PsDO，在最高阶只把主符号左右各乘一次，因此
 \begin{equation*}
@@ -498,6 +648,6 @@
 \end{equation*}
 直接得到\eqnrefs{eq:phys-cont-weighted-frequency-weyl}。由于被积函数在二维相空间中对 \(\boldsymbol\xi\) 的四次齐次子水平集面积正比于右端的 \(1/2\) 次方（二维、四阶），\(N_\omega(\varpi)\asymp\varpi\)：非均匀质量与各向异性刚度只改变前因子，不改变线性频率计数。
 
-\end{derivation}
+\end{proof}
 
-本章得到的接口现在与具体板模型无关：构成张量决定二次型和主符号，Green 边界型决定自伴边界对，零模决定是否必须使用 伪逆，质量权重决定真正的动力学 Hilbert 空间，而 Green 函数、共振和高频态密度都来自同一谱分解。下一章将从三维线弹性推出二维构成张量，并说明何时它进一步退化为熟悉的各向同性 Kirchhoff--Love 双调和方程。
+给定材料的构成张量以后，弯曲二次型同时确定微分算子的主部和允许的边界配对；边界条件若留下刚体零模，静态响应就必须投影到零模的正交补上，而动力学还要把面质量放进内积。这样，静态 Green 函数、受迫振动的共振极点和高频模态计数都来自同一个自伴算子的谱分解。下一章从三维线弹性出发推导二维构成张量，并说明各向同性 Kirchhoff--Love 双调和方程在什么近似下出现。

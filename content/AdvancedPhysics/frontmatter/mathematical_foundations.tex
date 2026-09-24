@@ -1,0 +1,302 @@
+\chapter{数学预备：从线性空间到联络}
+\label{chap:advanced-mathematical-foundations}
+
+物理公式中的对象各有明确类型。波函数是向量，哈密顿量是线性算符，对称操作组成群，参数依赖的本征空间组成向量丛。若不先分清这些对象，后面的计算即使符号无误，也容易把“选了一组基”误认为“改变了物理状态”，或把局部坐标公式误认为全局结论。这里从定义开始建立全书反复使用的数学语言。
+
+\section{集合、映射与商集}
+
+写 \(x\in X\) 表示 \(x\) 是集合 \(X\) 的元素。映射
+\[
+f:X\longrightarrow Y
+\]
+给每个 \(x\in X\) 指定唯一的 \(f(x)\in Y\)。若不同的 \(x\) 总有不同的像，\(f\) 称为单射；若每个 \(y\in Y\) 都等于某个 \(f(x)\)，\(f\) 称为满射；既单又满的映射称为双射。双射存在逆映射。
+
+关系 \(\sim\) 若满足
+\[
+x\sim x,\qquad
+x\sim y\Rightarrow y\sim x,\qquad
+x\sim y,\ y\sim z\Rightarrow x\sim z,
+\]
+便称为等价关系。元素 \(x\) 的等价类为
+\[
+[x]=\{y\in X:y\sim x\},
+\]
+全体等价类组成商集 \(X/{\sim}\)。例如角度 \(\theta\) 与
+\(\theta+2\pi n\) 表示同一方向，所以圆周可写成
+\(\mathbb R/(2\pi\mathbb Z)\)。
+
+\begin{proposition}[等价类要么相同，要么不相交]
+若 \(\sim\) 是等价关系，则任意两个等价类 \([x]\) 与 \([y]\) 或者相等，或者没有公共元素。
+\end{proposition}
+
+\begin{proof}
+若两类有公共元素 \(z\)，则 \(z\sim x\) 且 \(z\sim y\)，从而
+\(x\sim y\)。对任意 \(u\in[x]\)，有 \(u\sim x\sim y\)，故
+\(u\in[y]\)，所以 \([x]\subseteq[y]\)。交换 \(x,y\) 得到反向包含，于是 \([x]=[y]\)。
+\end{proof}
+
+\section{向量空间、线性映射与商空间}
+
+\begin{definition}[向量空间]
+在数域 \(\mathbb F\) 上，集合 \(V\) 若定义了向量加法和数乘，并满足加法结合律、交换律、零元与负元存在，以及数乘的结合律和分配律，就称为 \(\mathbb F\) 上的向量空间。本书主要取
+\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)。
+\end{definition}
+
+一组向量 \(e_1,\ldots,e_n\) 若线性无关，并且每个 \(v\in V\) 都能唯一写成 \(v=\sum_i v^ie_i\)，便是一组基。数 \(v^i\) 是 \(v\) 在这组基下的坐标。换基只改变坐标，不改变向量。
+
+映射 \(T:V\to W\) 若满足
+\[
+T(av+bw)=aT(v)+bT(w),
+\]
+便是线性映射。它的核与像分别为
+\[
+\ker T=\{v:T(v)=0\},\qquad
+\operatorname{im}T=\{T(v):v\in V\}.
+\]
+
+\begin{theorem}[秩--零化度定理]
+设 \(V\) 有限维，\(T:V\to W\) 线性，则
+\[
+\dim V=\dim\ker T+\dim\operatorname{im}T.
+\]
+\end{theorem}
+
+\begin{proof}
+取 \(\ker T\) 的基 \(e_1,\ldots,e_k\)，再扩充为 \(V\) 的基
+\(e_1,\ldots,e_n\)。向量
+\(T(e_{k+1}),\ldots,T(e_n)\) 张成 \(\operatorname{im}T\)。若它们有线性关系，则相应的
+\(\sum_{i=k+1}^na_ie_i\) 属于 \(\ker T\)，与整组基线性无关矛盾，所以它们也是线性无关的。因此
+\(\dim\operatorname{im}T=n-k\)，结论成立。
+\end{proof}
+
+若 \(U\subseteq V\) 是子空间，可规定 \(v\sim w\) 当且仅当
+\(v-w\in U\)。所得商空间 \(V/U\) 的元素是陪集
+\([v]=v+U\)。
+
+\begin{proposition}[商空间维数]
+有限维情形下，
+\[
+\dim(V/U)=\dim V-\dim U.
+\]
+\end{proposition}
+
+\begin{proof}
+取 \(U\) 的基 \(e_1,\ldots,e_k\)，扩充为 \(V\) 的基
+\(e_1,\ldots,e_n\)。在商空间中，前 \(k\) 个基向量的等价类为零，而
+\([e_{k+1}],\ldots,[e_n]\) 线性无关并张成 \(V/U\)，所以维数为
+\(n-k\)。
+\end{proof}
+
+\section{内积、伴随与谱分解}
+
+复向量空间上的内积 \(\langle u,v\rangle\) 对第二个变量线性，对第一个变量共轭线性，并满足
+\[
+\langle u,v\rangle=\langle v,u\rangle^*,\qquad
+\langle v,v\rangle\ge0.
+\]
+等号只在 \(v=0\) 时成立。算符 \(A\) 的伴随 \(A^\dagger\) 由
+\[
+\langle u,Av\rangle=\langle A^\dagger u,v\rangle
+\]
+定义。若 \(A=A^\dagger\)，则 \(A\) 自伴；若
+\(A^\dagger A=I\)，则 \(A\) 酉。
+
+\begin{proposition}[自伴算符的基本谱性质]
+自伴算符的本征值为实数，属于不同本征值的本征向量彼此正交。
+\end{proposition}
+
+\begin{proof}
+若 \(Av=\lambda v\)，则
+\[
+\lambda\langle v,v\rangle
+=\langle v,Av\rangle
+=\langle Av,v\rangle
+=\lambda^*\langle v,v\rangle,
+\]
+所以 \(\lambda=\lambda^*\)。若 \(Av=\lambda v\)、\(Aw=\mu w\)，则
+\[
+\mu\langle v,w\rangle
+=\langle v,Aw\rangle
+=\langle Av,w\rangle
+=\lambda\langle v,w\rangle.
+\]
+当 \(\lambda\ne\mu\) 时只能有 \(\langle v,w\rangle=0\)。
+\end{proof}
+
+有限维谱定理说明，每个复自伴矩阵都能由酉变换对角化。证明可先从特征多项式取一个本征向量，再证明它的正交补在算符作用下保持不变，最后对维数归纳。
+
+\section{群、表示与 Schur 引理}
+
+\begin{definition}[群]
+集合 \(G\) 配有乘法。若乘法满足结合律，存在单位元 \(e\)，且每个
+\(g\) 都有逆元 \(g^{-1}\)，则 \(G\) 称为群。若还有
+\(gh=hg\)，则群是交换群。
+\end{definition}
+
+\begin{definition}[表示]
+群 \(G\) 在向量空间 \(V\) 上的表示，是群同态
+\[
+D:G\longrightarrow GL(V),
+\qquad D(gh)=D(g)D(h).
+\]
+若每个 \(D(g)\) 都酉，则称为酉表示。
+\end{definition}
+
+子空间 \(W\subseteq V\) 若满足 \(D(g)W\subseteq W\) 对所有
+\(g\in G\) 成立，称为不变子空间。除 \(0,V\) 外没有不变子空间的表示称为不可约表示。线性映射 \(A:V\to W\) 若满足
+\[
+AD_V(g)=D_W(g)A,
+\]
+称为交织算符。
+
+\begin{theorem}[Schur 引理]
+设 \(V,W\) 是有限维复不可约表示。交织算符 \(A:V\to W\) 或为零，或为同构。若 \(V=W\)，则 \(A=cI\)。
+\end{theorem}
+
+\begin{proof}
+\(\ker A\) 是 \(V\) 的不变子空间，\(\operatorname{im}A\) 是 \(W\) 的不变子空间。不可约性说明非零 \(A\) 的核只能为零，像只能为
+\(W\)，所以它是同构。若 \(V=W\)，复矩阵 \(A\) 有某个本征值
+\(c\)。交织算符 \(A-cI\) 有非零核，因此只能等于零。
+\end{proof}
+
+表示的特征标是 \(\chi(g)=\operatorname{Tr}D(g)\)。相似矩阵迹相同，而
+\(D(hgh^{-1})=D(h)D(g)D(h)^{-1}\)，所以特征标在同一共轭类上相等。
+
+\section{Lie 群、生成元与指数映射}
+
+若群 \(G\) 同时是光滑流形，且乘法与取逆光滑，\(G\) 称为 Lie 群。单位元处的切空间
+\(\mathfrak g=T_eG\) 称为 Lie 代数。
+
+对矩阵 Lie 群，经过单位元的一参数子群满足
+\(g(t+s)=g(t)g(s)\)。令 \(X=g'(0)\)，对 \(s\) 在零点求导得
+\[
+g'(t)=g(t)X,\qquad g(0)=I.
+\]
+这个初值问题的唯一解为
+\[
+g(t)=\exp(tX)=\sum_{n=0}^{\infty}\frac{t^nX^n}{n!}.
+\]
+生成元的交换子 \([X,Y]=XY-YX\) 测量两个无穷小变换交换次序后的最低阶差异。
+
+\begin{proposition}[正交群的 Lie 代数]
+\[
+SO(d)=\{R:R^{\mathsf T}R=I,\ \det R=1\}
+\]
+的 Lie 代数是全体实反对称矩阵：
+\[
+\mathfrak{so}(d)=\{X:X^{\mathsf T}=-X\}.
+\]
+\end{proposition}
+
+\begin{proof}
+取 \(R(t)\in SO(d)\)、\(R(0)=I\)、\(R'(0)=X\)。对
+\(R(t)^{\mathsf T}R(t)=I\) 求导，得到
+\(X^{\mathsf T}+X=0\)。反过来，若 \(X^{\mathsf T}=-X\)，则
+\[
+(\ee^{tX})^{\mathsf T}\ee^{tX}
+=\ee^{-tX}\ee^{tX}=I,
+\]
+并且行列式连续且在 \(t=0\) 等于 \(1\)，所以
+\(\ee^{tX}\in SO(d)\)。
+\end{proof}
+
+\section{流形、切向量与微分形式}
+
+\begin{definition}[光滑流形]
+\(n\) 维光滑流形 \(M\) 是由坐标图
+\((U_\alpha,x_\alpha)\) 覆盖的空间，其中
+\[
+x_\alpha:U_\alpha\longrightarrow
+x_\alpha(U_\alpha)\subseteq\mathbb R^n
+\]
+是双射，重叠区上的坐标变换
+\(x_\beta\circ x_\alpha^{-1}\) 光滑。
+\end{definition}
+
+过点 \(p\) 的曲线 \(\gamma(t)\) 通过
+\[
+X[f]=\left.\frac{\dd}{\dd t}f(\gamma(t))\right|_{t=0}
+\]
+定义一个切向量。全体切向量组成 \(T_pM\)。其对偶空间
+\(T_p^*M\) 称为余切空间。局部坐标给出切基
+\(\partial_\mu\) 与余切基 \(\dd x^\mu\)，函数的微分为
+\[
+\dd f=\frac{\partial f}{\partial x^\mu}\dd x^\mu.
+\]
+
+反对称的 \(k\) 阶协变张量称为 \(k\)-形式。外微分满足
+\[
+\dd^2=0,\qquad
+\dd(\alpha\wedge\beta)
+=\dd\alpha\wedge\beta+(-1)^k\alpha\wedge\dd\beta
+\]
+，其中 \(\alpha\) 是 \(k\)-形式。微积分基本定理、Green 公式、Gauss 公式和 Stokes 公式统一为
+\begin{equation}
+\int_M\dd\omega=\int_{\partial M}\omega.
+\label{eq:general-stokes-primer}
+\end{equation}
+把流形切成小块时，相邻小块的公共边界方向相反，内部边界积分两两抵消，只剩整体边界；这给出 Stokes 公式从局部到整体的拼接机制。
+
+\section{向量丛、联络与曲率}
+
+\begin{definition}[向量丛与截面]
+秩为 \(r\) 的复向量丛是映射 \(\pi:E\to M\)。每个纤维
+\(E_p=\pi^{-1}(p)\) 是 \(r\) 维复向量空间；每个点附近都有
+\[
+\pi^{-1}(U)\simeq U\times\mathbb C^r.
+\]
+满足 \(\pi(s(p))=p\) 的光滑映射 \(s:M\to E\) 称为截面。
+\end{definition}
+
+在 \(U_\alpha\) 上逐点选基 \(e_{\alpha1},\ldots,e_{\alpha r}\)，得到局部标架。在重叠区，两组标架满足
+\[
+e_\beta=e_\alpha U_{\alpha\beta}.
+\]
+若截面坐标为 \(s=e_\alpha\psi_\alpha=e_\beta\psi_\beta\)，则
+\(\psi_\beta=U_{\alpha\beta}^{-1}\psi_\alpha\)。
+
+\begin{definition}[联络]
+联络 \(\nabla\) 把向量场 \(X\) 和截面 \(s\) 送到截面
+\(\nabla_Xs\)，并满足
+\[
+\nabla_{fX+gY}s=f\nabla_Xs+g\nabla_Ys,\qquad
+\nabla_X(fs)=X[f]s+f\nabla_Xs.
+\]
+\end{definition}
+
+在局部标架中，联络写成
+\[
+\nabla\psi=\dd\psi+\Gamma\psi,
+\]
+其中 \(\Gamma\) 是矩阵值 \(1\)-形式。更换标架
+\(e'=eU\) 后，同一个几何联络满足
+\begin{equation}
+\Gamma'=U^{-1}\Gamma U+U^{-1}\dd U.
+\label{eq:connection-transform-primer}
+\end{equation}
+
+\begin{proof}
+同一截面的坐标满足 \(\psi'=U^{-1}\psi\)。要求协变导数也按同样方式变换：
+\(\nabla'\psi'=U^{-1}\nabla\psi\)。展开
+\[
+\dd(U^{-1}\psi)+\Gamma'U^{-1}\psi
+=U^{-1}\dd\psi-U^{-1}(\dd U)U^{-1}\psi
++\Gamma'U^{-1}\psi
+\]
+并与 \(U^{-1}\dd\psi+U^{-1}\Gamma\psi\) 比较，便得到
+\eqnrefs{eq:connection-transform-primer}。
+\end{proof}
+
+联络的曲率定义为
+\begin{equation}
+F=\dd\Gamma+\Gamma\wedge\Gamma.
+\label{eq:curvature-primer}
+\end{equation}
+代入 \eqnrefs{eq:connection-transform-primer} 可得
+\(F'=U^{-1}FU\)。因此联络矩阵依赖标架，曲率是否为零却不依赖标架。
+
+沿曲线 \(\gamma(t)\) 平行移动截面，定义为满足
+\[
+\nabla_{\dot\gamma}s=0
+\]
+的初值问题。沿闭曲线走一周后，末态与初态之间的线性变换称为整体回转。曲率描述无穷小闭路的整体回转；Berry 相位和非 Abel Berry 矩阵就是电子本征态丛的整体回转。

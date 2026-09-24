@@ -1,0 +1,749 @@
+\chapter{Fano--Feshbach 共振与 Landau--Zener 跃迁}
+\label{ch:resonance-lz}
+
+离散态若与连续谱耦合，原来的能级会获得位移和有限寿命；两个随时间靠近的能级若彼此耦合，系统又可能在避免交叉处改变绝热分支。前者是定态散射问题，后者是含时演化问题，却共享同一种消元思想：把 Hilbert 空间分成保留子空间 \(P\) 与其余子空间 \(Q\)，解出 \(Q\) 分量，再把它反馈到 \(P\) 中。定态反馈形成能量依赖的自能，含时反馈形成局部二能级耦合。Fano--Feshbach 与 Landau--Zener 模型正是这两种情形最清楚的可解代表。
+\section{Feshbach 投影：先消去不关注的子空间}
+
+设正交投影算符
+
+\[
+P^2=P,
+\qquad
+Q^2=Q,
+\qquad
+PQ=0,
+\qquad
+P+Q=\mathbb I.
+\]
+
+更一般地，对复谱参数 $z$，完整预解式 $G(z)=(z-H)^{-1}$ 的 $P$ 块满足精确 Schur-补恒等式
+\begin{equation}
+PG(z)P
+=\left[z-H_{PP}-H_{PQ}(z-H_{QQ})^{-1}H_{QP}\right]^{-1}_{P}.
+\label{eq:feshbach-schur-resolvent}
+\end{equation}
+这里右端逆只在 $P$ 子空间中取。定态有效哈密顿量、共振极点、能级位移和寿命都只是这一预解式恒等式在不同解析区域与边界条件下的读法。
+
+\begin{proof}[解]
+设 Hilbert 空间分解 \(\mathcal H=\mathcal H_P\oplus\mathcal H_Q\)，正交投影 \(P+Q=I\)。对 \(z\in\rho(H)\)，预解式 \(G(z)=(z-H)^{-1}\) 满足
+\[
+ (z-H)|\Psi\rangle=|\eta_P\rangle,
+ \qquad Q|\eta_P\rangle=0.
+\]
+把 \(|\Psi\rangle\) 分块为 \(|\Psi\rangle=|\psi_P\rangle+|\psi_Q\rangle\)，其中 \(|\psi_P\rangle=P|\Psi\rangle\)、\(|\psi_Q\rangle=Q|\Psi\rangle\)。将方程分别左乘 \(P\) 和 \(Q\)，利用 \(PHP=H_{PP}\)、\(PHQ=H_{PQ}\) 等分块记号，得到耦合方程组
+\begin{align*}
+ (z-H_{PP})|\psi_P\rangle-H_{PQ}|\psi_Q\rangle
+ &=|\eta_P\rangle,\\
+ -H_{QP}|\psi_P\rangle+(z-H_{QQ})|\psi_Q\rangle
+ &=0.
+\end{align*}
+第一式是 \(P\) 空间分量，第二式是 \(Q\) 空间分量，两式通过非对角块 \(H_{PQ}\)、\(H_{QP}\) 耦合。
+
+只要 \(z\) 位于 \(H_{QQ}\) 的预解集，\((z-H_{QQ})\) 可逆，第二式精确解为
+\[
+ |\psi_Q\rangle
+ =(z-H_{QQ})^{-1}H_{QP}|\psi_P\rangle.
+\]
+
+
+将 \(|\psi_Q\rangle\) 代回第一式，
+\[
+ (z-H_{PP})|\psi_P\rangle
+ -H_{PQ}(z-H_{QQ})^{-1}H_{QP}|\psi_P\rangle
+ =|\eta_P\rangle,
+\]
+整理为
+\[
+ \left[z-H_{PP}
+ -H_{PQ}(z-H_{QQ})^{-1}H_{QP}\right]|\psi_P\rangle
+ =|\eta_P\rangle.
+\]
+方括号中正是 Feshbach 有效哈密顿量
+\[
+ H_{\rm eff}(z)=H_{PP}+H_{PQ}(z-H_{QQ})^{-1}H_{QP},
+\]
+因此 \(|\psi_P\rangle=(z-H_{\rm eff}(z))^{-1}|\eta_P\rangle\)。另一方面，由 \(|\eta_P\rangle\in\mathcal H_P\) 和 \(G(z)=(z-H)^{-1}\)，
+\[
+ |\psi_P\rangle=P|\Psi\rangle=PG(z)|\eta_P\rangle=PG(z)P|\eta_P\rangle.
+\]
+两个表达式对任意 \(|\eta_P\rangle\in\mathcal H_P\) 成立，故算子恒等
+\[
+ PG(z)P=(z-H_{\rm eff}(z))^{-1}
+ =\left[z-H_{PP}-H_{PQ}(z-H_{QQ})^{-1}H_{QP}\right]^{-1},
+\]
+即\eqnrefs{eq:feshbach-schur-resolvent}。修正项 \(H_{PQ}(z-H_{QQ})^{-1}H_{QP}\) 描述从 \(P\) 跳到 \(Q\)、传播再跳回 \(P\) 的二阶虚过程。
+
+边界条件：出射波 \(z\to E+\ii0^+\)、入射波 \(z\to E-\ii0^+\)。由 Sokhotski--Plemelj 公式，
+\[
+ (E\pm\ii0^+-H_{QQ})^{-1}
+ =\operatorname{p.v.}\frac1{E-H_{QQ}}
+ \mp\ii\pi\delta(E-H_{QQ}),
+\]
+虚部产生宽度 \(\Gamma=-2\operatorname{Im}\langle\psi_P|H_{PQ}\delta(E-H_{QQ})H_{QP}|\psi_P\rangle\)，即 Fermi 黄金法则中的衰变率。有效哈密顿量的非厄米部分正由这一步产生，把实能级移动到复平面 \(E\to E-\ii\Gamma/2\)，给出指数衰变 \(e^{-\Gamma t/2}\)。
+\end{proof}
+
+定态 Schr\"odinger 方程
+
+\[
+(E-H)|\Psi\rangle=0
+\]
+
+分块为
+
+\begin{align*}
+(E-H_{PP})P|\Psi\rangle
+&=H_{PQ}Q|\Psi\rangle,
+\\
+(E-H_{QQ})Q|\Psi\rangle
+&=H_{QP}P|\Psi\rangle.
+\end{align*}
+
+散射问题要求出射边界条件，因此预解式应取
+
+\[
+G_Q^{(+)}(E)
+\equiv(E+\ii0^+-H_{QQ})^{-1}.
+\]
+
+第二式形式精确地解为
+
+\[
+Q|\Psi\rangle
+=G_Q^{(+)}(E)H_{QP}P|\Psi\rangle.
+\]
+
+代回 \(P\) 空间：
+
+\begin{equation}
+H_{\rm eff}^{(+)}(E)
+=H_{PP}
++H_{PQ}G_Q^{(+)}(E)H_{QP}.
+\label{eq:feshbach-effective}
+\end{equation}
+
+第二项
+
+\[
+\Sigma(E)
+\equiv H_{PQ}G_Q^{(+)}(E)H_{QP}
+\]
+
+就是能量依赖自能。它的实部移动共振位置，虚部产生有限寿命。只要 \(Q\) 空间包含连续谱，\(H_{\rm eff}^{(+)}\) 一般就是非厄米的；这不是基本哈密顿量失去 Hermiticity，而是出射边界条件和连续谱消元后的有效描述。
+
+\section{定态共振：自能、Fano 干涉与阈值散射}
+取
+
+\[
+P=|\phi\rangle\langle\phi|,
+\qquad
+H_0|\phi\rangle=E_\phi|\phi\rangle,
+\]
+
+并令连续态满足能量归一化
+
+\[
+\langle E|E'\rangle=\delta(E-E').
+\]
+
+定义耦合
+
+\[
+V_E\equiv\langle E|V|\phi\rangle.
+\]
+
+则标量自能为
+
+\[
+\Sigma(E)
+=\int\dd E'\,
+\frac{|V_{E'}|^2}{E-E'+\ii0^+}.
+\]
+
+Sokhotski--Plemelj 公式
+
+\[
+\frac1{x+\ii0^+}
+=\mathcal P\frac1x-\ii\pi\delta(x)
+\]
+
+给出
+
+\begin{equation}
+\Sigma(E)
+=\Delta(E)-\frac{\ii}{2}\Gamma(E),
+\label{eq:self-energy-split}
+\end{equation}
+
+其中
+
+\begin{equation}
+\Delta(E)
+=\mathcal P\int\dd E'\,
+\frac{|V_{E'}|^2}{E-E'},
+\qquad
+\Gamma(E)=2\pi|V_E|^2.
+\label{eq:shift-width}
+\end{equation}
+
+\(\Gamma\) 的具体前因子依赖连续态归一化；如果改用动量归一化，态密度 Jacobian 必须显式出现。
+
+共振极点由
+
+\[
+E-E_\phi-\Sigma(E)=0
+\]
+
+决定。若 \(\Delta(E),\Gamma(E)\) 在共振附近缓慢变化，定义
+
+\[
+E_R=E_\phi+\Delta(E_R),
+\]
+
+就得到近似极点
+
+\[
+E_{\rm pole}\simeq E_R-\ii\Gamma(E_R)/2.
+\]
+
+对应时间振幅 \(\exp(-\ii E_{\rm pole}t/\hbar)\) 的概率按 \(\exp(-\Gamma t/\hbar)\) 衰减，所以寿命
+
+\[
+\tau\simeq\frac{\hbar}{\Gamma}.
+\]
+
+若自能的能量依赖不能忽略，极点附近传播子不是简单的单位留数。设 $z_p-E_\phi-\Sigma(z_p)=0$，则
+\begin{equation}
+G_P(z)\simeq\frac{Z_p}{z-z_p},
+\qquad
+Z_p=\frac{1}{1-\Sigma'(z_p)}.
+\label{eq:resonance-pole-residue}
+\end{equation}
+$Z_p$ 衡量裸离散态在穿衣共振中的极点权重；宽共振或阈值附近 $\Sigma'(z)$ 较大时，把 $Z_p$ 近似为 1 会丢失重要谱权重信息。
+
+仅知道复极点还不能解释不对称 Fano 线形，因为不对称来自“背景连续路径”和“经离散态再回到连续谱的路径”相干叠加。设固定总能量为 \(E\) 的精确 eigenstate 展开为
+
+\begin{equation}
+|\Psi_E\rangle
+=a_E|\phi\rangle
++\int\dd E'\,b_E(E')|E'\rangle.
+\label{eq:fano-state-expansion}
+\end{equation}
+
+Schr\"odinger 方程给出
+
+\begin{align*}
+(E-E_\phi)a_E
+&=\int\dd E'\,V_{E'}^*b_E(E'),
+\\
+(E-E')b_E(E')
+&=V_{E'}a_E.
+\end{align*}
+
+第二式在分布意义下的一般解不是普通函数 \(V_{E'}a_E/(E-E')\)，因为在 \(E'=E\) 处还允许 \(\delta\) 函数齐次解。写成
+
+\begin{equation}
+b_E(E')
+=a_EV_{E'}
+\left[
+\mathcal P\frac1{E-E'}
++Z_E\delta(E-E')
+\right].
+\label{eq:fano-distribution-solution}
+\end{equation}
+
+代回第一式：
+
+\[
+E-E_\phi
+=\Delta(E)+Z_E|V_E|^2.
+\]
+
+引入
+
+\[
+\epsilon
+\equiv\frac{E-E_R}{\Gamma/2},
+\qquad
+\Gamma=2\pi|V_E|^2,
+\]
+
+得到
+
+\[
+Z_E=\pi\epsilon.
+\]
+
+为了按能量 \(\delta\) 函数归一化，可定义散射相移 \(\delta_E\) 使
+
+\[
+Z_E=-\pi\cot\delta_E.
+\]
+
+于是
+
+\begin{equation}
+\tan\delta_E=-\frac1\epsilon.
+\label{eq:fano-phase-shift}
+\end{equation}
+
+由式 \eqnrefs{eq:fano-phase-shift} 定出相移后，同时选择
+
+\[
+a_E=\frac{\sin\delta_E}{\pi V_E}
+\]
+
+（若 \(V_E\) 为复数，相位可吸收到连续态约定中）。定义穿衣 discrete 态
+
+\[
+|\Phi_E\rangle
+=|\phi\rangle
++\mathcal P\int\dd E'\,
+\frac{V_{E'}}{E-E'}|E'\rangle,
+\]
+
+则精确散射态变为
+
+\begin{equation}
+|\Psi_E\rangle
+=\frac{\sin\delta_E}{\pi V_E}|\Phi_E\rangle
+-\cos\delta_E|E\rangle.
+\label{eq:fano-normalized-state}
+\end{equation}
+
+这一步把“连续背景”和“共振 dressing”两条振幅路径显式分开了。
+
+\begin{proof}[解]
+设外部跃迁算符为 \(T\)，初态为 \(|i\rangle\)。由 \eqnrefs{eq:fano-normalized-state}，散射态 $|\Psi_E\rangle$ 已分解为连续背景 $|E\rangle$ 和穿衣离散态 $|\Phi_E\rangle$ 两条路径，跃迁振幅为
+\[
+\mathcal M(E)
+=\langle\Psi_E|T|i\rangle
+=-\cos\delta_E\,\mathcal M_{\rm bg}
++\frac{\sin\delta_E}{\pi V_E^*}
+\langle\Phi_E|T|i\rangle,
+\]
+其中 \(\mathcal M_{\rm bg}=\langle E|T|i\rangle\) 是纯背景路径的振幅。两条路径的相干叠加是不对称线型的根源。
+
+定义
+\[
+q(E)
+\equiv
+\frac{\langle\Phi_E|T|i\rangle}
+{\pi V_E^*\mathcal M_{\rm bg}}.
+\]
+$q$ 是离散路径与背景路径的约化振幅比，包含两条路径的相对相位和强度。于是
+\[
+\frac{\mathcal M}{\mathcal M_{\rm bg}}
+=-\cos\delta_E+q\sin\delta_E.
+\]
+
+由 \(\tan\delta_E=-1/\epsilon\)，可取
+\[
+\cos\delta_E=\frac{\epsilon}{\sqrt{1+\epsilon^2}},
+\qquad
+\sin\delta_E=-\frac1{\sqrt{1+\epsilon^2}},
+\]
+代入得
+\[
+\frac{\mathcal M}{\mathcal M_{\rm bg}}
+=\frac{q-\epsilon}{\sqrt{1+\epsilon^2}},
+\]
+整体负号不影响截面，因此
+\[
+\frac{|\mathcal M(E)|^2}{|\mathcal M_{\rm bg}(E)|^2}
+=\frac{(q+\epsilon)^2}{1+\epsilon^2}.
+\]
+$|q|\to\infty$ 时，$(q+\epsilon)^2/(1+\epsilon^2)\approx q^2/(1+\epsilon^2)$，退化为以 $\epsilon=0$ 为中心的 Lorentz 峰（离散路径主导，背景可忽略）。$q=0$ 时，$\epsilon^2/(1+\epsilon^2)$ 在 $\epsilon=0$ 处为零、$|\epsilon|\to\infty$ 处趋于 1，共振中心成为反共振零点（完全相消干涉）。$q=\pm1$ 时，$(1+\epsilon)^2/(1+\epsilon^2)$ 在 $\epsilon=-1$ 处为零、$\epsilon=0$ 处为 $1/2$，不对称最显著。
+
+
+\end{proof}
+
+因此 Fano 线形为
+
+\begin{equation}
+\sigma(E)
+=\sigma_{\rm bg}(E)
+\frac{(q+\epsilon)^2}{1+\epsilon^2}.
+\label{eq:fano-profile}
+\end{equation}
+
+在单通道、时间反演对称且无吸收的常见约定中，可以通过相位选择把 $q$ 取为实数，得到\eqnrefs{eq:fano-profile}。若存在不可消去的多通道相位、吸收或时间反演破缺，$q$ 一般可以是复数，此时线型应保留 $|q+\epsilon|^2/(1+\epsilon^2)$，不能强行用实 $q$ 描述所有不对称性。
+
+不同 \(q\) 的线型见\figref{fig:fano-lineshape}。
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.83\textwidth]{fano_lineshape.pdf}
+\caption{不同 Fano 参数 \(q\) 对归一化线型的影响。\(|q|\gg1\) 时共振趋向 Lorentz 峰，\(q=0\) 时共振中心成为反共振零点。}
+\label{fig:fano-lineshape}
+\end{figure}
+
+冷原子 Feshbach 共振使用的是同一投影结构，只是空间含义对调：\(P\) 是开放散射通道，\(Q\) 包含闭通道束缚态。若闭通道中只有一个束缚态 \(|\phi_c\rangle\) 靠近开放通道阈值，则开通道的有效相互作用包含
+
+\[
+V_{\rm eff}(E,B)
+\supset
+\frac{W|\phi_c\rangle\langle\phi_c|W^\dagger}
+{E-E_c(B)-\Sigma_c(E)}.
+\]
+
+在超低能 s 波区，散射振幅满足有效程展开
+
+\[
+k\cot\delta_0(k)
+=-\frac1a+\frac12r_ek^2+\cdots.
+\]
+
+若闭通道束缚态相对于阈值的 detuning 在窄磁场区间近似线性，
+
+\[
+E_c(B)-E_{\rm th}
+\simeq\delta\mu(B-B_c),
+\]
+
+并把实自能产生的阈值位移吸收到新的共振位置 \(B_0\)，则零能 \(T\)-矩阵中的共振项必然产生一个 \((B-B_0)^{-1}\) 极点。因此散射长度可以参数化为
+
+\begin{equation}
+a(B)
+=a_{\rm bg}
+\left(1-\frac{\Delta B}{B-B_0}\right).
+\label{eq:feshbach-scattering-length}
+\end{equation}
+
+\(a_{\rm bg}\) 吸收所有缓慢变化的开放通道背景，\(\Delta B\) 把耦合强度和磁矩差压缩成实验可测的磁场宽度。\eqnrefs{eq:feshbach-scattering-length} 是“单闭通道束缚态 + 低能 s 波 + 背景缓慢变化”的阈值近似，而不是一般 Feshbach 理论的定义。
+
+\begin{proof}[解]
+磁场通过磁矩差 $\delta\mu=\mu_{\rm closed}-\mu_{\rm open}$ 移动闭通道束缚态，$E_c(B)\approx\delta\mu(B-B_c)$。零能附近单闭通道消元后，共振部分为
+\begin{equation*}
+ f_{\rm res}(0,B)
+ =\frac{C_f}
+ {-\delta\mu(B-B_c)-\Delta_c(0)},
+\end{equation*}
+其中 $C_f$ 汇总耦合常数，$\Delta_c(0)$ 为实自能位移。极点处
+\begin{equation*}
+ B_0
+ =B_c-\frac{\Delta_c(0)}{\delta\mu},
+\end{equation*}
+于是散射振幅分解为背景加共振极点：
+\begin{equation*}
+ f(0,B)
+ =f_{\rm bg}(0)-\frac{C_f/\delta\mu}{B-B_0}.
+\end{equation*}
+
+
+三维 s 波阈值 $f_0(k\to0)=-a$，于是
+\begin{equation}
+ a(B)=a_{\rm bg}-\frac{C_a}{B-B_0},
+ \qquad
+ C_a\equiv-\frac{C_f}{\delta\mu}.
+ \label{eq:feshbach-scattering-length-additive}
+\end{equation}
+
+
+只要 $a_{\rm bg}\neq0$，定义 $\Delta B=C_a/a_{\rm bg}$，则
+\begin{equation*}
+ a(B)=a_{\rm bg}\left(1-\frac{\Delta B}{B-B_0}\right),
+\end{equation*}
+即\eqnrefs{eq:feshbach-scattering-length}。$a(B)$ 在 $B=B_0$ 处发散、在 $B=B_0+\Delta B$ 处过零。
+
+\end{proof}
+
+\section{Landau--Zener：局部线性交叉与 Weber 方程}
+
+\begin{equation}
+H(t)
+=\begin{pmatrix}
+s_{\rm LZ} t/2&V\\
+V^*&-s_{\rm LZ} t/2
+\end{pmatrix},
+\label{eq:lz-hamiltonian}
+\end{equation}
+
+其中 \(s_{\rm LZ}\) 的量纲是能量/时间，\(2|V|\) 是避免交叉的最小绝热能隙。瞬时绝热能量
+
+\[
+E_\pm(t)
+=\pm\sqrt{(s_{\rm LZ} t/2)^2+|V|^2}.
+\]
+
+\figref{fig:landau-zener} 展示了非绝热交叉被恒定耦合打开的过程。
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.83\textwidth]{landau_zener.pdf}
+\caption{Landau--Zener 模型的 diabatic 与 adiabatic 能级。常数耦合 \(V\) 把线性交叉打开为最小间隙 \(2|V|\)。}
+\label{fig:landau-zener}
+\end{figure}
+
+通过常数相位变换可令 \(V>0\) 为实数。两分量方程为
+
+\begin{align*}
+\ii\hbar\dot c_1
+&=\frac{s_{\rm LZ} t}{2}c_1+Vc_2,
+\\
+\ii\hbar\dot c_2
+&=Vc_1-\frac{s_{\rm LZ} t}{2}c_2.
+\end{align*}
+
+消去 \(c_2\)。从第一式
+
+\[
+c_2
+=\frac{\ii\hbar\dot c_1-(s_{\rm LZ} t/2)c_1}{V}.
+\]
+
+对第一式再求导并代入第二式，\(\dot c_1\) 项恰好相消，得到
+
+\begin{equation}
+\ddot c_1
++\left[
+\frac{s_{\rm LZ}^2t^2}{4\hbar^2}
++\frac{V^2}{\hbar^2}
++\frac{\ii\,s_{\rm LZ}}{2\hbar}
+\right]c_1=0.
+\label{eq:lz-second-order}
+\end{equation}
+
+对 \(s_{\rm LZ}>0\) 定义
+
+\[
+z=\ee^{-\ii\pi/4}
+\sqrt{\frac{s_{\rm LZ}}{\hbar}}t,
+\qquad
+\delta\equiv\frac{V^2}{\hbar s_{\rm LZ}}.
+\]
+
+由于
+
+\[
+\frac{\dd^2}{\dd t^2}
+=-\ii\frac{s_{\rm LZ}}{\hbar}
+\frac{\dd^2}{\dd z^2},
+\qquad
+ t^2=\ii\frac{\hbar}{s_{\rm LZ}}z^2,
+\]
+
+\eqnrefs{eq:lz-second-order} 变成
+
+\begin{equation}
+\frac{\dd^2c_1}{\dd z^2}
++\left(
+\nu+\frac12-\frac{z^2}{4}
+\right)c_1=0,
+\qquad
+\nu=-1+\ii\delta.
+\label{eq:lz-weber}
+\end{equation}
+
+这就是抛物柱 (Weber) 方程，其独立解可写为 \(D_\nu(z)\) 与适当旋转后的 \(D_\nu(-z)\)。
+
+\section{Stokes 连接、跃迁指数与 Stückelberg 相位}
+
+Landau--Zener 概率的非平凡之处不在“解是特殊函数”，而在如何把 \(t\to-\infty\) 的入射边界条件穿过复平面的 Stokes 扇区连接到 \(t\to+\infty\)。利用抛物柱函数的标准连接公式，保持非绝热特征标的概率为
+
+\begin{equation}
+P_{\rm LZ}
+=\ee^{-2\pi\delta}
+=\exp\left[-\frac{2\pi|V|^2}{\hbar|s_{\rm LZ}|}\right].
+\label{eq:landau-zener}
+\end{equation}
+
+\begin{proof}[解]
+\eqnrefs{eq:lz-weber} 的解 $D_\nu(z)$（$\nu=-1+\ii\delta$）在不同复 $z$ 扇区有不同的渐近行为。Stokes 现象是指：同一解在不同扇区的渐近展开系数不同，连接公式描述跨扇区时这些系数如何跳变。对 Landau--Zener 问题，入射边界条件在 $t\to-\infty$（$z\to\infty\cdot\ee^{-\ii\pi/4}$）给定，出射在 $t\to+\infty$（$z\to\infty\cdot\ee^{+\ii\pi/4}$），两者位于不同 Stokes 扇区，必须用连接公式把它们联系起来。
+
+入射/出射解按单位概率流归一化后，连接矩阵对角振幅模为
+\[
+ |S_{11}|=\ee^{-\pi\delta},
+\]
+$\ee^{-\pi\delta}$ 的指数结构来自抛物柱函数 $D_\nu$ 在跨扇区时的次主导指数项系数，是 Stokes 现象的精确体现。
+
+Stokes 乘子可写成
+\[
+ C_\delta
+ =\frac{\sqrt{2\pi}\,\ee^{-\pi\delta/2}}
+ {\sqrt{\delta}\,\Gamma(-\ii\delta)}
+ \times \ee^{\ii\varphi_\delta},
+\]
+其中 \(\varphi_\delta\) 只影响相位。Gamma 函数 $|\Gamma(-\ii\delta)|^2$ 的模由两个恒等式决定：递推 $\Gamma(1-\ii\delta)=(-\ii\delta)\Gamma(-\ii\delta)$ 和反射公式给出的
+\[
+ \Gamma(1-\ii\delta)=(-\ii\delta)\Gamma(-\ii\delta),
+ \qquad
+ |\Gamma(1-\ii\delta)|^2
+ =\frac{\pi\delta}{\sinh(\pi\delta)},
+\]
+后者来自 $|\Gamma(1/2+\ii y)|^2=\pi/\cosh(\pi y)$ 经函数方程推广。
+
+代入 $|C_\delta|^2$，
+\begin{align*}
+ |C_\delta|^2
+ &=\frac{2\pi\ee^{-\pi\delta}}
+ {\delta|\Gamma(-\ii\delta)|^2}\\
+ &=2\ee^{-\pi\delta}\sinh(\pi\delta)\\
+ &=1-\ee^{-2\pi\delta}.
+\end{align*}
+最后一步用 $\sinh(\pi\delta)=(\ee^{\pi\delta}-\ee^{-\pi\delta})/2$。因此单位流守恒给出
+\[
+ |S_{11}|^2=\ee^{-2\pi\delta},
+ \qquad
+ |S_{21}|^2=1-\ee^{-2\pi\delta}.
+\]
+前者即 \eqnrefs{eq:landau-zener}。$|S_{11}|^2+|S_{21}|^2=1$ 验证幺正性。连接系数的相位整理后得 Stokes 相位 \(\phi_S\)（\eqnrefs{eq:lz-stokes-phase}），在 Stückelberg 干涉中与动力学相位叠加。$\delta=\Delta^2/(4\hbar s)$ 使 $s\to0$ 时 $P_{\rm LZ}\to0$、$s\to\infty$ 时 $P_{\rm LZ}\to1$。
+\end{proof}
+
+控制参数
+
+\[
+\delta=\frac{|V|^2}{\hbar|s_{\rm LZ}|}
+\]
+
+比较“能隙平方”与“扫过速率”。\(\delta\gg1\) 时交叉被缓慢穿过，系统绝热跟随；\(\delta\ll1\) 时扫过太快，状态来不及混合，几乎保持原非绝热特征标。
+
+如果不仅关心单次跃迁概率，还关心多次交叉的 Stückelberg interference，就必须保留振幅相位。单次 Landau--Zener 散射矩阵除了 \(P_{\rm LZ}\) 外还包含 Stokes 相
+
+\begin{equation}
+\phi_S
+=\frac\pi4
++\arg\Gamma(1-\ii\delta)
++\delta(\ln\delta-1).
+\label{eq:lz-stokes-phase}
+\end{equation}
+
+在一种常见相位约定下可写
+
+\[
+S_{\rm LZ}
+=\begin{pmatrix}
+\sqrt{P_{\rm LZ}}\ee^{-\ii\phi_S}&-\sqrt{1-P_{\rm LZ}}\\
+\sqrt{1-P_{\rm LZ}}&\sqrt{P_{\rm LZ}}\ee^{+\ii\phi_S}
+\end{pmatrix}.
+\]
+
+两次避免交叉之间积累的动力学相位与 \(\phi_S\) 干涉，就形成 St\"uckelberg 干涉条纹。
+
+\begin{note}[Landau--Zener 公式何时不能直接用]
+\eqnrefs{eq:landau-zener} 要求：非绝热能差在相关时间窗内可线性化、耦合 \(V\) 近似常数、演化从远离交叉的 \(t\to-\infty\) 延伸到 \(t\to+\infty\)，并且系统在这段时间内可视为封闭二能级系统。有限脉冲、非线性 sweep、多个近邻能级或显著耗散都会改变连接问题，应回到一般含时传播子或多能级模型。
+\end{note}
+
+\section{Feshbach 共振与 Landau--Zener 跃迁的实验数值}\label{sec:resonance-experiments}
+
+Feshbach 共振在超冷原子物理中用于精确调控散射长度 \(a(B)\)：
+\[
+a(B)=a_{\rm bg}\left(1-\frac{\Delta B}{B-B_0}\right)
+\]
+其中 \(a_{\rm bg}\) 是背景散射长度，\(B_0\) 是共振磁场，\(\Delta B\) 是共振宽度。
+
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+体系 & \(B_0\) (G) & \(\Delta B\) (G) & \(a_{\rm bg}\) (\AA) & 实验组 \\
+\hline
+\(^6\)Li \(|1/2,-1/2\rangle\) & 834.1 & 300 & \(-1405\) & MIT (2004) \\
+\(^{40}\)K \(|9/2,-9/2\rangle\) & 202.1 & 7.8 & 174 & JILA (2004) \\
+\(^{87}\)Rb \(|1,1\rangle+|1,0\rangle\) & 1007.4 & 0.21 & 99 & MIT (2004) \\
+\(^{23}\)Na \(|1,1\rangle\) & 907.0 & 1.0 & 52 & MIT (2003) \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{exbox}[\(^6\)Li 的宽共振与 BEC-BCS 渡越]
+\(^6\)Li 在 834\,G 的宽共振（\(\Delta B=300\,\mathrm{G}\)）使 \(a(B)\) 可在 \(-\infty\) 到 \(+\infty\) 间连续调节。在 \(B>B_0\)（\(a>0\)）侧实现分子 BEC（紧束缚 Feshbach 分子），在 \(B<B_0\)（\(a<0\)）侧实现 BCS 超流。共振点 \(B=B_0\) 处 \(a\to\pm\infty\)，系统进入幺正极限：散射截面达到量子极限 \(\sigma=4\pi/k^2\)，所有长度尺度被散射长度抹平，方程只依赖密度与温度之比。MIT (2006) 在此区域观测到超流涡旋，确认了 BEC-BCS 渡越。
+\end{exbox}
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+体系 & \(\delta_{\rm LZ}=V^2/(\hbar|\dot\Delta|)\) & 跃迁概率 & 实验 \\
+\hline
+超导量子比特 (Rabi) & 0.1--10 & 0--1 可调 & Nakamura (2003) \\
+Rydberg 原子 Stark & 0.5--5 & 0.1--0.9 & Gallagher (1980s) \\
+分子束共振 & \(\sim1\) & 0.5 附近 & 分子物理 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{exbox}[超导量子比特的 Landau--Zener sweep]
+transmon 量子比特在通量偏置扫描中穿越避免交叉。能隙 \(2V/h\approx100\,\mathrm{MHz}\)，sweep 速率 \(|\dot\Delta|/h\approx1\,\mathrm{GHz}/\mathrm{ns}\)，给出 \(\delta_{\rm LZ}=V^2/(\hbar|\dot\Delta|)\approx5\)。绝热跃迁概率 \(P_{\rm LZ}=e^{-2\pi\delta_{\rm LZ}}\approx3\times10^{-14}\approx0\)——系统几乎完全跟随瞬时本征态（绝热极限）。反向快扫 \(\dot\Delta/h\approx100\,\mathrm{GHz}/\mathrm{ns}\) 给出 \(\delta_{\rm LZ}\approx0.05\)，\(P_{\rm LZ}\approx0.73\)——大部分留在初态（突然极限）。
+\end{exbox}
+
+Fano 共振的散射截面
+\[
+\sigma(\epsilon)=\sigma_0\frac{(q+\epsilon)^2}{1+\epsilon^2},\qquad\epsilon=\frac{E-E_r}{\Gamma/2}
+\]
+其中 \(q\) 是 Fano 不对称参数，\(\Gamma\) 是共振宽度。
+
+\begin{center}
+\begin{tabular}{lcc}
+\hline
+体系 & \(q\) & \(\Gamma\) \\
+\hline
+He 原子 \(2s2p\,{}^1P\) 自电离 & \(-2.8\) & 0.012 eV \\
+量子点 Kondo & 0.5 & \(k_BT_K\) \\
+等离子体 Fano & 1--10 & 0.1--1 eV \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{exbox}[He 自电离共振的 Fano 谱]
+He 的 \(2s2p\,{}^1P\) 自电离共振是负 \(q\) Fano 线型的经典实例。对任意给定的拟合参数，零点位于 \(\epsilon=-q\)，极值位于 \(\epsilon=1/q\)；实际能量与时间尺度必须使用同一实验数据集拟合得到的 \(E_r\)、\(q\) 和 \(\Gamma\)，不能混用不同分辨率或不同通道的参数。
+\end{exbox}
+
+\begin{proof}[解]
+
+Feshbach 投影给出离散态 \(|\phi\rangle\) 与连续态 \(|E\rangle\) 的耦合。跃迁截面的不对称参数 \(q\) 描述外部探针通向离散与连续部分的振幅比；它并不移动散射矩阵的共振极点。Fano 对角化可写成
+\begin{equation}
+|\Psi_E\rangle=\frac{q+\epsilon}{\sqrt{\epsilon^2+1}}\,|\phi\rangle+\frac{1}{\sqrt{\epsilon^2+1}}\,|E\rangle,
+\qquad
+\epsilon=\frac{E-E_r}{\Gamma/2},
+\label{eq:fano-state-s-matrix}
+\end{equation}
+即\eqnrefs{eq:fano-normalized-state} 的参数化。单个弹性通道、缓变背景下的共振 S 矩阵是 Breit--Wigner 因子
+\begin{equation}
+S(\epsilon)=\ee^{2\ii\delta_{\rm bg}}\,\frac{\epsilon-\ii}{\epsilon+\ii},
+\label{eq:fano-s-matrix}
+\end{equation}
+式 \eqnrefs{eq:fano-s-matrix} 的极点位于 \(\epsilon=-\ii\)，即 \(E=E_r-\ii\Gamma/2\)。\(q\) 进入具体跃迁算符的 Fano 线型，而不是这一极点位置。
+
+由 \(S=\ee^{2\ii\delta}\) 提取 \(\delta=\delta_{\rm bg}+\delta_{\rm res}\)，共振部分满足
+\begin{equation}
+\delta_{\rm res}(\epsilon)=-\arctan\!\frac{1}{\epsilon},
+\label{eq:fano-resonance-phase-shift}
+\end{equation}
+其中反正切的分支取成跨过 \(\epsilon=0\) 时相移连续增加 \(\pi\)。因此相移中心由 \(E_r\) 决定，与 Fano 零点 \(\epsilon=-q\) 一般不重合。
+
+Wigner--Smith 时间延迟为
+\begin{equation}
+\tau(\epsilon)=2\hbar\,\frac{\dd\delta}{\dd E}
+=\frac{4\hbar}{\Gamma}\,\frac{\dd\delta_{\rm res}}{\dd\epsilon},
+\label{eq:wigner-smith-definition}
+\end{equation}
+因子 \(4\hbar/\Gamma\) 来自 \(\dd E=(\Gamma/2)\dd\epsilon\)。由\eqnrefs{eq:fano-resonance-phase-shift}，
+\begin{equation}
+\frac{\dd\delta_{\rm res}}{\dd\epsilon}
+=\frac{1}{1+\epsilon^2},
+\end{equation}
+故
+\begin{equation}
+\tau(\epsilon)=\frac{4\hbar}{\Gamma}\,\frac{1}{1+\epsilon^2}.
+\label{eq:fano-wigner-smith-delay}
+\end{equation}
+它在共振中心 \(\epsilon=0\) 取最大值 \(4\hbar/\Gamma\)；Fano 零点由 \(q\) 决定，两者仅在 \(q=0\) 时重合。若背景相移能量依赖 \(\dd\delta_{\rm bg}/\dd E<0\)，总延迟可含负修正项；因果性由 S 矩阵上半平面解析性约束。
+
+\end{proof}
+
+离散态与连续谱耦合同时给出共振极点和探针依赖的 Fano 线型。
+
+Fano 模型。哈密顿量 \(H=H_0+V\)，\(H_0|\phi\rangle=E_0|\phi\rangle\)（离散态），\(H_0|E\rangle=E|E\rangle\)（连续态），\(V\) 耦合离散与连续：\(V_\phi(E)=\langle\phi|V|E\rangle\)。Fano 假设 \(V_\phi(E)\) 在共振附近缓变（常数近似），自能 \(\Sigma(E)=\Delta(E)-i\Gamma(E)/2\)，\(\Gamma=2\pi|V_\phi(E_0)|^2\)（衰变率），\(\Delta=\mathcal P\int\frac{|V_\phi(E')|^2}{E_0-E'}\dd E'\)（能移）。
+
+Fano 线型。散射振幅 \(f(E)=\frac{q+\epsilon}{\epsilon+i}\)（\(\epsilon=(E-E_r)/(\Gamma/2)\)，\(E_r=E_0+\Delta\) 共振能，\(q\) 是 Fano 参数）。截面
+\begin{equation}
+  \sigma(E)=\sigma_0\frac{(q+\epsilon)^2}{1+\epsilon^2},
+  \label{eq:phys-rl-fano-profile}
+\end{equation}
+式 \eqnrefs{eq:phys-rl-fano-profile} 中，\(\sigma_0\) 是连续态背景截面。\(q\to\infty\) 给出 Lorentz（纯离散共振）；\(q=0\) 给出反共振（窗口共振，\(\sigma\propto\epsilon^2/(1+\epsilon^2)\)，共振处完全抑制）；一般 \(q\) 给出不对称线型。Fano 参数 \(q=-\frac{\mathcal P\int V_\phi(E')/(E_0-E')\dd E'}{\pi V_\phi(E_0)}\) 是离散态在连续态中的相位移——纯几何量。
+
+Feshbach 共振与磁场调控。在冷原子物理中，Feshbach 共振使散射长度随磁场变化为
+\[
+  a(B)=a_{\rm bg}\left(1-\frac{\Delta B}{B-B_0}\right),
+\]
+其中 \(a_{\rm bg}\) 是背景散射长度，\(B_0\) 是共振磁场，\(\Delta B\) 是共振宽度。开通道中的碰撞态与闭通道中的分子束缚态通过超精细相互作用混合；磁场改变 Zeeman 能移，使闭通道能级穿过开通道阈值。在 \(B=B_0\) 处，\(a\to\infty\)，散射达到幺正极限；随着磁场扫过 \(B_0\)，分子束缚态越过阈值而成为虚态。Feshbach 共振因此给了实验者一只连续调节相互作用强度的“旋钮”。
+
+多通道 Fano--Feshbach 理论。多通道散射中 Fano 共振的推广：开通道 \(\{|\chi_\alpha\rangle\}\) 和闭通道 \(\{|\phi_n\rangle\}\) 的耦合矩阵 \(W_{\alpha n}=\langle\chi_\alpha|V|\phi_n\rangle\)。多通道 Fano 参数 \(\boldsymbol q\) 是向量，截面是各开通道贡献的 Fano 线型叠加。共振位置由闭通道本征值（含自能修正）的零点给出，宽度由耦合矩阵的奇异值给出。多通道理论统一处理冷原子 Feshbach 共振（核-电子超精细耦合）、原子物理自电离共振（电子-连续态耦合）和核物理共振（复合核-散射态耦合），是共振物理的普适框架。

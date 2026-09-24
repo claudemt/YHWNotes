@@ -1,487 +1,298 @@
-\chapter{含时量子动力学与原子--光相互作用}\label{ch:time-dependent-perturbation}
+\chapter{精确约化动力学与记忆核}
+\label{chap:phys-oqs-open-quantum-systems}
 
-上一章给出了相对论原子结构与低能有效 Hamiltonian；真正的光谱和操控问题还需要回答一个动力学问题：给定一般的含时扰动，量子态怎样从一个定态子空间流向另一个子空间？本章先从形式精确传播开始，再依次引入弱场、窄带、近共振和 Markov 等可控近似。Fermi 黄金法则、Rabi 振荡与 光学 Bloch 方程因此不是彼此独立的公式，而是同一含时动力学在不同尺度极限下的结果。
+封闭复合系统的总态始终幺正演化，纯态不会凭空变成混态。实验却常常只读取其中一部分自由度：探测原子而不记录逸出的光子，或读取量子比特而不测量它所耦合的振子。丢掉未观测结果以后，系统的相干性可以下降，即使总态仍然完全纯。
 
-\section{形式精确传播、Magnus 展开与投影动力学}
+这个现象不需要弱耦合，也不需要马尔可夫环境。两个二能级已经足以看清全部逻辑：联合纯态的密度算符取偏迹后，环境标签相互正交的交叉项消失，系统态便可能变混。把同一计算写在任意环境基中，就得到 Kraus 算符及其完备关系；而一旦初态含有系统--环境关联，“给任意系统态规定同一个环境态”的制备假设便不再成立。
 
-设 Hilbert 空间上的自伴 Hamiltonian 写成
-\begin{equation}
-H(t)=H_0+V(t),
-\label{eq:tdpt-hamiltonian-split}
-\end{equation}
-其中 $H_0$ 为可解的参考 Hamiltonian，$V(t)$ 为含时相互作用。相互作用表象定义
+在开始计算以前，先把态矢量、密度算符和偏迹之间的关系从测量概率重新建立起来。这样做会多用几页，却能避免后面把“总态的部分信息没有读取”误解成“系统真的随机跳到了某个未知纯态”。
+
+\section{从态矢量到密度算符}
+
+量子力学中，归一化态矢量 \(\lvert\psi\rangle\) 对应的测量平均值是
 \[
-|\psi_I(t)\rangle=\ee^{\ii H_0(t-t_0)/\hbar}|\psi(t)\rangle,
-\qquad
-V_I(t)=\ee^{\ii H_0(t-t_0)/\hbar}V(t)\ee^{-\ii H_0(t-t_0)/\hbar}.
+\langle A\rangle_\psi
+=\langle\psi\rvert A\lvert\psi\rangle.
 \]
-传播子满足 Volterra 方程
+利用迹的循环性，可以把它写成
 \[
-U_I(t,t_0)=I-\frac{\ii}{\hbar}\int_{t_0}^{t}V_I(t_1)U_I(t_1,t_0)\,\dd t_1,
+\langle A\rangle_\psi
+=\Tr\!\left(\lvert\psi\rangle\langle\psi\rvert A\right).
 \]
-其形式精确解是时间序指数
+这提示我们把
+\(\rho_\psi=\lvert\psi\rangle\langle\psi\rvert\)
+作为纯态的另一种写法。它看似只是记号变化，却能描述实验制备中常见的经典不确定性：若制备装置以概率 \(p_k\) 输出态
+\(\lvert\psi_k\rangle\)，所有测量平均值都由
 \begin{equation}
-\boxed{
-U_I(t,t_0)=\mathcal T\exp\!\left[-\frac{\ii}{\hbar}\int_{t_0}^{t}V_I(t')\,\dd t'\right].
-}
-\label{eq:interaction-propagator}
+\rho=\sum_k p_k\lvert\psi_k\rangle\langle\psi_k\rvert,
+\qquad p_k\geq0,\qquad \sum_k p_k=1
+\label{eq:oqs-density-mixture}
 \end{equation}
-把 $U_I$ 迭代代回右端得到 Dyson 级数；若希望有限阶近似仍保持幺正性，则更适合写成 Magnus 形式 $U_I=\exp\Omega$。
-
-在 $H_0|n\rangle=E_n|n\rangle$ 的本征基中，令
+给出，因为
 \[
-|\psi(t)\rangle=\sum_n c_n(t)\ee^{-\ii E_n(t-t_0)/\hbar}|n\rangle,
+\sum_kp_k\langle\psi_k\rvert A\lvert\psi_k\rangle
+=\Tr(\rho A).
 \]
-则没有任何微扰近似的系数方程为
-\begin{equation}
-\boxed{
-\ii\hbar\dot c_m(t)
-=\sum_n V_{mn}(t)\ee^{\ii\omega_{mn}(t-t_0)}c_n(t),
-\qquad
-\omega_{mn}=\frac{E_m-E_n}{\hbar}.
-}
-\label{eq:tdpt-exact-coefficient}
-\end{equation}
-后面的“一级微扰”“两能级截断”都必须说明是怎样从这组精确耦合方程中舍弃通道。
 
-更一般地，若只关心一个有限维相关子空间，取正交投影 $P$ 与 $Q=I-P$。对 Schr\"odinger 方程作 $P/Q$ 分块并形式消去 $Q|\psi\rangle$，得到带记忆核的精确方程
+\begin{definition}[密度算符]
+Hilbert 空间上的算符 \(\rho\) 若满足
+\[
+\rho=\rho^\dagger,
+\qquad \langle\phi\rvert\rho\lvert\phi\rangle\geq0,
+\qquad \Tr\rho=1,
+\]
+就称为密度算符。三个条件分别保证概率为实数、非负并且总和为一。
+\end{definition}
+
+正算符的本征值都非负。有限维谱定理于是给出
+\[
+\rho=\sum_j\lambda_j\lvert j\rangle\langle j\rvert,
+\qquad \lambda_j\geq0,\qquad \sum_j\lambda_j=1.
+\]
+所以每个密度算符都能解释成某个正交态系综。这个分解一般不唯一；真正可观测的是 \(\rho\)，不是制备者选择的某一份系综清单。
+
+\begin{proposition}[纯度判据]
+若 Hilbert 空间维数为 \(d\)，则
+\[
+\frac1d\leq\Tr\rho^2\leq1.
+\]
+等号 \(\Tr\rho^2=1\) 当且仅当 \(\rho\) 是秩一投影；此时状态为纯态。
+\end{proposition}
+
+\begin{proof}
+在 \(\rho\) 的本征基中，
+\(\Tr\rho^2=\sum_j\lambda_j^2\)。由于
+\(0\leq\lambda_j\leq1\)，有
+\(\sum_j\lambda_j^2\leq\sum_j\lambda_j=1\)。等号要求每个
+\(\lambda_j^2=\lambda_j\)，再结合本征值之和为一，只能有一个本征值为一，其余为零。下界由 Cauchy--Schwarz 不等式
+\[
+1=\left(\sum_j\lambda_j\right)^2
+\leq d\sum_j\lambda_j^2
+\]
+得到；所有本征值都等于 \(1/d\) 时取等号。
+\end{proof}
+
+复合系统 \(S+B\) 的 Hilbert 空间是张量积
+\(\mathcal H_S\otimes\mathcal H_B\)。乘积态
+\(\lvert s\rangle\otimes\lvert b\rangle\)
+常简写成 \(\lvert s,b\rangle\)。并非每个联合态都能写成一个乘积。例如
+\[
+\lvert\Phi^+\rangle
+=\frac{\lvert0,0\rangle+\lvert1,1\rangle}{\sqrt2}
+\]
+若能写成
+\((a\lvert0\rangle+b\lvert1\rangle)\otimes
+(c\lvert0\rangle+d\lvert1\rangle)\)，
+则 \(ac=bd=1/\sqrt2\) 而 \(ad=bc=0\)，这四个条件互相矛盾。因此它是纠缠态。
+
+实验只测系统 \(S\) 时，需要一个系统算符 \(\rho_S\)，使每个只作用在 \(S\) 上的可观测量 \(A\) 都满足
 \begin{equation}
+\Tr_{SB}\!\left[\rho_{SB}(A\otimes I_B)\right]
+=\Tr_S(\rho_S A).
+\label{eq:oqs-partial-trace-operational}
+\end{equation}
+这条对所有 \(A\) 成立的要求定义了偏迹，而不是先凭形式删掉环境指标。
+
+\begin{definition}[偏迹]
+取 \(\mathcal H_B\) 的任意正交归一基
+\(\{\lvert\alpha\rangle\}\)。对联合算符 \(X\)，定义
+\begin{equation}
+\Tr_B X
+=\sum_\alpha
+(I_S\otimes\langle\alpha\rvert)X
+(I_S\otimes\lvert\alpha\rangle).
+\label{eq:oqs-partial-trace-definition}
+\end{equation}
+结果是只作用在 \(\mathcal H_S\) 上的算符。
+\end{definition}
+
+\begin{proposition}[偏迹与所选环境基无关]
+式 \eqnrefs{eq:oqs-partial-trace-definition} 在任何环境正交归一基中给出同一个算符，并且满足操作定义
+\eqnrefs{eq:oqs-partial-trace-operational}。
+\end{proposition}
+
+\begin{proof}
+设另一组基为
+\(\lvert\mu\rangle=\sum_\alpha U_{\alpha\mu}\lvert\alpha\rangle\)，
+其中 \(U\) 酉。用新基求和得到
+\[
 \begin{aligned}
-\ii\hbar\partial_t P|\psi(t)\rangle
-={}&PHP\,P|\psi(t)\rangle
-+PHQ\,U_Q(t,t_0)Q|\psi(t_0)\rangle\\
-&-\frac{\ii}{\hbar}\int_{t_0}^{t}
-PHQ\,U_Q(t,t')QHP\,P|\psi(t')\rangle\,\dd t',
+\sum_\mu(I\otimes\langle\mu\rvert)X(I\otimes\lvert\mu\rangle)
+&=\sum_{\mu,\alpha,\beta}
+U_{\alpha\mu}^*U_{\beta\mu}
+(I\otimes\langle\alpha\rvert)X(I\otimes\lvert\beta\rangle)\\
+&=\sum_\alpha
+(I\otimes\langle\alpha\rvert)X(I\otimes\lvert\alpha\rangle),
 \end{aligned}
-\label{eq:two-level-memory-kernel}
-\end{equation}
-其中 $U_Q$ 是 $QHQ$ 在 $Q$ 子空间中的传播子。通常的两能级模型实质上是在能隙、失谐与耦合尺度允许时，把这类记忆和虚跃迁修正系统地压缩进有限维有效 Hamiltonian。
+\]
+第二行使用
+\(\sum_\mu U_{\alpha\mu}^*U_{\beta\mu}=\delta_{\alpha\beta}\)。
+再在 \(S\) 的一组基 \(\{\lvert i\rangle\}\) 中展开迹，便有
+\[
+\begin{aligned}
+\Tr_S[(\Tr_BX)A]
+&=\sum_{i,\alpha}
+\langle i,\alpha\rvert X(A\otimes I)\lvert i,\alpha\rangle\\
+&=\Tr_{SB}[X(A\otimes I)].
+\end{aligned}
+\]
+因此偏迹恰好保留所有系统局域测量的统计，而且不依赖计算时使用的环境基。
+\end{proof}
 
-\begin{derivation}[从 Dyson 级数到二阶 Magnus 展开]
-Dyson 级数。将 Volterra 方程 $U_I=I-\frac{\ii}{\hbar}\int V_I U_I$ 迭代，得到 Dyson 级数写到二阶：
+三个简单例子可以把不同来源的混合区分开。乘积态
+\(\rho_S\otimes\rho_B\) 满足
+\(\Tr_B(\rho_S\otimes\rho_B)=\rho_S\)。经典相关态
 \[
-U_I=I+U_1+U_2+O(V^3),
+\rho_{SB}^{\rm cl}
+=\tfrac12\lvert00\rangle\langle00\rvert
++\tfrac12\lvert11\rangle\langle11\rvert
 \]
-\[
-U_1=-\frac{\ii}{\hbar}\int_{t_0}^{t}V_I(t_1)\,\dd t_1,
-\qquad
-U_2=-\frac{1}{\hbar^2}\int_{t_0}^{t}\dd t_1\int_{t_0}^{t_1}\dd t_2\,
-V_I(t_1)V_I(t_2).
-\]
-$U_2$ 的时序积分区域是三角形 $t_0\le t_2\le t_1\le t$，这正是时间序算符 $\mathcal T$ 的几何含义。
+与纠缠纯态
+\(\lvert\Phi^+\rangle\langle\Phi^+\rvert\)
+具有同一个约化态 \(I/2\)，但前者的联合纯度为 \(1/2\)，后者为 \(1\)。只看 \(S\) 无法区分二者；必须测量系统--环境关联。这也说明约化态变混并不等于联合态发生了随机坍缩。
 
-Magnus 指数展开。令 $U_I=\exp\Omega$，$\Omega=\Omega_1+\Omega_2+\cdots$ 按相互作用阶数展开。用 Baker--Campbell--Hausdorff 公式展开指数：
-\[
-U_I=I+\Omega_1+\Omega_2+\frac12\Omega_1^2+O(V^3).
-\]
-逐阶比较得到 $\Omega_1=U_1$ 以及
-\[
-\Omega_2=U_2-\frac12U_1^2.
-\]
+\section{一次偏迹：联合纯态怎样变成混态}
 
-对称化方形积分。把 $U_1^2$ 的积分区域从方形 $[t_0,t]^2$ 拆成两个三角形 $t_1>t_2$ 与 $t_2>t_1$：
-\[
-\frac12U_1^2
-=-\frac{1}{2\hbar^2}\int_{t_0}^{t}\dd t_1\int_{t_0}^{t_1}\dd t_2
-\bigl[V_I(t_1)V_I(t_2)+V_I(t_2)V_I(t_1)\bigr].
-\]
-代入 $\Omega_2=U_2-\frac12U_1^2$，对称的 anticommutator 部分与 $U_2$ 抵消，只剩下 对易子：
+设系统 $S$ 与环境 $B$ 都是二能级。相互作用把初始乘积态演化为
 \begin{equation}
-\boxed{
-\Omega_2(t)
-=-\frac{1}{2\hbar^2}\int_{t_0}^{t}\dd t_1\int_{t_0}^{t_1}\dd t_2\,
-[V_I(t_1),V_I(t_2)].
-}
-\label{eq:magnus-second-order}
+|\Psi\rangle=a|0\rangle_S|0\rangle_B+b|1\rangle_S|1\rangle_B,
+\qquad |a|^2+|b|^2=1.
+\label{eq:oqs-two-qubit-entangled}
 \end{equation}
-
-高阶结构与幺正性。三阶项 $\Omega_3$ 涉及嵌套对易子 $\bigl[[V_I(t_1),V_I(t_2)],V_I(t_3)\bigr]$ 与 $\bigl[V_I(t_1),[V_I(t_2),V_I(t_3)]\bigr]$ 的组合。Magnus 展开的关键性质是：截断到任意有限阶，$\Omega$ 仍是反 厄米 的（当 $V_I$ 厄米），故 $U_I=\exp\Omega$ 自动幺正。这正是 Magnus 形式优于 Dyson 级数之处——Dyson 截断到 $O(V^2)$ 给出 $I+U_1+U_2$，一般不幺正；而 $\exp(\Omega_1+\Omega_2)$ 在二阶精度内保持概率守恒。
-
-若不同时刻的相互作用彼此对易，$[V_I(t_1),V_I(t_2)]=0$，所有高阶 Magnus 对易子同时消失，时间序指数退化为普通指数
-\[
-U_I(t,t_0)=\exp\!\left[-\frac{\ii}{\hbar}\int_{t_0}^{t}V_I(t')\,\dd t'\right].
-\]
-这也给出脉冲面积定理的代数条件：若共振二能级系统的 $V_I(t)$ 始终正比于同一个 Pauli 矩阵，则跃迁概率只依赖 $\Theta=\int\Omega(t)\dd t$。若驱动方向随时间改变，二阶对易子会产生额外旋转。一个常用的充分收敛条件是 $\hbar^{-1}\int_0^t\|V_I(t')\|\,\dd t'<\pi$；长时间演化可分段应用 Magnus 展开。
-\end{derivation}
-
-\section{弱场极限：黄金法则、Einstein 系数与选择定则}
-
-当跃迁概率在观测时间内远小于一，可在\eqnrefs{eq:tdpt-exact-coefficient}中把初态振幅取 $c_i\simeq1$、其余振幅取零阶值。于是从 $|i\rangle$ 到 $|f\rangle$ 的一级振幅为
-\begin{equation}
-c_f^{(1)}(t)
-=-\frac{\ii}{\hbar}\int_{t_0}^{t}
-V_{fi}(t')\ee^{\ii\omega_{fi}(t'-t_0)}\,\dd t'.
-\label{eq:first-order-transition-amplitude}
-\end{equation}
-它首先是外场在 Bohr 频率处的有限时间 Fourier 分量，而不是一个“能量守恒 δ 函数”。只有连续谱、长观测时间并且矩阵元在共振窗口内足够平滑时，才出现 Fermi 黄金法则
-\begin{equation}
-\boxed{
-\Gamma_{i\to f}
-=\frac{2\pi}{\hbar}|V_{fi}|^2\rho(E_f),
-}
-\label{eq:fermi-golden-rule}
-\end{equation}
-其中 $\rho(E_f)$ 是按能量计的末态态密度。黄金法则的控制条件包括弱跃迁、连续或准连续末态、关联时间远短于总体衰减时间；在离散强耦合体系中它会被相干 Rabi 交换取代。
-
-\begin{derivation}[有限时间谱如何趋于 Fermi 黄金法则，即\eqnrefs{eq:fermi-golden-rule}]
-一阶微扰振幅。取在 $0<t<T$ 内近似恒定的矩阵元 $V_{fi}$。由\eqnrefs{eq:first-order-transition-amplitude}，对初态 $|i\rangle$ 的一阶跃迁振幅
-\begin{equation*}
- c_f^{(1)}(T)
- =-\frac{\ii V_{fi}}{\hbar}\int_0^T\ee^{\ii\omega_{fi}t}\,\dd t
- =-\frac{\ii V_{fi}}{\hbar}
- \ee^{\ii\omega_{fi}T/2}
- \frac{2\sin(\omega_{fi}T/2)}{\omega_{fi}},
-\end{equation*}
-其中 $\omega_{fi}=(E_f-E_i)/\hbar$ 是 Bohr 频率。
-
-跃迁概率。取模平方，
-\begin{equation*}
- P_{i\to f}(T)
- =|c_f^{(1)}(T)|^2
- =\frac{|V_{fi}|^2}{\hbar^2}
- \frac{4\sin^2(\omega_{fi}T/2)}{\omega_{fi}^2}.
-\end{equation*}
-被积函数是 sinc 平方型共振峰，中心在 $\omega_{fi}=0$（能量守恒），宽度 $\sim1/T$。
-
-连续末态求和。对连续末态求和，用 $E_f-E_i=\hbar\omega_{fi}$ 换元：
-\begin{equation*}
- \frac{P(T)}{T}
- =\int\dd E_f\,\rho(E_f)
- \frac{|V_{fi}|^2}{\hbar^2}
- \frac{4\sin^2[(E_f-E_i)T/(2\hbar)]}{(E_f-E_i)^2T/\hbar^2}.
-\end{equation*}
-
-分布极限。关键恒等式是 sinc 平方函数的分布极限：
-\begin{equation*}
- \lim_{T\to\infty}
- \frac{4\sin^2(\omega T/2)}{\omega^2T}
- =2\pi\delta(\omega).
-\end{equation*}
-验证：对测试函数 $\varphi(\omega)$，$\int\frac{4\sin^2(\omega T/2)}{\omega^2T}\varphi(\omega)\dd\omega\to2\pi\varphi(0)$（换元 $u=\omega T/2$ 后 Riemann--Lebesgue）。代入第三步，
-\begin{equation*}
- \Gamma_{i\to f}
- =\lim_{T\to\infty}\frac{P(T)}{T}
- =\int\dd E_f\,\rho(E_f)|V_{fi}|^2\frac{2\pi}{\hbar}\delta(E_f-E_i)
- =\frac{2\pi}{\hbar}|V_{fi}|^2\rho(E_i),
-\end{equation*}
-即\eqnrefs{eq:fermi-golden-rule}。
-
-有限 $T$ 时，共振峰宽度量级为 $1/T$，所以真正被近似为常数的是这一窄频窗内的 $V_{fi}$ 与 $\rho$。黄金法则要求弱跃迁和连续或准连续末态；离散强耦合体系中，它被相干 Rabi 交换取代。
-
-
-\end{derivation}
-
-对与黑体辐射场弱耦合的两能级原子，若 $u_\nu$ 是“每单位普通频率”的谱能量密度，受激吸收、受激辐射和自发辐射率分别写为 $B_{12}u_\nu$、$B_{21}u_\nu$、$A_{21}$。热平衡与 Planck 分布给出
-\begin{equation}
- g_1B_{12}=g_2B_{21},
-\qquad
-A_{21}=\frac{8\pi h\nu^3}{c^3}B_{21}.
-\label{eq:einstein-relations}
-\end{equation}
-若改用每单位角频率的谱密度 $u_\omega$，由于 $u_\omega\dd\omega=u_\nu\dd\nu$，相应 $B$ 系数的数值定义随谱密度约定改变；物理跃迁率保持不变。
-
-在长波电偶极近似中
-\[
-V_{E1}(t)=-\mathbf d\cdot\mathbf E(t),
-\qquad
-\mathbf d=\sum_a q_a\mathbf r_a.
-\]
-球分量 $d_q$ 是奇宇称 秩-$1$ 张量，因此\eqnrefs{eq:wigner-eckart}立即给出
-\begin{equation}
-\Delta M=q=0,\pm1,
-\qquad
-\Delta J=0,\pm1,
-\qquad
-J=0\not\leftrightarrow J'=0,
-\label{eq:e1-angular-selection}
-\end{equation}
-并要求初末态宇称相反。对单电子中心势本征态还可进一步写成 $\Delta l=\pm1$；在良好的 LS 耦合 且电偶极算符不作用于自旋时有 $\Delta S=0$。这些是额外结构下的特例，不应与一般总角动量选择定则混为一谈。
-
-\begin{derivation}[电偶极选择定则如何由宇称与 3-j 符号共同产生]
-由 Wigner--Eckart 定理，秩-1 张量 $d_q$ 的矩阵元
-\begin{equation*}
- \langle \alpha'J'M'|d_q|\alpha JM\rangle
- =(-1)^{J'-M'}
- \begin{pmatrix}J'&1&J\\-M'&q&M\end{pmatrix}
- \langle\alpha'J'||d||\alpha J\rangle.
-\end{equation*}
-3-j 符号非零有两个必要条件。其一为磁量子数守恒：三行第二列之和为零，
-\begin{equation*}
- -M'+q+M=0
- \quad\Longrightarrow\quad
- M'=M+q,
- \qquad q=0,\pm1,
-\end{equation*}
-即 $\Delta M=0,\pm1$。其二为三角条件：$(J',1,J)$ 可构成三角形，
-\begin{equation*}
- |J-1|\le J'\le J+1,
- \qquad
- J'\in\{J-1,J,J+1\},
-\end{equation*}
-即 $\Delta J=0,\pm1$。若 $J=J'=0$，三角条件要求 $|0-1|\le0\le0+1$，左端 $1\le0$ 失败，因此 $0\leftrightarrow0$ 被排除。
-
-另一方面空间反演算符 $\Pi$ 满足 $\Pi^2=I$ 且 $\Pi\mathbf d\Pi^{-1}=-\mathbf d$，因为电偶极矩是极矢量。若初末态是宇称本征态，
-\begin{equation*}
- \Pi|i\rangle=\pi_i|i\rangle,
- \qquad
- \Pi|f\rangle=\pi_f|f\rangle,
- \qquad
- \pi_i,\pi_f\in\{+1,-1\},
-\end{equation*}
-则
+联合密度算符含有四项，
 \begin{align*}
- \langle f|\mathbf d|i\rangle
- &=\pi_f\pi_i\,\langle f|\Pi^{-1}\mathbf d\Pi|i\rangle\\
- &=\pi_f\pi_i\,\langle f|(-\mathbf d)|i\rangle\\
- &=-\pi_f\pi_i\,\langle f|\mathbf d|i\rangle.
+|\Psi\rangle\langle\Psi|
+={}&|a|^2|00\rangle\langle00|+|b|^2|11\rangle\langle11|\\
+&+ab^*|00\rangle\langle11|+a^*b|11\rangle\langle00|.
 \end{align*}
-移项得
-\begin{equation*}
- (1+\pi_f\pi_i)\langle f|\mathbf d|i\rangle=0,
-\end{equation*}
-非零矩阵元要求 $1+\pi_f\pi_i=0$，即 $\pi_f\pi_i=-1$，初末态宇称相反。角动量约束来自旋转对称性，宇称约束来自空间反演对称性，两者是独立的对称性操作，必须同时满足；仅满足其一的跃迁仍被禁戒。
-\end{derivation}
-
-例：氢原子 $1s\to2p$ 初末态宇称相反，电偶极跃迁允许；$1s\to2s$ 宇称相同，电偶极跃迁禁戒。钠 $D$ 线 $3s\to3p$ 同时满足角动量与宇称选择定则。
-
-\section{近共振截断、旋波近似与 Rabi 动力学}
-
-设一个孤立近共振双态子空间由基 $\{|e\rangle,|g\rangle\}$ 张成，裸跃迁频率为 $\omega_0=(E_e-E_g)/\hbar$。所谓“两能级近似”要求外场带宽和 Rabi 频率远小于到其他能级的失谐，并且消去的能级只产生可控的虚跃迁修正。取实电场的复包络约定
+对环境取偏迹就是在一组完备环境基上夹取并求和。交叉项含有
+$\langle1|0\rangle_B$ 或 $\langle0|1\rangle_B$，因此消失，留下
 \begin{equation}
-\mathbf E(t)
-=\frac12\left[\boldsymbol{\mathcal E}(t)\ee^{-\ii\omega_L t}
-+\boldsymbol{\mathcal E}^{*}(t)\ee^{\ii\omega_L t}\right],
+\rho_S=\Tr_B|\Psi\rangle\langle\Psi|
+=|a|^2|0\rangle\langle0|+|b|^2|1\rangle\langle1|.
+\label{eq:oqs-two-qubit-reduced}
+\end{equation}
+系统纯度为 $\Tr\rho_S^2=|a|^4+|b|^4$。只要 $ab\neq0$，它就小于一；当 $|a|=|b|=1/\sqrt2$ 时纯度降到 $1/2$。相干项并没有在联合态中消失，而是储存在系统与环境的关联里；只看系统时，环境基态的正交性把这些项从可观测统计中删掉。
+
+\section{精确约化动力学}
+\label{sec:phys-oqs-exact}
+
+把所有未直接观测的自由度统称为环境 $B$。下面的总演化始终保持精确，近似只会在下一章为了得到时间局域方程时出现。
+
+环境的自由哈密顿量记为 $H_B$。系统--环境相互作用写成一般双线性形式
+\begin{equation}
+H_{SB}=\lambda H_I,
 \qquad
-\Omega(t)=-\frac{\mathbf d_{eg}\cdot\boldsymbol{\mathcal E}(t)}{\hbar},
-\label{eq:rabi-frequency-convention}
+H_I=\sum_\mu S_\mu\otimes B_\mu,
+\label{eq:phys-oqs-general-system-bath}
 \end{equation}
-并定义失谐 $\Delta=\omega_L-\omega_0$。在旋转表象中，保留缓慢项而舍弃频率约为 $\omega_L+\omega_0$ 的 反旋 项，需要
+其中 $S_\mu$ 与 $B_\mu$ 分别只作用于系统和环境 Hilbert 空间，$\lambda$ 取为无量纲的记账参数，只标记系统--环境耦合的微扰阶数；$H_I$ 本身保留能量量纲。总哈密顿量为
 \begin{equation}
-|\Omega|,|\Delta|,\tau_{\rm env}^{-1}\ll \omega_L+\omega_0,
-\label{eq:rwa-condition}
+H_{\rm tot}=H_S+H_B+\lambda H_I.
+\label{eq:phys-oqs-total-h}
 \end{equation}
-其中 $\tau_{\rm env}$ 是包络变化时间尺度。到该阶的 旋转波近似 Hamiltonian 可写为
+对任意给定初始总态 $\rho_{\rm tot}(0)$，严格总演化为
+\[
+\rho_{\rm tot}(t)
+=U_{\rm tot}(t,0)\rho_{\rm tot}(0)U_{\rm tot}^\dagger(t,0),
+\]
+因此系统约化态定义为
 \begin{equation}
-H_{\rm RWA}
-=\frac{\hbar}{2}
-\begin{pmatrix}
--\Delta&\Omega\\
-\Omega^*&\Delta
+\rho(t)=\Tr_B\!\left[
+U_{\rm tot}(t,0)\rho_{\rm tot}(0)U_{\rm tot}^\dagger(t,0)
+\right].
+\label{eq:phys-oqs-exact-reduced-state}
+\end{equation}
+\eqnrefs{eq:phys-oqs-exact-reduced-state} 是开放系统理论的严格起点，不要求弱耦合、马尔可夫、久期或热平衡。
+
+若进一步固定环境初态 $\rho_B$ 并采用无初始相关的制备
+\begin{equation}
+\rho_{\rm tot}(0)=\rho(0)\otimes\rho_B,
+\label{eq:phys-oqs-factorized-initial-state}
+\end{equation}
+则可把约化演化定义为对任意系统初态都适用的映射
+\begin{equation}
+\Phi_t[\rho(0)]
+=\Tr_B\!\left[
+U_{\rm tot}(t,0)(\rho(0)\otimes\rho_B)U_{\rm tot}^\dagger(t,0)
+\right].
+\label{eq:phys-oqs-exact-reduced-map}
+\end{equation}
+该映射自动保持迹、厄米性和完全正性。为看见完全正性从哪里来，把环境初态谱分解为 $\rho_B=\sum_r p_r|r\rangle\langle r|$，并在末态环境基 $\{|\alpha\rangle\}$ 上取偏迹。定义
+\begin{equation}
+K_{\alpha r}(t)=\sqrt{p_r}\,{}_B\!\langle\alpha|U_{\rm tot}(t,0)|r\rangle_B,
+\label{eq:oqs-kraus-operators}
+\end{equation}
+便得到 Kraus 表示
+\begin{equation}
+\Phi_t[\rho]=\sum_{\alpha,r}K_{\alpha r}(t)\rho K_{\alpha r}^\dagger(t).
+\label{eq:oqs-kraus-map}
+\end{equation}
+总演化的幺正性给出
+\[
+\sum_{\alpha,r}K_{\alpha r}^\dagger K_{\alpha r}
+=\sum_r p_r,{}_B\!\langle r|U_{\rm tot}^\dagger U_{\rm tot}|r\rangle_B=I_S,
+\]
+所以式 \eqnrefs{eq:oqs-kraus-map} 保持迹。若再给系统附加一个不参与演化的旁观参考系，映射仍保持联合正性；这正是“完全正”比“正”多出的要求。
+
+Kraus 表示还可以直接变成一次完整计算。考虑二能级原子的振幅阻尼：原子激发态把一个量子放进初始真空环境，幺正演化在相关二维子空间中取为
+\[
+\begin{aligned}
+U\lvert0\rangle_S\lvert0\rangle_B
+&=\lvert0\rangle_S\lvert0\rangle_B,\\
+U\lvert1\rangle_S\lvert0\rangle_B
+&=\sqrt{1-p}\,\lvert1\rangle_S\lvert0\rangle_B
++\sqrt p\,\lvert0\rangle_S\lvert1\rangle_B,
+\end{aligned}
+\]
+其中 \(0\leq p\leq1\) 是在所考察时间内发射量子的概率。环境初态只有
+\(\lvert0\rangle_B\)，所以只需对末态环境基
+\(\lvert0\rangle_B,\lvert1\rangle_B\) 取矩阵元：
+\begin{equation}
+K_0=\begin{pmatrix}1&0\\0&\sqrt{1-p}\end{pmatrix},
+\qquad
+K_1=\begin{pmatrix}0&\sqrt p\\0&0\end{pmatrix}.
+\label{eq:oqs-amplitude-damping-kraus}
+\end{equation}
+逐项相乘可见
+\(K_0^\dagger K_0+K_1^\dagger K_1=I\)。若
+\[
+\rho(0)=\begin{pmatrix}
+\rho_{00}&\rho_{01}\\
+\rho_{10}&\rho_{11}
 \end{pmatrix},
-\label{eq:rwa-hamiltonian}
-\end{equation}
-忽略与单位阵成正比的公共能量。
-
-当 $\Omega$ 和 $\Delta$ 为常数时，广义 Rabi 频率
-\[
-\Omega_R=\sqrt{|\Omega|^2+\Delta^2}
 \]
-给出从 $|g\rangle$ 出发的激发概率
+则
 \begin{equation}
-P_e(t)
-=\frac{|\Omega|^2}{\Omega_R^2}
-\sin^2\!\left(\frac{\Omega_Rt}{2}\right).
-\label{eq:rabi-probability}
+\rho(t)=
+\begin{pmatrix}
+\rho_{00}+p\rho_{11}&\sqrt{1-p}\,\rho_{01}\\
+\sqrt{1-p}\,\rho_{10}&(1-p)\rho_{11}
+\end{pmatrix}.
+\label{eq:oqs-amplitude-damping-map}
 \end{equation}
-共振且驱动相位固定时，若不同时刻 Hamiltonian 彼此对易，则动力学只依赖 pulse area $\Theta=\int|\Omega(t)|\dd t$；一般失谐或时变相位下不能把“脉冲面积”当成普适定理。
+激发态人口以因子 \(1-p\) 减少，失去的人口全部流入基态；相干项则只乘 \(\sqrt{1-p}\)。迹保持条件负责人口守恒，而相干项与人口使用不同幂次，说明“衰减”不能用一个非幺正态矢量演化完整代替。取短时间
+\(p=\gamma\,\Delta t+O(\Delta t^2)\)，把
+\eqnrefs{eq:oqs-amplitude-damping-map}
+减去初态再除以 \(\Delta t\)，就得到下一章会反复出现的自发辐射 Lindblad 耗散子。
 
-远失谐 $|\Delta|\gg|\Omega|$ 时，可对\eqnrefs{eq:rwa-hamiltonian}作二阶非简并微扰，得到 AC Stark 位移
+固定同一个 $\rho_B$ 对所有系统初态使用，是上述 Kraus 形式的制备前提。若制备过程只允许系统初态落在集合 $\mathfrak D_{\mathcal A}$ 中，可以引入赋值映射
 \begin{equation}
-\delta E_g=+\frac{\hbar|\Omega|^2}{4\Delta},
+\mathcal A:\mathfrak D_{\mathcal A}\to\mathcal S(\Hil_S\otimes\Hil_B),
 \qquad
-\delta E_e=-\frac{\hbar|\Omega|^2}{4\Delta},
-\label{eq:ac-stark-shift}
+\Tr_B\mathcal A[\rho]=\rho,
+\label{eq:phys-oqs-assignment-map}
 \end{equation}
-这里的正负号与\eqnrefs{eq:rabi-frequency-convention}和 $\Delta=\omega_L-\omega_0$ 的约定绑定；改用相反失谐定义时必须整体同步改变。
-
-\begin{derivation}[从实验室表象到 旋转波近似 与 Rabi 解，即\eqnrefs{eq:rwa-hamiltonian,eq:rabi-probability}]
-实验室表象 Hamiltonian。在两能级子空间取 $\sigma_z=|e\rangle\langle e|-|g\rangle\langle g|$、$\sigma_+=|e\rangle\langle g|$、$\sigma_-=|g\rangle\langle e|$。去掉公共能量 $(E_e+E_g)/2$ 后，实验室表象 Hamiltonian 为
-\begin{equation*}
- H=\frac{\hbar\omega_0}{2}\sigma_z
- +\frac{\hbar}{2}
- \left[\Omega\ee^{-\ii\omega_L t}+\Omega^*\ee^{\ii\omega_L t}\right]
- \frac{\sigma_++\sigma_-}{2}.
-\end{equation*}
-展开得共振项 $\Omega\sigma_\pm\ee^{\mp\ii\omega_Lt}/2$ 与反旋项 $\Omega\sigma_\mp\ee^{\mp\ii\omega_Lt}/2$。
-
-用 $R(t)=\exp(+\ii\omega_Lt\sigma_z/2)$ 变到以激光频率旋转的表象，
-\begin{equation*}
- H_{\rm rot}=RHR^\dagger+\ii\hbar\dot R R^\dagger.
-\end{equation*}
-$R(t)$ 把 $\sigma_\pm$ 旋转为 $\sigma_\pm\ee^{\mp\ii\omega_Lt}$。于是耦合项中，共振部分（$\Omega\ee^{-\ii\omega_Lt}\cdot\sigma_+\ee^{+\ii\omega_Lt}=\Omega\sigma_+$）变为常数，反旋部分携带 $\ee^{\pm2\ii\omega_Lt}$ 的快振荡。$\ii\hbar\dot RR^\dagger=-\hbar\omega_L\sigma_z/2$ 项将裸能隙 $\omega_0$ 替换为失谐 $\Delta=\omega_0-\omega_L$。在\eqnrefs{eq:rwa-condition}（$\omega_L\gg\Omega$）下丢弃快振荡项，得到\eqnrefs{eq:rwa-hamiltonian}；修正量级为 $(\Omega/\omega_L)^2$，对应 Bloch--Siegert 移位 $\delta_{\rm BS}=\Omega^2/[4(\omega_L+\omega_0)]$。
-
-对常系数 旋转波近似 Hamiltonian
-\begin{equation*}
- H_{\rm RWA}=\frac{\hbar}{2}\bigl(\Delta\,\sigma_z+\Omega\,\sigma_++\Omega^*\,\sigma_-\bigr)
-\end{equation*}
-满足
-\begin{equation*}
- H_{\rm RWA}^2=\frac{\hbar^2\Omega_R^2}{4}I,
- \qquad
- \Omega_R=\sqrt{|\Omega|^2+\Delta^2},
-\end{equation*}
-（Pauli 矩阵的 Clifford 代数关系 $\sigma_i\sigma_j=\delta_{ij}I+\ii\epsilon_{ijk}\sigma_k$）。因此指数截断为有限和：
-\begin{equation*}
- U(t)=\exp\!\left(-\frac{\ii t}{\hbar}H_{\rm RWA}\right)
- =\cos\frac{\Omega_Rt}{2}\,I
- -\frac{2\ii}{\hbar\Omega_R}
- \sin\frac{\Omega_Rt}{2}\,H_{\rm RWA}.
-\end{equation*}
-
-令初态为 $|g\rangle$，取 $\langle e|U(t)|g\rangle$ 的模平方。由 $\langle e|\sigma_+|g\rangle=1$、$\langle e|\sigma_z|g\rangle=0$，
-\begin{equation*}
- P_e(t)=|\langle e|U(t)|g\rangle|^2
- =\frac{|\Omega|^2}{\Omega_R^2}\sin^2\frac{\Omega_R t}{2},
-\end{equation*}
-即\eqnrefs{eq:rabi-probability}。共振时 $\Delta=0$ 布居数完全翻转，远失谐时翻转幅度 $\sim|\Omega/\Delta|^2$，主要效应为 AC Stark 移位。
-\end{derivation}
-
-\section{开放驱动两能级：Lindblad 方程与 Bloch 稳态}
-
-真实原子与真空电磁场、碰撞环境和激光相位噪声耦合。若环境关联时间远短于系统弛豫时间，并采用适当 Born--Markov 与 久期 近似，约化态满足 GKSL 方程。对自发辐射率 $\Gamma_1$ 和纯退相干率 $\gamma_\phi$，
+并定义
 \begin{equation}
-\dot\rho
-=-\frac{\ii}{\hbar}[H_{\rm RWA},\rho]
-+\Gamma_1\mathcal D[\sigma_-]\rho
-+\frac{\gamma_\phi}{2}(\sigma_z\rho\sigma_z-\rho),
-\label{eq:optical-bloch-master}
+\Phi_{t,0}^{\mathcal A}[\rho]
+=\Tr_B\!\left[U_{\rm tot}(t,0)\mathcal A[\rho]U_{\rm tot}^\dagger(t,0)\right],
+\qquad \rho\in\mathfrak D_{\mathcal A}.
+\label{eq:phys-oqs-assignment-reduced-map}
 \end{equation}
-其中 $\mathcal D[L]\rho=L\rho L^\dagger-\tfrac12\{L^\dagger L,\rho\}$，横向退相干率为
-\[
-\Gamma_2=\frac{\Gamma_1}{2}+\gamma_\phi.
-\]
-写 $u=2\Re\rho_{eg}$、$v=2\Im\rho_{eg}$、$w=\rho_{ee}-\rho_{gg}$，并通过重定义基态相位把常数 $\Omega$ 取为实数，可得 光学 Bloch 方程
-\begin{equation}
-\dot u=-\Gamma_2u+\Delta v,
-\qquad
-\dot v=-\Gamma_2v-\Delta u-\Omega w,
-\qquad
-\dot w=-\Gamma_1(w+1)+\Omega v.
-\label{eq:optical-bloch-equations}
-\end{equation}
-稳态激发占据为
-\begin{equation}
-\boxed{
-\rho_{ee}^{\rm ss}
-=\frac{|\Omega|^2\Gamma_2}
-{2\left[\Gamma_1(\Gamma_2^2+\Delta^2)+|\Omega|^2\Gamma_2\right]}.
-}
-\label{eq:bloch-steady-excited}
-\end{equation}
-若只有自发辐射，$\Gamma_2=\Gamma_1/2\equiv\Gamma/2$，则
-\begin{equation}
-\rho_{ee}^{\rm ss}
-=\frac{|\Omega|^2}{\Gamma^2+4\Delta^2+2|\Omega|^2}
-=\frac{s_0/2}{1+s_0+(2\Delta/\Gamma)^2},
-\qquad
-s_0=\frac{2|\Omega|^2}{\Gamma^2}.
-\label{eq:two-level-saturation}
-\end{equation}
-下一章以后用到的散射力、Doppler 冷却和精密操控都以这一稳态响应作为内部态输入；若饱和很强、环境非 Markov 或存在多重简并暗态，则必须回到更完整的主方程。
+乘积赋值 $\mathcal A_0[\rho]=\rho\otimes\rho_B$ 定义在整个系统态空间上，并直接给出\eqnrefs{eq:phys-oqs-exact-reduced-map} 的完全正迹保持映射。若初始总态含系统--环境相关，\eqnrefs{eq:phys-oqs-exact-reduced-state} 对该给定初态仍然精确，但“只给系统初态 \(\rho(0)\) 就唯一决定总初态”的赋值通常只在一个兼容子集上定义。此时可以在这个兼容定义域上讨论约化映射，却一般不能把它延拓成定义在整个系统态空间上的同一个完全正迹保持映射。因而是否采用因子化初态首先是制备与定义域问题，不是 Born 弱耦合截断本身。
 
-\begin{derivation}[Bloch 方程的稳态饱和解]
-令\eqnrefs{eq:optical-bloch-equations} 左端为零，稳态满足
-\begin{align*}
- 0&=\Delta v-\Gamma_2 u,\\
- 0&=-\Delta u-\Gamma_2 v-\Omega w,\\
- 0&=-\Gamma_1(w+1)+\Omega v.
-\end{align*}
-由第一式解出
-\begin{equation*}
- u=\frac{\Delta}{\Gamma_2}v.
-\end{equation*}
-代回第二式，
-\begin{equation*}
- 0=-\Delta\cdot\frac{\Delta}{\Gamma_2}v-\Gamma_2 v-\Omega w
- =-\left(\frac{\Delta^2}{\Gamma_2}+\Gamma_2\right)v-\Omega w,
-\end{equation*}
-整理得
-\begin{equation*}
- 0=-\frac{\Gamma_2^2+\Delta^2}{\Gamma_2}v-\Omega w,
-\end{equation*}
-于是
-\begin{equation*}
- v=-\frac{\Omega\Gamma_2}{\Gamma_2^2+\Delta^2}w.
-\end{equation*}
-再代入第三式，
-\begin{equation*}
- \Gamma_1(w+1)
- =\Omega v
- =-\frac{\Omega^2\Gamma_2}{\Gamma_2^2+\Delta^2}w.
-\end{equation*}
-把含 $w$ 的项合并到一端，
-\begin{equation*}
- \Gamma_1 w+\frac{\Omega^2\Gamma_2}{\Gamma_2^2+\Delta^2}w
- =-\Gamma_1,
-\end{equation*}
-解得
-\begin{equation*}
- w=-\frac{\Gamma_1}{\Gamma_1+\dfrac{\Omega^2\Gamma_2}{\Gamma_2^2+\Delta^2}}
- =-\frac{\Gamma_1(\Gamma_2^2+\Delta^2)}
- {\Gamma_1(\Gamma_2^2+\Delta^2)+\Omega^2\Gamma_2}.
-\end{equation*}
-由 $\rho_{ee}=(1+w)/2$，代入并化简即得\eqnrefs{eq:bloch-steady-excited}。当 $|\Omega|\to\infty$ 时，分母中 $\Omega^2\Gamma_2$ 主导，故 $w\to0$，从而 $\rho_{ee}\to1/2$，这不是"激发失败"，而是受驱二能级系统在强饱和下上下能级占据趋于相等。
-\end{derivation}
+\eqnrefs{eq:phys-oqs-exact-reduced-map} 通常不能仅用有限个系统算符写成闭合的时间局域微分方程。\secref{sec:phys-oqs-gksl}将从它对应的相互作用绘景方程出发，依次引入 Born、马尔可夫与久期条件，构造可计算的 GKSL 生成元。
 
-\section{原子--光相互作用：典型参数与实验}
-\label{sec:rabi-bloch-experiment}
 
-前几节建立了 Fermi 黄金法则、Rabi 振荡、选择定则和 Bloch 方程的理论框架。本节给出典型原子--光系统的数值参数和实验关联，使理论成为可操作的量子光学工具。
-
-接下来考察典型原子参数。
-
-二能级系统的关键参数为 Rabi 频率 $\Omega=\vb d\cdot\vb E/\hbar$、自发辐射率 $\Gamma$ 和失谐 $\Delta$。对常见原子：
-\begin{center}
-\begin{tabular}{cccccc}
-\hline
-原子 & 跃迁 & $\lambda$ (nm) & $\Gamma/2\pi$ (MHz) & $d$ (ea$_0$) & $\tau$ (ns) \\
-\hline
-H & $1s\to2p$ & 121.6 & 99.6 & 0.74 & 1.60 \\
-Na & $3s\to3p$ & 589.0 & 6.06 & 0.71 & 26.2 \\
-Rb & $5s\to5p$ & 780.2 & 6.07 & 0.68 & 26.2 \\
-Cs & $6s\to6p$ & 852.3 & 5.22 & 0.69 & 30.5 \\
-Ca & $4s^2\to4s4p$ & 422.7 & 37.4 & 1.49 & 4.25 \\
-\hline
-\end{tabular}
-\end{center}
-其中 $a_0=0.529\times10^{-10}\,\mathrm{m}$ 为 Bohr 半径。氢 $2p\to1s$ 的 Einstein $A$ 系数 $A_{21}=\Gamma=6.27\times10^8\,\mathrm{s}^{-1}$，对应寿命 $\tau=1.60\,\mathrm{ns}$。
-
-接下来考察 Rabi 振荡：从理论到实验。
-
-共振驱动 ($\Delta=0$) 下二能级系统的激发态布居
-\[
- P_e(t)=\sin^2\frac{\Omega t}{2}
-\]
-在 $\Gamma=0$ 时为完美振荡。有阻尼时 ($\Gamma>0$)，振荡以速率 $\Gamma/2$ 衰减，稳态趋于饱和值。典型实验参数：
-\begin{itemize}
- \item Rb 原子在 $I=1\,\mathrm{mW/cm^2}$ 激光下：$\Omega/2\pi\approx5\,\mathrm{MHz}$，$\Omega/\Gamma\approx0.8$（中等饱和）。
- \item 强场 $I=10\,\mathrm{W/cm^2}$：$\Omega/2\pi\approx500\,\mathrm{MHz}\gg\Gamma$，$\pi$ 脉冲时间 $t_\pi=\pi/\Omega\approx1\,\mathrm{ns}$。
- \item 冷原子实验中已观测到上千次相干 Rabi 振荡（退相干时间 $T_2\sim100\,\mathrm{\mu s}$）。
-\end{itemize}
-
-接下来考察 Fermi 黄金法则的适用边界。
-
-弱驱动 ($\Omega\ll\Gamma$) 下 Fermi 黄金法则给出跃迁率 $W=\Omega^2\Gamma/(\Gamma^2+\Delta^2)$，激发态布居 $P_e\approx Wt\propto t$ 线性增长。强驱动 ($\Omega\gtrsim\Gamma$) 时 Rabi 振荡显著，黄金法则失效——需用完整 Bloch 方程。判据：黄金法则要求 $\Omega^2/(\Gamma^2+\Delta^2)\ll1$（饱和参数 $s\ll1$）。
-
-接下来考察饱和吸收光谱。
-
-原子蒸气在连续激光扫描下，强驱动使 $\rho_{ee}\to1/2$，吸收系数 $\alpha\propto(1-2\rho_{ee})$ 下降。在共振频率处饱和最强、吸收最弱，形成饱和吸收峰的「反兰姆凹陷」。钠 D 线饱和吸收光谱的典型线宽 $\sim50\,\mathrm{MHz}$（功率加宽），用于激光频率锁定至原子跃迁——这是原子钟和激光冷却的标准技术。
-
-接下来考察光学 Bloch 方程的几何图像。
-
-Bloch 矢量 $\vb R=(u,v,w)$（$u=\rho_{ge}+\rho_{eg}$, $v=-i(\rho_{ge}-\rho_{eg})$, $w=\rho_{ee}-\rho_{gg}$）在 Bloch 球上运动。无阻尼时绕有效场 $\vb\Omega_{\rm eff}=(\Omega,0,\Delta)$ 做刚体旋转；有阻尼时 Bloch 矢量收缩至稳态。几何图像使量子态演化可视化：$\pi$ 脉冲把 $\vb R$ 从北极翻到南极（完全激发），$\pi/2$ 脉冲移至赤道（叠加态），自由演化绕 $z$ 轴以频率 $\Delta$ 进动。这一图像是 NMR 和量子比特操控的标准语言。
-
-\begin{derivation}[Landau--Zener 非绝热跃迁与精确公式]
-二能级 Hamiltonian
-\begin{equation*}
-  H(t)=\frac{1}{2}\begin{pmatrix}\alpha t&\Delta\\\Delta&-\alpha t\end{pmatrix},
-\end{equation*}
-能级差 \(\epsilon(t)=\alpha t\) 线性穿越零点，耦合 \(\Delta\) 恒定；绝热性由 \(\Delta^2/(\hbar\alpha)\) 控制。Schrödinger 方程化为 Weber 方程（抛物柱函数）。设 \(t\to-\infty\) 处于下能级 \(\psi_-\)，\(t\to+\infty\) 时处于上能级的概率
-\begin{equation}
-  P_{\rm LZ}=\exp\!\left(-\frac{\pi\Delta^2}{2\hbar\alpha}\right).
-  \label{eq:tdpt-landau-zener}
-\end{equation}
-证明将方程化为 Weber 方程后由 \(t\to\pm\infty\) 连接公式读 Stokes 系数即得。绝热极限 \(\alpha\to0\) 时 \(P_{\rm LZ}\to0\)，突然极限 \(\alpha\to\infty\) 时 \(P_{\rm LZ}\to1\)。多次穿越时各振幅连同动力学相位相干叠加，形成 Stückelberg 干涉。
-
-周期驱动由 Floquet 定理刻画：\(U(t,0)=P(t)\ee^{-iH_F t/\hbar}\)，\(P(t+T)=P(t)\) 为周期算符，准能 \(E_F\) 模 \(\hbar\omega\) 定义。在扩展空间 \(\mathcal H\otimes\mathcal T\) 上 \(H_F=H(t)-i\hbar\partial_t\)，将含时问题化为时间无关本征值问题。
-\end{derivation}
+精确约化映射通常依赖系统的整个历史，不能只用当前的 $\rho(t)$ 闭合。下一章将从相互作用绘景的精确积分方程出发，逐步比较环境相关时间、系统驰豫时间和不同 Bohr 频率的分离；只有这些尺度条件成立，时间局域的 GKSL 方程才会出现。

@@ -1,431 +1,12 @@
-\chapter{Cluster、Mayer、virial 与相互作用量子气体}
+\chapter{Beth--Uhlenbeck 公式、散射长度与第二位力系数}
 \label{chap:phys-sm-interacting-quantum-gases}
 
-零点和精确谱已经给出二维 Ising 的非微扰结构；现在回到巨配分函数 \(\Xi\)，改用 \(\log\Xi\) 在小逸度处的连通展开。逻辑顺序是：先由一般 Mayer/团簇 结构说明为什么 \(\log\Xi\) 只保留 连通 contributions，再固定量子 正则 与 巨-正则 归一化，随后反演到 维里 方程 of 态。二阶相互作用系数最后由一般二体谱移公式表示，再逐步特殊化到分波相移、内部交换通道、有效-值域 展开 与零程 EFT。每一步都保留热波长、质心质量和简并度，避免不同文献 约定 之间的整体因子混淆。
-
-\section{Mayer 展开与量子 cluster convention}
-
-对质量为 \(m\) 的三维单组分气体定义热 de Broglie 波长
-\begin{equation}
- \lambda_T(m)
- =\sqrt{\frac{2\pi\hbar^2\beta}{m}},
- \qquad
- \lambda_T:=\lambda_T(m).
- \label{eq:phys-sm-thermal-wavelength}
-\end{equation}
-单组分逸度仍为 \(z=\ee^{\beta\mu}\)。无量纲 量子团簇 系数 \(b_n\) 定义为
-\begin{equation}
- \frac{1}{\mathcal V}\log\Xi(z)
- =\frac{1}{\lambda_T^3}
- \sum_{n=1}^{\infty}b_n z^n.
- \label{eq:phys-sm-cluster-convention}
-\end{equation}
-因此 \(b_n\) 无量纲。后面出现的 维里 系数 \(B_n\) 则以粒子数密度为变量，量纲为 \(\text{volume}^{n-1}\)；两套系数不能混称为同一个“第二 维里 系数”。
-
-先从经典可积稳定势说明连通图为何进入 \(\log\Xi\)。这一结构随后迁移到量子 正则 累积量；二者共享的是“对数抽取 连通 contribution”，而不是相同的微观积分。
-
-经典 pair-势 气体提供最透明的 连通-combinatorics 原型。设
-\[
- U_N(\mathbf r_1,\ldots,\mathbf r_N)
- =\sum_{1\le i<j\le N}u(\mathbf r_i-\mathbf r_j).
-\]
-假设势稳定，即存在 \(B_{\rm stab}\ge0\) 使任意 \(N\) 和任意构型都满足
-\begin{equation}
- U_N\ge-B_{\rm stab}N,
- \label{eq:phys-sm-stable-potential}
-\end{equation}
-并假设 Mayer 键 可积。定义
-\begin{equation}
- \mathfrak f_{ij}=\ee^{-\beta u(\mathbf r_i-\mathbf r_j)}-1,
- \qquad
- \mathcal C_{\rm M}(\beta)=\int_{\mathbb R^3}|\mathfrak f(\mathbf r)|\dd^3r<\infty.
- \label{eq:phys-sm-mayer-f}
-\end{equation}
-用有量纲 经典 活度 \(\zeta\) 写巨配分函数
-\begin{equation}
- \Xi_{\rm cl}(\zeta)
- =\sum_{N=0}^{\infty}\frac{\zeta^N}{N!}
- \int_{\mathcal V^N}
- \prod_{i=1}^N\dd^3r_i
- \prod_{i<j}(1+\mathfrak f_{ij}).
- \label{eq:phys-sm-mayer-grand}
-\end{equation}
-展开最后的乘积，任意 标号 图 \(G\) on \(\{1,\ldots,N\}\) 贡献所有所选边的 \(\mathfrak f_{ij}\) 乘积。指数公式说明取对数以后只留下 连通 图：
-\begin{equation}
- \boxed{
- \log\Xi_{\rm cl}
- =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}
- \int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
- \sum_{G\in\mathcal C_n}
- \prod_{(ij)\in\mathsf E(G)}\mathfrak f_{ij},
- }
- \label{eq:phys-sm-general-mayer}
-\end{equation}
-其中 \(\mathcal C_n\) 是 \(n\) 个 标号 顶点 上的 连通 简单 图。
-
-\begin{derivation}[为什么 \(\log\Xi\) 只保留连通图]
-要说明对配分函数 \(\Xi\) 取对数为何只留下连通图，先把图按连通块分解，再写连通权重的指数生成函数，最后取对数。
-
-图的连通块分解。任意 标号 图 \(G\) on \(\{1,\ldots,N\}\) 唯一分解为若干连通块 \(G_1\sqcup\cdots\sqcup G_k\)，各块顶点集互斥且无跨块边。若块 \(G_i\) 有 \(n_i\) 个顶点，则 \(\sum_i n_i=N\)，且 Mayer 键 乘积因子化：
-\[
- \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}
- =\prod_{i=1}^k\prod_{(j,l)\in\mathsf E(G_i)}\mathfrak f_{jl}.
-\]
-对位置的积分也因此因子化为各块独立积分。这里 \(\mathfrak f_{jl}=\ee^{-\beta V(\mathbf r_j-\mathbf r_l)}-1\) 是 Mayer \(f\)-函数，满足 \(\mathfrak f_{jl}\to0\)（\(|\mathbf r_j-\mathbf r_l|\to\infty\)），保证短程势下积分收敛。
-
-连通块权重的指数生成函数。令 \(W_n\) 表示所有 \(n\)-点 连通 图 的积分权重和：
-\[
- W_n=\int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
- \sum_{G\in\mathcal C_n}
- \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}.
-\]
-一个一般 \(N\)-点图由连通块 \(G_1,\ldots,G_k\) 组成，块大小 \(n_1,\ldots,n_k\) 满足 \(\sum n_i=N\)。\(N\) 个 label 分配到各块有 \(N!/(n_1!\cdots n_k!)\) 种方式，但块内部已按 标号 图 求和，且块之间无顺序。因此全部图（连通与非连通）的配分函数为
-\[
- \Xi_{\rm cl}
- =\sum_{N=0}^{\infty}\frac{\zeta^N}{N!}
- \sum_{\substack{k\ge0\\n_1+\cdots+n_k=N}}
- \frac{N!}{n_1!\cdots n_k!}
- \prod_{i=1}^k W_{n_i}
- =\prod_{n=1}^{\infty}\sum_{k_n=0}^{\infty}
- \frac{1}{k_n!}\left(\frac{\zeta^nW_n}{n!}\right)^{k_n}
- =\exp\!\left(\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}W_n\right),
-\]
-其中 \(k_n\) 是大小为 \(n\) 的连通块个数，最后一步用了 \(\sum_{k=0}^\infty x^k/k!=\ee^x\)。这一步的代数本质是指数公式（指数 公式）：集合分拆的指数生成函数等于其连通分量的指数生成函数的指数。
-
-取对数。对上式取对数立即得到\eqnrefs{eq:phys-sm-general-mayer}：
-\[
- \log\Xi_{\rm cl}
- =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}W_n
- =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}
- \int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
- \sum_{G\in\mathcal C_n}
- \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}.
-\]
-非连通图并未被"忽略"：它们由连通块权重的指数自动重建。取对数的效果恰好剥离了这一指数结构，只留下 连通 扇区。
-
-对 \(n=2\)，连通简单图只有一条边，\(\mathcal C_2=\{(12)\}\)，故
-\begin{equation*}
- W_2=\int_{\mathcal V^2}\dd^3r_1\dd^3r_2\,\mathfrak f_{12}
- \xrightarrow{\mathcal V\to\infty}
- \mathcal V\int_{\mathbb R^3}\dd^3r\,\bigl(\ee^{-\beta V(r)}-1\bigr),
-\end{equation*}
-代入 \(\log\Xi=\zeta W_1+\zeta^2W_2/2+\cdots\) 并与 维里 展开比较，得经典第二 维里 系数
-\begin{equation*}
- B_2^{\rm cl}=-\frac12\int_{\mathbb R^3}\dd^3r\,\bigl(\ee^{-\beta V(r)}-1\bigr),
-\end{equation*}
-即 Mayer 第二 维里 积分。对硬球势 \(V(r)=\infty\,(r<d)\)、\(0\,(r>d)\)，积分给出 \(B_2=2\pi d^3/3\)，即四倍硬球体积。
-
-量子气体中 Mayer 键 被 正则 迹 \(Q_n\) 替代，连通性由 累积量 结构保证：\(\log\Xi=\sum b_nz^n\) 中 \(b_n\) 是 \(Q_1,\ldots,Q_n\) 的多项式，恰好删除所有非连通分拆。此结构在量子场论中对应 Feynman 图的连通图定理：\(\log Z[J]\) 的生成泛函只含连通图，是统计力学与 QFT 共用的组合骨架。
-\end{derivation}
-
-稳定性和可积性还给出 团簇展开 的一个充分收敛域。例如 Penrose--Ruelle 型估计可写成
-\begin{equation}
- |\zeta|\mathcal C_{\rm M}(\beta)\ee^{2\beta B_{\rm stab}+1}<1.
- \label{eq:phys-sm-mayer-sufficient-condition}
-\end{equation}
-这个条件保证低 活度 解析性，但只是充分条件，不等于真实相变边界。
-
-量子气体中不再使用经典 Mayer 键，而从已经施加交换统计的 正则 迹 出发。巨配分函数的对数仍按 累积量 组合抽取连通部分，因此前三阶 系数 可以直接由 \(Q_1,Q_2,Q_3\) 得到。
-
-量子体系固定粒子数的正则配分函数定义为
-\begin{equation}
- Q_N=\Tr_{\mathscr H_N^{(\eta)}}\ee^{-\beta H_N},
- \qquad
- \eta=+1\ \text{(boson)},\quad
- \eta=-1\ \text{(fermion)},
- \label{eq:phys-sm-canonical-qn}
-\end{equation}
-其中 \(\mathscr H_N^{(\eta)}\) 已经是完全对称或反对称的 \(N\)-粒子子空间，因此不能再额外除以 \(N!\)。巨配分函数为
-\begin{equation}
- \Xi(z)=\sum_{N=0}^{\infty}z^NQ_N,
- \qquad Q_0=1.
- \label{eq:phys-sm-quantum-grand}
-\end{equation}
-由 \(z\Xi'(z)=\Xi(z)\,z\partial_z\log\Xi(z)\) 可先得到任意阶的 正则--团簇 递推。把\eqnrefs{eq:phys-sm-quantum-grand} 与\eqnrefs{eq:phys-sm-cluster-convention} 代入并比较 \(z^N\) 系数，
-\begin{equation}
- NQ_N=\frac{\mathcal V}{\lambda_T^3}
- \sum_{n=1}^{N}n b_n Q_{N-n},
- \qquad Q_0=1.
- \label{eq:phys-sm-general-cluster-recurrence}
-\end{equation}
-于是
-\begin{equation}
- \boxed{
- b_N=\frac{\lambda_T^3}{\mathcal V}Q_N
- -\frac1N\sum_{n=1}^{N-1}n b_n Q_{N-n}.
- }
- \label{eq:phys-sm-cluster-recurrence-solved}
-\end{equation}
-这说明每个 \(b_N\) 都是 正则 迹 中恰好去除所有低阶非连通分拆后的 累积量。前三阶特殊化为
-\begin{align}
- b_1&=\frac{\lambda_T^3}{\mathcal V}Q_1,
- \label{eq:phys-sm-b1-canonical}\\
- b_2&=\frac{\lambda_T^3}{\mathcal V}
- \left(Q_2-\frac{Q_1^2}{2}\right),
- \label{eq:phys-sm-b2-canonical}\\
- b_3&=\frac{\lambda_T^3}{\mathcal V}
- \left(Q_3-Q_1Q_2+\frac{Q_1^3}{3}\right).
- \label{eq:phys-sm-b3-canonical}
-\end{align}
-这些是 巨-正则 累积量。\(b_3\) 已经含真正的三体 连通 扇区，因此不能由二体 Beth--Uhlenbeck 相移公式简单延拓得到。
-
-\begin{derivation}[从 正则 迹 到前三阶 累积量，即\eqnrefs{eq:phys-sm-b1-canonical}--\eqnrefs{eq:phys-sm-b3-canonical}]
-巨配分函数的 Taylor 展开为
-\begin{equation*}
- u(z)=zQ_1+z^2Q_2+z^3Q_3+O(z^4),
- \qquad \Xi=1+u.
-\end{equation*}
-累积量 生成函数是 $\log\Xi=\log(1+u)$。对 $|u|<1$ 使用 Taylor 展开
-\begin{equation*}
- \log(1+u)=u-\frac{u^2}{2}+\frac{u^3}{3}+O(u^4).
-\end{equation*}
-此展开的收敛半径为 1，对应 $|z|<z_0$ 的小逸度区；在相变处收敛半径触及奇点，累积量 展开失效。
-
-由 $u(z)$ 的展开式，
-\begin{align*}
- u^2
- &=\bigl(zQ_1+z^2Q_2+O(z^3)\bigr)^2
- =z^2Q_1^2+2z^3Q_1Q_2+O(z^4),\\
- u^3
- &=\bigl(zQ_1+O(z^2)\bigr)^3
- =z^3Q_1^3+O(z^4).
-\end{align*}
-交叉项 $2z^3Q_1Q_2$ 来自 $(zQ_1)(z^2Q_2)+(z^2Q_2)(zQ_1)$。$u^3$ 中 $z^3Q_1^3$ 来自 $(zQ_1)^3$，其余项至少含一个 $O(z^2)$ 因子故为 $O(z^4)$。
-
-把 $u=zQ_1+z^2Q_2+z^3Q_3$ 代入 $\log\Xi=\log(1+u)$，展开到 $z^3$ 阶：
-\begin{align*}
- \log\Xi
- &=\bigl(zQ_1+z^2Q_2+z^3Q_3\bigr)
-  -\frac{1}{2}\bigl(z^2Q_1^2+2z^3Q_1Q_2\bigr)
-  +\frac{1}{3}\bigl(z^3Q_1^3\bigr)+O(z^4)\\
- &=zQ_1
-  +z^2\left(Q_2-\frac{Q_1^2}{2}\right)
-  +z^3\left(Q_3-Q_1Q_2+\frac{Q_1^3}{3}\right)
-  +O(z^4).
-\end{align*}
-
-由\eqnrefs{eq:phys-sm-cluster-convention}，$\log\Xi=\sum_{n\ge1}b_nz^n$，逐次比较 $z$、$z^2$、$z^3$ 的系数即得到\eqnrefs{eq:phys-sm-b1-canonical}--\eqnrefs{eq:phys-sm-b3-canonical}。
-\end{derivation}
-
-设单粒子内部 Hilbert 空间维数为 \(d_{\rm int}\)，且所有内部态等能。理想气体满足
-\begin{equation}
- \boxed{
- b_n^{(0)}
- =\frac{d_{\rm int}\,\eta^{n+1}}{n^{5/2}}.
- }
- \label{eq:phys-sm-ideal-cluster}
-\end{equation}
-这里不从压力级数整体提出 \(d_{\rm int}\)。因此若另一 约定 定义“每个 自旋 分量 的 \(\bar b_n\)”，两套 系数 会相差相应的整体内部简并度。
-
-\begin{derivation}[理想量子气体的 团簇 系数，即\eqnrefs{eq:phys-sm-ideal-cluster}]
-理想巨配分函数。单粒子色散 $\varepsilon_{\mathbf p}=p^2/(2m)$，内部 Hilbert 空间维数 $d_{\rm int}$。理想巨配分函数（$\eta=+1$ Bose，$\eta=-1$ Fermi）满足
-\begin{equation*}
- \log\Xi_0
- =-\eta d_{\rm int}
- \sum_{\mathbf p}
- \log\left(1-\eta z\,\ee^{-\beta\varepsilon_{\mathbf p}}\right).
-\end{equation*}
-此式来自巨配分函数的乘积形式 \(\Xi_0=\prod_{\mathbf p,\sigma}(1-\eta z\ee^{-\beta\varepsilon_{\mathbf p}})^{-\eta}\)，取对数后对内部态 \(\sigma\) 求和给出 \(d_{\rm int}\) 因子。Bose 情形 \(\eta=+1\) 要求 \(|z|<1\) 以保证收敛；Fermi 情形 \(\eta=-1\) 对任意 \(z\) 解析。
-
-展开对数。利用 Taylor 展开
-\begin{equation*}
- -\eta\log(1-\eta x)
- =\sum_{n=1}^{\infty}\frac{\eta^{n+1}}{n}\,x^n,
-\end{equation*}
-（Bose 时 $\eta=+1$，得 $-\log(1-x)=\sum x^n/n$；Fermi 时 $\eta=-1$，得 $\log(1+x)=\sum(-1)^{n+1}x^n/n$），代入第一步，
-\begin{equation*}
- \log\Xi_0
- =d_{\rm int}\sum_{n=1}^{\infty}\frac{\eta^{n+1}}{n}\,z^n
- \sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}.
-\end{equation*}
-注意指数中 \(n\beta\) 而非 \(\beta\)：第 \(n\) 项对应 \(n\) 个粒子在同一动量态的"环图"贡献，等效温度 \(T/n\)。
-
-热力学极限。动量和在热力学极限下化为积分，
-\begin{equation*}
- \sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}
- \xrightarrow{\mathcal V\to\infty}
- \frac{\mathcal V}{(2\pi\hbar)^3}\int\ee^{-n\beta p^2/(2m)}\dd^3p
- =\frac{\mathcal V}{\lambda_T^3\,n^{3/2}},
-\end{equation*}
-其中 $\lambda_T=(2\pi\hbar^2\beta/m)^{1/2}$ 是热波长，$n^{-3/2}$ 来自三维 Gauss 积分
-\begin{equation*}
- \int_{\mathbb R^3}\ee^{-n\beta p^2/(2m)}\dd^3p
- =\left(\frac{2\pi m}{n\beta}\right)^{3/2}
- =\frac{(2\pi\hbar)^3}{\lambda_T^3\,n^{3/2}}.
-\end{equation*}
-
-合并。
-\begin{equation*}
- \log\Xi_0
- =\frac{\mathcal V}{\lambda_T^3}
- \sum_{n=1}^{\infty}
- \frac{d_{\rm int}\,\eta^{n+1}}{n^{5/2}}\,z^n.
-\end{equation*}
-与 团簇 展开 $\log\Xi=\sum_n b_n z^n$ 比较，$b_n=d_{\rm int}\,\eta^{n+1}/n^{5/2}$，即\eqnrefs{eq:phys-sm-ideal-cluster}。$n^{-5/2}=n^{-1}\cdot n^{-3/2}$ 中，$n^{-1}$ 来自对数展开，$n^{-3/2}$ 来自动量积分。
-
-Bose 气体 \(\eta^{n+1}=+1\)，所有 \(b_n>0\)，对应有效吸引（聚束倾向）；Fermi 气体 \(\eta^{n+1}=(-1)^{n+1}\)，\(b_n\) 交替变号，对应有效排斥（Pauli 不相容）。第二 维里 系数 \(B_2=-\lambda_T^3 b_2/b_1^2=-\eta\,\lambda_T^3/(2^{5/2})\)：Bose 为负（吸引修正），Fermi 为正（排斥修正），与经典 \(B_2=0\) 的差异即交换效应。
-
-若单粒子色散改为 \(\varepsilon_p=\sqrt{p^2c^2+m^2c^4}-mc^2\)，Gauss 积分被 Bessel 函数 \(K_2(n\beta mc^2)\) 替代，团簇 系数 不再是简单的 \(n^{-5/2}\) 而含相对论修正因子。在非相对论极限 \(\beta mc^2\gg1\) 下 \(K_2(x)\sim\sqrt{\pi/(2x)}\ee^{-x}\) 退化为经典结果。
-\end{derivation}
-
-\section{Virial 展开与一般二体 cluster 母结构}
-
-粒子数密度记为 \(\varrho\)。由 巨 势
-\begin{equation}
- \varrho
- =\frac{z}{\mathcal V}\frac{\partial\log\Xi}{\partial z}
- =\frac{1}{\lambda_T^3}
- \sum_{j\ge1}j b_jz^j.
- \label{eq:phys-sm-density-cluster}
-\end{equation}
-压力满足 \(\beta P=\mathcal V^{-1}\log\Xi\)。令 \(x=\varrho\lambda_T^3\)，则由\eqnrefs{eq:phys-sm-density-cluster} 有 \(x(z)=b_1z+O(z^2)\)。只要 \(b_1\neq0\)，解析逆函数定理保证原点附近存在唯一解析反函数 \(z=z(x)\)，因此 维里 级数 并不是额外假设，而是 团簇 级数 在局部可逆条件下的重参数化。维里 展开 以物理密度为变量：
-\begin{equation}
- \beta P
- =\varrho+B_2\varrho^2+B_3\varrho^3+\cdots.
- \label{eq:phys-sm-virial-definition}
-\end{equation}
-逐阶反演逸度级数得到
-\begin{align}
- B_2&=-\lambda_T^3\frac{b_2}{b_1^2},
- \label{eq:phys-sm-virial-b2}\\
- B_3&=\lambda_T^6
- \left(
- \frac{4b_2^2}{b_1^4}
- -\frac{2b_3}{b_1^3}
- \right).
- \label{eq:phys-sm-virial-b3}
-\end{align}
-因此 \(b_n\) 无量纲，而 \([B_n]=\text{length}^{3(n-1)}\)。
-
-\begin{derivation}[逸度反演到三阶]
-定义 \(x=\varrho\lambda_T^3\)，则
-\[
- x=b_1z+2b_2z^2+3b_3z^3+O(z^4).
-\]
-此式来自 \(\varrho=z\partial_z\log\Xi/\mathcal V=\lambda_T^{-3}\sum_{j\ge1}jb_jz^j\)，乘以 \(\lambda_T^3\) 即得 \(x\)。设
-\[
- z=A_1x+A_2x^2+A_3x^3+O(x^4).
-\]
-逐阶比较给出
-\[
- A_1=\frac1{b_1},
- \qquad
- A_2=-\frac{2b_2}{b_1^3},
- \qquad
- A_3=\frac{8b_2^2}{b_1^5}-\frac{3b_3}{b_1^4}.
-\]
-具体推导：把 \(z=A_1x+A_2x^2+A_3x^3\) 代入 \(x=b_1z+2b_2z^2+3b_3z^3\)，
-\begin{align*}
- x &= b_1(A_1x+A_2x^2+A_3x^3)
- +2b_2(A_1^2x^2+2A_1A_2x^3)\\
- &\quad+3b_3A_1^3x^3+O(x^4),
-\end{align*}
-比较 \(x\) 系数：\(1=b_1A_1\)，得 \(A_1=1/b_1\)；比较 \(x^2\)：\(0=b_1A_2+2b_2A_1^2\)，得 \(A_2=-2b_2/b_1^3\)；比较 \(x^3\)：\(0=b_1A_3+4b_2A_1A_2+3b_3A_1^3\)，代入前两式得 \(A_3=8b_2^2/b_1^5-3b_3/b_1^4\)。代回
-\[
- \beta P\lambda_T^3=b_1z+b_2z^2+b_3z^3+O(z^4)
-\]
-后，
-\[
- \beta P\lambda_T^3
- =x-\frac{b_2}{b_1^2}x^2
- +\left(
- \frac{4b_2^2}{b_1^4}
- -\frac{2b_3}{b_1^3}
- \right)x^3+O(x^4),
-\]
-恢复 \(x=\varrho\lambda_T^3\) 即得\eqnrefs{eq:phys-sm-virial-b2}--\eqnrefs{eq:phys-sm-virial-b3}。
-
-反演的解析性由隐函数定理保证：只要 \(b_1\neq0\)（理想气体 \(b_1=d_{\rm int}\neq0\) 满足），\(\varrho(z)\) 在 \(z=0\) 附近局部可逆，维里 级数收敛半径由最近的 团簇 级数奇点决定。相变处 维里 级数发散，对应 \(\varrho(z)\) 的多值性或支点。
-\end{derivation}
-
-Virial 系数 只依赖低阶 团簇 数据。为了把二阶相互作用部分写成散射信息而不在人为的参考热波长上做选择，先使用有量纲的多组分 连通 系数，并完成质心--相对运动分离。若组分 \(a\) 的粒子数 \(N_a\) 各自守恒，才可以给每个守恒荷引入独立 逸度 \(z_a\)，并写
-\begin{equation}
- \frac1{\mathcal V}\log\Xi(\{z_a\})
- =\sum_{\mathbf n\neq0}
- \mathfrak c_{\mathbf n}
- \prod_a z_a^{n_a},
- \qquad
- [\mathfrak c_{\mathbf n}]=\text{length}^{-3}.
- \label{eq:phys-sm-multicomponent-cluster}
-\end{equation}
-若存在 Rabi 耦合、自旋转换或其他使单独 \(N_a\) 不守恒的项，就不能先赋予每个内部标签独立化学势；此时应直接按真正的守恒荷组织 巨 ensemble。
-
-若各内部组分分别守恒、等质量且等能，把所有 逸度 最后统一设为 \(z_a=z\)，则
-\[
- \frac1{\mathcal V}\log\Xi(z,\ldots,z)
- =\sum_{n\ge1}
- \left(\sum_{|\mathbf n|=n}\mathfrak c_{\mathbf n}\right)z^n.
-\]
-与单 逸度 约定 \eqnrefs{eq:phys-sm-cluster-convention} 比较得到
-\begin{equation}
- \frac{b_n}{\lambda_T^3}
- =\sum_{|\mathbf n|=n}\mathfrak c_{\mathbf n}.
- \label{eq:phys-sm-multicomponent-to-single}
-\end{equation}
-特别在二阶，\(a=b\) 的系数来自 \(\mathfrak c_{2\mathbf e_a}\)，而 \(a\neq b\) 来自 \(\mathfrak c_{\mathbf e_a+\mathbf e_b}\)；后者没有额外的 \(1/2!\)，因为多变量 Taylor 单项式 本身已经区分了两个守恒 组分。
-
-考虑一个 \(a\)-粒子和一个 \(b\)-粒子的二体 扇区。定义总质量和约化质量
-\begin{equation}
- m_{ab}^{\rm tot}=m_a+m_b,
- \qquad
- m_{r,ab}=\frac{m_am_b}{m_a+m_b}.
- \label{eq:phys-sm-two-body-masses}
-\end{equation}
-平移不变二体 Hamiltonian 分离为
-\begin{equation}
- H_{ab}
- =\frac{\mathbf P^2}{2m_{ab}^{\rm tot}}
- +H_{{\rm rel},ab},
- \qquad
- H_{{\rm rel},ab}
- =\frac{\mathbf p^2}{2m_{r,ab}}+V_{ab}.
- \label{eq:phys-sm-two-body-separation}
-\end{equation}
-质心热迹为
-\begin{equation}
- Q_{{\rm CM},ab}
- =\frac{\mathcal V}
- {\lambda_T(m_{ab}^{\rm tot})^3}.
- \label{eq:phys-sm-qcm}
-\end{equation}
-记二体 单项式 对应的 系数 为
-\[
- \mathfrak c_{ab}^{(2)}:=
- \begin{cases}
- \mathfrak c_{2\mathbf e_a},&a=b,\\
- \mathfrak c_{\mathbf e_a+\mathbf e_b},&a\neq b.
- \end{cases}
-\]
-因此相互作用引起的二体 连通 系数 改变量满足
-\begin{equation}
- \boxed{
- \Delta\mathfrak c_{ab}^{(2)}
- =\frac{1}{\lambda_T(m_{ab}^{\rm tot})^3}
- \Delta\mathcal T_{{\rm rel},ab},
- }
- \label{eq:phys-sm-multicomponent-bu-prefactor}
-\end{equation}
-其中 \(\Delta\mathcal T_{{\rm rel},ab}\) 是相对运动 interacting/自由 热迹差，并已经在正确的内部与交换子空间中取迹。
-
-对单组分等质量气体，\(m_{aa}^{\rm tot}=2m\)，而
-\[
- \lambda_T(2m)=\frac{\lambda_T}{\sqrt2}.
-\]
-又有 \(\mathfrak c_2=b_2/\lambda_T^3\)，所以\eqnrefs{eq:phys-sm-multicomponent-bu-prefactor} 特殊化为
-\begin{equation}
- \boxed{
- \Delta b_2
- =2^{3/2}\Delta\mathcal T_{\rm rel}.
- }
- \label{eq:phys-sm-delta-b2-delta-q2}
-\end{equation}
-所有常见的 \(\sqrt2\) 因子都来自这个质心 Gaussian 归一化，而不是额外的统计简并度。
+经典低密度展开把多体计数压缩成连通簇，量子气体的第二位力修正却同时含有交换、束缚态和散射连续谱。二体配分函数减去自由二体贡献以后，这三类信息可以统一写成可直接计算的谱公式；连续谱的态密度差由散射相移的能量导数给出。
 
 \section{Beth--Uhlenbeck 谱移、交换通道与低能展开}
 
-一般短程二体散射不必先假设中心势或分波解耦。设相对连续谱阈值取 \(E=0\)，\(\mathsf S(E)\) 是开放散射通道上的 在壳 幺正 散射 矩阵。若没有阈值 半束缚 ambiguity，则相对热迹差可写为
+一般短程二体散射不必先假设中心势或分波解耦。设相对连续谱阈值取 \(E=0\)，\(\mathsf S(E)\) 是开放散射通道上的在壳幺正散射矩阵。若没有阈值半束缚态歧义，则相对热迹差可写为
 \begin{equation}
- \boxed{
  \Delta\mathcal T_{\rm rel}
  =\sum_b d_b\ee^{-\beta E_b}
  +\frac{1}{2\pi\ii}
@@ -435,10 +16,9 @@ Virial 系数 只依赖低阶 团簇 数据。为了把二阶相互作用部分�
  \mathsf S(E)^\dagger
  \frac{\dd\mathsf S(E)}{\dd E}
  \right]\dd E.
- }
  \label{eq:phys-sm-bu-s-matrix}
 \end{equation}
-这里 \(E_b<0\) 是相对束缚态，\(d_b\) 是该束缚态在当前二体 扇区 中的总简并度；连续通道的内部和角动量简并度则已经包含在 通道 迹 中。\eqnrefs{eq:phys-sm-bu-s-matrix} 是 Beth--Uhlenbeck 的一般二体 谱-位移 形式。这里从有限体积谱差到 在壳 散射 矩阵 的过渡使用 Birman--Krein 谱-位移 定理；该 谱-位移 定理 作为独立数学输入。后续中心势的大球量子化只是在分波可解条件下对这一输入给出直接的态密度解释，并不替代一般定理。
+这里 \(E_b<0\) 是相对束缚态，\(d_b\) 是该束缚态在当前二体扇区中的总简并度；连续通道的内部和角动量简并度则已经包含在通道迹中。\eqnrefs{eq:phys-sm-bu-s-matrix} 是 Beth--Uhlenbeck 的一般二体谱移形式。这里从有限体积谱差到在壳散射矩阵的过渡使用 Birman--Krein 谱移定理；该谱移定理作为独立数学输入。后续中心势的大球量子化只是在分波可解条件下对这一输入给出直接的态密度解释，并不替代一般定理。
 
 当相互作用为中心势且通道 \(\alpha\) 与分波 \(\ell\) 解耦时，\(\mathsf S\) 的本征值为 \(\ee^{2\ii\delta_{\alpha\ell}(E)}\)，于是
 \[
@@ -454,7 +34,6 @@ Virial 系数 只依赖低阶 团簇 数据。为了把二阶相互作用部分�
 \]
 可得
 \begin{equation}
- \boxed{
  \begin{aligned}
  \Delta\mathcal T_{{\rm rel},ab}
  ={}&\sum_b d_b\ee^{-\beta E_b}\\
@@ -464,12 +43,11 @@ Virial 系数 只依赖低阶 团簇 数据。为了把二阶相互作用部分�
  \ee^{-\beta\hbar^2k^2/(2m_{r,ab})}
  \frac{\dd\delta_{\alpha\ell}}{\dd k}\dd k.
  \end{aligned}
- }
  \label{eq:phys-sm-bu-general}
 \end{equation}
 束缚态的 \(d_b\) 已经是总简并度，不能再额外乘一次 \(d_\alpha(2\ell+1)\)。
 
-\begin{derivation}[大球量子化与相移态密度，即\eqnrefs{eq:phys-sm-bu-general}]
+\begin{proof}[解]
 自由径向量子化。把相对问题放入半径 $R_{\rm box}$ 的大球，要求波函数在边界为零。对给定角动量 $\ell$，自由径向波 $j_\ell(kr)$ 的零点条件给出
 \begin{equation*}
  k_n^{(0)}R_{\rm box}-\frac{\ell\pi}{2}
@@ -504,7 +82,7 @@ Virial 系数 只依赖低阶 团簇 数据。为了把二阶相互作用部分�
 \end{equation}
 即\eqnrefs{eq:phys-sm-phase-density-shift}。这是有限密度差：相互作用只移动了态密度，没有创造或消灭总态数（Friedel 求和规则的体现）。
 
-热迹与通道求和。连续谱热迹差是 $\Delta\rho_\ell(k)$ 乘 Boltzmann 因子 $e^{-\beta\hbar^2k^2/(2m_{r,ab})}$ 的积分，再对角动量 $\ell$ 和通道 $\alpha$ 求和。加上负能离散谱（束缚态）的贡献，得到\eqnrefs{eq:phys-sm-bu-general}。多通道不再能同时按单个 $\ell$ 相移对角化时，回到\eqnrefs{eq:phys-sm-bu-s-matrix} 的 矩阵 迹 即可。
+热迹与通道求和。连续谱热迹差是 $\Delta\rho_\ell(k)$ 乘 Boltzmann 因子 $e^{-\beta\hbar^2k^2/(2m_{r,ab})}$ 的积分，再对角动量 $\ell$ 和通道 $\alpha$ 求和。加上负能离散谱（束缚态）的贡献，得到\eqnrefs{eq:phys-sm-bu-general}。多通道不再能同时按单个 $\ell$ 相移对角化时，回到\eqnrefs{eq:phys-sm-bu-s-matrix} 的矩阵迹即可。
 
 对硬球势 \(V(r)=\infty\,(r<d)\)，\(s\)-波相移 \(\delta_0(k)=-kd\)，故 \(\dd\delta_0/\dd k=-d\)，态密度差 \(\Delta\rho_0=-d/\pi\)。热迹差
 \begin{equation*}
@@ -512,14 +90,14 @@ Virial 系数 只依赖低阶 团簇 数据。为了把二阶相互作用部分�
  =-\frac{d}{\pi}\int_0^\infty\ee^{-\beta\hbar^2k^2/(2m_r)}\dd k
  =-\frac{d}{2}\sqrt{\frac{2m_r}{\pi\beta\hbar^2}},
 \end{equation*}
-代入\eqnrefs{eq:phys-sm-multicomponent-bu-prefactor} 给出硬球第二 维里 系数 \(B_2=2\pi d^3/3\)，与经典 Mayer 积分一致，验证了 Beth--Uhlenbeck 公式的自洽性。
+代入\eqnrefs{eq:phys-sm-multicomponent-bu-prefactor} 给出硬球第二位力系数 \(B_2=2\pi d^3/3\)，与经典 Mayer 积分一致，验证了 Beth--Uhlenbeck 公式的自洽性。
 
-Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)（\(\nu_\ell\) 为 半束缚 计数）保证束缚态数与相移端点差一致，是 Beth--Uhlenbeck 公式在零能共振处的自洽条件。在 幺正 极限 \(|a|\to\infty\)，相移趋近 \(\pi/2\)，\(\Delta b_2\to\sqrt2\) 成为普适常数，与具体势形无关——这是 Efimov 物理与 幺正 气体在二体层面的体现。
-\end{derivation}
+Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)（\(\nu_\ell\) 为半束缚计数）保证束缚态数与相移端点差一致，是 Beth--Uhlenbeck 公式在零能共振处的自洽条件。在幺正极限 \(|a|\to\infty\)，相移趋近 \(\pi/2\)，\(\Delta b_2\to\sqrt2\) 成为普适常数，与具体势形无关——这是 Efimov 物理与幺正气体在二体层面的体现。
+\end{proof}
 
-若存在精确零能共振或 半束缚态，\(E=0\) 端点与束缚态计数必须按 Levinson 定理 一致处理。不能一边把阈值态算成完整 束缚态，另一边又保留相移端点的同一贡献。
+若存在精确零能共振或半束缚态，\(E=0\) 端点与束缚态计数必须按 Levinson 定理一致处理。不能一边把阈值态算成完整束缚态，另一边又保留相移端点的同一贡献。
 
-一般 谱-位移 公式把所有开放通道放在同一个 通道 迹 中。对 全同 particles，还必须把轨道交换奇偶与内部交换奇偶配对；只有完成这个投影以后，分波简并度与内部简并度才不会被重复计数。
+一般谱移公式把所有开放通道放在同一个通道迹中。对全同 particles，还必须把轨道交换奇偶与内部交换奇偶配对；只有完成这个投影以后，分波简并度与内部简并度才不会被重复计数。
 
 若单粒子内部空间维数为 \(d_{\rm int}\)，二体内部空间分解为
 \begin{equation}
@@ -531,7 +109,7 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  d_{\rm asym}=\frac{d_{\rm int}(d_{\rm int}-1)}2.
  \label{eq:phys-sm-internal-symmetry-dimensions}
 \end{equation}
-对 全同 玻色子，总波函数交换对称，所以内部对称态配偶 \(\ell\)，内部反对称态配奇 \(\ell\)；对 全同 费米子 正好相反。于是允许 \(s\) 波的内部维数为
+对全同玻色子，总波函数交换对称，所以内部对称态配偶 \(\ell\)，内部反对称态配奇 \(\ell\)；对全同费米子正好相反。于是允许 \(s\) 波的内部维数为
 \begin{equation}
  d_s=
  \begin{cases}
@@ -540,11 +118,11 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  \end{cases}
  \label{eq:phys-sm-s-wave-channel-degeneracy}
 \end{equation}
-完全极化单组分费米气体 \(d_{\rm int}=1\) 因而没有 \(s\)-波 通道；两内部态费米子若相互作用只在内部 反对称 单重态 中发生，则恰有一个 \(s\)-波 内部 通道。
+完全极化单组分费米气体 \(d_{\rm int}=1\) 因而没有 \(s\)-波通道；两内部态费米子若相互作用只在内部反对称单重态中发生，则恰有一个 \(s\)-波内部通道。
 
-有两种等价 记账 方式必须避免重复使用。若 \(N_\uparrow,N_\downarrow\) 分别守恒，可以把它们当作两个 组分，并直接在固定 \((N_\uparrow,N_\downarrow)\) Fock 扇区 中取迹；跨 组分 不再额外除一次 \(2!\)。若改用 基-独立 的 全同-particle 描述，则总交换统计由“空间交换奇偶 \(\otimes\) 内部交换奇偶”投影实现。两种语言是同一个 Fock 空间 的不同分解，不能同时再乘一次 \(d_s\) 或 阶乘。
+有两种等价记账方式必须避免重复使用。若 \(N_\uparrow,N_\downarrow\) 分别守恒，可以把它们当作两个组分，并直接在固定 \((N_\uparrow,N_\downarrow)\) Fock 扇区中取迹；跨组分不再额外除一次 \(2!\)。若改用基-独立的全同-particle 描述，则总交换统计由“空间交换奇偶 \(\otimes\) 内部交换奇偶”投影实现。两种语言是同一个 Fock 空间的不同分解，不能同时再乘一次 \(d_s\) 或阶乘。
 
-当不同内部通道有不同相移或发生耦合时，\(\alpha\) 必须取真正的散射 通道；此时最稳健的表达仍是\eqnrefs{eq:phys-sm-bu-s-matrix} 的 通道 迹。
+当不同内部通道有不同相移或发生耦合时，\(\alpha\) 必须取真正的散射通道；此时最稳健的表达仍是\eqnrefs{eq:phys-sm-bu-s-matrix} 的通道迹。
 
 在热波长远大于真实势程时，谱移母式可以进一步按低能散射参数展开。以下固定一个二体散射通道，并依次保留散射长度与有效程。
 
@@ -566,7 +144,7 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  +O(k^5r_0^5,k^5a^5).
  \label{eq:phys-sm-phase-low}
 \end{equation}
-对等质量粒子 \(m_r=m/2\)，单个允许 \(s\)-波 内部 通道 的 主导 相对热迹为
+对等质量粒子 \(m_r=m/2\)，单个允许 \(s\)-波内部通道的主导相对热迹为
 \[
  \Delta\mathcal T_{\rm rel}^{(s)}
  =-\frac{a}{\sqrt2\lambda_T}
@@ -575,19 +153,17 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
 \]
 因此若 \(d_s\) 个通道具有相同 \(a,r_e\)，
 \begin{equation}
- \boxed{
  \Delta b_2^{(s)}
  =-2d_s\frac{a}{\lambda_T}
  +O\!\left(
  d_s\frac{a^3}{\lambda_T^3},
  d_s\frac{a^2r_e}{\lambda_T^3}
  \right).
- }
  \label{eq:phys-sm-bu-low-energy}
 \end{equation}
-这个展开在深束缚 \(a>0\) 一侧并不均匀，因为 束缚-态 Boltzmann 因子 可以指数大；那时必须保留完整 Beth--Uhlenbeck 结果。
+这个展开在深束缚 \(a>0\) 一侧并不均匀，因为束缚-态 Boltzmann 因子可以指数大；那时必须保留完整 Beth--Uhlenbeck 结果。
 
-\begin{derivation}[高斯积分中的质心与相对质量因子]
+\begin{proof}[解]
 由\eqnrefs{eq:phys-sm-bu-general} 取单通道、\(\ell=0\)、无束缚态的情形，相对热迹差只保留连续谱积分
 \begin{equation*}
  \Delta\mathcal T_{\rm rel}^{(s)}
@@ -605,7 +181,7 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  \qquad
  \frac{\dd\delta_0}{\dd k}=-a+O(k^2).
 \end{equation*}
-代入后只保留 主导 项，
+代入后只保留主导项，
 \begin{equation*}
  \Delta\mathcal T_{\rm rel}^{(s)}
  =-\frac{a}{\pi}\int_0^\infty
@@ -640,15 +216,15 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  \Delta\mathcal T_{\rm rel}^{(s)}
  =-\frac{a}{\sqrt2\lambda_T}+\cdots.
 \end{equation*}
-再由\eqnrefs{eq:phys-sm-delta-b2-delta-q2}，单组分等质量气体的第二 团簇 系数差为
+再由\eqnrefs{eq:phys-sm-delta-b2-delta-q2}，单组分等质量气体的第二团簇系数差为
 \begin{equation*}
  \Delta b_2^{(s)}
  =2^{3/2}\Delta\mathcal T_{\rm rel}^{(s)}
  =2^{3/2}\cdot\!\left(-\frac{a}{\sqrt2\lambda_T}\right)
  =-\frac{2a}{\lambda_T},
 \end{equation*}
-即\eqnrefs{eq:phys-sm-bu-low-energy} 在 \(d_s=1\) 的情形。一个 \(\sqrt2\) 来自相对质量 \(m_r=m/2\) 压缩了 Gaussian 宽度，另一个 \(\sqrt2\) 来自质心质量 \(2m\) 放大了 \(\lambda_T(2m)^{-3}\) 前因子；二者均与内部简并度无关，简并度只通过 \(d_s\) 整体相乘进入\eqnrefs{eq:phys-sm-bu-low-energy}。
-\end{derivation}
+即\eqnrefs{eq:phys-sm-bu-low-energy} 在 \(d_s=1\) 的情形。一个 \(\sqrt2\) 来自相对质量 \(m_r=m/2\) 压缩了高斯宽度，另一个 \(\sqrt2\) 来自质心质量 \(2m\) 放大了 \(\lambda_T(2m)^{-3}\) 前因子；二者均与内部简并度无关，简并度只通过 \(d_s\) 整体相乘进入\eqnrefs{eq:phys-sm-bu-low-energy}。
+\end{proof}
 
 \section{零程 EFT、unitary 极限与多体展开边界}
 
@@ -669,7 +245,7 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
 \end{equation}
 等质量 \(m_r=m/2\) 时系数恢复 \(4\pi\hbar^2a/m\)。
 
-为了固定 散射 \(T\)-算符 归一化，定义 在壳 \(s\)-波 振幅
+为了固定散射 \(T\)-算符归一化，定义在壳 \(s\)-波振幅
 \begin{equation}
  f_{\rm sc}(k)
  =-\frac{m_r}{2\pi\hbar^2}
@@ -685,7 +261,7 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  \label{eq:phys-sm-contact-coupling}
 \end{equation}
 
-若直接用 裸 接触耦合 \(g_{\rm bare}(\Lambda_{\rm UV})\) 并以动量 截断 \(\Lambda_{\rm UV}\) 解 Lippmann--Schwinger 方程，
+若直接用裸接触耦合 \(g_{\rm bare}(\Lambda_{\rm UV})\) 并以动量截断 \(\Lambda_{\rm UV}\) 解 Lippmann--Schwinger 方程，
 \[
  \mathfrak t_{\rm sc}(E)^{-1}
  =g_{\rm bare}^{-1}-\Pi(E),
@@ -702,18 +278,16 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
 \]
 用\eqnrefs{eq:phys-sm-contact-coupling} 匹配散射长度得到
 \begin{equation}
- \boxed{
  \frac1{g_{\rm bare}(\Lambda_{\rm UV})}
  =\frac{m_r}{2\pi\hbar^2a}
  -\frac{m_r\Lambda_{\rm UV}}{\pi^2\hbar^2}.
- }
  \label{eq:phys-sm-contact-renormalization}
 \end{equation}
-因此三维 接触 相互作用 不是“把普通 \(\delta\)-函数势无限迭代”得到的；裸 耦合 必须随 截断 流动，使物理散射长度保持有限。
+因此三维接触相互作用不是“把普通 \(\delta\)-函数势无限迭代”得到的；裸耦合必须随截断流动，使物理散射长度保持有限。
 
-重整化后的零程理论可以直接代回 Beth--Uhlenbeck 积分，并把束缚态与连续谱贡献在同一 约定 下求和。这样 幺正 极限 的常数项不是外加结果，而是零程谱移公式的连续极限。
+重整化后的零程理论可以直接代回 Beth--Uhlenbeck 积分，并把束缚态与连续谱贡献在同一约定下求和。这样幺正极限的常数项不是外加结果，而是零程谱移公式的连续极限。
 
-纯 zero-值域 \(s\)-波 满足
+纯 zero-值域 \(s\)-波满足
 \[
  k\cot\delta_0(k)=-\frac1a,
 \]
@@ -732,29 +306,27 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  =\frac{\lambda_T(m_r)}{2\sqrt\pi|a|}.
  \label{eq:phys-sm-zero-range-x}
 \end{equation}
-对单个允许内部通道，Gaussian 积分可以精确完成：
+对单个允许内部通道，高斯积分可以精确完成：
 \begin{equation}
- \boxed{
  \Delta\mathcal T_{\rm rel}^{(0)}
  =\frac12\ee^{x_a^2}
  \left[1+\operatorname{erf}(\operatorname{sgn}(a)x_a)\right].
- }
  \label{eq:phys-sm-zero-range-bu-closed}
 \end{equation}
-在 幺正 极限 \(|a|\to\infty\) 中，\(x_a\to0\)，所以
+在幺正极限 \(|a|\to\infty\) 中，\(x_a\to0\)，所以
 \begin{equation}
  \Delta\mathcal T_{\rm rel}^{(0)}\longrightarrow\frac12.
  \label{eq:phys-sm-unitary-relative-trace}
 \end{equation}
-对等质量单组分 约定，单个允许通道由\eqnrefs{eq:phys-sm-delta-b2-delta-q2} 给出
+对等质量单组分约定，单个允许通道由\eqnrefs{eq:phys-sm-delta-b2-delta-q2} 给出
 \begin{equation}
  \Delta b_2\longrightarrow\sqrt2.
  \label{eq:phys-sm-unitary-b2-check}
 \end{equation}
-这提供一个非常敏感的 归一化 self-check：质心热波长、相对质量或通道简并度只要漏掉一个因子，就不能得到 \(\sqrt2\)。
+这提供一个非常敏感的归一化 self-check：质心热波长、相对质量或通道简并度只要漏掉一个因子，就不能得到 \(\sqrt2\)。
 
-\begin{derivation}[zero-值域 相移积分]
- 把连续谱积分化为 Gaussian--Lorentz 卷积，用 Feynman 技巧积出，再并入束缚态项并检验三个物理极限。
+\begin{proof}[解]
+ 把连续谱积分化为高斯--Lorentz 卷积，用 Feynman 技巧积出，再并入束缚态项并检验三个物理极限。
 
  令
  \begin{equation*}
@@ -771,7 +343,7 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
    \int_0^\infty
    \frac{b\ee^{-ck^2}}{k^2+b^2}\dd k.
  \end{equation*}
- 第二个等号来自 \(a=\operatorname{sgn}(a)/b\)，故 \(-a/(1+a^2k^2)=-\operatorname{sgn}(a)b/(b^2+k^2)\)。被积函数中 \(\ee^{-ck^2}\) 是 Boltzmann 因子，\(-a/(1+a^2k^2)=\dd\delta_0/\dd k\) 是 zero-值域 模型的 \(s\)-波相移导数（由 \(\delta_0(k)=-\arctan(ak)\) 求导得到）。
+ 第二个等号来自 \(a=\operatorname{sgn}(a)/b\)，故 \(-a/(1+a^2k^2)=-\operatorname{sgn}(a)b/(b^2+k^2)\)。被积函数中 \(\ee^{-ck^2}\) 是 Boltzmann 因子，\(-a/(1+a^2k^2)=\dd\delta_0/\dd k\) 是 zero-值域模型的 \(s\)-波相移导数（由 \(\delta_0(k)=-\arctan(ak)\) 求导得到）。
 
  利用恒等式
  \begin{equation*}
@@ -797,42 +369,39 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
    \qquad x_a=b\sqrt c=\frac{\beta\hbar^2}{2m_r|a|\lambda_T}\sqrt{\frac{2m_r}{\beta\hbar^2}}.
  \end{equation*}
 
- 当 \(a>0\) 时 zero-值域 模型有唯一束缚态 \(E_b=-\hbar^2/(2m_ra^2)\)，其热权重 \(\ee^{-\beta|E_b|}=\ee^{cb^2}=\ee^{x_a^2}\)；当 \(a<0\) 时无束缚态。利用 \(\operatorname{erfc}x=1-\operatorname{erf}x\)，散射项加束缚态项统一成\eqnrefs{eq:phys-sm-zero-range-bu-closed}。
+ 当 \(a>0\) 时 zero-值域模型有唯一束缚态 \(E_b=-\hbar^2/(2m_ra^2)\)，其热权重 \(\ee^{-\beta|E_b|}=\ee^{cb^2}=\ee^{x_a^2}\)；当 \(a<0\) 时无束缚态。利用 \(\operatorname{erfc}x=1-\operatorname{erf}x\)，散射项加束缚态项统一成\eqnrefs{eq:phys-sm-zero-range-bu-closed}。
 
 \begin{itemize}
  \item[\((1)\)] \(a\to0^-\)（弱排斥）：\(x_a\to\infty\)，\(\ee^{x_a^2}\operatorname{erfc}(x_a)\sim1/(\sqrt\pi x_a)\to0\)，\(\Delta b_2\to0\)，恢复理想气体。
  \item[\((2)\)] \(a\to0^+\)（弱吸引）：束缚态贡献 \(\ee^{x_a^2}\to\infty\) 但被 \(-\operatorname{erfc}\) 项抵消至有限，\(\Delta b_2\to0\)，与 \(a\to0^-\) 连续。
- \item[\((3)\)] \(|a|\to\infty\)（幺正 极限）：\(x_a\to0\)，\(\ee^{x_a^2}\to1\)，\(\operatorname{erfc}(x_a)\to1\)，散射项 \(-\operatorname{sgn}(a)/2\) 加束缚态 \(+1\)（\(a>0\)）给 \(\Delta b_2\to\sqrt2\)，即\eqnrefs{eq:phys-sm-unitary-b2-check} 的普适值。
+ \item[\((3)\)] \(|a|\to\infty\)（幺正极限）：\(x_a\to0\)，\(\ee^{x_a^2}\to1\)，\(\operatorname{erfc}(x_a)\to1\)，散射项 \(-\operatorname{sgn}(a)/2\) 加束缚态 \(+1\)（\(a>0\)）给 \(\Delta b_2\to\sqrt2\)，即\eqnrefs{eq:phys-sm-unitary-b2-check} 的普适值。
 \end{itemize}
 
   保留有效程 \(r_e\) 时，相移 \(\delta_0(k)=-ak+(a^3/3-a^2r_e/2)k^3+\cdots\)，\(\dd\delta_0/\dd k=-a+(a^3-a^2r_e)k^2+\cdots\)。积分后 \(\Delta b_2\) 增加 \(r_e\) 修正项 \(\propto r_e/\lambda_T^2\)，在 \(r_e\ll\lambda_T\) 时为小修正。
-\end{derivation}
+\end{proof}
 
-接下来考察三体 连通 团簇、谱移与内部通道。
-
-二体谱移只闭合到第二 团簇 系数。进入第三阶时，即使全部二体散射参数已经已知，三个粒子的 连通 谱 仍携带新的信息。这里先把第三阶的“连通”定义成精确 正则 累积量，而不是把某个三体势修正直接称为 \(b_3\)。由\eqnrefs{eq:phys-sm-b3-canonical}，
+二体谱移只闭合到第二团簇系数。进入第三阶时，即使全部二体散射参数已经已知，三个粒子的连通谱仍携带新的信息。这里先把第三阶的“连通”定义成精确正则累积量，而不是把某个三体势修正直接称为 \(b_3\)。由\eqnrefs{eq:phys-sm-b3-canonical}，
 \begin{equation}\label{eq:phys-sm-third-connected-canonical}
  C_3(\beta)
  :=Q_3-Q_1Q_2+\frac{Q_1^3}{3},
  \qquad
  b_3=\frac{\lambda_T^3}{\mathcal V}C_3.
 \end{equation}
-若相互作用不改变单粒子 Hamiltonian，\(\Delta Q_1=0\)，因此自由理论与相互作用理论之差为
+若相互作用不改变单粒子哈密顿量，\(\Delta Q_1=0\)，因此自由理论与相互作用理论之差为
 \begin{equation}
- \boxed{
  \Delta b_3
  =\frac{\lambda_T^3}{\mathcal V}
  \left[
  \Delta Q_3-Q_1\Delta Q_2
- \right].}
+ \right].
  \label{eq:phys-sm-delta-b3}
 \end{equation}
-第二项不是经验修正，而是精确删除“一个 旁观者 \(\times\) 一个二体 连通 团簇”的 不连通 划分。故真正新的三体数据是
+第二项不是经验修正，而是精确删除“一个旁观者 \(\times\) 一个二体连通团簇”的不连通划分。故真正新的三体数据是
 \(
 \Delta Q_3-Q_1\Delta Q_2
 \)，而不是裸的 \(\Delta Q_3\)。
 
-内部自由度必须在物理三体 Hilbert 空间上一次性计数。设守恒内部对称性把三体空间分解为 相互 正交 扇区
+内部自由度必须在物理三体 Hilbert 空间上一次性计数。设守恒内部对称性把三体空间分解为相互正交扇区
 \begin{equation}\label{eq:phys-sm-three-body-sector-decomposition}
  \mathscr H_3^{\rm phys}
  =\bigoplus_{\alpha}
@@ -842,20 +411,20 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  =\bigoplus_\alpha
  \left(I_{g_\alpha}\otimes H_{3,\alpha}\right),
 \end{equation}
-其中 \(g_\alpha\) 是由内部表示和交换对称性共同决定的 重数，\(\mathscr K_\alpha\) 只保留该 扇区 的空间/相对运动自由度。于是
+其中 \(g_\alpha\) 是由内部表示和交换对称性共同决定的重数，\(\mathscr K_\alpha\) 只保留该扇区的空间/相对运动自由度。于是
 \begin{equation}\label{eq:phys-sm-three-body-trace-sectors}
  Q_3
  =\sum_\alpha g_\alpha
  \Tr_{\mathscr K_\alpha}
  \ee^{-\beta H_{3,\alpha}}.
 \end{equation}
-同样的 projector 分解 必须施加到 旁观者--二聚体 扣除 上，因此可以唯一写成
+同样的 projector 分解必须施加到旁观者--二聚体扣除上，因此可以唯一写成
 \begin{equation}\label{eq:phys-sm-three-body-connected-sectors}
  \Delta Q_3-Q_1\Delta Q_2
  =\sum_\alpha g_\alpha\,
  \Delta C_{3,\alpha}(\beta).
 \end{equation}
-这里 \(\Delta C_{3,\alpha}\) 的定义已经包含该 扇区 中所有 不连通 two-body 分拆 的减除。这样一来，内部自旋简并度只通过 \(g_\alpha\) 出现一次；若某个 束缚 三聚体 在 \(\mathscr K_\alpha\) 中还有轨道简并度 \(d_{\alpha j}\)，其总权重才是 \(g_\alpha d_{\alpha j}\)，不能再额外乘一次“自旋 degeneracy”。
+这里 \(\Delta C_{3,\alpha}\) 的定义已经包含该扇区中所有不连通 two-body 分拆的减除。这样一来，内部自旋简并度只通过 \(g_\alpha\) 出现一次；若某个束缚三聚体在 \(\mathscr K_\alpha\) 中还有轨道简并度 \(d_{\alpha j}\)，其总权重才是 \(g_\alpha d_{\alpha j}\)，不能再额外乘一次“自旋 degeneracy”。
 
 对平移不变的等质量三维体系，还可以把质心精确分离。总质量为 \(3m\)，故质心热波长
 \[
@@ -863,20 +432,19 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  =\sqrt{\frac{2\pi\hbar^2\beta}{3m}}
  =\frac{\lambda_T}{\sqrt3}.
 \]
-在每个内部 扇区 中，把三体 束缚态 的相对能量记为 \(E_{\alpha j}<0\)，并用 \(\dd\xi_{3,c,\alpha}(E)\) 表示已经减去所有 旁观者--two-body 不连通 pieces 后的 连通 连续谱 谱-位移 测度。则 扇区 连通 热 迹 具有一般谱表示
+在每个内部扇区中，把三体束缚态的相对能量记为 \(E_{\alpha j}<0\)，并用 \(\dd\xi_{3,c,\alpha}(E)\) 表示已经减去所有旁观者--two-body 不连通 pieces 后的连通连续谱谱移测度。则扇区连通热迹具有一般谱表示
 \begin{equation}\label{eq:phys-sm-three-body-connected-spectral}
- \boxed{
  \Delta C_{3,\alpha}(\beta)
  =\frac{\mathcal V}{\lambda_{3m}^3}
  \left[
  \sum_j d_{\alpha j}\ee^{-\beta E_{\alpha j}}
  +\int_0^\infty
  \ee^{-\beta E}\,\dd\xi_{3,c,\alpha}(E)
- \right].}
+ \right].
 \end{equation}
-这里 连续谱 测度 不是二体 相移 的简单求和：三体 breakup、atom--二聚体 通道、重复 pair rescattering 与真正三体散射必须先在 连通 谱 位移 中按 团簇 划分 正确组合。将\eqnrefs{eq:phys-sm-three-body-connected-spectral}代入\eqnrefs{eq:phys-sm-three-body-connected-sectors,eq:phys-sm-delta-b3}，才得到第三 团簇 系数 的三体谱表示。
+这里连续谱测度不是二体相移的简单求和：三体 breakup、atom--二聚体通道、重复 pair rescattering 与真正三体散射必须先在连通谱位移中按团簇划分正确组合。将\eqnrefs{eq:phys-sm-three-body-connected-spectral}代入\eqnrefs{eq:phys-sm-three-body-connected-sectors,eq:phys-sm-delta-b3}，才得到第三团簇系数的三体谱表示。
 
-\begin{derivation}[第三 正则 累积量 为何只留下 连通 三体信息]
+\begin{proof}[解]
 从
 \[
  \Xi(z)=1+zQ_1+z^2Q_2+z^3Q_3+O(z^4)
@@ -900,7 +468,7 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
  =Q_3-Q_1Q_2+\frac{Q_1^3}{3}
  =C_3.
 \]
-现在把 \(H_3\) 从自由值连续改变到相互作用值，而保持单粒子 Hamiltonian 不变。自由与相互作用的差满足
+现在把 \(H_3\) 从自由值连续改变到相互作用值，而保持单粒子哈密顿量不变。自由与相互作用的差满足
 \[
  \Delta C_3
  =\Delta Q_3-Q_1\Delta Q_2,
@@ -908,38 +476,38 @@ Levinson 定理 \(\delta_\ell(0)-\delta_\ell(\infty)=n_\ell\pi+\pi/2\,\nu_\ell\)
 因为 \(Q_1^3/3\) 完全不变，而
 \(
 \Delta(Q_1Q_2)=Q_1\Delta Q_2
-\)。这说明 旁观者--pair 扣除 是 对数 巨 配分函数 的 累积量 代数强制给出的，不依赖势的具体形式。
+\)。这说明旁观者--pair 扣除是对数巨配分函数的累积量代数强制给出的，不依赖势的具体形式。
 
-若再插入 扇区 projectors \(P_\alpha\)，利用
+若再插入扇区 projectors \(P_\alpha\)，利用
 \[
  [P_\alpha,H_3]=0,
  \qquad
  \sum_\alpha P_\alpha=I,
 \]
-则热迹按\eqnrefs{eq:phys-sm-three-body-trace-sectors}逐 扇区 相加。相同 projectors 作用于 团簇 扣除 后，线性性立即给出\eqnrefs{eq:phys-sm-three-body-connected-sectors}。最后在平移不变体系中用 Jacobi 坐标把
+则热迹按\eqnrefs{eq:phys-sm-three-body-trace-sectors}逐扇区相加。相同 projectors 作用于团簇扣除后，线性性立即给出\eqnrefs{eq:phys-sm-three-body-connected-sectors}。最后在平移不变体系中用 Jacobi 坐标把
 \[
  H_{3,\alpha}
  =\frac{\vb P_{\rm CM}^2}{6m}
  +H_{\rm rel,\alpha}
 \]
-分离，质心 Gaussian 迹 给出 \(\mathcal V/\lambda_{3m}^3\)，而相对 Hamiltonian 的离散谱与 连通 连续谱 谱 位移 分别给出\eqnrefs{eq:phys-sm-three-body-connected-spectral}中的求和与 Stieltjes 积分。整个推导先完成 精确 团簇 扣除，再谈 束缚/连续谱 分解，因此不会把 二聚体+旁观者 的二体信息重复算入真正的三体 系数。
-\end{derivation}
+分离，质心高斯迹给出 \(\mathcal V/\lambda_{3m}^3\)，而相对哈密顿量的离散谱与连通连续谱谱位移分别给出\eqnrefs{eq:phys-sm-three-body-connected-spectral}中的求和与 Stieltjes 积分。整个推导先完成精确团簇扣除，再谈束缚/连续谱分解，因此不会把二聚体+旁观者的二体信息重复算入真正的三体系数。
+\end{proof}
 
 \begin{note}[三体尺度何时不可由二体数据消去]
-若三体 扇区 的 连通 谱测度 能由二体参数完全决定，\eqnrefs{eq:phys-sm-three-body-connected-spectral}当然可以进一步化简；但这不是一般事实。在 resonant 玻色子、Efimov 型问题或存在 genuine three-body force 的体系中，固定全部二体 散射 长度/有效 值域 后，\(\xi_{3,c,\alpha}\) 与 三聚体 能量 仍可依赖独立三体尺度。此时 \(b_3\) 正是第一个对该尺度敏感的 维里 系数。反过来，在费米统计或内部对称性禁止某些三体 扇区 时，相应 \(g_\alpha=0\)，该 扇区 从一开始就不进入热迹；这比事后再乘一个经验“简并因子”更可靠。
+若三体扇区的连通谱测度能由二体参数完全决定，\eqnrefs{eq:phys-sm-three-body-connected-spectral}当然可以进一步化简；但这不是一般事实。在共振玻色子、Efimov 型问题或存在真正的三体力的体系中，固定全部二体散射长度/有效值域后，\(\xi_{3,c,\alpha}\) 与三聚体能量仍可依赖独立三体尺度。此时 \(b_3\) 正是第一个对该尺度敏感的位力系数。反过来，在费米统计或内部对称性禁止某些三体扇区时，相应 \(g_\alpha=0\)，该扇区从一开始就不进入热迹；这比事后再乘一个经验“简并因子”更可靠。
 \end{note}
 
 最后把常用稀薄极限放回同一展开参数下比较，可以看出“弱散射”“unitarity”和“深束缚”并不是同一种小参数极限。
 
 相互作用量子气体至少有三套彼此独立的 small 参数。
 
-高温低密度 维里 展开 由小 逸度 控制：
+高温低密度位力展开由小逸度控制：
 \[
  |z|\ll1,
  \qquad
  \frac{\varrho\lambda_T^3}{d_{\rm int}}\ll1.
 \]
-Beth--Uhlenbeck 精确固定 \(z^2\) 阶 相互作用 修正；忽略 \(b_3z^3\) 的条件仍是 团簇 级数 的下一阶足够小。若 \(a>0\) 且 二聚体 binding \(|E_b|\gg\kB T\)，则 \(b_2\) 本身可含 \(\ee^{\beta|E_b|}\) 的大因子，此时还必须要求相应 molecular 活度 \(z^2\ee^{\beta|E_b|}\ll1\)，否则简单截断到二阶并不受控。
+Beth--Uhlenbeck 精确固定 \(z^2\) 阶相互作用修正；忽略 \(b_3z^3\) 的条件仍是团簇级数的下一阶足够小。若 \(a>0\) 且二聚体 binding \(|E_b|\gg\kB T\)，则 \(b_2\) 本身可含 \(\ee^{\beta|E_b|}\) 的大因子，此时还必须要求相应 molecular 活度 \(z^2\ee^{\beta|E_b|}\ll1\)，否则简单截断到二阶并不受控。
 
 低能零程极限由
 \[
@@ -949,7 +517,7 @@ Beth--Uhlenbeck 精确固定 \(z^2\) 阶 相互作用 修正；忽略 \(b_3z^3\)
 \]
 控制，它允许用 \(a,r_e,\ldots\) 取代势的微观结构，但并不要求气体非简并。相反，零温稀薄多体展开使用不同参数，例如玻色气 \(\varrho a^3\ll1\) 或弱耦合费米气 \(k_F|a|\ll1\)。这些极限可以重叠，但彼此不能替代。
 
-例如零温均匀稀薄玻色气的 平均-场 主导 项 是
+例如零温均匀稀薄玻色气的平均-场主导项是
 \begin{equation}
  \frac{E}{\mathcal V}
  =\frac{g_{\rm phys}}{2}\varrho^2+\cdots,
@@ -957,9 +525,9 @@ Beth--Uhlenbeck 精确固定 \(z^2\) 阶 相互作用 修正；忽略 \(b_3z^3\)
  g_{\rm phys}=\frac{4\pi\hbar^2a}{m},
  \label{eq:phys-sm-bose-mean-field}
 \end{equation}
-其 beyond-平均-场 小参数是 \(\sqrt{\varrho a^3}\)，而不是 \(a/\lambda_T\)。它与 Beth--Uhlenbeck 共享同一个二体散射长度输入，但属于完全不同的多体重求和。
+其 beyond-平均-场小参数是 \(\sqrt{\varrho a^3}\)，而不是 \(a/\lambda_T\)。它与 Beth--Uhlenbeck 共享同一个二体散射长度输入，但属于完全不同的多体重求和。
 
-从 \(\log\Xi\) 的局部 Taylor 数据出发，在有限状态空间中这些系数还可以直接写成 逸度 零点的逆幂矩，从而与开篇的零点解析性重新接合。
+从 \(\log\Xi\) 的局部 Taylor 数据出发，在有限状态空间中这些系数还可以直接写成逸度零点的逆幂矩，从而与开篇的零点解析性重新接合。
 
 若有限体积 \(\Xi_\Lambda(z)\) 确实是多项式且 \(\Xi_\Lambda(0)=1\)，设零点为 \(z_{\alpha,\Lambda}\)。在
 \[
@@ -979,15 +547,13 @@ Beth--Uhlenbeck 精确固定 \(z^2\) 阶 相互作用 修正；忽略 \(b_3z^3\)
  \sum_\alpha z_{\alpha,\Lambda}^{-n}.
  \label{eq:phys-sm-zero-moment-cluster}
 \end{equation}
-这条“零点逆幂矩”关系只在有限体积 \(\Xi_\Lambda\) 是有限多项式或已建立相应 Weierstrass 积 控制时可直接使用。连续量子气体的 巨 配分函数 一般不是有限多项式，不能无条件照搬有限零点求和公式；其低 逸度 团簇 系数 仍由局部 Taylor 展开 定义。
+这条“零点逆幂矩”关系只在有限体积 \(\Xi_\Lambda\) 是有限多项式或已建立相应 Weierstrass 积控制时可直接使用。连续量子气体的巨配分函数一般不是有限多项式，不能无条件照搬有限零点求和公式；其低逸度团簇系数仍由局部 Taylor 展开定义。
 
-至此，统计物理十章的首尾由同一个解析对象闭合：前端研究有限配分函数零点如何在热力学极限逼近物理轴，后端研究 \(\log\Xi\) 在原点附近的 连通 Taylor 数据。Lee--Yang 描述全局复平面几何，团簇/维里 描述局部低密度展开，而 Beth--Uhlenbeck 把第一个非平凡 相互作用 系数 精确连接到二体束缚谱和 散射 矩阵。
+至此，统计物理十章的首尾由同一个解析对象闭合：前端研究有限配分函数零点如何在热力学极限逼近物理轴，后端研究 \(\log\Xi\) 在原点附近的连通 Taylor 数据。Lee--Yang 描述全局复平面几何，团簇/位力描述局部低密度展开，而 Beth--Uhlenbeck 把第一个非平凡相互作用系数精确连接到二体束缚谱和散射矩阵。
 
-\section{Virial 系数与散射长度的实验数值}\label{sec:virial-experiments}
+\section{位力系数与散射长度的实验数值}\label{sec:virial-experiments}
 
-接下来考察经典气体的第二 Virial 系数。
-
-经典第二 维里 系数
+经典第二位力系数
 \[
 B_2(T)=-\frac12\int f(r)\,\dd^3r=-2\pi\int_0^\infty\left(e^{-\beta V(r)}-1\right)r^2\,\dd r
 \]
@@ -1011,9 +577,7 @@ CO\(_2\) & 3.90 & 195 & \(-124.4\) & \(-28.2\) \\
 Boyle 温度 \(T_B\) 满足 \(B_2(T_B)=0\)，对 Ar 的 LJ 参数 \(\sigma=3.40\,\text{\AA}\)，\(\epsilon/k_B=120\,\mathrm{K}\)，数值积分给出 \(T_B\approx411\,\mathrm{K}\)。在 \(T<T_B\) 时 \(B_2<0\)（引力主导），\(T>T_B\) 时 \(B_2>0\)（排斥主导）。Boyle 温度是真实气体偏离理想气体行为的标度：在 \(T=T_B\) 附近，气体在较宽压力范围内近似遵循 \(PV=nRT\)。
 \end{exbox}
 
-接下来考察量子气体的散射长度。
-
-量子第二 维里 系数通过散射长度 \(a\) 进入：
+量子第二位力系数通过散射长度 \(a\) 进入：
 \[
 B_2^{\rm Bose}(T)=-\frac{\lambda_T^3}{2^{5/2}}+\frac{\lambda_T^3}{2}\left(\frac{a}{\lambda_T}\right)+\cdots
 \]
@@ -1037,17 +601,15 @@ H (Bose) & 0.65 & \(+\) & 束缚态 (H\(_2\)) \\
 \end{tabular}
 \end{center}
 
-\begin{exbox}[\(^4\)He 的散射长度与 二聚体]
-\(^4\)He 的 \(a=100.5\,\text{\AA}\) 远大于原子尺寸 \(\sim2.7\,\text{\AA}\)，表明存在一个极浅的 二聚体 束缚态，结合能
+\begin{exbox}[\(^4\)He 的散射长度与二聚体]
+\(^4\)He 的 \(a=100.5\,\text{\AA}\) 远大于原子尺寸 \(\sim2.7\,\text{\AA}\)，表明存在一个极浅的二聚体束缚态，结合能
 \[
 E_b=\frac{\hbar^2}{m a^2}\approx1.31\,\mathrm{mK}\times k_B
 \]
-对应 二聚体 尺寸 \(\sim a/2\approx50\,\text{\AA}\)。这个 halo 二聚体 已被实验直接观测。\(^4\)He 液体的超流转变温度 \(T_\lambda=2.17\,\mathrm{K}\) 远大于 二聚体 结合能，说明液氦超流不是 二聚体 BEC，而是强相互作用多体效应。
+对应二聚体尺寸 \(\sim a/2\approx50\,\text{\AA}\)。这个 halo 二聚体已被实验直接观测。\(^4\)He 液体的超流转变温度 \(T_\lambda=2.17\,\mathrm{K}\) 远大于二聚体结合能，说明液氦超流不是二聚体 BEC，而是强相互作用多体效应。
 \end{exbox}
 
-接下来考察 Effective Range 展开与低能散射。
-
-低能 \(s\) 波散射相移的 有效 值域 展开：
+低能 \(s\) 波散射相移的有效值域展开：
 \[
 k\cot\delta_0(k)=-\frac1a+\frac12r_e k^2+\cdots
 \]
@@ -1065,18 +627,18 @@ pp (\(^1S_0\)) & \(-7.8\) & 2.79 \\
 \end{tabular}
 \end{center}
 
-\begin{exbox}[幺正 极限的标度不变性]
-在 Feshbach 共振点 \(a\to\pm\infty\)，散射长度从问题中完全消失，系统具有标度不变性。此时 \(k\cot\delta_0=\frac12r_e k^2\)，在 \(kr_e\ll1\) 时 \(\delta_0\approx\pi/2\)（共振散射）。超冷 \(^6\)Li 在 834\,G 附近的 幺正 气体是自然界中实现强耦合标度不变 Fermi 气体的最佳体系，其热力学量只依赖 \(E_F\) 和 \(T/T_F\)，不依赖 \(a\)。
+\begin{exbox}[幺正极限的标度不变性]
+在 Feshbach 共振点 \(a\to\pm\infty\)，散射长度从问题中完全消失，系统具有标度不变性。此时 \(k\cot\delta_0=\frac12r_e k^2\)，在 \(kr_e\ll1\) 时 \(\delta_0\approx\pi/2\)（共振散射）。超冷 \(^6\)Li 在 834\,G 附近的幺正气体是自然界中实现强耦合标度不变 Fermi 气体的最佳体系，其热力学量只依赖 \(E_F\) 和 \(T/T_F\)，不依赖 \(a\)。
 \end{exbox}
 
-在 幺正 极限附近，Beth--Uhlenbeck 二体输入与 Mayer 连通结构共同组织 维里 展开。
-本块统一处理相互作用量子气体的三个核心结构：幺正 Fermi 气体的标度不变热力学、Beth--Uhlenbeck 相移公式把 维里 系数化为散射数据、Mayer 图的拓扑约化给出收敛性。三者从不同角度刻画强耦合量子气体的精确热力学，在 幺正 极限汇合。
+在幺正极限附近，Beth--Uhlenbeck 二体输入与 Mayer 连通结构共同组织位力展开。
+本块统一处理相互作用量子气体的三个核心结构：幺正 Fermi 气体的标度不变热力学、Beth--Uhlenbeck 相移公式把位力系数化为散射数据、Mayer 图的拓扑约化给出收敛性。三者从不同角度刻画强耦合量子气体的精确热力学，在幺正极限汇合。
 
-量子第二 维里 系数 \(b_2\) 由两体密度矩阵 \(\rho_2\) 的迹给出。起点是巨配分函数的 团簇 展开 \(\log\Xi=zV/\lambda_T^3+\sum_{n\ge2}b_n z^n V/\lambda_T^{3(n-1)}\)（\(z=\ee^{\beta\mu}\)，\(\lambda_T=(2\pi\hbar^2\beta/m)^{1/2}\)）。第二 维里 系数的量子修正来自两体密度矩阵与单粒子直积的偏差：
+量子第二位力系数 \(b_2\) 由两体密度矩阵 \(\rho_2\) 的迹给出。起点是巨配分函数的团簇展开 \(\log\Xi=zV/\lambda_T^3+\sum_{n\ge2}b_n z^n V/\lambda_T^{3(n-1)}\)（\(z=\ee^{\beta\mu}\)，\(\lambda_T=(2\pi\hbar^2\beta/m)^{1/2}\)）。第二位力系数的量子修正来自两体密度矩阵与单粒子直积的偏差：
 \begin{equation*}
   b_2=\pm\frac{\lambda_T^3}{2V}\operatorname{Tr}(\rho_2-\rho_1\otimes\rho_1),
 \end{equation*}
-\(\pm\) 对应 Bose/Fermi。两体 Hamiltonian \(H_2=H_{\rm cm}+H_{\rm rel}\) 分离质心和相对运动。质心部分贡献理想量子统计修正 \(b_2^{(0)}=\mp 2^{-5/2}\)（Bose 负/Fermi 正）。相对运动的修正由散射相移编码——这是 Beth--Uhlenbeck 的核心洞察。
+\(\pm\) 对应 Bose/Fermi。两体哈密顿量 \(H_2=H_{\rm cm}+H_{\rm rel}\) 分离质心和相对运动。质心部分贡献理想量子统计修正 \(b_2^{(0)}=\mp 2^{-5/2}\)（Bose 负/Fermi 正）。相对运动的修正由散射相移编码——这是 Beth--Uhlenbeck 的核心洞察。
 
 相对运动的密度矩阵 \(\rho_{\rm rel}=\ee^{-\beta H_{\rm rel}}\) 的迹在散射态基下计算。散射态 \(|\psi_l^+(k)\rangle\) 满足 \(H_{\rm rel}|\psi_l^+\rangle=\frac{\hbar^2k^2}{m}|\psi_l^+\rangle\)（约化质量 \(\mu=m/2\)），渐近行为 \(|\psi_l^+(k)\rangle\to|k,l\rangle+\frac{f_l(k)}{r}\ee^{ikr}\)（\(f_l=\frac{\delta_l(k)}{k}\) 是分波散射振幅）。自由态 \(|k,l\rangle\) 的密度矩阵迹已知（给出理想气体贡献），散射修正来自 \(\delta_l(k)\) 对态密度的修正。具体地，分波 \(l\) 的态密度修正 \(\Delta\rho_l(k)=\frac{1}{\pi}\frac{\dd\delta_l(k)}{\dd k}\)（Friedel 相位公式），代入迹积分：
 \begin{equation}
@@ -1085,24 +647,24 @@ pp (\(^1S_0\)) & \(-7.8\) & 2.79 \\
 \end{equation}
 分部积分把 \(\delta_l'\) 移分转为 \(\delta_l\) 积分（边界项消失因 \(\ee^{-\beta\hbar^2k^2/m}\to0\)）。\((\pm1)^l\) 因子来自 Bose/Fermi 对称化：偶 \(l\) 对称（Bose 允许/Fermi 禁止），奇 \(l\) 反对称。束缚态项 \(\sum\ee^{\beta E_b}\) 来自离散谱（\(E_b<0\) 的分子态），在 BCS--BEC 跨越中物理重要。
 
-低能散射由 有效-值域 展开 \(k\cot\delta_0(k)=-1/a+\frac{1}{2}r_e k^2+\cdots\) 参数化（\(a\) 散射长度，\(r_e\) 有效力程）。代入\eqnrefs{eq:phys-sm-beth-uhlenbeck}，只保留 \(s\) 波（低能主导），积分 \(\int_0^\infty\delta_0(k)\frac{\dd}{\dd k}\ee^{-\beta\hbar^2k^2/m}\dd k\) 在 \(ka\ll1\) 近似下给出 \(\mp a/\lambda_T\)（散射长度的线性贡献）。完整展开：
+低能散射由有效力程展开 \(k\cot\delta_0(k)=-1/a+\frac{1}{2}r_e k^2+\cdots\) 参数化（\(a\) 散射长度，\(r_e\) 有效力程）。代入\eqnrefs{eq:phys-sm-beth-uhlenbeck}，只保留 \(s\) 波（低能主导），积分 \(\int_0^\infty\delta_0(k)\frac{\dd}{\dd k}\ee^{-\beta\hbar^2k^2/m}\dd k\) 在 \(ka\ll1\) 近似下给出 \(\mp a/\lambda_T\)（散射长度的线性贡献）。完整展开：
 \begin{equation*}
   b_2=b_2^{(0)}\pm\frac{1}{2^{5/2}}\mp\frac{a}{\lambda_T}+O\!\left(\frac{a^2}{\lambda_T^2},\frac{r_e a}{\lambda_T^2}\right).
 \end{equation*}
-散射长度的线性项是量子 维里 修正的主导项——经典 Mayer 理论无此贡献（经典 \(b_2\) 只依赖 \(\int V\dd r\)，量子 \(b_2\) 依赖散射数据 \(a,r_e,\ldots\)，后者更物理）。
+散射长度的线性项是量子位力修正的主导项——经典 Mayer 理论无此贡献（经典 \(b_2\) 只依赖 \(\int V\dd r\)，量子 \(b_2\) 依赖散射数据 \(a,r_e,\ldots\)，后者更物理）。
 
-Feshbach 共振点 \(|a|\to\infty\)，\(r_e\to0\)，低能展开失效，但 Beth--Uhlenbeck 积分仍精确。此时 \(s\) 波相移 \(\delta_0(k)\to\pi/2\)（共振散射，\(\tan\delta_0\to-\infty\)），\(\sin^2\delta_0\to1\)。幺正 修正积分精确计算：
+Feshbach 共振点 \(|a|\to\infty\)，\(r_e\to0\)，低能展开失效，但 Beth--Uhlenbeck 积分仍精确。此时 \(s\) 波相移 \(\delta_0(k)\to\pi/2\)（共振散射，\(\tan\delta_0\to-\infty\)），\(\sin^2\delta_0\to1\)。幺正修正积分精确计算：
 \begin{equation*}
   \Delta b_2^{\rm unitary}=-\frac{2}{\pi\lambda_T^3}\int_0^\infty\frac{k^2\dd k}{\ee^{\beta\hbar^2k^2/m}\mp1}=-\frac{\Gamma(3/2)\zeta(3/2)}{\pi\lambda_T^3}=-\frac{0.466}{\lambda_T^3},
 \end{equation*}
 对 Fermi 气体（分母 \(\ee^x+1\)，用 Fermi 积分 \(\int k^2/(\ee^{\beta\epsilon_k}+1)\dd k=\frac{\sqrt\pi}{4}(k_BT)^{3/2}\Gamma(3/2)\zeta(3/2)\)）。因此 \(b_2^{\rm unitary}\) 偏离理想值一个普适常数，已由超冷 \(^6\)Li 实验精确测量（Ku et al. 2012）。
 
-幺正 极限的标度不变性（无内禀长度尺度）强制自由能密度取 Bertsch 参数化形式：
+幺正极限的标度不变性（无内禀长度尺度）强制自由能密度取 Bertsch 参数化形式：
 \begin{equation*}
   \mathcal F(n,T)=\frac{\hbar^2}{m}(3\pi^2 n)^{2/3}n\,f(T/T_F),\qquad T_F=\frac{\hbar^2(3\pi^2 n)^{2/3}}{mk_B},
 \end{equation*}
-\(f\) 是普适函数（Bertsch 1999）。零温 \(f(0)=\xi\approx0.37\)（Bertsch 参数，蒙特卡洛）。化学势 \(\mu=\partial\mathcal F/\partial n=\xi E_F\)（\(T=0\)），压强 \(P=\frac{2}{3}\mathcal E+\frac{\hbar^2 C}{4\pi m}\)（Tan 压强关系，\(C\) 是 接触）。Tan 接触 \(C=k_F^4 g(T/T_F)\) 联系热力学（压强、绝热 \(\partial E/\partial(1/a)=\hbar^2 C/(4\pi m)\)）、关联函数（短程 \(n_\sigma(r)\sim C/(4\pi r^2)\)）和动力学（射频谱 \(I(\omega)\sim C\omega^{-3/2}/(4\pi)\)），是标度不变性的深刻体现。
+\(f\) 是普适函数（Bertsch 1999）。零温 \(f(0)=\xi\approx0.37\)（Bertsch 参数，蒙特卡洛）。化学势 \(\mu=\partial\mathcal F/\partial n=\xi E_F\)（\(T=0\)），压强 \(P=\frac{2}{3}\mathcal E+\frac{\hbar^2 C}{4\pi m}\)（Tan 压强关系，\(C\) 是接触）。Tan 接触 \(C=k_F^4 g(T/T_F)\) 联系热力学（压强、绝热 \(\partial E/\partial(1/a)=\hbar^2 C/(4\pi m)\)）、关联函数（短程 \(n_\sigma(r)\sim C/(4\pi r^2)\)）和动力学（射频谱 \(I(\omega)\sim C\omega^{-3/2}/(4\pi)\)），是标度不变性的深刻体现。
 
-散射长度 \(a\) 从 BCS 侧（\(1/k_Fa<0\)，弱吸引）经 幺正 点（\(1/k_Fa=0\)，强耦合）到 BEC 侧（\(1/k_Fa>0\)，分子形成）连续变化。BCS 侧配对能隙 \(\Delta\sim E_F\ee^{-\pi/(2k_F|a|)}\) 指数小（BCS 理论），超流转变温度 \(T_c\sim\ee^{-\pi/(2k_F|a|)}T_F\)。幺正 点 \(\Delta\approx0.5\,E_F\)（量级 \(E_F\)），\(T_c\approx0.17\,T_F\)（蒙特卡洛，是跨越中最高转变温度）。BEC 侧形成 二聚体（结合能 \(E_b=\hbar^2/(ma^2)\)），二聚体-二聚体 散射长度 \(a_{\rm dd}=0.6a\)（Petrov 2004），\(T_c\to0.218\,T_F\)（理想 Bose 气体，二聚体 质量 \(2m\)）。整个跨越中热力学量平滑插值，无相变（除 \(T=0\) 处的 BCS--BEC 跨越本身），幺正 点是唯一标度不变的中间点。
+散射长度 \(a\) 从 BCS 侧（\(1/k_Fa<0\)，弱吸引）经幺正点（\(1/k_Fa=0\)，强耦合）到 BEC 侧（\(1/k_Fa>0\)，分子形成）连续变化。BCS 侧配对能隙 \(\Delta\sim E_F\ee^{-\pi/(2k_F|a|)}\) 指数小（BCS 理论），超流转变温度 \(T_c\sim\ee^{-\pi/(2k_F|a|)}T_F\)。幺正点 \(\Delta\approx0.5\,E_F\)（量级 \(E_F\)），\(T_c\approx0.17\,T_F\)（蒙特卡洛，是跨越中最高转变温度）。BEC 侧形成二聚体（结合能 \(E_b=\hbar^2/(ma^2)\)），二聚体-二聚体散射长度 \(a_{\rm dd}=0.6a\)（Petrov 2004），\(T_c\to0.218\,T_F\)（理想 Bose 气体，二聚体质量 \(2m\)）。整个跨越中热力学量平滑插值，无相变（除 \(T=0\) 处的 BCS--BEC 跨越本身），幺正点是唯一标度不变的中间点。
 
-Beth--Uhlenbeck 公式处理二体（\(b_2\)），高阶 维里 系数 \(b_n\)（\(n\ge3\)）由 Mayer 图的拓扑结构给出。巨配分函数取对数后只含连通图（Mayer 第一定理，累积量 展开的指数公式）：\(\log\Xi=\sum_{N\ge1}z^N b_N V/\lambda_T^{3(N-1)}\)，\(b_N\) 是 \(N\) 粒子连通图上的带权求和。维里 系数 \(B_n\) 进一步要求不可约星图（删去任一边仍连通，即 2-连通）——Mayer 第二定理。星图的 2-连通性保证 维里 展开的收敛性：若配分函数零点在复 \(z\) 平面避开正实轴直到 \(|z|=R\)，则 维里 级数在 \(|z|<R\) 收敛。Lee--Yang 圆定理保证铁磁 Ising 零点在 \(|z|=1\) 上，给出收敛半径 \(R=1\)。对硬球气体，星图计数给出 \(B_2=\frac{2}{3}\pi d^3\)，\(B_3=\frac{5}{8}\pi^2 d^6\)（Ree--Hoover 1964），\(B_4\) 含 3 个星图贡献——高阶系数的星图数指数增长，但收敛半径由零点分布保证。这一拓扑—解析对应把图论（连通性、星图）与复分析（零点、收敛半径）统一在 维里 展开中，是经典统计力学最优雅的数学结构，也是 Beth--Uhlenbeck 公式向高阶的自然推广。
+Beth--Uhlenbeck 公式处理二体（\(b_2\)），高阶位力系数 \(b_n\)（\(n\ge3\)）由 Mayer 图的拓扑结构给出。巨配分函数取对数后只含连通图（Mayer 第一定理，累积量展开的指数公式）：\(\log\Xi=\sum_{N\ge1}z^N b_N V/\lambda_T^{3(N-1)}\)，\(b_N\) 是 \(N\) 粒子连通图上的带权求和。位力系数 \(B_n\) 进一步要求不可约星图（删去任一边仍连通，即 2-连通）——Mayer 第二定理。星图的 2-连通性保证位力展开的收敛性：若配分函数零点在复 \(z\) 平面避开正实轴直到 \(|z|=R\)，则位力级数在 \(|z|<R\) 收敛。Lee--Yang 圆定理保证铁磁 Ising 零点在 \(|z|=1\) 上，给出收敛半径 \(R=1\)。对硬球气体，星图计数给出 \(B_2=\frac{2}{3}\pi d^3\)，\(B_3=\frac{5}{8}\pi^2 d^6\)（Ree--Hoover 1964），\(B_4\) 含 3 个星图贡献——高阶系数的星图数指数增长，但收敛半径由零点分布保证。这一拓扑—解析对应把图论（连通性、星图）与复分析（零点、收敛半径）统一在位力展开中，是经典统计力学最优雅的数学结构，也是 Beth--Uhlenbeck 公式向高阶的自然推广。

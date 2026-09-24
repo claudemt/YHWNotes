@@ -1,467 +1,1165 @@
-\chapter{Dirac 理论、Foldy--Wouthuysen 展开与原子精细结构}\label{ch:spin-orbit-thomas}
+\chapter{奇异径向哈密顿量、自伴扩张与低能散射}
+\label{chap:singular-radial-hamiltonian}
 
-原子精细结构若从“电子静止系中的磁场”开始，会把一个相对论量子问题倒置成半经典猜测。正确主线是：先由 Lorentz 对称性建立 Dirac 母方程，再对正能量子空间作受控低能展开；Pauli 磁矩、相对论动能、Darwin 项和自旋轨道耦合会在同一 Foldy--Wouthuysen（FW）块对角化中同时出现。Thomas--Wigner 进动随后作为同一系数的经典几何解释，而不是决定系数的替代推导。
+分离角变量以后，径向微分表达式仍不能独自决定量子理论。原点附近若有两个平方可积解，边界条件会改变谱、束缚态和低能散射；本章因此把定义域作为哈密顿量的一部分来处理。
 
-\section{Lorentz 表示、Clifford 代数与 Dirac 最小耦合}\label{sec:dirac-lorentz}
+\section{同一个微分式为什么会给出不同量子理论}
 
-取 Minkowski 度规
-\[
-\eta_{\mu\nu}=\operatorname{diag}(1,-1,-1,-1),
-\qquad
-x^\mu=(ct,\mathbf r),
-\qquad
-A_\mu=(\Phi/c,-\mathbf A).
-\]
-Lorentz 代数生成元 $M^{\mu\nu}=-M^{\nu\mu}$ 满足
-\begin{equation}
-[M^{\mu\nu},M^{\rho\sigma}]
-=\ii\hbar
-\left(
-\eta^{\nu\rho}M^{\mu\sigma}
--\eta^{\mu\rho}M^{\nu\sigma}
--\eta^{\nu\sigma}M^{\mu\rho}
-+\eta^{\mu\sigma}M^{\nu\rho}
-\right).
-\label{eq:rel-lorentz-algebra}
-\end{equation}
-旋量表示由 Clifford 代数
-\begin{equation}
-\{\gamma^\mu,\gamma^\nu\}=2\eta^{\mu\nu}\mathbb I,
-\qquad
-\sigma^{\mu\nu}\equiv\frac{\ii}{2}[\gamma^\mu,\gamma^\nu]
-\label{eq:clifford-algebra}
-\end{equation}
-实现，其 Lorentz 生成元为
-\begin{equation}
-S^{\mu\nu}=\frac{\hbar}{2}\sigma^{\mu\nu}
-=\frac{\ii\hbar}{4}[\gamma^\mu,\gamma^\nu].
-\label{eq:spinor-lorentz-generator}
-\end{equation}
+初等量子力学常把哈密顿量写成一个微分表达式，例如
+\(-\hbar^2\dd^2/(2\mu\dd r^2)\)。但算符不仅要说明“怎样作用”，还要说明“允许作用在哪些函数上”。对有界矩阵，这个区别看不见；对微分算符，边界条件正是定义域的一部分。
 
-对质量 $m$、电荷 $Q$ 的自旋 $1/2$ 粒子，采用四维规范约定
+设 Hilbert 空间为 \(L^2(0,\infty;\dd r)\)，先考虑无量纲微分表达式
 \[
-A_\mu' = A_\mu-\partial_\mu\chi,
-\qquad
-\psi'=\exp\!\left(\frac{\ii Q\chi}{\hbar}\right)\psi,
+\tau u=-u''.
 \]
-并定义
-\[
-D_\mu=\partial_\mu+\frac{\ii Q}{\hbar}A_\mu.
-\]
-则 $D_\mu'\psi'=\exp(\ii Q\chi/\hbar)D_\mu\psi$，Dirac 方程写成
+若 \(u,v\) 足够光滑并在无穷远衰减，两次分部积分给出 Green 恒等式
 \begin{equation}
-\boxed{
-\left(\ii\hbar c\gamma^\mu D_\mu-mc^2\right)\psi=0.
-}
-\label{eq:dirac}
+\langle u,\tau v\rangle-\langle\tau u,v\rangle
+=\left[u'(r)^*v(r)-u(r)^*v'(r)\right]_{0}^{\infty}.
+\label{eq:radial-green-boundary-form}
 \end{equation}
-Schr\"odinger 形式为
-\begin{equation}
-\ii\hbar\partial_t\psi
-=H_D\psi,
-\qquad
-H_D=c\boldsymbol\alpha\cdot\boldsymbol\pi
-+\beta mc^2+Q\Phi,
-\qquad
-\boldsymbol\pi=\mathbf p-Q\mathbf A,
-\label{eq:dirac-hamiltonian-em}
-\end{equation}
-其中 $\alpha^i=\gamma^0\gamma^i$、$\beta=\gamma^0$。守恒流
-\begin{equation}
-j^\mu=c\bar\psi\gamma^\mu\psi,
-\qquad
-\partial_\mu j^\mu=0,
-\qquad
-\bar\psi=\psi^\dagger\gamma^0
-\label{eq:dirac-current}
-\end{equation}
-给出正定密度 $j^0=c\psi^\dagger\psi$。
+无穷远项在所用定义域上消失，原点项却未必消失。若不规定
+\(u(0)\) 与 \(u'(0)\) 的关系，就不能断言这个“哈密顿量”是对称的。
 
-\begin{derivation}[从 Clifford 代数到 Lorentz 旋量生成元]
-无穷小 Lorentz 变换写成
+\begin{definition}[对称算符与自伴算符]
+稠密定义算符 \(A\) 若满足
 \[
-\Lambda^\rho{}_{\sigma}
-=\delta^\rho{}_{\sigma}+\omega^\rho{}_{\sigma}+O(\omega^2),
+\langle u,Av\rangle=\langle Au,v\rangle
+\qquad (u,v\in\Dom A),
+\]
+就称为对称算符。伴随算符 \(A^\dagger\) 的定义域由所有满足
+\(
+\langle u,Av\rangle=\langle w,v\rangle
+\)
+对每个 \(v\in\Dom A\) 成立的 \(u\) 组成，并定义
+\(A^\dagger u=w\)。若
+\(A=A^\dagger\) 且二者定义域相同，才称 \(A\) 自伴。
+\end{definition}
+
+对称只检查定义域内部任意两函数的边界型是否相消；自伴还要求伴随算符没有额外允许的函数。量子时间演化
+\(\exp(-\ii At/\hbar)\) 对所有实 \(t\) 都酉，需要的是自伴性，而不只是形式上把积分分部一次后“看起来厄米”。
+
+最简单的一族边界条件是
+\begin{equation}
+u'(0)=\gamma u(0),
+\qquad \gamma\in\mathbb R,
+\label{eq:radial-robin-boundary}
+\end{equation}
+其中 \(\gamma=0\) 是 Neumann 条件，形式极限
+\(|\gamma|\to\infty\) 对应 Dirichlet 条件 \(u(0)=0\)。
+
+\begin{proposition}[半直线自由哈密顿量的 Robin 实现]
+令
+\[
+H_\gamma=-\frac{\hbar^2}{2\mu}\frac{\dd^2}{\dd r^2},
 \qquad
-\omega_{\mu\nu}=-\omega_{\nu\mu}.
+\Dom H_\gamma
+=\{u\in H^2(0,\infty):u'(0)=\gamma u(0)\},
 \]
-旋量变换取
+其中 \(\gamma\) 为实数，则 \(H_\gamma\) 自伴。
+\end{proposition}
+
+\begin{proof}
+先取 \(u,v\in\Dom H_\gamma\)。式
+\eqnrefs{eq:radial-green-boundary-form} 的原点边界项为
 \[
-\mathcal S(\Lambda)
-=\mathbb I-\frac{\ii}{2\hbar}\omega_{\mu\nu}S^{\mu\nu}+O(\omega^2).
+u'(0)^*v(0)-u(0)^*v'(0)
+=\gamma u(0)^*v(0)-\gamma u(0)^*v(0)=0,
 \]
-由 Clifford 代数直接计算
+所以 \(H_\gamma\) 对称。
+
+再设 \(u\in\Dom H_\gamma^\dagger\)。伴随定义要求
+\eqnrefs{eq:radial-green-boundary-form} 对每个满足
+\(v'(0)=\gamma v(0)\) 的 \(v\) 都为零。原点处可自由选择
+\(v(0)\)，而 \(v'(0)\) 随之等于 \(\gamma v(0)\)，因此
 \[
-[S^{\mu\nu},\gamma^\rho]
-=\ii\hbar
-\left(\eta^{\nu\rho}\gamma^\mu-\eta^{\mu\rho}\gamma^\nu\right).
+\bigl[u'(0)^*-\gamma u(0)^*\bigr]v(0)=0
 \]
-于是
+对任意 \(v(0)\) 成立，只能有
+\(u'(0)=\gamma u(0)\)。所以伴随定义域没有比原定义域更大，
+\(\Dom H_\gamma^\dagger=\Dom H_\gamma\)，从而算符自伴。
+\end{proof}
+
+这个边界参数会直接改变可观测量。先看负能束缚态，写
+\(E=-\hbar^2\kappa^2/(2\mu)\)、\(\kappa>0\)。平方可积解只能取
+\(u(r)=Ce^{-\kappa r}\)。代入边界条件得到
 \[
+-\kappa=\gamma.
+\]
+因此只有 \(\gamma<0\) 时存在一个束缚态，能量为
+\begin{equation}
+E_b=-\frac{\hbar^2\gamma^2}{2\mu}.
+\label{eq:radial-robin-bound-state}
+\end{equation}
+微分表达式完全没有改变，仅仅改变定义域，就从“没有束缚态”变成“有一个束缚态”。
+
+正能量 \(E=\hbar^2k^2/(2\mu)\) 时，可把外区解写成
+\(u(r)=C\sin(kr+\delta)\)。边界条件给出
+\begin{equation}
+k\cot\delta(k)=\gamma.
+\label{eq:radial-robin-phase-shift}
+\end{equation}
+若用三维 \(s\) 波的低能约定
+\(k\cot\delta=-1/a+O(k^2)\)，便有
+\begin{equation}
+a=-\frac1\gamma.
+\label{eq:radial-robin-scattering-length}
+\end{equation}
+同一个参数同时决定束缚态和散射长度：当 \(\gamma\to0\) 时，束缚态逼近阈值，散射长度发散；当 \(\gamma<0\) 时，
+\eqnrefs{eq:radial-robin-bound-state} 也可写成
+\(E_b=-\hbar^2/(2\mu a^2)\)。这就是后文“自伴扩张参数与低能散射数据等价”的最小可算模型。
+
+概率流也给出同一条件。径向流为
+\[
+j(0)=\frac\hbar\mu\operatorname{Im}[u(0)^*u'(0)].
+\]
+实 \(\gamma\) 使 \(u'(0)=\gamma u(0)\)，所以 \(j(0)=0\)：概率不会从半直线端点漏走。自伴边界条件的物理含义正是把端点处的概率通量封闭起来。
+
+\section{短程散射、阈值展开与零程相互作用}
+\label{sec:phys-hdqm-threshold-scattering}
+
+以下先取 $d\ge2$，并假设 $V(r)$ 在某个 $R_c$ 之外为零或衰减得足够快，使自由分波渐近成立。正能量写成
+\[
+E=\frac{\hbar^2k^2}{2\mu},\qquad k>0.
+\]
+外区约化径向解由阶数 $\nu_l$ 的 Bessel 函数组成，等价地
+\begin{equation}
+R_l(r)=C_l r^{-(d-2)/2}
+\left[J_{\nu_l}(kr)\cos\delta_l(k)-Y_{\nu_l}(kr)\sin\delta_l(k)\right].
+\label{eq:phys-hdqm-scattering-bessel-combination}
+\end{equation}
+大 $r$ 时
+\begin{equation}
+R_l(r)\sim r^{-(d-1)/2}
+\sin\left(kr-\frac{\pi\nu_l}{2}+\frac\pi4+\delta_l(k)\right).
+\label{eq:phys-hdqm-phase-asymptotic}
+\end{equation}
+三维时 $\nu_l=l+1/2$，相位常数立即化为 $-l\pi/2$，即熟悉的 $\sin(kr-l\pi/2+\delta_l)$；这一检验固定了把 Bessel 余弦渐近改写成正弦时的 $+\pi/4$，不能任意吸收到 $\delta_l$ 中，否则自由态的 $S_l=1$ 基准会被整体平移。
+
+为了使不同维数中的截面归一化由同一一般结构决定，先固定散射振幅。对 $d>2$，令入射方向为 $\widehat{\mathbf k}$，并定义
+\begin{equation}
+\psi_{\mathbf k}(\mathbf r)
+\sim
+\ee^{\ii\mathbf k\cdot\mathbf r}
++\frac{\ee^{\ii kr}}{r^{(d-1)/2}}
+ f_d(\widehat{\mathbf r},\widehat{\mathbf k}),
+\qquad r\to\infty.
+\label{eq:phys-hdqm-d-scattering-amplitude-convention}
+\end{equation}
+这里短程假设保证渐近波可分解为未畸变的入射平面波与球面出射波。采用前文归一化的超球谐，中心势的弹性 $S$ 矩阵在 $(l,\alpha)$ 基底中对角，$S_l=\ee^{2\ii\delta_l}$，于是
+\begin{equation}
+ f_d(\widehat{\mathbf r},\widehat{\mathbf k})
+ =\left(\frac{2\pi}{k}\right)^{\frac{d-1}{2}}
+ \ee^{-\ii\pi(d-1)/4}
+ \sum_{l,\alpha}
+ \left(S_l-1\right)
+ Y_{l\alpha}(\widehat{\mathbf r})Y_{l\alpha}^*(\widehat{\mathbf k}).
+\label{eq:phys-hdqm-d-partial-wave-amplitude}
+\end{equation}
+若只保留散射角 $\theta$，使用 $\xi_d=(d-2)/2$ 与加法定理可写为
+\begin{equation}
+ f_d(\theta)
+ =\left(\frac{2\pi}{k}\right)^{\frac{d-1}{2}}
+ \frac{\ee^{-\ii\pi(d-1)/4}}{\xi_d S_{d-1}}
+ \sum_{l=0}^{\infty}(l+\xi_d)
+ \left(S_l-1\right)C_l^{\xi_d}(\cos\theta),
+ \qquad d>2.
+\label{eq:phys-hdqm-d-central-partial-amplitude}
+\end{equation}
+其中 $S_{d-1}=2\pi^{d/2}/\Gamma(d/2)$ 已在本章开头定义。由
+\[
+\frac{\dd\sigma^{(d)}}{\dd\Omega_{d-1}}=|f_d|^2
+\]
+和超球谐正交归一性，总截面严格为
+\begin{equation}
 \begin{aligned}
-\mathcal S^{-1}\gamma^\rho\mathcal S
-&=\gamma^\rho
-+\frac{\ii}{2\hbar}\omega_{\mu\nu}
-[S^{\mu\nu},\gamma^\rho]+O(\omega^2)\\
-&=\gamma^\rho+\omega^\rho{}_{\sigma}\gamma^\sigma+O(\omega^2),
+\sigma_{\rm tot}^{(d)}
+&=\frac{4(2\pi)^{d-1}}{S_{d-1}k^{d-1}}
+\sum_{l=0}^{\infty}g_l^{(d)}\sin^2\delta_l(k)\\
+&=\frac{2^d\pi^{d/2-1}\Gamma(d/2)}{k^{d-1}}
+\sum_{l=0}^{\infty}g_l^{(d)}\sin^2\delta_l(k),
+\qquad d>2.
 \end{aligned}
-\]
-恰好得到四矢量变换律。再用 Jacobi 恒等式可得
+\label{eq:phys-hdqm-d-cross-section}
+\end{equation}
+三维时 $g_l^{(3)}=2l+1$，上式立即退化为 $\sigma_{\rm tot}^{(3)}=(4\pi/k^2)\sum_l(2l+1)\sin^2\delta_l$；这个检验同时固定了高维归一化中的全部几何因子。
+
+二维不能通过 $\xi_d=(d-2)/2\to0$ 直接套用 Gegenbauer 表示，但可以在同一个散射渐近约定下独立完成归一化。取入射方向为 $\theta=0$，圆周本征函数为 $Y_m(\theta)=\ee^{\ii m\theta}/\sqrt{2\pi}$，中心势给 $S_m=S_{|m|}=\ee^{2\ii\delta_{|m|}}$。若定义
 \[
-[S^{\mu\nu},S^{\rho\sigma}]
-=\ii\hbar
-\left(
-\eta^{\nu\rho}S^{\mu\sigma}
--\eta^{\mu\rho}S^{\nu\sigma}
--\eta^{\nu\sigma}S^{\mu\rho}
-+\eta^{\mu\sigma}S^{\nu\rho}
+\psi_k(r,\theta)\sim \ee^{\ii kr\cos\theta}
++\frac{\ee^{\ii kr}}{\sqrt r}\,f_2(\theta),
+\]
+则二维分波振幅为
+\begin{equation}
+ f_2(\theta)
+ =\frac{\ee^{-\ii\pi/4}}{\sqrt{2\pi k}}
+ \sum_{m\in\mathbb Z}(S_m-1)\ee^{\ii m\theta}
+ =\frac{\ee^{-\ii\pi/4}}{\sqrt{2\pi k}}
+ \left[(S_0-1)+2\sum_{l=1}^{\infty}(S_l-1)\cos(l\theta)\right].
+\label{eq:phys-hdqm-2d-partial-wave-amplitude}
+\end{equation}
+因此 $\dd\sigma^{(2)}/\dd\theta=|f_2(\theta)|^2$，Fourier 正交性给
+\begin{equation}
+\sigma_{\rm tot}^{(2)}
+=\frac4k\sum_{m\in\mathbb Z}\sin^2\delta_{|m|}
+=\frac4k\left[\sin^2\delta_0+2\sum_{l=1}^{\infty}\sin^2\delta_l\right].
+\label{eq:phys-hdqm-2d-cross-section}
+\end{equation}
+这正好对应本章开头的二维角向简并度 $g_0^{(2)}=1$、$g_{l\ge1}^{(2)}=2$。二维 ERE 因而与一个完全确定的散射振幅归一化相连，而不是只给出孤立的相移展开。
+
+Gegenbauer 多项式与 Gauss 超几何函数的精确关系为
+\begin{equation}
+C_l^{(d-2)/2}(\cos\theta)
+=\frac{(d-2)_l}{l!}
+{}_2F_1\!\left(
+-l,l+d-2;\frac{d-1}{2};\sin^2\frac\theta2
 \right),
-\]
-与\eqnrefs{eq:rel-lorentz-algebra}同构。因此 $\gamma^\mu$ 与 $S^{\mu\nu}$ 是 Lorentz 旋量表示的结构，而不是仅为“线性化能量色散”临时引入的矩阵。
-\end{derivation}
-
-\section{Foldy--Wouthuysen 块对角化与 Breit--Pauli 结构}
-
-原子束缚态满足 $|E-m_ec^2|\ll m_ec^2$。需要的是 Dirac 正能量子空间上的系统低能展开，而不是直接“删除小分量”。把静态 Dirac Hamiltonian 写成
-\[
-H_D=\beta mc^2+\mathcal E+\mathcal O,
-\qquad
-[\beta,\mathcal E]=0,
-\qquad
-\{\beta,\mathcal O\}=0,
-\]
-其中 $\mathcal E=Q\Phi$、$\mathcal O=c\boldsymbol\alpha\cdot\boldsymbol\pi$。对原子精细结构采用静电主导计数
-\[
-\frac{p}{mc}=O(v/c)\ll1,
-\qquad
-\frac{|Q\Phi|}{mc^2}=O(v^2/c^2),
-\]
-并只保留外磁场的领先 Pauli 耦合。FW 变换给出正能量块
-\begin{equation}
-\boxed{
-\begin{aligned}
-H_{\rm FW}^{(+)}
-={}&mc^2+Q\Phi
-+\frac{\boldsymbol\pi^2}{2m}
--\frac{\boldsymbol\pi^4}{8m^3c^2}
--\frac{Q\hbar}{2m}\boldsymbol\sigma\cdot\mathbf B\\
-&-\frac{Q\hbar^2}{8m^2c^2}\nabla\cdot\mathbf E
--\frac{Q\hbar}{8m^2c^2}
-\boldsymbol\sigma\cdot
-\left(\mathbf E\times\boldsymbol\pi-\boldsymbol\pi\times\mathbf E\right)
-+O(c^{-4}).
-\end{aligned}
-}
-\label{eq:fw-general-order-c2}
+\qquad d>2.
+\label{eq:phys-hdqm-gegenbauer-2f1}
 \end{equation}
-这些项分别是非相对论动能、相对论动能修正、Pauli 磁矩、Darwin 项和自旋轨道项。对任意强静磁场，$\mathcal O^4$ 中还存在同阶相对论磁修正；\eqnrefs{eq:fw-general-order-c2}针对的是原子 Coulomb 场主导的精细结构计数。
+二维角向基底应改用圆周上的 Fourier 模；因此不能把\eqnrefs{eq:phys-hdqm-d-central-partial-amplitude} 中的 $\xi_d\to0$ 当作逐项极限。
 
-\begin{derivation}[FW 偶--奇 消元到相对阶 \(1/c^2\)]
-第一步取生成元
-\[
-S_1=-\frac{\ii}{2mc^2}\beta\mathcal O.
-\]
-Baker--Campbell--Hausdorff 展开
-\[
-H'=
-\ee^{\ii S_1}H_D\ee^{-\ii S_1}
-=H_D+\ii[S_1,H_D]-\frac12[S_1,[S_1,H_D]]+\cdots
-\]
-中，$\ii[S_1,\beta mc^2]$ 恰好消去最低阶 奇 块。重复消元并保留目标阶，偶 部分为
+\begin{proof}[解]
+归一化超球谐下，平面波展开为
 \begin{equation}
-H_{\rm FW}
-=\beta mc^2+\mathcal E
-+\frac{\beta\mathcal O^2}{2mc^2}
--\frac{\beta\mathcal O^4}{8m^3c^6}
--\frac{[\mathcal O,[\mathcal O,\mathcal E]]}{8m^2c^4}
-+O(c^{-4}).
-\label{eq:fw-even-odd-master}
+\ee^{\ii\mathbf k\cdot\mathbf r}
+=(2\pi)^{d/2}
+\sum_{l,\alpha}\ii^l
+\frac{J_{l+d/2-1}(kr)}{(kr)^{d/2-1}}
+Y_{l\alpha}(\widehat{\mathbf r})Y_{l\alpha}^*(\widehat{\mathbf k}).
+\label{eq:phys-hdqm-plane-wave-d}
 \end{equation}
 利用
 \[
-[\pi_i,\pi_j]=\ii Q\hbar\epsilon_{ijk}B_k,
-\qquad
-\alpha_i\alpha_j=\delta_{ij}+\ii\epsilon_{ijk}\Sigma_k,
+J_\nu(z)\sim\sqrt{\frac{2}{\pi z}}
+\cos\!\left(z-\frac{\pi\nu}{2}-\frac\pi4\right),
 \]
-得到
+把每个余弦拆成入射与出射指数。所有出射分波共享系数
 \[
-\mathcal O^2
-=c^2(\boldsymbol\pi^2-Q\hbar\boldsymbol\Sigma\cdot\mathbf B).
+\left(\frac{2\pi}{k}\right)^{\frac{d-1}{2}}
+\ee^{-\ii\pi(d-1)/4}r^{-(d-1)/2}.
 \]
-对静电标势，$[\pi_i,Q\Phi]=\ii\hbar Q E_i$，进一步计算
-\[
-[\mathcal O,[\mathcal O,Q\Phi]]
-=Q\hbar^2c^2\nabla\cdot\mathbf E
-+Q\hbar c^2\boldsymbol\Sigma\cdot
-(\mathbf E\times\boldsymbol\pi-\boldsymbol\pi\times\mathbf E).
-\]
-在正能量块取 $\boldsymbol\Sigma\to\boldsymbol\sigma$。静电主导计数下，$\mathcal O^4$ 在本阶只需保留 $c^4\boldsymbol\pi^4$；若磁场不属于弱修正，则 $\{\pi^2,\boldsymbol\sigma\cdot\mathbf B\}$ 等项也必须同时保留。代回\eqnrefs{eq:fw-even-odd-master}即得\eqnrefs{eq:fw-general-order-c2}。
-\end{derivation}
+散射把第 $l$ 个出射系数由 $1$ 变为 $S_l$，故新增出射波的系数为 $S_l-1$，得到\eqnrefs{eq:phys-hdqm-d-partial-wave-amplitude}。
 
-对纯静电中心势 $U(r)=Q\Phi(r)$，$\mathbf B=0$ 且 $\mathbf E=-\nabla\Phi$。于是
-\begin{equation}
-H_{\rm so}
-=\frac{1}{2m^2c^2r}\frac{\dd U}{\dd r}\,\mathbf L\cdot\mathbf S,
+中心势下的加法定理是
+\[
+\sum_\alpha Y_{l\alpha}(\Omega)Y_{l\alpha}^*(\Omega')
+=\frac{l+\xi_d}{\xi_d S_{d-1}}C_l^{\xi_d}(\cos\gamma),
+\qquad \xi_d=\frac{d-2}{2},
+\]
+从而得到\eqnrefs{eq:phys-hdqm-d-central-partial-amplitude}。当 $d=3$ 时，$\xi_d=1/2$、$S_2=4\pi$，于是
+\[
+f_3(\theta)=\frac1{2\ii k}
+\sum_{l=0}^{\infty}(2l+1)(S_l-1)P_l(\cos\theta),
+\]
+与标准三维归一化一致。
+
+最后固定入射方向并积分出射角。由超球谐正交性，
+\[
+\begin{aligned}
+\sigma_{\rm tot}^{(d)}
+&=\int_{S^{d-1}}|f_d(\widehat{\mathbf r},\widehat{\mathbf k})|^2\dd\Omega_{d-1}\\
+&=\left(\frac{2\pi}{k}\right)^{d-1}
+\sum_{l,\alpha}|S_l-1|^2|Y_{l\alpha}(\widehat{\mathbf k})|^2.
+\end{aligned}
+\]
+再令 $\Omega=\Omega'$ 使用加法定理，得到
+\[
+\sum_\alpha|Y_{l\alpha}(\widehat{\mathbf k})|^2=\frac{g_l^{(d)}}{S_{d-1}},
 \qquad
-H_{\rm Darwin}
-=\frac{\hbar^2}{8m^2c^2}\nabla^2U.
-\label{eq:pauli-from-dirac}
+|S_l-1|^2=4\sin^2\delta_l.
+\]
+因此
+\[
+\sigma_{\rm tot}^{(d)}
+=\frac{4(2\pi)^{d-1}}{S_{d-1}k^{d-1}}
+\sum_l g_l^{(d)}\sin^2\delta_l,
+\]
+再代入 $S_{d-1}=2\pi^{d/2}/\Gamma(d/2)$ 即得\eqnrefs{eq:phys-hdqm-d-cross-section}。
+
+二维时改用 Jacobi--Anger 展开
+\[
+\ee^{\ii kr\cos\theta}
+=\sum_{m\in\mathbb Z}\ii^mJ_m(kr)\ee^{\ii m\theta}.
+\]
+由
+\[
+J_m(kr)\sim\frac12\sqrt{\frac{2}{\pi kr}}
+\left[
+\ee^{\ii(kr-m\pi/2-\pi/4)}
++\ee^{-\ii(kr-m\pi/2-\pi/4)}
+\right]
+\]
+可见第 $m$ 个自由出射分量的公共系数是
+$\ee^{-\ii\pi/4}/\sqrt{2\pi k r}$。散射只把它乘成 $S_m$，故新增部分立即给出\eqnrefs{eq:phys-hdqm-2d-partial-wave-amplitude}。最后利用
+\[
+\int_0^{2\pi}\ee^{\ii(m-m')\theta}\dd\theta
+=2\pi\delta_{mm'}
+\]
+便得到\eqnrefs{eq:phys-hdqm-2d-cross-section}。
+\end{proof}
+
+内部势的全部信息可以压缩成 $r=R_c$ 的无量纲对数导数
+\[
+\mathcal L_l(k)=R_c\frac{R_l'(R_c)}{R_l(R_c)}+\frac{d-2}{2},
+\qquad x=kR_c.
+\]
+连续匹配给出
+\begin{equation}
+\tan\delta_l(k)=
+\frac{xJ_{\nu_l}'(x)-\mathcal L_l(k)J_{\nu_l}(x)}
+{xY_{\nu_l}'(x)-\mathcal L_l(k)Y_{\nu_l}(x)}.
+\label{eq:phys-hdqm-phase-log-derivative}
+\end{equation}
+这条式子是后续低能展开的精确母式：势阱、数值积分或任意有限程势只改变 $\mathcal L_l(k)$，自由外区的维数依赖则完全包含在 Bessel 阶数 $\nu_l$ 中。
+
+\begin{proof}[解]
+由\eqnrefs{eq:phys-hdqm-scattering-bessel-combination}，
+\begin{equation*}
+ R_l(r)=C_l r^{-(d-2)/2}
+ \left[J_{\nu_l}(kr)\cos\delta_l-Y_{\nu_l}(kr)\sin\delta_l\right].
+\end{equation*}
+令 $t_l=\tan\delta_l$，并把 $\widetilde C_l=C_l\cos\delta_l$ 吸收到整体归一化中，
+\begin{equation*}
+ R_l(r)=\widetilde C_l r^{-(d-2)/2}
+ \left[J_{\nu_l}(kr)-t_lY_{\nu_l}(kr)\right].
+\end{equation*}
+对 $r$ 求导，
+\begin{align*}
+ R_l'(r)
+ ={}&\widetilde C_l\!\left[
+ -\frac{d-2}{2}r^{-(d-2)/2-1}
+ \left(J_{\nu_l}(kr)-t_lY_{\nu_l}(kr)\right)\right.\\
+ &\left.+r^{-(d-2)/2}
+ \left(kJ_{\nu_l}'(kr)-t_l kY_{\nu_l}'(kr)\right)
+ \right],
+\end{align*}
+其中 Bessel 函数的导数对自变量 $kr$ 取。在 $r=R_c$ 处取对数导数，$r^{-(d-2)/2}$ 前因子相消，
+\begin{equation*}
+ \frac{R_l'(R_c)}{R_l(R_c)}
+ =-\frac{d-2}{2R_c}
+ +k\frac{J_{\nu_l}'(x)-t_lY_{\nu_l}'(x)}
+ {J_{\nu_l}(x)-t_lY_{\nu_l}(x)},
+\end{equation*}
+乘以 $R_c$ 并加 $\frac{d-2}{2}$，$-(d-2)/2$ 项与 $+(d-2)/2$ 相消，
+\begin{equation*}
+ \mathcal L_l
+ =x\frac{J_{\nu_l}'(x)-t_lY_{\nu_l}'(x)}
+ {J_{\nu_l}(x)-t_lY_{\nu_l}(x)}.
+\end{equation*}
+交叉相乘，
+\begin{equation*}
+ \mathcal L_l J_{\nu_l}(x)-\mathcal L_l t_lY_{\nu_l}(x)
+ =xJ_{\nu_l}'(x)-x t_lY_{\nu_l}'(x),
+\end{equation*}
+收集 $t_l$，
+\begin{equation*}
+ t_l\!\left[xY_{\nu_l}'(x)-\mathcal L_lY_{\nu_l}(x)\right]
+ =xJ_{\nu_l}'(x)-\mathcal L_lJ_{\nu_l}(x),
+\end{equation*}
+即\eqnrefs{eq:phys-hdqm-phase-log-derivative}。
+\end{proof}
+
+对有限程势，或衰减足够快且原点不比 $r^{-2}$ 更奇异的短程相互作用，可以在一个使零能正则解 $R_l(R_c,0)\neq0$ 的匹配半径处讨论阈值展开。径向方程只通过 $k^2=2\mu E/\hbar^2$ 依赖能量，因此正则内部解及其对数导数在 $k=0$ 附近具有偶次解析展开
+\begin{equation}
+\mathcal L_l(k)=\mathcal L_{l,0}+\mathcal L_{l,2}k^2+\mathcal O(k^4).
+\label{eq:phys-hdqm-logderivative-threshold}
+\end{equation}
+零能共振并不自动破坏\eqnrefs{eq:phys-hdqm-logderivative-threshold}；它通常对应下面某个低能散射系数被调到临界值。真正失效的是“散射参数有限”的普通阈值层级，而不是内部常微分方程对 $k^2$ 的局部解析性。
+
+把\eqnrefs{eq:phys-hdqm-logderivative-threshold}代入精确匹配\eqnrefs{eq:phys-hdqm-phase-log-derivative}，并记
+\[
+2\nu_l=2l+d-2,
+\qquad
+\epsilon_d=
+\begin{cases}
+0,&d\text{ 为奇数},\\
+1,&d\text{ 为偶数},
+\end{cases}
+\]
+即可把奇、偶维统一写成一般有效力程展开
+\begin{equation}
+\begin{aligned}
+\mathcal K_l^{(d)}(k;\rho_{l,d})
+&\equiv
+k^{2l+d-2}
+\left[
+\cot\delta_l(k)
+-\epsilon_d\frac2\pi\ln(k\rho_{l,d})
+\right]\\
+&=-\frac1{a_l^{(d)}}
++\frac12r_l^{(d)}k^2
++\mathcal O(k^4).
+\end{aligned}
+\label{eq:phys-hdqm-ere-general-d}
+\end{equation}
+这里 $\rho_{l,d}>0$ 是偶维中把对数写成无量纲量的任意参考长度；改变 $\rho_{l,d}$ 会重新分配同阶的解析常数，但不改变相移。除二维 $s$ 波这一边界情形外，$a_l^{(d)}$ 的量纲为 $\mathrm{length}^{2l+d-2}$；$r_l^{(d)}$ 的量纲统一为 $\mathrm{length}^{4-d-2l}$。三维 $s$ 波的 $\epsilon_3=0$，于是\eqnrefs{eq:phys-hdqm-ere-general-d}立即给出
+\begin{equation}
+k\cot\delta_0(k)=-\frac1a+\frac12r_e k^2+\mathcal O(k^4).
+\label{eq:phys-hdqm-ere-3d}
 \end{equation}
 
-\begin{derivation}[从 FW 自旋-轨道项到中心势形式]
-FW 展开给出的自旋-轨道耦合 \(H_{\rm so}=\frac{e\hbar}{4m^2c^2}\boldsymbol\sigma\cdot(\mathbf E\times\mathbf p)\) 中电场 \(\mathbf E\) 是一般矢量。对中心势 \(U(r)\)，电场沿径向，叉乘 \(\mathbf E\times\mathbf p\) 自然给出轨道角动量 \(\mathbf L=\mathbf r\times\mathbf p\)。
-
-对中心势 \(U(r)=Q\Phi(r)\)，电场为 \(\mathbf E=-\nabla\Phi=-\frac{1}{Qr}\frac{dU}{dr}\mathbf r\)。
-
-代入叉乘：
-\begin{equation*}
-\mathbf E\times\mathbf p=-\frac{1}{Qr}\frac{dU}{dr}\,\mathbf r\times\mathbf p=-\frac{1}{Qr}\frac{dU}{dr}\,\mathbf L,
-\end{equation*}
-其中 \(\mathbf L=\mathbf r\times\mathbf p\) 为轨道角动量。
-
-代入 \(H_{\rm so}\) 并利用 \(\mathbf S=\frac{\hbar}{2}\boldsymbol\sigma\)：
-\begin{equation*}
-H_{\rm so}=\frac{e\hbar}{4m^2c^2}\boldsymbol\sigma\cdot\left(-\frac{1}{Qr}\frac{dU}{dr}\mathbf L\right)
-=-\frac{e}{2m^2c^2Qr}\frac{dU}{dr}\,\mathbf S\cdot\mathbf L.
-\end{equation*}
-对电子 \(Q=-e\)，负号消去，得
-\begin{equation*}
-H_{\rm so}=\frac{1}{2m^2c^2r}\frac{dU}{dr}\,\mathbf L\cdot\mathbf S,
-\end{equation*}
-即\eqnrefs{eq:pauli-from-dirac}的第一式。系数中的 \(\frac{1}{2}\) 即 Thomas 因子，由 FW 结构自动给出。
-
-Darwin 项 \(H_{\rm Darwin}=\frac{\hbar^2}{8m^2c^2}\nabla^2 U\) 来自 FW 展开中 \(\nabla\cdot\mathbf E\) 的接触项。对 Coulomb 势 \(U=-Ze^2/(4\pi\epsilon_0 r)\)，利用 \(\nabla^2(1/r)=-4\pi\delta^{(3)}(\mathbf r)\)：
-\begin{equation*}
-\nabla^2 U=\frac{Ze^2}{\epsilon_0}\delta^{(3)}(\mathbf r),
-\end{equation*}
-故 \(H_{\rm Darwin}\propto\delta^{(3)}(\mathbf r)\)，只对 \(s\) 波（\(L=0\)）有贡献。
-
-对氢原子 \(dU/dr=Ze^2/(4\pi\epsilon_0 r^2)\)，故 \(H_{\rm so}=\frac{Ze^2}{8\pi\epsilon_0 m^2c^2 r^3}\mathbf L\cdot\mathbf S\)。由 \(\mathbf J=\mathbf L+\mathbf S\) 得 \(\langle\mathbf L\cdot\mathbf S\rangle=\frac{\hbar^2}{2}[J(J+1)-L(L+1)-S(S+1)]\)，精细结构分裂为
-\begin{equation*}
- \Delta E_{n,j}=\frac{(Z\alpha)^4 mc^2}{2n^3}\left(\frac{1}{j+\frac12}-\frac{3}{4n}\right).
-\end{equation*}
-
-\end{derivation}
-
-对氢样电子 $Q=-e$、$U(r)=-Ze^2/(4\pi\epsilon_0r)$，
+二维 $s$ 波满足 $2l+d-2=0$，所以\eqnrefs{eq:phys-hdqm-ere-general-d}中的 $a_0^{(2)}$ 本身是无量纲参数。把它与任意参考尺度 $\rho_{0,2}$ 组合成物理二维散射长度
 \[
-H_{\rm so}
-=\frac{Ze^2}{8\pi\epsilon_0m_e^2c^2r^3}\,\mathbf L\cdot\mathbf S.
+a_2
+=2\rho_{0,2}
+\exp\!\left[-\gamma_{\rm E}-\frac{\pi}{2a_0^{(2)}}\right],
 \]
-Darwin 项只对在原点非零的 $s$ 波径向分量有贡献。自旋轨道项中的 $1/2$ 已由 Dirac/FW 结构固定，无需再手工插入 Thomas 因子。
-
-\section{LS、jj 与中间耦合：精细结构和 Zeeman 结构}
-
-\chapref{ch:angular-momentum}已经建立一般角动量耦合。对给定 $L,S,J$，
+则阈值展开可改写成更常用的形式
 \begin{equation}
-\langle\mathbf L\cdot\mathbf S\rangle
-=\frac{\hbar^2}{2}
-[J(J+1)-L(L+1)-S(S+1)].
-\label{eq:ls-expectation}
+\cot\delta_0^{(2)}(k)
+=\frac2\pi\left[\gamma_{\rm E}+\ln\frac{ka_2}{2}\right]
++\frac12r_0^{(2)}k^2
++\mathcal O(k^4).
+\label{eq:phys-hdqm-ere-2d}
 \end{equation}
-若同一 $LS$ 项 中精细结构可以写成
+这里 $r_0^{(2)}$ 的量纲是长度平方；不同文献常把它改记成一个“有效力程 squared”。因此二维的下一解析修正是 $k^2$ 项，而不是必须带 $k^2\ln k$。偶维的对数已经由\eqnrefs{eq:phys-hdqm-ere-general-d}中显式的运动学项完整分离。
+
+阈值各项的相对重要性还取决于 $2l+d$。逆散射振幅中的幺正性项按 $k^{2l+d-2}$ 缩放，而有效程项按 $k^2$ 缩放；所以 $2l+d=4$ 时二者同阶，$2l+d\ge5$ 时有效程甚至比幺正性项更早进入。高维或高分波的“unitarity 极限”因此不能只靠令 $1/a_l^{(d)}=0$ 就完全刻画。
+
+\begin{proof}[解]
+奇维对应半整数 \(\nu\)。Bessel 函数的小宗量展开为
+\begin{equation*}
+ J_\nu(z)=\frac{(z/2)^\nu}{\Gamma(\nu+1)}[1+\mathcal O(z^2)],
+\end{equation*}
+\begin{equation*}
+ Y_\nu(z)=
+ -\frac{\Gamma(\nu)}\pi\left(\frac2z\right)^\nu[1+\mathcal O(z^2)]
+ +\cot(\pi\nu)J_\nu(z).
+\end{equation*}
+其中负幂首项由 \(Y_\nu=(J_\nu\cos\pi\nu-J_{-\nu})/\sin\pi\nu\) 与 \(\Gamma(\nu)\Gamma(1-\nu)=\pi/\sin\pi\nu\) 合并得到。
+
+把上述展开与\eqnrefs{eq:phys-hdqm-logderivative-threshold}代入\eqnrefs{eq:phys-hdqm-phase-log-derivative}，分子从 \(z^\nu\) 起、分母从 \(z^{-\nu}\) 起，故
+\begin{equation*}
+  k^{2\nu_l}\cot\delta_l(k)
+  =c_0+c_2k^2+c_4k^4+\cdots .
+\end{equation*}
+即左端在阈值附近按 \(k^2\) 解析：常数项编码散射长度，次项编码有效程。
+
+偶维对应整数 \(\nu_l=n\)。第二独立解由 \(\nu\to n\) 极限得到，此时 \(Y_n\) 的展开含对数项：
+\begin{equation*}
+ Y_n(z)
+ =\text{有限个负幂项}
+ +\frac2\pi J_n(z)\ln z
+ +\text{解析项},
+\end{equation*}
+对数项来自 \(\cot(\pi\nu)\) 在 \(\nu\to n\) 的极点与 \(J_\nu\) 的 \(\nu\) 导数（含 \(\ln(z/2)\)）相乘。故匹配式中出现
+\begin{equation*}
+ k^{2n}\frac2\pi\ln(k\rho),
+\end{equation*}
+该运动学对数完全来自自由 Green 函数，与势无关；显式减去后剩余部分仍按 \(k^2\) 解析，正是\eqnrefs{eq:phys-hdqm-ere-general-d}。
+
+二维 \(s\) 波对应 \(n=0\)，对数直接出现在最低阶，重新吸收常数后得\eqnrefs{eq:phys-hdqm-ere-2d}。
+\end{proof}
+
+零能阈值的关键不是让内部对数导数变得不解析，而是把有效力程展开的常数项调到临界值。先看 $d>2$ 的 $s$ 波。势外零能方程为
 \[
-H_{\rm fs}=A_{LS}\,\mathbf L\cdot\mathbf S/\hbar^2,
+R_0''+\frac{d-1}{r}R_0'=0,
 \]
-则
+所以
+\begin{equation}
+R_0(r)=A+B r^{2-d}.
+\label{eq:phys-hdqm-zero-energy-free}
+\end{equation}
+当 $A\neq0$ 时，定义广义散射参数 $\mathfrak a_d$（量纲 $\mathrm{length}^{d-2}$）为
+\begin{equation}
+R_0(r)=A\left(1-\frac{\mathfrak a_d}{r^{d-2}}\right),
+\qquad
+\mathfrak a_d=-\frac BA.
+\label{eq:phys-hdqm-generalized-scattering-length}
+\end{equation}
+三维时 $\mathfrak a_3=a$。对 $d>2$，它与\eqnrefs{eq:phys-hdqm-ere-general-d} 中 $s$ 波的有效力程参数 $a_0^{(d)}$ 只差一个由自由 Bessel 归一化决定的维数因子。利用 $J_{\nu_0}$、$Y_{\nu_0}$ 的小参数主导项，
 \[
-E_J
-=E_{LS}+\frac{A_{LS}}{2}
-[J(J+1)-L(L+1)-S(S+1)],
+\frac{\tan\delta_0(k)}{k^{d-2}}
+\longrightarrow -a_0^{(d)},
+\qquad k\to0,
+\]
+而零能外区解的常数项与 $r^{2-d}$ 项之比给出
+\begin{equation}
+\mathfrak a_d
+=\frac{2^{d-2}
+\Gamma\!\left(\frac{d-2}{2}\right)
+\Gamma\!\left(\frac d2\right)}{\pi}
+a_0^{(d)},
+\qquad d>2.
+\label{eq:phys-hdqm-generalized-length-vs-ere}
+\end{equation}
+当 $d=3$ 时前因子恰为 $1$，故通常三维散射长度不需要区分这两个记号。高维中若不先声明分波归一化，直接把所有量纲为 $\mathrm{length}^{d-2}$ 的阈值参数都记成同一个 $a$，会隐藏这一几何常数。
+
+\begin{proof}[解]
+令 $\nu_0=(d-2)/2>0$。由\eqnrefs{eq:phys-hdqm-scattering-bessel-combination}，$s$ 波外区解为
+\[
+R_0(r)=Cr^{-\nu_0}
+\left[J_{\nu_0}(kr)\cos\delta_0-Y_{\nu_0}(kr)\sin\delta_0\right].
+\]
+对固定 $r>R_c$ 先取 $k\to0$。Bessel 函数的主导项为
+\[
+J_{\nu_0}(kr)
+=\frac{(kr/2)^{\nu_0}}{\Gamma(\nu_0+1)}+o(k^{\nu_0}),
+\]
+\[
+Y_{\nu_0}(kr)
+=-\frac{\Gamma(\nu_0)}{\pi}
+\left(\frac{2}{kr}\right)^{\nu_0}
++o(k^{-\nu_0}),
+\]
+其中整数 $\nu_0$ 时附加的对数项比显示出的负幂主导项更高阶，不改变下面的零能系数比。于是
+\[
+R_0(r)=A(k)+B(k)r^{2-d}+o(1),
+\]
+且
+\[
+A(k)=C\cos\delta_0\,
+\frac{k^{\nu_0}}{2^{\nu_0}\Gamma(\nu_0+1)},
+\]
+\[
+B(k)=C\sin\delta_0\,
+\frac{2^{\nu_0}\Gamma(\nu_0)}{\pi k^{\nu_0}}.
+\]
+因此
+\[
+-\frac{B(k)}{A(k)}
+=-\frac{2^{2\nu_0}\Gamma(\nu_0)\Gamma(\nu_0+1)}{\pi}
+\frac{\tan\delta_0(k)}{k^{2\nu_0}}.
+\]
+另一方面，\eqnrefs{eq:phys-hdqm-ere-general-d} 在 $k\to0$ 给出
+\[
+k^{2\nu_0}\cot\delta_0(k)\longrightarrow-\frac1{a_0^{(d)}},
+\]
+因为偶维的 $k^{2\nu_0}\ln(k\rho_{0,d})$ 在 $d>2$ 时也趋于零。故
+\[
+\frac{\tan\delta_0(k)}{k^{2\nu_0}}
+\longrightarrow-a_0^{(d)}.
+\]
+再用 $2\nu_0=d-2$、$\Gamma(\nu_0+1)=\Gamma(d/2)$，便得到\eqnrefs{eq:phys-hdqm-generalized-length-vs-ere}。
+\end{proof}
+
+这一参数也可以直接由前面的匹配对数导数读出。记 $\nu_0=(d-2)/2$，在 $r=R_c$ 处令 $z=\mathfrak a_d/R_c^{d-2}$，则
+\[
+R_c\frac{R_0'}{R_0}
+=(d-2)\frac{z}{1-z}.
+\]
+因此
+\[
+\mathcal L_{0,0}
+=\nu_0+(d-2)\frac{z}{1-z},
+\]
+解出 $z$ 得到精确关系
+\begin{equation}
+\mathfrak a_d
+=R_c^{d-2}
+\frac{\mathcal L_{0,0}-\nu_0}
+{\mathcal L_{0,0}+\nu_0},
+\qquad d>2.
+\label{eq:phys-hdqm-scattering-length-logderivative}
+\end{equation}
+所以 $|\mathfrak a_d|\to\infty$ 的零能临界点是
+\begin{equation}
+\mathcal L_{0,0}=-\nu_0=-\frac{d-2}{2},
+\label{eq:phys-hdqm-zero-resonance-matching}
+\end{equation}
+而不是\eqnrefs{eq:phys-hdqm-logderivative-threshold}本身失效。此时外区解退化为 $R_0(r)=B r^{2-d}$。
+
+它在无穷远的范数行为为
+\[
+\int^\infty r^{d-1}|R_0|^2\dd r
+\sim\int^\infty r^{3-d}\dd r.
+\]
+因此 $d=3,4$ 时该阈值解不平方可积，是通常意义的零能共振或半束缚态；$d\ge5$ 时相同尾部已经平方可积，若内部解也正则，则阈值奇异对应真正的零能本征态。二维的外区零能解为 $A+B\ln(r/r_*)$，必须用\eqnrefs{eq:phys-hdqm-ere-2d}的对数散射长度来描述阈值极限；一维则应按偶、奇宇称通道分别分类。维数改变的是阈值谱类型，而不仅是相移公式中的系数。
+
+\label{sec:phys-hdqm-point-interactions}
+
+形式表达式
+\begin{equation}
+V(\vb r)=\alpha\,\delta^{(d)}(\vb r)
+\label{eq:phys-hdqm-delta-potential}
+\end{equation}
+只有在说明它所代表的算子定义域或重整化条件之后才具有物理意义。原因是自由预解式在原点的短程奇性依赖空间维数；同一个裸常数 $\alpha$ 不能跨维数解释为同一个可观测耦合。点相互作用的维数判据因此应直接从自由 Green 函数的短程结构与去点拉普拉斯算子的自伴扩张性质得到。
+
+束缚能写成
+\[
+E_B=-\frac{\hbar^2\kappa_B^2}{2\mu},\qquad \kappa_B>0.
+\]
+定义 $(-\Delta+\kappa^2)^{-1}$ 的 Euclidean Green 函数核
+\begin{equation}
+(-\Delta+\kappa^2)G_\kappa(\vb r)=\delta^{(d)}(\vb r),
+\qquad
+G_\kappa(\vb r)=
+\int\frac{\dd^d p}{(2\pi)^d}
+\frac{\ee^{\ii\vb p\cdot\vb r}}{p^2+\kappa^2}
+=
+\frac{1}{(2\pi)^{d/2}}
+\left(\frac{\kappa}{r}\right)^{d/2-1}
+K_{d/2-1}(\kappa r)
+\label{eq:phys-hdqm-delta-bound-green}
+\end{equation}
+给出点源方程在 $r>0$ 的唯一衰减解。其原点渐近行为为
+\begin{equation}
+G_\kappa(r)\sim
+\begin{cases}
+\displaystyle \frac{1}{2\kappa}+O(r), & d=1,\\[0.5em]
+\displaystyle -\frac{1}{2\pi}\ln\!\left(\frac{\kappa r}{2}\right)+O(1), & d=2,\\[0.5em]
+\displaystyle \frac{\Gamma(d/2-1)}{4\pi^{d/2}}\,r^{2-d}\,[1+o(1)], & d\ge3.
+\end{cases}
+\label{eq:phys-hdqm-point-green-short-distance}
+\end{equation}
+因此 $d\ge2$ 时直接把\eqnrefs{eq:phys-hdqm-delta-potential} 当作普通乘法势会遇到 $G_\kappa(0)$ 发散；正确对象是自由拉普拉斯算子在去掉原点后的自伴扩张，或与之等价的零程重整化极限。
+\begin{proof}[解]
+考虑去掉原点后的最小自由哈密顿量
+\[
+ H_0^{\min}=-\frac{\hbar^2}{2\mu}\Delta,
+ \qquad
+ \Dom(H_0^{\min})=C_c^\infty(\mathbb R^d\setminus\{0\}).
+\]
+该算子对称但未必自伴。由 von Neumann 延拓理论，其自伴扩张的存在性与个数由亏指数
+\begin{equation*}
+ n_\pm=\dim\ker\bigl[(H_0^{\min})^*\mp \ii E_*\bigr]
+\end{equation*}
+决定，其中 $E_*>0$ 仅为固定能标，$n_\pm$ 与其取值无关。
+\begin{equation*}
+ (H_0^{\min})^*\psi_\pm=\pm \ii E_*\psi_\pm.
+\end{equation*}
+在原点附近，方程的主导项即自由拉普拉斯算子的齐次解，故亏量解的主导奇性与 Laplace 基本解一致。对 $d\ge3$，径向 Laplace 方程 $\Delta G=0$ 的解满足
+\begin{equation*}
+ \frac{1}{r^{d-1}}\frac{\dd}{\dd r}\left(r^{d-1}\frac{\dd G}{\dd r}\right)=0,
+\end{equation*}
+积分两次得基本解 $G(r)\sim r^{2-d}$，于是 $\psi_\pm(r)\sim r^{2-d}$。其局部平方可积性由
+\begin{equation*}
+ \int_0^\epsilon r^{d-1}|\psi_\pm(r)|^2\dd r
+ \sim
+ \int_0^\epsilon r^{d-1}\,r^{2(2-d)}\dd r
+ =
+ \int_0^\epsilon r^{3-d}\dd r
+\end{equation*}
+判定。该积分在 $3-d>-1$ 即 $d<4$ 时收敛，故 $d=3$ 收敛而 $d\ge4$ 发散。二维径向方程退化为
+\begin{equation*}
+ \frac{1}{r}\frac{\dd}{\dd r}\left(r\frac{\dd G}{\dd r}\right)=0,
+\end{equation*}
+其解为对数 $G(r)\sim\ln(r/L_*)$，于是 $\psi_\pm(r)\sim\ln(r/L_*)$，且
+\begin{equation*}
+ \int_0^\epsilon r\left|\ln\frac r{L_*}\right|^2\dd r
+ =\frac{\epsilon^2}{2}\left[\left(\ln\frac\epsilon{L_*}\right)^2+1\right]<\infty,
+\end{equation*}
+故二维亏量解亦平方可积。一维去掉一点把直线分成两个半轴，每段端点独立，亏指数为 $(1,1)$。
+综上，$d=1,2,3$ 时 $n_+=n_-=1$，去点拉普拉斯算子有单参数族自伴扩张，可经原点边界条件引入一个点相互作用参数；$d\ge4$ 时奇异亏量解不再平方可积，$n_\pm=0$，算子本质自伴，单点不能产生这种零程相互作用。临界维数 $d=4$ 处 $\psi\sim r^{-2}$ 的范数积分 $\int r^{-1}\dd r$ 在对数尺度发散，恰处边界。一维通常的 $\delta(x)$ 势只是这一自伴连接条件的特例。
+\end{proof}
+扩张参数与散射长度之间的对应可以直接从零能径向解读出。
+三维自由 $s$ 波恰处于极限圆型区。由 $d=3,l=0$ 得 $u=rR$，零能原点附近的一般自伴边界条件可写成
+\[
+u(r)=A+Br+o(r),\qquad B=\Lambda A,
+\]
+其中 $\Lambda\in\mathbb R\cup\{\infty\}$ 是\eqnrefs{eq:phys-hdqm-extension-boundary} 在 $\chi=1/2$ 时的参数。另一方面 Bethe--Peierls 形式
+\[
+\psi(r)=\frac{u(r)}r
+=A\left(\frac1r-\frac1a\right)+o(1)
+\]
+要求
+\begin{equation}
+\Lambda=-\frac1a.
+\label{eq:phys-hdqm-extension-scattering-length-3d}
+\end{equation}
+因此三维散射长度不是附加在哈密顿量之外的经验常数，而就是去点拉普拉斯算子自伴扩张参数的倒长度表示。若 $a>0$，束缚态写成 $u(r)=A_B\ee^{-\kappa_Br}$，则在原点有 $B/A=-\kappa_B$，与上式比较即得 $\kappa_B=1/a$。
+二维 $s$ 波位于临界 $g=-1/4$。写 $u=\sqrt r\,\psi$，则
+\[
+u(r)=\sqrt r\left[A+B\ln\frac r{L_0}\right]+o(\sqrt r).
+\]
+自伴定义域固定实比值 $A/B$。把它重写为
+\[
+\psi(r)=B\ln\frac r{a_2}+o(1)
+\]
+给出
+\begin{equation}
+\frac AB=-\ln\frac{a_2}{L_0}.
+\label{eq:phys-hdqm-extension-scattering-length-2d}
+\end{equation}
+所以二维扩张参数天然以对数方式对应一个长度尺度 $a_2$；这正是后面维数 transmutation 的算子论来源。
+在一维，普通 $\delta$ 势已经给出非平凡的点相互作用。
+一维中可直接定义
+\[
+V(x)=-g\,\delta(x),\qquad g>0.
+\]
+把 Schrödinger 方程在 $(-\epsilon,\epsilon)$ 上积分并令 $\epsilon\to0$，波函数连续而导数满足跳跃条件
+\begin{equation}
+\psi'(0^+)-\psi'(0^-)
+=-\frac{2\mu g}{\hbar^2}\psi(0).
+\label{eq:phys-hdqm-delta-1d-jump}
+\end{equation}
+束缚态在两侧只能取 $\psi_B(x)=\mathcal N_B\ee^{-\kappa_B|x|}$。代入\eqnrefs{eq:phys-hdqm-delta-1d-jump} 得
+\[
+2\kappa_B=\frac{2\mu g}{\hbar^2},
+\qquad
+\kappa_B=\frac{\mu g}{\hbar^2},
 \]
 从而
 \begin{equation}
-E_J-E_{J-1}=A_{LS}J.
-\label{eq:lande-interval-energy}
+E_B=-\frac{\mu g^2}{2\hbar^2}.
+\label{eq:phys-hdqm-delta-1d-bound-energy}
 \end{equation}
-这就是 Land\'e interval 规则。它要求 LS 耦合 是良好近似；若自旋轨道与电子间静电分裂同阶，必须在固定 $J$ 子空间内整体对角化，即 intermediate 耦合。
-
-弱磁场 $\mathbf B=B\mathbf e_z$ 中，
+零能偶宇称解在 $x\ne0$ 处为线性函数。若把一维偶通道散射长度定义为
 \[
-H_Z=\frac{\mu_B}{\hbar}(\mathbf L+g_s\mathbf S)\cdot\mathbf B,
-\qquad
-\mu_B=\frac{e\hbar}{2m_e}.
+\psi_0(x)=A\left(1-\frac{|x|}{a_1}\right),
 \]
-在 $|LSJM\rangle$ 中作矢量投影，得到
+则跳跃条件给
 \begin{equation}
-\Delta E_Z=\mu_Bg_JMB,
+\frac1{a_1}=\frac{\mu g}{\hbar^2},
 \qquad
-g_J
-=1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}(g_s-1).
-\label{eq:lande-g-factor}
+\kappa_B=\frac1{a_1}.
+\label{eq:phys-hdqm-extension-scattering-length-1d}
 \end{equation}
-取 Dirac 树级 $g_s=2$ 得常用 Land\'e 因子。若 Zeeman 能量超过自旋轨道耦合，$J$ 不再是好量子数，系统趋向 $m_L,m_S$ 近似独立的 Paschen--Back 极限。
-
-\begin{derivation}[Land\'e 因子来自向总角动量的投影]
-在固定 $J$ 不可约子空间内，由 Wigner--Eckart 定理，任意矢量算符的一阶对角矩阵元都必须平行于 $\mathbf J$，故可写
-\begin{equation*}
-\langle\mathbf L\rangle = a_L\,\langle\mathbf J\rangle,
+这是一维普通 $\delta$ 势的偶通道结果；一般一维点相互作用具有更大的自伴扩张族，不能全部压缩为一个散射长度。一维自由 Green 函数在原点有限，因此这个特例不需要二维、三维那样的紫外重整化。
+在二维，零能 Green 函数的对数结构使边界条件出现尺度生成。
+二维 Green 函数在原点按 $-\ln(r/L_*)$ 发散，因此点相互作用不能由一个有限的裸 $\alpha$ 直接定义。一个等价的自伴边界条件是规定 $s$ 波在 $r\to0$ 时具有
+\begin{equation}
+\psi(r)=A\ln\frac{r}{a_2}+o(1),
+\label{eq:phys-hdqm-point-2d-boundary}
+\end{equation}
+其中 $a_2>0$ 是二维散射长度。束缚态由 $K_0(\kappa_B r)$ 给出，而
+\[
+K_0(z)=-\ln\frac z2-\gamma_{\rm E}+O(z^2\ln z).
+\]
+比较\eqnrefs{eq:phys-hdqm-point-2d-boundary} 可得
+\begin{equation}
+\kappa_B=\frac{2\ee^{-\gamma_{\rm E}}}{a_2}.
+\label{eq:phys-hdqm-point-2d-kappa}
+\end{equation}
+这说明二维零程相互作用把无量纲的形式耦合转化成了一个有量纲尺度，即维数 transmutation。
+若用束缚尺度 $\kappa_B$ 作为重整化条件，Lippmann--Schwinger 方程中的发散积分只以差值出现：
+\[
+I_2(-\ii k)-I_2(\kappa_B)
+=-\frac{1}{4\pi}
+\left[\ln\frac{k^2}{\kappa_B^2}-\ii\pi\right].
+\]
+在以下采用的 $T$ 矩阵归一化下，
+\begin{equation}
+T_2(k)=
+-\frac{2\pi\hbar^2/\mu}
+{\ln(k^2/\kappa_B^2)-\ii\pi}.
+\label{eq:phys-hdqm-delta-t-2d}
+\end{equation}
+发散已经完全被物理尺度 $\kappa_B$ 吸收。
+在三维，散射长度本身就是点相互作用最自然的自伴扩张参数。
+三维点相互作用最方便用 Bethe--Peierls 边界条件定义：
+\begin{equation}
+\psi(r)=A\left(\frac1r-\frac1a\right)+O(r),
+\qquad r\to0,
+\label{eq:phys-hdqm-bethe-peierls}
+\end{equation}
+其中 $a$ 是三维 $s$ 波散射长度。对正能量 $E=\hbar^2k^2/(2\mu)$，这直接给出零程 $s$ 波振幅
+\begin{equation}
+f_0(k)=\frac{1}{-a^{-1}-\ii k}.
+\label{eq:phys-hdqm-contact-3d-amplitude}
+\end{equation}
+若 $a>0$，振幅在 $k=\ii/a$ 处有束缚态极点，因此
+\begin{equation}
+E_B=-\frac{\hbar^2}{2\mu a^2}.
+\label{eq:phys-hdqm-contact-3d-bound-energy}
+\end{equation}
+若使用与前文一致的 $T$ 矩阵约定 $f_0=-\mu T/(2\pi\hbar^2)$，则
+\begin{equation}
+T_3(k)=\frac{2\pi\hbar^2/\mu}{a^{-1}+\ii k}.
+\label{eq:phys-hdqm-contact-3d-t}
+\end{equation}
+这里的 $a$，而不是形式上的裸 $\alpha$，才是可测的低能耦合。
+在四维及更高维，单点零程相互作用的紫外结构发生质变，朴素的一参数点相互作用不再成立。
+由前面的亏量分析，$d\ge4$ 时 $-\Delta$ 在 $\mathbb R^d\setminus\{0\}$ 上本质自伴。因而不能通过给原点增加一个自伴扩张参数来得到与二维、三维同类的非平凡点相互作用。把 coincident Euclidean Green 积分形式记为
+\[
+I_d(\kappa)
+\equiv\int\frac{\dd^dp}{(2\pi)^d}\frac1{p^2+\kappa^2}
+=\frac{\Gamma(1-d/2)}{(4\pi)^{d/2}}\kappa^{d-2},
+\]
+其中最后一个等号按维数正规化作解析延拓。这样的解析延拓仍然可以作为正规化计算工具，但它本身并不能证明任意整数 $d$ 都存在一个由单一参数定义的量子 $\delta^{(d)}$ 势。若在 $d\ge4$ 需要描述短程相互作用，应从有限作用程势或包含更高阶接触算符的有效理论出发，并明确其截止依赖与所需反项。
+这一区分也解释了为什么“先写任意 $d$ 维裸 $\delta$ 势，再把 $d$ 代成整数”会掩盖真正的数学问题：维数改变的不只是积分数值，还改变了自由哈密顿量的自伴扩张结构。
+\section{维数依赖的中心势：Maxwell--Poisson 与数学延拓}
+\label{sec:phys-hdqm-maxwell-poisson}
+高维“氢原子”的物理母问题不是把三维的 $1/r$ 势机械搬到任意维数，而是先求 $d$ 维 Poisson 方程的 Green 函数。设点电荷 $q$ 位于原点，静电势满足
+\begin{equation}\label{eq:phys-hdqm-poisson-d}
+ \nabla_d^2\Phi(\vb r)=-\frac{q}{\varepsilon_d}\,\delta^{(d)}(\vb r).
+\end{equation}
+记单位 $(d-1)$ 维球面面积为
+\[
+ S_{d-1}=\frac{2\pi^{d/2}}{\Gamma(d/2)}.
+\]
+对 $r>0$，球对称性给出 $\partial_r(r^{d-1}\partial_r\Phi)=0$。在半径 $r$ 的球面上积分\eqnrefs{eq:phys-hdqm-poisson-d}，由 Gauss 定律
+\begin{equation}\label{eq:phys-hdqm-gauss-d}
+ S_{d-1}r^{d-1}\Phi'(r)=-\frac{q}{\varepsilon_d}.
+\end{equation}
+因此不同维数的 Green 函数具有本质不同的标度。对 $d\ge3$，取无穷远势能为零得到
+\begin{equation}\label{eq:phys-hdqm-potential-d-ge3}
+ \Phi_d(r)=\frac{q}{(d-2)S_{d-1}\varepsilon_d}\,r^{2-d}.
+\end{equation}
+二维中积分产生对数，只有势差有物理意义：
+\begin{equation}\label{eq:phys-hdqm-potential-d2}
+ \Phi_2(r)=-\frac{q}{2\pi\varepsilon_2}\ln\frac{r}{r_0},
+\end{equation}
+其中 $r_0$ 是任意参考尺度；一维则有
+\begin{equation}\label{eq:phys-hdqm-potential-d1}
+ \Phi_1(x)=-\frac{q}{2\varepsilon_1}|x|+\mathrm{const}.
+\end{equation}
+对于异号电荷 $+e$ 与 $-e$ 的相对运动，势能因此为
+\begin{equation}\label{eq:phys-hdqm-coulomb-potential-all-d}
+ V_d(r)=
+ \begin{cases}
+ \displaystyle \frac{e^2}{2\varepsilon_1}|x|, & d=1,\\[0.8em]
+ \displaystyle \frac{e^2}{2\pi\varepsilon_2}\ln\frac{r}{r_0}, & d=2,\\[0.8em]
+ \displaystyle -\frac{e^2}{(d-2)S_{d-1}\varepsilon_d}\,r^{2-d}, & d\ge3.
+ \end{cases}
+\end{equation}
+这才是 Maxwell--Poisson 理论在不同空间维数中的真实静电相互作用。$d=3$ 恰好退化为 $-e^2/(4\pi\varepsilon_3r)$；$d=4$ 则是逆平方势；二维对数势虽然没有三维氢原子那样的简单主量子数闭式谱，却不能从一般理论中删去。
+真实 Maxwell--Poisson 势的短程奇性随维数从 $r^{-1}$、$r^{-2}$ 一直增强。对 $d>4$，吸引势为 $-C_dr^{-(d-2)}$，其幂次 $d-2>2$ 比动能的缩放 $r^{-2}$ 更奇异。取任意光滑归一化试探函数 $\varphi$，并定义
+\[
+\psi_\ell(\vb x)=\ell^{-d/2}\varphi(\vb x/\ell).
+\]
+则
+\[
+\langle T\rangle_{\ell}=\ell^{-2}\langle T\rangle_1,
 \qquad
-\langle\mathbf S\rangle = a_S\,\langle\mathbf J\rangle,
-\end{equation*}
-其中 $a_L,a_S$ 为待定标量。由 $\mathbf J=\mathbf L+\mathbf S$，于是
-\begin{equation*}
-\langle\mathbf J\rangle
-= \langle\mathbf L\rangle+\langle\mathbf S\rangle
-= (a_L+a_S)\,\langle\mathbf J\rangle,
-\end{equation*}
-因此 $a_L+a_S=1$。为求 $a_L$，将上式两边点乘 $\mathbf J$ 并取对角元，
-\begin{equation*}
-\langle\mathbf L\cdot\mathbf J\rangle
-= a_L\,\langle J^2\rangle.
-\end{equation*}
-由 $\mathbf J=\mathbf L+\mathbf S$ 平方得
-\begin{equation*}
-\mathbf L\cdot\mathbf J
-= \frac12\bigl(J^2+L^2-S^2\bigr),
-\qquad
-\mathbf S\cdot\mathbf J
-= \frac12\bigl(J^2+S^2-L^2\bigr),
-\end{equation*}
-代回并取 $|LSJM\rangle$ 对角元，
-\begin{equation*}
-\frac12\bigl[J(J+1)+L(L+1)-S(S+1)\bigr]\hbar^2
-= a_L\,J(J+1)\hbar^2,
-\end{equation*}
-于是
-\begin{equation*}
-a_L
-= \frac{J(J+1)+L(L+1)-S(S+1)}{2J(J+1)}.
-\end{equation*}
-同理对 $\mathbf S$ 重复点乘 $\mathbf J$ 的步骤，
-\begin{equation*}
-\langle\mathbf S\cdot\mathbf J\rangle
-= a_S\,\langle J^2\rangle,
-\end{equation*}
-代入第二个恒等式并取对角元，
-\begin{equation*}
-a_S
-= \frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}.
-\end{equation*}
+\langle V\rangle_{\ell}=-C_d\ell^{-(d-2)}
+\int\frac{|\varphi(\vb y)|^2}{|\vb y|^{d-2}}\dd^dy.
+\]
 因此
-\begin{equation*}
-\langle\mathbf L\rangle
-= \frac{J(J+1)+L(L+1)-S(S+1)}{2J(J+1)}\,\langle\mathbf J\rangle,
+\begin{equation}
+\langle H\rangle_\ell
+=A\ell^{-2}-B\ell^{-(d-2)}\longrightarrow-\infty
+\qquad(d>4,\ \ell\to0),
+\label{eq:phys-hdqm-maxwell-collapse-dgt4}
+\end{equation}
+其中 $A,B>0$。这证明任意强度的吸引点电荷 Maxwell 势在 $d>4$ 都没有下界；必须给电荷有限尺寸、短程截断或其他紫外完成。$d=4$ 是两个缩放同阶的临界维数，稳定性转化为逆平方耦合的临界问题；$d=3$ 则势能只按 $\ell^{-1}$ 增长，短程处由动能压制。
+一维势 $V_1(x)=F|x|$，其中 $F=e^2/(2\varepsilon_1)$。令
+\[
+ \ell=\left(\frac{\hbar^2}{2\mu F}\right)^{1/3},\qquad
+ z=\frac{|x|}{\ell}-\frac{E}{F\ell},
+\]
+Schrödinger 方程化为 Airy 方程。无穷远可归一化要求舍去 $\operatorname{Bi}$ 分支；$x=0$ 的奇偶边界条件分别给出 $\operatorname{Ai}(-E/F\ell)=0$ 与 $\operatorname{Ai}'(-E/F\ell)=0$。
+二维势 $V_2(r)=\gamma_2\ln(r/r_0)$，$\gamma_2=e^2/(2\pi\varepsilon_2)$。径向方程为
+\begin{equation}\label{eq:phys-hdqm-d2-log-radial}
+ -\frac{\hbar^2}{2\mu}\left(R_l''+\frac1rR_l'-\frac{l^2}{r^2}R_l\right)
+ +\gamma_2\ln\frac r{r_0}R_l=ER_l.
+\end{equation}
+它定义了良好的束缚态谱，但一般不化为初等特殊函数的有限参数闭式解。一般理论在这里给出的是算子、边界条件和尺度结构；具体能级可用 shooting、变分或谱方法计算。不能因为缺少漂亮闭式表达式就用固定 $1/r$ 势替代真实二维 Coulomb 问题。
+$d=3$ 时\eqnrefs{eq:phys-hdqm-coulomb-potential-all-d} 成为
+\begin{equation}\label{eq:phys-hdqm-coulomb-3d}
+ V_3(r)=-\frac{\gamma_3}{r},\qquad \gamma_3=\frac{e^2}{4\pi\varepsilon_3}.
+\end{equation}
+这时真实 Maxwell 势与通常的 $1/r$ 模型完全一致。束缚态和散射态都由合流超几何函数给出，能谱为
+\begin{equation}\label{eq:phys-hdqm-hydrogen-spectrum-3d}
+ E_n=-\frac{\mu\gamma_3^2}{2\hbar^2n^2},\qquad n=n_r+l+1,
+\end{equation}
+而散射截面退化为 Rutherford 形式
+\begin{equation}\label{eq:phys-hdqm-rutherford-3d}
+ \frac{\dd\sigma}{\dd\Omega}=\frac{\eta_3^2}{4k^2\sin^4(\theta/2)},
+ \qquad \eta_3=\frac{\mu\gamma_3}{\hbar^2k}>0.
+\end{equation}
+$d=4$ 时
+\begin{equation}\label{eq:phys-hdqm-coulomb-4d}
+ V_4(r)=-\frac{\gamma_4}{r^2},\qquad
+ \gamma_4=\frac{e^2}{2S_3\varepsilon_4}.
+\end{equation}
+约化径向函数 $u_l=r^{3/2}R_l$ 满足
+\begin{equation}\label{eq:phys-hdqm-inverse-square-reduced}
+ -u_l''+\frac{g_l}{r^2}u_l=k^2u_l,
+ \qquad
+ g_l=\left(l+1\right)^2-\frac14-\frac{2\mu\gamma_4}{\hbar^2}.
+\end{equation}
+因此“耦合强弱”首先是一个算子定义域问题。对半直线上的算子 $-\dd^2/\dd r^2+g_l/r^2$，若 $g_l\ge3/4$，原点为极限点型，最小算子在原点本质自伴；若 $-1/4\le g_l<3/4$，原点为极限圆型，需要选择自伴边界条件；若 $g_l<-1/4$，则进入超临界 fall-to-the-中心区域，裸哈密顿量没有下界，必须引入短程物理或重整化尺度。只有在最后一种情形中，离散尺度不变性和几何能级塔才作为受控的自伴扩张/重整化结果出现。
+\begin{note}[四维逆平方势的临界参数]
+定义 $s_l^2=(l+1)^2-2\mu\gamma_4/\hbar^2$，则 $g_l=s_l^2-1/4$。$s_l^2\ge1$ 对应本质自伴；$0\le s_l^2<1$ 需要边界条件；$s_l^2<0$ 为超临界区域。把所有实 $s_l$ 都简单称为“普通散射解”会漏掉 $0\le s_l^2<1$ 的自伴扩张自由度。
+\end{note}
+作为对照，还可以研究一个纯数学延拓：在任意维数中人为固定 $1/r$ 势，而不把它误认作高维 Maxwell--Poisson 点电荷势。
+真实 Maxwell 势建立以后，可以把固定 $1/r$ 形状的中心势作为独立数学模型延拓到任意 $d$。除 $d=3$ 外，它不再是 $d$ 维 Maxwell--Poisson 方程的 Green 函数，因此以下结果描述的是“改变 Hilbert 空间维数但固定势函数形状”的模型，而不是高维电磁学本身。具体取
+\begin{equation}
+	V(r)=-\frac{\gamma}{r},
+	\label{eq:phys-hdqm-formal-coulomb}
+\end{equation}
+其中 \(\gamma>0\)。束缚态中令
+\begin{equation}
+	\kappa=\frac{\sqrt{-2\mu E}}{\hbar},\qquad
+	\eta_{\rm B}=\frac{\mu\gamma}{\hbar^2\kappa}>0,\qquad
+	\rho=2\kappa r.
+\end{equation}
+径向解为
+\begin{equation}
+	R_l(r)=A_l\,\rho^l\ee^{-\rho/2}
+	{}_1F_1\left(l+\frac{d-1}{2}-\eta_{\rm B};\,2l+d-1;\,\rho\right).
+\end{equation}
+原点正则性选出 \({}_1F_1\) 分支；无穷远可归一化要求级数截断：
+\begin{equation}
+	l+\frac{d-1}{2}-\eta_{\rm B}=-n_r,\qquad
+	E_{n_rl}=-\frac{\mu\gamma^2}{2\hbar^2
+	\left(n_r+l+\frac{d-1}{2}\right)^2}.
+	\label{eq:phys-hdqm-formal-coulomb-energy}
+\end{equation}
+归一化径向波函数可取
+\begin{equation}
+	R_{n_rl}(r)=
+	(2\kappa)^{d/2}
+	\left[
+	\frac{n_r!}{(2n_r+2l+d-1)\Gamma(n_r+2l+d-1)}
+	\right]^{1/2}
+	(2\kappa r)^l\ee^{-\kappa r}
+	L_{n_r}^{2l+d-2}(2\kappa r).
+	\label{eq:phys-hdqm-formal-coulomb-bound}
+\end{equation}
+由于
+\begin{equation}
+	L_n^\alpha(z)=\frac{(\alpha+1)_n}{n!}\,
+	{}_1F_1(-n;\alpha+1;z),
+\end{equation}
+\eqnrefs{eq:phys-hdqm-formal-coulomb-bound} 也就是合流超几何解。
+散射态 \(E>0\) 中令
+\begin{equation}
+	k=\frac{\sqrt{2\mu E}}{\hbar},\qquad
+	\eta_{\rm C}=-\frac{\mu\gamma}{\hbar^2k}<0.
+\end{equation}
+这里使用带符号的 Coulomb--Sommerfeld 参数 $\eta_{\rm C}$：吸引势 \(V=-\gamma/r\) 对应负值。正则径向解为
+\begin{equation}
+	R_{kl}(r)=C_{kl}\,(2kr)^l\ee^{-\ii kr}
+	{}_1F_1\left(l+\frac{d-1}{2}-\ii\eta_{\rm C};\,2l+d-1;\,2\ii kr\right).
+	\label{eq:phys-hdqm-formal-coulomb-scattering-solution}
+\end{equation}
+其长程 Coulomb 相位为
+\begin{equation}
+	R_{kl}(r)\sim r^{-(d-1)/2}
+	\sin\left(kr-\eta_{\rm C}\ln(2kr)-\frac{\pi\nu_l}{2}
+	+\frac{\pi}{4}+\sigma_l^{(d)}\right),
+\end{equation}
+\begin{equation}
+	\sigma_l^{(d)}=\operatorname{Arg}\Gamma\left(l+\frac{d-1}{2}+\ii\eta_{\rm C}\right).
+	\label{eq:phys-hdqm-formal-coulomb-phase}
+\end{equation}
+因为 $\eta_{\rm C}<0$，吸引势的对数相实际为 $+|\eta_{\rm C}|\ln(2kr)$。同一符号也可由束缚态公式作解析延拓检验：取 $\kappa\to\ii k$，则 $\eta_{\rm B}\to-\ii\mu\gamma/(\hbar^2k)$，从而合流超几何参数连续变为上式的 $-\ii\eta_{\rm C}$。
+固定 $1/r$ 势是长程势，因此它不满足\secref{sec:phys-hdqm-threshold-scattering}用于\eqnrefs{eq:phys-hdqm-d-scattering-amplitude-convention} 的短程假设：渐近波含有上式的 $-\eta_{\rm C}\ln(2kr)$ 相位，不能把自由平面波加自由球面波的分解逐项照搬。严格定义 Coulomb 振幅时，应采用 Coulomb--distorted 入射/出射态，或先引入屏蔽势、在计算可观测量后取去屏蔽极限。形式上把
+\[
+S_l^{\rm C}=\ee^{2\ii\sigma_l^{(d)}}
+\]
+代入一般分波级数可以组织角向结构，但该级数必须按长程散射的意义求和，不能把它当作短程级数的普通逐项收敛。三维情形经过标准 Coulomb 求和后给出熟知的 Rutherford 振幅与截面；这里保留这一点作为固定 $1/r$ 数学模型与真实 Maxwell--Poisson 势之间的又一项重要差别。
+\section{可解中心势与特殊函数的共同结构}
+考虑
+\begin{equation}
+	V(r)=
+	\begin{cases}
+		0,&0<r<a,\\
+		V_0,&r>a,
+	\end{cases}
+	\qquad V_0>0.
+	\label{eq:phys-hdqm-finite-well-potential}
+\end{equation}
+这是 ``阱内零势、阱外抬高 \(V_0\)'' 的球形势阱。令
+\begin{equation}
+	\nu=\nu_l=l+\frac{d-2}{2}.
+\end{equation}
+常势区的正则径向解统一写成
+\begin{equation}
+	R_l(r)=r^{-\beta}Z_{\nu}(qr),\qquad
+	\beta=\frac{d-2}{2},
+\end{equation}
+其中 \(Z_\nu\) 是 \(J_\nu,Y_\nu,I_\nu,K_\nu\) 中相应的 Bessel 函数。Bessel 函数也可写成
+\begin{equation}
+	J_\nu(z)=\frac{(z/2)^\nu}{\Gamma(\nu+1)}
+	{}_0F_1\left(;\nu+1;-\frac{z^2}{4}\right).
+	\label{eq:phys-hdqm-bessel-0f1}
+\end{equation}
+对束缚态 $0<E<V_0$，内外径向解分别由振荡型与衰减型 Bessel 函数组成。
+令
+\begin{equation}
+	k=\frac{\sqrt{2\mu E}}{\hbar},\qquad
+	\kappa=\frac{\sqrt{2\mu(V_0-E)}}{\hbar}.
+\end{equation}
+原点正则、无穷远衰减的解为
+\begin{equation}
+	R_{\mathrm{in}}(r)=A\,r^{-\beta}J_\nu(kr),\qquad
+	R_{\mathrm{out}}(r)=B\,r^{-\beta}K_\nu(\kappa r).
+	\label{eq:phys-hdqm-finite-well-bound-wave}
+\end{equation}
+在 \(r=a\) 连续 \(R\) 与 \(R'\) 得到能级方程
+\begin{equation}
+	k\frac{J_\nu'(ka)}{J_\nu(ka)}
+	=
+	\kappa\frac{K_\nu'(\kappa a)}{K_\nu(\kappa a)}.
+	\label{eq:phys-hdqm-finite-well-bound-condition}
+\end{equation}
+系数比例为
+\begin{equation}
+	\frac{B}{A}=\frac{J_\nu(ka)}{K_\nu(\kappa a)}.
+\end{equation}
+归一化条件为
+\begin{equation}
+	1=\int_0^\infty |R_l(r)|^2r^{d-1}\dd r
+	=A^2\int_0^a rJ_\nu^2(kr)\dd r
+	+B^2\int_a^\infty rK_\nu^2(\kappa r)\dd r.
+\end{equation}
+注意 \(r^{d-1}r^{-2\beta}=r\)，因此归一化积分的维度依赖只通过阶数 \(\nu\) 进入。
+对散射态 $E>V_0$，外区解改为振荡型组合，并由边界匹配读出相移。
+令
+\begin{equation}
+	k=\frac{\sqrt{2\mu E}}{\hbar},\qquad
+	q=\frac{\sqrt{2\mu(E-V_0)}}{\hbar}.
+\end{equation}
+内区正则解为
+\begin{equation}
+	R_{\mathrm{in}}(r)=A\,r^{-\beta}J_\nu(kr),
+\end{equation}
+外区取相移形式
+\begin{equation}
+	R_{\mathrm{out}}(r)=C\,r^{-\beta}
+	\left[\cos\delta_l\,J_\nu(qr)-\sin\delta_l\,Y_\nu(qr)\right].
+\end{equation}
+匹配 \(r=a\) 处的对数导数，得到
+\begin{equation}
+	\tan\delta_l(q)
+	=
+	\frac{
+		kJ_\nu'(ka)J_\nu(qa)-qJ_\nu(ka)J_\nu'(qa)
+	}{
+		kJ_\nu'(ka)Y_\nu(qa)-qJ_\nu(ka)Y_\nu'(qa)
+	}.
+	\label{eq:phys-hdqm-finite-well-phase-shift}
+\end{equation}
+代入\eqnrefs{eq:phys-hdqm-d-cross-section}，并把 \(k\) 换成外区波数 \(q\)，即可得到总截面。
+在 $V_0\to\infty$ 的极限，边界条件退化为硬壁零点条件。
+若保持\eqnrefs{eq:phys-hdqm-finite-well-potential} 的定义并令 \(V_0\to\infty\)，粒子被限制在半径 \(a\) 的 \(d\) 维球内。边界条件为
+\begin{equation}
+	R_l(a)=0.
+\end{equation}
+因此
+\begin{equation}
+	J_\nu(k_{nl}a)=0,\qquad
+	k_{nl}=\frac{j_{\nu,n}}{a},
+\end{equation}
+\begin{equation}
+	E_{nl}=\frac{\hbar^2j_{\nu,n}^2}{2\mu a^2},\qquad
+	R_{nl}(r)=N_{nl}\,r^{-\beta}J_\nu\left(\frac{j_{\nu,n}r}{a}\right).
+	\label{eq:phys-hdqm-infinite-ball}
+\end{equation}
+这里 \(j_{\nu,n}\) 是 \(J_\nu\) 的第 \(n\) 个正零点。利用
+\begin{equation}
+	\int_0^a rJ_\nu^2\left(\frac{j_{\nu,n}r}{a}\right)\dd r
+	=\frac{a^2}{2}J_{\nu+1}^2(j_{\nu,n}),
+\end{equation}
+归一化常数为
+\begin{equation}
+	N_{nl}=\frac{\sqrt{2}}{a|J_{\nu+1}(j_{\nu,n})|}.
+\end{equation}
+\begin{note}
+	上式是 ``外区势垒无穷高'' 的球盒。若另一个问题取
+	\(V(r)=+\infty\)（\(r<a\)）与 \(V(r)=0\)（\(r>a\)），则是硬球散射，
+	相移为
+	\begin{equation}
+		\tan\delta_l^{\mathrm{hard}}(k)=\frac{J_\nu(ka)}{Y_\nu(ka)}.
+	\end{equation}
+	这不是\eqnrefs{eq:phys-hdqm-finite-well-potential} 的 \(V_0\to\infty\) 极限，而是互补的势垒问题。
+\end{note}
+对各向同性谐振子的束缚态，径向方程可化为合流超几何方程。
+取
+\begin{equation}
+	V(r)=\frac12\mu\omega^2r^2,\qquad
+	b=\sqrt{\frac{\hbar}{\mu\omega}},\qquad
+	\rho=\frac{r^2}{b^2}.
+\end{equation}
+径向方程 \eqnrefs{eq:phys-hdqm-radial-r} 的一般解可写为
+\begin{equation}
+	R_l(r)=\rho^{l/2}\ee^{-\rho/2}
+	\left[
+		A\,{}_1F_1(a;c;\rho)+B\,U(a,c,\rho)
+	\right],
+	\label{eq:phys-hdqm-osc-general-solution}
+\end{equation}
+其中
+\begin{equation}
+	c=l+\frac{d}{2},\qquad
+	a=\frac12\left(l+\frac{d}{2}\right)-\frac{E}{2\hbar\omega}.
+\end{equation}
+原点正则要求 \(B=0\)。无穷远处可归一化要求
+\({}_1F_1\) 截断为多项式：
+\begin{equation}
+	a=-n_r,\qquad n_r=0,1,2,\ldots.
+\end{equation}
+因此能级为
+\begin{equation}
+	E_{n_rl}=\hbar\omega\left(2n_r+l+\frac{d}{2}\right).
+	\label{eq:phys-hdqm-osc-energy}
+\end{equation}
+归一化径向波函数为
+\begin{equation}
+	R_{n_rl}(r)=
+	\left[\frac{2n_r!}{b^d\Gamma(n_r+l+d/2)}\right]^{1/2}
+	\rho^{l/2}\ee^{-\rho/2}L_{n_r}^{l+d/2-1}(\rho).
+	\label{eq:phys-hdqm-osc-bound}
+\end{equation}
+完整波函数为
+\begin{equation}
+	\psi_{n_rl\alpha}(\vb r)=R_{n_rl}(r)Y_{l\alpha}(\Omega).
+\end{equation}
+若用笛卡尔量子数 \(n_1,\ldots,n_d\) 表示，则
+\begin{equation}
+	E_N=\hbar\omega\left(N+\frac{d}{2}\right),\qquad
+	N=\sum_{i=1}^d n_i=2n_r+l.
+\end{equation}
+第 \(N\) 层总简并度为
+\begin{equation}
+	G_N^{(d)}=\binom{N+d-1}{d-1}.
+\end{equation}
+若暂不施加可归一化条件，任意能量都存在形式解；谱离散性来自无穷远处的可积性条件。
+由于
+\begin{equation}
+	V(r)\to+\infty,\qquad r\to\infty,
+\end{equation}
+各向同性谐振子的谱纯离散，不存在通常意义下的入射平面波散射态。若只把径向方程当作微分方程，则任意能量的两个独立解就是\eqnrefs{eq:phys-hdqm-osc-general-solution} 中的
+\({}_1F_1(a;c;\rho)\) 与 \(U(a,c,\rho)\)。其中 \(U(a,c,\rho)\) 在无穷远处衰减但在原点奇异；\({}_1F_1(a;c;\rho)\) 在原点正则但通常在无穷远处发散。只有 \(a=-n_r\) 时二者要求相容，得到\eqnrefs{eq:phys-hdqm-osc-energy} 的束缚态谱。
+\begin{exbox}
+	基态 \(n_r=l=0\) 为
+	\begin{equation}
+		\psi_0(\vb r)=\frac{1}{\pi^{d/4}b^{d/2}}\exp\left(-\frac{r^2}{2b^2}\right),
+		\qquad
+		E_0=\frac{d}{2}\hbar\omega.
+	\end{equation}
+	这里使用 \(Y_{00}=1/\sqrt{S_{d-1}}\) 以及\eqnrefs{eq:phys-hdqm-osc-bound} 的径向归一化。
+\end{exbox}
+径向微分方程的奇点结构把这些特殊函数组织成若干标准解析族。有限程常势区只有 $r=0$ 与 $r=\infty$ 的 Bessel 型结构，因此传播支使用 $J_\nu,Y_\nu$，倏逝支使用 $I_\nu,K_\nu$；固定 $1/r$ 势和各向同性谐振子把径向方程化为 Kummer 方程，因此由 ${}_1F_1$ 与 $U$ 给出两个独立分支；二维、三维零程相互作用则直接继承自由 Green 核中的 $K_0,H_0^{(1)}$ 或 $\ee^{\ii kr}/r$ 型短程结构。
+角向 Gegenbauer 多项式与 Gauss 超几何函数的关系已经在\eqnrefs{eq:phys-hdqm-gegenbauer-2f1} 中给出。径向函数之间还存在两个常用的合流关系，
+\begin{equation}
+{}_1F_1(a;c;z)
+=\lim_{b\to\infty}{}_2F_1\!\left(a,b;c;\frac{z}{b}\right),
 \qquad
-\langle\mathbf S\rangle
-= \frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}\,\langle\mathbf J\rangle.
-\end{equation*}
-由磁矩 $\boldsymbol\mu=-(\mu_B/\hbar)(\mathbf L+g_s\mathbf S)$ 与 Zeeman 微扰 $H_Z=-\boldsymbol\mu\cdot\mathbf B$，代回投影式，
-\begin{equation*}
-\langle H_Z\rangle
-= \frac{\mu_B}{\hbar}\,\bigl(a_L+g_s a_S\bigr)\,\langle J_z\rangle B.
-\end{equation*}
-取 $\langle J_z\rangle=\hbar M$，整理得
-\begin{equation*}
-\Delta E_Z = \mu_B g_J M B,
-\qquad
-g_J = a_L+g_s a_S
-= 1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}\,(g_s-1),
-\end{equation*}
-即\eqnrefs{eq:lande-g-factor}。
-\end{derivation}
-
-\section{Thomas--Wigner 进动与 Dirac 低能极限}
-
-两个不共线 Lorentz 推进 的乘积并不是纯 推进，而会附带空间旋转。对速度 $\mathbf v(t)$ 的粒子，相邻瞬时共动系之间的 Thomas--Wigner 角速度为
-\begin{equation}
-\boldsymbol\Omega_T
-=\frac{\gamma^2}{\gamma+1}
-\frac{\mathbf a\times\mathbf v}{c^2}.
-\label{eq:thomas-exact}
+J_\nu(z)=\frac{(z/2)^\nu}{\Gamma(\nu+1)}
+{}_0F_1\!\left(;\nu+1;-\frac{z^2}{4}\right).
+\label{eq:phys-hdqm-hypergeometric-confluence}
 \end{equation}
-在 $v\ll c$ 时
+因此固定 $1/r$ 势与谐振子的 Kummer 解可以看成 Gauss 超几何方程的合流极限，而球阱中的 Bessel 解又可写成进一步的 ${}_0F_1$ 极限。这些合流关系只描述微分方程的解析族；量子物理解仍由算子定义域、端点条件与无穷远边界条件共同选定。
+真实 Maxwell--Poisson 势也不存在跨维数的单一特殊函数模板：$d=1$ 的线性势对应 Airy 方程，$d=3$ 的 $1/r$ 势对应 Kummer 方程，$d=4$ 的 $1/r^2$ 势受逆平方结构控制，而 $d=2$ 的对数势一般没有与三维 Coulomb 谱同构的超几何闭式。
+\begin{proof}[解]
+对径向哈密顿量 \(H=-\frac{\hbar^2}{2m}\frac{\dd^2}{\dd r^2}+V_{\rm eff}(r)\)（\(V_{\rm eff}=V(r)+\frac{\hbar^2\ell(\ell+1)}{2mr^2}\)），定义超位力算符 \(G=r^s\frac{\dd}{\dd r}+\frac{s}{2}r^{s-1}\)（\(s\) 为非负整数）。对束缚态 \(|n\rangle\)，超位力关系来自
+\begin{equation*}
+  0=\langle n|[G,H]|n\rangle.
+\end{equation*}
+逐项计算对易子（利用 \([\frac{\dd}{\dd r},V(r)]=V'(r)\)），
+\begin{equation*}
+  [G,H]=-\frac{\hbar^2}{2m}\left(s r^{s-1}\frac{\dd^2}{\dd r^2}+\frac{s(s-1)}{2}r^{s-2}\frac{\dd}{\dd r}\right)+\frac{s}{2}r^{s-1}V'(r)+r^s V'(r).
+\end{equation*}
+取期望值并由位力定理 \(\langle T\rangle=\frac12\langle rV'(r)\rangle\) 消去动能项，得超位力递推
 \begin{equation}
-\boldsymbol\Omega_T
-=\frac{1}{2c^2}\mathbf a\times\mathbf v
-+O(v^4/c^4).
-\label{eq:thomas-nonrel}
+  2E_n\langle r^s\rangle=\langle r^s V'(r)\rangle+\frac{s\hbar^2}{4m}\bigl[(2s-1)\langle r^{s-2}\rangle+4\ell(\ell+1)\langle r^{s-2}\rangle\bigr].
+  \label{eq:phys-hdqm-hypervirial-recurrence}
 \end{equation}
-电子在中心电场中的瞬时静止系会看到运动诱导磁场；若只计算该磁场引起的 Larmor 进动，会得到两倍于\eqnrefs{eq:pauli-from-dirac}的自旋轨道系数。共动坐标系自身还按\eqnrefs{eq:thomas-nonrel}旋转，恰好把多出的因子减半。因此 Thomas 因子是 推进 非交换性的经典几何表现，与 Dirac/FW 的量子结果一致。
-
-自由 Dirac Hamiltonian 还给出速度算符 $\dot{\mathbf x}=c\boldsymbol\alpha$。Heisenberg 方程可解为
-\begin{equation}
-\boldsymbol\alpha(t)
-=c\mathbf pH_D^{-1}
-+\left[\boldsymbol\alpha(0)-c\mathbf pH_D^{-1}\right]
-\ee^{-2\ii H_Dt/\hbar},
-\label{eq:alpha-zitter}
-\end{equation}
-从而位置包含频率约 $2mc^2/\hbar$ 的正负能量干涉项，即 颤动。FW 表象把正负能量子空间在给定阶数上解耦后，这一快速干涉不再作为低能正能量波包的独立运动项。Pauli 理论因此应理解为 Dirac 谱子空间的受控块对角化，而不是“删去两个分量”。
-
-\section{精细结构、兰姆移位与实验数值}
-\label{sec:rel-fine-structure-experiment}
-
-前几节从 Dirac 方程经 FW 变换导出了自旋轨道耦合、Darwin 项和相对论修正。本节把这些修正代入氢原子和碱金属，给出可与光谱实验直接对比的数值。
-
-接下来考察氢原子精细结构。
-
-Dirac 方程对氢原子的精确能级为
-\[
- E_{n,j}=mc^2\left[1+\frac{(Z\alpha)^2}{\left(n-j-\frac12+\sqrt{(j+\frac12)^2-(Z\alpha)^2}\right)^2}\right]^{-1/2},
-\]
-展开到 $(Z\alpha)^4$ 阶（减去静能 $mc^2$）得精细结构公式
-\[
- E_{n,j}^{(0)}+E_{\rm FS}
- =-\frac{R_\infty hc}{n^2}\left[1+\frac{(Z\alpha)^2}{n}\left(\frac1{j+\frac12}-\frac{3}{4n}\right)\right].
-\]
-对氢原子 $Z=1$、$\alpha\approx1/137$，典型精细结构分裂数值：
-\begin{itemize}
- \item $2p_{3/2}-2p_{1/2}$：$\Delta E=4.53\times10^{-5}\,\mathrm{eV}$，对应频率 $10.97\,\mathrm{GHz}$，波长差 $\Delta\lambda\approx0.006\,\mathrm{nm}$。
- \item $2s_{1/2}-2p_{1/2}$：Dirac 理论给出 $\Delta E=0$（简并），但 QED 修正（兰姆移位）破缺此简并。
- \item $3p_{3/2}-3p_{1/2}$：$\Delta E=1.34\times10^{-5}\,\mathrm{eV}$，对应 $3.24\,\mathrm{GHz}$。
-\end{itemize}
-精细结构常数 $\alpha=e^2/(4\pi\varepsilon_0\hbar c)\approx1/137.036$ 是这些分裂的无量纲控制参数：$\Delta E_{\rm FS}/E_{\rm Bohr}\sim(Z\alpha)^2\sim5\times10^{-5}$。
-
-接下来考察兰姆移位：QED 对 Dirac 理论的修正。
-
-1947 年 Lamb 和 Retherford 用微波共振实验测得氢 $2s_{1/2}$ 比 $2p_{1/2}$ 高
-\[
- \Delta E_{\rm Lamb}=E(2s_{1/2})-E(2p_{1/2})=1057.8\,\mathrm{MHz}\times h=4.37\,\mathrm{\mu eV}.
-\]
-这一分裂在 Dirac 理论中严格为零，其物理来源是真空涨落（电子与真空电磁场零点涨落耦合）和电子自能修正。Bethe 的初步估算给出 $\Delta E_{\rm Lamb}\approx\frac{4\alpha^5mc^2}{3\pi}\ln(1/\alpha)\approx1040\,\mathrm{MHz}$，与现代 QED 精确值 $1057.833(1)\,\mathrm{MHz}$ 高度一致。兰姆移位的测量是 QED 发展的决定性实验之一。
-
-接下来考察碱金属精细结构。
-
-碱金属的精细结构来自量子亏损对 $j$ 的依赖。钠 D 线分裂：
-\[
- \Delta E_{\rm FS}(\mathrm{Na}\,3p)=E(3p_{3/2})-E(3p_{1/2})=17.2\,\mathrm{cm^{-1}}\times hc=2.13\times10^{-3}\,\mathrm{eV},
-\]
-对应 $\Delta\lambda=0.6\,\mathrm{nm}$（$D_1=589.6\,\mathrm{nm}$, $D_2=589.0\,\mathrm{nm}$）。此分裂远大于氢原子同 $n$ 的精细结构，因为碱金属的有效 $Z_{\rm eff}$ 在核区更大。铯 $6p$ 分裂 $\Delta E=554\,\mathrm{cm^{-1}}$，已接近 $jj$ 耦合区。
-
-接下来考察 Thomas 进动的数值估计。
-
-对氢原子 $1s$ 电子，轨道速度 $v\sim\alpha c\sim2.2\times10^6\,\mathrm{m/s}$，轨道频率 $\omega_{\rm orb}\sim4.1\times10^{16}\,\mathrm{rad/s}$。Thomas 进动频率
-\[
- \omega_T\sim\frac{v^2}{2c^2}\omega_{\rm orb}\sim\frac{\alpha^2}{2}\omega_{\rm orb}\sim1.1\times10^{12}\,\mathrm{rad/s},
-\]
-正好是精细结构频率尺度。Thomas 因子 $1/2$ 把「naive 自旋轨道耦合」从 $2\times$ 修正到 $1\times$，是精细结构系数正确的关键。
-
-接下来考察 颤动 的物理讨论。
-
-自由 Dirac 电子的位置算符含快速振荡项\eqnrefs{eq:alpha-zitter}，频率 $\omega_Z=2mc^2/\hbar\approx1.55\times10^{21}\,\mathrm{rad/s}$，振幅 $\lambda_C=\hbar/(mc)\approx3.86\times10^{-13}\,\mathrm{m}$（电子 Compton 波长）。这一「颤动运动」来自正负能态的干涉，在 FW 表象中被精确消去——低能电子不表现 颤动。但在石墨烯（Dirac 锥有效理论）中，$\omega_Z$ 被压低到可实验观测的尺度（$\sim10^{13}\,\mathrm{rad/s}$），已在输运实验中间接探测。
-
-\begin{derivation}[Bethe 对兰姆移位的对数重整化与 QED 精确计算]
-Bethe 估算的核心是质量重整化与对数截断。氢原子中电子的自能修正
+对幂律势 \(V(r)=\lambda r^q\)，上式化为
 \begin{equation*}
-  \Delta E_{\rm self}=\langle n|\delta H|n\rangle,\qquad\delta H=\frac{e^2}{2}\int\frac{\dd^3k}{(2\pi)^3}\frac{1}{\omega_k}\left[\frac{1}{H-\omega_k-E_n}-\frac{1}{H_0-\omega_k-mc^2}\right],
+  2E_n\langle r^s\rangle=(2q+s)\lambda\langle r^{s+q-1}\rangle+\frac{s\hbar^2}{4m}\bigl[2s-1+4\ell(\ell+1)\bigr]\langle r^{s-2}\rangle.
 \end{equation*}
-第一项为束缚态自能，第二项减去自由电子自能实现质量重整化；\(\omega_k=|\vb k|c\) 为光子能量。
-
-对低能态（\(E_n\ll mc^2\)）取非相对论中间态 \(H_0=\vb p^2/(2m)+V\)。Bethe 观察到高能中间态贡献被重整化减项消去，剩余积分在 \(\omega_k\in[0,mc^2]\) 上对数发散，取截断 \(\Lambda=mc^2\)，
+即 Kramers--Pasternack 递推：\(\langle r^s\rangle\) 由 \(\langle r^{s+q-1}\rangle\) 与 \(\langle r^{s-2}\rangle\) 决定。对 Coulomb 势（\(q=-1\)，\(\lambda=-e^2\)），递推联系 \(\langle r^s\rangle\)、\(\langle r^{s-1}\rangle\)、\(\langle r^{s-2}\rangle\)，从 \(\langle r^0\rangle=1\) 出发可逐阶算出所有矩阵元。
+代入 Coulomb 势，递推式为
 \begin{equation*}
-  \Delta E_{\rm Lamb}(n,l)\approx\frac{4\alpha^3}{3\pi}\frac{(mc^2)^2}{\hbar^2}\ln\frac{1}{\alpha}\cdot|\psi_{nl}(0)|^2\cdot\delta_{l0}.
+  2E_n\langle r^s\rangle=(-2+s)(-e^2)\langle r^{s-2}\rangle+\frac{s\hbar^2}{4m}[2s-1+4\ell(\ell+1)]\langle r^{s-2}\rangle.
 \end{equation*}
-只有 \(s\) 态（\(\psi_{ns}(0)\ne0\)）有非零移位，与 \(2s_{1/2}-2p_{1/2}\) 分裂一致。对氢 \(2s\)，\(|\psi_{20}(0)|^2=1/(8\pi a_0^3)\) 给出 \(\approx1040\,\mathrm{MHz}\)，与实验 \(1057.8\,\mathrm{MHz}\) 在 \(\sim2\%\) 内一致。
-
-完整 QED 处理（精确自能、真空极化、反常磁矩）给出
+取 \(s=0\) 给位力定理 \(\langle r^{-1}\rangle=1/(n^2a_0)\)；\(s=1\) 给 \(\langle r\rangle=\frac{a_0}{2}[3n^2-\ell(\ell+1)]\)；\(s=2\) 给 \(\langle r^2\rangle=\frac{a_0^2 n^2}{2}[5n^2+1-3\ell(\ell+1)]\)。该递推绕开中间态的显式求和，直接生成 Stark、Zeeman 等微扰所需的径向矩阵元。
+Coulomb 问题还具有推广 Runge--Lenz 向量生成的 \(SO(d+1)\) 隐对称性。\(d\) 维角动量张量 \(L_{ij}=x_i p_j-x_j p_i\)，定义
 \begin{equation*}
-  \Delta E_{\rm Lamb}(n,l,j)=\frac{\alpha^3}{\pi n^3}F(n,l,j)\,Z^4\alpha^2 mc^2,
+  A_i=\frac{1}{\sqrt{-2mE}}\left(\frac{1}{2}(p_i L_{ij}-L_{ij}p_i)-\frac{me^2 x_i}{r}\right),
 \end{equation*}
-其中 \(F=A_{40}+A_{41}\ln\alpha+A_{50}\alpha+\cdots\)，\(A_{40}\ln\alpha\) 即 Bethe 对数项。
-
-质子有限尺寸修正 \(\Delta E_{\rm proton}=\frac{2\pi\alpha}{3}|\psi_{ns}(0)|^2 r_p^2\)（\(r_p\) 为质子电荷半径）；\(\mu\)氢 Lamb 移位测量给出 \(r_p=0.842\,\mathrm{fm}\)，与电子散射值 \(0.877\,\mathrm{fm}\) 的差异即"质子半径疑难"。
-
-对数因子 \(\ln(1/\alpha)\) 来自原子尺度 \(a_0\) 与 Compton 尺度 \(\lambda_C\) 之间的尺度分离，是 QED 微扰展开的标志性结构。
-
-\end{derivation}
+在束缚态能面 \(H=E<0\) 上，归一化后 \(\{A_i,A_j\}=\delta_{ij}\)、\(\{A_i,L_{jk}\}=\delta_{ij}A_k-\delta_{ik}A_j\)，与角动量代数共同生成 \(SO(d+1)\)。
+量子化 \(\{\,\}\to\frac1{\ii\hbar}[\,]\) 后 \([A_i,H]=0\)，即 \(A\) 把每个 \(n\) 简并子空间映射到自身。三维下 \([A_i,A_j]=\ii\hbar\,\epsilon_{ijk}L_k\) 与 \(so(3)\) 角动量代数闭合为 \(so(4)\cong so(3)\oplus so(3)\)。
+\(SO(d+1)\) 的不可约表示 \((n+\frac{d-3}{2},0,\ldots,0)\) 维数即简并度；\(d=3\) 时 \(SO(4)\cong SU(2)\times SU(2)\) 给出 \(n^2\)，\(d=2\) 时 \(SO(3)\) 给出 \(2n-1\)。
+外电场 \(F\) 下取抛物线量子数 \((n_1,n_2,m)\)，线性 Stark 分裂为
+\[
+ E_{n,k}=E_n+\frac32\,e a_0\,n\,k\,F,\qquad k=n_1-n_2,\quad |k|\le n-1-|m|.
+\]
+Bertrand 定理进一步指出，唯一使所有束缚轨道闭合的中心势是 Coulomb 与谐振子：闭合轨道恰由隐对称性保证，二者因而精确可解。
+\end{proof}

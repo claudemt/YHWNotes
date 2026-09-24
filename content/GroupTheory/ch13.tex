@@ -1,0 +1,835 @@
+\chapter{\texorpdfstring{$SO(3)$、$SU(2)$ 与二重覆盖}{SO(3)、SU(2) 与二重覆盖}}
+\label{chap:rotation-group}
+
+\chapref{chap:point-space-groups}已经把三维实正交群 $O(3)$ 和它的纯转动部分 $SO(3)$ 作为点群的母体使用过。当时我们关心的是有限子群：哪些离散转动能够共同保持一个分子或晶体不变。现在问题反过来。若系统具有完整的球对称性，例如中心势
+\[
+V(\vb r)=V(r),\qquad r=\lvert\vb r\rvert,
+\]
+那么任意空间转动都是对称操作，有限点群不再足够，必须直接研究连续群 $SO(3)$。量子力学还带来一个新的事实：电子自旋在空间转动下并不由 $SO(3)$ 的普通表示完整描述，而自然落在 $SU(2)$ 的表示中。一个 \(2\pi\) 空间转动对经典矢量是恒等变换，却可以使半整数自旋态获得负号；同一个空间转动因此对应两个相差符号的旋量变换。
+
+轴角表示把有限转动写成一个方向和一个角度，无穷小生成元则给出角动量代数。Pauli 矩阵把 \(SU(2)\) 元素送到三维转动；当转角分别取为 \(2\pi\) 和 \(4\pi\) 时，覆盖映射的二对一性质会直接显现。
+
+除特别说明外，本章采用\textbf{主动转动}约定：坐标系固定，物理矢量被转动。量子态上的转动算符记为 $U(R)$；角动量算符 $J_i$ 保留 SI 单位，因而显式保留 $\hbar$。
+\section{三维转动群的几何结构}
+\label{sec:so3-geometry}
+
+
+有限点群只包含有限多个离散转动，而球对称原子允许绕任意轴转任意角，因此对称群变成连续群 $SO(3)$。连续性的真正新内容是：群元可以无限接近单位元。于是我们不必一次处理一个任意大转动，而可以先理解“无穷小转动”，再通过指数映射把它积累成有限转动。生成元和 Lie 代数正是为此出现的。
+
+
+这里第一次遇到 \textbf{Lie 群}和 \textbf{Lie 代数}，先只需要掌握它们最直接的含义。Lie 群是“既是群，又能用连续参数光滑描述”的对象；$SO(3)$ 可以用转轴和转角连续参数化，所以是 Lie 群。Lie 代数则只保留单位元附近的一阶变化：从单位元沿不同参数方向走一个无穷小距离，会得到若干生成元；生成元之间的交换子告诉我们不同无穷小操作交换次序时产生什么二阶差异。换句话说，Lie 群描述全部有限变换，Lie 代数描述单位元附近的局部乘法规律。对本课程而言，不需要先学习一般微分流形理论，也可以通过矩阵指数把这层关系完整算出来。
+
+符号 $SO(3)$ 中，$O$ 表示正交，即保持三维欧氏内积；字母 $S$ 表示 special，指行列式固定为 $+1$；数字 $3$ 表示三维实空间。因此
+\[
+SO(3)=\{R\in M_{3}(\RR)\mid R^{\mathsf T}R=I_3,\ \det R=1\}.
+\]
+它不是“三个矩阵的集合”，而是所有三维纯转动矩阵构成的无限群。
+
+
+\chapref{chap:point-space-groups}已经证明
+\[
+SO(3)=\{R\in M_3(\RR)\mid R^{\mathsf T}R=I_3,\ \det R=1\},
+\]
+并且每个 $R\in SO(3)$ 都有本征值 $1$。取相应非零本征向量并归一化为单位向量 $\uv n$，就得到转轴方向，且 $R\uv n=\uv n$。与转轴正交的二维平面在 $R$ 下保持不变，$R$ 在这个平面上只能是一个二维转动。因此每个 $SO(3)$ 元素都可以由一条单位轴 $\uv n$ 和一个转角 $\theta$ 描述。
+
+为了把这个几何结论变成可计算公式，定义反对称矩阵
+\[
+K(\uv n)=
+\begin{pmatrix}
+0&-n_z&n_y\\
+n_z&0&-n_x\\
+-n_y&n_x&0
+\end{pmatrix},
+\qquad
+K(\uv n)\vb r=\uv n\times\vb r.
+\]
+由于 $\uv n$ 已按约定归一化，向量三重积给出
+\[
+K(\uv n)^2\vb r
+=\uv n\times(\uv n\times\vb r)
+=\uv n(\uv n\cdot\vb r)-\vb r,
+\]
+因此
+\begin{equation}
+K(\uv n)^2=\uv n\uv n^{\mathsf T}-I_3,
+\qquad
+K(\uv n)^3=-K(\uv n).
+\label{eq:K-identities}
+\end{equation}
+
+\begin{theorem}[Rodrigues 公式与指数表示]
+绕单位轴 $\uv n$ 主动转动角 $\theta$ 的矩阵可写为
+\begin{align}
+R_{\uv n}(\theta)
+&=I_3+\sin\theta\,K(\uv n)
+ +(1-\cos\theta)K(\uv n)^2,\label{eq:rodrigues-so3}\\
+&=\exp\!\bigl[\theta K(\uv n)\bigr].\label{eq:so3-exponential}
+\end{align}
+对任意 $\vb r\in\RR^3$，等价地有
+\[
+R_{\uv n}(\theta)\vb r
+=\vb r\cos\theta
+ +(\uv n\times\vb r)\sin\theta
+ +\uv n(\uv n\cdot\vb r)(1-\cos\theta).
+\]
+
+\end{theorem}
+
+\begin{proof}
+把 $\vb r$ 分解为平行于转轴和垂直于转轴的两部分，
+\[
+\vb r=\vb r_{\parallel}+\vb r_\perp,
+\qquad
+\vb r_{\parallel}=(\uv n\cdot\vb r)\uv n.
+\]
+平行分量不变；在垂直平面内，$\vb r_\perp$ 与 $\uv n\times\vb r_\perp$ 正交且等长，所以二维转动给出
+\[
+R_{\uv n}(\theta)\vb r
+=\vb r_{\parallel}
+ +\vb r_\perp\cos\theta
+ +(\uv n\times\vb r_\perp)\sin\theta.
+\]
+代入 $\vb r_\perp=\vb r-\vb r_{\parallel}$，并注意 $\uv n\times\vb r_{\parallel}=0$，得到向量形式。再用 \eqnrefs{eq:K-identities} 即得矩阵形式 \eqnrefs{eq:rodrigues-so3}。
+
+最后展开矩阵指数。因为 $K^3=-K$，所有高次幂都退化为 $I,K,K^2$：
+\begin{align*}
+\ee^{\theta K}
+&=I+\theta K+\frac{\theta^2}{2!}K^2
+ +\frac{\theta^3}{3!}K^3+\cdots\\
+&=I+
+\left(\theta-\frac{\theta^3}{3!}+\frac{\theta^5}{5!}-\cdots\right)K
++
+\left(\frac{\theta^2}{2!}-\frac{\theta^4}{4!}+\cdots\right)K^2\\
+&=I+\sin\theta\,K+(1-\cos\theta)K^2.
+\end{align*}
+故两种表达完全等价。
+\end{proof}
+
+指数形式比单独的 Rodrigues 公式更重要，因为它把连续群与生成元联系起来。若 $\theta$ 很小，
+\[
+R_{\uv n}(\theta)
+=I_3+\theta K(\uv n)+O(\theta^2),
+\]
+所以反对称矩阵 $K(\uv n)$ 就是该一参数转动子群的无穷小生成元。
+
+取三个坐标轴，定义
+\[
+K_x=K(\vb e_x),\qquad
+K_y=K(\vb e_y),\qquad
+K_z=K(\vb e_z).
+\]
+把三个矩阵真正写出一次：
+\[
+K_x=\begin{pmatrix}0&0&0\\0&0&-1\\0&1&0\end{pmatrix},\quad
+K_y=\begin{pmatrix}0&0&1\\0&0&0\\-1&0&0\end{pmatrix},\quad
+K_z=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&0\end{pmatrix}.
+\]
+例如
+\[
+K_xK_y=
+\begin{pmatrix}0&0&0\\1&0&0\\0&0&0\end{pmatrix},
+\qquad
+K_yK_x=
+\begin{pmatrix}0&1&0\\0&0&0\\0&0&0\end{pmatrix},
+\]
+所以
+\[
+[K_x,K_y]=K_xK_y-K_yK_x
+=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&0\end{pmatrix}=K_z.
+\]
+循环交换 $x,y,z$ 得到另外两式，因此可统一写成
+\begin{equation}
+[K_i,K_j]=\epsilon_{ijk}K_k.
+\label{eq:so3-lie-algebra-real}
+\end{equation}
+若希望使用 Hermite 生成元，定义 $L_i=\ii K_i$。由于 $K_i=-\ii L_i$，上式变为
+\begin{equation}
+[L_i,L_j]=\ii\epsilon_{ijk}L_k.
+\label{eq:so3-lie-algebra-hermitian}
+\end{equation}
+这已经出现了量子角动量对易关系的无量纲版本。后面把 $L_i$ 换成 $J_i/\hbar$，就得到熟悉的
+$[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k$。
+
+轴角表示适合几何理解，但做不可约表示时 Euler 角更方便。本讲义固定采用 $z$--$y$--$z$ 主动转动约定：
+\begin{equation}
+R(\alpha,\beta,\gamma)
+=R_z(\alpha)R_y(\beta)R_z(\gamma),
+\label{eq:zyz-euler}
+\end{equation}
+其中最右侧的 $R_z(\gamma)$ 先作用，
+\[
+0\le \alpha<2\pi,
+\qquad 0\le\beta\le\pi,
+\qquad 0\le\gamma<2\pi.
+\]
+不同教材对 Euler 角的先后顺序和主动/被动约定常有差异；如果不先声明约定，后面的 Wigner $D$ 矩阵很容易出现转置、共轭或角顺序差异。
+
+三个基本矩阵为
+\[
+R_z(\phi)=
+\begin{pmatrix}
+\cos\phi&-\sin\phi&0\\
+\sin\phi&\cos\phi&0\\
+0&0&1
+\end{pmatrix},
+\qquad
+R_y(\theta)=
+\begin{pmatrix}
+\cos\theta&0&\sin\theta\\
+0&1&0\\
+-\sin\theta&0&\cos\theta
+\end{pmatrix}.
+\]
+因此任意 Euler 转动都可以直接通过矩阵乘法写出。真正需要记住的并不是那个较长的 $3\times3$ 结果，而是分解 \eqnrefs{eq:zyz-euler}：后面在任意不可约表示中，只需知道 $z$ 轴转动和 $y$ 轴转动的表示矩阵，就自动得到一般转动。
+
+欧拉角与转轴转角的关系如图 \figref{fig:euler-axis-angle} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}[scale=1.05]
+  \draw[axes] (0,0)--(3.0,0) node[right] {$x$};
+  \draw[axes] (0,0)--(0,3.0) node[above] {$z$};
+  \draw[axes] (0,0)--(-1.5,-1.1) node[left] {$y$};
+  \draw[thick,->] (0,0)--(1.75,1.95) node[above right] {$\uv n$};
+  \draw[dashed] (1.75,1.95)--(1.75,0);
+  \draw (0,0.55) arc[start angle=90,end angle=48,radius=.55];
+  \node at (.45,.72) {$\beta$};
+  \draw[->] (1.15,0) arc[start angle=0,end angle=-35,x radius=1.15,y radius=.45];
+  \node at (1.05,-.58) {$\alpha$};
+  \node[lecturelabel,align=left] at (5.6,1.25) {Euler 角不是新的物理操作，\\而是对同一个 $R\in SO(3)$ 的参数化。\\选择 $z$--$y$--$z$ 约定后，\\表示矩阵的相位约定随之固定。};
+\end{tikzfig}
+\caption{$SO(3)$ 转动的轴角图像与 Euler 角参数化。}
+\label{fig:euler-axis-angle}
+\end{figure}
+
+Euler 角描述任意有限转动，但连续群真正的新结构出现在单位元附近，因此下面转向无穷小转动与生成元。
+
+
+先看最熟悉的一维例子：实数平移可以写成 $T(a)=\ee^{-\ii a\hat p/\hbar}$。参数 $a$ 连续变化，而所有有限平移都由同一个生成元 $\hat p$ 控制。转动也一样。若 $R_i(\epsilon)$ 表示绕第 $i$ 条坐标轴转一个很小的角 $\epsilon$，则可以写成
+\[
+R_i(\epsilon)=I-\ii\epsilon L_i+O(\epsilon^2).
+\]
+这里 $L_i$ 是无量纲的矩阵生成元；量子力学中的有量纲角动量算符则是 $\hat J_i=\hbar L_i$。研究三个 $L_i$ 的对易关系，比直接研究所有 $R(\uv n,\theta)$ 简洁得多，因为局域的对易关系已经编码了整个连续群的非交换结构。有限群可以逐个列出群元；$SO(3)$ 有无穷多个元素，不可能用这种方式工作。连续群真正可计算的对象是单位元附近的无穷小结构。设量子态上的转动表示为 $U(R)$。对绕 $\uv n$ 的小转动 $\delta\theta$，酉性允许写成
+\[
+U(R_{\uv n}(\delta\theta))
+=I-\frac{\ii}{\hbar}\delta\theta\,\uv n\cdot\vb J
++O(\delta\theta^2),
+\]
+其中 $\vb J=(J_x,J_y,J_z)$ 为 Hermite 生成元。有限转动由指数得到
+\begin{equation}
+U(R_{\uv n}(\theta))
+=\exp\!\left(-\frac{\ii\theta}{\hbar}\uv n\cdot\vb J\right).
+\label{eq:quantum-rotation-operator}
+\end{equation}
+
+把两个不同方向的小转动交换顺序，会在二阶产生差异。这里把这一步展开，而不直接引用结论。几何上取绕 $x$、$y$ 轴的小转动，群交换子为
+\[
+R_x(\epsilon)R_y(\eta)R_x(-\epsilon)R_y(-\eta).
+\]
+用 $R_i(\epsilon)=I+\epsilon K_i+O(\epsilon^2)$ 展开到最低非零的混合阶 $\epsilon\eta$：
+\begin{align*}
+R_x(\epsilon)R_y(\eta)R_x(-\epsilon)R_y(-\eta)
+&=I+\epsilon\eta[K_x,K_y]
++O(\epsilon^2\eta,\epsilon\eta^2)\\
+&=I+\epsilon\eta K_z+\text{高阶项}.
+\end{align*}
+所以“先 $x$ 后 $y$ 再逆操作”留下的是一个大小为 $\epsilon\eta$ 的 $z$ 向小转动。
+
+在量子表示中，同一个群关系必须被保持。令
+\[
+A=-\frac{\ii\epsilon}{\hbar}J_x,
+\qquad
+B=-\frac{\ii\eta}{\hbar}J_y.
+\]
+那么到 $\epsilon\eta$ 阶，
+\[
+\ee^A\ee^B\ee^{-A}\ee^{-B}
+=I+[A,B]+\text{高阶项}
+=I-\frac{\epsilon\eta}{\hbar^2}[J_x,J_y]+\cdots.
+\]
+而刚才的几何结果对应量子 $z$ 向转动
+\[
+U_z(\epsilon\eta)
+=I-\frac{\ii\epsilon\eta}{\hbar}J_z+\cdots.
+\]
+比较 $\epsilon\eta$ 的系数得到
+\[
+[J_x,J_y]=\ii\hbar J_z.
+\]
+对坐标循环置换，最终得到量子角动量代数
+\begin{equation}
+[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k.
+\label{eq:angular-momentum-algebra}
+\end{equation}
+这条关系比任何一个具体 $3\times3$ 转动矩阵都更基础：不同维数的不可约表示虽然矩阵不同，却都必须实现同一套对易关系。
+
+\section{\texorpdfstring{$SU(2)$ 与 $SO(3)$}{SU(2) 与 SO(3)} 的二重覆盖}
+\label{sec:su2-double-cover}
+
+
+如果只研究普通三维向量，$SO(3)$ 已经足够。但电子自旋 $1/2$ 的态在转动 $2\pi$ 后会得到负号，转动 $4\pi$ 才完全回到原态。这种行为无法由 $SO(3)$ 的普通单值表示描述，却可以自然地由二维特殊酉群 $SU(2)$ 描述。
+
+$SU(2)$ 的定义是
+\[
+SU(2)=\{U\in M_2(\CC)\mid U^\dagger U=I_2,\ \det U=1\}.
+\]
+$U^\dagger$ 表示先转置再复共轭。条件 $U^\dagger U=I_2$ 说明它保持二维复向量的厄米内积，而行列式条件去掉了一个整体 $U(1)$ 相位自由度。接下来要证明的不是“$SU(2)$ 看起来像转动”，而是存在一个满同态
+\[
+\Phi:SU(2)\to SO(3)
+\]
+且恰好有两个 $SU(2)$ 元素 $U$ 与 $-U$ 对应同一个三维转动。
+
+有了 $SU(2)$ 与 $SO(3)$ 的二重覆盖关系，现在写出 $SU(2)$ 的一般元素和它到 $SO(3)$ 的具体映射。
+
+二维特殊酉群定义为
+\[
+SU(2)=\{U\in M_2(\CC)\mid U^\dagger U=I_2,\ \det U=1\}.
+\]
+设
+\[
+U=\begin{pmatrix}a&b\\c&d\end{pmatrix}.
+\]
+由 $U^{-1}=U^\dagger$ 与 $\det U=1$，直接比较逆矩阵
+\[
+U^{-1}=\begin{pmatrix}d&-b\\-c&a\end{pmatrix}
+\]
+和 Hermite 共轭
+\[
+U^\dagger=\begin{pmatrix}a^*&c^*\\b^*&d^*\end{pmatrix}
+\]
+得到
+\[
+d=a^*,\qquad c=-b^*.
+\]
+因此每个 $SU(2)$ 元素唯一写成
+\begin{equation}
+U=\begin{pmatrix}
+a&b\\-b^*&a^*
+\end{pmatrix},
+\qquad |a|^2+|b|^2=1.
+\label{eq:su2-general}
+\end{equation}
+若写 $a=x_0-\ii x_3$、$b=-\ii x_1-x_2$，其中 $x_\mu\in\RR$，则约束变成
+\[
+x_0^2+x_1^2+x_2^2+x_3^2=1.
+\]
+因此作为流形，$SU(2)$ 与三维球面 $S^3$ 同胚；这一点稍后会帮助理解为什么它是 $SO(3)$ 的“双层”覆盖。
+
+引入 Pauli 矩阵
+\[
+\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad
+\sigma_y=\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix},\quad
+\sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+它们满足
+\begin{equation}
+\sigma_i\sigma_j
+=\delta_{ij}I_2+\ii\epsilon_{ijk}\sigma_k,
+\qquad
+[\sigma_i,\sigma_j]=2\ii\epsilon_{ijk}\sigma_k.
+\label{eq:pauli-product}
+\end{equation}
+于是 \eqnrefs{eq:su2-general} 也可写成
+\[
+U=x_0I_2-\ii\vb x\cdot\boldsymbol{\sigma},
+\qquad x_0^2+\lvert\vb x\rvert^2=1.
+\]
+令 $x_0=\cos(\theta/2)$、$\vb x=\uv n\sin(\theta/2)$，便得到最重要的轴角形式
+\begin{equation}
+U(\uv n,\theta)
+=\cos\frac\theta2\,I_2
+-\ii\sin\frac\theta2\,\uv n\cdot\boldsymbol{\sigma}
+=\exp\!\left(-\frac{\ii\theta}{2}\uv n\cdot\boldsymbol{\sigma}\right).
+\label{eq:su2-axis-angle}
+\end{equation}
+最后一个等号来自 $(\uv n\cdot\boldsymbol{\sigma})^2=I_2$。
+
+\medskip
+\noindent\emph{$z$ 轴转动的旋量矩阵。}
+取 $\uv n=\vb e_z$，由 \eqnrefs{eq:su2-axis-angle}
+\[
+U_z(\theta)=
+\begin{pmatrix}
+\ee^{-\ii\theta/2}&0\\
+0&\ee^{\ii\theta/2}
+\end{pmatrix}.
+\]
+这里的半角不是人为约定，而是 $SU(2)\to SO(3)$ 二重覆盖的核心。令 $\theta=2\pi$，得到 $U_z(2\pi)=-I_2$；只有到 $\theta=4\pi$ 才回到 $I_2$。
+\par\medskip
+
+任意三维实向量 $\vb r=(x,y,z)$ 对应一个无迹 Hermite 矩阵
+\begin{equation}
+X(\vb r)=\vb r\cdot\boldsymbol{\sigma}
+=\begin{pmatrix}
+z&x-\ii y\\x+\ii y&-z
+\end{pmatrix}.
+\label{eq:vector-pauli-map}
+\end{equation}
+这个对应是一一的，并且
+\[
+X(\vb r)^2=r^2I_2,
+\qquad
+\det X(\vb r)=-r^2.
+\]
+因此三维 Euclid 长度被编码在矩阵行列式里。
+
+给定 $U\in SU(2)$，考虑相似变换
+\[
+X(\vb r)\longmapsto UX(\vb r)U^\dagger.
+\]
+相似变换保持迹和行列式，厄米性也保持，所以结果仍然是某个唯一实向量 $\vb r'$ 对应的 $X(\vb r')$。于是存在唯一线性变换 $R_U$ 使
+\begin{equation}
+U(\vb r\cdot\boldsymbol{\sigma})U^\dagger
+=(R_U\vb r)\cdot\boldsymbol{\sigma}.
+\label{eq:su2-to-so3-map}
+\end{equation}
+因为行列式保持，$\lvert R_U\vb r\rvert=\lvert\vb r\rvert$，故 $R_U\in O(3)$。又因为 $U$ 从单位元连续变化时 $R_U$ 也连续，而 $R_I=I_3$ 的行列式为 $+1$，所以整个 $SU(2)$ 的像都落在 $SO(3)$。
+
+\begin{theorem}[$SU(2)$ 到 $SO(3)$ 的二重覆盖]
+映射
+\[
+\pi:SU(2)\longrightarrow SO(3),
+\qquad
+U\longmapsto R_U,
+\]
+由 \eqnrefs{eq:su2-to-so3-map} 定义。它是满同态，且
+\[
+\operatorname{Ker}\pi=\{I_2,-I_2\}.
+\]
+因此
+\begin{equation}
+SO(3)\cong SU(2)/\{\pm I_2\}.
+\label{eq:so3-su2-quotient}
+\end{equation}
+若 $U=U(\uv n,\theta)$，则 $R_U$ 正是三维空间中绕 $\uv n$ 转动角 $\theta$ 的 $R_{\uv n}(\theta)$。
+
+\end{theorem}
+
+\begin{proof}
+先证同态性。对任意 $U,V\in SU(2)$，
+\begin{align*}
+(UV)X(\vb r)(UV)^\dagger
+&=U\bigl[VX(\vb r)V^\dagger\bigr]U^\dagger\\
+&=U X(R_V\vb r)U^\dagger\\
+&=X(R_U R_V\vb r).
+\end{align*}
+由对应的一一性，$R_{UV}=R_U R_V$。
+
+再看轴角形式。令
+\[
+U=cI_2-\ii s\,\uv n\cdot\boldsymbol{\sigma},
+\qquad
+c=\cos\frac\theta2,\quad s=\sin\frac\theta2.
+\]
+利用 \eqnrefs{eq:pauli-product} 的向量形式
+\[
+(\vb a\cdot\boldsymbol{\sigma})(\vb b\cdot\boldsymbol{\sigma})
+=(\vb a\cdot\vb b)I_2
++\ii(\vb a\times\vb b)\cdot\boldsymbol{\sigma},
+\]
+逐项展开
+\begin{align*}
+U(\vb r\cdot\boldsymbol{\sigma})U^\dagger
+&=(cI-\ii s\uv n\cdot\boldsymbol{\sigma})
+(\vb r\cdot\boldsymbol{\sigma})
+(cI+\ii s\uv n\cdot\boldsymbol{\sigma})\\
+&=c^2\vb r\cdot\boldsymbol{\sigma}
++cs\bigl[(\uv n\times\vb r)+(\uv n\times\vb r)\bigr]\cdot\boldsymbol{\sigma}\\
+&\quad+s^2\bigl[2\uv n(\uv n\cdot\vb r)-\vb r\bigr]\cdot\boldsymbol{\sigma}.
+\end{align*}
+使用 $c^2-s^2=\cos\theta$、$2cs=\sin\theta$、$2s^2=1-\cos\theta$，得到
+\[
+R_U\vb r
+=\vb r\cos\theta
+ +(\uv n\times\vb r)\sin\theta
+ +\uv n(\uv n\cdot\vb r)(1-\cos\theta),
+\]
+这就是 Rodrigues 公式，所以 $R_U=R_{\uv n}(\theta)$。任意 $SO(3)$ 转动都有轴角表示，因此 $\pi$ 满射。
+
+最后求核。若 $R_U=I_3$，则 $U$ 与所有 $\vb r\cdot\boldsymbol{\sigma}$ 交换，特别与三个 Pauli 矩阵都交换。任意与所有 $2\times2$ 矩阵生成元交换的矩阵只能是标量矩阵，于是 $U=\lambda I_2$。再由 $U\in SU(2)$ 得 $|\lambda|=1$ 且 $\lambda^2=1$，故 $\lambda=\pm1$。所以核正是 $\{\pm I_2\}$，商群结论由第一同构定理得到。
+\end{proof}
+
+这个定理把“为什么半角出现”解释得很清楚。$SU(2)$ 中从 $I_2$ 沿着 $U(\uv n,\theta)$ 走到 $\theta=2\pi$ 时到达的是 $-I_2$，但在 $SO(3)$ 中它已经回到了恒等转动；再走到 $4\pi$ 才在 $SU(2)$ 中闭合。也就是说，$SU(2)$ 把 $SO(3)$ 中每个转动复制成两层。
+
+SU(2) 对 SO(3) 的双覆盖如图 \figref{fig:su2-double-cover} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}
+  \node[lecturebox] (u) at (0,1.2) {$U\in SU(2)$};
+  \node[lecturebox] (mu) at (0,-1.2) {$-U\in SU(2)$};
+  \node[lecturebox] (r) at (6.5,0) {$R_U\in SO(3)$};
+  \draw[lecturearrow] (u) -- node[above,lecturelabel] {$\pi$} (r);
+  \draw[lecturearrow] (mu) -- node[below,lecturelabel] {$\pi$} (r);
+  \node[lecturelabel,align=center] at (3.25,-2.25)
+  {$U$ 与 $-U$ 在三维矢量上产生同一个转动；\\差别只会在旋量表示中被看见。};
+\end{tikzfig}
+\caption{$SU(2)$ 对 $SO(3)$ 的二重覆盖。}
+\label{fig:su2-double-cover}
+\end{figure}
+
+二重覆盖证明完成以后，可以把三个层次放在一起。一个空间转动 $R\in SO(3)$ 对普通三维向量作用；覆盖它的两个元素 $\pm U\in SU(2)$ 对二维旋量作用；而对任意 $j$，同一个 $U$ 还可以通过不可约表示映到 $(2j+1)\times(2j+1)$ 矩阵 $D^{(j)}(U)$。当 $j$ 为整数时，$D^{(j)}(-U)=D^{(j)}(U)$，所以表示能下降到 $SO(3)$；当 $j$ 为半整数时，$D^{(j)}(-U)=-D^{(j)}(U)$，必须保留 $SU(2)$ 或双群结构。这就是整数角动量与半整数自旋在群论上的分界。
+
+\section{\texorpdfstring{$SU(2)$ 与 $SO(3)$}{SU(2) 与 SO(3)} 的不可约表示}
+\label{sec:rotation-irreps}
+
+
+表示论告诉我们，连续群的不可约表示可以先在 Lie 代数层面寻找。对转动群，核心不是背诵球谐函数，而是解三个算符满足的对易代数
+\[
+[J_i,J_j]=\ii\hbar\epsilon_{ijk}J_k.
+\]
+这里 $\epsilon_{ijk}$ 是 Levi--Civita 符号：当 $(i,j,k)$ 是 $(x,y,z)$ 的偶排列时取 $+1$，奇排列时取 $-1$，有重复指标时取 $0$。这个紧凑公式等价于
+\[
+[J_x,J_y]=\ii\hbar J_z,
+\quad [J_y,J_z]=\ii\hbar J_x,
+\quad [J_z,J_x]=\ii\hbar J_y.
+\]
+群本身的关系确定以后，还要分类它的有限维不可约酉表示。只用生成元的对易关系、厄米性与有限维性，就能推出 $j=0,\tfrac12,1,\tfrac32,\dots$、维数 $2j+1$ 和全部升降系数；这些量子数是表示论的结论。设生成元 $J_x,J_y,J_z$ 满足\eqnrefs{eq:angular-momentum-algebra}，并定义
+\[
+J^2=J_x^2+J_y^2+J_z^2,
+\qquad
+J_\pm=J_x\pm\ii J_y.
+\]
+下面几条恒等式是整个角动量分类的计算底座，因此逐条推出。先算升降算符与 $J_z$ 的交换子：
+\begin{align*}
+[J_z,J_+]
+&=[J_z,J_x+\ii J_y]\\
+&=[J_z,J_x]+\ii[J_z,J_y]\\
+&=\ii\hbar J_y+\ii(-\ii\hbar J_x)\\
+&=\hbar(J_x+\ii J_y)=\hbar J_+.
+\end{align*}
+同理 $[J_z,J_-]=-\hbar J_-$。再算
+\begin{align*}
+[J_+,J_-]
+&=[J_x+\ii J_y,J_x-\ii J_y]\\
+&=-\ii[J_x,J_y]+\ii[J_y,J_x]\\
+&=2\hbar J_z.
+\end{align*}
+而
+\begin{align*}
+J_-J_+
+&=(J_x-\ii J_y)(J_x+\ii J_y)\\
+&=J_x^2+J_y^2+\ii[J_x,J_y]\\
+&=J_x^2+J_y^2-\hbar J_z\\
+&=J^2-J_z^2-\hbar J_z,
+\end{align*}
+交换次序则给
+\[
+J_+J_-=J^2-J_z^2+\hbar J_z.
+\]
+最后验证 $J^2$ 与生成元对易。例如
+\begin{align*}
+[J^2,J_z]
+&=[J_x^2,J_z]+[J_y^2,J_z]\\
+&=J_x[J_x,J_z]+[J_x,J_z]J_x
+ +J_y[J_y,J_z]+[J_y,J_z]J_y\\
+&=-\ii\hbar(J_xJ_y+J_yJ_x)
+ +\ii\hbar(J_yJ_x+J_xJ_y)=0.
+\end{align*}
+循环置换坐标即得 $[J^2,J_x]=[J^2,J_y]=0$。因此
+\begin{align}
+[J^2,J_i]&=0,\label{eq:J2-commutes}\\
+[J_z,J_\pm]&=\pm\hbar J_\pm,\label{eq:Jz-ladder}\\
+[J_+,J_-]&=2\hbar J_z,\label{eq:Jpm-commutator}\\
+J_-J_+&=J^2-J_z^2-\hbar J_z,\label{eq:JminusJplus}\\
+J_+J_-&=J^2-J_z^2+\hbar J_z.\label{eq:JplusJminus}
+\end{align}
+因为 $J^2$ 与全部生成元交换，Schur 引理告诉我们：在一个不可约表示中，$J^2$ 必须是恒等算子的常数倍。于是可以同时取 $J^2$ 和 $J_z$ 的本征基。
+
+\begin{theorem}[角动量不可约表示的分类]
+任一有限维不可约酉 $SU(2)$ 表示都由一个
+\[
+j\in\left\{0,\frac12,1,\frac32,\dots\right\}
+\]
+唯一标记，其维数为 $2j+1$。存在标准正交基
+\[
+\{\lvert j,m\rangle\mid m=-j,-j+1,\dots,j\}
+\]
+使
+\begin{align}
+J^2\lvert j,m\rangle&=\hbar^2j(j+1)\lvert j,m\rangle,\label{eq:J2-eigen}\\
+J_z\lvert j,m\rangle&=\hbar m\lvert j,m\rangle,\label{eq:Jz-eigen}\\
+J_+\lvert j,m\rangle
+&=\hbar\sqrt{(j-m)(j+m+1)}\lvert j,m+1\rangle,\label{eq:Jplus-action}\\
+J_-\lvert j,m\rangle
+&=\hbar\sqrt{(j+m)(j-m+1)}\lvert j,m-1\rangle.\label{eq:Jminus-action}
+\end{align}
+其中整数 $j$ 的表示下降为 $SO(3)$ 的普通表示；半整数 $j$ 的表示不能成为 $SO(3)$ 的单值表示，只能看作其双值表示或双群表示。
+
+\end{theorem}
+
+\begin{proof}
+先取 $J_z$ 的一个归一化本征态 $\ket{m}$，满足 $J_z\ket m=\hbar m\ket m$。由 \eqnrefs{eq:Jz-ladder}，若 $J_+\ket m\neq0$，则它是本征值 $\hbar(m+1)$ 的态；同理 $J_-\ket m$ 把 $m$ 降低 $1$。由于表示空间有限维且 $J_z$ 是 Hermite 算符，它只有有限多个实本征值，因此一定存在最大的本征值。把这个最大本征值写成 $\hbar j$，并取相应归一化本征态 $\ket j$。若 $J_+\ket j\neq0$，由 \eqnrefs{eq:Jz-ladder} 它会产生本征值 $\hbar(j+1)$ 的新态，与“$j$ 已最大”矛盾。因此必有最高权态 $\ket j$ 使
+\[
+J_+\ket j=0,
+\qquad J_z\ket j=\hbar j\ket j.
+\]
+设在该不可约空间中 $J^2=\lambda I$。把 \eqnrefs{eq:JminusJplus} 作用到最高权态：
+\[
+0=\langle j|J_-J_+|j\rangle
+=\lambda-\hbar^2j^2-\hbar^2j,
+\]
+故
+\[
+\lambda=\hbar^2j(j+1).
+\]
+于是得到 \eqnrefs{eq:J2-eigen}。
+
+对一般 $m$，利用 \eqnrefs{eq:JminusJplus}，
+\begin{align*}
+\|J_+\lvert j,m\rangle\|^2
+&=\langle j,m|J_-J_+|j,m\rangle\\
+&=\hbar^2\bigl[j(j+1)-m(m+1)\bigr]\\
+&=\hbar^2(j-m)(j+m+1).
+\end{align*}
+选择相位使系数为非负实数，就得到 \eqnrefs{eq:Jplus-action}。同理得到 \eqnrefs{eq:Jminus-action}。
+
+不断作用 $J_-$ 必须在某处终止。设最低权为 $m_\mathrm{min}$，则 $J_-\ket{m_\mathrm{min}}=0$。由 \eqnrefs{eq:JplusJminus}，
+\[
+0=j(j+1)-m_\mathrm{min}(m_\mathrm{min}-1),
+\]
+解为 $m_\mathrm{min}=-j$ 或 $j+1$；后者不可能低于最高权，因此 $m_\mathrm{min}=-j$。从 $j$ 每次减 $1$ 到 $-j$，步数为 $2j$，必须是非负整数，故 $j$ 只能是整数或半整数；态数为 $2j+1$。
+
+到这里已经证明了“若不可约表示存在，它只能具有上述形式”。还要证明每个允许的 $j$ 确实存在，并且所得表示不可约。令 $N=2j\in\mathbb N_0$，考虑两个复变量上的 $N$ 次齐次多项式空间
+\[
+\mathcal P_N
+=\Span\{z_1^{N-r}z_2^r\mid r=0,1,\dots,N\}.
+\]
+对 $U\in SU(2)$ 定义
+\[
+(\mathcal U_N(U)f)(z)=f(U^{\mathsf T}z),
+\qquad z=(z_1,z_2)^{\mathsf T}.
+\]
+这里用转置而不是逆，是为了让一次多项式 $z_1,z_2$ 本身就按基本旋量表示 $U$ 变换。并且
+\[
+\mathcal U_N(U_1)\mathcal U_N(U_2)f(z)
+=f(U_2^{\mathsf T}U_1^{\mathsf T}z)
+=f((U_1U_2)^{\mathsf T}z),
+\]
+所以 $\mathcal U_N(U_1)\mathcal U_N(U_2)=\mathcal U_N(U_1U_2)$，确实是群表示。线性变量代换保持总次数，因此这是一个 $N+1=2j+1$ 维表示。取归一化单项式
+\[
+\phi_m(z_1,z_2)
+=\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}}
+ z_1^{j+m}z_2^{j-m},
+\qquad m=-j,\dots,j.
+\]
+现在把“求导可得生成元”真正算出来。对绕 $z$ 轴的基本旋量
+\[
+U_z(\epsilon)=
+\begin{pmatrix}
+\ee^{-\ii\epsilon/2}&0\\0&\ee^{\ii\epsilon/2}
+\end{pmatrix},
+\]
+有
+\begin{align*}
+(\mathcal U_N(U_z(\epsilon))f)(z)
+&=f(\ee^{-\ii\epsilon/2}z_1,
+     \ee^{\ii\epsilon/2}z_2)\\
+&=f(z)-\frac{\ii\epsilon}{2}
+\left(z_1\frac{\partial}{\partial z_1}
+-z_2\frac{\partial}{\partial z_2}\right)f(z)
++O(\epsilon^2).
+\end{align*}
+与 $\mathcal U_N(U_z(\epsilon))=I-\ii\epsilon J_z/\hbar+O(\epsilon^2)$ 比较，得到
+\[
+J_z=\frac{\hbar}{2}
+\left(z_1\partial_{z_1}-z_2\partial_{z_2}\right).
+\]
+同样由 $x,y$ 方向的一参数子群得到更方便的升降形式
+\[
+J_+=\hbar z_1\partial_{z_2},
+\qquad
+J_-=\hbar z_2\partial_{z_1}.
+\]
+把它们作用到
+\[
+\phi_m=N_m z_1^{j+m}z_2^{j-m},
+\qquad
+N_m=\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}},
+\]
+先看 $J_+$：
+\begin{align*}
+J_+\phi_m
+&=\hbar N_m(j-m)
+ z_1^{j+m+1}z_2^{j-m-1}\\
+&=\hbar(j-m)\frac{N_m}{N_{m+1}}\phi_{m+1}\\
+&=\hbar\sqrt{(j-m)(j+m+1)}\,\phi_{m+1}.
+\end{align*}
+最后一步用了
+\[
+\frac{N_m}{N_{m+1}}
+=\sqrt{\frac{j+m+1}{j-m}}.
+\]
+同理
+\[
+J_-\phi_m
+=\hbar\sqrt{(j+m)(j-m+1)}\,\phi_{m-1},
+\]
+而 $J_z\phi_m=\hbar m\phi_m$。因此这个多项式模型逐项实现了 \eqnrefs{eq:Jz-eigen}--\eqnrefs{eq:Jminus-action}，而不是只在维数上碰巧相同。特别地，$\phi_j=z_1^{2j}$ 是最高权态，连续作用 $J_-$ 依次产生所有 $\phi_m$。
+
+若 $W\subset\mathcal P_N$ 是非零不变子空间，由于表示酉化后 $J_z$ 为 Hermite 算符，$W$ 对 $J_z$ 不变。$J_z$ 在上述基中的本征值两两不同，所以每个谱投影都可写成 $J_z$ 的插值多项式；因此 $W$ 至少包含某个非零权态 $\phi_m$。再利用 $W$ 对 $J_+$ 与 $J_-$ 不变，从 $\phi_m$ 向上、向下反复作用便得到全部 $\phi_{-j},\dots,\phi_j$，所以 $W=\mathcal P_N$。故该表示不可约。由此每个 $j=0,\frac12,1,\dots$ 都确实给出一个不可约表示。
+
+唯一性也随之明确：前面从代数关系推出的 $J_z,J_\pm$ 在标准权基中的全部矩阵元只由 $j$ 决定；而连通群 $SU(2)$ 由这些生成元的指数产生，所以同一 $j$ 的两个有限维不可约酉表示必等价。
+
+最后区分 $SU(2)$ 与 $SO(3)$。由 \eqnrefs{eq:quantum-rotation-operator}，绕 $z$ 轴转 $2\pi$ 时
+\[
+U_z(2\pi)\lvert j,m\rangle
+=\ee^{-2\pi\ii m}\lvert j,m\rangle
+=(-1)^{2j}\lvert j,m\rangle,
+\]
+因为同一 $j$ 中所有 $m$ 与 $j$ 同为整数或同为半整数。若表示要下降到 $SO(3)$，$2\pi$ 转动必须表示为恒等算子，所以要求 $(-1)^{2j}=1$，即 $j$ 为整数。半整数 $j$ 则在 $2\pi$ 转动下得到 $-I$。
+\end{proof}
+
+这一定理把原子物理中熟悉的角动量量子数放回了群表示的框架：$j$ 不是先验“量子数规则”，而是 $SU(2)$ 有限维不可约表示的分类标签；$m$ 则是选择 $J_z$ 作为一组可对易生成元后得到的基标签。
+
+从角动量代数得到了全部不可约表示 $D^{(j)}$。现在写出它们在 Euler 角参数化下的显式矩阵元——Wigner $D$ 矩阵。
+
+选定 Euler 角后，任意转动的表示矩阵定义为
+\[
+D^{(j)}_{m'm}(\alpha,\beta,\gamma)
+=\bra{j,m'}U(R(\alpha,\beta,\gamma))\ket{j,m}.
+\]
+由 \eqnrefs{eq:zyz-euler} 和 \eqnrefs{eq:quantum-rotation-operator}，
+\[
+U(R)=
+\ee^{-\ii\alpha J_z/\hbar}
+\ee^{-\ii\beta J_y/\hbar}
+\ee^{-\ii\gamma J_z/\hbar}.
+\]
+因此两侧的 $z$ 轴转动直接给出相位，得到
+\begin{equation}
+D^{(j)}_{m'm}(\alpha,\beta,\gamma)
+=\ee^{-\ii m'\alpha}\,
+ d^{(j)}_{m'm}(\beta)\,
+ \ee^{-\ii m\gamma},
+\label{eq:wigner-D-factorization}
+\end{equation}
+其中
+\[
+d^{(j)}_{m'm}(\beta)
+=\bra{j,m'}\ee^{-\ii\beta J_y/\hbar}\ket{j,m}
+\]
+称为 Wigner 小 $d$ 矩阵。
+
+在本章相位约定下，它有显式表达
+\begin{align}
+ d^{(j)}_{m'm}(\beta)
+&=
+\sqrt{(j+m')!(j-m')!(j+m)!(j-m)!}
+\nonumber\\
+&\quad\times
+\sum_k
+\frac{(-1)^{k-m'+m}
+\left(\cos\dfrac\beta2\right)^{2j+m-m'-2k}
+\left(\sin\dfrac\beta2\right)^{2k-m+m'}}
+{(j+m-k)!\,k!\,(j-k-m')!\,(k-m+m')!},
+\label{eq:wigner-small-d}
+\end{align}
+求和只遍历使所有阶乘参数非负的整数 $k$。这个看起来复杂的公式本质上只是把二维基本旋量表示做 $2j$ 次对称张量积以后展开二项式；它不是一个独立的新规律。下面把这一步真正展开一次。
+
+取两个复变量 $z_1,z_2$，考虑次数为 $2j$ 的齐次多项式空间。用归一化单项式
+\[
+\phi_m(z_1,z_2)
+=
+\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}}
+\,z_1^{j+m}z_2^{j-m},
+\qquad m=-j,\dots,j,
+\]
+作为基。$SU(2)$ 对这个多项式空间采用上一小节已经验证过的作用
+\[
+(\mathcal U(U)f)(z)=f(U^{\mathsf T}z).
+\]
+它的好处是 $j=\tfrac12$ 时基 $(z_1,z_2)$ 的表示矩阵就是 $U$ 本身。对绕 $y$ 轴的转动，
+\[
+U_y(\beta)=
+\begin{pmatrix}
+\cos\dfrac\beta2&-\sin\dfrac\beta2\\
+\sin\dfrac\beta2&\cos\dfrac\beta2
+\end{pmatrix},
+\]
+因此实际代入多项式的是
+\[
+U_y(\beta)^{\mathsf T}
+=
+\begin{pmatrix}
+\cos\dfrac\beta2&\sin\dfrac\beta2\\
+-\sin\dfrac\beta2&\cos\dfrac\beta2
+\end{pmatrix}.
+\]
+记 $c=\cos(\beta/2)$、$s=\sin(\beta/2)$，则
+\begin{align*}
+\mathcal U(U_y)\phi_m
+&=N_m(cz_1+sz_2)^{j+m}(-sz_1+cz_2)^{j-m},\\
+N_m&=\sqrt{\frac{(2j)!}{(j+m)!(j-m)!}}.
+\end{align*}
+分别对两个括号应用二项式定理，令第一个括号中选择 $z_2$ 的次数为 $p$，第二个括号中选择 $z_1$ 的次数为 $q$，得到一般项
+\[
+N_m
+\binom{j+m}{p}\binom{j-m}{q}
+(-1)^q
+c^{2j-p-q}s^{p+q}
+ z_1^{j+m-p+q}z_2^{j-m+p-q}.
+\]
+若这一项要落在基函数 $\phi_{m'}$ 上，必须满足
+\[
+j+m-p+q=j+m',
+\qquad
+j-m+p-q=j-m',
+\]
+即
+\[
+q-p=m'-m.
+\]
+因此只有一个独立求和指标。令 $k=p$，则 $q=k+m'-m$；把单项式重新写成归一化基 $\phi_{m'}$ 并整理两个二项式系数，就得到 \eqnrefs{eq:wigner-small-d}（若采用相反的 $y$ 轴主动转动或不同基相位，唯一变化是若干等价的整体符号约定）。所以 Wigner 小 $d$ 矩阵并不是凭空给出的特殊函数，而是 $SU(2)$ 基本二维作用在对称幂空间上的二项式展开系数。
+
+\medskip
+\noindent\emph{$j=\tfrac12$ 与 $j=1$。}
+当 $j=\tfrac12$ 时，基取 $\ket{\frac12,\frac12},\ket{\frac12,-\frac12}$，有
+\[
+D^{(1/2)}(\alpha,\beta,\gamma)=
+\begin{pmatrix}
+\ee^{-\ii(\alpha+\gamma)/2}\cos\frac\beta2
+&-\ee^{-\ii(\alpha-\gamma)/2}\sin\frac\beta2\\
+\ee^{\ii(\alpha-\gamma)/2}\sin\frac\beta2
+&\ee^{\ii(\alpha+\gamma)/2}\cos\frac\beta2
+\end{pmatrix}.
+\]
+它正是 $SU(2)$ 的定义表示。
+
+当 $j=1$ 时得到三维不可约表示。若改用笛卡尔基，它与通常三维矢量的 $SO(3)$ 转动矩阵等价。也就是说，三维矢量表示并不是额外的一类表示，它就是 $j=1$ 的不可约表示。
+\par\medskip
+
+球谐函数给出了整数 $j=\ell$ 表示最重要的函数空间实现。对固定 $\ell$，空间
+\[
+\mathcal H_\ell=\Span\{Y_{\ell m}\mid m=-\ell,\dots,\ell\}
+\]
+在转动下不变，并承载 $2\ell+1$ 维不可约表示。按照本章主动转动约定，
+\begin{equation}
+Y_{\ell m}(R^{-1}\hat{\vb r})
+=\sum_{m'=-\ell}^{\ell}
+Y_{\ell m'}(\hat{\vb r})
+D^{(\ell)}_{m'm}(R).
+\label{eq:spherical-harmonic-rotation}
+\end{equation}
+因此 $s,p,d,f,\dots$ 轨道的角向部分分别对应 $\ell=0,1,2,3,\dots$ 的 $SO(3)$ 不可约表示。\chapref{chap:point-space-groups}与\chapref{chap:group-theory-quantum}中“原子轨道在晶体场下降低对称性并发生劈裂”的问题，本质上就是把这些 $SO(3)$ 不可约表示限制到某个有限点群后再做分支。
+
+\begin{example}[$j=1$ 表示限制到 $D_3$：从球对称到三重轴]
+\label{ex:j1-restrict-d3}
+$D_3$ 是 $SO(3)$ 的有限子群：$C_3$ 是绕主轴转 $2\pi/3$，三条 $C_2$ 是绕垂直于主轴的轴转 $\pi$。把 $j=1$ 的三维不可约表示 $D^{(1)}$ 限制到 $D_3$，其特征标由 $\tr D^{(1)}(R)=1+2\cos\theta$ 给出：
+\[
+\chi(E)=3,\qquad \chi(C_3)=1+2\cos\frac{2\pi}{3}=0,\qquad \chi(C_2)=1+2\cos\pi=-1.
+\]
+用\chapref{chap:representation-theory} 中 $D_3$ 的特征标表\cref{tab:d3-character-table} 做投影：
+\[
+m_{A_1}=\frac16(1\cdot3+2\cdot0+3\cdot(-1))=0,
+\quad
+m_{A_2}=\frac16(1\cdot3+2\cdot0+3\cdot1)=1,
+\quad
+m_E=\frac16(2\cdot3+2\cdot(-1)\cdot0+3\cdot0\cdot(-1))=1.
+\]
+因此
+\[
+D^{(1)}\big\downarrow_{D_3}^{SO(3)}=A_2\oplus E.
+\]
+$j=1$ 的三个基可取 $(x,y,z)$。沿主轴的 $z$ 分量在 $C_3$ 下不变，但在绕垂直轴转 $\pi$ 的 $C_2$ 下翻号，故属于 $A_2$；垂直于主轴的 $(x,y)$ 承载二维不可约表示 $E$。这也解释了\chapref{chap:point-space-groups} 中 $C_{3v}$ 特征标表的基函数列：镜面反射保持 $z$ 不变，所以在 $C_{3v}$ 中 $z$ 落在 $A_1$ 而非 $A_2$。
+
+这个例子展示了分支的普遍模式：\emph{高对称群的不可约表示，限制到低对称子群后一般可约，分解方式由特征标内积完全决定}。晶场劳裂（$O_h$ 中 $d$ 轨道 $\ell=2$ 分裂为 $e_g\oplus t_{2g}$）遵循完全相同的逻辑，只是子群从 $D_3$ 换成 $O$。
+\end{example}

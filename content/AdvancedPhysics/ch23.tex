@@ -1,609 +1,500 @@
-\chapter{双原子分子的振动与转动}\label{ch:diatomic-vib-rot}
+\chapter{Dirac 原子、Foldy--Wouthuysen 展开与精细结构}
+\label{ch:spin-orbit-thomas}
 
-前面的 Born--Oppenheimer 思想表明：在选定一条电子势能面之后，双原子分子的低能内部运动首先是两个原子核在该势能曲线上的量子运动。本章从两核 Hamiltonian 开始，不预先假设“振动”和“转动”彼此独立，而是先精确分离质心，再得到只含核间距与取向的相对运动方程。谐振子、刚性转子以及离心畸变都将作为这一母方程的受控近似依次出现。
+原子精细结构若从“电子静止系中的磁场”开始，容易把一个相对论量子问题倒置成半经典猜测。Dirac 方程已经把 Lorentz 对称、电子自旋和电磁最小耦合放在同一个算符中；对正负能量块作 Foldy--Wouthuysen 低能展开时，Pauli 磁矩、相对论动能、Darwin 项和自旋轨道耦合会一起出现。Thomas--Wigner 进动解释其中的几何来源，却不替代决定系数的量子推导。
+\section{Lorentz 表示、Clifford 代数与 Dirac 最小耦合}\label{sec:dirac-lorentz}
 
-\section{一般多原子分子的质量加权正常模}
+狭义相对论把时间和空间坐标合成四维向量
+\(x^\mu=(ct,x,y,z)\)。这里的上标 \(\mu=0,1,2,3\) 是分量编号。重复出现的一上一下指标按 Einstein 约定求和。
 
-Born--Oppenheimer 势能面 $E_n(\mathbf R)$ 建立以后，振动理论首先是一个一般的多自由度二次型问题，而双原子分子只是只有一个内部振动坐标的特例。设平衡构型为 $\mathbf R^{(0)}$，笛卡尔位移记为 $\delta R_{A\alpha}$。在平衡点附近
+取 Minkowski 度规
 \[
-E_n(\mathbf R)=E_n(\mathbf R^{(0)})
-+\frac12\sum_{A\alpha,B\beta}
-K_{A\alpha,B\beta}\delta R_{A\alpha}\delta R_{B\beta}+O(\delta R^3),
-\]
-其中 Hessian $K$ 的元素量纲为力常数。定义质量加权坐标 $q_{A\alpha}=\sqrt{M_A}\,\delta R_{A\alpha}$ 与质量加权 Hessian
-\begin{equation}
-F_{A\alpha,B\beta}
-=\frac{K_{A\alpha,B\beta}}{\sqrt{M_AM_B}},
+\eta_{\mu\nu}=\operatorname{diag}(1,-1,-1,-1),
 \qquad
-\sum_{B\beta}F_{A\alpha,B\beta}L_{B\beta,s}=\omega_s^2L_{A\alpha,s}.
-\label{eq:mass-weighted-hessian}
-\end{equation}
-去除整体平移与转动零模以后，剩余正本征值给出分子正常模频率 $\omega_s$。非线性 $N$ 原子分子有 $3N-6$ 个振动模，线性分子有 $3N-5$ 个。
-
-\begin{derivation}[为什么 Hessian 必然包含平移与转动零模]
-孤立分子势能对整体平移不变。将恒等式
-\(V(\{\mathbf R_A+\mathbf a\})=V(\{\mathbf R_A\})\)
-先对 \(R_{A\alpha}\) 求导，再对 \(a_\beta\) 求导，并令
-\(\mathbf a=0\)，便有
-\begin{equation}
- \sum_B K_{A\alpha,B\beta}=0 .
-\label{eq:hessian-translation-zero}
-\end{equation}
-所以三个向量
-\(t^{(\beta)}_{A\alpha}=\delta_{\alpha\beta}\)
-满足 \(Kt^{(\beta)}=0\)。对旋转恒等式
-\(V(\{R\mathbf R_A\})=V(\{\mathbf R_A\})\)
-作同样微分，在平衡构型处得到
-\begin{equation*}
- \sum_{B\beta}K_{A\alpha,B\beta}
- (\boldsymbol\theta\times\mathbf R_B^{(0)})_\beta=0 .
-\end{equation*}
-非线性构型给出三个独立转动向量；线性构型绕分子轴的向量恒为零，故只有两个。又因为
-\(F=M^{-1/2}KM^{-1/2}\)，若 \(Kt=0\)，则
-\(F(M^{1/2}t)=0\)。因此质量加权零模应取
-\begin{equation*}
- \widetilde t_{A\alpha}^{(\beta)}
- =\sqrt{M_A}\,\delta_{\alpha\beta},\qquad
- \widetilde r_{A\alpha}^{(\beta)}
- =\sqrt{M_A}\,(\mathbf e_\beta\times\mathbf R_A^{(0)})_\alpha .
-\end{equation*}
-将这些向量正交归一化为列矩阵 \(Z\)，振动子空间的投影算符便是
-\(P_{\rm vib}=I-ZZ^{\mathsf T}\)，所需频率由
-\(P_{\rm vib}FP_{\rm vib}\) 的正本征值给出。于是
-\begin{equation*}
-3N-3-3=3N-6\;(\text{非线性}),\qquad
-3N-3-2=3N-5\;(\text{线性}).
-\end{equation*}
-\end{derivation}
-
-零模是连续平移与转动对称性的结果，不应与真正的软振动或过渡态的负曲率混淆。分子点群进一步把振动子空间分解为不可约表示；其特征标满足
-\(\chi_{\rm vib}=\chi_{3N}-\chi_{\rm trans}-\chi_{\rm rot}\)，从而可在求解 Hessian 之前预言简并度以及红外、拉曼选择定则。若改用键长、键角等内坐标，Wilson \(GF\) 方法会在坐标选择中直接消去刚体运动，与上述投影后的质量加权本征值问题等价。
-
-\section{双原子分子的精确两体约化}
-接下来考察质心与相对坐标的精确分离。
-
-设两个原子核质量分别为 \(m_A,m_B\)，实验室坐标为 \(\mathbf R_A,\mathbf R_B\)。在一条给定的绝热势能曲线 \(U(R)\) 上，核 Hamiltonian 为
-
-\begin{equation}
-H_N
-=-\frac{\hbar^2}{2m_A}\nabla_A^2
--\frac{\hbar^2}{2m_B}\nabla_B^2
-+U(R),
+x^\mu=(ct,\mathbf r),
 \qquad
-R=|\mathbf R_A-\mathbf R_B|.
-\label{eq:diatomic-nuclear-hamiltonian}
+A_\mu=(\Phi/c,-\mathbf A).
+\]
+
+\begin{definition}[Lorentz 变换]
+实 \(4\times4\) 矩阵 \(\Lambda\) 若满足
+\[
+\Lambda^{\mathsf T}\eta\Lambda=\eta,
+\]
+就称为 Lorentz 变换。它保持时空间隔
+\[
+x^\mu\eta_{\mu\nu}x^\nu=c^2t^2-|\mathbf r|^2
+\]
+不变。与单位矩阵连续相连并保持时间方向的分支称为正规正时 Lorentz 群。
+\end{definition}
+
+\begin{proof}[间隔不变]
+令 \(x'=\Lambda x\)。则
+\[
+x'^{\mathsf T}\eta x'
+=x^{\mathsf T}\Lambda^{\mathsf T}\eta\Lambda x
+=x^{\mathsf T}\eta x.
+\]
+反过来，若此等式对每个 \(x\) 成立，极化恒等式说明相应双线性型也处处相等，从而
+\(\Lambda^{\mathsf T}\eta\Lambda=\eta\)。
+\end{proof}
+
+无穷小变换写成
+\(\Lambda=I+\omega+O(\omega^2)\)。代入 Lorentz 条件并保留一阶项，得到
+\[
+\omega^{\mathsf T}\eta+\eta\omega=0.
+\]
+把指标降下去，\(\omega_{\mu\nu}=\eta_{\mu\rho}\omega^\rho{}_\nu\)，上式就是
+\(\omega_{\mu\nu}=-\omega_{\nu\mu}\)。四维反对称矩阵有六个独立分量，对应三个空间转动和三个推动。
+
+Lorentz 代数生成元 $M^{\mu\nu}=-M^{\nu\mu}$ 满足
+\begin{equation}
+[M^{\mu\nu},M^{\rho\sigma}]
+=\ii\hbar
+\left(
+\eta^{\nu\rho}M^{\mu\sigma}
+-\eta^{\mu\rho}M^{\nu\sigma}
+-\eta^{\nu\sigma}M^{\mu\rho}
++\eta^{\mu\sigma}M^{\nu\rho}
+\right).
+\label{eq:rel-lorentz-algebra}
 \end{equation}
 
-定义总质量、质心坐标和相对坐标
-
+\begin{definition}[Clifford 代数与旋量表示]
+给定度规 \(\eta\)，Clifford 代数由生成元
+\(\gamma^\mu\) 及关系
 \[
-M=m_A+m_B,
+\gamma^\mu\gamma^\nu+\gamma^\nu\gamma^\mu
+=2\eta^{\mu\nu}I
+\]
+定义。选取满足这些关系的复矩阵，就是 Clifford 代数的一个矩阵表示。由这些矩阵构造的
+\(S^{\mu\nu}\) 若满足 Lorentz 代数并作用在四分量复向量上，这个四分量向量便称为 Dirac 旋量。
+\end{definition}
+
+旋量表示由 Clifford 代数
+\begin{equation}
+\{\gamma^\mu,\gamma^\nu\}=2\eta^{\mu\nu}\mathbb I,
 \qquad
-\mathbf R_{\rm cm}
-=\frac{m_A\mathbf R_A+m_B\mathbf R_B}{M},
+\sigma^{\mu\nu}\equiv\frac{\ii}{2}[\gamma^\mu,\gamma^\nu]
+\label{eq:clifford-algebra}
+\end{equation}
+实现，其 Lorentz 生成元为
+\begin{equation}
+S^{\mu\nu}=\frac{\hbar}{2}\sigma^{\mu\nu}
+=\frac{\ii\hbar}{4}[\gamma^\mu,\gamma^\nu].
+\label{eq:spinor-lorentz-generator}
+\end{equation}
+
+对质量 $m$、电荷 $Q$ 的自旋 $1/2$ 粒子，采用四维规范约定
+\[
+A_\mu' = A_\mu-\partial_\mu\chi,
 \qquad
-\mathbf R=\mathbf R_A-\mathbf R_B.
+\psi'=\exp\!\left(\frac{\ii Q\chi}{\hbar}\right)\psi,
 \]
-
-由链式法则，梯度变换为
-
-\[
-\nabla_A
-=\frac{m_A}{M}\nabla_{\rm cm}+\nabla_R,
-\qquad
-\nabla_B
-=\frac{m_B}{M}\nabla_{\rm cm}-\nabla_R.
-\]
-
-代入动能项，交叉项严格抵消：
-
-\begin{align*}
-\frac{\nabla_A^2}{m_A}+\frac{\nabla_B^2}{m_B}
-&=\left(\frac{m_A}{M^2}+\frac{m_B}{M^2}\right)\nabla_{\rm cm}^2
-+\left(\frac1{m_A}+\frac1{m_B}\right)\nabla_R^2\\
-&\quad
-+\frac{2}{M}\nabla_{\rm cm}\!\cdot\!\nabla_R
--\frac{2}{M}\nabla_{\rm cm}\!\cdot\!\nabla_R\\
-&=\frac1M\nabla_{\rm cm}^2+\frac1\mu\nabla_R^2,
-\end{align*}
-
-其中
-
-\begin{equation}
-\boxed{
-\mu=\frac{m_Am_B}{m_A+m_B}
-}
-\label{eq:diatomic-reduced-mass}
-\end{equation}
-
-是约化质量。因此 \eqnrefs{eq:diatomic-nuclear-hamiltonian} 精确分裂成
-
-\begin{equation}
-H_N
-=-\frac{\hbar^2}{2M}\nabla_{\rm cm}^2
-+H_{\rm int},
-\qquad
-H_{\rm int}
-=-\frac{\hbar^2}{2\mu}\nabla_R^2+U(R).
-\label{eq:diatomic-internal-hamiltonian}
-\end{equation}
-
-质心自由平移与内部光谱完全解耦，所以后文只研究 \(H_{\rm int}\)。
-
-接下来考察球坐标分离与精确径向方程。
-
-相对坐标 \(\mathbf R\) 同时包含键长 \(R\) 和分子轴取向 \((\theta,\phi)\)。球坐标中的 Laplace 算符可以写成
-
-\begin{equation}
-\nabla_R^2
-=\frac1{R^2}\frac{\dd}{\dd R}
-\left(R^2\frac{\dd}{\dd R}\right)
--\frac{\hat{\mathbf J}^{\,2}}{\hbar^2R^2},
-\label{eq:radial-laplacian-angular}
-\end{equation}
-
-这里 \(\hat{\mathbf J}\) 是核相对运动的轨道角动量算符。因为 \(U(R)\) 是中心势，\([H_{\rm int},\mathbf J^2]=[H_{\rm int},J_Z]=0\)，可以取
-
-\[
-\Psi_{JM}(R,\theta,\phi)
-=F_J(R)Y_{JM}(\theta,\phi),
-\qquad
-\mathbf J^2Y_{JM}=\hbar^2J(J+1)Y_{JM}.
-\]
-
-把它代回 Schr\"odinger 方程得到
-
-\[
--\frac{\hbar^2}{2\mu}
-\left[
-\frac1{R^2}\frac{\dd}{\dd R}
-\left(R^2\frac{\dd F_J}{\dd R}\right)
--\frac{J(J+1)}{R^2}F_J
-\right]
-+U(R)F_J
-=EF_J.
-\]
-
-为了去掉径向一阶导数，定义约化径向波函数
-
-\[
-u_J(R)=R F_J(R).
-\]
-
-直接计算
-
-\[
-\frac1{R^2}\frac{\dd}{\dd R}
-\left(R^2\frac{\dd}{\dd R}\frac{u}{R}\right)
-=\frac1R\frac{\dd^2u}{\dd R^2},
-\]
-
-于是得到一维形式的精确径向方程
-
-\begin{equation}
-\boxed{
--\frac{\hbar^2}{2\mu}\frac{\dd^2u_J}{\dd R^2}
-+
-\left[
-U(R)+\frac{\hbar^2J(J+1)}{2\mu R^2}
-\right]u_J
-=E u_J.
-}
-\label{eq:diatomic-radial-equation}
-\end{equation}
-
-因此所谓“振动--转动耦合”并不是后加的一项：它从一开始就包含在离心势
-
-\[
-U_{\rm cent}(R)=\frac{\hbar^2J(J+1)}{2\mu R^2}
-\]
-
-中。把振动和转动完全分开，只是 \eqnrefs{eq:diatomic-radial-equation} 的某个尺度极限。
-
-\section{从一般势能曲线到 Dunham 展开}
-接下来考察平衡位置附近的系统展开。
-
-设 \(R_e\) 是电子势能曲线的稳定极小值，满足
-
-\[
-U'(R_e)=0,
-\qquad
-k\equiv U''(R_e)>0.
-\]
-
-令 \(q=R-R_e\)，Taylor 展开为
-
-\begin{equation}
-U(R_e+q)
-=U_e+\frac12kq^2
-+\frac1{3!}k_3q^3
-+\frac1{4!}k_4q^4+\cdots,
-\label{eq:diatomic-potential-expansion}
-\end{equation}
-
-其中 \(k_n=U^{(n)}(R_e)\)。最低非零项给出角频率
-
-\begin{equation}
-\omega_e=\sqrt{\frac{k}{\mu}},
-\qquad
-\ell_v\equiv\sqrt{\frac{\hbar}{\mu\omega_e}}.
-\label{eq:diatomic-vibrational-scale}
-\end{equation}
-
-\(\ell_v\) 是振动波函数的典型空间宽度。谐近似的控制条件不是抽象的“\(q\) 很小”，而是低振动态主要取样的区域 \(|q|\sim\ell_v\) 内高阶项相对于二次项足够小，例如
-
-\[
-\epsilon_3
-\sim\frac{|k_3|\ell_v}{k}\ll1,
-\qquad
-\epsilon_4
-\sim\frac{|k_4|\ell_v^2}{k}\ll1.
-\]
-
-忽略 \(k_3,k_4,\ldots\) 后得到标准谐振子
-
-\[
-H_{\rm vib}^{(0)}
-=-\frac{\hbar^2}{2\mu}\frac{\dd^2}{\dd q^2}
-+\frac12\mu\omega_e^2q^2.
-\]
-
-其本征能量与归一化本征函数为
-
-\begin{equation}
-\boxed{
-E_v^{\rm vib}
-=\hbar\omega_e\left(v+\frac12\right),
-\qquad
-v=0,1,2,\ldots
-}
-\label{eq:diatomic-harmonic-levels}
-\end{equation}
-
-和
-
-\[
-\psi_v(q)
-=\left(\frac{\alpha_v}{\pi}\right)^{1/4}
-\frac{H_v(\sqrt{\alpha_v}q)}{\sqrt{2^vv!}}
-\exp\!\left(-\frac12\alpha_vq^2\right),
-\qquad
-\alpha_v=\frac{\mu\omega_e}{\hbar}.
-\]
-
-这里的 \(v\) 是振动量子数。随着 \(v\) 增大，波函数向更远离 \(R_e\) 的区域延伸，高阶势能项必然变得重要，因此谐近似的失效首先发生在高振动态，而不是在所有能级上同时发生。
-
-接下来考察刚性转子是径向方程的冻结极限。
-
-若振动宽度满足
-
-\[
-\epsilon_R\equiv\frac{\ell_v}{R_e}\ll1,
-\]
-
-并且研究的 \(J\) 不大到足以显著拉长键长，就可以在离心项中先取 \(R\simeq R_e\)。定义转动惯量
-
-\[
-I_e=\mu R_e^2
-\]
-
-以及能量量纲的转动常数
-
-\begin{equation}
-B_e\equiv\frac{\hbar^2}{2I_e}
-=\frac{\hbar^2}{2\mu R_e^2},
-\label{eq:diatomic-rotational-constant}
-\end{equation}
-
-则刚性转子能级为
-
-\begin{equation}
-\boxed{
-E_J^{\rm rot}=B_eJ(J+1),
-\qquad
-J=0,1,2,\ldots
-}
-\label{eq:diatomic-rigid-rotor}
-\end{equation}
-
-每个 \(J\) 在无外场时具有 \(2J+1\) 个 \(M\) 简并态。若谱学采用波数 \(\tilde\nu\) 表示能量，常定义
-
-\[
-\widetilde B_e=\frac{B_e}{hc}
-=\frac{\hbar}{4\pi c I_e}.
-\]
-
-这里要区分两个不同的近似：\eqnrefs{eq:diatomic-harmonic-levels} 来自势能面的局部二次展开，而 \eqnrefs{eq:diatomic-rigid-rotor} 来自把离心项中的径向自由度冻结在 \(R_e\)。二者都从同一个精确径向方程出发，但控制它们的尺度并不完全相同。
-
-接下来考察转振耦合与离心畸变。
-
-真正的分子转动越快，离心势就越倾向于增大平均键长。这个效应可以直接从 \eqnrefs{eq:diatomic-radial-equation} 的有效势中计算，而不必把离心畸变常数 \(D\) 当成经验参数。
-
-令
-
-\[
-L_J^2\equiv\hbar^2J(J+1).
-\]
-
-在低振动量子数和中等 \(J\) 下，对 \(q/R_e\) 展开
-
-\[
-\frac1{(R_e+q)^2}
-=\frac1{R_e^2}
-\left(1-\frac{2q}{R_e}+\frac{3q^2}{R_e^2}+\cdots\right).
-\]
-
-只保留产生最低阶 \(J^4\) 能量修正所需的线性项，得到
-
-\begin{align*}
-U_{\rm eff}(q)
-&\simeq
-U_e+\frac12kq^2
-+\frac{L_J^2}{2\mu R_e^2}
--\frac{L_J^2}{\mu R_e^3}q.
-\end{align*}
-
-把关于 \(q\) 的两项配方：
-
-\begin{align*}
-\frac12kq^2-\frac{L_J^2}{\mu R_e^3}q
-&=\frac12k(q-q_J)^2
--\frac12kq_J^2,\\
-q_J&=\frac{L_J^2}{\mu kR_e^3}.
-\end{align*}
-
-所以转动使势阱最低点向更大键长移动 \(q_J>0\)，同时把能量降低
-
-\[
-\Delta E_{\rm cd}
-=-\frac{(L_J^2)^2}{2\mu^2kR_e^6}.
-\]
-
-因此最低阶转振能谱为
-
-\begin{equation}
-\boxed{
-E_{vJ}
-\simeq
-U_e+\hbar\omega_e\left(v+\frac12\right)
-+B_eJ(J+1)
--D_J[J(J+1)]^2,
-}
-\label{eq:rovib-centrifugal-spectrum}
-\end{equation}
-
-其中离心畸变常数
-
-\begin{equation}
-\boxed{
-D_J
-=\frac{\hbar^4}{2\mu^2kR_e^6}
-=\frac{4B_e^3}{\hbar^2\omega_e^2}.
-}
-\label{eq:centrifugal-distortion-constant}
-\end{equation}
-
-\begin{derivation}[为什么只保留线性 \(q\) 项就能得到最低阶 \(J^4\) 修正]
-把 \(1/(R_e+q)^2\) 按 \(q/R_e\) 展开，
-\begin{align*}
- \frac1{(R_e+q)^2}
- &=\frac1{R_e^2}\left(1+\frac q{R_e}\right)^{-2}\\
- &=\frac1{R_e^2}
- \left(1-\frac{2q}{R_e}
- +\frac{3q^2}{R_e^2}
- -\frac{4q^3}{R_e^3}+\cdots\right),
-\end{align*}
-因此有效势中来自转动的三项分别为
-\begin{equation*}
- \frac{L_J^2}{2\mu R_e^2}
- -\frac{L_J^2}{\mu R_e^3}q
- +\frac{3L_J^2}{2\mu R_e^4}q^2+\cdots.
-\end{equation*}
-第一项是常数，正比于 \(L_J^2\sim J(J+1)\)，给出刚性转子能量 \(B_eJ(J+1)\)。第二项线性于 \(q\)，系数正比于 \(L_J^2\)；把它与谐振子势 \(kq^2/2\) 合并并配方，
-\begin{equation*}
- \frac12kq^2-\frac{L_J^2}{\mu R_e^3}q
- =\frac12k\left(q-\frac{L_J^2}{\mu kR_e^3}\right)^2
- -\frac12k\left(\frac{L_J^2}{\mu kR_e^3}\right)^2
- =\frac12k(q-q_J)^2
- -\frac{(L_J^2)^2}{2\mu^2kR_e^6},
-\end{equation*}
-于是新平衡位置
-\begin{equation*}
- q_J=\frac{L_J^2}{\mu kR_e^3}\propto L_J^2,
-\end{equation*}
-最低点相对 \(q=0\) 下降
-\begin{equation*}
- \frac12kq_J^2
- =\frac12k\frac{(L_J^2)^2}{\mu^2k^2R_e^6}
- =\frac{(L_J^2)^2}{2\mu^2kR_e^6}\propto (L_J^2)^2\sim [J(J+1)]^2,
-\end{equation*}
-正好是 \(J^4\) 阶的离心畸变修正 \(-D_J[J(J+1)]^2\)。
-
-二次项 \(3L_J^2q^2/(2\mu R_e^4)\) 在新平衡点 \(q=q_J+\xi\) 附近展开，
-\begin{align*}
- \frac{3L_J^2}{2\mu R_e^4}(q_J+\xi)^2
- &=\frac{3L_J^2}{2\mu R_e^4}q_J^2
- +\frac{3L_J^2}{\mu R_e^4}q_J\,\xi
- +\frac{3L_J^2}{2\mu R_e^4}\xi^2.
-\end{align*}
-其中 \(\xi^2\) 项把振动频率改为 \(\frac12k_{\rm eff}\xi^2\)，\(k_{\rm eff}=k+3L_J^2/(\mu R_e^4)\)，使 \(\omega\) 依赖 \(J\)；\(\xi\) 项进一步微调 \(q_J\)；常数项 \(3L_J^2q_J^2/(2\mu R_e^4)\) 虽然也是 \(J^4\) 阶，但其系数进入 \(v\) 依赖的振转耦合 \(B_v=B_e-\alpha_e(v+1/2)+\cdots\)，而非纯粹的离心畸变常数 \(D_e\)。因此仅用线性项配方已足以得到 \eqnrefs{eq:centrifugal-distortion-constant} 的最低阶 \([J(J+1)]^2\) 修正，二次项属于下一阶的振转精细结构。
-\end{derivation}
-
-这一步展开有两个独立的小参数：振动本身要求 \(\ell_v/R_e\ll1\)，转动造成的静态位移还要求
-
-\begin{equation}
-\frac{q_J}{R_e}
-=\frac{\hbar^2J(J+1)}{\mu kR_e^4}\ll1.
-\label{eq:centrifugal-control-parameter}
-\end{equation}
-
-当 \(J\) 足够大使 \(q_J/R_e\) 不再很小时，简单的 \(B_e-D_JJ^2(J+1)^2\) 截断必须被更高阶 Dunham 展开或直接数值求解 \eqnrefs{eq:diatomic-radial-equation} 取代。
-
-\section{从正常模到振转光谱与 vibronic 跃迁}
-
-本章得到的振动本征态不仅决定红外或拉曼振转谱，也会在电子跃迁中作为核波函数出现。当电子态改变时，势能曲线的平衡位置、曲率乃至正规模式都可能变化，于是两个电子势能面上的核波函数不再彼此正交。它们的重叠正是后文 Franck--Condon 因子的来源。换句话说，Franck--Condon 理论并不是另外引入的一套经验规则，而是本章核 Hamiltonian 在不同电子势能面上的本征态之间的投影问题。
-
-\section{振转光谱的实验数值与典型分子参数}\label{sec:rovib-experiments}
-
-本节给出双原子分子振转光谱的典型实验参数，与\eqnrefs{eq:rovib-centrifugal-spectrum}的理论公式直接对接。
-
-接下来考察双原子分子光谱常数总表。
-
-\begin{center}
-\begin{tabular}{lcccccc}
-\hline
-分子 & \(\tilde\omega_e\) (cm\(^{-1}\)) & \(\tilde B_e\) (cm\(^{-1}\)) & \(\tilde D_J\) (cm\(^{-1}\)) & \(\tilde\alpha_e\) (cm\(^{-1}\)) & \(R_e\) (\AA) & \(\mu\) (amu) \\
-\hline
-H\(_2\) & 4401.2 & 60.853 & 0.0471 & 3.062 & 0.741 & 0.504 \\
-HCl & 2990.9 & 10.593 & 0.00053 & 0.307 & 1.275 & 0.981 \\
-N\(_2\) & 2358.6 & 1.998 & 5.8\(\times10^{-6}\) & 0.017 & 1.098 & 7.004 \\
-O\(_2\) & 1580.2 & 1.446 & 4.8\(\times10^{-6}\) & 0.016 & 1.208 & 8.000 \\
-CO & 2170.0 & 1.931 & 6.5\(\times10^{-6}\) & 0.017 & 1.128 & 6.861 \\
-NO & 1904.2 & 1.702 & 5.5\(\times10^{-6}\) & 0.018 & 1.151 & 7.466 \\
-I\(_2\) & 214.5 & 0.0374 & 4.2\(\times10^{-9}\) & 0.0004 & 2.667 & 63.45 \\
-\hline
-\end{tabular}
-\end{center}
-
-其中 \(\tilde\omega_e=\omega_e/(2\pi c)\)，\(\tilde B_e=B_e/(hc)\)，\(\tilde D_J=D_J/(hc)\)，\(\tilde\alpha_e\) 是振转耦合常数。约化质量 \(\mu=m_Am_B/(m_A+m_B)\) 以原子质量单位 (amu) 给出。
-
-接下来考察 HCl 振转光谱的定量分析。
-
-HCl 是振转光谱教学的典型分子。其红外吸收谱在 \(\tilde\nu\approx2900\,\mathrm{cm}^{-1}\) 附近展现 P 支（\(\Delta J=-1\)）和 R 支（\(\Delta J=+1\)）：
-
-\[
-\tilde\nu_R(J)=\tilde\omega_0+2\tilde B_e(J+1)-4\tilde D_J(J+1)^3,\qquad J=0,1,2,\ldots
-\]
-\[
-\tilde\nu_P(J)=\tilde\omega_0-2\tilde B_e J+4\tilde D_J J^3,\qquad J=1,2,3,\ldots
-\]
-
-\begin{exbox}[HCl R 支前几条线]
-取 \(\tilde\omega_0=2885.9\,\mathrm{cm}^{-1}\)（含零点能修正），\(\tilde B_e=10.593\,\mathrm{cm}^{-1}\)：
-\[
-\tilde\nu_R(0)=2907.1,\quad\tilde\nu_R(1)=2928.3,\quad\tilde\nu_R(2)=2949.5\,\mathrm{cm}^{-1}
-\]
-间距 \(\Delta\tilde\nu_R\approx2\tilde B_e=21.19\,\mathrm{cm}^{-1}\)，与实验精确吻合。P 支：\(\tilde\nu_P(1)=2864.7\)，\(\tilde\nu_P(2)=2843.5\,\mathrm{cm}^{-1}\)，间距相同但向低频移动。P 和 R 支之间的缺口（隙）\(\approx4\tilde B_e\approx42.4\,\mathrm{cm}^{-1}\) 是振转光谱的标志性特征。
-\end{exbox}
-
-接下来考察非谐性与 Morse 势。
-
-谐振子近似预测等间距能级 \(\Delta E=\hbar\omega_e\)，但实际分子的振动能级间距随 \(v\) 增大而递减。Morse 势
-\[
-V_M(R)=D_e^{(\mathrm{diss})}\left(1-e^{-a(R-R_e)}\right)^2
-\]
-给出非谐能级
-\[
-E_v=\hbar\omega_e\left(v+\frac12\right)-\hbar\omega_ex_e\left(v+\frac12\right)^2
-\]
-其中非谐常数 \(x_e=\hbar\omega_e/(4D_e^{(\mathrm{diss})})\)，离解能 \(D_e^{(\mathrm{diss})}=\hbar^2a^2/(2\mu)\)。
-
-\begin{center}
-\begin{tabular}{lccc}
-\hline
-分子 & \(\tilde\omega_ex_e\) (cm\(^{-1}\)) & \(D_e^{(\mathrm{diss})}\) (eV) & \(D_0\) (eV) \\
-\hline
-H\(_2\) & 121.3 & 4.75 & 4.48 \\
-HCl & 52.8 & 4.43 & 4.28 \\
-N\(_2\) & 14.2 & 9.77 & 9.45 \\
-O\(_2\) & 12.1 & 5.12 & 5.02 \\
-CO & 13.3 & 11.09 & 10.85 \\
-I\(_2\) & 0.6 & 1.54 & 1.51 \\
-\hline
-\end{tabular}
-\end{center}
-
-\begin{exbox}[HCl 的离解能与非谐常数]
-HCl 的 \(\tilde\omega_ex_e=52.8\,\mathrm{cm}^{-1}\)，\(\tilde\omega_e=2990.9\,\mathrm{cm}^{-1}\)，给出
-\[
-D_e^{(\mathrm{diss})}=\frac{\hbar\omega_e}{4x_e}=\frac{\tilde\omega_e^2}{4\tilde\omega_ex_e}\cdot hc
-=\frac{2990.9^2}{4\times52.8}\times1.2398\times10^{-4}\approx5.29\,\mathrm{eV}
-\]
-Morse 势预测值偏高约 19\%，因为 Morse 势忽略了长程 van der Waals 尾巴 \(-C_6/R^6\)，实际离解能 \(D_e^{(\mathrm{diss})}=4.43\,\mathrm{eV}\)。
-\end{exbox}
-
-接下来考察振动波函数宽度与零点能。
-
-振动长度 \(\ell_v=\sqrt{\hbar/(\mu\omega_e)}\) 和零点能 \(E_0=\frac12\hbar\omega_e\) 的数值：
-
-\begin{center}
-\begin{tabular}{lccc}
-\hline
-分子 & \(\ell_v\) (\AA) & \(\ell_v/R_e\) & \(E_0\) (eV) \\
-\hline
-H\(_2\) & 0.168 & 0.227 & 0.273 \\
-HCl & 0.113 & 0.089 & 0.185 \\
-N\(_2\) & 0.050 & 0.046 & 0.146 \\
-O\(_2\) & 0.055 & 0.046 & 0.098 \\
-I\(_2\) & 0.077 & 0.029 & 0.013 \\
-\hline
-\end{tabular}
-\end{center}
-
-\(\ell_v/R_e\) 是谐振子近似的控制参数。H\(_2\) 的 \(\ell_v/R_e\approx0.23\) 较大，非谐效应显著；I\(_2\) 的 \(\ell_v/R_e\approx0.03\) 很小，谐振子近似在高振动态仍有效。
-
-\begin{derivation}[Morse 势的束缚态量子化]
-取
-\begin{equation}
- V(r)=D_e[1-\ee^{-a(r-r_e)}]^2,
- \label{eq:morse-potential}
-\end{equation}
 并定义
-\begin{equation}
- y=2\lambda\ee^{-a(r-r_e)},\qquad
- \lambda=\frac{\sqrt{2\mu D_e}}{\hbar a}.
- \label{eq:morse-variable-change}
-\end{equation}
-由代换 \eqnrefs{eq:morse-variable-change}，束缚态 \(E<D_e\) 还可用
-\(\varepsilon=\sqrt{2\mu(D_e-E)}/(\hbar a)>0\) 参数化。径向方程化为
 \[
- y^2\chi''+y\chi'
- +\left(-\frac{y^2}{4}+\lambda y-\varepsilon^2\right)\chi=0.
+D_\mu=\partial_\mu+\frac{\ii Q}{\hbar}A_\mu.
 \]
-令 \(\chi=y^\varepsilon \ee^{-y/2}w(y)\)，得到
+则 $D_\mu'\psi'=\exp(\ii Q\chi/\hbar)D_\mu\psi$，Dirac 方程写成
 \begin{equation}
- y w''+(2\varepsilon+1-y)w'
- +(\lambda-\varepsilon-\tfrac12)w=0 .
- \label{eq:morse-kummer}
+\left(\ii\hbar c\gamma^\mu D_\mu-mc^2\right)\psi=0.
+\label{eq:dirac}
 \end{equation}
-当 \(y\to\infty\) 时，一般的合流超几何解含 \(e^y\) 增长支。平方可积要求级数终止为 Laguerre 多项式，因此
+Schr\"odinger 形式为
 \begin{equation}
- \lambda-\varepsilon-\frac12=n_v,\qquad
- n_v=0,1,\ldots,\quad n_v<\lambda-\frac12 .
- \label{eq:morse-quantization}
+\ii\hbar\partial_t\psi
+=H_D\psi,
+\qquad
+H_D=c\boldsymbol\alpha\cdot\boldsymbol\pi
++\beta mc^2+Q\Phi,
+\qquad
+\boldsymbol\pi=\mathbf p-Q\mathbf A,
+\label{eq:dirac-hamiltonian-em}
 \end{equation}
-这里最后一个不等式来自 \(\varepsilon>0\)，也说明 Morse 势只有有限个束缚态。由
-\(\varepsilon=\lambda-n_v-\tfrac12\) 反解能量即得
-\eqnrefs{eq:morse-exact-levels}。
-\end{derivation}
+其中 $\alpha^i=\gamma^0\gamma^i$、$\beta=\gamma^0$。守恒流
+\begin{equation}
+j^\mu=c\bar\psi\gamma^\mu\psi,
+\qquad
+\partial_\mu j^\mu=0,
+\qquad
+\bar\psi=\psi^\dagger\gamma^0
+\label{eq:dirac-current}
+\end{equation}
+给出正定密度 $j^0=c\psi^\dagger\psi$。
 
-Morse 势的精确能级为
+\begin{proof}[解]
+无穷小 Lorentz 变换写成
+\[
+\Lambda^\rho{}_{\sigma}
+=\delta^\rho{}_{\sigma}+\omega^\rho{}_{\sigma}+O(\omega^2),
+\qquad
+\omega_{\mu\nu}=-\omega_{\nu\mu}.
+\]
+旋量变换取
+\[
+\mathcal S(\Lambda)
+=\mathbb I-\frac{\ii}{2\hbar}\omega_{\mu\nu}S^{\mu\nu}+O(\omega^2).
+\]
+由 Clifford 代数直接计算
+\[
+[S^{\mu\nu},\gamma^\rho]
+=\ii\hbar
+\left(\eta^{\nu\rho}\gamma^\mu-\eta^{\mu\rho}\gamma^\nu\right).
+\]
+于是
+\[
+\begin{aligned}
+\mathcal S^{-1}\gamma^\rho\mathcal S
+&=\gamma^\rho
++\frac{\ii}{2\hbar}\omega_{\mu\nu}
+[S^{\mu\nu},\gamma^\rho]+O(\omega^2)\\
+&=\gamma^\rho+\omega^\rho{}_{\sigma}\gamma^\sigma+O(\omega^2),
+\end{aligned}
+\]
+恰好得到四矢量变换律。再用 Jacobi 恒等式可得
+\[
+[S^{\mu\nu},S^{\rho\sigma}]
+=\ii\hbar
+\left(
+\eta^{\nu\rho}S^{\mu\sigma}
+-\eta^{\mu\rho}S^{\nu\sigma}
+-\eta^{\nu\sigma}S^{\mu\rho}
++\eta^{\mu\sigma}S^{\nu\rho}
+\right),
+\]
+与\eqnrefs{eq:rel-lorentz-algebra}同构。因此 $\gamma^\mu$ 与 $S^{\mu\nu}$ 是 Lorentz 旋量表示的结构，而不是仅为“线性化能量色散”临时引入的矩阵。
+\end{proof}
+
+\section{Foldy--Wouthuysen 块对角化与 Breit--Pauli 结构}
+
+原子束缚态满足 $|E-m_ec^2|\ll m_ec^2$。需要的是 Dirac 正能量子空间上的系统低能展开，而不是直接“删除小分量”。把静态 Dirac 哈密顿量写成
+\[
+H_D=\beta mc^2+\mathcal E+\mathcal O,
+\qquad
+[\beta,\mathcal E]=0,
+\qquad
+\{\beta,\mathcal O\}=0,
+\]
+其中 $\mathcal E=Q\Phi$、$\mathcal O=c\boldsymbol\alpha\cdot\boldsymbol\pi$。对原子精细结构采用静电主导计数
+\[
+\frac{p}{mc}=O(v/c)\ll1,
+\qquad
+\frac{|Q\Phi|}{mc^2}=O(v^2/c^2),
+\]
+并只保留外磁场的领先 Pauli 耦合。FW 变换给出正能量块
 \begin{equation}
- E_{n_v}=D_e-\frac{\hbar^2a^2}{2\mu}
- \left(\lambda-n_v-\frac12\right)^2 .
- \label{eq:morse-exact-levels}
+\begin{aligned}
+H_{\rm FW}^{(+)}
+={}&mc^2+Q\Phi
++\frac{\boldsymbol\pi^2}{2m}
+-\frac{\boldsymbol\pi^4}{8m^3c^2}
+-\frac{Q\hbar}{2m}\boldsymbol\sigma\cdot\mathbf B\\
+&-\frac{Q\hbar^2}{8m^2c^2}\nabla\cdot\mathbf E
+-\frac{Q\hbar}{8m^2c^2}
+\boldsymbol\sigma\cdot
+\left(\mathbf E\times\boldsymbol\pi-\boldsymbol\pi\times\mathbf E\right)
++O(c^{-4}).
+\end{aligned}
+\label{eq:fw-general-order-c2}
 \end{equation}
-用 \(\lambda^2=2\mu D_e/(\hbar^2a^2)\) 展开后，
+这些项分别是非相对论动能、相对论动能修正、Pauli 磁矩、Darwin 项和自旋轨道项。对任意强静磁场，$\mathcal O^4$ 中还存在同阶相对论磁修正；\eqnrefs{eq:fw-general-order-c2}针对的是原子 Coulomb 场主导的精细结构计数。
+
+\begin{proof}[解]
+第一步取生成元
+\[
+S_1=-\frac{\ii}{2mc^2}\beta\mathcal O.
+\]
+Baker--Campbell--Hausdorff 展开
+\[
+H'=
+\ee^{\ii S_1}H_D\ee^{-\ii S_1}
+=H_D+\ii[S_1,H_D]-\frac12[S_1,[S_1,H_D]]+\cdots
+\]
+中，$\ii[S_1,\beta mc^2]$ 恰好消去最低阶奇块。重复消元并保留目标阶，偶部分为
 \begin{equation}
- E_{n_v}
- =\hbar a\sqrt{\frac{2D_e}{\mu}}\left(n_v+\frac12\right)
- -\frac{\hbar^2a^2}{2\mu}\left(n_v+\frac12\right)^2 .
- \label{eq:morse-exact-levels-expanded}
+H_{\rm FW}
+=\beta mc^2+\mathcal E
++\frac{\beta\mathcal O^2}{2mc^2}
+-\frac{\beta\mathcal O^4}{8m^3c^6}
+-\frac{[\mathcal O,[\mathcal O,\mathcal E]]}{8m^2c^4}
++O(c^{-4}).
+\label{eq:fw-even-odd-master}
 \end{equation}
+利用
+\[
+[\pi_i,\pi_j]=\ii Q\hbar\epsilon_{ijk}B_k,
+\qquad
+\alpha_i\alpha_j=\delta_{ij}+\ii\epsilon_{ijk}\Sigma_k,
+\]
+得到
+\[
+\mathcal O^2
+=c^2(\boldsymbol\pi^2-Q\hbar\boldsymbol\Sigma\cdot\mathbf B).
+\]
+对静电标势，$[\pi_i,Q\Phi]=\ii\hbar Q E_i$，进一步计算
+\[
+[\mathcal O,[\mathcal O,Q\Phi]]
+=Q\hbar^2c^2\nabla\cdot\mathbf E
++Q\hbar c^2\boldsymbol\Sigma\cdot
+(\mathbf E\times\boldsymbol\pi-\boldsymbol\pi\times\mathbf E).
+\]
+在正能量块取 $\boldsymbol\Sigma\to\boldsymbol\sigma$。静电主导计数下，$\mathcal O^4$ 在本阶只需保留 $c^4\boldsymbol\pi^4$；若磁场不属于弱修正，则 $\{\pi^2,\boldsymbol\sigma\cdot\mathbf B\}$ 等项也必须同时保留。代回\eqnrefs{eq:fw-even-odd-master}即得\eqnrefs{eq:fw-general-order-c2}。
+\end{proof}
+
+对纯静电中心势 $U(r)=Q\Phi(r)$，$\mathbf B=0$ 且 $\mathbf E=-\nabla\Phi$。于是
+\begin{equation}
+H_{\rm so}
+=\frac{1}{2m^2c^2r}\frac{\dd U}{\dd r}\,\mathbf L\cdot\mathbf S,
+\qquad
+H_{\rm Darwin}
+=\frac{\hbar^2}{8m^2c^2}\nabla^2U.
+\label{eq:pauli-from-dirac}
+\end{equation}
+
+\begin{proof}[解]
+FW 展开给出的自旋-轨道耦合 \(H_{\rm so}=\frac{e\hbar}{4m^2c^2}\boldsymbol\sigma\cdot(\mathbf E\times\mathbf p)\) 中电场 \(\mathbf E\) 是一般矢量。对中心势 \(U(r)\)，电场沿径向，叉乘 \(\mathbf E\times\mathbf p\) 自然给出轨道角动量 \(\mathbf L=\mathbf r\times\mathbf p\)。
+
+对中心势 \(U(r)=Q\Phi(r)\)，电场为 \(\mathbf E=-\nabla\Phi=-\frac{1}{Qr}\frac{dU}{dr}\mathbf r\)。
+
+代入叉乘：
+\begin{equation*}
+\mathbf E\times\mathbf p=-\frac{1}{Qr}\frac{dU}{dr}\,\mathbf r\times\mathbf p=-\frac{1}{Qr}\frac{dU}{dr}\,\mathbf L,
+\end{equation*}
+其中 \(\mathbf L=\mathbf r\times\mathbf p\) 为轨道角动量。
+
+代入 \(H_{\rm so}\) 并利用 \(\mathbf S=\frac{\hbar}{2}\boldsymbol\sigma\)：
+\begin{equation*}
+H_{\rm so}=\frac{e\hbar}{4m^2c^2}\boldsymbol\sigma\cdot\left(-\frac{1}{Qr}\frac{dU}{dr}\mathbf L\right)
+=-\frac{e}{2m^2c^2Qr}\frac{dU}{dr}\,\mathbf S\cdot\mathbf L.
+\end{equation*}
+对电子 \(Q=-e\)，负号消去，得
+\begin{equation*}
+H_{\rm so}=\frac{1}{2m^2c^2r}\frac{dU}{dr}\,\mathbf L\cdot\mathbf S,
+\end{equation*}
+即\eqnrefs{eq:pauli-from-dirac}的第一式。系数中的 \(\frac{1}{2}\) 即 Thomas 因子，由 FW 结构自动给出。
+
+Darwin 项 \(H_{\rm Darwin}=\frac{\hbar^2}{8m^2c^2}\nabla^2 U\) 来自 FW 展开中 \(\nabla\cdot\mathbf E\) 的接触项。对 Coulomb 势 \(U=-Ze^2/(4\pi\epsilon_0 r)\)，利用 \(\nabla^2(1/r)=-4\pi\delta^{(3)}(\mathbf r)\)：
+\begin{equation*}
+\nabla^2 U=\frac{Ze^2}{\epsilon_0}\delta^{(3)}(\mathbf r),
+\end{equation*}
+故 \(H_{\rm Darwin}\propto\delta^{(3)}(\mathbf r)\)，只对 \(s\) 波（\(L=0\)）有贡献。
+
+对氢原子 \(dU/dr=Ze^2/(4\pi\epsilon_0 r^2)\)，故 \(H_{\rm so}=\frac{Ze^2}{8\pi\epsilon_0 m^2c^2 r^3}\mathbf L\cdot\mathbf S\)。由 \(\mathbf J=\mathbf L+\mathbf S\) 得 \(\langle\mathbf L\cdot\mathbf S\rangle=\frac{\hbar^2}{2}[J(J+1)-L(L+1)-S(S+1)]\)，精细结构分裂为
+\begin{equation*}
+ \Delta E_{n,j}=\frac{(Z\alpha)^4 mc^2}{2n^3}\left(\frac{1}{j+\frac12}-\frac{3}{4n}\right).
+\end{equation*}
+
+\end{proof}
+
+对氢样电子 $Q=-e$、$U(r)=-Ze^2/(4\pi\epsilon_0r)$，
+\[
+H_{\rm so}
+=\frac{Ze^2}{8\pi\epsilon_0m_e^2c^2r^3}\,\mathbf L\cdot\mathbf S.
+\]
+Darwin 项只对在原点非零的 $s$ 波径向分量有贡献。自旋轨道项中的 $1/2$ 已由 Dirac/FW 结构固定，无需再手工插入 Thomas 因子。
+
+\section{LS、jj 与中间耦合：精细结构和 Zeeman 结构}
+
+\chapref{ch:angular-momentum}已经建立一般角动量耦合。对给定 $L,S,J$，
+\begin{equation}
+\langle\mathbf L\cdot\mathbf S\rangle
+=\frac{\hbar^2}{2}
+[J(J+1)-L(L+1)-S(S+1)].
+\label{eq:ls-expectation}
+\end{equation}
+若同一 $LS$ 项中精细结构可以写成
+\[
+H_{\rm fs}=A_{LS}\,\mathbf L\cdot\mathbf S/\hbar^2,
+\]
+则
+\[
+E_J
+=E_{LS}+\frac{A_{LS}}{2}
+[J(J+1)-L(L+1)-S(S+1)],
+\]
+从而
+\begin{equation}
+E_J-E_{J-1}=A_{LS}J.
+\label{eq:lande-interval-energy}
+\end{equation}
+这就是 Land\'e interval 规则。它要求 LS 耦合是良好近似；若自旋轨道与电子间静电分裂同阶，必须在固定 $J$ 子空间内整体对角化，即 intermediate 耦合。
+
+弱磁场 $\mathbf B=B\mathbf e_z$ 中，
+\[
+H_Z=\frac{\mu_B}{\hbar}(\mathbf L+g_s\mathbf S)\cdot\mathbf B,
+\qquad
+\mu_B=\frac{e\hbar}{2m_e}.
+\]
+在 $|LSJM\rangle$ 中作矢量投影，得到
+\begin{equation}
+\Delta E_Z=\mu_Bg_JMB,
+\qquad
+g_J
+=1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}(g_s-1).
+\label{eq:lande-g-factor}
+\end{equation}
+取 Dirac 树级 $g_s=2$ 得常用 Land\'e 因子。若 Zeeman 能量超过自旋轨道耦合，$J$ 不再是好量子数，系统趋向 $m_L,m_S$ 近似独立的 Paschen--Back 极限。
+
+\begin{proof}[解]
+在固定 $J$ 不可约子空间内，由 Wigner--Eckart 定理，任意矢量算符的一阶对角矩阵元都必须平行于 $\mathbf J$，故可写
+\begin{equation*}
+\langle\mathbf L\rangle = a_L\,\langle\mathbf J\rangle,
+\qquad
+\langle\mathbf S\rangle = a_S\,\langle\mathbf J\rangle,
+\end{equation*}
+其中 $a_L,a_S$ 为待定标量。由 $\mathbf J=\mathbf L+\mathbf S$，于是
+\begin{equation*}
+\langle\mathbf J\rangle
+= \langle\mathbf L\rangle+\langle\mathbf S\rangle
+= (a_L+a_S)\,\langle\mathbf J\rangle,
+\end{equation*}
+因此 $a_L+a_S=1$。为求 $a_L$，将上式两边点乘 $\mathbf J$ 并取对角元，
+\begin{equation*}
+\langle\mathbf L\cdot\mathbf J\rangle
+= a_L\,\langle J^2\rangle.
+\end{equation*}
+由 $\mathbf J=\mathbf L+\mathbf S$ 平方得
+\begin{equation*}
+\mathbf L\cdot\mathbf J
+= \frac12\bigl(J^2+L^2-S^2\bigr),
+\qquad
+\mathbf S\cdot\mathbf J
+= \frac12\bigl(J^2+S^2-L^2\bigr),
+\end{equation*}
+代回并取 $|LSJM\rangle$ 对角元，
+\begin{equation*}
+\frac12\bigl[J(J+1)+L(L+1)-S(S+1)\bigr]\hbar^2
+= a_L\,J(J+1)\hbar^2,
+\end{equation*}
+于是
+\begin{equation*}
+a_L
+= \frac{J(J+1)+L(L+1)-S(S+1)}{2J(J+1)}.
+\end{equation*}
+同理对 $\mathbf S$ 重复点乘 $\mathbf J$ 的步骤，
+\begin{equation*}
+\langle\mathbf S\cdot\mathbf J\rangle
+= a_S\,\langle J^2\rangle,
+\end{equation*}
+代入第二个恒等式并取对角元，
+\begin{equation*}
+a_S
+= \frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}.
+\end{equation*}
 因此
-\begin{equation}
- \omega_e=a\sqrt{\frac{2D_e}{\mu}},\qquad
- \omega_ex_e=\frac{\hbar a^2}{2\mu},\qquad
- x_e=\frac1{2\lambda}.
- \label{eq:morse-anharmonic-constants}
-\end{equation}
-第一项给出井底谐振频率，第二项使相邻能级间距随 \(n_v\) 线性减小，并使最高束缚态逼近离解阈。谐振极限是在保持 \(\omega_e\) 固定时令
-\(D_e\to\infty\)，此时 \(x_e\to0\)。
+\begin{equation*}
+\langle\mathbf L\rangle
+= \frac{J(J+1)+L(L+1)-S(S+1)}{2J(J+1)}\,\langle\mathbf J\rangle,
+\qquad
+\langle\mathbf S\rangle
+= \frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}\,\langle\mathbf J\rangle.
+\end{equation*}
+由磁矩 $\boldsymbol\mu=-(\mu_B/\hbar)(\mathbf L+g_s\mathbf S)$ 与 Zeeman 微扰 $H_Z=-\boldsymbol\mu\cdot\mathbf B$，代回投影式，
+\begin{equation*}
+\langle H_Z\rangle
+= \frac{\mu_B}{\hbar}\,\bigl(a_L+g_s a_S\bigr)\,\langle J_z\rangle B.
+\end{equation*}
+取 $\langle J_z\rangle=\hbar M$，整理得
+\begin{equation*}
+\Delta E_Z = \mu_B g_J M B,
+\qquad
+g_J = a_L+g_s a_S
+= 1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}\,(g_s-1),
+\end{equation*}
+即\eqnrefs{eq:lande-g-factor}。
+\end{proof}
 
-更一般的振转光谱可按两个作用量量子数组织为 Dunham 展开
+\section{Thomas--Wigner 进动与 Dirac 低能极限}
+
+两个不共线 Lorentz 推进的乘积并不是纯推进，而会附带空间旋转。对速度 $\mathbf v(t)$ 的粒子，相邻瞬时共动系之间的 Thomas--Wigner 角速度为
 \begin{equation}
- E_{v,J}=\sum_{k,l}Y_{kl}
- (v+\tfrac12)^k[J(J+1)]^l .
- \label{eq:phys-dv-dunham}
+\boldsymbol\Omega_T
+=\frac{\gamma^2}{\gamma+1}
+\frac{\mathbf a\times\mathbf v}{c^2}.
+\label{eq:thomas-exact}
 \end{equation}
-其中 \(Y_{10},Y_{20},Y_{01},Y_{11},Y_{02}\) 依次包含谐振、非谐、刚性转动、振转耦合和离心畸变；Morse 结果只固定这一一般展开的振动前两阶。
+在 $v\ll c$ 时
+\begin{equation}
+\boldsymbol\Omega_T
+=\frac{1}{2c^2}\mathbf a\times\mathbf v
++O(v^4/c^4).
+\label{eq:thomas-nonrel}
+\end{equation}
+电子在中心电场中的瞬时静止系会看到运动诱导磁场；若只计算该磁场引起的 Larmor 进动，会得到两倍于\eqnrefs{eq:pauli-from-dirac}的自旋轨道系数。共动坐标系自身还按\eqnrefs{eq:thomas-nonrel}旋转，恰好把多出的因子减半。因此 Thomas 因子是推进非交换性的经典几何表现，与 Dirac/FW 的量子结果一致。
+
+自由 Dirac 哈密顿量还给出速度算符 $\dot{\mathbf x}=c\boldsymbol\alpha$。Heisenberg 方程可解为
+\begin{equation}
+\boldsymbol\alpha(t)
+=c\mathbf pH_D^{-1}
++\left[\boldsymbol\alpha(0)-c\mathbf pH_D^{-1}\right]
+\ee^{-2\ii H_Dt/\hbar},
+\label{eq:alpha-zitter}
+\end{equation}
+从而位置包含频率约 $2mc^2/\hbar$ 的正负能量干涉项，即颤动。FW 表象把正负能量子空间在给定阶数上解耦后，这一快速干涉不再作为低能正能量波包的独立运动项。Pauli 理论因此应理解为 Dirac 谱子空间的受控块对角化，而不是“删去两个分量”。
+
+\section{精细结构、兰姆移位与实验数值}
+\label{sec:rel-fine-structure-experiment}
+
+前几节从 Dirac 方程经 FW 变换导出了自旋轨道耦合、Darwin 项和相对论修正。本节把这些修正代入氢原子和碱金属，给出可与光谱实验直接对比的数值。
+
+Dirac 方程对氢原子的精确能级为
+\[
+ E_{n,j}=mc^2\left[1+\frac{(Z\alpha)^2}{\left(n-j-\frac12+\sqrt{(j+\frac12)^2-(Z\alpha)^2}\right)^2}\right]^{-1/2},
+\]
+展开到 $(Z\alpha)^4$ 阶（减去静能 $mc^2$）得精细结构公式
+\[
+ E_{n,j}^{(0)}+E_{\rm FS}
+ =-\frac{R_\infty hc}{n^2}\left[1+\frac{(Z\alpha)^2}{n}\left(\frac1{j+\frac12}-\frac{3}{4n}\right)\right].
+\]
+对氢原子 $Z=1$、$\alpha\approx1/137$，典型精细结构分裂数值：
+\begin{itemize}
+ \item $2p_{3/2}-2p_{1/2}$：$\Delta E=4.53\times10^{-5}\,\mathrm{eV}$，对应频率 $10.97\,\mathrm{GHz}$，波长差 $\Delta\lambda\approx0.006\,\mathrm{nm}$。
+ \item $2s_{1/2}-2p_{1/2}$：Dirac 理论给出 $\Delta E=0$（简并），但 QED 修正（兰姆移位）破缺此简并。
+ \item $3p_{3/2}-3p_{1/2}$：$\Delta E=1.34\times10^{-5}\,\mathrm{eV}$，对应 $3.24\,\mathrm{GHz}$。
+\end{itemize}
+精细结构常数 $\alpha=e^2/(4\pi\varepsilon_0\hbar c)\approx1/137.036$ 是这些分裂的无量纲控制参数：$\Delta E_{\rm FS}/E_{\rm Bohr}\sim(Z\alpha)^2\sim5\times10^{-5}$。
+
+1947 年 Lamb 和 Retherford 用微波共振实验测得氢 $2s_{1/2}$ 比 $2p_{1/2}$ 高
+\[
+ \Delta E_{\rm Lamb}=E(2s_{1/2})-E(2p_{1/2})=1057.8\,\mathrm{MHz}\times h=4.37\,\mathrm{\mu eV}.
+\]
+这一分裂在 Dirac 理论中严格为零，其物理来源是真空涨落（电子与真空电磁场零点涨落耦合）和电子自能修正。Bethe 的初步估算给出 $\Delta E_{\rm Lamb}\approx\frac{4\alpha^5mc^2}{3\pi}\ln(1/\alpha)\approx1040\,\mathrm{MHz}$，与现代 QED 精确值 $1057.833(1)\,\mathrm{MHz}$ 高度一致。兰姆移位的测量是 QED 发展的决定性实验之一。
+
+碱金属的精细结构来自量子亏损对 $j$ 的依赖。钠 D 线分裂：
+\[
+ \Delta E_{\rm FS}(\mathrm{Na}\,3p)=E(3p_{3/2})-E(3p_{1/2})=17.2\,\mathrm{cm^{-1}}\times hc=2.13\times10^{-3}\,\mathrm{eV},
+\]
+对应 $\Delta\lambda=0.6\,\mathrm{nm}$（$D_1=589.6\,\mathrm{nm}$, $D_2=589.0\,\mathrm{nm}$）。此分裂远大于氢原子同 $n$ 的精细结构，因为碱金属的有效 $Z_{\rm eff}$ 在核区更大。铯 $6p$ 分裂 $\Delta E=554\,\mathrm{cm^{-1}}$，已接近 $jj$ 耦合区。
+
+对氢原子 $1s$ 电子，轨道速度 $v\sim\alpha c\sim2.2\times10^6\,\mathrm{m/s}$，轨道频率 $\omega_{\rm orb}\sim4.1\times10^{16}\,\mathrm{rad/s}$。Thomas 进动频率
+\[
+ \omega_T\sim\frac{v^2}{2c^2}\omega_{\rm orb}\sim\frac{\alpha^2}{2}\omega_{\rm orb}\sim1.1\times10^{12}\,\mathrm{rad/s},
+\]
+正好是精细结构频率尺度。Thomas 因子 $1/2$ 把「naive 自旋轨道耦合」从 $2\times$ 修正到 $1\times$，是精细结构系数正确的关键。
+
+自由 Dirac 电子的位置算符含快速振荡项\eqnrefs{eq:alpha-zitter}，频率 $\omega_Z=2mc^2/\hbar\approx1.55\times10^{21}\,\mathrm{rad/s}$，振幅 $\lambda_C=\hbar/(mc)\approx3.86\times10^{-13}\,\mathrm{m}$（电子 Compton 波长）。这一「颤动运动」来自正负能态的干涉，在 FW 表象中被精确消去——低能电子不表现颤动。但在石墨烯（Dirac 锥有效理论）中，$\omega_Z$ 被压低到可实验观测的尺度（$\sim10^{13}\,\mathrm{rad/s}$），已在输运实验中间接探测。
+
+\begin{proof}[解]
+Bethe 估算的核心是质量重整化与对数截断。氢原子中电子的自能修正
+\begin{equation*}
+  \Delta E_{\rm self}=\langle n|\delta H|n\rangle,\qquad\delta H=\frac{e^2}{2}\int\frac{\dd^3k}{(2\pi)^3}\frac{1}{\omega_k}\left[\frac{1}{H-\omega_k-E_n}-\frac{1}{H_0-\omega_k-mc^2}\right],
+\end{equation*}
+第一项为束缚态自能，第二项减去自由电子自能实现质量重整化；\(\omega_k=|\vb k|c\) 为光子能量。
+
+对低能态（\(E_n\ll mc^2\)）取非相对论中间态 \(H_0=\vb p^2/(2m)+V\)。Bethe 观察到高能中间态贡献被重整化减项消去，剩余积分在 \(\omega_k\in[0,mc^2]\) 上对数发散，取截断 \(\Lambda=mc^2\)，
+\begin{equation*}
+  \Delta E_{\rm Lamb}(n,l)\approx\frac{4\alpha^3}{3\pi}\frac{(mc^2)^2}{\hbar^2}\ln\frac{1}{\alpha}\cdot|\psi_{nl}(0)|^2\cdot\delta_{l0}.
+\end{equation*}
+只有 \(s\) 态（\(\psi_{ns}(0)\ne0\)）有非零移位，与 \(2s_{1/2}-2p_{1/2}\) 分裂一致。对氢 \(2s\)，\(|\psi_{20}(0)|^2=1/(8\pi a_0^3)\) 给出 \(\approx1040\,\mathrm{MHz}\)，与实验 \(1057.8\,\mathrm{MHz}\) 在 \(\sim2\%\) 内一致。
+
+完整 QED 处理（精确自能、真空极化、反常磁矩）给出
+\begin{equation*}
+  \Delta E_{\rm Lamb}(n,l,j)=\frac{\alpha^3}{\pi n^3}F(n,l,j)\,Z^4\alpha^2 mc^2,
+\end{equation*}
+其中 \(F=A_{40}+A_{41}\ln\alpha+A_{50}\alpha+\cdots\)，\(A_{40}\ln\alpha\) 即 Bethe 对数项。
+
+质子有限尺寸修正 \(\Delta E_{\rm proton}=\frac{2\pi\alpha}{3}|\psi_{ns}(0)|^2 r_p^2\)（\(r_p\) 为质子电荷半径）；\(\mu\)氢 Lamb 移位测量给出 \(r_p=0.842\,\mathrm{fm}\)，与电子散射值 \(0.877\,\mathrm{fm}\) 的差异即"质子半径疑难"。
+
+对数因子 \(\ln(1/\alpha)\) 来自原子尺度 \(a_0\) 与 Compton 尺度 \(\lambda_C\) 之间的尺度分离，是 QED 微扰展开的标志性结构。
+
+\end{proof}

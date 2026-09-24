@@ -1,3680 +1,516 @@
-\chapter{开放量子系统的约化动力学}
-\label{chap:phys-oqs-open-quantum-systems}
+\chapter{自场、ALD 方程与 Landau--Lifshitz 动力学}
+\label{chap:phys-rr-radiation-reaction}
 
-\section{精确约化动力学}
-\label{sec:phys-oqs-exact}
+远场能流说明加速电荷会持续带走能量，但只写外场洛伦兹力时，粒子方程并不知道这笔能量支出。要恢复局域能量--动量守恒，必须把电荷自己的场分成辐射部分与束缚部分，再问点粒子极限留下什么有限反作用。
 
-上一章讨论的 Hamiltonian 在一个封闭 Hilbert 空间上生成幺正演化；一旦只保留其中一部分自由度，真正需要描述的对象便从态矢量转为约化密度算符，环境自由度通过记忆核和相关函数进入动力学。开放系统理论的起点因此仍是联合 Hilbert 空间上的精确幺正动力学，而不是某一个腔模、二能级原子或 Lindblad 方程。先把“系统”定义为直接观测的自由度，把其余自由度统称为环境；只在精确约化映射建立以后，才引入弱耦合、短记忆和旋波等条件。这样可以清楚区分哪些性质来自量子力学本身，哪些性质来自后续近似。
+\section{因果自场、Dirac 分解与点粒子极限}
 
-接下来考察一般系统--环境结构与精确约化映射。
+给定源的辐射谱把世界线当作已知函数；辐射反作用则必须同时决定场与源。因此一般起点不是某个点粒子阻尼项，而是 Maxwell 方程、守恒电流与总能动量守恒。只有在平滑有限尺寸源的因果自场已经定义之后，才能讨论点粒子极限中的奇异场、质量重整化与有限自力。
 
-把所有未直接观测的自由度统称为环境 $B$，其自由 Hamiltonian 为 $H_B$。系统--环境相互作用写成一般双线性形式
+采用度规
+\[
+ g_{\mu\nu}=\diag(1,-1,-1,-1),
+ \qquad x^\mu=(ct,\vb x),
+ \qquad J^\mu=(c\rho_{\rm e},\vb J),
+\]
+令四势 \(A^\mu=(\Phi/c,\vb A)\)，场强张量 \(F^{\mu\nu}:=\partial^\mu A^\nu-\partial^\nu A^\mu\)，并定义 d'Alembert 算子 \(\Box:=\partial_\mu\partial^\mu=c^{-2}\partial_t^2-\nabla^2\)。再令 \(u^\mu=\dd z^\mu/\dd\tau\)、\(a^\mu=\dd u^\mu/\dd\tau\)。由于 \(x^0=ct\)，后文四维积分测度统一记作 \(\dd^4x:=\dd x^0\,\dd^3x=c\,\dd t\,\dd^3x\)，相应的 \(\delta^{(4)}(x)\) 对这一测度归一化。于是
+\[
+ u^2=c^2,
+ \qquad u\cdot a=0,
+ \qquad u\cdot\dot a=-a^2.
+\]
+这些运动学恒等式将在 ALD 正交性和 Landau--Lifshitz 降阶中反复使用。
+
+电磁能动量张量取
 \begin{equation}
-\boxed{
-H_{SB}=\lambda H_I,
-\qquad
-H_I=\sum_\mu S_\mu\otimes B_\mu,}
-\label{eq:phys-oqs-general-system-bath}
+ T_{\rm em}^{\mu\nu}
+ =\frac1{\mu_0}
+ \left[-F^{\mu\alpha}F^\nu{}_{\alpha}
+ +\frac14g^{\mu\nu}F^{\alpha\beta}F_{\alpha\beta}\right].
+ \label{eq:phys-rr-em-stress-energy}
 \end{equation}
-其中 $S_\mu$ 与 $B_\mu$ 分别只作用于系统和环境 Hilbert 空间，$\lambda$ 取为无量纲的 记账 参数，只标记系统--环境耦合的微扰阶数；$H_I$ 本身保留能量量纲。总 Hamiltonian 为
+由 Maxwell 方程与 Bianchi 恒等式可得
+\[
+ \partial_\mu T_{\rm em}^{\mu\nu}=-F^{\nu\lambda}J_\lambda.
+\]
+若 \(T_{\rm mat}^{\mu\nu}\) 包含物质的机械动量以及维持有限尺寸结构所需的非电磁应力，并把场分成外场和自场，定义 \(T_{\rm self}^{\mu\nu}:=T_{\rm em}^{\mu\nu}[F_{\rm self}]\)。对任意类空截面 \(\Sigma\)，对 \(X\in\{\mathrm{mat},\mathrm{self}\}\) 分别定义
+\[
+ P_X^{\nu}[\Sigma]
+ :=\frac1c\int_{\Sigma}T_X^{\mu\nu}\,\dd\Sigma_\mu,
+\]
+其中 \(\dd\Sigma_\mu\) 是定向三维超曲面元。因此 \(P_{\rm mat}^{\nu}\) 与 \(P_{\rm self}^{\nu}\) 分别是该截面上的物质四动量和自场四动量。于是内部 Lorentz 力在物质与自场之间相消，留下
 \begin{equation}
-\boxed{H_{\rm tot}=H_S+H_B+\lambda H_I.}
-\label{eq:phys-oqs-total-h}
+ \partial_\mu\!
+ \left(T_{\rm mat}^{\mu\nu}+T_{\rm self}^{\mu\nu}\right)
+ =F_{\rm ext}^{\nu\lambda}J_\lambda .
+ \label{eq:phys-rr-exact-self-balance}
 \end{equation}
-对任意给定初始总态 $\rho_{\rm tot}(0)$，严格总演化为
-\[
-\rho_{\rm tot}(t)
-=U_{\rm tot}(t,0)\rho_{\rm tot}(0)U_{\rm tot}^\dagger(t,0),
-\]
-因此系统约化态定义为
-\begin{equation}
-\boxed{
-\rho(t)=\Tr_B\!\left[
-U_{\rm tot}(t,0)\rho_{\rm tot}(0)U_{\rm tot}^\dagger(t,0)
-\right].}
-\label{eq:phys-oqs-exact-reduced-state}
-\end{equation}
-\eqnrefs{eq:phys-oqs-exact-reduced-state} 是开放系统理论的严格起点，不要求弱耦合、Markov、久期 或热平衡。
-
-若进一步固定环境初态 $\rho_B$ 并采用无初始相关的制备
-\begin{equation}
-\rho_{\rm tot}(0)=\rho(0)\otimes\rho_B,
-\label{eq:phys-oqs-factorized-initial-state}
-\end{equation}
-则可把约化演化定义为对任意系统初态都适用的映射
-\begin{equation}
-\boxed{
-\Phi_t[\rho(0)]
-=\Tr_B\!\left[
-U_{\rm tot}(t,0)(\rho(0)\otimes\rho_B)U_{\rm tot}^\dagger(t,0)
-\right].}
-\label{eq:phys-oqs-exact-reduced-map}
-\end{equation}
-该映射自动保持迹、Hermiticity 和完全正性。更一般地，若制备过程只允许系统初态落在集合 $\mathfrak D_{\mathcal A}$ 中，可以引入 assignment 映射
-\begin{equation}
-\boxed{
-\mathcal A:\mathfrak D_{\mathcal A}\to\mathcal S(\Hil_S\otimes\Hil_B),
-\qquad
-\Tr_B\mathcal A[\rho]=\rho,
-}
-\label{eq:phys-oqs-assignment-map}
-\end{equation}
-并定义
-\begin{equation}
-\boxed{
-\Phi_{t,0}^{\mathcal A}[\rho]
-=\Tr_B\!\left[U_{\rm tot}(t,0)\mathcal A[\rho]U_{\rm tot}^\dagger(t,0)\right],
-\qquad \rho\in\mathfrak D_{\mathcal A}.
-}
-\label{eq:phys-oqs-assignment-reduced-map}
-\end{equation}
-乘积赋值 $\mathcal A_0[\rho]=\rho\otimes\rho_B$ 定义在整个系统态空间上，并直接给出\eqnrefs{eq:phys-oqs-exact-reduced-map} 的 完全正迹保持 映射。若初始总态含系统--环境相关，\eqnrefs{eq:phys-oqs-exact-reduced-state} 对该给定初态仍然精确，但“只给系统初态 \(\rho(0)\) 就唯一决定总初态”的赋值通常只在一个兼容子集上定义。此时可以在这个 相容性 定义域 上讨论约化映射，却一般不能把它延拓成定义在整个系统态空间上的同一个 完全正迹保持 映射。因而是否采用因子化初态首先是一个制备与映射定义域问题，而不是 Born 弱耦合截断本身。后面的 Born 展开将在已经选定参考环境态与初始兼容条件以后，独立地作为耦合阶数近似引入。
-
-\eqnrefs{eq:phys-oqs-exact-reduced-map} 通常不能仅用有限个系统算符写成闭合的时间局域微分方程。\secref{sec:phys-oqs-gksl}将从它对应的相互作用绘景方程出发，依次引入 Born、Markov 与 久期 条件，构造可计算的 GKSL 生成元。
-
-接下来考察系统谱与 Bohr 频率记号。
-
-后续所有频率分解都相对于实际采用的系统 Hamiltonian $H_S$ 进行。为建立离散 Bohr 频率的微观 GKSL 公式，以下先假设相关系统能区具有纯点谱；有限维系统自动满足这一条件。若系统含连续谱或阈值连续部分，应把下面的谱投影求和改写成投影值测度积分，并另行控制长时间极限与连续频率共振，不能直接把离散 久期 求和逐项照搬。设
-\begin{equation}
-H_S=\sum_{\epsilon}\epsilon\,\Pi(\epsilon),
-\qquad
-\Pi(\epsilon)\Pi(\epsilon')=\delta_{\epsilon\epsilon'}\Pi(\epsilon),
-\label{eq:phys-oqs-system-spectral-resolution}
-\end{equation}
-其中 $\Pi(\epsilon)$ 是能量 $\epsilon$ 的谱投影。任意两能量块之间的带符号 Bohr 频率定义为
-\[
-\omega_{\epsilon'\epsilon}=\frac{\epsilon'-\epsilon}{\hbar}.
-\]
-若系统谱非简并并以 $|i\rangle$ 表示本征态，则记
-\begin{equation}
-\boxed{
-\omega_{ij}=\frac{E_i-E_j}{\hbar},
-\qquad
-\omega_{ji}=-\omega_{ij}.
-}
-\label{eq:phys-oqs-bohr-signed}
-\end{equation}
-向下跃迁 $i\to j$ 满足 $E_i>E_j$，所以 $\omega_{ij}>0$。这一定义只固定频率符号，不要求系统是二能级或多能级原子；真正的 Bohr 算符分解将在微观生成元需要时再引入。
-
-普通 $\otimes$ 始终表示物理 Hilbert 空间的张量积；密度算符向量化以后使用的 $\mathbin{\otimes_{\rm K}}$ 表示矩阵 Kronecker 积，两者不混用。
-
-\section{从精确记忆核到 GKSL 生成元}
-\label{sec:phys-oqs-gksl}
-
-接下来考察精确 Nakajima--Zwanzig 与 Born 展开。
-
-本节继续把系统 Hamiltonian 保持为一般的 $H_S$。只有在最后的具体模型中，才会把它替换为经过明确近似得到的有效 Hamiltonian。系统--环境总 Hamiltonian 统一写为
-\[
-H_{\rm tot}=H_S+H_B+\lambda H_I,
-\qquad
-H_I=\sum_\mu S_\mu\otimes B_\mu,
-\]
-其中 $\lambda$ 只用于标记系统--环境耦合的微扰阶数。定义自由部分
-\[
-H_0=H_S+H_B
-\]
-以及相互作用绘景
-\[
-\widetilde X(t)
-=\ee^{+\ii H_0t/\hbar}X\ee^{-\ii H_0t/\hbar}.
-\]
-对总态，
-\[
-\widetilde\rho_{\rm tot}(t)
-=\ee^{+\ii H_0t/\hbar}
-\rho_{\rm tot}(t)
-\ee^{-\ii H_0t/\hbar}.
-\]
-设
-\[
-U_S(t)=\ee^{-\ii H_St/\hbar},
-\qquad
-U_B(t)=\ee^{-\ii H_Bt/\hbar}.
-\]
-利用偏迹对环境幺正变换的不变性，
-\[
-\begin{aligned}
-\widetilde\rho(t)
-&=\Tr_B\widetilde\rho_{\rm tot}(t)\\
-&=U_S^\dagger(t)
-\Tr_B\!\left[U_B^\dagger(t)\rho_{\rm tot}(t)U_B(t)\right]
-U_S(t)\\
-&=U_S^\dagger(t)\rho(t)U_S(t).
-\end{aligned}
-\]
-因此两种绘景下的约化态满足
-\begin{equation}
-\boxed{
-\widetilde\rho(t)
-=\ee^{+\ii H_St/\hbar}\rho(t)
- \ee^{-\ii H_St/\hbar},
-\qquad
-\rho(t)
-=\ee^{-\ii H_St/\hbar}\widetilde\rho(t)
- \ee^{+\ii H_St/\hbar}.
-}
-\label{eq:phys-oqs-picture-dictionary}
-\end{equation}
-这个关系将在本节末端逐项用于把相互作用绘景生成元变回 Schr\"odinger 绘景。
-
-相互作用绘景下总态严格满足
-\begin{equation}
-\boxed{
-\dot{\widetilde\rho}_{\rm tot}(t)
-=-\frac{\ii\lambda}{\hbar}
-[\widetilde H_I(t),\widetilde\rho_{\rm tot}(t)].
-}
-\label{eq:phys-oqs-interaction-vn}
-\end{equation}
-在施加任何弱耦合近似之前，先把\eqnrefs{eq:phys-oqs-interaction-vn}写成精确的投影算符记忆方程。固定一个平稳参考环境态
-\[
-[H_B,\rho_B]=0
-\]
-并定义 Nakajima--Zwanzig 投影
-\begin{equation}\label{eq:phys-oqs-nz-projectors}
-\boxed{
-\mathcal P X
-=
-\Tr_B(X)\otimes\rho_B,
-\qquad
-\mathcal Q=1-\mathcal P .
-}
-\end{equation}
-同时把相互作用绘景 Liouvillian 定义为
-\begin{equation}\label{eq:phys-oqs-interaction-liouvillian}
-\mathcal L(t)X
-=
--\frac{\ii\lambda}{\hbar}
-[\widetilde H_I(t),X].
-\end{equation}
-于是精确总态方程就是
-\[
-\dot{\widetilde\rho}_{\rm tot}(t)
-=
-\mathcal L(t)\widetilde\rho_{\rm tot}(t).
-\]
-
-\begin{derivation}[精确 Nakajima--Zwanzig 记忆方程]
-分别左乘 \(\mathcal P\) 和 \(\mathcal Q\)，得到两个耦合方程
-\[
-\frac{\dd}{\dd t}\mathcal P\widetilde\rho_{\rm tot}
-=
-\mathcal P\mathcal L(t)\mathcal P\widetilde\rho_{\rm tot}
-+
-\mathcal P\mathcal L(t)\mathcal Q\widetilde\rho_{\rm tot},
-\]
-\[
-\frac{\dd}{\dd t}\mathcal Q\widetilde\rho_{\rm tot}
-=
-\mathcal Q\mathcal L(t)\mathcal P\widetilde\rho_{\rm tot}
-+
-\mathcal Q\mathcal L(t)\mathcal Q\widetilde\rho_{\rm tot}.
-\]
-定义 \(\mathcal Q\) 子空间上的传播子
-\begin{equation}\label{eq:phys-oqs-q-propagator}
-\mathcal G_Q(t,s)
-=
-\mathcal T
-\exp\!\left[
-\int_s^t
-\mathcal Q\mathcal L(u)\mathcal Q\,\dd u
-\right].
-\end{equation}
-第二个方程由常数变易法精确积分为
-\[
-\begin{aligned}
-\mathcal Q\widetilde\rho_{\rm tot}(t)
-={}&
-\mathcal G_Q(t,0)
-\mathcal Q\widetilde\rho_{\rm tot}(0)
-\\
-&+
-\int_0^t\dd s\,
-\mathcal G_Q(t,s)
-\mathcal Q\mathcal L(s)\mathcal P
-\widetilde\rho_{\rm tot}(s).
-\end{aligned}
-\]
-代回 \(\mathcal P\) 方程，得到
+这是一切自力公式的母守恒律。把它在由两张类空端面和一段世界管侧壁围成的四维区域内积分，得到
 \begin{align}
-\frac{\dd}{\dd t}\mathcal P\widetilde\rho_{\rm tot}(t)
-={}&
-\mathcal P\mathcal L(t)\mathcal P
-\widetilde\rho_{\rm tot}(t)
-\nonumber\\
-&+
-\mathcal P\mathcal L(t)\mathcal G_Q(t,0)
-\mathcal Q\widetilde\rho_{\rm tot}(0)
-\nonumber\\
-&+
-\int_0^t\dd s\,
-\mathcal K(t,s)
-\mathcal P\widetilde\rho_{\rm tot}(s),
-\label{eq:phys-oqs-exact-nz}
+ &P_{\rm mat}^\nu[\Sigma_2]-P_{\rm mat}^\nu[\Sigma_1]
+ +P_{\rm self}^\nu[\Sigma_2]-P_{\rm self}^\nu[\Sigma_1]\notag\\
+ &\qquad
+ +\frac1c\int_{\partial\mathcal W}T_{\rm self}^{\mu\nu}\dd\Sigma_\mu
+ =\frac1c\int_{\mathcal V_4} F_{\rm ext}^{\nu\lambda}J_\lambda\dd^4x .
+ \label{eq:phys-rr-worldtube-general-balance}
 \end{align}
-其中精确记忆核为
-\begin{equation}\label{eq:phys-oqs-exact-memory-kernel}
-\boxed{
-\mathcal K(t,s)
-=
-\mathcal P\mathcal L(t)
-\mathcal G_Q(t,s)
-\mathcal Q\mathcal L(s)\mathcal P.
-}
-\end{equation}
-\eqnrefs{eq:phys-oqs-exact-nz}没有做 Born 或 Markov 近似。第二行是初始系统--环境相关产生的 非齐次 项；第三行则明确显示约化动力学一般依赖全部历史状态。
-\end{derivation}
+大世界管把侧壁通量解释为远区辐射；缩小世界管时，端面还包含随粒子运动的束缚近场动量。Schott 项与辐射动量正是这一同一守恒式的不同有限部分，而不是额外施加的耗散模型。
 
-若采用因子化制备
+对平滑有限尺寸电流，取 Lorenz 规范 \(\partial_\mu A^\mu=0\)，因果自场由
 \[
-\rho_{\rm tot}(0)
-=
-\rho(0)\otimes\rho_B,
+ \Box A_{\rm self}^\mu=\mu_0J^\mu,
+ \qquad
+ A_{\rm self}^\mu(x)
+ =\mu_0\int G_{\rm ret}(x-x')J^\mu(x')\dd^4x'
 \]
-则
-\[
-\mathcal Q\rho_{\rm tot}(0)=0
-\]
-使初始相关项消失。再把环境算符中心化，使
-\[
-\Tr_B(B_\mu\rho_B)=0,
-\]
-便有
-\[
-\mathcal P\mathcal L(t)\mathcal P=0.
-\]
-此时\eqnrefs{eq:phys-oqs-exact-nz}只剩记忆积分。
-
-由于\eqnrefs{eq:phys-oqs-interaction-liouvillian}中
-\(\mathcal L=\mathcal O(\lambda)\)，
-\[
-\mathcal G_Q(t,s)
-=
-1+\mathcal O(\lambda).
-\]
-所以在只保留 \(\lambda^2\) 的 Born 阶数时，
-\[
-\mathcal K(t,s)
-=
-\mathcal P\mathcal L(t)
-\mathcal Q\mathcal L(s)\mathcal P
-+
-\mathcal O(\lambda^3).
-\]
-在已经中心化的情况下
-\(\mathcal P\mathcal L(s)\mathcal P=0\)，于是
-\(\mathcal Q\mathcal L(s)\mathcal P
-=\mathcal L(s)\mathcal P\)，最终得到
-\begin{equation}\label{eq:phys-oqs-born-memory-from-nz}
-\boxed{
-\dot{\widetilde\rho}(t)
-=
--\frac{\lambda^2}{\hbar^2}
-\int_0^t\dd s\,
-\Tr_B
-\left[
-\widetilde H_I(t),
-\left[
-\widetilde H_I(s),
-\widetilde\rho(s)\otimes\rho_B
-\right]
-\right]
-+
-\mathcal O(\lambda^3).
-}
-\end{equation}
-因此 Born 近似在这一语言中不是把精确历史依赖直接删掉，而是先把精确
-\(\mathcal Q\)-子空间传播子按耦合常数展开到所需阶数；Markov 近似则是之后对
-\eqnrefs{eq:phys-oqs-born-memory-from-nz}中的历史状态和积分上限作时间尺度近似。
-
-同一精确约化动力学也可以重排为 时间局域 的 无时间卷积 展开；它与 Nakajima--Zwanzig 记忆核是两种不同的组织方式，而不是两个不同的物理模型。
-
-在进入 Markov 极限之前，还可以从同一个二阶展开得到 time-convolutionless 形式。中心化条件使约化动力学的一阶项消失，因此
-\[
-\dot{\widetilde\rho}(t)=O(\lambda^2),
-\qquad
-\widetilde\rho(s)-\widetilde\rho(t)=O(\lambda^2)
-\]
-在固定有限时间区间上成立。把这个差异放回已经带 \(\lambda^2\) 的 Born 核，只改变 \(O(\lambda^4)\) 项，所以二阶精度下可把历史态换成当前态，但仍保留有限上限 \(t\)：
-\begin{equation}\label{eq:phys-oqs-tcl2}
-\boxed{
-\dot{\widetilde\rho}(t)
-=\mathcal K_{\rm TCL}^{(2)}(t)\widetilde\rho(t)+O(\lambda^3),
-}
-\end{equation}
-其中
-\begin{equation}\label{eq:phys-oqs-tcl2-generator}
-\boxed{
-\mathcal K_{\rm TCL}^{(2)}(t)\rho
-=-\frac{\lambda^2}{\hbar^2}
-\int_0^t\dd s\,
-\Tr_B
-\left[
-\widetilde H_I(t),
-\left[
-\widetilde H_I(s),
-\rho\otimes\rho_B
-\right]
-\right].
-}
-\end{equation}
-
-\begin{derivation}[Born 记忆方程与 TCL2 在二阶的关系]
-由\eqnrefs{eq:phys-oqs-born-memory-from-nz}，Born 记忆方程形如
-\begin{equation*}
- \dot{\widetilde\rho}(t)
- =-\int_0^t\dd s\,\mathcal K_{\rm NZ}(t,s)\,\widetilde\rho(s),
-\end{equation*}
-其中 Born 核 \(\mathcal K_{\rm NZ}\) 在耦合 \(\lambda\) 的微扰展开中首阶为 \(\lambda^2\)。把历史态 \(\widetilde\rho(s)\) 在当前时刻 \(t\) 展开：
-\begin{equation*}
- \widetilde\rho(s)
- =\widetilde\rho(t)-\int_s^t\dot{\widetilde\rho}(u)\dd u.
-\end{equation*}
-代回记忆方程，
-\begin{equation*}
- \dot{\widetilde\rho}(t)
- =-\int_0^t\dd s\,\mathcal K_{\rm NZ}(t,s)\,\widetilde\rho(t)
- +\int_0^t\dd s\,\mathcal K_{\rm NZ}(t,s)\int_s^t\dd u\,\dot{\widetilde\rho}(u).
-\end{equation*}
-由中心化环境下一阶生成元为零，约化动力学首阶为 \(\lambda^2\)，故
-\begin{equation*}
- \dot{\widetilde\rho}(u)=O(\lambda^2).
-\end{equation*}
-于是上式右端第二项的被积函数阶为 \(\lambda^2\cdot O(\lambda^2)=O(\lambda^4)\)，整体
-\begin{equation*}
- \int_0^t\dd s\,\mathcal K_{\rm NZ}(t,s)\int_s^t\dd u\,\dot{\widetilde\rho}(u)
- =O(\lambda^4).
-\end{equation*}
-因此历史态可替换为
-\begin{equation*}
- \widetilde\rho(s)
- =\widetilde\rho(t)+O(\lambda^2),
-\end{equation*}
-且 Born 核前已有显式 \(\lambda^2\)，故历史态替换产生的修正为
-\begin{equation*}
- \lambda^2\,[\widetilde\rho(s)-\widetilde\rho(t)]
- =\lambda^2\cdot O(\lambda^2)=O(\lambda^4).
-\end{equation*}
-于是截断到二阶时，记忆方程化为
-\begin{equation*}
- \dot{\widetilde\rho}(t)
- =-\int_0^t\dd s\,\mathcal K_{\rm NZ}(t,s)\,\widetilde\rho(t)+O(\lambda^4),
-\end{equation*}
-与\eqnrefs{eq:phys-oqs-tcl2-generator} 的 TCL2 生成元 \(\mathcal K_{\rm TCL}^{(2)}(t)=-\int_0^t\dd s\,\mathcal K_{\rm NZ}(t,s)\) 给出相同的约化动力学。积分上限仍为 \(t\)，因此 \(\mathcal K_{\rm TCL}^{(2)}(t)\) 一般显含初始时刻，环境相关函数的有限记忆仍保留在系数中。时间局域 只是把历史依赖重新组织进时间依赖生成元，并没有自动完成 Markov 极限。
-\end{derivation}
-
-二阶等价并不意味着 无时间卷积 与 NZ 在高阶逐项相同。设因子化制备下的精确约化传播映射在有限时间内可逆，并写成
+唯一确定。这里 \(G_{\rm ret}\) 是满足 \(\Box G=\delta^{(4)}\) 且支撑在未来光锥上的基本解；相应的过去支撑基本解记为 \(G_{\rm adv}\)。显式地
 \begin{equation}
-\widetilde\Phi_t
-=\id()+\lambda\Phi_1(t)+\lambda^2\Phi_2(t)
-+\lambda^3\Phi_3(t)+\lambda^4\Phi_4(t)+\cdots .
-\label{eq:phys-oqs-map-perturbative-expansion}
+ G_{\rm ret/adv}(x)
+ =\frac1{2\pi}\theta(\pm x^0)\delta(x^2)
+ =\frac{\delta(x^0\mp r)}{4\pi r},
+ \qquad r=|\vb x|.
+ \label{eq:phys-rr-ret-adv-green}
 \end{equation}
-精确 时间局域 生成元定义为
+因此平滑源的自力密度是有限而因果的历史泛函
 \begin{equation}
-\boxed{
-\mathcal K_{\rm TCL}(t)=\dot{\widetilde\Phi}_t\widetilde\Phi_t^{-1},
-}
-\label{eq:phys-oqs-exact-tcl-generator}
+ \mathfrak f_{\rm self}^\mu(x)
+ =\mu_0J_\nu(x)\int\dd^4x'\,
+ \left[
+ \partial^\mu G_{\rm ret}(x-x')J^\nu(x')
+ -\partial^\nu G_{\rm ret}(x-x')J^\mu(x')
+ \right].
+ \label{eq:phys-rr-general-self-force-functional}
 \end{equation}
-它只要求当前时刻的传播映射可逆，不要求动力学 Markov。中心化条件给 $\Phi_1=0$，于是逐阶相乘得到
-\begin{equation}
-\boxed{
-\begin{aligned}
-\mathcal K_{\rm TCL}(t)
-={}&\lambda^2\dot\Phi_2(t)
-+\lambda^3\dot\Phi_3(t)\\
-&+\lambda^4\left[\dot\Phi_4(t)-\dot\Phi_2(t)\Phi_2(t)\right]
-+\mathcal O(\lambda^5).
-\end{aligned}}
-\label{eq:phys-oqs-tcl-through-fourth-order}
-\end{equation}
-若环境是高斯态且耦合对环境变量为线性，奇数阶累积量消失，从而 $\Phi_3=0$；此时 TCL2 的下一项确实是 TCL4。一般非高斯环境即使已经中心化，也不能自动删去 $O(\lambda^3)$。这里的阶数是固定有限时间上的微扰阶数：截断到 $\lambda^n$ 后，局部余项为 $O(\lambda^{n+1})$，但这一估计通常不对 $t\sim O(\lambda^{-2})$ 的弛豫时间一致。若要在这样的长时间尺度上使用低阶 无时间卷积，必须再结合弱耦合/van Hove 极限或相应重求和。另一个独立失效机制是 $\widetilde\Phi_t$ 失去可逆性；此时精确约化映射仍可良好定义，而\eqnrefs{eq:phys-oqs-exact-tcl-generator} 的 时间局域 生成元可能出现奇点。
+其中 \(\mathfrak f_{\rm self}^\mu\) 是自场 Lorentz 四力密度。有限尺寸理论可直接使用\eqnrefs{eq:phys-rr-general-self-force-functional}。点粒子理论则只能把同一 Maxwell--源体系作为受调节的极限起点：一旦把 \(J^\mu\) 换成世界线分布，式中自场与源的乘积就变得奇异，必须先做局域分解与重整化，不能把分布形式直接代回并当作普通函数计算。
 
-\begin{derivation}[TCL4 与 NZ 的逐阶对应]
-由 $\Phi_1=0$（中心化条件使一阶累积量消失），传播映射的逆到四阶为
-\[
-\widetilde\Phi_t^{-1}
-=\id()-\lambda^2\Phi_2-\lambda^3\Phi_3
-+\lambda^4(\Phi_2^2-\Phi_4)+\mathcal O(\lambda^5).
-\]
-这里 \(\Phi_n\) 是 \(n\) 阶累积量传播映射。该展开即 Neumann 级数 \((\id()+X)^{-1}=\id()-X+X^2-\cdots\)（\(X=\lambda^2\Phi_2+\lambda^3\Phi_3+\lambda^4\Phi_4+\cdots\)）到 \(\lambda^4\) 阶。再乘上
-\[
-\dot{\widetilde\Phi}_t
-=\lambda^2\dot\Phi_2+\lambda^3\dot\Phi_3
-+\lambda^4\dot\Phi_4+\mathcal O(\lambda^5),
-\]
-得到\eqnrefs{eq:phys-oqs-tcl-through-fourth-order}。展开逐阶写出：
-\[
- \dot{\widetilde\Phi}_t\widetilde\Phi_t^{-1}
- =\lambda^2\dot\Phi_2
- +\lambda^3\dot\Phi_3
- +\lambda^4(\dot\Phi_4-\dot\Phi_2\Phi_2-\Phi_2\dot\Phi_2+\Phi_2^2\Phi_2)
- +\mathcal O(\lambda^5),
-\]
-其中 \(\lambda^2\) 阶给出 TCL2，\(\lambda^4\) 阶给出 TCL4 修正（后三项为可逆性修正）。另一方面，把 NZ 方程写成传播映射形式
-\[
-\dot{\widetilde\Phi}_t
-=\int_0^t\dd s\,\Sigma(t,s)\widetilde\Phi_s,
-\qquad
-\Sigma=\lambda^2\Sigma_2+\lambda^3\Sigma_3+\lambda^4\Sigma_4+\cdots,
-\]
-则二阶满足
-\[
-\dot\Phi_2(t)=\int_0^t\Sigma_2(t,s)\dd s,
-\]
-四阶满足
-\[
-\dot\Phi_4(t)
-=\int_0^t\Sigma_4(t,s)\dd s
-+\int_0^t\Sigma_2(t,s)\Phi_2(s)\dd s.
-\]
-第二项 \(\int_0^t\Sigma_2(t,s)\Phi_2(s)\dd s\) 含可约部分 \(\dot\Phi_2(t)\Phi_2(t)\)（两个二阶过程独立串联），代入 TCL4 后被可逆性修正项减去，剩余不可约四阶贡献。故 NZ 与 无时间卷积 在同一截断阶给出相同传播映射：NZ 把高阶信息组织成两时刻记忆核 \(\Sigma_n(t,s)\)，无时间卷积 则组织成当前时刻生成元，但核与生成元本身不能逐项等同。
-\end{derivation}
+为固定后续缩管极限的几何记号，图~\figref{fig:phys-rr-worldtube-geometry} 采用 Fermi 管：在固有时 \(\tau\) 的端面上取单位类空径向量 \(n^\mu\)，满足 \(n\cdot u=0\)、\(n^2=-1\)，并用 \(\ell>0\) 表示沿该端面的局域空间半径。后文点粒子极限取 \(\ell\to0\)。
 
-接下来考察 Markov 极限、时间尺度与 Redfield 方程。
+\begin{figure}[htbp]
+\centering
+\begin{adjustbox}{max width=0.96\linewidth}
+\input{figures/tikz/worldtube-geometry.tex}
+\end{adjustbox}
+\caption{世界管守恒的几何结构。管壁通量与端面束缚动量必须同时保留；只有把管半径缩小并完成质量重整化以后，才得到点粒子的有限自力。}
+\label{fig:phys-rr-worldtube-geometry}
+\end{figure}
 
-若原始环境算符尚未中心化，可作
+\begin{proof}[解]
+对\eqnrefs{eq:phys-rr-em-stress-energy}求散度。第一项用
+\(\partial_\mu F^{\mu\alpha}=\mu_0J^\alpha\) 化为
+\(-F^{\nu\lambda}J_\lambda\)；其余两项在
 \[
-B_\mu\longrightarrow
-B_\mu-\Tr_B(B_\mu\rho_B)\id(B),
+ \partial_\mu F_{\alpha\nu}+\partial_\alpha F_{\nu\mu}
+ +\partial_\nu F_{\mu\alpha}=0
 \]
-并把产生的系统平均场项吸收到 \(H_S\) 中。因此后文统一采用
-\begin{equation}
-\boxed{\Tr_B(B_\mu\rho_B)=0.}
-\label{eq:phys-oqs-bath-centered}
-\end{equation}
-在二阶 Born 展开中，\eqnrefs{eq:phys-oqs-born-memory-from-nz}等价于先把精确 $\mathcal Q$-子空间传播子按耦合常数展开，并在所保留阶数内用参考环境态
-\(\rho_B\) 闭合环境相关函数；它并不声称环境在精确动力学中“永远不变”。因此 Born 的控制首先是\emph{耦合阶数控制}，而不是时间尺度近似。对中心化耦合，固定有限时间上的二阶截断写成
+与 \(F_{\mu\nu}=-F_{\nu\mu}\) 下相消。因此
 \[
-\dot{\widetilde\rho}=\lambda^2\mathcal K_2[\widetilde\rho]
-+\mathcal O(\lambda^3),
+ \partial_\mu T_{\rm em}^{\mu\nu}=-F^{\nu\lambda}J_\lambda .
 \]
-若环境为高斯态且环境耦合算符线性，奇阶累积量消失，下一项才提升为 $\mathcal O(\lambda^4)$。这一固定时间的微扰余项并不自动对弛豫时间 $t\sim\tau_R=O(\lambda^{-2})$ 一致；长时间一致性需要后面的弱耦合/van Hove 极限或其他重求和。
+物质张量的散度是相反的 Lorentz 四力密度。把总场分为给定外场与自场后，
+内部的物质--自场交换相消，留下
+\eqnrefs{eq:phys-rr-exact-self-balance}。
 
-Born 二阶闭合还要求系统对参考环境态 $\rho_B$ 的反作用在所保留阶数内可以忽略：由系统诱导的环境耗尽、相干位移或更高阶相关必须进入被截去的高阶项，而不能与二阶项同阶。有限小环境、单个窄带振子或明显回波往往不满足这一条件；这类慢自由度应并入扩大的系统，而不是继续用固定参考态 $\rho_B$ 闭合。只有在进入 Markov 步骤时，环境相关时间 $\tau_B$ 与系统弛豫时间 $\tau_R$ 的分离才成为新的独立小参数：
-\begin{equation}
-\boxed{
-\epsilon_{\rm M}\equiv\frac{\tau_B}{\tau_R}\ll1.
-}
-\label{eq:phys-oqs-markov-memory-parameter}
-\end{equation}
+在由两张类空端面 \(\Sigma_1,\Sigma_2\) 和类时管壁
+\(\partial\mathcal W\) 围成的四维区域上应用 Gauss 定理：
+\[
+ \int_{\mathcal V_4}\partial_\mu T^{\mu\nu}\dd^4x
+ =\int_{\Sigma_2-\Sigma_1+\partial\mathcal W}
+ T^{\mu\nu}\dd\Sigma_\mu .
+\]
+再用
+\(P_X^\nu[\Sigma]=c^{-1}\int_\Sigma T_X^{\mu\nu}\dd\Sigma_\mu\)
+识别两端的物质与束缚场动量，便得到
+\eqnrefs{eq:phys-rr-worldtube-general-balance}。这一步对有限尺寸源是精确的；
+辐射通量、束缚动量与质量重整化只有在随后缩小世界管时才被分开。
+\end{proof}
 
-把\eqnrefs{eq:phys-oqs-born-memory-from-nz}中的高阶余项暂时省略，并令
-\(\tau=t-s\)，则
-\[
-\dot{\widetilde\rho}(t)
-=-\frac{\lambda^2}{\hbar^2}
-\int_0^t\dd\tau\,
-\Tr_B
-[\widetilde H_I(t),
-[\widetilde H_I(t-\tau),
-\widetilde\rho(t-\tau)\otimes\rho_B]].
-\]
-若环境相关时间为 $\tau_B$，而系统约化态在这段时间内变化很小，即系统弛豫时间 $\tau_R$ 满足 $\tau_B\ll\tau_R$，就可以选择一个粗粒化时间 $\Delta t$ 使
-\begin{equation}
-\boxed{\tau_B\ll\Delta t\ll\tau_R.}
-\label{eq:phys-oqs-markov-coarse-graining}
-\end{equation}
-在这样的时间窗口上，Markov 近似取
-\[
-\widetilde\rho(t-\tau)\simeq\widetilde\rho(t)
-\quad(\tau\lesssim\tau_B),
-\qquad
-\int_0^t\dd\tau\longrightarrow\int_0^\infty\dd\tau.
-\]
-第一步丢弃系统在环境记忆时间内的变化，第二步丢弃有限初始时刻造成的边界记忆；二者都由\eqnrefs{eq:phys-oqs-markov-coarse-graining}控制，而不是独立的经验假设。
-由此得到二阶 Born--Markov 核
-\begin{equation}
-\boxed{
-\dot{\widetilde\rho}(t)
-=-\frac{\lambda^2}{\hbar^2}
-\int_0^\infty\dd\tau\,
-\Tr_B
-[\widetilde H_I(t),
-[\widetilde H_I(t-\tau),
-\widetilde\rho(t)\otimes\rho_B]].
-}
-\label{eq:phys-oqs-born-markov-kernel}
-\end{equation}
-若用相关函数包络 $c(\tau)$ 定义
-\[
-\tau_B=\frac{\int_0^\infty \tau c(\tau)\dd\tau}{\int_0^\infty c(\tau)\dd\tau},
-\qquad
-\epsilon_{\rm tail}(t)=
-\frac{\int_t^\infty c(\tau)\dd\tau}{\int_0^\infty c(\tau)\dd\tau},
-\]
-则历史态替换的相对误差量级为 $O(\tau_B/\tau_R)$，把上限延长到无穷的边界误差由 $\epsilon_{\rm tail}(t)$ 控制。弱耦合下 $\tau_R^{-1}=O(\lambda^2)$，所以在固定 $\tau_B$ 的 van Hove 标度中，历史态替换对二阶生成元的首个反馈是 $O(\lambda^4)$；但 Born 截断本身在一般非高斯环境中仍可能有 $O(\lambda^3)$ 修正。环境长尾、有限模回波或 $t\lesssim\tau_B$ 时，$\epsilon_{\rm tail}$ 不小，不能使用这一 Markov 极限。
+\begin{figure}[htbp]
+\centering
+\begin{adjustbox}{max width=0.96\linewidth}
+\input{figures/tikz/dirac-decomposition.tex}
+\end{adjustbox}
+\caption{有限尺寸源与点粒子极限的两条自作用支路。有限尺寸源保留完整的因果记忆；点粒子极限中，Dirac 正则场与 Fermi 世界管守恒是两种独立组织方式，并汇聚到同一个有限 ALD 自力。Landau--Lifshitz 只在后文建立相应控制参数后才作为受控降阶出现。}
+\label{fig:phys-rr-dirac-self-force-decomposition}
+\end{figure}
 
-在进入 Markov 极限以后，环境相关函数最自然地由其频谱表述。
+点电荷的协变电流是
+\begin{equation}
+ J^\mu(x)=qc\int u^\mu(\tau')\delta^{(4)}
+ (x-z(\tau'))\dd\tau' .
+ \label{eq:phys-rr-point-current}
+\end{equation}
+它与光锥 Green 函数卷积得到
+\begin{equation}
+ A_{\rm ret}^\mu
+ =\frac{\mu_0qc}{4\pi}
+ \left.\frac{u^\mu}{R\cdot u}\right|_{\rm ret},
+ \qquad
+ A_{\rm adv}^\mu
+ =-\frac{\mu_0qc}{4\pi}
+ \left.\frac{u^\mu}{R\cdot u}\right|_{\rm adv}.
+ \label{eq:phys-rr-lw-four-potential}
+\end{equation}
+超前势只用于提取局部奇异结构；实际边界条件仍取推迟解。Dirac 分解为
+\begin{equation}
+ F_{\rm S}^{\mu\nu}=\frac12(F_{\rm ret}^{\mu\nu}+F_{\rm adv}^{\mu\nu}),
+ \qquad
+ F_{\rm R}^{\mu\nu}=\frac12(F_{\rm ret}^{\mu\nu}-F_{\rm adv}^{\mu\nu}).
+ \label{eq:phys-rr-dirac-split}
+\end{equation}
+两支共有的奇异项全在 \(F_{\rm S}^{\mu\nu}\) 中，半差在世界线上有限：
+\begin{equation}
+ F_{\rm R}^{\mu\nu}(z(\tau))
+ =\frac{q}{6\pi\varepsilon_0c^5}
+ (\dot a^\mu u^\nu-\dot a^\nu u^\mu).
+ \label{eq:phys-rr-regular-field-worldline}
+\end{equation}
+因此点粒子的有限自力是
+\begin{equation}
+ f_{\rm self}^\mu
+ =qF_{\rm R}^{\mu\nu}u_\nu
+ =\frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
+ \label{eq:phys-rr-ald-self-force}
+\end{equation}
+这条等式是局部点粒子极限的结论；有限尺寸源仍应使用前面的因果历史泛函。
 
-把
+\begin{proof}[解]
+由 \(\Box G=\delta^{(4)}\) 得
 \[
-\widetilde H_I(t)
-=\sum_\mu\widetilde S_\mu(t)\otimes\widetilde B_\mu(t)
+ G_{\rm ret/adv}(x)
+ =-\int\frac{\dd^4k}{(2\pi)^4}
+ \frac{e^{-\ii k\cdot x}}{k^2\pm\ii0\,k^0}.
 \]
-代入\eqnrefs{eq:phys-oqs-born-markov-kernel}，并定义平稳环境二时相关函数
-\begin{equation}
-\boxed{
-C_{\mu\nu}(\tau)
-=\Tr_B[\widetilde B_\mu(\tau)B_\nu\rho_B].
-}
-\label{eq:phys-oqs-bath-correlation}
-\end{equation}
-由 $[H_B,\rho_B]=0$，相关函数只依赖时间差。将
+按 \(x^0\) 的符号闭合 \(k^0\) 围道，再做径向波数积分，得到
 \[
-[A,[B,R]]=ABR-ARB-BRA+RBA
+ G_{\rm ret/adv}(x)
+ =\frac{\delta(x^0\mp r)}{4\pi r}
+ =\frac1{2\pi}\theta(\pm x^0)\delta(x^2).
 \]
-逐项代入。例如第一项为
+将点流\eqnrefs{eq:phys-rr-point-current}代入卷积，并对
+\(\chi(\tau')=[x-z(\tau')]^2\) 使用
 \[
-\begin{aligned}
-&\Tr_B\!\left[
-\widetilde H_I(t)\widetilde H_I(t-\tau)
-\widetilde\rho(t)\otimes\rho_B
-\right]\\
-&=\sum_{\mu\nu}
-\widetilde S_\mu(t)\widetilde S_\nu(t-\tau)
-\widetilde\rho(t)\,
-C_{\mu\nu}(\tau).
-\end{aligned}
+ \delta(\chi)=\sum_i
+ \frac{\delta(\tau'-\tau_i)}{2|R\cdot u|_{\tau_i}},
 \]
-对另外三项作相同展开并使用偏迹循环性，得到
-\begin{equation}
-\boxed{
-\begin{aligned}
-\dot{\widetilde\rho}
-=\frac{\lambda^2}{\hbar^2}
-\sum_{\mu\nu}\int_0^\infty\dd\tau\Big\{&
-C_{\mu\nu}(\tau)
-[\widetilde S_\nu(t-\tau)\widetilde\rho\widetilde S_\mu(t)
--\widetilde S_\mu(t)\widetilde S_\nu(t-\tau)\widetilde\rho]\\
-+&C_{\nu\mu}(-\tau)
-[\widetilde S_\mu(t)\widetilde\rho\widetilde S_\nu(t-\tau)
--\widetilde\rho\widetilde S_\nu(t-\tau)\widetilde S_\mu(t)]
-\Big\}.
-\end{aligned}}
-\label{eq:phys-oqs-bm-correlation-form}
-\end{equation}
-这一步把系统算符结构与环境统计完全分离。
+过去、未来光锥根分别给出\eqnrefs{eq:phys-rr-lw-four-potential}。
 
-定义双边谱矩阵
+对光锥条件求导有
+\(\partial_\alpha\tau'=R_\alpha/(R\cdot u)\)。据此对势求导并反对称化，
+推迟与超前场可统一写成
 \begin{equation}
-\boxed{
-\widetilde C_{\mu\nu}(\omega)
-=\int_{-\infty}^{+\infty}\dd\tau\,
-\ee^{+\ii\omega\tau}C_{\mu\nu}(\tau),
-}
-\label{eq:phys-oqs-two-sided-spectrum}
+ F_\eta^{\mu\nu}(x)
+ =\eta\frac{q}{4\pi\varepsilon_0c}
+ \left.
+ \frac1{R\cdot u}\frac{\dd}{\dd\tau'}
+ \left(\frac{R^\mu u^\nu-R^\nu u^\mu}{R\cdot u}\right)
+ \right|_{\tau_\eta},
+ \qquad \eta=\begin{cases}+1,&{\rm ret},\\-1,&{\rm adv}.
+ \end{cases}
+ \label{eq:phys-rr-unified-ret-adv-field}
 \end{equation}
-以及对应的耗散谱矩阵
-\begin{equation}
-\boxed{
-\Gamma_{\mu\nu}(\omega)
-=\frac{\lambda^2}{\hbar^2}
-\widetilde C_{\mu\nu}(\omega).
-}
-\label{eq:phys-oqs-gamma-from-spectrum}
-\end{equation}
-这里 $\mu,\nu$ 是系统--环境耦合通道指标，而不是能级指标。$\Gamma(\omega)$ 可以先作为连续频率的环境响应定义；系统最终只在自己的 Bohr 频率处读取它。
+这个公式同时保留 \(R^{-2}\) 的速度场和 \(R^{-1}\) 的加速度场，是局域缩限的起点。
+\end{proof}
 
-下面证明\eqnrefs{eq:phys-oqs-gamma-from-spectrum} 的半正定性。对 厄米 的 $H_I$，总可以把耦合通道重新组合成 厄米 的 $S_\mu$ 与 $B_\mu$。在这一基底中，取同时对角化 $H_B$ 与平稳态 $\rho_B$ 的基底
+\begin{proof}[解]
+在世界线附近取 Fermi 坐标
+\(x^\mu=z^\mu(\tau)+\ell n^\mu\)，其中
+\(n\cdot u=0\)、\(n^2=-1\)。把过去与未来光锥根以及
+\eqnrefs{eq:phys-rr-unified-ret-adv-field}一致展开到有限阶，可写成
 \[
-H_B|n\rangle=E_n|n\rangle,
-\qquad
-\rho_B=\sum_np_n|n\rangle\langle n|,
-\qquad
-p_n\ge0,
+ F_{\rm ret/adv}^{\mu\nu}
+ =F_{\rm S}^{\mu\nu}
+ \pm\frac{q}{6\pi\varepsilon_0c^5}
+ (\dot a^\mu u^\nu-\dot a^\nu u^\mu)+O(\ell).
 \]
-并定义
+其中共同的 \(F_{\rm S}^{\mu\nu}\) 含 \(\ell^{-2}\) 与
+\(\ell^{-1}\) 奇异项；它们在半差中逐项抵消。因此
 \[
-\omega_{mn}=\frac{E_m-E_n}{\hbar}.
+ \frac12(F_{\rm ret}^{\mu\nu}-F_{\rm adv}^{\mu\nu})
+ \xrightarrow[\ell\to0]{}
+ \frac{q}{6\pi\varepsilon_0c^5}
+ (\dot a^\mu u^\nu-\dot a^\nu u^\mu),
 \]
-在\eqnrefs{eq:phys-oqs-bath-correlation} 中插入完备关系，得到
-\[
-C_{\mu\nu}(\tau)
-=\sum_{nm}p_n
-\ee^{-\ii\omega_{mn}\tau}
-(B_\mu)_{nm}(B_\nu)_{nm}^*.
-\]
-Fourier 变换后
-\begin{equation}
-\boxed{
-\Gamma_{\mu\nu}(\omega)
-=\frac{2\pi\lambda^2}{\hbar^2}
-\sum_{nm}p_n
-(B_\mu)_{nm}(B_\nu)_{nm}^*
-\delta(\omega-\omega_{mn}).
-}
-\label{eq:phys-oqs-gamma-spectral-representation}
-\end{equation}
-因此 $\Gamma_{\nu\mu}^*=\Gamma_{\mu\nu}$。再对任意复向量 $\mathbf c$ 计算
-\[
-\begin{aligned}
-\mathbf c^\dagger\Gamma(\omega)\mathbf c
-&=\frac{2\pi\lambda^2}{\hbar^2}
-\sum_{nm}p_n\delta(\omega-\omega_{mn})
-\left|\sum_\mu c_\mu^*(B_\mu)_{nm}\right|^2\\
-&\ge0.
-\end{aligned}
-\]
-故
-\begin{equation}
-\boxed{
-\Gamma(\omega)=\Gamma^\dagger(\omega),
-\qquad
-\Gamma(\omega)\succeq0.
-}
-\label{eq:phys-oqs-gamma-psd}
-\end{equation}
-这保证后面每一个频率块都可以化为非负速率的标准 GKSL 通道。
+即\eqnrefs{eq:phys-rr-regular-field-worldline}。该系数并非由最终自力反拟合，而是 Fermi 喷流展开的唯一结果：把 \(F_{\rm ret/adv}^{\mu\nu}\) 在世界线附近按 \(n^\mu,u^\mu\) 及其协变导数逐阶分类，\(F_{\rm S}^{\mu\nu}\) 的 \(\ell^{-2}\)、\(\ell^{-1}\) 奇异项在半差中逐项抵消，正则部分唯一幸存且横向于 \(u^\mu\) 的结构即 \(\dot a^\mu u^\nu-\dot a^\nu u^\mu\)，系数由该展开的几何数值固定。两支光锥根的高阶修正不能整体丢弃：ret/adv 根在 \(O(\ell^3)\) 阶有不对称偏移，成对略去便会在正则场中引入伪有限项；Dirac 处方要求在同一 \(O(\ell^3)\) 精度上保留两支，这不同于随意取某个有限部分。
+\end{proof}
 
-同时把系统耦合算符按 Bohr 频率分解，才能把环境频谱与具体跃迁通道一一对应。
-
-对当前采用的系统 Hamiltonian 作谱分解
+\begin{proof}[解]
+将\eqnrefs{eq:phys-rr-regular-field-worldline}与四速度缩并：
 \[
-H_S=\sum_\epsilon\epsilon\Pi(\epsilon).
+ f_{\rm self}^\mu
+ =\frac{q^2}{6\pi\varepsilon_0c^5}
+ \left(c^2\dot a^\mu-u^\mu\,u\cdot\dot a\right).
 \]
-任意系统耦合算符按 Bohr 频率分解为
+由 \(u^2=c^2\) 两次求导得到
+\(u\cdot a=0\) 与 \(u\cdot\dot a=-a^2\)，因而
+\[
+ f_{\rm self}^\mu
+ =\frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
+\]
+这就是\eqnrefs{eq:phys-rr-ald-self-force}，并且
+\(u_\mu f_{\rm self}^\mu=0\)；最后一个正交性同时固定两项的相对符号。
+\end{proof}
+世界管方法把同一自力分解为束缚近场和远区辐射。Fermi 端面上的束缚四动量为
 \begin{equation}
-\boxed{
-S_\mu(\omega)
-=\sum_{\epsilon'-\epsilon=\hbar\omega}
-\Pi(\epsilon)S_\mu\Pi(\epsilon').
-}
-\label{eq:phys-oqs-bohr-component}
+ P_{\rm bound}^\mu(\ell)
+ =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu
+ -\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu+O(\ell).
+ \label{eq:phys-rr-bound-momentum-expansion}
 \end{equation}
-由 $H_S\Pi(\epsilon)=\epsilon\Pi(\epsilon)$，逐项计算
-\[
-\begin{aligned}
-[H_S,S_\mu(\omega)]
-&=\sum_{\epsilon'-\epsilon=\hbar\omega}
-(\epsilon-\epsilon')
-\Pi(\epsilon)S_\mu\Pi(\epsilon')\\
-&=-\hbar\omega S_\mu(\omega).
-\end{aligned}
-\]
-于是
+第一项吸收到观测质量
 \begin{equation}
-\boxed{
-\widetilde S_\mu(t)
-=\sum_\omega
-\ee^{-\ii\omega t}S_\mu(\omega).
-}
-\label{eq:phys-oqs-s-interaction-bohr}
+ m=\lim_{\ell\to0}\left[
+ m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}\right],
+ \label{eq:phys-rr-mass-renormalization}
 \end{equation}
-在这里固定的频率约定下，$\omega>0$ 的 $S_\mu(\omega)$ 把系统从能量 $\epsilon'$ 降到较低能量 $\epsilon$；相应的 $S_\mu^\dagger(\omega)$ 描述反向跃迁。
-
-$\omega=0$ 是 Bohr 分解的一部分，而不是另加的噪声模型。它连接等能量子空间：若存在简并，$S_\mu(0)$ 可以在简并子空间内混合状态；只有当相应零频算符在所选能量基中对角时，零频通道才表现为通常意义的纯退相干。具体地，若
-\[
-[Q,H_S]=0,
-\qquad
-Q=\sum_iq_i|i\rangle\langle i|,
-\]
-且该通道的零频速率记为 $\gamma_Q(0)$，则
-\[
-\Diss{\sqrt{\gamma_Q(0)}Q}\rho
-=\gamma_Q(0)\left(Q\rho Q-\frac12\{Q^2,\rho\}\right).
-\]
-投影到 $|i\rangle\langle j|$，
-\[
-\langle i|Q\rho Q|j\rangle=q_iq_j\rho_{ij},
-\qquad
-\frac12\langle i|\{Q^2,\rho\}|j\rangle
-=\frac{q_i^2+q_j^2}{2}\rho_{ij},
-\]
+第二项定义 Schott 四动量
+\begin{equation}
+ P_{\rm Schott}^\mu
+ =-\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu .
+ \label{eq:phys-rr-schott-momentum}
+\end{equation}
+远区辐射携走的四动量率为
+\begin{equation}
+ \frac{\dd P_{\rm rad}^\mu}{\dd\tau}
+ =-\frac{q^2}{6\pi\varepsilon_0c^5}a^2u^\mu ,
+ \label{eq:phys-rr-radiated-four-momentum-rate}
+\end{equation}
 所以
 \begin{equation}
-\boxed{
-\dot\rho_{ij}\big|_\varphi
-=-\frac{\gamma_Q(0)}2(q_i-q_j)^2\rho_{ij},
-\qquad
-\dot\rho_{ii}\big|_\varphi=0.
-}
-\label{eq:phys-oqs-zero-frequency-dephasing}
+ f_{\rm self}^\mu
+ =-\frac{\dd P_{\rm Schott}^\mu}{\dd\tau}
+ -\frac{\dd P_{\rm rad}^\mu}{\dd\tau}.
+ \label{eq:phys-rr-self-force-momentum-split}
 \end{equation}
-\eqnrefs{eq:phys-oqs-zero-frequency-dephasing} 说明：对角零频噪声不改变 布居，而是随机化不同能级之间的相对相位；后文的 $\gamma_{ij}^{\varphi}$ 正是这类零频通道在给定相干元上的总贡献。
+Schott 项是可逆的近场储能，只有其边界贡献消失时，机械能损失才逐过程等于远区辐射能。
 
-把\eqnrefs{eq:phys-oqs-s-interaction-bohr} 代入\eqnrefs{eq:phys-oqs-bm-correlation-form}。例如其中一项变为
-\[
-\begin{aligned}
-&\int_0^\infty\dd\tau\,
-C_{\mu\nu}(\tau)
-\widetilde S_\nu(t-\tau)\widetilde\rho\widetilde S_\mu(t)\\
-&=\sum_{\omega,\omega'}
-\ee^{\ii(\omega'-\omega)t}
-\left[
-\int_0^\infty\dd\tau\,
-\ee^{+\ii\omega\tau}C_{\mu\nu}(\tau)
-\right]
-S_\nu(\omega)\widetilde\rho S_\mu^\dagger(\omega').
-\end{aligned}
-\]
-因此所有记忆积分都归结为单边 Fourier 变换
-\begin{equation}
-\boxed{
-G_{\mu\nu}(\omega)
-=\int_0^\infty\dd\tau\,
-\ee^{+\ii\omega\tau}C_{\mu\nu}(\tau).
-}
-\label{eq:phys-oqs-one-sided-response}
-\end{equation}
-利用分布恒等式
-\[
-\int_0^\infty\dd\tau\,\ee^{\ii x\tau}
-=\pi\delta(x)+\ii\,\mathcal P\frac1x,
-\]
-得到逐矩阵元的 Plemelj 关系
-\begin{equation}
-\boxed{
-G_{\mu\nu}(\omega)
-=\frac12\widetilde C_{\mu\nu}(\omega)
-+\frac{\ii}{2\pi}\mathcal P
-\int_{-\infty}^{+\infty}\dd\omega'\,
-\frac{\widetilde C_{\mu\nu}(\omega')}{\omega-\omega'}.
-}
-\label{eq:phys-oqs-plemelj}
-\end{equation}
-因此耗散与 Lamb 位移 来自同一个复响应。一般地定义
-\begin{equation}
-\boxed{
-\Gamma_{\mu\nu}(\omega)
-=\frac{\lambda^2}{\hbar^2}
-\left[G_{\mu\nu}(\omega)+G_{\nu\mu}^*(\omega)\right],
-}
-\label{eq:phys-oqs-gamma-from-g}
-\end{equation}
-和
-\begin{equation}
-\boxed{
-\Delta_{\mu\nu}^{\rm LS}(\omega)
-=\frac{\lambda^2}{2\ii\hbar}
-\left[G_{\mu\nu}(\omega)-G_{\nu\mu}^*(\omega)\right].
-}
-\label{eq:phys-oqs-delta-ls}
-\end{equation}
-在前面采用的 厄米 环境算符基底中，
-\[
-C_{\nu\mu}(-\tau)=C_{\mu\nu}^*(\tau),
-\]
-于是\eqnrefs{eq:phys-oqs-gamma-from-g} 与\eqnrefs{eq:phys-oqs-gamma-from-spectrum} 完全一致，而
-\begin{equation}
-\boxed{
-\Delta_{\mu\nu}^{\rm LS}(\omega)
-=\frac{\lambda^2}{2\pi\hbar}
-\mathcal P\int_{-\infty}^{+\infty}\dd\omega'\,
-\frac{\widetilde C_{\mu\nu}(\omega')}{\omega-\omega'}.
-}
-\label{eq:phys-oqs-delta-hilbert}
-\end{equation}
-$\Gamma$ 的量纲为频率，$\Delta^{\rm LS}$ 的量纲为能量。前者只读取环境谱在系统 Bohr 频率处的在壳值；后者是整个频谱的 Hilbert 变换。
-
-接下来考察有限粗粒化、部分 久期 与 Kossakowski 矩阵。
-
-把 Bohr 分解代入\eqnrefs{eq:phys-oqs-bm-correlation-form} 并保留所有 $\omega,\omega'$ 交叉项，就得到通常所称的二阶 Redfield 生成元。它已经是 时间局域 且在 Markov 时间尺度上系数近似常数，但一般不具有 GKSL 形式；特别是交叉频率块对应的系数矩阵不必整体半正定，所以 Redfield 演化不能仅凭“二阶、时间局域”就宣称完全正。完全正性要么来自受控的有限粗粒化构造，要么来自进一步的 久期 极限。
-
-Bohr 分解代入 Born--Markov 核后，尚未 久期 化的项都带有
-\[
-\ee^{\ii(\omega'-\omega)t}
-\]
-这样的相对相位。粗粒化时间还必须足以平均掉不同 Bohr 频率之间的相对相位。若希望删除一对 $\omega\neq\omega'$ 的交叉项，需要同时存在
-\[
-\tau_B\ll\Delta t\ll\tau_R,
-\qquad
-|\omega-\omega'|\Delta t\gg1.
-\]
-这样的 $\Delta t$ 存在的充分尺度条件是
-\begin{equation}
-|\omega-\omega'|\,\tau_R\gg1.
-\label{eq:phys-oqs-secular-condition}
-\end{equation}
-因此 久期 并不是 Born--Markov 的自动结果，而是对同一粗粒化窗口追加的频率分辨条件。完全 久期 近似于是保留 $\omega=\omega'$。若两条跃迁严格简并，或其频率差小到不满足\eqnrefs{eq:phys-oqs-secular-condition}，则它们必须保留在同一频率块内；此时 $\Gamma_{\mu\nu}(\omega)$ 的非对角元描述环境不能分辨这些跃迁所产生的干涉耗散。
-
-这个条件还可以从有限粗粒化平均直接看出。令
-\(\Delta\omega=\omega'-\omega\)，则
-\begin{align}
-\frac1{\Delta t}
-\int_{t-\Delta t/2}^{t+\Delta t/2}
-\ee^{\ii\Delta\omega s}\dd s
-&=
-\ee^{\ii\Delta\omega t}
-\frac{
-\sin(\Delta\omega\Delta t/2)
-}{
-\Delta\omega\Delta t/2
-}
-\nonumber\\
-&=
-\ee^{\ii\Delta\omega t}
-\operatorname{sinc}
-\!\left(
-\frac{\Delta\omega\Delta t}{2}
-\right).
-\label{eq:phys-oqs-finite-coarse-grain-sinc}
-\end{align}
-因此完全 久期 是
-\(|\Delta\omega|\Delta t\gg1\) 的极限；当一组近简并频率满足
-\[
-|\omega-\omega'|\Delta t\lesssim1,
-\]
-它们应作为同一个 coarse-grained frequency 块 保留，这就是 部分-久期 的自然来源。
-
-为在保留近简并交叉项的同时保证完全正性，不能从 Redfield 方程中任意删项，而应直接在有限窗口 $\Delta t$ 上构造二阶 coarse-grained Kossakowski 矩阵。在前面采用的 厄米 环境算符基底中，把复合指标记为 $a=(\mu,\omega)$，定义
-\begin{equation}
-\boxed{
-\Gamma_{\mu\omega,\nu\omega'}^{(\Delta t)}
-=\frac{\lambda^2}{\hbar^2\Delta t}
-\int_0^{\Delta t}\dd s\int_0^{\Delta t}\dd u\,
-\ee^{+\ii\omega s-\ii\omega'u}
-C_{\mu\nu}(s-u).
-}
-\label{eq:phys-oqs-coarse-grained-kossakowski}
-\end{equation}
-对任意复系数 $z_{\mu\omega}$，令
-\[
-X_z=\sum_{\nu,\omega'}z_{\nu\omega'}
-\int_0^{\Delta t}\ee^{-\ii\omega'u}\widetilde B_\nu(u)\dd u.
-\]
-平稳性给
-\begin{align}
-\sum_{\mu\omega,\nu\omega'}
- z_{\mu\omega}^*
-\Gamma_{\mu\omega,\nu\omega'}^{(\Delta t)}
- z_{\nu\omega'}
-&=\frac{\lambda^2}{\hbar^2\Delta t}
-\Tr_B(X_z^\dagger X_z\rho_B)\nonumber\\
-&\ge0.
-\label{eq:phys-oqs-coarse-grained-gram}
-\end{align}
-所以
-\begin{equation}
-\boxed{\Gamma^{(\Delta t)}\succeq0}
-\label{eq:phys-oqs-coarse-grained-psd}
-\end{equation}
-是一个直接的 Gram 结论，而不是额外假设。令复合指标 $a=(\mu,\omega)$ 并记 $S_a=S_\mu(\omega)$，则有限粗粒化生成元的耗散部分可直接写为
-\begin{equation}
-\boxed{
-\mathcal D_{\Delta t}[\rho]
-=\sum_{a,b}\Gamma_{ab}^{(\Delta t)}
-\left(
-S_b\rho S_a^\dagger
--\frac12\{S_a^\dagger S_b,\rho\}
-\right).
-}
-\label{eq:phys-oqs-coarse-grained-dissipator}
-\end{equation}
-与双时间积分的 反厄米 部分产生的 $H_{\rm LS}^{(\Delta t)}$ 合并后，
-\[
-\mathcal L_{\Delta t}\rho
-=-\frac{\ii}{\hbar}[H_S+H_{\rm LS}^{(\Delta t)},\rho]
-+\mathcal D_{\Delta t}[\rho]
-\]
-已经是 GKSL 形式；因此这里的完全正性来自\eqnrefs{eq:phys-oqs-coarse-grained-psd}，而不是来自随后再做 完全 久期。等价地，引入归一化有限时间滤波器
-\[
-F_{\Delta t}(x)=\frac1{\sqrt{\Delta t}}
-\int_0^{\Delta t}\ee^{\ii xs}\dd s
-=\sqrt{\Delta t}\,\ee^{\ii x\Delta t/2}
-\operatorname{sinc}\!\left(\frac{x\Delta t}{2}\right),
-\]
-可把\eqnrefs{eq:phys-oqs-coarse-grained-kossakowski}写成
-\begin{equation}
-\Gamma_{\mu\omega,\nu\omega'}^{(\Delta t)}
-=\frac{\lambda^2}{\hbar^2}
-\int_{-\infty}^{+\infty}\frac{\dd\varpi}{2\pi}
-\widetilde C_{\mu\nu}(\varpi)
-F_{\Delta t}(\omega-\varpi)
-F_{\Delta t}^*(\omega'-\varpi).
-\label{eq:phys-oqs-coarse-grained-spectral-filter}
-\end{equation}
-因此 部分 久期 的含义是：只要 $|\omega-\omega'|\Delta t\lesssim1$，两个滤波窗口仍有显著重叠，交叉项就应作为同一正半定 Kossakowski 块保留；当 $|\omega-\omega'|\Delta t\gg1$ 时，其重叠按 sinc 尾部衰减，才进入完全 久期 极限。一个保持完全正性的离散化办法，是把近简并复合指标分成若干频率簇，完整保留每个簇对应的 主 块，只把不同簇之间的整块耦合置零；所得块对角矩阵仍为半正定。反之，任意“凭频率看起来接近就删掉若干单独矩阵元”的做法都可能破坏\eqnrefs{eq:phys-oqs-coarse-grained-psd}。
-
-\begin{note}[四个容易混淆的逻辑层级]
-时间局域 只表示方程可写成 $\dot\rho(t)=\mathcal K(t)\rho(t)$，其系数仍可携带有限初始时刻和环境记忆，因此 时间局域 不等于 Markov。Redfield 方程来自 Born--Markov 的二阶闭合，但未必具有半正定 Kossakowski 矩阵，因此 Redfield 不等于 GKSL。有限 $\Delta t$ 的 coarse graining 保留满足 $|\omega-\omega'|\Delta t\lesssim1$ 的近简并块，是 部分 久期；只有在所有待区分频率满足 $|\omega-\omega'|\Delta t\gg1$ 时，才可进入 完全 久期。最后，部分 久期 本身也不是“任意保留一些交叉项”：只有像\eqnrefs{eq:phys-oqs-coarse-grained-kossakowski}这样从有限时间 Gram 矩阵整体构造，才能保证完全正性。
-
-在 $\tau_B\ll\Delta t\ll\tau_R$ 内，Markov 历史态替换的相对误差为 $O(\epsilon_{\rm M})=O(\tau_B/\tau_R)$，有限频率平均的残余交叉项由 $\operatorname{sinc}[(\omega-\omega')\Delta t/2]$ 控制；若 $|\omega-\omega'|\Delta t\gg1$，其包络至多为 $O((|\omega-\omega'|\Delta t)^{-1})$。这些误差与 Born/无时间卷积 的耦合阶数截断是不同来源，不能用一个“小耦合”条件同时替代。
-\end{note}
-
-若不同 Bohr 频率之间的拍频在粗粒化时间内完全平均掉，就进一步得到完全 久期 的 GKSL 极限。
-
-把\eqnrefs{eq:phys-oqs-one-sided-response} 的 厄米 与 反厄米 部分分别代回同一频率块。由\eqnrefs{eq:phys-oqs-gamma-from-g}--\eqnrefs{eq:phys-oqs-delta-ls}，可写成
-\[
-G(\omega)
-=\frac{\hbar^2}{2\lambda^2}\Gamma(\omega)
-+\frac{\ii\hbar}{\lambda^2}\Delta^{\rm LS}(\omega).
-\]
-其中 厄米 部分组合为耗散子，反厄米 部分组合为对易子。定义
-\begin{equation}
-\boxed{
-H_{\rm LS}
-=\sum_\omega\sum_{\mu\nu}
-\Delta_{\mu\nu}^{\rm LS}(\omega)
-S_\mu^\dagger(\omega)S_\nu(\omega).
-}
-\label{eq:phys-oqs-hls-general}
-\end{equation}
-由
-\[
-[H_S,S_\nu(\omega)]=-\hbar\omega S_\nu(\omega),
-\qquad
-[H_S,S_\mu^\dagger(\omega)]=+\hbar\omega S_\mu^\dagger(\omega),
-\]
-逐项得到
-\[
-\begin{aligned}
-[H_S,S_\mu^\dagger(\omega)S_\nu(\omega)]
-={}&[H_S,S_\mu^\dagger(\omega)]S_\nu(\omega)\\
-&+S_\mu^\dagger(\omega)[H_S,S_\nu(\omega)]\\
-={}&0.
-\end{aligned}
-\]
-故
-\begin{equation}
-\boxed{[H_S,H_{\rm LS}]=0.}
-\label{eq:phys-oqs-hls-commutes}
-\end{equation}
-久期 后相互作用绘景中的生成元为
-\begin{equation}
-\boxed{
-\begin{aligned}
-\dot{\widetilde\rho}
-={}&-\frac{\ii}{\hbar}[H_{\rm LS},\widetilde\rho]\\
-&+\sum_\omega\sum_{\mu\nu}
-\Gamma_{\mu\nu}(\omega)
-\left[
-S_\nu(\omega)\widetilde\rho S_\mu^\dagger(\omega)
--\frac12\{S_\mu^\dagger(\omega)S_\nu(\omega),\widetilde\rho\}
-\right].
-\end{aligned}}
-\label{eq:phys-oqs-gksl-interaction-picture}
-\end{equation}
-
-现在使用\eqnrefs{eq:phys-oqs-picture-dictionary} 返回 Schr\"odinger 绘景。由
-\[
-\rho=U_S\widetilde\rho U_S^\dagger
-\]
-对时间求导，
-\[
-\begin{aligned}
-\dot\rho
-&=\dot U_S\widetilde\rho U_S^\dagger
-+U_S\dot{\widetilde\rho}U_S^\dagger
-+U_S\widetilde\rho\dot U_S^\dagger\\
-&=-\frac{\ii}{\hbar}[H_S,\rho]
-+U_S\dot{\widetilde\rho}U_S^\dagger.
-\end{aligned}
-\]
-另一方面，由\eqnrefs{eq:phys-oqs-s-interaction-bohr} 等价地得到
-\[
-U_SS_\nu(\omega)U_S^\dagger
-=\ee^{+\ii\omega t}S_\nu(\omega),
-\qquad
-U_SS_\mu^\dagger(\omega)U_S^\dagger
-=\ee^{-\ii\omega t}S_\mu^\dagger(\omega).
-\]
-因此 回收 结构中的相位逐项抵消：
-\[
-\begin{aligned}
-&U_S
-[S_\nu(\omega)\widetilde\rho S_\mu^\dagger(\omega)]
-U_S^\dagger\\
-&=\ee^{+\ii\omega t}S_\nu(\omega)
-\rho
-\ee^{-\ii\omega t}S_\mu^\dagger(\omega)\\
-&=S_\nu(\omega)\rho S_\mu^\dagger(\omega).
-\end{aligned}
-\]
-同样，$S_\mu^\dagger S_\nu$ 中的相位也抵消；再由\eqnrefs{eq:phys-oqs-hls-commutes}，
-\[
-U_SH_{\rm LS} U_S^\dagger=H_{\rm LS}.
-\]
-于是得到 Schr\"odinger 绘景中的微观 GKSL 方程
-\begin{equation}
-\boxed{
-\begin{aligned}
-\dot\rho
-={}&-\frac{\ii}{\hbar}[H_S+H_{\rm LS},\rho]\\
-&+\sum_\omega\sum_{\mu\nu}
-\Gamma_{\mu\nu}(\omega)
-\left[
-S_\nu(\omega)\rho S_\mu^\dagger(\omega)
--\frac12\{S_\mu^\dagger(\omega)S_\nu(\omega),\rho\}
-\right].
-\end{aligned}}
-\label{eq:phys-oqs-gksl-microscopic}
-\end{equation}
-
-由\eqnrefs{eq:phys-oqs-gamma-psd}，每个 $\omega$ 块都可以酉对角化：
-\[
-\Gamma(\omega)
-=U^\dagger(\omega)
-\operatorname{diag}[\gamma_1(\omega),\gamma_2(\omega),\ldots]
-U(\omega),
-\qquad
-\gamma_q(\omega)\ge0.
-\]
-定义含速率的 坍缩算符
-\begin{equation}
-\boxed{
-C_q(\omega)
-=\sqrt{\gamma_q(\omega)}
-\sum_\mu U_{q\mu}(\omega)S_\mu(\omega).
-}
-\label{eq:phys-oqs-collapse-from-gamma}
-\end{equation}
-于是\eqnrefs{eq:phys-oqs-gksl-microscopic} 化为标准形式
-\begin{equation}
-\boxed{
-\dot\rho
-=-\frac{\ii}{\hbar}[H,\rho]
-+\sum_{\omega,q}\Diss{C_q(\omega)}\rho,
-\qquad
-H\equiv H_S+H_{\rm LS},
-}
-\label{eq:phys-oqs-gksl-standard}
-\end{equation}
-其中
-\begin{equation}
-\boxed{
-\Diss{C}\rho
-=C\rho C^\dagger-\frac12\{C^\dagger C,\rho\}.
-}
-\label{eq:phys-oqs-dissipator}
-\end{equation}
-正半定性\eqnrefs{eq:phys-oqs-gamma-psd} 在这里承担了关键作用：它保证所有 $\gamma_q(\omega)$ 非负，因此耗散部分可以写成一组真实非负速率的 Lindblad 通道。反对易项使 $\Tr\rho$ 的一阶变化精确抵消 回收 项，而非负速率又使生成元满足 GKSL 定理的完全正性条件。后文\eqnrefs{eq:phys-oqs-infinitesimal-completeness} 会进一步把这个结论写成显式的无穷小 Kraus 完备关系；因此“环境谱矩阵半正定 $\Rightarrow$ 生成元完全正”不是额外假设，而是从平稳环境相关函数到 完全正迹保持 半群的闭合链条。
-
-接下来考察热平衡环境：KMS 关系、detailed balance 与 Gibbs 稳态。
-
-若环境不是任意平稳态，而是温度 $T=(k_B\beta)^{-1}$ 的 Gibbs 态
-\begin{equation}
-\rho_B^{(\beta)}=\frac{\ee^{-\beta H_B}}{Z_B},
-\qquad
-Z_B=\Tr_B\ee^{-\beta H_B},
-\label{eq:phys-oqs-bath-gibbs-state}
-\end{equation}
-则平稳性之外还多出 Kubo--Martin--Schwinger（KMS）约束。沿用\eqnrefs{eq:phys-oqs-gamma-spectral-representation}的 厄米 耦合基底，在能量本征态上有
-\[
-p_n=\frac{\ee^{-\beta E_n}}{Z_B}.
-\]
-把 $n,m$ 互换，并利用 $\delta(\omega-\omega_{mn})$ 强制 $E_m-E_n=\hbar\omega$，可得谱矩阵的精确 detailed-balance 关系
-\begin{equation}
-\boxed{
-\Gamma_{\mu\nu}(-\omega)
-=\ee^{-\beta\hbar\omega}\,
-\Gamma_{\nu\mu}(\omega).
-}
-\label{eq:phys-oqs-kms-detailed-balance}
-\end{equation}
-因此正频率的向下跃迁与负频率的向上跃迁不是两组独立速率；热因子 $\ee^{-\beta\hbar\omega}$ 精确固定了它们的比值。
-
-系统自身的 Gibbs 态记为
-\begin{equation}
-\rho_{S,\beta}=\frac{\ee^{-\beta H_S}}{Z_S}.
-\label{eq:phys-oqs-system-gibbs-state}
-\end{equation}
-由 $[H_S,S_\mu(\omega)]=-\hbar\omega S_\mu(\omega)$，对指数函数作级数展开，逐项交换 $H_S$ 与 $S_\mu(\omega)$，得到
-\begin{equation}
-\boxed{
-S_\mu(\omega)\rho_{S,\beta}
-=\ee^{-\beta\hbar\omega}
-\rho_{S,\beta}S_\mu(\omega).
-}
-\label{eq:phys-oqs-gibbs-intertwining}
-\end{equation}
-在 厄米 耦合基底中 $S_\mu(-\omega)=S_\mu^\dagger(\omega)$。于是 完全-久期 GKSL 耗散子中 $+\omega$ 与 $-\omega$ 的贡献可成对相消；零频块则由\eqnrefs{eq:phys-oqs-kms-detailed-balance}在 $\omega=0$ 处给出的对称性相消。再结合 $[H_S,H_{\rm LS}]=0$，得到
-\begin{equation}
-\boxed{
-\mathcal L_{\rm sec}[\rho_{S,\beta}]=0.
-}
-\label{eq:phys-oqs-gibbs-stationary}
-\end{equation}
-因此在当前弱耦合、Markov、完全-久期 的微观极限中，裸系统 Hamiltonian $H_S$ 的 Gibbs 态由 KMS 关系与 Bohr 频率分解严格推出为一个平衡稳态，而不是额外指定的 phenomenological ansatz。这里得到的是驻定性而非自动得到全局热化：只有当 Liouvillian 在相关态空间上具有唯一零模并且其余谱的实部严格为负（例如满足适当的 irreducibility/primitivity 条件）时，任意初态才收敛到该 Gibbs 态；若存在暗子空间、额外守恒量或多个不变扇区，热 detailed balance 仍可成立而稳态并不唯一。
-
-\begin{derivation}[从 KMS 谱关系到 Gibbs 稳态]
-由\eqnrefs{eq:phys-oqs-gamma-spectral-representation}，
-\[
-\Gamma_{\nu\mu}(-\omega)
-=\frac{2\pi\lambda^2}{\hbar^2}
-\sum_{nm}p_n
-(B_\nu)_{nm}(B_\mu)_{nm}^*
-\delta(-\omega-\omega_{mn}).
-\]
-交换 $n\leftrightarrow m$ 后，厄米 性给出
-\[
-(B_\nu)_{mn}(B_\mu)_{mn}^*
-=(B_\mu)_{nm}(B_\nu)_{nm}^*,
-\]
-而在 δ 函数的支撑上
-\[
-\frac{p_m}{p_n}
-=\ee^{-\beta(E_m-E_n)}
-=\ee^{-\beta\hbar\omega}.
-\]
-因此
-\[
-\Gamma_{\nu\mu}(-\omega)
-=\ee^{-\beta\hbar\omega}\Gamma_{\mu\nu}(\omega),
-\]
-交换指标即得\eqnrefs{eq:phys-oqs-kms-detailed-balance}。
-
-接着从
-\[
-[H_S,S_\mu(\omega)]=-\hbar\omega S_\mu(\omega)
-\]
-出发。对伴随作用的指数展开有
-\[
-\ee^{-\beta H_S}S_\mu(\omega)\ee^{+\beta H_S}
-=\sum_{n=0}^{\infty}
-\frac{(-\beta)^n}{n!}\operatorname{ad}_{H_S}^nS_\mu(\omega)
-=\ee^{+\beta\hbar\omega}S_\mu(\omega).
-\]
-右乘 $\ee^{-\beta H_S}$ 并重新排列，得到
-\[
-S_\mu(\omega)\ee^{-\beta H_S}
-=\ee^{-\beta\hbar\omega}
-\ee^{-\beta H_S}S_\mu(\omega),
-\]
-除以 $Z_S$ 即为\eqnrefs{eq:phys-oqs-gibbs-intertwining}。
-
-再取任意 $\omega>0$。因为 $S_\mu^\dagger(\omega)S_\nu(\omega)$ 与 $H_S$ 对易，$+\omega$ 块作用于 $\rho_{S,\beta}$ 时可写成
-\[
-\mathcal D_{+\omega}[\rho_{S,\beta}]
-=\rho_{S,\beta}
-\sum_{\mu\nu}\Gamma_{\mu\nu}(\omega)
-\left[
-\ee^{-\beta\hbar\omega}S_\nu S_\mu^\dagger
--S_\mu^\dagger S_\nu
-\right].
-\]
-另一方面，用 $S_\mu(-\omega)=S_\mu^\dagger(\omega)$ 与\eqnrefs{eq:phys-oqs-kms-detailed-balance}，负频率块为
-\[
-\begin{aligned}
-\mathcal D_{-\omega}[\rho_{S,\beta}]
-={}&\rho_{S,\beta}
-\sum_{\mu\nu}\Gamma_{\mu\nu}(-\omega)
-\left[
-\ee^{+\beta\hbar\omega}S_\nu^\dagger S_\mu
--S_\mu S_\nu^\dagger
-\right]\\
-={}&-\mathcal D_{+\omega}[\rho_{S,\beta}],
-\end{aligned}
-\]
-其中第二步只需交换哑指标 $\mu\leftrightarrow\nu$。$\omega=0$ 时，$S_\mu(0)$ 与 $\rho_{S,\beta}$ 对易，且 KMS 与 厄米 性共同使 $\Gamma_{\mu\nu}(0)$ 为实对称矩阵，所以零频块也湮灭 $\rho_{S,\beta}$。Hamiltonian 部分则因
-\[
-[H_S,\rho_{S,\beta}]=0,
-\qquad
-[H_{\rm LS},\rho_{S,\beta}]=0
-\]
-而为零，故得到\eqnrefs{eq:phys-oqs-gibbs-stationary}。
-\end{derivation}
-
-\begin{note}[完全正性不等于热 detailed balance]
-有限粗粒化构造\eqnrefs{eq:phys-oqs-coarse-grained-kossakowski}保证的是 Kossakowski 矩阵半正定，因此 部分-久期 动力学可以保持完全正；但若一个频率簇同时保留 $\omega\neq\omega'$ 的交叉项，\eqnrefs{eq:phys-oqs-kms-detailed-balance}一般不足以让裸 Gibbs 态成为\emph{精确}稳态。只有在完整 Davies/完全-久期 极限，或所保留簇结构额外满足相应量子 detailed-balance 对称性时，\eqnrefs{eq:phys-oqs-gibbs-stationary}才严格成立。另一方面，有限耦合下总体系的精确平衡约化态是
-\[
-\rho_{S,\beta}^{\rm exact}
-=\frac{\Tr_B\ee^{-\beta H_{\rm tot}}}
-{\Tr_{SB}\ee^{-\beta H_{\rm tot}}},
-\]
-一般可由 Hamiltonian of 平均 force 描述，并不等于裸 $\ee^{-\beta H_S}/Z_S$。因此“GKSL”“CP”“Markov”“热详细平衡”是四个不同层次的性质，不能相互替代。
-\end{note}
-
-\section{一般生成元的 Liouvillian、jump 与对称性}
-\label{sec:phys-oqs-unified}
-
-标准 GKSL 方程\eqnrefs{eq:phys-oqs-gksl-standard} 把微观环境信息压缩为 Hamiltonian $H=H_S+H_{\rm LS}$ 与一组 坍缩算符 $C_q$。它的 跳跃、Liouvillian 与对称分级结构与具体能级数无关，可以直接在一般算符层面建立。
-
-这一生成元还可以按 跳跃、回收 与无跳跃传播三部分重排。
-
-令
-\begin{equation}
-K=\sum_q C_q^\dagger C_q,
-\qquad
-\boxed{H_{\rm eff}=H-\frac{\ii\hbar}{2}K.}
-\label{eq:phys-oqs-heff-general}
-\end{equation}
-对一个无穷小时间步 $\dd t$，定义
-\begin{equation}
-M_0=\id()-\frac{\ii}{\hbar}H_{\rm eff}\dd t,
-\qquad
-M_q=\sqrt{\dd t}\,C_q\quad(q\ge1).
-\label{eq:phys-oqs-infinitesimal-kraus}
-\end{equation}
-先检查概率守恒。由
-\[
-H_{\rm eff}^\dagger-H_{\rm eff}=\ii\hbar K
-\]
-可得
-\begin{align}
-M_0^\dagger M_0
-&=\id()+\frac{\ii\dd t}{\hbar}
-(H_{\rm eff}^\dagger-H_{\rm eff})+O(\dd t^2)\nonumber\\
-&=\id()-K\dd t+O(\dd t^2),
-\end{align}
-而
-\[
-\sum_{q\ge1}M_q^\dagger M_q
-=K\dd t.
-\]
-因此
-\begin{equation}
-\boxed{
-\sum_{\alpha\ge0}M_\alpha^\dagger M_\alpha
-=\id()+O(\dd t^2).}
-\label{eq:phys-oqs-infinitesimal-completeness}
-\end{equation}
-也就是说，GKSL 动力学在每个无穷小时间步都具有精确到 $O(\dd t^2)$ 的 Kraus 表示；精确有限时间映射则由 完全正迹保持 半群 $\ee^{\mathbb L t}$ 给出。
-
-把
-\[
-\rho(t+\dd t)=M_0\rho(t)M_0^\dagger
-+\sum_{q\ge1}M_q\rho(t)M_q^\dagger+O(\dd t^2)
-\]
-展开到一阶：
-\begin{align}
-M_0\rho M_0^\dagger
-&=\rho-\frac{\ii\dd t}{\hbar}
-(H_{\rm eff}\rho-\rho H_{\rm eff}^\dagger)+O(\dd t^2),\\
-\sum_{q\ge1}M_q\rho M_q^\dagger
-&=\dd t\sum_q C_q\rho C_q^\dagger.
-\end{align}
-除以 $\dd t$ 并令 $\dd t\to0$，就得到与 GKSL 完全等价的分解
-\begin{equation}
-\boxed{
-\dot\rho
-=-\frac{\ii}{\hbar}
-(H_{\rm eff}\rho-\rho H_{\rm eff}^\dagger)
-+\mathcal R[\rho],
-\qquad
-\mathcal R[\rho]=\sum_q\mathcal J_q[\rho],}
-\label{eq:phys-oqs-heff-recycle}
-\end{equation}
-其中
-\begin{equation}
-\boxed{\mathcal J_q[\rho]=C_q\rho C_q^\dagger}
-\label{eq:phys-oqs-jump-superoperator}
-\end{equation}
-称为第 $q$ 个 跳跃 超算符，而 $\mathcal R$ 称为 回收 超算符。在给定 分解 后，前者给“发生第 $q$ 个 跳跃 后”的未归一化状态，后者把所有 跳跃 分支的概率全部回注到无条件密度矩阵。
-
-若当前归一化条件态为 $\rho_c$，则\eqnrefs{eq:phys-oqs-infinitesimal-kraus} 立即给出第 $q$ 个 跳跃 的概率
-\begin{equation}
-\boxed{
-\dd p_q
-=\Tr(M_q\rho_cM_q^\dagger)
-=\dd t\,\Tr(C_q^\dagger C_q\rho_c),}
-\label{eq:phys-oqs-jump-probability}
-\end{equation}
-以及 跳跃 后的归一化条件态
-\begin{equation}
-\boxed{
-\rho_c\longrightarrow
-\frac{C_q\rho_cC_q^\dagger}
-{\Tr(C_q^\dagger C_q\rho_c)}.}
-\label{eq:phys-oqs-jump-update}
-\end{equation}
-这里的 ``跳跃 通道'' 依赖所选的 分解，而不是无条件 GKSL 生成元唯一指定的经典事件。若 $U$ 是作用在 跳跃 指标上的酉矩阵，并定义
-\[
-C'_a=\sum_qU_{aq}C_q,
-\]
-则
-\[
-\begin{aligned}
-\sum_aC'_a\rho C_a'^\dagger
-&=\sum_{q,q'}(U^\dagger U)_{q'q}C_q\rho C_{q'}^\dagger
-=\sum_qC_q\rho C_q^\dagger,\\
-\sum_aC_a'^\dagger C'_a
-&=\sum_qC_q^\dagger C_q.
-\end{aligned}
-\]
-因此这种酉混合不改变 $\mathbb L$、$H_{\rm eff}$ 或无条件态 $\rho(t)$，却会改变单条随机轨迹中“哪一种 跳跃 发生”的标签。只有在环境测量方案、输出模基底或其他监测协议同时给定以后，\eqnrefs{eq:phys-oqs-jump-probability}--\eqnrefs{eq:phys-oqs-jump-update} 才对应一个具体的实验 分解。
-
-无 跳跃 时，未归一化条件态为 $M_0\rho_cM_0^\dagger$，其迹
-\[
-1-\dd t\sum_q\Tr(C_q^\dagger C_q\rho_c)+O(\dd t^2)
-\]
-正好是“没有任何环境事件”的概率。因此 $H_{\rm eff}$ 的非厄密部分不是额外引入的耗散，而是条件在“尚未探测到 跳跃”这一信息下的概率权重。
-
-对纯态 无-跳跃 分支，
-\begin{equation}
-\ii\hbar\frac{\dd}{\dd t}|\psi_{\rm nj}(t)\rangle
-=H_{\rm eff}|\psi_{\rm nj}(t)\rangle.
-\label{eq:phys-oqs-nojump-schrodinger}
-\end{equation}
-若 $H_{\rm eff}$ 与时间无关，
-\[
-|\psi_{\rm nj}(t)\rangle
-=\ee^{-\ii H_{\rm eff}t/\hbar}|\psi_0\rangle.
-\]
-若其某个右本征值写成 $E_r-\ii\hbar\kappa_r/2$，则相应条件振幅包含 $\ee^{-\ii E_rt/\hbar}\ee^{-\kappa_rt/2}$。
-
-接下来考察 Liouvillian。
-
-对有限维系统，主方程可以转化成普通线性常微分方程。采用按列堆叠约定
-\[
-|X\!\rangle\!\rangle\equiv\operatorname{vec}(X),
-\qquad
-\operatorname{vec}(X)_{i+(j-1)d}=X_{ij}.
-\]
-需要的核心恒等式是
-\begin{equation}
-\boxed{
-\operatorname{vec}(AXB)
-=(B^{\mathsf T}\mathbin{\otimes_{\rm K}} A)\operatorname{vec}(X).}
-\label{eq:phys-oqs-vec-axb}
-\end{equation}
-这个式子可以直接从指标证明。左边第 $(i,j)$ 个矩阵元为
-\[
-(AXB)_{ij}=\sum_{k,l}A_{ik}X_{kl}B_{lj}.
-\]
-右边对应向量分量则是
-\begin{align}
-[(B^{\mathsf T}\mathbin{\otimes_{\rm K}} A)\operatorname{vec}(X)]_{i+(j-1)d}
-&=\sum_{k,l}(B^{\mathsf T})_{jl}A_{ik}X_{kl}\nonumber\\
-&=\sum_{k,l}A_{ik}X_{kl}B_{lj},
-\end{align}
-与左边逐项相同。
-
-将\eqnrefs{eq:phys-oqs-vec-axb} 分别用于 Hamiltonian、跳跃 与 损失 项：
-\[
-\operatorname{vec}(H\rho)=(\id()\mathbin{\otimes_{\rm K}} H)|\rho\!\rangle\!\rangle,
-\qquad
-\operatorname{vec}(\rho H)=(H^{\mathsf T}\mathbin{\otimes_{\rm K}}\id())|\rho\!\rangle\!\rangle,
-\]
-\[
-\operatorname{vec}(C_q\rho C_q^\dagger)
-=(C_q^*\mathbin{\otimes_{\rm K}} C_q)|\rho\!\rangle\!\rangle.
-\]
-于是任意 $d$ 维 GKSL 方程统一成为
-\begin{equation}
-\boxed{
-\frac{\dd}{\dd t}|\rho\!\rangle\!\rangle
-=\mathbb L|\rho\!\rangle\!\rangle.}
-\label{eq:phys-oqs-liouville-evolution}
-\end{equation}
-其中
-\begin{equation}
-\boxed{
-\begin{aligned}
-\mathbb L={}&-\frac{\ii}{\hbar}
-(\id()\mathbin{\otimes_{\rm K}} H-H^{\mathsf T}\mathbin{\otimes_{\rm K}}\id())\\
-&+\sum_q\left[
-C_q^*\mathbin{\otimes_{\rm K}} C_q
--\frac12\id()\mathbin{\otimes_{\rm K}} C_q^\dagger C_q
--\frac12(C_q^\dagger C_q)^{\mathsf T}\mathbin{\otimes_{\rm K}}\id()
-\right].
-\end{aligned}}
-\label{eq:phys-oqs-liouvillian-general}
-\end{equation}
-利用\eqnrefs{eq:phys-oqs-heff-general} 也可写成
-\begin{equation}
-\boxed{
-\mathbb L
-=-\frac{\ii}{\hbar}
-(\id()\mathbin{\otimes_{\rm K}} H_{\rm eff}-H_{\rm eff}^*\mathbin{\otimes_{\rm K}}\id())
-+\sum_qC_q^*\mathbin{\otimes_{\rm K}} C_q.}
-\label{eq:phys-oqs-liouvillian-heff}
-\end{equation}
-
-时间无关时，严格线性解为
-\begin{equation}
-\boxed{
-|\rho(t)\!\rangle\!\rangle
-=\ee^{\mathbb L t}|\rho(0)\!\rangle\!\rangle.}
-\label{eq:phys-oqs-liouvillian-exponential}
-\end{equation}
-若 $\mathbb L(t)$ 随时间变化，则应使用
-\begin{equation}
-|\rho(t)\!\rangle\!\rangle
-=\mathcal T\exp\!\left[\int_0^t\mathbb L(s)\,\dd s\right]
-|\rho(0)\!\rangle\!\rangle.
-\label{eq:phys-oqs-time-dependent-liouvillian}
-\end{equation}
-
-迹守恒在 Liouville 空间中表现为一个左零模。定义
-\[
-\langle\!\langle\id()|X\!\rangle\!\rangle=\Tr X.
-\]
-因为 $\dd\Tr\rho/\dd t=0$ 对任意 $\rho$ 都成立，所以
-\begin{equation}
-\boxed{\langle\!\langle\id()|\mathbb L=0.}
-\label{eq:phys-oqs-left-zero-mode}
-\end{equation}
-稳态则是右零模
-\begin{equation}
-\boxed{\mathbb L|\rho_{\rm ss}\!\rangle\!\rangle=0,
-\qquad \Tr\rho_{\rm ss}=1.}
-\label{eq:phys-oqs-steady-state-liouvillian}
-\end{equation}
-若 $\mathbb L$ 可对角化，其他右本征模满足
-\[
-\mathbb L|R_\alpha\!\rangle\!\rangle
-=\lambda_\alpha|R_\alpha\!\rangle\!\rangle.
-\]
-有限维 完全正迹保持 半群的生成元满足 $\operatorname{Re}\lambda_\alpha\le0$；$-\operatorname{Re}\lambda_\alpha$ 给相应无条件模的衰减率，$\operatorname{Im}\lambda_\alpha$ 给其振荡频率。最靠近零的非零实部决定长时间弛豫尺度，这与后面 $H_{\rm eff}$ 的条件极点是不同的谱对象。
-
-接下来考察对称分级与荷扇区。
-
-流形方法的本质不是“二能级技巧”，而是 Liouvillian 对某个荷算符诱导的伴随作用具有协变性。这里必须区分“对称分级”与“荷本身守恒”：跳跃 可以按确定步长改变荷，却仍保持 算符 空间 的荷差分块。
-
-取任意 厄米 算符 $Q$，其离散谱投影为
-\begin{equation}
-Q=\sum_n q_nP_n,
-\qquad
-P_nP_m=\delta_{nm}P_n,
-\qquad
-\sum_nP_n=\id().
-\label{eq:phys-oqs-general-charge-projectors}
-\end{equation}
-若相干部分满足
-\begin{equation}
-\boxed{[Q,H]=0,}
-\label{eq:phys-oqs-charge-conserving-h}
-\end{equation}
-并且每个 坍缩算符 都是 $Q$ 的伴随本征算符，即存在实数 $s_q$ 使
-\begin{equation}
-\boxed{[Q,C_q]=-s_qC_q,}
-\label{eq:phys-oqs-charge-jump}
-\end{equation}
-则 $C_q$ 把荷为 $q_n$ 的子空间送到荷为 $q_n-s_q$ 的子空间。由
-\[
-[Q,C_q^\dagger]=+s_qC_q^\dagger
-\]
-以及 Leibniz 规则，
-\[
-[Q,C_q^\dagger C_q]
-=[Q,C_q^\dagger]C_q+C_q^\dagger[Q,C_q]=0,
-\]
-所以 $H_{\rm eff}$ 与 $Q$ 对易。
-
-定义作用在 算符 空间 上的荷超算符
-\begin{equation}
-\boxed{
-\mathcal C_Q[X]\equiv[Q,X].
-}
-\label{eq:phys-oqs-charge-superoperator}
-\end{equation}
-Hamiltonian 部分满足
-\[
-[Q,[H,X]]=[H,[Q,X]],
-\]
-而对任一 跳跃，先计算 回收 项
-\[
-\begin{aligned}
-[Q,C_qXC_q^\dagger]
-={}&[Q,C_q]XC_q^\dagger
-+C_q[Q,X]C_q^\dagger
-+C_qX[Q,C_q^\dagger]\\
-={}&C_q[Q,X]C_q^\dagger,
-\end{aligned}
-\]
-其中首尾两个 $s_q$ 项精确抵消。又因 $[Q,C_q^\dagger C_q]=0$，
-\[
-\left[Q,\{C_q^\dagger C_q,X\}\right]
-=\{C_q^\dagger C_q,[Q,X]\}.
-\]
-故整个 GKSL 生成元满足
-\begin{equation}
-\boxed{
-[\mathcal C_Q,\mathbb L]=0.
-}
-\label{eq:phys-oqs-liouvillian-charge-covariance}
-\end{equation}
-这才是后续分块传播真正需要的对称性：若 $X$ 满足 $[Q,X]=\Delta q\,X$，则 $\mathbb L X$ 仍处在同一个荷差 $\Delta q$ 扇区。
-
-与此同时，$Q$ 本身通常\emph{不守恒}。伴随生成元作用于 $Q$ 时，Hamiltonian 部分为零，而
-\[
-\begin{aligned}
-\mathcal D^\dagger[C_q]Q
-&=C_q^\dagger Q C_q
--\frac12\{C_q^\dagger C_q,Q\}\\
-&=C_q^\dagger C_q(Q-s_q)-C_q^\dagger C_qQ\\
-&=-s_qC_q^\dagger C_q.
-\end{aligned}
-\]
-因此
-\begin{equation}
-\boxed{
-\frac{\dd}{\dd t}\langle Q\rangle
-=-\sum_qs_q\,\langle C_q^\dagger C_q\rangle.
-}
-\label{eq:phys-oqs-charge-expectation-flow}
-\end{equation}
-只有当所有有效 跳跃 都满足 $s_q=0$，或更一般地右边因额外结构恒等为零时，$Q$ 才是完整开放动力学的守恒量。特别地，$s_q=0$ 对所有 $q$ 时，$[Q,H]=[Q,C_q]=0$ 给出通常所称的 强 对称；此时每个荷本征子空间都由完整动力学保持。
-
-为了写出具有固定步长的分级结构，以下假设相关荷本征值可以等距编号为整数 $N$，并把每个 跳跃 的荷变化 $s_q$ 用同一基本间隔计为整数，相应投影记为 $P_N$；若谱并非等距，只需保留实际的 $q_n$ 标签与真实荷差，下面的投影论证不变。定义
-\begin{equation}
-\boxed{R_{NM}=P_N\rho P_M,}
-\label{eq:phys-oqs-density-block-general}
-\end{equation}
-以及
-\begin{equation}
-\boxed{
-M_N=P_NH_{\rm eff}P_N,
-\qquad
-J_q^{(N)}=P_{N-s_q}C_qP_N.}
-\label{eq:phys-oqs-general-block-operators}
-\end{equation}
-相干部分逐项投影为
-\[
-P_NH_{\rm eff}\rho P_M=M_NR_{NM},
-\qquad
-P_N\rho H_{\rm eff}^\dagger P_M=R_{NM}M_M^\dagger.
-\]
-对 回收 项，在 $\rho=\sum_{KL}P_K\rho P_L$ 中插入完备分解：
-\begin{align}
-P_NC_q\rho C_q^\dagger P_M
-&=\sum_{K,L}P_NC_qP_K\,R_{KL}\,P_LC_q^\dagger P_M.
-\end{align}
-\eqnrefs{eq:phys-oqs-charge-jump} 要求只有
-\[
-K=N+s_q,
-\qquad
-L=M+s_q
-\]
-能留下非零贡献，因此
-\[
-P_NC_q\rho C_q^\dagger P_M
-=J_q^{(N+s_q)}R_{N+s_q,M+s_q}J_q^{(M+s_q)\dagger}.
-\]
-最终得到一般分级主方程
-\begin{equation}
-\boxed{
-\begin{aligned}
-\dot R_{NM}
-={}&-\frac{\ii}{\hbar}
-(M_NR_{NM}-R_{NM}M_M^\dagger)\\
-&+\sum_q
-J_q^{(N+s_q)}R_{N+s_q,M+s_q}
-J_q^{(M+s_q)\dagger}.
-\end{aligned}}
-\label{eq:phys-oqs-general-block-master}
-\end{equation}
-因为 回收 同时把左右荷标签各降低同一个 $s_q$，荷差 $N-M$ 在\eqnrefs{eq:phys-oqs-general-block-master}中保持不变，这正是\eqnrefs{eq:phys-oqs-liouvillian-charge-covariance}的投影表示。若 $s_q>0$，布居 可以沿 $N$ 方向逐级流向低荷扇区，但不同荷差的 相干 扇区 仍不会混合。
-
-对一般分级只需定义
-\[
-\mathcal H_N=\operatorname{Ran}P_N,
-\qquad
-d_N=\operatorname{rank}P_N.
-\]
-低荷扇区的维数可以与高荷扇区不同；任何矩阵传播都必须从实际的 $P_N$ 与 $d_N$ 构造，而不能从某个具体腔模型的高激发矩阵反推边界扇区。单模 旋转波近似 中如何由原子跃迁图求出整数激发等级 $\nu_i$，将在最后的腔 QED 应用中再具体化。
-
-接下来考察矩阵传播。
-
-选定某个 $N$ 流形的有序基
-\[
-\mathcal B_N=
-\{|\chi_1^{(N)}\rangle,\ldots,|\chi_{d_N}^{(N)}\rangle\}.
-\]
-对 无-跳跃 纯态写
-\[
-|\psi_N(t)\rangle
-=\sum_{r=1}^{d_N}c_r(t)|\chi_r^{(N)}\rangle,
-\qquad
-\mathbf c_N=(c_1,\ldots,c_{d_N})^{\mathsf T}.
-\]
-将\eqnrefs{eq:phys-oqs-nojump-schrodinger} 左乘 $P_N$，并用 $P_NH_{\rm eff}=P_NH_{\rm eff}P_N$，得到
-\[
-\ii\hbar P_N\frac{\dd}{\dd t}|\psi_N\rangle
-=M_N|\psi_N\rangle.
-\]
-再左乘每个 $\langle\chi_r^{(N)}|$，就得到有限维矩阵方程
-\begin{equation}
-\boxed{
-\ii\hbar\dot{\mathbf c}_N=M_N\mathbf c_N,
-\qquad
-\mathbf c_N(t)=\ee^{-\ii M_Nt/\hbar}\mathbf c_N(0).}
-\label{eq:phys-oqs-manifold-propagator}
-\end{equation}
-
-下面只证明一次任意维矩阵指数的谱形式。定义
-\[
-p_N(z)=\det(z\id(d_N)-M_N).
-\]
-若 $M_N$ 有 $d_N$ 个互异本征值 $z_{r,N}$，定义 Lagrange 谱投影多项式
-\begin{equation}
-\Pi_{r,N}
-=\prod_{s\ne r}
-\frac{M_N-z_{s,N}\id()}{z_{r,N}-z_{s,N}}.
-\label{eq:phys-oqs-lagrange-projector}
-\end{equation}
-对任一本征向量 $|v_{k,N}\rangle$，有
-\[
-\Pi_{r,N}|v_{k,N}\rangle
-=\prod_{s\ne r}
-\frac{z_{k,N}-z_{s,N}}{z_{r,N}-z_{s,N}}
-|v_{k,N}\rangle
-=\delta_{rk}|v_{k,N}\rangle.
-\]
-因此
-\[
-\Pi_{r,N}\Pi_{s,N}=\delta_{rs}\Pi_{r,N},
-\qquad
-\sum_r\Pi_{r,N}=\id(),
-\qquad
-M_N=\sum_r z_{r,N}\Pi_{r,N}.
-\]
-对任意解析函数 $f$，幂级数逐项作用后便有
-\[
-f(M_N)=\sum_r f(z_{r,N})\Pi_{r,N}.
-\]
-取 $f(z)=\ee^{-\ii zt/\hbar}$，得到
-\begin{equation}
-\boxed{
-\ee^{-\ii M_Nt/\hbar}
-=\sum_{r=1}^{d_N}
-\ee^{-\ii z_{r,N}t/\hbar}
-\prod_{s\ne r}
-\frac{M_N-z_{s,N}\id(d_N)}{z_{r,N}-z_{s,N}}.}
-\label{eq:phys-oqs-spectral-propagator}
-\end{equation}
-若本征值简并但矩阵仍可对角化，只需把同一简并本征值对应的投影合并。若矩阵在 例外点 处不可对角化，设某个 Jordan 块为
-\[
-J_r=z_r\id()+N_r,
-\qquad N_r^{m_r}=0,
-\]
-则
-\begin{equation}
-\ee^{-\ii J_rt/\hbar}
-=\ee^{-\ii z_rt/\hbar}
-\sum_{k=0}^{m_r-1}\frac1{k!}
-\left(-\frac{\ii t}{\hbar}N_r\right)^k,
-\label{eq:phys-oqs-jordan-propagator}
-\end{equation}
-所以矩阵指数在简并点仍然完全有定义，只是会多出多项式乘指数的时间因子。
-
-无条件块方程\eqnrefs{eq:phys-oqs-general-block-master} 具有相同的齐次传播子。定义
-\[
-U_N(t)=\ee^{-\ii M_Nt/\hbar},
-\]
-以及 回收 源
-\begin{equation}
-S_{NM}(t)=\sum_q
-J_q^{(N+s_q)}R_{N+s_q,M+s_q}(t)
-J_q^{(M+s_q)\dagger}.
-\label{eq:phys-oqs-block-source}
-\end{equation}
-由 $\dot U_N=-(\ii/\hbar)M_NU_N$ 可得
-\[
-\frac{\dd}{\dd t}U_N^{-1}(t)
-=+\frac{\ii}{\hbar}U_N^{-1}(t)M_N.
-\]
-因此对乘积逐项求导：
-\begin{align}
-\frac{\dd}{\dd t}
-[U_N^{-1}R_{NM}U_M^{-\dagger}]
-={}&\frac{\ii}{\hbar}U_N^{-1}M_NR_{NM}U_M^{-\dagger}
-+U_N^{-1}\dot R_{NM}U_M^{-\dagger}\nonumber\\
-&-\frac{\ii}{\hbar}U_N^{-1}R_{NM}M_M^\dagger U_M^{-\dagger}.
-\end{align}
-代入\eqnrefs{eq:phys-oqs-general-block-master} 后，两个齐次项精确抵消，只剩
-\[
-\frac{\dd}{\dd t}
-[U_N^{-1}R_{NM}U_M^{-\dagger}]
-=U_N^{-1}S_{NM}U_M^{-\dagger}.
-\]
-从 $0$ 到 $t$ 积分并恢复左右传播子，得到
-\begin{equation}
-\boxed{
-\begin{aligned}
-R_{NM}(t)
-={}&U_N(t)R_{NM}(0)U_M^\dagger(t)\\
-&+\int_0^t\dd\tau\,
-U_N(t-\tau)S_{NM}(\tau)U_M^\dagger(t-\tau).
-\end{aligned}}
-\label{eq:phys-oqs-duhamel-block}
-\end{equation}
-第一项是当前块的 无-跳跃 齐次传播，第二项是所有其他流形经 跳跃 后在过去各时刻注入该块的历史总和。
-
-若 $M_N(t)$ 随时间变化，结论仍成立，只需把 $U_N(t-\tau)$ 换成满足
-\[
-\ii\hbar\partial_tU_N(t,\tau)=M_N(t)U_N(t,\tau),
-\qquad U_N(\tau,\tau)=\id()
-\]
-的两时传播子。也就是说，谱分解是求时间无关矩阵指数的一种计算工具，而“齐次传播 + Duhamel 源项”这一结构本身并不依赖时间无关假设。
-
-由精确约化映射到 Liouvillian 的一般链条至此闭合。Born 截断控制耦合阶数，无时间卷积 重组记忆为时间局域生成元，Markov 控制环境记忆时间，有限粗粒化与 久期 决定频率分辨率；这些条件彼此独立。具体环境谱、腔模与有限能级结构只改变一般公式中的谱矩阵、Hamiltonian 和 坍缩算符。
-
-\section{应用：环境谱、微观跃迁率与腔 QED}
-\label{sec:phys-oqs-bath-examples}
-
-一般生成元、近似层级和求解表示已经建立以后，才需要把具体环境相关函数代入。下面三个例子分别展示有限带宽相关、热玻色环境与自由空间电磁真空如何生成速率矩阵和 Lamb 位移；它们不改变前面的动力学结构。本章一直保留的 $\lambda$ 只是系统--环境耦合阶数的 记账 参数；以下物理耦合强度已经写入 $g_{\alpha q}$、偶极矩阵元等实际参数中，因此完成微扰阶数审计后可令 $\lambda=1$。
-
-\begin{exbox}[Lorentz 环境]
-取与前文 Markov 分析一致的相关时间 $\tau_B>0$，并令
-\[
-C(\tau)
-=A\,\ee^{-|\tau|/\tau_B}
-\ee^{-\ii\omega_B\tau},
-\qquad A>0.
-\]
-其中 $\omega_B$ 是谱峰中心，$\tau_B$ 正是环境记忆衰减的时间尺度。双边谱为
-\[
-\begin{aligned}
-\widetilde C(\omega)
-&=A\int_{-\infty}^{+\infty}\dd\tau\,
-\ee^{-|\tau|/\tau_B}
-\ee^{\ii(\omega-\omega_B)\tau}\\
-&=\frac{2A\tau_B}
-{1+(\omega-\omega_B)^2\tau_B^2},
-\end{aligned}
-\]
-而单边响应为
-\[
-G(\omega)
-=\frac{A}{\tau_B^{-1}-\ii(\omega-\omega_B)}
-=A\tau_B\frac{1+\ii(\omega-\omega_B)\tau_B}
-{1+(\omega-\omega_B)^2\tau_B^2}.
-\]
-代入\eqnrefs{eq:phys-oqs-gamma-from-g} 与\eqnrefs{eq:phys-oqs-delta-ls}，
-\[
-\Gamma(\omega)
-=\frac{2\lambda^2A\tau_B/\hbar^2}
-{1+(\omega-\omega_B)^2\tau_B^2},
-\qquad
-\Delta^{\rm LS}(\omega)
-=\frac{\lambda^2A\tau_B^2}{\hbar}
-\frac{\omega-\omega_B}
-{1+(\omega-\omega_B)^2\tau_B^2}.
-\]
-若某个频率块只有一条下降跃迁 $S(\omega_0)=|j\rangle\langle i|$，则
-\[
-S^\dagger(\omega_0)S(\omega_0)=|i\rangle\langle i|,
-\]
-从而
-\begin{equation}
-\boxed{
-H_{\rm LS}^{(\omega_0)}
-=\Delta^{\rm LS}(\omega_0)|i\rangle\langle i|.
-}
-\label{eq:phys-oqs-lorentzian-lamb-shift}
-\end{equation}
-若同一频率块包含多条不可分辨跃迁，则应保留完整的 $\Delta_{\mu\nu}^{\rm LS}(\omega_0)$ 矩阵，并按\eqnrefs{eq:phys-oqs-hls-general} 形成跃迁之间的环境诱导相干耦合。
-\end{exbox}
-
-\begin{exbox}[热玻色环境]
-考虑一组系统下降算符 $A_\alpha$ 与玻色环境交换能量，
-\begin{equation}
-\boxed{
-H_B=\sum_q\hbar\nu_qb_q^\dagger b_q,
-\qquad
-H_I^{\rm ex}
-=\hbar\sum_{\alpha q}
-\left(
- g_{\alpha q}A_\alpha b_q^\dagger
-+g_{\alpha q}^*A_\alpha^\dagger b_q
-\right).
-}
-\label{eq:phys-oqs-boson-exchange}
-\end{equation}
-沿用\eqnrefs{eq:phys-oqs-bath-gibbs-state} 的热平衡记号，环境状态为
-\[
-\rho_B=\frac{\ee^{-\beta H_B}}{Z_B},
-\qquad
-\beta=\frac1{k_BT}.
-\]
-单模平均占据数为
-\begin{equation}
-\boxed{
-\bar n_T(\nu)=\frac1{\exp[\hbar\nu/(k_BT)]-1}.
-}
-\label{eq:phys-oqs-bose-occupation}
-\end{equation}
-从热态的 Fock 权重 $p_{n_q}$ 直接有
-\[
-\sum_{n_q}p_{n_q}n_q=\bar n_T(\nu_q),
-\qquad
-\sum_{n_q}p_{n_q}(n_q+1)=\bar n_T(\nu_q)+1.
-\]
-因此环境相关函数满足
-\[
-\langle b_q(\tau)b_{q'}^\dagger(0)\rangle
-=\delta_{qq'}[\bar n_T(\nu_q)+1]\ee^{-\ii\nu_q\tau},
-\]
-\[
-\langle b_q^\dagger(\tau)b_{q'}(0)\rangle
-=\delta_{qq'}\bar n_T(\nu_q)\ee^{+\ii\nu_q\tau}.
-\]
-定义正频谱密度矩阵
-\begin{equation}
-\boxed{
-J_{\alpha\beta}(\nu)
-=\sum_qg_{\alpha q}g_{\beta q}^*\delta(\nu-\nu_q),
-\qquad \nu>0.
-}
-\label{eq:phys-oqs-boson-j}
-\end{equation}
-对一个正 Bohr 频率 $\omega>0$，若 $\alpha,\beta$ 标记该频率块内的所有下降跃迁，则在壳的 $\delta$ 项给出
-\begin{equation}
-\boxed{
-\Gamma_{\alpha\beta}^{\downarrow}(\omega,T)
-=2\pi\lambda^2J_{\alpha\beta}(\omega)
-[\bar n_T(\omega)+1],
-}
-\label{eq:phys-oqs-thermal-down-matrix}
-\end{equation}
-而反向吸收块为
-\begin{equation}
-\boxed{
-\Gamma_{\alpha\beta}^{\uparrow}(\omega,T)
-=2\pi\lambda^2J_{\beta\alpha}(\omega)
-\bar n_T(\omega).
-}
-\label{eq:phys-oqs-thermal-up-matrix}
-\end{equation}
-这两式是任意多能级系统的矩阵形式。若该频率块只有一条独立跃迁 $i\to j$，$E_i>E_j$，定义
-\[
-\Gamma_{i\to j}^{(0)}
-=2\pi\lambda^2J_{i\to j}(\omega_{ij}),
-\]
-则矩阵公式退化为
-\begin{equation}
-\boxed{
-\Gamma_{i\to j}(T)
-=\Gamma_{i\to j}^{(0)}[\bar n_T(\omega_{ij})+1],
-\qquad
-\Gamma_{j\to i}(T)
-=\Gamma_{i\to j}^{(0)}\bar n_T(\omega_{ij}).
-}
-\label{eq:phys-oqs-thermal-transition-rates}
-\end{equation}
-并满足
-\[
-\frac{\Gamma_{j\to i}(T)}{\Gamma_{i\to j}(T)}
-=\ee^{-\hbar\omega_{ij}/(k_BT)}.
-\]
-所以二能级热跃迁率只是\eqnrefs{eq:phys-oqs-thermal-down-matrix}--\eqnrefs{eq:phys-oqs-thermal-up-matrix} 在只有一条跃迁通道时的标量特例。
-\end{exbox}
-
-\begin{exbox}[自由空间多能级电磁场]
-设物质 Hamiltonian 为
-\[
-H_A=\sum_iE_i|i\rangle\langle i|,
-\]
-并通过 $H_I=-\mathbf d\cdot\mathbf E(\mathbf r_0)$ 与三维自由空间电磁场耦合。对任意允许下降跃迁
-\[
-\alpha=(i\to j),
-\qquad
-E_i>E_j,
-\qquad
-\omega_\alpha=\omega_{ij},
-\]
-定义
-\begin{equation}
-\boxed{
-A_\alpha=|j\rangle\langle i|,
-\qquad
-\mathbf d_\alpha
-=\langle j|\mathbf d|i\rangle.
-}
-\label{eq:phys-oqs-transition-alpha}
-\end{equation}
-在交换型 旋转波近似 中，一个模式 $(\mathbf k,\lambda)$ 的耦合常数可以写成
-\[
-g_{\alpha,\mathbf k\lambda}
-=\ii
-\sqrt{\frac{\omega_k}{2\hbar\epsilon_0V_{\rm q}}}
-\,\mathbf d_\alpha\cdot\mathbf e_{\mathbf k\lambda}^*
-\ee^{-\ii\mathbf k\cdot\mathbf r_0}.
-\]
-固定一个正 Bohr 频率 $\omega$，把所有满足 $\omega_\alpha=\omega$ 的跃迁组成集合 $\mathcal T_\omega$。由\eqnrefs{eq:phys-oqs-thermal-down-matrix} 的零温极限，
-\[
-\Gamma_{\alpha\beta}^{(0)}(\omega)
-=2\pi\lambda^2
-\sum_{\mathbf k,\lambda}
- g_{\alpha,\mathbf k\lambda}
- g_{\beta,\mathbf k\lambda}^*
-\delta(\omega-\omega_k),
-\qquad
-\alpha,\beta\in\mathcal T_\omega.
-\]
-采用连续极限
-\[
-\sum_{\mathbf k}
-\longrightarrow
-\frac{V_{\rm q}}{(2\pi)^3}
-\int_0^\infty k^2\dd k\int\dd\Omega,
-\]
-横向偏振完备关系
-\[
-\sum_\lambda e_{\mathbf k\lambda,a}e_{\mathbf k\lambda,b}^*
-=\delta_{ab}-\hat k_a\hat k_b,
-\]
-以及角积分
-\[
-\int\dd\Omega\,
-(\delta_{ab}-\hat k_a\hat k_b)
-=\frac{8\pi}{3}\delta_{ab},
-\]
-可得
-\[
-\int\dd\Omega\sum_\lambda
-(\mathbf d_\alpha\cdot\mathbf e_{\mathbf k\lambda}^*)
-(\mathbf d_\beta^*\cdot\mathbf e_{\mathbf k\lambda})
-=\frac{8\pi}{3}\mathbf d_\alpha\cdot\mathbf d_\beta^*.
-\]
-径向积分为
-\[
-\int_0^\infty k^2\dd k\,(ck)\delta(\omega-ck)
-=\frac{\omega^3}{c^3}.
-\]
-代回模式和，得到任意同频跃迁的自由空间零温速率矩阵
-\begin{equation}
-\boxed{
-\Gamma_{\alpha\beta}^{(0)}(\omega)
-=\lambda^2
-\frac{\omega^3}{3\pi\epsilon_0\hbar c^3}
-\,\mathbf d_\alpha\cdot\mathbf d_\beta^*,
-\qquad
-\alpha,\beta\in\mathcal T_\omega.
-}
-\label{eq:phys-oqs-free-space-gamma-matrix-zerot}
-\end{equation}
-它是跃迁偶极向量的 Gram 矩阵乘以非负因子。对任意系数 $c_\alpha$，
-\[
-\sum_{\alpha\beta}c_\alpha^*
-\Gamma_{\alpha\beta}^{(0)}c_\beta
-=\lambda^2\frac{\omega^3}{3\pi\epsilon_0\hbar c^3}
-\left|\sum_\alpha c_\alpha^*\mathbf d_\alpha\right|^2\ge0,
-\]
-这与一般的半正定性\eqnrefs{eq:phys-oqs-gamma-psd} 一致。若同一频率块中两条跃迁的偶极矩阵元不正交，\eqnrefs{eq:phys-oqs-free-space-gamma-matrix-zerot} 的非对角元就是共同真空产生的交叉阻尼；若偶极正交，该交叉项消失。
-
-在温度 $T$ 的自由空间热光子场中，直接乘上\eqnrefs{eq:phys-oqs-thermal-down-matrix}--\eqnrefs{eq:phys-oqs-thermal-up-matrix} 的 Bose 因子：
-\begin{equation}
-\boxed{
-\Gamma_{\alpha\beta}^{\downarrow}(\omega,T)
-=\Gamma_{\alpha\beta}^{(0)}(\omega)
-[\bar n_T(\omega)+1],
-\qquad
-\Gamma_{\alpha\beta}^{\uparrow}(\omega,T)
-=\Gamma_{\beta\alpha}^{(0)}(\omega)
-\bar n_T(\omega).
-}
-\label{eq:phys-oqs-free-space-thermal-matrix}
-\end{equation}
-若某个 Bohr 频率只有一条跃迁 $i\to j$，则
-\begin{equation}
-\boxed{
-\Gamma_{i\to j}^{(0)}
-=\lambda^2
-\frac{\omega_{ij}^3|\mathbf d_{ji}|^2}
-{3\pi\epsilon_0\hbar c^3},
-}
-\label{eq:phys-oqs-free-space-single-rate}
-\end{equation}
-并与\eqnrefs{eq:phys-oqs-thermal-transition-rates} 直接组合得到有限温度的上下跃迁率。
-
-同一自由空间谱的主值部分产生 Lamb 位移。对交换型耦合的正频块，定义
-\[
-J_{\alpha\beta}^{\rm fs}(\nu)
-=\frac{\nu^3}{6\pi^2\epsilon_0\hbar c^3}
-\mathbf d_\alpha\cdot\mathbf d_\beta^*,
-\]
-使 $\Gamma_{\alpha\beta}^{(0)}(\omega)=2\pi\lambda^2J_{\alpha\beta}^{\rm fs}(\omega)$。则带高频截断 $\varpi_{\rm UV}$ 的正频主值贡献为
-\begin{equation}
-\boxed{
-\Delta_{\alpha\beta}^{\rm LS,+}(\omega;\varpi_{\rm UV})
-=\hbar\lambda^2\,\mathcal P
-\int_0^{\varpi_{\rm UV}}\dd\varpi\,
-\frac{J_{\alpha\beta}^{\rm fs}(\varpi)}{\omega-\varpi}.
-}
-\label{eq:phys-oqs-free-space-ls-general}
-\end{equation}
-由上式 $J_{\alpha\beta}^{\rm fs}(\varpi)=A_{\alpha\beta}\varpi^3$，其中 $A_{\alpha\beta}=\mathbf d_\alpha\cdot\mathbf d_\beta^*/(6\pi^2\epsilon_0\hbar c^3)$，故主值积分的频率部分为
-\[
-\frac{\varpi^3}{\omega-\varpi}
-=-(\varpi^2+\omega\varpi+\omega^2)
-+\frac{\omega^3}{\omega-\varpi},
-\]
-故
-\[
-\begin{aligned}
-\mathcal P\int_0^{\varpi_{\rm UV}}\dd\varpi\,
-\frac{\varpi^3}{\omega-\varpi}
-={}&-\frac{\varpi_{\rm UV}^3}{3}
--\frac{\omega\varpi_{\rm UV}^2}{2}
--\omega^2\varpi_{\rm UV}\\
-&-\omega^3
-\ln\!\left|\frac{\varpi_{\rm UV}-\omega}{\omega}\right|.
-\end{aligned}
-\]
-因此点偶极连续谱的绝对能级位移具有紫外敏感性。若从完整偶极 Hamiltonian 而不是交换型 旋转波近似 出发，负频/反旋虚过程还会给出额外主值项，但高频重整化问题仍然存在。可观测量应取完整原子结构与重整化后得到的能级差或跃迁频移，而\eqnrefs{eq:phys-oqs-hls-general} 仍是把这些主值系数组装成多能级 $H_{\rm LS}$ 的统一公式。
-\end{exbox}
-
-\label{sec:phys-oqs-manifoldmodels}
-接下来考察多能级物质与单模腔的 Hamiltonian。
-
-这一节开始才把一般生成元代入腔 QED。物质 Hamiltonian 与跃迁算符定义为
-\begin{equation}
-\boxed{
-H_A=\sum_iE_i\sigma_{ii},
-\qquad
-\sigma_{ij}=|i\rangle\langle j|.
-}
-\label{eq:phys-oqs-atomic-h-general}
-\end{equation}
-它们满足
-\[
-\sigma_{ij}\sigma_{kl}=\delta_{jk}\sigma_{il},
-\qquad
-[\sigma_{ij},\sigma_{kl}]
-=\delta_{jk}\sigma_{il}-\delta_{li}\sigma_{kj}.
-\]
-
-单一量子模式的自由 Hamiltonian 为
-\begin{equation}
-\boxed{
-H_c=\hbar\omega_c\left(a^\dagger a+\frac12\right),
-\qquad [a,a^\dagger]=1.}
-\label{eq:phys-oqs-cavity-h}
-\end{equation}
-物质偶极算符写成
-\[
-\mathbf d=\sum_{ij}\mathbf d_{ij}\sigma_{ij},
-\qquad
-\mathbf d_{ij}=\langle i|\mathbf d|j\rangle,
-\qquad
-\mathbf d_{ji}=\mathbf d_{ij}^*.
-\]
-为了使物质与场使用同一套频率符号，先按自由物质 Hamiltonian $H_A$ 的 Heisenberg 时间依赖定义偶极的正、负频率部分。对 $E_i>E_j$，算符 $\sigma_{ji}$ 随 $\ee^{-\ii\omega_{ij}t}$ 演化，因此正频率部分必须是降能算符，而负频率部分是它的厄密共轭：
-\begin{equation}
-\boxed{
-\mathbf d^{(+)}=\sum_{E_i>E_j}\mathbf d_{ji}\sigma_{ji},
-\qquad
-\mathbf d^{(-)}=(\mathbf d^{(+)})^\dagger
-=\sum_{E_i>E_j}\mathbf d_{ij}\sigma_{ij}.}
-\label{eq:phys-oqs-dipole-positive-negative}
-\end{equation}
-这里上标 $(\pm)$ 表示 Fourier 正、负频率，而不是“升能/降能”的符号；按上述约定，$\mathbf d^{(+)}$ 恰好降低物质能量。若体系具有永久偶极矩，
-\[
-\mathbf d^{(0)}=\sum_i\mathbf d_{ii}\sigma_{ii}
-\]
-是额外的零频部分。它与腔场耦合时产生 $-\mathbf d^{(0)}\cdot(\mathbf E^{(+)}+\mathbf E^{(-)})$ 的纵向/位移型耦合，并不会自动化成下面的激发交换项。对具有反演或适当宇称对称性的原子常有 $\mathbf d_{ii}=0$；若永久偶极不为零，则必须显式保留该纵向项，或在给出独立小参数后再消去，不能把它无条件并入 exchange 旋转波近似。若 $\mathbf d^{(0)}$ 耦合的是外部零频噪声，它还会产生纯退相干或静态位移通道。
-
-在物质位置 $\mathbf r_0$，令 $\mathbf e_c$ 为腔模的单位偏振向量，$f_c(\mathbf r)$ 为无量纲复模函数，$V_{\rm eff}$ 为与该模函数归一化配套的有效模体积；模函数的整体归一化约定只允许在 $f_c$ 与 $V_{\rm eff}$ 之间重新分配，不能重复计入。单模电场正频率部分写为
-\begin{equation}
-\mathbf E^{(+)}(\mathbf r_0)
-=\ii\sqrt{\frac{\hbar\omega_c}{2\epsilon_0V_{\rm eff}}}
-\,\mathbf e_c f_c(\mathbf r_0)a,
-\qquad
-\mathbf E^{(-)}=(\mathbf E^{(+)})^\dagger.
-\label{eq:phys-oqs-cavity-field}
-\end{equation}
-其中 $\mathbf E^{(+)}$ 随自由演化携带 $\ee^{-\ii\omega_ct}$，所以与\eqnrefs{eq:phys-oqs-dipole-positive-negative} 的正频率约定一致。相应地，\eqnrefs{eq:phys-oqs-gij-def} 中的 $g_{ij}$ 具有角频率量纲。
-电偶极相互作用为
-\begin{equation}
-\boxed{H_{Ac}=-\mathbf d\cdot(\mathbf E^{(+)}+\mathbf E^{(-)}).}
-\label{eq:phys-oqs-dipole-interaction}
-\end{equation}
-尚未施加系统内部 旋转波近似 时，
-\begin{equation}
-\boxed{H_S^{\rm full}=H_A+H_c+H_{Ac}.}
-\label{eq:phys-oqs-hs-full}
-\end{equation}
-
-以
-\[
-H_{0,S}=H_A+H_c
-\]
-定义系统内部相互作用绘景。对每条 $E_i>E_j$ 的跃迁，$\mathbf d^{(-)}\mathbf E^{(+)}$ 与 $\mathbf d^{(+)}\mathbf E^{(-)}$ 携带慢相位 $\ee^{\pm\ii(\omega_{ij}-\omega_c)t}$，描述吸收一个腔光子与发射一个腔光子；$\mathbf d^{(-)}\mathbf E^{(-)}$ 与 $\mathbf d^{(+)}\mathbf E^{(+)}$ 则携带 $\ee^{\pm\ii(\omega_{ij}+\omega_c)t}$ 的反旋相位。对一般复偏振或行波模，共旋与反旋项读取的是不同的复偶极投影，因此分别定义
-\begin{equation}
-\boxed{
-\begin{aligned}
- g_{ij}
- &=-\ii\sqrt{\frac{\omega_c}{2\hbar\epsilon_0V_{\rm eff}}}
- \,\mathbf d_{ij}\!\cdot\!\mathbf e_c f_c(\mathbf r_0),\\
- g_{ij}^{\rm cr}
- &=+\ii\sqrt{\frac{\omega_c}{2\hbar\epsilon_0V_{\rm eff}}}
- \,\mathbf d_{ij}\!\cdot\!\mathbf e_c^* f_c^*(\mathbf r_0),
- \qquad E_i>E_j.
-\end{aligned}}
-\label{eq:phys-oqs-gij-def}
-\end{equation}
-忽略永久偶极项后，跃迁部分的完整偶极耦合可写成
-\begin{equation}
-\boxed{
-H_{Ac}^{\rm tr}
-=\hbar\sum_{E_i>E_j}
-\left(
- g_{ij}a\sigma_{ij}+g_{ij}^*a^\dagger\sigma_{ji}
- +g_{ij}^{\rm cr}a^\dagger\sigma_{ij}
- +g_{ij}^{{\rm cr}*}a\sigma_{ji}
-\right).}
-\label{eq:phys-oqs-cavity-rot-counter-coupling}
-\end{equation}
-若偏振与模函数可同时取实（差一个整体相位也可吸收入 $a$），则 $|g_{ij}^{\rm cr}|=|g_{ij}|$；一般复模中不能预先假定这一等式。在系统内部旋波近似可控时，保留交换激发的慢相位对，得到
-\begin{equation}
-\boxed{
-H_S^{\rm RWA}
-=\sum_iE_i\sigma_{ii}
-+\hbar\omega_c\left(a^\dagger a+\frac12\right)
-+\hbar\sum_{E_i>E_j}
-\left(g_{ij}a\sigma_{ij}+g_{ij}^*a^\dagger\sigma_{ji}\right).}
-\label{eq:phys-oqs-hs-rwa}
-\end{equation}
-这里仍是一般多能级单模 Hamiltonian；具体构形只通过哪些 $g_{ij}$ 非零来指定。旋转波近似 的控制量不是“小失谐”本身。若所研究态的相关光子数不超过 $n$，反旋项的最大一阶混合振幅由
-\begin{equation}
-\boxed{
-\epsilon_{\rm RWA}^{(ij,n)}
-=\frac{|g_{ij}^{\rm cr}|\sqrt{n+1}}{\omega_{ij}+\omega_c}
-\ll1}
-\label{eq:phys-oqs-rwa-small-parameter}
-\end{equation}
-控制。此时反旋项产生的态矢修正为 $O(\epsilon_{\rm RWA})$，而 Bloch--Siegert 型频率修正的量级为
-\[
-\delta\omega_{\rm BS}
-=O\!\left(\frac{|g_{ij}^{\rm cr}|^2(n+1)}{\omega_{ij}+\omega_c}\right).
-\]
-因此 旋转波近似 与近共振是两个不同条件：即使 $|\omega_{ij}-\omega_c|$ 很大，只要\eqnrefs{eq:phys-oqs-rwa-small-parameter} 足够小，反旋项仍可受控消去，而交换项进入色散区；反之在 ultrastrong-耦合 区，即使共振也不能直接删除反旋项。
-
-\begin{derivation}[从偶极频率分解到交换型 旋转波近似]
-由对易关系 $[H_A,\sigma_{ij}]=(E_i-E_j)\sigma_{ij}$（\(\sigma_{ij}=|i\rangle\langle j|\) 为跃迁算符），对 $E_i>E_j$ 有
-\[
-\ee^{+\ii H_At/\hbar}\sigma_{ij}\ee^{-\ii H_At/\hbar}
-=\ee^{+\ii\omega_{ij}t}\sigma_{ij},
-\qquad
-\ee^{+\ii H_At/\hbar}\sigma_{ji}\ee^{-\ii H_At/\hbar}
-=\ee^{-\ii\omega_{ij}t}\sigma_{ji}.
-\]
-另一方面，腔场在自由 Hamiltonian \(H_c=\hbar\omega_c a^\dagger a\) 下的 Heisenberg 演化为
-\[
-a(t)=\ee^{-\ii\omega_ct}a,
-\qquad
-a^\dagger(t)=\ee^{+\ii\omega_ct}a^\dagger.
-\]
-于是四类非零频乘积分别为
-\begin{align*}
-\sigma_{ij}(t)a(t)
-&=\ee^{+\ii(\omega_{ij}-\omega_c)t}\sigma_{ij}a,
-&
-\sigma_{ji}(t)a^\dagger(t)
-&=\ee^{-\ii(\omega_{ij}-\omega_c)t}\sigma_{ji}a^\dagger,\\
-\sigma_{ij}(t)a^\dagger(t)
-&=\ee^{+\ii(\omega_{ij}+\omega_c)t}\sigma_{ij}a^\dagger,
-&
-\sigma_{ji}(t)a(t)
-&=\ee^{-\ii(\omega_{ij}+\omega_c)t}\sigma_{ji}a.
-\end{align*}
-前一行相位 \(\omega_{ij}-\omega_c\) 在共振时为零，保持裸激发数；后一行相位 \(\omega_{ij}+\omega_c\) 始终为正，一次改变两个裸激发（反旋项）。把\eqnrefs{eq:phys-oqs-cavity-field} 代入 $-\mathbf d\cdot\mathbf E$，四项系数组织成\eqnrefs{eq:phys-oqs-cavity-rot-counter-coupling}。其中交换项系数为
-\[
--\ii\sqrt{\frac{\hbar\omega_c}{2\epsilon_0V_{\rm eff}}}
-\,\mathbf d_{ij}\!\cdot\!\mathbf e_c f_c(\mathbf r_0)
-=\hbar g_{ij},
-\]
-其厄密共轭系数为 $\hbar g_{ij}^*$，删除 $g_{ij}^{\rm cr}$ 两个反旋项后即得\eqnrefs{eq:phys-oqs-hs-rwa}。反旋项相位 \(\ee^{\pm\ii(\omega_{ij}+\omega_c)t}\) 的时间积分
-\[
- \int_0^T\ee^{\pm\ii(\omega_{ij}+\omega_c)t}\dd t
- \sim O\!\left(\frac{1}{\omega_{ij}+\omega_c}\right)
-\]
-在 \(T\gg1/(\omega_{ij}+\omega_c)\) 时趋于零，故 旋转波近似 成立。若用 Schrieffer--Wolff 消元，虚跃迁能量分母为 $\hbar(\omega_{ij}+\omega_c)$，频率修正量级为 $|g_{ij}^{\rm cr}|^2(n+1)/(\omega_{ij}+\omega_c)$，即\eqnrefs{eq:phys-oqs-rwa-small-parameter} 控制一阶态混合而频率修正从二阶开始。
-\end{derivation}
-
-对这里的单模 旋转波近似 Hamiltonian\eqnrefs{eq:phys-oqs-hs-rwa}，最常用的选择是
-\begin{equation}
-\boxed{
-\mathcal N=a^\dagger a+\sum_i\nu_i\sigma_{ii}.}
-\label{eq:phys-oqs-excitation-number-general}
-\end{equation}
-由
-\[
-[a^\dagger a,a]=-a,
-\qquad
-\left[\sum_k\nu_k\sigma_{kk},\sigma_{ij}\right]
-=(\nu_i-\nu_j)\sigma_{ij}
-\]
-可得
-\[
-[\mathcal N,a\sigma_{ij}]
-=(-1+\nu_i-\nu_j)a\sigma_{ij}.
-\]
-因此每条被保留的单光子边都必须满足
-\begin{equation}
-\boxed{\nu_i-\nu_j=1\qquad(g_{ij}\ne0).}
-\label{eq:phys-oqs-grading-edge-condition}
-\end{equation}
-若这组线性约束存在解，就有 $[\mathcal N,H_S^{\rm RWA}]=0$。若不存在解，则不能强行使用固定激发流形。例如三条单光子边 $1\leftrightarrow2$、$2\leftrightarrow3$、$1\leftrightarrow3$ 同时保留时，会要求
-\[
-\nu_2-\nu_1=1,
-\qquad
-\nu_3-\nu_2=1,
-\qquad
-\nu_3-\nu_1=1,
-\]
-前两式相加却给 $\nu_3-\nu_1=2$，与第三式矛盾；这类闭环模型应直接使用完整 Liouvillian 或引入更合适的多模守恒荷。
-
-当\eqnrefs{eq:phys-oqs-grading-edge-condition} 成立时，$\mathcal N$ 的 $N$ 本征子空间为
-\begin{equation}
-\boxed{
-\mathcal H_N
-=\operatorname{span}
-\{|i,N-\nu_i\rangle:\;N-\nu_i\in\mathbb N_0\}.}
-\label{eq:phys-oqs-manifold-span}
-\end{equation}
-其维数为
-\begin{equation}
-d_N=\#\{i:N-\nu_i\ge0\}.
-\label{eq:phys-oqs-manifold-dimension}
-\end{equation}
-低激发区不能默认具有与高激发区相同的维数。若 $\min_i\nu_i=0$，则
-\[
-\mathcal H_0
-=\operatorname{span}\{|i,0\rangle:\nu_i=0\}.
-\]
-二能级模型通常只有 $|g,0\rangle$；$\Lambda$ 型可有两个零等级下能级；V 型与 $\Xi$ 型通常只有最低态。随着 $N$ 增大，只有满足 $N\ge\nu_i$ 的原子态才进入该流形。
-
-单模 旋转波近似 Hamiltonian 与激发流形确定以后，条件传播由\eqnrefs{eq:phys-oqs-manifold-propagator} 给出，无条件传播由\eqnrefs{eq:phys-oqs-duhamel-block} 给出。若经典驱动使生成元显含时间，则传播子必须相应采用时间有序形式；静态 Liouvillian 的普通矩阵指数只适用于时间无关生成元。
-
-接下来考察二能级。
-
-取
-\[
-|g\rangle,\ |e\rangle,
-\qquad
-\nu_g=0,\quad \nu_e=1,
-\qquad
-g_{eg}=g.
-\]
-由\eqnrefs{eq:phys-oqs-hs-rwa} 取 $\nu_g=0,\nu_e=1$，并记 $g_{eg}=g$。零激发扇区为
-\[
-\mathcal H_0^{(2)}=\operatorname{span}\{|g,0\rangle\},
-\qquad
-P_0=|g,0\rangle\langle g,0|,
-\]
-它没有可由 旋转波近似 相互作用继续降低的伙伴态。对 $N\ge1$，
-\[
-\mathcal H_N^{(2)}
-=\operatorname{span}\{|e,N-1\rangle,|g,N\rangle\},
-\]
-并且
-\begin{equation}
-P_N=|e,N-1\rangle\langle e,N-1|
-+|g,N\rangle\langle g,N|.
-\label{eq:phys-oqs-pn-two}
-\end{equation}
-在基底 $\mathcal B_N^{(2)}=\{|e,N-1\rangle,|g,N\rangle\}$ 中，逐个矩阵元做投影。对角元为
-\[
-\begin{aligned}
-\langle e,N-1|H_S^{\rm RWA}|e,N-1\rangle
-&=E_e+\hbar\omega_c\left(N-\frac12\right),\\
-\langle g,N|H_S^{\rm RWA}|g,N\rangle
-&=E_g+\hbar\omega_c\left(N+\frac12\right).
-\end{aligned}
-\]
-非对角元使用 $a|N\rangle=\sqrt N|N-1\rangle$ 与 $\sigma_+|g\rangle=|e\rangle$：
-\[
-\begin{aligned}
-\langle e,N-1|\hbar g a\sigma_+|g,N\rangle
-&=\hbar g\sqrt N,\\
-\langle g,N|\hbar g^*a^\dagger\sigma_-|e,N-1\rangle
-&=\hbar g^*\sqrt N.
-\end{aligned}
-\]
-其余交叉矩阵元为零。因此
-\begin{equation}
-\boxed{
-H_{S,N}^{(2)}
-=P_NH_S^{\rm RWA}P_N
-=\begin{pmatrix}
-E_e+\hbar\omega_c(N-\frac12)&\hbar g\sqrt N\\
-\hbar g^*\sqrt N&E_g+\hbar\omega_c(N+\frac12)
-\end{pmatrix}.}
-\label{eq:phys-oqs-hn2-bare}
-\end{equation}
-\eqnrefs{eq:phys-oqs-hn2-bare} 还可以把“无关的共同能量”和真正控制两态混合的部分分开。定义
-\begin{equation}
-E_{0,N}=\frac{E_e+E_g}{2}+\hbar\omega_cN,
-\qquad
-\Delta=\omega_{eg}-\omega_c,
-\label{eq:phys-oqs-two-detuning}
-\end{equation}
-则
-\begin{equation}
-\boxed{
-H_{S,N}^{(2)}
-=E_{0,N}\id(2)
-+\frac{\hbar}{2}
-\begin{pmatrix}
-\Delta&2g\sqrt N\\
-2g^*\sqrt N&-\Delta
-\end{pmatrix}.}
-\label{eq:phys-oqs-hn2-detuning-form}
-\end{equation}
-第一项只给整个流形共同相位；第二项才决定 穿衣-态 混合、Rabi 频率和能级劈裂。因此后面出现的 $\sqrt N$ 增强并不是额外假设，而是投影 $a|N\rangle=\sqrt N|N-1\rangle$ 的直接结果。
-
-加入\secref{sec:phys-oqs-gksl}得到的 Lamb 位移 后，相干块统一为
-\begin{equation}
-\boxed{
-H_N^{(2)}
-=P_N(H_S^{\rm RWA}+H_{\rm LS})P_N
-=H_{S,N}^{(2)}+P_NH_{\rm LS}P_N.}
-\label{eq:phys-oqs-hn2-full}
-\end{equation}
-例如若 $H_{\rm LS}=\Delta_e^{\rm LS}|e\rangle\langle e|+\Delta_g^{\rm LS}|g\rangle\langle g|$，则只需在\eqnrefs{eq:phys-oqs-hn2-bare} 的两个对角元上分别加 $\Delta_e^{\rm LS}$ 与 $\Delta_g^{\rm LS}$；可观测的跃迁频率位移为 $(\Delta_e^{\rm LS}-\Delta_g^{\rm LS})/\hbar$。
-
-下面把一般 GKSL 生成元特殊化为常用的“裸原子 + 裸腔模”耗散表示。若这些耗散通道来自对外部环境的微观消元，它们并不由\eqnrefs{eq:phys-oqs-hs-rwa} 自动推出。严格做法是以实际采用的耦合系统 Hamiltonian 求 Bohr 算符 $S_\mu(\omega)$，其 跳跃 一般作用在 穿衣 态 之间。只有当一组 穿衣 转移 的最大频率分裂 $\delta\omega_{\rm dress}$ 同时满足
-\begin{equation}
-\boxed{
-\delta\omega_{\rm dress}\,\tau_B\ll1,
-\qquad
-\delta\omega_{\rm dress}\,\Delta t\lesssim1,
-\qquad
-\tau_B\ll\Delta t\ll\tau_R,}
-\label{eq:phys-oqs-local-dissipator-condition}
-\end{equation}
-并且环境谱与耦合矩阵在该频率簇内近似常数时，有限粗粒化才既看不见谱函数的局部变化，也不把该簇内部频率完全 久期 分开；此时保留完整交叉块后，簇内 穿衣 Bohr 算符之和可重新组合成 $a$、$\sigma_-$ 等裸算符。若任一条件失效，就应回到 穿衣 $S_\mu(\omega)$ 与相应 Kossakowski 块，而不能把“裸耗散”当作与 Hamiltonian 无关的普适形式。
-
-在满足上述局域耗散条件，或把下列通道直接作为现象学 GKSL 模型定义时，考虑原子上下跃迁、原子纯退相干、腔的损失与热激发以及腔频率噪声：
-\[
-C_{e\to g}=\sqrt{\Gamma_{e\to g}}\,\sigma_-,
-\qquad
-C_{g\to e}=\sqrt{\Gamma_{g\to e}}\,\sigma_+,
-\]
-\[
-C_A^\varphi=\sqrt{\frac{\gamma_\varphi}{2}}\,\sigma_z,
-\qquad
-C_c^-=\sqrt{\kappa_\downarrow}\,a,
-\qquad
-C_c^+=\sqrt{\kappa_\uparrow}\,a^\dagger,
-\qquad
-C_c^\varphi=\sqrt{\kappa_\varphi}\,a^\dagger a.
-\]
-这里的 $\Gamma_{e\to g}$ 与 $\Gamma_{g\to e}$ 是\secref{sec:phys-oqs-gksl}一般频率块在“只有一条 $e\leftrightarrow g$ 跃迁”时的标量极限；热环境中可直接使用\eqnrefs{eq:phys-oqs-thermal-transition-rates}，而不是重新定义另一套速率符号。
-
-这些 坍缩算符 对流形的作用也可以在构造 风险 之前直接写出。对 $N\ge1$，
-\begin{align}
-J_{e\to g}^{(N)}
-&=\sqrt{\Gamma_{e\to g}}\,
-|g,N-1\rangle\langle e,N-1|,
-& s_{e\to g}&=1,\\
-J_{g\to e}^{(N)}
-&=\sqrt{\Gamma_{g\to e}}\,
-|e,N\rangle\langle g,N|,
-& s_{g\to e}&=-1,
-\end{align}
-而腔 跳跃 为
-\begin{align}
-J_{c,-}^{(N)}
-={}&\sqrt{\kappa_\downarrow}\big[
-\sqrt{N-1}|e,N-2\rangle\langle e,N-1|
-+\sqrt N|g,N-1\rangle\langle g,N|\big],\\
-J_{c,+}^{(N)}
-={}&\sqrt{\kappa_\uparrow}\big[
-\sqrt N|e,N\rangle\langle e,N-1|
-+\sqrt{N+1}|g,N+1\rangle\langle g,N|\big].
-\end{align}
-纯退相干不改变 $N$：
-\begin{align}
-J_{A,\varphi}^{(N)}
-&=\sqrt{\frac{\gamma_\varphi}{2}}
-\big(|e,N-1\rangle\langle e,N-1|-|g,N\rangle\langle g,N|\big),\\
-J_{c,\varphi}^{(N)}
-&=\sqrt{\kappa_\varphi}
-\big[(N-1)|e,N-1\rangle\langle e,N-1|
-+N|g,N\rangle\langle g,N|\big].
-\end{align}
-这些 右矢-bra 形式在低激发边界的含义是：仅保留光子数指标非负的项；任何含负 Fock 指标的项都从算符和中省略，而不是把不存在的 右矢 形式上乘以零。这样 $N=0,1$ 的实际流形维数始终由投影 $P_N$ 决定，不需要人为补成固定维方阵。
-
-构造 风险 矩阵时先计算
-\[
-\begin{aligned}
-C_{e\to g}^\dagger C_{e\to g}&=\Gamma_{e\to g}|e\rangle\langle e|,\\
-C_{g\to e}^\dagger C_{g\to e}&=\Gamma_{g\to e}|g\rangle\langle g|,\\
-(C_A^\varphi)^\dagger C_A^\varphi&=\frac{\gamma_\varphi}{2}\id(),\\
-(C_c^-)^\dagger C_c^-&=\kappa_\downarrow a^\dagger a,\\
-(C_c^+)^\dagger C_c^+&=\kappa_\uparrow(a^\dagger a+1),\\
-(C_c^\varphi)^\dagger C_c^\varphi&=\kappa_\varphi(a^\dagger a)^2.
-\end{aligned}
-\]
-定义
-\[
-\boxed{
-\ell_{e,N}=\langle e,N-1|K_N|e,N-1\rangle,
-\qquad
-\ell_{g,N}=\langle g,N|K_N|g,N\rangle,}
-\]
-其中
-\[
-K_N=P_N\left(\sum_qC_q^\dagger C_q\right)P_N.
-\]
-由于 $a^\dagger a|e,N-1\rangle=(N-1)|e,N-1\rangle$，逐项取期望值得
-\[
-\boxed{
-\ell_{e,N}
-=\Gamma_{e\to g}+\frac{\gamma_\varphi}{2}
-+(N-1)\kappa_\downarrow+N\kappa_\uparrow
-+(N-1)^2\kappa_\varphi.}
-\]
-同理，$a^\dagger a|g,N\rangle=N|g,N\rangle$，因此
-\[
-\boxed{
-\ell_{g,N}
-=\Gamma_{g\to e}+\frac{\gamma_\varphi}{2}
-+N\kappa_\downarrow+(N+1)\kappa_\uparrow
-+N^2\kappa_\varphi.}
-\]
-两者分别是基矢 $|e,N-1\rangle$ 与 $|g,N\rangle$ 在单位时间内离开 无-跳跃 分支的总 风险。于是
-\begin{equation}
-\boxed{
-K_N^{(2)}=\begin{pmatrix}\ell_{e,N}&0\\0&\ell_{g,N}\end{pmatrix},
-\qquad
-M_N^{(2)}=H_N^{(2)}-\frac{\ii\hbar}{2}K_N^{(2)}.}
-\label{eq:phys-oqs-mn2}
-\end{equation}
-
-写
-\[
-M_N^{(2)}=
-\begin{pmatrix}
-m_{ee,N}&m_{eg,N}\\
-m_{ge,N}&m_{gg,N}
-\end{pmatrix}.
-\]
-其两个复极点由二次特征方程
-\[
-(z-m_{ee,N})(z-m_{gg,N})-m_{eg,N}m_{ge,N}=0
-\]
-得到。令
-\[
-\bar m_N=\frac{m_{ee,N}+m_{gg,N}}2,
-\qquad
-\chi_N=\sqrt{\left(\frac{m_{ee,N}-m_{gg,N}}2\right)^2+m_{eg,N}m_{ge,N}},
-\]
-则
-\[
-\boxed{z_{\pm,N}=\bar m_N\pm\chi_N.}
-\]
-把 $z_{\pm,N}$ 代入普适谱公\eqnrefs{eq:phys-oqs-spectral-propagator} 即得条件传播子。对非简并情形，可写成
-\[
-U_N(t)=\ee^{-\ii z_{+,N}t/\hbar}
-\frac{M_N^{(2)}-z_{-,N}\id(2)}{z_{+,N}-z_{-,N}}
-+\ee^{-\ii z_{-,N}t/\hbar}
-\frac{M_N^{(2)}-z_{+,N}\id(2)}{z_{-,N}-z_{+,N}}.
-\]
-闭合极限 $C_q=0$、$H_{\rm LS}=0$ 下，\eqnrefs{eq:phys-oqs-hn2-detuning-form} 直接给出
-\begin{equation}
-\boxed{\Omega_N=\sqrt{\Delta^2+4|g|^2N}.}
-\label{eq:phys-oqs-jc-generalized-rabi}
-\end{equation}
-把\eqnrefs{eq:phys-oqs-hn2-detuning-form} 的两条谱投影代入普适传播子\eqnrefs{eq:phys-oqs-spectral-propagator}，分别乘上相位因子后得到
+质量重整化后的运动方程为
 \begin{equation}
-\boxed{
-U_N^{\rm JC}(t)
-=\ee^{-\ii E_{0,N}t/\hbar}
-\left[
-\cos\frac{\Omega_Nt}{2}\,\id(2)
--\frac{\ii\sin(\Omega_Nt/2)}{\Omega_N}
-\begin{pmatrix}
-\Delta&2g\sqrt N\\
-2g^*\sqrt N&-\Delta
-\end{pmatrix}
-\right].}
-\label{eq:phys-oqs-jc-propagator}
+ ma^\mu=qF_{\rm ext}^{\mu\nu}u_\nu+
+ \frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
+ \label{eq:phys-rr-ald}
 \end{equation}
-例如初态为 $|e,N-1\rangle$ 时，
-\begin{align}
-c_e(t)
-&=\ee^{-\ii E_{0,N}t/\hbar}
-\left[\cos\frac{\Omega_Nt}{2}
--\ii\frac{\Delta}{\Omega_N}\sin\frac{\Omega_Nt}{2}\right],\\
-c_g(t)
-&=-\ii\,\ee^{-\ii E_{0,N}t/\hbar}
-\frac{2g^*\sqrt N}{\Omega_N}
-\sin\frac{\Omega_Nt}{2}.
-\end{align}
-因此共振 $\Delta=0$ 时的 布居 交换频率就是 $2|g|\sqrt N$；失谐只改变同一普适二维传播子的极点和混合角。
-
-密度矩阵块的物理内容可直接写成 Fock 矩阵元：
-\[
-\boxed{
-R_{NM}^{(2)}=
-\begin{pmatrix}
-\rho_{N-1,M-1}^{ee}&\rho_{N-1,M}^{eg}\\
-\rho_{N,M-1}^{ge}&\rho_{N,M}^{gg}
-\end{pmatrix},
-\qquad
-\rho_{nm}^{\alpha\beta}=\langle\alpha,n|\rho|\beta,m\rangle.}
-\]
-记 回收 源矩阵为
-\[
-\mathcal S_{NM}^{(2)}=
-\sum_qJ_q^{(N+s_q)}R_{N+s_q,M+s_q}^{(2)}J_q^{(M+s_q)\dagger}
-\equiv
-\begin{pmatrix}s_{ee}&s_{eg}\\s_{ge}&s_{gg}\end{pmatrix}_{NM}.
-\]
-把 $M_N^{(2)}R_{NM}^{(2)}-R_{NM}^{(2)}M_M^{(2)\dagger}$ 逐项相乘，得到四个直接可计算的方程：
-\[
-\boxed{
-\begin{aligned}
-\dot\rho_{N-1,M-1}^{ee}
-={}&-\frac{\ii}{\hbar}
-\left[(m_{ee,N}-m_{ee,M}^*)\rho_{N-1,M-1}^{ee}
-+m_{eg,N}\rho_{N,M-1}^{ge}
--m_{eg,M}^*\rho_{N-1,M}^{eg}\right]+s_{ee}^{NM},\\
-\dot\rho_{N-1,M}^{eg}
-={}&-\frac{\ii}{\hbar}
-\left[(m_{ee,N}-m_{gg,M}^*)\rho_{N-1,M}^{eg}
-+m_{eg,N}\rho_{N,M}^{gg}
--m_{ge,M}^*\rho_{N-1,M-1}^{ee}\right]+s_{eg}^{NM},\\
-\dot\rho_{N,M-1}^{ge}
-={}&-\frac{\ii}{\hbar}
-\left[(m_{gg,N}-m_{ee,M}^*)\rho_{N,M-1}^{ge}
-+m_{ge,N}\rho_{N-1,M-1}^{ee}
--m_{eg,M}^*\rho_{N,M}^{gg}\right]+s_{ge}^{NM},\\
-\dot\rho_{N,M}^{gg}
-={}&-\frac{\ii}{\hbar}
-\left[(m_{gg,N}-m_{gg,M}^*)\rho_{N,M}^{gg}
-+m_{ge,N}\rho_{N-1,M}^{eg}
--m_{ge,M}^*\rho_{N,M-1}^{ge}\right]+s_{gg}^{NM}.
-\end{aligned}}
-\]
-
-各 跳跃 对 回收 源的作用可以直接从投影矩阵读出。对原子跃迁，
-\[
-\mathcal S_{NM}^{e\to g}
-=\Gamma_{e\to g}
-\begin{pmatrix}0&0\\0&\rho_{N,M}^{ee}\end{pmatrix},
-\qquad
-\mathcal S_{NM}^{g\to e}
-=\Gamma_{g\to e}
-\begin{pmatrix}\rho_{N-1,M-1}^{gg}&0\\0&0\end{pmatrix}.
-\]
-对腔损失，
-\[
-\mathcal S_{NM}^{c-}=\kappa_\downarrow
-\begin{pmatrix}
-\sqrt{NM}\,\rho_{N,M}^{ee}&\sqrt{N(M+1)}\,\rho_{N,M+1}^{eg}\\
-\sqrt{(N+1)M}\,\rho_{N+1,M}^{ge}&\sqrt{(N+1)(M+1)}\,\rho_{N+1,M+1}^{gg}
-\end{pmatrix},
-\]
-而腔热激发给
-\[
-\mathcal S_{NM}^{c+}=\kappa_\uparrow
-\begin{pmatrix}
-\sqrt{(N-1)(M-1)}\,\rho_{N-2,M-2}^{ee}&\sqrt{(N-1)M}\,\rho_{N-2,M-1}^{eg}\\
-\sqrt{N(M-1)}\,\rho_{N-1,M-2}^{ge}&\sqrt{NM}\,\rho_{N-1,M-1}^{gg}
-\end{pmatrix}.
-\]
-纯退相干是 $s_q=0$ 的同流形 回收：
-\[
-\mathcal S_{NM}^{A\varphi}=\frac{\gamma_\varphi}{2}
-\begin{pmatrix}
-\rho_{N-1,M-1}^{ee}&-\rho_{N-1,M}^{eg}\\
--\rho_{N,M-1}^{ge}&\rho_{N,M}^{gg}
-\end{pmatrix},
-\]
-\[
-\mathcal S_{NM}^{c\varphi}=\kappa_\varphi
-\begin{pmatrix}
-(N-1)(M-1)\rho_{N-1,M-1}^{ee}&(N-1)M\rho_{N-1,M}^{eg}\\
-N(M-1)\rho_{N,M-1}^{ge}&NM\rho_{N,M}^{gg}
-\end{pmatrix}.
-\]
-这些矩阵公式只对相应 Fock 指标非负的投影子空间成立；越过低激发边界的项由流形投影 $P_N$ 或 $P_M$ 直接缺席，而不是额外规定不存在的矩阵元等于零。这组方程把 无-跳跃 漂移与 回收 注入分别保留，因此可以逐项追踪 布居 与 相干 的来源。
-
-接下来考察三能级。
-
-取三个物质能级 $|1\rangle,|2\rangle,|3\rangle$。三能级动力学先由一般能级指标、一般耦合矩阵元和一般耗散通道建立；$\Lambda$、V、$\Xi$ 三种构形随后由允许跃迁的参数约束直接生成。
-
-把一般结构特殊化到量子单模耦合的三能级系统，可以得到以下块矩阵。
-
-给每个能级分配整数激发等级 $\nu_i$，并沿用\eqnrefs{eq:phys-oqs-manifold-span} 的总激发算符。固定流形中的基矢写为
-\[
-|i;N\rangle=|i,N-\nu_i\rangle,
-\qquad N-\nu_i\ge0,
-\]
-并定义 $I_N=\{i:N-\nu_i\ge0\}$。投影算符与固定流形为
-\begin{equation}
-\boxed{
-P_N=\sum_{i\in I_N}|i;N\rangle\langle i;N|,
-\qquad
-\mathcal H_N^{(3)}=\operatorname{span}\{|i;N\rangle:i\in I_N\}.}
-\label{eq:phys-oqs-pn-three}
-\end{equation}
-因此低激发区的维数是 $d_N=|I_N|$；只有当三个基矢都存在时才有 $d_N=3$。
-
-把\eqnrefs{eq:phys-oqs-hs-rwa} 投影到 $\mathcal H_N^{(3)}$。先算对角元。由于 $H_A$ 与 $H_c$ 都不改变原子态和光子数，
-\begin{align}
-\langle i;N|P_N(H_A+H_c)P_N|i;N\rangle
-&=\langle i,N-\nu_i|H_A+H_c|i,N-\nu_i\rangle\\
-&=E_i+\hbar\omega_c\left(N-\nu_i+\frac12\right).
-\end{align}
-再算非对角元。若 $\nu_i=\nu_j+1$，\eqnrefs{eq:phys-oqs-hs-rwa} 中连接 $|j;N\rangle$ 与 $|i;N\rangle$ 的项是 $\hbar g_{ij}a\sigma_{ij}$，于是
-\begin{align}
-\langle i;N|\hbar g_{ij}a\sigma_{ij}|j;N\rangle
-&=\hbar g_{ij}
-\langle i|\sigma_{ij}|j\rangle
-\langle N-\nu_i|a|N-\nu_j\rangle\\
-&=\hbar g_{ij}
-\sqrt{N-\nu_j}\,
-\delta_{N-\nu_i,N-\nu_j-1}\\
-&=\hbar g_{ij}\sqrt{N-\nu_j}.
-\end{align}
-若 $\nu_j=\nu_i+1$，则由 厄米 共轭项得到反向矩阵元。故
-\begin{equation}
-\boxed{
-(H_{S,N}^{(3)})_{ij}=
-\begin{cases}
-E_i+\hbar\omega_c(N-\nu_i+\frac12),&i=j,\\
-\hbar g_{ij}\sqrt{N-\nu_j},&\nu_i=\nu_j+1,\\
-\hbar g_{ji}^*\sqrt{N-\nu_i},&\nu_j=\nu_i+1,\\
-0,&\text{其余情形}.
-\end{cases}}
-\label{eq:phys-oqs-hn3-elements}
-\end{equation}
-这一步给出的不是某一种三能级构形，而是任意激发等级 $\nu_i$ 和任意允许单光子边 $g_{ij}$ 的统一投影结果。
-
-开放系统还需要把 坍缩算符 投影成 跳跃 块。对任意原子跃迁 $i\to j$，取
-\[
-C_{i\to j}=\sqrt{\Gamma_{i\to j}}\,\sigma_{ji},
-\qquad
-s_{i\to j}=\nu_i-\nu_j.
-\]
-由\eqnrefs{eq:phys-oqs-pn-three} 逐项作用，
-\begin{align}
-P_{N-s_{i\to j}}C_{i\to j}P_N|k;N\rangle
-&=\sqrt{\Gamma_{i\to j}}\,\delta_{ik}
-P_{N-s_{i\to j}}|j,N-\nu_i\rangle\\
-&=\sqrt{\Gamma_{i\to j}}\,\delta_{ik}|j;N-s_{i\to j}\rangle.
-\end{align}
-因此
+它的实验室时间分量给出 Liénard 功率（\(\gamma=1/\sqrt{1-v^2/c^2}\) 为粒子洛伦兹因子）
 \begin{equation}
-\boxed{
-J_{i\to j}^{(N)}
-=\sqrt{\Gamma_{i\to j}}\,
-|j;N-s_{i\to j}\rangle\langle i;N|.}
-\label{eq:phys-oqs-three-atomic-jump}
+ P_{\rm rad}
+ =\frac{q^2\gamma^6}{6\pi\varepsilon_0c^3}
+ \left[\vb a^2-\frac{|\vb v\times\vb a|^2}{c^2}\right].
+ \label{eq:phys-rr-lienard-power}
 \end{equation}
-这说明原子 跳跃 在固定流形语言中只是把原子指标 $i$ 改成 $j$，同时把总激发标签从 $N$ 改成 $N-s_{i\to j}$。
+低速时才退化为 Larmor 公式；不能从低速功率反推协变自力。
 
-对腔损失 $C_{c,-}=\sqrt{\kappa_\downarrow}\,a$，有 $s_{c,-}=1$。因为
+\begin{proof}[解]
+在 Fermi 端面的瞬时静止系中，近场的唯一
+\(r^{-2}\) 主项是 Coulomb 场，因此
 \[
-a|i;N\rangle
-=\sqrt{N-\nu_i}\,|i;N-1\rangle,
+ U_{\rm div}(\ell)
+ =\int_\ell^{L_{\rm loc}}\frac{\varepsilon_0}{2}
+ \left(\frac{q}{4\pi\varepsilon_0r^2}\right)^2
+ 4\pi r^2\dd r
+ =\frac{q^2}{8\pi\varepsilon_0\ell}+O(\ell^0).
 \]
-故
-\begin{equation}
-\boxed{
-J_{c,-}^{(N)}
-=\sqrt{\kappa_\downarrow}
-\sum_{i\in I_N\cap I_{N-1}}
-\sqrt{N-\nu_i}\,
-|i;N-1\rangle\langle i;N|.}
-\label{eq:phys-oqs-three-cavity-jump-down}
-\end{equation}
-同理，对热激发 $C_{c,+}=\sqrt{\kappa_\uparrow}\,a^\dagger$，$s_{c,+}=-1$，
-\begin{equation}
-\boxed{
-J_{c,+}^{(N)}
-=\sqrt{\kappa_\uparrow}
-\sum_{i\in I_N\cap I_{N+1}}
-\sqrt{N-\nu_i+1}\,
-|i;N+1\rangle\langle i;N|.}
-\label{eq:phys-oqs-three-cavity-jump-up}
-\end{equation}
-对零频纯退相干，取 厄米 对角 坍缩算符
-\begin{equation}
-C_{\varphi,\alpha}
-=\sqrt{\kappa_\alpha}\sum_iq_{\alpha i}\sigma_{ii},
-\qquad q_{\alpha i}\in\mathbb R.
-\label{eq:phys-oqs-three-dephasing-collapse}
-\end{equation}
-它满足 $s_{\varphi,\alpha}=0$，所以不改变流形。直接取任意原子 相干 的矩阵元：
-\begin{align}
-\langle i|\mathcal D[C_{\varphi,\alpha}]\rho|j\rangle
-={}&\kappa_\alpha q_{\alpha i}q_{\alpha j}\rho_{ij}
--\frac{\kappa_\alpha}{2}
-(q_{\alpha i}^2+q_{\alpha j}^2)\rho_{ij}\nonumber\\
-={}&-\frac{\kappa_\alpha}{2}
-(q_{\alpha i}-q_{\alpha j})^2\rho_{ij}.
-\end{align}
-因此一般多通道纯退相干率为
-\begin{equation}
-\boxed{
-\gamma_{ij}^{\varphi}
-=\frac12\sum_\alpha\kappa_\alpha
-(q_{\alpha i}-q_{\alpha j})^2.}
-\label{eq:phys-oqs-general-pure-dephasing-rate}
-\end{equation}
-这就是\secref{sec:phys-oqs-gksl}零频谱结论在三能级矩阵元语言中的直接实现：只有不同能级感受到不同的零频噪声位移时，相对相位才会衰减。
-
-由这些 跳跃 可直接计算 $K_N=P_N\sum_qC_q^\dagger C_qP_N$。例如相互独立的原子跃迁给
-\[
-P_N\sum_{i\ne j}C_{i\to j}^\dagger C_{i\to j}P_N
-=\sum_{i\in I_N}\Gamma_i^{\rm out}|i;N\rangle\langle i;N|,
-\qquad
-\Gamma_i^{\rm out}=\sum_{j\ne i}\Gamma_{i\to j},
-\]
-腔损失与热激发分别给
-\[
-\kappa_\downarrow\sum_{i\in I_N}(N-\nu_i)|i;N\rangle\langle i;N|,
-\qquad
-\kappa_\uparrow\sum_{i\in I_N}(N-\nu_i+1)|i;N\rangle\langle i;N|.
-\]
-上式只对应“各原子跃迁已经彼此可分辨”的对角耗散情形。若同一 Bohr 频率块内有多条不可分辨跃迁，应保留完整 Kossakowski 矩阵。用跃迁标签
-\[
-\alpha=(i_\alpha\to j_\alpha),
-\qquad
-F_\alpha=\sigma_{j_\alpha i_\alpha}
-\]
-表示该频率块中的系统算符，则耗散部分为
-\begin{equation}
-\mathcal D_{\Gamma^{(\omega)}}[\rho]
-=\sum_{\alpha,\beta\in\omega}
-\Gamma_{\alpha\beta}^{(\omega)}
-\left(F_\beta\rho F_\alpha^\dagger
--\frac12\{F_\alpha^\dagger F_\beta,\rho\}\right).
-\label{eq:phys-oqs-general-transition-kossakowski}
-\end{equation}
-相应 风险 算符不是简单的标量速率之和，而是
-\begin{equation}
-K^{(\omega)}
-=\sum_{\alpha,\beta\in\omega}
-\Gamma_{\alpha\beta}^{(\omega)}F_\alpha^\dagger F_\beta.
-\label{eq:phys-oqs-kossakowski-hazard}
-\end{equation}
-由于
-\[
-F_\alpha^\dagger F_\beta
-=\delta_{j_\alpha j_\beta}
-\sigma_{i_\alpha i_\beta},
-\]
-如果两条近简并跃迁具有同一个末态，$K^{(\omega)}$ 会在它们的初态之间产生非对角 风险；如果它们具有同一个初态，则 回收 项
-$F_\beta\rho F_\alpha^\dagger$ 可以在不同末态之间直接生成 相干。二者都来自同一个 $\Gamma_{\alpha\beta}^{(\omega)}$，并不是 V 型或 $\Lambda$ 型才额外定义的特殊机制。
-
-把交叉耗散继续投影到固定激发流形之前，还必须检查它是否保留前面使用的荷分级。若
+其中 \(\ell\) 为世界管内半径，\(L_{\rm loc}\) 为 Coulomb 近场近似仍成立的外截断，发散仅来自 \(\ell\) 端。
+同阶没有 Poynting 动量，故协变化后发散四动量平行于 \(u^\mu\)：
 \[
-[\mathcal N,F_\alpha]=-s_\alpha F_\alpha,
+ P_{\rm div}^\mu
+ =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu .
 \]
-则交叉 回收 项 $F_\beta\rho F_\alpha^\dagger$ 会把左右荷标签分别改变 $s_\beta$ 与 $s_\alpha$。因此只有在每个非零 Kossakowski 元都满足
-\begin{equation}
-\boxed{
-\Gamma_{\alpha\beta}^{(\omega)}\ne0
-\quad\Longrightarrow\quad
-s_\alpha=s_\beta
-}
-\label{eq:phys-oqs-kossakowski-grading-compatibility}
-\end{equation}
-时，$N-M$ 才保持不变，并且该频率块可在固定的 $s$ 子块内酉对角化成具有确定荷步长的 坍缩算符。此时只需计算
+有限的局域束缚动量只能与 \(a^\mu\) 成正比。由世界管平衡，束缚近场动量的变化率为 \(\dd P_{\rm bound}^\mu/\dd\tau=-f_{\rm self}^\mu-\dd P_{\rm rad}^\mu/\dd\tau\)。代入正则自力与 Larmor 辐射流 \(\dd P_{\rm rad}^\mu/\dd\tau=-q^2a^2u^\mu/(6\pi\varepsilon_0c^5)\)，两个 \(a^2u^\mu\) 项相消，得 \(\dd P_{\rm bound}^\mu/\dd\tau=-q^2\dot a^\mu/(6\pi\varepsilon_0c^3)\)。对 \(\tau\) 积分并把发散 Coulomb 项 \(\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu\) 单列，即
 \[
-K_N^{(\omega)}=P_NK^{(\omega)}P_N,
-\qquad
-P_{N-s}F_\alpha P_N,
+ P_{\rm bound}^\mu(\ell)
+ =\frac{q^2}{8\pi\varepsilon_0c^2\ell}u^\mu
+ -\frac{q^2}{6\pi\varepsilon_0c^3}a^\mu+O(\ell),
 \]
-再代入一般块方程\eqnrefs{eq:phys-oqs-general-block-master}。若\eqnrefs{eq:phys-oqs-kossakowski-grading-compatibility} 不成立，物理 GKSL 方程本身没有问题，但当前 $\mathcal N$ 不再给出 Liouvillian 对称分级，必须在完整 Liouville 空间传播或寻找与耗散共同兼容的另一守恒荷。只有当 $\Gamma_{\alpha\beta}^{(\omega)}$ 进一步在所选跃迁基底中对角时，才可把它简化成彼此独立的标量 $\Gamma_{i\to j}$。
-
-于是三能级固定流形中的三个核心矩阵统一为
-\begin{equation}
-\boxed{
-H_N^{(3)}=P_N(H_S^{\rm RWA}+H_{\rm LS})P_N,
-\qquad
-K_N^{(3)}=P_N\left(\sum_qC_q^\dagger C_q\right)P_N,
-\qquad
-M_N^{(3)}=H_N^{(3)}-\frac{\ii\hbar}{2}K_N^{(3)}.}
-\label{eq:phys-oqs-three-m}
-\end{equation}
-当 $d_N=3$ 时写 $M_N^{(3)}=(m_{ij}^{(N)})$。三个条件极点由
-\begin{equation}
-\boxed{
-p_N(z)=\det(z\id(3)-M_N^{(3)})
-=z^3-\tau_{1,N}z^2+\tau_{2,N}z-\tau_{3,N}=0,}
-\label{eq:phys-oqs-three-cubic}
-\end{equation}
-其中
+即\eqnrefs{eq:phys-rr-bound-momentum-expansion}。把第一项与裸机械动量合并，
 \[
-\tau_{1,N}=\Tr M_N^{(3)},\qquad
-\tau_{2,N}=\frac12\left[(\Tr M_N^{(3)})^2-\Tr((M_N^{(3)})^2)\right],\qquad
-\tau_{3,N}=\det M_N^{(3)}.
+ m=\lim_{\ell\to0}\left[
+ m_0(\ell)+\frac{q^2}{8\pi\varepsilon_0c^2\ell}\right],
 \]
-求出三个根以后直接使用\eqnrefs{eq:phys-oqs-spectral-propagator}；矩阵指数的证明已经在\secref{sec:phys-oqs-unified}完成，此处只负责把具体 $M_N^{(3)}$ 代入。
+得到\eqnrefs{eq:phys-rr-mass-renormalization}。
 
-无条件动力学同样不需要新方法。令
-\[
-R_{NM}^{(3)}=(r_{ij}^{NM}),
-\qquad
-\mathcal S_{NM}^{(3)}=(s_{ij}^{NM}),
-\]
-把\eqnrefs{eq:phys-oqs-duhamel-block} 对应的微分方程逐矩阵元展开，先有
-\[
-(M_NR_{NM})_{ij}=\sum_{k=1}^{3}m_{ik}^{(N)}r_{kj}^{NM},
-\qquad
-(R_{NM}M_M^\dagger)_{ij}
-=\sum_{k=1}^{3}r_{ik}^{NM}m_{jk}^{(M)*},
-\]
-而 回收 源项是
+将束缚动量导数和
+\(\dd P_{\rm rad}^\mu/\dd\tau
+ =-q^2a^2u^\mu/(6\pi\varepsilon_0c^5)\)
+代回世界管平衡式并取 \(\ell\to0\)，便得到
 \[
-s_{ij}^{NM}
-=\left[
-\sum_qJ_q^{(N+s_q)}R_{N+s_q,M+s_q}^{(3)}J_q^{(M+s_q)\dagger}
-\right]_{ij}.
+ ma^\mu=f_{\rm ext}^\mu+
+ \frac{q^2}{6\pi\varepsilon_0c^3}
+ \left(\dot a^\mu+\frac{a^2}{c^2}u^\mu\right).
 \]
-因此九个矩阵元共享同一个母式
-\begin{equation}
-\boxed{
-\dot r_{ij}^{NM}
-=-\frac{\ii}{\hbar}
-\left[
-\sum_{k=1}^3m_{ik}^{(N)}r_{kj}^{NM}
--\sum_{k=1}^3r_{ik}^{NM}m_{jk}^{(M)*}
-\right]
-+s_{ij}^{NM},
-\qquad i,j=1,2,3.}
-\label{eq:phys-oqs-three-block-elements}
-\end{equation}
-\eqnrefs{eq:phys-oqs-three-block-elements} 与\eqnrefs{eq:phys-oqs-three-atomic-jump}--\eqnrefs{eq:phys-oqs-three-cavity-jump-up} 已经构成量子单模三能级系统的完整无条件计算规则。
+因此发散惯性、Schott 束缚动量和远区辐射通量来自同一个守恒式，
+而不是三个独立假设。
+\end{proof}
+\section{从 ALD 到受控的 Landau--Lifshitz 有效动力学}
 
-若耦合来自经典驱动，则先把显式时间相位吸收到合适的旋转框架中。
+ALD 已经是从 Maxwell--守恒律点极限得到的局部方程，但它含三阶世界线导数。为了得到实际计算中常用的二阶方程，必须先识别 ALD 的额外解模态，再在辐射反作用时间远短于外场变化时间时做受控的阶数约化。
 
-经典激光驱动同样从电偶极相互作用得到。更一般地，设外场含有若干频率分量
-\begin{equation}
-\mathbf E^{(+)}(t)
-=\frac12\sum_r\boldsymbol{\mathcal E}_r
-\ee^{-\ii\omega_rt},
-\qquad
-\mathbf E^{(-)}=(\mathbf E^{(+)})^\dagger,
-\label{eq:phys-oqs-multitone-classical-field}
-\end{equation}
-并对每个场分量与每条跃迁分别定义共旋与反旋偶极投影
-\begin{equation}
-\boxed{
-\Omega_{ij}^{(r)}
-=\frac{\mathbf d_{ij}\cdot\boldsymbol{\mathcal E}_r}{\hbar},
-\qquad
-\Omega_{ij,{\rm cr}}^{(r)}
-=\frac{\mathbf d_{ij}\cdot\boldsymbol{\mathcal E}_r^*}{\hbar}.}
-\label{eq:phys-oqs-general-rabi-frequency}
-\end{equation}
-两者都是角频率。对线偏振并选择实偶极基时二者模长相同；对一般复偏振或有角动量选择规则的跃迁，不能把它们预先等同。把单个场分量 $r$ 与单条跃迁 $i\leftrightarrow j$ 单独取出，在相互作用绘景中，共旋项与反旋项分别带有频率
-\[
-\Delta_{ij}^{(r)}=\omega_{ij}-\omega_r,
-\qquad
-\Sigma_{ij}^{(r)}=\omega_{ij}+\omega_r.
-\]
-因此丢弃反旋转项的 光学 旋转波近似 由
-\begin{equation}
-\boxed{
-\epsilon_{\rm optRWA}^{(ij,r)}
-=\frac{|\Omega_{ij,{\rm cr}}^{(r)}|}{2|\Sigma_{ij}^{(r)}|}
-\ll1}
-\label{eq:phys-oqs-classical-optical-rwa-control}
-\end{equation}
-控制：反旋转分量给态矢造成 $O(\epsilon_{\rm optRWA}^{(ij,r)})$ 的快速微运动，并在二阶产生
-\[
-\delta\omega_{\rm BS}^{(ij,r)}
-=O\!\left(\frac{|\Omega_{ij,{\rm cr}}^{(r)}|^2}{|\Sigma_{ij}^{(r)}|}\right)
-\]
-的 Bloch--Siegert 型频移。这个条件只允许删除反旋转项；它并不自动允许把一个仍然旋转、但远失谐的场分量从 Hamiltonian 中删除。若某个 $r$ 不收入后面的 $\mathcal R_{ij}$，还必须另行满足
+定义电子之外任意电荷 \(q\)、质量 \(m\) 的辐射反作用时间
 \begin{equation}
-\boxed{
-\epsilon_{\rm off}^{(ij,r)}
-=\frac{|\Omega_{ij}^{(r)}|}{2|\Delta_{ij}^{(r)}|}
-\ll1,
-\qquad \Delta_{ij}^{(r)}\ne0,}
-\label{eq:phys-oqs-classical-offresonant-control}
+ \tau_{\rm rr}=\frac{q^2}{6\pi\varepsilon_0mc^3}.
+ \label{eq:phys-rr-reaction-time}
 \end{equation}
-此时被消去的旋转项仍会留下
-$O(|\Omega_{ij}^{(r)}|^2/|\Delta_{ij}^{(r)}|)$ 的 交流 Stark 位移；若这一二阶位移达到所需精度，就必须把它保留在有效 Hamiltonian 中。接近多光子共振、强驱动或 $|\Delta_{ij}^{(r)}|$ 与 $|\Omega_{ij}^{(r)}|$ 同阶时，\eqnrefs{eq:phys-oqs-classical-offresonant-control} 失效，不能通过“没有直接共振”删除该频率分量。
+它不是新的基本常数，而是点粒子自力相对于机械惯性的时间尺度。
 
-把 $-\mathbf d\cdot\mathbf E(t)$ 按照\eqnrefs{eq:phys-oqs-dipole-positive-negative} 所固定的正负频率约定分解；在\eqnrefs{eq:phys-oqs-classical-optical-rwa-control} 控制下先删除反旋转项，再按\eqnrefs{eq:phys-oqs-classical-offresonant-control} 删除确实可微扰消去的远失谐旋转项，便得到
+一维相对论运动可用快度 \(\psi(\tau)\) 精确参数化：
 \[
-H_d^{\rm RWA}(t)
-=-\frac{\hbar}{2}
-\sum_{E_i>E_j}\sum_{r\in\mathcal R_{ij}}
-\left[
-\Omega_{ij}^{(r)}\ee^{-\ii\omega_rt}\sigma_{ij}
-+\Omega_{ij}^{(r)*}\ee^{+\ii\omega_rt}\sigma_{ji}
-\right],
+ u^\mu=c(\cosh\psi,\sinh\psi,0,0).
 \]
-其中 $\mathcal R_{ij}$ 表示在所取光学 旋转波近似 中保留、能够驱动该跃迁的频率分量集合。若每条允许边只保留一个主导激光，记该频率为 $\omega_{ij}^{d}$，并简写 $\Omega_{ij}^{(r)}\to\Omega_{ij}$。于是实验室系 Hamiltonian 才退化为后面三个例子使用的形式
+若 \(F_\parallel=\dd p/\dd t\) 是沿运动方向的普通三维外力，则 ALD 方程严格化为
 \begin{equation}
-\boxed{
-H_{\rm lab}(t)
-=\sum_iE_i\sigma_{ii}
--\frac{\hbar}{2}\sum_{E_i>E_j}
-\left(
-\Omega_{ij}\ee^{-\ii\omega_{ij}^{d}t}\sigma_{ij}
-+\Omega_{ij}^*\ee^{+\ii\omega_{ij}^{d}t}\sigma_{ji}
-\right).}
-\label{eq:phys-oqs-three-drive-lab}
+ mc\left(\dot\psi-\tau_{\rm rr}\ddot\psi\right)=F_\parallel(\tau).
+ \label{eq:phys-rr-ald-rapidity}
 \end{equation}
-因此\eqnrefs{eq:phys-oqs-three-drive-lab} 不是三能级专用假设，而是多频经典场在“每条边只保留一个近共振分量”后的记号简化。开放系统的相干部分实际是 $H_{\rm lab}(t)+H_{\rm LS}$；下面先变换 $H_{\rm lab}$，随后再说明 $H_{\rm LS}$ 与 dissipator 如何一起变换。
-
-现在选择三个旋转频率 $\chi_i$，定义
-\[
-U_R(t)=\exp\!\left[-\ii t\sum_i\chi_i\sigma_{ii}\right],
-\qquad
-\rho_R=U_R^\dagger\rho U_R.
-\]
-由 $U_R^\dagger\sigma_{ij}U_R=
-\ee^{\ii(\chi_i-\chi_j)t}\sigma_{ij}$ 以及
-$-\ii\hbar U_R^\dagger\dot U_R=-\hbar\sum_i\chi_i\sigma_{ii}$，旋转框架 Hamiltonian 逐项变为
-\begin{align}
-H_R(t)
-&=U_R^\dagger H_{\rm lab}(t)U_R
--\ii\hbar U_R^\dagger\dot U_R\\
-&=\sum_i(E_i-\hbar\chi_i)\sigma_{ii}
--\frac{\hbar}{2}\sum_{E_i>E_j}
-\left[
-\Omega_{ij}
-\ee^{-\ii[\omega_{ij}^{d}-(\chi_i-\chi_j)]t}\sigma_{ij}
-+\mathrm{h.c.}
-\right].
-\label{eq:phys-oqs-three-drive-transform}
-\end{align}
-对一组可以同时静止化的驱动边，选择
-\[
-\chi_i-\chi_j=\omega_{ij}^{d}.
-\]
-再定义裸旋转框架失谐
-\[
-\delta_i^{(0)}=\frac{E_i}{\hbar}-\chi_i,
-\qquad
-\Delta_{ij}^{(0)}=\delta_i^{(0)}-\delta_j^{(0)}.
-\]
-给所有 $\delta_i^{(0)}$ 同时加同一个常数只给 Hamiltonian 增加单位阵倍数，不影响密度矩阵动力学，因此可以任取一个能级作为零点。在暂不计 Lamb 位移 时，相干 Hamiltonian 为
-\[
-H_{\rm rot}^{(0)}
-=\hbar\sum_i\delta_i^{(0)}\sigma_{ii}
--\frac{\hbar}{2}\sum_{E_i>E_j}
-\left(\Omega_{ij}\sigma_{ij}+\Omega_{ij}^*\sigma_{ji}\right).
-\]
-若 $i\leftrightarrow j$ 本身被频率 $\omega_{ij}^{d}$ 的激光直接驱动，则
-\[
-\Delta_{ij}^{(0)}
-=\frac{E_i-E_j}{\hbar}-\omega_{ij}^{d}
-=\omega_{ij}-\omega_{ij}^{d},
-\]
-即通常的裸单光子失谐。若三条边都被独立驱动，则三个条件 $\chi_i-\chi_j=\omega_{ij}^{d}$ 只有在闭环频率满足
-\[
-\omega_{31}^{d}=\omega_{32}^{d}+\omega_{21}^{d}
-\]
-时才能同时成立；否则必有一条边保留多光子失谐对应的显式时间相位。这一闭环条件只由驱动相位决定，与后面是否加入 Lamb 位移 无关。
-
-旋转框架必须作用在整个主方程上，而不仅是 Hamiltonian。若实验室系写成
-\[
-\dot\rho
-=-\frac{\ii}{\hbar}[H_{\rm lab}(t)+H_{\rm LS},\rho]
-+\sum_q\mathcal D[C_q]\rho,
-\]
-由 $\rho_R=U_R^\dagger\rho U_R$ 对时间求导可得
+齐次方程含 \(\dot\psi\propto e^{\tau/\tau_{\rm rr}}\) 的失控模态。若要求外力在未来关闭后加速度不指数增长，就必须选取特殊的无失控分支
 \begin{equation}
-\boxed{
-\dot\rho_R
-=-\frac{\ii}{\hbar}
-[H_R(t)+U_R^\dagger H_{\rm LS}U_R,\rho_R]
-+\sum_q\mathcal D[C_q^{R}(t)]\rho_R,
-\qquad
-C_q^{R}(t)=U_R^\dagger C_qU_R.}
-\label{eq:phys-oqs-rotating-frame-master}
+ \dot\psi(\tau)
+ =\frac1{mc}\int_0^\infty e^{-r}
+ F_\parallel(\tau+\tau_{\rm rr}r)\dd r .
+ \label{eq:phys-rr-no-runaway-integral}
 \end{equation}
-若独立跃迁 跳跃 写成 $C_q=\sqrt{\gamma_q}\,\sigma_{ji}$，则
-\[
-C_q^{R}(t)
-=\ee^{\ii(\chi_j-\chi_i)t}C_q.
-\]
-由于 $\mathcal D[\ee^{\ii\phi(t)}C_q]=\mathcal D[C_q]$，单个独立跃迁耗散子在这种对角旋转框架下形式不变；对角纯退相干算符甚至本身不变。
+它把失控排除掉，但当前加速度依赖未来宽度 \(O(\tau_{\rm rr})\) 的外力，这就是点粒子 ALD 的预加速。对真实有限尺寸源，基本描述应回到因果记忆核，而不能把\eqnrefs{eq:phys-rr-no-runaway-integral} 当作微观因果律。
 
-但对\eqnrefs{eq:phys-oqs-general-transition-kossakowski} 的交叉耗散，不能逐项丢掉相位。若
-\[
-F_\alpha^R(t)=\ee^{\ii\theta_\alpha(t)}F_\alpha,
-\qquad
-\theta_\alpha(t)=(\chi_{j_\alpha}-\chi_{i_\alpha})t,
-\]
-则交叉项的系数变为
+\begin{proof}[解]
+快度参数化给出
 \[
-\Gamma_{\alpha\beta}^{(\omega)}
-\ee^{\ii[\theta_\beta(t)-\theta_\alpha(t)]}.
+ a^\mu=c\dot\psi(\sinh\psi,\cosh\psi,0,0),\qquad
+ \dot a^\mu+\frac{a^2}{c^2}u^\mu
+ =c\ddot\psi(\sinh\psi,\cosh\psi,0,0).
 \]
-只有当同一耗散块内各跃迁在所选旋转框架中具有相同相位速度时，该 Kossakowski 矩阵仍保持时间无关。这一点在近简并 V 型和 $\Lambda$ 型的干涉耗散中尤其重要。
-
-若 $H_{\rm LS}$ 在所选能量基中对角，记
+一维外四力也沿同一类空方向，故 ALD 方程约化为
+\eqnrefs{eq:phys-rr-ald-rapidity}。令 \(w=\dot\psi\)，乘以积分因子后有
 \[
-\Delta_i^{\rm LS}=\langle i|H_{\rm LS}|i\rangle,
-\qquad
-\delta_i=\delta_i^{(0)}+\frac{\Delta_i^{\rm LS}}{\hbar}.
+ \frac{\dd}{\dd\tau}
+ \left(e^{-\tau/\tau_{\rm rr}}w\right)
+ =-\frac{e^{-\tau/\tau_{\rm rr}}}{mc\tau_{\rm rr}}
+ F_\parallel(\tau).
 \]
-从这里开始，$\delta_i$ 专指已经包含对角 Lamb 位移 的有效旋转框架频率，并定义
-\begin{equation}
-\boxed{\Delta_{ij}=\delta_i-\delta_j.}
-\label{eq:phys-oqs-three-detuning}
-\end{equation}
-于是直接受驱跃迁的有效失谐为
+一般解包含 \(e^{\tau/\tau_{\rm rr}}\) 齐次模。施加未来无失控边界条件，
+从 \(\tau\) 积分到 \(+\infty\)，得到
 \[
-\Delta_{ij}
-=\omega_{ij}-\omega_{ij}^{d}
-+\frac{\Delta_i^{\rm LS}-\Delta_j^{\rm LS}}{\hbar}.
+ W(\tau)=\frac1{mc\tau_{\rm rr}}\int_\tau^\infty
+ e^{-(s-\tau)/\tau_{\rm rr}}F_\parallel(s)\dd s.
 \]
-为使后面的 光学 Bloch 方程只出现这一组有效参数，定义
-\begin{equation}
-\boxed{
-H_{\rm rot}
-=\hbar\sum_i\delta_i\sigma_{ii}
--\frac{\hbar}{2}\sum_{E_i>E_j}
-\left(\Omega_{ij}\sigma_{ij}+\Omega_{ij}^*\sigma_{ji}\right).}
-\label{eq:phys-oqs-three-hrot}
-\end{equation}
-并把 Rabi 频率延拓到所有有序指标：$\Omega_{ji}\equiv\Omega_{ij}^*$、$\Omega_{ii}=0$。若 $H_{\rm LS}$ 在简并或近简并子空间内含非对角元，则不能把它压缩进三个标量 $\delta_i$；这些矩阵元必须显式保留在旋转框架 Hamiltonian 中，此时下面的 对易子 母式仍成立，但需把 $H_{ij}$ 的相应非对角贡献一并加入。
+令 \(r=(s-\tau)/\tau_{\rm rr}\) 即得
+\eqnrefs{eq:phys-rr-no-runaway-integral}。未来力之所以出现，正是因为这里用
+未来边界条件投影掉增长模。
+\end{proof}
 
-对一般三能级密度矩阵，把 Hamiltonian 与耗散项逐个投影到矩阵元即可得到闭合方程。
-
-先考虑独立的 布居-转移 通道
-\[
-C_{i\to j}=\sqrt{\Gamma_{i\to j}}\,\sigma_{ji},
-\qquad i\ne j.
-\]
-对单个 $k\to l$ 通道，耗散子的 布居 矩阵元是
-\begin{align}
-\langle i|\Diss[C_{k\to l}]\rho|i\rangle
-&=\Gamma_{k\to l}\delta_{il}\rho_{kk}
--\frac{\Gamma_{k\to l}}2
-\langle i|\{\sigma_{kk},\rho\}|i\rangle\\
-&=\Gamma_{k\to l}\delta_{il}\rho_{kk}
--\Gamma_{k\to l}\delta_{ik}\rho_{ii}.
-\end{align}
-对所有通道求和，得到
-\begin{equation}
-\boxed{
-\dot\rho_{ii}\big|_{\rm tr}
-=\sum_{k\ne i}\Gamma_{k\to i}\rho_{kk}
--\Gamma_i^{\rm out}\rho_{ii},
-\qquad
-\Gamma_i^{\rm out}=\sum_{l\ne i}\Gamma_{i\to l}.}
-\label{eq:phys-oqs-three-transfer-pop}
-\end{equation}
-对 $i\ne j$，同一个耗散子的非对角矩阵元为
-\begin{align}
-\langle i|\Diss[C_{k\to l}]\rho|j\rangle
-&=-\frac{\Gamma_{k\to l}}2
-\left(\delta_{ik}+\delta_{jk}\right)\rho_{ij}.
-\end{align}
-所以 布居 转移 对 $\rho_{ij}$ 的总衰减是
-\[
--\frac12(\Gamma_i^{\rm out}+\Gamma_j^{\rm out})\rho_{ij}.
-\]
-把\eqnrefs{eq:phys-oqs-general-pure-dephasing-rate} 的零频纯退相干与 布居 转移 的寿命展宽相加，定义总 相干 衰减率
+若外力在固有时尺度 \(T\) 上光滑变化，无失控积分的局域展开为
 \begin{equation}
-\boxed{
-\gamma_{ij}
-=\frac12(\Gamma_i^{\rm out}+\Gamma_j^{\rm out})
-+\gamma_{ij}^{\varphi}.}
-\label{eq:phys-oqs-three-gamma}
+ mc\dot\psi
+ =F_\parallel+\tau_{\rm rr}\dot F_\parallel
+ +O(\mathcal F_\star\epsilon_{\rm grad}^2),
+ \qquad \epsilon_{\rm grad}=\frac{\tau_{\rm rr}}T,\qquad \mathcal F_\star\text{ 为外力在尺度 }T\text{ 上的典型幅值}.
+ \label{eq:phys-rr-ll-scalar-local}
 \end{equation}
-
-再计算相干项。由\eqnrefs{eq:phys-oqs-three-hrot}，对 布居 有
-\begin{align}
--\frac{\ii}{\hbar}\langle i|[H_{\rm rot},\rho]|i\rangle
-&=-\frac{\ii}{\hbar}
-\sum_{k\ne i}(H_{ik}\rho_{ki}-\rho_{ik}H_{ki})\\
-&=\frac{\ii}{2}\sum_{k\ne i}
-\left(\Omega_{ik}\rho_{ki}-\rho_{ik}\Omega_{ki}\right),
-\end{align}
-其中已经用 $H_{ik}=-\hbar\Omega_{ik}/2$。与\eqnrefs{eq:phys-oqs-three-transfer-pop} 相加得到一般 布居 方程
+这说明 Landau--Lifshitz 方程是 ALD 无失控分支的受控低频展开。定义
 \begin{equation}
-\boxed{
-\dot\rho_{ii}
-=\frac{\ii}{2}\sum_{k\ne i}
-\left(\Omega_{ik}\rho_{ki}-\rho_{ik}\Omega_{ki}\right)
-+\sum_{k\ne i}\Gamma_{k\to i}\rho_{kk}
--\Gamma_i^{\rm out}\rho_{ii}.}
-\label{eq:phys-oqs-three-obe-pop}
+ \mathsf P_u^\mu{}_\nu
+ =\delta^\mu{}_\nu-\frac{u^\mu u_\nu}{c^2}.
+ \label{eq:phys-rr-orthogonal-projector}
 \end{equation}
-
-对 相干 $\rho_{ij}$，设 $k$ 是除 $i,j$ 外的第三个能级。把 对易子 的三个中间态逐项写开，
-\begin{align}
-\langle i|[H_{\rm rot},\rho]|j\rangle
-={}&\hbar(\delta_i-\delta_j)\rho_{ij}
--\frac{\hbar}{2}\Omega_{ij}\rho_{jj}
--\frac{\hbar}{2}\Omega_{ik}\rho_{kj}\\
-&+\frac{\hbar}{2}\rho_{ii}\Omega_{ij}
-+\frac{\hbar}{2}\rho_{ik}\Omega_{kj}.
-\end{align}
-乘以 $-\ii/\hbar$，再加入\eqnrefs{eq:phys-oqs-three-gamma} 的耗散，得到
+只在已经带有 \(\tau_{\rm rr}\) 的项中代入零阶 Lorentz 动力学，得到
 \begin{equation}
-\boxed{
-\begin{aligned}
-\dot\rho_{ij}
-={}&-(\gamma_{ij}+\ii\Delta_{ij})\rho_{ij}
-+\frac{\ii\Omega_{ij}}{2}(\rho_{jj}-\rho_{ii})\\
-&+\frac{\ii\Omega_{ik}}{2}\rho_{kj}
--\frac{\ii}{2}\rho_{ik}\Omega_{kj},
-\qquad i\ne j,\quad k\ne i,j.
-\end{aligned}}
-\label{eq:phys-oqs-three-obe-coh}
+\begin{split}
+ ma^\mu={}&qF_{\rm ext}^\mu{}_\nu u^\nu
+ +q\tau_{\rm rr}\mathsf P_u^\mu{}_\rho
+ (\partial_\alpha F_{\rm ext}^\rho{}_\nu)u^\alpha u^\nu\\
+ &+\frac{q^2\tau_{\rm rr}}m\mathsf P_u^\mu{}_\rho
+ F_{\rm ext}^\rho{}_\nu F_{\rm ext}^\nu{}_\beta u^\beta
+ +O(\mathcal F_\star\epsilon_{\rm LL}^2).
+\end{split}
+ \label{eq:phys-rr-landau-lifshitz}
 \end{equation}
-\eqnrefs{eq:phys-oqs-three-obe-pop} 与\eqnrefs{eq:phys-oqs-three-obe-coh} 是经典驱动三能级系统在独立跃迁耗散下的普适 光学 Bloch 方程。下面把六个独立方程完整写出。利用 $\Omega_{ji}=\Omega_{ij}^*$ 与 $\rho_{ji}=\rho_{ij}^*$，三个 布居 为
-\begin{subequations}\label{eq:phys-oqs-three-obe-explicit}
-\begin{align}
-\dot\rho_{11}
-={}&\sum_{k\ne1}\Gamma_{k\to1}\rho_{kk}-\Gamma_1^{\rm out}\rho_{11}
-+\frac{\ii}{2}
-(\Omega_{12}\rho_{21}-\rho_{12}\Omega_{21}
-+\Omega_{13}\rho_{31}-\rho_{13}\Omega_{31}),\label{eq:phys-oqs-three-obe-explicit-pop1}\\
-\dot\rho_{22}
-={}&\sum_{k\ne2}\Gamma_{k\to2}\rho_{kk}-\Gamma_2^{\rm out}\rho_{22}
-+\frac{\ii}{2}
-(\Omega_{21}\rho_{12}-\rho_{21}\Omega_{12}
-+\Omega_{23}\rho_{32}-\rho_{23}\Omega_{32}),\label{eq:phys-oqs-three-obe-explicit-pop2}\\
-\dot\rho_{33}
-={}&\sum_{k\ne3}\Gamma_{k\to3}\rho_{kk}-\Gamma_3^{\rm out}\rho_{33}
-+\frac{\ii}{2}
-(\Omega_{31}\rho_{13}-\rho_{31}\Omega_{13}
-+\Omega_{32}\rho_{23}-\rho_{32}\Omega_{23}),\label{eq:phys-oqs-three-obe-explicit-pop3}
-\end{align}
-三个独立 相干 为
-\begin{align}
-\dot\rho_{21}
-={}&-(\gamma_{21}+\ii\Delta_{21})\rho_{21}
-+\frac{\ii\Omega_{21}}2(\rho_{11}-\rho_{22})
-+\frac{\ii\Omega_{23}}2\rho_{31}
--\frac{\ii}{2}\rho_{23}\Omega_{31},\label{eq:phys-oqs-three-obe-explicit-coh21}\\
-\dot\rho_{31}
-={}&-(\gamma_{31}+\ii\Delta_{31})\rho_{31}
-+\frac{\ii\Omega_{31}}2(\rho_{11}-\rho_{33})
-+\frac{\ii\Omega_{32}}2\rho_{21}
--\frac{\ii}{2}\rho_{32}\Omega_{21},\label{eq:phys-oqs-three-obe-explicit-coh31}\\
-\dot\rho_{32}
-={}&-(\gamma_{32}+\ii\Delta_{32})\rho_{32}
-+\frac{\ii\Omega_{32}}2(\rho_{22}-\rho_{33})
-+\frac{\ii\Omega_{31}}2\rho_{12}
--\frac{\ii}{2}\rho_{31}\Omega_{12}.\label{eq:phys-oqs-three-obe-explicit-coh32}
-\end{align}
-\end{subequations}
-把前三式相加，所有 Hamiltonian 项按每一条边成对抵消；转移 项也因每个 $k\to i$ 对一个方程是流出、对另一个方程是流入而抵消，因此
+这里还要控制
 \[
-\frac{\dd}{\dd t}(\rho_{11}+\rho_{22}+\rho_{33})=0.
+ \epsilon_{\rm acc}=\frac{\tau_{\rm rr}}c\sqrt{-a_0^2},
+ \qquad
+ \epsilon_{\rm LL}=\max(\epsilon_{\rm grad},\epsilon_{\rm acc})\ll1,
 \]
-这给出了对显式方程的迹守恒检查。三种常见构形的差别现在只需在\eqnrefs{eq:phys-oqs-three-obe-explicit} 中置零不存在的 $\Omega_{ij}$、$\Gamma_{i\to j}$，再根据具体稳态决定零阶 布居。
-
-若某些近简并跃迁属于同一个 Bohr 频率块，独立跃迁形式要替换成\secref{sec:phys-oqs-gksl}的一般正半定矩阵 $\boldsymbol\Gamma=(\Gamma_{\mu\nu})$：
-\begin{equation}
-\boxed{
-\mathcal D_{\Gamma}[\rho]
-=\sum_{\mu\nu}\Gamma_{\mu\nu}
-\left(F_\nu\rho F_\mu^\dagger
--\frac12\{F_\mu^\dagger F_\nu,\rho\}\right).}
-\label{eq:phys-oqs-three-cross-damping}
-\end{equation}
-此时应直接从\eqnrefs{eq:phys-oqs-three-cross-damping} 取矩阵元；V 型的交叉阻尼例子将在下面显式计算。
+其中 \(a_0^\mu=(q/m)F_{\rm ext}^\mu{}_\nu u^\nu\)。前者控制外场梯度，后者控制强场中四速度在一个反作用时间内的转动。
 
-最后给出统一的弱探针展开。用无量纲参数 $\eta$ 乘在所有弱探针 Rabi 频率上，写
+\begin{proof}[解]
+若 \(\|F_\parallel^{(n)}\|\sim\mathcal F_\star/T^n\)，在无失控积分中展开
 \[
-\mathbb L(\eta)=\mathbb L_0+\eta\mathbb L_p+O(\eta^2),
-\qquad
-\rho_{\rm ss}=\rho^{(0)}+\eta\rho^{(1)}+O(\eta^2).
+ F_\parallel(\tau+\tau_{\rm rr}r)
+ =F_\parallel+\tau_{\rm rr}r\,\dot F_\parallel+R_1(r).
 \]
-代入 $\mathbb L(\eta)|\rho_{\rm ss}\!\rangle\!\rangle=0$，零阶与一阶分别满足
+Taylor 余项与
+\(\int_0^\infty e^{-r}r^2\dd r=2\) 给出
 \[
-\mathbb L_0|\rho^{(0)}\!\rangle\!\rangle=0,
+ \left|\int_0^\infty e^{-r}R_1(r)\dd r\right|
+ =O\!\left(\mathcal F_\star\frac{\tau_{\rm rr}^2}{T^2}\right).
 \]
-\begin{equation}
-\boxed{
-\mathbb L_0|\rho^{(1)}\!\rangle\!\rangle
-=-\mathbb L_p|\rho^{(0)}\!\rangle\!\rangle,
-\qquad
-\Tr\rho^{(1)}=0.}
-\label{eq:phys-oqs-three-linear-response}
-\end{equation}
-由于 $\mathbb L_0$ 必然有稳态零模，它在整个 Liouville 空间上不可逆。若零阶稳态唯一，则在迹为零的子空间上可以使用约化逆或 Drazin 逆 $\mathbb L_0^+$，写成
-\begin{equation}
-\boxed{
-|\rho^{(1)}\!\rangle\!\rangle
-=-\mathbb L_0^+\mathbb L_p|\rho^{(0)}\!\rangle\!\rangle.}
-\label{eq:phys-oqs-linear-response-pseudoinverse}
-\end{equation}
-\eqnrefs{eq:phys-oqs-linear-response-pseudoinverse} 是弱探针线性响应的真正普适解；后面把两个 相干 联立消元，只是这个 Liouville 空间方程在特定构形中的低维实现。线性响应的控制量也应在这里给出。对任意与所选算符范数相容的诱导范数，可以用
-\begin{equation}
-\boxed{
-\epsilon_p
-=|\eta|\,\|\mathbb L_0^+\mathbb L_p\|
-\ll1}
-\label{eq:phys-oqs-probe-small-parameter}
-\end{equation}
-作为充分的小参数诊断；它直接控制一阶修正相对于零阶态的尺度。若 $\mathbb L_0$ 出现额外近零模，$\|\mathbb L_0^+\|$ 会变大，即使探针 Rabi 频率本身很小也可能破坏线性响应。此时必须保留更高阶项或直接求完整非线性稳态。
+因此得到\eqnrefs{eq:phys-rr-ll-scalar-local}，而首个舍弃项由
+\(\epsilon_{\rm grad}^2\) 控制。
 
-下面三个例子都只是在\eqnrefs{eq:phys-oqs-three-obe-explicit}、\eqnrefs{eq:phys-oqs-general-transition-kossakowski} 与\eqnrefs{eq:phys-oqs-three-linear-response} 中代入不同的非零参数。
-
-\begin{exbox}[$\Lambda$ 型]
-$\Lambda$ 型有两个下能级 $|1\rangle,|2\rangle$ 与一个上能级 $|3\rangle$。单模量子场中可取
-\[
-(\nu_1,\nu_2,\nu_3)=(0,0,1),
-\qquad
-g_{31},g_{32}\ne0,
-\qquad
-g_{21}=0.
-\]
-由\eqnrefs{eq:phys-oqs-hn3-elements}，完整三维流形 $N\ge1$ 中只有 $1\leftrightarrow3$ 与 $2\leftrightarrow3$ 的非对角元：
-\[
-\left.H_{S,N}^{(3)}\right|_{\Lambda}=
-\begin{pmatrix}
-E_1+\hbar\omega_c(N+\tfrac12)&0&\hbar g_{31}^*\sqrt N\\
-0&E_2+\hbar\omega_c(N+\tfrac12)&\hbar g_{32}^*\sqrt N\\
-\hbar g_{31}\sqrt N&\hbar g_{32}\sqrt N&E_3+\hbar\omega_c(N-\tfrac12)
-\end{pmatrix}.
-\]
-该矩阵由\eqnrefs{eq:phys-oqs-hn3-elements} 在上述 $\nu_i,g_{ij}$ 下逐项代入得到。若只考虑零温自发辐射，则非零原子 跳跃 为
-\[
-C_{3\to1}=\sqrt{\Gamma_{3\to1}}\sigma_{13},
-\qquad
-C_{3\to2}=\sqrt{\Gamma_{3\to2}}\sigma_{23},
-\]
-所以
+协变地写
 \[
-\Gamma_1^{\rm out}=\Gamma_2^{\rm out}=0,
-\qquad
-\Gamma_3^{\rm out}=\Gamma_{3\to1}+\Gamma_{3\to2},
+ ma^\mu=f_{\rm ext}^\mu+
+ m\tau_{\rm rr}\mathsf P_u^\mu{}_\nu\dot a^\nu .
 \]
-并由\eqnrefs{eq:phys-oqs-three-gamma}
+只在已经乘有 \(\tau_{\rm rr}\) 的项中代入零阶关系
+\(a^\mu=f_{\rm ext}^\mu/m+O(\tau_{\rm rr})\)。对
+\(f_{\rm ext}^\rho=qF_{\rm ext}^\rho{}_\nu u^\nu\) 沿世界线求导，
 \[
-\gamma_{31}=\frac{\Gamma_{3\to1}+\Gamma_{3\to2}}2+\gamma_{31}^{\varphi},
-\quad
-\gamma_{32}=\frac{\Gamma_{3\to1}+\Gamma_{3\to2}}2+\gamma_{32}^{\varphi},
-\quad
-\gamma_{21}=\gamma_{21}^{\varphi}.
+ \dot f_{\rm ext}^\rho
+ =q(\partial_\alpha F_{\rm ext}^\rho{}_\nu)u^\alpha u^\nu
+ +\frac{q^2}{m}F_{\rm ext}^\rho{}_\nu
+ F_{\rm ext}^\nu{}_\beta u^\beta+O(\tau_{\rm rr}).
 \]
-特别地，在上述“两个自发辐射通道可由环境分辨、$\Gamma_{\alpha\beta}$ 已对角”的条件下，两个下能级的 相干 不因上能级寿命直接衰减；这正是 $\Lambda$ 型能形成长寿命 Raman 相干 的原因。
+投影到 \(u^\perp\) 后即得
+\eqnrefs{eq:phys-rr-landau-lifshitz}。梯度展开和零阶四速度在一个
+\(\tau_{\rm rr}\) 内的转动分别由
+\(\epsilon_{\rm grad}\) 与 \(\epsilon_{\rm acc}\) 控制，所以总误差从
+\(O(\epsilon_{\rm LL}^2)\) 开始。
+\end{proof}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\linewidth]{order_reduction_error.pdf}
+\caption{低频梯度方向的阶数约化误差标度。图中只展示 \(\epsilon_{\rm grad}=\tau_{\rm rr}/T\) 的截断层级；协变强场情形还需同时满足正文定义的 \(\epsilon_{\rm acc}\ll1\)。}
+\label{fig:phys-rr-order-reduction-error}
+\end{figure}
 
-若 $3\to1$ 与 $3\to2$ 近简并且跃迁偶极不正交，则必须回到\eqnrefs{eq:phys-oqs-general-transition-kossakowski}。取
-\[
-F_1=\sigma_{13},\qquad F_2=\sigma_{23},
-\qquad \Gamma_{12}\ne0,
-\]
-由于 $F_1^\dagger F_2=F_2^\dagger F_1=0$，交叉项不增加上能级的额外 损失；但 回收 项直接给
+平滑扩展电荷的基本自作用仍由\eqnrefs{eq:phys-rr-general-self-force-functional}定义。若用集体坐标 \(\Xi_A(t)\) 参数化整体运动或内部形变，其中离散指标 \(A,B\) 只枚举所选集体自由度而不是 Lorentz 指标；在一条给定背景解 \(\Xi_A^{(0)}(t)\) 附近线性化，记 \(\delta\Xi_A=\Xi_A-\Xi_A^{(0)}\)、\(\delta F_A^{\rm self}=F_A^{\rm self}-F_{A,(0)}^{\rm self}\)，则最一般的一阶因果响应是两时 Volterra 算子
 \begin{equation}
-\boxed{
-\dot\rho_{21}\big|_{\rm cross}
-=\Gamma_{12}\rho_{33},
-\qquad
-\dot\rho_{12}\big|_{\rm cross}
-=\Gamma_{12}^*\rho_{33}.}
-\label{eq:phys-oqs-lambda-spontaneous-coherence}
+ \delta F_A^{\rm self}(t)
+ =\sum_B\int_{-\infty}^{t}
+ K_{AB}(t,t')\,\delta\Xi_B(t')\dd t'.
+ \label{eq:phys-rr-finite-size-memory}
 \end{equation}
-所以“长寿命下能级 相干”与“自发产生下能级 相干”是两个不同效应：前者来自 $\Gamma_1^{\rm out}=\Gamma_2^{\rm out}=0$，后者来自不可分辨跃迁的非对角 Kossakowski 元。下面的标准 $\Lambda$ 型 光学 Bloch 方程先采用独立通道，即 $\Gamma_{12}=0$。
-
-现在考虑经典场，令
-\[
-\Omega_{31},\Omega_{32}\ne0,
-\qquad
-\Omega_{21}=0.
-\]
-把这些条件代入\eqnrefs{eq:phys-oqs-three-obe-pop}，三个 布居 方程为
-\begin{align}
-\dot\rho_{33}
-={}&-\Gamma_3^{\rm out}\rho_{33}
-+\frac{\ii}{2}
-(\Omega_{31}\rho_{13}-\rho_{31}\Omega_{13}
-+\Omega_{32}\rho_{23}-\rho_{32}\Omega_{23}),\\
-\dot\rho_{11}
-={}&\Gamma_{3\to1}\rho_{33}
-+\frac{\ii}{2}(\Omega_{13}\rho_{31}-\rho_{13}\Omega_{31}),\\
-\dot\rho_{22}
-={}&\Gamma_{3\to2}\rho_{33}
-+\frac{\ii}{2}(\Omega_{23}\rho_{32}-\rho_{23}\Omega_{32}).
-\end{align}
-再从\eqnrefs{eq:phys-oqs-three-obe-coh} 分别取 $(i,j)=(3,1),(3,2),(2,1)$，得到
-\begin{align}
-\dot\rho_{31}
-={}&-(\gamma_{31}+\ii\Delta_{31})\rho_{31}
-+\frac{\ii\Omega_{31}}2(\rho_{11}-\rho_{33})
-+\frac{\ii\Omega_{32}}2\rho_{21},\\
-\dot\rho_{32}
-={}&-(\gamma_{32}+\ii\Delta_{32})\rho_{32}
-+\frac{\ii\Omega_{32}}2(\rho_{22}-\rho_{33})
-+\frac{\ii\Omega_{31}}2\rho_{12},\\
-\dot\rho_{21}
-={}&-(\gamma_{21}+\ii\Delta_{21})\rho_{21}
-+\frac{\ii\Omega_{32}^*}{2}\rho_{31}
--\frac{\ii}{2}\rho_{23}\Omega_{31}.
-\end{align}
-这里
-\[
-\Delta_{21}=\delta_2-\delta_1=\Delta_{31}-\Delta_{32},
-\]
-所以两光子共振就是 $\Delta_{31}=\Delta_{32}$。
+核 \(K_{AB}(t,t')\) 同时记录源的内部传播、背景运动以及推迟 Green 函数；积分上限 \(t\) 就是因果性。一般非平稳背景下，核依赖两个时间，不能预先写成只依赖时间差的卷积。
 
-若 $\Omega_{31}$ 是弱探针、$\Omega_{32}$ 是有限控制场，而且在探针加入前稳态主要为 $\rho_{11}^{(0)}=1$，其余 布居 与 相干 为零，则 $\rho_{31}^{(1)},\rho_{21}^{(1)}=O(\Omega_{31})$，而 $\rho_{23}^{(1)}\Omega_{31}=O(\Omega_{31}^2)$ 可在一阶忽略。上面两条 相干 方程化为
-\[
-0=-(\gamma_{31}+\ii\Delta_{31})\rho_{31}^{(1)}
-+\frac{\ii\Omega_{31}}2
-+\frac{\ii\Omega_{32}}2\rho_{21}^{(1)},
-\]
-\[
-0=-(\gamma_{21}+\ii\Delta_{21})\rho_{21}^{(1)}
-+\frac{\ii\Omega_{32}^*}{2}\rho_{31}^{(1)}.
-\]
-第二式给
-\[
-\rho_{21}^{(1)}
-=\frac{\ii\Omega_{32}^*/2}{\gamma_{21}+\ii\Delta_{21}}\rho_{31}^{(1)},
-\]
-代回第一式得到
+只有当线性化背景具有时间平移不变性时，才有
 \begin{equation}
-\boxed{
-\rho_{31}^{(1)}
-=\frac{(\ii\Omega_{31}/2)(\gamma_{21}+\ii\Delta_{21})}
-{(\gamma_{31}+\ii\Delta_{31})(\gamma_{21}+\ii\Delta_{21})
-+|\Omega_{32}|^2/4}.}
-\label{eq:phys-oqs-lambda-response}
+ K_{AB}(t,t')=K_{AB}(t-t'),
+ \qquad K_{AB}(s)=0\quad(s<0),
+ \label{eq:phys-rr-stationary-memory-kernel}
 \end{equation}
-因此吸收谱不是从某个额外公式得到，而是一般 相干 方程的二元线性方程组直接求解。
-
-在两光子共振且下能级近简并时，去掉共同对角能量后相干耦合部分为
-\[
-H_{\rm int}^{(\Lambda)}
-=-\frac{\hbar}{2}
-(\Omega_{31}\sigma_{31}+\Omega_{32}\sigma_{32}+\mathrm{h.c.}).
-\]
-作用在
-\[
-|D\rangle
-=\frac{\Omega_{32}|1\rangle-\Omega_{31}|2\rangle}
-{\sqrt{|\Omega_{31}|^2+|\Omega_{32}|^2}}
-\]
-上时，$|3\rangle$ 的系数正比于
-$\Omega_{31}\Omega_{32}-\Omega_{32}\Omega_{31}=0$，故 $H_{\rm int}^{(\Lambda)}|D\rangle$ 不含激发态分量。这就是暗态；\eqnrefs{eq:phys-oqs-lambda-response} 中两光子共振处的吸收抑制是同一干涉结构在密度矩阵线性响应中的表现。
-\end{exbox}
-
-\clearpage
-\begin{exbox}[V 型]
-V 型有一个下能级 $|1\rangle$ 与两个上能级 $|2\rangle,|3\rangle$。单模量子场中取
-\[
-(\nu_1,\nu_2,\nu_3)=(0,1,1),
-\qquad
-g_{21},g_{31}\ne0,
-\qquad
-g_{32}=0.
-\]
-代入\eqnrefs{eq:phys-oqs-hn3-elements}，$N\ge1$ 时
-\[
-\left.H_{S,N}^{(3)}\right|_{V}=
-\begin{pmatrix}
-E_1+\hbar\omega_c(N+\tfrac12)&\hbar g_{21}^*\sqrt N&\hbar g_{31}^*\sqrt N\\
-\hbar g_{21}\sqrt N&E_2+\hbar\omega_c(N-\tfrac12)&0\\
-\hbar g_{31}\sqrt N&0&E_3+\hbar\omega_c(N-\tfrac12)
-\end{pmatrix}.
-\]
-若两个下降通道 $2\to1$ 与 $3\to1$ 在环境看来可分辨，则只需在\eqnrefs{eq:phys-oqs-three-obe-pop}--\eqnrefs{eq:phys-oqs-three-obe-coh} 中取
-\[
-\Gamma_{2\to1},\Gamma_{3\to1}\ne0,
-\qquad
-\Omega_{21},\Omega_{31}\ne0,
-\qquad
-\Omega_{32}=0.
-\]
-于是
-\[
-\Gamma_2^{\rm out}=\Gamma_{2\to1},
-\qquad
-\Gamma_3^{\rm out}=\Gamma_{3\to1},
-\qquad
-\Gamma_1^{\rm out}=0,
-\]
-并且上能级 相干 的自然寿命贡献是
-\[
-\gamma_{23}\big|_{\rm tr}
-=\frac12(\Gamma_{2\to1}+\Gamma_{3\to1}).
-\]
-把 $\Omega_{32}=0$ 和上述跃迁率代入\eqnrefs{eq:phys-oqs-three-obe-pop}，得到
-\begin{align}
-\dot\rho_{11}
-={}&\Gamma_{2\to1}\rho_{22}+\Gamma_{3\to1}\rho_{33}
-+\frac{\ii}{2}
-(\Omega_{12}\rho_{21}-\rho_{12}\Omega_{21}
-+\Omega_{13}\rho_{31}-\rho_{13}\Omega_{31}),\\
-\dot\rho_{22}
-={}&-\Gamma_{2\to1}\rho_{22}
-+\frac{\ii}{2}(\Omega_{21}\rho_{12}-\rho_{21}\Omega_{12}),\\
-\dot\rho_{33}
-={}&-\Gamma_{3\to1}\rho_{33}
-+\frac{\ii}{2}(\Omega_{31}\rho_{13}-\rho_{31}\Omega_{13}).
-\end{align}
-相应地，由\eqnrefs{eq:phys-oqs-three-obe-coh}
-\begin{align}
-\dot\rho_{21}
-={}&-(\gamma_{21}+\ii\Delta_{21})\rho_{21}
-+\frac{\ii\Omega_{21}}2(\rho_{11}-\rho_{22})
--\frac{\ii}{2}\rho_{23}\Omega_{31},\\
-\dot\rho_{31}
-={}&-(\gamma_{31}+\ii\Delta_{31})\rho_{31}
-+\frac{\ii\Omega_{31}}2(\rho_{11}-\rho_{33})
--\frac{\ii}{2}\rho_{32}\Omega_{21},\\
-\dot\rho_{23}
-={}&-(\gamma_{23}+\ii\Delta_{23})\rho_{23}
-+\frac{\ii\Omega_{21}}2\rho_{13}
--\frac{\ii}{2}\rho_{21}\Omega_{13}.
-\end{align}
-因此 V 型中两条光学 相干 $\rho_{21},\rho_{31}$ 通过上能级 相干 $\rho_{23}$ 相互联系。若其中一条驱动作为强场，弱探针展开的零阶态应先由保留该强场的 $\mathbb L_0\rho^{(0)}=0$ 求出；一般不能预先把 $\rho_{11}^{(0)}$ 固定为 1，因为强场本身会重新分配 $|1\rangle$ 与相应上能级的 布居。
-
-V 型的另一重要情形是两个上能级近简并、两条偶极矩共享同一环境模式。此时不能使用相互独立的两个标量耗散子，而应从\eqnrefs{eq:phys-oqs-three-cross-damping} 出发，取
-\[
-F_2=\sigma_{12},\qquad F_3=\sigma_{13},
-\qquad
-\boldsymbol\Gamma=
-\begin{pmatrix}
-\Gamma_{2\to1}&\Gamma_{23}\\
-\Gamma_{23}^*&\Gamma_{3\to1}
-\end{pmatrix}\succeq0.
-\]
-现在直接取矩阵元。跳跃 项只回注到 $|1\rangle$，所以
-\begin{align}
-\dot\rho_{11}\big|_{\Gamma}
-={}&\Gamma_{2\to1}\rho_{22}+\Gamma_{3\to1}\rho_{33}
-+\Gamma_{23}\rho_{32}+\Gamma_{23}^*\rho_{23}.
-\end{align}
-反对易子作用在上能级子空间，给
-\begin{align}
-\dot\rho_{22}\big|_{\Gamma}
-={}&-\Gamma_{2\to1}\rho_{22}
--\frac12(\Gamma_{23}\rho_{32}+\Gamma_{23}^*\rho_{23}),\\
-\dot\rho_{33}\big|_{\Gamma}
-={}&-\Gamma_{3\to1}\rho_{33}
--\frac12(\Gamma_{23}\rho_{32}+\Gamma_{23}^*\rho_{23}),\\
-\dot\rho_{23}\big|_{\Gamma}
-={}&-\frac12(\Gamma_{2\to1}+\Gamma_{3\to1})\rho_{23}
--\frac{\Gamma_{23}}2(\rho_{22}+\rho_{33}),\\
-\dot\rho_{21}\big|_{\Gamma}
-={}&-\frac{\Gamma_{2\to1}}2\rho_{21}
--\frac{\Gamma_{23}}2\rho_{31},\\
-\dot\rho_{31}\big|_{\Gamma}
-={}&-\frac{\Gamma_{3\to1}}2\rho_{31}
--\frac{\Gamma_{23}^*}{2}\rho_{21}.
-\end{align}
-这些交叉项均由同一个 $\Gamma_{\mu\nu}$ 矩阵的非对角元逐矩阵元展开得到。正半定性给出
-\[
-|\Gamma_{23}|^2\le
-\Gamma_{2\to1}\Gamma_{3\to1}.
-\]
-耗散矩阵的两个本征值为
-\[
-\gamma_{\pm}
-=\frac12\left[
-\Gamma_{2\to1}+\Gamma_{3\to1}
-\pm
-\sqrt{(\Gamma_{2\to1}-\Gamma_{3\to1})^2+4|\Gamma_{23}|^2}
-\right].
-\]
-当等号 $|\Gamma_{23}|^2=\Gamma_{2\to1}\Gamma_{3\to1}$ 成立时，$\gamma_-=0$。若写
-$\Gamma_{23}=\ee^{\ii\phi}\sqrt{\Gamma_{2\to1}\Gamma_{3\to1}}$，并假设
-$\Gamma_{2\to1}+\Gamma_{3\to1}>0$，则归一化的零衰减方向为
-\[
-|D_{\Gamma}\rangle
-=\frac{
-\sqrt{\Gamma_{3\to1}}|2\rangle
--\ee^{-\ii\phi}\sqrt{\Gamma_{2\to1}}|3\rangle}
-{\sqrt{\Gamma_{2\to1}+\Gamma_{3\to1}}}.
-\]
-它是否同时成为完整动力学的暗态，还要继续把它代入\eqnrefs{eq:phys-oqs-three-hrot} 检查相干驱动是否把它耦合到 $|1\rangle$；因此“耗散暗态”和“Hamiltonian 暗态”是两个需要同时验证的条件。
-\end{exbox}
-
-\clearpage
-\begin{exbox}[$\Xi$ 型]
-$\Xi$ 型是级联结构 $|1\rangle\leftrightarrow|2\rangle\leftrightarrow|3\rangle$。单模量子场中取
-\[
-(\nu_1,\nu_2,\nu_3)=(0,1,2),
-\qquad
-g_{21},g_{32}\ne0,
-\qquad
-g_{31}=0.
-\]
-代入\eqnrefs{eq:phys-oqs-hn3-elements}，对 $N\ge2$ 的完整三维流形有
-\[
-\left.H_{S,N}^{(3)}\right|_{\Xi}=
-\begin{pmatrix}
-E_1+\hbar\omega_c(N+\tfrac12)&\hbar g_{21}^*\sqrt N&0\\
-\hbar g_{21}\sqrt N&E_2+\hbar\omega_c(N-\tfrac12)&\hbar g_{32}^*\sqrt{N-1}\\
-0&\hbar g_{32}\sqrt{N-1}&E_3+\hbar\omega_c(N-\tfrac32)
-\end{pmatrix}.
-\]
-这里第二条边的系数是 $\sqrt{N-1}$，直接来自\eqnrefs{eq:phys-oqs-hn3-elements} 中 $\sqrt{N-\nu_2}$；这也是为什么级联结构不能简单照抄二能级的 $\sqrt N$。
-
-在零温级联衰减中取
-\[
-C_{3\to2}=\sqrt{\Gamma_{3\to2}}\sigma_{23},
-\qquad
-C_{2\to1}=\sqrt{\Gamma_{2\to1}}\sigma_{12}.
-\]
-于是
-\[
-\Gamma_3^{\rm out}=\Gamma_{3\to2},
-\qquad
-\Gamma_2^{\rm out}=\Gamma_{2\to1},
-\qquad
-\Gamma_1^{\rm out}=0,
-\]
-从\eqnrefs{eq:phys-oqs-three-gamma} 得
-\[
-\gamma_{21}=\frac{\Gamma_{2\to1}}2+\gamma_{21}^{\varphi},
-\quad
-\gamma_{32}=\frac{\Gamma_{3\to2}+\Gamma_{2\to1}}2+\gamma_{32}^{\varphi},
-\quad
-\gamma_{31}=\frac{\Gamma_{3\to2}}2+\gamma_{31}^{\varphi}.
-\]
-注意 $\rho_{31}$ 虽然对应一个没有直接偶极驱动的两光子 相干，但它的寿命仍由 $|3\rangle$ 与 $|1\rangle$ 的总出射率按\eqnrefs{eq:phys-oqs-three-gamma} 决定。
-
-经典驱动时取
-\[
-\Omega_{21},\Omega_{32}\ne0,
-\qquad
-\Omega_{31}=0.
-\]
-由\eqnrefs{eq:phys-oqs-three-obe-pop} 得
-\begin{align}
-\dot\rho_{11}
-={}&\Gamma_{2\to1}\rho_{22}
-+\frac{\ii}{2}(\Omega_{12}\rho_{21}-\rho_{12}\Omega_{21}),\\
-\dot\rho_{22}
-={}&\Gamma_{3\to2}\rho_{33}-\Gamma_{2\to1}\rho_{22}
-+\frac{\ii}{2}
-(\Omega_{21}\rho_{12}-\rho_{21}\Omega_{12}
-+\Omega_{23}\rho_{32}-\rho_{23}\Omega_{32}),\\
-\dot\rho_{33}
-={}&-\Gamma_{3\to2}\rho_{33}
-+\frac{\ii}{2}(\Omega_{32}\rho_{23}-\rho_{32}\Omega_{23}).
-\end{align}
-三个独立 相干 方程由\eqnrefs{eq:phys-oqs-three-obe-coh} 直接得到
-\begin{align}
-\dot\rho_{21}
-={}&-(\gamma_{21}+\ii\Delta_{21})\rho_{21}
-+\frac{\ii\Omega_{21}}2(\rho_{11}-\rho_{22})
-+\frac{\ii\Omega_{32}^*}{2}\rho_{31},\\
-\dot\rho_{32}
-={}&-(\gamma_{32}+\ii\Delta_{32})\rho_{32}
-+\frac{\ii\Omega_{32}}2(\rho_{22}-\rho_{33})
--\frac{\ii}{2}\rho_{31}\Omega_{21}^*,\\
-\dot\rho_{31}
-={}&-(\gamma_{31}+\ii\Delta_{31})\rho_{31}
-+\frac{\ii\Omega_{32}}2\rho_{21}
--\frac{\ii}{2}\rho_{32}\Omega_{21}.
-\end{align}
-由\eqnrefs{eq:phys-oqs-three-detuning} 自动有
+此时\eqnrefs{eq:phys-rr-finite-size-memory}退化为因果卷积，并可在频域写成
 \[
-\Delta_{31}=\delta_3-\delta_1
-=(\delta_3-\delta_2)+(\delta_2-\delta_1)
-=\Delta_{32}+\Delta_{21},
+ \widetilde{\delta F}_A^{\rm self}(\omega)
+ =\sum_B\widetilde K_{AB}(\omega)\widetilde{\delta\Xi}_B(\omega).
 \]
-所以这里的两光子失谐不需要再引入新的符号。
-
-令 $\Omega_{21}$ 为弱探针，$\Omega_{32}$ 为有限控制场，并取无探针稳态 $\rho_{11}^{(0)}=1$。一阶中 $\rho_{21}^{(1)},\rho_{31}^{(1)}=O(\Omega_{21})$，而 $\rho_{32}^{(1)}\Omega_{21}=O(\Omega_{21}^2)$，故
-\[
-0=-(\gamma_{21}+\ii\Delta_{21})\rho_{21}^{(1)}
-+\frac{\ii\Omega_{21}}2
-+\frac{\ii\Omega_{32}^*}{2}\rho_{31}^{(1)},
-\]
+若结构尺度为 \(a_{\rm src}\)，局域导数展开仍由前面同一个结构参数
 \[
-0=-(\gamma_{31}+\ii\Delta_{31})\rho_{31}^{(1)}
-+\frac{\ii\Omega_{32}}2\rho_{21}^{(1)}.
+ \kappa_{\rm src}=\frac{\omega a_{\rm src}}{c}\ll1
 \]
-第二式给
+控制，
+并要求 \(\widetilde K_{AB}(\omega)\) 在所考察频带内远离内部极点、阈值和分支切口而可作解析展开。于是
 \[
-\rho_{31}^{(1)}
-=\frac{\ii\Omega_{32}/2}{\gamma_{31}+\ii\Delta_{31}}\rho_{21}^{(1)},
+\widetilde K_{AB}(\omega)
+=K^{(0)}_{AB}
++(-\ii\omega)K^{(1)}_{AB}
++(-\ii\omega)^2K^{(2)}_{AB}+\cdots,
 \]
-代回第一式，得到
-\begin{equation}
-\boxed{
-\rho_{21}^{(1)}
-=\frac{(\ii\Omega_{21}/2)(\gamma_{31}+\ii\Delta_{31})}
-{(\gamma_{21}+\ii\Delta_{21})(\gamma_{31}+\ii\Delta_{31})
-+|\Omega_{32}|^2/4}.}
-\label{eq:phys-oqs-xi-response}
-\end{equation}
-控制场通过两光子 相干 $\rho_{31}$ 改写探针极化 $\rho_{21}$ 的分母。响应表现为干涉透明还是可分辨的 穿衣-态 双峰，由 $|\Omega_{32}|$ 与 $\gamma_{21},\gamma_{31}$ 的相对尺度决定，不能仅凭极点分裂的代数形式将两种机制等同。
-\end{exbox}
-
-接下来考察应用近似与数值截断的控制。
-
-具体腔与多能级模型还引入系统 旋转波近似、经典场 光学 旋转波近似、远失谐频率筛选、裸/缀饰耗散、弱探针和 Fock 截断；它们彼此独立，也独立于系统--环境 Born、Markov 与 久期 近似。系统 旋转波近似 由\eqnrefs{eq:phys-oqs-rwa-small-parameter} 控制，失效时回到 $H_S^{\rm full}$ 并保留 Bloch--Siegert 位移、虚光子成分与激发数不守恒；经典场的反旋项与远失谐旋转项分别由\eqnrefs{eq:phys-oqs-classical-optical-rwa-control}、\eqnrefs{eq:phys-oqs-classical-offresonant-control} 控制，前者失效时需保留 反旋 动力学，后者失效时需保留对应驱动及其 交流 Stark 修正。裸耗散只有在\eqnrefs{eq:phys-oqs-local-dissipator-condition} 的环境谱不可分辨与粗粒化不可完全分辨条件同时成立时才受控，否则必须用实际耦合 Hamiltonian 的 穿衣 Bohr 算符重建耗散块。
-
-多频驱动还要求旋转框架一致：只有沿任意闭环的驱动相位和为零，才存在一个对角 $U_R(t)$ 同时消去全部显式相位；否则剩余拍频使 Liouvillian 成为周期或准周期时间依赖，周期情形可用 Floquet--Liouville 方法。弱探针则由\eqnrefs{eq:phys-oqs-probe-small-parameter} 中的 $\|\mathbb L_0^+\|$ 直接控制；靠近额外慢模或耗散临界点时必须检查实际的一阶态修正，而不能只比较 Rabi 频率与某个裸衰减率。
+其逆 Fourier 变换才产生“附加质量”“阻尼”和更高导数等局域项。若内部模、共振或有限传播时延被解析地分辨出来，就必须保留完整两时核或平稳情形下的完整频率响应，而不能继续截断成有限阶局域方程。
 
-Fock 截断只是数值截断。定义顶层占据
-\begin{equation}
-P_{\rm edge}
-=\sum_i\sum_{n\in\text{最高若干层}}
-\langle i,n|\rho|i,n\rangle,
-\label{eq:phys-oqs-fock-edge-population}
-\end{equation}
-应令 $P_{\rm edge}$ 远小于目标数值精度，并递增 $n_{\max}$ 检查目标可观测量收敛；高温、强驱动或接近激光阈值时尤其需要这一检查。自由空间有限能级偶极模型的 Lamb-位移 主值积分还可能具有高频敏感性；绝对 Lamb 位移 应由足以描述高频结构的原子/QED 模型给出，并把可测跃迁频率理解为重整化后的参数。
+这一区分也固定了 ALD 与有限尺寸理论的逻辑关系：ALD 是理想点粒子缩限中经过质量重整化后留下的局域有限项；扩展源还保留结构尺度 \(a_{\rm src}/c\) 以及可能的内部模时间尺度。只有在点粒子近似、低频结构展开和 \(\tau_{\rm rr}/T\ll1\) 同时成立时，Landau--Lifshitz 才是最终受控的二阶有效方程。
 
-\begin{center}
-\small
-\begin{tabularx}{0.96\textwidth}{>{\raggedright\arraybackslash\bfseries}p{2.6cm} X X}
-\toprule
-条件 & 接近失效时的信号 & 更完整描述\\
-\midrule
-系统 旋转波近似 & Bloch--Siegert 位移、激发数不守恒 & $H_S^{\rm full}$、Rabi/Floquet 模型\\
-经典场 光学 旋转波近似 & 反旋 微运动、Bloch--Siegert 位移 & 保留反旋驱动项\\
-远失谐频率筛选 & 交流 Stark 位移或远失谐激发不可忽略 & 保留对应旋转驱动项\\
-Born 截断 & 高阶累积量、bath back-作用量 不可忽略 & 高阶 NZ/无时间卷积、扩大系统\\
-Markov & 回波、长尾相关、非指数记忆 & 有限记忆 NZ/无时间卷积、扩大系统\\
-Complete 久期 & 近简并跃迁干涉 & 有限 coarse graining / 部分 久期\\
-裸耗散 & bath 可分辨 穿衣 splitting & 穿衣 $S_\mu(\omega)$\\
-弱探针 & 饱和、布居 大幅改变 & 完整非线性 Liouvillian\\
-Fock 截断 & 顶层 布居 不可忽略 & 增大 $n_{\max}$ 并做收敛检查\\
-\bottomrule
-\end{tabularx}
-\end{center}
+\section{从守恒律到谱与反作用的闭合链}
 
-\begin{derivation}[量子 Zeno 效应与脉冲控制中的有效 Hamiltonian]
-对初始态 \(|\psi_0\rangle\) 在投影 \(P=|\psi_0\rangle\langle\psi_0|\) 上，\(N\) 次等间隔投影测量（间隔 \(\tau=T/N\)）后的存活概率
-\begin{equation*}
-  P_{\rm surv}(T,N)=\left|\langle\psi_0|(P\ee^{-\ii H\tau/\hbar}P)^N|\psi_0\rangle\right|^2=\left|\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle\right|^{2N}.
-\end{equation*}
-短时展开 \(\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle=1-\frac{\ii\tau}{\hbar}\langle H\rangle-\frac{\tau^2}{2\hbar^2}\langle H^2\rangle+\cdots\)，故
-\begin{equation*}
-  |\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle|^2=1-\frac{\tau^2}{\hbar^2}\Delta H^2+O(\tau^3),
-\end{equation*}
-其中 \(\Delta H^2=\langle H^2\rangle-\langle H\rangle^2\)。因此
-\begin{equation*}
-  P_{\rm surv}(T,N)=\left(1-\frac{T^2\Delta H^2}{N^2\hbar^2}+\cdots\right)^N\to1\quad(N\to\infty),
-\end{equation*}
-即无穷频繁测量完全冻结演化。
+本章现在形成一条单向依赖关系。首先，Maxwell 方程和 \(\partial_\mu J^\mu=0\) 给出任意守恒源的辐射壳振幅与一般频谱；世界线表示、多极展开和软极限都只是该精确频谱的后续特化。其次，当源的运动不再预先给定时，总能动量守恒与推迟 Green 函数定义平滑源的因果自作用。点粒子极限要求 Dirac 推迟/超前分解和世界管质量重整化，由此得到有限 ALD 自力；Schott 动量和 Liénard 辐射则是同一四动量守恒的近场与远场两部分。最后，在 \(\epsilon_{\rm LL}\ll1\) 时，ALD 的无失控分支才可约化为 Landau--Lifshitz 方程。
 
-在 \(P\) 支撑上 \(P\ee^{-\ii H\tau/\hbar}P=\ee^{-\ii H_Z\tau/\hbar}\)，其中
-\begin{equation*}
-  H_Z=PHP+\frac{1}{2}\sum_{\alpha}\frac{PHQ_\alpha Q_\alpha HP}{\Delta E_\alpha}+O(\tau),
-\end{equation*}
-\(Q_\alpha=|\phi_\alpha\rangle\langle\phi_\alpha|\) 是补空间投影，\(\Delta E_\alpha\) 为能级差。有限 \(\tau\) 下衰变率 \(\Gamma(\tau)=[1-|\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle|^2]/\tau\) 在 \(\tau\to0\) 时趋于零（Zeno），但在能谱密度宽度 \(\sigma_E\) 对应的 \(\tau^*\sim\hbar/\sigma_E\) 处可能超过自然衰变率（反 Zeno）。
-
-保迹 CP 映射的生成元由 GKS 定理给出：
-\begin{equation}
-  \frac{\dd\rho}{\dd t}=-\ii[H,\rho]+\sum_{\alpha,\beta}c_{\alpha\beta}\left(F_\alpha\rho F_\beta^\dagger-\frac{1}{2}\{F_\beta^\dagger F_\alpha,\rho\}\right),
-  \label{eq:phys-oqs-gkls}
-\end{equation}
-其中 \(H=H^\dagger\) 为有效 Hamiltonian，\(C=(c_{\alpha\beta})\ge0\) 为 Kossakowski 矩阵，其半正定性即 CP 性的代数判据。作 Cholesky 分解 \(C=WW^\dagger\)、定义 \(L_k=\sum_\alpha W_{k\alpha}F_\alpha\)，即得标准 Lindblad 形式。方程自动保迹 \(\operatorname{tr}\dot\rho=0\)，并满足相对熵单调性 \(D(\Phi_t\rho\|\Phi_t\sigma)\le D(\rho\|\sigma)\)。稳态由 \(\{H,L_k\}\) 的代数决定：\(\{L_k\}\) 遍历整个算符代数时稳态唯一。
-\end{derivation}
+因此，任何具体辐射反作用模型都应按以下次序判断适用性：先确定电流是否可视为给定源；若不可，判断是否需要有限尺寸记忆；只有在点粒子近似成立后才使用 ALD；只有在辐射反作用时间相对于外部时间尺度足够小时才进一步使用 Landau--Lifshitz。这个层级把频谱、守恒、Green 函数和有效动力学放在同一经典场论框架中。下一部分转入量子理论时，Green/谱方法仍被保留，但动力学对象改为具有自伴定义域的哈密顿量；随后开放系统再把封闭量子演化推广为约化动力学。
