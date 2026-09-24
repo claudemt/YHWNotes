@@ -1,4 +1,4 @@
-\chapter{数学预备：从线性空间到联络}
+\chapter{数学预备}
 \label{chap:advanced-mathematical-foundations}
 
 物理公式中的对象各有明确类型。波函数是向量，哈密顿量是线性算符，对称操作组成群，参数依赖的本征空间组成向量丛。若不先分清这些对象，后面的计算即使符号无误，也容易把“选了一组基”误认为“改变了物理状态”，或把局部坐标公式误认为全局结论。这里从定义开始建立全书反复使用的数学语言。
@@ -37,10 +37,10 @@ x\sim y,\ y\sim z\Rightarrow x\sim z,
 
 \section{向量空间、线性映射与商空间}
 
-\begin{definition}[向量空间]
+\begin{definitionplain}[向量空间]
 在数域 \(\mathbb F\) 上，集合 \(V\) 若定义了向量加法和数乘，并满足加法结合律、交换律、零元与负元存在，以及数乘的结合律和分配律，就称为 \(\mathbb F\) 上的向量空间。本书主要取
 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)。
-\end{definition}
+\end{definitionplain}
 
 一组向量 \(e_1,\ldots,e_n\) 若线性无关，并且每个 \(v\in V\) 都能唯一写成 \(v=\sum_i v^ie_i\)，便是一组基。数 \(v^i\) 是 \(v\) 在这组基下的坐标。换基只改变坐标，不改变向量。
 
@@ -127,20 +127,20 @@ T(av+bw)=aT(v)+bT(w),
 
 \section{群、表示与 Schur 引理}
 
-\begin{definition}[群]
+\begin{definitionplain}[群]
 集合 \(G\) 配有乘法。若乘法满足结合律，存在单位元 \(e\)，且每个
 \(g\) 都有逆元 \(g^{-1}\)，则 \(G\) 称为群。若还有
 \(gh=hg\)，则群是交换群。
-\end{definition}
+\end{definitionplain}
 
-\begin{definition}[表示]
+\begin{definitionplain}[表示]
 群 \(G\) 在向量空间 \(V\) 上的表示，是群同态
 \[
 D:G\longrightarrow GL(V),
 \qquad D(gh)=D(g)D(h).
 \]
 若每个 \(D(g)\) 都酉，则称为酉表示。
-\end{definition}
+\end{definitionplain}
 
 子空间 \(W\subseteq V\) 若满足 \(D(g)W\subseteq W\) 对所有
 \(g\in G\) 成立，称为不变子空间。除 \(0,V\) 外没有不变子空间的表示称为不可约表示。线性映射 \(A:V\to W\) 若满足
@@ -202,101 +202,278 @@ SO(d)=\{R:R^{\mathsf T}R=I,\ \det R=1\}
 
 \section{流形、切向量与微分形式}
 
-\begin{definition}[光滑流形]
-\(n\) 维光滑流形 \(M\) 是由坐标图
-\((U_\alpha,x_\alpha)\) 覆盖的空间，其中
-\[
-x_\alpha:U_\alpha\longrightarrow
-x_\alpha(U_\alpha)\subseteq\mathbb R^n
-\]
-是双射，重叠区上的坐标变换
-\(x_\beta\circ x_\alpha^{-1}\) 光滑。
-\end{definition}
+曲线、曲面和转动群的共同点，不是它们都能嵌入某个更大的欧氏空间，而是每个点附近都可以用若干实数作坐标。球面需要至少两张坐标图；用经纬度覆盖时，极点处的经度失去意义，但球面本身并没有在那里产生奇点。微分几何首先要把这种“坐标失效”和真正的几何奇点区分开。
 
-过点 \(p\) 的曲线 \(\gamma(t)\) 通过
+\begin{definitionplain}[光滑流形]
+一个 \(n\) 维光滑流形 \(M\) 是 Hausdorff、第二可数的拓扑空间，并带有一族坐标图
 \[
-X[f]=\left.\frac{\dd}{\dd t}f(\gamma(t))\right|_{t=0}
+(U_\alpha,x_\alpha),\qquad
+x_\alpha:U_\alpha\longrightarrow x_\alpha(U_\alpha)\subseteq\mathbb R^n.
 \]
-定义一个切向量。全体切向量组成 \(T_pM\)。其对偶空间
-\(T_p^*M\) 称为余切空间。局部坐标给出切基
-\(\partial_\mu\) 与余切基 \(\dd x^\mu\)，函数的微分为
+各 \(U_\alpha\) 覆盖 \(M\)，每个 \(x_\alpha\) 都是到 \(\mathbb R^n\) 中开集的同胚；若 \(U_\alpha\cap U_\beta\ne\varnothing\)，则坐标变换
 \[
+x_\beta\circ x_\alpha^{-1}:
+x_\alpha(U_\alpha\cap U_\beta)\longrightarrow
+x_\beta(U_\alpha\cap U_\beta)
+\]
+光滑，并有光滑逆映射。满足这些条件的一整族相容坐标图称为光滑图册。
+\end{definitionplain}
+
+Hausdorff 条件保证两个不同点能由不相交邻域分开，第二可数条件排除过大的病态空间。物理中常见的开集、球面、环面、矩阵群和由正则约束定义的曲面都满足这两条条件。真正承担微分运算的是坐标变换的光滑性：同一个函数在两张图中写法不同，但链式法则保证导数能够相互转换。
+
+单位圆 \(S^1=\{(x,y)\in\mathbb R^2:x^2+y^2=1\}\) 已经说明为什么一张全局坐标图通常不存在。删去一点以后可用角度区间参数化；另删一点可得到第二张图。重叠处的两个角坐标相差 \(2\pi\) 的整数倍，转移函数光滑。圆周也可以写成商空间 \(\mathbb R/(2\pi\mathbb Z)\)，这与前面等价关系的定义完全一致。
+
+流形上的光滑函数由坐标来检验。若 \(f:M\to\mathbb R\)，则要求每个局部表达
+\(f\circ x_\alpha^{-1}\) 都是普通的光滑函数。若 \(F:M\to N\) 是两个流形间的映射，则在任意相交坐标图中要求
+\[
+y_\beta\circ F\circ x_\alpha^{-1}
+\]
+光滑。这个定义不依赖图册中的某一张图，因为不同图之间的转换本身已经光滑。
+
+在欧氏空间里，点 \(p\) 处的方向是一个箭头；在抽象流形上，没有预先给定的环境空间可供放置箭头。可以改用过 \(p\) 的曲线来定义方向。设 \(\gamma:(-\epsilon,\epsilon)\to M\) 且 \(\gamma(0)=p\)。若对每个光滑函数 \(f\) 都有
+\[
+\left.\frac{\dd}{\dd t}f(\gamma_1(t))\right|_{t=0}
+=
+\left.\frac{\dd}{\dd t}f(\gamma_2(t))\right|_{t=0},
+\]
+便把 \(\gamma_1\) 与 \(\gamma_2\) 看作同一个切向量。于是切向量 \(X\) 可以直接视为作用在光滑函数上的导子，
+\[
+X[f]=\left.\frac{\dd}{\dd t}f(\gamma(t))\right|_{t=0},
+\qquad
+X[fg]=X[f]g(p)+f(p)X[g].
+\]
+所有切向量组成 \(n\) 维向量空间 \(T_pM\)，称为 \(p\) 点的切空间。
+
+取局部坐标 \((x^1,\ldots,x^n)\)。普通多元微积分的链式法则给出
+\[
+X[f]=X^\mu\frac{\partial f}{\partial x^\mu}(p),
+\qquad
+X=X^\mu\left.\frac{\partial}{\partial x^\mu}\right|_p.
+\]
+因此 \(\partial/\partial x^\mu|_p\) 是 \(T_pM\) 的一组基。更换坐标 \(y^a=y^a(x)\) 时，
+\begin{equation}
+\frac{\partial}{\partial x^\mu}
+=\frac{\partial y^a}{\partial x^\mu}
+\frac{\partial}{\partial y^a},
+\qquad
+X'^a=\frac{\partial y^a}{\partial x^\mu}X^\mu.
+\label{eq:tangent-coordinate-transform-primer}
+\end{equation}
+坐标分量会变，导子 \(X\) 本身不变。
+
+光滑映射 \(F:M\to N\) 在每个点诱导线性映射
+\[
+F_{*p}:T_pM\longrightarrow T_{F(p)}N,
+\qquad
+(F_{*p}X)[h]=X[h\circ F],
+\]
+称为微分或推出。若在坐标中写 \(F^a= y^a\circ F\)，则
+\[
+(F_{*p}X)^a=\frac{\partial F^a}{\partial x^\mu}(p)X^\mu,
+\]
+这正是 Jacobian 矩阵作用在方向导数上。复合映射满足
+\((G\circ F)_{*p}=G_{*F(p)}\circ F_{*p}\)，所以推出是链式法则的无坐标写法。
+
+切空间的对偶空间 \(T_p^*M\) 称为余切空间。坐标函数的微分 \(\dd x^\mu\) 由
+\[
+\dd x^\mu\!\left(\frac{\partial}{\partial x^\nu}\right)
+=\delta^\mu_{\nu}
+\]
+定义，因此 \(\{\dd x^\mu\}\) 是余切基。对光滑函数 \(f\)，其微分 \(\dd f\in T_p^*M\) 满足
+\[
+(\dd f)_p(X)=X[f],
+\qquad
 \dd f=\frac{\partial f}{\partial x^\mu}\dd x^\mu.
 \]
+由式 \eqnrefs{eq:tangent-coordinate-transform-primer} 可知余切基按逆 Jacobian 变换；这正是上指标和下指标变换规律不同的来源。
 
-反对称的 \(k\) 阶协变张量称为 \(k\)-形式。外微分满足
+在每一点平滑选取一个切向量得到向量场。两个向量场的 Lie 括号定义为
 \[
-\dd^2=0,\qquad
+[X,Y][f]=X[Y[f]]-Y[X[f]].
+\]
+在局部坐标中，若 \(X=X^\mu\partial_\mu\)、\(Y=Y^\mu\partial_\mu\)，则
+\[
+[X,Y]
+=\left(X^\mu\partial_\mu Y^\nu-Y^\mu\partial_\mu X^\nu\right)\partial_\nu.
+\]
+坐标基满足 \([\partial_\mu,\partial_\nu]=0\)，一般移动标架则未必对易。
+
+\begin{definitionplain}[微分形式]
+点 \(p\) 处的 \(k\)-形式是 \(T_pM\) 上的反对称 \(k\) 重线性函数。把它随 \(p\) 光滑选取，便得到流形上的微分 \(k\)-形式。局部可写成
+\[
+\omega=\frac1{k!}\omega_{\mu_1\cdots\mu_k}
+\dd x^{\mu_1}\wedge\cdots\wedge\dd x^{\mu_k},
+\]
+其中系数对全部指标完全反对称。
+\end{definitionplain}
+
+楔积把一个 \(k\)-形式和一个 \(\ell\)-形式合成 \((k+\ell)\)-形式，并满足
+\[
+\alpha\wedge\beta=(-1)^{k\ell}\beta\wedge\alpha.
+\]
+特别地，\(\dd x^\mu\wedge\dd x^\mu=0\)。外微分先在函数上由通常的全微分定义，再由
+\[
+\dd^2=0,
+\qquad
 \dd(\alpha\wedge\beta)
 =\dd\alpha\wedge\beta+(-1)^k\alpha\wedge\dd\beta
 \]
-，其中 \(\alpha\) 是 \(k\)-形式。微积分基本定理、Green 公式、Gauss 公式和 Stokes 公式统一为
+唯一延拓到所有形式。局部表达为
+\[
+\dd\omega
+=\frac1{k!}\partial_\nu\omega_{\mu_1\cdots\mu_k}
+\dd x^\nu\wedge\dd x^{\mu_1}\wedge\cdots\wedge\dd x^{\mu_k}.
+\]
+式 \(\dd^2=0\) 来自二阶偏导的对称性与楔积的反对称性。
+
+映射 \(F:M\to N\) 还能把 \(N\) 上的微分形式拉回 \(M\)。对 \(k\)-形式 \(\omega\)，定义
+\[
+(F^*\omega)_p(X_1,\ldots,X_k)
+=\omega_{F(p)}(F_{*p}X_1,\ldots,F_{*p}X_k).
+\]
+拉回满足 \(F^*(\alpha\wedge\beta)=F^*\alpha\wedge F^*\beta\) 和
+\(F^*(\dd\omega)=\dd(F^*\omega)\)。积分变量替换、曲面上的面积元以及电磁场强在坐标变换下的写法，都使用这个运算。
+
+在可定向流形上选择一致的方向以后，紧支撑的最高次形式可以积分。若 \(M\) 是带边界的定向 \(n\) 维流形，\(\omega\) 是紧支撑的 \((n-1)\)-形式，则 Stokes 定理为
 \begin{equation}
 \int_M\dd\omega=\int_{\partial M}\omega.
 \label{eq:general-stokes-primer}
 \end{equation}
-把流形切成小块时，相邻小块的公共边界方向相反，内部边界积分两两抵消，只剩整体边界；这给出 Stokes 公式从局部到整体的拼接机制。
+边界方向取“外法向优先”的约定。把流形分割成坐标小块后，相邻小块在公共边界上诱导相反方向，内部积分两两抵消；每个小块内的结论则退化为多元微积分基本定理。微积分基本定理、Green 公式、Gauss 公式和经典 Stokes 公式因而都是式 \eqnrefs{eq:general-stokes-primer} 的不同维数版本。
 
 \section{向量丛、联络与曲率}
 
-\begin{definition}[向量丛与截面]
-秩为 \(r\) 的复向量丛是映射 \(\pi:E\to M\)。每个纤维
-\(E_p=\pi^{-1}(p)\) 是 \(r\) 维复向量空间；每个点附近都有
-\[
-\pi^{-1}(U)\simeq U\times\mathbb C^r.
-\]
-满足 \(\pi(s(p))=p\) 的光滑映射 \(s:M\to E\) 称为截面。
-\end{definition}
+流形把每一点附近的几何与 \(\mathbb R^n\) 比较；向量丛则在每一点上再附着一个向量空间。最简单的情形是直积 \(M\times\mathbb C^r\)，但电子本征态随核坐标变化时，通常只能在局部连续地选取一组本征矢，不能预先假定存在全局统一的基。
 
-在 \(U_\alpha\) 上逐点选基 \(e_{\alpha1},\ldots,e_{\alpha r}\)，得到局部标架。在重叠区，两组标架满足
+\begin{definitionplain}[向量丛与截面]
+秩为 \(r\) 的复向量丛由流形 \(E,M\) 和光滑满射 \(\pi:E\to M\) 构成。每个纤维 \(E_p=\pi^{-1}(p)\) 是 \(r\) 维复向量空间；对每个 \(p\in M\)，存在邻域 \(U\) 和微分同胚
 \[
-e_\beta=e_\alpha U_{\alpha\beta}.
+\Phi_U:\pi^{-1}(U)\longrightarrow U\times\mathbb C^r,
 \]
-若截面坐标为 \(s=e_\alpha\psi_\alpha=e_\beta\psi_\beta\)，则
-\(\psi_\beta=U_{\alpha\beta}^{-1}\psi_\alpha\)。
+使 \(\Phi_U\) 在每个纤维上都是线性同构，并且投影到第一个因子后等于 \(\pi\)。满足 \(\pi(s(p))=p\) 的光滑映射 \(s:M\to E\) 称为截面。
+\end{definitionplain}
 
-\begin{definition}[联络]
-联络 \(\nabla\) 把向量场 \(X\) 和截面 \(s\) 送到截面
-\(\nabla_Xs\)，并满足
-\[
-\nabla_{fX+gY}s=f\nabla_Xs+g\nabla_Ys,\qquad
-\nabla_X(fs)=X[f]s+f\nabla_Xs.
-\]
-\end{definition}
+切丛 \(TM=\bigsqcup_{p\in M}T_pM\) 是实秩 \(n\) 的向量丛，余切丛 \(T^*M\) 是其对偶丛。量子力学中若哈密顿量 \(H(R)\) 的某个隔离能级在每个核构型 \(R\) 上有 \(r\) 维本征空间，这些本征空间在能隙不闭合的区域内组成秩 \(r\) 的本征态丛。
 
-在局部标架中，联络写成
+在 \(U_\alpha\) 上逐点选取纤维基
+\(e_{\alpha1},\ldots,e_{\alpha r}\)，称为局部标架。把它们排成行向量 \(e_\alpha\)，则重叠区上存在光滑可逆矩阵
 \[
-\nabla\psi=\dd\psi+\Gamma\psi,
+e_\beta=e_\alpha U_{\alpha\beta},
+\qquad U_{\alpha\beta}:U_\alpha\cap U_\beta\to GL(r,\mathbb C).
 \]
-其中 \(\Gamma\) 是矩阵值 \(1\)-形式。更换标架
-\(e'=eU\) 后，同一个几何联络满足
+同一截面写成
+\(s=e_\alpha\psi_\alpha=e_\beta\psi_\beta\)，故
+\[
+\psi_\beta=U_{\alpha\beta}^{-1}\psi_\alpha.
+\]
+三个坐标邻域相交时，同一个标架变换可以分两步完成，所以转移函数必须满足
+\[
+U_{\alpha\alpha}=I,
+\qquad U_{\alpha\beta}U_{\beta\gamma}=U_{\alpha\gamma}.
+\]
+这就是余圈条件。反过来，一族满足余圈条件的转移函数可以把各个 \(U_\alpha\times\mathbb C^r\) 粘合成向量丛。
+
+不同纤维 \(E_p\) 与 \(E_q\) 是不同的向量空间，所以截面 \(s(p)\) 与 \(s(q)\) 不能直接相减。普通偏导暗中使用了直积丛中“各点采用同一组基”的识别；一般向量丛没有这种天然识别。联络正是补上这一信息的微分规则。
+
+\begin{definitionplain}[联络]
+联络 \(\nabla\) 把向量场 \(X\) 和截面 \(s\) 送到截面 \(\nabla_Xs\)，并满足
+\[
+\nabla_{fX+gY}s=f\nabla_Xs+g\nabla_Ys,
+\]
+\[
+\nabla_X(as+bt)=a\nabla_Xs+b\nabla_Xt,
+\qquad
+\nabla_X(fs)=X[f]s+f\nabla_Xs,
+\]
+其中 \(f,g\) 是光滑函数，\(a,b\in\mathbb C\)。第一式说明它对求导方向是函数线性的；最后一式是 Leibniz 法则。
+\end{definitionplain}
+
+在局部标架中写 \(s=e_a\psi^a\)。定义系数 \(1\)-形式 \(\Gamma^a{}_b\) 使
+\[
+\nabla e_b=e_a\Gamma^a{}_b.
+\]
+于是
+\begin{equation}
+\nabla s=e_a\bigl(\dd\psi^a+\Gamma^a{}_b\psi^b\bigr),
+\qquad
+\nabla\psi=\dd\psi+\Gamma\psi.
+\label{eq:local-connection-primer}
+\end{equation}
+矩阵 \(\Gamma=\Gamma_\mu\dd x^\mu\) 不是额外的物理向量；它记录所选局部基在移动时怎样变化。
+
+若更换局部标架 \(e'=eU\)，同一截面的坐标满足 \(\psi'=U^{-1}\psi\)。几何对象 \(\nabla s\) 不能因换基而改变，所以其坐标也应满足
+\(\nabla'\psi'=U^{-1}\nabla\psi\)。将式 \eqnrefs{eq:local-connection-primer} 两边展开，得到
+\[
+\dd(U^{-1}\psi)+\Gamma'U^{-1}\psi
+=U^{-1}(\dd\psi+\Gamma\psi).
+\]
+再用 \(\dd U^{-1}=-U^{-1}(\dd U)U^{-1}\)，比较 \(\psi\) 的系数，便有
 \begin{equation}
 \Gamma'=U^{-1}\Gamma U+U^{-1}\dd U.
 \label{eq:connection-transform-primer}
 \end{equation}
+非齐次项 \(U^{-1}\dd U\) 说明联络系数本身不是张量。这不是缺陷：正是这个额外项抵消了 \(\dd\psi\) 换基时产生的导数项，使 \(\nabla\psi\) 按齐次方式变换。
 
-\begin{proof}
-同一截面的坐标满足 \(\psi'=U^{-1}\psi\)。要求协变导数也按同样方式变换：
-\(\nabla'\psi'=U^{-1}\nabla\psi\)。展开
+沿曲线 \(\gamma:[0,1]\to M\) 的截面可写成 \(s(t)=e_a(\gamma(t))\psi^a(t)\)。称它被平行移动，是指
 \[
-\dd(U^{-1}\psi)+\Gamma'U^{-1}\psi
-=U^{-1}\dd\psi-U^{-1}(\dd U)U^{-1}\psi
-+\Gamma'U^{-1}\psi
+\nabla_{\dot\gamma}s=0,
+\qquad
+\frac{\dd\psi}{\dd t}
++\Gamma_\mu(\gamma(t))\dot\gamma^\mu(t)\psi=0.
 \]
-并与 \(U^{-1}\dd\psi+U^{-1}\Gamma\psi\) 比较，便得到
-\eqnrefs{eq:connection-transform-primer}。
-\end{proof}
+给定 \(s(0)\) 后，这是线性常微分方程，因而局部存在唯一解。其解写成路径有序指数
+\[
+\psi(1)=
+\mathcal P\exp\!\left[-\int_\gamma\Gamma\right]\psi(0).
+\]
+若 \(\Gamma\) 在不同点不对易，路径排序不可省略。闭路上的平行移动给出纤维到自身的线性变换，称为整体回转。
 
-联络的曲率定义为
+连续求两次协变导数时，二阶普通导数的对称部分在反对称化中抵消，剩下的量定义为曲率。对矩阵值形式，令协变外微分为
+\[
+D\alpha=\dd\alpha+\Gamma\wedge\alpha
+\]
+（若 \(\alpha\) 还带有右作用指标，相应再加右侧项）。作用在截面上可直接计算：
+\[
+D^2\psi
+=\dd(\dd\psi+\Gamma\psi)
++\Gamma\wedge(\dd\psi+\Gamma\psi)
+=(\dd\Gamma+\Gamma\wedge\Gamma)\psi.
+\]
+因此曲率二形式为
 \begin{equation}
-F=\dd\Gamma+\Gamma\wedge\Gamma.
+F=\dd\Gamma+\Gamma\wedge\Gamma,
+\qquad
+F_{\mu\nu}
+=\partial_\mu\Gamma_\nu-
+\partial_\nu\Gamma_\mu+[\Gamma_\mu,\Gamma_\nu].
 \label{eq:curvature-primer}
 \end{equation}
-代入 \eqnrefs{eq:connection-transform-primer} 可得
-\(F'=U^{-1}FU\)。因此联络矩阵依赖标架，曲率是否为零却不依赖标架。
-
-沿曲线 \(\gamma(t)\) 平行移动截面，定义为满足
+等价地，若坐标向量场对易，则
 \[
-\nabla_{\dot\gamma}s=0
+[\nabla_\mu,\nabla_\nu]s=F_{\mu\nu}s.
 \]
-的初值问题。沿闭曲线走一周后，末态与初态之间的线性变换称为整体回转。曲率描述无穷小闭路的整体回转；Berry 相位和非 Abel Berry 矩阵就是电子本征态丛的整体回转。
+这给出了曲率的操作意义：沿两个无穷小方向平行移动，交换次序后的差异由 \(F_{\mu\nu}\) 控制。
+
+把式 \eqnrefs{eq:connection-transform-primer} 代入式 \eqnrefs{eq:curvature-primer}，并使用 \(\dd^2=0\)，交叉项成对抵消，得到
+\begin{equation}
+F'=U^{-1}FU.
+\label{eq:curvature-transform-primer}
+\end{equation}
+所以联络矩阵依赖标架，而曲率按共轭齐次变换。特别地，\(F=0\) 与否不依赖标架。继续计算协变外微分还得到 Bianchi 恒等式
+\[
+DF=\dd F+\Gamma\wedge F-F\wedge\Gamma=0.
+\]
+
+秩一情形中各矩阵退化为复数，\(\Gamma\wedge\Gamma=0\)，于是 \(F=\dd\Gamma\)。若局部规范变换写成 \(U=\ee^{\ii\chi}\)，则
+\[
+\Gamma'=\Gamma+\ii\dd\chi,
+\qquad F'=F.
+\]
+这与电磁势改变而场强不变的结构相同。对秩大于一的丛，交换子项不能消失，曲率在换基下发生共轭而不是保持每个矩阵元不变。
+
+分子问题中，参数 \(R\) 取代流形坐标，局部电子本征态 \(\{|u_a(R)\rangle\}\) 取代标架。矩阵元
+\[
+\Gamma_{\mu,ab}(R)=
+\langle u_a(R)|\partial_\mu u_b(R)\rangle
+\]
+正是本征态丛上的联络。改变本征态基底会按式 \eqnrefs{eq:connection-transform-primer} 改变 \(\Gamma\)，但曲率、闭路整体回转以及由它们产生的可观测干涉不依赖这种选择。这样，后文的 Berry 相位、非 Abel 几何矩阵和 Born--Huang 协变核方程，都只是这里定义的同一套向量丛几何在不同物理系统中的具体实现。
