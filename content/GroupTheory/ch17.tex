@@ -1,17 +1,48 @@
-\chapter{Lie 群、Lie 代数与指数映射}
+\chapter{\texorpdfstring{Lie 群、根系与 $SU(3)$}{Lie 群、根系与 SU(3)}}
 \label{chap:lie-groups-algebras}
 
 有限群可以逐个列出元素和乘法表，旋转群却含有连续无穷多个元素。若仍试图逐个研究群元，连“从单位元附近稍微转动一下”都无法与有限转动联系起来。连续性提供了更有效的入口：沿群中的一条曲线从单位元出发，只保留它在起点的切向量。有限维的切空间记录了群在单位元附近的全部无穷小方向。
 
 无穷小方向本身还不够，因为两个方向依次走一小步通常与反向次序不同。这个二阶差异产生 Lie 括号；把同一方向反复复合则产生指数映射。于是连续群的局部乘法被转化为有限维向量空间、双线性括号和常微分方程。$SO(3)$ 与 $SU(2)$ 会贯穿本章，使每个抽象定义都能立刻落到矩阵运算上。
 
-\section{从一参数子群到生成元}
+\section{Lie 群与 Lie 代数}
 
-先取矩阵 Lie 群 $G\subseteq GL(n,\mathbb C)$。一条经过单位元的光滑曲线写作 $g(t)$，满足 $g(0)=I$。它在 $t=0$ 的速度
+\begin{definitionplain}[矩阵 Lie 群]
+矩阵 Lie 群是 $GL(n,\mathbb C)$ 的一个闭子群。这里的闭是矩阵空间通常拓扑中的闭：若群内矩阵列 $g_k$ 收敛到一个可逆矩阵 $g$，则 $g$ 仍在群内。闭子群定理保证这样的群自动带有光滑流形结构，而且矩阵乘法与求逆都是光滑映射。
+\end{definitionplain}
+
+这个定义比“含连续参数的矩阵群”多了一个闭性条件。去掉闭性会出现反例：取平面环面
+\[
+T^2=\{(e^{\ii\theta_1},e^{\ii\theta_2})\},
+\]
+固定无理数 $\alpha$，集合
+\[
+H=\{(e^{\ii t},e^{\ii\alpha t})\mid t\in\mathbb R\}
+\]
+在乘法下是子群，却在 $T^2$ 中稠密而不闭。它作为抽象参数群只有一维，闭包却是二维环面；若不要求闭，子群的内在维数便不能从它在矩阵空间中的局部形状稳定地读出。
+
+现在取矩阵 Lie 群 $G\subseteq GL(n,\mathbb C)$。一条经过单位元的光滑曲线写作 $g(t)$，满足 $g(0)=I$。它在 $t=0$ 的速度
 \[
 X=\left.\frac{\dd g(t)}{\dd t}\right|_{t=0}
 \]
-是矩阵空间中的向量。所有这类速度组成单位元处的切空间 $T_IG$，记为 $\mathfrak g$。例如 $SO(3)$ 的约束 $R^{\mathsf T}R=I$ 对 $t$ 求导给出
+是矩阵空间中的向量。若两条曲线在某组局部坐标中有相同的一阶导数，就把它们视作同一个切向量；链式法则保证这个判定不依赖所选坐标。所有这类速度组成单位元处的切空间 $T_IG$，记为 $\mathfrak g$。
+
+\begin{proposition}[约束的线性化给出 Lie 代数]
+设矩阵群在单位元附近由光滑矩阵方程 $F(g)=0$ 定义，而且单位元是正则点，则
+\[
+\mathfrak g=T_IG=\ker(\dd F)_I.
+\]
+\end{proposition}
+
+\begin{proof}
+若 $g(t)$ 是群内曲线，则 $F(g(t))=0$。在 $t=0$ 求导得到
+\[
+(\dd F)_I\bigl(g'(0)\bigr)=0,
+\]
+所以每个切向量都在核中。反过来，正则点条件使 $F^{-1}(0)$ 在单位元附近成为子流形；子流形的切空间正是微分的核。两个包含关系合在一起便得到结论。
+\end{proof}
+
+例如 $SO(3)$ 的约束 $R^{\mathsf T}R=I$ 对 $t$ 求导给出
 \[
 X^{\mathsf T}+X=0,
 \]
@@ -32,7 +63,25 @@ g(t)=\exp(tX)=\sum_{k=0}^{\infty}\frac{t^kX^k}{k!}.
 \end{equation}
 式 \eqnrefs{eq:one-parameter-exponential} 把一个无穷小生成元恢复成有限群变换。指数映射不必在整个群上一一对应，但在单位元附近总能把足够小的切向量送到群元。
 
-\begin{example}[$SO(2)$ 的指数映射]
+\begin{theorem}[一参数子群与生成元一一对应]
+对矩阵 Lie 群 $G$，每个 $X\in\mathfrak g$ 都唯一决定一参数子群 $t\mapsto\exp(tX)$；反过来，每个光滑一参数子群都有这种形式。
+\end{theorem}
+
+\begin{proof}
+反向结论已经由初值问题 $g'(t)=g(t)X$ 的唯一性得到。还需说明 $X\in\mathfrak g$ 时 $\exp(tX)$ 确实留在 $G$ 中。按切向量定义，可取群内曲线 $c(s)$ 使 $c(0)=I$、$c'(0)=X$。固定 $t$，令
+\[
+g_n(t)=c(t/n)^n\in G.
+\]
+Taylor 展开给出 $c(t/n)=I+tX/n+O(n^{-2})$，从而
+\[
+g_n(t)\longrightarrow \lim_{n\to\infty}
+\left(I+\frac{tX}{n}\right)^n=\exp(tX).
+\]
+矩阵 Lie 群是闭集，所以极限仍属于 $G$。矩阵指数满足
+$\exp((t+s)X)=\exp(tX)\exp(sX)$，故它是一参数子群。
+\end{proof}
+
+\begin{exampleplain}[$SO(2)$ 的指数映射]
 取
 \[
 J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad J^2=-I.
@@ -44,9 +93,9 @@ J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad J^2=-I.
 \sin\theta&\cos\theta\end{pmatrix}.
 \]
 生成元 $J$ 决定转动开始时的速度，指数映射则把这条局部方向延伸为任意角度的转动；周期性也说明指数映射不是单射。
-\end{example}
+\end{exampleplain}
 
-\section{Lie 括号来自复合次序}
+\subsection{Lie 括号}
 
 两个生成元 $X,Y$ 的线性组合仍是切向量，但群乘法还留下一个仅靠向量加法看不见的信息。比较两条小变换的不同次序，Baker--Campbell--Hausdorff 展开给出
 \begin{align*}
@@ -66,6 +115,39 @@ J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad J^2=-I.
 \]
 带有这种括号的向量空间称为 Lie 代数。对一般 Lie 群，括号可由左不变向量场的交换子定义；矩阵群的式 \eqnrefs{eq:matrix-lie-bracket} 是最直接的实现。
 
+还要验证交换子没有跑出切空间。对固定 $X,Y\in\mathfrak g$，
+\[
+Y(t)=\operatorname{Ad}_{\ee^{tX}}Y
+=\ee^{tX}Y\ee^{-tX}
+\]
+始终属于线性空间 $\mathfrak g$。在 $t=0$ 求导，
+\[
+Y'(0)=XY-YX=[X,Y].
+\]
+线性子空间包含其中每条曲线的速度，所以 $[X,Y]\in\mathfrak g$。Lie 括号的封闭性来自群的共轭作用，不是额外加在切空间上的运算。
+
+\begin{proposition}[两个指数何时可以直接合并]
+若 $X$ 与 $Y$ 对易，则
+\[
+\ee^X\ee^Y=\ee^{X+Y}.
+\]
+反过来，若等式 $\ee^{sX}\ee^{tY}=\ee^{sX+tY}$ 对原点附近所有 $s,t$ 都成立，则 $[X,Y]=0$。
+\end{proposition}
+
+\begin{proof}
+对易时可在两个指数级数中交换 $X$ 与 $Y$，按总次数整理后由二项式定理得到 $\ee^{X+Y}$。反向只需比较 $st$ 项：
+\[
+\ee^{sX}\ee^{tY}
+=I+sX+tY+stXY+O(s^2+t^2),
+\]
+而
+\[
+\ee^{sX+tY}
+=I+sX+tY+\frac{st}{2}(XY+YX)+O(s^2+t^2).
+\]
+两式相等迫使 $XY=YX$。
+\end{proof}
+
 取一组基 $T_a$，括号可写为
 \begin{equation}
 [T_a,T_b]=f_{ab}{}^{c}T_c.
@@ -77,7 +159,7 @@ f_{ab}{}^d f_{dc}{}^e+f_{bc}{}^d f_{da}{}^e+f_{ca}{}^d f_{db}{}^e=0.
 \]
 它保证无穷小复合的结合律与原群的结合律相容。
 
-\begin{derivation}[$SO(3)$ 的交换关系]
+\begin{proof}[$SO(3)$ 交换关系的直接计算]
 令 $(L_i)_{jk}=-\epsilon_{ijk}$。直接相乘并使用
 $\epsilon_{i\ell m}\epsilon_{jmk}=\delta_{ik}\delta_{\ell j}-\delta_{ij}\delta_{\ell k}$，得到
 \[
@@ -89,7 +171,7 @@ $\epsilon_{i\ell m}\epsilon_{jmk}=\delta_{ik}\delta_{\ell j}-\delta_{ij}\delta_{
 [J_i,J_j]=\ii\epsilon_{ijk}J_k.
 \]
 括号中的 $J_k$ 表明绕两个不同轴的微小转动交换次序后，会多出绕第三个轴的微小转动；结构常数在这里就是 Levi--Civita 符号。
-\end{derivation}
+\end{proof}
 
 \section{平移、伴随表示与 Killing 形式}
 
@@ -116,7 +198,7 @@ B([Z,X],Y)+B(X,[Z,Y])=0,
 \]
 所以在伴随作用下不变。半单 Lie 代数的 Killing 形式非退化；下一章会用它在 Cartan 子代数的对偶空间上比较根的长度与夹角。
 
-\section{\texorpdfstring{$SU(2)$：局部代数与全局群并不相同}{SU(2)：局部代数与全局群并不相同}}
+\section{\texorpdfstring{$SU(2)$ 与 $SO(3)$}{SU(2) 与 SO(3)}}
 
 取 Pauli 矩阵 $\sigma_i$，并令 $T_i=-\ii\sigma_i/2$。它们反厄米且无迹，满足
 \[
@@ -131,4 +213,50 @@ $(\hat{\vb n}\cdot\boldsymbol\sigma)^2=I$ 可把指数算到底：
 \end{equation}
 当 $\theta=2\pi$ 时结果为 $-I$，到 $4\pi$ 才回到 $I$。$\mathfrak{su}(2)$ 与 $\mathfrak{so}(3)$ 有相同的局部交换关系，却对应不同的全局群；Lie 代数控制单位元附近的结构，不能单独恢复群的拓扑。
 
-本章把连续群压缩到了生成元、交换关系和指数映射。下一步的困难来自高秩代数：生成元不能全部同时对角化，而表示中的态仍需要一组可同时测量的量子数。为此要在代数中选出最大的可交换部分，并研究其余生成元怎样搬运这些共同本征值。
+把这个二重覆盖写成可计算的映射。对 $\mathbf x\in\mathbb R^3$，用无迹厄米矩阵
+\[
+X(\mathbf x)=\mathbf x\cdot\boldsymbol\sigma
+\]
+表示它。若 $U\in SU(2)$，相似变换保持厄米性、迹和行列式，因此存在唯一向量 $R_U\mathbf x$ 使
+\begin{equation}
+U X(\mathbf x)U^\dagger=X(R_U\mathbf x).
+\label{eq:su2-so3-conjugation}
+\end{equation}
+又因为
+\[
+\frac12\Tr[X(\mathbf x)X(\mathbf y)]
+=\mathbf x\cdot\mathbf y,
+\]
+相似变换保持迹，故 $R_U$ 保持 Euclidean 内积。连续性以及 $R_I=I$ 排除了行列式 $-1$，所以 $R_U\in SO(3)$。
+
+\begin{theorem}[$SU(2)$ 到 $SO(3)$ 的二重覆盖]
+映射 $\pi:SU(2)\to SO(3)$，$\pi(U)=R_U$，是满同态，且
+\[
+\ker\pi=\{I,-I\}.
+\]
+因此 $SO(3)\cong SU(2)/\{\pm I\}$。
+\end{theorem}
+
+\begin{proof}
+由\eqnrefs{eq:su2-so3-conjugation}连续使用两次，
+\[
+X(R_{UV}\mathbf x)
+=UVX(\mathbf x)V^\dagger U^\dagger
+=X(R_U R_V\mathbf x),
+\]
+故 $R_{UV}=R_UR_V$。若 $R_U=I$，则 $U$ 与三个 Pauli 矩阵都对易；它也与所有 $2\times2$ 复矩阵对易，所以 $U=\lambda I$。条件 $U^\dagger U=I$ 与 $\det U=1$ 给出 $\lambda=\pm1$。
+
+最后，任意三维转动都有轴角表示 $(\hat{\mathbf n},\theta)$。取
+\[
+U=\exp\!\left(-\frac{\ii\theta}{2}
+\hat{\mathbf n}\cdot\boldsymbol\sigma\right),
+\]
+用 Pauli 乘法公式
+$(\mathbf a\cdot\boldsymbol\sigma)
+(\mathbf b\cdot\boldsymbol\sigma)
+=(\mathbf a\cdot\mathbf b)I+
+\ii(\mathbf a\times\mathbf b)\cdot\boldsymbol\sigma$
+代入\eqnrefs{eq:su2-so3-conjugation}，得到 Rodrigues 转动公式，转轴为 $\hat{\mathbf n}$、转角为 $\theta$。因此 $\pi$ 为满射，而 $U$ 与 $-U$ 给出同一转动。
+\end{proof}
+
+高秩代数中，生成元不能全部同时对角化，而表示中的态仍需要一组相容量子数。下一章先选出最大的可交换子代数，再计算其余生成元怎样改变这些共同本征值。

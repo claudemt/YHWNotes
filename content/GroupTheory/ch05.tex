@@ -1,13 +1,15 @@
-\chapter{线性表示、等价与不可约性}
+\chapter{线性表示}
 \label{chap:representation-theory}
 
-\chapref{chap:group-basics}讨论的是群本身的结构：群元怎样相乘、怎样分解、怎样通过正规子群与商群揭示内部组织。到了真正的物理应用里，我们还需要第二步：把抽象的群元变成线性空间上的可计算对象。点群要作用在晶格位移、原子轨道和振动模上，转动群要作用在波函数与态矢量上，置换群要作用在多体 Hilbert 空间上。于是我们自然会问：能否把一个抽象群 $G$ 送到某个线性空间上的可逆线性变换群中，并且保持群乘法？这正是群表示理论的出发点。
-
-上一章的群元仍然是抽象对象。只知道 $gh=k$，我们能够研究群内部结构，却还不能把它直接放进量子力学方程或数值计算里。线性代数给了我们一个桥梁：把每个抽象群元 $g$ 对应到一个可逆线性变换 $\rho(g)$。这样，群乘法会变成矩阵乘法，抽象的“对称操作”就可以真正作用在坐标、轨道系数、振动位移或量子态上。
+群的乘法、陪集和商群揭示了群本身的结构，但物理量通常是向量：晶格位移、原子轨道的系数、波函数和态矢量都可以相加，也可以乘一个复数。要让抽象群元参与实际计算，就要把每个 $g\in G$ 对应到向量空间上的可逆线性变换 $\rho(g)$，并使群乘法变成算符复合，
+\[
+\rho(gh)=\rho(g)\rho(h).
+\]
+这个对应就是群表示。
 
 初学表示论时最容易混淆三个对象。第一层是抽象群元 $g\in G$；第二层是它在向量空间 $V$ 上对应的线性算符 $\rho(g):V\to V$；第三层是在选定一组基以后，这个线性算符写成的矩阵 $D(g)$。同一个 $\rho(g)$ 换一组基，矩阵会改变，但线性变换本身没有改变。表示论中所谓“两个表示等价”，很大程度上就是把这种无关紧要的坐标选择剔除掉。
 
-本章最终要解决的问题可以用一句话概括：给定一个群在线性空间上的作用，怎样找出其中最小的、不能继续分裂的对称性块？这些最小块就是不可约表示。后面的能级简并、选择定则和能带标记之所以能用几个字母概括，本质上都是因为复杂的表示可以被拆成不可约表示。
+若表示空间能分成若干彼此不混合的不变子空间，表示矩阵便能同时化成分块形式。不能继续分裂的块称为不可约表示。能级简并、选择定则和能带标记之所以能用少数标签概括，正是因为复杂的表示可以分解成这些最小块。
 
 除特别说明外，本章默认表示空间是有限维复线性空间 $V$，记 $\dim V=n$。这里“线性空间”意味着向量可以相加、可以乘复数；$\dim V=n$ 意味着存在 $n$ 个线性无关向量 $e_1,\dots,e_n$，使任意 $v\in V$ 都唯一写成
 \[
@@ -18,7 +20,7 @@ $\operatorname{GL}(V)$ 表示 $V$ 上全部\emph{可逆}线性变换组成的群
 \label{sec:representations-basic}
 
 
-\begin{definition}[群表示]
+\begin{definitionplain}[群表示]
 设 $G$ 为群，$V$ 为有限维复线性空间。一个从 $G$ 到 $\operatorname{GL}(V)$ 的群同态
 \[
 \rho:G\longrightarrow \operatorname{GL}(V)
@@ -31,7 +33,7 @@ $\operatorname{GL}(V)$ 表示 $V$ 上全部\emph{可逆}线性变换组成的群
 \]
 空间 $V$ 称为该表示的\textbf{表示空间}，其维数 $\dim V$ 称为表示的\textbf{维数}。
 \label{def:representation}
-\end{definition}
+\end{definitionplain}
 
 定义中的目标群必须是可逆线性变换群 $\operatorname{GL}(V)$，而不是所有线性变换的集合。原因与\chapref{chap:group-basics}中“群元必须有逆”完全一致：既然 $g^{-1}$ 在群里存在，$\rho(g)$ 也必须可逆，且其逆恰好是 $\rho(g^{-1})$。这一点直接由同态性质推出，也是后面许多运算的基础。
 
@@ -62,18 +64,18 @@ $\operatorname{GL}(V)$ 表示 $V$ 上全部\emph{可逆}线性变换组成的群
 
 一旦选定基底，表示就会转化为矩阵表示。这一步在实际计算中几乎总会做，但应当清楚：不同基底下得到的矩阵不同，它们描述的却是同一个表示。
 
-\begin{definition}[矩阵表示]
+\begin{definitionplain}[矩阵表示]
 设 $\rho:G\to\operatorname{GL}(V)$ 为表示，$\mathcal B=(e_1,\dots,e_n)$ 为 $V$ 的一组基。对每个 $g\in G$，记 $D_{\mathcal B}(g)$ 为线性变换 $\rho(g)$ 在基 $\mathcal B$ 下的矩阵，则有
 \[
 D_{\mathcal B}(gh)=D_{\mathcal B}(g)D_{\mathcal B}(h).
 \]
 映射 $g\mapsto D_{\mathcal B}(g)$ 称为表示 $\rho$ 在该基下的\textbf{矩阵表示}。
 \label{def:matrix-representation}
-\end{definition}
+\end{definitionplain}
 
 矩阵表示之所以重要，是因为之后的约化、对角化与特征标计算都发生在矩阵层面上；但如果过早把矩阵当成本体，就容易忽略基变换带来的冗余。因此本章反复区分“表示”与“某一基下的表示矩阵”。
 
-\begin{definition}[子表示与不变子空间]
+\begin{definitionplain}[子表示与不变子空间]
 设 $\rho:G\to\operatorname{GL}(V)$ 为表示，$W\subseteq V$ 为线性子空间。若对任意 $g\in G$ 都有
 \[
 \rho(g)W\subseteq W,
@@ -84,7 +86,7 @@ D_{\mathcal B}(gh)=D_{\mathcal B}(g)D_{\mathcal B}(h).
 \]
 给出一个新的表示，称为原表示的\textbf{子表示}。
 \label{def:subrepresentation}
-\end{definition}
+\end{definitionplain}
 
 不变子空间的概念看似简单，却是整章最核心的几何对象。因为表示是否"能被分解"，实质上就是问：除了 $\{0\}$ 与 $V$ 本身之外，它有没有非平凡不变子空间？这个问题将在下面变成"可约与不可约"的定义。
 
@@ -114,7 +116,7 @@ V_X=\operatorname{span}_{\mathbb C}\{e_{x_1},\dots,e_{x_n}\}.
 \label{ex:permutation-representation}
 \par\medskip
 
-\begin{example}[$S_3$ 的二维标准表示]
+\begin{exampleplain}[$S_3$ 的二维标准表示]
 上一章我们已经知道 $S_3$ 是三阶置换群。它对三维空间 $\mathbb C^3$ 的自然作用是置换标准基向量 $e_1,e_2,e_3$，即得到三维置换表示。这个表示中，
 \[
 u_0=e_1+e_2+e_3
@@ -124,7 +126,7 @@ u_0=e_1+e_2+e_3
 W=\{(z_1,z_2,z_3)\in\mathbb C^3\mid z_1+z_2+z_3=0\}
 \]
 也在 $S_3$ 作用下不变，故限制到 $W$ 上得到一个二维表示。这个表示就是 $S_3$ 最重要的不可约表示之一，后面构造其特征标表时还会再次遇到。这个例子说明：我们之所以关心不变子空间，是因为它能把一个较大的表示分裂成更小、更本质的成分。
-\end{example}
+\end{exampleplain}
 
 为了帮助读者把“抽象群 $\to$ 线性变换群”这层关系视觉化，\figref{fig:representation-homomorphism} 给出了一个最简示意。它并不添加新的数学内容，但有助于在后文反复出现基变换、交织算子与特征标时保持概念清晰。
 
@@ -177,7 +179,7 @@ D'(a)=
 
 若两个表示只是在不同基下写出的同一个线性作用，那么把它们当成不同对象会造成大量重复。于是首先要消除“基的任意性”带来的冗余，这就得到等价表示的概念。
 
-\begin{definition}[交织算子与表示等价]
+\begin{definitionplain}[交织算子与表示等价]
 设 $(\rho,V)$ 与 $(\rho',V')$ 是群 $G$ 的两个表示。若线性映射
 \[
 T:V\to V'
@@ -191,7 +193,7 @@ T\rho(g)=\rho'(g)T,
 (\rho,V)\simeq(\rho',V').
 \]
 \label{def:equivalent-representations}
-\end{definition}
+\end{definitionplain}
 
 这个定义看似抽象，其实完全是在形式化“同一个表示在不同基下有不同矩阵”的直觉。交织关系要求先作用群元再做 $T$，与先做 $T$ 再作用群元的结果相同；而 $T$ 可逆则保证两个表示的信息完全一致。
 
@@ -255,25 +257,25 @@ D(g)=\begin{pmatrix}D_1(g)&0\\0&D_2(g)\end{pmatrix}
 
 \chapref{chap:group-basics}中我们把一个群通过子群、正规子群与商群来分解；在表示论里，对应的分解工具是不变子空间。于是“是否还能继续分解”被正式表述为可约与不可约。
 
-\begin{definition}[可约表示与不可约表示]
+\begin{definitionplain}[可约表示与不可约表示]
 设 $(\rho,V)$ 为群 $G$ 的表示。若存在非平凡不变子空间
 \[
 \{0\}\subsetneq W\subsetneq V,
 \]
 则称 $\rho$ 为\textbf{可约表示}。若不存在这样的 $W$，则称 $\rho$ 为\textbf{不可约表示}（不可约表示，常缩写为 \textbf{irrep}）。
 \label{def:irreducible}
-\end{definition}
+\end{definitionplain}
 
 不可约表示之于表示论，正如素数之于整数分解。一般表示的真正结构并不体现在“矩阵有多大”，而体现在它能否分裂为若干不可约成分，以及这些成分各自出现多少次。为了说明这一点，先记一个最基本的直接和结构。
 
-\begin{definition}[表示的直接和]
+\begin{definitionplain}[表示的直接和]
 设 $(\rho_1,V_1)$ 与 $(\rho_2,V_2)$ 是群 $G$ 的表示。在直和空间 $V_1\oplus V_2$ 上定义
 \[
 (\rho_1\oplus \rho_2)(g)(v_1,v_2)=\bigl(\rho_1(g)v_1,\rho_2(g)v_2\bigr).
 \]
 这给出新的表示，称为 $\rho_1$ 与 $\rho_2$ 的\textbf{直接和}。
 \label{def:direct-sum-representation}
-\end{definition}
+\end{definitionplain}
 
 若在某组基下 $V_1$ 与 $V_2$ 对应于前后两个坐标块，则矩阵形式恰好是分块对角矩阵
 \[
@@ -315,7 +317,7 @@ D(g)=
 
 在量子力学里，保持内积往往比仅仅可逆更重要，因此我们希望把表示尽量放到酉变换的框架内。一般群并不保证每个有限维表示都天然酉，但对有限群却总可以通过平均化把内积改造成群不变的，于是任何有限群表示都等价于酉表示。
 
-\begin{definition}[酉表示]
+\begin{definitionplain}[酉表示]
 设 $V$ 为带厄米内积 $\langle\cdot,\cdot\rangle$ 的复内积空间。若表示 $\rho:G\to\operatorname{GL}(V)$ 满足对任意 $g\in G$ 与 $u,v\in V$ 有
 \[
 \langle \rho(g)u,\rho(g)v\rangle=\langle u,v\rangle,
@@ -325,7 +327,7 @@ D(g)=
 \rho(g)^{\dagger}=\rho(g)^{-1}.
 \]
 \label{def:unitary-representation}
-\end{definition}
+\end{definitionplain}
 
 \begin{theorem}[有限群表示的酉化]
 设 $G$ 为有限群，$(\rho,V)$ 为其有限维复表示。则存在 $V$ 上的某个厄米内积，使得 $\rho$ 成为酉表示。特别地，任何有限群的有限维复表示都等价于酉表示。
