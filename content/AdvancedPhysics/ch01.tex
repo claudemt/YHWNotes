@@ -1,7 +1,7 @@
 \chapter{统计物理中的相变与图展开}
 \label{chap:phys-sm-general-frameworks}
 
-统计力学的相变只在热力学极限中出现，但真正进入极限之前，必须先把有限系统的概率结构和解析结构固定下来。因此先建立 Ising 与量子气体共同使用的共同框架：经典 Gibbs 测度、量子 Gibbs 态、正则与巨正则配分函数、自由能、响应函数以及复参数零点。核心事实是，有限体积本身通常只给出解析函数；非解析性只能在体积趋于无穷时由零点、谱隙闭合或非一致极限产生。
+教材常说相变处的自由能不解析：磁化可能跳变，比热也可能发散。可是一盒只有有限个 Ising 自旋时，配分函数不过是有限项指数函数之和，在实温度和实外场下还严格为正。这样的函数取对数怎么会突然产生奇点？有限盒里确实不会；困难发生在盒子越来越大、自由能按体积归一化之后。要判断极限能否改变解析性，先要弄清有限系统的权重怎样定义、对参数求导得到什么，以及哪些结论真正依赖“状态数有限”。
 \section{经典与量子有限 Gibbs 系统}
 
 设有限体积区域为 \(\Lambda\)，其物理体积记为 \(\mathcal V_\Lambda\)。经典体系的微观状态空间记为 \(\Omega_\Lambda\)，参考测度记为 \(\dd\nu_\Lambda(\omega)\)。离散自旋模型中它就是计数测度；连续粒子体系中它可以是相空间 Lebesgue 测度连同适当的统计因子。给定 Hamilton 函数 \(H_\Lambda(\omega;\vartheta)\)，其中 \(\vartheta\) 表示外场、耦合或其他控制参数，逆温度为
@@ -51,9 +51,18 @@
 \end{equation}
 极小值唯一地由 \(\rho_\Lambda\) 取得。这个变分表述把热力学稳定性写成与具体可解模型无关的凸性结论。
 
-\begin{proof}[解]
-记平衡态为 \(\rho_\beta=Z_\Lambda^{-1}\ee^{-\beta H_\Lambda}\)。对任意满足
-\(\rho\ge0\)、\(\Tr\rho=1\) 且相对熵有限的密度算符，Klein 不等式给出
+\begin{proof}
+记平衡态为 \(\rho_\beta=Z_\Lambda^{-1}\ee^{-\beta H_\Lambda}\)。先说明下面用到的相对熵不等式。在有限维空间中，若 \(\rho=\sum_i p_i|i\rangle\langle i|\)、\(\sigma=\sum_j q_j|j\rangle\langle j|\) 都严格正且迹为一，则由标量不等式 \(-\log x\ge1-x\) 有
+\[
+\begin{aligned}
+D(\rho\Vert\sigma)
+&=\sum_{i,j}p_i|\langle i|j\rangle|^2
+   \log\frac{p_i}{q_j}\\
+&\ge\sum_{i,j}|\langle i|j\rangle|^2(p_i-q_j)
+=\Tr\rho-\Tr\sigma=0.
+\end{aligned}
+\]
+等号要求相互有非零重叠的本征向量对应相同本征值，故 \(\rho=\sigma\)。迹类情形在相对熵有限的定义域内由有限维逼近得到同一结论。取 \(\sigma=\rho_\beta\)，便有
 \begin{equation*}
  D(\rho\Vert\rho_\beta)
  =\Tr\!\left[\rho(\log\rho-\log\rho_\beta)\right]\ge0
@@ -103,7 +112,7 @@
  =\beta^2\Var(A_\Lambda)\ge0.
  \label{eq:phys-sm-finite-response}
 \end{equation}
-因此有限体积经典自由能关于线性源的凸性直接来自方差非负。
+因此 \(\log Z_\Lambda\) 关于线性源是凸函数；由于 \(F_\Lambda=-\beta^{-1}\log Z_\Lambda\)，自由能关于该源是凹函数：\(\partial_\vartheta^2F_\Lambda=-\beta\Var(A_\Lambda)\le0\)。这两个符号不能混用。
 
 量子情形若 \([H_\Lambda,A_\Lambda]\neq0\)，第二个等式不能把量子涨落简单写成普通方差。令
 \[
@@ -188,180 +197,126 @@ Duhamel 公式给出算符指数关于参数的导数公式
  \ee^{-(1-s)\beta H(\vartheta)}\,\dd s,
  \label{eq:phys-sm-duhamel-formula}
 \end{equation}
-它是量子统计力学中替代经典 Leibniz 法则的核心工具；下面用两种独立证明推导。
+由于 \(H\) 与 \(\partial_\vartheta H\) 一般不对易，不能把导数写成 \(-\beta(\partial_\vartheta H)\ee^{-\beta H}\)。下面在有限维情形证明公式；无界算符的情形还须另外检查定义域和迹类条件。
 
-设 \(H(\vartheta+\varepsilon)=H+\varepsilon A+O(\varepsilon^2)\)。由定义
+设 \(H(\vartheta+\varepsilon)=H+\varepsilon K+O(\varepsilon^2)\)，其中 \(K=\partial_\vartheta H\)。
+利用 Trotter 乘积公式 \(\ee^{X+Y}=\lim_{n\to\infty}(\ee^{X/n}\ee^{Y/n})^n\)，取 \(X=-\beta H\)、\(Y=-\beta\varepsilon K\)，有
 \begin{equation*}
- \frac{\ee^{-\beta(H+\varepsilon A)}-\ee^{-\beta H}}{\varepsilon}
- =\frac{1}{\varepsilon}\left[\ee^{-\beta(H+\varepsilon A)}-\ee^{-\beta H}\right].
+ \ee^{-\beta(H+\varepsilon K)}
+ =\lim_{n\to\infty}\left(\ee^{-\beta H/n}\ee^{-\beta\varepsilon K/n}\right)^n.
 \end{equation*}
-利用 Trotter 乘积公式 \(\ee^{X+Y}=\lim_{n\to\infty}(\ee^{X/n}\ee^{Y/n})^n\)，取 \(X=-\beta H\)、\(Y=-\beta\varepsilon A\)，有
-\begin{equation*}
- \ee^{-\beta(H+\varepsilon A)}
- =\lim_{n\to\infty}\left(\ee^{-\beta H/n}\ee^{-\beta\varepsilon A/n}\right)^n.
-\end{equation*}
-展开 \(\ee^{-\beta\varepsilon A/n}=I-\beta\varepsilon A/n+O(\varepsilon^2/n^2)\)，代入后保留 \(O(\varepsilon)\) 项：
+展开 \(\ee^{-\beta\varepsilon K/n}=I-\beta\varepsilon K/n+O(\varepsilon^2/n^2)\)，代入后保留一阶项：
 \begin{equation*}
  \left(\ee^{-\beta H/n}\right)^n
  +\varepsilon\sum_{k=0}^{n-1}
  \left(\ee^{-\beta H/n}\right)^k
- \left(-\frac{\beta A}{n}\right)
+ \left(-\frac{\beta K}{n}\right)
  \left(\ee^{-\beta H/n}\right)^{n-k}
  +O(\varepsilon^2).
 \end{equation*}
 第一项是 \(\ee^{-\beta H}\)。第二项中令 \(s=k/n\)，\(\Delta s=1/n\)，取 \(n\to\infty\) 极限后求和化为积分：
 \begin{equation*}
- -\beta\varepsilon\int_0^1\ee^{-s\beta H}A\,\ee^{-(1-s)\beta H}\,\dd s.
+ -\beta\varepsilon\int_0^1\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}\,\dd s.
 \end{equation*}
 因此差商极限给出\eqnrefs{eq:phys-sm-duhamel-formula}。
 
-也可改用微分方程证明。令 \(G(\vartheta)=\ee^{-\beta H(\vartheta)}\)，\(K(\vartheta)=\partial_\vartheta H(\vartheta)\)，并定义
-\begin{equation*}
- \Phi(\beta)=-\beta\int_0^1\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}\,\dd s.
-\end{equation*}
-验证 \(\Phi\) 满足与 \(\partial_\vartheta G\) 相同的微分方程和初值。首先 \(G(0)=I\)，故 \(\partial_\vartheta G|_{\beta=0}=0\)，而 \(\Phi(0)=0\)，初值一致。对 \(\beta\) 求导，利用 \(\partial_\beta\ee^{-s\beta H}=-sH\ee^{-s\beta H}\) 和被积函数的 Leibniz 法则：
-\begin{align*}
- \partial_\beta\Phi
- &= -\int_0^1\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}\,\dd s
- -\beta\int_0^1\bigl[-sH\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}
- +\ee^{-s\beta H}K\,(-(1-s)H)\ee^{-(1-s)\beta H}\bigr]\dd s\\
- &= -\int_0^1\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}\,\dd s
- +\beta H\int_0^1 s\,\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}\,\dd s
- +\beta\int_0^1(1-s)\ee^{-s\beta H}K\,H\,\ee^{-(1-s)\beta H}\,\dd s.
-\end{align*}
-利用 \(H\ee^{-s\beta H}=\ee^{-s\beta H}H\)（\(H\) 与自身指数对易）合并后两项，并做分部积分 \(\int_0^1 s\,f(s)\,\dd s+\int_0^1(1-s)f(s)\,\dd s=\int_0^1 f(s)\,\dd s\)，得
-\begin{equation*}
- \partial_\beta\Phi=-\int_0^1\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}\,\dd s
- +\beta H\,\Phi.
-\end{equation*}
-而 \(\partial_\vartheta G=\partial_\vartheta\ee^{-\beta H}\) 对 \(\beta\) 求导给出 \(\partial_\beta(\partial_\vartheta G)=-H\,\partial_\vartheta G+\beta(\partial_\vartheta H)G\)，经整理后满足同一方程。由常微分方程解的唯一性，\(\Phi=\partial_\vartheta G\)。
-
-对\eqnrefs{eq:phys-sm-duhamel-formula} 再求导，得到二阶 Duhamel 公式（嵌套积分）：
+一阶公式已经足以推出上面的 Kubo--Mori 响应。若 \(H(\vartheta)=H_0-\vartheta A\)，再求一次导数时，导数可落在指数的左段或右段；两项在交换积分变量后相同。因此二阶公式中有因子 \(2\)：
 \begin{equation}
  \frac{\partial^2}{\partial\vartheta^2}\ee^{-\beta H}
- =\beta^2\int_0^1\dd s\int_0^s\dd t\,
+ =2\beta^2\int_0^1\dd s\int_0^s\dd t\,
  \ee^{-t\beta H}A\,\ee^{-(s-t)\beta H}A\,\ee^{-(1-s)\beta H}
- +(\text{含 }\partial_\vartheta^2 H\text{ 的项}).
+ .
  \label{eq:phys-sm-duhamel-second-order}
 \end{equation}
-若 \(H(\vartheta)=H_0-\vartheta A\) 线性，则 \(\partial_\vartheta^2 H=0\)，只保留第一项。一般 \(n\) 阶导数给出 \(n\)-重嵌套积分，积分区域为单纯形 \(0\le t_n\le\cdots\le t_1\le\beta\)，这正是 Dyson 级数的算符指数版本。
+非线性参数依赖时还需加上含 \(\partial_\vartheta^2H\) 的一阶 Duhamel 项；不能把上式原封不动地用于任意 \(H(\vartheta)\)。
 \end{proof}
 
-\begin{proof}[解]
-Gibbs 态 \(\rho=Z^{-1}e^{-\beta H}\) 满足 Kubo--Martin--Schwinger (KMS) 条件：对任意算符 \(A,B\)，
+Gibbs 态 \(\rho=Z^{-1}\ee^{-\beta H}\) 的实时间关联函数还满足一个虚时间边界关系。对有限维系统中的任意算符 \(A,B\)，Kubo--Martin--Schwinger (KMS) 条件为
 \begin{equation}
  \langle A(t)B\rangle_\beta
  =\langle B\,A(t+\ii\beta\hbar)\rangle_\beta,
  \label{eq:phys-sm-kms-condition}
 \end{equation}
-其中 \(A(t)=e^{iHt/\hbar}A\,e^{-iHt/\hbar}\)。证明：在能量本征基 \(H|n\rangle=E_n|n\rangle\) 中，
+其中 \(A(t)=\ee^{\ii Ht/\hbar}A\ee^{-\ii Ht/\hbar}\)。这里的 \(A(t+\ii\beta\hbar)\) 是有限维矩阵函数的解析延拓。其证明只需展开迹：在 \(H|n\rangle=E_n|n\rangle\) 的本征基中，
 \begin{align*}
  \langle A(t)B\rangle
  &= Z^{-1}\sum_{m,n}e^{-\beta E_m}e^{i(E_m-E_n)t/\hbar}A_{mn}B_{nm},\\
  \langle B\,A(t+\ii\beta\hbar)\rangle
- &= Z^{-1}\sum_{m,n}e^{-\beta E_m}e^{i(E_m-E_n)(t+\ii\beta\hbar)/\hbar}B_{mn}A_{nm}\\
- &= Z^{-1}\sum_{m,n}e^{-\beta E_m}e^{i(E_m-E_n)t/\hbar}e^{-\beta(E_m-E_n)}B_{mn}A_{nm}\\
- &= Z^{-1}\sum_{m,n}e^{-\beta E_n}e^{i(E_m-E_n)t/\hbar}A_{mn}B_{nm},
+ &=Z^{-1}\sum_{m,n}e^{-\beta E_m}B_{mn}A_{nm}
+    e^{\ii(E_n-E_m)t/\hbar}e^{-\beta(E_n-E_m)}\\
+ &=Z^{-1}\sum_{m,n}e^{-\beta E_n}B_{mn}A_{nm}
+    e^{\ii(E_n-E_m)t/\hbar}\\
+ &=Z^{-1}\sum_{m,n}e^{-\beta E_m}A_{mn}B_{nm}
+    e^{\ii(E_m-E_n)t/\hbar}.
 \end{align*}
-末行用了交换指标 \(m\leftrightarrow n\) 和 \(A_{mn}B_{nm}=B_{nm}A_{mn}\)（标量可交换）。两式相等，即得 KMS 条件。
+最后一步只是交换求和指标 \(m\leftrightarrow n\)。这就证明了 \eqnrefs{eq:phys-sm-kms-condition}。
 
 定义 Kubo--Mori 内积
 \begin{equation*}
  \langle\!\langle A,B\rangle\!\rangle_\beta
  :=\int_0^1\Tr(\rho^s A\rho^{1-s}B)\,\dd s.
 \end{equation*}
-由 KMS 条件，\(\Tr(\rho^s A\rho^{1-s}B)=\Tr(\rho\,A(-is\beta\hbar)B)\)（将 \(\rho^s\) 的指数解释为虚时演化），故
+由 \(\rho=Z^{-1}\ee^{-\beta H}\) 及迹的循环性，取 \(\tau=\beta(1-s)\) 可得
 \begin{equation*}
  \langle\!\langle A,B\rangle\!\rangle_\beta
- =\int_0^\beta\langle A(-i\tau\hbar)B\rangle\,\dd\tau.
+ =\frac1\beta\int_0^\beta\langle A(-\ii\tau\hbar)B\rangle\,\dd\tau.
 \end{equation*}
-这一表示显示 Kubo--Mori 内积是 KMS 函数沿虚时间方向的积分，其对称性 \(\langle\!\langle A,B\rangle\!\rangle=\langle\!\langle B,A\rangle\!\rangle\) 来自 KMS 条件中 \(\tau\to\beta-\tau\) 的变量替换。
+因子 \(1/\beta\) 来自区间 \([0,1]\) 到 \([0,\beta]\) 的变量替换；少了它，前面的响应式便会多出一个 \(\beta\)。其对称性也可直接把原积分中的 \(s\) 换成 \(1-s\)，再用迹的循环性验证。
 
 对 \(H(\vartheta)=H_0-\vartheta A\)，自由能 \(F(\vartheta)=-\beta^{-1}\log Z(\vartheta)\) 的 \(n\) 阶导数为
 \begin{equation}
  \frac{\partial^n F}{\partial\vartheta^n}
- =(-1)^{n+1}\beta^{n-1}\,\kappa_n(A,\ldots,A),
+ =-\beta^{n-1}\,\kappa_n(A,\ldots,A),
  \label{eq:phys-sm-nth-response-general}
 \end{equation}
 其中 \(\kappa_n\) 是 \(n\)-阶 Kubo 累积量（连通关联函数），定义为
 \begin{equation*}
  \kappa_n(A_1,\ldots,A_n)
- =\left.\frac{\partial^n}{\partial\lambda_1\cdots\partial\lambda_n}\log\Tr\exp\!\left(-\beta H+\beta\sum_i\lambda_i A_i\right)\right|_{\lambda_i=0}.
+ =\left.\beta^{-n}\frac{\partial^n}{\partial\lambda_1\cdots\partial\lambda_n}\log\Tr\exp\!\left(-\beta H+\beta\sum_i\lambda_i A_i\right)\right|_{\lambda_i=0}.
 \end{equation*}
 前几阶为：
 \begin{itemize}
  \item \(\kappa_1(A)=\langle A\rangle\)（一阶响应 = 期望值）；
  \item \(\kappa_2(A,A)=\langle\!\langle\delta A,\delta A\rangle\!\rangle\)（二阶 = Kubo--Mori 内积，即\eqnrefs{eq:phys-sm-kubo-mori-response}）；
- \item \(\kappa_3(A,A,A)=\langle\!\langle\delta A,\delta A,\delta A\rangle\!\rangle\)（三阶 = 三点 Kubo--Mori 内积，含嵌套 Duhamel 积分）。
+ \item \(\kappa_3(A,A,A)\) 由同一生成函数的三阶导数定义；算符不对易时，须保留虚时间排序，不能直接写成 \(\langle(\delta A)^3\rangle\)。
 \end{itemize}
-一般 \(n\)-阶 Kubo--Mori 内积由 \(n\)-重嵌套 Duhamel 积分给出，积分区域为 \(n\)-维单纯形 \(0\le s_n\le\cdots\le s_1\le 1\)。
+若 \([H,A]=0\)，指数可以拆开，此时 \(\kappa_n\) 才成为通常概率分布的累积量，例如 \(\kappa_2=\langle A^2\rangle-\langle A\rangle^2\)。非对易情形由生成函数而非普通矩定义；这一点在计算高阶响应时不可省略。
 
-Kubo 累积量 \(\kappa_n\) 与普通矩 \(\mu_n=\langle A^n\rangle\) 通过累积量--矩关系联系：
-\begin{equation*}
- \kappa_1=\mu_1,\quad
- \kappa_2=\mu_2-\mu_1^2,\quad
- \kappa_3=\mu_3-3\mu_2\mu_1+2\mu_1^3,
-\end{equation*}
-但量子情形中 \(\mu_n=\langle A^n\rangle\) 需替换为 Kubo--Mori 有序积 \(\int_{\Delta_n}\Tr(\rho^{s_1}A\rho^{s_2-s_1}A\cdots\rho^{1-s_n}A)\,\dd\mathbf s\)。经典极限 \([H,A]=0\) 下，所有有序积退化为普通矩，Kubo 累积量退化为经典累积量。
-\end{proof}
-
-\begin{proof}[解]
-涨落-耗散定理把响应函数（耗散）与关联函数（涨落）联系起来。要从 Kubo--Mori 内积推出它，只需 KMS 条件与谱分解。
-
-谱表示。对任意算符 \(A\)，定义谱函数（动态结构因子）
-\begin{equation*}
- S_{AA}(\omega)=\frac{1}{Z}\sum_{m,n}e^{-\beta E_n}|\langle m|A|n\rangle|^2\,\delta(\omega-(E_m-E_n)/\hbar).
-\end{equation*}
-由定义 \(S_{AA}(\omega)\ge0\)（谱函数非负）。KMS 条件给出细致平衡：
-\begin{equation*}
- S_{AA}(-\omega)=e^{-\beta\hbar\omega}S_{AA}(\omega).
-\end{equation*}
-证明：交换求和指标 \(m\leftrightarrow n\)，
-\begin{equation*}
- S_{AA}(-\omega)=\frac{1}{Z}\sum_{m,n}e^{-\beta E_m}|\langle n|A|m\rangle|^2\delta(\omega-(E_m-E_n)/\hbar)
- =e^{-\beta\hbar\omega}\frac{1}{Z}\sum_{m,n}e^{-\beta E_n}|\langle m|A|n\rangle|^2\delta(\omega-(E_m-E_n)/\hbar),
-\end{equation*}
-末行用了 \(e^{-\beta E_m}=e^{-\beta E_n}e^{-\beta(E_m-E_n)}=e^{-\beta E_n}e^{-\beta\hbar\omega}\)。
-
-推迟响应函数。定义推迟 Green 函数
-\begin{equation*}
- \chi_{AA}^R(t)=-\frac{i}{\hbar}\theta(t)\langle[A(t),A(0)]\rangle,
-\end{equation*}
-其 Fourier 变换的虚部（耗散部分）为
-\begin{equation*}
- \chi_{AA}''(\omega)=\frac{1}{2\hbar}(1-e^{-\beta\hbar\omega})S_{AA}(\omega).
-\end{equation*}
-证明：展开 \(\langle[A(t),A(0)]\rangle\) 为谱表示，
-\begin{align*}
- \langle[A(t),A(0)]\rangle
- &=\frac{1}{Z}\sum_{m,n}\bigl(e^{-\beta E_n}-e^{-\beta E_m}\bigr)|\langle m|A|n\rangle|^2 e^{i(E_m-E_n)t/\hbar}\\
- &=\frac{1}{Z}\sum_{m,n}e^{-\beta E_n}(1-e^{-\beta\hbar\omega_{mn}})|\langle m|A|n\rangle|^2 e^{i\omega_{mn}t},
-\end{align*}
-其中 \(\omega_{mn}=(E_m-E_n)/\hbar\)。Fourier 变换后取虚部，\(\theta(t)\) 的 Fourier 变换给出 \(\pi\delta(\omega)+i\mathcal P(1/\omega)\)，虚部只保留 \(\delta\) 函数贡献，即得 \(\chi''(\omega)=\frac{1}{2\hbar}(1-e^{-\beta\hbar\omega})S_{AA}(\omega)\)。
-
-涨落-耗散定理。由上式反解，
+\begin{proposition}[有序谱的涨落--耗散关系]
+设 \(A=A^\dagger\)，并约定 \(\widehat f(\omega)=\int_{\mathbb R}e^{\ii\omega t}f(t)\,\dd t\)。定义有序谱
+\[
+S_{AA}(\omega)=\frac1Z\sum_{m,n}e^{-\beta E_m}|A_{mn}|^2
+\delta\!\left(\omega-\frac{E_n-E_m}{\hbar}\right),
+\]
+以及对扰动 \(-f(t)A\) 的推迟响应
+\(\chi^R_{AA}(t)=(\ii/\hbar)\theta(t)\langle[A(t),A(0)]\rangle\)。若 \(\chi''_{AA}(\omega)=\operatorname{Im}\widehat\chi^R_{AA}(\omega)\)，则
 \begin{equation}
- S_{AA}(\omega)=\frac{2\hbar\,\chi_{AA}''(\omega)}{1-e^{-\beta\hbar\omega}}
- =\hbar\coth\!\frac{\beta\hbar\omega}{2}\cdot 2\chi_{AA}''(\omega).
- \label{eq:phys-sm-fluctuation-dissipation}
+\chi''_{AA}(\omega)
+=\frac{\pi}{\hbar}\bigl(1-e^{-\beta\hbar\omega}\bigr)S_{AA}(\omega).
+\label{eq:phys-sm-fluctuation-dissipation}
 \end{equation}
-这就是涨落-耗散定理：涨落（左式 \(S_{AA}\)）完全由耗散（右式 \(\chi''\)）和温度（\(\coth\) 因子）决定。
+\end{proposition}
 
-在经典极限 \(\hbar\to0\) 中，\(\coth(\beta\hbar\omega/2)\to 2/(\beta\hbar\omega)\)，涨落-耗散定理退化为
-\begin{equation*}
- S_{AA}^{\rm cl}(\omega)=\frac{2}{\beta\omega}\chi_{AA}''(\omega),
-\end{equation*}
-即 Einstein 关系 \(D=\mu\kB T\)（扩散系数 = 迁移率 × 温度）的频域版本。
-
-再取零频极限 \(\omega\to0\)，此时 \(\chi''(\omega)/\omega\to\chi'(0)\)（静态磁化率），涨落-耗散定理给出
-\begin{equation*}
- \int_{-\infty}^{\infty}S_{AA}(\omega)\,\dd\omega
- =\langle A^2\rangle-\langle A\rangle^2
- =\beta\hbar\cdot 2\chi_{AA}'(0)\cdot\frac{1}{\beta\hbar}
- =2\chi_{AA}'(0),
-\end{equation*}
-即静态涨落等于两倍静态响应——这正是\eqnrefs{eq:phys-sm-kubo-mori-response} 在 \([H,A]=0\) 时的经典极限。量子情形中，Kubo--Mori 内积取代普通方差，涨落-耗散定理的零频极限自动给出 Kubo--Mori 公式。
+\begin{proof}
+交换求和指标 \(m,n\)，并在 Delta 函数的支集上使用 \(E_n-E_m=\hbar\omega\)，得到细致平衡
+\[
+S_{AA}(-\omega)=e^{-\beta\hbar\omega}S_{AA}(\omega).
+\]
+另一方面，\(C(t)=\langle A(t)A(0)\rangle\) 的谱展开为
+\[
+C(t)=\int_{\mathbb R}e^{-\ii\omega t}S_{AA}(\omega)\,\dd\omega.
+\]
+故交换子的谱密度是 \(S_{AA}(\omega)-S_{AA}(-\omega)\)。将其代入 \(\chi^R\)，并用
+\(\int_0^\infty e^{\ii xt}\dd t=\pi\delta(x)+\ii\mathcal P(1/x)\)，虚部恰为 \(\pi/\hbar\) 乘以交换子的谱密度，便得结论。
 \end{proof}
+
+这里的 \(S_{AA}\) 是有序关联谱，不能把上式第二项擅自改成 \(\coth(\beta\hbar\omega/2)\)。只有定义对称谱 \(S_{AA}^{\rm sym}(\omega)=[S_{AA}(\omega)+S_{AA}(-\omega)]/2\) 后，才有
+\[
+S_{AA}^{\rm sym}(\omega)
+=\frac{\hbar}{2\pi}\coth\!\left(\frac{\beta\hbar\omega}{2}\right)
+\chi''_{AA}(\omega).
+\]
+两种谱的区别是算符顺序，而 \(\pi\) 因子来自本节明确采用的 Fourier 约定。
 
 \section{有限体积解析性与复零点}
 
@@ -398,134 +353,48 @@ Kubo 累积量 \(\kappa_n\) 与普通矩 \(\mu_n=\langle A^n\rangle\) 通过累�
 
 \begin{theorem}[共同零点禁区中的解析极限]
 \label{thm:phys-sm-zero-free-analyticity}
-设单连通开集 \(U\subset\mathbb C\) 满足：充分大的所有 \(\Xi_\Lambda\) 在 \(U\) 内无零点；在 \(U\) 上选取与同一参考点连续相接的 \(\log\Xi_\Lambda\) 分支；并且 \(p_\Lambda\) 在 \(U\) 的每个紧子集上一致收敛到 \(p\)。则 \(p\) 在 \(U\) 上全纯。因而若热力学极限在 \(z_c\) 非解析，有限体积零点必须逼近 \(z_c\) 的任意邻域。
+设单连通开集 \(U\subset\mathbb C\) 满足：充分大的所有 \(\Xi_\Lambda\) 在 \(U\) 内无零点；在 \(U\) 上选取相容的 \(\log\Xi_\Lambda\) 分支；并且 \(p_\Lambda\) 在 \(U\) 的每个紧子集上一致收敛到 \(p\)。则 \(p\) 在 \(U\) 上全纯。反过来说，若极限在 \(z_c\) 非解析，则围绕 \(z_c\) 不可能同时有共同零点禁区和局部一致收敛；单靠本定理不能断言零点一定逼近 \(z_c\)。
 \end{theorem}
 
-\begin{proof}[解]
-设 \(\Xi_\Lambda\) 在区域 \(U\) 内无零点。先在 \(U\) 的单连通子域上选取 \(\log\Xi_\Lambda\) 的解析分支，再对有限体积压强作一致估计，最后取热力学极限。
-
-\(\log\Xi_\Lambda\) 的解析对数支。取定参考点 \(z_0\in U\) 及实数 \(\theta_0\) 使 \(\log\Xi_\Lambda(z_0)=\log|\Xi_\Lambda(z_0)|+\ii\theta_0\)。对任意 \(z\in U\)，沿 \(U\) 中从 \(z_0\) 到 \(z\) 的路径 \(\gamma\) 定义
+\begin{proof}
+取定参考点 \(z_0\in U\)，为每个 \(\Lambda\) 在此选择一个对数值。对任意 \(z\in U\)，沿 \(U\) 中从 \(z_0\) 到 \(z\) 的路径 \(\gamma\) 定义
 \[
  \log\Xi_\Lambda(z)
  :=\log\Xi_\Lambda(z_0)
  +\int_\gamma\frac{\Xi_\Lambda'(\zeta)}{\Xi_\Lambda(\zeta)}\,\dd\zeta.
 \]
-被积函数 \(\Xi_\Lambda'/\Xi_\Lambda\) 在 \(U\) 上全纯，因为 \(\Xi_\Lambda\) 在 \(U\) 内无零点。\(U\) 单连通保证了任意两条路径同伦，故由 Cauchy 定理积分值与路径选取无关，从而 \(\log\Xi_\Lambda\) 是 \(U\) 上良定义的全纯函数。对 \(\Xi_\Lambda\) 的分支选取由 \(\theta_0\) 固定，且与 \(\Lambda\) 无关地使用同一 \(z_0\)，确保不同体积的对数支可逐点比较。
-
-\(p_\Lambda\) 全纯。由\eqnrefs{eq:phys-sm-pressure-finite-general}，
-\[
- p_\Lambda(z)=\frac{1}{\beta\mathcal V_\Lambda}\log\Xi_\Lambda(z),
-\]
-其中 \(\log\Xi_\Lambda\) 已由第一步构造为全纯函数，\(\beta\mathcal V_\Lambda>0\) 为常数，因此 \(p_\Lambda\) 在 \(U\) 上全纯。其导数由 Cauchy 变换\eqnrefs{eq:phys-sm-zero-cauchy-transform}给出
-\begin{equation*}
- p_\Lambda'(z)=\frac{1}{\beta\mathcal V_\Lambda}
- \frac{\Xi_\Lambda'(z)}{\Xi_\Lambda(z)}
- =\frac{1}{\beta}\int_{\mathbb C}\frac{1}{z-w}\,
- \dd\mathfrak z_\Lambda^{(0)}(w),
-\end{equation*}
-高阶导数依次为 \(\partial_z^n p_\Lambda=(-1)^{n-1}(n-1)!\beta^{-1}\int(z-w)^{-n}\dd\mathfrak z_\Lambda^{(0)}\)，全部由零点测度的解析变换控制。
-
-一致极限的全纯性。取任意紧集 \(\mathcal K\Subset U\)。假设 \(p_\Lambda\to p\) 在 \(\mathcal K\) 上一致。由 Weierstrass 定理，全纯函数列在紧集上的一致极限仍全纯：对 \(\mathcal K\) 内任意三角形 \(\triangle\subset\mathcal K\)，由一致收敛可交换极限与积分，
+因为被积函数在无零点的单连通域内全纯，Cauchy 定理保证积分与路径无关。故 \(p_\Lambda=(\beta\mathcal V_\Lambda)^{-1}\log\Xi_\Lambda\) 在 \(U\) 全纯。对任意边界及内部均包含于 \(U\) 的三角形 \(\triangle\)，局部一致收敛允许交换极限与积分：
 \[
  \oint_\triangle p(z)\,\dd z
  =\lim_{\Lambda\to\infty}\oint_\triangle p_\Lambda(z)\,\dd z
  =0,
 \]
-末一等号来自 Morera 定理条件。因此 \(p\) 在 \(\mathcal K\) 内全纯。由于 \(\mathcal K\Subset U\) 任意，\(p\) 在整个 \(U\) 全纯。进一步，导数也一致收敛 \(p_\Lambda'\to p'\)，故一阶响应（密度、磁化）在 \(U\) 内同样解析，高阶响应依次类推。
-
-若 \(z_c\) 是极限 \(p\) 的非解析点，则不存在包含 \(z_c\) 的共同零点禁区：否则上述三步将推出 \(p\) 在 \(z_c\) 附近全纯，矛盾。因此有限体积零点集合必须随 \(\mathcal V_\Lambda\) 增长而逼近 \(z_c\) 的任意邻域。但零点逼近 \(z_c\) 本身尚不足以产生非解析性——还需要局部一致收敛条件在 \(z_c\) 处失效。两个条件同时成立才产生相变：零点提供奇性的"种子"，一致收敛的破坏提供奇性的"显化"。
-
-上述全纯性结论以极限 \(p=\lim p_\Lambda\) 存在为前提。对稳定、短程、平移不变体系，存在性由次可加性给出：取立方盒 \(\Lambda_L=[-L,L]^d\)，则
-\begin{equation*}
- |F_{\Lambda_{L+L'}}|\le|F_{\Lambda_L}|+|F_{\Lambda_{L'}}|+O(|\partial\Lambda|\cdot\|\Phi\|),
-\end{equation*}
-其中边界项 \(O(|\partial\Lambda|)\) 来自跨盒相互作用。van Hove 条件 \(|\partial\Lambda|/\mathcal V_\Lambda\to0\) 使边界项在 \(\mathcal V_\Lambda\) 归一化后消失，故 \(F_\Lambda/\mathcal V_\Lambda\) 是次可加序列，极限存在且等于 \(\inf_\Lambda F_\Lambda/\mathcal V_\Lambda\)。不同边界条件（周期、自由、固定）只改变边界项，不影响体自由能极限。
-
-因此，零点禁区与局部一致收敛共同保证极限压强及其响应函数解析；相变只能在零点逼近物理区并破坏这一收敛时出现。
+Morera 定理给出 \(p\) 全纯。Cauchy 积分公式还说明 \(p_\Lambda\) 的各阶导数在更小的紧集上一致收敛到 \(p\) 的相应导数。最后的逆否命题必须同时否定两个假设之一；它不单独推出零点逼近。
 \end{proof}
 
-\begin{proof}[解]
-Jensen 公式把圆内零点数与边界对数模长联系起来，是零点禁区定理中"禁区内的零点密度有界"这一论断的严格基础。
-
-设 \(f(z)\) 在 \(|z|\le R\) 上亚纯，在 \(|z|=R\) 上无零点和极点，在 \(|z|<R\) 内的零点为 \(\{a_k\}\)、极点为 \(\{b_j\}\)（计重数），且 \(f(0)\ne0,\infty\)。则
+Jensen 公式在这里有一个直接可用的多项式版本。设 $f(0)\ne0$，且 $f$ 在 $|z|=R$ 上无零点，把圆内零点（按重数）记为 $a_1,\ldots,a_m$。则
 \begin{equation}
- \frac{1}{2\pi}\int_0^{2\pi}\log|f(Re^{i\theta})|\,\dd\theta
- =\log|f(0)|
- +\sum_k\log\frac{R}{|a_k|}
- -\sum_j\log\frac{R}{|b_j|}.
+ \frac1{2\pi}\int_0^{2\pi}\log|f(Re^{\ii\theta})|\,\dd\theta
+ =\log|f(0)|+\sum_{|a_k|<R}\log\frac{R}{|a_k|}.
  \label{eq:phys-sm-jensen-formula}
 \end{equation}
-对全纯函数（无极点），公式简化为
-\begin{equation*}
- \frac{1}{2\pi}\int_0^{2\pi}\log|f(Re^{i\theta})|\,\dd\theta
- =\log|f(0)|+\sum_k\log\frac{R}{|a_k|}.
-\end{equation*}
+对配分函数多项式，这个等式可以从因式分解逐项证明。若 $f(z)=f(0)\prod_j(1-z/a_j)$，只需计算一个因子的圆周平均。$|a_j|>R$ 时，$\log(1-z/a_j)$ 在圆盘内全纯，实部的平均等于中心值零；$|a_j|<R$ 时，写成
+\[
+ \log|1-Re^{\ii\theta}/a_j|
+ =\log(R/|a_j|)
+  +\log|1-(a_j/R)e^{-\ii\theta}|,
+\]
+第二项的平均仍为零。逐项相加便得到 \eqnrefs{eq:phys-sm-jensen-formula}，不需要把多项式推广为亚纯函数。
 
-对每个零点 \(a_k\)，Blaschke 因子 \(B_{a_k}(z)=\frac{R(z-a_k)}{R^2-\bar a_k z}\) 在 \(|z|=R\) 上满足 \(|B_{a_k}|=1\)，且 \(B_{a_k}\) 在 \(|z|<R\) 内有唯一零点 \(a_k\)。令
-\begin{equation*}
- g(z)=\frac{f(z)}{\prod_k B_{a_k}(z)},
-\end{equation*}
-则 \(g\) 在 \(|z|\le R\) 上全纯且无零点，故 \(\log g\) 全纯。由平均值公式 \(\frac{1}{2\pi}\int\log|g(Re^{i\theta})|\dd\theta=\log|g(0)|\)。在边界 \(|z|=R\) 上 \(|B_{a_k}|=1\)，故 \(|g|=|f|\)，而
-\begin{equation*}
- \log|g(0)|=\log|f(0)|-\sum_k\log|B_{a_k}(0)|
- =\log|f(0)|+\sum_k\log\frac{R}{|a_k|},
-\end{equation*}
-因为 \(|B_{a_k}(0)|=|a_k|/R\)。代入即得\eqnrefs{eq:phys-sm-jensen-formula}。
-
-取 \(f(z)=\Xi_\Lambda(z)\)（全纯多项式），\(R\) 使得 \(\Xi_\Lambda\) 在 \(|z|\le R\) 内无零点在 \(|z|<r\) 之外（即零点禁区为 \(r<|z|<R\) 的环隙外）。由 Jensen 公式，圆 \(|z|\le r\) 内的零点数 \(N_\Lambda(r)\) 满足
-\begin{equation*}
- N_\Lambda(r)\log\frac{R}{r}
- \le\frac{1}{2\pi}\int_0^{2\pi}\log|\Xi_\Lambda(Re^{i\theta})|\,\dd\theta-\log|\Xi_\Lambda(0)|.
-\end{equation*}
-右端由 \(\log|\Xi_\Lambda|\le\mathcal V_\Lambda\cdot\sup_{|z|=R}|p_\Lambda(z)|\cdot\beta\) 控制（\(p_\Lambda\) 为有限体积压强），故
+记 $N_\Lambda(r)$ 为 $\Xi_\Lambda$ 在 $|z|\le r<R$ 内的零点数，仍按重数计算。因这些零点各贡献至少 $\log(R/r)$，有
 \begin{equation}
- N_\Lambda(r)\le\frac{\beta\mathcal V_\Lambda\sup_{|z|=R}|p_\Lambda|+\log|\Xi_\Lambda(0)|}{\log(R/r)}.
+ N_\Lambda(r)\log\frac Rr
+ \le \frac1{2\pi}\int_0^{2\pi}
+       \log|\Xi_\Lambda(Re^{\ii\theta})|\,\dd\theta
+       -\log|\Xi_\Lambda(0)|.
  \label{eq:phys-sm-jensen-zero-bound}
 \end{equation}
-若 \(\sup_\Lambda\sup_{|z|=R}|p_\Lambda|<\infty\)（压强一致有界），则 \(N_\Lambda(r)\le C\mathcal V_\Lambda\)，即零点密度 \(\mathfrak z_\Lambda^{(0)}/\mathcal V_\Lambda\) 在禁区外一致有界。
-
-若 \(N_\Lambda(r)\le C\mathcal V_\Lambda\) 对所有 \(\Lambda\) 和 \(r\) 一致成立，则归一化零点测度 \(\mathfrak z_\Lambda^{(0)}/\mathcal V_\Lambda\) 的总质量一致有界。由测度论的 Banach--Alaoglu 定理，有界测度列在弱-* 拓扑下有弱收敛子列，极限测度 \(\mathfrak z^{(0)}\) 是有界正测度。这保证热力学极限中零点测度存在（至少沿子列），且极限压强的奇性完全由 \(\mathfrak z^{(0)}\) 的支撑和局部类型决定。
-\end{proof}
-
-\begin{proof}[解]
-对稳定、短程、平移不变体系，体自由能 \(f_\Lambda=F_\Lambda/\mathcal V_\Lambda\) 的热力学极限存在性由次可加性给出；下面控制边界项，并说明结果与边界条件无关。
-
-稳定性与能量分解。设相互作用势 \(\Phi\) 满足稳定性条件
-\begin{equation*}
- \sum_{1\le i<j\le N}\Phi(x_i-x_j)\ge-BN\quad\text{（某常数 \(B\ge0\)）},
-\end{equation*}
-和短程条件 \(\sum_{r\ge1}r^{d-1}\|\Phi\|_r<\infty\)（\(\|\Phi\|_r=\sup_{|x|\ge r}|\Phi(x)|\)）。对立方盒 \(\Lambda_L=[-L,L]^d\)，\(\mathcal V_L=(2L)^d\)，Hamilton 量分解为
-\begin{equation*}
- H_{\Lambda_L}=H_{\Lambda_L^{\rm int}}+H_{\partial\Lambda_L}+H_{\rm cross},
-\end{equation*}
-其中 \(\Lambda_L^{\rm int}\) 为内部区域（远离边界 \(r_{\rm cut}\) 以上），\(H_{\partial\Lambda_L}\) 为边界带（厚度 \(r_{\rm cut}\)）的能量，\(H_{\rm cross}\) 为跨边界相互作用。
-
-次可加性。取 \(L=L_1+L_2\)，将 \(\Lambda_L\) 分成 \(\Lambda_{L_1}\)（左半）和 \(\Lambda_{L_2}\)（右半）加边界带。由稳定性和短程条件：
-\begin{equation*}
- H_{\Lambda_L}\ge H_{\Lambda_{L_1}}+H_{\Lambda_{L_2}}-B'|\partial\Lambda_L|,
-\end{equation*}
-其中 \(B'|\partial\Lambda_L|\) 是跨边界相互作用的下界，\(|\partial\Lambda_L|\sim L^{d-1}\) 是边界面积。取 Gibbs 迹（\(\Tr e^{-\beta H}\)）并利用 Golden--Thompson 不等式 \(\Tr e^{A+B}\le\Tr(e^A e^B)\)：
-\begin{equation*}
- Z_{\Lambda_L}\le e^{\beta B'|\partial\Lambda_L|}Z_{\Lambda_{L_1}}Z_{\Lambda_{L_2}}.
-\end{equation*}
-取对数并除以 \(\mathcal V_L\)：
-\begin{equation*}
- \frac{F_{\Lambda_L}}{\mathcal V_L}\ge\frac{F_{\Lambda_{L_1}}}{\mathcal V_L}+\frac{F_{\Lambda_{L_2}}}{\mathcal V_L}-\frac{B'|\partial\Lambda_L|}{\beta\mathcal V_L}.
-\end{equation*}
-当 \(L_1/L\to\alpha\)、\(L_2/L\to1-\alpha\) 时，\(\mathcal V_{L_i}/\mathcal V_L\to\alpha_i^d\)，边界项 \(|\partial\Lambda_L|/\mathcal V_L\sim L^{-1}\to0\)（van Hove 条件）。故
-\begin{equation}
- f_L\ge\alpha_1^d f_{L_1}+\alpha_2^d f_{L_2},
- \label{eq:phys-sm-subadditivity-free-energy}
-\end{equation}
-其中 \(f_L=F_{\Lambda_L}/\mathcal V_L\)。这是体自由能的次可加性（注意符号：自由能 \(F\le0\)，故次可加性给出下界）。
-
-极限存在。由\eqnrefs{eq:phys-sm-subadditivity-free-energy} 取 \(L_1=L_2=L/2\)（等分），得 \(f_L\ge f_{L/2}\)，即 \(f_L\) 沿 \(L\to2L\) 单调不增。由稳定性 \(f_L\ge-B\)（有下界），单调有下界序列收敛。对一般 \(L\to\infty\)，取 \(L_n=2^n L_0\)，\(f_{L_n}\) 收敛到 \(f^*=\inf_L f_L\)。对任意 \(L\)，取 \(n\) 使 \(2^n L_0\le L<2^{n+1}L_0\)，由次可加性 \(f_L\ge f_{2^n L_0}\ge f^*\)，且 \(f_L\le f^*+O(2^{-n})\)，故 \(f_L\to f^*\)。
-
-边界条件无关性。不同边界条件（周期、自由、固定、Dirichlet）只改变边界带 \(H_{\partial\Lambda_L}\) 中的相互作用项，其贡献 \(\le B''|\partial\Lambda_L|\)。归一化后边界差异 \(\sim|\partial\Lambda_L|/\mathcal V_L\to0\)（van Hove），故体自由能极限与边界条件无关。这一无关性是热力学量的"广延性"的数学表述：只有体量（正比于 \(\mathcal V_\Lambda\)）在极限中保留，面量（正比于 \(|\partial\Lambda|\)）和更低阶量消失。
-
-一般区域。上述证明对立方盒给出。对满足 van Hove 条件 \(|\partial\Lambda|/\mathcal V_\Lambda\to0\) 的一般区域，用内接和外接立方盒夹逼：取最大内接盒 \(\Lambda^{\rm in}\) 和最小外接盒 \(\Lambda^{\rm out}\)，由稳定性 \(F_{\Lambda^{\rm in}}\le F_\Lambda\le F_{\Lambda^{\rm out}}+B'|\partial\Lambda|\)，van Hove 条件保证两者归一化后趋于同一极限。
-\end{proof}
-
+若右端为 $O(\mathcal V_\Lambda)$，圆内零点数至多与体积同阶。这个局部计数界本身既不保证全部零点测度收敛，也不保证热力学极限存在；后者需要模型的稳定性和边界估计另行证明。
 \section{热力学极限、边界阶与几何层次}
 
 有限体积解析性本身并不保证热力学极限存在。对稳定、短程、平移不变体系，通常利用次可加性或亚可加性证明
@@ -541,52 +410,29 @@ Jensen 公式把圆内零点数与边界对数模长联系起来，是零点禁�
 \]
 则边界条件对体自由能的差异消失。这个结论依赖稳定性、相互作用范围与取极限方式，不能仅由有限配分函数的代数形式推出。
 
-Ising 模型中每增加一层几何结构，结论的适用域就会相应收窄。任意有限图只需要顶点和边；胞腔平面嵌入才允许定义对偶面和 Kramers--Wannier 对偶；方格再加入平移结构，使 Fourier 与转移-矩阵分块成为可能；双周期方格嵌入环面后，第一同调非平凡，才出现四个拓扑扇区。高温展开属于一般图结论，Peierls 轮廓和 Kramers--Wannier 属于平面几何，Onsager 谱依赖方格平移结构，而 Kaufman 四扇区属于有限环面问题。
+独立自旋的配分函数能分解为单个自旋因子的乘积。一旦加入边耦合 \(-J_{ij}\sigma_i\sigma_j\)，同一个自旋同时出现在多条边的能量中，这种乘积分解便不再成立。研究相变时，首先要弄清有限图的配分函数仍有哪些可控的代数结构；若再利用平面嵌入或周期边界，必须明确指出这些额外假设在哪里进入计算。
 
-同一个配分函数对数会在后文显出两种面貌：铁磁 Ising 先把外场复化，用 Lee--Yang 定理确定零点几何，再转入零场图展开；相互作用量子气体则回到同一个 \(\log\Xi\)，用团簇系数读取原点附近的局部 Taylor 数据。
+一个完全可算的对照例子是 $N$ 个互不作用的 Ising 自旋，外场为 $h$。每个自旋取 $\sigma_i=\pm1$，Hamilton 量为 $H_N=-h\sum_{i=1}^N\sigma_i$。由于各自旋的求和彼此独立，
+\[
+ Z_N(\beta,h)
+ =\sum_{\sigma_1,\ldots,\sigma_N}
+   \prod_{i=1}^N e^{\beta h\sigma_i}
+ =(2\cosh\beta h)^N.
+\]
+所以每个自旋的自由能和磁化强度分别是
+\[
+ f_N=-\frac1\beta\log(2\cosh\beta h),\qquad
+ m_N=-\frac{\partial f_N}{\partial h}
+     =\tanh(\beta h).
+\]
+两者与 $N$ 无关，因而热力学极限立即存在；对任意有限实 $h$、$\beta>0$，它们也没有奇性。这说明“把体积送到无穷”是相变的必要背景，却不是相变的充分条件，相互作用如何连接自旋同样重要。
 
-\begin{proof}[解]
-Griffiths 不等式给出铁磁 Ising 模型关联函数的正性，是证明相变存在性和单调性的代数基础。以下分六步建立完整理论，并接入复变方法给出奇点分类。
-
-Griffiths 第一不等式。对铁磁 Ising 哈密顿量 \(H=-\sum_{A}J_A\prod_{x\in A}\sigma_x\)（\(J_A\ge0\)），任意多项式 \(P(\sigma)=\prod_{x\in B}\sigma_x\)（\(B\subset V\)）的期望
-\begin{equation*}
-  \langle P\rangle=\frac{1}{Z}\sum_\sigma P(\sigma)\ee^{\sum_A J_A\prod_{x\in A}\sigma_x}.
-\end{equation*}
-展开指数 \(\ee^{\sum_A J_A\sigma_A}=\prod_A\sum_{n_A\ge0}\frac{J_A^{n_A}}{n_A!}\sigma_A^{n_A}\)，每个 \(J_A^{n_A}\ge0\)。对每个自旋 \(\sigma_x\)，总幂次为 \(\mathbb{1}_{x\in B}+\sum_{A\ni x}n_A\)。对 \(\sigma_x=\pm1\) 求和给出因子 \(2\)（偶幂）或 \(0\)（奇幂）。因此只有所有 \(x\) 处幂次为偶的项存活，每项贡献非负。故 \(\langle P\rangle\ge0\)，即任意自旋乘积的期望非负。
-
-Griffiths 第二不等式。对两个多项式 \(P=\prod_{x\in B}\sigma_x\)，\(Q=\prod_{x\in C}\sigma_x\)，考虑 \(\langle PQ\rangle-\langle P\rangle\langle Q\rangle\)。展开后，\(\langle PQ\rangle\) 中 \(\sigma_x\) 幂次为 \(\mathbb{1}_{x\in B}+\mathbb{1}_{x\in C}+\sum n_A\mathbb{1}_{x\in A}\)，\(\langle P\rangle\langle Q\rangle\) 中两个独立求和给出 \(\mathbb{1}_{x\in B}+\sum m_A\mathbb{1}_{x\in A}\) 和 \(\mathbb{1}_{x\in C}+\sum l_A\mathbb{1}_{x\in A}\)。关键观察：\(\langle PQ\rangle\) 的存活项对应 \(B\mathbin{\triangle} C\subseteq\mathbin{\triangle}\{A:n_A\text{ odd}\}\)，而 \(\langle P\rangle\langle Q\rangle\) 对应 \(B\subseteq\mathbin{\triangle}\{A:m_A\text{ odd}\}\) 且 \(C\subseteq\mathbin{\triangle}\{A:l_A\text{ odd}\}\)。后者是前者的子集（取 \(n_A=m_A+l_A\)），故 \(\langle PQ\rangle\ge\langle P\rangle\langle Q\rangle\)，即连通关联 \(\langle PQ\rangle_c\ge0\)。
-
-FKG 不等式与归纳证明。Fortuin--Kasteleyn--Ginibre (FKG) 不等式把 Griffiths 正性推广到一般格上的乘积测度。设 \(\mu\) 是 \(\{-1,+1\}^V\) 上满足 FKG 格条件的概率测度：若 \(\sigma\le\sigma'\)（逐点偏序），则 \(\mu(\sigma)\mu(\sigma')\le\mu(\sigma\wedge\sigma')\mu(\sigma\vee\sigma')\)。若 \(f,g\) 同时递增（或同时递减），则
-\begin{equation}
-  \langle fg\rangle_\mu\ge\langle f\rangle_\mu\langle g\rangle_\mu.
-  \label{eq:phys-sm-fkg-inequality}
-\end{equation}
-基底 \(|V|=1\)：设 \(V=\{x\}\)，\(\sigma_x\in\{-1,+1\}\)，\(\mu(+1)=p\)，\(\mu(-1)=1-p\)。对递增 \(f,g\)（即 \(f(+1)\ge f(-1)\)，\(g(+1)\ge g(-1)\)），直接计算
-\begin{equation*}
-  \langle fg\rangle-\langle f\rangle\langle g\rangle
-  =p(1-p)\bigl[f(+1)-f(-1)\bigr]\bigl[g(+1)-g(-1)\bigr]\ge0,
-\end{equation*}
-因为 \(p(1-p)\ge0\) 且两个方括号同号非负。归纳步：设\eqnrefs{eq:phys-sm-fkg-inequality} 对 \(|V|\le n\) 成立。对 \(|V|=n+1\)，写 \(\sigma=(\sigma_x,\sigma_{\bar x})\)，条件测度 \(\mu(\dd\sigma_{\bar x}\mid\sigma_x)\) 仍满足 FKG 格条件。令 \(F(\sigma_x)=\langle f\rangle_{\mu(\cdot\mid\sigma_x)}\)，\(G(\sigma_x)=\langle g\rangle_{\mu(\cdot\mid\sigma_x)}\)，则 \(F,G\) 递增（由 FKG 格条件保证条件期望保单调性）。由归纳假设（\(n\) 个顶点），
-\begin{equation*}
-  \langle fg\rangle=\sum_{\sigma_x}\mu(\sigma_x)\langle fg\rangle_{\mu(\cdot\mid\sigma_x)}
-  \ge\sum_{\sigma_x}\mu(\sigma_x)F(\sigma_x)G(\sigma_x).
-\end{equation*}
-再由基底 \(|V|=1\) 对 \(F,G\) 应用\eqnrefs{eq:phys-sm-fkg-inequality}：
-\begin{equation*}
-  \sum_{\sigma_x}\mu(\sigma_x)F(\sigma_x)G(\sigma_x)\ge\langle F\rangle\langle G\rangle=\langle f\rangle\langle g\rangle.
-\end{equation*}
-合并不等式即得\eqnrefs{eq:phys-sm-fkg-inequality}。FKG 蕴含 Griffiths 第一和第二不等式（取 \(f=\sigma_B\)，\(g=\sigma_C\)），且适用于连续自旋和量子系统。
-
-单调性与相变存在性。Griffiths 不等式给出四条物理推论：
-\begin{itemize}
-  \item[(i)] 磁化 \(m=\langle\sigma_0\rangle\ge0\)（第一不等式）；
-  \item[(ii)] 二点关联 \(\langle\sigma_0\sigma_r\rangle\ge m^2\)（第二不等式），即连通关联 \(\langle\sigma_0\sigma_r\rangle_c\ge0\)；
-  \item[(iii)] 磁化 \(m(\beta)\) 关于 \(\beta\) 单调递增：\(\partial m/\partial\beta=\langle\sigma_0 H\rangle-\langle\sigma_0\rangle\langle H\rangle\ge0\)（第二不等式）；
-  \item[(iv)] 关联函数关于 \(\beta\) 单调递增（同理）。
-\end{itemize}
-由 (iii)，\(m(\beta)\) 单调有界故极限存在。相变温度 \(\beta_c\) 定义为 \(m(\beta)\) 从零变为正的临界点：\(m(\beta)=0\) 当 \(\beta\le\beta_c\)，\(m(\beta)>0\) 当 \(\beta>\beta_c\)。Peierls 轮廓论证给出 \(\beta_c<\infty\)（低温有序），而高温展开给出 \(\beta_c>0\)（高温无序），故 \(0<\beta_c<\infty\)。临界指数不等式（如 Rushbrooke \(\alpha+2\beta+\gamma\ge2\)、Griffiths \(\gamma\ge\beta(\delta-1)\)）均由 Griffiths 正性导出。
-
-复变方法与奇点分类。热力学自由能 \(f(\beta,h)\) 作为复参数的解析函数，其奇点分类是相变理论的核心。有限体积配分函数 \(Z_\Lambda(\beta,h)=\sum_\sigma\ee^{-\beta H_\Lambda+h\sum\sigma_x}\) 是 \((\beta,h)\in\mathbb C^2\) 的整函数（有限指数和），故 \(f_\Lambda=-\frac{1}{\beta|\Lambda|}\log Z_\Lambda\) 在 \(Z_\Lambda\ne0\) 处解析。由次可加性，\(f=\lim f_\Lambda\) 存在；由 Lee--Yang 定理（外场方向）和 Fisher（温度方向）的零点禁区，\(f_\Lambda\) 在禁区外一致收敛，故 \(f\) 在禁区外全纯。奇点按导数阶分类：一阶导数（序参量 \(m=-\partial f/\partial h\)）不连续为一级相变（隐含热 \(\Delta m\ne0\)），二阶导数（磁化率 \(\chi=-\partial^2 f/\partial h^2\) 或比热 \(C=-\partial^2 f/\partial\beta^2\)）不连续或发散为二级相变。标度理论统一描述：奇异部分 \(f_s\sim|t|^{2-\alpha}\)（\(t=(T-T_c)/T_c\)），\(\alpha<1\) 为连续相变，\(\alpha=1\) 时隐含热非零（一级），对数发散 \(C\sim-\log|t|\) 对应 \(\alpha=0\)。
-
-Yang--Lee 自然边界与普适类。Yang--Lee 理论把相变与复零点聚积集 \(\mathcal Z=\overline{\bigcup_\Lambda\{z:Z_\Lambda(z)=0\}}\) 联系：\(\mathcal Z\) 的实轴交集即相变点。零点极限测度 \(\mathfrak z^{(0)}\) 的局部类型完全决定相变性质：原子 \(\mathfrak z^{(0)}(\{z_c\})>0\) 给出一级相变（\(f\) 有对数跳跃，磁化不连续），绝对连续分量给出连续相变（\(f\) 导数连续但高阶导数发散），临界指数 \(\alpha\) 由测度的 Hausdorff 维数决定：\(\mathfrak z^{(0)}(B_r(z_c))\sim r^{2-\alpha}\)。自然边界猜想：\(\mathcal Z\) 的某些弧段可能是 \(f\) 的自然边界（不可穿越的解析延拓障碍），使 \(f\) 的解析域由 \(\mathcal Z\) 完全决定。对二维 Ising，\(\mathcal Z\) 在外场方向由 Lee--Yang 圆定理给出（单位圆），在温度方向由 Fisher 零点给出（特定曲线）；自然边界猜想在高维和一般模型中大多未证。这一框架把相变从"实参数上的非解析性"提升为"复参数上的拓扑障碍"，是统计力学与复分析深刻交汇的体现：普适类由零点测度在临界点的标度行为决定，而非由微观细节决定。
-\end{proof}
+再取两个自旋，令 $H=-J\sigma_1\sigma_2$，$J>0$，且外场为零。四个构型中，平行的两个各有权 $e^{\beta J}$，反平行的两个各有权 $e^{-\beta J}$，因此
+\[
+ Z_2=4\cosh(\beta J),\qquad
+ \langle\sigma_1\sigma_2\rangle
+ =\frac{2e^{\beta J}-2e^{-\beta J}}
+        {2e^{\beta J}+2e^{-\beta J}}
+ =\tanh(\beta J)>0.
+\]
+这个计算只证明了两自旋模型中的相关性为正；推广到任意铁磁图的 Griffiths 不等式需要单独的组合证明，不能把两个展开式中“存活的项较多”直接当作不等式的证明。后文研究 Ising 图展开时再处理一般图的结构。
