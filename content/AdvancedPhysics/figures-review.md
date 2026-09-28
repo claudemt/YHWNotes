@@ -18,7 +18,7 @@
 
 ## Python 数值图
 
-正文中的数值图由对应的 `figures/code/*_code.py` 生成：`biharmonic_square`、`integral_equations`、`inverse_integral_regularization`、`plate_modal_response`、`plate_modal_shapes`、`ising_random_cluster`、`form_factor_shell`、`order_reduction_error`、`strong_field_return`、`doppler_limit`、`franck_condon`、`fano_lineshape` 与 `landau_zener`。
+正文中的数值图由对应的 `figures/code/*_code.py` 生成：`biharmonic_square`、`biharmonic_disk_boundary`、`integral_equations`、`inverse_integral_regularization`、`plate_modal_response`、`plate_modal_shapes`、`ising_random_cluster`、`form_factor_shell`、`order_reduction_error`、`strong_field_return`、`doppler_limit`、`franck_condon`、`fano_lineshape` 与 `landau_zener`。
 
 ## 出版检查
 

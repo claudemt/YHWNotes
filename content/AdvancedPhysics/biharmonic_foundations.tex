@@ -29,6 +29,51 @@ u(r)=C_1+C_2r^2+C_3\log r+C_4r^2\log r,\qquad 0<r<R.
 \]
 其中 $m=0,1,2,\ldots$。对 $m\ge1$，圆心正则的两支双调和模态是 $r^m\ee^{\ii m\theta}$ 与 $r^{m+2}\ee^{\ii m\theta}$；第二支第一次作用 $\Delta$ 后成为调和的第一支，第二次便为零。对 $m=0$，正则两支是 $1,r^2$。更一般的函数也有同样的“两个调和部分”，而且不必假定它能先展开成 Fourier 级数。
 
+这些模态可以直接解圆盘边值问题。令 $D=\{(r,\theta):0\le r<1\}$，给定圆周位移 $f$ 与径向斜率 $g$，并假定二者都是光滑的 $2\pi$ 周期函数。按约定写成
+\[
+f(\theta)=f_0+\sum_{m=1}^\infty(f_m^c\cos m\theta+f_m^s\sin m\theta),
+\qquad
+g(\theta)=g_0+\sum_{m=1}^\infty(g_m^c\cos m\theta+g_m^s\sin m\theta),
+\]
+其中 $f_0=(2\pi)^{-1}\int_0^{2\pi}f(\theta)\dd\theta$，而 $f_m^c,f_m^s$ 是通常的 $\pi^{-1}$ 归一化 Fourier 系数，$g$ 的系数同理。对每个 $m\ge1$，正则解的余弦部分只能为
+\[
+(A_m^c r^m+B_m^c r^{m+2})\cos m\theta.
+\]
+在 $r=1$ 处分别令函数值等于 $f_m^c$、径向导数等于 $g_m^c$，得到
+\[
+A_m^c+B_m^c=f_m^c,\qquad mA_m^c+(m+2)B_m^c=g_m^c.
+\]
+这组 $2\times2$ 方程的行列式为 $2$，不随 $m$ 改变，故系数唯一：
+\[
+A_m^c=\frac{(m+2)f_m^c-g_m^c}{2},\qquad
+B_m^c=\frac{g_m^c-mf_m^c}{2}.
+\]
+正弦部分满足完全相同的方程；零阶模态则由 $A_0+B_0=f_0$、$2B_0=g_0$ 给出 $A_0=f_0-g_0/2$、$B_0=g_0/2$。因此完整解为
+\begin{align}
+u(r,\theta)={}&f_0+\frac{g_0}{2}(r^2-1)\\
+&+\sum_{m=1}^\infty\sum_{\sigma\in\{c,s\}}
+\left[\frac{(m+2)f_m^\sigma-g_m^\sigma}{2}r^m
++\frac{g_m^\sigma-mf_m^\sigma}{2}r^{m+2}\right]\psi_m^\sigma(\theta),
+\label{eq:phys-cont-biharmonic-disk-solution}
+\end{align}
+其中 $\psi_m^c=\cos m\theta$、$\psi_m^s=\sin m\theta$。光滑边界数据的 Fourier 系数比任意 $m^{-N}$ 都衰减得快；对该级数逐项求任意固定阶数的导数，额外出现的至多是 $m$ 的幂，故级数及这些导数在闭圆盘上一致收敛。于是式\eqnrefs{eq:phys-cont-biharmonic-disk-solution} 给出经典解，并满足 $u(1,\theta)=f(\theta)$、$\partial_ru(1,\theta)=g(\theta)$。
+
+若两组解有相同边界数据，它们之差 $w$ 满足 $\Delta^2w=0$、$w=\partial_rw=0$。两次分部积分得 $\int_D(\Delta w)^2\dd^2x=0$，所以 $\Delta w=0$；再对调和函数 $w$ 用一次 Green 恒等式，得到 $\int_D|\nabla w|^2\dd^2x=0$，且边界值为零，故 $w=0$。至此，存在性由 Fourier 级数显式构造，唯一性由能量恒等式给出。
+
+取 $f(\theta)=\cos2\theta$、$g(\theta)=0$，只有 $m=2$ 的一个系数非零，公式立刻化为
+\begin{equation}
+u(r,\theta)=(2r^2-r^4)\cos2\theta.
+\label{eq:phys-cont-biharmonic-disk-example}
+\end{equation}
+代入 $r=1$ 得边界位移 $\cos2\theta$；求导得到 $\partial_ru=(4r-4r^3)\cos2\theta$，故边界斜率为零。又因 $r^2\cos2\theta=x^2-y^2$ 是调和多项式，而 $r^4\cos2\theta=(x^2+y^2)(x^2-y^2)$ 的 Laplace 是 $12(x^2-y^2)$，再取一次 Laplace 即为零，所以\eqnrefs{eq:phys-cont-biharmonic-disk-example} 确实双调和。它把两项边界数据和内部函数逐项连在一起，薄板计算中的边界条件因而不再是形式上的附注。\figref{fig:phys-cont-biharmonic-disk}显示这项解在圆盘内的延拓。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.76\linewidth]{biharmonic_disk_boundary.pdf}
+\caption{圆盘上由边界位移 $\cos2\theta$ 与零径向斜率确定的双调和解。正负颜色表示挠度方向；边界的二瓣形位移在圆盘内部平滑延拓。}
+\label{fig:phys-cont-biharmonic-disk}
+\end{figure}
+
 \begin{theorem}[双调和函数的 Almansi 分解]
 设 $\Omega\subset\mathbb R^2$ 对原点星形，即 $x\in\Omega$ 时整条线段 $\{tx:0\le t\le1\}$ 都在 $\Omega$ 内。若 $u\in C^4(\Omega)$ 且 $\Delta^2u=0$，则存在唯一一对调和函数 $h_0,h_1$，使
 \begin{equation}

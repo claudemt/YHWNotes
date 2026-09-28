@@ -36,6 +36,7 @@ LINE_STYLES = ["-", "--", "-.", ":"]
 COLORMAPS = {
     "field": "viridis",
     "amplitude": "magma",
+    "signed_field": "coolwarm",
 }
 
 # One understated style for threshold, asymptotic, and comparison references.
