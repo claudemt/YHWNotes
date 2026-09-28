@@ -2,7 +2,6 @@ from pathlib import Path
 import sys, numpy as np, matplotlib.pyplot as plt
 from scipy.special import gammaln
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'fig'))
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:

@@ -3,15 +3,13 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import jv
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "fig"))
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from preamble import figure_style, polish_axes, save_pdf_png_pair  # noqa: E402
 
-out = ROOT / "figures"
+out = Path(__file__).resolve().parents[1] / 'generated'
 ell = np.arange(-12, 13)
 beta = 2.5
 P = jv(ell, 2 * beta) ** 2

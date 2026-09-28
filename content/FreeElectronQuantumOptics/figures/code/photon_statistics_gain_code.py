@@ -3,15 +3,13 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import factorial
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "fig"))
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from preamble import figure_style, polish_axes, save_pdf_png_pair, add_legend  # noqa: E402
 
-out = ROOT / "figures"
+out = Path(__file__).resolve().parents[1] / 'generated'
 k = np.arange(1, 6)
 nbar = 3.0
 coh = nbar**k / (factorial(k)**2)

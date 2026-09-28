@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from scipy.constants import c, epsilon_0, mu_0, hbar, e, physical_constants
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT/'fig'))
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:

@@ -4,8 +4,6 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'fig'))
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:
@@ -19,7 +17,7 @@ from preamble import (  # noqa: E402
     save_pdf_png_pair,
 )
 
-OUT = ROOT / 'figures'
+OUT = Path(__file__).resolve().parents[1] / 'generated'
 
 # Dimensionless form of Eq. (hopfield_rwa_polariton_frequencies):
 # delta = (omega_c_bar - omega_m)/|g_cm|,
