@@ -1,8 +1,8 @@
-\chapter{分子对称性与正规振动}
+\section{分子对称性}
 \label{ch:molecular-symmetry}
 
 正规振动最终来自质量加权 Hessian 的本征矢量，但在真正对角化一个 \(3N\times3N\) 矩阵之前，对称性已经能够回答大量问题：有多少种不同频率、哪些模式简并、哪些模式能够被红外或 Raman 光谱看见，以及 Hessian 可以分成哪些彼此不耦合的块。这些结论来自有限群表示的特征标理论，不必从若干分子的已知模式表反推一般规律。
-\section{有限群作用、投影算符与对称分块}
+\subsection{有限群作用、投影算符与对称分块}
 
 \begin{definition}[有限群、表示与特征标]
 有限群 \(G\) 是有限多个可复合、可逆的操作组成的集合。单位元记为 \(e\)，每个 \(g\) 的逆元记为 \(g^{-1}\)。群在复向量空间 \(V\) 上的表示，是满足
@@ -110,7 +110,7 @@ n_{B_2}&=\tfrac14(3-1-1+3)=1.
 两个 \(A_1\) 模是对称伸缩与弯曲，\(B_2\) 模是不对称伸缩。这个计算没有先求 Hessian 的本征矢，却已经得到模式数目、简并度和对称性。后面的一般特征标正交定理，正是把这里“逐行相乘再平均”的算法证明为任意有限群都成立。
 
 \begin{theorem}[有限群特征标正交关系]
-设 \(\chi_\alpha,\chi_\beta\) 是两个不等价复不可约表示的特征标，则
+设 \(\chi_\alpha,\chi_\beta\) 是任意两个复不可约表示的特征标，则
 \[
 \frac1{|G|}\sum_{g\in G}\chi_\alpha(g)^*\chi_\beta(g)
 =\delta_{\alpha\beta}.
@@ -132,10 +132,15 @@ D_\beta(g)A D_\alpha(g)^{-1}.
 \]
 换元可验证
 \(D_\beta(h)\overline A=\overline A D_\alpha(h)\)，所以
-\(\overline A\) 是交织算符。Schur 引理说明：当
-\(\alpha\ne\beta\) 时 \(\overline A=0\)；当
-\(\alpha=\beta\) 时 \(\overline A=(\operatorname{Tr}A/d_\alpha)I\)。
-依次令 \(A\) 为矩阵单位 \(E_{ij}\)，取相应矩阵元并对对角指标求和，便得到上式。整个证明只用群平均、Schur 引理和迹的线性性。
+\(\overline A\) 是交织算符。这里所需的 Schur 引理可以直接证明：交织算符的核与像都是不变子空间，故不等价的不可约表示之间只能有零映射；在同一个复不可约空间上，取算符的一个本征值 \(\lambda\)，则 \(\overline A-\lambda I\) 的核非零，必为全空间。因此 \(\overline A=(\operatorname{Tr}A/d_\alpha)I\)。
+
+取两边的迹。若 \(\alpha=\beta\)，迹的循环性给出 \(\operatorname{Tr}\overline A=\operatorname{Tr}A\)；若 \(\alpha\ne\beta\)，则 \(\overline A=0\)。再令 \(A\) 依次为矩阵单位，便得到矩阵元关系
+\[
+\frac1{|G|}\sum_{g\in G}
+D_\beta(g)_{ji}D_\alpha(g)_{lk}^{*}
+=\delta_{\alpha\beta}\frac{\delta_{ik}\delta_{jl}}{d_\alpha}.
+\]
+令 \(j=i\)、\(l=k\)，对 \(i,k\) 求和，左边就是 \(\langle\chi_\alpha,\chi_\beta\rangle_G\)，右边为 \(\delta_{\alpha\beta}\)。
 \end{proof}
 
 因此，若可约表示的特征标为 \(\chi\)，并有
@@ -193,14 +198,6 @@ D_{3N}(g_1g_2)=D_{3N}(g_1)D_{3N}(g_2).
 
 对镜面反射，三个本征值是 \(1,1,-1\)，因此每个不动原子贡献 \(1\)。反演的三个本征值全为 \(-1\)，每个不动原子贡献 \(-3\)。这些常用“计数公式”都只是 \eqnrefs{eq:fixed-atom-character} 的特例。
 
-课堂中也可以把 \(\{E_a\}\) 看成有限离散 base 上的向量丛。这个几何图像是合法的，但在普通正规振动问题里真正参与计算的是截面空间
-
-\[
-\Gamma(E)\cong\bigoplus_a E_a=\mathcal V_{3N}
-\]
-
-上的有限维群表示，而不需要连续流形上的联络、曲率等额外结构。
-
 设 \(\Gamma\) 是 \(G\) 的一个可约表示，特征标为 \(\chi(g)\)。若它分解为
 
 \[
@@ -252,52 +249,22 @@ P_\alpha
 \end{equation}
 因此 Hessian 在不同不可约表示之间没有矩阵元，正规模问题可以先按对称性分块再数值对角化。
 
-\begin{proof}[解]
-由\eqnrefs{eq:molecular-irrep-projector}，
-\begin{equation*}
- P_\alpha
- =\frac{d_\alpha}{|G|}
- \sum_{g\in G}\chi_\alpha^*(g)D(g),
-\end{equation*}
-若 $[F,D(g)]=0$ 对每个 $g\in G$ 成立，由换位子的线性性，
-\begin{align*}
- [F,P_\alpha]
- &=F P_\alpha-P_\alpha F\\
- &=\frac{d_\alpha}{|G|}\sum_{g\in G}\chi_\alpha^*(g)\!\left(FD(g)-D(g)F\right)\\
- &=\frac{d_\alpha}{|G|}\sum_{g\in G}\chi_\alpha^*(g)[F,D(g)]=0.
-\end{align*}
-另一方面由有限群特征标正交关系
-\begin{equation*}
- \frac1{|G|}\sum_{g\in G}\chi_\alpha^*(g)\chi_\beta(g)
- =\delta_{\alpha\beta},
-\end{equation*}
-以及表示的直和分解 $D(g)=\bigoplus_\beta n_\beta D_\beta(g)$，得到投影代数
-\begin{equation*}
- P_\alpha P_\beta=\delta_{\alpha\beta}P_\alpha,
- \qquad
- \sum_\alpha P_\alpha=I,
-\end{equation*}
-即 $\{P_\alpha\}$ 是一组正交完备投影（这里 $P_\alpha$ 投影到整个等型分量；若同一 irrep 出现多重拷贝，还需在该块内继续对角化）。由完备性，
-\begin{equation*}
- F=IF I
- =\!\sum_{\alpha,\beta}P_\alpha F P_\beta.
-\end{equation*}
-又由 $[F,P_\alpha]=0$ 即 $F P_\alpha=P_\alpha F$，对任意 $\alpha,\beta$，
-\begin{equation*}
- P_\alpha F P_\beta
- =P_\alpha P_\beta F
- =\delta_{\alpha\beta}P_\alpha F,
-\end{equation*}
-交叉块 $P_\alpha F P_\beta$ 在 $\alpha\neq\beta$ 时为零，于是
-\begin{equation*}
- F=\sum_\alpha P_\alpha F P_\alpha.
-\end{equation*}
-故"不同对称性的正常模不混合"不是经验规则，而是 Schur 分块在 Hessian 上的直接结果。
+这里的对易条件也有物理来源，而非额外假设。设 \(Q=D_{3N}(g)\) 是作用在微位移上的正交矩阵；对称操作保持势能，故在平衡点附近 \(U(\mathbf R+Q\mathbf u)=U(\mathbf R+\mathbf u)\)。两边对 \(\mathbf u\) 求两次导数得到 \(Q^{\mathsf T}KQ=K\)，即 \(KQ=QK\)。点群只能交换同种原子，故质量矩阵 \(M\) 也与 \(Q\) 对易。于是 \(F=M^{-1/2}KM^{-1/2}\) 与 \(Q\) 对易。只有外场、同位素替换等破坏所选点群对称性时，才须改用剩余的对称群。
 
-如水分子 $C_{2v}$ 群的 3 个振动模分属 $A_1$ 与 $B_2$，Hessian 自动分块；$\mathrm{CH_4}$ 的 $T_2$ 三重简并模由 Schur 分块保证不分裂。
-\end{proof}
+\eqnrefs{eq:molecular-irrep-projector} 确实是投影，而不只是一个形式上的群平均。因为特征标在共轭类上不变，\(P_\alpha\) 与每个 \(D(h)\) 可交换；把它限制在任一不可约子空间 \(V_\beta\) 上，Schur 引理给出 \(P_\alpha|_{V_\beta}=c_\beta I\)。取迹并用正交关系，得到
+\[
+d_\beta c_\beta
+=\frac{d_\alpha}{|G|}\sum_g\chi_\alpha(g)^*\chi_\beta(g)
+=d_\alpha\delta_{\alpha\beta}.
+\]
+故 \(c_\beta=\delta_{\alpha\beta}\)：它在所有 \(\alpha\) 型子空间上为恒等，在其余子空间上为零。于是 \(P_\alpha P_\beta=\delta_{\alpha\beta}P_\alpha\) 且 \(\sum_\alpha P_\alpha=I\)。若 \([F,D(g)]=0\)，由线性性 \([F,P_\alpha]=0\)，从而
+\[
+P_\alpha F P_\beta=P_\alpha P_\beta F=0\quad(\alpha\ne\beta),
+\qquad F=\sum_\alpha P_\alpha F P_\alpha.
+\]
+这说明不同对称型不混合。同一不可约表示若出现多次，仍须在其等型子空间内继续对角化。
 
-\section{Hessian 的对称分块与正规振动}
+\subsection{Hessian 的对称分块与正规振动}
 对非线性分子，整体平移给出 3 个自由度，整体转动再给出 3 个自由度。于是
 
 \begin{equation}
@@ -331,50 +298,16 @@ P_\alpha
 \]
 才是内部振动空间。在线性分子中，绕分子轴的 \(\mathbf r_\mu\) 恒为零，因此只需扣除两个转动方向。
 
-\begin{proof}[解]
-设势能只依赖内部相对构型，平衡点为 \(\{\mathbf R_a\}\)。整体平移 \(\mathbf R_a\mapsto\mathbf R_a+\boldsymbol\epsilon\) 不改变势能，所以
-\[
-U(\{\mathbf R_a+\boldsymbol\epsilon\})=U(\{\mathbf R_a\}).
-\]
-对 \(\epsilon_\mu\) 求一次导数得到
-\[
-\sum_a\frac{\partial U}{\partial r_{a\mu}}=0.
-\]
-在平衡点再对 \(r_{b\nu}\) 求导，若记笛卡尔 Hessian 为
-\[
-K_{b\nu,a\mu}
-=\frac{\partial^2U}{\partial r_{b\nu}\partial r_{a\mu}},
-\]
-则
+这些刚体方向为何是零模，可以在平衡点 \(\mathbf R\) 直接验算。记笛卡尔 Hessian 为 \(K=\nabla^2U(\mathbf R)\)，且 \(\nabla U(\mathbf R)=0\)。平移不变性对任意构型成立：\(U(\mathbf r_a+\boldsymbol\epsilon)=U(\mathbf r_a)\)。对 \(\epsilon_\mu\) 求导，再对 \(r_{b\nu}\) 求导，便有
 \[
 \sum_a K_{b\nu,a\mu}=0.
 \]
-质量加权 Hessian 定义为
+旋转不变性同样给出 \(\sum_a\nabla_a U(\mathbf r)\cdot(\mathbf e_\mu\times\mathbf r_a)=0\)。对 \(r_{b\nu}\) 求导并置 \(\mathbf r=\mathbf R\)；含一阶梯度的项因平衡条件消失，剩下
 \[
-F_{b\nu,a\mu}
-=\frac{K_{b\nu,a\mu}}{\sqrt{m_bm_a}}.
+\sum_{a,\lambda}K_{b\nu,a\lambda}
+(\mathbf e_\mu\times\mathbf R_a)_\lambda=0.
 \]
-因此
-\[
-(F\mathbf t_\mu)_{b\nu}
-=\sum_a\frac{K_{b\nu,a\mu}}{\sqrt{m_bm_a}}\sqrt{m_a}
-=\frac1{\sqrt{m_b}}\sum_a K_{b\nu,a\mu}=0,
-\]
-即 \(F\mathbf t_\mu=0\)。
-
-对无外场的孤立分子，整体转动同样不改变势能。令无穷小转角为 \(\delta\boldsymbol\theta\)，则
-\[
-\delta\mathbf R_a
-=\delta\boldsymbol\theta\times\mathbf R_a.
-\]
-对旋转不变性做同样的二阶微分，在平衡点得到
-\[
-F\mathbf r_\mu=0.
-\]
-因此平移和刚体转动不是“经验上需要减掉的自由度”，而是由 Euclidean 对称性产生的 Hessian 零方向。真正的振动频率来自 \(F\) 在 \(\mathcal V_{\rm vib}\) 上的正谱。
-
-实例。非线性分子有 3 个平移零模 + 3 个转动零模 = 6 个零频，$3N-6$ 个振动模。线性分子只有 2 个转动零模（绕分子轴转动无惯量），故 $3N-5$ 个振动模。水分子 $N=3$：$9-6=3$ 振动模。二氧化碳 $N=4$（线性）：$12-5=7$ 振动模。零模的对称性分类在群论约化中自动处理，确保振动表示 $\Gamma_{\rm vib}=\Gamma_{\rm tot}-\Gamma_{\rm trans}-\Gamma_{\rm rot}$ 的正确性。
-\end{proof}
+因此，若 \(F_{b\nu,a\lambda}=K_{b\nu,a\lambda}/\sqrt{m_bm_a}\)，上两式分别意味着 \(F\mathbf t_\mu=0\) 和 \(F\mathbf r_\mu=0\)。这些是对称性造成的零方向；对稳定分子，内部振动频率由 \(F\) 在 \(\mathcal V_{\rm vib}\) 上的正本征值开平方得到。以水分子为例，九个坐标扣除六个刚体方向，留下三个振动模式；线性四原子分子则留下 \(12-5=7\) 个。
 
 CH\(_4\) 的平衡构型属于 \(T_d\) 点群，群阶为 \(|T_d|=24\)，共轭类按
 
@@ -457,7 +390,7 @@ n_{T_2}=3,
 
 维数检查给出 \(1+2+2\times3=9=3N-6\)。这里的“9 个振动自由度”和“4 组基本频率”并不矛盾：\(E\) 是二重简并，两个 \(T_2\) 各自三重简并。
 
-\section{光谱活性也可以从表示直接判断}
+\subsection{光谱选择定则}
 
 选择定则首先是一个一般的群不变量问题。设初态、末态分别按表示 \(\Gamma_i,\Gamma_f\) 变换，跃迁算符 \(O\) 的各分量按 \(\Gamma_O\) 变换。矩阵元
 \[
@@ -538,7 +471,7 @@ Raman 强度则由极化率张量对正常坐标的一阶导数决定。对称�
 在 \(T_d\) 中分别按 \(A_1\oplus E\oplus T_2\) 变换，因此 CH\(_4\) 的 \(A_1,E,T_2\) 模式都可以 Raman 主动。这个选择定则不需要先求出每个正常模式的具体笛卡尔分量。
 
 
-\section{一般多原子分子的质量加权正常模}
+\subsection{一般多原子分子的质量加权正常模}
 
 Born--Oppenheimer 势能面 $E_n(\mathbf R)$ 建立以后，振动理论首先是一个一般的多自由度二次型问题，而双原子分子只是只有一个内部振动坐标的特例。设平衡构型为 $\mathbf R^{(0)}$，笛卡尔位移记为 $\delta R_{A\alpha}$。在平衡点附近
 \[
@@ -596,7 +529,7 @@ F_{A\alpha,B\beta}
 \(\chi_{\rm vib}=\chi_{3N}-\chi_{\rm trans}-\chi_{\rm rot}\)，从而可在求解 Hessian 之前预言简并度以及红外、拉曼选择定则。若改用键长、键角等内坐标，Wilson \(GF\) 方法会在坐标选择中直接消去刚体运动，与上述投影后的质量加权本征值问题等价。
 
 
-\section{环形对称性的另一个例子：一般 \texorpdfstring{\(N\)}{N} 元环与苯的 H\"uckel 模型}
+\subsection{\texorpdfstring{\(N\)}{N} 元环与苯的 H\"uckel 模型}
 
 考虑 \(N\) 个等价局域轨道 \(|n\rangle\)，只保留最近邻耦合。把在位能量记为 \(\varepsilon_p\)，跳跃积分记为 \(t_\pi\)：
 

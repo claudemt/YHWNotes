@@ -1,30 +1,100 @@
-\chapter{Cartan 子代数、根、权与最高权}
+\section{根、权与最高权}
 \label{chap:roots-weights}
 
 $SU(2)$ 只有一个彼此独立的对角生成元，因此一个磁量子数就能标记角动量多重态中的各个权态。对 $SU(3)$ 或更高秩群，生成元大多不对易，不可能同时对角化；但我们仍希望用尽可能多的一组相容量子数标记态，并知道其余生成元会把一个态送到哪里。
 
-先选出最大的可交换生成元集合。它们的共同本征值组成“权”，其余生成元则像角动量升降算符一样移动这些本征值；移动量在伴随表示中称为“根”。根描述代数怎样作用，权描述某个具体表示中的态怎样响应。选定正根以后，单根、最高权与 Weyl 反射便把这种作用关系组织成有限的组合数据。
+先选出最大的可交换生成元集合。它们的共同本征值组成“权”，其余生成元则像角动量升降算符一样移动这些本征值；移动量在伴随表示中称为“根”。根描述代数中的移动方向，权描述某个具体表示中的态。先算清 \(\mathfrak{sl}(2,\mathbb C)\) 的情形，才能看出高秩代数中哪些结论仍来自同一条升降链。
 
-\section{Cartan 子代数与根空间}
+\subsection{表示的微分与复化}
 
-上一章已经从连续群得到 Lie 代数和伴随表示。这里取有限维复半单 Lie 代数 $\mathfrak g$。伴随表示 $\operatorname{ad}_X(Y)=[X,Y]$ 把括号变成线性算符，而 Killing 形式
+上一节的伴随表示把群元变成作用在生成元上的线性映射。若群表示 $D:G\to GL(V)$ 的矩阵元在局部坐标中光滑，也可以在单位元处求导。对 $X\in\mathfrak g$，定义
+\begin{equation}
+\rho(X)=\left.\frac{\dd}{\dd t}D(\ee^{tX})\right|_{t=0}\in\operatorname{End}(V).
+\label{eq:derived-lie-representation}
+\end{equation}
+这里 $\operatorname{End}(V)$ 是 $V$ 上全体线性算符的空间。沿同一条一参数子群，$D(\ee^{tX})$ 仍满足一参数群的乘法式，所以等于 $\ee^{t\rho(X)}$。于是 $\rho(X)$ 直接告诉我们态在 $X$ 方向的无穷小变化。
+
+这个定义确实给出线性映射。实数 $a$ 的情形，把参数 $t$ 改成 $at$ 即有 $\rho(aX)=a\rho(X)$。再由指数级数，
+\[
+\ee^{t(X+Y)}=\ee^{tX}\ee^{tY}+O(t^2).
+\]
+表示 $D$ 在单位元附近光滑，所以两条群内曲线若只差 $O(t^2)$，它们在 $D$ 下的像也有相同的一阶导数。右边的像是 $D(\ee^{tX})D(\ee^{tY})=I+t\rho(X)+t\rho(Y)+O(t^2)$，从而 $\rho(X+Y)=\rho(X)+\rho(Y)$。线性性来自群乘法的一阶展开，单独对每个方向求导还看不出这一点。
+
+这个微分还必须保留交换关系。将上一节的群交换子
+$\ee^{tX}\ee^{tY}\ee^{-tX}\ee^{-tY}=I+t^2[X,Y]+O(t^3)$
+先送入 $D$，再分别用 $D(\ee^{tX})=\ee^{t\rho(X)}$ 展开，两边的 $t^2$ 系数分别是 $\rho([X,Y])$ 与 $[\rho(X),\rho(Y)]$。因此
+\begin{equation}
+\rho([X,Y])=[\rho(X),\rho(Y)].
+\label{eq:lie-representation-bracket}
+\end{equation}
+反过来，本节也把满足这个等式的线性映射 $\rho:\mathfrak g\to\operatorname{End}(V)$ 称为 Lie 代数表示。它未必总能在原来的全局群上积分成单值表示：自旋 $1/2$ 的生成元满足三维转动代数的交换关系，却只能给 $SU(2)$ 的普通表示，不能给 $SO(3)$ 的单值表示。局部代数与全局群的区别在这里又出现了一次。
+
+根与权通常用复数作本征值，因此要把实 Lie 代数的生成元允许复系数线性组合。若 $\mathfrak k$ 是实 Lie 代数，定义它的复化为 $\mathfrak k_{\mathbb C}=\mathfrak k\otimes_{\mathbb R}\mathbb C$；实际计算时可把元素写成 $X+\ii Y$，$X,Y\in\mathfrak k$，并将括号按复双线性延拓。例如 $\mathfrak{su}(2)$ 由反厄米无迹矩阵构成，而它的复化是全体复无迹 $2\times2$ 矩阵，记为 $\mathfrak{sl}(2,\mathbb C)$。同理 $\mathfrak{su}(3)_{\mathbb C}=\mathfrak{sl}(3,\mathbb C)$。复化扩大了计算用的线性空间，并没有把物理系统的紧群 $SU(n)$ 换成另一种对称操作。
+
+\subsection{Cartan 子代数与根空间}
+
+先在刚才的 $\mathfrak{sl}(2,\mathbb C)$ 与 $\mathfrak{sl}(3,\mathbb C)$ 上寻找可以同时对角化的生成元，再给一般定义。$\mathfrak{sl}(n,\mathbb C)$ 中所有无迹对角矩阵彼此对易。若矩阵 $A$ 与每一块这样的对角矩阵 $H=\operatorname{diag}(h_1,\ldots,h_n)$ 对易，则
+\[
+[H,A]_{ij}=(h_i-h_j)A_{ij}=0.
+\]
+对每个 $i\ne j$ 选 $h_i\ne h_j$，便知 $A_{ij}=0$；所以再也不能添入一个独立的、与全体 $H$ 对易的矩阵。对角无迹矩阵因此是这里的极大交换子代数。
+
+以下一般结论放在有限维\emph{复半单} Lie 代数 $\mathfrak g$ 中表述。子空间 $I\subseteq\mathfrak g$ 若满足 $[\mathfrak g,I]\subseteq I$，称为理想；若反复取 $I^{(0)}=I$、$I^{(k+1)}=[I^{(k)},I^{(k)}]$ 最终得到零空间，称 $I$ 可解。半单意指没有非零可解理想。Cartan 判别法把它等价地刻画为 Killing 形式非退化；这一判别法属于 Lie 代数结构理论，不由上面的矩阵例子自动推出。伴随表示 $\operatorname{ad}_X(Y)=[X,Y]$ 把括号变成线性算符，其 Killing 形式是
 \begin{equation}
 B(X,Y)=\operatorname{tr}(\operatorname{ad}_X\operatorname{ad}_Y)
 \label{eq:killing-form}
 \end{equation}
-在半单 Lie 代数上非退化。对紧半单实形式，$-B$ 正定，因而可以比较根空间中的长度和夹角。
+在半单代数上非退化。对紧半单实形式 $\mathfrak k$，$-B$ 正定；以下根与权在复代数 $\mathfrak g=\mathfrak k\otimes_{\mathbb R}\mathbb C$ 上定义，根的正定内积则由紧实形式诱导。这里 $\mathfrak h^*$ 表示从 $\mathfrak h$ 到 $\mathbb C$ 的全体复线性映射；它是 $\mathfrak h$ 的对偶空间。一个根 $\alpha$ 的值 $\alpha(H)$ 是数，不是另一个矩阵。
 
 \begin{definition}[Cartan 子代数]
-Cartan 子代数 $\mathfrak h$ 是 $\mathfrak g$ 中最大的可交换半单子代数，其维数 $r$ 称为 $\mathfrak g$ 的秩。复化后，伴随表示可在 $\mathfrak h$ 上同时对角化，按根空间分解为
+Cartan 子代数 $\mathfrak h$ 是 $\mathfrak g$ 中由可对角化伴随算符组成的极大交换子代数，其维数 $r$ 称为 $\mathfrak g$ 的秩。对本节的复半单代数，$\operatorname{ad}_H$（$H\in\mathfrak h$）可同时对角化：它们彼此对易，先分解一个算符的本征空间，其余算符保持这些空间，再在每个空间中继续分解。由此得到共同本征空间；非零共同本征值组成根空间分解
 \[
-\mathfrak g_{\mathbb C}=\mathfrak h_{\mathbb C}
+\mathfrak g=\mathfrak h
 \oplus\bigoplus_{\alpha\in\Phi}\mathfrak g_\alpha,
-\qquad [H,E_\alpha]=\alpha(H)E_\alpha .
+\qquad \mathfrak g_\alpha
+=\{X\in\mathfrak g:[H,X]=\alpha(H)X\text{ 对所有 }H\in\mathfrak h\}.
 \]
-$\alpha\in\mathfrak h^*$ 称为根，$\Phi$ 为根系。
+非零线性泛函 $\alpha\in\mathfrak h^*$ 称为根，$\Phi$ 为根系。对复半单代数，零本征值的共同本征空间恰是 $\mathfrak h$；这用到了 Cartan 子代数的自中心化性质。对 $\mathfrak{sl}(n,\mathbb C)$，该性质已由上面的矩阵计算直接证明。
 \end{definition}
 
-设 $V$ 是 $\mathfrak g$ 的一个有限维表示，表示映射记为 $\rho$。由于 $\mathfrak h$ 中的生成元彼此对易，可以同时对角化。若非零向量 $v_\mu\in V$ 满足
+这一抽象定义可以直接用 $2\times2$ 矩阵检查。取 $\mathfrak g=\mathfrak{sl}(2,\mathbb C)$，令
+\[
+h=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad
+e=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad
+f=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+\]
+矩阵相乘给出 $[h,e]=2e$、$[h,f]=-2f$、$[e,f]=h$。于是 $\mathfrak h=\mathbb Ch$，根空间为 $\mathbb Ce$ 与 $\mathbb Cf$，两个根由 $\alpha(h)=2$ 和 $(-\alpha)(h)=-2$ 确定。在定义表示 $\mathbb C^2$ 中，$h$ 的两个本征向量 $(1,0)^{\mathsf T}$、$(0,1)^{\mathsf T}$ 的权分别为 $\mu_+(h)=1$、$\mu_-(h)=-1$；$e(0,1)^{\mathsf T}=(1,0)^{\mathsf T}$，权恰好增加 $2=\alpha(h)$。根是伴随作用的本征值，权是所选表示的本征值，两者不能混作同一个集合。
+
+\begin{example}[在多项式上看见完整的权链]
+取非负整数 $m$，令 $V_m$ 为两个变量 $u,v$ 的 $m$ 次齐次复多项式空间。它有一组显式基
+\[
+p_r=u^{m-r}v^r,\qquad r=0,1,\ldots,m,
+\]
+所以 $\dim V_m=m+1$。在这个空间上定义三个线性算符
+\[
+\rho(h)=u\frac{\partial}{\partial u}-v\frac{\partial}{\partial v},
+\qquad
+\rho(e)=u\frac{\partial}{\partial v},
+\qquad
+\rho(f)=v\frac{\partial}{\partial u}.
+\]
+偏导之后再乘一次 $u$ 或 $v$ 不改变总次数，故这三个算符确实把 $V_m$ 映回自身。逐项作用在基上，
+\[
+\rho(h)p_r=(m-2r)p_r,\qquad
+\rho(e)p_r=r p_{r-1},\qquad
+\rho(f)p_r=(m-r)p_{r+1},
+\]
+其中 $p_{-1}=p_{m+1}=0$。例如
+$[\rho(e),\rho(f)]p_r=((m-r)(r+1)-r(m-r+1))p_r=(m-2r)p_r=\rho(h)p_r$；另两个交换关系同样逐项得到。因此这是一份 Lie 代数表示，而不只是三个形似升降算符的记号。
+
+最高向量是 $p_0=u^m$：$\rho(e)p_0=0$，其权在 $h$ 上取值 $m$。每作用一次 $f$，权减少 $2$，直到 $p_m=v^m$ 的权 $-m$；链上恰有 $m+1$ 个态。若 $W\subseteq V_m$ 是非零不变子空间，它对 $\rho(h)$ 不变。由于本征值 $m,m-2,\ldots,-m$ 两两不同，可以用 $\rho(h)$ 的插值多项式从 $W$ 的任意非零向量提取出某个 $p_r$。再反复作用 $e$ 和 $f$ 就得到全部 $p_0,\ldots,p_m$，所以 $W=V_m$，表示不可约。$m=2$ 时权为 $2,0,-2$，正是熟悉的三维角动量链；一般 $m$ 则为每个非负整数构造出一份不可约表示。为什么\emph{任意}有限维不可约表示的最高权只能取这些整数，还需下面的整性定理证明。
+\end{example}
+
+设 $V$ 是 $\mathfrak g$ 的一个有限维表示，表示映射记为 $\rho$。要把 $\mathfrak h$ 的共同本征值用于标记态，还需解释为什么有足够多的共同本征向量。\emph{仅有对易并不够}：$I$ 与非零 Jordan 块彼此对易，后者却不能对角化。
+
+对本书主要使用的 $SU(n)$ 有限维酉表示，可以直接补齐这一步。取 $\mathfrak{su}(n)$ 中的无迹对角反厄米矩阵 $H_1,\ldots,H_{n-1}$。由于 $D(\ee^{tH_i})$ 酉，求导 $D(\ee^{tH_i})^\dagger D(\ee^{tH_i})=I$ 得 $\rho(H_i)^\dagger=-\rho(H_i)$；这些反厄米算符彼此对易，故各自正规。先对角化 $\rho(H_1)$。它的每个本征空间都被其余 $\rho(H_i)$ 保持，因为后者与它对易；在每个本征空间中再对角化 $\rho(H_2)$，如此逐次进行，便得到共同本征向量组成的基。复化后的一般 $H\in\mathfrak h$ 是这些 $H_i$ 的复线性组合，同一组向量仍是共同本征向量。以下对 $SU(2)$、$SU(3)$ 的具体计算只用这条已经证明的结论。推广到任意复半单 Lie 代数的有限维表示，还需完全可约性等结构定理，不能单凭 $[H_i,H_j]=0$ 推出。
+
+若非零向量 $v_\mu\in V$ 满足
 \begin{equation}
 \rho(H)v_\mu=\mu(H)v_\mu,
 \qquad H\in\mathfrak h,
@@ -39,16 +109,156 @@ $\alpha\in\mathfrak h^*$ 称为根，$\Phi$ 为根系。
 \end{align*}
 只要结果不为零，$E_\alpha v_\mu$ 就是权为 $\mu+\alpha$ 的新态。这个计算给出了根图与权图的直接联系：根向量沿根的方向搬运权态。
 
-在 $\mathfrak{su}(2)$ 中，可取 Cartan 生成元 $J_z$，而 $J_\pm=J_x\pm\ii J_y$ 满足 $[J_z,J_\pm]=\pm\hbar J_\pm$。因此权就是 $m\hbar$，两个根对应步长 $\pm\hbar$。更高秩代数只是同时拥有多个对角生成元，权和根因而成为多分量向量。
+量子角动量给出同一计算的物理记号，但须记住厄米的 $J_z$ 属于复化代数，而非由反厄米矩阵构成的紧实形式 $\mathfrak{su}(2)$。令 $H=2J_z/\hbar$、$E_\pm=J_\pm/\hbar$，由 $[J_z,J_\pm]=\pm\hbar J_\pm$ 得 $[H,E_\pm]=\pm2E_\pm$。态 $|j,m\rangle$ 的权在 $H$ 上取值 $2m$；升降算符使它变为 $2m\pm2$，正好对应前面 $\mathfrak{sl}(2)$ 的根 $\pm\alpha$。若改用 $J_z$ 作坐标，权值写成 $m\hbar$、步长写成 $\hbar$，只是基的归一化改变。
 
-用 Killing 型把 $\mathfrak h$ 与 $\mathfrak h^*$ 识别后，根的内积记为
+由于 Killing 型在 $\mathfrak h$ 上非退化，对每个根 $\alpha$ 存在唯一 $t_\alpha\in\mathfrak h$ 满足 $B(t_\alpha,H)=\alpha(H)$（任意 $H\in\mathfrak h$）。据此定义根的内积
 \begin{equation}
-(\alpha,\beta)=B(H_\alpha,H_\beta).
+(\alpha,\beta)=B(t_\alpha,t_\beta).
 \label{eq:root-inner-product}
 \end{equation}
 
-\begin{derivation}[在 $su(3)$ 上验证 Killing 型非退化]
-目标：直接验算 $B(X,Y)=\tr(\operatorname{ad}_X\operatorname{ad}_Y)$ 在 $\mathfrak{su}(3)$ 上非退化。取 $\mathfrak h$ 的基 $H_1,H_2$，使其满足 $\alpha_i(H_j)=\delta_{ij}$；$su(3)$ 的六个根为 $\pm\alpha_1,\pm\alpha_2,\pm(\alpha_1+\alpha_2)$。对 $H\in\mathfrak h$，$\operatorname{ad}_H$ 在根空间 $\mathfrak g_\alpha$ 上作用为标量 $\alpha(H)$，而在 $\mathfrak h$ 上作用为零，故
+现在把二维根图直接从矩阵乘法算出来。取 \(\mathfrak g=\mathfrak{sl}(3,\mathbb C)\)，让 \(\mathfrak h\) 为所有无迹对角矩阵。写
+\[
+H=\operatorname{diag}(h_1,h_2,h_3),\qquad h_1+h_2+h_3=0,
+\]
+并令 \(E_{ij}\) 为第 \(i\) 行第 \(j\) 列是 \(1\)、其余位置是 \(0\) 的矩阵。矩阵相乘立即给出
+\begin{equation}
+[H,E_{ij}]=(h_i-h_j)E_{ij}.
+\label{eq:sl3-matrix-unit-root}
+\end{equation}
+因此六个非对角矩阵各自张成一个根空间。若定义 \(\alpha_1(H)=h_1-h_2\)、\(\alpha_2(H)=h_2-h_3\)，则 \(E_{12},E_{23},E_{13}\) 的根依次为 \(\alpha_1,\alpha_2,\alpha_1+\alpha_2\)，而 \(E_{21},E_{32},E_{31}\) 给出相反的三个根。这说明 \(\mathfrak{sl}(3,\mathbb C)\) 的秩为 \(2\)、根空间总维数为 \(6\)，与 \(\dim\mathfrak{sl}(3,\mathbb C)=8\) 相符。
+
+\begin{proposition}[根空间的括号如何相加]
+令 $\mathfrak g_0:=\mathfrak h$。若 $X\in\mathfrak g_\alpha$、$Y\in\mathfrak g_\beta$，则
+\[
+[X,Y]\in\mathfrak g_{\alpha+\beta}.
+\]
+若 $\alpha+\beta\ne0$ 却不是根，右边按零空间理解，因而 $[X,Y]=0$；若 $\beta=-\alpha$，括号落在 $\mathfrak h$ 中。
+\end{proposition}
+
+\begin{proof}
+对任意 $H\in\mathfrak h$，Jacobi 恒等式可重排为
+\[
+[H,[X,Y]]=[[H,X],Y]+[X,[H,Y]]
+=\bigl(\alpha(H)+\beta(H)\bigr)[X,Y].
+\]
+这正是共同本征空间 $\mathfrak g_{\alpha+\beta}$ 的定义。根空间分解中若没有相应非零本征空间，只能有 $[X,Y]=0$；若本征泛函为零，则共同零本征空间是 $\mathfrak h$。
+\end{proof}
+
+在 $\mathfrak{sl}(3,\mathbb C)$ 中还能把命题算到矩阵元。矩阵单位满足
+\[
+E_{ij}E_{k\ell}=\delta_{jk}E_{i\ell},\qquad
+[E_{ij},E_{k\ell}]
+=\delta_{jk}E_{i\ell}-\delta_{\ell i}E_{kj}.
+\]
+前一式只需看乘积第 $(a,b)$ 项
+$\sum_c(E_{ij})_{ac}(E_{k\ell})_{cb}
+=\delta_{ai}\delta_{jk}\delta_{b\ell}$；后一式则交换两因子相减即得。于是
+$[E_{12},E_{23}]=E_{13}$ 实现 $\alpha_1+\alpha_2$，
+$[E_{12},E_{21}]=E_{11}-E_{22}=K_1$ 实现 $\alpha_1-\alpha_1=0$，而
+$[E_{12},E_{32}]=0$，因为相应根之和不是根。根图的加法规则至此既有一般证明，也有可亲手相乘的三阶例子。
+
+根与权的差别也能在同一组矩阵上看清。令 \(\mathbb C^3\) 的标准基为 \(e_1,e_2,e_3\)，则 \(He_i=h_i e_i\)。三个权 \(\varepsilon_i\) 定义为 \(\varepsilon_i(H)=h_i\)，且 \(\varepsilon_1+\varepsilon_2+\varepsilon_3=0\)（在无迹对角矩阵上）。例如 \(E_{12}e_2=e_1\)，所以 \(E_{12}\) 把权 \(\varepsilon_2\) 搬到 \(\varepsilon_1=\varepsilon_2+\alpha_1\)。这正是前面抽象计算 \(\mu\mapsto\mu+\alpha\) 的第一次数值化。
+
+在此处还可以先用三维表示作一次完整的迁移计算，而不必等到粒子模型才接触张量表示。令 $K_1=\operatorname{diag}(1,-1,0)$、$K_2=\operatorname{diag}(0,1,-1)$。权 $\varepsilon_1,\varepsilon_2,\varepsilon_3$ 在这两个矩阵上的值依次是 $(1,0),(-1,1),(0,-1)$。\figref{fig:su3-roots-defining-weights} 的左图画出六个根，右图画出三维表示的三个权；右图的箭头是 $E_{12}$、$E_{23}$ 的实际作用，并非另外定义的根。
+
+\begin{figure}[htbp]
+\centering
+\input{figures/tikz/su3-roots-weights.tex}
+\caption{$\mathfrak{sl}(3,\mathbb C)$ 的根与定义表示 $\mathbb C^3$ 的权。左图的六个点是伴随表示中的非零权；右图三个点是 $\mathbb C^3$ 中的权，箭头分别使权增加 $\alpha_1$ 和 $\alpha_2$。两图采用同一根坐标尺度。}
+\label{fig:su3-roots-defining-weights}
+\end{figure}
+
+\begin{example}[由共轭作用逐项读出 $SU(3)$ 伴随表示]
+群 $SU(3)$ 通过共轭作用在自身的 Lie 代数上：
+\[
+D(U)X=UXU^{-1},\qquad U\in SU(3),\ X\in\mathfrak{su}(3).
+\]
+共轭保持反厄米性和零迹，所以右端仍在 $\mathfrak{su}(3)$；而
+$D(U_1)D(U_2)X=U_1U_2X(U_1U_2)^{-1}$，故这是一个群表示。沿
+$U(t)=\ee^{tX}$ 求导，得到 $D_*(X)Y=[X,Y]$。根与权的计算在复化空间
+$\mathfrak{sl}(3,\mathbb C)$ 中进行，这不改变维数，因为 $\mathfrak{su}(3)$
+的实维数与其复化的复维数同为 $8$。
+
+取 Cartan 子代数的基 $K_1=E_{11}-E_{22}$、
+$K_2=E_{22}-E_{33}$。$\mathfrak{sl}(3,\mathbb C)$ 的一组基由
+$K_1,K_2$ 和六个 $E_{ij}$（$i\ne j$）组成。对任意
+$H=\operatorname{diag}(h_1,h_2,h_3)$，逐项相乘给出
+\[
+[H,E_{ij}]=(h_i-h_j)E_{ij},\qquad [H,K_1]=[H,K_2]=0.
+\]
+所以六个非对角基向量的权分别是
+$\pm\alpha_1,\pm\alpha_2,\pm(\alpha_1+\alpha_2)$，每个权重数为 $1$；
+$K_1,K_2$ 张成二维零权空间。维数逐项核对为
+$6\cdot1+2=8$，零权的重数不是一，而是 Cartan 子代数的维数。
+
+正根向量是 $E_{12},E_{23},E_{13}$。它们逐个消去 $E_{13}$，故最高权向量
+可以取 $E_{13}$；其权为最高根
+$\theta=\alpha_1+\alpha_2$。直接代入 $K_1,K_2$ 得
+$\theta(K_1)=2-1=1$、$\theta(K_2)=-1+2=1$，所以 Dynkin 标号为 $(1,1)$。
+升降作用也能直接算出：
+\[
+[E_{21},E_{13}]=E_{23},\qquad
+[E_{32},E_{13}]=-E_{12},\qquad
+[E_{32},E_{23}]=-K_2,\qquad
+[E_{21},E_{12}]=-K_1.
+\]
+每次作用都把权减去对应的简单根；走到零权后，两个独立的 Cartan 方向
+仍然存在。其余负根向量 $E_{21},E_{32},E_{31}$ 已在基的计算中列出，
+因而整个八维权结构不依赖一幅图来猜测。
+
+最后核实不可约性。若 $W\subset\mathfrak{sl}(3,\mathbb C)$ 在伴随作用下不变，
+则对所有 $X\in\mathfrak{sl}(3,\mathbb C)$ 都有 $[\mathfrak{sl}(3,\mathbb C),W]\subseteq W$，
+也就是说 $W$ 是理想。两个对易算子 $\operatorname{ad}_{K_1}$、
+$\operatorname{ad}_{K_2}$ 的共同本征值对为
+$(0,0)$、$\pm(2,-1)$、$\pm(-1,2)$、$\pm(1,1)$；非零的六对彼此不同。
+对任一有限组不同的本征值对，都能逐坐标作 Lagrange 插值，构造一个
+$\operatorname{ad}_{K_1}$、$\operatorname{ad}_{K_2}$ 的多项式，把指定本征空间
+上的分量保留、把其余分量消去。故若 $W$ 中某个向量含非零根分量，
+便可从它投影得到某个 $E_{ij}\in W$。若非零元素全在 Cartan 子代数，
+它不是标量矩阵（非零标量矩阵不可能无迹），故与某个 $E_{ij}$ 的括号非零，
+同样得到一个根向量。再算
+$[E_{ij},E_{ji}]=E_{ii}-E_{jj}\in W$。这个对角矩阵的三个对角元两两不同，
+与六个 $E_{k\ell}$ 逐一取括号便得到全部六个根向量；根向量两两配对的括号
+又张成整个 Cartan 子代数。因此 $W=\mathfrak{sl}(3,\mathbb C)$。
+这就从矩阵乘法证明了伴随表示不可约，且其最高权为 $(1,1)$；
+后面的 Freudenthal 例题所用八重态权重数由此全部确定。
+\end{example}
+
+\begin{example}[从 $\mathbf3$ 亲手构造六维表示]
+令 $V=\mathbb C^3$，把 $V\otimes V$ 中交换两因子后不变的子空间记作 $\operatorname{Sym}^2V$。取 $e_i e_j=e_j e_i$ 为对称张量的简写，其六个基向量是
+\[
+e_1^2,\quad e_1e_2,\quad e_2^2,\quad
+e_1e_3,\quad e_2e_3,\quad e_3^2.
+\]
+群作用为 $U(vw)=(Uv)(Uw)$；在 $U=I+tX+O(t^2)$ 处求导，得到不可省略的 Leibniz 规则
+\begin{equation}
+\rho_2(X)(vw)=(Xv)w+v(Xw).
+\label{eq:su3-symmetric-square-action}
+\end{equation}
+因此 $H(e_ie_j)=(\varepsilon_i(H)+\varepsilon_j(H))e_ie_j$。依上面 $K_1,K_2$ 的顺序，六个基向量的权分别为
+\[
+(2,0),\quad(0,1),\quad(-2,2),\quad
+(1,-1),\quad(-1,0),\quad(0,-2).
+\]
+这些数可直接由两个整数对相加，不需要先知道任何六维权图。最高向量 $e_1^2$ 被 $E_{12},E_{23},E_{13}$ 全部消去，其最高权为 $2\varepsilon_1=2\omega_1$，故 Dynkin 标号是 $(2,0)$。例如
+\[
+\rho_2(E_{12})(e_2e_3)=e_1e_3,
+\qquad
+\rho_2(E_{23})(e_2e_3)=e_2^2.
+\]
+前一项的权差 $(1,-1)-(-1,0)=(2,-1)$ 正是 $\alpha_1$ 在 $K_1,K_2$ 上的取值；后一项的权差 $(-2,2)-(-1,0)=(-1,2)$ 正是 $\alpha_2$。根移动权的公式在这六维空间中逐项成立。
+
+这份表示还是不可约的。若 $W\ne0$ 是不变子空间，它对 $K_1,K_2$ 不变；上列六个共同本征值两两不同，取 $K_1,K_2$ 的适当多项式作用在 $W$ 中一个非零向量上，能提取出至少一个基向量 $e_i e_j$。再用 $E_{ab}$ 把因子 $e_b$ 换成 $e_a$，由\eqnrefs{eq:su3-symmetric-square-action}可以从任一个 $e_i e_j$ 走到其余五个；在需要避免两项相加时，先用同样的本征值投影取出其中一项即可。于是 $W$ 包含全部六个基向量，$W=\operatorname{Sym}^2V$。对更高张量幂，仍可从具体基向量出发，按同样的次序求权并计算根算符的作用。
+\end{example}
+
+\begin{proposition}[$\mathfrak{sl}(3,\mathbb C)$ 的 Killing 型在 Cartan 子代数上非退化]
+取 $\mathfrak h$ 的基 $H_1,H_2$，使其满足 $\alpha_i(H_j)=\delta_{ij}$。$\mathfrak{sl}(3,\mathbb C)$ 的六个根为
+$\pm\alpha_1,\pm\alpha_2,\pm(\alpha_1+\alpha_2)$。Killing 型限制到 $\mathfrak h$ 后非退化。
+\end{proposition}
+
+\begin{proof}
+对 $H\in\mathfrak h$，$\operatorname{ad}_H$ 在根空间 $\mathfrak g_\alpha$ 上作用为标量 $\alpha(H)$，而在 $\mathfrak h$ 上作用为零，故
 \[
 B(H,H')=\sum_{\alpha\in\Phi}\alpha(H)\alpha(H')
 =2\sum_{\alpha>0}\alpha(H)\alpha(H').
@@ -60,33 +270,79 @@ B(H,H')=2\bigl[h_1h_1'+h_2h_2'+(h_1+h_2)(h_1'+h_2')\bigr]
 \begin{pmatrix}4&2\\2&4\end{pmatrix}
 \begin{pmatrix}h_1'\\h_2'\end{pmatrix}.
 \]
-该矩阵行列式 $4\cdot4-2\cdot2=12>0$，本征值为 $6,2$，故 $B$ 在 $\mathfrak h$ 上正定、非退化。半单性又保证 $B$ 在 $\mathfrak h$ 与根空间 $\mathfrak g_\alpha$ 之间的分块为零（迹只在同一权空间内贡献），故 $B$ 在整个 $su(3)$ 上非退化。这正是可用式 \eqnrefs{eq:root-inner-product} 与式 \eqnrefs{eq:cartan-matrix} 在 $\mathfrak h^*$ 上定义根内积与 Cartan 矩阵的前提。
-\end{derivation}
+矩阵行列式为 $12$，所以限制型非退化。这里计算的是复代数
+$\mathfrak{sl}(3,\mathbb C)$ 上选定实根坐标后的形式。若回到紧实形式
+$\mathfrak{su}(3)$，生成元取反厄米矩阵，Killing 型为负定；用来定义正定根内积的是 $-B$。这一区分避免把复化代数与紧实形式的符号混在一起。
+\end{proof}
 
-\section{正根、单根与最高权}
+\subsection{正根、单根与最高权}
 
-根总是成对出现为 $\pm\alpha$，因此必须先选定“向上”的方向。选择正根后，每个正根都可由简单根 $\alpha_i$ 的非负整数线性组合表示。Cartan 矩阵
+根总是成对出现为 $\pm\alpha$，因此必须先选定“向上”的方向。在根张成的实向量空间中选不垂直于任何根的向量 $u$，规定 $(\alpha,u)>0$ 的根为正根；不能写成两个正根之和的正根称为简单根。每个正根都可由简单根 $\alpha_i$ 的非负整数线性组合表示；这是一条根系定理，而不是“正”的定义。Cartan 矩阵
 \begin{equation}
 A_{ij}=\frac{2(\alpha_i,\alpha_j)}{(\alpha_j,\alpha_j)}
 \label{eq:cartan-matrix}
 \end{equation}
 把简单根的相对长度和夹角编码为整数矩阵。有限维复半单 Lie 代数的 Dynkin 图正是由这个矩阵分类的。
 
+在刚才的 $\mathfrak{sl}(3,\mathbb C)$ 例子中，先把 $h_i$ 限制为实数，并取 $h_1>h_2>h_3$ 的方向为正。正根就是 $\alpha_1,\alpha_2,\alpha_1+\alpha_2$；后一个根已是前两个之和，所以简单根只有 $\alpha_1,\alpha_2$。令
+\[
+K_1=E_{11}-E_{22}=\operatorname{diag}(1,-1,0),\qquad
+K_2=E_{22}-E_{33}=\operatorname{diag}(0,1,-1).
+\]
+按 \eqnrefs{eq:sl3-matrix-unit-root} 逐项代入，
+\[
+\bigl(\alpha_i(K_j)\bigr)_{i,j=1,2}
+=\begin{pmatrix}2&-1\\-1&2\end{pmatrix}.
+\]
+由于 $K_j$ 正是相应的根余权（即 $2t_{\alpha_j}/(\alpha_j,\alpha_j)$），这个矩阵就是 $A_2$ 型 Cartan 矩阵。它的非对角元 $-1$ 表明两条简单根不正交；若把根长共同缩放成 $1$，二者夹角满足 $\cos\vartheta=-1/2$，即 $120^\circ$。根图的夹角来自矩阵交换子，不必先靠图形猜出。
+
 \begin{definition}[单根、基本权与 Dynkin 标号]
 选定正根后，每个正根都可写成单根 $\alpha_i$（$i=1,\dots,r$）的非负整线性组合。基本权 $\omega_i\in\mathfrak h^*$ 由
 \[
 \frac{2(\omega_i,\alpha_j)}{(\alpha_j,\alpha_j)}=\delta_{ij}
 \]
-定义。任意有限维表示中 $\mathfrak h$ 的共同本征值 $\mu\in\mathfrak h^*$ 称为权；支配权 $\lambda=\sum_{i=1}^r a_i\omega_i$（$a_i\in\mathbb Z_{\ge0}$）唯一标记一个不可约有限维表示，非负整数 $a_i$ 即 Dynkin 标号。这个结论把不可约表示的分类化为一个离散格点问题，而降算符 $E_{-\alpha_i}$ 从最高权逐层生成全部权。
+定义。若权 $\lambda$ 的非零权向量被所有正根的 $E_\alpha$ 消去，就称 $\lambda$ 为最高权。满足 $\lambda=\sum_{i=1}^r a_i\omega_i$、$a_i\in\mathbb Z_{\ge0}$ 的权称为支配整权，整数 $a_i$ 是 Dynkin 标号。最高权分类定理断言每个有限维不可约表示由一个支配整权唯一标记；下面证明其中必要的整数条件，充分性与唯一性需要更深入的表示构造。
 \end{definition}
 
-若权 $\mu$ 的重数为 $m(\mu)$，Freudenthal 递推式（式 \eqnrefs{eq:freudenthal}）给出
+回到定义表示 $\mathbb C^3$，权 $\varepsilon_1$ 在 $K_1,K_2$ 上分别取值 $1,0$，故 $\varepsilon_1=\omega_1$。矩阵 $E_{12},E_{13},E_{23}$ 都消去 $e_1$，所以 $\varepsilon_1$ 是最高权；另外两个权由
+\[
+\varepsilon_2=\varepsilon_1-\alpha_1,\qquad
+\varepsilon_3=\varepsilon_2-\alpha_2
+\]
+得到。这样，Dynkin 标号 $(1,0)$ 不是凭名称贴在三维表示上，而是由 $K_1,K_2$ 的本征值直接读出。
+
+最高权为什么必须满足整数条件，可以沿任意一条根方向退回熟悉的
+$\mathfrak{sl}(2)$。为每个根 $\alpha$ 取 $H_\alpha=2t_\alpha/(\alpha,\alpha)$，再选取根空间生成元 $E_\alpha,E_{-\alpha}$，使
+\[
+[E_\alpha,E_{-\alpha}]=H_\alpha.
+\]
+由 $\alpha(H_\alpha)=2$ 随即有 $[H_\alpha,E_{\pm\alpha}]=\pm2E_{\pm\alpha}$。
+这三个元素组成一个 $\mathfrak{sl}(2)$ 子代数。于是高秩代数中的每一条根方向都带着一条普通角动量升降链。
+
+\begin{theorem}[权的整性与最高权的支配性]
+设 $V$ 是有限维 $\mathfrak g$ 表示，$\mu$ 是它的一个权，$\alpha$ 是根，则
 \begin{equation}
-\bigl[(\lambda+\rho,\lambda+\rho)-(\mu+\rho,\mu+\rho)\bigr]m(\mu)
-=2\sum_{\alpha>0}\sum_{k\ge1}(\mu+k\alpha,\alpha)m(\mu+k\alpha),
-\label{eq:freudenthal}
+\frac{2(\mu,\alpha)}{(\alpha,\alpha)}\in\mathbb Z.
+\label{eq:root-string-integrality}
 \end{equation}
-其中 $\rho=\frac12\sum_{\alpha>0}\alpha$，右侧只含比 $\mu$ 更高的权，因此递推从 $m(\lambda)=1$ 开始闭合。
+若 $V$ 不可约，最高权 $\lambda$ 对每条简单根还满足
+$2(\lambda,\alpha_i)/(\alpha_i,\alpha_i)\in\mathbb Z_{\ge0}$，因此可唯一写成 $\lambda=\sum_i a_i\omega_i$，$a_i\in\mathbb Z_{\ge0}$。
+\end{theorem}
+
+\begin{proof}
+固定 $\alpha$，把 $V$ 限制到由 $E_\alpha,E_{-\alpha},H_\alpha$ 生成的 $\mathfrak{sl}(2)$。选归一化使 $[H_\alpha,E_{\pm\alpha}]=\pm2E_{\pm\alpha}$；$H_\alpha$ 在权空间 $V_\mu$ 上的本征值为
+\[
+m=\mu(H_\alpha)=\frac{2(\mu,\alpha)}{(\alpha,\alpha)}.
+\]
+这里无需先调用一般 $\mathfrak{sl}(2)$ 完全可约定理。任取 $0\ne v_\mu\in V_\mu$，连续作用 $E_\alpha$；每次非零结果的 $H_\alpha$ 本征值都增加 $2$。有限维空间只有有限个本征值，所以某次必到达非零的最高向量 $v=E_\alpha^p v_\mu$，满足 $E_\alpha v=0$、$H_\alpha v=nv$，其中 $n=m+2p$。由三个生成元的交换关系归纳得到
+\[
+E_\alpha E_{-\alpha}^{k}v
+=k(n-k+1)E_{-\alpha}^{k-1}v.
+\]
+有限维性同样保证存在最小正整数 $N$ 使 $E_{-\alpha}^{N}v=0$。在上式取 $k=N$，由于 $E_{-\alpha}^{N-1}v\ne0$，得到 $n=N-1\in\mathbb Z_{\ge0}$。原向量的本征值 $m=n-2p$ 因而是整数。这一步只追踪了从一个 $v_\mu$ 出发的升降链，不要求整个 $V_\mu$ 只属于一条链，也不预设表示已经完全分解。
+
+若 $\mu=\lambda$ 是全表示的最高权，则 $E_{\alpha_i}V_\lambda=0$。因此在每条简单根的 $\mathfrak{sl}(2)$ 限制中，$V_\lambda$ 只落在升算符消去的最高端，$m=a_i\ge0$。基本权的定义随即给出 $\lambda=\sum_i a_i\omega_i$。
+\end{proof}
 
 紧群的有限维幺正不可约表示还满足 Peter--Weyl 定理：矩阵元在 $L^2(G)$ 中构成正交完备系，
 \[
@@ -94,14 +350,15 @@ L^2(G)\cong\widehat{\bigoplus}_{\pi\in\widehat G}V_\pi\otimes V_\pi^* .
 \]
 这既是有限群正则表示分解的连续版本，也是紧群 Fourier 分析的基础。非紧群一般需要直积分与 Plancherel 测度，不能直接照搬离散直和。
 
-\begin{derivation}[Freudenthal 递推的来源]
-二次 Casimir $C_2=\sum_aT^aT^a$ 在最高权表示 $V_\lambda$ 上取标量 $(\lambda,\lambda+2\rho)$。把生成元分成 Cartan 基与根向量，并在权空间 $V_\mu$ 上取迹，根向量只连接 $\mu$ 与 $\mu\pm\alpha$。用 $[E_\alpha,E_{-\alpha}]=H_\alpha$ 把成对项移到更高权空间，便得到
-\[
-\bigl[(\lambda+\rho)^2-(\mu+\rho)^2\bigr]m(\mu)
-=2\sum_{\alpha>0}\sum_{k\ge1}(\mu+k\alpha,\alpha)m(\mu+k\alpha).
-\]
-递推之所以终止，是因为有限维最高权表示中，沿每条正根方向只有有限长的权串。
-\end{derivation}
+同一权可能由几个线性无关的态实现；这个维数记作 $m(\mu)=\dim V_\mu$，称为权重数，若 $\mu$ 不是权则约定 $m(\mu)=0$。令 $\rho=\tfrac12\sum_{\alpha>0}\alpha$。计算一般权重数可用 Freudenthal 递推：
+\begin{equation}
+\bigl[(\lambda+\rho,\lambda+\rho)
+ -(\mu+\rho,\mu+\rho)\bigr]m(\mu)
+=2\sum_{\alpha>0}\sum_{k\ge1}
+ (\mu+k\alpha,\alpha)m(\mu+k\alpha).
+\label{eq:freudenthal-recursion}
+\end{equation}
+对固定 $\mu$，只有有限项非零。这个公式的完整证明须先把二次 Casimir 按 Cartan 与根向量分解，再对权空间取迹；本讲义在此将它作为高级结构定理输入，而不把一句“移动成对项”冒充证明。下面的八重态算例只是检验它的第一步；初学者理解根、权及最高权的整性并不依赖这条递推。
 
 \begin{example}[Freudenthal 递推在 $SU(3)$ 八重态 $(1,1)$ 上走一步]
 取最高权表示 $(1,1)$，其最高权 $\lambda=\omega_1+\omega_2=\rho$，已知 $m(\lambda)=1$。递推第一个要算的是次高权 $\mu=\lambda-\alpha_1=\rho-\alpha_1=\alpha_2$。用上面的归一化 $(\alpha_i,\alpha_i)=1$、$(\rho,\alpha_1)=\tfrac12$。
@@ -123,7 +380,7 @@ L^2(G)\cong\widehat{\bigoplus}_{\pi\in\widehat G}V_\pi\otimes V_\pi^* .
 \end{example}
 
 
-\section{Weyl 群与特征标公式}
+\subsection{Weyl 群与特征标公式}
 
 对每个根 $\alpha$，根空间中的反射为
 \[
@@ -132,7 +389,17 @@ s_\alpha(\lambda)=\lambda-
 \]
 由简单根反射生成的有限群称为 Weyl 群。它保持根系和内积，并把权空间分成 Weyl 室；每条 Weyl 轨道恰有一个支配权落在闭基本室中。
 
-若 $\lambda$ 是支配整权，Weyl 特征标公式（式 \eqnrefs{eq:weyl-character}）为
+这个反射在 $\mathfrak{sl}(3,\mathbb C)$ 中不是抽象的图形操作。取 $\alpha_1=\varepsilon_1-\varepsilon_2$，由内积定义可算出
+\[
+\frac{2(\varepsilon_1,\alpha_1)}{(\alpha_1,\alpha_1)}=1,
+\qquad
+\frac{2(\varepsilon_2,\alpha_1)}{(\alpha_1,\alpha_1)}=-1,
+\qquad
+(\varepsilon_3,\alpha_1)=0.
+\]
+故 $s_{\alpha_1}$ 交换 $\varepsilon_1,\varepsilon_2$ 而固定 $\varepsilon_3$；同理 $s_{\alpha_2}$ 交换 $\varepsilon_2,\varepsilon_3$。两次相邻交换可生成三个字母的全部六种置换，所以这里的 Weyl 群是 $S_3$。对角矩阵 $H=\operatorname{diag}(h_1,h_2,h_3)$ 上，相应操作就是交换两个 $h_i$。例如三维定义表示的权集合 $\{\varepsilon_1,\varepsilon_2,\varepsilon_3\}$ 是一条 Weyl 轨道，正是\figref{fig:su3-roots-defining-weights}右侧三个顶点；而六维对称平方的三个纯平方权 $2\varepsilon_i$ 构成另一条轨道，三个混合权 $\varepsilon_i+\varepsilon_j$ 构成第三条轨道。因而“Weyl 群搬运权”并不表示一个不可约表示的全部权必属于同一轨道。
+
+令 $G$ 为单连通紧半单 Lie 群，$H$ 属于其 Cartan 子代数，$V_\lambda$ 为最高权是支配整权 $\lambda$ 的有限维不可约表示，$W$ 为 Weyl 群，$\rho$ 为正根之和的一半。Weyl 特征标公式为
 \begin{equation}
 \chi_\lambda(\ee^H)=
 \frac{\sum_{w\in W}\det(w)\,
@@ -140,11 +407,67 @@ s_\alpha(\lambda)=\lambda-
 {\sum_{w\in W}\det(w)\,\ee^{(w\rho,H)}}.
 \label{eq:weyl-character}
 \end{equation}
-令 $H\to0$ 时分子分母同时为零，须用行列式展开取最低非零阶。把分子按 $W$ 中元素排成行列式：$\sum_{w\in W}\det(w)\,\ee^{(w(\lambda+\rho),H)}$ 是关于变量 $x_\alpha=\ee^{(\alpha,H)}$ 的斜反对称多项式，在 $H\to0$（即 $x_\alpha\to1$）时其最低非零阶就是 Vandermonde 型
+
+先用前面已经算过的 $SU(3)$ 伴随表示检查这条公式。令
+$\ee^H=\operatorname{diag}(x_1,x_2,x_3)$，其中
+$x_1x_2x_3=1$。在伴随表示中，两个 Cartan 基向量权为零，六个
+$E_{ij}$（$i\ne j$）的权给出本征值 $x_i/x_j$，所以直接由矩阵作用得到
+\begin{equation}
+\chi_{1,1}(x_1,x_2,x_3)
+=2+\sum_{i\ne j}\frac{x_i}{x_j}.
+\label{eq:su3-adjoint-character-direct}
+\end{equation}
+这个计算只用到了 $[H,E_{ij}]=(h_i-h_j)E_{ij}$，其中 $x_i=\ee^{h_i}$。
+
+\begin{samepage}
+还可以不借助根图，从半标准 Young 盘数出同一个特征标。$GL(3)$ 分拆
+$(2,1,0)$ 的两个相邻部分之差都是 $1$，所以限制到 $SU(3)$ 后的最高权为
+$(1,1)$。在 $x_1x_2x_3=1$ 的对角矩阵上，给分拆的三个部分同时加上
+$c$ 只会多乘 $(x_1x_2x_3)^c=1$，不会改变这个特征标。形状 $(2,1)$ 的盘写成
 \[
-\prod_{\alpha>0}\bigl(\ee^{(\lambda+\rho,H)_\alpha/2}-\ee^{-(\lambda+\rho,H)_\alpha/2}\bigr)
+\begin{array}{cc}a&b\\c&\end{array},
+\qquad 1\le a\le b\le3,\quad a<c\le3.
 \]
-中首次展开的线性项，比例系数恰为 $\prod_{\alpha>0}(\lambda+\rho,\alpha)$；分母同法给出 $\prod_{\alpha>0}(\rho,\alpha)$。二者相除、公共的二阶小因子抵消，得到 Weyl 维数公式（式 \eqnrefs{eq:weyl-dimension}）
+若 $a=1$，则 $b=1,2,3$，每种取值都允许 $c=2,3$；若 $a=2$，则
+$(b,c)=(2,3),(3,3)$。因此盘恰有八个，它们的权单项式之和为
+\[
+x_1^2x_2+x_1^2x_3+x_1x_2^2+2x_1x_2x_3
++x_1x_3^2+x_2^2x_3+x_2x_3^2
+=\sum_{i\ne j}x_i^2x_j+2x_1x_2x_3.
+\]
+由于 $x_1x_2x_3=1$，每个 $x_i^2x_j$（$i\ne j$）都等于某个
+$x_i/x_k$（$k$ 是剩下的指标），故这正是
+\eqnrefs{eq:su3-adjoint-character-direct}。八个盘也逐项显示了伴随表示中
+六个一重根权和两个零权。
+\end{samepage}
+
+在三个 $x_i$ 互不相同时，还能把这个盘计数写成 Weyl 公式的交错和商。
+对 $(1,1)$，分子指数为 $(4,2,0)$，分母指数为 $(2,1,0)$。记
+$D=(x_1-x_2)(x_1-x_3)(x_2-x_3)$。按行列式定义展开，分母等于 $D$，
+分子等于 $D\bigl(\sum_{i\ne j}x_i^2x_j+2x_1x_2x_3\bigr)$，所以
+\[
+\frac{\det\!\begin{pmatrix}
+x_1^4&x_2^4&x_3^4\\
+x_1^2&x_2^2&x_3^2\\
+1&1&1
+\end{pmatrix}}
+{\det\!\begin{pmatrix}
+x_1^2&x_2^2&x_3^2\\
+x_1&x_2&x_3\\
+1&1&1
+\end{pmatrix}}
+=\sum_{i\ne j}x_i^2x_j+2x_1x_2x_3.
+\]
+分母在 $x_i=x_j$ 时为零，但左侧作为已约分的 Schur 多项式连续延拓；右侧是
+多项式，因而重合本征值处仍由同一式给出。这样，最高权、半标准盘、矩阵
+本征值和 Weyl 交错和在一个八维表示上得到同一份可逐项核对的特征标。
+
+令 $A_\nu(H)=\sum_{w\in W}\det(w)\ee^{(w\nu,H)}$。为求 $H\to0$ 的比值，固定一个避开反射超平面的 $H_0$，展开 $A_\nu(tH_0)$。把 Taylor 系数看成 $H_0$ 的多项式：因为 $A_\nu(wH)=\det(w)A_\nu(H)$，每个非零系数都在每条根的反射超平面上为零，因而能被 $\prod_{\alpha>0}(\alpha,H_0)$ 整除。设正根数为 $N$，低于 $t^N$ 的系数遂全为零。$t^N$ 的系数又作为 $\nu$ 的多项式在每条反射超平面上为零，且次数恰为 $N$，所以它必是
+\[
+C\prod_{\alpha>0}(\nu,\alpha)
+  \prod_{\alpha>0}(\alpha,H_0),
+\]
+其中常数 $C$ 与 $\nu$ 无关。在特征标公式中分别取 $\nu=\lambda+\rho$ 和 $\nu=\rho$，再令 $t\to0$；共同的 $t^N$、$C$ 与含 $H_0$ 的因子约去，便得到 Weyl 维数公式
 \begin{equation}
 \dim V_\lambda=
 \prod_{\alpha>0}

@@ -1,7 +1,7 @@
-\chapter{数学预备：从线性空间到联络}
+\chapter{数学预备}
 \label{chap:advanced-mathematical-foundations}
 
-物理公式中的对象各有明确类型。波函数是向量，哈密顿量是线性算符，对称操作组成群，参数依赖的本征空间组成向量丛。若不先分清这些对象，后面的计算即使符号无误，也容易把“选了一组基”误认为“改变了物理状态”，或把局部坐标公式误认为全局结论。这里从定义开始建立全书反复使用的数学语言。
+物理公式中的对象各有明确类型。有限自旋配置构成集合，波函数属于函数空间，哈密顿量是带有定义域的算符，配分函数在复参数下成为解析函数；对称操作组成群，随核构型变化的本征空间则组成向量丛。一个公式可以在有限维矩阵上正确，却在未指定边界条件的微分算子上失去意义；也可以在每个有限体积都解析，却在取极限时产生奇性。下面先建立这些对象的定义及彼此之间的推导关系，再用于具体模型。
 
 \section{集合、映射与商集}
 
@@ -125,6 +125,699 @@ T(av+bw)=aT(v)+bT(w),
 
 有限维谱定理说明，每个复自伴矩阵都能由酉变换对角化。证明可先从特征多项式取一个本征向量，再证明它的正交补在算符作用下保持不变，最后对维数归纳。
 
+有限维矩阵并不足以描述一根梁的挠度：后者的每个位置都可以独立取值。把矩阵的求和换成积分以前，必须先说明函数之间怎样比较大小，以及微分方程在函数不够光滑时是什么意思。
+
+\section{平方可积函数与弱导数}
+\label{sec:advanced-weak-derivative}
+
+设 \(\Omega\subset\mathbb R^d\) 为开集。连续函数当然可以逐点求导，但点力产生的挠度通常只有若干阶导数连续，而量子态或温度场还可能仅在积分意义下有定义。对可测函数规定
+\[
+ \|u\|_{L^2(\Omega)}^2:=\int_\Omega |u(x)|^2\,\dd x.
+\]
+平方可积、且仅在零测集上不同的函数视为同一个元素；它们组成 \(L^2(\Omega)\)。内积取
+\(\langle u,v\rangle=\int_\Omega\overline u v\,\dd x\)，正好延续了有限维内积的约定。
+
+\begin{proposition}[\(L^2\) 的完备性]
+每个按 \(L^2\) 范数 Cauchy 的序列都收敛到 \(L^2\) 中的函数。
+\end{proposition}
+
+\begin{proof}
+从 Cauchy 序列 \((u_n)\) 抽出子列 \((u_{n_k})\)，使
+\(\|u_{n_{k+1}}-u_{n_k}\|_2\le 2^{-k}\)。由三角不等式，有限和
+\[
+ s_m=|u_{n_1}|+\sum_{k=1}^{m-1}|u_{n_{k+1}}-u_{n_k}|
+\]
+的 \(L^2\) 范数不超过 \(\|u_{n_1}\|_2+1\)。单调极限
+\(s=\lim_m s_m\) 仍有有限平方积分，因此几乎处处有限。在这些点上，差分级数绝对收敛，定义极限 \(u\)。再用三角不等式控制尾和，得
+\(\|u-u_{n_k}\|_2\le\sum_{j=k}^{\infty}2^{-j}\to0\)。原序列本来是 Cauchy 序列，所以也趋于同一个 \(u\)。
+\end{proof}
+
+光滑且支集紧含于 \(\Omega\) 的函数称为试验函数，记作
+\(C_c^\infty(\Omega)\)。它在边界附近为零，因而分部积分没有边界项。若 \(u,v\in L^2_{\mathrm{loc}}(\Omega)\) 满足
+\begin{equation}
+ \int_\Omega u\,\partial_j\varphi\,\dd x
+ =-\int_\Omega v\varphi\,\dd x
+ \quad\text{对每个 }\varphi\in C_c^\infty(\Omega),
+ \label{eq:advanced-weak-derivative}
+\end{equation}
+便称 \(v\) 为 \(u\) 的第 \(j\) 个弱导数，写成 \(\partial_j u=v\)。光滑函数的弱导数就是通常的导数；这个定义只是把分部积分反过来当作导数的判据。
+
+\begin{proposition}[弱导数的唯一性]
+若 \(v_1,v_2\) 都满足\eqnrefs{eq:advanced-weak-derivative}，则 \(v_1=v_2\) 几乎处处。
+\end{proposition}
+
+\begin{proof}
+两式相减得 \(\int(v_1-v_2)\varphi=0\) 对一切试验函数成立。试验函数在局部 \(L^2\) 中稠密：先截去远离原点和边界的部分，再与光滑、积分为一的核卷积即可逼近。因此 \(v_1-v_2\) 与自身在任意紧子集上的 \(L^2\) 内积为零，故它几乎处处为零。
+\end{proof}
+
+例如 \(u(x)=|x|\) 在 \((-1,1)\) 中不可在原点通常求导，却有弱导数 \(\operatorname{sgn}x\)：把积分拆在原点两侧分部积分，两个边界项因 \(u(0)=0\) 恰好抵消。相反，阶跃函数
+\(\Theta(x)=0\)（\(x<0\)）、\(\Theta(x)=1\)（\(x>0\)）的导数不是 \(L^2\) 函数，而是满足
+\(\langle\delta_0,\varphi\rangle=\varphi(0)\) 的 Dirac 分布：
+\[
+ \langle\Theta',\varphi\rangle
+ :=-\int_0^\infty\varphi'(x)\,\dd x=\varphi(0).
+\]
+更一般地，分布是试验函数上的连续线性泛函；分布的导数由
+\(\langle T',\varphi\rangle=-\langle T,\varphi'\rangle\) 定义。由此直接求得分段光滑函数在 \(x=a\) 处的导数为“各段通常导数加上跳跃量乘 \(\delta_a\)”。梁所受的点载荷正是这个意义下的源。
+
+\begin{definition}[Sobolev 空间]
+对于非负整数 \(m\)，\(H^m(\Omega)\) 是所有满足
+\(\partial^\alpha u\in L^2(\Omega)\)（\(|\alpha|\le m\)，导数取弱意义）的函数所成的空间，其范数为
+\[
+ \|u\|_{H^m(\Omega)}^2
+ =\sum_{|\alpha|\le m}\|\partial^\alpha u\|_{L^2(\Omega)}^2.
+\]
+特别地，\(H^0=L^2\)；\(H^1\) 控制位移与斜率，\(H^2\) 还控制曲率。\(H_0^m(\Omega)\) 定义为 \(C_c^\infty(\Omega)\) 在 \(H^m\) 范数中的闭包。
+\end{definition}
+
+\begin{proposition}[\(H^m\) 是 Hilbert 空间]
+上述范数来自各阶导数内积之和；在此范数下 \(H^m(\Omega)\) 完备。
+\end{proposition}
+
+\begin{proof}
+若 \((u_n)\) 在 \(H^m\) 中为 Cauchy 序列，则每个 \(\partial^\alpha u_n\) 在 \(L^2\) 中有极限 \(v_\alpha\)，特别记 \(u=v_0\)。把
+\(\int(\partial^\alpha u_n)\varphi=(-1)^{|\alpha|}\int u_n\partial^\alpha\varphi\)
+两边取极限，得到 \(v_\alpha\) 正是 \(u\) 的弱导数。因此 \(u\in H^m\)，且定义范数中的每一项都收敛。
+\end{proof}
+
+空间微分在许多方程中反复出现。Fourier 变换的作用，是把这些微分同时化成代数乘法。先在快速下降的光滑函数上定义
+\begin{equation}
+ \widehat f(k)=(2\pi)^{-d/2}\int_{\mathbb R^d}
+       \ee^{-\ii k\cdot x}f(x)\,\dd^dx,
+ \qquad
+ f(x)=(2\pi)^{-d/2}\int_{\mathbb R^d}
+       \ee^{\ii k\cdot x}\widehat f(k)\,\dd^dk.
+ \label{eq:advanced-fourier-pair}
+\end{equation}
+所谓快速下降，是指函数及其任意阶导数乘任意多项式仍有界；这个函数类记作 \(\mathcal S(\mathbb R^d)\)。它使下面的交换积分与分部积分没有边界疑问。第二个式子是反演定理，不只是符号约定。对第一个积分连续对 \(k\) 求导，相当于在被积函数中乘 \(-\ii x\)；对 \(x\) 分部积分，则相当于乘 \(\ii k\)。这两种操作说明 \(\widehat f\) 仍快速下降。
+
+\begin{proposition}[Fourier 反演与求导]
+对 \(f\in\mathcal S(\mathbb R^d)\)，\eqnrefs{eq:advanced-fourier-pair} 的反演式成立，且
+\[
+ \widehat{\partial_jf}(k)=\ii k_j\widehat f(k),
+ \qquad
+ \widehat{f*g}(k)=(2\pi)^{d/2}\widehat f(k)\widehat g(k).
+\]
+这里 \((f*g)(x)=\int f(x-y)g(y)\,\dd^dy\)。
+\end{proposition}
+
+\begin{proof}
+对第一个式子分部积分一次，\(\partial_j\) 从 \(f\) 转移到指数函数，边界项因快速下降消失；卷积式只需令 \(x=y+z\)，然后把两个积分分开。为证明反演，先在右边的 \(k\) 积分中加入因子 \(\ee^{-\varepsilon|k|^2/2}\)。将 \(\widehat f\) 的定义代入，完成 Gaussian 积分，得到
+\[
+ (2\pi)^{-d/2}\int\ee^{\ii k\cdot x-\varepsilon|k|^2/2}\widehat f(k)\,\dd^dk
+ =\int f(y)(2\pi\varepsilon)^{-d/2}
+     \ee^{-|x-y|^2/(2\varepsilon)}\,\dd^dy.
+\]
+右边的核非负、积分为一，并随 \(\varepsilon\downarrow0\) 集中到 \(y=x\)，故趋于 \(f(x)\)。左边由 \(\widehat f\) 的快速下降性可直接令 \(\varepsilon\downarrow0\)，于是得到反演式。
+\end{proof}
+
+\begin{proposition}[Plancherel 等式与 Sobolev 范数]
+Fourier 变换按 \(L^2\) 范数唯一延拓为酉算子，特别地
+\[
+ \int_{\mathbb R^d}\overline{f(x)}g(x)\,\dd^dx
+ =\int_{\mathbb R^d}\overline{\widehat f(k)}\widehat g(k)\,\dd^dk.
+\]
+对整数 \(m\ge0\)，\(u\in H^m(\mathbb R^d)\) 当且仅当
+\(\int(1+|k|^2)^m|\widehat u(k)|^2\,\dd^dk<\infty\)；这个积分的平方根与前述 \(H^m\) 范数等价。
+\end{proposition}
+
+\begin{proof}
+先取 \(f,g\in\mathcal S\)。把刚证明的反演式代入 \(\int\overline f g\)，交换积分即得内积等式。快速下降函数在 \(L^2\) 中稠密，所以等式把 Fourier 变换唯一延拓到所有 \(L^2\) 函数，且逆变换仍由指数符号反向的公式给出。最后使用
+\(\widehat{\partial^\alpha u}=(\ii k)^\alpha\widehat u\)，把 \(H^m\) 范数写成
+\(\int\sum_{|\alpha|\le m}|k^\alpha|^2|\widehat u|^2\)。有限个单项式的和与 \((1+|k|^2)^m\) 在上下两个方向都相差至多一个仅依赖 \(d,m\) 的常数。先对快速下降函数证明；对一般 \(u\)，在 Fourier 侧把 \(\widehat u\) 截到大球内，再以光滑核卷积。所得光滑紧支函数在带权 \(L^2\) 中逼近 \(\widehat u\)，它们的逆变换属于 \(\mathcal S\)，故可取极限。
+\end{proof}
+
+例如热方程 \(\partial_tu=\kappa\Delta u\)（\(\kappa>0\)）的初值为 \(f\)。空间 Fourier 变换将其化为每个 \(k\) 上的一阶常微分方程
+\(\partial_t\widehat u=-\kappa|k|^2\widehat u\)，所以
+\[
+ \widehat u(t,k)=\ee^{-\kappa t|k|^2}\widehat f(k),
+ \qquad
+ u(t,x)=\int_{\mathbb R^d}
+   \frac{\ee^{-|x-y|^2/(4\kappa t)}}{(4\pi\kappa t)^{d/2}}f(y)\,\dd^dy.
+\]
+第二式由反演和同一个 Gaussian 积分得到。这里并没有先猜一个“热核”：微分变乘法、常微分方程可解、再变换回来，核便自然出现。后文的波动 Green 函数、散射振幅和正常模展开用的也是这套次序，只是谱参数与边界条件不同。
+
+弱导数并没有抹去边界条件。以区间 \((0,L)\) 为例，\(H^1\) 函数有连续代表，满足
+\(u(x)=u(y)+\int_y^x u'(t)\,\dd t\)。这是先对光滑函数使用微积分基本定理、再由 \(H^1\) 稠密逼近取得的。对 \(y\) 取平均并用 Cauchy--Schwarz 不等式，得到
+\begin{equation}
+ |u(0)|\le L^{-1/2}\|u\|_{L^2(0,L)}+L^{1/2}\|u'\|_{L^2(0,L)}.
+ \label{eq:advanced-trace-interval}
+\end{equation}
+因此端点值并非随意选择的代表，而是 \(H^1\) 范数下连续的映射。对 \(u'\) 再用一次同样论证，\(H^2(0,L)\) 的 \(u(0),u(L),u'(0),u'(L)\) 都有确定意义。特别地，\(H_0^2(0,L)\) 的四个值全为零，正好是两端固支梁的条件；\(H^2(0,L)\cap H_0^1(0,L)\) 只预先固定两个位移值，弯矩条件须由变分产生。
+
+在光滑有界的二维区域，局部把边界拉直，再沿法向使用同样方法，也能证明 \(u\) 与 \(\partial_nu\) 的边界迹连续存在。切向还有一个值得算清的正则性问题。先在上半平面取切向 Fourier 变换，记 \(a=(1+\xi^2)^{1/2}\)，对每个频率写 \(w(t)=\widehat u(\xi,t)\)。一维恒等式
+\(
+ |w(0)|^2=-\int_0^\infty (|w|^2)'\,\dd t
+ \le 2\|w\|_{L^2_t}\|w'\|_{L^2_t}
+\)
+先对紧支光滑函数成立，再由稠密性延至 \(H^1\)。把它乘以 \(a^3\)，并用 \(2xy\le x^2+y^2\)，得到
+\[
+ a^3|\widehat u(\xi,0)|^2
+ \le a^4\|\widehat u(\xi,\cdot)\|_2^2
+    +a^2\|\partial_t\widehat u(\xi,\cdot)\|_2^2.
+\]
+对 \(w'=\partial_t\widehat u\) 重做计算，乘以 \(a\) 得
+\[
+ a|\partial_t\widehat u(\xi,0)|^2
+ \le a^2\|\partial_t\widehat u(\xi,\cdot)\|_2^2
+    +\|\partial_t^2\widehat u(\xi,\cdot)\|_2^2.
+\]
+两式对 \(\xi\) 积分，右边均由 \(\|u\|_{H^2}\) 控制。因而边界值分别属于 \(H^{3/2}\) 与 \(H^{1/2}\)；这里局部边界坐标中的 \(H^s\) 由 Fourier 权重
+\(\int(1+|\xi|^2)^s|\widehat f(\xi)|^2\,\dd\xi\)
+定义。光滑边界可由有限个坐标片拉直，并用总和为一的光滑截断函数把上述估计相加；坐标改变只修改估计常数。因此位移迹属于 $H^{3/2}$，法向斜率迹属于 $H^{1/2}$，二者自然落在不同的边界函数空间中。
+
+\section{从能量极小到自伴算子}
+\label{sec:advanced-form-method}
+
+线性弹性与量子力学经常从一个二次能量开始。设 \(H\) 为复 Hilbert 空间，\(V\subset H\) 为稠密的 Hilbert 子空间，包含关系连续。以薄板为例，\(H=L^2(\Omega)\)，而 \(V\) 是满足指定运动学边界条件的 \(H^2(\Omega)\) 子空间。设 \(a:V\times V\to\mathbb C\) 对第一变量线性、对第二变量共轭线性，且
+\[
+ a[u,v]=\overline{a[v,u]},\qquad
+ |a[u,v]|\le M\|u\|_V\|v\|_V,
+ \qquad a[u,u]\ge c\|u\|_V^2,
+\]
+其中 \(M,c>0\)。这里把试探函数放在第二变量，所以 \(a[u,v]\) 对 \(v\) 共轭线性；与前述“内积对第二变量线性”的约定相配时，弱方程中的源项写成 \(\langle v,f\rangle_H\)。最后一个不等式称为强制性；它说能量不只非负，还控制了解的整个范数。
+
+\begin{theorem}[强制型变分方程]
+对任意连续共轭线性泛函 \(F\)（例如 \(F(v)=\langle v,f\rangle_H\)），存在唯一的 \(u\in V\) 满足
+\begin{equation}
+ a[u,v]=F(v)\quad(\forall v\in V),
+ \qquad \|u\|_V\le c^{-1}\|F\|_{V^*}.
+ \label{eq:advanced-coercive-weak}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+先回忆 Riesz 表示：Hilbert 空间上的连续共轭线性泛函可唯一写成 \(F(v)=\langle v,g\rangle_V\)。这一结论可直接从正交投影得到：若 \(F\ne0\)，\(\ker F\) 是闭超平面；取一个不在核中的向量，减去它在核上的最近点便得一维正交方向，沿此方向的系数唯一确定 \(g\)。最近点的存在可由极小化序列和恒等式
+\(\|p-q\|^2=2\|p\|^2+2\|q\|^2-4\|(p+q)/2\|^2\)
+证明，唯一性由严格凸性得到。对每个 \(u\)，把 \(v\mapsto a[u,v]\) 也这样表示，得到有界算子 \(A:V\to V\) 满足 \(a[u,v]=\langle v,Au\rangle_V\)。对称性使 \(A=A^*\)；强制性与 Cauchy--Schwarz 给出
+\(\|Au\|_V\ge c\|u\|_V\)，所以 \(A\) 单射且像闭。若 \(w\) 与像正交，则 \(Aw=0\)，故 \(w=0\)；像又稠密，因而等于 \(V\)。取 \(u=A^{-1}g\) 即得存在性与唯一性。令 \(v=u\) 并用强制性，还得到题中的估计。
+\end{proof}
+
+这个证明解释了为什么边界条件不能事后随便附加：它们先决定允许变化的空间 \(V\)，再决定能量是否强制。例如自由薄板的能量只含二阶导数，任意仿射函数 \(a+bx+cy\) 都有零能量。此时在这些零模的正交补上解变分方程；源项必须与零模正交，否则平衡不存在。
+
+还可以从弱方程定义真正的算子，而不预先猜它的微分表达式。假设 \(a[u,u]\ge0\)，且
+\(\|u\|_a^2:=a[u,u]+\|u\|_H^2\) 使 \(V\) 完备，定义
+\[
+ D(L)=\{u\in V:\text{存在 }g\in H\text{ 使 }a[u,v]=\langle v,g\rangle_H\ (\forall v\in V)\},
+ \qquad Lu=g.
+\]
+\(g\) 因 \(V\) 在 \(H\) 中稠密而唯一。对 \(a[u,v]+\langle v,u\rangle_H\) 应用刚证过的定理，知道每个 \(f\in H\) 都有唯一的
+\((L+I)u=f\)。记其有界逆为 \(B=(L+I)^{-1}\)。由形式的对称性，任意 \(f,g\in H\) 都满足
+\(\langle Bf,g\rangle_H=\langle f,Bg\rangle_H\)，所以 \(B\) 自伴。又因 \(B\) 单射，\(\overline{\operatorname{ran}B}=(\ker B)^{\perp}=H\)，故 \(D(L)=\operatorname{ran}B\) 稠密，伴随算子 \(L^*\) 确实有定义。算子 \(L\) 对称；又因 \(L+I\) 满射，它实际上自伴。为看清最后一步，若 \(w\in D(L^*)\)，选 \(u\in D(L)\) 使
+\((L+I)u=(L^*+I)w\)，则 \(w-u\) 与 \(\operatorname{ran}(L+I)=H\) 正交，只能为零。这就是非负闭二次型的第一表示定理在这里所需的内容。
+
+有界区域上的离散振动谱还需要一个与自伴性不同的条件：紧性。对矩形区域，把它分成边长 \(h\) 的小方格，以每格平均值构成有限维近似 \(Q_hu\)。一维微积分基本定理沿坐标方向给出
+\(\|u-Q_hu\|_{L^2}\le Ch\|\nabla u\|_{L^2}\)。所以 \(H^1\) 中有界的一族函数，可先用有限维的 \(Q_hu\) 逼近，再从中抽出 \(L^2\) 收敛子列；这便是紧嵌入的直接证明。对有界 Lipschitz 区域，局部拉直边界并反射延拓，把论证化为矩形情形。特别是 \(H^2(\Omega)\) 到 \(L^2(\Omega)\) 的包含映射紧。
+
+若形式范数控制 \(H^2\) 范数，则 \((L+I)^{-1}\) 先把 \(L^2\) 中的有界集送到 \(H^2\) 的有界集，再由紧嵌入送到 \(L^2\) 的相对紧集，故预解算子紧。同理，把紧嵌入逐一用于 \(u\) 的所有一阶导数，还得到 \(H^2\hookrightarrow\hookrightarrow H^1\)。
+
+\begin{theorem}[紧预解式的离散谱]
+设 \(H\) 可分，\(L\ge0\) 自伴，且 \(K=(L+I)^{-1}\) 紧。则 \(H\) 有一组由 \(L\) 的本征向量组成的正交基；对应本征值非负、有限重数，若 \(H\) 无限维，则按重数排列后趋于无穷。
+\end{theorem}
+
+\begin{proof}
+\(K\) 是正的紧自伴算子。先说明它为何有本征向量。对任意非零紧自伴算子 \(T\)，记
+\(w=\sup_{\|u\|=1}|\langle u,Tu\rangle|\)。显然 \(w\le\|T\|\)。反过来，给单位向量 \(u,v\) 乘适当相位，使 \(\langle u,Tv\rangle\) 为非负实数；自伴性和恒等式
+\[
+4\operatorname{Re}\langle u,Tv\rangle
+=\langle u+v,T(u+v)\rangle-\langle u-v,T(u-v)\rangle
+\]
+给出 \(|\langle u,Tv\rangle|\le w(\|u+v\|^2+\|u-v\|^2)/4=w\)。再对 \(v\) 取上确界，得 \(\|T\|=w\)。取趋近上确界的单位向量 \(u_n\)。在可分 Hilbert 空间中，对一组可数正交基的坐标逐次抽子列，并用 Bessel 不等式检查极限，便得到弱收敛子列；紧性使 \(Tu_n\) 强收敛。因此二次型的极限取得非零极值。若弱极限的范数小于一，把它归一化会使二次型绝对值更大，故极限仍是单位向量。对它作与正交方向的一阶变分，得到 \(Tu=\lambda u\)，其中 \(|\lambda|=\|T\|\)。
+
+把所得本征向量的正交补作为新的不变空间，重复这一步。不同本征值对应的向量正交；若存在无限多个绝对值至少为 \(\varepsilon>0\) 的正交本征向量，它们在 \(T\) 作用后的像相距至少 \(\sqrt2\varepsilon\)，与紧性矛盾。因此非零本征值只能趋于零，剩余正交补上 \(T=0\)。对 \(T=K\)，逆算子 \(L+I\) 的满射性说明 \(K\) 单射，所以没有剩余的核；本征向量张成整个 \(H\)。若 \(K\phi_n=\mu_n\phi_n\)，则
+\(L\phi_n=(\mu_n^{-1}-1)\phi_n\)。\(\mu_n>0\) 且趋于零，所述结论随之成立。
+\end{proof}
+
+这里的逻辑不可倒置：形式非负保证能量不下降，强制性保证弱解唯一，紧性才保证振动频率离散。
+
+\section{积分方程：从定义到求解}
+\label{sec:advanced-integral-equations}
+
+在微分方程中，未知函数的导数出现在方程里；在积分方程中，未知函数出现在积分号下。例如薄梁受到载荷 $f$ 后的位移，可以写成 $u(x)=\int_0^L G(x,y)f(y)\dd y$。这不只是换一种记号：$G(x,y)$ 记录作用在 $y$ 处的单位点力对 $x$ 处的响应，因而使局部微分方程变成了全域的响应公式。这里先把这种写法作为独立的数学问题讲清楚。
+
+\begin{definition}[积分算子与积分方程]
+给定区间 $I=[a,b]$、已知核 $k:I\times I\to\mathbb C$，定义
+\[
+(K\phi)(x)=\int_a^b k(x,y)\phi(y)\dd y.
+\]
+求未知函数 $\phi$ 使 $K\phi=f$，称为第一类 Fredholm 积分方程；求 $\phi=f+\lambda K\phi$，称为第二类 Fredholm 积分方程，其中 $f$ 与参数 $\lambda$ 已知。若积分上限改为 $x$，即 $(V\phi)(x)=\int_a^x k(x,y)\phi(y)\dd y$，相应称为 Volterra 方程。第一类方程求的是积分算子的逆，第二类方程求的是 $I-\lambda K$ 的逆。核在对角线奇异时，普通积分可能不存在，必须另外规定弱积分或主值积分；以下先讨论连续核。
+\end{definition}
+
+定义还必须说明函数空间。$C(I)$ 表示 $I$ 上所有连续函数，配以最大值范数 $\|\phi\|_\infty=\max_{x\in I}|\phi(x)|$；一致收敛的连续函数列仍连续，所以它对这个范数完备。一般地，范数空间若所有 Cauchy 列都收敛，便称为 Banach 空间。连续核在 $C(I)$ 上给出有界算子：若 $M=\max_{I^2}|k|$，则
+\[
+\|K\phi\|_\infty\le M(b-a)\|\phi\|_\infty.
+\]
+在 $L^2(I)$ 中也有 $\|K\phi\|_2\le\|k\|_{L^2(I^2)}\|\phi\|_2$，这由对每个 $x$ 使用 Cauchy--Schwarz 不等式，再对 $x$ 积分得到。同一个积分式因此可以在不同空间中讨论，但“存在唯一解”必须相对于选定的空间而言。
+
+\begin{theorem}[第二类方程的 Neumann 级数]
+若 $K$ 是 Banach 空间上的有界线性算子，且 $q:=|\lambda|\|K\|<1$，则 $\phi=f+\lambda K\phi$ 有唯一解
+\begin{equation}
+\phi=\sum_{n=0}^\infty\lambda^nK^nf.
+\label{eq:advanced-fredholm-neumann}
+\end{equation}
+取到第 $N$ 项的近似 $\phi_N$ 满足
+\[
+\|\phi-\phi_N\|\le\frac{q^{N+1}}{1-q}\|f\|.
+\]
+\end{theorem}
+
+\begin{proof}
+第 $n$ 项范数不超过 $q^n\|f\|$，故级数按几何级数一致收敛。以 $K$ 的连续性逐项作用，得 $\lambda K\phi=\sum_{n\ge1}\lambda^nK^nf=\phi-f$。若两个解之差为 $w$，则 $\|w\|=\|\lambda Kw\|\le q\|w\|$；$q<1$ 迫使 $w=0$。尾项的几何级数估计即给出所述误差界。
+\end{proof}
+
+这个条件是充分条件，不是“$q\ge1$ 时无解”的判据。Volterra 核还具有更强的结构：第 $n$ 次作用只在有序单纯形 $a\le y_n\le\cdots\le y_1\le x$ 上积分，体积为 $(x-a)^n/n!$。因此若 $|k(x,y)|\le M$，则
+\[
+\|V^n\|_{C(I)\to C(I)}\le\frac{[M(b-a)]^n}{n!}.
+\]
+于是 $\sum_{n\ge0}\lambda^nV^nf$ 对每个有限 $\lambda$ 都收敛；同样以 $w=\lambda Vw$ 反复代入，并令 $n\to\infty$，便得唯一性。最简单的例子是
+\[
+u(x)=1+\lambda\int_0^x u(y)\dd y.
+\]
+这里 $V^n1=x^n/n!$，故 $u(x)=\sum_{n\ge0}(\lambda x)^n/n!=\ee^{\lambda x}$；直接微分也得到 $u'=\lambda u$、$u(0)=1$。这说明积分方程不仅能求微分方程，初值也已包含在积分下限与非齐次项里。
+
+同一方程还能把梯形求积的误差阶数算到首项。取 $\lambda=2$、$[0,1]$ 上的均匀网格 $x_n=nh$，其中 $h=1/N$。在节点 $x_n$ 使用复合梯形公式，令 $u_n$ 近似 $u(x_n)$，得到
+\[
+u_n=1+2h\left(\frac12u_0+\sum_{j=1}^{n-1}u_j+\frac12u_n\right),
+\qquad u_0=1.
+\]
+把第 $n-1$ 个方程从第 $n$ 个方程中相减，公共的旧节点项全部消去：
+\[
+u_n-u_{n-1}=h(u_n+u_{n-1}),
+\qquad
+u_n=\frac{1+h}{1-h}u_{n-1}.
+\]
+因此数值解有闭式表达
+\[
+u_n=\left(\frac{1+h}{1-h}\right)^n.
+\]
+当 $0<h<1$ 时，利用 $\log\frac{1+h}{1-h}=2(h+h^3/3+h^5/5+\cdots)$，且 $x_n=nh\le1$，可一致地展开为
+\[
+\log u_n=2x_n+\frac23x_nh^2+O(h^4),\qquad
+u_n-\ee^{2x_n}=\frac23x_n\ee^{2x_n}h^2+O(h^4).
+\]
+首项在 $x_n=1$ 取最大，故最大误差为
+$\frac23\ee^2h^2+O(h^4)$；网格步长减半时，误差比趋于 $4$。\figref{fig:advanced-integral-equations} 上图的斜率 $2$ 因而来自离散方程本身，而非仅由有限几组数值点推测。
+
+Fredholm 方程与初值型 Volterra 方程不同：反馈遍及整个区间，某些参数值会出现共振。先看一个无需抽象谱理论便可算完的例子：
+\begin{equation}
+u(x)=1+\lambda\int_0^1 xy\,u(y)\dd y,\qquad 0\le x\le1.
+\label{eq:advanced-rank-one-fredholm}
+\end{equation}
+令 $c=\int_0^1 y u(y)\dd y$，则 $u(x)=1+\lambda cx$，代回定义得到
+\[
+c=\frac12+\frac{\lambda}{3}c.
+\]
+所以 $\lambda\ne3$ 时唯一解为
+\[
+u(x)=1+\frac{\lambda x}{2(1-\lambda/3)}.
+\]
+在 $\lambda=3$ 时，方程要求 $c=1/2+c$，不可能成立。若把右端的 $1$ 换成某个 $f(x)$，则 $\lambda=3$ 可解的充要条件是 $\int_0^1 yf(y)\dd y=0$；此时 $c$ 可任意取，解并不唯一。这是 Fredholm 二择定理最小的模型。
+
+对连续且对称的实核，$K$ 在 $L^2(I)$ 上是紧自伴算子。紧性可以直接从连续核的一致连续性看出：把 $I^2$ 分成足够小的矩形，并在每块上以常数近似 $k$，所得核只产生有限秩算子；核的 $L^2$ 误差控制算子范数误差。由前面的紧自伴谱定理，非零本征值 $\mu_j$ 只能以 $0$ 为聚点。本征方向上的第二类方程逐项成为
+\begin{equation}
+(1-\lambda\mu_j)\phi_j=f_j.
+\label{eq:advanced-fredholm-spectral}
+\end{equation}
+若 $1-\lambda\mu_j\ne0$ 对所有 $j$ 成立，就可逐项求解；若其中某项为零，必须先有对应的 $f_j=0$，而该方向的解可加任意倍本征函数。对不对称核也有 Fredholm 二择定理，但相容条件要对伴随算子的零空间检验，不能直接照搬对称情形。
+
+第一类方程的困难则常是稳定性，而非形式上的可解性。取 $(K\phi)(x)=\int_0^x\phi(y)\dd y$，令 $\phi_n(x)=\sin(n\pi x)$，则 $\|\phi_n\|_\infty=1$，而
+\[
+(K\phi_n)(x)=\frac{1-\cos(n\pi x)}{n\pi},\qquad
+\|K\phi_n\|_\infty\le\frac{2}{n\pi}\longrightarrow0.
+\]
+可见很大的高频未知量，积分后却几乎看不见；若从含噪数据中通过求导恢复 $\phi$，噪声也会被放大。这就是第一类方程的病态性。加入先验平滑约束的正则化是另一个问题，不能把第一类方程直接当作第二类方程的 Neumann 级数来求。
+
+并非所有第一类方程都要先离散成矩阵。带弱奇异核的 Abel 方程是一个可以完整反演的范例：设 $f(0)=0$，
+\begin{equation}
+f(x)=\int_0^x\frac{\phi(t)}{\sqrt{x-t}}\dd t,
+\qquad 0<x<b.
+\label{eq:advanced-abel-integral}
+\end{equation}
+核在 $t=x$ 发散，但奇性可积。再对 $f$ 作用一次同样的积分算子，并在连续 $\phi$ 的假设下交换积分次序，得到
+\[
+\int_0^x\frac{f(s)}{\sqrt{x-s}}\dd s
+=\int_0^x\phi(t)\left[\int_t^x
+\frac{\dd s}{\sqrt{(x-s)(s-t)}}\right]\dd t
+=\pi\int_0^x\phi(t)\dd t.
+\]
+内层令 $s=t+(x-t)z$，再令 $z=\sin^2\theta$，就得到 $\int_0^1[z(1-z)]^{-1/2}\dd z=\pi$。因此
+\begin{equation}
+\phi(x)=\frac1\pi\frac{\dd}{\dd x}
+\int_0^x\frac{f(s)}{\sqrt{x-s}}\dd s.
+\label{eq:advanced-abel-inverse}
+\end{equation}
+公式看似显式，末尾的求导仍会放大数据噪声；“有反演公式”与“稳定可反演”是不同命题。
+
+若数据 $f^\delta$ 含噪，在 Hilbert 空间里一种明确的稳定化办法是最小化
+\[
+J_\alpha(\phi)=\|K\phi-f^\delta\|^2+\alpha\|\phi\|^2,
+\qquad\alpha>0.
+\]
+对任意方向 $h$ 求一阶变分并令其为零，得正规方程
+\begin{equation}
+(K^*K+\alpha I)\phi_\alpha=K^*f^\delta.
+\label{eq:advanced-tikhonov}
+\end{equation}
+因为 $\langle\phi,(K^*K+\alpha I)\phi\rangle\ge\alpha\|\phi\|^2$，前面的强制型变分定理保证每个 $\alpha>0$ 有唯一解。再以 $\phi_\alpha$ 与\eqnrefs{eq:advanced-tikhonov}取内积，记 $t=\|K\phi_\alpha\|$，便有
+\[
+\alpha\|\phi_\alpha\|^2
+\le t\|f^\delta\|-t^2
+\le\frac14\|f^\delta\|^2,
+\qquad
+\|\phi_\alpha\|\le\frac{\|f^\delta\|}{2\sqrt\alpha}.
+\]
+$\alpha$ 不能只求越小越好：它减小时偏差通常降低，噪声放大却增加；选取它须结合数据误差与先验知识。
+
+\figref{fig:advanced-integral-inverse}展示同一数据上的两种恢复：先对 $\phi(x)=1+\sin(2\pi x)$ 积分，再给积分值加入固定随机种子的微小噪声。相邻数据直接相减相当于求导，误差按 $1/h$ 放大；按\eqnrefs{eq:advanced-tikhonov}求解则以有限的 $\alpha$ 牺牲少量分辨率，换取稳定的形状恢复。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\linewidth]{inverse_integral_regularization.pdf}
+\caption{第一类积分方程 $(K\phi)(x)=\int_0^x\phi(y)\dd y$ 的反演。上：原始积分值与含噪观测几乎重合；下：直接差分显著放大噪声，零阶 Tikhonov 正则化从同一组数据得到较稳定的近似。}
+\label{fig:advanced-integral-inverse}
+\end{figure}
+
+实际计算第二类方程时，最直接的是把积分替换为求积公式。取节点 $x_i$ 和权重 $w_j$，令 $u_i\approx u(x_i)$，便得到 Nystr\"om 离散式
+\begin{equation}
+\sum_j\bigl[\delta_{ij}-\lambda w_jk(x_i,x_j)\bigr]u_j=f(x_i).
+\label{eq:advanced-nystrom}
+\end{equation}
+先检查离散矩阵是否接近奇异，再比较加密节点后的结果；仅仅得到一组可解的线性方程，并不保证原积分方程稳定。后面的薄板 Green 算子与散射方程都会用到这套语言。
+
+微分方程怎样变成第二类方程，可以在这里精确写出。设 $L_0$ 是带指定边界条件的可逆微分算子，$G_0=L_0^{-1}$，而实际模型多了乘法项 $V(x)u(x)$。对 $(L_0+V)u=f$ 两边作用 $G_0$，便有
+\[
+u=G_0f-G_0(Vu),\qquad
+u(x)=\int_I G_0(x,y)f(y)\dd y
+-\int_I G_0(x,y)V(y)u(y)\dd y.
+\]
+因此已知的自由 Green 函数成为核，未知量只在线性积分项内。若 $\|G_0V\|<1$，Neumann 级数给出逐次散射（或逐次响应）；若 $-1$ 是 $G_0V$ 的特征值，则 $I+G_0V$ 不可逆，必须检查前述 Fredholm 相容条件，不能只增加迭代次数。\figref{fig:advanced-integral-equations}以 Volterra 的 $u=1+2\int_0^x u$ 和秩一 Fredholm 方程\eqnrefs{eq:advanced-rank-one-fredholm}为例，分别显示初值型积分求积的二阶收敛与全局反馈在 $\lambda=3$ 处的奇异性。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\linewidth]{integral_equations.pdf}
+\caption{积分方程的两种数值行为。上：复合梯形公式求 Volterra 方程，相对精确解 $e^{2x}$ 的最大误差按 $h^2$ 下降；下：Gauss--Legendre 求积离散秩一 Fredholm 方程时，矩阵条件数在 $\lambda=3$ 附近增大。图中不在奇点本身求逆。}
+\label{fig:advanced-integral-equations}
+\end{figure}
+
+\section{复函数、零点与极限}
+\label{sec:advanced-complex-analysis}
+
+统计物理中说“有限系统没有相变”，并不是说它的配分函数在复平面没有零点，而是说实物理参数处的有限体积自由能仍可解析地求导。两句话之间的距离由复分析填上。设 \(U\subset\mathbb C\) 为开集；若
+\[
+ f'(z)=\lim_{h\to0}\frac{f(z+h)-f(z)}{h}
+\]
+与复数 \(h\) 趋零的方向无关，就称 \(f\) 在 \(z\) 复可微；若在 \(U\) 每点都如此，就称 \(f\) 全纯。复可微比两个实变量分别可微严格得多：写 \(f=u+\ii v\)、\(z=x+\ii y\)，沿实轴与虚轴分别取极限，必有
+\[
+ u_x=v_y,\qquad u_y=-v_x,
+\]
+这就是 Cauchy--Riemann 方程。多项式和指数函数全纯；有限个指数的和因而全纯，但它们的对数只能在避开零点的区域选择分支。
+
+\begin{theorem}[Cauchy 积分公式]
+若 \(f\) 在包含闭圆盘 \(\overline{B(a,R)}\) 的开集上全纯，且 \(|w-a|<R\)，则
+\begin{equation}
+ f(w)=\frac{1}{2\pi\ii}\oint_{|z-a|=R}\frac{f(z)}{z-w}\,\dd z,
+ \qquad
+ f^{(n)}(w)=\frac{n!}{2\pi\ii}
+       \oint_{|z-a|=R}\frac{f(z)}{(z-w)^{n+1}}\,\dd z.
+ \label{eq:advanced-cauchy-formula}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+先证明三角形边界上的积分为零。把一个三角形等分成四个相似小三角形；内边抵消后，原积分等于四个小积分之和，故至少一个小三角形的积分绝对值不小于原来的四分之一。重复选取，得到直径趋零、公共极限点为 \(z_*\) 的嵌套三角形。复可微意味着
+\(f(z)=f(z_*)+f'(z_*)(z-z_*)+r(z)(z-z_*)\)，其中 \(r(z)\to0\)。常数和线性项沿三角形边界的积分都为零；余项的积分由“周长乘直径乘 \(\sup|r|\)”控制。第 \(n\) 个三角形的周长和直径均为原来的 \(2^{-n}\)，而它的积分至少是原积分的 \(4^{-n}\) 倍；两式合起来迫使原积分为零。这是 Goursat 论证，不需要事先假设 \(f'\) 连续。把圆盘内区域三角剖分并令网格趋细，可得可缩闭曲线上的积分也为零。
+
+在圆盘中挖去以 \(w\) 为心的半径 \(\varepsilon\) 小圆，对 \(f(z)/(z-w)\) 应用刚证的闭路积分定理。外圆积分等于小圆积分；令 \(\varepsilon\to0\)，由 \(f(z)\to f(w)\) 与
+\(\oint_{|z-w|=\varepsilon}(z-w)^{-1}\dd z=2\pi\ii\)，得到第一式。固定外圆以后，核 \((z-w)^{-1}\) 对内部 \(w\) 可逐次求导，且在更小闭圆盘上一致有界，因此把导数移入积分便得到第二式。
+\end{proof}
+
+\begin{proposition}[局部一致极限仍全纯]
+若 \(f_n\) 在 \(U\) 全纯，并在 \(U\) 的每个紧子集上一致收敛于 \(f\)，则 \(f\) 全纯；在更小的紧子集上，各阶导数也收敛到 \(f\) 的相应导数。
+\end{proposition}
+
+\begin{proof}
+任取中心 \(a\) 和闭圆盘 \(\overline{B(a,R)}\subset U\)。一致收敛允许对 Cauchy 公式右边的圆周积分取极限，得到
+\[
+ f(w)=\frac{1}{2\pi\ii}\oint_{|z-a|=R}
+       \frac{f(z)}{z-w}\,\dd z,
+ \qquad |w-a|<R.
+\]
+右边对 \(w\) 可微，所以 \(f\) 全纯。对高阶导数也用同一个公式；只要 \(w\) 留在较小的闭圆盘内，分母有统一正下界，故导数一致收敛。
+\end{proof}
+
+“一致”不能删去。实变量上的解析函数
+\(f_n(x)=\sqrt{x^2+1/n}\) 逐点趋于 \(|x|\)，后者在原点不可微；相应的复函数之所以不违背上一定理，是因为其分支点 \(\pm\ii/\sqrt n\) 向原点靠近，不存在包含原点的共同复邻域。后文研究热力学极限时，必须分别核查共同零点禁区和局部一致收敛，才可把有限体积解析性传给极限。
+
+\section{有限图：路径、连通性与树}
+\label{sec:advanced-graph-foundations}
+
+二维 Ising 模型把自旋放在格点上，并让相邻自旋相互作用。真正参与计算的不是格点画在纸上的形状，而是哪些点被哪条相互作用连接。把格点记为顶点、相互作用记为边，便得到一张图。这个抽象允许先在任意有限网络上证明组合恒等式，再把方格、环面或具体边界条件代入。
+
+\begin{definition}[有限图与顶点的度]
+有限图 $G=(V,E,\partial_E)$ 由有限顶点集 $V$、有限边集 $E$ 和端点映射 $\partial_E$ 组成；$\partial_E(e)$ 是边 $e$ 的一对端点，允许两端相同。两条不同边可以有同一对端点，此时称为平行边；端点相同的边称为自环。顶点 $v$ 的度 $\deg_G(v)$ 是与它相接的\emph{边端}数，所以一条自环对该顶点的度贡献 $2$。
+\end{definition}
+
+例如三角形的三个顶点都有度 $2$。若另添一条连接其中两点的平行边，这两点的度各增加 $1$；若在第三点添一条自环，它的度增加 $2$。按边端而不是“相邻顶点的个数”计数，下面的恒等式才无需排除这两种情况。
+
+\begin{proposition}[握手引理]
+任意有限图满足 $\sum_{v\in V}\deg_G(v)=2|E|$。特别地，奇度顶点的数目必为偶数。
+\end{proposition}
+
+\begin{proof}
+把所有顶点的度相加时，每条非自环边在两个端点各被数一次，自环在同一端点被数两次，因此每条边恰贡献 $2$。把等式模 $2$ 化，偶度顶点没有贡献，每个奇度顶点贡献 $1$；右边为零，故奇度顶点的个数为偶数。
+\end{proof}
+
+一条长为 $k$ 的游走写作 $v_0,e_1,v_1,\ldots,e_k,v_k$，其中 $e_i$ 连接 $v_{i-1}$ 与 $v_i$。若顶点不重复，称为简单路径；若除了 $v_k=v_0$ 以外顶点不重复，称为简单回路。自环可视为长为 $1$ 的回路，两条平行边可构成长为 $2$ 的回路。允许长度为零的路径，因此每个顶点都与自己连通。
+
+\begin{proposition}[游走与连通分支]
+若 $u$ 到 $v$ 存在游走，就存在一条从 $u$ 到 $v$ 的简单路径。“存在路径相连”是顶点集上的等价关系；它的等价类称为连通分支，分支数记为 $c(G)$。
+\end{proposition}
+
+\begin{proof}
+在所有从 $u$ 到 $v$ 的游走中取边数最少的一条。若有两个位置经过同一顶点，就可删去它们之间的一段而仍从 $u$ 走到 $v$，与最短性矛盾，所以这条游走是简单路径。长度为零的路径给自反性；倒走给对称性；首尾相接给传递性。传递时得到的游走可按刚才的方法缩成简单路径。
+\end{proof}
+
+连通分支使“全图上是否有一条路径”化成每个分支内的问题。特别是孤立顶点也单独构成一个分支，不能在以后的顶点数公式里悄悄丢掉。
+
+没有回路的图称为森林；连通的森林称为树。树的重要性不在于外形像树，而在于它以最少的边把一组顶点连在一起。
+
+\begin{theorem}[树的唯一路径与边数]
+有限连通\emph{无自环}图 $T$ 是树，当且仅当任意两顶点之间恰有一条简单路径。若树有 $n$ 个顶点，则有 $n-1$ 条边。因而任意森林满足 $|E|=|V|-c(G)$。
+\end{theorem}
+
+\begin{proof}
+连通保证路径存在。若两顶点间有两条不同的简单路径，从第一处分叉走到第一次重合处，两段路径合成一条回路。因此树中路径唯一。反过来，若图中有回路，取回路上相邻两顶点：一条路径直接沿连接边，另一条沿回路的其余边，违背唯一性。
+
+对边数按顶点数归纳。一个顶点的树没有边。若 $n>1$，取一条最长简单路径，其一个端点只能有一条相邻边；否则可把路径延长，或由一条通向路径内部的边形成回路。删去这个叶顶点及其唯一相邻边后，剩下的图仍连通且无回路，是 $n-1$ 个顶点的树。归纳给出原树有 $(n-2)+1=n-1$ 条边。森林逐分支相加即可。
+\end{proof}
+
+任意连通有限图都含有生成树，即包含全部顶点的树。若图有回路，删去回路上的一条边不会破坏连通性，因为原来经过该边的路径可以绕回路另一侧。反复删边，过程因边数有限而停止；所得连通无回路的图就是生成树。每条未被选入生成树的边称为弦，它与树中连接其两端的唯一路径合成一个基本回路。稍后这组回路会成为圈空间的基，而不是只供画图的辅助线。
+
+取\figref{fig:advanced-five-edge-graph}中的四顶点方环，边依次为 $a=01,b=12,c=23,d=30$，再加对角线 $e=02$。选 $a,b,c$ 作生成树；弦 $d$ 给回路 $a+b+c+d$，弦 $e$ 给回路 $a+b+e$。这里的加号暂时只表示“把边放在同一个边集中”；进入模二链空间后，它将有精确的代数含义。
+
+\begin{figure}[htbp]
+\centering
+\input{figures/tikz/five-edge-graph.tex}
+\caption{四顶点方环加一条对角线。边 $a,b,c$ 构成一棵生成树，余下两条边各生成一个基本回路。}
+\label{fig:advanced-five-edge-graph}
+\end{figure}
+
+\section{图上的边界、圈与割}
+
+在 Ising 高温展开中，一条边或者被选中，或者不被选中。同一条边若在两个边集的叠加中出现两次，就应抵消而不是变成两条新边。因此使用只有 $0,1$ 两个元素且 $1+1=0$ 的域 $\mathbb F_2$。定义 $C_0(G)=\mathbb F_2^V$ 和 $C_1(G)=\mathbb F_2^E$：前者把顶点子集写成 $0$-$1$ 向量，后者把边子集写成 $0$-$1$ 向量。两个边集在 $C_1$ 中相加，正好取它们的对称差。
+
+\begin{definition}[边界算子与圈空间]
+对端点为 $u,v$ 的非自环边，定义 $\partial_1e=u+v\in C_0(G)$；对自环定义 $\partial_1e=0$，再按 $\mathbb F_2$ 线性延拓为
+\begin{equation}
+\partial_1:C_1(G)\longrightarrow C_0(G).
+\label{eq:advanced-graph-boundary-primer}
+\end{equation}
+其核 $Z_1(G)=\ker\partial_1$ 称为圈空间。$Z_1$ 的元素也称偶子图或闭链。
+\end{definition}
+
+例如路径 $u\!\! -\!\! v\!\! -\!\! w$ 的两条边相加后，$v$ 在边界中出现两次而消失，留下 $u+w$；一条闭回路的每个顶点都被数两次，边界为零。一般地，$\partial_1A$ 恰是边集 $A$ 中所有\emph{奇度顶点}的集合。这使“每个顶点接偶数条被选边”变成线性方程 $\partial_1A=0$。
+
+若以顶点为行、边为列写出 $\partial_1$ 的矩阵，非自环边所在列在两个端点处各有一个 $1$，自环列全为零。这个矩阵称为模二关联矩阵，记为 $I_G$；选择箭头方向不会改变它，因为在 $\mathbb F_2$ 中 $-1=1$。
+
+\begin{theorem}[圈空间的基与维数]
+若 $G$ 有 $c(G)$ 个连通分支，则
+\begin{equation}
+\dim_{\mathbb F_2}Z_1(G)=|E|-|V|+c(G),
+\qquad \operatorname{rank}_{\mathbb F_2}I_G=|V|-c(G).
+\label{eq:advanced-graph-cycle-rank-primer}
+\end{equation}
+固定每个分支中的一棵生成树，合起来得到生成森林 $T$。每条非树边与森林中的唯一路径合成的基本回路，构成 $Z_1(G)$ 的一组基。
+\end{theorem}
+
+\begin{proof}
+先看这些基本回路的线性无关性：每条非树边只出现在以它自己命名的基本回路中，故它的系数必须为零。再取任意偶子图 $A$。逐条查看 $A$ 中的非树边 $e$，若出现 $e$，就将 $A$ 与相应基本回路作对称差；这一操作保留 $\partial_1A=0$，却消去 $e$，且不会重新引入已处理的非树边。最后留下的偶子图若非空，就全在森林中；但非空森林有叶顶点，该点度为奇数，矛盾。因此 $A$ 已写成基本回路之和。
+
+生成森林有 $|V|-c(G)$ 条边，所以非树边有 $|E|-|V|+c(G)$ 条，得到第一式。再对 $\partial_1:C_1\to C_0$ 用秩--零化度定理，得到第二式。
+\end{proof}
+
+在前面的方环加对角线例子里，$|V|=4$、$|E|=5$、$c(G)=1$，故圈空间维数为 $2$。以 $C_d=a+b+c+d$、$C_e=a+b+e$ 为基，四个偶子图恰是 $0,C_d,C_e,C_d+C_e$；最后一个等于 $c+d+e$，是沿对角线形成的另一条三角回路。这里不仅算出了维数，还把全部元素列了出来。
+
+\begin{proposition}[偶子图的回路分解]
+每个非空偶子图都可以写成有限条简单回路的对称差。若图允许自环或平行边，长为 $1$ 或 $2$ 的回路也计入其中。
+\end{proposition}
+
+\begin{proof}
+若非空偶子图没有回路，它就是一片非空森林；森林必有叶顶点，与每个顶点度为偶数矛盾。所以其中有一条简单回路 $C$。取对称差 $A+C$ 等于从 $A$ 删去这条回路，每个顶点的度改变偶数，故仍是偶子图；边数严格减少。对边数归纳即可。
+\end{proof}
+
+另一种边集来自把顶点分成两侧。给定 $S\subseteq V$，把恰有一个端点在 $S$ 中的边收集起来，称为割 $\delta S$。在模二记号下，$S$ 的示性向量 $1_S\in C_0(G)$ 经 $I_G^{\mathsf T}$ 映成 $\delta S$，所以全体割的线性组合组成割空间 $\operatorname{im}I_G^{\mathsf T}$。
+
+\begin{theorem}[圈与割的正交关系]
+在 $C_1(G)$ 上取模二点积 $\langle A,B\rangle=\sum_{e\in E}A_eB_e$，则
+\begin{equation}
+Z_1(G)=\bigl(\operatorname{im}I_G^{\mathsf T}\bigr)^\perp.
+\label{eq:advanced-graph-cycle-cut-primer}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+若 $A\in\ker I_G$，对任意 $u\in C_0$ 有 $\langle A,I_G^{\mathsf T}u\rangle=\langle I_GA,u\rangle=0$，所以左边包含在右边。点积在 $\mathbb F_2^E$ 上非退化；右边维数为 $|E|-\operatorname{rank}I_G$，正好等于上一定理算出的 $\dim Z_1$，于是两空间相等。
+\end{proof}
+
+这个等式说闭回路穿过任意割的次数是偶数，却\emph{不}意味着边空间一定是圈空间与割空间的直和。例如四边形的整条边界既是回路，又是由一对相对顶点与其余顶点形成的割；在特征为 $2$ 的域上，非零向量可以与自己正交。
+
+给定顶点集 $J$，还会遇到带源方程 $\partial_1A=J$。握手引理先给出必要条件：$J$ 在每个连通分支中必须含偶数个顶点。这个条件也是充分的，因为可以在各分支内把 $J$ 中顶点两两配对，再将每对端点间的路径相加。若 $A_0$ 是一个解，则任意另一个解 $A$ 满足 $\partial_1(A+A_0)=0$；反过来，$A_0$ 加任何闭链仍是解。因此全部解恰是
+\begin{equation}
+\{A:\partial_1A=J\}=A_0+Z_1(G).
+\label{eq:advanced-graph-affine-source-primer}
+\end{equation}
+对两个源点 $a,b$，可取一条 $a$ 到 $b$ 的路径作 $A_0$。于是“连接两点的开线，加上任意闭合回路”是一条精确的仿射空间等式，而不只是图画上的比喻。
+
+同一张图还可在实数域上描述扩散与弹性。先任意给每条非自环边定向，让实关联矩阵 $B$ 的一列在起点取 $-1$、终点取 $+1$，自环列为零。图 Laplace 算子为 $L=BB^{\mathsf T}$；对实顶点函数 $f$，
+\[
+f^{\mathsf T}Lf=\|B^{\mathsf T}f\|^2
+=\sum_{e=uv}(f(v)-f(u))^2.
+\]
+故 $Lf=0$ 当且仅当 $f$ 在每个连通分支上为常数，$\dim\ker L=c(G)$。这与模二关联矩阵的秩公式有相同的组合原因，但两个矩阵的系数域不同，不能把实数上的正交分解原样搬到 $\mathbb F_2$。在 Ising 图展开里使用的是模二边界；在网络振动与扩散里常用的是实 Laplace 算子。
+
+生成树也藏在这个实矩阵里。先假定图连通且有 $n\ge2$ 个顶点，给每条非自环边一个权重 $w_e$，把它们排成对角矩阵 $W$。加权 Laplace 矩阵为 $L_w=BWB^{\mathsf T}$。任选顶点 $r$，从 $B$ 中删去对应的一行得 $B_r$，再从 $L_w$ 中删去第 $r$ 行和第 $r$ 列得 $L_w^{(r)}=B_rWB_r^{\mathsf T}$。
+
+下面的行列式计算只用到一个线性代数恒等式。若 $U$ 有 $m$ 行、$V$ 有 $m$ 列，而两者相乘的中间指标有 $s\ge m$ 个，则
+\[
+\det(UV)=\sum_{\substack{A\subseteq\{1,\ldots,s\}\\|A|=m}}
+\det U[:,A]\,\det V[A,:].
+\]
+证明时把 $UV$ 的第 $j$ 列写成 $\sum_{a=1}^s U[:,a]V_{aj}$，按行列式对各列的多重线性展开。若选出的两个指标相同，两列都与同一个 $U[:,a]$ 成比例，该项为零；对每组互不相同的指标，把它们的 $m!$ 种排列合并，系数恰为 $\det V[A,:]$。这就是此处所需的 Cauchy--Binet 公式，不必把它当成未经说明的黑箱。
+
+\begin{theorem}[加权矩阵树定理]
+对连通有限多重图，
+\begin{equation}
+\det L_w^{(r)}
+=\sum_{T\text{ 为 }G\text{ 的生成树}}\prod_{e\in T}w_e.
+\label{eq:advanced-graph-matrix-tree-primer}
+\end{equation}
+右边与删去哪个顶点 $r$ 无关。若所有边权都为 $1$，这个行列式便是生成树的数目；自环不会贡献，因为它在 $B$ 中的列为零。
+\end{theorem}
+
+\begin{proof}
+对 $(n-1)\times |E|$ 的矩阵 $B_r$ 用 Cauchy--Binet 公式，按大小为 $n-1$ 的边子集 $A$ 展开：
+\[
+\det(B_rWB_r^{\mathsf T})
+=\sum_{\substack{A\subseteq E\\|A|=n-1}}
+\det(B_r[:,A])^2\prod_{e\in A}w_e.
+\]
+这里只需判定每个方阵 $B_r[:,A]$ 的行列式。若 $(V,A)$ 不连通，取不含 $r$ 的一个连通分支，其顶点对应的行相加为零，故行列式为零。若 $(V,A)$ 连通且恰有 $n-1$ 条边，前面的树定理说明它必是生成树。对这样的 $A$，取一片不等于 $r$ 的叶顶点；它对应的行只有一个非零元 $\pm1$。沿这行展开行列式，并同时删去叶顶点与其边，便回到较小树的同型矩阵。归纳到单顶点，得到 $\det(B_r[:,A])=\pm1$。因此 Cauchy--Binet 展开中恰有生成树留下，每棵树留下其边权乘积。
+\end{proof}
+
+例如三角形三边的权依次为 $a,b,c$。它有三棵生成树，分别删去一条边，故右边为 $ab+bc+ca$。若直接删去顶点 $3$，也可算得
+\[
+L_w^{(3)}=
+\begin{pmatrix}a+c&-a\\-a&a+b\end{pmatrix},
+\qquad
+\det L_w^{(3)}=(a+c)(a+b)-a^2=ab+bc+ca.
+\]
+这说明 Laplace 矩阵的一个主子式不仅检测连通性，还逐棵记录了生成树。以后若要处理电阻网络、随机生成树或图上的 Gaussian 积分，便可在同一个恒等式上继续计算。
+
+\section{连通分支多项式与随机簇展开}
+
+前面的圈空间只记录一个边集是否闭合；统计模型的另一类展开则要记录选中边以后还剩多少连通分支。对每个边集 $A\subseteq E$，令 $k(A)$ 为图 $(V,A)$ 的连通分支数，\emph{孤立顶点也各算一个分支}。给每条边一个可独立变化的权 $v_e$，定义
+\begin{equation}
+ C_G(q,\{v_e\})=\sum_{A\subseteq E}q^{k(A)}\prod_{e\in A}v_e .
+ \label{eq:advanced-graph-component-polynomial}
+\end{equation}
+这里 $q$ 先只是一个形式变量。把它代入正整数时，$q^{k(A)}$ 才取得明确的计数意义：给每个连通分支独立选一种颜色，共有这么多种选法。这个解释将直接产生 Potts 模型的图展开。
+
+先证明一个可实际计算的递推。删边 $G\setminus e$ 保留全部顶点，只把 $e$ 从边集中去掉；若 $e$ 不是自环，缩边 $G/e$ 则把它的两个端点合并为一个顶点，并保留其他边的身份。因此缩边后可以出现平行边或自环，这正是最初定义图时允许它们的原因。
+
+\begin{proposition}[删边--缩边恒等式]
+若 $e$ 不是自环，则
+\[
+C_G(q,\{v_f\})=C_{G\setminus e}(q,\{v_f\}_{f\ne e})
++v_e C_{G/e}(q,\{v_f\}_{f\ne e}).
+\]
+若 $e$ 是自环，则 $C_G=(1+v_e)C_{G\setminus e}$。没有边而有 $n$ 个顶点的图满足 $C_G=q^n$；这三条规则由此唯一确定多项式。
+\end{proposition}
+
+\begin{proof}
+在定义式中按 $e\notin A$ 与 $e\in A$ 分组。第一组正是删边图的所有边集。第二组可唯一写成 $A=B\cup\{e\}$，其中 $B\subseteq E\setminus\{e\}$。若 $e$ 非自环，先选择它再合并两端点，与在缩边图中选择 $B$ 有相同的连通分支数，故第二组的和是 $v_eC_{G/e}$。若 $e$ 是自环，是否选它均不改变连通分支数，第二组便是 $v_eC_{G\setminus e}$。无边图中每个顶点孤立，只有空边集，故为 $q^n$。
+\end{proof}
+
+例如三角形的边权依次为 $a,b,c$。零条、一条、两条、三条边的选法依次给出
+\[
+C_\triangle(q;a,b,c)
+=q^3+q^2(a+b+c)+q(ab+bc+ca)+qabc.
+\]
+最后一项仍只乘 $q$，因为第三条边虽然增加一个回路，却没有再减少连通分支。若把同样三条边排成一条有四顶点的路径，每选一条边都会使分支数减一，结果变成 $q(q+a)(q+b)(q+c)$。两个例子说明多项式同时看见“连通了多少”和“闭合了多少”，不只看边数。
+
+现在令 $q$ 为正整数，在每个顶点放一个颜色 $s_v\in\{1,\ldots,q\}$。有限图 Potts 模型的无场配分函数定义为
+\[
+Z_{\rm P}(G)=\sum_{s:V\to\{1,\ldots,q\}}
+\prod_{e=uv}\exp\bigl(K_e\,\mathbf1_{s_u=s_v}\bigr).
+\]
+自环的两个端点相同，所以它的指标恒为 $1$。记 $v_e=\ee^{K_e}-1$，并对每条边使用恒等式
+$\ee^{K_e\mathbf1_{s_u=s_v}}=1+v_e\mathbf1_{s_u=s_v}$。将乘积展开，选中一组边 $A$ 后，指标乘积要求每个 $(V,A)$ 连通分支上的颜色相同，而不同分支可以独立选色。于是严格地得到
+\begin{equation}
+ Z_{\rm P}(G)=\sum_{A\subseteq E}q^{k(A)}\prod_{e\in A}(\ee^{K_e}-1)
+ =C_G(q,\{\ee^{K_e}-1\}).
+ \label{eq:advanced-graph-fk-expansion}
+\end{equation}
+这就是有限图上的随机簇展开；它不要求图是平面图，也不要求耦合常数相同。
+
+若 $K_e\ge0$，令 $p_e=1-\ee^{-K_e}\in[0,1)$，则 $v_e=p_e/(1-p_e)$。把每项同时乘上 $\prod_e(1-p_e)$，得到非负权
+\[
+w(A)=q^{k(A)}\prod_{e\in A}p_e\prod_{e\notin A}(1-p_e).
+\]
+以 $\sum_Aw(A)$ 归一化后，它定义边集 $A$ 上的随机簇概率分布。$q=1$ 时，$q^{k(A)}=1$，每条边独立地以概率 $p_e$ 出现；$q>1$ 时，分支数因子使边不再独立。这个概率解释只在权非负时使用；式\cref{eq:advanced-graph-fk-expansion}本身作为代数恒等式对任意 $K_e$ 都成立。
+
+\begin{proposition}[无场 Ising 关联函数的连通性表示]
+令 $q=2$，并将颜色 $1,2$ 分别记作自旋 $+1,-1$。对非负耦合 $J_e$ 的无场 Ising 模型
+\[
+Z_{\rm I}=\sum_{\sigma\in\{\pm1\}^V}\exp\!\left(\sum_{e=uv}J_e\sigma_u\sigma_v\right),
+\]
+取随机簇参数 $p_e=1-\ee^{-2J_e}$。若 $a,b$ 是任意两个顶点，则
+\begin{equation}
+\langle\sigma_a\sigma_b\rangle_{\rm I}
+=\mathbb P_{\rm RC}(a\text{ 与 }b\text{ 属于同一个连通分支}).
+\label{eq:advanced-graph-ising-connectivity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+因为 $\sigma_u\sigma_v=2\mathbf1_{\sigma_u=\sigma_v}-1$，每条 Ising 边权等于
+$\ee^{-J_e}\ee^{2J_e\mathbf1_{\sigma_u=\sigma_v}}$。前面的 Potts 展开给出
+\[
+Z_{\rm I}=\left(\prod_e\ee^{-J_e}\right)
+C_G(2,\{\ee^{2J_e}-1\}).
+\]
+在联合展开中先固定边集 $A$，然后给 $(V,A)$ 的每个连通分支独立选一个 $\pm1$ 自旋。这样得到的 $A$ 的边缘分布恰与上面的 $q=2$ 随机簇权成比例；自旋的边缘分布则是原 Ising Gibbs 分布。若 $a,b$ 属于同一分支，其自旋必相同，条件平均 $\sigma_a\sigma_b$ 为 $1$；若它们属于不同分支，两个独立对称符号的乘积条件平均为 $0$。再对 $A$ 求平均即得所述等式。
+\end{proof}
+
+这个结果把一项自旋热平均化成纯图上的连通概率。它与上一节的“两个源点之间选一条路径，再叠加偶回路”是两种不同展开：前者按\emph{连通分支}赋权，后者按\emph{模二边界}筛选边集。两种公式都从有限次乘积展开而来，因而在进入热力学极限之前便已严格成立。
+
+\figref{fig:advanced-ising-cluster}对\figref{fig:advanced-five-edge-graph}的图直接穷举 $2^4$ 个自旋构型与 $2^5$ 个边集，逐个耦合常数核对\eqnrefs{eq:advanced-graph-ising-connectivity}。两条曲线在数值精度内重合：一条由自旋 Boltzmann 权求和，另一条由随机簇连通事件求和。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\linewidth]{ising_random_cluster.pdf}
+\caption{有限图上的 Ising--随机簇恒等式数值核查。对顶点 $0$ 与 $2$，黑线由自旋求和，蓝点由边集连通事件求和；两种枚举在浮点精度内吻合。}
+\label{fig:advanced-ising-cluster}
+\end{figure}
+
 \section{群、表示与 Schur 引理}
 
 \begin{definition}[群]
@@ -164,8 +857,7 @@ AD_V(g)=D_W(g)A,
 
 \section{Lie 群、生成元与指数映射}
 
-若群 \(G\) 同时是光滑流形，且乘法与取逆光滑，\(G\) 称为 Lie 群。单位元处的切空间
-\(\mathfrak g=T_eG\) 称为 Lie 代数。
+离散群只有逐个元素；转动群却允许转角连续变化。要描述后者在单位元附近的变化，先不必假定读者已经学过流形，只需把群看成矩阵空间中的一个集合，并考察其中的光滑矩阵曲线。一般的定义将在下一节的流形语言建立后得到：若群同时是光滑流形，且乘法与求逆光滑，它就是 Lie 群；单位元处全部曲线速度组成的切空间 $T_eG$ 记为 $\mathfrak g$，称为它的 Lie 代数。这里的“代数”还应有括号运算，矩阵群中就是交换子 $[X,Y]=XY-YX$。
 
 对矩阵 Lie 群，经过单位元的一参数子群满足
 \(g(t+s)=g(t)g(s)\)。令 \(X=g'(0)\)，对 \(s\) 在零点求导得
@@ -176,7 +868,20 @@ g'(t)=g(t)X,\qquad g(0)=I.
 \[
 g(t)=\exp(tX)=\sum_{n=0}^{\infty}\frac{t^nX^n}{n!}.
 \]
-生成元的交换子 \([X,Y]=XY-YX\) 测量两个无穷小变换交换次序后的最低阶差异。
+这说明\emph{已知的一参数子群}必由指数给出；对一般矩阵群，哪些 $X$ 的指数仍留在群内还需要检查。交换子测量两个无穷小变换交换次序后的差异，因为直接乘开至二阶得到
+\[
+\ee^{tX}\ee^{sY}-\ee^{sY}\ee^{tX}
+=ts[X,Y]+O(t^2s+ts^2).
+\]
+这个公式也说明为什么只知道普通向量空间 $T_eG$ 还不够：连续对称的非交换性正编码在括号里。
+
+例如平面转动
+\[
+R(\theta)=\begin{pmatrix}\cos\theta&-\sin\theta\\
+\sin\theta&\cos\theta\end{pmatrix}
+=\exp\!\left(\theta\begin{pmatrix}0&-1\\1&0\end{pmatrix}\right).
+\]
+它满足 $R(\theta+\phi)=R(\theta)R(\phi)$，所以 $SO(2)$ 的一个生成元便足以给出全部连通转动；两个生成元的括号在此只能为零。到了三维，不同轴转动的生成元不再对易，交换子会给出第三个轴的转动。
 
 \begin{proposition}[正交群的 Lie 代数]
 \[
@@ -202,101 +907,335 @@ SO(d)=\{R:R^{\mathsf T}R=I,\ \det R=1\}
 
 \section{流形、切向量与微分形式}
 
+曲线、曲面和转动群的共同点，不是它们都能嵌入某个更大的欧氏空间，而是每个点附近都可以用若干实数作坐标。球面需要至少两张坐标图；用经纬度覆盖时，极点处的经度失去意义，但球面本身并没有在那里产生奇点。微分几何首先要把这种“坐标失效”和真正的几何奇点区分开。
+
 \begin{definition}[光滑流形]
-\(n\) 维光滑流形 \(M\) 是由坐标图
-\((U_\alpha,x_\alpha)\) 覆盖的空间，其中
+一个 \(n\) 维光滑流形 \(M\) 是 Hausdorff、第二可数的拓扑空间，并带有一族坐标图
 \[
-x_\alpha:U_\alpha\longrightarrow
-x_\alpha(U_\alpha)\subseteq\mathbb R^n
+(U_\alpha,x_\alpha),\qquad
+x_\alpha:U_\alpha\longrightarrow x_\alpha(U_\alpha)\subseteq\mathbb R^n.
 \]
-是双射，重叠区上的坐标变换
-\(x_\beta\circ x_\alpha^{-1}\) 光滑。
+各 \(U_\alpha\) 覆盖 \(M\)，每个 \(x_\alpha\) 都是到 \(\mathbb R^n\) 中开集的同胚；若 \(U_\alpha\cap U_\beta\ne\varnothing\)，则坐标变换
+\[
+x_\beta\circ x_\alpha^{-1}:
+x_\alpha(U_\alpha\cap U_\beta)\longrightarrow
+x_\beta(U_\alpha\cap U_\beta)
+\]
+光滑，并有光滑逆映射。满足这些条件的一整族相容坐标图称为光滑图册。
 \end{definition}
 
-过点 \(p\) 的曲线 \(\gamma(t)\) 通过
+Hausdorff 条件保证两个不同点能由不相交邻域分开，第二可数条件排除过大的病态空间。物理中常见的开集、球面、环面、矩阵群和由正则约束定义的曲面都满足这两条条件。真正承担微分运算的是坐标变换的光滑性：同一个函数在两张图中写法不同，但链式法则保证导数能够相互转换。
+
+单位圆 \(S^1=\{(x,y)\in\mathbb R^2:x^2+y^2=1\}\) 已经说明为什么一张全局坐标图通常不存在。删去一点以后可用角度区间参数化；另删一点可得到第二张图。重叠处的两个角坐标相差 \(2\pi\) 的整数倍，转移函数光滑。圆周也可以写成商空间 \(\mathbb R/(2\pi\mathbb Z)\)，这与前面等价关系的定义完全一致。
+
+球面上可以把坐标变换真正算一遍。令 $S^2\subset\mathbb R^3$ 的北极、南极分别为 $N=(0,0,1)$、$S=(0,0,-1)$。在 $S^2\setminus\{N\}$ 上取
 \[
-X[f]=\left.\frac{\dd}{\dd t}f(\gamma(t))\right|_{t=0}
+u_N(x,y,z)=\left(\frac{x}{1-z},\frac{y}{1-z}\right),
 \]
-定义一个切向量。全体切向量组成 \(T_pM\)。其对偶空间
-\(T_p^*M\) 称为余切空间。局部坐标给出切基
-\(\partial_\mu\) 与余切基 \(\dd x^\mu\)，函数的微分为
+在 $S^2\setminus\{S\}$ 上取 $u_S(x,y,z)=(x/(1+z),y/(1+z))$。两者都是到 $\mathbb R^2$ 的双射，逆映射由球面方程直接解出，且分母处处不为零。在两图重叠处，若 $u_N=(a,b)$，代入 $x^2+y^2+z^2=1$ 得
 \[
+u_S\circ u_N^{-1}(a,b)
+=\frac{(a,b)}{a^2+b^2},\qquad (a,b)\ne(0,0).
+\]
+这幅图上的转移函数及其逆函数都光滑。北极在第一张图中缺席，却在第二张图中有良好坐标；所以“某个坐标分母为零”并不说明球面有奇点。
+
+流形上的光滑函数由坐标来检验。若 \(f:M\to\mathbb R\)，则要求每个局部表达
+\(f\circ x_\alpha^{-1}\) 都是普通的光滑函数。若 \(F:M\to N\) 是两个流形间的映射，则在任意相交坐标图中要求
+\[
+y_\beta\circ F\circ x_\alpha^{-1}
+\]
+光滑。这个定义不依赖图册中的某一张图，因为不同图之间的转换本身已经光滑。
+
+在欧氏空间里，点 \(p\) 处的方向是一个箭头；在抽象流形上，没有预先给定的环境空间可供放置箭头。可以改用过 \(p\) 的曲线来定义方向。设 \(\gamma:(-\epsilon,\epsilon)\to M\) 且 \(\gamma(0)=p\)。若对每个光滑函数 \(f\) 都有
+\[
+\left.\frac{\dd}{\dd t}f(\gamma_1(t))\right|_{t=0}
+=
+\left.\frac{\dd}{\dd t}f(\gamma_2(t))\right|_{t=0},
+\]
+便把 \(\gamma_1\) 与 \(\gamma_2\) 看作同一个切向量。于是切向量 \(X\) 可以直接视为作用在光滑函数上的导子，
+\[
+X[f]=\left.\frac{\dd}{\dd t}f(\gamma(t))\right|_{t=0},
+\qquad
+X[fg]=X[f]g(p)+f(p)X[g].
+\]
+两个曲线等价类可以按坐标速度相加、数乘，因而构成向量空间 $T_pM$。也可以从另一个方向出发：在 $p$ 附近光滑函数的芽上，把满足线性性和上式 Leibniz 法则的映射 $D:f\mapsto D[f]$ 称为导子。以下证明两种定义得到同一个空间，而不是只凭类比给它们同一个名字。
+
+\begin{proposition}[切向量的坐标刻画]
+在任一局部坐标 $(x^1,\ldots,x^n)$ 中，点 $p$ 处的每个导子都唯一写成
+\[
+D[f]=\sum_{i=1}^n a^i\frac{\partial f}{\partial x^i}(p),
+\qquad a^i=D[x^i].
+\]
+每组实数 $(a^1,\ldots,a^n)$ 又都由一条过 $p$ 的曲线实现。因此切空间的维数为 $n$，曲线定义与导子定义等价。
+\end{proposition}
+
+\begin{proof}
+先把坐标平移到 $x(p)=0$。沿从 $0$ 到 $x$ 的直线应用一元微积分基本定理，可把任意光滑函数写成
+\[
+f(x)-f(0)=\sum_i x^i f_i(x),\qquad
+f_i(x)=\int_0^1\partial_i f(tx)\,\dd t.
+\]
+其中 $f_i(0)=\partial_i f(0)$。导子由 Leibniz 法则满足 $D[1]=0$，所以常数的导数为零；对上式逐项施加 $D$，并利用 $x^i(p)=0$，便得到 $D[f]=\sum_iD[x^i]\partial_i f(p)$。这也证明系数唯一。反过来，任取 $a^i$，在坐标图内取足够短的曲线 $\gamma(t)=x^{-1}(ta^1,\ldots,ta^n)$；链式法则表明沿它求导正是上述导子。
+\end{proof}
+
+取局部坐标 \((x^1,\ldots,x^n)\)。普通多元微积分的链式法则给出
+\[
+X[f]=X^\mu\frac{\partial f}{\partial x^\mu}(p),
+\qquad
+X=X^\mu\left.\frac{\partial}{\partial x^\mu}\right|_p.
+\]
+因此 \(\partial/\partial x^\mu|_p\) 是 \(T_pM\) 的一组基。更换坐标 \(y^a=y^a(x)\) 时，
+\begin{equation}
+\frac{\partial}{\partial x^\mu}
+=\frac{\partial y^a}{\partial x^\mu}
+\frac{\partial}{\partial y^a},
+\qquad
+X'^a=\frac{\partial y^a}{\partial x^\mu}X^\mu.
+\label{eq:tangent-coordinate-transform-primer}
+\end{equation}
+坐标分量会变，导子 \(X\) 本身不变。
+
+光滑映射 \(F:M\to N\) 在每个点诱导线性映射
+\[
+F_{*p}:T_pM\longrightarrow T_{F(p)}N,
+\qquad
+(F_{*p}X)[h]=X[h\circ F],
+\]
+称为微分或推出。若在坐标中写 \(F^a= y^a\circ F\)，则
+\[
+(F_{*p}X)^a=\frac{\partial F^a}{\partial x^\mu}(p)X^\mu,
+\]
+这正是 Jacobian 矩阵作用在方向导数上。复合映射满足
+\((G\circ F)_{*p}=G_{*F(p)}\circ F_{*p}\)，所以推出是链式法则的无坐标写法。
+
+切空间的对偶空间 \(T_p^*M\) 称为余切空间。坐标函数的微分 \(\dd x^\mu\) 由
+\[
+\dd x^\mu\!\left(\frac{\partial}{\partial x^\nu}\right)
+=\delta^\mu_{\nu}
+\]
+定义，因此 \(\{\dd x^\mu\}\) 是余切基。对光滑函数 \(f\)，其微分 \(\dd f\in T_p^*M\) 满足
+\[
+(\dd f)_p(X)=X[f],
+\qquad
 \dd f=\frac{\partial f}{\partial x^\mu}\dd x^\mu.
 \]
+由 \eqnrefs{eq:tangent-coordinate-transform-primer} 可知余切基按逆 Jacobian 变换；这正是上指标和下指标变换规律不同的来源。
 
-反对称的 \(k\) 阶协变张量称为 \(k\)-形式。外微分满足
+在每一点平滑选取一个切向量得到向量场。两个向量场的 Lie 括号定义为
 \[
-\dd^2=0,\qquad
+[X,Y][f]=X[Y[f]]-Y[X[f]].
+\]
+在局部坐标中，若 \(X=X^\mu\partial_\mu\)、\(Y=Y^\mu\partial_\mu\)，则
+\[
+[X,Y]
+=\left(X^\mu\partial_\mu Y^\nu-Y^\mu\partial_\mu X^\nu\right)\partial_\nu.
+\]
+坐标基满足 \([\partial_\mu,\partial_\nu]=0\)，一般移动标架则未必对易。
+
+\begin{definition}[微分形式]
+点 \(p\) 处的 \(k\)-形式是 \(T_pM\) 上的反对称 \(k\) 重线性函数。把它随 \(p\) 光滑选取，便得到流形上的微分 \(k\)-形式。局部可写成
+\[
+\omega=\frac1{k!}\omega_{\mu_1\cdots\mu_k}
+\dd x^{\mu_1}\wedge\cdots\wedge\dd x^{\mu_k},
+\]
+其中系数对全部指标完全反对称。
+\end{definition}
+
+楔积把一个 \(k\)-形式和一个 \(\ell\)-形式合成 \((k+\ell)\)-形式，并满足
+\[
+\alpha\wedge\beta=(-1)^{k\ell}\beta\wedge\alpha.
+\]
+具体说，对两个 $1$-形式，$(\alpha\wedge\beta)(X,Y)=\alpha(X)\beta(Y)-\alpha(Y)\beta(X)$；较高次数时，对张量积作所有指标的反对称化。这一定义既给出上面的换序符号，也保证楔积满足结合律。特别地，\(\dd x^\mu\wedge\dd x^\mu=0\)。外微分先在函数上由通常的全微分定义，再由
+\[
+\dd^2=0,
+\qquad
 \dd(\alpha\wedge\beta)
 =\dd\alpha\wedge\beta+(-1)^k\alpha\wedge\dd\beta
 \]
-，其中 \(\alpha\) 是 \(k\)-形式。微积分基本定理、Green 公式、Gauss 公式和 Stokes 公式统一为
+唯一延拓到所有形式。局部表达为
+\[
+\dd\omega
+=\frac1{k!}\partial_\nu\omega_{\mu_1\cdots\mu_k}
+\dd x^\nu\wedge\dd x^{\mu_1}\wedge\cdots\wedge\dd x^{\mu_k}.
+\]
+式 \(\dd^2=0\) 来自二阶偏导的对称性与楔积的反对称性。
+
+\begin{proposition}[外微分与坐标无关]
+上述局部公式在坐标变换下给出同一个 $(k+1)$-形式，并且对每个微分形式 $\omega$ 都有 $\dd^2\omega=0$。
+\end{proposition}
+
+\begin{proof}
+先对函数 $f$ 验证：链式法则使 $\dd f=\partial_i f\,\dd x^i$ 在任意坐标中相同。再对由 $f_0\,\dd f_1\wedge\cdots\wedge\dd f_k$ 组成的形式，Leibniz 法则与 $\dd^2 f_i=0$ 给出
+\[
+\dd(f_0\,\dd f_1\wedge\cdots\wedge\dd f_k)
+=\dd f_0\wedge\dd f_1\wedge\cdots\wedge\dd f_k.
+\]
+右边没有选用坐标。局部每个形式都是这类形式的和，因为可取 $f_i=x^i$，故 $\dd$ 与坐标无关。再施一次 $\dd$，各项都含某个 $\dd^2 f_i$，所以结果为零；或者直接观察 $\partial_i\partial_j$ 的对称性被 $\dd x^i\wedge\dd x^j$ 消去。
+\end{proof}
+
+例如在平面上取 $\alpha=x\,\dd y-y\,\dd x$，则 $\dd\alpha=2\,\dd x\wedge\dd y$。将它限制到单位圆后，圆是一维流形，所有 $2$-形式都为零，所以受限的 $\alpha$ 是闭形式。然而沿 $x=\cos\theta,y=\sin\theta$ 的圆周积分给出
+\[
+\oint_{S^1}\alpha=\int_0^{2\pi}(\cos^2\theta+\sin^2\theta)\,\dd\theta=2\pi.
+\]
+若 $\alpha$ 在圆上等于某个emph{全局单值}函数 $f$ 的 $\dd f$，沿闭路积分应为 $f(2\pi)-f(0)=0$，与计算矛盾。因此“闭”不一定意味着“恰当”；在一个小角度坐标图中虽可写 $\alpha=\dd\theta$，$\theta$ 却不能在整个圆上连续地选成单值函数。这个区别正是后面讨论整体回转与 Berry 相位时不能只看局部公式的原因。
+
+映射 \(F:M\to N\) 还能把 \(N\) 上的微分形式拉回 \(M\)。对 \(k\)-形式 \(\omega\)，定义
+\[
+(F^*\omega)_p(X_1,\ldots,X_k)
+=\omega_{F(p)}(F_{*p}X_1,\ldots,F_{*p}X_k).
+\]
+拉回满足 \(F^*(\alpha\wedge\beta)=F^*\alpha\wedge F^*\beta\) 和
+\(F^*(\dd\omega)=\dd(F^*\omega)\)。积分变量替换、曲面上的面积元以及电磁场强在坐标变换下的写法，都使用这个运算。
+
+为讨论边界，需要把坐标图的允许区域从 $\mathbb R^n$ 的开集扩展到半空间 $\mathbb H^n=\{x^n\ge0\}$ 的相对开集；落在 $x^n=0$ 上的点组成 $\partial M$。选定相容的方向后，边界方向约定为“外法向放在最前面”。紧支撑是指形式不为零的点集之闭包为紧集，这保证积分不会在无穷远处留下边界项。若 \(M\) 是带边界的定向 \(n\) 维流形，\(\omega\) 是紧支撑的 \((n-1)\)-形式，则 Stokes 定理为
 \begin{equation}
 \int_M\dd\omega=\int_{\partial M}\omega.
 \label{eq:general-stokes-primer}
 \end{equation}
-把流形切成小块时，相邻小块的公共边界方向相反，内部边界积分两两抵消，只剩整体边界；这给出 Stokes 公式从局部到整体的拼接机制。
+
+\begin{proof}
+先在一个保持方向的内部坐标图上考虑紧支撑形式。将它按坐标写成 $\sum_i f_i\,\dd x^1\wedge\cdots\wedge\widehat{\dd x^i}\wedge\cdots\wedge\dd x^n$；帽号表示略去该因子。外微分后每项只留下 $\pm\partial_i f_i$ 乘体积形式。对 $x^i$ 在整条实轴积分，由紧支撑和一元微积分基本定理，结果为零，和该图没有边界的右端一致。
+
+若图落在 $x^n\ge0$，对 $i<n$ 的项仍沿整条直线积分而消失。只有略去 $\dd x^n$ 的项留下：沿 $x^n$ 从 $0$ 积到无穷大，$\int_0^\infty\partial_n f_n\,\dd x^n=-f_n|_{x^n=0}$。把 $\dd x^n$ 从该项前面移到体积形式的位置所产生的符号，恰与外法向 $-\partial_n$ 决定的边界方向符号合起来，得到 $\int_{x^n=0}\omega$。
+
+最后把紧支撑的 $\omega$ 化成有限个这样的局部形式。做法是用有限张坐标图覆盖其支撑，在每张图内取非负光滑鼓包函数 $\rho_i$，使它们的正值区域仍覆盖该支撑；普通欧氏空间中的紧集与开集之间可用光滑鼓包函数分离。令 $\phi_i=\rho_i/\sum_j\rho_j$，则在支撑附近 $\sum_i\phi_i=1$，且各 $\phi_i\omega$ 支撑在一张图内。对每项应用已证的局部等式，再求和；由于 $\sum_i\phi_i\omega=\omega$，其外微分也逐项相加，便得到全局等式。
+\end{proof}
+
+微积分基本定理、Green 公式、Gauss 公式和经典 Stokes 公式都是这个等式在不同维数、不同坐标写法中的表现。
 
 \section{向量丛、联络与曲率}
 
+流形把每一点附近的几何与 \(\mathbb R^n\) 比较；向量丛则在每一点上再附着一个向量空间。最简单的情形是直积 \(M\times\mathbb C^r\)，但电子本征态随核坐标变化时，通常只能在局部连续地选取一组本征矢，不能预先假定存在全局统一的基。
+
 \begin{definition}[向量丛与截面]
-秩为 \(r\) 的复向量丛是映射 \(\pi:E\to M\)。每个纤维
-\(E_p=\pi^{-1}(p)\) 是 \(r\) 维复向量空间；每个点附近都有
+秩为 \(r\) 的复向量丛由流形 \(E,M\) 和光滑满射 \(\pi:E\to M\) 构成。每个纤维 \(E_p=\pi^{-1}(p)\) 是 \(r\) 维复向量空间；对每个 \(p\in M\)，存在邻域 \(U\) 和微分同胚
 \[
-\pi^{-1}(U)\simeq U\times\mathbb C^r.
+\Phi_U:\pi^{-1}(U)\longrightarrow U\times\mathbb C^r,
 \]
-满足 \(\pi(s(p))=p\) 的光滑映射 \(s:M\to E\) 称为截面。
+使 \(\Phi_U\) 在每个纤维上都是线性同构，并且投影到第一个因子后等于 \(\pi\)。满足 \(\pi(s(p))=p\) 的光滑映射 \(s:M\to E\) 称为截面。
 \end{definition}
 
-在 \(U_\alpha\) 上逐点选基 \(e_{\alpha1},\ldots,e_{\alpha r}\)，得到局部标架。在重叠区，两组标架满足
+切丛 \(TM=\bigsqcup_{p\in M}T_pM\) 是实秩 \(n\) 的向量丛，余切丛 \(T^*M\) 是其对偶丛。量子力学中若哈密顿量 \(H(R)\) 的某个隔离能级在每个核构型 \(R\) 上有 \(r\) 维本征空间，这些本征空间在能隙不闭合的区域内组成秩 \(r\) 的本征态丛。
+
+在 \(U_\alpha\) 上逐点选取纤维基
+\(e_{\alpha1},\ldots,e_{\alpha r}\)，称为局部标架。把它们排成行向量 \(e_\alpha\)，则重叠区上存在光滑可逆矩阵
 \[
-e_\beta=e_\alpha U_{\alpha\beta}.
+e_\beta=e_\alpha U_{\alpha\beta},
+\qquad U_{\alpha\beta}:U_\alpha\cap U_\beta\to GL(r,\mathbb C).
 \]
-若截面坐标为 \(s=e_\alpha\psi_\alpha=e_\beta\psi_\beta\)，则
-\(\psi_\beta=U_{\alpha\beta}^{-1}\psi_\alpha\)。
+同一截面写成
+\(s=e_\alpha\psi_\alpha=e_\beta\psi_\beta\)，故
+\[
+\psi_\beta=U_{\alpha\beta}^{-1}\psi_\alpha.
+\]
+三个坐标邻域相交时，同一个标架变换可以分两步完成，所以转移函数必须满足
+\[
+U_{\alpha\alpha}=I,
+\qquad U_{\alpha\beta}U_{\beta\gamma}=U_{\alpha\gamma}.
+\]
+这就是余圈条件。反过来，一族满足余圈条件的转移函数可以把各个 \(U_\alpha\times\mathbb C^r\) 粘合成向量丛。
+
+不同纤维 \(E_p\) 与 \(E_q\) 是不同的向量空间，所以截面 \(s(p)\) 与 \(s(q)\) 不能直接相减。普通偏导暗中使用了直积丛中“各点采用同一组基”的识别；一般向量丛没有这种天然识别。联络正是补上这一信息的微分规则。
 
 \begin{definition}[联络]
-联络 \(\nabla\) 把向量场 \(X\) 和截面 \(s\) 送到截面
-\(\nabla_Xs\)，并满足
+联络 \(\nabla\) 把向量场 \(X\) 和截面 \(s\) 送到截面 \(\nabla_Xs\)，并满足
 \[
-\nabla_{fX+gY}s=f\nabla_Xs+g\nabla_Ys,\qquad
-\nabla_X(fs)=X[f]s+f\nabla_Xs.
+\nabla_{fX+gY}s=f\nabla_Xs+g\nabla_Ys,
 \]
+\[
+\nabla_X(as+bt)=a\nabla_Xs+b\nabla_Xt,
+\qquad
+\nabla_X(fs)=X[f]s+f\nabla_Xs,
+\]
+其中 \(f,g\) 是光滑函数，\(a,b\in\mathbb C\)。第一式说明它对求导方向是函数线性的；最后一式是 Leibniz 法则。
 \end{definition}
 
-在局部标架中，联络写成
+在局部标架中写 \(s=e_a\psi^a\)。定义系数 \(1\)-形式 \(\Gamma^a{}_b\) 使
 \[
-\nabla\psi=\dd\psi+\Gamma\psi,
+\nabla e_b=e_a\Gamma^a{}_b.
 \]
-其中 \(\Gamma\) 是矩阵值 \(1\)-形式。更换标架
-\(e'=eU\) 后，同一个几何联络满足
+于是
+\begin{equation}
+\nabla s=e_a\bigl(\dd\psi^a+\Gamma^a{}_b\psi^b\bigr),
+\qquad
+\nabla\psi=\dd\psi+\Gamma\psi.
+\label{eq:local-connection-primer}
+\end{equation}
+矩阵 \(\Gamma=\Gamma_\mu\dd x^\mu\) 不是额外的物理向量；它记录所选局部基在移动时怎样变化。
+
+若更换局部标架 \(e'=eU\)，同一截面的坐标满足 \(\psi'=U^{-1}\psi\)。几何对象 \(\nabla s\) 不能因换基而改变，所以其坐标也应满足
+\(\nabla'\psi'=U^{-1}\nabla\psi\)。将 \eqnrefs{eq:local-connection-primer} 两边展开，得到
+\[
+\dd(U^{-1}\psi)+\Gamma'U^{-1}\psi
+=U^{-1}(\dd\psi+\Gamma\psi).
+\]
+再用 \(\dd U^{-1}=-U^{-1}(\dd U)U^{-1}\)，比较 \(\psi\) 的系数，便有
 \begin{equation}
 \Gamma'=U^{-1}\Gamma U+U^{-1}\dd U.
 \label{eq:connection-transform-primer}
 \end{equation}
+非齐次项 \(U^{-1}\dd U\) 说明联络系数本身不是张量。这不是缺陷：正是这个额外项抵消了 \(\dd\psi\) 换基时产生的导数项，使 \(\nabla\psi\) 按齐次方式变换。
 
-\begin{proof}
-同一截面的坐标满足 \(\psi'=U^{-1}\psi\)。要求协变导数也按同样方式变换：
-\(\nabla'\psi'=U^{-1}\nabla\psi\)。展开
+沿曲线 \(\gamma:[0,1]\to M\) 的截面可写成 \(s(t)=e_a(\gamma(t))\psi^a(t)\)。称它被平行移动，是指
 \[
-\dd(U^{-1}\psi)+\Gamma'U^{-1}\psi
-=U^{-1}\dd\psi-U^{-1}(\dd U)U^{-1}\psi
-+\Gamma'U^{-1}\psi
+\nabla_{\dot\gamma}s=0,
+\qquad
+\frac{\dd\psi}{\dd t}
++\Gamma_\mu(\gamma(t))\dot\gamma^\mu(t)\psi=0.
 \]
-并与 \(U^{-1}\dd\psi+U^{-1}\Gamma\psi\) 比较，便得到
-\eqnrefs{eq:connection-transform-primer}。
-\end{proof}
+给定 \(s(0)\) 后，这是线性常微分方程，因而局部存在唯一解。其解写成路径有序指数
+\[
+\psi(1)=
+\mathcal P\exp\!\left[-\int_\gamma\Gamma\right]\psi(0).
+\]
+若 \(\Gamma\) 在不同点不对易，路径排序不可省略。闭路上的平行移动给出纤维到自身的线性变换，称为整体回转。
 
-联络的曲率定义为
+连续求两次协变导数时，二阶普通导数的对称部分在反对称化中抵消，剩下的量定义为曲率。对矩阵值形式，令协变外微分为
+\[
+D\alpha=\dd\alpha+\Gamma\wedge\alpha
+\]
+（若 \(\alpha\) 还带有右作用指标，相应再加右侧项）。作用在截面上可直接计算：
+\[
+D^2\psi
+=\dd(\dd\psi+\Gamma\psi)
++\Gamma\wedge(\dd\psi+\Gamma\psi)
+=(\dd\Gamma+\Gamma\wedge\Gamma)\psi.
+\]
+因此曲率二形式为
 \begin{equation}
-F=\dd\Gamma+\Gamma\wedge\Gamma.
+F=\dd\Gamma+\Gamma\wedge\Gamma,
+\qquad
+F_{\mu\nu}
+=\partial_\mu\Gamma_\nu-
+\partial_\nu\Gamma_\mu+[\Gamma_\mu,\Gamma_\nu].
 \label{eq:curvature-primer}
 \end{equation}
-代入 \eqnrefs{eq:connection-transform-primer} 可得
-\(F'=U^{-1}FU\)。因此联络矩阵依赖标架，曲率是否为零却不依赖标架。
-
-沿曲线 \(\gamma(t)\) 平行移动截面，定义为满足
+等价地，若坐标向量场对易，则
 \[
-\nabla_{\dot\gamma}s=0
+[\nabla_\mu,\nabla_\nu]s=F_{\mu\nu}s.
 \]
-的初值问题。沿闭曲线走一周后，末态与初态之间的线性变换称为整体回转。曲率描述无穷小闭路的整体回转；Berry 相位和非 Abel Berry 矩阵就是电子本征态丛的整体回转。
+这给出了曲率的操作意义：沿两个无穷小方向平行移动，交换次序后的差异由 \(F_{\mu\nu}\) 控制。
+
+把 \eqnrefs{eq:connection-transform-primer} 代入 \eqnrefs{eq:curvature-primer}，并使用 \(\dd^2=0\)，交叉项成对抵消，得到
+\begin{equation}
+F'=U^{-1}FU.
+\label{eq:curvature-transform-primer}
+\end{equation}
+所以联络矩阵依赖标架，而曲率按共轭齐次变换。特别地，\(F=0\) 与否不依赖标架。继续计算协变外微分还得到 Bianchi 恒等式
+\[
+DF=\dd F+\Gamma\wedge F-F\wedge\Gamma=0.
+\]
+
+秩一情形中各矩阵退化为复数，\(\Gamma\wedge\Gamma=0\)，于是 \(F=\dd\Gamma\)。若局部规范变换写成 \(U=\ee^{\ii\chi}\)，则
+\[
+\Gamma'=\Gamma+\ii\dd\chi,
+\qquad F'=F.
+\]
+这与电磁势改变而场强不变的结构相同。对秩大于一的丛，交换子项不能消失，曲率在换基下发生共轭而不是保持每个矩阵元不变。
+
+分子问题中，参数 \(R\) 取代流形坐标，局部电子本征态 \(\{|u_a(R)\rangle\}\) 取代标架。矩阵元
+\[
+\Gamma_{\mu,ab}(R)=
+\langle u_a(R)|\partial_\mu u_b(R)\rangle
+\]
+正是本征态丛上的联络。改变本征态基底会按 \eqnrefs{eq:connection-transform-primer} 改变 \(\Gamma\)，但曲率、闭路整体回转以及由它们产生的可观测干涉不依赖这种选择。这样，后文的 Berry 相位、非 Abel 几何矩阵和 Born--Huang 协变核方程，都只是这里定义的同一套向量丛几何在不同物理系统中的具体实现。

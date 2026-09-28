@@ -1,4 +1,4 @@
-\chapter{Maxwell 场的辐射谱与能流}
+\chapter{电磁辐射与辐射反作用}
 \label{chap:maxwell-radiation}
 
 给定局域电荷和电流以后，Maxwell 方程原则上已经决定所有时空点的场，但实验常常只测远区单位频率、单位立体角携带的能量。若每换一个源都重新解偏微分方程，这个可观测量很难直接读出；推迟 Green 函数把源到场的传播固定下来，Fourier 变换则把不同频率分开。
@@ -29,6 +29,38 @@
 \section{从 Maxwell 方程到一般频率的精确辐射谱}
 
 本节始终先固定 \(\omega>0\)，再取 \(R\to\infty\) 的 \(R^{-1}\) 辐射系数；只有母式建立以后才讨论 \(\omega\to0\)。因此“软频”“长波”和“周期”都是不同方向的后续特殊化，而不是一般辐射公式的前提。
+
+时间 Fourier 变换把波算子 \(\nabla^2-c^{-2}\partial_t^2\) 化为 \(\nabla^2+k^2\)，其中 \(k=\omega/c\)。要解有源方程，先求满足
+\begin{equation}
+ (\nabla^2+k^2)G_k(\vb r)=-\delta^{(3)}(\vb r)
+ \label{eq:phys-rr-helmholtz-green-definition}
+\end{equation}
+的 Green 函数。方程本身还不能区分向外传播与从无穷远射入的波；物理上无入射波的条件必须另加。
+
+\begin{proposition}[三维出射 Green 函数]
+对 \(k>0\)，满足\eqnrefs{eq:phys-rr-helmholtz-green-definition}、球对称且在远处只含出射球面波的解为
+\begin{equation}
+ G_k(\vb r)=\frac{\ee^{\ii k r}}{4\pi r},
+ \qquad r=|\vb r|.
+ \label{eq:phys-rr-helmholtz-green}
+\end{equation}
+在当前时间 Fourier 约定下，它的逆变换为推迟核
+\(G_{\rm ret}(t,r)=\delta(t-r/c)/(4\pi r)\)：源在距离 \(r\) 处的影响经过 \(r/c\) 才到达观测点。
+\end{proposition}
+
+\begin{proof}
+在 \(r>0\) 处，球对称函数满足
+\(\nabla^2G=r^{-1}(rG)''\)，所以 \(F=rG\) 满足
+\(F''+k^2F=0\)。相应的两个解是 \(\ee^{\ii kr}/r\) 与
+\(\ee^{-\ii kr}/r\)。乘回时间因子 \(\ee^{-\ii\omega t}\) 后，前者的相位 \(kr-\omega t\) 沿向外运动的球面保持不变；出射条件因而选它，令 \(G=A\ee^{\ii kr}/r\)。在原点周围半径 \(\varepsilon\) 的小球内积分\eqnrefs{eq:phys-rr-helmholtz-green-definition}。\(k^2\int_{B_\varepsilon}G\,\dd^3x=O(\varepsilon^2)\)，而散度定理给出
+\[
+ \int_{B_\varepsilon}\nabla^2G\,\dd^3x
+ =4\pi\varepsilon^2G'(\varepsilon)
+ \longrightarrow-4\pi A.
+\]
+右边的点源积分为 \(-1\)，故 \(A=1/(4\pi)\)。最后直接变换
+\(\delta(t-r/c)\)：\(\int\delta(t-r/c)\ee^{\ii\omega t}\dd t=\ee^{\ii\omega r/c}\)，便得到推迟核。对于局域源，取其与此核的卷积即为无外来辐射的因果解。
+\end{proof}
 
 设局域四流 \(J^\mu=(c\rho_{\rm e},\vb J)\) 满足
 \begin{equation}
@@ -78,7 +110,7 @@
  \left|\vb{\Pi}_{\perp}\cdot\boldsymbol{\mathcal J}\right|^2.
  \label{eq:phys-rr-exact-radiation-spectrum-current}
 \end{equation}
-这是本章给定源辐射理论的母公式。非周期、有限总辐射能量的过程可直接使用它；无限持续的周期源必须改用后面的周期平均功率。
+这是给定守恒源在一般频率下的辐射公式。非周期且总辐射能有限的过程可直接使用它；无限持续的周期源则应改用周期平均功率。
 
 对角度积分，可把源的空间相干性写成一个不依赖具体几何的双点核。令 \(\Delta\vb x=\vb x-\vb x'\)、\(r=|\Delta\vb x|\)、\(\widehat{\vb r}=\Delta\vb x/r\)、\(z=\omega r/c\)，记 \(j_\ell(z)\) 为第一类球 Bessel 函数。定义
 \begin{equation}
@@ -142,8 +174,7 @@ Lorenz 规范下的势满足
  \qquad
  \left(\nabla^2-c^{-2}\partial_t^2\right)\vb A=-\mu_0\vb J .
 \]
-对时间作 Fourier 变换，并用出射 Helmholtz 核
-\(G_k(\vb R-\vb x)=e^{\ii k|\vb R-\vb x|}/(4\pi|\vb R-\vb x|)\)。
+对时间作 Fourier 变换，再用\eqnrefs{eq:phys-rr-helmholtz-green} 对源作空间卷积。
 在固定 \(\omega>0\) 的远区，
 \[
  G_k(R\vb n-\vb x)

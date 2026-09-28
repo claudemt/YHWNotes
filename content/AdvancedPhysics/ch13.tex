@@ -1,12 +1,12 @@
-\chapter{薄板谱、受迫响应与 Chladni 节线}
+\section{薄板的谱与振动}
 \label{chap:phys-sm-thin-plate-chladni}
 
 薄板方程已经把三维弹性约化为二维四阶边值问题。真正可见的图样却由边界条件和本征函数决定：同一块板怎样选出共振频率，节线又为什么正好落在本征函数的零集上？
 
-\section{环板：谱、Green 与动态响应}
+\subsection{圆形板}
 \label{sec:phys-sm-eigenvalue}
 
-前面的母理论允许位置依赖的 \(\mathsf D(\vb r)\) 与 \(\mu_A(\vb r)\)。从这里开始才同时施加材料与几何特例：取均匀各向同性板，使弯曲刚度退化为常数 \(D\)、面质量退化为常数 \(\rho_{\rm m} h\)，再把中面区域取为环域
+前一节得到的变分方程允许弯曲刚度 \(\mathsf D(\vb r)\) 和面质量 \(\mu_A(\vb r)\) 随位置改变。为了把本征值实际算出来，现在取均匀各向同性板，使弯曲刚度成为常数 \(D\)、面质量成为常数 \(\rho_{\rm m} h\)，并把中面区域取为环域
 \[
  \mathcal A=\{(r,\theta):R_0<r<R\},
  \qquad
@@ -27,12 +27,31 @@
  k^4=\frac{\rho_{\rm m} h\omega^2}{D}.
  \label{eq:phys-sm-annulus-eigenproblem}
 \end{equation}
-圆对称使角向 Fourier 扇区彼此独立。写
+先把微分算子换到圆坐标。由 \(x=r\cos\theta\)、\(y=r\sin\theta\) 的链式法则，
+\[
+ \partial_x=\cos\theta\,\partial_r-\frac{\sin\theta}{r}\partial_\theta,
+ \qquad
+ \partial_y=\sin\theta\,\partial_r+\frac{\cos\theta}{r}\partial_\theta.
+\]
+将两式平方后相加，系数的导数也一并计入，得到
+\(\nabla_t^2=\partial_r^2+r^{-1}\partial_r+r^{-2}\partial_\theta^2\)。角函数 \(\ee^{\ii m\theta}\) 的二阶导数为 \(-m^2\ee^{\ii m\theta}\)，所以不同整数 \(m\) 的角向 Fourier 扇区彼此独立。写
 \[
  \Psi(r,\theta)=\mathcal R_m(r)e^{\ii m\theta},
  \qquad m\in\mathbb Z,
 \]
-并定义 \(\beta=kR\)。下式中的 \(J_m,Y_m\) 是第一、第二类 Bessel 函数，\(I_m,K_m\) 是相应的修正 Bessel 函数。径向齐次解空间由
+并定义 \(\beta=kR\)。记
+\(\Delta_m=\partial_r^2+r^{-1}\partial_r-m^2r^{-2}\)。径向方程因式分解为
+\[
+ (\Delta_m^2-k^4)\mathcal R_m
+ =(\Delta_m-k^2)(\Delta_m+k^2)\mathcal R_m=0.
+\]
+两个因子的零空间各有两维。对 \(\Delta_m+k^2\)，若取 \(m\ge0\) 并试 \(\mathcal R_m=\sum_{q\ge0}a_qr^{m+2q}\)，逐幂比较得到
+\(a_q=-k^2a_{q-1}/[4q(m+q)]\)。选取 \(a_0=(k/2)^m/m!\)，所得正规解为
+\[
+ J_m(kr)=\sum_{q=0}^\infty
+ \frac{(-1)^q}{q!(m+q)!}\left(\frac{kr}{2}\right)^{m+2q}.
+\]
+把方程中的 \(k^2\) 改为 \(-k^2\)，同样递推但符号全为正，得到修正 Bessel 解 \(I_m(kr)\)。二阶方程若已知一个非零解 \(y_1\)，令第二解为 \(y_2=y_1v\)，代回方程可得 \(v'=C/(r y_1^2)\)；由此产生与 \(J_m\)、\(I_m\) 线性无关的第二支，按通常的原点与无穷远归一化分别记为 \(Y_m\)、\(K_m\)。对于负整数 \(m\)，方程只含 \(m^2\)，故取 \(|m|\) 即可。四阶齐次解空间于是由
 \begin{equation}
  \vb b_m(\xi;\beta)
  :=\bigl(J_m(\beta\xi),\,Y_m(\beta\xi),\,I_m(\beta\xi),\,K_m(\beta\xi)\bigr)
@@ -70,7 +89,7 @@
  \det\vb Z_m^{XY}(\beta,\xi_0)=0.
  \label{eq:phys-sm-annulus-characteristic}
 \end{equation}
-这里每个 \(\mathcal B\) 产生两行，作用在行向量 \(\vb b_m\) 的每个分量上；当边界算子作用于 \(\vb b_m(\xi;\beta)\) 时，径向导数均按 \(\partial_r=R^{-1}\partial_\xi\) 还原为物理导数。内缘外法向与 \(+\vb e_r\) 相反，但齐次条件中的整体符号不影响零空间。\eqnrefs{eq:phys-sm-annulus-characteristic} 的正根按从小到大记为 \(\beta_{m,s}^{XY}\)，其中 \(s=1,2,\ldots\) 是径向根序号，于是
+这里每个 \(\mathcal B\) 产生两行，作用在行向量 \(\vb b_m\) 的每个分量上，四个齐次边界条件合起来就是 \(\vb Z_m^{XY}\vb c=0\)。线性代数的秩判据说明非零模态 \(\vb c\ne0\) 存在当且仅当 \(\det\vb Z_m^{XY}=0\)；这一步并没有再用特殊函数恒等式。当边界算子作用于 \(\vb b_m(\xi;\beta)\) 时，径向导数均按 \(\partial_r=R^{-1}\partial_\xi\) 还原为物理导数。内缘外法向与 \(+\vb e_r\) 相反，但齐次条件中的整体符号不影响零空间。\eqnrefs{eq:phys-sm-annulus-characteristic} 的正根按从小到大记为 \(\beta_{m,s}^{XY}\)，其中 \(s=1,2,\ldots\) 是径向根序号，于是
 \begin{equation}
  \omega_{m,s}^{XY}
  =\frac{(\beta_{m,s}^{XY})^2}{R^2}
@@ -252,53 +271,6 @@
 这个极限同时检查了载荷归一化、边界条件和 \(R^4/D\) 的量纲。
 \end{exbox}
 \begin{proof}[解]
-定义径向 Bessel 算子
-\begin{equation*}
- \Delta_m:=\frac{\dd^2}{\dd r^2}
- +\frac1r\frac{\dd}{\dd r}-\frac{m^2}{r^2}.
-\end{equation*}
-由角向本征关系 \(\partial_\theta^2 e^{\ii m\theta}=-m^2 e^{\ii m\theta}\)，面内拉普拉斯算子对分离变量 \(\Psi=\mathcal R_m(r)e^{\ii m\theta}\) 的作用为
-\begin{equation*}
- \nabla_t^2\Psi
- =e^{\ii m\theta}
- \left(\mathcal R_m''+\frac1r\mathcal R_m'-\frac{m^2}{r^2}\mathcal R_m\right)
- =e^{\ii m\theta}\Delta_m\mathcal R_m,
-\end{equation*}
-由于 \(e^{\ii m\theta}\) 仍是 \(\partial_\theta^2\) 的本征函数，再作用一次得 \(\nabla_t^4\Psi=e^{\ii m\theta}\Delta_m^2\mathcal R_m\)。把分离变量代入\eqnrefs{eq:phys-sm-annulus-eigenproblem}，约去公因子 \(e^{\ii m\theta}\) 后得到
-\begin{equation*}
- (\Delta_m^2-k^4)\mathcal R_m=0.
-\end{equation*}
-由于 \(\Delta_m\) 与常数 \(k^2\) 可换，算子多项式可因式分解为
-\begin{equation*}
- \Delta_m^2-k^4
- =(\Delta_m-k^2)(\Delta_m+k^2)
- =(\Delta_m+k^2)(\Delta_m-k^2).
-\end{equation*}
-于是齐次解空间是两个二阶算子核的直和。\(\Delta_m+k^2\) 的核满足
-\begin{equation*}
- \mathcal R_m''+\frac1r\mathcal R_m'
- +\left(k^2-\frac{m^2}{r^2}\right)\mathcal R_m=0,
-\end{equation*}
-两端乘 \(r^2\) 并作变量替换 \(z=kr\)，即化为标准 Bessel 方程 \(z^2 R''+zR'+(z^2-m^2)R=0\)，其两个线性无关解为 \(J_m(kr),Y_m(kr)\)。同理 \(\Delta_m-k^2\) 的核满足把 \(k^2\) 换成 \(-k^2\) 的方程，作同一替换得到修正 Bessel 方程 \(z^2 R''+zR'-(z^2+m^2)R=0\)，两个线性无关解为 \(I_m(kr),K_m(kr)\)。四个解在 \(r>0\) 上线性无关，因此径向齐次解空间即\eqnrefs{eq:phys-sm-annulus-radial-basis}。
-设 \(\mathcal R_m=\vb b_m\vb c\)，其中 \(\vb c=(c_1,c_2,c_3,c_4)^{\mathsf T}\)。边界迹 \(\mathcal R\)、\(\mathcal R'\)、\(M_{rr}\)、\(V_r\) 中每一个都是 \(\mathcal R_m\) 的常系数线性微分算子，因而对 \(\vb c\) 线性。具体地，外缘 \(r=R\) 上的边界算子 \(\mathcal B_X\) 作用在基向量 \(\vb b_m\) 上得到一个 \(2\times4\) 行块
-\begin{equation*}
- \mathcal B_X[\vb b_m](R)
- =\begin{pmatrix}
-  \mathcal B_{X,1}[b_{m,1}](R)&\cdots&\mathcal B_{X,1}[b_{m,4}](R)\\
-  \mathcal B_{X,2}[b_{m,1}](R)&\cdots&\mathcal B_{X,2}[b_{m,4}](R)
- \end{pmatrix},
-\end{equation*}
-内缘 \(r=R_0\) 上同理得到 \(\mathcal B_Y[\vb b_m](R_0)\)。把两个行块上下堆叠，便得到 \(4\times4\) 矩阵 \(\vb Z_m^{XY}\) 和齐次线性系统
-\begin{equation*}
- \vb Z_m^{XY}(\beta,\xi_0)\vb c=0.
-\end{equation*}
-非零 \(\vb c\) 存在当且仅当 \(\vb Z_m^{XY}\) 的秩小于四，即其行列式为零
-\begin{equation*}
- \det\vb Z_m^{XY}(\beta,\xi_0)=0.
-\end{equation*}
-此即\eqnrefs{eq:phys-sm-annulus-characteristic}。因此 \(\mathrm C,\mathrm S,\mathrm F\) 在外缘和内缘的九种有序组合只是 \(X,Y\) 的九个取值，而不是九条独立推导链。
-\end{proof}
-\begin{proof}[解]
 轴对称双调和齐次方程 \(\mathcal L_0 f=0\) 中，\(\mathcal L_0=(\dd_\xi^2+\xi^{-1}\dd_\xi)^2\)。先解一阶因子 \((\dd_\xi^2+\xi^{-1}\dd_\xi)g=0\)，即 \((\xi g')'=0\)，得 \(g=A\ln\xi+B\)；再解 \((\dd_\xi^2+\xi^{-1}\dd_\xi)g=\ln\xi\) 与 \(=1\) 两类非齐次方程，得到基本解空间
 \[
  \operatorname{span}\{1,\xi^2,\ln\xi,\xi^2\ln\xi\}.
@@ -388,7 +360,7 @@
 \]
 由 \(f'(1)=0\) 再把 \(c_{\mathrm{CF}}\) 用 \(b_{\mathrm{CF}}\) 表出，最后 \(\mathcal M[f](\xi_0)=0\) 解出 \(b_{\mathrm{CF}}\)。三条方程的系数矩阵行列式为 \(16\Delta\)，\(\Delta=(1-\nu)+(1+\nu)\xi_0^2\)，在 \(\xi_0\in(0,1)\)、\(\nu\in(-1,1)\) 时非零，故解唯一。回代即得正文给出的三个系数。
 \end{proof}
-\section{长方形板的解析解}
+\subsection{长方形板的解析解}
 \label{sec:phys-sm-rectangular}
 继续保持上一节的均匀各向同性材料特例，只把中面区域改为长方形
 \[
@@ -662,205 +634,95 @@
 代回\eqnrefs{eq:phys-sm-levy-uniform-mode}即可。这一处理对任意 \(XY\in\{\mathrm C,\mathrm S,\mathrm F\}^2\) 都适用，只是 \(\vb Z_{m,\mathrm L}^{XY}\) 的行选取不同。
 \end{proof}
 四边简支与 L\'evy 类边界因此都只是前面一般 Kirchhoff--Love 双调和算子的几何特例：前者把两个方向都谱对角化，后者只对一个方向谱对角化，再用一维自伴边界问题处理另一个方向。具体几何没有改变变分结构、Green 跳跃或谱理论，只改变了实现这些一般结构所用的基函数。
-\section{Chladni 图形：节线的一般理论与实例}
+\subsection{Chladni 节线}
 \label{sec:phys-sm-chladni-general}
-前两节分别把环板和长方形的谱显式写出。本节回到本章标题中的核心物理对象：Chladni 图形。1787 年 Chladni 用琴弓拉振金属板并在其上撒沙，观察到沙粒聚集到振动为零的节线上，形成对称而优美的图案。这些图案并非额外模型，而是双调和算子本征函数的\emph{节点集}。本节目的不是罗列具体图形，而是给出适用于任意有界区域 \(\mathcal A\subset\mathbb R^2\) 和任意自伴边界实现 \(X\in\{\mathrm C,\mathrm S,\mathrm F\}\) 的一般理论，再把环板和长方形作为特例代入。
-设 \(\{\Psi_j,\omega_j\}_{j=1}^\infty\) 是双调和算子在区域 \(\mathcal A\) 上对应边界实现 \(X\) 的本征系，按质量内积
-\[
- \langle f,g\rangle_\mu=\int_{\mathcal A}\rho_{\rm m} h\,f^*g\,\dd a
-\]
-归一。第 \(j\) 个 Chladni 图形定义为\emph{节点集}
+
+在前面的圆板与矩形板计算中，本征值给出共振频率，本征函数则给出板面各点的相对位移。对实本征函数 \(\Psi\)，把区域内部的零集定义为
 \begin{equation}
- \mathcal N_j
- :=\{\vb r\in\mathcal A:\Psi_j(\vb r)=0\}.
+ \mathcal N(\Psi)=\{\vb r\in\mathcal A:\Psi(\vb r)=0\}.
  \label{eq:phys-sm-chladni-nodal-set}
 \end{equation}
-在实验中，板面撒布的细沙在驻波腹点处被垂直加速度 \(-\omega_j^2\Psi_j\) 抛起、在节点处静止，因此沙粒沿 \(\mathcal N_j\) 聚集。Chladni 图形因此完全由谱理论决定，不需要在板方程之外引入任何新物理。
-节点集的普适结构由以下几条给出。
-(i) Courant 节域定理。把节点集 \(\mathcal N_j\) 在 \(\mathcal A\) 中截出的连通开区域称为\emph{节域}，其数目记为 \(\mu(\Psi_j)\)。将本征值按重数排序 \(\omega_1\le\omega_2\le\cdots\)，则
+这就是理想单一驻波的节线。若一个本征值有多个线性无关的本征函数，节线属于选定的\emph{本征函数}，而不属于本征值本身；不同驱动点可激发同一特征空间中的不同线性组合。
+
+节点附近的几何可从多变量微积分判断。若 \(\Psi(\vb r_0)=0\) 且
+\(\nabla\Psi(\vb r_0)\ne0\)，隐函数定理把零集在 \(\vb r_0\) 附近写成一条光滑曲线。若梯度也为零，必须继续查看 Taylor 展开的第一个非零齐次项；它的次数未必是二，零集可能交叉、相切或形成孤立点。均匀板的内部系数为常数，本征函数在内部解析；对变系数板仍可在适当正则性下使用隐函数定理，但不能仅凭“椭圆方程”就断言所有节线都解析。
+
+有一个常被误用的节域计数结论需要在此划清边界。二阶 Dirichlet Laplace 算子的 Courant 定理把第 \(j\) 个本征函数的节域数界为 \(j\)，证明靠把本征函数限制到每个节域后延拓为零。对四阶板方程，这个试探函数通常不属于能量空间 \(H^2\)：一维例子
+\(u(x)=x\) 限制到 \(x>0\) 后延拓为零得到 \(u_+(x)=\max(x,0)\)，它的一阶导数是阶跃函数，二阶弱导数是 \(\delta_0\)，并非 \(L^2\) 函数。板的节线只保证位移为零，不保证法向斜率也为零；零延拓便会在节线上产生同类分布。因而不能把二阶 Courant 证明或由它导出的 Pleijel 常数直接移给一般固支、简支或自由薄板。本节只对可显式求出的模态逐一数零集，不宣称普遍的 \(\mu_j\le j\)。
+
+先取半径 \(R\) 的实心圆板，并以固支外缘 \(w(R)=\partial_rw(R)=0\) 为例。中心正则性排除 \(Y_m,K_m\)，但\emph{同时保留} \(J_m,I_m\) 两支。写 \(\xi=r/R\) 后，
+\[
+ \mathcal R_m(\xi)=A J_m(\beta\xi)+B I_m(\beta\xi).
+\]
+外缘的两个条件构成
+\[
+ \begin{pmatrix}
+  J_m(\beta)&I_m(\beta)\\
+  J_m'(\beta)&I_m'(\beta)
+ \end{pmatrix}
+ \binom{A}{B}=0.
+\]
+因而允许的正 \(\beta\) 满足
 \begin{equation}
- \mu(\Psi_j)\le j.
- \label{eq:phys-sm-courant-nodal-domain}
+ J_m(\beta)I_m'(\beta)-J_m'(\beta)I_m(\beta)=0.
+ \label{eq:phys-sm-clamped-disk-characteristic}
 \end{equation}
-这一结论对任意自伴椭圆算子成立，不限于双调和或特定边界。它说明第 \(j\) 个模态最多把板面分成 \(j\) 块振动相位互不连通的区域。对基态 \(j=1\)，\(\mu\le1\) 意味着基态无内节线——板面整体同相振动。
-(ii) 节线光滑性与交叉。对双调和算子 \(\nabla_t^4\)，本征函数 \(\Psi_j\) 是实解析的（因为 \(\nabla_t^4\Psi_j=\omega_j^2(\rho_{\rm m}h/D)\Psi_j\) 右端光滑，由椭圆正则性逐次提升可得任意阶可导，再用解析椭圆估计得到实解析）。因此 \(\mathcal N_j\) 是 \(\Psi_j\) 的零水平集。由隐函数定理，在梯度非零处 \(\nabla_t\Psi_j\neq0\)，节线是光滑曲线。在临界点 \(\nabla_t\Psi_j=0\) 处，\(\Psi_j\) 的 Taylor 展开主导项为二次型，节线在该处可形成交叉或孤立点。
-(iii) 双调和与 Laplace 节线的区别。对 Laplace 算子 \(-\nabla_t^2\)，节线在内部不相交（Pleijel 定理的推论），两条节线只会在边界相遇。但对双调和算子 \(\nabla_t^4\)，节线\emph{可以在内部交叉}。这是因为 \(\nabla_t^4=(\nabla_t^2)^2\)，若 \(\Psi\) 同时是 Laplace 本征函数 \(-\nabla_t^2\Psi=\lambda\Psi\)，则它自动是双调和本征函数 \(\nabla_t^4\Psi=\lambda^2\Psi\)，而两个 Laplace 本征函数的线性组合 \(\Psi=\Psi_a+c\,\Psi_b\)（若 \(\lambda_a=\lambda_b\) 即简并）的零集正是两条节线的交叉图案。方形板的经典十字形 Chladni 图就是这一机制的产物。
-(iv) 边界行为。在边界 \(\partial\mathcal A\) 上，节线与边界的交角受边界条件约束。对固支边 \(\mathrm C\)，\(\Psi_j|_{\partial\mathcal A}=0\) 意味着整条边界都是节点，节线从边界出发的方向由 \(\partial_n\Psi_j=0\) 进一步约束。对简支边 \(\mathrm S\)，\(\Psi_j|_{\partial\mathcal A}=0\) 同样使边界属于节点集，但 \(\partial_n\Psi_j\) 自由，节线以非零角度与边界相遇。对自由边 \(\mathrm F\)，边界一般不属于节点集，节线只在特定点与边界相遇，这些点由 \(M_{nn}=0\) 与 \(V_n=0\) 的额外约束决定。
-\begin{proof}[解]
-策略：用节域上的 Rayleigh 商构造 \(j-1\) 个试探函数，由极小极大原理推出矛盾。
-设 \(\Psi_j\) 的节域为 \(\Omega_1,\ldots,\Omega_\mu\)，其中 \(\mu=\mu(\Psi_j)\)。在每个节域 \(\Omega_\ell\) 上，\(\Psi_j|_{\Omega_\ell}\) 满足 Dirichlet 边界条件（因为在 \(\partial\Omega_\ell\) 上 \(\Psi_j=0\)），且
+这时可取
 \[
- \nabla_t^4\Psi_j=\omega_j^2\frac{\rho_{\rm m}h}{D}\Psi_j
- \quad\text{在 }\Omega_\ell\text{ 内}.
+ \mathcal R_m(\xi)
+ =I_m(\beta)J_m(\beta\xi)-J_m(\beta)I_m(\beta\xi).
 \]
-因此 \(\omega_j^2\) 是双调和算子在 \(\Omega_\ell\) 上带 Dirichlet 边界的本征值。由 Rayleigh 商，
+把 \(\xi=1\) 代入，函数值为零；再求一次导数，所得恰是
+\(-\beta\) 乘以\eqnrefs{eq:phys-sm-clamped-disk-characteristic} 的左边，故斜率也为零。这说明实心圆板绝不能简单把环板的某个含 \(I_m(\beta\xi_0)\) 的式子令 \(\xi_0=0\)：对 \(m\ge1\)，那样会把两个系数同时送到零。
+
+取实角向组合 \(\Psi=\mathcal R_m(r/R)\cos m\theta\)。当 \(m\ge1\) 时，
+\(\cos m\theta=0\) 给出 \(m\) 条穿过圆心的直径，即 \(2m\) 个角向扇区。若这一径向函数在 \(0<r<R\) 有 \(n\) 个不同零半径，就还有 \(n\) 条节圆；在没有额外简并组合的这一单一分离模态中，零集补集有 \(2m(n+1)\) 个连通节域。对 \(m=0\)，没有节径，节域数为 \(n+1\)。这里的 \(n\) 应由实际径向组合的零点求得；不能把二阶 Sturm 振荡定理的“第 \(s\) 根有 \(s-1\) 个内零点”未经证明地套到四阶径向问题。
+
+四边简支的矩形板则给出一个完全由初等函数组成的对照。对
+\(\mathcal A=(0,a)\times(0,b)\)，
 \[
- \omega_j^2
- =\frac{D\int_{\Omega_\ell}|\nabla_t^2\Psi_j|^2\dd a}
- {\int_{\Omega_\ell}\rho_{\rm m}h\,|\Psi_j|^2\dd a}
- \ge\lambda_1(\Omega_\ell),
-\]
-其中 \(\lambda_1(\Omega_\ell)\) 是 \(\Omega_\ell\) 上带 Dirichlet 边界的双调和算子第一本征值。
-现在构造 \(\mu-1\) 个试探函数。在每个节域上令
-\[
- \phi_\ell(\vb r)=
- \begin{cases}
-  \displaystyle\frac{\Psi_j|_{\Omega_\ell}}{\|\Psi_j\|_{L^2(\Omega_\ell)}},& \vb r\in\Omega_\ell,\\[6pt]
-  0,& \vb r\notin\Omega_\ell.
- \end{cases}
-\]
-每个 \(\phi_\ell\) 在 \(\mathcal A\) 上 \(H_0^2\)（因为在节域边界上函数值和法向导数都连续为零），且彼此正交：
-\[
- \int_{\mathcal A}\rho_{\rm m}h\,\phi_\ell^*\phi_m\dd a=0,
- \qquad \ell\neq m.
-\]
-取这 \(\mu-1\) 个函数张成的 \((\mu-1)\) 维子空间 \(V_{\mu-1}=\operatorname{span}\{\phi_1,\ldots,\phi_{\mu-1}\}\)。对任意 \(\phi\in V_{\mu-1}\)，其 Rayleigh 商满足
-\[
- \mathcal R[\phi]
- =\frac{D\int_{\mathcal A}|\nabla_t^2\phi|^2\dd a}
- {\int_{\mathcal A}\rho_{\rm m}h\,|\phi|^2\dd a}
- =\frac{D\sum_{\ell=1}^{\mu-1}|c_\ell|^2\int_{\Omega_\ell}|\nabla_t^2\Psi_j|^2\dd a/\|\Psi_j\|_{L^2(\Omega_\ell)}^2}
- {\sum_{\ell=1}^{\mu-1}|c_\ell|^2}
- \le\omega_j^2,
-\]
-因为每个节域上的 Rayleigh 商都等于 \(\omega_j^2\)（\(\Psi_j\) 在每个节域上都是本征函数）。由极小极大原理的第 \((\mu-1)\) 个本征值刻画，
-\[
- \omega_{\mu}^2\le\sup_{\phi\in V_{\mu-1}\setminus\{0\}}\mathcal R[\phi]\le\omega_j^2.
-\]
-由于本征值按递增排列，\(\omega_\mu\le\omega_j\) 蕴含 \(\mu\le j\)。若 \(\mu>j\)，则 \(\omega_\mu>\omega_j\)（严格不等号来自本征值排序），矛盾。故 \(\mu(\Psi_j)\le j\)，即\eqnrefs{eq:phys-sm-courant-nodal-domain}。
-\end{proof}
-节点集的普适结构确定以后，区域对称群便可用来分类 Chladni 图形。圆板和方形板给出两组可直接计算的实例。
-Chladni 图形的丰富程度直接由本征值的简并结构决定。设区域 \(\mathcal A\) 的对称群为 \(G_{\mathcal A}\subset O(2)\)，则双调和算子与 \(G_{\mathcal A}\) 交换，本征空间自动携带 \(G_{\mathcal A}\) 的表示。
-(i) 连续对称——圆板。圆板的对称群 \(G_{\mathcal A}=O(2)\) 连续。对 \(m\ge1\)，角向表示 \(e^{\pm\ii m\theta}\) 是二维不可约表示，因此每个径向量子数 \(s\) 对应一个二重简并本征值 \(\omega_{m,s}\)。实本征函数
-\[
- \Psi_{m,s}^{(\cos)}=\mathcal R_{m,s}(r)\cos m\theta,
+ \Psi_{m,s}(x,y)
+ =\sin\frac{m\pi x}{a}\sin\frac{s\pi y}{b},
  \qquad
- \Psi_{m,s}^{(\sin)}=\mathcal R_{m,s}(r)\sin m\theta
+ \omega_{m,s}^2
+ =\frac{D}{\rho_{\rm m}h}
+   \left[\left(\frac{m\pi}{a}\right)^2+
+         \left(\frac{s\pi}{b}\right)^2\right]^2.
 \]
-的节线分别为 \(m\) 条等角节径和 \(m\) 条旋转 \(\pi/(2m)\) 的节径，加上由 \(\mathcal R_{m,s}\) 的径向零点给出的节圆。任意实线性组合
+在每条边上 \(\Psi=0\)，且二阶法向导数仍是 \(\Psi\) 的常数倍，所以简支弯矩条件也成立。内部零线是
+\(x=ka/m\)（\(1\le k<m\)）与 \(y=\ell b/s\)（\(1\le\ell<s\)）；
+它们把矩形确切分成 \(ms\) 个节域，这个数来自网格计数，不是从 Courant 定理借来的。
+
+方板 \(a=b\) 中，\((m,s)\) 与 \((s,m)\)（\(m\ne s\)）因方形对称性共享频率。还可能发生算术上的额外简并：
+\(1^2+7^2=7^2+1^2=5^2+5^2=50\)，所以这一频率的本征空间至少包含三个独立模式
+\(\Psi_{1,7},\Psi_{7,1},\Psi_{5,5}\)。一般线性组合的节线不必保持任何单一正弦网格，也不能把其中两项之和一概称作 \(D_4\) 全对称。相反，若
+\((a/b)^2\) 是无理数，从
 \[
- \Psi_{m,s}^{(\alpha)}=\mathcal R_{m,s}(r)\cos m(\theta-\alpha)
+ \frac{m^2}{a^2}+\frac{s^2}{b^2}
+ =\frac{p^2}{a^2}+\frac{q^2}{b^2}
 \]
-只是把节径整体旋转角度 \(\alpha\)。因此在理想圆对称下，Chladni 图形不是一个离散集合而是一个连续族，参数 \(\alpha\in[0,\pi/m)\)。实验中板的微小不对称（质量分布偏差、驱动点位置）会破缺这一连续简并，选定特定 \(\alpha\)。对 \(m=0\)，无角向简并，节线只有节圆。
-(ii) 离散对称——方形板。方形板 \(\mathcal A=(0,a)\times(0,a)\) 的对称群为二面体群 \(D_4\)（四阶旋转和反射，共 8 个元素）。四边简支时本征函数
+可知，若 \((m,s)\ne(p,q)\)，便会把 \((a/b)^2\) 写成两个整数差之比，与无理性矛盾。因此在这一条件下上述可分离谱是单重的。只假定 \(a/b\) 无理还不够，例如 \(a/b=\sqrt2\) 的平方是有理数。
+
+实验或数值图像通常是受迫响应，而不是抽象地“画第 \(j\) 个本征函数”。若质量归一化模态满足
+\(\int_{\mathcal A}\rho_{\rm m}h\,\overline{\Psi_i}\Psi_j\,\dd a=\delta_{ij}\)，
+谐波载荷 \(f_\omega\) 对第 \(j\) 模的投影为
+\(F_j=\int_{\mathcal A}\overline{\Psi_j}f_\omega\,\dd a\)。
+在模态阻尼率 \(\gamma_j\ge0\) 的线性近似下，复振幅为
 \[
- \Psi_{m,s}^{\mathrm{SSSS}}=\sin\frac{m\pi x}{a}\sin\frac{s\pi y}{a}
+ w_\omega(\vb r)
+ =\sum_j\frac{F_j}{\omega_j^2-\omega^2-\ii\gamma_j\omega}
+       \Psi_j(\vb r).
 \]
-的本征值为
+只有驱动频率靠近一个孤立共振、相应 \(F_j\ne0\)，且其他模式的贡献可忽略时，观测到的暗线才近似于单一 \(\mathcal N(\Psi_j)\)。撒沙过程还涉及颗粒与板面的碰撞和摩擦；板方程给出位移零线，并不单独证明颗粒一定在每条零线上聚集。
+
+对一般区域，可选满足运动学边界条件的有限维试探基
+\(\{\varphi_1,\ldots,\varphi_N\}\)，把前章二次型与质量内积分别组成
 \[
- \omega_{m,s}^2=\frac{D}{\rho_{\rm m}h}\left[\left(\frac{m\pi}{a}\right)^2+\left(\frac{s\pi}{a}\right)^2\right]^2.
-\]
-当 \(m\neq s\) 时，\(\Psi_{m,s}\) 与 \(\Psi_{s,m}\) 共享同一本征值（\emph{偶然简并}），因为 \(m^2+s^2=s^2+m^2\)。此时任意线性组合
-\[
- \Psi=c_1\sin\frac{m\pi x}{a}\sin\frac{s\pi y}{a}
- +c_2\sin\frac{s\pi x}{a}\sin\frac{m\pi y}{a}
-\]
-都是本征函数，其 Chladni 图随 \((c_1:c_2)\in\mathbb{RP}^1\) 变化。两个极端情形给出截然不同的图案：
-\begin{itemize}
- \item \(c_2=0\)：节线为 \(x=k\pi/m\) 或 \(y=l\pi/s\) 的直网格，把板面分成 \(m\times s\) 个矩形节域。
- \item \(c_1=c_2\)：节线方程 \(\sin(m\pi x/a)\sin(s\pi y/a)+\sin(s\pi x/a)\sin(m\pi y/a)=0\)，一般给出弯曲的对角节线，具有 \(D_4\) 对称性。
-\end{itemize}
-当 \(m=s\) 时无偶然简并，节线为 \(m\times m\) 正交直网格。更高阶的偶然简并（如 \((m,s)=(1,7)\) 与 \((5,5)\) 因 \(1^2+7^2=5^2+5^2=50\) 而简并）会产生更复杂的 Chladni 图，这正是方形板实验中高阶图案丰富多变的数学根源。
-(iii) 一般矩形板。矩形板 \(\mathcal A=(0,a)\times(0,b)\)，\(a/b\notin\mathbb Q\) 时，\(m^2/a^2+s^2/b^2\) 几乎不会有非平凡简并（由 Weyl 谱渐近和数论结果，有理比 \(a/b\) 才可能产生偶然简并）。因此一般矩形的 Chladni 图形远不如方形丰富，几乎每个本征值都是单重的，节线为单一模式 \(\sin(m\pi x/a)\sin(s\pi y/b)\) 的直网格。
-(iv) 一般区域的 Pleijel 渐近。对任意有界光滑区域，节域数 \(\mu(\Psi_j)\) 的渐近上界由 Pleijel 定理给出：
-\begin{equation}
- \limsup_{j\to\infty}\frac{\mu(\Psi_j)}{j}
- \le\frac{4\pi j_{\nu,1}^2}{\operatorname{Area}(\mathcal A)\cdot C_{\mathrm{Weyl}}},
- \label{eq:phys-sm-pleijel-asymptotic}
-\end{equation}
-其中 \(j_{\nu,1}\) 是相应 Bessel 函数的第一个正零点，\(C_{\mathrm{Weyl}}\) 是 Weyl 谱密度常数。对二维双调和算子，这一常数比 Laplace 情形更小，因此 Pleijel 商严格小于 1，说明 Courant 界 \(\mu\le j\) 在高阶模态上远非紧致——绝大多数高阶模态的节域数显著少于 \(j\)。
-上述分类理论在圆板和方形板中有完全显式的实例。
-\begin{exbox}[圆板 Chladni 图形的完整分类]
-实心圆板 (\(\xi_0\to0\)) 的本征函数为
-\[
- \Psi_{m,s}(r,\theta)=\mathcal R_{m,s}(r)\cos m\theta
- \quad\text{或}\quad
- \mathcal R_{m,s}(r)\sin m\theta,
-\]
-其中径向函数
-\[
- \mathcal R_{m,s}(r)=J_m(\beta_{m,s}\xi)I_m(\beta_{m,s}\xi_0)
- -I_m(\beta_{m,s}\xi)J_m(\beta_{m,s}\xi_0)
-\]
-（\(\xi_0\to0\) 时退化为 \(J_m(\beta_{m,s}\xi)\)，因为 \(I_m(0)=0\) 对 \(m\ge1\)，\(I_0(0)=1\) 对 \(m=0\) 需单独处理）。节线由两个独立因子决定：
-角向节径。\(\cos m\theta=0\) 给出 \(m\) 条等角节径 \(\theta=(2k+1)\pi/(2m)\)，\(k=0,\ldots,m-1\)。对 \(\sin m\theta\) 则旋转 \(\pi/(2m)\)。
-径向节圆。\(\mathcal R_{m,s}(r)=0\) 的正零点给出 \(s-1\) 个同心节圆（由 Sturm 振荡定理，第 \(s\) 个径向本征函数恰有 \(s-1\) 个内部零点）。
-因此第 \((m,s)\) 模态的 Chladni 图形由 \(m\) 条节径和 \(s-1\) 条节圆组成，把圆板分成 \(m\cdot s\) 个节域（满足 Courant 界 \(\mu=m\cdot s\le j\)，其中 \(j\) 是 \((m,s)\) 在排序谱中的位置）。
-具体低阶图案：
-\begin{itemize}
- \item \((m,s)=(0,1)\)：无节径、无节圆，整板同相振动（基态，\(\mu=1\)）。
- \item \((m,s)=(1,1)\)：1 条节径把圆板分成 2 个半圆 (\(\mu=2\))。
- \item \((m,s)=(2,1)\)：2 条正交节径分成 4 个扇形 (\(\mu=4\))。
- \item \((m,s)=(0,2)\)：1 条节圆分成内圆和外环 (\(\mu=2\))。
- \item \((m,s)=(1,2)\)：1 条节径加 1 条节圆，分成 4 个区域 (\(\mu=4\))。
- \item \((m,s)=(3,1)\)：3 条等角节径分成 6 个扇形 (\(\mu=6\))。
-\end{itemize}
-\end{exbox}
-\begin{exbox}[方形板 SSSS 的 Chladni 图形与偶然简并]
-四边简支方形板 (\(a=b\)) 的本征函数 \(\Psi_{m,s}=\sin(m\pi x/a)\sin(s\pi y/a)\) 的节线为直网格
-\[
- x=\frac{ka}{m},\quad k=1,\ldots,m-1;
+ K_{ij}=a[\varphi_j,\varphi_i],
  \qquad
- y=\frac{la}{s},\quad l=1,\ldots,s-1.
+ M_{ij}=\int_{\mathcal A}\mu_A\,
+       \varphi_j\overline{\varphi_i}\,\dd a.
 \]
-节域数为 \(\mu=m\cdot s\)。
-无简并情形 （\(m\neq s\) 且 \(m^2+s^2\) 无其他分解）：节线为 \(m\times s\) 矩形直网格。例如 \((1,2)\)：1 条水平节线 \(y=a/2\)，\(\mu=2\)。\((2,3)\)：1 条竖线 \(x=a/2\) 加 2 条横线 \(y=a/3,2a/3\)，\(\mu=6\)。
-偶然简并情形 （\(m\neq s\) 且存在 \((p,q)\neq(m,s)\) 使 \(m^2+s^2=p^2+q^2\)）：本征值二重简并，Chladni 图为连续族。最简单的例子是 \((1,7)\) 与 \((5,5)\)：
-\[
- 1^2+7^2=5^2+5^2=50.
-\]
-本征函数
-\[
- \Psi=c_1\sin\frac{\pi x}{a}\sin\frac{7\pi y}{a}
- +c_2\sin\frac{5\pi x}{a}\sin\frac{5\pi y}{a}
-\]
-的节线随 \(c_1/c_2\) 从直网格连续变形为对角弯曲节线。\(c_2=0\) 时有 \(1\times7=7\) 个矩形节域；\(c_1=0\) 时有 \(5\times5=25\) 个正方形节域；中间比值给出过渡图案。这正是 Chladni 实验中方形板高阶图案极为丰富的数学原因。
-对称组合。取 \(c_1=c_2=1\)，节线方程
-\[
- \sin\frac{\pi x}{a}\sin\frac{7\pi y}{a}
- +\sin\frac{5\pi x}{a}\sin\frac{5\pi y}{a}=0
-\]
-具有 \(D_4\) 全对称性（关于 \(x=y\)、\(x=a-y\)、\(x=a/2\)、\(y=a/2\) 对称），图案呈四重旋转对称。取 \(c_1=1,c_2=-1\) 则关于对角线反对称，节线必过方形中心。
-\end{exbox}
-Chladni 图形不仅是正问题（给定区域求节线）的输出，还自然引出反问题。
-(i) Kac 问题：「能否听出板的形状？」 板的振动谱 \(\{\omega_j\}\) 决定了 Weyl 谱渐近
-\[
- N(\omega)=\#\{j:\omega_j\le\omega\}
- \sim\frac{\operatorname{Area}(\mathcal A)}{4\pi}\left(\frac{\rho_{\rm m}h}{D}\right)^{1/2}\omega,
-\]
-因此从谱可读出面积 \(\operatorname{Area}(\mathcal A)\)。更高阶热迹展开可读出周长、Euler 示性数等。但 Kac 的反问题「谱 \(\{\omega_j\}\to\mathcal A\) 是否一一」的答案是否定的：存在等谱不同构的区域（Milnor 的 16 维反例；二维平面的等谱不 congruent 反例由 Gordon--Wilson--Webb 构造）。因此仅凭 Chladni 图形的频率序列不能唯一反推板的形状。
-(ii) 节线反问题。比谱更强的问题是：给定所有 Chladni 图形 \(\{\mathcal N_j\}_{j=1}^\infty\) 的完整集合（不只是频率），能否反推 \(\mathcal A\)？Uhlenbeck 证明了对通有（generic）区域，谱和节点集共同唯一确定算子，从而确定区域。但「通有」排除了等谱反例所在的零测集，因此反问题在可操作意义下的完全回答仍开放。
-(iii) Berry 随机波猜想。高阶模态 \(j\gg1\) 的本征函数在局部尺度上趋于高斯随机场（Berry 猜想）。若成立，则高阶 Chladni 图形的节线统计性质（节线长度密度、交叉点密度）由高斯随机场的统计量决定，与具体区域无关。对二维双调和算子，数值实验支持这一猜想在典型区域上成立，但在可积区域（如矩形）上因简并结构而失效——矩形的高阶 Chladni 图形保持直网格，远非随机。
-Chladni 原始实验。在金属板下方用琴弓以频率 \(\omega\) 驱动板面振动，板面撒布细沙。沙粒在腹点处被垂直加速度 \(\omega^2|\Psi|\) 抛起、在节线处静止，最终聚集成 \(\mathcal N_j\)。驱动频率连续扫过本征频率 \(\omega_j\) 时，沙图案在共振处突然清晰。这一方法的分辨率受限于沙粒惯性和板阻尼，通常只观察到前几十个模态。
-典型实验用黄铜板：密度 \(\rho\approx8.5\times10^3\,\mathrm{kg/m^3}\)，杨氏模量 \(E\approx1.1\times10^{11}\,\mathrm{Pa}\)，泊松比 \(\nu\approx0.34\)，厚度 \(h\approx1.5\,\mathrm{mm}\)。板的抗弯刚度 \(D=Eh^3/[12(1-\nu^2)]\) 决定本征频率的整体尺度：同几何下 \(\omega_j\propto\sqrt{D/(\rho h)}\)，故频率对厚度 \(h\) 极敏感（\(\omega\propto h\)）。
-全息干涉法。用激光全息术记录板面驻波的振幅分布 \(|\Psi_j(\vb r)|\)，节线为零等高线。分辨率远高于沙法，可观测数百个模态。
-数值方法。给定区域 \(\mathcal A\) 和边界条件 \(X\)，数值生成 Chladni 图形的标准流程为：
-\begin{enumerate}
- \item 用有限元或谱方法离散双调和算子，施加边界条件 \(X\)。
- \item 求解广义本征值问题 \(\vb K\vb c=\omega^2\vb M\vb c\)，得到本征对 \((\omega_j,\vb c_j)\)。
- \item 由 \(\vb c_j\) 重建本征函数 \(\Psi_j(\vb r)\)（有限元插值或谱展开）。
- \item 绘制零等高线 \(\Psi_j(\vb r)=0\)，即 Chladni 图形 \(\mathcal N_j\)。
-\end{enumerate}
-对解析可解区域（圆板、矩形板），步骤 1--3 由前两节的显式公式直接给出，只需绘制零等高线。对一般区域，有限元离散是唯一可行途径，Courant 节域定理可用于验证数值正确性：若数值得到的节域数 \(\mu>j\)，则必有离散或求根错误。
-\begin{proof}[解]
-Courant 节域定理给出 \(\mu_j\le j\)，但高阶本征函数的节域数远小于 \(j\)。Pleijel 定理给出精确渐近上界。
-Pleijel 常数。定义 Pleijel 常数
-\begin{equation*}
-  \gamma_{\rm Pl}=\frac{4\pi j_0^2}{2\pi}=\frac{2}{j_0^2}\approx0.691,
-\end{equation*}
-其中 \(j_0\approx2.4048\) 是 \(J_0\) 的第一个正零点。Pleijel 定理（1956）：对有界区域 \(\mathcal D\subset\mathbb R^2\) 上 Dirichlet 拉普拉斯算子，
-\begin{equation*}
-  \limsup_{j\to\infty}\frac{\mu_j}{j}\le\gamma_{\rm Pl}\approx0.691.
-\end{equation*}
-因 \(\gamma_{\rm Pl}<1\)，高阶本征函数的节域数严格小于 Courant 上界 \(j\)。
-证明骨架。设 \(\mu_j\) 是 \(\phi_j\) 的节域数。每个节域 \(\Omega_k\) 上 \(\phi_j\) 是第一本征函数（Dirichlet，因 \(\phi_j|_{\partial\Omega_k}=0\)），故 \(\lambda_j\ge\lambda_1(\Omega_k)\)。由 Faber--Krahn 不等式（\(\lambda_1(\Omega)\ge\pi j_0^2/|\Omega|\)），\(\lambda_j\ge\pi j_0^2/|\Omega_k|\)，即 \(|\Omega_k|\ge\pi j_0^2/\lambda_j\)。节域互斥：\(\sum_k|\Omega_k|\le|\mathcal D|\)，故
-\begin{equation*}
-  \mu_j\cdot\frac{\pi j_0^2}{\lambda_j}\le|\mathcal D|,\qquad\mu_j\le\frac{|\mathcal D|\lambda_j}{\pi j_0^2}.
-\end{equation*}
-由 Weyl 定律 \(j\sim\frac{|\mathcal D|}{4\pi}\lambda_j\)（二维拉普拉斯算子），\(\frac{\mu_j}{j}\le\frac{4\pi}{\pi j_0^2}=\frac{4}{j_0^2}=\gamma_{\rm Pl}\)。
-双调和算子的推广。对双调和算子 \(\Delta^2\)（板振动），本征值 \(\lambda_j=\omega_j^2\)，Weyl 定律 \(j\sim\frac{|\mathcal D|}{2\pi}\sqrt{\lambda_j}\)。Faber--Krahn 型不等式对 \(\Delta^2\) 给出 \(\lambda_1(\Omega)\ge C/|\Omega|^2\)（Talenti 型），代入得
-\begin{equation*}
-  \frac{\mu_j}{j}\le\gamma_{\rm Pl}^{(4)}<1,
-\end{equation*}
-其中 \(\gamma_{\rm Pl}^{(4)}\) 是四阶 Pleijel 常数（精确值依赖四阶 Faber--Krahn 常数，目前只有数值估计）。因此板的 Chladni 图形在高频时节域数也严格小于 Courant 上界。
-\end{proof}
+\(K\) 是 Hermitian 非负矩阵，\(M\) 正定；离散本征问题
+\(K\vb c=\omega^2M\vb c\) 因而有实的非负频率平方。由
+\(\Psi_N=\sum_jc_j\varphi_j\) 画零等高线，才得到数值节线。随网格加密，应同时检查本征值、边界迹与零线位置是否稳定；对一般四阶板不能拿未经证明的 Courant 节域上界当作数值正确性的判据。

@@ -2,7 +2,8 @@ from pathlib import Path
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-ROOT = Path(__file__).resolve().parents[5]; sys.path.insert(0, str(ROOT))
+ROOT = next(p for p in Path(__file__).resolve().parents if (p / "preamble.py").exists())
+sys.path.insert(0, str(ROOT))
 from preamble import figure_style, polish_axes, add_legend, save_pdf_png_pair
 with figure_style():
     x=np.linspace(-3.5,-0.08,800); T=0.25*(1+(2*x)**2)/np.abs(2*x)

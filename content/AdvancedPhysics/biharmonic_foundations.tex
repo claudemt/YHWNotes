@@ -1,0 +1,176 @@
+\section{二维双调和函数}
+\label{sec:phys-cont-biharmonic-primer}
+
+梁上的四阶导数换到平面时，最简单的对应物是拉普拉斯算子的平方。设 $\Omega\subset\mathbb R^2$ 为开集，$u\in C^4(\Omega)$。若 $\Delta^2u:=\Delta(\Delta u)=0$，便称 $u$ 为双调和函数；满足 $\Delta u=0$ 的函数称为调和函数。每个调和函数当然双调和，反过来却不成立：$u(x,y)=x^2+y^2$ 满足 $\Delta u=4$、$\Delta^2u=0$。因此也不能直接套用调和函数的最大值原理。例如单位圆盘上的 $1-r^2$ 在边界为零、内部为正，同时仍是双调和函数。
+
+给定载荷 $f$ 时，方程 $D\Delta^2u=f$ 只有内部条件；在边界上还须给出两项相互独立的数据。夹持边界给 $u=\partial_nu=0$。数学上常用的 Navier 边界给 $u=\Delta u=0$；对各向同性薄板的直边段，由于边界上 $u=0$ 导致切向二阶导数为零，它与零弯矩的简支条件一致，但在弯曲边界上不能不加检验地等同。自由边界的两项条件是弯矩和有效剪力为零，稍后的变分公式会把它们准确写出。只给 $u=0$ 并不足以构成四阶边值问题；上面的 $1-r^2$ 已提供一个非零齐次解。
+
+先看圆形几何为何总出现对数。若 $u=u(r)$ 不依赖极角，把 $\partial_xr=x/r$、$\partial_yr=y/r$ 代入链式法则，可得
+\begin{equation}
+\Delta u=u''(r)+\frac1r u'(r)=\frac1r(ru')',\qquad r>0.
+\label{eq:phys-cont-radial-laplacian}
+\end{equation}
+令 $g=\Delta u$。$\Delta^2u=0$ 意味着 $(rg')'=0$，所以 $g=A\log r+B$。再解 $(ru')'=r(A\log r+B)$，积分两次得到
+\begin{equation}
+u(r)=C_1+C_2r^2+C_3\log r+C_4r^2\log r,\qquad 0<r<R.
+\label{eq:phys-cont-radial-biharmonic-basis}
+\end{equation}
+四个系数对应四阶方程的四维局部解空间。若区域包含原点且要求 $u\in C^2$，必须令 $C_3=C_4=0$：$\log r$ 本身发散；$r^2\log r$ 虽趋于零，其二阶导数仍含 $\log r$。在圆环里没有原点，后两项则完全合法。后面圆环薄板的对数解不是凑出的试探函数，而是解空间不可少的成员。
+
+对非轴对称问题也可分离变量。由 $x=r\cos\theta$、$y=r\sin\theta$ 的链式法则先得
+\[
+\partial_x=\cos\theta\,\partial_r-\frac{\sin\theta}{r}\partial_\theta,
+\qquad
+\partial_y=\sin\theta\,\partial_r+\frac{\cos\theta}{r}\partial_\theta.
+\]
+将两式各作用两次并相加，可核算
+\[
+\Delta=\partial_r^2+r^{-1}\partial_r+r^{-2}\partial_\theta^2.
+\]
+固定角向数 $m=0,1,2,\ldots$，先求一个分离模态
+$u_m(r,\theta)=R_m(r)\ee^{\ii m\theta}$。实函数的余弦、正弦模态分别是它与
+$m$ 的共轭模态的线性组合，因此只需列出非负 $m$。定义径向算子
+\[
+L_mR=R''+\frac1rR'-\frac{m^2}{r^2}R.
+\]
+代入极坐标 Laplace 算子后，$\Delta u_m=(L_mR_m)\ee^{\ii m\theta}$；再作用一次，
+双调和方程便化为四阶 Euler 方程 $L_m^2R_m=0$。试取幂函数 $R_m=r^p$，逐次计算得
+\[
+L_m(r^p)=(p^2-m^2)r^{p-2},\qquad
+L_m^2(r^p)=(p^2-m^2)((p-2)^2-m^2)r^{p-4}.
+\]
+所以指数 $p$ 必须是特征方程
+\[
+(p^2-m^2)((p-2)^2-m^2)=0
+\]
+的根。四根在一般情形为 $m,-m,m+2,2-m$；四阶方程在穿孔圆盘上的通解由这四个根对应的幂函数张成。
+
+有两个角向数需要单独处理重根。$m=1$ 时，$p=1$ 是二重根；$m=0$ 时，$p=0$ 与 $p=2$ 各为二重根。若特征多项式在 $p_0$ 有二重根，对恒等式
+$L_m^2(r^p)=P_m(p)r^{p-4}$ 对 $p$ 求导，并在 $p=p_0$ 代入，因
+$P_m(p_0)=P_m'(p_0)=0$，可知 $r^{p_0}\log r$ 是第二个独立解。因此穿孔圆盘上的四支径向解分别为
+\[
+\begin{array}{ll}
+m\ge2:&r^m,\ r^{-m},\ r^{m+2},\ r^{2-m},\\
+m=1:&r,\ r^{-1},\ r^3,\ r\log r,\\
+m=0:&1,\ \log r,\ r^2,\ r^2\log r.
+\end{array}
+\]
+这也从同一条特征方程推出了前面的轴对称解，而不是另行猜测其对数项。
+
+若区域包含圆心并要求 $u$ 为经典解，负幂项在原点发散；$m=2$ 时的
+$r^{2-m}\ee^{\ii m\theta}=\ee^{2\ii\theta}$ 虽有界，却依赖趋近原点的方向，因而也不连续。$r\log r\ee^{\ii\theta}=(x+\ii y)\log r$ 的一阶导数在圆心发散；$\log r$ 与 $r^2\log r$ 的二阶正则性也分别失败。故圆心正则的两支解恰为
+\[
+r^m\ee^{\ii m\theta}=(x+\ii y)^m,
+\qquad
+r^{m+2}\ee^{\ii m\theta}=(x^2+y^2)(x+\ii y)^m.
+\]
+第二支满足 $\Delta(r^{m+2}\ee^{\ii m\theta})=4(m+1)r^m\ee^{\ii m\theta}$，右端已经调和，再取一次 Laplace 就为零。取实部、虚部便得到余弦和正弦模态；$m=0$ 时只剩 $1,r^2$。一般双调和函数也有相应的“两个调和部分”，而且这个分解不要求先假定 Fourier 展开，下一定理会直接证明这一点。
+
+这些模态可以直接解圆盘边值问题。令 $D=\{(r,\theta):0\le r<1\}$，给定圆周位移 $f$ 与径向斜率 $g$，并假定二者都是光滑的 $2\pi$ 周期函数。按约定写成
+\[
+f(\theta)=f_0+\sum_{m=1}^\infty(f_m^c\cos m\theta+f_m^s\sin m\theta),
+\qquad
+g(\theta)=g_0+\sum_{m=1}^\infty(g_m^c\cos m\theta+g_m^s\sin m\theta),
+\]
+其中 $f_0=(2\pi)^{-1}\int_0^{2\pi}f(\theta)\dd\theta$，而 $f_m^c,f_m^s$ 是通常的 $\pi^{-1}$ 归一化 Fourier 系数，$g$ 的系数同理。对每个 $m\ge1$，正则解的余弦部分只能为
+\[
+(A_m^c r^m+B_m^c r^{m+2})\cos m\theta.
+\]
+在 $r=1$ 处分别令函数值等于 $f_m^c$、径向导数等于 $g_m^c$，得到
+\[
+A_m^c+B_m^c=f_m^c,\qquad mA_m^c+(m+2)B_m^c=g_m^c.
+\]
+这组 $2\times2$ 方程的行列式为 $2$，不随 $m$ 改变，故系数唯一：
+\[
+A_m^c=\frac{(m+2)f_m^c-g_m^c}{2},\qquad
+B_m^c=\frac{g_m^c-mf_m^c}{2}.
+\]
+正弦部分满足完全相同的方程；零阶模态则由 $A_0+B_0=f_0$、$2B_0=g_0$ 给出 $A_0=f_0-g_0/2$、$B_0=g_0/2$。因此完整解为
+\begin{align}
+u(r,\theta)={}&f_0+\frac{g_0}{2}(r^2-1)\\
+&+\sum_{m=1}^\infty\sum_{\sigma\in\{c,s\}}
+\left[\frac{(m+2)f_m^\sigma-g_m^\sigma}{2}r^m
++\frac{g_m^\sigma-mf_m^\sigma}{2}r^{m+2}\right]\psi_m^\sigma(\theta),
+\label{eq:phys-cont-biharmonic-disk-solution}
+\end{align}
+其中 $\psi_m^c=\cos m\theta$、$\psi_m^s=\sin m\theta$。光滑边界数据的 Fourier 系数比任意 $m^{-N}$ 都衰减得快；对该级数逐项求任意固定阶数的导数，额外出现的至多是 $m$ 的幂，故级数及这些导数在闭圆盘上一致收敛。于是式\eqnrefs{eq:phys-cont-biharmonic-disk-solution} 给出经典解，并满足 $u(1,\theta)=f(\theta)$、$\partial_ru(1,\theta)=g(\theta)$。
+
+若两组解有相同边界数据，它们之差 $w$ 满足 $\Delta^2w=0$、$w=\partial_rw=0$。两次分部积分得 $\int_D(\Delta w)^2\dd^2x=0$，所以 $\Delta w=0$；再对调和函数 $w$ 用一次 Green 恒等式，得到 $\int_D|\nabla w|^2\dd^2x=0$，且边界值为零，故 $w=0$。至此，存在性由 Fourier 级数显式构造，唯一性由能量恒等式给出。
+
+取 $f(\theta)=\cos2\theta$、$g(\theta)=0$，只有 $m=2$ 的一个系数非零，公式立刻化为
+\begin{equation}
+u(r,\theta)=(2r^2-r^4)\cos2\theta.
+\label{eq:phys-cont-biharmonic-disk-example}
+\end{equation}
+代入 $r=1$ 得边界位移 $\cos2\theta$；求导得到 $\partial_ru=(4r-4r^3)\cos2\theta$，故边界斜率为零。又因 $r^2\cos2\theta=x^2-y^2$ 是调和多项式，而 $r^4\cos2\theta=(x^2+y^2)(x^2-y^2)$ 的 Laplace 是 $12(x^2-y^2)$，再取一次 Laplace 即为零，所以\eqnrefs{eq:phys-cont-biharmonic-disk-example} 确实双调和。它把两项边界数据和内部函数逐项连在一起，薄板计算中的边界条件因而不再是形式上的附注。\figref{fig:phys-cont-biharmonic-disk}显示这项解在圆盘内的延拓。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.76\linewidth]{biharmonic_disk_boundary.pdf}
+\caption{圆盘上由边界位移 $\cos2\theta$ 与零径向斜率确定的双调和解。正负颜色表示挠度方向；边界的二瓣形位移在圆盘内部平滑延拓。}
+\label{fig:phys-cont-biharmonic-disk}
+\end{figure}
+
+\begin{theorem}[双调和函数的 Almansi 分解]
+设 $\Omega\subset\mathbb R^2$ 对原点星形，即 $x\in\Omega$ 时整条线段 $\{tx:0\le t\le1\}$ 都在 $\Omega$ 内。若 $u\in C^4(\Omega)$ 且 $\Delta^2u=0$，则存在唯一一对调和函数 $h_0,h_1$，使
+\begin{equation}
+u(x)=h_0(x)+|x|^2h_1(x),\qquad \Delta h_0=\Delta h_1=0.
+\label{eq:phys-cont-almansi-polynomial}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+记 $g=\Delta u$。由于 $\Delta g=0$，定义
+\[
+h_1(x)=\frac14\int_0^1g(tx)\dd t.
+\]
+对 $x$ 求 Laplace 时，每次导数都带一个 $t$，所以 $\Delta h_1=\frac14\int_0^1t^2(\Delta g)(tx)\dd t=0$。令 $E=x\partial_x+y\partial_y$ 为径向缩放导数。乘积法则直接给出 $\Delta(|x|^2h)=4h+4Eh+|x|^2\Delta h$。另一方面，沿线段对 $t$ 作一次分部积分，得到
+\[
+(I+E)h_1(x)
+=\frac14\int_0^1\frac{\dd}{\dd t}[t g(tx)]\dd t
+=\frac14g(x).
+\]
+故 $\Delta(|x|^2h_1)=g=\Delta u$，从而 $h_0:=u-|x|^2h_1$ 调和。若另有一组这样的分解，对两式取 Laplace 后，其 $h_1$ 的差满足 $(I+E)h_1=0$；沿每条射线积分 $\frac{\dd}{\dd t}[t h_1(tx)]=0$，再用原点处的连续性，得差为零，$h_0$ 的差也为零。
+\end{proof}
+
+即使不使用完整分解，也能求出圆周平均。设闭圆盘 $\overline{B_R(0)}\subset\Omega$，记 $A(r)=(2\pi)^{-1}\int_0^{2\pi}u(r,\theta)\dd\theta$。把极坐标拉普拉斯中的 $r^{-2}\partial_\theta^2u$ 沿一周积分，因周期性它为零，故 $A$ 仍满足径向双调和方程。$u$ 在圆心光滑，排除\eqnrefs{eq:phys-cont-radial-biharmonic-basis}中的对数项。再由 $A(0)=u(0)$ 和 $\Delta A(0)=\Delta u(0)$ 确定系数，得到
+\begin{equation}
+\frac1{2\pi}\int_0^{2\pi}u(r,\theta)\dd\theta
+=u(0)+\frac{r^2}{4}\Delta u(0),\qquad 0<r<R.
+\label{eq:phys-cont-biharmonic-mean-value}
+\end{equation}
+与调和函数的平均值性质相比，多出的 $r^2\Delta u(0)/4$ 正是两者的区别。
+
+点载荷带来一种须在分布意义下理解的双调和函数。在整个平面定义
+\begin{equation}
+\Phi(x)=\frac{|x|^2\log|x|}{8\pi},\qquad x\ne0.
+\label{eq:phys-cont-biharmonic-fundamental}
+\end{equation}
+由\eqnrefs{eq:phys-cont-radial-laplacian}算得 $\Delta(r^2\log r)=4\log r+4$。记 $\delta_0$ 为原点的点质量，即对任意光滑紧支撑试验函数 $\varphi$，$\int\delta_0(x)\varphi(x)\dd^2x=\varphi(0)$。另一方面，$\Delta\log r=2\pi\delta_0$：圆心外它为零，而半径 $\varepsilon$ 小圆上的通量 $\int\partial_r\log r\,\dd s=\int_0^{2\pi}(1/\varepsilon)\varepsilon\dd\theta=2\pi$。由于 $r^2\log r$ 及其一阶导数在小圆上的边界贡献趋零，第一次取 Laplace 不另产生点质量。于是
+\begin{equation}
+\Delta^2\Phi=\delta_0
+\label{eq:phys-cont-biharmonic-fundamental-delta}
+\end{equation}
+作为分布成立。在有界区域，$\Phi(x-y)$ 通常不满足夹持或简支边界条件，不能直接称为该边值问题的 Green 函数；必须再加一个关于 $x$ 双调和的修正项，使两项边界条件同时成立。
+
+夹持边值问题的唯一性也可直接证明。若 $\Delta^2w=0$ 且边界上 $w=\partial_nw=0$，两次分部积分消去边界项，得到
+\[
+0=\int_\Omega w\Delta^2w\dd^2x=\int_\Omega(\Delta w)^2\dd^2x.
+\]
+所以 $\Delta w=0$；再由 $w=0$ 的边界数据与调和函数的能量恒等式，得 $\int_\Omega|\nabla w|^2=0$，从而 $w=0$。这证明的是唯一性；存在性还需要强制变分理论，而不是由分部积分自动得到。
+
+最后用一个能手算也能数值复核的载荷收束本节。单位正方形 $\Omega=(0,1)^2$ 上取 Navier 边界和 $f(x,y)=\sin(\pi x)\sin(\pi y)$。因为 $\Delta f=-2\pi^2f$，故 $\Delta^2f=4\pi^4f$；于是
+\begin{equation}
+\Delta^2u=f,\qquad u|_{\partial\Omega}=\Delta u|_{\partial\Omega}=0
+\quad\Longrightarrow\quad
+u(x,y)=\frac{\sin(\pi x)\sin(\pi y)}{4\pi^4}.
+\label{eq:phys-cont-square-biharmonic-exact}
+\end{equation}
+解的唯一性可令 $v=\Delta u$，对 $\Delta v=f$、$\Delta u=v$ 两个零 Dirichlet 问题依次应用二阶能量法。\figref{fig:phys-cont-biharmonic-square}把精确解与五点差分 Laplace 算子连续作用两次所得的离散解比较。连续方程的两次微分在数值上变成两次求解稀疏线性系统，而网格误差随步长平方下降。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\linewidth]{biharmonic_square.pdf}
+\caption{单位正方形上 $\Delta^2u=\sin(\pi x)\sin(\pi y)$ 的 Navier 解。上图为数值挠度，下图为相对精确式\eqnrefs{eq:phys-cont-square-biharmonic-exact}的最大误差；采用内点五点差分与两次零边界 Poisson 求解。}
+\label{fig:phys-cont-biharmonic-square}
+\end{figure}

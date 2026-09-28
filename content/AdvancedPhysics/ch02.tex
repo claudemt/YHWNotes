@@ -1,8 +1,8 @@
-\chapter{Lee--Yang 零点与相变}
+\section{Lee--Yang 零点}
 \label{chap:phys-sm-partition-function-zeros-phase-transitions}
 
-有限体积的配分函数是解析函数；热力学极限若要产生相变，它的复零点必须不断逼近物理参数轴。铁磁 Ising 模型的特殊之处在于，这些零点的几何位置能够被精确限制。多变量 Lee--Yang 禁区对任意有限图成立，均匀外场时零点进一步落到单位圆上；零点在极限中的密度直接控制磁化的不连续性。这里不需要二维方格的可解性。
-\section{有限图铁磁 Ising 模型}
+有限体积的配分函数是解析函数；若在物理参数附近有共同的零点禁区，而且单位体积的对数在其中局部一致收敛，极限仍然解析。铁磁 Ising 模型的特殊之处，是无需解出配分函数便能精确限制有限体积零点的位置。均匀外场时零点落在单位圆上；当极限零点密度存在且有适当边界正则性时，它还给出磁化跃变的大小。这些结论不依赖二维方格的可解性。
+\subsection{有限图铁磁 Ising 模型}
 \label{sec:phys-sm-finite-zeros}
 
 设 \(G=(\mathsf V,\mathsf E)\) 为有限无向图，自旋 \(\sigma_x\in\{\pm1\}\)，耦合 \(J_{xy}\ge0\)。Hamilton 量取
@@ -37,7 +37,26 @@
 \end{equation}
 所以当 \(|z_1|<1\) 且 \(K>0\) 时必有 \(|z_2|>1\)。一条铁磁边不可能在双单位圆盘中产生零点。
 
-把局部结论推广到任意有限图需要 Asano--Ruelle 收缩引理。该引理是独立的多变量稳定多项式定理：它说明在逐边合并变量的特定收缩操作下，上述单位圆盘零点禁区保持不变。简单代入 \(z_i=z_j\) 与收缩并不等价；从单边稳定性推广到一般图所需的保持定理正是 Asano--Ruelle 引理。
+当 \(t=1\) 时，\(P_K=(1+z_1)(1+z_2)\)，零点只在单位圆边界，所以上述无零点结论也覆盖零耦合边。现在需要一种把同一格点的各条边重新接在一起、又不破坏零点禁区的操作。
+
+\begin{lemma}[单位圆盘上的 Asano 收缩]
+\label{lem:phys-sm-asano-disk}
+设多仿射多项式
+\(P(u,v,\boldsymbol w)=A(\boldsymbol w)+B(\boldsymbol w)u+C(\boldsymbol w)v+D(\boldsymbol w)uv\)
+在所有变量的模都小于一时不为零。定义
+\(\mathcal A P(z,\boldsymbol w)=A(\boldsymbol w)+D(\boldsymbol w)z\)。则 \(\mathcal A P\) 在 \(|z|<1\)、\(|w_j|<1\) 时也不为零。
+\end{lemma}
+
+\begin{proof}
+固定满足 \(|w_j|<1\) 的 \(\boldsymbol w\)，此时 \(A=P(0,0,\boldsymbol w)\ne0\)。对角多项式
+\[
+ q(s)=P(s,s,\boldsymbol w)=A+(B+C)s+Ds^2
+\]
+在 \(|s|<1\) 无零点。若 \(D=0\)，收缩式恒为非零的 \(A\)；若 \(D\ne0\)，设 \(q\) 的两根为 \(s_1,s_2\)，则 \(|s_1|,|s_2|\ge1\)，由 Vieta 公式
+\(|A/D|=|s_1s_2|\ge1\)。收缩式的唯一零点 \(-A/D\) 因而不在开单位圆盘。由于固定的 \(\boldsymbol w\) 任意，结论对全部变量同时成立。
+\end{proof}
+
+收缩与直接代入不同：\(P(u,v)=A+Bu+Cv+Duv\) 经收缩变为 \(A+Dz\)，而代入 \(u=v=z\) 得到 \(A+(B+C)z+Dz^2\)。后者只出现在引理的证明中，用来控制收缩式的零点；它不是收缩后应采用的配分函数。
 
 \begin{theorem}[多变量 Lee--Yang 定理]
 \label{thm:phys-sm-multivariate-lee-yang}
@@ -48,47 +67,42 @@
 由全自旋翻转对称性，若所有 \(|z_x|>1\)，配分函数同样不为零。
 \end{theorem}
 
-\begin{note}[独立数学输入的边界]
-\eqnrefs{eq:phys-sm-two-spin-stability} 可由二自旋多项式直接计算；从单边稳定性到任意图的逐边收缩则依赖 Asano--Ruelle 引理。两者的证明层级必须分开。
-\end{note}
+\begin{proof}
+自环边只贡献不依赖自旋的常数，可先略去。给每条边 \(e=\{x,y\}\) 的两个端点分别放一个独立变量 \(u_{e,x},u_{e,y}\)，令
+\[
+ \Psi=\prod_{e=\{x,y\}\in\mathsf E}
+   \bigl[1+t_e(u_{e,x}+u_{e,y})+u_{e,x}u_{e,y}\bigr],
+ \qquad t_e=\ee^{-2\beta J_e}\in(0,1].
+\]
+对孤立顶点再乘 \(1+u_x\)。每个因子在其变量均位于开单位圆盘时无零点，所以 \(\Psi\) 也如此。现在在每个顶点，把属于该顶点的两个半边变量用\cref{lem:phys-sm-asano-disk} 收缩成一个；若度数大于二，继续把所得变量与下一个半边变量收缩。每次都保持多仿射性与圆盘无零点性质。
 
-\begin{proof}[解]
-Asano--Ruelle 收缩引理把单边稳定性\eqnrefs{eq:phys-sm-two-spin-stability} 逐边推广到任意有限图。核心操作是"收缩"：把双变量多项式中 \(z_1,z_2\) 同时替换为 \(z\)，在特定条件下保持零点禁区。
-
-Asano 收缩的代数表述。设 \(P(z_1,z_2)\) 是双变量多项式，在 \(\mathbb D^2=\{|z_1|<1,|z_2|<1\}\) 内无零点（即 \(P\) 在双单位圆盘上稳定）。定义收缩
-\begin{equation*}
- (CP)(z)=P(z,z).
-\end{equation*}
-要证的是 \(CP\) 在 \(\mathbb D=\{|z|<1\}\) 内无零点。
-
-反证法。设存在 \(z_0\in\mathbb D\) 使 \(P(z_0,z_0)=0\)。把 \(P\) 按 \(z_2\) 展开：
-\begin{equation*}
- P(z_1,z_2)=\sum_{k=0}^n a_k(z_1)\,z_2^k.
-\end{equation*}
-对固定 \(z_1\in\mathbb D\)，\(P(z_1,\cdot)\) 在 \(\mathbb D\) 内无零点（假设），故所有根 \(w_j(z_1)\) 满足 \(|w_j|\ge1\)。由根与系数关系，\(P(z_1,z_2)=a_n(z_1)\prod_j(z_2-w_j(z_1))\)。
-
-对每个 \(z_1\in\mathbb D\)，定义 Rouché 变换
-\begin{equation*}
- \tilde P(z_1,\zeta)=\zeta^n P(z_1,\zeta^{-1})=a_0(z_1)+a_1(z_1)\zeta+\cdots+a_n(z_1)\zeta^n.
-\end{equation*}
-\(\tilde P\) 的根为 \(\zeta_j=1/w_j\)，故 \(|\zeta_j|\le1\)。由假设 \(P\) 在 \(\mathbb D^2\) 无零点，当 \(|z_1|<1\) 时 \(P(z_1,z_2)\ne0\) 对 \(|z_2|<1\)，即 \(w_j\notin\mathbb D\)，故 \(\zeta_j\notin\overline{\mathbb D}^c\)，即 \(|\zeta_j|\le1\)。
-
-现在 \(P(z_0,z_0)=0\) 意味着 \(\tilde P(z_0,1/z_0)=z_0^{-n}P(z_0,z_0)=0\)。但 \(|1/z_0|>1\)，而 \(\tilde P(z_0,\cdot)\) 的根 \(\zeta_j\) 满足 \(|\zeta_j|\le1\)，故 \(1/z_0\) 不是根——矛盾。
-
-Ruelle 推广到多变量。Ruelle 把 Asano 收缩推广到多变量：设 \(P(z_1,\ldots,z_n)\) 在 \(\mathbb D^n\) 内无零点。对任意 \(i\ne j\)，收缩 \(z_i,z_j\to z\)（即令 \(z_i=z_j=z\)）后，\(P(z,\ldots,z,\ldots,z,\ldots)\) 在 \(\mathbb D\) 内无零点。证明对 \(z_i\) 固定其余变量，应用第一步的双变量结果。
-
-从单边到一般图。对有限铁磁图 \(G=(\mathsf V,\mathsf E)\)，配分函数 \(\Phi_G(\{z_x\})\) 可逐边构造：
-\begin{itemize}
- \item 初始：每个顶点 \(x\) 贡献因子 \((1+z_x)\)（外场部分），在 \(\mathbb D^{|\mathsf V|}\) 内无零点。
- \item 逐边添加：对边 \(\{x,y\}\) 添加铁磁耦合因子 \(P_{K_{xy}}(z_x,z_y)=1+z_xz_y+t_{xy}(z_x+z_y)\)（\eqnrefs{eq:phys-sm-two-spin-edge-poly}）。由\eqnrefs{eq:phys-sm-two-spin-stability}，\(P_{K_{xy}}\) 在 \(\mathbb D^2\) 内无零点。
- \item 合并：添加边 \(\{x,y\}\) 后，新多项式是旧多项式与 \(P_{K_{xy}}\) 的乘积。乘积在 \(\mathbb D^n\) 内无零点当且仅当每个因子无零点。但合并后 \(z_x,z_y\) 成为同一多项式的变量——需用 Asano--Ruelle 收缩保证合并后仍稳定。
-\end{itemize}
-具体地，逐边构造中每步产生的新变量（如合并两个独立子图时共享的顶点变量）由 Ruelle 推广保证稳定性传递。最终 \(\Phi_G\) 在 \(\mathbb D^{|\mathsf V|}\) 内无零点，即多变量 Lee--Yang 定理。
-
-圆定理。取均匀场 \(z_x=z\)，\(\Phi_G(z,\ldots,z)=\Phi_G(z)\) 是单变量多项式。由多变量定理，\(\Phi_G(z)\ne0\) 当 \(|z|<1\)；由自旋翻转对称 \(\Phi_G(z)=z^{|\mathsf V|}\Phi_G(1/z)\)，\(\Phi_G(z)\ne0\) 当 \(|z|>1\)。故零点全在 \(|z|=1\)，即 Lee--Yang 圆定理。
+为何收缩恰好恢复 Ising 求和？展开 \(\Psi\) 后，每个半边变量的指数为零或一。一次收缩 \(A+Bu+Cv+Duv\mapsto A+Dz\) 只保留两个指数相等的项，并把共同指数交给新变量。一个顶点的全部半边收缩完后，它们只能共同取 \(\tau_x=0\) 或 \(1\)。所得多项式因而是
+\begin{equation}
+ \Phi_G(\{z_x\})
+ =\sum_{\tau:\mathsf V\to\{0,1\}}
+   \left(\prod_{e=\{x,y\}}t_e^{|\tau_x-\tau_y|}\right)
+   \prod_{x\in\mathsf V}z_x^{\tau_x}.
+ \label{eq:phys-sm-asano-recovered-ising}
+\end{equation}
+令 \(\sigma_x=1-2\tau_x\)，则每条边的 Boltzmann 权重为
+\(\ee^{\beta J_e\sigma_x\sigma_y}=\ee^{\beta J_e}t_e^{|\tau_x-\tau_y|}\)，每个场因子为
+\(\ee^{\beta h_x\sigma_x}=\ee^{\beta h_x}z_x^{\tau_x}\)。所以\eqnrefs{eq:phys-sm-asano-recovered-ising} 与原配分函数只差非零因子
+\(\exp(\sum_e\beta J_e+\sum_x\beta h_x)\)。它在全体 \(|z_x|<1\) 时无零点。最后把 \(\tau_x\) 全部换成 \(1-\tau_x\)，边权不变，得到
+\(\Phi_G(\boldsymbol z)=(\prod_xz_x)\Phi_G(\boldsymbol z^{-1})\)。若全体 \(|z_x|>1\)，右边的倒数变量均在单位圆盘内，同样不可能为零。
 \end{proof}
 
-\section{均匀场与 Lee--Yang 圆定理}
+三点链 \(1\!-!2\!-!3\) 可以把收缩看得更清楚。两条边的参数分别为 \(t_1,t_2\)。在顶点 \(2\) 收缩前的乘积是
+\(P_{t_1}(z_1,u)P_{t_2}(v,z_3)\)。其中不含 \(u,v\) 的系数为
+\((1+t_1z_1)(1+t_2z_3)\)，含 \(uv\) 的系数为
+\((t_1+z_1)(t_2+z_3)\)。因此
+\[
+ \Phi_{1-2-3}
+ =(1+t_1z_1)(1+t_2z_3)
+ +z_2(t_1+z_1)(t_2+z_3).
+\]
+第一项对应中间自旋 \(\tau_2=0\)，第二项对应 \(\tau_2=1\)；各项再展开，恰好是三个自旋的八种配置，没有遗漏或重复。
+
+\subsection{均匀场与 Lee--Yang 圆定理}
 \label{sec:phys-sm-circle-theorem}
 
 取均匀场 \(h_x=h\)，于是所有 \(z_x=z=\ee^{-2\beta h}\)。多变量定理立即给出：当 \(|z|<1\) 或 \(|z|>1\) 时配分函数无零点。因此所有有限体积零点只能位于
@@ -112,99 +126,72 @@ Ruelle 推广到多变量。Ruelle 把 Asano 收缩推广到多变量：设 \(P(
 \end{equation}
 其中 \(P_N\) 是提出非零场因子后的零点多项式，\(\rho_{{\rm LY},N}(\theta)=N^{-1}\sum_\alpha\delta(\theta-\theta_\alpha)\) 是有限体积归一化角密度。
 
-\begin{proof}[解]
-Sokhotski--Plemelj 公式给出 Cauchy 型积分在积分路径上的边界值，是从零点密度到磁化跳跃的关键工具。
-
-设 \(\varphi(t)\) 在实轴上 Hölder 连续（\(|\varphi(t)-\varphi(s)|\le C|t-s|^\alpha\)，\(0<\alpha\le1\)）。定义 Cauchy 型积分
-\begin{equation*}
- \Phi(z)=\frac{1}{2\pi i}\int_{-\infty}^{\infty}\frac{\varphi(t)}{t-z}\,\dd t,\qquad z\notin\mathbb R.
-\end{equation*}
-\(\Phi\) 在上下半平面分别全纯。问题：当 \(z\) 从上下半平面趋于实轴上一点 \(x_0\) 时，\(\Phi\) 的边界值是什么？
-Sokhotski--Plemelj 公式给出边界值
+\begin{proposition}[Sokhotski--Plemelj 边界值]
+设 \(\varphi\) 在实轴上有紧支撑，且在 \(x_0\) 附近 Hölder 连续。令
+\[
+\Phi(z)=\frac{1}{2\pi\ii}\int_{\mathbb R}
+\frac{\varphi(t)}{t-z}\,\dd t,\qquad z\notin\mathbb R.
+\]
+则从上、下半平面到达 \(x_0\) 的边界值为
 \begin{equation}
- \Phi^\pm(x_0)=\lim_{\varepsilon\downarrow0}\Phi(x_0\pm i\varepsilon)
- =\pm\frac12\varphi(x_0)+\frac{1}{2\pi i}\,\mathrm{p.v.}\!\int_{-\infty}^{\infty}\frac{\varphi(t)}{t-x_0}\,\dd t,
- \label{eq:phys-sm-sokhotski-plemelj}
+\Phi^\pm(x_0)
+=\pm\frac12\varphi(x_0)
++\frac{1}{2\pi\ii}\,\mathrm{p.v.}\!\int_{\mathbb R}
+\frac{\varphi(t)}{t-x_0}\,\dd t.
+\label{eq:phys-sm-sokhotski-plemelj}
 \end{equation}
-其中 \(\mathrm{p.v.}\) 为 Cauchy 主值积分。两式相减给出跳跃公式
+特别地，
 \begin{equation}
- \Phi^+(x_0)-\Phi^-(x_0)=\varphi(x_0).
- \label{eq:phys-sm-plemelj-jump}
+\Phi^+(x_0)-\Phi^-(x_0)=\varphi(x_0).
+\label{eq:phys-sm-plemelj-jump}
 \end{equation}
+\end{proposition}
 
-把 \(\Phi(x_0+i\varepsilon)\) 拆成三部分：在 \(|t-x_0|<\delta\) 的小邻域内、邻域外、以及一个补偿项。
-\begin{equation*}
- \Phi(x_0+i\varepsilon)=\frac{1}{2\pi i}\int_{|t-x_0|<\delta}\frac{\varphi(t)}{t-x_0-i\varepsilon}\,\dd t+\frac{1}{2\pi i}\int_{|t-x_0|\ge\delta}\frac{\varphi(t)}{t-x_0-i\varepsilon}\,\dd t.
-\end{equation*}
-第二项在 \(\varepsilon\to0\) 时直接趋于 \(\frac{1}{2\pi i}\int_{|t-x_0|\ge\delta}\frac{\varphi(t)}{t-x_0}\dd t\)。第一项改写为
-\begin{align*}
- \frac{1}{2\pi i}\int_{|t-x_0|<\delta}\frac{\varphi(t)-\varphi(x_0)}{t-x_0-i\varepsilon}\,\dd t
- +\frac{\varphi(x_0)}{2\pi i}\int_{|t-x_0|<\delta}\frac{\dd t}{t-x_0-i\varepsilon}.
-\end{align*}
-由 Hölder 条件，第一部分被积函数有界 \(C|t-x_0|^\alpha/|t-x_0-i\varepsilon|\le C|t-x_0|^{\alpha-1}\)，可积（\(\alpha>0\)），\(\varepsilon\to0\) 时趋于 \(\frac{1}{2\pi i}\int_{|t-x_0|<\delta}\frac{\varphi(t)-\varphi(x_0)}{t-x_0}\dd t\)。第二部分直接计算：
-\begin{equation*}
- \int_{x_0-\delta}^{x_0+\delta}\frac{\dd t}{t-x_0-i\varepsilon}
- =\log(t-x_0-i\varepsilon)\Big|_{x_0-\delta}^{x_0+\delta}
- =\log(\delta-i\varepsilon)-\log(-\delta-i\varepsilon).
-\end{equation*}
-当 \(\varepsilon\downarrow0\) 时，\(\log(\delta-i\varepsilon)\to\log\delta\)，\(\log(-\delta-i\varepsilon)\to\log\delta-i\pi\)（从下半平面绕过支点），故积分趋于 \(i\pi\)。因此
-\begin{equation*}
- \Phi^+(x_0)=\frac{\varphi(x_0)}{2}+\frac{1}{2\pi i}\,\mathrm{p.v.}\!\int\frac{\varphi(t)}{t-x_0}\,\dd t.
-\end{equation*}
-类似地 \(\Phi^-(x_0)\) 从 \(\varepsilon<0\) 方向取极限，\(\log(-\delta+i\varepsilon)\to\log\delta+i\pi\)，积分趋于 \(-i\pi\)，给出 \(\Phi^-(x_0)=-\frac{\varphi(x_0)}{2}+\frac{1}{2\pi i}\mathrm{p.v.}\int\frac{\varphi(t)}{t-x_0}\dd t\)。
+\begin{proof}
+把 \(|t-x_0|<\delta\) 上的分子写成
+\(\varphi(t)-\varphi(x_0)+\varphi(x_0)\)。
+Hölder 条件使第一项除以 \(t-x_0\) 后仍可积，所以可直接取边界极限；区间外的积分也可直接取极限。这两部分合起来正是主值积分。剩下的常数项满足
+\[
+\lim_{\varepsilon\downarrow0}
+\int_{-\delta}^{\delta}\frac{\dd s}{s\mp\ii\varepsilon}
+=\pm\ii\pi:
+\]
+实部为奇函数，其积分为零；虚部是
+\(\pm\int_{-\delta}^{\delta}\varepsilon/(s^2+\varepsilon^2)\,\dd s
+\to\pm\pi\)。
+乘上 \(1/(2\pi\ii)\) 即得两式。
 \end{proof}
 
-\begin{proof}[解]
-设热力学极限零点密度 \(\rho_{\rm LY}(\theta)\) 在 \(\theta=0\) 邻域有边界值，并把\eqnrefs{eq:phys-sm-magnetization-zero-transform}中的 Cauchy 积分记为
+设热力学极限零点角密度 \(\rho_{\rm LY}(\theta)\) 在所考察的角度 \(\varphi\) 附近连续。把\eqnrefs{eq:phys-sm-magnetization-zero-transform} 的积分记作
 \[
- F(z)=\int_{-\pi}^{\pi}
- \frac{\rho_{\rm LY}(\theta)}{z-\ee^{\ii\theta}}\,\dd\theta,
+F(z)=\int_{-\pi}^{\pi}
+\frac{\rho_{\rm LY}(\theta)}{z-\ee^{\ii\theta}}\,\dd\theta,
+\qquad \mathfrak m(z)=1-2zF(z).
 \]
-于是热力学极限磁化可写作 \(\mathfrak m(z)=1-2zF(z)\)。当 \(z\) 从单位圆内外趋于 \(\ee^{\ii\varphi}\) 时，把核分式改写为
+沿逆时针单位圆取 \(w=\ee^{\ii\theta}\)，于是
+\(F(z)=-\int_{|w|=1}\rho_{\rm LY}(\arg w)
+\,[\ii w(w-z)]^{-1}\dd w\)。
+在 \(w_0=\ee^{\ii\varphi}\) 的一个小弧段上用刚证明的边界值公式，得到
 \[
- \frac1{z-\ee^{\ii\theta}}
- =\frac{\ee^{-\ii\theta}}{z\ee^{-\ii\theta}-1},
+F_{\rm in}(w_0)-F_{\rm out}(w_0)
+=-\frac{2\pi}{w_0}\rho_{\rm LY}(\varphi).
 \]
-并使用 Sokhotski--Plemelj 公式
-\[
- \lim_{\varepsilon\downarrow0}
- \int_{-\pi}^{\pi}
- \frac{\rho_{\rm LY}(\theta)}{\theta-\varphi\pm\ii\varepsilon}\,\dd\theta
- =\mathrm{p.v.}\!\int_{-\pi}^{\pi}
- \frac{\rho_{\rm LY}(\theta)}{\theta-\varphi}\,\dd\theta
- \mp\ii\pi\rho_{\rm LY}(\varphi),
-\]
-其中主值部分在内外两侧相同，虚部贡献相差一个符号。由此 Cauchy 边界值之差为
-\[
- F_{\rm in}(\varphi)-F_{\rm out}(\varphi)
- =-2\pi\ee^{-\ii\varphi}\rho_{\rm LY}(\varphi).
-\]
-代入 \(\mathfrak m(z)=1-2zF(z)\)，常数项 \(1\) 与因子 \(2z\) 在两侧取相同边界值 \(2\ee^{\ii\varphi}\)，因此相减后只剩
-\begin{equation*}
- \mathfrak m_{\rm in}(\varphi)-\mathfrak m_{\rm out}(\varphi)
- =-2\ee^{\ii\varphi}
- \bigl[F_{\rm in}(\varphi)-F_{\rm out}(\varphi)\bigr]
- =4\pi\rho_{\rm LY}(\varphi).
-\end{equation*}
-亦即
+远离 \(w_0\) 的弧段在两侧有相同极限，不影响差值。因而
 \begin{equation}
- \mathfrak m_{\rm in}(\varphi)-\mathfrak m_{\rm out}(\varphi)
- =4\pi \rho_{\rm LY}(\varphi).
- \label{eq:phys-sm-mag-jump}
+\mathfrak m_{\rm in}(\varphi)-\mathfrak m_{\rm out}(\varphi)
+=4\pi\rho_{\rm LY}(\varphi).
+\label{eq:phys-sm-mag-jump}
 \end{equation}
-现在取 \(\varphi=0\)，于是 \(z=\ee^{\ii\varphi}=1\)。由 \(z=\ee^{-2\beta h}\)，实场 \(h>0\) 给出 \(0<z<1\)，对应单位圆内侧；实场 \(h<0\) 给出 \(z>1\)，对应单位圆外侧。因此内侧边界 \(h\downarrow0^+\)，外侧边界 \(h\uparrow0^-\)，代入得
+在物理点 \(\varphi=0\)，实场 \(h>0\) 对应 \(|z|<1\)，而 \(h<0\) 对应 \(|z|>1\)。若低温两侧磁化分别趋于
+\(\mathfrak m_{\rm sp}\) 和 \(-\mathfrak m_{\rm sp}\)，便得到
 \[
- \mathfrak m(0^+)-\mathfrak m(0^-)=4\pi\rho_{\rm LY}(0).
+\rho_{\rm LY}(0)=\frac{\mathfrak m_{\rm sp}}{2\pi}.
 \]
-若自旋翻转对称相在低温分裂为 \(\pm\mathfrak m_{\rm sp}\)，则 \(\mathfrak m(0^+)=\mathfrak m_{\rm sp}\)、\(\mathfrak m(0^-)=-\mathfrak m_{\rm sp}\)，左端为 \(2\mathfrak m_{\rm sp}\)，因此
-\[
- \rho_{\rm LY}(0)=\frac{\mathfrak m_{\rm sp}}{2\pi}.
-\]
-\end{proof}
+这个等式需要零点密度在 \(0\) 附近具有所用的边界值；有限体积圆定理本身并不保证该正则性。
 
 \eqnrefs{eq:phys-sm-mag-jump} 给出一个清楚的物理分类。若 \(\rho_{\rm LY}(0)>0\)，零场磁化发生跳跃；若零点只逼近 \(z=1\) 但密度在那里趋零，则可能得到连续相变；若零点与 \(z=1\) 保持有限角隙，则零场附近保持解析。
 
-\section{一维链作为零点禁区的可解例子}
+\subsection{一维链作为零点禁区的可解例子}
 \label{sec:phys-sm-1d-ising}
 
 一维周期 Ising 链提供最小的非平凡检验。取
@@ -321,7 +308,7 @@ Sokhotski--Plemelj 公式给出边界值
 一维结论并不是“转移矩阵只有两个本征值，所以不能相变”。真正决定解析性的是热力学极限中最大本征值之间是否能在物理参数上形成非解析竞争。有限温一维链的 Lee--Yang 零点始终保留\eqnrefs{eq:phys-sm-1d-gap-angle} 的有限角隙；二维方格在临界温度以下则允许零点压到 \(z=1\)。后者需要后续二维几何与精确谱结构才能定量算出。
 \end{exbox}
 
-\section{Lee--Yang 理论的适用域}
+\subsection{Lee--Yang 理论的适用域}
 
 圆定理依赖铁磁耦合和 Ising 型二值自旋，不是任意统计模型的普遍零点定理；零点积聚导致非解析性的逻辑则更一般。Lee--Yang 理论负责外场方向的解析结构；零场二维 Ising 的自由能则要用另一套方法求解：先把配分函数改写成偶子图，再利用平面对偶 Duality、转移矩阵与费米子化。两种分析最终在 Yang 自发磁化处相接，因为 Yang 自发磁化既决定长距离关联，也通过\eqnrefs{eq:phys-sm-mag-jump} 决定 \(z=1\) 处的零点密度。
 

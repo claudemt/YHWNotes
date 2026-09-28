@@ -1,44 +1,40 @@
-# PINEM R16 — Derivation Rebuild
+# PINEM R19 — One Master Equation, Then Applications
 
-本版以 R15 深度重构为唯一基线，重点不是继续调整目录，而是把主线中的关键推导逐式闭环：明确每一步从哪条精确方程开始、代入了什么定义、采用了什么近似、舍弃项的控制参数是什么，以及近似失效后应退回哪一级理论。
+本版把正文压缩为五章。前两章完成并只完成电子动力学；后三章全部是同一个主方程的应用，不再把有限脉冲、Rayleigh、实验平均等内容包装成彼此并列的理论。
 
-## 正文唯一主线
+## 唯一电子输入--输出关系
 
-1. Dirac 最小耦合与自由正负能结构；
-2. 精确载波剥离与 P/Q 分块；
-3. Feshbach–Schur 精确消元；
-4. 二阶虚跃迁与相对论质量张量；
-5. 规范协变正能包络方程与 eikonal/PINEM 一阶极限；
-6. 任意外场特征线解 → 单色轨迹 Fourier 投影 → beta → Jacobi–Anger → Bessel 边带；
-7. Maxwell 算符 → Green 张量 → T 算符 → 可计算近场；
-8. 复杂 VSH/VSWF → 单球精确 Mie → 轨迹投影；
-9. 精确 Mie → Rayleigh 长波极限；
-10. 有限脉冲 → 延迟依赖边带；
-11. 从单轨迹到实验统计与可观测谱。
+1. Dirac 最小耦合约化到一阶/eikonal PINEM 主方程；
+2. 沿特征线积分；
+3. 单色场只留下复耦合 `beta`；
+4. `c_n = exp[i n arg(-beta)] J_n(2|beta|)`，`P_n = J_n^2(2|beta|)`。
 
-## 正文结构
+到这里电子理论结束。
 
-- `content/ch01.tex`：从 Dirac 方程到正能一阶输运方程；
-- `content/ch02.tex`：PINEM 核心——轨迹相位、相位匹配与 Bessel 边带；
-- `content/ch03.tex`：一般 Maxwell/Green/T 响应；
-- `content/ch04.tex`：球形 VSH/VSWF 与精确 Mie 近场；
-- `content/ch05.tex`：Mie 的 Rayleigh 受控极限；
-- `content/ch06.tex`：有限脉冲；
-- `content/ch07.tex`：实验平均、可观测量与适用范围。
+## 正文五章
+
+- `ch01`：Dirac → 正能一阶 PINEM 主方程；
+- `ch02`：只解一次主方程，得到 `beta` 与 Bessel 边带；
+- `ch03`：直接给定场时如何应用主方程：Gaussian、有限长度 sinc 相位匹配、指数近场、光锥失配、多区干涉、偏振、OAM、有限脉冲；
+- `ch04`：场未知时先解 Maxwell：Green/T、精确 Mie，并在同一章内取 Rayleigh 极限；
+- `ch05`：最后一步实验读出：时间平均、空间/孔径平均、PINEM 图像、相位灵敏读出与相干平均边界。
+
+原 `ch06` 有限脉冲章和 `ch07` 实验平均章不再独立存在；有限脉冲并入 `ch03`，统计读出统一并入 `ch05`。原独立 Rayleigh 章并入 Maxwell/Mie 章，因为它只是精确场的长波极限。
+
+## 新增的主方程应用
+
+- 有限长度相互作用区：`beta` 的 sinc 相位匹配；
+- 指数局域场：Lorentz 型空间谱；
+- 两段相干作用区：`beta_total = beta_1 + exp(i Phi) beta_2`；
+- 偏振控制：线性组合直接在线性 `beta` 上完成；
+- OAM/角向谐波：`beta ~ exp(i ell phi)` 导致第 `n` 个边带获得 `n ell` 的角向相位，在轴对称条件下给出 `Delta L_z = n ell hbar`；
+- 弱耦合 PINEM 图像：`I_PINEM ≈ |beta|^2`；
+- 参考耦合干涉：把 `arg beta` 转成能谱强度振荡。
 
 ## 附录
 
-平方 Dirac、自旋修正、固定自旋双带逐分量复核、非相对论与 FW 复核、Green 谱表示、多层/多球/圆柱、一般椭球、多频驱动、解析级数以及完全失相干模型均保留在 `appendices/`，但不参与第一次阅读的主推导。
+A--D 保留推导复核、Green 谱表示、几何扩展和多频推广；E 只作为 Bessel 平均的矩展开工具；F 仍明确标为另一条 Poisson--Skellam 随机动力学分支。
 
-## 全局约定
+入口为 `main.tex`，使用 XeLaTeX 编译。
 
-- SI 单位制，显式保留 `c`、`\hbar`、`\epsilon_0`、`\mu_0`；
-- 正基本电荷 `e>0`，电子电荷 `q_e=-e`；
-- phasor convention 为 `\exp(-i\omega t)`；
-- 真实电子通道能量与无反冲等间隔有效梯使用不同符号；
-- 所有近似只在真正删项/截断处声明，并给出控制参数；
-- 具体几何和命名模型只建立在一般理论之后。
-
-## 构建
-
-入口为 `main.tex`，使用 XeLaTeX 编译。交付包包含已编译 `main.pdf`，不包含编译中间文件。
+R19 后续精简中，弱耦合也从主方程章移出，归入直接应用；附录 E 被压成一个矩命题和两个解析矩算例。周期/多中心结构新增结构因子 `beta_N`，用于直接描述阵列相干增强与准相位匹配。
