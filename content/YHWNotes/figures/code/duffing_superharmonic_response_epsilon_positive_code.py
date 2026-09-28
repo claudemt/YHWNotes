@@ -20,7 +20,7 @@ def make_plot(eps,xlim,ylim,filename):
             handles.append(Line2D([0],[0],color=COLORS[i],label=rf"$F={F:g}$"))
         ax.set(xlabel=r"$s$",ylabel=r"$a_s$")
         ax.set_xlim(*xlim); ax.set_ylim(*ylim); polish_axes(ax); add_legend(ax, handles=handles, loc="upper left")
-        save_figure(fig, filename, output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, filename, output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 
 def main(): make_plot(0.025,(0.325,0.45),(0,5),"duffing_superharmonic_response_epsilon_positive.png")

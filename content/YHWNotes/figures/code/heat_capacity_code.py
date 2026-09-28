@@ -52,5 +52,5 @@ def main():
             handles2=[Line2D([0],[0],color=COLORS[i],ls="-",label=rf"$q={q}$") for i,q in enumerate((3,4,5))],
             kw1=dict(loc="upper left"), kw2=dict(loc="upper right"))
         ax.set(xlabel=r"$kT/J$",ylabel=r"$C/(Nk)$",xlim=(0,5.5),ylim=(0,2.5)); polish_axes(ax)
-        save_figure(fig, "heat_capacity.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "heat_capacity.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

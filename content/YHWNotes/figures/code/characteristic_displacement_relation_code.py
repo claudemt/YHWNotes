@@ -55,5 +55,5 @@ def main():
         ax.set(xlabel=r"$\theta\;(\mathrm{rad})$",ylabel=r"$D_m/a$")
         ax.set_xlim(0,THETA_MAX); ax.set_ylim(0,6.6)
         polish_axes(ax); add_waveguide_legends(ax, loc="upper left")
-        save_figure(fig, "characteristic_displacement_relation.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "characteristic_displacement_relation.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

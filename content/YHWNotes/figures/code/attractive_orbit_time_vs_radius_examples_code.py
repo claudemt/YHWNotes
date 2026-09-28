@@ -44,5 +44,5 @@ def main():
         ax.set(xlabel=r"$\tilde{r}$",ylabel=r"$\tilde{t}$")
         ax.set_xlim(0,8.7); ax.set_ylim(0,52)
         polish_axes(ax); add_legend(ax, loc="upper left")
-        save_figure(fig, "attractive_orbit_time_vs_radius_examples.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "attractive_orbit_time_vs_radius_examples.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

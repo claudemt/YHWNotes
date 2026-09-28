@@ -145,7 +145,7 @@ def main() -> None:
             [r"$0$", r"$\pi$", r"$2\pi$", r"$3\pi$", r"$4\pi$"],
         )
         polish_axes(ax, grid=False)
-        save_figure(fig, "mathieu_function.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "mathieu_function.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
     print(f"Mathieu periodic closure max error: {max_closure_error:.3e}")
 

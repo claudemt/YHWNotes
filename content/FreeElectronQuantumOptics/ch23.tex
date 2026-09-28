@@ -1,8 +1,17 @@
 \section{一个复近场参数的完整测量与反演}
 \label{chap:feqo-end-to-end}
 
+本节要走的完整链条是：电子束掠过纳米结构，采样结构附近同步的纵向近场，再由能谱仪读出边带。\cref{fig:pinem-experiment-interface-dp19} 给出这一链条的几何。图中电子束沿水平直线穿过，竖直的纳米结构只在一小段上提供近场，结构右侧的同步近场按指数衰减，末端是记录边带分布的 EELS 读出。关键在几何本身：电子走的是直线，场却只在结构附近存在，所以电子采样到的是位置依赖的场幅与相位，而读出端只回答交换了几个 \(\hbar\omega\)。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\linewidth]{pinem_experiment_geometry.pdf}
+\caption{PINEM 的基本实验几何：电子束掠过竖直的纳米结构，在结构附近采样随距离衰减的同步纵向近场，随后由能谱仪读出离散的边带分布。电子沿直线运动而近场局域在结构附近，因此一次能谱记录的是场幅与相位沿轨迹的积分耦合。}
+\label{fig:pinem-experiment-interface-dp19}
+\end{figure}
+
 令电子沿 \(+z\) 以速度 \(v_0\) 经过局域近场，未知正频振幅取
-\(E_z^{(+)}(z)=E_*e^{\ii\varphi}e^{-z^2/(2d^2)}e^{\ii kz}\)。其中 \(E_*>0\) 的单位为 \(\si{\volt\per\metre}\)，\(d\) 是已由几何标定的长度，\(k\) 是已知空间波数，\(\varphi\) 是待求相位。直接代入\cref{eq:feqo-beta}，用高斯积分得到
+\(E_z^{(+)}(z)=E_*e^{\ii\varphi}e^{-z^2/(2d^2)}e^{\ii kz}\)。其中实振幅 \(E_*>0\) 的单位为 \(\si{\volt\per\metre}\)，\(d\) 是已由几何标定的长度，\(k\) 是已知空间波数，\(\varphi\) 是待求相位。直接代入\cref{eq:feqo-beta}，用高斯积分得到
 \begin{equation}
 \beta_{\rm sam}=\frac{qE_*\sqrt{2\pi}d}{\hbar\omega}
 \exp\!\left[-\frac{d^2}{2}(k-\omega/v_0)^2\right]e^{\ii\varphi}.
@@ -42,6 +51,15 @@ E_*=\frac{A\hbar\omega}{e\sqrt{2\pi}d}
 \label{eq:feqo-imaging-field-inversion}
 \end{equation}
 右边单位为 \(\si{\volt\per\metre}\)。相位则由已知 \(q=-e\) 的符号取 \(\varphi=\phi-\pi\)（模 \(2\pi\)）。但这一反解也揭示条件数：设 \(\Delta k=k-\omega/v_0\)，在其他量固定时 \(\partial\ln E_*/\partial k=d^2\Delta k\)。若失配很大，指数使真实耦合 \(A\) 极小，同时对 \(k\) 的标定误差极敏感；即使计数模型无噪声，未知的 \(k\) 仍会与 \(E_*\) 形成退化。
+
+把场幅、相位匹配和边带概率连起来看，反演的脆弱处就在\cref{fig:electron-field-calibration} 的两条曲线之间。左图横轴是失配 \(\Delta\kappa L_{\rm int}\)，纵轴是有效耦合与同步值的比：主瓣宽约 \(2\pi\)，在 \(\Delta\kappa L_{\rm int}=\pm2\pi\) 处过零，所以作用区每偏离同步一个条纹，同样的场幅给出的有效耦合就掉一个量级，而按\cref{eq:feqo-imaging-field-inversion} 反解出的 \(E_*\) 又被同一个因子放大。右图取 200 keV 电子与 800 nm 光，此时 \(|\beta|=0.645\)，边带概率为 \(P_0=J_0^2\simeq0.391\)、\(P_{\pm1}\simeq0.270\)、\(P_{\pm2}\simeq0.033\)。\(\pm2\) 阶已占百分之几，说明在这种耦合下若仍按\cref{eq:feqo-imaging-weak-forward} 只留三条边带，漏掉的概率不是可以忽略的小量。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\linewidth]{electron_field_calibration.pdf}
+\caption{从有限长度场积分到电子谱。左图纵轴为 \(\beta/\beta_{\rm sync}\)，横轴为失配 \(\Delta\kappa L_{\rm int}\)，给出复振幅相加形成的 \(\sinc\) 响应；右图为电子阶数 \(\ell\) 上的边带概率 \(P_\ell=J_\ell^2(2|\beta|)\)，取 200 keV 电子与 800 nm 光，对应 \(|\beta|=0.645\)。}
+\label{fig:electron-field-calibration}
+\end{figure}
 
 能谱仪记录读数 \(y\) 的分箱 \(B_j\)，不是理想 \(\ell\)。对高斯能量响应 \(R(y|E)=(2\pi\sigma_D^2)^{-1/2}e^{-(y-E)^2/(2\sigma_D^2)}\)，定义
 \begin{equation}

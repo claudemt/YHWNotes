@@ -98,7 +98,7 @@ def main():
         ax.set_xticks(np.arange(-2, 35, 2))
         ax.set_yticks(np.arange(0, 18, 2))
         polish_axes(ax, minor_ticks=False)
-        save_figure(fig, "eigenvalue_curve_shaded_region_stable.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "eigenvalue_curve_shaded_region_stable.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 if __name__ == "__main__":
     main()

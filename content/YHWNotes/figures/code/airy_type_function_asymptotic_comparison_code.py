@@ -22,5 +22,5 @@ def main():
         ax.set(xlabel=r"$x$",ylabel="relative error")
         ax.set_xlim(0,0.2); ax.set_ylim(-0.012,0.17)
         polish_axes(ax); add_legend(ax, loc="upper left")
-        save_figure(fig, "airy_type_function_asymptotic_comparison.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "airy_type_function_asymptotic_comparison.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

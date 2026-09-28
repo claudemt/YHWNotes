@@ -25,6 +25,15 @@ P_{\rm err}=\frac12\operatorname{erfc}
 
 若第 \(\ell\) 通道的检出效率为 \(\eta_\ell\in[0,1]\)，可把 \(M_y\) 中的每项改成 \(\eta_\ell R(y|E_\ell)P_\ell\)，并增加一个“未检出”效应 \(M_\varnothing=\sum_\ell(1-\eta_\ell)P_\ell\)。这时 \(M_\varnothing+\int M_y\dd y=I\)，所以损失的计数没有被偷偷改写成不归一化概率。
 
+把响应宽度和有限窗口放进同一张数值图，这两类偏差的差别就一目了然。\cref{fig:electron-detector-forward} 左图取同一个 \(|\beta|=1.20\) 的真实边带谱，只把高斯响应宽度由 \(\sigma_E=0.292\,\si{\electronvolt}\) 换成 \(0.800\,\si{\electronvolt}\)：两组的边带权重完全相同，差别只是相邻 \(\ell\) 的读数是否被抹平。右图把读数截在半宽 \(W\) 的窗口内，却仍用完整谱的方差公式反演，得到的 \(|\beta|\) 在 \(W/(\hbar\omega)=0.7\) 时只有 \(0.42\)，即使开到 \(2\) 也只回到 \(0.90\)，要一直开到 \(5\) 才收敛到虚线标出的真值 \(1.20\)。窗口截断造成的偏差是前向模型问题，不能记到计数噪声头上。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\linewidth]{electron_detector_forward.pdf}
+\caption{同一 \(|\beta|=1.20\) 电子谱经不同仪器分辨率与有限能量窗口。左图横轴为读数偏离 \(\varepsilon_d\)，纵轴为读数密度，两条曲线取响应宽度 \(\sigma_E=0.292\,\si{\electronvolt}\) 与 \(0.800\,\si{\electronvolt}\)，真实边带权重不变。右图横轴为半窗宽 \(W/(\hbar\omega)\)，纵轴为反演出的 \(|\beta|\)，虚线为真耦合 \(|\beta|=1.20\)，曲线是对条件数据直接套用完整方差公式的结果。}
+\label{fig:electron-detector-forward}
+\end{figure}
+
 二维小矩阵可以同时检验正性和条件更新。取 \(M_+=\operatorname{diag}(0.8,0.2)\)、\(M_-=\operatorname{diag}(0.2,0.8)\)，则二者本征值非负且和为 \(I\)。一种具体测量装置可用 \(K_\pm=\sqrt{M_\pm}\) 描述结果后的态更新。对 \(|+\rangle=(|0\rangle+|1\rangle)/\sqrt2\)，\(p_+=\langle+|M_+|+\rangle=1/2\)；记录 \(+\) 后，归一化态为 \(\sqrt{0.8}|0\rangle+\sqrt{0.2}|1\rangle\)。同一 \(M_+\) 也可能由别的测量操作实现，故只知结果概率时不能擅自选择这一个条件态。
 
 若要读相位，可在能量测量前施加已知酉变换 \(U_s\)。设置 \(s\) 下的概率变为

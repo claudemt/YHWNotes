@@ -97,6 +97,20 @@ F=\frac{\{\mathrm{RSS}_0-\mathrm{RSS}_1\}/(p_1-p_0)}
 \]
 \(\Sigma\) 若由数据估计，上面基于已知协方差和正态投影的有限样本分布一般不再精确。
 
+满列秩的假设值得单独检查一次，因为它同时承担了可识别性与稳定性两件事。若两列几乎相同，\(X^\top X\) 的最小本征值 \(s_{\min}^2\) 很小，而 \(\widehat\beta\) 的协方差含 \((X^\top X)^{-1}\)，噪声沿该方向被 \(1/s_{\min}^2\) 放大。这与\cref{sec:math-ill-posed-inverse-problem}中小奇异值放大数据误差是同一个现象，只是这里的方向来自设计矩阵而不是积分核。一个直接的补救是把正规方程改成
+\[
+\widehat\beta_\alpha=(X^\top X+\alpha I)^{-1}X^\top Y .
+\]
+沿 \(X\) 的右奇异向量 \(v_i\) 分解，它把每个系数按
+\(\lambda_i/(\lambda_i+\alpha)\) 收缩（\(\lambda_i\) 是 \(X^\top X\) 的本征值），\cref{fig:math-ridge-spectrum}画出这些因子。\(\lambda_i\gg\alpha\) 的方向几乎不动，\(\lambda_i\ll\alpha\) 的方向被压向零。代价是 \(\widehat\beta_\alpha\) 有偏：它不再是无偏估计，Gauss--Markov 的最优性也就不再适用。用偏差换方差是否划算，取决于 \(\sigma^2\) 与 \(\alpha\) 的相对大小，没有普遍答案；这里能确定的是，滤波因子 \(\lambda/(\lambda+\alpha)\) 与前一章 Tikhonov 的 \(s/(s^2+\alpha)\) 形状完全相同。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.76\linewidth]{ridge_spectrum.pdf}
+\caption{岭回归谱收缩 $\lambda_i/(\lambda_i+\alpha)$。不同 $\alpha$ 下，小特征值被压向零、大特征值保持不变，虚线为无收缩情形。}
+\label{fig:math-ridge-spectrum}
+\end{figure}
+
 \begin{exercise}
 取两组各两次观测，写出包含截距与组别指示变量的 \(X\)，求其投影矩阵。再将两组均值相等写为嵌套模型检验，并验证残差自由度为 \(2\)。
 \end{exercise}

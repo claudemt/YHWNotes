@@ -45,5 +45,5 @@ def main():
             y=np.array([finite_or_zero(bethe_values(max(t,5e-2),q)[4]) for t in T])
             ax.plot(T,y,color=COLORS[i],label=rf"$q={q}$")
         ax.set(xlabel=r"$kT/J$",ylabel=r"$\chi$",xlim=(0,8),ylim=(0,1.3)); polish_axes(ax); add_legend(ax, loc="lower right")
-        save_figure(fig, "magnetic_susceptibility.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "magnetic_susceptibility.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

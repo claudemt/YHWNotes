@@ -25,7 +25,7 @@ def main():
         ax.set_rlim(0.0, 4.2)
         polish_polar_axes(ax, radial_grid=True, radial_labels=False)
         add_legend(ax)
-        save_figure(fig, "energy_angular_distribution.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "energy_angular_distribution.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 
 if __name__ == "__main__":

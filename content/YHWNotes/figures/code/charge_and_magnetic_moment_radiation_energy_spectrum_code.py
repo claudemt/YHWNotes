@@ -37,7 +37,7 @@ def main():
         ax.set_ylim(0.0, 1.0)
         polish_axes(ax)
         add_legend(ax, loc="upper right", framealpha=0.94)
-        save_figure(fig, "charge_and_magnetic_moment_radiation_energy_spectrum.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "charge_and_magnetic_moment_radiation_energy_spectrum.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 
 if __name__ == "__main__":

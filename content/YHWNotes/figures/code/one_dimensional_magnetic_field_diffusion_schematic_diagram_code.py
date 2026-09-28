@@ -21,6 +21,6 @@ def main():
         ax.set(xlabel=r"$z/a$", ylabel=r"$H(z,t)/H_0$")
         ax.set_xlim(-4, 4); ax.set_ylim(0, 1.04)
         polish_axes(ax); add_legend(ax, loc="upper right")
-        save_figure(fig, "one_dimensional_magnetic_field_diffusion_schematic_diagram.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "one_dimensional_magnetic_field_diffusion_schematic_diagram.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 if __name__ == "__main__": main()

@@ -27,5 +27,5 @@ def main():
         ax.set(xlabel=r"$x$",ylabel=r"$\operatorname{Li}_{\nu}(x)$")
         ax.set_xlim(-2.5,1.2); ax.set_ylim(-2.1,3.1)
         polish_axes(ax); add_legend(ax, loc="upper left")
-        save_figure(fig, "polylogarithm_function.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "polylogarithm_function.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

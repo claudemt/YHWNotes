@@ -42,7 +42,7 @@ def main():
         polish_polar_axes(ax, radial_grid=True, radial_labels=True)
         ax.set_rlabel_position(180.0)
         add_legend(ax)
-        save_figure(fig, "attractive_orbit_radius_vs_azimuth_examples.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "attractive_orbit_radius_vs_azimuth_examples.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 
 if __name__ == "__main__":

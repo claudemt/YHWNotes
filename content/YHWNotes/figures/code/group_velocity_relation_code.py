@@ -59,5 +59,5 @@ def main():
         ax.set(xlabel=r"$\theta\;(\mathrm{rad})$",ylabel=r"$v_m/c$")
         ax.set_xlim(0,THETA_MAX); ax.set_ylim(0.32,0.65)
         polish_axes(ax); add_waveguide_legends(ax, loc="upper left")
-        save_figure(fig, "group_velocity_relation.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "group_velocity_relation.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

@@ -29,5 +29,5 @@ def main():
         handles += [Line2D([0],[0],color="black",ls="--",label=r"$\mathrm{d}a_s=0$"),Line2D([0],[0],color="gray",ls="--",label=r"$\mathrm{d}s=0$")]
         ax.set(xlabel=r"$s$",ylabel=r"$a_s$")
         ax.set_xlim(0,1.3); ax.set_ylim(0,3); polish_axes(ax); add_legend(ax, handles=handles)
-        save_figure(fig, "duffing_near_resonance_phase_portrait_epsilon_negative.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "duffing_near_resonance_phase_portrait_epsilon_negative.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

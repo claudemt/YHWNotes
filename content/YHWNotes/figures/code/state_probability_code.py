@@ -52,5 +52,5 @@ def main():
             kw1=dict(loc="lower left", bbox_to_anchor=(0.0, 0.36)),
             kw2=dict(loc="lower left"))
         ax.set(xlabel=r"$kT/J$",ylabel="probability",xlim=(0,4),ylim=(0,1.03)); polish_axes(ax)
-        save_figure(fig, "state_probability.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "state_probability.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

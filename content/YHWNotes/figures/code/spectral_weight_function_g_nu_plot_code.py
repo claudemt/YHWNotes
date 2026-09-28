@@ -32,7 +32,7 @@ def main():
         ax.set_xlim(0.0, 20.0)
         ax.set_ylim(0.0, 1.02)
         polish_axes(ax)
-        save_figure(fig, "spectral_weight_function_g_nu_plot.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "spectral_weight_function_g_nu_plot.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 
 if __name__ == "__main__":

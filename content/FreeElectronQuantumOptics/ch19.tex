@@ -15,6 +15,15 @@ p_+(\theta)=\langle+_\theta|\rho|+_\theta\rangle
 \end{equation}
 取 \(\theta=0,\pi/2\)，两次测量分别给 \(r\cos\phi\) 与 \(r\sin\phi\)，从而在 \(r>0\) 时恢复 \(r,\phi\)。当 \(r=0\) 时相位根本没有物理定义，任意测量都不能“恢复”它。这比只说“多设置有用”更明确：新增设置补上了前向映射缺少的独立方向。
 
+二能级情形下的参考读出可以直接画出来。\cref{fig:electron-reference-tomography} 里有两条曲线和四个点：实线是中心通道概率随参考相位 \(\varphi_R\) 的余弦条纹，在 \(\varphi_R=0\) 与 \(\pi\) 处分别取 \(0.388\) 与 \(0.638\)；虚线取同样的边带人口但把相干抹掉，于是完全变平，停在 \(0.513\)。峰谷差 \(0.25\) 只来自交叉项，与对角线人口无关，这正是单一能谱读不出的那个量。四个方点按每相位 \(10^4\) 个电子的二项标准差画误差棒，只有约 \(\pm0.005\)，远小于条纹振幅，所以四个设置就足以把复相干的两分量定下来。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\linewidth]{electron_reference_tomography.pdf}
+\caption{两通道电子态的参考读出。横轴为参考相位 \(\varphi_R/\pi\)，纵轴为中心通道概率 \(P_0\)；数值取 \(p=0.65\)、\(b_R=0.40\)，实线用相干项 \(c_{01}=0.20+0.15\ii\)，虚线用人口相同但相干为零的混合。四个方点是解析反演所需的参考相位，误差棒为每相位 \(10^4\) 个电子的二项计数标准差，并非模拟测量数据。}
+\label{fig:electron-reference-tomography}
+\end{figure}
+
 两设置还允许直接计算实验难度。把两次“\(+\)”概率记为 \(p_0=(1+r\cos\phi)/2\)、\(p_{\pi/2}=(1+r\sin\phi)/2\)。它们对 \((r,\phi)\) 的导数矩阵为
 \[
 J=\frac12
@@ -42,6 +51,15 @@ I_{ab}=\sum_{s\in\{0,\pi/2\}}
 若同时估计多个参数，把各偏导排成得分列向量 \(S\)，信息矩阵就是 \(I=\mathbb E(SS^\top)\)。在同样的正则条件下，对无偏估计列向量 \(T\) 求导可得 \(\mathbb E[(T-\vartheta)S^\top]=\mathbf1\)。若 \(I\) 可逆，随机向量 \(Z=T-\vartheta-I^{-1}S\) 的协方差矩阵半正定。展开并用刚才的恒等式，便得到矩阵界 \(\operatorname{Cov}(T)-I^{-1}=\operatorname{Cov}(Z)\succeq0\)。这里 \(A\succeq0\) 的定义是对每个实向量 \(u\) 都有 \(u^\top Au\geq0\)；这也解释了为何信息矩阵不可逆时不能对不可识别方向声称有限误差界。
 
 对只估计相位、把 \(r>0\) 当作已知的局部实验，令 \(\vartheta=\phi\)，刚才的信息给出 \(\operatorname{Var}\widehat\phi\gtrsim1/(\nu r^2)\)。若 \(r\) 也未知，则用上述二维矩阵界；由于 \(r\) 与 \(\phi\) 的导数列在小 \(r\) 时正交，其领先阶仍是 \(I_{\phi\phi}=\nu r^2\)。此界只约束满足所述无偏与正则条件的估计量，绝非保证某个算法必能达到它。
+
+上面把 \(r\) 当成给定常数，但 \(r\) 本身会被实验条件压小。\cref{fig:tomography-jitter-visibility} 取 800 nm 的光频，把到达时间抖动 \(\sigma_t\) 对对角可见度 \(V_q=\exp[-q^2(\omega\sigma_t)^2/2]\) 的压制按相距 \(q\) 格的拍频分层画出。指数里 \(q\) 是平方，所以抖动加倍等于把每条曲线取四次方：\(\sigma_t=50\,\si{\atto\second}\) 时 \(q=12\) 还有 \(0.37\)，\(\sigma_t=100\,\si{\atto\second}\) 时同一格只剩 \(0.018\)，而 \(250\,\si{\atto\second}\) 时连 \(q=4\) 都掉到 \(0.063\)。可见度不是可以随意设定的参数，它由束流的时间稳定度决定。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.76\linewidth]{tomography_jitter_visibility.pdf}
+\caption{到达时间抖动对不同对角距离可见度的压制。横轴为对角距离 \(q\)，纵轴为可见度 \(V_q=\exp[-q^2(\omega\sigma_t)^2/2]\)，三条曲线分别取 \(\sigma_t=50\)、\(100\)、\(250\,\si{\atto\second}\)，中心波长取 \(800\,\si{\nano\metre}\)。}
+\label{fig:tomography-jitter-visibility}
+\end{figure}
 
 一般地，参数 \(\vartheta=(\vartheta^1,\ldots,\vartheta^p)\) 到结果概率 \(p_j(\vartheta,s)\) 的映射，若不同参数始终产生不同的所有设置概率，称全局可识别；其 Jacobian \(J_{(j,s),a}=\partial p_j(\vartheta,s)/\partial\vartheta^a\) 满列秩是局部一阶可识别的充分条件。秩不足时存在参数微扰 \(u\neq0\) 使 \(Ju=0\)，数据对这一方向的一阶变化为零。
 

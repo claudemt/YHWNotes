@@ -15,5 +15,5 @@ def main():
         ax.contour(X,Y,region.astype(float),levels=[0.5],colors=[COLORS[0]],linewidths=2.8)
         ax.set(xlabel=r"$\sigma\epsilon/\zeta$",ylabel=r"$A^2\epsilon/\zeta$")
         ax.set_xlim(0,20); ax.set_ylim(0,10); polish_axes(ax)
-        save_figure(fig, "duffing_system_subharmonic_resonance_response_plot.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "duffing_system_subharmonic_resonance_response_plot.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 if __name__=="__main__": main()

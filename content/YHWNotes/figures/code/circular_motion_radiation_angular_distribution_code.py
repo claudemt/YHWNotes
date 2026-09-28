@@ -40,7 +40,7 @@ def main():
         ax.set_yticklabels([rf"${tick:g}$" for tick in log_ticks])
         polish_polar_axes(ax, radial_grid=True, radial_labels=False)
         add_legend(ax)
-        save_figure(fig, "circular_motion_radiation_angular_distribution.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "circular_motion_radiation_angular_distribution.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 
 if __name__ == "__main__":

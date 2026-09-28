@@ -33,7 +33,7 @@ def main():
         )
         polish_axes(ax)
         add_legend(ax, handles=handles, loc="upper left")
-        save_figure(fig, "duffing_superharmonic_response_epsilon_negative.png", output_dir=pathlib.Path(__file__).resolve().parent.parent)
+        save_figure(fig, "duffing_superharmonic_response_epsilon_negative.png", output_dir=pathlib.Path(__file__).resolve().parents[1] / "generated")
 
 if __name__ == "__main__":
     main()

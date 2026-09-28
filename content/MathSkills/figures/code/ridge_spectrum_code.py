@@ -17,7 +17,9 @@ with figure_style():
     ax.set_xlim(0, 1); ax.set_ylim(0, 1.05)
     ax.set_xlabel(r'eigenvalue $\lambda_i$'); ax.set_ylabel(r'ridge factor $\lambda_i/(\lambda_i+\alpha)$')
     ax.set_title(r'Ridge spectral shrinkage $\lambda_i/(\lambda_i+\alpha)$')
-    add_legend(ax, loc='lower right')
+    # 右下角是唯一不被任何曲线穿过的区域，但六条目单列会高过紫色曲线，
+    # 故排成两列把它压扁到曲线下方。
+    add_legend(ax, loc='lower right', ncol=2)
     polish_axes(ax, grid=True)
     fig.tight_layout()
     save_pdf_png_pair(fig, 'ridge_spectrum', Path(__file__).resolve().parents[1] / 'generated')
