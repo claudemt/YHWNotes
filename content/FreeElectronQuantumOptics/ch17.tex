@@ -1,0 +1,41 @@
+\section{环境带走相位信息时，哪一项先衰减}
+\label{chap:feqo-decoherence}
+
+电子的边带人口与边带相干是不同的矩阵元。设传播中电子边带 \(|\ell\rangle\) 分别把环境初态 \(|\varepsilon_0\rangle\) 变为 \(|\varepsilon_\ell(t)\rangle\)。对联合态求环境偏迹得到
+\begin{equation}
+\rho_{\ell\ell'}(t)=\rho_{\ell\ell'}(0)
+e^{-\ii(E_\ell-E_{\ell'})t/\hbar}
+\langle\varepsilon_{\ell'}(t)|\varepsilon_\ell(t)\rangle .
+\label{eq:feqo-decoherence-factor}
+\end{equation}
+同一通道的环境态范数是一，所以人口可以不变；不同通道留下可区分的环境记录时，重叠模长小于一，时间密度式~\eqref{eq:feqo-temporal-density} 中的相应拍频就变浅。这一计算已经解释了“退相干”，无需先背主方程名称。
+
+可直接求解的电子模型是随机相位。令 \(L_e|\ell\rangle=\ell|\ell\rangle\)，噪声 哈密顿量 为 \(H_{\rm noise}(t)=\hbar\xi(t)L_e\)，其中实随机过程 \(\xi\) 单位为 \(\si{\per\second}\)，平均零，相关函数 \(C(t-s)=\mathbb E[\xi(t)\xi(s)]\)。在每次噪声实现中，\(\rho_{\ell\ell'}\) 多乘 \(e^{-\ii(\ell-\ell')X_t}\)，\(X_t=\int_0^t\xi(s)\dd s\)。若 \(\xi\) 为高斯过程，\(X_t\) 也是零均值高斯变量，特征函数 \(\mathbb E[e^{-\ii kX_t}]=e^{-k^2\mathbb E X_t^2/2}\) 给
+\begin{equation}
+D_{\ell\ell'}(t)=\exp\!\left[-\frac{(\ell-\ell')^2}{2}
+\int_0^t\dd s\int_0^t\dd s'\,C(s-s')\right].
+\label{eq:feqo-gaussian-dephasing}
+\end{equation}
+指数无量纲，\(D_{\ell\ell}=1\)，且高阶时间谐波因 \(|\ell-\ell'|\) 大而衰减更快。这一通道也可写成对随机酉算符 \(e^{-\ii X_tL_e}\) 的概率平均，因此保持正性和迹。
+
+取 \(C(u)=\sigma^2e^{-|u|/\tau_c}\)。把正方形 \([0,t]^2\) 按 \(s>s'\) 对半，积分可手算为
+\[
+\int_0^t\dd s\int_0^t\dd s'\,C(s-s')
+=2\sigma^2\bigl[t\tau_c-\tau_c^2(1-e^{-t/\tau_c})\bigr].
+\]
+故 \(t\ll\tau_c\) 时 \(D_{\ell\ell'}\simeq e^{-(\ell-\ell')^2\sigma^2t^2/2}\)，而 \(t\gg\tau_c\) 时衰减率趋向 \((\ell-\ell')^2\sigma^2\tau_c\)。只有相关时间 \(\tau_c\) 远短于观测时间及电子相干变化尺度，才可用常数速率的马尔可夫方程代替原来的双重积分。
+
+在这个后一个时间窗内，令 \(D=\sigma^2\tau_c\)（单位 \(\si{\per\second}\)）。因为对任意矩阵元有 \([L_e,[L_e,\rho]]_{\ell\ell'}=(\ell-\ell')^2\rho_{\ell\ell'}\)，刚才的长时指数等价于
+\begin{equation}
+\frac{\dd\rho_e}{\dd t}
+=-\frac{\ii}{\hbar}[H_0,\rho_e]
+-D[L_e,[L_e,\rho_e]].
+\label{eq:feqo-markov-dephasing}
+\end{equation}
+这里 \(H_0=\sum_\ell E_\ell|\ell\rangle\langle\ell|\)，并假设它与 \(L_e\) 对易。双重对易不改变对角元，却使第 \(m\) 阶拍频以速率 \(Dm^2\) 衰减。这个方程不是任意环境都满足的公理；它是相关时间短、噪声高斯且只耦合 \(L_e\) 时由上面的精确平均得到的极限。若环境能实际交换边带能量，还须增加改变人口的跃迁项。
+
+若噪声只是每次电子入射前已固定、而实验未记录的初始能量，平均也会降低可见对比度，但它属于制备混合；式~\eqref{eq:feqo-gaussian-dephasing} 属于传播中的随机耦合。若保存相关制备或环境记录，两者能够通过条件数据或回波操作区别。探测器分辨率则只在最终测量概率形成后作用，不能再算作这里的退相干率。
+
+\begin{exercise}
+把指数相关函数的双重积分化为 \(2\int_0^t(t-u)C(u)\dd u\)，完成积分并核对短时和长时两个极限。
+\end{exercise}

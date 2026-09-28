@@ -1,0 +1,53 @@
+\section{大样本局部似然}
+
+有限样本最优检验只处理两个完全指定的分布。一般光滑模型的样本量变大时，参数附近的似然可近似为一个二次函数；这里的“附近”必须随 \(n\) 缩小。
+
+\begin{definition}[局部渐近正态性]
+设 \(\theta_0\) 为开参数区间中的内点，\(\ell_n(\theta)\) 是 \(n\) 个观测的联合对数似然。若对每个有界的 \(h\) 集合，一致地有
+\[
+\ell_n(\theta_0+h/\sqrt n)-\ell_n(\theta_0)
+=h\Delta_n-\tfrac12h^2I(\theta_0)+o_{P_{\theta_0}}(1),
+\]
+且 \(\Delta_n\Rightarrow N(0,I(\theta_0))\)、\(I(\theta_0)>0\)，称模型在 \(\theta_0\) 局部渐近正态。\(o_{P_{\theta_0}}(1)\) 指在 \(P_{\theta_0}\) 下依概率趋零。
+\end{definition}
+
+在 Bernoulli 模型内点 \(p_0\in(0,1)\)，令
+\(p=p_0+h/\sqrt n\)、\(S_n=\sum X_i\)。对
+\(\ell_n(p)=S_n\log p+(n-S_n)\log(1-p)\) 作 Taylor 展开，得到
+\[
+\Delta_n=\frac{S_n-np_0}{\sqrt n\,p_0(1-p_0)},\qquad
+I(p_0)=\frac1{p_0(1-p_0)}.
+\]
+确切地，线性项为 \(h\Delta_n\)。二次导数除以 \(n\) 依大数律趋于
+\(-I(p_0)\)，所以二次项趋于 \(-h^2I(p_0)/2\)。
+在 \(p_0\) 的一个闭小邻域里三阶导数的绝对值由常数乘 \(n\) 控制；
+Taylor 余项因此为
+\(O(n|h/\sqrt n|^3)=O(n^{-1/2})\)，对有界 \(h\) 一致趋零。
+最后，由中心极限定理 \(\Delta_n\Rightarrow N(0,I(p_0))\)。
+这逐步验证了定义，而不是把形式上的二阶展开直接叫作定理。
+
+\begin{theorem}[一维正则模型中的三种渐近检验]
+若一维模型在内点 \(\theta_0\) 满足上述局部渐近正态性，非受限极大似然估计存在、以 \(n^{-1/2}\) 速度一致且落在局部二次展开有效的邻域，观测信息一致估计 \(nI(\theta_0)\)，则检验 \(H_0:\theta=\theta_0\) 时的似然比、Wald 和得分统计量在 \(P_{\theta_0}\) 下均趋于 \(\chi^2_1\)：
+\[
+2\{\ell_n(\widehat\theta_n)-\ell_n(\theta_0)\},\quad
+nI(\theta_0)(\widehat\theta_n-\theta_0)^2,\quad
+\frac{U_n(\theta_0)^2}{nI(\theta_0)}.
+\]
+\end{theorem}
+\begin{proof}
+在局部坐标 \(h=\sqrt n(\theta-\theta_0)\) 中，二次近似
+\(q_n(h)=h\Delta_n-h^2I/2\) 的唯一最大点为
+\(h_n^*=\Delta_n/I\)。局部一致余项与估计量的局部性条件保证
+\(\sqrt n(\widehat\theta_n-\theta_0)=h_n^*+o_P(1)\)。
+把 \(h_n^*\) 分别代入三式：似然比趋同于
+\(2q_n(h_n^*)=\Delta_n^2/I\)；Wald 趋同于
+\(I(h_n^*)^2=\Delta_n^2/I\)；由于
+\(U_n(\theta_0)/\sqrt n=\Delta_n\)，得分统计量也等于
+\(\Delta_n^2/I\)。标准正态平方的分布为 \(\chi^2_1\)，由连续映射定理得结论。
+\end{proof}
+
+这是大样本零假设下的极限，不是三种统计量在有限 \(n\) 相等，也不是任意边界参数的结论。例如 Bernoulli 的 \(p_0=0\) 时 Fisher 信息表达式发散，局部扰动还可能离开参数空间，上述定理不能使用。
+
+\begin{exercise}
+对 Bernoulli 模型代入 \(\widehat p=S_n/n\)，分别写出三种统计量；用 Taylor 展开验证在 \(p_0\in(0,1)\) 且 \(S_n/n\to p_0\) 时它们的差依概率趋零。
+\end{exercise}

@@ -1,0 +1,82 @@
+\section{固定数据以后，似然怎样工作}
+
+设可观测数据为 \(X=x\)，模型有共同的质量函数或密度 \(p_\theta(x)\)。
+在概率论里固定 \(\theta\) 而改变 \(x\)；在推断中固定已观测的 \(x\) 而比较不同 \(\theta\)。同一个公式因此承担不同任务。
+
+\begin{definition}[似然、得分与信息]
+似然函数 \(L(\theta;x)=p_\theta(x)\) 是固定 \(x\) 后参数的非负函数；它不被要求对 \(\theta\) 积分为一。对数似然为 \(\ell(\theta;x)=\log L(\theta;x)\)。一维内点参数的得分 \(U_\theta(X)=\partial_\theta\ell(\theta;X)\)，Fisher 信息
+\(I(\theta)=\mathbb E_\theta U_\theta(X)^2\)，前提是得分平方可积。
+\end{definition}
+
+一次 Bernoulli 试验观测 \(x=1\) 后，\(L(p;1)=p\)；观测 \(x=0\) 后，\(L(p;0)=1-p\)。前者较支持较大的 \(p\)，后者较支持较小的 \(p\)。把 \(p\) 在 \((0,1)\) 上积分并没有概率论上的必要，因为此处 \(p\) 仍是固定而未知的模型参数。
+
+\begin{proposition}[信息恒等式]
+设 \(\Theta\) 是开区间，支配测度和样本支集不依赖 \(\theta\)，\(p_\theta\) 二次可微，且可在考虑的 \(\theta\) 邻域内以可积函数控制一、二阶导数，从而允许两次交换微分与积分。若 \(I(\theta)<\infty\)，则
+\[
+\mathbb E_\theta U_\theta=0,\qquad
+I(\theta)=-\mathbb E_\theta\partial_\theta^2\ell(\theta;X).
+\]
+\end{proposition}
+\begin{proof}
+密度归一化给 \(\int p_\theta\,d\mu=1\)。第一次求导得到
+\(\mathbb E_\theta U_\theta=\int\partial_\theta p_\theta\,d\mu=0\)。
+再用
+\(\partial_\theta^2\log p_\theta
+=(\partial_\theta^2p_\theta)/p_\theta-
+(\partial_\theta p_\theta)^2/p_\theta^2\)，对 \(p_\theta d\mu\) 积分。前一项为 \(\partial_\theta^2\int p_\theta\,d\mu=0\)，后一项为 \(-I(\theta)\)。
+\end{proof}
+
+\begin{theorem}[Cramér--Rao 有限样本界]
+在上述正则条件下，若 \(T(X)\) 平方可积、对每个 \(\theta\) 无偏估计可微函数 \(g(\theta)\)，且 \(\partial_\theta \mathbb E_\theta T\) 可交换为积分内的导数，则
+\[
+\operatorname{Var}_\theta T\ge \frac{g'(\theta)^2}{I(\theta)}
+\]
+对 \(0<I(\theta)<\infty\) 的每个 \(\theta\) 成立。
+\end{theorem}
+\begin{proof}
+对 \(g(\theta)=\int T(x)p_\theta(x)\,d\mu(x)\) 求导：
+\(g'(\theta)=\mathbb E_\theta[TU_\theta]\)。
+由 \(\mathbb E_\theta U_\theta=0\)，右侧是
+\(\operatorname{Cov}_\theta(T,U_\theta)\)。
+Cauchy--Schwarz 给
+\(g'(\theta)^2\le\operatorname{Var}_\theta(T)I(\theta)\)，移项即得。
+\end{proof}
+
+对 \(n\) 个 Bernoulli\((p)\) 样本，令 \(s=\sum X_i\)，则
+\[
+\ell(p)=s\log p+(n-s)\log(1-p),\quad
+U_p=\frac{s-np}{p(1-p)},\quad
+I_n(p)=\frac{n}{p(1-p)}.
+\]
+样本均值无偏且方差 \(p(1-p)/n=I_n(p)^{-1}\)，故在每个 \(p\in(0,1)\) 达到该界。极大似然估计是使 \(L\) 最大的参数；此例为 \(\widehat p=s/n\)，可能位于边界。一般模型中“求解 \(U_\theta=0\)”只找内点驻点，不能替代边界检查，也不保证唯一或无偏。
+
+这些计算不是 Bernoulli 模型独有的巧合。设一次观测的共同支配密度可写成
+\[
+p_\eta(x)=h(x)\exp\{\eta T(x)-A(\eta)\},
+\qquad \eta\in J,
+\]
+其中 \(J\) 是开区间，\(h\ge0\)，\(T\) 是实值统计量，而
+\(A(\eta)=\log\int h(x)\ee^{\eta T(x)}\,\dd\mu(x)\)
+保证密度归一化；这称为一参数自然指数族。在任意闭子区间上若积分可两次求导，分别对归一化式求导给
+\[
+A'(\eta)=\mathbb E_\eta T(X),\qquad
+A''(\eta)=\mathbb E_\eta[T(X)^2]-(\mathbb E_\eta T(X))^2
+=\operatorname{Var}_\eta T(X)\ge0.
+\]
+第一式说明自然参数的改变如何推动可观测均值；第二式说明 \(A\) 的凸性恰由统计波动决定。对 \(n\) 个独立观测，对数似然除去与 \(\eta\) 无关的部分是
+\(\eta\sum_iT(X_i)-nA(\eta)\)。所以总和 \(\sum_iT(X_i)\) 是充分统计量，得分为
+\(U_\eta=\sum_iT(X_i)-nA'(\eta)\)，Fisher 信息为
+\(I_n(\eta)=nA''(\eta)\)。若 \(A''>0\)，内点极大似然估计满足
+\(A'(\widehat\eta)=n^{-1}\sum_iT(X_i)\)；它是把模型期望与观测平均配平，而不是仅仅“令导数为零”。
+
+以 Poisson 模型为例，令 \(\eta=\log\lambda\)、\(T(x)=x\)、
+\(h(x)=1/x!\)。由 \(\sum_{x\ge0}\ee^{\eta x}/x!=\exp(\ee^\eta)\)，得
+\(A(\eta)=\ee^\eta=\lambda\)。于是 \(A'=A''=\lambda\)，
+\(\widehat\lambda=\overline X\)，\(I_n(\eta)=n\lambda\)。若改用参数 \(\lambda\)，链式法则把得分乘 \(\dd\eta/\dd\lambda=1/\lambda\)，信息变为
+\(I_n(\lambda)=n/\lambda\)。Fisher 信息的数值依赖参数坐标；若不同时变换 \(g'(\theta)\)，就不能拿不同参数下的 Cramér--Rao 界直接比较。
+
+支集随参数变化时上述证明可能失效。例如 \(X\sim\operatorname{Uniform}(0,\theta)\) 的密度支集是 \((0,\theta)\)；微分 \(\int_0^\theta\theta^{-1}dx=1\) 有端点项，不能只对被积函数求导。
+
+\begin{exercise}
+复算 Bernoulli 信息与样本均值的方差。对 \(X\sim\operatorname{Uniform}(0,\theta)\) 找出忽略端点项会导致的错误等式。
+\end{exercise}

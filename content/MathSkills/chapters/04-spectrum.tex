@@ -1,0 +1,45 @@
+\chapter{谱测度、能量形式与边值问题}
+\label{chap:math-spectrum}
+
+自伴性保证时间演化存在，但并未告诉我们怎样算 \(\exp(-\ii tH/\hbar)\)。有限维时把矩阵按本征值对角化即可。自由粒子的平面波却不在 \(L^2(\mathbb R)\) 内；若只依靠可归一化本征向量，连续能量便无从处理。
+
+\section{谱是逆算子不能存在的位置}
+
+\begin{definition}[预解集与谱]
+对 Hilbert 空间中的闭算子 \(A:D(A)\to\mathcal H\)，若 \(A-zI:D(A)\to\mathcal H\) 为双射，且逆算子 \((A-zI)^{-1}:\mathcal H\to\mathcal H\) 有界，称 \(z\) 属于预解集 \(\rho(A)\)。其补集 \(\sigma(A)=\mathbb C\setminus\rho(A)\) 称谱。
+\end{definition}
+
+非谱点意味着对每个源 \(f\) 都能唯一、稳定地解 \((A-z)u=f\)。失败可能是非唯一、无解，或者形式解对源不稳定。有限维把这些情况压成“行列式为零”，无穷维不再如此。
+
+\begin{definition}[投影值测度]
+令 \(\mathcal B(\mathbb R)\) 为由开区间生成、对可数并和补集封闭的集合族。投影值测度 \(E\) 给每个 \(B\in\mathcal B(\mathbb R)\) 一个正交投影 \(E(B)\)，满足 \(E(\varnothing)=0\)、\(E(\mathbb R)=I\) 和
+\[
+E\!\left(\bigcup_{n=1}^\infty B_n\right)x=\sum_{n=1}^\infty E(B_n)x
+\quad\text{对两两不交的 }B_n\text{ 与每个 }x\in\mathcal H,
+\]
+右侧按 Hilbert 空间范数收敛。
+\end{definition}
+
+这里的投影彼此兼容，不是任意给每个集合挑一块子空间。若 \(B,C\) 不交，可加性给 \(E(B\cup C)=E(B)+E(C)\)，左侧仍是正交投影。令 \(x\in\operatorname{Ran}E(B)\)；投影恒等式 \((E(B)+E(C))^2=E(B)+E(C)\) 在 \(x\) 上取内积，得到 \(2\|E(C)x\|^2=0\)，故 \(E(C)E(B)=0\)。对一般 \(B,C\)，把它们各自拆成交集和互不相交的剩余部分，便得 \(E(B)E(C)=E(B\cap C)\)。特别地，若把能量轴分成互不相交的几个窗口，投影后的各个态分量两两正交，概率之和等于原态概率；这正是有限维不同本征空间正交性的连续谱版本。
+
+有限维自伴矩阵 \(A=\sum_j\lambda_jP_j\) 给出 \(E(B)=\sum_{\lambda_j\in B}P_j\)。于是 \(E(B)x\) 就是态 \(x\) 中能量落在 \(B\) 的分量，\(\|E(B)x\|^2/\|x\|^2\) 是归一化态落在该能量集合的概率。连续谱也保留这层意思，只是投影不再来自有限个本征向量的和。
+
+\input{content/MathSkills/ch06.tex}
+\input{content/MathSkills/ch07.tex}
+\input{content/MathSkills/ch08.tex}
+
+\section{能量形式怎样决定边界条件}
+
+同一个积分 \(q[u,v]=\int_0^1\overline{u'}v'\,\dd x\) 可以放在不同的形式域上。取 \(D(q)=H_0^1(0,1)\) 时，表示算子 \(A\) 的定义要求对某个 \(f\in L^2\) 有 \(q[u,v]=\langle u,f\rangle\) 对一切 \(u\in H_0^1\) 成立。先取紧支测试函数，得 \(-v''=f\)；再由 \(v\in H_0^1\) 得两个端点值为零。所以 \(D(A)=H^2\cap H_0^1\)，是 Dirichlet 实现。
+
+若把形式域改成 \(H^1(0,1)\)，相同的内部计算仍给 \(-v''=f\)，但此时 \(u(0),u(1)\) 可任取。分部积分
+\[
+q[u,v]=\langle u,-v''\rangle+[\overline u v']_0^1
+\]
+迫使 \(v'(0)=v'(1)=0\)，得到 Neumann 实现。边界条件不是写在微分式旁边的注释；它进入形式域或算子域，决定了算子本身。
+
+\begin{theorem}[紧预解式的谱结论]
+设 \(A\) 自伴，且某个 \(z\in\rho(A)\) 使 \((A-zI)^{-1}\) 紧。则 \(A\) 有一组正交本征向量基；谱点是有限重的实本征值，在有限实区间内只有有限个，唯一可能的累积位置是无穷远。
+\end{theorem}
+
+有限区间上的 Dirichlet Laplacian 有此性质；全空间的自由粒子没有。两者谱型不同，原因在于边界使有限区间的预解式具有紧性，而全空间容许波包平移到任意远处。

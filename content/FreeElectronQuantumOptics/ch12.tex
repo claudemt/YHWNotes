@@ -1,0 +1,100 @@
+\section{一个量子交换会改变两边的量子数}
+\label{chap:feqo-quantum-pinem}
+
+令电子边带数算符 \(L_e|\ell\rangle=\ell|\ell\rangle\)，平移算符 \(B|\ell\rangle=|\ell-1\rangle\)、\(B^\dagger|\ell\rangle=|\ell+1\rangle\)。在双向无限的理想电子梯上 \(B^\dagger B=BB^\dagger=I\)；它不是满足 \([B,B^\dagger]=1\) 的玻色湮灭算符。光模仍由 \(a|n\rangle=\sqrt n|n-1\rangle\) 描述。
+
+在低反冲、单模、旋波条件下，单次能量交换的 哈密顿量 可写为
+\begin{equation}
+H_I(t)=\hbar g(t)B^\dagger a+\hbar g(t)^*B a^\dagger.
+\label{eq:feqo-quantum-pinem-hamiltonian}
+\end{equation}
+\(g\) 单位为 \(\si{\per\second}\)。第一项提高电子边带标号并湮灭一个光子，第二项反向进行。令 \(N_\gamma=a^\dagger a\)。由 \([L_e,B^\dagger]=B^\dagger\)、\([N_\gamma,a]=-a\)，直接相加得到
+\begin{equation}
+[H_I,N_\gamma+L_e]=0.
+\label{eq:feqo-exchange-conservation}
+\end{equation}
+守恒的是 \(N_\gamma+L_e\)，不是 \(N_\gamma+B^\dagger B\)，后者在无限梯上仅等于 \(N_\gamma+I\)。这个区别决定哪些联合态可以相互连接。
+
+将 \(|\Psi(t)\rangle=\sum C_{\ell n}(t)|\ell,n\rangle\) 代入薛定谔方程，分别使两项作用于源态，得到
+\begin{equation}
+\ii\dot C_{\ell n}=g(t)\sqrt{n+1}\,C_{\ell-1,n+1}
++g(t)^*\sqrt n\,C_{\ell+1,n-1}.
+\label{eq:feqo-quantum-pinem-recursion}
+\end{equation}
+右边两项都满足 \((\ell-1)+(n+1)=\ell+n=(\ell+1)+(n-1)\)。截断数值计算时要在光子数上保留足够大的上界，并检查边界人口；简单把越界振幅扔掉会破坏幺正性。
+
+最小手算例子需要明确边界。若一个物理选择规则或强失谐只保留 \(|0,1\rangle\) 与 \(|1,0\rangle\)，用投影 \(P\) 定义受限模型 \(PH_IP\)，常数实 \(g\) 给二维矩阵 \(\hbar g\sigma_x\)。从 \(|0,1\rangle\) 出发，
+\[
+|\Psi(t)\rangle=\cos(gt)|0,1\rangle-\ii\sin(gt)|1,0\rangle.
+\]
+由式~\eqref{eq:feqo-partial-trace-components}，\(\rho_e=\cos^2(gt)|0\rangle\langle0|+\sin^2(gt)|1\rangle\langle1|\)，纯度为 \(\operatorname{Tr}\rho_e^2=1-\tfrac12\sin^2(2gt)\)。联合态始终是纯态，电子在中间时刻却是混态。若无限电子梯未被物理地截断，\(|-1,2\rangle\) 也与 \(|0,1\rangle\) 相连，上面的二维解就不是完整 哈密顿量 的精确解。
+
+有限截断时还有一个有用的矩阵定理，值得在这里说明其含义而非只报名字。任意有限复矩阵 \(C\) 都可写成 \(C=\sum_r s_r u_rv_r^\dagger\)，其中 \(s_r>0\)，两组列向量 \(u_r,v_r\) 各自正交归一；这叫奇异值分解。证明从正的 厄米 矩阵 \(C^\dagger C\) 出发：取其非零本征值 \(s_r^2\) 与归一本征向量 \(v_r\)，令 \(u_r=Cv_r/s_r\)。于是 \(u_r^\dagger u_s=v_r^\dagger C^\dagger Cv_s/(s_rs_s)=\delta_{rs}\)；在 \(C^\dagger C\) 的零空间上 \(C\) 为零，所以这些非零项已重构整个 \(C\)。
+
+把矩阵分解代回联合态，光侧向量的分量取 \(v_r\) 的复共轭，便得 \(|\Psi\rangle=\sum_r s_r|u_r\rangle_e|\bar v_r\rangle_\gamma\)。矩阵归一化给 \(\sum_rs_r^2=\sum_{\ell,n}|C_{\ell n}|^2=1\)。把它代入偏迹式得到 \(\rho_e=\sum_rs_r^2|u_r\rangle\langle u_r|\)。因此有限截断态可分当且仅当只有一个非零奇异值；\(\operatorname{Tr}\rho_e^2=\sum_rs_r^4\)。奇异值分解只在这个有限矩阵上使用，不能不加说明地把有限维定理搬到无限电子梯。
+
+无限梯的判据其实可直接由偏迹证明，不需要先调用无限维奇异值定理。把矩阵的第 \(n\) 列看成电子向量 \(|c_n\rangle_e=\sum_\ell C_{\ell n}|\ell\rangle\)，则归一化条件为 \(\sum_n\|c_n\|^2=1\)，而式~\eqref{eq:feqo-partial-trace-components} 成为 \(\rho_e=\sum_n|c_n\rangle\langle c_n|\)。因为所有求和项非负，可先对有限部分求迹再取极限，得到
+\begin{equation}
+\operatorname{Tr}\rho_e^2
+=\sum_{n,m}|\langle c_n|c_m\rangle|^2
+\leq\sum_{n,m}\|c_n\|^2\|c_m\|^2=1.
+\label{eq:feqo-entanglement-column-test}
+\end{equation}
+不等号逐项使用柯西--施瓦茨不等式。等号成立当且仅当所有非零列向量彼此共线；此时 \(C_{\ell n}=u_\ell v_n\)，联合态正好是 \((\sum_\ell u_\ell|\ell\rangle)\otimes(\sum_n v_n|n\rangle)\)。若至少两列不共线，严格不等号出现，电子约化态的纯度小于一，联合纯态便是纠缠态。这个证明对平方可和的无限矩阵同样成立：有限部分单调收敛，且右边总和为一，不需要对无限矩阵做未经证明的谱分解。
+
+理想无限电子梯还有一个比二维截断更有用的精确解。令 \(A=B^\dagger a\)，则 \(A^\dagger=Ba^\dagger\)。因为电子平移与光算符作用在不同空间，且 \(BB^\dagger=B^\dagger B=I\)，
+\[
+[A,A^\dagger]=B^\dagger B\,aa^\dagger-BB^\dagger\,a^\dagger a=I.
+\]
+满足玻色对易关系的是电子与光组合成的 \(A\)，不是电子平移 \(B\)。若 \(g\) 在持续时间 \(T\) 内为常数，令 \(\zeta=-\ii g^*T\)，则式~\eqref{eq:feqo-quantum-pinem-hamiltonian} 的精确传播为
+\begin{equation}
+U(T)=\exp(\zeta A^\dagger-\zeta^*A)
+=e^{-|\zeta|^2/2}e^{\zeta A^\dagger}e^{-\zeta^*A}.
+\label{eq:feqo-joint-displacement}
+\end{equation}
+第二个等号是对易子为数时的 Baker--Campbell--Hausdorff 恒等式。它可直接验证：将两个指数的乘积按级数展开，所有高阶对易子都为零，只剩 \(-|\zeta|^2/2\)；而指数中的算符反厄米，故 \(U^\dagger U=I\)。在初态 \(|0,0\rangle\) 上，\(A|0,0\rangle=0\)，逐项展开右边指数便有
+\begin{equation}
+U(T)|0,0\rangle=e^{-\mu/2}\sum_{m=0}^\infty
+\frac{\zeta^m}{\sqrt{m!}}|-m,m\rangle,
+\qquad \mu=|\zeta|^2.
+\label{eq:feqo-vacuum-joint-state}
+\end{equation}
+电子失去 \(m\hbar\omega\)，同一光模多出 \(m\) 个光子。按式~\eqref{eq:feqo-partial-trace-components} 求偏迹，电子人口为 \(P_{-m}=e^{-\mu}\mu^m/m!\)，其它边带人口为零；\(\sum_mP_{-m}=e^{-\mu}e^\mu=1\)。约化纯度是 \(e^{-2\mu}I_0(2\mu)\)，其中 \(I_0(2\mu):=\sum_{m=0}^\infty\mu^{2m}/(m!)^2\)。\(\mu>0\) 时其值小于一，所以这个全阶例子展示了电子与光的纠缠。
+
+这一联合态还能把“交换”二字变成可测的相关。以 \(P_m=e^{-\mu}\mu^m/m!\) 求生成函数 \(F(s)=\sum_mP_ms^m=e^{\mu(s-1)}\)，在 \(s=1\) 求一次和两次导数，便得 \(\langle m\rangle=\mu\)、\(\langle m(m-1)\rangle=\mu^2\)，所以 \(\operatorname{Var}(m)=\mu\)。每次事例中 \(L_e=-N_\gamma=-m\)，故
+\[
+\langle\Delta E_e\rangle=-\hbar\omega\mu,\qquad
+\operatorname{Cov}(L_e,N_\gamma)=-\mu.
+\]
+光子计数与电子损失量逐次严格反相关，即使只看电子或只看光的边缘分布都会丢掉这条信息。这也是实际检验单模交换模型的一个办法：若同时记录两侧而相关显著偏离上述守恒线，须检查未收集的光模、电子反冲或探测器漏计。
+
+这个位移解依赖四项条件：电子梯在实际占据区可视作双向无限；各交换边的反冲失谐可忽略；只保留一个共振光模；\(g\) 的相位在 \(T\) 内固定。若 \(g(t)\) 仅实幅度变化而相位固定，可把 \(gT\) 换成 \(\int g(t)\dd t\)；若相位变化，时间排序产生额外整体相位。若反冲可分辨，自由失谐不再与相互作用对易，式~\eqref{eq:feqo-joint-displacement} 就不是完整传播。
+
+单模位移把一个共振频率视为唯一可用的光通道。实际结构的模常常连续；这时不能把不同频率的振幅无条件相加。先在长度有限的量子化盒中取离散模 \(a_j\)，\([a_j,a_k^\dagger]=\delta_{jk}\)，每个模具有频率 \(\omega_j\)、动量转移 \(\hbar\mathbf q_j\) 和角频率量纲耦合 \(g_j\)。一次吸收从 \(|\mathbf p;n_j\rangle\) 到 \(|\mathbf p+\hbar\mathbf q_j;n_j-1\rangle\) 的一阶振幅是
+\begin{equation}
+\mathcal A_j=-\ii g_j\sqrt{n_j}\,
+\widetilde w(\Delta_j),\qquad
+\Delta_j=\frac{E(\mathbf p+\hbar\mathbf q_j)-E(\mathbf p)}{\hbar}-\omega_j .
+\label{eq:feqo-continuum-mode-amplitude}
+\end{equation}
+\(\widetilde w\) 是式~\eqref{eq:feqo-finite-time-amplitude} 定义的时间窗变换。若初态各模是确定数态，\(j\neq k\) 的末态光场正交，故总一次吸收概率是 \(\sum_j|\mathcal A_j|^2\)；把振幅先求和再取模平方会制造不存在的模式干涉。
+
+令相邻频率间隔为 \(\Delta\omega\)，定义 \(a(\omega_j)=a_j/\sqrt{\Delta\omega}\)、\(g(\omega_j)=g_j/\sqrt{\Delta\omega}\)。当盒变大，\([a(\omega),a^\dagger(\omega')]=\delta(\omega-\omega')\)，并且 \(\sum_jg_ja_j\to\int\dd\omega\,g(\omega)a(\omega)\)。\(a(\omega)\) 的量纲是 \(\si{\second\tothe{1/2}}\)，\(g(\omega)\) 是 \(\si{\per\second\tothe{1/2}}\)；两者连同 \(\dd\omega\) 仍给角频率。对模式族标号 \(\nu\) 求和后，定义频率谱密度 \(J(\omega)=\sum_\nu|g_\nu(\omega)|^2\)，量纲为 \(\si{\per\second}\)。若不同 \(\nu\) 的失谐只取决于 \(\omega\)，
+\begin{equation}
+P_{\rm abs}^{(1)}=\int_0^\infty\dd\omega\,
+n(\omega)J(\omega)|\widetilde w[\Delta(\omega)]|^2.
+\label{eq:feqo-continuum-absorption}
+\end{equation}
+对真空发射，相关因子不是 \(n\) 而是 \(n+1\)。若 \(\Delta(\omega_*)=0\) 的根孤立且 \(\Delta'(\omega_*)\neq0\)，矩形窗的长时极限给 \(P/T\to2\pi\sum_{\omega_*}n(\omega_*)J(\omega_*)/|\Delta'(\omega_*)|\)。这里的导数是从 \(\delta[\Delta(\omega)]\) 换到 \(\delta(\omega-\omega_*)\) 时的 Jacobian；若 \(J,n\) 在宽度 \(1/T\) 内变化剧烈、\(\Delta'=0\) 或总跃迁概率不再小，就不能使用这个速率。
+
+电子探测器通常按能量而非动量分箱，另一个 Jacobian 来自态归一化。固定横向动量和自旋，沿正向一维支有 \(\langle p|p'\rangle=\delta(p-p')\)、\(v(E)=\dd E/\dd p>0\)。定义 \(|E\rangle_E=v(E)^{-1/2}|p(E)\rangle\)，则
+\[
+{}_E\langle E|E'\rangle_E=
+\frac{\delta[p(E)-p(E')]}{\sqrt{v(E)v(E')}}
+=\delta(E-E').
+\]
+因此动量概率密度 \(|f_p(p)|^2\dd p\) 变成 \(|f_p[p(E)]|^2\dd E/v(E)\)。这个速度因子不能在从理论动量态改成实验能谱时遗漏。固定横向动量的限定也必须保留；若收集了不同出射角，还须对横向动量积分并使用相应的完整相空间测度。
+
+\begin{exercise}
+检查 \(H_I\) 对 \(|0,1\rangle\) 的完整作用，并解释为什么除 \(|1,0\rangle\) 外还出现 \(|-1,2\rangle\)。再从 \(\delta[\Delta(\omega)]\) 推导连续模速率中的 \(|\Delta'|^{-1}\)。
+\end{exercise}

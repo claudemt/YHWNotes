@@ -1,0 +1,64 @@
+\section{Pearson 卡方从何而来}
+
+分类计数 \((N_1,\ldots,N_k)\) 的和固定为 \(n\)。所以计数波动只能沿“各分量和为零”的 \(k-1\) 维空间发生；若直接当作 \(k\) 个独立正态波动，就会多算一个自由度。
+
+\begin{theorem}[固定分类概率的 Pearson 极限]
+设 \(k\ge2\) 固定，\(n\) 次独立分类的概率向量为
+\(p=(p_1,\ldots,p_k)\)，各 \(p_i>0\)、\(\sum_i p_i=1\)。
+令 \(N_i\) 为第 \(i\) 类计数，则在此零假设下
+\[
+X_n^2=\sum_{i=1}^k\frac{(N_i-np_i)^2}{np_i}
+\Rightarrow\chi^2_{k-1}.
+\]
+\end{theorem}
+\begin{proof}
+每次分类的指示向量 \(Y_j\in\mathbb R^k\) 满足
+\(\mathbb E Y_j=p\)，协方差
+\(\Sigma=\operatorname{diag}(p)-pp^\top\)。
+要从前面的一维中心极限定理得到这里的向量极限，固定任意
+\(t\in\mathbb R^k\)：标量
+\(t^\top\sqrt n(N/n-p)=n^{-1/2}\sum_jt^\top(Y_j-p)\)
+是独立同分布有界变量之和，故趋于方差
+\(t^\top\Sigma t\) 的正态分布；方差为零时该线性组合恒为零，结论同样成立。于是向量的特征函数在每个 \(t\) 处趋于
+\(\exp(-t^\top\Sigma t/2)\)。前一章证明的特征函数连续性论证按每个坐标作 Fourier 反演，同样给
+\(\sqrt n(N/n-p)\Rightarrow N_k(0,\Sigma)\)。这一步称为多元中心极限定理在当前有限分类模型中的证明。
+令 \(D=\operatorname{diag}(p)\)、\(v=(\sqrt{p_1},\ldots,\sqrt{p_k})^\top\)。
+标准化向量 \(D^{-1/2}\sqrt n(N/n-p)\) 的极限协方差为
+\(D^{-1/2}\Sigma D^{-1/2}=I-vv^\top\)。
+由于 \(\|v\|=1\)，这是秩 \(k-1\) 的正交投影。按上一章的高斯投影定理，该极限向量的平方长度服从 \(\chi^2_{k-1}\)；平方长度正是 \(X_n^2\)。连续映射定理完成证明。
+\end{proof}
+
+若概率由同一数据估计，不能机械把 \(k-1\) 改成 \(k-1-r\)。这一扣除需要从拟合方程算出来。设 \(p(\theta)\) 是 \(r\) 参数的光滑概率向量，真参数 \(\theta_0\) 为内点，所有 \(p_i(\theta_0)>0\)。在真值处记
+\(D=\operatorname{diag}(p_i)\)、
+\(J=(\partial p_i/\partial\theta_a)_{i,a}\)，并假定 \(J\) 满列秩。由于 \(\sum_i p_i(\theta)=1\)，每列满足 \(\sum_iJ_{ia}=0\)。把原始计数的标准化波动写成
+\(Z_n=D^{-1/2}\sqrt n(N/n-p)\)，其极限协方差仍为
+\(I-vv^\top\)。再设 \(A=D^{-1/2}J\)，便有
+\(v^\top A=0\)：模型参数能改变的概率方向，确实位于总和为零的波动空间内。
+
+假设使用内点多项分布极大似然估计 \(\widehat\theta\)，且它一致。对数似然得分在真值的第 \(a\) 分量为
+\[
+U_a(\theta_0)
+=\sum_i\frac{N_i}{p_i}J_{ia}
+=\sum_i\frac{N_i-np_i}{p_i}J_{ia}
+=\sqrt n\,(A^\top Z_n)_a;
+\]
+第二个等号正用到 \(\sum_iJ_{ia}=0\)。其负 Hessian 除以 \(n\) 依概率趋于
+\(J^\top D^{-1}J=A^\top A\)。在 \(\widehat\theta\) 处令得分为零并作 Taylor 展开，便得到
+\[
+\sqrt n(\widehat\theta-\theta_0)
+=(A^\top A)^{-1}A^\top Z_n+o_P(1).
+\]
+将 \(p(\widehat\theta)=p+J(\widehat\theta-\theta_0)+o_P(n^{-1/2})\)
+代入拟合后的标准化残差，得到
+\[
+D^{-1/2}\sqrt n\{N/n-p(\widehat\theta)\}
+=\{I-A(A^\top A)^{-1}A^\top\}Z_n+o_P(1).
+\]
+括号中减去的是投到 \(\operatorname{col}(A)\) 的正交投影；由于这 \(r\) 个方向位于 \(v^\perp\)，剩余投影在 \(v^\perp\) 上的秩是 \(k-1-r\)。把分母中的 \(p_i(\widehat\theta)\) 以一致性换成 \(p_i\)，差为 \(o_P(1)\)，故拟合后的 Pearson 统计量趋于
+\(\chi^2_{k-1-r}\)。若参数在边界、类别概率为零、\(J\) 不满秩或 \(r\ge k-1\)，上述投影与 Taylor 论证都不能照搬。
+
+上述定理的极限以固定 \(p_i>0\)、\(n\to\infty\) 为前提，使每个 \(np_i\to\infty\)。稀疏表或随 \(n\) 变化的分类数需要重新检查近似，不能仅凭自由度公式作结论。
+
+\begin{exercise}
+对 \(k=3\)、\(p_i=1/3\) 写出 \(v\) 和投影 \(I-vv^\top\)，验证其迹为 \(2\)。若某一 \(p_i=0\)，指出证明中哪一步不合法。
+\end{exercise}

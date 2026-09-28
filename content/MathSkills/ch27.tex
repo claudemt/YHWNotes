@@ -1,0 +1,122 @@
+\section{从一次实验到随机变量}
+
+掷两枚硬币时，一个样本点可以写成 \((\text{正},\text{反})\)；“至少一枚为正”却是若干样本点构成的集合。若把这两者都叫“结果”，后面的条件概率便容易混乱。
+
+\begin{definition}[概率空间]
+样本空间 \(\Omega\) 是所有可能样本点的集合。事件域 \(\mathcal F\) 是 \(\Omega\) 的子集族，包含 \(\Omega\)，且对补集和可数并封闭；这样的子集族称为 \(\sigma\)-代数。概率测度 \(P:\mathcal F\to[0,1]\) 满足 \(P(\Omega)=1\) 以及对互不相交事件 \(A_i\) 的可数可加性：
+\(P(\bigcup_{i=1}^\infty A_i)=\sum_{i=1}^\infty P(A_i)\)。
+三者合称概率空间 \((\Omega,\mathcal F,P)\)。
+\end{definition}
+
+有限样本空间取 \(\mathcal F=2^\Omega\)，给每个样本点非负权重且权重和为一，就得到概率测度。并非任意子集族都可作事件域：只含 \(\Omega\) 和空集的集合族虽是 \(\sigma\)-代数，却不能表达“第一枚硬币为正”。连续模型也不能一概给每个子集赋概率，所以需要先指定 \(\mathcal F\)。
+
+\begin{definition}[随机变量及其分布]
+实随机变量 \(X\) 是可测映射 \(X:(\Omega,\mathcal F)\to(\mathbb R,\mathcal B(\mathbb R))\)：对每个 Borel 集 \(B\)，事件 \(\{\omega:X(\omega)\in B\}\) 属于 \(\mathcal F\)。这里 Borel 集是由实数轴开区间经可数并、可数交与补集生成的集合。\(X\) 的分布 \(P_X\) 由 \(P_X(B)=P(X\in B)\) 定义。
+\end{definition}
+
+在硬币例子中，\(X(\omega)=\) 正面个数。样本点 \((\text{正},\text{反})\)、事件 \(\{X=1\}\)、映射 \(X\) 与取值 \(1\) 是四种不同对象。掷公平硬币时 \(P_X(\{1\})=1/2\)。若一个映射的逆像有可能不在 \(\mathcal F\) 中，它就不是相对于该事件域的随机变量。
+
+\begin{definition}[期望]
+非负简单函数是 \(s=\sum_{i=1}^m a_i\mathbf1_{A_i}\)，其中 \(a_i\ge0\)、\(A_i\) 两两不交，定义 \(\int s\,\dd P=\sum_i a_iP(A_i)\)。非负随机变量的期望定义为所有 \(0\le s\le X\) 的简单函数积分的上确界，记为 \(\mathbb E X=\int_\Omega X\,\dd P\)。令 \(X^+=\max(X,0)\)、\(X^-=\max(-X,0)\)，若 \(\mathbb E|X|<\infty\)，则 \(\mathbb E X=\mathbb E X^+-\mathbb E X^-\)。
+\end{definition}
+
+在有限样本空间，这一定义还原为熟悉的加权和
+\(\mathbb E X=\sum_{\omega\in\Omega}X(\omega)P(\{\omega\})\)；
+有密度 \(f_X\) 时则还原为 \(\int_{\mathbb R}xf_X(x)\,\dd x\)。
+
+\begin{definition}[独立]
+事件 \(A,B\) 独立指 \(P(A\cap B)=P(A)P(B)\)；
+随机变量 \(X,Y\) 独立指对任意 Borel 集 \(C,D\)，事件
+\(\{X\in C\}\) 与 \(\{Y\in D\}\) 独立。
+\end{definition}
+
+若只记录第一枚硬币，所得信息不足以知道两枚正面的总数，却仍能给出基于该信息的平均预测。为使“已知的信息”本身成为数学对象，使用一个子事件域。
+
+\begin{definition}[条件期望]
+若 \(X\) 可积且 \(\mathcal G\subset\mathcal F\) 是子 \(\sigma\)-代数，条件期望 \(\mathbb E[X\mid\mathcal G]\) 是 \(\mathcal G\)-可测变量，满足
+\[
+\int_G\mathbb E[X\mid\mathcal G]\,\dd P=\int_GX\,\dd P
+\quad\text{对每个 }G\in\mathcal G.
+\]
+它在几乎处处相等的意义下唯一。
+\end{definition}
+
+在有限硬币空间，令 \(\mathcal G\) 只记录第一枚硬币，\(X\) 为正面总数。给定第一枚为正，第二枚平均贡献 \(1/2\)，故条件期望取 \(3/2\)；给定第一枚为反则取 \(1/2\)。这两值分别代入 \(\mathcal G\) 的两个原子，逐一满足上面的积分恒等式。条件期望仍是随机变量，不是从一次固定观察中得出的常数。
+
+一般有限划分 \(\Omega=G_1\sqcup\cdots\sqcup G_m\) 所生成的 \(\mathcal G\) 上，也能直接构造：在 \(P(G_i)>0\) 的原子上令
+\[
+\mathbb E[X\mid\mathcal G](\omega)
+=\frac{\mathbb E[X\mathbf1_{G_i}]}{P(G_i)},\qquad \omega\in G_i.
+\]
+代入每个原子再相加，就证明它满足定义；零概率原子上的取值任意，解释了“几乎处处唯一”。无限事件域中，\(L^2\) 情形可由前面证明过的 Hilbert 空间投影定理得到存在性：投影到 \(\mathcal G\)-可测平方可积变量的闭子空间，正交于每个指示函数 \(\mathbf1_G\) 正是上述积分恒等式。
+
+这里“闭子空间”不是一句形式话。若 \(\mathcal G\)-可测的
+\(Y_n\) 在 \(L^2\) 中趋于 \(Y\)，可选一个子列使
+\(\sum_j\mathbb E|Y_{n_j}-Y|^2<\infty\)；
+Markov 不等式 \(P(|W|>\varepsilon)\le\mathbb E|W|^2/\varepsilon^2\)（它由 \(|W|^2\ge\varepsilon^2\mathbf1_{\{|W|>\varepsilon\}}\) 取期望得到）与可数可加性说明该子列在几乎处处意义下趋于 \(Y\)。
+可测函数的逐点极限仍可测，修改零测集上的值后，
+\(Y\) 也是 \(\mathcal G\)-可测。投影 \(Z\) 与每个
+\(\mathbf1_G\) 正交，即
+\(\mathbb E[(X-Z)\mathbf1_G]=0\)，与条件期望定义完全相同。
+这也解释 Rao--Blackwell 定理中条件平均为何使平方误差不增：
+正交投影不可能比原向量离目标子空间更远。
+
+不过，定义允许 \(X\) 只有一阶矩，因而仅靠 \(L^2\) 投影还没有证明条件期望总是存在。先从投影得到一个以后还会反复使用的不等式。若 \(Z\in L^2\)，记其投影为 \(Y=\mathbb E[Z\mid\mathcal G]\)。当 \(Z\ge0\) 时，取 \(G=\{Y<0\}\in\mathcal G\)，定义式给
+\[
+\int_GY\,\dd P=\int_GZ\,\dd P\ge0.
+\]
+左边除非 \(P(G)=0\) 否则严格为负，故 \(Y\ge0\) 几乎处处；投影保序。对一般 \(Z\)，在定义式里取 \(\mathcal G\)-可测、绝对值不超过一的 \(\operatorname{sgn}Y\)，先对简单函数验证、再用有界收敛逼近，便有
+\[
+\mathbb E|Y|=\mathbb E[(\operatorname{sgn}Y)Z]
+\le\mathbb E|Z|.
+\]
+所以条件平均不会放大 \(L^1\) 距离；在平方可积类上它是 \(L^1\) 收缩。
+
+现在令 \(X\in L^1\)，取截断
+\(X_m=(-m)\vee(X\wedge m)\)。每个 \(X_m\) 有界，故在 \(L^2\) 中存在条件期望 \(Y_m\)。又因
+\(\mathbb E|X_m-X|\to0\)，收缩性给
+\(\mathbb E|Y_m-Y_k|\le\mathbb E|X_m-X_k|\to0\)。
+\(L^1\) 的完备性使 \(Y_m\) 有 \(L^1\) 极限 \(Y\)。这里完备性也能简短验证：从任意 \(L^1\)-Cauchy 列抽出子列 \(Y_{m_j}\)，使 \(\sum_j\mathbb E|Y_{m_{j+1}}-Y_{m_j}|<\infty\)；交换非负和与期望说明差的绝对值级数几乎处处收敛，其极限又由尾和估计给出 \(L^1\) 收敛，原 Cauchy 列随之收敛。取这个几乎处处收敛的子列，可知 \(Y\) 有 \(\mathcal G\)-可测版本。对每个 \(G\in\mathcal G\)，
+\[
+\left|\int_GY\,\dd P-\int_GX\,\dd P\right|
+\le\mathbb E|Y-Y_m|+\mathbb E|X_m-X|\longrightarrow0.
+\]
+这证明了 \(Y=\mathbb E[X\mid\mathcal G]\) 的存在。若两个候选者 \(Y,Y'\) 都满足定义，分别在
+\(\{Y>Y'\}\) 与 \(\{Y<Y'\}\) 上比较积分，即知它们只可能在零概率集合上不同。这里的“几乎处处”不是技巧性的措辞，而是条件期望本身所能确定的精度。
+
+从同一个积分定义还能推出计算时最常用的规则。若 \(H\) 是有界且 \(\mathcal G\)-可测的随机变量，则先对 \(H\) 为指标函数验证，再对简单函数作线性组合、以有界收敛取极限，得到
+\[
+\mathbb E[HX\mid\mathcal G]
+=H\,\mathbb E[X\mid\mathcal G]
+\quad\text{几乎处处}.
+\]
+式子左侧需要 \(HX\in L^1\)，有界性保证了这一点。特别地，若 \(H\) 已由现有信息确定，条件平均不会再改变它。称 \(X\) 与 \(\mathcal G\) 独立，是指每个事件 \(\{X\in B\}\) 与每个 \(G\in\mathcal G\) 独立。若独立，则对每个 \(G\in\mathcal G\) 有
+\(\mathbb E[X\mathbf1_G]=(\mathbb EX)P(G)\)，因而
+\(\mathbb E[X\mid\mathcal G]=\mathbb EX\)。
+
+若 \(X\in L^2\)，条件期望还能把总波动分成“现有信息能解释的部分”和“信息之外仍随机的部分”。定义
+\(\operatorname{Var}(X\mid\mathcal G)
+=\mathbb E[(X-\mathbb E[X\mid\mathcal G])^2\mid\mathcal G]\)。令
+\(Y=\mathbb E[X\mid\mathcal G]\)，则上面的取出规则与塔式性质给
+\(\mathbb E[(X-Y)Y]=0\)：误差与已知信息正交。把
+\(X-\mathbb EX=(X-Y)+(Y-\mathbb EX)\) 平方并取期望，交叉项因此消失，得到
+\begin{equation}
+\label{eq:math-total-variance}
+\operatorname{Var}(X)
+=\mathbb E\operatorname{Var}(X\mid\mathcal G)
++\operatorname{Var}(\mathbb E[X\mid\mathcal G]).
+\end{equation}
+如果 \(\mathcal G\) 只记录第一枚公平硬币、\(X\) 是两枚正面总数，则右侧两项各为 \(1/4\)，总方差为 \(1/2\)。这不是把同一个不确定性重复计算：第一项来自尚未看见的第二枚，第二项来自第一枚本身在不同实验中会改变条件均值。
+
+\begin{proposition}[条件期望的塔式性质]
+若 \(X\in L^1(P)\) 且 \(\mathcal H\subset\mathcal G\subset\mathcal F\)，则
+\(\mathbb E[\mathbb E[X\mid\mathcal G]\mid\mathcal H]
+=\mathbb E[X\mid\mathcal H]\) 几乎处处。
+\end{proposition}
+\begin{proof}
+左侧按定义为 \(\mathcal H\)-可测。对任意 \(H\in\mathcal H\)，先用外层条件期望的积分恒等式，再因 \(H\in\mathcal G\) 用内层恒等式，得到积分为 \(\int_HX\,\dd P\)。条件期望的几乎处处唯一性给出结论。
+\end{proof}
+
+\begin{exercise}
+复算两枚硬币例子的四个样本点，并说明 \(X\) 与“第一枚是否为正”的指示变量为何不独立。再用定义验证塔式性质在该例中成立。
+\end{exercise}

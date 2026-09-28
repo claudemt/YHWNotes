@@ -1,0 +1,73 @@
+\section{哪些样本信息可以丢掉}
+
+重复抽样得到整组 \(X=(X_1,\ldots,X_n)\)，但参数有时只通过总和影响概率。若压缩成 \(T(X)\) 后，剩余排列方式对参数没有信息，就称这个压缩是充分的。
+
+\begin{definition}[充分统计量]
+在模型 \(\{P_\theta:\theta\in\Theta\}\) 中，统计量 \(T(X)\) 对参数充分，指给定 \(T(X)\) 后，\(X\) 的条件分布有一个不依赖 \(\theta\) 的版本。有限或可数样本空间中，即对每个概率非零的 \(t\)，条件概率 \(P_\theta(X=x\mid T=t)\) 不依赖 \(\theta\)。
+\end{definition}
+
+例子是两个独立 Bernoulli\((p)\) 观测，\(T=X_1+X_2\)。给定 \(T=1\) 后，两种排列各有条件概率 \(1/2\)，与 \(p\) 无关。反例是只保留 \(X_1\)：给定它以后，\(X_2\) 仍服从 Bernoulli\((p)\)，故 \(X_1\) 不充分。
+
+\begin{theorem}[因子分解准则]
+若样本空间有限或可数，且每个 \(P_\theta\) 都有联合质量函数
+\(p_\theta(x)\)，则 \(T\) 充分，当且仅当存在非负函数 \(h(x)\) 与
+\(g_\theta(t)\)，使 \(p_\theta(x)=g_\theta(T(x))h(x)\)。
+\end{theorem}
+\begin{proof}
+若有因子分解，固定 \(T=t\) 后，
+\[
+P_\theta(X=x\mid T=t)
+=\frac{h(x)}{\sum_{z:T(z)=t}h(z)},\qquad T(x)=t,
+\]
+所以与 \(\theta\) 无关。反过来，若条件概率等于共同函数 \(q(x\mid t)\)，则
+\(p_\theta(x)=P_\theta(T=t)q(x\mid t)\)。取
+\(g_\theta(t)=P_\theta(T=t)\)、\(h(x)=q(x\mid T(x))\) 即得。
+
+\end{proof}
+
+连续样本中也常使用同形的密度因子分解准则，但要以共同支配测度与正则条件概率为前提。尤其当 \(P_\theta(T=t)=0\) 时，不能把上面可数情形的条件概率分式逐字搬过去；需要用条件分布核处理。本节的 Poisson 例子属于已经完整证明的可数情形。
+
+上一节的正态样本还给出一个连续的直接验证。若 \(X_i\) 独立服从
+\(N(\mu,\sigma^2)\)，由正交平方和分解，联合密度仅通过
+\(\bar X\) 与 \(R^2=\sum_i(X_i-\bar X)^2\) 依赖 \((\mu,\sigma)\)。
+更具体地，给定这两个统计量后，残差向量的长度已固定，方向在
+\(\mathbf1^\perp\) 中的单位球面上均匀分布：标准正态密度只依赖残差长度，
+正交旋转不改变密度。这个条件方向分布与 \(\mu,\sigma\) 无关，
+所以 \((\bar X,R^2)\) 在该正态模型中充分。
+
+对独立 Poisson\((\lambda)\) 样本，
+\[
+p_\lambda(x)=e^{-n\lambda}\lambda^{\sum_i x_i}\prod_i(x_i!)^{-1},
+\]
+故 \(T=\sum_iX_i\) 充分。这还可直接检查：给定总数 \(t\) 后，
+\(X\) 的条件分布为参数 \((t;1/n,\ldots,1/n)\) 的多项分布，不依赖 \(\lambda\)。
+
+后一说法可以从质量函数算出，而不必先背多项分布。独立 Poisson
+变量之和满足 \(P_\lambda(T=t)=e^{-n\lambda}(n\lambda)^t/t!\)。
+对任何非负整数 \(x_1+\cdots+x_n=t\)，相除得到
+\[
+P_\lambda(X_1=x_1,\ldots,X_n=x_n\mid T=t)
+=\frac{t!}{x_1!\cdots x_n!}\left(\frac1n\right)^t.
+\]
+参数 \(\lambda\) 在分子分母中完全消去；这恰好是充分性定义所说的
+“给定总数后，如何分配到各次实验已不含参数信息”。
+
+充分性说明信息未丢，但尚不能保证由 \(T\) 构造的无偏估计只有一个。为排除对所有参数都平均为零的隐藏修正，引入另一个条件。
+
+\begin{definition}[完备统计量]
+统计量 \(T\) 的分布族称为完备，若任意满足对每个 \(\theta\) 都可积的可测函数 \(a\)，一旦
+\(\mathbb E_\theta a(T)=0\) 对全部 \(\theta\in\Theta\) 成立，便有
+\(a(T)=0\) 在每个 \(P_\theta\) 下几乎处处成立。
+\end{definition}
+
+Poisson 总数 \(T\sim\operatorname{Pois}(n\lambda)\) 在 \(\lambda>0\) 上完备。因为
+\[
+0=e^{n\lambda}\mathbb E_\lambda a(T)
+=\sum_{t=0}^\infty a(t)\frac{(n\lambda)^t}{t!}
+\quad(\lambda>0).
+\]
+可积性使该幂级数在每个正的 \(\lambda\) 处绝对收敛；幂级数恒等定理给所有系数 \(a(t)=0\)。反例是只取单个 \(N(\mu,1)\) 观测但参数空间限制为 \(\mu=0\)：函数 \(a(T)=T\) 均值为零却非零，故这个单点分布族不完备。
+
+\begin{exercise}
+复算 Poisson 条件分布。再证明独立 Bernoulli\((p)\) 样本的总数 \(T\sim\operatorname{Bin}(n,p)\) 在 \(0<p<1\) 上完备；可把 \(\mathbb E_p a(T)=0\) 化为 \(p/(1-p)\) 的多项式恒等式。
+\end{exercise}

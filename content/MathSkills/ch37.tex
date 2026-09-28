@@ -1,0 +1,102 @@
+\section{线性模型也是正交投影}
+
+对 \(n\) 个响应值，设计矩阵的每一列描述一种允许的均值变化。最小二乘就是找列空间中离观测向量最近的点；这与前面正态样本均值方向的投影是同一种运算。
+
+\begin{definition}[线性模型与可识别性]
+设 \(X\in\mathbb R^{n\times p}\) 为已知且满列秩的设计矩阵，\(\beta\in\mathbb R^p\) 为固定未知参数，\(Y=X\beta+\varepsilon\)，其中
+\(\mathbb E\varepsilon=0\)、\(\operatorname{Cov}(\varepsilon)=\sigma^2I_n\)，\(\sigma^2>0\)。
+满列秩使不同 \(\beta\) 给出不同均值 \(X\beta\)，因而参数可识别。若两列相同，就只能识别它们对应系数的和，不能分别估计两系数。
+\end{definition}
+
+最小化 \(\|y-Xb\|^2\)。对 \(b\) 求导得正规方程
+\(X^\top Xb=X^\top y\)。满列秩使 \(X^\top X\) 正定且可逆，因此
+\[
+\widehat\beta=(X^\top X)^{-1}X^\top Y,\qquad
+H=X(X^\top X)^{-1}X^\top,\qquad
+\widehat Y=HY,\quad e=(I-H)Y.
+\]
+直接计算 \(H^\top=H\)、\(H^2=H\)，故 \(H\) 是到
+\(\operatorname{col}(X)\) 的正交投影，残差 \(e\) 与该列空间正交。
+
+\begin{theorem}[Gauss--Markov，有限样本]
+在上述仅有均值与协方差条件的线性模型中，任意线性无偏估计
+\(\widetilde\beta=AY\)、\(AX=I_p\)，都满足
+\(\operatorname{Cov}(\widetilde\beta)-\operatorname{Cov}(\widehat\beta)\) 半正定。结论不要求误差正态。
+\end{theorem}
+\begin{proof}
+写 \(A=(X^\top X)^{-1}X^\top+D\)。由 \(AX=I_p\) 得 \(DX=0\)。
+因此
+\[
+AA^\top=(X^\top X)^{-1}
+ +(X^\top X)^{-1}X^\top D^\top
+ +DX(X^\top X)^{-1}+DD^\top
+ =(X^\top X)^{-1}+DD^\top .
+\]
+两估计协方差差为 \(\sigma^2DD^\top\)，其二次型
+\(v^\top DD^\top v=\|D^\top v\|^2\ge0\)，所以半正定。
+\end{proof}
+
+若 \(X\) 的列空间包含常数向量 \(\mathbf1\)，则
+\(\operatorname{span}\{\mathbf1\}\subset\operatorname{col}(X)\)，三个互相正交的部分给
+\[
+\|Y-\overline Y\mathbf1\|^2
+=\|HY-\overline Y\mathbf1\|^2+\|(I-H)Y\|^2.
+\]
+这就是回归和方差分析共用的平方和分解；解释变量是连续量还是组别指示变量，只改变 \(X\) 的列，不改变投影证明。
+
+\begin{theorem}[正态误差下的精确平方和分布]
+若额外假定 \(\varepsilon\sim N_n(0,\sigma^2I_n)\)，且
+\(\operatorname{rank}(X)=p<n\)，则
+\(\|(I-H)Y\|^2/\sigma^2\sim\chi^2_{n-p}\)，并与 \(\widehat\beta\) 独立。若两个嵌套设计矩阵 \(X_0,X_1\) 的列空间满足
+\(\operatorname{col}(X_0)\subset\operatorname{col}(X_1)\)，秩分别为
+\(p_0<p_1\)，且零假设中的均值属于 \(\operatorname{col}(X_0)\)，则
+\[
+F=\frac{\{\mathrm{RSS}_0-\mathrm{RSS}_1\}/(p_1-p_0)}
+{\mathrm{RSS}_1/(n-p_1)}
+\sim F_{p_1-p_0,n-p_1}.
+\]
+\end{theorem}
+\begin{proof}
+因 \((I-H)X\beta=0\)，残差为 \((I-H)\varepsilon\)；
+\(I-H\) 是秩 \(n-p\) 的正交投影。上一章的高斯投影定理给第一结论，也给它与 \(H\varepsilon\) 独立。对嵌套模型，\(H_1-H_0\) 和 \(I-H_1\) 是像互相正交、秩分别为 \(p_1-p_0\)、\(n-p_1\) 的投影。在零假设下它们也都消去均值。
+\(\mathrm{RSS}_0-\mathrm{RSS}_1=Y^\top(H_1-H_0)Y\)，
+\(\mathrm{RSS}_1=Y^\top(I-H_1)Y\)；
+两者除以 \(\sigma^2\) 是独立卡方，按 \(F\) 分布的定义得式。
+\end{proof}
+
+同一个投影证明也给出回归系数的精确区间。取一个事先指定的非零向量 \(c\in\mathbb R^p\)，要估计线性目标 \(c^\top\beta\)。由正规方程可直接写
+\(\widehat\beta-\beta=(X^\top X)^{-1}X^\top\varepsilon\)，所以
+\[
+\mathbb E(c^\top\widehat\beta)=c^\top\beta,
+\qquad
+\operatorname{Var}(c^\top\widehat\beta)
+=\sigma^2c^\top(X^\top X)^{-1}c.
+\]
+残差平方和的期望为 \((n-p)\sigma^2\)，故
+\(s^2=\mathrm{RSS}/(n-p)\) 无偏。在正态误差条件下，标准化的
+\(c^\top\widehat\beta-c^\top\beta\) 是标准正态，且因为它只依赖
+\(H\varepsilon\)，与只依赖 \((I-H)\varepsilon\) 的 \(s^2\) 独立。于是
+\[
+\frac{c^\top\widehat\beta-c^\top\beta}
+{s\sqrt{c^\top(X^\top X)^{-1}c}}
+\sim t_{n-p}.
+\]
+从而把绝对值限制在 \(t_{n-p,1-\alpha/2}\) 内，便得到 \(c^\top\beta\) 的精确 \(1-\alpha\) 置信区间。若误差只有相同方差但不正态，Gauss--Markov 的最优线性无偏结论仍成立，这个有限样本 \(t\) 分布却不再有保证。
+
+投影矩阵的对角元 \(h_{ii}=e_i^\top He_i\) 衡量第 \(i\) 个观测位置对自身拟合值的影响，称为杠杆值。因 \(H\) 是正交投影，
+\(0\le h_{ii}=\|He_i\|^2\le1\)，且
+\(\sum_i h_{ii}=\operatorname{tr}H=p\)。残差协方差为
+\(\sigma^2(I-H)\)，故
+\(\operatorname{Var}(e_i)=\sigma^2(1-h_{ii})\)。高杠杆位置的残差可能偏小，不等于该观测可靠；它也可能把拟合直线拉向自己。这个结论直接来自投影，不能仅凭残差绝对值判断异常观测。
+
+最后，若已知 \(\operatorname{Cov}(\varepsilon)=\Sigma\) 为正定而非
+\(\sigma^2I\)，以 \(\Sigma^{-1/2}\) 同时变换 \(Y\) 和 \(X\)，便把误差白化。对变换后的问题应用同一投影证明，得到广义最小二乘
+\[
+\widehat\beta_{\mathrm{GLS}}
+=(X^\top\Sigma^{-1}X)^{-1}X^\top\Sigma^{-1}Y.
+\]
+\(\Sigma\) 若由数据估计，上面基于已知协方差和正态投影的有限样本分布一般不再精确。
+
+\begin{exercise}
+取两组各两次观测，写出包含截距与组别指示变量的 \(X\)，求其投影矩阵。再将两组均值相等写为嵌套模型检验，并验证残差自由度为 \(2\)。
+\end{exercise}
