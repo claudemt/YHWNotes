@@ -1,0 +1,39 @@
+\section{从 Born 概率到有限分辨的能谱仪}
+\label{chap:feqo-measurement}
+
+对理想能量基 \(|\ell\rangle\)，投影 \(P_\ell=|\ell\rangle\langle\ell|\) 满足 \(P_\ell\geq0\)、\(\sum_\ell P_\ell=I\)。Born 规则给 \(p_\ell=\operatorname{Tr}(\rho P_\ell)=\rho_{\ell\ell}\)。因为 \(P_\ell\) 是对角的，任意非对角元都不会进入这次测量。即使上一章的时间波形有尖峰，理想能量人口仍只读 \(|c_\ell|^2\)。
+
+有限分辨率把一个真实能量 \(E_\ell\) 分配到一系列读数 \(y\)。令 \(R(y|E_\ell)\geq0\) 是条件概率密度，满足 \(\int R(y|E_\ell)\dd y=1\)。把仪器响应放进测量算符，定义
+\begin{equation}
+M_y=\sum_\ell R(y|E_\ell)P_\ell,
+\qquad p(y|\rho)=\operatorname{Tr}(\rho M_y)
+=\sum_\ell R(y|E_\ell)\rho_{\ell\ell}.
+\label{eq:feqo-energy-povm}
+\end{equation}
+每个 \(M_y\) 正，且 \(\int M_y\dd y=I\)。满足这两个条件的一族算符叫正算符值测量（positive operator-valued measure，POVM）；它只规定结果概率，不自动规定电子在读出以后怎样变化。响应 \(R\) 可以是高斯函数，例如 \(R(y|E)=(2\pi\sigma_D^2)^{-1/2}e^{-(y-E)^2/(2\sigma_D^2)}\)，其中 \(\sigma_D\) 是探测器能量分辨率，不是入射电子的能散。
+
+这族算符的正性可直接检验，而无需把“有限分辨”当成一句直觉话。任取电子态 \(|\chi\rangle=\sum_\ell\chi_\ell|\ell\rangle\)，有 \(\langle\chi|M_y|\chi\rangle=\sum_\ell R(y|E_\ell)|\chi_\ell|^2\geq0\)；再对 \(y\) 积分，每个 \(R\) 的归一化给 \(\sum_\ell|\chi_\ell|^2\)。但 \(M_y\) 仍在能量基对角，所以把分辨率做得无限好也不能凭同一设置恢复相位；分辨率与相位可识别性是不同问题。
+
+用相邻两条能量相差 \(\Delta E=\hbar\omega\) 的等先验边带，可以把“可分辨”算成一个数。若两条边带的读数都服从标准差 \(\sigma_D\) 的高斯响应，按读数是否超过两中心的中点分类，两侧的错误概率相同，都是
+\[
+P_{\rm err}=\frac12\operatorname{erfc}
+\!\left(\frac{\Delta E}{2\sqrt2\,\sigma_D}\right),
+\qquad
+\operatorname{erfc}(x):=\frac2{\sqrt\pi}\int_x^\infty e^{-u^2}\dd u.
+\]
+推导只需把较低能量那一峰从中点积分到 \(+\infty\)，再作变量 \(u=(y-E_0)/(\sqrt2\sigma_D)\)。当 \(\sigma_D\ll\Delta E\) 时误判趋零；当 \(\sigma_D\gg\Delta E\) 时它趋向 \(1/2\)，测量对两通道近乎没有区分力。这个判错率与电子态本身是否纯、是否相干没有直接等号。
+
+若第 \(\ell\) 通道的检出效率为 \(\eta_\ell\in[0,1]\)，可把 \(M_y\) 中的每项改成 \(\eta_\ell R(y|E_\ell)P_\ell\)，并增加一个“未检出”效应 \(M_\varnothing=\sum_\ell(1-\eta_\ell)P_\ell\)。这时 \(M_\varnothing+\int M_y\dd y=I\)，所以损失的计数没有被偷偷改写成不归一化概率。
+
+二维小矩阵可以同时检验正性和条件更新。取 \(M_+=\operatorname{diag}(0.8,0.2)\)、\(M_-=\operatorname{diag}(0.2,0.8)\)，则二者本征值非负且和为 \(I\)。一种具体测量装置可用 \(K_\pm=\sqrt{M_\pm}\) 描述结果后的态更新。对 \(|+\rangle=(|0\rangle+|1\rangle)/\sqrt2\)，\(p_+=\langle+|M_+|+\rangle=1/2\)；记录 \(+\) 后，归一化态为 \(\sqrt{0.8}|0\rangle+\sqrt{0.2}|1\rangle\)。同一 \(M_+\) 也可能由别的测量操作实现，故只知结果概率时不能擅自选择这一个条件态。
+
+若要读相位，可在能量测量前施加已知酉变换 \(U_s\)。设置 \(s\) 下的概率变为
+\begin{equation}
+p(y|s,\rho)=\operatorname{Tr}\bigl(U_s\rho U_s^\dagger M_y\bigr).
+\label{eq:feqo-phase-readout}
+\end{equation}
+变换把原来的非对角元旋转到新的能量人口。参考场相位、两次作用间的传播距离和收集角可提供不同设置；每一种设置必须先标定，才能将记录差异解释为电子相位。
+
+\begin{exercise}
+证明两个态 \((|0\rangle+|1\rangle)/\sqrt2\) 与 \((|0\rangle+\ii|1\rangle)/\sqrt2\) 的理想能量谱相同，并构造一个投影到 \((|0\rangle+e^{\ii\theta}|1\rangle)/\sqrt2\) 的设置区分它们。
+\end{exercise}

@@ -1,0 +1,95 @@
+\section{正态样本为何产生 \texorpdfstring{\(\chi^2,t,F\)}{chi-square, t, F}}
+
+在正态模型中，均值和方差的统计量有精确分布。这些公式来自同一件事：把一个标准正态向量沿相互正交的子空间投影。
+
+\begin{definition}[正态向量与正交投影]
+\(Z\sim N_n(0,I_n)\) 指 \(Z_1,\ldots,Z_n\) 独立且各服从 \(N(0,1)\)。
+实矩阵 \(P\) 若满足 \(P^2=P=P^\top\)，称为正交投影矩阵；其像与核正交，秩是像的维数。
+\end{definition}
+
+例如 \(P=\mathbf1\mathbf1^\top/n\) 把 \(z\in\mathbb R^n\) 投到常数向量方向，\(Pz=\overline z\,\mathbf1\)；矩阵 \(I-P\) 投到与 \(\mathbf1\) 正交的残差空间。单有 \(P^2=P\) 而没有 \(P^\top=P\) 的斜投影不能直接用于下述平方长度分解。
+
+\begin{theorem}[高斯正交投影]
+若 \(Z\sim N_n(0,I_n)\)，\(P\) 是秩 \(r\) 的正交投影，则
+\(\|PZ\|^2\sim\chi_r^2\)，其中 \(\chi_r^2\) 定义为 \(r\) 个独立标准正态平方的和。若 \(P,Q\) 是像互相正交的正交投影，则 \(PZ,QZ\) 独立。
+\end{theorem}
+\begin{proof}
+取正交矩阵 \(O\)，使 \(OPO^\top=\operatorname{diag}(I_r,0)\)。变换 \(OZ\) 的联合密度仍为
+\((2\pi)^{-n/2}\exp(-\|z\|^2/2)\)：正交变换保持长度，Jacobian 的绝对值为一。因此 \(OZ\) 的分量仍是独立标准正态。
+\(\|PZ\|^2=\sum_{i=1}^r(OZ)_i^2\)，得到第一结论。
+若 \(P,Q\) 的像正交，可选择同一正交基，使两投影分别选取不相交的坐标块；独立性随之由联合密度的乘积分解得到。
+\end{proof}
+
+卡方分布也可从这个定义算出，而不必把它当作查表符号。对
+\(Z\sim N(0,1)\)，配方后的高斯积分给
+\[
+\mathbb E\ee^{tZ^2}
+=\frac1{\sqrt{2\pi}}\int_{\mathbb R}
+\ee^{-(1/2-t)z^2}\,\dd z
+=(1-2t)^{-1/2},\qquad t<1/2.
+\]
+独立的 \(r\) 个平方相加，其矩母函数便是
+\((1-2t)^{-r/2}\)。用
+\(\Gamma(a)=\int_0^\infty u^{a-1}\ee^{-u}\,\dd u\)
+作变量替换，可验证密度
+\[
+f_{\chi_r^2}(q)
+=\frac{q^{r/2-1}\ee^{-q/2}}
+{2^{r/2}\Gamma(r/2)}\mathbf1_{\{q>0\}}
+\]
+具有同一矩母函数。由于它在零点附近有限，可把该解析式延续到纯虚参数，得到相同的特征函数；上一节的唯一性论证于是表明它正是 \(\chi_r^2\) 的密度。对矩母函数在零点求导得到
+\(\mathbb E\chi_r^2=r\)、
+\(\operatorname{Var}(\chi_r^2)=2r\)。自由度既是投影空间的维数，也控制平方长度的均值与波动；这解释了样本方差中 \(n-1\) 为何会反复出现。
+
+现在取 \(n\ge2\) 个独立样本 \(X_i\sim N(\mu,\sigma^2)\)，其中 \(\sigma>0\)。
+令 \(Z=(X-\mu\mathbf1)/\sigma\)，\(P=\mathbf1\mathbf1^\top/n\)。于是
+\[
+PX=\overline X\mathbf1,\qquad
+(I-P)X=X-\overline X\mathbf1,\qquad
+\|X-\mu\mathbf1\|^2=n(\overline X-\mu)^2+\sum_i(X_i-\overline X)^2.
+\]
+两个右侧项来自正交子空间。令
+\(S^2=(n-1)^{-1}\sum_i(X_i-\overline X)^2\)，前一定理逐项给出
+\[
+U=\frac{\sqrt n(\overline X-\mu)}{\sigma}\sim N(0,1),\qquad
+V=\frac{(n-1)S^2}{\sigma^2}\sim\chi^2_{n-1},\qquad U\perp V.
+\]
+分母 \(n-1\) 是残差空间的维数。因 \(I-P\) 是秩 \(n-1\)
+的正交投影，
+\[
+\mathbb E\sum_i(X_i-\overline X)^2
+=\mathbb E\|(I-P)\varepsilon\|^2
+=\sigma^2\operatorname{tr}(I-P)
+=(n-1)\sigma^2.
+\]
+中间一步由
+\(\mathbb E(\varepsilon^\top A\varepsilon)
+=\operatorname{tr}(A\mathbb E\varepsilon\varepsilon^\top)\)
+得到；所以 \(S^2\) 对 \(\sigma^2\) 无偏。
+这一步的独立性依赖联合正态，而不只是均值与残差正交。
+定义 \(t_\nu\) 为 \(U/\sqrt{V/\nu}\) 的分布，其中
+\(U\sim N(0,1)\)、\(V\sim\chi_\nu^2\) 独立，便得到
+\[
+T=\frac{\sqrt n(\overline X-\mu)}{S}\sim t_{n-1}.
+\]
+若 \(V_1\sim\chi^2_{r_1}\)、\(V_2\sim\chi^2_{r_2}\) 独立，则
+\((V_1/r_1)/(V_2/r_2)\) 的分布定义为 \(F_{r_1,r_2}\)。
+
+因此在上述正态模型下，
+\(\overline X\pm t_{n-1,1-\alpha/2}S/\sqrt n\)
+是均值 \(\mu\) 的精确 \(1-\alpha\) 置信区间：重复抽样时，随机区间包含固定 \(\mu\) 的概率恰为 \(1-\alpha\)。若原始数据不正态，CLT 只可能给大样本近似，不能保留这句有限样本精确结论。
+
+这里 \(t_{\nu,q}\) 表示 \(t_\nu\) 分布的 \(q\) 分位点，
+即 \(P(T_\nu\le t_{\nu,q})=q\)。
+取一次具体样本 \((1,2,3)\)，有
+\(\bar x=2\)、\(s^2=[(1-2)^2+(2-2)^2+(3-2)^2]/2=1\)。
+于是 \(n=3\) 时置信区间为
+\([2-t_{2,1-\alpha/2}/\sqrt3,\,
+2+t_{2,1-\alpha/2}/\sqrt3]\)。
+区间在观测后已固定；“覆盖概率 \(1-\alpha\)”
+描述的是重复进行三次抽样所产生的随机区间，而不是对这次
+固定样本和固定参数再抽一次概率。
+
+\begin{exercise}
+对 \(n=3\) 写出投影到常数方向的矩阵 \(P\)，验证 \(P(I-P)=0\) 与两投影秩之和为三。再说明若 \(X_i\) 是独立 Bernoulli 变量，上述独立卡方证明在何处失效。
+\end{exercise}

@@ -1,0 +1,176 @@
+\chapter{联络、曲率与度量几何}
+\label{chap:math-connections}
+
+上一章只定义了每个点的切空间。不同点的切向量属于不同向量空间，表达式
+\(Y(q)-Y(p)\) 没有类型意义。联络的职责不是“把普通导数写弯”，而是补充一个
+跨点比较规则。
+
+\begin{definition}[向量丛与截面]
+向量丛 \(E\xrightarrow{\pi}M\) 给每个 \(p\in M\) 配一个同维向量空间
+\(E_p=\pi^{-1}(p)\)，并要求在每个足够小的开集 \(U\) 上能光滑地识别
+\(\pi^{-1}(U)\) 与 \(U\times\mathbb R^r\)。
+一个截面 \(s\) 给每个 \(p\) 选取 \(s(p)\in E_p\)，且随点光滑变化；
+所有截面的集合记为 \(\Gamma(E)\)。切丛 \(TM\) 是 \(E_p=T_pM\)
+的特例。
+\end{definition}
+
+局部识别允许在一小片区域中用 \(r\) 个函数记录截面，但不同局部识别的
+基一般随位置变化。若直接对这些函数求导，结果会依赖选用的基。
+联络补偿这种基的变化。
+
+\begin{definition}[向量丛上的联络]
+向量丛 \(E\to M\) 上的联络是映射
+\[
+\nabla:\Gamma(TM)\times\Gamma(E)\to\Gamma(E)
+\]
+满足对第一变量 \(C^\infty(M)\)-线性
+（这里 \(C^\infty(M)\) 是流形上的光滑实值函数），
+对第二变量 \(\mathbb R\)-线性，并满足
+\[
+\nabla_X(f s)=X(f)s+f\nabla_Xs.
+\]
+\end{definition}
+
+\input{content/MathSkills/ch17.tex}
+
+\begin{definition}[伪 Riemann 度量]
+度量是每点切空间上的非退化对称双线性型 \(g_p\)，并随 \(p\) 光滑变化。
+若正定，称 Riemann 度量；若签名不全正，称伪 Riemann 度量。
+\end{definition}
+
+度量并非某张坐标图中的固定矩阵。若 \(y=y(x)\)，
+把前章的基变换代入同一双线性型，得到
+\[
+g'_{ab}=g\!\left(\frac{\partial}{\partial y^a},
+\frac{\partial}{\partial y^b}\right)
+=\frac{\partial x^i}{\partial y^a}
+\frac{\partial x^j}{\partial y^b}g_{ij}.
+\]
+例如 Euclid 平面的 \(g=dx^2+dy^2\)，在
+\(x=r\cos\theta,y=r\sin\theta\) 下满足
+\(dx=\cos\theta\,dr-r\sin\theta\,d\theta\)、
+\(dy=\sin\theta\,dr+r\cos\theta\,d\theta\)。
+两式平方相加时交叉项抵消，得
+\(g=dr^2+r^2d\theta^2\)。
+极坐标矩阵在 \(r=0\) 看似退化，是该坐标图在那里失效，
+并非原平面度量突然失去非退化性。
+
+\input{content/MathSkills/ch19.tex}
+
+联络决定平行移动以后，还可以问：沿两个方向组成的小闭路搬运一个向量，
+最后是否回到原向量？两个协变导数不对易的部分给出曲率。
+
+\begin{proposition}[曲率的张量性]
+\[
+R(X,Y)Z=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z
+\]
+对 \(X,Y,Z\) 的每个变量都是 \(C^\infty(M)\)-线性的。
+\end{proposition}
+\begin{proof}
+对第一变量，把 \(X\) 换成 \(fX\)。第二项
+\(-\nabla_Y\nabla_{fX}Z\) 多出 \(-Y(f)\nabla_XZ\)，而
+\([fX,Y]=f[X,Y]-Y(f)X\) 使第三项多出
+\(+Y(f)\nabla_XZ\)，故 \(R(fX,Y)Z=fR(X,Y)Z\)。
+由定义 \(R(X,Y)=-R(Y,X)\)，第二变量也具有线性性。
+最后将 \(Z\) 换成 \(fZ\)，前两项的交叉导数互相抵消，
+剩余的新项为 \((XY-YX)(f)Z\)；第三项恰减去
+\([X,Y](f)Z\)。由于 Lie 括号定义为 \(XY-YX\)，余项为零。
+\end{proof}
+
+\input{content/MathSkills/ch18.tex}
+
+\section{球面的贯穿计算}
+
+单位球面坐标 \((\vartheta,\varphi)\) 给
+\[
+g_{\vartheta\vartheta}=1,\qquad
+g_{\varphi\varphi}=\sin^2\vartheta .
+\]
+逆矩阵只有 \(g^{\vartheta\vartheta}=1\) 和
+\(g^{\varphi\varphi}=\sin^{-2}\vartheta\) 两个非零分量。
+代入 Levi--Civita 公式，所有非零系数为
+\[
+\Gamma^\vartheta_{\varphi\varphi}
+=-\sin\vartheta\cos\vartheta,\qquad
+\Gamma^\varphi_{\vartheta\varphi}
+=\Gamma^\varphi_{\varphi\vartheta}=\cot\vartheta.
+\]
+按前述 \(R(X,Y)Z\) 的号差约定，选择
+\(X=\partial_\vartheta,\ Y=\partial_\varphi,\ Z=\partial_\varphi\)。
+在 \(\partial_\vartheta\) 方向的曲率分量中，真正留下的是
+\[
+\partial_\vartheta\Gamma^\vartheta_{\varphi\varphi}
+-\Gamma^\vartheta_{\varphi\varphi}
+ \Gamma^\varphi_{\vartheta\varphi}
+=-(\cos^2\vartheta-\sin^2\vartheta)+\cos^2\vartheta
+=\sin^2\vartheta .
+\]
+因而
+\[
+R^\vartheta{}_{\varphi\vartheta\varphi}=\sin^2\vartheta.
+\]
+二维曲面的 Gauss 曲率定义为
+\(K=g(R(X,Y)Y,X)/
+[g(X,X)g(Y,Y)-g(X,Y)^2]\)，其中 \(X,Y\) 线性独立。
+分子和分母在换基时都乘同一个行列式平方，故商不依赖所选的
+\(X,Y\)。在坐标基上，
+\(R_{\vartheta\varphi\vartheta\varphi}
+=g_{\vartheta\vartheta}R^\vartheta{}_{\varphi\vartheta\varphi}
+=\sin^2\vartheta\)。
+除以 \(\det(g_{ij})=\sin^2\vartheta\)，得到 Gauss 曲率 \(K=1\)。
+分量随坐标而变，标量曲率不会；极点处的 \(\sin\vartheta=0\)
+只说明这张经纬度图失效，不说明球面曲率发散。
+
+同一球面还能把曲率解释成闭路平行移动的净转角。
+在避开极点的区域取正交余标架
+\(\theta^1=d\vartheta\)、\(\theta^2=\sin\vartheta\,d\varphi\)。
+度量相容性使 \(\omega^2{}_1=-\omega^1{}_2\)；
+无挠方程 \(d\theta^a+\omega^a{}_b\wedge\theta^b=0\)
+与 \(d\theta^2=\cos\vartheta\,d\vartheta\wedge d\varphi\)
+共同给出
+\[
+\omega^1{}_2=-\cos\vartheta\,d\varphi,
+\qquad
+\Omega^1{}_2=d\omega^1{}_2
+=\sin\vartheta\,d\vartheta\wedge d\varphi
+=\theta^1\wedge\theta^2.
+\]
+固定纬度 \(\vartheta=\vartheta_0\)，沿 \(\varphi:0\to2\pi\)
+平行搬运 \(V=V^ae_a\)。分量方程是
+\(dV^1/d\varphi=\cos\vartheta_0 V^2\)、
+\(dV^2/d\varphi=-\cos\vartheta_0 V^1\)，
+故回到起点时相对同一正交标架转过
+\(-2\pi\cos\vartheta_0\)。转角只在模 \(2\pi\) 意义下确定，
+它也可写成 \(2\pi(1-\cos\vartheta_0)\)，
+正好是北极到该纬线所围球冠的面积。
+与前面的平面圆周不同，这条闭路保留了非零净转角。
+
+\section{曲率怎样改变相邻的自由轨迹}
+
+仅把曲率当作四指标数组，还不能看出它对运动的影响。
+设 \(\gamma_s(t)\) 是一族以仿射参数表示的测地线，
+定义速度场 \(u=\partial_t\gamma_s\) 和连接相邻轨迹的
+变分场 \(J=\partial_s\gamma_s\)。参数 \(s,t\) 可交换，
+所以 \([J,u]=0\)。联络无挠给
+\(\nabla_uJ=\nabla_Ju\)，每条曲线为测地线给
+\(\nabla_uu=0\)。把这两式代入曲率定义，得到
+\[
+\nabla_u\nabla_uJ
+=\nabla_u\nabla_Ju
+=R(u,J)u+\nabla_J\nabla_uu
+=-R(J,u)u.
+\]
+因此相邻测地线的间距满足 Jacobi 方程
+\begin{equation}
+\nabla_u^2J+R(J,u)u=0.
+\label{eq:math-jacobi-equation}
+\end{equation}
+这不是在同一条轨迹上人为加入“曲率力”；
+它比较的是初始条件略有差别的两条自由轨迹。
+在单位球面取单位速的大圆，且 \(J\perp u\)，
+前面算出的 \(K=1\) 意味着 \(R(J,u)u=J\)。
+若沿测地线选平行单位法向量 \(n\)，写 \(J=j(t)n\)，
+就得到 \(j''+j=0\)。从同一北极以略不同方向出发的
+大圆在南极再次相遇，正是这个振荡解的几何含义。
+
+\input{content/MathSkills/ch20.tex}

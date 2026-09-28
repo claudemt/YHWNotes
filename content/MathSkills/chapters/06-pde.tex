@@ -1,0 +1,64 @@
+\chapter{经典解破裂以后：弱解与色散}
+\label{chap:math-pde}
+
+线性方程中的点源迫使我们把导数理解为分布。非线性方程即使从光滑初值出发，也可能自己产生跳跃。此时改变的不是守恒律，而是“解”的含义；方程仍应记录每个区域内的守恒以及穿越跳跃面的通量。
+
+\section{从经典守恒律推弱形式}
+
+设 \(u_t+f(u)_x=0\) 在 \(\mathbb R\times(0,\infty)\) 上有光滑解，初值为 \(u_0\)。取 \(\varphi\in C_c^\infty(\mathbb R\times[0,\infty))\)，乘方程积分。时间分部积分给
+\[
+\int_0^\infty\!\int_{\mathbb R}u_t\varphi\,\dd x\dd t
+=-\int_0^\infty\!\int_{\mathbb R}u\varphi_t\,\dd x\dd t
+-\int_{\mathbb R}u_0(x)\varphi(x,0)\,\dd x.
+\]
+时间无穷远的项因测试函数紧支而为零；空间分部积分也因其紧支没有边界项。把两项相加为零并移项，得到可在非光滑函数上继续使用的恒等式。
+
+\begin{definition}[守恒律的弱解]
+若 \(u,f(u)\in L^1_{\mathrm{loc}}(\mathbb R\times[0,\infty))\)，并且对每个上述测试函数都有
+\[
+\int_0^\infty\!\int_{\mathbb R}
+\bigl(u\varphi_t+f(u)\varphi_x\bigr)\,\dd x\dd t
++\int_{\mathbb R}u_0(x)\varphi(x,0)\,\dd x=0,
+\]
+就称 \(u\) 为具有初值 \(u_0\) 的弱解。初值须以可使最后一项成立的迹意义进入。
+\end{definition}
+
+弱解定义保留了初值项，也写明了非线性通量的局部可积条件。若区域有物理边界，测试函数不在边界消失时还会出现边界通量；不能直接套用全空间公式。
+
+\begin{theorem}[跳跃速度的 Rankine--Hugoniot 条件]
+设 \(u\) 在直线 \(x=st\) 两侧分别为常数 \(u_L,u_R\)，通量 \(f\) 在这两值有定义。则 \(u_t+f(u)_x=0\) 在分布意义下成立，当且仅当
+\[
+s(u_R-u_L)=f(u_R)-f(u_L).
+\]
+\end{theorem}
+\begin{proof}
+把阶跃写成 \(u=u_L+(u_R-u_L)H(x-st)\)。上一章证明 \(H'=\delta_0\)；对复合变量求分布导数得到 \(u_t=-s(u_R-u_L)\delta(x-st)\)。同理 \(f(u)_x=(f(u_R)-f(u_L))\delta(x-st)\)。两者相加为零，恰等于给出的等式。反向也成立，因为跳跃曲线外两导数均为零。
+\end{proof}
+
+此条件只保证质量守恒，不保证弱解唯一。Burgers 方程的膨胀激波也满足这个等式，却与小黏性极限不符；要知道应留下哪一种弱解，还须考察熵不等式。
+
+\input{content/MathSkills/ch13.tex}
+
+\section{黏性为何会挑出较平滑的解}
+
+刚才给 Burgers 方程加上 \(\nu u_{xx}\)，并从行波中看见激波被摊成厚度约为 \(\nu/\Delta\) 的过渡层。要知道这个二阶项通常会做什么，先把非线性去掉，研究全空间的热方程 \(u_t=D u_{xx}\)，其中 \(D>0\) 的量纲是长度平方除以时间。采用前章的 Fourier 约定，\(\widehat{u_{xx}}(k)=-k^2\widehat u(k)\)，所以每个波数都满足常微分方程 \(\partial_t\widehat u=-Dk^2\widehat u\)，其精确解是
+\[
+ \widehat u(k,t)=\ee^{-Dk^2t}\widehat{u_0}(k).
+\]
+高波数 \(|k|\) 越大，衰减越快；这与后面色散项只改变相位而不衰减振幅的情形不同。对足够好的初值作逆变换，得到
+\begin{equation}
+ u(x,t)=\int_{\mathbb R}H_t(x-y)u_0(y)\,\dd y,
+ \qquad H_t(x)=\frac{1}{\sqrt{4\pi Dt}}\exp\!\left(-\frac{x^2}{4Dt}\right).
+ \label{eq:math-heat-kernel}
+\end{equation}
+这里 \(H_t\) 是点源初值的响应：它在任意正时间都是普通光滑函数，而 \(t\downarrow0\) 时在分布意义下趋于 \(\delta_0\)。这一极限可直接检查：\(\int H_t=1\)，代换 \(x=\sqrt{4Dt}\,z\) 后，对连续紧支测试函数 \(\varphi\) 有 \(\int H_t(x)\varphi(x)\,\dd x\to\varphi(0)\)。因此公式确实恢复初值，而不是只解了 \(t>0\) 的方程。
+
+核非负且积分为一，所以若 \(u_0\ge0\)，则 \(u(t)\ge0\)；若 \(u_0\in L^1\)，交换积分还给 \(\int u(x,t)\,\dd x=\int u_0(x)\,\dd x\)。扩散保持总量，却摊开它的空间分布。对光滑且在无穷远衰减的解，用方程乘 \(\overline u\) 积分并分部积分，得到
+\[
+ \frac12\frac{\dd}{\dd t}\|u(t)\|_2^2
+ =\operatorname{Re}\int\overline u D u_{xx}\,\dd x
+ =-D\|u_x(t)\|_2^2\le0.
+\]
+若两个解有同一初值，把它们相减后重做这个估计，差的范数从零开始且不能增加，因此它们相同。公式 \(\ee^{-Dk^2t}\) 的模至多一，又使解算子能由光滑初值连续延拓到所有 \(L^2\) 初值。这样，Green 核、谱乘子、守恒和唯一性在同一个可算的 PDE 上相互检验；非线性方程的小黏性极限还需要额外估计，不能单凭热核的性质就宣布一般熵解唯一。
+
+\input{content/MathSkills/ch14.tex}

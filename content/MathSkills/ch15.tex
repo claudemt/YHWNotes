@@ -1,716 +1,164 @@
-\chapter{Moving frame 与 Gauss--Codazzi--Ricci 方程}
+\section{曲线速度与点处求导为何是同一对象}
+\label{sec:math-tangent-derivations}
 
-前面所有曲率都属于流形自身的内在几何。若一个 Riemann 流形 $M^m$ 浸入更高维 Riemann 流形 $\overline M^{m+q}$，环境 Levi--Civita 联络沿 $M$ 的导数既有切向分量，也有法向分量。后者就是外在弯曲。最一般的兼容条件不是只适用于曲面的 Gauss--Codazzi 两式，而是任意余维的 Gauss、Codazzi 与 Ricci 三个曲率块。本章先在一般 $(m,q)$ 情形推导它们，再把 $M^2\subset\RR^3$ 作为余维一、平坦环境的特例。
+球面上的一条曲线 \(\gamma:(-\epsilon,\epsilon)\to S^2\) 有速度，
+但把 \(\dot\gamma(0)\) 看作三维向量只适用于已经嵌入
+\(\mathbb R^3\) 的曲面。一个不依赖嵌入的办法是记录曲线经过点
+\(p=\gamma(0)\) 时，怎样改变所有光滑函数的值。
 
-\section{切向与法向联络的分块}
+\begin{definition}[曲线切向量]
+经过 \(p\in M\) 的两条可微曲线 \(\gamma_1,\gamma_2\) 等价，
+若在一张经过 \(p\) 的坐标图 \(\varphi\) 中有
+\((\varphi\circ\gamma_1)'(0)=(\varphi\circ\gamma_2)'(0)\)。
+等价类称为 \(p\) 处的切向量，其集合记为 \(T_pM\)。
+\end{definition}
 
-设
+这里的“一张”不会导致坐标依赖。若换到图 \(\psi\)，链式法则给
 \[
-F:M^m\longrightarrow\overline M^{m+q}
+(\psi\circ\gamma)'(0)
+=D(\psi\circ\varphi^{-1})_{\varphi(p)}
+(\varphi\circ\gamma)'(0).
 \]
-为等距浸入。以后把 $TM$ 与其像识别。沿 $M$ 有正交分解
-\[
-T\overline M|_M=TM\oplus NM,
-\]
-其中 $NM$ 是法丛。环境度量与 Levi--Civita 联络分别记为 $\overline g$、$\overline\nabla$，诱导度量与 Levi--Civita 联络记为 $g$、$\nabla$。
+两曲线在 \(\varphi\) 中速度相同，则在 \(\psi\) 中也相同。
+这个等式同时告诉我们：切向量本身不变，分量被坐标变换的 Jacobian 相乘。
 
-对切向量场 $X,Y\in\Gamma(TM)$，把环境导数分解为
-\begin{equation*}\boxed{
-\overline\nabla_XY
-=\nabla_XY+B(X,Y),}
-\end{equation*}
-其中
+\begin{definition}[点处导子]
+点 \(p\) 处的导子是一个把 \(p\) 附近光滑实值函数送到实数的线性映射
+\(v\)，满足 Leibniz 法则
 \[
-B(X,Y):=(\overline\nabla_XY)^\perp\in\Gamma(NM)
+v(fg)=f(p)v(g)+g(p)v(f).
 \]
-称为第二基本形式。环境联络无挠，且 $\nabla$ 也是无挠的，因此
-\[
-B(X,Y)-B(Y,X)
-=(\overline\nabla_XY-\overline\nabla_YX-[X,Y])^\perp=0,
-\]
-故 $B$ 对称。
+只在 \(p\) 附近相同的函数视为同一个输入；这种局部函数称为 \(p\) 处的芽。
+\end{definition}
 
-对法向场 $\xi\in\Gamma(NM)$，环境导数同样分解为
-\begin{equation*}\boxed{
-\overline\nabla_X\xi
-=-A_\xi X+\nabla_X^\perp\xi.}
-\end{equation*}
-这里 $A_\xi:TM\to TM$ 是关于法向 $\xi$ 的 形状算符，$\nabla^\perp$ 是 正规 联络。由 $X\overline g(Y,\xi)=0$ 与度量相容，
-\[
-0=\overline g(\overline\nabla_XY,\xi)
-+\overline g(Y,\overline\nabla_X\xi),
-\]
-所以
-\begin{equation}\label{eq:math-dg-shape-second-form-relation}
-\boxed{
-\overline g(B(X,Y),\xi)
-=g(A_\xi X,Y).}
-\end{equation}
-由于 $B$ 对称，每个 $A_\xi$ 都关于 $g$ 自伴。
+曲线 \(\gamma\) 给出导子
+\(v_\gamma(f)=\left.\dd f(\gamma(t))/\dd t\right|_{t=0}\)。
+乘积求导法则说明它确实满足上面的定义。反过来，导子并不会包含比曲线速度
+更多的信息。
 
-取适配正交标架
+\begin{theorem}[曲线定义与导子定义的对应]
+在 \(n\) 维光滑流形 \(M\) 上，每个 \(p\) 处的导子都由唯一的曲线切向量给出。
+给定坐标 \(x=(x^1,\ldots,x^n)\)，该导子可唯一写成
 \[
-\{e_i\}_{i=1}^m\subset TM,
+v=\sum_{i=1}^n v(x^i)\,\partial_i\big|_p,\qquad
+\partial_i\big|_p(f)=\partial_i(f\circ x^{-1})(x(p)).
+\]
+\end{theorem}
+\begin{proof}
+先由 Leibniz 法则作用于常数函数 \(1=1\cdot1\) 得 \(v(1)=0\)，
+故所有常数的导数为零。把局部坐标中的 \(f\) 限制在 \(x(p)\) 附近的小凸球，
+沿连接 \(x(p)\) 与 \(x\) 的直线使用微积分基本定理：
+\[
+f(x)-f(x(p))
+=\sum_i(x^i-x^i(p))f_i(x),\qquad
+f_i(x)=\int_0^1\partial_i f(x(p)+t(x-x(p)))\,\dd t.
+\]
+这里 \(f_i\) 光滑且 \(f_i(x(p))=\partial_i f(x(p))\)。
+对等式作用 \(v\)，常数项为零，Leibniz 法则使
+\((x^i-x^i(p))v(f_i)\) 在 \(p\) 处消失，得到
+\[
+v(f)=\sum_i v(x^i)\partial_i f(x(p)).
+\]
+因此数 \(v^i=v(x^i)\) 决定全部作用。取
+\(\gamma(t)=x^{-1}(x(p)+t(v^1,\ldots,v^n))\)，小 \(t\) 时该曲线有定义，
+链式法则给 \(v_\gamma(f)=v(f)\)。唯一性由各坐标函数的值确定。
+\end{proof}
+
+把球面当作 \(\mathbb R^3\) 的子集时，约束
+\(x^2+y^2+z^2=1\) 沿曲线求导给
+\(p\cdot\dot\gamma(0)=0\)。
+反过来，每个满足 \(p\cdot v=0\) 的三维向量都可作为球面上一条曲线
+的初速度，例如把 \(p+tv\) 归一化。
+因此 \(T_pS^2=\{v\in\mathbb R^3:p\cdot v=0\}\)。
+这算出了切空间，也验证抽象定义与熟悉的切平面一致。
+
+\begin{proposition}[正则约束的切空间]
+设 \(F:\mathbb R^N\to\mathbb R^m\) 光滑，
+\(M=F^{-1}(0)\)，并且 \(DF_p\) 在每个 \(p\in M\)
+的秩为 \(m\)。则 \(M\) 在每个点附近是 \((N-m)\) 维
+光滑流形，且
+\[
+T_pM=\ker DF_p.
+\]
+\end{proposition}
+\begin{proof}
+由秩条件，可重新排列环境坐标，使 \(DF_p\) 对最后 \(m\)
+个坐标的偏导方阵可逆。多变量微积分的隐函数定理遂把这些坐标
+局部写成前 \(N-m\) 个坐标的光滑函数，这给出一张局部图。
+若 \(\gamma(t)\subset M\) 且 \(\gamma(0)=p\)，
+对 \(F(\gamma(t))=0\) 求导，得
+\(DF_p\dot\gamma(0)=0\)，故 \(T_pM\subseteq\ker DF_p\)。
+局部图的 \(N-m\) 个坐标速度线性独立并全在该核内；
+由秩—零度定理，核维数也是 \(N-m\)，故两者相等。
+\end{proof}
+
+球面取 \(F(x,y,z)=x^2+y^2+z^2-1\)，
+\(DF_pv=2p\cdot v\)，于是回到上面的切平面。
+秩条件不能省略：锥面
+\(x^2+y^2-z^2=0\) 在顶点的 \(DF_0=0\)，
+形式上的核是整个 \(\mathbb R^3\)，却不存在一个二维光滑切平面。
+这就是约束方程虽可写下，几何对象却可能在特殊点变坏的具体例子。
+
+\section{映射怎样推动速度}
+
+若 \(F:M\to N\) 光滑，曲线 \(\gamma\) 经 \(F\) 变成
+\(F\circ\gamma\)。由此定义点 \(p\) 处的微分
+\[
+dF_p:T_pM\to T_{F(p)}N,\qquad
+dF_p(v)(h)=v(h\circ F).
+\]
+它是线性的，且因函数复合满足
+\(d(G\circ F)_p=dG_{F(p)}\circ dF_p\)。
+在坐标中，\(dF_p\) 正是熟悉的 Jacobian 矩阵；
+写清定义域与值域能防止把两个不同点的速度直接相加。
+
+\section{对偶向量与张量}
+
+线性代数中，行向量作用于列向量得到一个数。流形上也一样：
+\begin{definition}[余切向量与张量]
+\(T_pM\) 上的线性泛函组成余切空间 \(T_p^*M\)。
+函数 \(f\) 的微分 \(df_p\) 由 \(df_p(v)=v(f)\) 定义。
+一个 \((r,s)\) 型张量是在同一点 \(p\) 处，对 \(r\) 个余切向量和
+\(s\) 个切向量分别线性的多重映射，值为实数。
+\end{definition}
+
+坐标函数的微分 \(dx^i\) 与 \(\partial_j\) 对偶，因为
+\(dx^i(\partial_j)=\delta^i{}_j\)。
+若新坐标为 \(y^a=y^a(x)\)，上面的链式法则给
+\[
+\frac{\partial}{\partial y^a}
+=\frac{\partial x^i}{\partial y^a}\frac{\partial}{\partial x^i},
 \qquad
-\{n_\alpha\}_{\alpha=1}^q\subset NM.
+dy^a=\frac{\partial y^a}{\partial x^i}dx^i .
 \]
-写
+两种 Jacobian 互逆，故对偶配对不随坐标改变。
+在平面极坐标区域 \(r>0\)，直接微分
+\(x=r\cos\theta,y=r\sin\theta\)，得
 \[
-B(e_i,e_j)=h^\alpha{}_{ij}n_\alpha.
-\]
-则
-\[
-h^\alpha{}_{ij}=h^\alpha{}_{ji}.
-\]
-平均曲率向量定义为
-\begin{equation*}\mathbf H
-:=\frac1m\operatorname{tr}_gB.
-\end{equation*}
-它是法向量场，而不是内在标量曲率。
-
-\section{Gauss--Codazzi--Ricci 的统一推导}
-
-记 $\overline R$、$R$ 与 $R^\perp$ 分别为环境联络、切向 Levi--Civita 联络和 正规 联络 的曲率，均采用
-\[
-R(X,Y)Z
-=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z
-\]
-的符号约定。对第二基本形式定义协变导数
-\begin{equation*}(\nabla_X^\perp B)(Y,Z)
-:=\nabla_X^\perp(B(Y,Z))
--B(\nabla_XY,Z)-B(Y,\nabla_XZ).
-\end{equation*}
-
-\begin{derivation}[从环境曲率的切向/法向分块推出三条兼容方程]
-先让环境曲率作用在切向量 $Z$。由 Gauss 公式，
-\[
-\overline\nabla_YZ
-=\nabla_YZ+B(Y,Z).
-\]
-再沿 $X$ 求环境协变导数，并分别对切向与法向部分使用 Gauss--Weingarten 分解：
-\[
-\begin{aligned}
-\overline\nabla_X\overline\nabla_YZ
-={}&\nabla_X\nabla_YZ+B(X,\nabla_YZ)\\
-&-A_{B(Y,Z)}X
-+\nabla_X^\perp B(Y,Z).
-\end{aligned}
-\]
-交换 $X,Y$，再减去 $\overline\nabla_{[X,Y]}Z$。切向部分得到
-\[
-(\overline R(X,Y)Z)^\top
-=R(X,Y)Z
--A_{B(Y,Z)}X+A_{B(X,Z)}Y.
-\]
-与切向量 $W$ 做内积并用\eqnrefs{eq:math-dg-shape-second-form-relation}，
-\[
-\begin{aligned}
-\overline g(\overline R(X,Y)Z,W)
-={}&g(R(X,Y)Z,W)\\
-&-\overline g(B(X,W),B(Y,Z))\\
-&+\overline g(B(Y,W),B(X,Z)).
-\end{aligned}
-\]
-移项后得到 Gauss 方程
-\begin{equation}\label{eq:math-dg-gauss-general}
-\boxed{
-\begin{aligned}
-g(R(X,Y)Z,W)
-={}&\overline g(\overline R(X,Y)Z,W)\\
-&+\overline g(B(X,W),B(Y,Z))\\
-&-\overline g(B(X,Z),B(Y,W)).
-\end{aligned}}
-\end{equation}
-
-同一个展开的法向部分为
-\[
-(\overline R(X,Y)Z)^\perp
-=(\nabla_X^\perp B)(Y,Z)
--(\nabla_Y^\perp B)(X,Z),
-\]
-即 Codazzi 方程
-\begin{equation}\label{eq:math-dg-codazzi-general}
-\boxed{
-(\overline R(X,Y)Z)^\perp
-=(\nabla_X^\perp B)(Y,Z)
--(\nabla_Y^\perp B)(X,Z).}
-\end{equation}
-
-最后让环境曲率作用在法向场 $\xi$。由 Weingarten 公式，
-\[
-\overline\nabla_Y\xi
-=-A_\xi Y+\nabla_Y^\perp\xi.
-\]
-再次沿 $X$ 求导并取法向部分：
-\[
-\begin{aligned}
-(\overline\nabla_X\overline\nabla_Y\xi)^\perp
-=-B(X,A_\xi Y)
-+\nabla_X^\perp\nabla_Y^\perp\xi.
-\end{aligned}
-\]
-交换 $X,Y$ 并减去 $[X,Y]$ 项，得到
-\[
-(\overline R(X,Y)\xi)^\perp
-=R^\perp(X,Y)\xi
--B(X,A_\xi Y)+B(Y,A_\xi X).
-\]
-与另一法向场 $\eta$ 做内积，利用 形状算符 自伴性，
-\[
-\begin{aligned}
-\overline g(\overline R(X,Y)\xi,\eta)
-={}&\overline g(R^\perp(X,Y)\xi,\eta)\\
-&-g(A_\eta X,A_\xi Y)
-+g(A_\eta Y,A_\xi X)\\
-={}&\overline g(R^\perp(X,Y)\xi,\eta)
--g([A_\xi,A_\eta]X,Y).
-\end{aligned}
-\]
-因此 Ricci 方程为
-\begin{equation}\label{eq:math-dg-ricci-general}
-\boxed{
-\overline g(R^\perp(X,Y)\xi,\eta)
-=\overline g(\overline R(X,Y)\xi,\eta)
-+g([A_\xi,A_\eta]X,Y).}
-\end{equation}
-交换子的次序已经由上述展开固定；若把 $[A_\xi,A_\eta]$ 反写，右端必须同时变号。
-
-退化自检：一维法丛（如 $\mathbb R^3$ 中曲面）中 $[A_\xi,A_\eta]=0$，Ricci 方程 的法向部分自动满足；$\mathbb R^4$ 中 Clifford 环面 的两个法向 $A$ 分别为 $\pm J$，其法曲率 $[A_{n_1},A_{n_2}]=0$ 是 Lawson 不等式 的关键。
-\end{derivation}
-
-三条方程分别来自环境曲率的三个块：切--切块给 Gauss，切--法混合块给 Codazzi，法--法块给 Ricci。高余维时 形状算符 之间可能不交换，Ricci 方程正是 正规 丛 曲率与这种不交换性的联系。
-
-\section{移动标架形式}
-
-在适配正交标架 $\{e_i,n_\alpha\}$ 中，环境联络一形式分块为
-\[
-\overline\omega
-=
-\begin{pmatrix}
-\omega^i{}_j & \overline\omega^i{}_\beta\\
-\overline\omega^\alpha{}_j & \omega^\alpha{}_\beta
-\end{pmatrix}.
-\]
-其中 $\omega^i{}_j$ 是 $TM$ 的 Levi--Civita 联络，$\omega^\alpha{}_\beta$ 是 正规 联络，而混合块编码第二基本形式：
-\begin{equation}\label{eq:math-dg-moving-frame-second-form}
-\overline\omega^\alpha{}_i
-=h^\alpha{}_{ij}\theta^j,
+\partial_r=\cos\theta\,\partial_x+\sin\theta\,\partial_y,
 \qquad
-\overline\omega^i{}_\alpha
-=-h^\alpha{}_{ij}\theta^j.
-\end{equation}
-把这一分块代入环境第二结构方程
-\[
-\overline\Omega
-=\dd\overline\omega+\overline\omega\wedge\overline\omega
+\partial_\theta=-r\sin\theta\,\partial_x
++r\cos\theta\,\partial_y.
 \]
-并分别读取切--切、切--法与法--法块，就得到\eqnrefs{eq:math-dg-gauss-general}、\eqnrefs{eq:math-dg-codazzi-general}与\eqnrefs{eq:math-dg-ricci-general}的外形式版本。移动标架法并不是另一套理论，而是同一分块曲率计算的紧凑表示。
-
-
-上述三条兼容方程不仅是任何浸入都必须满足的必要条件；在平坦环境中，它们在适当拓扑假设下也是重构浸入的充分条件。这一事实称为子流形基本定理，它说明 Gauss--Codazzi--Ricci 并不是若干互不相关的恒等式，而是移动标架系统的完整可积条件。
-
-设 $(M^m,g)$ 为单连通 Riemann 流形，$N\to M$ 是秩 $q$ 的 Euclidean 向量丛，带 度量 联络 $\nabla^\perp$，并给定对称双线性形式
+反过来，由 \(r=\sqrt{x^2+y^2}\) 与局部角函数得到
 \[
-B\in\Gamma\bigl(\operatorname{Sym}^2T^*M\otimes N\bigr).
-\]
-若 $(g,\nabla^\perp,B)$ 满足 Euclidean 环境 $\overline R=0$ 时的 Gauss、Codazzi、Ricci 方程，则局部存在等距浸入
-\[
-F:M\longrightarrow\RR^{m+q}
-\]
-实现这些数据；在单连通情形可作全局重构，并且在固定初始点、初始适配标架以后唯一。去掉初始归一化后，唯一性只差一个 Euclidean 刚体运动。
-
-\begin{derivation}[Gauss--Codazzi--Ricci 怎样成为浸入的可积条件]
-在局部正交标架下，把 Levi--Civita 联络、正规 联络 与第二基本形式组合成一个 $\mathfrak{so}(m+q)$-值一形式
-\[
-\mathcal A=
-\begin{pmatrix}
-\omega^i{}_j & -h^i{}_{\beta k}\theta^k\\
- h^\alpha{}_{jk}\theta^k & \omega^\alpha{}_{\beta}
-\end{pmatrix}.
-\]
-这里上下混合块用环境度量识别，符号选择与\eqnrefs{eq:math-dg-moving-frame-second-form}一致。计算其曲率
-\[
-\mathcal F
-:=\dd\mathcal A+\mathcal A\wedge\mathcal A.
-\]
-切--切块恰是 Gauss 方程的左减右，切--法块恰是 Codazzi 方程，法--法块恰是 Ricci 方程。因此
-\begin{equation}
-\text{Gauss+Codazzi+Ricci}
-\quad\Longleftrightarrow\quad
-\mathcal F=0.
-\label{eq:math-dg-submanifold-flat-extended-connection}
-\end{equation}
-也就是说，全部兼容条件等价于这个扩展联络平坦。
-
-在单连通区域上，平坦矩阵联络可积分为一个正交矩阵场 $Q:M\to O(m+q)$，使
-\[
-Q^{-1}\dd Q=\mathcal A
-\]
-（若采用相反的矩阵 约定，等价地写成 $\dd Q=Q\mathcal A$）。令 $Q_1,\ldots,Q_m$ 为前 $m$ 个列向量，并定义 $\RR^{m+q}$-值一形式
-\[
-\alpha:=\sum_{i=1}^m Q_i\,\theta^i.
-\]
-计算外微分：
-\[
-\dd\alpha
-=\sum_i \dd Q_i\wedge\theta^i
-+\sum_i Q_i\,\dd\theta^i.
-\]
-$\dd Q_i$ 的切向联络部分与无挠第一结构方程
-\[
-\dd\theta^i+\omega^i{}_j\wedge\theta^j=0
-\]
-恰好抵消；法向部分含
-\[
-h^\alpha{}_{ij}\theta^j\wedge\theta^i,
-\]
-又因 $h^\alpha{}_{ij}=h^\alpha{}_{ji}$ 对称而为零。故
-\[
-\dd\alpha=0.
-\]
-单连通性使闭的一形式 $\alpha$ 可全局积分，所以存在 $F:M\to\RR^{m+q}$ 满足
-\[
-\dd F=\alpha.
-\]
-因为 $Q_i$ 正交归一，
-\[
-\langle \dd F(X),\dd F(Y)\rangle
-=\sum_i\theta^i(X)\theta^i(Y)=g(X,Y),
-\]
-故 $F$ 是等距浸入。再由 $\dd Q=Q\mathcal A$ 的混合块读出其第二基本形式与 正规 联络 正是预先给定的 $B$ 与 $\nabla^\perp$。这完成了存在性重构的核心计算。
-
-若两个重构具有相同初始点与初始适配标架，它们满足同一一阶系统，因此由唯一性完全一致；改变初始点和初始正交标架只对应环境中的平移与正交变换。于是唯一性恰好差一个 Euclidean 刚体运动。
-\end{derivation}
-
-子流形的 Gauss--Codazzi--Ricci 三方程由此等价于扩展联络的平坦性 $\mathcal F=\dd\mathcal A+\mathcal A\wedge\mathcal A=0$（\eqnrefs{eq:math-dg-submanifold-flat-extended-connection}）。
-
-\section{Euclidean 三维空间中的曲面}
-
-现在令 $m=2,q=1$，并取环境 $\overline M=\RR^3$ 的 Euclidean 度量。设 $(e_1,e_2,n)$ 为适配正交归一标架，余标架为 $(\theta^1,\theta^2,\theta^3)$。限制到曲面后
-\[
-\theta^3=0.
-\]
-环境第一结构方程的法向分量给出
-\begin{equation*}\omega^3{}_1\wedge\theta^1
-+\omega^3{}_2\wedge\theta^2=0.
-\end{equation*}
-写
-\[
-\omega^3{}_1=h_{11}\theta^1+h_{12}\theta^2,
+dr=\frac{x\,dx+y\,dy}{r},
 \qquad
-\omega^3{}_2=h_{21}\theta^1+h_{22}\theta^2,
+d\theta=\frac{-y\,dx+x\,dy}{r^2}.
 \]
-代回上式得到
-\begin{equation*}h_{12}=h_{21},
-\end{equation*}
-这正是一般结论“$B$ 对称”在二维余维一移动标架中的分量形式。第二基本形式写成
-\begin{equation*}II=h_{ij}\theta^i\theta^j.
-\end{equation*}
-按本书约定，形状算符 $A$ 满足
-\[
-\overline\nabla_Xn=-AX,
-\qquad
-II(X,Y)=g(AX,Y).
-\]
-Gauss--Weingarten 公式于是成为
-\begin{equation*}\boxed{
-\begin{aligned}
-\overline\nabla_XY&=\nabla_XY+II(X,Y)n,\\
-\overline\nabla_Xn&=-AX.
-\end{aligned}}
-\end{equation*}
+于是 \(dr(\partial_\theta)=0\)、
+\(d\theta(\partial_\theta)=1\)，确实是一对对偶基。
+但角度 \(\theta\) 不能在整个穿孔平面选成连续单值函数；
+右侧的公式却拼成一个处处光滑的全局一形式。
+下一章将证明它虽处处局部等于角度的微分，却不是全局函数的微分。
+例如点处的双线性型 \(b_p(v,w)\) 是 \((0,2)\) 型张量；记
+\((\alpha\otimes\beta)(v,w)=\alpha(v)\beta(w)\)，则它可写成
+\(b=b_{ij}dx^i\otimes dx^j\)，这时才出现指标。
+因此“张量”首先是多重线性映射，带指标的数组只是选基后的坐标记录。
 
-因为 Euclidean 环境平坦，$\overline R=0$。Gauss 方程在正交基 $e_1,e_2$ 上给出
-\[
-K
-=g(R(e_1,e_2)e_2,e_1)
-=h_{11}h_{22}-h_{12}^2,
-\]
-即
-\begin{equation*}\boxed{K=\det A.}
-\end{equation*}
-若 $\kappa_1,\kappa_2$ 是主曲率，则
-\[
-K=\kappa_1\kappa_2,
-\qquad
-\mathsf H=\frac12(\kappa_1+\kappa_2),
-\]
-其中 $\mathsf H$ 表示有向标量平均曲率，平均曲率向量为 $\mathbf H=\mathsf H n$。采用不同法向会使 $\kappa_i$ 与 $\mathsf H$ 同时变号，但 $K$ 不变。
-
-Codazzi 方程在平坦环境中化为
-\[
-(\nabla_X^\perp B)(Y,Z)
-=(\nabla_Y^\perp B)(X,Z).
-\]
-余维一时 $\nabla^\perp n=0$，若定义
-\[
-Dh_{ij}
-:=\dd h_{ij}-h_{kj}\omega^k{}_i-h_{ik}\omega^k{}_j
-=h_{ij;k}\theta^k,
-\]
-则移动标架的两个独立方程可写为
-\begin{equation*}\dd\omega^3{}_1+\omega^3{}_2\wedge\omega^2{}_1=0,
-\end{equation*}
-\begin{equation*}\dd\omega^3{}_2+\omega^3{}_1\wedge\omega^1{}_2=0,
-\end{equation*}
-并等价于分量式
-\begin{equation*}\boxed{h_{ij;k}=h_{ik;j}.}
-\end{equation*}
-余维一只有一个 形状算符，所以 Ricci 方程中的交换子自动为零；正规 丛 也是一维，Ricci 方程不再给出额外独立条件。
-
-
-对定向 Euclidean 超曲面
-\[
-F:M^m\to\RR^{m+1},
-\]
-单位法向本身定义 Gauss 映射
-\begin{equation*}\mathcal N:M\longrightarrow S^m,
-\qquad
-\mathcal N(p)=n(p).\end{equation*}
-由 Weingarten 公式，任意 $X\in T_pM$ 都有
-\begin{equation}
-\boxed{
-\dd\mathcal N_p(X)
-=\overline\nabla_Xn
-=-A_pX.
-}
-\label{eq:math-dg-gauss-map-differential}
-\end{equation}
-所以 形状算符 不是抽象定义出来的矩阵：它就是 Gauss 映射 的负微分。其本征方向是法向变化最快的正交方向，主曲率则是这些方向上的有符号伸缩率。
-
-把单位球面的标准度量记为 $g_{S^m}$，则 Gauss 映射 拉回度量为
-\begin{equation*}(\mathcal N^*g_{S^m})(X,Y)
-=g(AX,AY).\end{equation*}
-右边常称为第三基本形式。另一方面，Gauss 映射 的有向 Jacobian 为
-\begin{equation*}\det(\dd\mathcal N)
-=(-1)^m\det A.\end{equation*}
-对曲面 $M^2\subset\RR^3$，$\det A=K$，故 Gaussian 曲率 恰是 Gauss 映射 的局部面积伸缩率。$K$ 的“内在性”和法向映射的“外在定义”在这里并不矛盾：Gauss 方程保证二者数值一致。
-
-形状算符 还精确控制平行超曲面的首次奇性。定义
-\[
-F_s(p):=F(p)+s\,n(p).
-\]
-对 $X\in T_pM$，由\eqnrefs{eq:math-dg-gauss-map-differential}
-\begin{equation*}\dd F_s(X)
-=(I-sA)X.\end{equation*}
-因此只要 $I-sA$ 可逆，$F_s$ 仍是局部浸入；在主方向 $e_i$ 上，
-\[
-\dd F_s(e_i)=(1-s\kappa_i)e_i.
-\]
-当 $s=1/\kappa_i$ 时该方向退化，这就是 focal point 出现的外在版本。
-
-在未退化区域内，法向仍可选为同一个 $n$。由
-\[
--A_s\bigl((I-sA)X\bigr)
-=\overline\nabla_Xn
-=-AX
-\]
-得到
-\begin{equation*}\boxed{
-A_s=A(I-sA)^{-1},
-\qquad
-\kappa_i(s)=\frac{\kappa_i}{1-s\kappa_i}.
-}\end{equation*}
-同时面积元按
-\begin{equation}
-\operatorname{vol}_{g_s}
-=|\det(I-sA)|\,\operatorname{vol}_g
-=\prod_{i=1}^m|1-s\kappa_i|\,\operatorname{vol}_g
-\label{eq:math-dg-parallel-area-jacobian}
-\end{equation}
-变化。展开这个乘积就会依次出现平均曲率、第二基本形式的初等对称多项式以及 Gauss--Kronecker 曲率。于是 tube 公式 与曲率积分的系数，本质上都来自同一个 行列式。
-
-\begin{derivation}[平行曲面的面积一阶变化如何恢复平均曲率]
-由\eqnrefs{eq:math-dg-parallel-area-jacobian}，平行曲面的面积元为
-\begin{equation*}
-\operatorname{vol}_{g_s}=|\det(I-sA)|\,\operatorname{vol}_g
-=\prod_{i=1}^m|1-s\kappa_i|\,\operatorname{vol}_g,
-\end{equation*}
-其中 $\kappa_1,\ldots,\kappa_m$ 是 形状算符 $A$ 的本征值即主曲率。在 $s=0$ 附近假设尚未遇到 focal point，即 $1-s\kappa_i>0$ 对所有 $i$ 成立，可去掉绝对值，
-\begin{equation*}
-\operatorname{vol}_{g_s}=\det(I-sA)\,\operatorname{vol}_g
-=\prod_{i=1}^m(1-s\kappa_i)\,\operatorname{vol}_g.
-\end{equation*}
-把行列式按特征多项式在 $s=0$ 处 Taylor 展开。由 $\det(I-sA)$ 是 $s$ 的 $m$ 次多项式，常数项为 $\det I=1$，一次项为 $-s\operatorname{tr}A$（特征多项式系数与初等对称多项式的关系，一次项系数恰为负迹），故
-\begin{equation*}
-\det(I-sA)=1-s\operatorname{tr}A+O(s^2).
-\end{equation*}
-等价地，对乘积形式逐项展开，
-\begin{equation*}
-\prod_{i=1}^m(1-s\kappa_i)
-=1-s\sum_{i=1}^m\kappa_i+O(s^2)
-=1-s\operatorname{tr}A+O(s^2),
-\end{equation*}
-其中用了 $\operatorname{tr}A=\sum_i\kappa_i$。由平均曲率定义 $\mathsf H=\frac1m\operatorname{tr}A=\frac1m\sum_i\kappa_i$，
-\begin{equation*}
-\operatorname{tr}A=m\mathsf H
-\end{equation*}
-（余维一时 $\mathbf H=\mathsf H n$）。代回面积元展开，
-\begin{equation*}
-\operatorname{vol}_{g_s}=(1-sm\mathsf H+O(s^2))\,\operatorname{vol}_g.
-\end{equation*}
-对 $s$ 求导并在 $s=0$ 取值，
-\begin{align*}
-\left.\frac{\dd}{\dd s}\operatorname{vol}_{g_s}\right|_{s=0}
-&=\left.\frac{\dd}{\dd s}\bigl[(1-sm\mathsf H+O(s^2))\,\operatorname{vol}_g\bigr]\right|_{s=0}\\
-&=\bigl[-m\mathsf H+O(s)\bigr]\Big|_{s=0}\operatorname{vol}_g\\
-&=-m\mathsf H\,\operatorname{vol}_g.
-\end{align*}
-这正是后面\eqnrefs{eq:math-dg-first-variation-submanifold-volume}在常法向速度 $V=n$ 情形的局部版本。换言之，平均曲率既是 形状算符 的迹，也是平行法向推进时面积元的一阶响应。
-\end{derivation}
-
-高阶项：继续展开到二阶，$\det(I-sA)=1-s\sigma_1+\frac{s^2}{2}(\sigma_1^2-\sigma_2)+O(s^3)$（$\sigma_k=\sum_{i_1<\cdots<i_k}\kappa_{i_1}\cdots\kappa_{i_k}$ 为主曲率的第 $k$ 个初等对称多项式），二阶项 $\frac12(\sigma_1^2-\sigma_2)\operatorname{vol}_g=\frac12(m^2\mathsf H^2-|A|^2)\operatorname{vol}_g$ 给出二阶变分，是研究 极小 子流形稳定性的关键；$m^2\mathsf H^2=|A|^2$ 时二阶项消失，对应全测地子流形。管状邻域体积 $\operatorname{Vol}(T_r(M))=\omega_{n-m}\int_M\int_0^r\prod_{i=1}^m(1-s\kappa_i)\,\dd s\,\operatorname{vol}_g$ 展开后只有偶数阶 $\sigma_{2k}$ 出现（法向反射对称），即 Weyl 管公式；这些积分是 Lipschitz--Killing 曲率，与热核渐近展开系数一致。例：球面 $S^m(r)\subset\RR^{m+1}$ 主曲率全为 $1/r$，平行曲面面积元 $(1+s/r)^m\operatorname{vol}_g$ 的一阶项 $m\mathsf Hs$ 与公式一致；圆柱 $S^1(r)\times\RR\subset\RR^3$ 主曲率为 $(1/r,0)$，$\mathsf H=1/(2r)$，一阶项 $s/r=2\mathsf Hs$，验证余维一情形。膜与肥皂膜：极小曲面方程 $\mathsf H=0$ 是肥皂膜的平衡条件，一阶项消失即平衡；二阶项 $-\frac12\int_M|A|^2\operatorname{vol}_g$ 在非全测地为负，反映膜多数情形不稳定，需要边界约束维持，与 Plateau 问题的解存在性密切相关。
-
-外在几何真正进入变分问题时，第二基本形式不再只是兼容条件中的系数，而直接控制面积的一阶与二阶变化。设
-\[
-F_t:M^m\to\overline M^{m+q}
-\]
-是一族浸入，变分速度为
-\[
-V:=\partial_tF_t|_{t=0}.
-\]
-把 $V=V^\top+V^\perp$ 分解成切向与法向部分。切向部分只对应参数重标记；内在面积真正改变的主项来自 $V^\perp$。对紧支撑变分，一阶体积公式为
-\begin{equation}
-\boxed{
-\left.\frac{\dd}{\dd t}\operatorname{Vol}(F_t(M))\right|_{t=0}
-=-m\int_M
-\overline g(\mathbf H,V^\perp)\,\operatorname{vol}_g
-}.
-\label{eq:math-dg-first-variation-submanifold-volume}
-\end{equation}
-若有边界，还要加上由 $V^\top$ 产生的边界通量项。因此
-\[
-\boxed{\mathbf H=0}
-\]
-恰是对所有紧支撑法向变分面积临界的 Euler--Lagrange 方程；这样的浸入称为 极小子流形。
-
-\begin{derivation}[第二基本形式怎样进入面积一阶变分]
-取局部坐标 $x^i$，诱导度量为
-\[
-g_{ij}(t)
-=\overline g(\partial_iF_t,\partial_jF_t).
-\]
-时间求导并用环境联络度量相容性：
-\[
-\dot g_{ij}
-=\overline g(\overline\nabla_iV,e_j)
-+\overline g(e_i,\overline\nabla_jV).
-\]
-因此
-\[
-\frac12\operatorname{tr}_g\dot g
-=g^{ij}\overline g(\overline\nabla_iV,e_j).
-\]
-将 $V=V^\top+V^\perp$ 分解。切向部分给出
-\[
-g^{ij}g(\nabla_iV^\top,e_j)
-=\operatorname{div}_M V^\top.
-\]
-对法向部分，利用
-\[
-0=e_i\,\overline g(V^\perp,e_j)
-=\overline g(\overline\nabla_iV^\perp,e_j)
-+\overline g(V^\perp,\overline\nabla_ie_j)
-\]
-得到
-\[
-\overline g(\overline\nabla_iV^\perp,e_j)
-=-\overline g(V^\perp,B_{ij}).
-\]
-收缩后
-\[
-\frac12\operatorname{tr}_g\dot g
-=\operatorname{div}_M V^\top
--m\overline g(\mathbf H,V^\perp).
-\]
-再用体积形式的一般变分公式
-\[
-\partial_t\operatorname{vol}_g
-=\frac12\operatorname{tr}_g\dot g\,\operatorname{vol}_g
-\]
-并对散度项积分，即得到\eqnrefs{eq:math-dg-first-variation-submanifold-volume}。
-
-一阶变分 $\delta\operatorname{Area}=-\int_M m\,\overline g(\mathbf H,V^\perp)\dd\operatorname{vol}_g$ 说明面积泛函的 Euler--Lagrange 方程为 $\mathbf H=0$，即极小子流形方程：切向变分只产生散度（边界项），法向变分才通过平均曲率与面积变化耦合。
-
-典型例：平面 $B_{ij}=0$、$\mathbf H=0$；球面 $\mathbf H=(1/R)n\neq0$；悬链面 $\mathbf H=0$，即两圆环间肥皂膜的平衡形状。
-\end{derivation}
-
-对余维一 极小 超曲面，取单位法向 $n$ 与法向变分
-\[
-V=\phi n.
-\]
-在 $\mathbf H=0$ 的临界点，一阶变分消失，二阶变分由 稳定性 二次型 控制：
-\begin{equation}
-\boxed{
-\delta^2\operatorname{Vol}[\phi]
-=
-\int_M
-\left(
-|\nabla\phi|^2
--\bigl(|A|^2+\overline{\operatorname{Ric}}(n,n)\bigr)\phi^2
-\right)\operatorname{vol}_g
-}.
-\label{eq:math-dg-minimal-second-variation}
-\end{equation}
-这与前面测地线的 指标 形式 具有完全相同的结构：梯度项提供正的``弹性''，曲率势项可能制造负方向。事实上，一维 极小子流形 就是测地线，而\eqnrefs{eq:math-dg-minimal-second-variation}正退化为测地线 指标 形式。
-
-若\eqnrefs{eq:math-dg-minimal-second-variation}对所有紧支撑 $\phi$ 都非负，称 极小 超曲面 stable。因而稳定性问题被化成一个 Schrödinger 型二次型的谱下界问题；前面 Hilbert 空间、自伴算子与 Friedrichs 实现的理论在这里重新出现。几何变分、谱理论和 PDE 并不是三块独立知识，而是在这一 Jacobi 二次型 上闭合。
-
-
-把分部积分显式做出来，二阶变分可写成
-\begin{equation*}\delta^2\operatorname{Vol}[\phi]
-=\int_M\phi\,L_J\phi\,\operatorname{vol}_g,
-\qquad
-L_J:=-\Delta_{\mathrm{LB}}
--\left(|A|^2+\overline{\operatorname{Ric}}(n,n)\right).\end{equation*}
-这里 $L_J$ 是与当前 Laplace--Beltrami 符号约定相容的 自伴 Jacobi 算符。稳定性等价于 $L_J$ 的 二次型 非负；Morse 指标 则等于其负本征值总数（计重数）。这与测地线的 Morse 指标定理 完全平行，只是普通 Sturm--Liouville 算子被 超曲面 上的 Schrödinger 算符 取代。
-
-Euclidean 极小 超曲面 还有一个重要的二阶恒等式，把第二基本形式本身变成椭圆方程的未知量。若 $\overline M=\RR^{m+1}$ 且 $\mathsf H=0$，则 Codazzi 与 Gauss 方程推出 Simons 恒等式
-\begin{equation}
-\boxed{
-\Delta_{\mathrm{LB}}h_{ij}
-+|A|^2h_{ij}=0.
-}
-\label{eq:math-dg-simons-hessian}
-\end{equation}
-与 $h_{ij}$ 收缩，并使用
-\[
-\frac12\Delta_{\mathrm{LB}}|A|^2
-=\langle\Delta_{\mathrm{LB}}A,A\rangle
-+|\nabla A|^2,
-\]
-得到标量形式
-\begin{equation*}\boxed{
-\frac12\Delta_{\mathrm{LB}}|A|^2
-=|\nabla A|^2-|A|^4.
-}\end{equation*}
-它说明 极小 条件并没有让外在曲率变成 调和；$|A|^4$ 是一个临界的非线性反应项，恰好与梯度耗散竞争。
-
-\begin{derivation}[Simons 恒等式 的结构来源]
-在 Euclidean 超曲面 上，Codazzi 给出
-\[
-\nabla_k h_{ij}=\nabla_i h_{kj}.
-\]
-因此
-\[
-\Delta_{\mathrm{LB}}h_{ij}
-=\nabla^k\nabla_kh_{ij}
-=\nabla^k\nabla_i h_{kj}.
-\]
-交换两次协变导数时产生 Riemann 曲率 对两个切指标的作用；再用 Gauss 方程把所有内在 Riemann 张量 写成 $h*h$。另一方面，极小 条件
-\[
-\operatorname{tr}A=0
-\]
-使 $\nabla_i\nabla_j(\operatorname{tr}A)$ 项完全消失。剩余的所有三次项整理后恰为
-\[
--|A|^2h_{ij},
-\]
-从而得到\eqnrefs{eq:math-dg-simons-hessian}。最后对
-\[
-|A|^2=h_{ij}h^{ij}
-\]
-应用乘积法则：
-\[
-\frac12\Delta_{\mathrm{LB}}|A|^2
-=|\nabla A|^2
-+\langle\Delta_{\mathrm{LB}}A,A\rangle
-=|\nabla A|^2-|A|^4.
-\]
-所以 Simons 恒等式 的三项来源分别非常清楚：Codazzi 负责交换一个导数，Gauss 负责把交换子曲率变成 $A^2$，minimality 负责杀掉 平均-曲率 Hessian。
-
-交换子计算的细节。由 Riemann 曲率作用，
-\begin{equation*}
-(\nabla^k\nabla_i-\nabla_i\nabla^k)h_{kj}
-=R^k{}_\ell h_{\ell j}+R_j{}_\ell h_{k\ell}
--R^\ell{}_{kj}h_{i\ell},
-\end{equation*}
-其中 $R_{ij}$ 是 Ricci 张量。代入 Gauss 方程 $R_{ij}=h_{i\ell}h_j{}^\ell-Hh_{ij}$（$H=\operatorname{tr}A$ 为平均曲率），并使用 minimality $H=0$，得
-\begin{equation*}
-R^k{}_\ell h_{\ell j}=h^k{}_\ell h^\ell{}_m h^m{}_j=|A|^2h^k{}_j,
-\end{equation*}
-最后一步用到 $h$ 是对称的且 $h^k{}_\ell h^\ell{}_m=|A|^2\delta^k_m$ 在主曲率坐标系下成立。其他两项类似计算，合并后给出 $-|A|^2h_{ij}$。
-\end{derivation}
-
-应用：Bernstein 定理。对 极小 图 $u:\Omega\subset\RR^n\to\RR$，Simons 恒等式 结合 Bochner 技巧给出 $\frac12\Delta_{\mathrm{LB}}|A|^2\ge(\frac{2}{n}-1)|A|^4$；$n\le7$ 时系数为负，配合 $|A|^2$ 的有界性给出 $|A|^2\equiv0$，即整 极小 图 必为超平面——$n=8$ 时 Bombieri--De Giorgi--Giusti 给出反例，临界维数正是系数变号处。Chern--Simons 形式 $\operatorname{CS}(A)=\operatorname{tr}(A\wedge\dd A+\frac23A\wedge A\wedge A)$ 的变分给出 $F\wedge F$，与 $|A|^4$ 项有类似的'曲率平方'结构，是 Chern--Simons 拓扑场论与极小曲面理论在变分结构上的深层联系。例：$S^3\subset\RR^4$ 中 Clifford 极小环面 $|A|^2=2$ 处处为常数，Simons 恒等式 给出 $\Delta_{\mathrm{LB}}|A|^2=0$，对应 $|\nabla A|^2=|A|^4=4$，验证 $A$ 不能平行。弦论中开弦的世界面是 Dirichlet 边界条件下的极小曲面，Simons 恒等式 给出世界面方程在量子涨落下稳定性的判据：$|A|^2$ 的椭圆不等式控制弦世界面在背景时空中的涨落尺度，与 $\alpha'$ 修正的几何展开直接相关。
-
-
-对图形浸入，极小 方程可以直接写成一个拟线性椭圆 PDE。令
-\[
-F(x)=(x,u(x)),
-\qquad x\in\Omega\subset\RR^m.
-\]
-诱导度量满足
-\[
-g_{ij}=\delta_{ij}+u_i u_j,
-\qquad
-\det g=1+|\nabla u|^2.
-\]
-因此面积泛函为
-\begin{equation*}\mathcal A[u]
-=\int_\Omega\sqrt{1+|\nabla u|^2}\,\dd^m x.\end{equation*}
-做紧支撑变分 $u\mapsto u+\varepsilon\eta$，有
-\[
-\begin{aligned}
-\delta\mathcal A[u;\eta]
-&=\int_\Omega
-\frac{\nabla u\cdot\nabla\eta}
-{\sqrt{1+|\nabla u|^2}}\,\dd^mx\\
-&=-\int_\Omega
-\eta\,
-\operatorname{div}\left(
-\frac{\nabla u}{\sqrt{1+|\nabla u|^2}}
-\right)\dd^mx.
-\end{aligned}
-\]
-所以 极小 图 方程 是
-\begin{equation*}\boxed{
-\operatorname{div}\left(
-\frac{\nabla u}{\sqrt{1+|\nabla u|^2}}
-\right)=0
-}.\end{equation*}
-在小斜率 $|\nabla u|\ll1$ 下展开
-\[
-\frac{1}{\sqrt{1+|\nabla u|^2}}
-=1-\frac12|\nabla u|^2+O(|\nabla u|^4),
-\]
-最低阶退化为
-\[
-\Delta u=0.
-\]
-因此 调和 图 是 极小 图 的线性化，而不是与其无关的偶然近似。
-
-面积最速下降则给出 平均曲率 流。若选择纯法向速度
-\[
-V=m\mathbf H,
-\]
-则由一阶变分公式
-\[
-\frac{\dd}{\dd t}\operatorname{Vol}(M_t)
-=-m^2\int_{M_t}|\mathbf H|^2\,\operatorname{vol}_{g_t}\le0.
-\]
-这说明 平均曲率 流 与 Ricci 流 在逻辑上不同：前者演化的是浸入并以外在平均曲率降低面积，后者直接演化内在度量。两者都可看作几何泛函的梯度型演化，但状态空间和 规范 结构不同。
-
-\begin{exbox}[单位球面与圆柱面]
-单位球面取外法向 $n=r$。对切向量 $X$，
-\[
-\overline\nabla_Xn=X.
-\]
-由约定 $\overline\nabla_Xn=-AX$，有 $A=-I$，故
-\[
-\kappa_1=\kappa_2=-1,
-\qquad
-K=1,
-\qquad
-\mathsf H=-1.
-\]
-
-半径 $R$ 的圆柱面取外法向时，圆周方向主曲率为 $-1/R$，轴向主曲率为零，因此
-\[
-K=0,
-\qquad
-\mathsf H=-\frac{1}{2R}.
-\]
-圆柱具有非零外在弯曲却有零 Gaussian 曲率，直接说明平均曲率依赖嵌入，而 $K$ 是内在度量可以检测的曲率。
-\end{exbox}
-
-一般余维的三条兼容方程到此才在 $q=1$、$\overline R=0$ 的条件下退化为熟悉的曲面公式。这样的顺序保证 Gauss--Codazzi 不是从三维曲面的特殊计算“推广”出来，而是环境联络曲率分块的一般结论。
+\begin{exercise}
+在圆柱面 \(x^2+y^2=1\) 的局部坐标 \((\theta,z)\) 中，
+求 \(\partial_\theta,\partial_z\) 作为 \(\mathbb R^3\) 向量的表达，
+并验证它们满足正则约束切空间的判据。
+解释为何 \(\theta\) 仍不能作为覆盖整个圆柱面的单张实值坐标。
+\end{exercise}

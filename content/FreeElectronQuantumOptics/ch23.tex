@@ -1,0 +1,60 @@
+\section{一个复近场参数的完整测量与反演}
+\label{chap:feqo-end-to-end}
+
+令电子沿 \(+z\) 以速度 \(v_0\) 经过局域近场，未知正频振幅取
+\(E_z^{(+)}(z)=E_*e^{\ii\varphi}e^{-z^2/(2d^2)}e^{\ii kz}\)。其中 \(E_*>0\) 的单位为 \(\si{\volt\per\metre}\)，\(d\) 是已由几何标定的长度，\(k\) 是已知空间波数，\(\varphi\) 是待求相位。直接代入\cref{eq:feqo-beta}，用高斯积分得到
+\begin{equation}
+\beta_{\rm sam}=\frac{qE_*\sqrt{2\pi}d}{\hbar\omega}
+\exp\!\left[-\frac{d^2}{2}(k-\omega/v_0)^2\right]e^{\ii\varphi}.
+\label{eq:feqo-imaging-beta}
+\end{equation}
+指数给相位失配导致的耦合抑制；\(q=-e\) 的负号使 \(\arg\beta_{\rm sam}=\varphi+\pi\)（模 \(2\pi\)）。若 \(k,d,v_0\) 未独立标定，则一次能谱只能求这个积分耦合，不能把 \(E_*\) 与几何参数分别求出。
+
+令 \(\beta_{\rm sam}=A e^{\ii\phi}\)，其中 \(A=|\beta_{\rm sam}|\) 无量纲。加入已知强度 \(B>0\)、可扫描相位 \(\theta_s\) 的第二个参考场，并假设两作用区间的色散可忽略，于是总耦合 \(\beta_s=Ae^{\ii\phi}+Be^{\ii\theta_s}\)。对于每个设置，理想边带概率是 \(P_{\ell s}=J_\ell^2(2|\beta_s|)\)。若 \(r_s:=|\beta_s|\ll1\)，由 Bessel 级数可逐项截断为
+\begin{equation}
+P_{+1,s}=P_{-1,s}=r_s^2+O(r_s^4),\quad
+P_{0,s}=1-2r_s^2+O(r_s^4),\quad
+r_s^2=A^2+B^2+2AB\cos(\phi-\theta_s).
+\label{eq:feqo-imaging-weak-forward}
+\end{equation}
+忽略的 \(|\ell|\geq2\) 总人口是 \(O(r_s^4)\)。若 \(r_s\) 不小，必须使用完整 Bessel 分布，不能把截断后的三条概率硬归一化来隐藏误差。
+
+先假想无噪声地得到三个设置的 \(y_0=P_{+1}(0)\)、\(y_{\pi/2}=P_{+1}(\pi/2)\)、\(y_\pi=P_{+1}(\pi)\)。由\cref{eq:feqo-imaging-weak-forward} 直接消元，
+\begin{align*}
+A^2&=\frac{y_0+y_\pi}{2}-B^2+O(r^4),\\
+\cos\phi&=\frac{y_0-y_\pi}{4AB}+O(r^4/(AB)),\\
+\sin\phi&=\frac{y_{\pi/2}-(y_0+y_\pi)/2}{2AB}+O(r^4/(AB)).
+\end{align*}
+实际可用 \(\operatorname{atan2}(\sin\phi,\cos\phi)\) 取相位。若 \(B=0\)，所有设置相同，\(\phi\) 消失；若 \(A=0\)，样品相位本身没有定义。分母 \(AB\) 还说明即便不严格为零，小 \(A\) 或小 \(B\) 都会放大计数噪声。这个失败模式来自前向映射，而不是拟合器不够努力。
+
+把无噪声代数换成一组可检查的数。设已标定参考强度 \(B=0.05\)，真实样品强度 \(A=0.05\)、相位 \(\phi=\pi/3\)，三个参考相位仍取 \(0,\pi/2,\pi\)。弱耦合式逐项给
+\[
+y_0=0.0075,
+\qquad y_{\pi/2}=0.005+0.0025\sqrt3\simeq0.0093301,
+\qquad y_\pi=0.0025.
+\]
+将它们代回刚才的反演式：\((y_0+y_\pi)/2-B^2=0.0025=A^2\)，\((y_0-y_\pi)/(4AB)=1/2\)，\([y_{\pi/2}-(y_0+y_\pi)/2]/(2AB)=\sqrt3/2\)，确实恢复 \(A=0.05\) 与 \(\phi=\pi/3\)。若每设置平均入射 \(10^5\) 个电子且只看理想 \(+1\) 箱，预期计数约为 \(750,933,250\)，各自的 Poisson 标准差约为其平方根。此时最高设置的 \(r_s^2\simeq0.00933\)，弱耦合遗漏的 \(O(r_s^4)\) 概率已在 \(10^{-4}\) 量级；继续提高曝光后，模型截断会先于计数噪声成为限制，必须改用完整 Bessel 前向模型。这里的数是理论算例，不代表某台仪器已经测得这些计数。
+
+若 \(d,k,v_0,\omega\) 均已独立标定，最后还可由 \(A\) 反解实际场幅度：
+\begin{equation}
+E_*=\frac{A\hbar\omega}{e\sqrt{2\pi}d}
+\exp\!\left[\frac{d^2}{2}(k-\omega/v_0)^2\right].
+\label{eq:feqo-imaging-field-inversion}
+\end{equation}
+右边单位为 \(\si{\volt\per\metre}\)。相位则由已知 \(q=-e\) 的符号取 \(\varphi=\phi-\pi\)（模 \(2\pi\)）。但这一反解也揭示条件数：设 \(\Delta k=k-\omega/v_0\)，在其他量固定时 \(\partial\ln E_*/\partial k=d^2\Delta k\)。若失配很大，指数使真实耦合 \(A\) 极小，同时对 \(k\) 的标定误差极敏感；即使计数模型无噪声，未知的 \(k\) 仍会与 \(E_*\) 形成退化。
+
+能谱仪记录读数 \(y\) 的分箱 \(B_j\)，不是理想 \(\ell\)。对高斯能量响应 \(R(y|E)=(2\pi\sigma_D^2)^{-1/2}e^{-(y-E)^2/(2\sigma_D^2)}\)，定义
+\begin{equation}
+R_{j\ell}=\int_{B_j}R(y|E_0+\ell\hbar\omega)\dd y,
+\qquad p_{js}=\sum_\ell R_{j\ell}P_{\ell s}.
+\label{eq:feqo-imaging-detector}
+\end{equation}
+若所有分箱覆盖整个读数轴，\(\sum_jR_{j\ell}=1\)，故 \(\sum_jp_{js}=1\)。若有限视场漏掉部分能量，须增加“视场外”结果或显式建模检出效率，不能在每个设置下任意把已见峰强归一化为一。
+
+设每个设置有期望入射数 \(\nu_s\) 且各箱独立计数，\(N_{js}\sim\operatorname{Pois}(\nu_sp_{js})\)。这便把样品场经\cref{eq:feqo-imaging-beta}、相干作用经\cref{eq:feqo-imaging-weak-forward}、仪器响应经\cref{eq:feqo-imaging-detector} 送入\cref{eq:feqo-count-likelihood}。对 \((A,\phi)\) 求导并代入\cref{eq:feqo-poisson-fisher}，可得到这次具体实验的 Fisher 信息。它对曝光数 \(\nu_s\) 线性增长，却在无参考场时沿 \(\phi\) 方向严格为零。
+
+反演前应逐项核对：\(\sum_\ell P_{\ell s}=1\)；\(\sum_jR_{j\ell}=1\)；\(qE_*d/(\hbar\omega)\) 无量纲；\(A\to0\) 时恢复参考场谱；\(B\to0\) 时丢失相位灵敏度。还须检查实际占据边带的反冲相位 \(N^2\omega_rT\)、传播相位的三阶余项、弱耦合 \(r_s^4\) 与探测器非线性。若它们不小，反演应使用对应的精确反冲链、完整 Bessel 概率或重新标定的响应，而不应把模型误差塞进 Poisson 误差条。
+
+\begin{exercise}
+令 \(B=0\)，求\cref{eq:feqo-imaging-weak-forward} 对 \((A,\phi)\) 的 Jacobian 并给出秩。再取 \(\theta_s=0,\pi/2,\pi\) 与 \(A,B>0\)，解释为什么三设置能恢复复耦合的两个实分量。
+\end{exercise}

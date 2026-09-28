@@ -1,0 +1,90 @@
+\chapter{从内积到 Hilbert 空间}
+\label{chap:math-hilbert}
+
+有限维线性代数里，正交投影总能找到，Cauchy 列也总有极限。波函数却是函数而非有限列数字。若用函数列逼近一个态，我们需要先回答两件事：怎样判断它们越来越近，以及极限是否仍是允许的态。
+
+\section{函数空间中“越来越近”是什么意思}
+
+\begin{definition}[度量、收敛与完备]
+集合 \(X\) 上的度量 \(d:X\times X\to[0,\infty)\) 满足 \(d(x,y)=0\iff x=y\)、\(d(x,y)=d(y,x)\) 和三角不等式。若对每个 \(\varepsilon>0\) 存在 \(N\)，使 \(n\ge N\) 时 \(d(x_n,x)<\varepsilon\)，称 \(x_n\to x\)。若对每个 \(\varepsilon>0\) 存在 \(N\)，使 \(m,n\ge N\) 时 \(d(x_m,x_n)<\varepsilon\)，称 \((x_n)\) 为 Cauchy 列。每个 Cauchy 列都在 \(X\) 内收敛时，\(X\) 完备。
+\end{definition}
+
+在有理数中取逐位截断 \(\sqrt2\) 的小数列，它是 Cauchy 列，却没有有理数极限。这说明“项彼此接近”不足以保证极限留在选定的集合。对函数还要指定距离：\(f_n(x)=x^n\) 在 \([0,1]\) 的积分平方距离下趋于零，但 \(\sup_{[0,1]}|f_n|=1\)，因而不一致趋于零。同一个函数列在不同距离下可以有不同结论。
+
+\begin{definition}[范数、内积与 Hilbert 空间]
+复向量空间上的范数 \(\|\cdot\|\) 满足正定、\(\|\lambda x\|=|\lambda|\|x\|\) 和三角不等式。内积 \(\langle x,y\rangle\) 对第二变量线性，满足 \(\langle x,y\rangle=\overline{\langle y,x\rangle}\) 与 \(\langle x,x\rangle>0\)（\(x\ne0\)）。它诱导范数 \(\|x\|=\sqrt{\langle x,x\rangle}\)。对此范数完备的内积空间称 Hilbert 空间。
+\end{definition}
+
+内积确实给出范数所需的三角不等式，关键是下一个估计。
+
+\begin{theorem}[Cauchy--Schwarz 不等式]
+在任意实或复内积空间中，\(|\langle x,y\rangle|\le\|x\|\|y\|\)。等号成立当且仅当 \(x,y\) 线性相关。
+\end{theorem}
+\begin{proof}
+若 \(y=0\)，结论成立。否则取 \(\lambda=\langle y,x\rangle/\|y\|^2\)。由范数非负及内积第二变量线性，
+\[
+0\le\|x-\lambda y\|^2
+=\|x\|^2-\lambda\langle x,y\rangle
+-\overline\lambda\langle y,x\rangle+|\lambda|^2\|y\|^2
+=\|x\|^2-\frac{|\langle x,y\rangle|^2}{\|y\|^2}.
+\]
+移项得到不等式。等号等价于 \(x-\lambda y=0\)。
+\end{proof}
+
+这里先不预设测度论，也能严格得到后文需要的 \(L^2(0,1)\)。
+在连续函数空间 \(C[0,1]\) 上取
+\(\|f\|_2^2=\int_0^1|f(x)|^2\,\dd x\)。
+把它的所有 Cauchy 列放在一起，若两列 \((f_n),(g_n)\) 满足
+\(\|f_n-g_n\|_2\to0\)，就把它们视为同一个元素；
+所得完备化定义为 \(L^2(0,1)\)。加法、数乘与内积均取
+连续函数列的极限，刚证出的 Cauchy--Schwarz 不等式保证内积极限
+存在且不依赖代表列。为验证完备性，给定完备化中的 Cauchy 列，
+先抽子列使相邻两项距离小于 \(2^{-j}\)，再从第 \(j\) 项
+选连续函数代表使误差小于 \(2^{-j}\)。三角不等式说明这些
+连续函数构成 Cauchy 列；它所代表的元素是抽出子列的极限，
+也就是原 Cauchy 列的极限。
+
+在通常的函数实现中，\(L^2\) 的元素可看作平方可积函数，
+但两个函数只要在零测集以外相等，就代表同一个元素。
+这里“零测集”指对任意 \(\varepsilon>0\)，都能用可数个开区间
+覆盖它，且这些区间总长度小于 \(\varepsilon\) 的集合；
+“几乎处处相等”就是除这样的集合外处处相等。
+例如只在一个点上改动函数值不改变其 \(L^2\) 元素。
+其内积写成 \(\langle f,g\rangle=
+\int_0^1\overline{f(x)}g(x)\,\dd x\)，这里的零向量
+是一整个几乎处处为零的函数等价类。只取多项式并沿用这个范数
+则不完备：多项式可在平方平均意义下逼近阶跃函数，而极限不是多项式。
+
+\section{正交投影的存在与唯一性}
+
+有限维里解最小二乘方程时，我们把向量投到一列向量张成的子空间。无穷维中，距离的下确界未必由子空间里的元素取得；这里第一次真正用到完备性和闭性。
+
+\begin{definition}[闭子空间与正交补]
+子空间 \(M\subset\mathcal H\) 称为闭的，若 \(M\) 中任意收敛列的极限仍属于 \(M\)。它的正交补为 \(M^\perp=\{z\in\mathcal H:\langle m,z\rangle=0\text{ 对每个 }m\in M\}\)。
+\end{definition}
+
+例如 \(L^2(0,1)\) 中的零均值函数构成闭子空间，因为积分对 \(L^2\) 范数连续。相反，多项式集合不是闭的；点到该集合的距离可能为零，但点不属于集合，这时谈不上最近的多项式。
+
+\begin{theorem}[闭子空间投影定理]
+若 \(M\) 是 Hilbert 空间 \(\mathcal H\) 的闭线性子空间，则每个 \(x\in\mathcal H\) 恰有一个 \(p\in M\) 使 \(\|x-p\|=\inf_{m\in M}\|x-m\|\)。该元素满足 \(x-p\in M^\perp\)，故 \(x=p+(x-p)\) 是唯一的正交分解。
+\end{theorem}
+\begin{proof}
+令距离下确界为 \(d\)，选 \(m_n\in M\) 使 \(\|x-m_n\|^2\to d^2\)。平行四边形恒等式用于 \(x-m_n\) 和 \(x-m_k\)，给出
+\[
+\|m_n-m_k\|^2
+=2\|x-m_n\|^2+2\|x-m_k\|^2
+-4\left\|x-\frac{m_n+m_k}{2}\right\|^2
+\le 2\|x-m_n\|^2+2\|x-m_k\|^2-4d^2.
+\]
+右端趋于零；这里用到了中点仍在 \(M\)。故 \((m_n)\) 为 Cauchy 列，由 \(\mathcal H\) 完备且 \(M\) 闭，存在 \(p\in M\) 使 \(m_n\to p\)。范数连续，所以 \(\|x-p\|=d\)。
+
+现在任取 \(h\in M\)，实数 \(t\) 的二次式 \(\|x-p-th\|^2\) 在 \(t=0\) 取最小值，故 \(\operatorname{Re}\langle x-p,h\rangle=0\)。将 \(h\) 换成 \(\ii h\) 又得到虚部为零，因此 \(x-p\perp M\)。若 \(q\in M\) 也是最小点，则 \(x-q\perp M\)，从而 \(p-q\in M\cap M^\perp=\{0\}\)。
+\end{proof}
+
+记 \(P_Mx=p\)。由正交分解，\(\|x-m\|^2=\|x-P_Mx\|^2+\|P_Mx-m\|^2\)；这个式子既证明最优性，也说明投影把误差分成不能消除的部分与选择 \(m\) 额外造成的部分。对常数函数子空间，\(P_Mf=\int_0^1f(x)\,\dd x\)，因为 \(f-P_Mf\) 与每个常数正交。
+
+\input{content/MathSkills/ch03.tex}
+
+\begin{exercise}
+设 \(M=\{f\in L^2(0,1):\int_0^1f=0\}\)。求 \(P_Mf\)，检验所得差向量与 \(M\) 正交；再说明若把 \(M\) 换成稠密但非闭的多项式子空间，投影定理哪一步失效。
+\end{exercise}

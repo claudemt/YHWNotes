@@ -1,0 +1,70 @@
+\section{怎样比较估计量}
+
+知道 \(T\) 足够保存参数信息后，仍有很多函数可用来估计参数。评价时必须指定损失；例如平方误差对严重偏离赋予更大代价。
+
+\begin{definition}[偏差、方差与风险]
+估计量 \(\delta(X)\) 是样本的可测函数，观测后的数值才叫估计值。估计实参数 \(g(\theta)\) 时，其偏差为
+\(\operatorname{Bias}_\theta(\delta)=\mathbb E_\theta\delta-g(\theta)\)；
+在平方损失下的风险为
+\(R(\theta,\delta)=\mathbb E_\theta(\delta-g(\theta))^2\)，若二阶矩有限，则
+\[
+R(\theta,\delta)=\operatorname{Var}_\theta(\delta)
++\operatorname{Bias}_\theta(\delta)^2.
+\]
+\end{definition}
+
+例如 \(\delta_1=X_1\) 与 \(\delta_2=\overline X_n\) 都无偏估计独立同分布样本的均值 \(\mu\)，但方差分别是 \(\sigma^2\) 与 \(\sigma^2/n\)。无偏也并不保证平方风险全局最小：在 \(\mu\) 限于很小区间时，恒等于零的有偏估计可能比噪声很大的 \(X_1\) 风险更低。
+
+\begin{theorem}[Rao--Blackwell 定理]
+若 \(T\) 对 \(\theta\) 充分，\(\delta(X)\) 在每个 \(P_\theta\) 下平方可积，则有一个与 \(\theta\) 无关的函数版本
+\(\delta^*(T)=\mathbb E_\theta[\delta(X)\mid T]\)。
+对每个 \(\theta\)，\(\delta^*\) 与 \(\delta\) 具有相同期望，且估计同一 \(g(\theta)\) 的平方风险满足
+\(R(\theta,\delta^*)\le R(\theta,\delta)\)。
+\end{theorem}
+\begin{proof}
+充分性使给定 \(T\) 后 \(X\) 的条件分布不依赖 \(\theta\)，故条件积分可选同一函数 \(\delta^*(t)\)。塔式性质给期望相同。将
+\(\delta-g=(\delta-\delta^*)+(\delta^*-g)\) 平方展开；交叉项的期望等于
+\(\mathbb E_\theta[(\delta^*-g)\mathbb E_\theta(\delta-\delta^*\mid T)]=0\)。
+因此
+\(R(\theta,\delta)=R(\theta,\delta^*)+
+\mathbb E_\theta(\delta-\delta^*)^2\)。
+\end{proof}
+
+\begin{theorem}[Lehmann--Scheffé 定理]
+若 \(T\) 对模型 \(\{P_\theta\}\) 充分且完备，存在平方可积的 \(u(T)\) 满足
+\(\mathbb E_\theta u(T)=g(\theta)\) 对每个 \(\theta\) 成立，则 \(u(T)\) 是 \(g(\theta)\) 的唯一最小方差无偏估计量，唯一性按每个 \(P_\theta\) 下几乎处处相等理解。
+\end{theorem}
+\begin{proof}
+对任一平方可积无偏估计 \(\delta(X)\) 作 Rao--Blackwell 化，得另一个基于 \(T\) 的无偏估计 \(\delta^*(T)\)，且方差不增。因为
+\(\mathbb E_\theta[\delta^*(T)-u(T)]=0\) 对所有 \(\theta\) 成立，完备性给
+\(\delta^*(T)=u(T)\) 几乎处处。因此 \(u\) 的方差不大于任何 \(\delta\)。
+若另一估计也达到同样方差，Rao--Blackwell 证明中的非负差必须为零，于是它与 \(u(T)\) 几乎处处相等。
+\end{proof}
+
+对 \(X_i\sim\operatorname{Pois}(\lambda)\)，前节证明 \(T=\sum_iX_i\) 充分且完备。\(\mathbb E_\lambda(T/n)=\lambda\)，故 \(T/n\) 是 \(\lambda\) 的唯一最小方差无偏估计。若从粗糙估计 \(X_1\) 出发，给定 \(T=t\) 后 \(X_1\sim\operatorname{Bin}(t,1/n)\)，所以
+\(\mathbb E[X_1\mid T]=T/n\)：定理确实给出一个可计算的改进。
+
+同一统计量还可以估计非线性目标 \(g(\lambda)=e^{-\lambda}\)。
+单次观测的 \(\delta(X)=\mathbf1_{\{X_1=0\}}\) 无偏，
+因为 \(P_\lambda(X_1=0)=e^{-\lambda}\)。
+给定 \(T=t\) 后，每一个总计数落在第一格的条件概率为 \(1/n\)，
+故
+\[
+\mathbb E[\delta(X)\mid T=t]
+=P(X_1=0\mid T=t)=\left(1-\frac1n\right)^t.
+\]
+其无偏性也能直接复核：
+\[
+\mathbb E_\lambda\left(1-\frac1n\right)^T
+=e^{-n\lambda}\sum_{t=0}^\infty
+\frac{\{n\lambda(1-1/n)\}^t}{t!}
+=e^{-\lambda}.
+\]
+充分且完备使这一函数成为 \(e^{-\lambda}\) 的唯一最小方差
+无偏估计。若 \(n=1\)，表达式在 \(T=0\) 时按
+\(0^0=1\) 的指示函数约定解释；为避免该记号约定，
+也可在这个算例中取 \(n\ge2\)。
+
+\begin{exercise}
+对两个 Poisson 观测直接比较 \(X_1\) 与 \((X_1+X_2)/2\) 的方差。再取 \(n\) 个 Bernoulli 观测，利用上一节的完备性证明样本均值是 \(p\) 的最小方差无偏估计。
+\end{exercise}

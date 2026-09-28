@@ -1,0 +1,73 @@
+\section{相位什么时候能由计数恢复}
+\label{chap:feqo-inversion}
+
+先给一个可手算的可识别性例子。两边带电子态写为
+\[
+\rho(r,\phi)=\frac12
+\begin{pmatrix}1&r e^{-\ii\phi}\\r e^{\ii\phi}&1\end{pmatrix},
+\qquad 0\leq r\leq1.
+\]
+两个本征值是 \((1\pm r)/2\)，故这确是正、迹为一的密度矩阵。能量投影对任意 \(r,\phi\) 都给 \(p_0=p_1=1/2\)；无论重复多少次，单一能谱都无法恢复相位。若增加投影到 \(|+_\theta\rangle=(|0\rangle+e^{\ii\theta}|1\rangle)/\sqrt2\) 的参考设置，则
+\begin{equation}
+p_+(\theta)=\langle+_\theta|\rho|+_\theta\rangle
+=\frac{1+r\cos(\phi-\theta)}2.
+\label{eq:feqo-reference-phase-probability}
+\end{equation}
+取 \(\theta=0,\pi/2\)，两次测量分别给 \(r\cos\phi\) 与 \(r\sin\phi\)，从而在 \(r>0\) 时恢复 \(r,\phi\)。当 \(r=0\) 时相位根本没有物理定义，任意测量都不能“恢复”它。这比只说“多设置有用”更明确：新增设置补上了前向映射缺少的独立方向。
+
+两设置还允许直接计算实验难度。把两次“\(+\)”概率记为 \(p_0=(1+r\cos\phi)/2\)、\(p_{\pi/2}=(1+r\sin\phi)/2\)。它们对 \((r,\phi)\) 的导数矩阵为
+\[
+J=\frac12
+\begin{pmatrix}
+\cos\phi&-r\sin\phi\\
+\sin\phi&r\cos\phi
+\end{pmatrix},
+\qquad \det J=\frac r4.
+\]
+所以 \(r>0\) 时，任意 \(\phi\) 的微小变化都留下可区分的一阶计数变化。为量化这种变化，先定义一次观测的\emph{得分}为对数概率的参数导数 \(S_a=\partial_a\log P_\vartheta(x)\)，定义 Fisher 信息矩阵为 \(I_{ab}=\mathbb E(S_aS_b)\)。若每个设置有 \(\nu_s\) 个独立入射电子，并同时记录“\(+\)”与“\(-\)”两类计数，那么单次“\(+\)”结果的得分是 \((\partial_a p_s)/p_s\)，单次“\(-\)”结果的是 \(-(\partial_a p_s)/(1-p_s)\)。按两种结果的概率加权，再对独立观测求和，得到这一二项实验的信息
+\[
+I_{ab}=\sum_{s\in\{0,\pi/2\}}
+\frac{\nu_s\,(\partial_a p_s)(\partial_b p_s)}{p_s(1-p_s)},
+\qquad 0<p_s<1.
+\]
+例如 \(r\ll1\) 且两次曝光同为 \(\nu\) 时，\(p_s(1-p_s)=1/4+O(r^2)\)，由两行导数的正交性可得 \(I_{rr}=\nu+O(\nu r^2)\)、\(I_{\phi\phi}=\nu r^2+O(\nu r^4)\)。估计相位的方差尺度因此随 \(r^{-2}\) 恶化。这里的“方差尺度”并非凭直觉猜测，而是来自下述可以直接证明的界。数学上 \(r>0\) 已可识别，实验上微弱相干仍可能需要很大曝光；这是“能否唯一求出”与“能否稳定求出”的区别。
+
+\begin{proposition}[计数实验的 Cram\'er--Rao 界]
+设参数 \(\vartheta\) 在开区间中，离散结果 \(x\) 的概率 \(P_\vartheta(x)>0\) 可微，且可把有限或绝对收敛的求和与求导交换。记得分 \(S_\vartheta(x)=\partial_\vartheta\log P_\vartheta(x)\) 和信息 \(I(\vartheta)=\mathbb E_\vartheta S_\vartheta^2>0\)。若估计量 \(T(x)\) 在此区间无偏，即 \(\mathbb E_\vartheta T=\vartheta\)，且方差有限，则 \(\operatorname{Var}_\vartheta T\geq I(\vartheta)^{-1}\)。
+\end{proposition}
+\begin{proof}
+由概率归一化求导，\(\mathbb E S_\vartheta=\sum_x\partial_\vartheta P_\vartheta(x)=0\)。由无偏条件求导并用 \(\partial_\vartheta P=P S_\vartheta\)，有 \(1=\mathbb E[(T-\vartheta)S_\vartheta]\)。对随机变量 \(T-\vartheta\) 与 \(S_\vartheta\) 用 Cauchy--Schwarz 不等式，得到 \(1\leq\sqrt{\operatorname{Var}T}\sqrt{I(\vartheta)}\)，平方即证。若 \(P_\vartheta(x)=0\) 或参数处在边界，需要另行检查这些正则条件，不能直接套用此式。
+\end{proof}
+
+若同时估计多个参数，把各偏导排成得分列向量 \(S\)，信息矩阵就是 \(I=\mathbb E(SS^\top)\)。在同样的正则条件下，对无偏估计列向量 \(T\) 求导可得 \(\mathbb E[(T-\vartheta)S^\top]=\mathbf1\)。若 \(I\) 可逆，随机向量 \(Z=T-\vartheta-I^{-1}S\) 的协方差矩阵半正定。展开并用刚才的恒等式，便得到矩阵界 \(\operatorname{Cov}(T)-I^{-1}=\operatorname{Cov}(Z)\succeq0\)。这里 \(A\succeq0\) 的定义是对每个实向量 \(u\) 都有 \(u^\top Au\geq0\)；这也解释了为何信息矩阵不可逆时不能对不可识别方向声称有限误差界。
+
+对只估计相位、把 \(r>0\) 当作已知的局部实验，令 \(\vartheta=\phi\)，刚才的信息给出 \(\operatorname{Var}\widehat\phi\gtrsim1/(\nu r^2)\)。若 \(r\) 也未知，则用上述二维矩阵界；由于 \(r\) 与 \(\phi\) 的导数列在小 \(r\) 时正交，其领先阶仍是 \(I_{\phi\phi}=\nu r^2\)。此界只约束满足所述无偏与正则条件的估计量，绝非保证某个算法必能达到它。
+
+一般地，参数 \(\vartheta=(\vartheta^1,\ldots,\vartheta^p)\) 到结果概率 \(p_j(\vartheta,s)\) 的映射，若不同参数始终产生不同的所有设置概率，称全局可识别；其 Jacobian \(J_{(j,s),a}=\partial p_j(\vartheta,s)/\partial\vartheta^a\) 满列秩是局部一阶可识别的充分条件。秩不足时存在参数微扰 \(u\neq0\) 使 \(Ju=0\)，数据对这一方向的一阶变化为零。
+
+若设置 \(s\) 的预期入射电子数为 \(\nu_s\)，探测通道 \(j\) 的平均计数为 \(\mu_{js}(\vartheta)=\nu_s p_j(\vartheta,s)\)。独立 Poisson 计数 \(N_{js}\) 的对数似然为
+\begin{equation}
+\log\mathcal L(\vartheta)=\sum_{j,s}
+\bigl[N_{js}\log\mu_{js}(\vartheta)-\mu_{js}(\vartheta)-\log(N_{js}!)\bigr].
+\label{eq:feqo-count-likelihood}
+\end{equation}
+由 \(\partial_a\log\mathcal L=\sum (N/\mu-1)\partial_a\mu\)、\(\mathbb E N=\mu\)、\(\operatorname{Var}N=\mu\)，得到 Fisher 信息
+\begin{equation}
+I_{ab}(\vartheta)=\sum_{j,s}\frac{\partial_a\mu_{js}(\vartheta)
+\,\partial_b\mu_{js}(\vartheta)}{\mu_{js}(\vartheta)}.
+\label{eq:feqo-poisson-fisher}
+\end{equation}
+若 \(Ju=0\)，同时有 \(u^\top Iu=0\)。增加曝光时间只放大已有非零信息，不能填补严格零方向。若总计数被实验固定，应改用多项分布似然，不能把相关的分箱计数又当独立 Poisson。
+
+即使 Jacobian 满秩，极小奇异值也会使噪声被放大。对线性化模型 \(y=Ax+\epsilon\)，令 \(W\) 为噪声权重，\(Lx\) 为希望平滑或压小的量。Tikhonov 估计最小化 \(\|Ax-y\|_W^2+\lambda\|Lx\|^2\)，其一阶条件为
+\begin{equation}
+(A^\dagger WA+\lambda L^\dagger L)\widehat x_\lambda=A^\dagger Wy.
+\label{eq:feqo-tikhonov}
+\end{equation}
+在无噪声 \(y=Ax_*\) 下，只要左矩阵可逆，偏差为 \(\widehat x_\lambda-x_*=-\lambda(A^\dagger WA+\lambda L^\dagger L)^{-1}L^\dagger Lx_*\)。正则化稳定小奇异值，也引入可计算偏差；\(\lambda\) 应由独立验证数据、预测风险或明确的先验选择，不能称作物理退相干率。
+
+计数涨落可以通过\cref{eq:feqo-count-likelihood} 的重复抽样或信息矩阵估计；束流强度、响应核标定和参考相位的不确定度要另行传播。优化器收敛阈值只衡量数值误差，不是这些实验误差的替身。
+
+\begin{exercise}
+对\cref{eq:feqo-reference-phase-probability} 求 \(\theta=0,\pi/2\) 时关于 \((r,\phi)\) 的 Jacobian 行列式，说明它在 \(r=0\) 为何为零。
+\end{exercise}

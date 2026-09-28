@@ -1,0 +1,47 @@
+\chapter{分布、Green 算子与反问题}
+\label{chap:math-distributions}
+
+上一章把点源写成 \(L_xG(x,y)=\delta_y\)。它有效地编码了导数跳跃，但 \(\delta_y\) 不是普通函数：一个普通可积函数若只在单点非零，其积分为零，不能表示单位强度点源。要让这个等式有精确意义，应从“源怎样作用在平滑探针上”定义它。
+
+\section{测试函数与分布}
+
+\begin{definition}[测试函数和收敛]
+对开集 \(\Omega\subset\mathbb R^n\)，\(\mathcal D(\Omega)=C_c^\infty(\Omega)\) 是所有支集紧且包含在 \(\Omega\) 内的无限次可微函数的空间。\(\varphi_j\to0\) 于 \(\mathcal D(\Omega)\)，意为所有支集包含在同一个紧集 \(K\Subset\Omega\) 内，且每个多重指标 \(\alpha\) 都满足 \(\sup_K|\partial^\alpha\varphi_j|\to0\)。
+\end{definition}
+
+紧支集让分部积分不产生区域边界项；共同的 \(K\) 则保证“探针趋于零”不会同时跑到无穷远处。这比只要求逐点趋零强。例如 \(\varphi_j(x)=\varphi(x-j)\) 在每个固定点最终为零，却因支集逃走而不在 \(\mathcal D(\mathbb R)\) 的上述意义下趋零。
+
+\begin{definition}[分布]
+\(\mathcal D(\Omega)\) 上连续的复线性泛函称为分布。局部可积函数 \(f\) 定义 \(\langle T_f,\varphi\rangle=\int_\Omega f(x)\varphi(x)\,\dd x\)；点源定义 \(\langle\delta_y,\varphi\rangle=\varphi(y)\)。两者都是分布，但 \(\delta_y\) 不是由普通局部可积函数给出的分布。
+\end{definition}
+
+对支集在固定 \(K\) 的 \(\varphi\)，\(|\varphi(y)|\le\sup_K|\varphi|\)，所以点源确实连续。若想把它当作函数，则其在单点外必须几乎处处为零，与 \(\langle\delta_y,\varphi\rangle=\varphi(y)\) 矛盾。点源的“单位强度”是这条作用规则，而不是一个无穷大的函数值。
+
+\input{content/MathSkills/ch09.tex}
+\input{content/MathSkills/ch10.tex}
+
+\section{基本解什么时候能与源卷积}
+
+在 \(\mathbb R^n\) 上，常系数微分算子 \(L\) 的基本解 \(E\) 满足 \(LE=\delta_0\)。对足够好的源 \(f\)，平移不变性给 \(u=E*f\)，且 \(Lu=(LE)*f=f\)。若 \(f\) 是光滑紧支函数，卷积可用分布作用 \((E*f)(x)=\langle E_y,f(x-y)\rangle\) 定义。对两个任意分布则未必能卷积；若至少一个紧支，定义可以通过测试函数的双重作用延拓。边界 Green 核 \(G(x,y)\) 不具平移不变性，故通常写 \(u(x)=\int G(x,y)f(y)\,\dd y\)，而非 \(G*f\)。
+
+\input{content/MathSkills/ch11.tex}
+\input{content/MathSkills/ch12.tex}
+
+\section{正则化方程为什么有唯一解}
+
+\begin{proposition}[Tikhonov 正规方程]
+设 \(K:X\to Y\) 为 Hilbert 空间间的有界线性算子，\(y\in Y\)，\(\alpha>0\)。泛函 \(J_\alpha(x)=\|Kx-y\|_Y^2+\alpha\|x\|_X^2\) 有唯一极小点 \(x_\alpha\)，且
+\[
+(K^*K+\alpha I)x_\alpha=K^*y.
+\]
+\end{proposition}
+\begin{proof}
+写 \(B=K^*K+\alpha I\)。它有界、自伴，且 \(\langle x,Bx\rangle=\|Kx\|^2+\alpha\|x\|^2\ge\alpha\|x\|^2\)。Cauchy--Schwarz 推出 \(\|Bx\|\ge\alpha\|x\|\)，故 \(B\) 的像闭且核为零。又 \(\operatorname{Ran}(B)^\perp=\ker B^*=\ker B=\{0\}\)，所以像也稠密，只能等于 \(X\)。正规方程因而有唯一解。令该解为 \(x_\alpha\)，对任意 \(h\in X\) 展开平方并使用 \(Bx_\alpha=K^*y\)，得到
+\[
+J_\alpha(x_\alpha+h)-J_\alpha(x_\alpha)
+=\|Kh\|^2+\alpha\|h\|^2.
+\]
+右端仅在 \(h=0\) 时为零，故解是唯一极小点。
+\end{proof}
+
+正规方程使不稳定的形式逆变成稳定的有界求解，但 \(\alpha\) 也引入偏差。它与噪声水平的关系要在具体奇异值算例里看清。
