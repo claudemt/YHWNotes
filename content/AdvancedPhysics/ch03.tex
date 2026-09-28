@@ -3,14 +3,12 @@
 
 零外场 Ising 模型的配分函数含有 \(2^{|\mathsf V|}\) 个自旋配置，看上去只能逐项相加。真正的简化来自一个很朴素的事实：对某个自旋 \(\sigma_x=\pm1\) 求和时，奇次幂相消，偶次幂相加。于是，展开 Boltzmann 因子以后，只有每个顶点都连接偶数条已选边的边集能够留下来。
 
-这一章先用图论语言把“偶数条边”写清楚，再引入边界算子和同调。所有概念都从有限集合与线性代数开始。平面对偶、环面上的四个绕行扇区以及 Gauss--Bonnet 公式，会在确有需要时依次出现。
+数学预备已经把路径、树、圈与割当作图本身的对象证明过。现在每条边另有一个热力学权重；我们要看自旋求和如何挑选允许的边集，以及同一套边界语言如何计算两点关联。到了平面上，面与对偶边又会给这些边集另一种读法。
 
 \subsection{有限图与高温展开}
 \label{sec:phys-sm-high-temp}
 
-\begin{definitionplain}[有限图]
-有限图 \(G=(\mathsf V,\mathsf E)\) 由有限顶点集 \(\mathsf V\) 和有限边集 \(\mathsf E\) 组成。一条非自环边 \(e=\{x,y\}\) 连接两个不同顶点；自环的两个端点相同。边集 \(\mathscr A\subseteq\mathsf E\) 在顶点 \(x\) 的度数，记为 \(\deg_{\mathscr A}(x)\)，是 \(\mathscr A\) 中与 \(x\) 相接的边端数。
-\end{definitionplain}
+沿用数学预备的有限图定义，把顶点集、边集分别记为 \(\mathsf V,\mathsf E\)。对每条边 \(e\)，任意选一个端点顺序 \(s(e),t(e)\)；下面的乘积只含 \(\sigma_{s(e)}\sigma_{t(e)}\)，交换顺序不会改变它。
 
 零外场 Ising 配分函数为
 \[
@@ -76,165 +74,41 @@ Z_G
 \sum_{\partial_1\mathscr A=0}\prod_{e\in\mathscr A}x_e}.
 \label{eq:phys-sm-correlation-expansion}
 \end{equation}
-这里的边界记号将在下一节定义。式
-\eqnrefs{eq:phys-sm-correlation-expansion} 的分子可以想成一条从 \(a\) 到 \(b\) 的开线，再叠加任意闭合涨落；不同开线的权重仍须按实际边集逐边计算，不能把对称差错误地当成普通乘法。
+这里的 \(\partial_1\) 是数学预备定义的模二边界算子。分子所需的边集在 \(a,b\) 处为奇度，在其他点为偶度；下一段把它们精确写成一条开路径加一个圈空间元素。
 
-\subsection{模二链、边界与圈空间}
+\subsection{偶子图与带源路径}
 
-只关心一条边是否被选中时，系数 \(0,1\) 已经足够。它们按模二规则相加：\(1+1=0\)。这个二元域记为
-\(\mathbb F_2\)。两个边集的和就是对称差，因为同时出现的边被消去。
-
-\begin{definitionplain}[链空间与边界算子]
-定义
-\begin{equation}
-C_0(G)=\mathbb F_2^{\mathsf V},
-\qquad
-C_1(G)=\mathbb F_2^{\mathsf E}.
-\label{eq:phys-sm-chain-spaces}
-\end{equation}
-\(C_0\) 的元素叫 \(0\)-链，可看成顶点子集；\(C_1\) 的元素叫
-\(1\)-链，可看成边子集。边界算子
-\begin{equation}
-\partial_1:C_1(G)\longrightarrow C_0(G)
-\label{eq:phys-sm-boundary-operator-1}
-\end{equation}
-对非自环 \(e=\{x,y\}\) 定义为
-\(\partial_1e=x+y\)，对自环定义为零，再按线性延拓。
-\end{definitionplain}
-
-由于同一顶点上出现两次便在 \(\mathbb F_2\) 中消去，
-\(\partial_1\mathscr A\) 正好由 \(\mathscr A\) 的奇度顶点组成。
-
-\begin{definitionplain}[圈空间]
-边界为零的 \(1\)-链称为闭链。全体闭链组成圈空间
-\begin{equation}
-Z_1(G)=\ker\partial_1
-=\{\mathscr A:\deg_{\mathscr A}(x)\equiv0\pmod2\},
-\label{eq:phys-sm-cycle-space-definition}
-\end{equation}
-其中的元素可以由多条回路组成，不一定是一条简单闭曲线。
-\end{definitionplain}
-
-固定每条边的任意方向并写出关联矩阵
-\(\mathsf I_G\)。一条非自环边所在列，在两个端点行各有一个 \(1\)；自环列为零。于是
-\begin{equation}
-\partial_1a=\mathsf I_Ga,
-\qquad
-Z_1(G)=\ker\mathsf I_G.
-\label{eq:phys-sm-incidence-kernel}
-\end{equation}
-
-\subsection{圈空间的维数与具体基}
-\label{sec:phys-sm-cycle-space}
-
-\begin{theorem}[圈秩公式]
-若图 \(G\) 有 \(c(G)\) 个连通分支，则
-\begin{equation}
-\operatorname{rank}_{\mathbb F_2}\mathsf I_G
-=|\mathsf V|-c(G),
-\label{eq:phys-sm-incidence-rank}
-\end{equation}
-并且
-\begin{equation}
-\dim_{\mathbb F_2}Z_1(G)
-=|\mathsf E|-|\mathsf V|+c(G).
-\label{eq:phys-sm-cycle-rank}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-先设 \(G\) 连通，共有 \(n\) 个顶点。关联矩阵每一列含两个 \(1\)，所以全部顶点行之和为零，秩至多为 \(n-1\)。
-
-取一棵生成树 \(T\)。树有 \(n-1\) 条边。删去关联矩阵的一行，再只保留树边对应的 \(n-1\) 列。树总有叶顶点；叶顶点行在其唯一相邻树边列上为 \(1\)，可作为一个消元主元。删去该叶和这条边，重复此过程，最终得到 \(n-1\) 个主元。因此秩至少为 \(n-1\)，从而恰为 \(n-1\)。
-
-各连通分支分别给出 \(|V_i|-1\)，相加便得
-\eqnrefs{eq:phys-sm-incidence-rank}。最后对线性映射
-\(\partial_1:C_1\to C_0\) 使用秩--零化度定理：
+数学预备中已经证明：若把边集看作模二向量，边界算子 \(\partial_1:C_1(G)\to C_0(G)\) 选出奇度顶点；它的核 \(Z_1(G)\) 是圈空间。固定一棵生成森林后，每条非树边给出一个基本回路，因而
 \[
-\dim Z_1=\dim C_1-\operatorname{rank}\partial_1
-=|\mathsf E|-|\mathsf V|+c(G).
+\dim Z_1(G)=|\mathsf E|-|\mathsf V|+c(G).
 \]
-\end{proof}
+高温展开恰好在这个线性空间上求和。不过“线性空间”只控制哪些边集允许出现，不会让它们的物理权重自动相同；\eqnrefs{eq:phys-sm-kw-even-subgraph-polynomial} 仍须对每个实际边集逐边相乘。
 
-生成树还给出一组可直接画出的基。设 \(G\) 连通，固定生成树 \(T\)。每条非树边 \(e\) 与树中连接其两端点的唯一路径合成一个回路 \(C_e\)。不同 \(C_e\) 各含一条只属于自己的非树边，所以它们线性无关；其数目
-\(|\mathsf E|-|\mathsf V|+1\) 又等于圈空间维数，因此构成一组基。
-
-\begin{theorem}[偶子图的回路分解]
-\label{thm:phys-sm-even-subgraph-cycles}
-任意 \(\mathscr A\in Z_1(G)\) 都能写成有限条边简单回路的对称差。
-\end{theorem}
-
-\begin{proof}
-若 \(\mathscr A\) 为空，结论成立。否则，从其中任意一条边出发沿未使用的边前进。每次进入一个顶点时，因为该顶点在 \(\mathscr A\) 中的度数为偶数，除进入边外仍有未配对的离开边。图是有限的，所以行走终会第一次回到已经到过的顶点；这段行程形成一条简单回路 \(C\)。
-
-从 \(\mathscr A\) 中删去 \(C\) 的边，等价于取对称差
-\(\mathscr A\mathbin{\triangle}C\)。每个顶点被删去零条或两条边，余下的图仍为偶子图，而且边数严格减少。按边数归纳，重复这个过程直到没有边为止。
-\end{proof}
-
-\subsection{割空间与带源方程}
-
-关联矩阵的转置把顶点函数送到边函数：
-\begin{equation}
-\mathsf I_G^{\mathsf T}:C_0(G)\longrightarrow C_1(G).
-\label{eq:phys-sm-cut-map}
-\end{equation}
-若顶点函数是某个顶点集合的示性函数，它的像正好选出横跨该集合与补集的边。这些边集张成割空间
-\begin{equation}
-\mathcal C^*(G)=\operatorname{im}\mathsf I_G^{\mathsf T}.
-\label{eq:phys-sm-cut-space}
-\end{equation}
-
-在 \(C_1(G)\) 上定义模二内积
-\(\langle a,b\rangle=\sum_ea_eb_e\)。若 \(a\) 是闭链，则
-\[
-\langle a,\mathsf I_G^{\mathsf T}u\rangle
-=\langle\mathsf I_Ga,u\rangle=0.
-\]
-这说明一条闭链穿过任意割的次数为偶数。再比较维数，得到
-\begin{equation}
-Z_1(G)=\mathcal C^*(G)^\perp.
-\label{eq:phys-sm-cycle-cut-orthogonality}
-\end{equation}
-这里的等号不能理解成 \(C_1=Z_1\oplus\mathcal C^*\)；在特征二的域上，两空间可能有非零交集。
-
-现在给定 \(j\in C_0(G)\)，考虑
-\begin{equation}
-\partial_1\mathscr A=j.
-\label{eq:phys-sm-general-source-boundary}
-\end{equation}
-
-\begin{proposition}[带源解集是仿射空间]
-方程 \eqnrefs{eq:phys-sm-general-source-boundary} 可解，当且仅当每个连通分支中 \(j\) 所含顶点数为偶数。若 \(\mathscr A_0\) 是一个解，则全部解为
-\begin{equation}
-\{\mathscr A:\partial_1\mathscr A=j\}
-=\mathscr A_0+Z_1(G).
-\label{eq:phys-sm-affine-source-space}
-\end{equation}
-\end{proposition}
-
-\begin{proof}
-每条边贡献两个端点，所以任意边界在每个连通分支中都有偶数个顶点。反过来，把同一分支中的源顶点两两配对，并为每一对选一条连接路径；这些路径的模二和就是一个解。
-
-若 \(\mathscr A_1,\mathscr A_2\) 都是解，则
-\(\partial_1(\mathscr A_1+\mathscr A_2)=j+j=0\)，所以两解之差属于 \(Z_1\)。反过来，
-\(\partial_1(\mathscr A_0+z)=j\) 对每个 \(z\in Z_1\) 成立。
-\end{proof}
-
-对二点源 \(j=a+b\)，任取一条从 \(a\) 到 \(b\) 的路径
-\(\mathscr P_{ab}\)，便有
+插入两个自旋 \(\sigma_a\sigma_b\) 时，幸存边集的边界变成 \(a+b\)。任选一条从 \(a\) 到 \(b\) 的路径 \(\mathscr P_{ab}\)，数学预备中的带源方程给出
 \begin{equation}
 \{\mathscr A:\partial_1\mathscr A=a+b\}
 =\mathscr P_{ab}+Z_1(G).
 \label{eq:phys-sm-affine-cycle-coset}
 \end{equation}
-这正是式 \eqnrefs{eq:phys-sm-correlation-expansion} 中“开线加闭合涨落”的准确含义。
+若 \(a,b\) 不在同一连通分支，方程无解，零场二点函数也为零。若在同一分支，右边列出了所有能对分子作贡献的边集；对称差是列举边集的运算，不是 Boltzmann 权重的乘法规则。
+
+四顶点方环给出一个可完整列举的检验。按顺序把边记为 \(e_1=12,e_2=23,e_3=34,e_4=41\)，令 \(x_i=\tanh K_{e_i}\)。圈空间只有空集与整条方环，故
+\[
+\mathcal Z_G=1+x_1x_2x_3x_4.
+\]
+取 \(a=1,b=2\)，边界为 \(1+2\) 的边集恰有 \(\{e_1\}\) 和 \(\{e_2,e_3,e_4\}\)。\eqnrefs{eq:phys-sm-correlation-expansion} 因此成为
+\[
+\langle\sigma_1\sigma_2\rangle
+=\frac{x_1+x_2x_3x_4}{1+x_1x_2x_3x_4}.
+\]
+分子中第二项是绕方环另一侧到达同一端点的路径；分母中的回路项修正了配分函数的归一化。这一次计算也说明为什么不能只数圈空间的维数就宣称已经算出了关联函数。
 
 \subsection{平面嵌入、Euler 公式与面边界}
 \label{sec:phys-sm-planar-duality}
 
-\begin{definitionplain}[胞腔平面嵌入]
+\begin{definition}[胞腔平面嵌入]
 把连通图画在球面上，若边只在公共端点相交，并且图的补集每个连通分支都同胚于开圆盘，就称为胞腔嵌入。这些圆盘分支称为面，面集记为 \(\mathsf F\)。在平面图中，无界外部区域也算一个面。
-\end{definitionplain}
+\end{definition}
 
 每个原图面 \(f\) 对应对偶图 \(G^*\) 的一个顶点；每条原图边 \(e\) 对应一条穿过它的对偶边 \(e^*\)，连接 \(e\) 两侧的面。桥的两侧是同一面，所以它对应对偶自环。
 
@@ -334,7 +208,7 @@ C_2\xrightarrow{\partial_2}C_1\xrightarrow{\partial_1}C_0,
 \]
 所以每个面边界都是闭链，但闭链未必都是面边界。
 
-\begin{definitionplain}[第一同调]
+\begin{definition}[第一同调]
 第一同调空间定义为
 \begin{equation}
 H_1(\Sigma;\mathbb F_2)
@@ -342,7 +216,7 @@ H_1(\Sigma;\mathbb F_2)
 \label{eq:phys-sm-first-homology}
 \end{equation}
 两个闭链代表同一个同调类，当且仅当它们的差是若干面边界。换言之，同调只保留不能靠局部填面消去的全局绕行。
-\end{definitionplain}
+\end{definition}
 
 闭可定向曲面 \(\Sigma_g\) 的亏格 \(g\) 是“环柄”的数目：球面 \(g=0\)，环面 \(g=1\)。这类曲面的 Euler 特征为
 \(\chi(\Sigma_g)=2-2g\)。
@@ -415,7 +289,7 @@ Z_{w_x,w_y}
 
 同调只用到曲面的拼接方式，不需要长度和角度。Gauss--Bonnet 公式则说明，一旦曲面带有度量，局部曲率的总和仍由同一个 Euler 特征决定。下面从微分几何的基本定义开始。
 
-\begin{definitionplain}[Riemann 度量与 Levi--Civita 联络]
+\begin{definition}[Riemann 度量与 Levi--Civita 联络]
 二维光滑流形 \(\Sigma\) 上的 Riemann 度量 \(g\)，是在每个切空间 \(T_p\Sigma\) 上光滑选取的正定内积。联络 \(\nabla\) 若满足
 \[
 X\langle Y,Z\rangle
@@ -423,7 +297,7 @@ X\langle Y,Z\rangle
 \]
 并且
 \(\nabla_XY-\nabla_YX=[X,Y]\)，就分别称为度量相容且无挠。满足这两个条件的联络唯一，称为 Levi--Civita 联络。
-\end{definitionplain}
+\end{definition}
 
 在局部坐标中，唯一性可以直接看出。写
 \(\nabla_{\partial_i}\partial_j=\Gamma^k{}_{ij}\partial_k\)。无挠给出

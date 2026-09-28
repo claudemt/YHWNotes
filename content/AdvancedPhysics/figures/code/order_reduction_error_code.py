@@ -10,7 +10,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from preamble import figure_style, polish_axes, add_legend, save_pdf_png_pair
 
-OUT = Path(__file__).resolve().parents[2] / 'generated' / Path(__file__).resolve().parent.name
+OUT = Path(__file__).resolve().parents[1] / "generated"
 
 nodes, weights = laggauss(96)
 t = np.linspace(-4.0, 4.0, 2001)

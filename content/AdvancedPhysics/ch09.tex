@@ -61,60 +61,36 @@
 \end{equation}
 其中 \(\mathcal C_n\) 是 \(n\) 个标号顶点上的连通简单图。
 
-\begin{proof}[解]
-要说明对配分函数 \(\Xi\) 取对数为何只留下连通图，先把图按连通块分解，再写连通权重的指数生成函数，最后取对数。
-
-图的连通块分解。任意标号图 \(G\) on \(\{1,\ldots,N\}\) 唯一分解为若干连通块 \(G_1\sqcup\cdots\sqcup G_k\)，各块顶点集互斥且无跨块边。若块 \(G_i\) 有 \(n_i\) 个顶点，则 \(\sum_i n_i=N\)，且 Mayer 键乘积因子化：
+\begin{proof}
+记
 \[
- \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}
- =\prod_{i=1}^k\prod_{(j,l)\in\mathsf E(G_i)}\mathfrak f_{jl}.
+W_n=\int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
+\sum_{G\in\mathcal C_n}\prod_{(ij)\in E(G)}\mathfrak f_{ij}.
 \]
-对位置的积分也因此因子化为各块独立积分。这里 \(\mathfrak f_{jl}=\ee^{-\beta V(\mathbf r_j-\mathbf r_l)}-1\) 是 Mayer \(f\)-函数，满足 \(\mathfrak f_{jl}\to0\)（\(|\mathbf r_j-\mathbf r_l|\to\infty\)），保证短程势下积分收敛。
-
-连通块权重的指数生成函数。令 \(W_n\) 表示所有 \(n\)-点连通图的积分权重和：
+每张标号图按其连通分支唯一分成若干块；不同块没有边，故 Mayer 键乘积及位置积分都分别因子化。固定各尺寸块的数目为 \(k_n\)，其中 \(\sum_{n\ge1}nk_n=N\)。把 \(N\) 个标号分到这些块中的方式数是
 \[
- W_n=\int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
- \sum_{G\in\mathcal C_n}
- \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}.
+\frac{N!}{\prod_{n\ge1}(n!)^{k_n}k_n!}.
 \]
-一个一般 \(N\)-点图由连通块 \(G_1,\ldots,G_k\) 组成，块大小 \(n_1,\ldots,n_k\) 满足 \(\sum n_i=N\)。\(N\) 个 label 分配到各块有 \(N!/(n_1!\cdots n_k!)\) 种方式，但块内部已按标号图求和，且块之间无顺序。因此全部图（连通与非连通）的配分函数为
+分母的 \((n!)^{k_n}\) 消去同一块内部标号的排序，\(k_n!\) 消去同尺寸块之间的排序。因此全部图的指数生成函数为
 \[
- \Xi_{\rm cl}
- =\sum_{N=0}^{\infty}\frac{\zeta^N}{N!}
- \sum_{\substack{k\ge0\\n_1+\cdots+n_k=N}}
- \frac{N!}{n_1!\cdots n_k!}
- \prod_{i=1}^k W_{n_i}
- =\prod_{n=1}^{\infty}\sum_{k_n=0}^{\infty}
- \frac{1}{k_n!}\left(\frac{\zeta^nW_n}{n!}\right)^{k_n}
- =\exp\!\left(\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}W_n\right),
+\begin{aligned}
+\Xi_{\rm cl}(\zeta)
+&=\sum_{(k_n)_{n\ge1}}
+\prod_{n\ge1}
+\frac1{k_n!}\left(\frac{\zeta^nW_n}{n!}\right)^{k_n}\\
+&=\prod_{n\ge1}\exp\!\left(\frac{\zeta^nW_n}{n!}\right)
+=\exp\!\left(\sum_{n\ge1}\frac{\zeta^nW_n}{n!}\right).
+\end{aligned}
 \]
-其中 \(k_n\) 是大小为 \(n\) 的连通块个数，最后一步用了 \(\sum_{k=0}^\infty x^k/k!=\ee^x\)。这一步的代数本质是指数公式（指数公式）：集合分拆的指数生成函数等于其连通分量的指数生成函数的指数。
-
-取对数。对上式取对数立即得到\eqnrefs{eq:phys-sm-general-mayer}：
-\[
- \log\Xi_{\rm cl}
- =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}W_n
- =\sum_{n=1}^{\infty}\frac{\zeta^n}{n!}
- \int_{\mathcal V^n}\prod_{i=1}^n\dd^3r_i
- \sum_{G\in\mathcal C_n}
- \prod_{(j,l)\in\mathsf E(G)}\mathfrak f_{jl}.
-\]
-非连通图并未被"忽略"：它们由连通块权重的指数自动重建。取对数的效果恰好剥离了这一指数结构，只留下连通扇区。
-
-对 \(n=2\)，连通简单图只有一条边，\(\mathcal C_2=\{(12)\}\)，故
-\begin{equation*}
- W_2=\int_{\mathcal V^2}\dd^3r_1\dd^3r_2\,\mathfrak f_{12}
- \xrightarrow{\mathcal V\to\infty}
- \mathcal V\int_{\mathbb R^3}\dd^3r\,\bigl(\ee^{-\beta V(r)}-1\bigr),
-\end{equation*}
-代入 \(\log\Xi=\zeta W_1+\zeta^2W_2/2+\cdots\) 并与位力展开比较，得经典第二位力系数
-\begin{equation*}
- B_2^{\rm cl}=-\frac12\int_{\mathbb R^3}\dd^3r\,\bigl(\ee^{-\beta V(r)}-1\bigr),
-\end{equation*}
-即 Mayer 第二位力积分。对硬球势 \(V(r)=\infty\,(r<d)\)、\(0\,(r>d)\)，积分给出 \(B_2=2\pi d^3/3\)，即四倍硬球体积。
-
-量子气体中 Mayer 键被正则迹 \(Q_n\) 替代，连通性由累积量结构保证：\(\log\Xi=\sum b_nz^n\) 中 \(b_n\) 是 \(Q_1,\ldots,Q_n\) 的多项式，恰好删除所有非连通分拆。此结构在量子场论中对应 Feynman 图的连通图定理：\(\log Z[J]\) 的生成泛函只含连通图，是统计力学与 QFT 共用的组合骨架。
+这些式子先作为逸度 \(\zeta\) 的形式幂级数恒等式成立；在收敛域内才进一步作为解析函数使用。取对数即得式\cref{eq:phys-sm-general-mayer}。
 \end{proof}
+
+二阶时只有一张连通标号图，即顶点 \(1,2\) 之间的一条边。于是 \(W_2=\int_{\mathcal V^2}\mathfrak f_{12}\,\dd^3r_1\dd^3r_2\)。在大体积极限中，平移不变性给 \(W_2/\mathcal V\to\int_{\mathbb R^3}\mathfrak f(\mathbf r)\,\dd^3r\)，故经典第二位力系数为
+\[
+B_2^{\rm cl}=-\frac12\int_{\mathbb R^3}
+\bigl(\ee^{-\beta u(\mathbf r)}-1\bigr)\,\dd^3r .
+\]
+硬球直径为 \(d\) 时，括号内在 \(|\mathbf r|<d\) 为 \(-1\)，外面为 \(0\)；积分得到 \(B_2^{\rm cl}=2\pi d^3/3\)。这个数值检验也说明 \(W_2/2!\) 中的阶乘不可漏掉。
 
 稳定性和可积性还给出团簇展开的一个充分收敛域。例如 Penrose--Ruelle 型估计可写成
 \begin{equation}
@@ -165,42 +141,22 @@
 \end{align}
 这些是巨-正则累积量。\(b_3\) 已经含真正的三体连通扇区，因此不能由二体 Beth--Uhlenbeck 相移公式简单延拓得到。
 
-\begin{proof}[解]
-巨配分函数的 Taylor 展开为
-\begin{equation*}
- u(z)=zQ_1+z^2Q_2+z^3Q_3+O(z^4),
- \qquad \Xi=1+u.
-\end{equation*}
-累积量生成函数是 $\log\Xi=\log(1+u)$。对 $|u|<1$ 使用 Taylor 展开
-\begin{equation*}
- \log(1+u)=u-\frac{u^2}{2}+\frac{u^3}{3}+O(u^4).
-\end{equation*}
-此展开的收敛半径为 1，对应 $|z|<z_0$ 的小逸度区；在相变处收敛半径触及奇点，累积量展开失效。
-
-由 $u(z)$ 的展开式，
-\begin{align*}
- u^2
- &=\bigl(zQ_1+z^2Q_2+O(z^3)\bigr)^2
- =z^2Q_1^2+2z^3Q_1Q_2+O(z^4),\\
- u^3
- &=\bigl(zQ_1+O(z^2)\bigr)^3
- =z^3Q_1^3+O(z^4).
-\end{align*}
-交叉项 $2z^3Q_1Q_2$ 来自 $(zQ_1)(z^2Q_2)+(z^2Q_2)(zQ_1)$。$u^3$ 中 $z^3Q_1^3$ 来自 $(zQ_1)^3$，其余项至少含一个 $O(z^2)$ 因子故为 $O(z^4)$。
-
-把 $u=zQ_1+z^2Q_2+z^3Q_3$ 代入 $\log\Xi=\log(1+u)$，展开到 $z^3$ 阶：
-\begin{align*}
- \log\Xi
- &=\bigl(zQ_1+z^2Q_2+z^3Q_3\bigr)
-  -\frac{1}{2}\bigl(z^2Q_1^2+2z^3Q_1Q_2\bigr)
-  +\frac{1}{3}\bigl(z^3Q_1^3\bigr)+O(z^4)\\
- &=zQ_1
-  +z^2\left(Q_2-\frac{Q_1^2}{2}\right)
-  +z^3\left(Q_3-Q_1Q_2+\frac{Q_1^3}{3}\right)
-  +O(z^4).
-\end{align*}
-
-由\eqnrefs{eq:phys-sm-cluster-convention}，$\log\Xi=\sum_{n\ge1}b_nz^n$，逐次比较 $z$、$z^2$、$z^3$ 的系数即得到\eqnrefs{eq:phys-sm-b1-canonical}--\eqnrefs{eq:phys-sm-b3-canonical}。
+\begin{proof}
+写 \(u=zQ_1+z^2Q_2+z^3Q_3+O(z^4)\)，则在形式幂级数环中
+\[
+u^2=z^2Q_1^2+2z^3Q_1Q_2+O(z^4),
+\qquad
+u^3=z^3Q_1^3+O(z^4).
+\]
+把两式代入 \(\log(1+u)=u-u^2/2+u^3/3+O(z^4)\)，得到
+\[
+\log\Xi
+=zQ_1
++z^2\!\left(Q_2-\frac{Q_1^2}{2}\right)
++z^3\!\left(Q_3-Q_1Q_2+\frac{Q_1^3}{3}\right)
++O(z^4).
+\]
+与式\cref{eq:phys-sm-cluster-convention}逐阶比较，便是所列三式。这里先比较的是形式系数；对数级数的实际收敛半径还取决于具体模型，不能单凭 \(\log(1+u)\) 在 \(u\) 平面的半径就断定相变位置。
 \end{proof}
 
 设单粒子内部 Hilbert 空间维数为 \(d_{\rm int}\)，且所有内部态等能。理想气体满足
@@ -211,55 +167,36 @@
 \end{equation}
 这里不从压力级数整体提出 \(d_{\rm int}\)。因此若另一约定定义“每个自旋分量的 \(\bar b_n\)”，两套系数会相差相应的整体内部简并度。
 
-\begin{proof}[解]
-理想巨配分函数。单粒子色散 $\varepsilon_{\mathbf p}=p^2/(2m)$，内部 Hilbert 空间维数 $d_{\rm int}$。理想巨配分函数（$\eta=+1$ Bose，$\eta=-1$ Fermi）满足
-\begin{equation*}
- \log\Xi_0
- =-\eta d_{\rm int}
- \sum_{\mathbf p}
- \log\left(1-\eta z\,\ee^{-\beta\varepsilon_{\mathbf p}}\right).
-\end{equation*}
-此式来自巨配分函数的乘积形式 \(\Xi_0=\prod_{\mathbf p,\sigma}(1-\eta z\ee^{-\beta\varepsilon_{\mathbf p}})^{-\eta}\)，取对数后对内部态 \(\sigma\) 求和给出 \(d_{\rm int}\) 因子。Bose 情形 \(\eta=+1\) 要求 \(|z|<1\) 以保证收敛；Fermi 情形 \(\eta=-1\) 对任意 \(z\) 解析。
+\begin{proof}
+单粒子能量为 \(\varepsilon_{\mathbf p}=p^2/(2m)\)。Bose 与 Fermi 两种统计可统一写成
+\[
+\log\Xi_0=-\eta d_{\rm int}
+\sum_{\mathbf p}\log(1-\eta z\ee^{-\beta\varepsilon_{\mathbf p}}).
+\]
+先取 \(|z|<1\)，逐项展开对数：
+\[
+\log\Xi_0
+=d_{\rm int}\sum_{n\ge1}\frac{\eta^{n+1}z^n}{n}
+\sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}.
+\]
+在三维热力学极限中，动量和的每体积极限由 Gaussian 积分给出
+\[
+\frac1{\mathcal V}\sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}
+\longrightarrow
+\frac1{(2\pi\hbar)^3}\int_{\mathbb R^3}
+\ee^{-n\beta p^2/(2m)}\,\dd^3p
+=\frac1{\lambda_T^3n^{3/2}}.
+\]
+因此 \(\mathcal V^{-1}\log\Xi_0
+=\lambda_T^{-3}\sum_{n\ge1}
+d_{\rm int}\eta^{n+1}z^n/n^{5/2}\)，与式\cref{eq:phys-sm-cluster-convention}比较即得结论。这里的 \(n^{-1}\) 来自对数，\(n^{-3/2}\) 来自动量积分。Fermi 配分函数在正实逸度上可继续定义，但这并不使它在 \(z=0\) 的上述 Taylor 级数具有无限收敛半径。
 
-展开对数。利用 Taylor 展开
-\begin{equation*}
- -\eta\log(1-\eta x)
- =\sum_{n=1}^{\infty}\frac{\eta^{n+1}}{n}\,x^n,
-\end{equation*}
-（Bose 时 $\eta=+1$，得 $-\log(1-x)=\sum x^n/n$；Fermi 时 $\eta=-1$，得 $\log(1+x)=\sum(-1)^{n+1}x^n/n$），代入第一步，
-\begin{equation*}
- \log\Xi_0
- =d_{\rm int}\sum_{n=1}^{\infty}\frac{\eta^{n+1}}{n}\,z^n
- \sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}.
-\end{equation*}
-注意指数中 \(n\beta\) 而非 \(\beta\)：第 \(n\) 项对应 \(n\) 个粒子在同一动量态的"环图"贡献，等效温度 \(T/n\)。
-
-热力学极限。动量和在热力学极限下化为积分，
-\begin{equation*}
- \sum_{\mathbf p}\ee^{-n\beta p^2/(2m)}
- \xrightarrow{\mathcal V\to\infty}
- \frac{\mathcal V}{(2\pi\hbar)^3}\int\ee^{-n\beta p^2/(2m)}\dd^3p
- =\frac{\mathcal V}{\lambda_T^3\,n^{3/2}},
-\end{equation*}
-其中 $\lambda_T=(2\pi\hbar^2\beta/m)^{1/2}$ 是热波长，$n^{-3/2}$ 来自三维 Gauss 积分
-\begin{equation*}
- \int_{\mathbb R^3}\ee^{-n\beta p^2/(2m)}\dd^3p
- =\left(\frac{2\pi m}{n\beta}\right)^{3/2}
- =\frac{(2\pi\hbar)^3}{\lambda_T^3\,n^{3/2}}.
-\end{equation*}
-
-合并。
-\begin{equation*}
- \log\Xi_0
- =\frac{\mathcal V}{\lambda_T^3}
- \sum_{n=1}^{\infty}
- \frac{d_{\rm int}\,\eta^{n+1}}{n^{5/2}}\,z^n.
-\end{equation*}
-与团簇展开 $\log\Xi=\sum_n b_n z^n$ 比较，$b_n=d_{\rm int}\,\eta^{n+1}/n^{5/2}$，即\eqnrefs{eq:phys-sm-ideal-cluster}。$n^{-5/2}=n^{-1}\cdot n^{-3/2}$ 中，$n^{-1}$ 来自对数展开，$n^{-3/2}$ 来自动量积分。
-
-Bose 气体 \(\eta^{n+1}=+1\)，所有 \(b_n>0\)，对应有效吸引（聚束倾向）；Fermi 气体 \(\eta^{n+1}=(-1)^{n+1}\)，\(b_n\) 交替变号，对应有效排斥（Pauli 不相容）。第二位力系数 \(B_2=-\lambda_T^3 b_2/b_1^2=-\eta\,\lambda_T^3/(2^{5/2})\)：Bose 为负（吸引修正），Fermi 为正（排斥修正），与经典 \(B_2=0\) 的差异即交换效应。
-
-若单粒子色散改为 \(\varepsilon_p=\sqrt{p^2c^2+m^2c^4}-mc^2\)，Gauss 积分被 Bessel 函数 \(K_2(n\beta mc^2)\) 替代，团簇系数不再是简单的 \(n^{-5/2}\) 而含相对论修正因子。在非相对论极限 \(\beta mc^2\gg1\) 下 \(K_2(x)\sim\sqrt{\pi/(2x)}\ee^{-x}\) 退化为经典结果。
+特别地，\(b_1=d_{\rm int}\)、\(b_2=d_{\rm int}\eta/2^{5/2}\)。代入式\cref{eq:phys-sm-virial-b2}，得到
+\[
+B_2^{(0)}
+=-\frac{\eta\,\lambda_T^3}{d_{\rm int}2^{5/2}}.
+\]
+内部简并度在压力中是整体因子，在改用\emph{总粒子数密度}作变量后却出现在分母；若忽略这一步，就会把有自旋粒子的交换位力系数算大 \(d_{\rm int}\) 倍。
 \end{proof}
 
 \section{位力展开与一般二体团簇}
@@ -291,45 +228,29 @@ Bose 气体 \(\eta^{n+1}=+1\)，所有 \(b_n>0\)，对应有效吸引（聚束�
 \end{align}
 因此 \(b_n\) 无量纲，而 \([B_n]=\text{length}^{3(n-1)}\)。
 
-\begin{proof}[解]
-定义 \(x=\varrho\lambda_T^3\)，则
+\begin{proof}
+令 \(x=\varrho\lambda_T^3\)。由式\cref{eq:phys-sm-density-cluster}，
+\(x=b_1z+2b_2z^2+3b_3z^3+O(z^4)\)。设
+\(z=A_1x+A_2x^2+A_3x^3+O(x^4)\)。代入并比较 \(x,x^2,x^3\) 的系数，依次得到
 \[
- x=b_1z+2b_2z^2+3b_3z^3+O(z^4).
+b_1A_1=1,\qquad
+b_1A_2+2b_2A_1^2=0,\qquad
+b_1A_3+4b_2A_1A_2+3b_3A_1^3=0.
 \]
-此式来自 \(\varrho=z\partial_z\log\Xi/\mathcal V=\lambda_T^{-3}\sum_{j\ge1}jb_jz^j\)，乘以 \(\lambda_T^3\) 即得 \(x\)。设
+解出
 \[
- z=A_1x+A_2x^2+A_3x^3+O(x^4).
+A_1=b_1^{-1},\qquad
+A_2=-2b_2b_1^{-3},\qquad
+A_3=8b_2^2b_1^{-5}-3b_3b_1^{-4}.
 \]
-逐阶比较给出
+再代入 \(\beta P\lambda_T^3=b_1z+b_2z^2+b_3z^3+O(z^4)\)，得到
 \[
- A_1=\frac1{b_1},
- \qquad
- A_2=-\frac{2b_2}{b_1^3},
- \qquad
- A_3=\frac{8b_2^2}{b_1^5}-\frac{3b_3}{b_1^4}.
+\beta P\lambda_T^3
+=x-\frac{b_2}{b_1^2}x^2
++\left(\frac{4b_2^2}{b_1^4}
+-\frac{2b_3}{b_1^3}\right)x^3+O(x^4).
 \]
-具体推导：把 \(z=A_1x+A_2x^2+A_3x^3\) 代入 \(x=b_1z+2b_2z^2+3b_3z^3\)，
-\begin{align*}
- x &= b_1(A_1x+A_2x^2+A_3x^3)
- +2b_2(A_1^2x^2+2A_1A_2x^3)\\
- &\quad+3b_3A_1^3x^3+O(x^4),
-\end{align*}
-比较 \(x\) 系数：\(1=b_1A_1\)，得 \(A_1=1/b_1\)；比较 \(x^2\)：\(0=b_1A_2+2b_2A_1^2\)，得 \(A_2=-2b_2/b_1^3\)；比较 \(x^3\)：\(0=b_1A_3+4b_2A_1A_2+3b_3A_1^3\)，代入前两式得 \(A_3=8b_2^2/b_1^5-3b_3/b_1^4\)。代回
-\[
- \beta P\lambda_T^3=b_1z+b_2z^2+b_3z^3+O(z^4)
-\]
-后，
-\[
- \beta P\lambda_T^3
- =x-\frac{b_2}{b_1^2}x^2
- +\left(
- \frac{4b_2^2}{b_1^4}
- -\frac{2b_3}{b_1^3}
- \right)x^3+O(x^4),
-\]
-恢复 \(x=\varrho\lambda_T^3\) 即得\eqnrefs{eq:phys-sm-virial-b2}--\eqnrefs{eq:phys-sm-virial-b3}。
-
-反演的解析性由隐函数定理保证：只要 \(b_1\neq0\)（理想气体 \(b_1=d_{\rm int}\neq0\) 满足），\(\varrho(z)\) 在 \(z=0\) 附近局部可逆，位力级数收敛半径由最近的团簇级数奇点决定。相变处位力级数发散，对应 \(\varrho(z)\) 的多值性或支点。
+恢复 \(x=\varrho\lambda_T^3\) 即为两条位力系数公式。若团簇级数在原点附近解析且 \(b_1\ne0\)，逆函数定理保证这里的反演在某个邻域内解析；逆级数的实际收敛半径还可能先受 \(\dd x/\dd z=0\) 的点限制，不能只看原团簇级数的最近奇点。
 \end{proof}
 
 位力系数只依赖低阶团簇数据。为了把二阶相互作用部分写成散射信息而不在人为的参考热波长上做选择，先使用有量纲的多组分连通系数，并完成质心--相对运动分离。若组分 \(a\) 的粒子数 \(N_a\) 各自守恒，才可以给每个守恒荷引入独立逸度 \(z_a\)，并写

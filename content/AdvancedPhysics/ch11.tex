@@ -153,6 +153,8 @@ G(x,\xi)=
 \]
 而每个 \(G(\cdot,\xi)\) 都满足简支边界条件，因此积分后的 \(u\) 也满足同一边界条件。取 \(f=q_0\) 并完成分段积分，恰好返回\eqnrefs{eq:phys-cont-uniform-simply-supported-beam}。至此，变分法、四阶边界条件和 Green 函数已经在一个只需常微分方程知识的例子里连成了同一件事；下面再把这些结构推广到二维区域与一般构成张量。
 
+\input{content/AdvancedPhysics/biharmonic_foundations.tex}
+
 \section{一般四阶变分算子}
 
 设 \(\mathcal D\subset\mathbb R^2\) 为有界连通区域。弱形式只要求 Lipschitz 边界；写点态边界算子时再假定边界分段 \(C^2\)，并把角点单独处理。令
@@ -337,7 +339,7 @@ G(x,\xi)=
 
 \section{自伴实现、零模与加权动力学}
 
-先考虑三类经典纯边界。相应的形式定义域为
+先考虑三类经典纯边界。这里使用的弱导数、\(H^2\) 空间与闭二次型的构造已在\eqnrefs{eq:advanced-weak-derivative}及其后的讨论中给出。相应的形式定义域为
 \[
  V_{\mathrm C}=H_0^2(\mathcal D),
  \qquad
@@ -347,7 +349,7 @@ G(x,\xi)=
 \]
 把\eqnrefs{eq:phys-cont-general-bending-form} 限制在这些空间上，第一表示定理生成非负自伴算子 \(\mathsf L_X\)（\(X=\mathrm C,\mathrm S,\mathrm F\)），满足
 \begin{equation}
- a_{\mathsf C}[u,v]=\langle \mathsf L_Xu,v\rangle_{L^2(\mathcal D)},
+ a_{\mathsf C}[u,v]=\langle v,\mathsf L_Xu\rangle_{L^2(\mathcal D)},
  \qquad u\in D(\mathsf L_X),\quad v\in V_X.
  \label{eq:phys-cont-form-operator}
 \end{equation}
@@ -370,6 +372,44 @@ G(x,\xi)=
 \end{equation}
 其余谱由有限重数正本征值组成，并且 \(\lambda_n\to\infty\)。
 \end{theorem}
+
+\begin{proof}[解]
+\eqnrefs{eq:phys-cont-fourth-ellipticity} 首先给出 Hessian 的上下界
+\begin{equation*}
+ c_0\|\nabla^2u\|_{L^2}^2
+ \le a_{\mathsf C}[u,u]
+ \le c_1\|\nabla^2u\|_{L^2}^2.
+\end{equation*}
+也就是说，弯曲能控制全部二阶导数。还须利用边界条件控制位移和一阶导数，才能得到完整的 \(H^2\) 范数。
+
+固支与简支的形式定义域都包含在 \(H_0^1(\mathcal D)\) 中。对其中任意 \(u\)，一次分部积分和 Cauchy--Schwarz 不等式给出
+\[
+ \|\nabla u\|_{L^2}^2
+ =-\int_\mathcal D\overline u\,\Delta u\,\dd^2x
+ \le\sqrt2\|u\|_{L^2}\|\nabla^2u\|_{L^2}.
+\]
+再证明 \(\|u\|_{L^2}\le C'\|\nabla^2u\|_{L^2}\)。若不然，可选 \(\|u_n\|_{L^2}=1\) 而 \(\|\nabla^2u_n\|_{L^2}\to0\) 的序列；上式使 \(\|\nabla u_n\|_{L^2}\to0\)。有界区域的 \(H^1\hookrightarrow\hookrightarrow L^2\) 紧嵌入给出 \(L^2\) 收敛子列，其极限梯度为零，在连通区域上只能为常数；零边界迹又迫使这个常数为零，与极限的 \(L^2\) 范数为一矛盾。因此
+\begin{equation*}
+ \|u\|_{H^2}\le C''\|\nabla^2u\|_{L^2}\le C''c_0^{-1/2}\,a_{\mathsf C}[u,u]^{1/2}.
+\end{equation*}
+故二次型强制，零能量只能由 \(u=0\) 实现。常数 \(C'\) 依赖区域的形状，却不依赖具体的 \(u\)。
+
+自由边界没有这样的控制：若 \(a_{\mathsf C}[u,u]=0\)，椭圆下界只能推出 \(\nabla^2u=0\) 几乎处处。连通性于是给出 \(u=a+bx+cy\in\mathcal P_1(\mathcal D)\)，即\eqnrefs{eq:phys-cont-free-kernel}。常数项是横向平移，\(x,y\) 两项是无曲率的整体倾斜。
+
+在正交补 \(\mathcal P_1(\mathcal D)^\perp\) 上，存在模仿射函数的二阶 Poincar\'e 不等式
+\begin{equation*}
+ \|u\|_{H^2}\le C\|\nabla^2u\|_{L^2},
+ \qquad u\perp\mathcal P_1(\mathcal D),
+\end{equation*}
+用反证法证明：若不等式不成立，存在序列 \(\|u_n\|_{H^2}=1\)、\(u_n\perp\mathcal P_1\)、\(\|\nabla^2u_n\|_{L^2}\to0\)。由有界性取 \(H^2\) 弱收敛子列，再由紧嵌入取 \(H^1\) 强收敛子列，设共同极限为 \(u\)。极限满足 \(\nabla^2u=0\)，故 \(u\in\mathcal P_1\)；正交条件又给出 \(u=0\)。于是 \(u_n\to0\) 在 \(H^1\) 中成立，同时二阶导数范数也趋于零，与 \(\|u_n\|_{H^2}=1\) 矛盾。故自由二次型在正交补上强制。
+
+最后考察三种情形的形式范数
+\begin{equation*}
+ \|u\|_a^2=a_{\mathsf C}[u,u]+\|u\|_{L^2}^2
+\end{equation*}
+与相应形式定义域上的 \(H^2\) 范数等价；自由情形用零模上有限维范数等价及其正交补上的估计合并即可。有界区域上 \(H^2(\mathcal D)\hookrightarrow\hookrightarrow L^2(\mathcal D)\) 紧，因此 \((\mathsf L_X+I)^{-1}\) 作为“从 \(L^2\) 到形式定义域的有界映射，再包含进 \(L^2\)”的复合是紧算子。第一表示定理给出自伴性，紧自伴谱定理便给出离散谱 \(\{\lambda_n\}_{n=1}^\infty\)（有限重数，\(\lambda_n\to\infty\)）与完备正交本征系 \(\{\phi_n\}\)。
+
+\end{proof}
 
 自由边界的三个零模有直接几何意义：常数对应整体横向平移，\(x,y\) 对应无曲率刚体倾斜。它们的 Hessian 为零，因此任何只依赖曲率的弯曲能都无法惩罚这些运动。这一结论与材料各向同性无关，只依赖\eqnrefs{eq:phys-cont-fourth-ellipticity} 对 Hessian 的正定性。
 
@@ -401,43 +441,34 @@ G(x,\xi)=
 \end{equation}
 这就是非均匀面质量下的形式精确 Green/预解式解。对自由边界，\(\omega_n=0\) 的三个刚体模也属于这个动力学谱：只要驱动频率 \(\omega\neq0\)，它们在分母中给出有限的 \(-\omega^{-2}\) 惯性响应，不能像静态伪逆那样删除；只有严格静态极限才需要先施加净力和净力矩兼容条件。只有当 \(\mu_A\) 是常数时，动态算子才退化为简单的 \((\mathsf L_X-\mu_A\omega^2I)^{-1}\)；非均匀质量不能被一个常数谱参数吸收。
 
-\begin{proof}[解]
-对三种边界分别建立强制性（能量范数控制 Sobolev 范数），再用 Rellich 紧嵌入得到紧预解式，最后由谱定理给出离散谱。
+为使抽象预解式成为可计算的物理模型，再回到单位正方形上的均匀薄板，取 $D=\mu_A=1$、Navier 边界，并加一个明确的小阻尼项：
+\[
+u_{tt}+2\zeta\omega_{11}u_t+\Delta^2u
+=\operatorname{Re}\{\ee^{-\ii\omega t}\},
+\qquad \omega_{11}=2\pi^2,
+\]
+其中 $\zeta>0$ 无量纲。令 $\phi_{mn}=2\sin(m\pi x)\sin(n\pi y)$；直接积分可验证这些函数在正方形上正交归一，并且 $\Delta^2\phi_{mn}=\omega_{mn}^2\phi_{mn}$，$\omega_{mn}=\pi^2(m^2+n^2)$。均匀载荷在该模态上的投影为 $F_{mn}=\int\phi_{mn}\dd x\dd y$，当 $m,n$ 均为奇数时等于 $8/(mn\pi^2)$，否则为零。设稳态解为 $u=\operatorname{Re}\{U_\omega\ee^{-\ii\omega t}\}$，逐模投影便得到
+\begin{equation}
+U_\omega(x,y)=\sum_{\substack{m,n\ge1\\m,n\ \mathrm{odd}}}
+\frac{8\phi_{mn}(x,y)/(mn\pi^2)}
+{\omega_{mn}^2-\omega^2-2\ii\zeta\omega_{11}\omega}.
+\label{eq:phys-cont-square-modal-response}
+\end{equation}
+每个分母都来自把 $u_{tt}$、$u_t$ 与 $\Delta^2u$ 投影到同一正交模态。\figref{fig:phys-cont-plate-modal-response}用 $\zeta=0.025$、奇数模态 $m,n\le9$ 计算中心频响。$\omega=\omega_{11}$ 时主要是单峰模态；$\omega=5\omega_{11}$ 同时激发简并的 $(1,3)$ 与 $(3,1)$ 模态，位形随之改变，见\figref{fig:phys-cont-plate-modal-shapes}。两幅空间振幅图各自除以本幅最大值，只比较形状；绝对强弱应读频响曲线。
 
-椭圆上下界。\eqnrefs{eq:phys-cont-fourth-ellipticity} 给出 Hessian 层面的夹逼
-\begin{equation*}
- c_0\|\nabla^2u\|_{L^2}^2
- \le a_{\mathsf C}[u,u]
- \le c_1\|\nabla^2u\|_{L^2}^2.
-\end{equation*}
-这是所有后续估计的出发点：能量二次型与 \(H^2\) 半范数等价，只差低阶项 \(\|u\|_{L^2}\)。此估计来自 \(\mathsf M_{\mathsf C}[u]\) 作为 Hessian 的线性变换，其特征值被 \(c_0,c_1\) 控制。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\linewidth]{plate_modal_response.pdf}
+\caption{均匀驱动的简支方板在轻阻尼下的中心频响。纵轴以静态中心挠度归一化；虚线标出前两个受均匀载荷激发的共振频率。}
+\label{fig:phys-cont-plate-modal-response}
+\end{figure}
 
-固支与简支的强制性。在 \(H_0^2(\mathcal D)\)（固支）与 \(H^2(\mathcal D)\cap H_0^1(\mathcal D)\)（简支）上，二阶 Poincar\'e 不等式
-\begin{equation*}
- \|u\|_{H^2}^2\le C\bigl(\|\nabla^2u\|_{L^2}^2+\|u\|_{L^2}^2\bigr)
-\end{equation*}
-中，边界条件强制 \(\|u\|_{L^2}\le C'\|\nabla^2u\|_{L^2}\)（固支时 \(u\) 有零延拓，简支时迹为零），因此
-\begin{equation*}
- \|u\|_{H^2}\le C''\|\nabla^2u\|_{L^2}\le C''c_0^{-1/2}\,a_{\mathsf C}[u,u]^{1/2}.
-\end{equation*}
-故二次型强制，零能量只能由 \(u=0\) 实现——没有零模。Poincar\'e 不等式的常数 \(C'\) 依赖区域直径与边界正则性，但对有界连通区域始终有限。
-
-自由边界的核与正交补上的强制性。自由边界时，\(a_{\mathsf C}[u,u]=0\) 与强椭圆性共同推出 \(\nabla^2u=0\) 几乎处处。连通性因此给出 \(u=a+bx+cy\in\mathcal P_1(\mathcal D)\)，即\eqnrefs{eq:phys-cont-free-kernel}。这三个函数有明确几何意义：常数是横向平移，\(x,y\) 是无曲率刚体倾斜。
-
-在正交补 \(\mathcal P_1(\mathcal D)^\perp\) 上，存在模仿射函数的二阶 Poincar\'e 不等式
-\begin{equation*}
- \|u\|_{H^2}\le C\|\nabla^2u\|_{L^2},
- \qquad u\perp\mathcal P_1(\mathcal D),
-\end{equation*}
-其证明思路是反证法：若不等式不成立，存在序列 \(\|u_n\|_{H^2}=1\)、\(u_n\perp\mathcal P_1\)、\(\|\nabla^2u_n\|_{L^2}\to0\)。由 Rellich 紧嵌入取弱收敛子列 \(u_n\rightharpoonup u\)，极限满足 \(\nabla^2u=0\) 故 \(u\in\mathcal P_1\)，但 \(u\perp\mathcal P_1\) 又强制 \(u=0\)，与 \(\|u_n\|_{H^2}=1\) 矛盾。故自由二次型在正交补上重新强制。
-
-紧预解式与谱定理。三种情形的形式范数
-\begin{equation*}
- \|u\|_a^2=a_{\mathsf C}[u,u]+\|u\|_{L^2}^2
-\end{equation*}
-与相应形式定义域上的 \(H^2\) 范数等价（由前三步的强制性）。有界区域上 Sobolev 嵌入 \(H^2(\mathcal D)\hookrightarrow\hookrightarrow L^2(\mathcal D)\) 是紧的（Rellich 定理），因此形式定义域到 \(L^2\) 的嵌入也紧。由 Kato--Rellich 或直接用紧算子谱定理，表示定理生成的自伴算子具有紧预解式，谱定理便给出离散谱 \(\{\lambda_n\}_{n=1}^\infty\)（有限重数，\(\lambda_n\to\infty\)）与完备正交本征系 \(\{\phi_n\}\)。
-
-\end{proof}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\linewidth]{plate_modal_shapes.pdf}
+\caption{同一方板在 $\omega_{11}$ 与 $5\omega_{11}$ 处的位移振幅。每幅图分别按其最大值归一化，因此颜色只表示模态形状，不能比较两种频率下的绝对振幅。}
+\label{fig:phys-cont-plate-modal-shapes}
+\end{figure}
 
 \section{Green 算子、伪逆与预解式}
 
@@ -494,64 +525,29 @@ G(x,\xi)=
 \end{equation}
 其中 \([f]_\eta=f(\eta^+)-f(\eta^-)\)。若最高阶项前有常数 \(D\)，最后一式变为 \([g''']_\eta=1/D\)。变系数或曲线坐标下应直接对守恒型算子积分；不能把这条笛卡尔常系数跳跃律机械搬到极坐标。
 
-\begin{proof}[解]
-设 \(g_\pm(y)\) 在 \(\eta\) 两侧分别光滑，把 \(g\) 写为分段函数
+\begin{proof}
+对任意在 \(\eta\) 两侧光滑的 \(h\)，把它写成
+\(h=h_-\Theta(\eta-y)+h_+\Theta(y-\eta)\)。分布求导的定义和
+\(\Theta'=\delta\) 给出
 \[
- g(y)=g_-(y)\Theta(\eta-y)+g_+(y)\Theta(y-\eta),
+ \partial_y h=(\partial_yh)_{\rm reg}+[h]_\eta\delta_\eta.
 \]
-其中 \(\Theta\) 为 Heaviside 分布，\(\Theta'=\delta\)。记跳跃 \([f]_\eta=f(\eta^+)-f(\eta^-)\)。先建立分布求导公式。由 Leibniz 律与 \(\Theta(\eta-y)'=-\delta(y-\eta)\)、\(\Theta(y-\eta)'=\delta(y-\eta)\)，
+逐次求导便得到
+\(\partial_y^n h=(\partial_y^n h)_{\rm reg}
++\sum_{j=0}^{n-1}[h^{(n-1-j)}]_\eta\delta_\eta^{(j)}\)。
+应用于 \(L_\alpha=\partial_y^4-2\alpha^2\partial_y^2+\alpha^4\)，其奇异部分恰为
 \[
- \begin{aligned}
- g'(y)
- &=g_-'(y)\Theta(\eta-y)+g_+'(y)\Theta(y-\eta)
- +[g]_\eta\delta(y-\eta),\\
- g''(y)
- &=g_-''(y)\Theta(\eta-y)+g_+''(y)\Theta(y-\eta)
- +[g']_\eta\delta(y-\eta)
- +[g]_\eta\delta'(y-\eta),\\
- g'''(y)
- &=g_-'''(y)\Theta(\eta-y)+g_+'''(y)\Theta(y-\eta)
- +[g'']_\eta\delta(y-\eta)
- +[g']_\eta\delta'(y-\eta)
- +[g]_\eta\delta''(y-\eta),\\
- g^{(4)}(y)
- &=g_-^{(4)}(y)\Theta(\eta-y)+g_+^{(4)}(y)\Theta(y-\eta)
- +[g''']_\eta\delta(y-\eta)
- +[g'']_\eta\delta'(y-\eta)\\
- &\quad
- +[g']_\eta\delta''(y-\eta)
- +[g]_\eta\delta'''(y-\eta).
- \end{aligned}
+ [g]_\eta\delta_\eta'''
+ +[g']_\eta\delta_\eta''
+ +\bigl([g'']_\eta-2\alpha^2[g]_\eta\bigr)\delta_\eta'
+ +\bigl([g''']_\eta-2\alpha^2[g']_\eta\bigr)\delta_\eta.
 \]
-方程 \(L_\alpha g=\delta(y-\eta)\) 展开为
-\[
- g^{(4)}-2\alpha^2 g''+\alpha^4 g=\delta(y-\eta).
-\]
-右端只含 \(\delta\)，不含 \(\delta',\delta'',\delta'''\)。比较两端奇异分布阶数：由 \(g^{(4)}\) 表达式，\(\delta'''\) 系数为 \([g]_\eta\)，故 \([g]_\eta=0\)；在此条件下 \(\delta''\) 系数为 \([g']_\eta\)，故 \([g']_\eta=0\)；再在此条件下 \(\delta'\) 系数为 \([g'']_\eta\)，故 \([g'']_\eta=0\)。即
-\[
- [g]_\eta=[g']_\eta=[g'']_\eta=0.
-\]
-此时 \(g,g',g''\) 跨越 \(\eta\) 连续，分布求导公式简化为
-\[
- \begin{aligned}
- g''(y)
- &=g_-''(y)\Theta(\eta-y)+g_+''(y)\Theta(y-\eta),\\
- g^{(4)}(y)
- &=g_-^{(4)}(y)\Theta(\eta-y)+g_+^{(4)}(y)\Theta(y-\eta)
- +[g''']_\eta\delta(y-\eta).
- \end{aligned}
-\]
-低阶项 \(-2\alpha^2 g''+\alpha^4 g\) 中 \(g\) 与 \(g''\) 均无跳跃，不再产生奇异分布。因此
-\[
- L_\alpha g
- =\left(L_\alpha g\right)_{\rm reg}
- +[g''']_\eta\delta(y-\eta).
-\]
-在 \(\eta\) 两侧 \(g_\pm\) 满足齐次方程 \(L_\alpha g_\pm=0\)，正则部分 \(\left(L_\alpha g\right)_{\rm reg}\) 在分布意义下为零。比较 \(\delta\) 系数即得
-\[
- [g''']_\eta=1,
-\]
-连同前述三个连续条件，即\eqnrefs{eq:phys-cont-fourth-order-green-jump}。若最高阶项前有常数 \(D\)，则 \(Dg^{(4)}\) 给出 \(D[g''']_\eta\delta\)，比较系数得 \([g''']_\eta=1/D\)。
+两侧的正则部分按定义满足齐次方程。令上式等于
+\(\delta_\eta\)，依次比较 \(\delta_\eta'''\)、\(\delta_\eta''\)、
+\(\delta_\eta'\)、\(\delta_\eta\) 的系数，就得到
+\([g]_\eta=[g']_\eta=[g'']_\eta=0\) 与
+\([g''']_\eta=1\)。若最高阶项为 \(D\,g^{(4)}\)，最后一式相应为
+\([g''']_\eta=1/D\)。
 \end{proof}
 
 \section{主符号与 Weyl 高频谱}
@@ -608,7 +604,7 @@ G(x,\xi)=
  \sqrt{\frac{D}{\mu_A}}.
  \label{eq:phys-cont-isotropic-frequency-weyl}
 \end{equation}
-式 \eqnrefs{eq:phys-cont-isotropic-frequency-weyl} 才是下一章薄板振动真正使用的高频结论；把刚度谱的 \(\lambda_n\) 与物理频率 \(\omega_n\) 区分开，可以避免在非均匀质量下误用常系数换元。
+式 \eqnrefs{eq:phys-cont-isotropic-frequency-weyl} 给出薄板振动所需的高频渐近关系。非均匀质量下，刚度谱的 \(\lambda_n\) 与物理频率 \(\omega_n\) 由广义本征值问题联系，只有质量密度为常数时才能使用常系数换元。
 
 \begin{proof}[解]
 先对四阶刚度算子作相空间计数得到 \(\lambda_n\) 渐近，再用酉变换把质量加权本征问题化为标准形式；变换后主符号的相空间体积直接给出 \(\omega_n\) 渐近。

@@ -7,9 +7,12 @@ import sys
 REPO_ROOT = next(p for p in Path(__file__).resolve().parents if (p / 'preamble.py').exists())
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
-from preamble import figure_style, polish_axes, add_legend, save_pdf_png_pair
+from preamble import (
+    REFERENCE_LINE_STYLE, figure_style, polish_axes, add_legend,
+    save_pdf_png_pair,
+)
 
-OUT = Path(__file__).resolve().parents[2] / 'generated' / Path(__file__).resolve().parent.name
+OUT = Path(__file__).resolve().parents[1] / "generated"
 
 kappa = np.linspace(0.0, 4.0, 1601)
 shell = np.ones_like(kappa)
@@ -27,7 +30,8 @@ with figure_style():
     ax.plot(kappa, gaussian, label=r"Gaussian: $e^{-\kappa_{\rm src}^2/2}$")
     ax.plot(k_small, shell_lw, "--", label=r"shell LW: $1-\kappa_{\rm src}^2/3$")
     ax.plot(k_small, gaussian_lw, "--", label=r"Gaussian LW: $1-\kappa_{\rm src}^2/2$")
-    ax.axvline(1.0, linestyle=":", linewidth=1.0, label=r"$\kappa_{\rm src}=1$")
+    ax.axvline(1.0, **REFERENCE_LINE_STYLE,
+               label=r"$\kappa_{\rm src}=1$")
     ax.set_xlabel(r"$\kappa_{\rm src}=\omega a_{\rm src}/c$")
     ax.set_ylabel(r"$I(\omega)/I_{\rm point}(\omega)$")
     ax.set_xlim(0.0, 4.0)

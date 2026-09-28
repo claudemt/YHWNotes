@@ -11,7 +11,7 @@
 前面所有对称性都由酉算符实现。时间反演不同：它不是普通的酉空间变换，而是\textbf{反酉}变换。这个差别看似技术性，实际上决定了 Kramers 简并以及拓扑能带理论的许多基本结构。因此必须从 $\vb k\to-\vb k$、自旋翻转与复共轭开始，并明确区分 $\Theta^2=+1$ 与 $\Theta^2=-1$。
 
 
-\begin{definitionplain}[时间反演算符]
+\begin{definition}[时间反演算符]
 时间反演算符记为 $\Theta$。它是反线性的：
 \[
 \Theta(a\ket\psi+b\ket\phi)
@@ -28,7 +28,7 @@
 \]
 则称系统具有时间反演对称性。
 \label{def:time-reversal}
-\end{definitionplain}
+\end{definition}
 
 时间反演下，经典对应量的变换为
 \[
@@ -126,7 +126,7 @@ U_y(\pi)=\exp\!\left(-\frac{\ii\pi}{2}\sigma_y\right)=-\ii\sigma_y,
 \]
 个不等价时间反演不变动量。三维晶体因此有八个时间反演不变动量，二维有四个。一些时间反演不变动量在具体晶格中会被空间点群进一步分成不同的星，例如立方晶格里常见 $\Gamma$、若干 $X$、$L$ 型点。
 
-Kramers 定理保证自旋 $1/2$ 时间反演体系在每个时间反演不变动量都至少二重简并。拓扑绝缘体理论进一步利用这些时间反演不变动量上的 Kramers 对如何在整个 Brillouin 区连接来定义拓扑不变量；那已经超出本课程，但其最基本的代数根源就是本节证明的 $\Theta^2=-1$。
+自旋 $1/2$ 体系在每个时间反演不变动量上至少有一对 Kramers 简并态。拓扑绝缘体进一步考察这些 Kramers 对如何在整个 Brillouin 区连续连接；其局部简并条件正是 $\Theta^2=-1$，而全局连接方式由能带波函数的拓扑不变量刻画。
 
 \begin{theorem}[Kramers 定理]
 若系统具有时间反演对称性，且在所讨论的态空间上
@@ -165,21 +165,7 @@ Kramers 定理保证自旋 $1/2$ 时间反演体系在每个时间反演不变�
 因此 $\ket\psi$ 与 $\Theta\ket\psi$ 是两个线性无关、同能量的本征态。
 \end{proof}
 
-证明中的关键不是“时间反演让自旋翻转”这句物理直觉，而是反酉性与 $\Theta^2=-1$ 的组合。设 $|\psi\rangle$ 是能量本征态。若 $[\Theta,\hat H]=0$，则 $\Theta|\psi\rangle$ 具有同样能量。接下来要证明这两个态不是同一个方向。
-
-利用反酉算符满足
-\[
-\langle\Theta\phi|\Theta\psi\rangle=\langle\psi|\phi\rangle,
-\]
-取 $|\phi\rangle=|\psi\rangle$、并把第二个态再作用一次 $\Theta$，可得
-\[
-\langle\Theta\psi|\Theta^2\psi\rangle
-=\langle\Theta\psi|\psi\rangle.
-\]
-若 $\Theta^2=-1$，左边又等于 $-\langle\Theta\psi|\psi\rangle$，所以该内积只能为零。于是 $|\psi\rangle$ 与 $\Theta|\psi\rangle$ 正交，必然是两个线性无关的同能态。
-
-
-时间反演算符的构造完成后，现在分析它在晶体中的物理后果：$\vb k$ 和 $-\vb k$ 态的配对，以及复共轭表示的等价性判据。
+在晶体中，时间反演把 Bloch 态的波矢由 $\vb k$ 变为 $-\vb k$，于是
 
 时间反演把动量反号，因此 Bloch 态满足
 \[
@@ -216,8 +202,8 @@ P:\vb k\to-\vb k,
 \begin{tikzfig}[scale=0.98]
   \draw[axes] (-3.2,0)--(3.25,0) node[right] {$k$};
   \draw[axes] (0,-.4)--(0,4.6) node[above] {$E$};
-  \draw[line width=.9pt,domain=-3:3,samples=80] plot (\x,{1.15+0.28*(\x)^2+0.42*\x});
-  \draw[line width=.9pt,domain=-3:3,samples=80] plot (\x,{1.15+0.28*(\x)^2-0.42*\x});
+  \draw[wfA,domain=-3:3,samples=80] plot (\x,{1.15+0.28*(\x)^2+0.42*\x});
+  \draw[wfA,domain=-3:3,samples=80] plot (\x,{1.15+0.28*(\x)^2-0.42*\x});
   \fill (0,1.15) circle (1.6pt);
   \node[lecturelabel] at (0.85,0.55) {Kramers point};
   \node[lecturelabel] at (1.65,3.7) {$E_+(k)=E_-(-k)$};
@@ -228,12 +214,16 @@ P:\vb k\to-\vb k,
 
 时间反演的反酉性还解释了一个在点群特征标表中常见的现象。若一个无自旋态按复表示 $D(g)$ 变换，则其时间反演态中的系数被复共轭，因此按 $D(g)^*$ 变换。若 $D$ 与 $D^*$ 不等价，纯空间点群并不要求两者属于同一个不可约表示；但时间反演会把它们联系起来。在具有时间反演对称性的完整问题中，这对复共轭表示不能被任意分开处理。
 
-这也说明为什么仅看普通点群特征标表有时会低估简并：真正的对称结构可能包含反酉操作。要系统处理磁性系统和时间反演，需要把普通群表示推广到共表示（corepresentation）理论；这超出本课程主体范围，但本节的 Kramers 定理和 $\vb k\leftrightarrow-\vb k$ 关系已经覆盖后续凝聚态物理中最常用的部分。
+若对称操作包含反酉元，普通群表示不足以描述整个态空间。设幺正操作组成正规子群 $G$，反酉操作构成陪集 $aG$，并令 $A$ 表示反酉元 $a$。若 $D(g)$ 表示 $g\in G$，相容关系为
+\[
+A D(g)A^{-1}=D(aga^{-1}),\qquad A^2=D(a^2).
+\]
+这里 $A=UK$，$U$ 为酉矩阵，$K$ 对复系数取共轭。满足这些关系的 $D$ 与 $A$ 合称为共表示。它把磁性点群与时间反演放在同一代数框架中；当 $a$ 与 $G$ 对易且 $A^2=-I$ 时，Kramers 定理立即给出每个能量本征态的正交时间反演伴侣。
 
 
 时间反演算符把复表示 $D(g)$ 送到复共轭 $D(g)^*$。一个自然的问题是：$D$ 与 $D^*$ 是否等价？如果等价，能否在实数域上实现？这两个问题的答案由\textbf{Frobenius--Schur 指标}完全分类。这个指标不仅是一个纯代数不变量，还直接决定时间反演对称性下简并的结构。
 
-\begin{definitionplain}[Frobenius--Schur 指标]
+\begin{definition}[Frobenius--Schur 指标]
 设 $G$ 是有限群，$D^{(\alpha)}$ 是不可约酉表示，维数 $d_\alpha$。定义
 \begin{equation}
 \nu_\alpha
@@ -242,7 +232,7 @@ P:\vb k\to-\vb k,
 \end{equation}
 称为不可约表示 $\alpha$ 的\textbf{Frobenius--Schur 指标}。
 \label{def:frobenius-schur-indicator}
-\end{definitionplain}
+\end{definition}
 
 \begin{theorem}[Frobenius--Schur 分类定理]
 对有限群 $G$ 的每个不可约表示 $\alpha$，Frobenius--Schur 指标 $\nu_\alpha\in\{+1,0,-1\}$，且：
@@ -350,13 +340,13 @@ Frobenius--Schur 指标还给出一个有用的维数约束。
 前面各节处理的是"对称性 $\Rightarrow$ 简并与选择定则"的正向逻辑。现在反过来：当系统的对称性从高对称群 $G$ 降为子群 $H\subset G$ 时，群论如何描述这一"破缺"？这个问题在相变理论（Landau 理论）、Jahn--Teller 效应和凝聚态物理中是核心。
 
 
-\begin{definitionplain}[对称性破缺]
+\begin{definition}[对称性破缺]
 设系统 Hamilton 量 $\hat H$ 在群 $G$ 下不变（$[\hat H,U(g)]=0$，$\forall g\in G$）。若基态 $\ket{\psi_0}$ 满足 $U(g)\ket{\psi_0}\ne\ket{\psi_0}$ 对某些 $g\in G$，则称对称性从 $G$ 破缺到\textbf{保持基态不变的子群}
 \[
 H=\{h\in G\mid U(h)\ket{\psi_0}=\ket{\psi_0}\}\le G.
 \]
 $H$ 称为\textbf{残余对称群}，$G/H$（若 $H\mathrel{\trianglelefteq} G$）或陪集结构描述被破缺的对称操作。
-\end{definitionplain}
+\end{definition}
 
 \begin{proposition}[序参量的表示论]
 \label{prop:order-parameter}
@@ -450,7 +440,7 @@ H_{mn}(Q)=E_0\delta_{mn}+\sum_i\bra{\Gamma,m}\frac{\partial\hat H}{\partial Q_i}
 再对称性破缺。畸变 $Q$ 按 $\Gamma_v\ne A_1$ 变换，故 $Q$ 不在所有 $G$ 操作下不变。残余对称群 $H=\{g\in G\mid D^{(\Gamma_v)}(g)Q=Q\}$ 是 $G$ 的真子群。
 \end{proof}
 
-\begin{exampleplain}[$E\otimes e$ Jahn--Teller 效应]
+\begin{example}[$E\otimes e$ Jahn--Teller 效应]
 正三角形分子（如 $\mathrm{H_3}$、$\mathrm{C_3H_3}$）的电子基态按 $C_{3v}$ 的 $E$ 表示变换（二重简并），振动模式中有一个 $e$ 型模式（二重简并的弯曲振动）。检查条件：
 \[
 \mathrm{Sym}^2 E = A_1\oplus E,\qquad \mathrm{Sym}^2 E\otimes E = (A_1\oplus E)\otimes E = E\oplus(A_1\oplus A_2\oplus E)\supset A_1.
@@ -458,7 +448,7 @@ H_{mn}(Q)=E_0\delta_{mn}+\sum_i\bra{\Gamma,m}\frac{\partial\hat H}{\partial Q_i}
 条件满足，Jahn--Teller 效应发生：正三角形构型不稳定，系统畸变为等腰三角形（对称性从 $C_{3v}$ 破缺到 $C_s$）。这就是 $E\otimes e$ Jahn--Teller 效应，是分子物理中最常见的类型。
 
 例外。若 $\Gamma$ 是一维表示（$\dim\Gamma=1$），$\mathrm{Sym}^2\Gamma=\Gamma^2$，对一维表示 $\Gamma^2$ 可能不含任何 $\Gamma_v\ne A_1$，Jahn--Teller 效应不发生。线性分子的 $\Sigma$ 态（一维）不发生 Jahn--Teller 畸变，保持线性构型。Kramers 简并（时间反演强制二重简并）也不受 Jahn--Teller 效应影响——Kramers 对不能被晶场劈裂，这是 \cref{thm:kramers} 的推论。
-\end{exampleplain}
+\end{example}
 
 \subsection{习题与解答}
 \label{sec:quantum-group-exercises}
