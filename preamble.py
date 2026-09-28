@@ -31,6 +31,23 @@ COLORS = [
 
 LINE_STYLES = ["-", "--", "-.", ":"]
 
+# Central colormaps for scalar-valued fields. Individual figures select a
+# semantic role, never an ad hoc colormap name.
+COLORMAPS = {
+    "field": "viridis",
+    "amplitude": "magma",
+}
+
+# One understated style for threshold, asymptotic, and comparison references.
+# Keep these lines visually distinct from data while using the same convention
+# in every book and every figure.
+REFERENCE_LINE_STYLE = {
+    "color": "#333333",
+    "linestyle": "--",
+    "linewidth": 1.0,
+    "alpha": 0.8,
+}
+
 _CORNER_LOC = {
     "upper left": "upper left",
     "upper right": "upper right",
@@ -43,7 +60,7 @@ _CORNER_LOC = {
 # rcParams keys touched by figure_style(); saved/restored on exit.
 _STYLE_KEYS = (
     "font.family", "font.serif", "font.size",
-    "axes.titlesize", "axes.labelsize", "axes.linewidth",
+    "axes.titlesize", "axes.labelsize", "axes.linewidth", "axes.prop_cycle",
     "axes.grid", "axes.axisbelow",
     "xtick.labelsize", "ytick.labelsize",
     "xtick.direction", "ytick.direction",
@@ -75,6 +92,7 @@ def figure_style():
             "axes.titlesize": 16.0,
             "axes.labelsize": 13.0,
             "axes.linewidth": 1.0,
+            "axes.prop_cycle": mpl.cycler(color=COLORS),
             "xtick.labelsize": 12.0,
             "ytick.labelsize": 12.0,
             "xtick.major.width": 1.0,

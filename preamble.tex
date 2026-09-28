@@ -300,31 +300,14 @@
 \newcommand{\dotdotdot}{\mathbin{\vcenter{\offinterlineskip\hbox to 4pt{\hss$\cdot$\hss}\hbox to 4pt{\hss$\cdot$\hss}\hbox to 4pt{\hss$\cdot$\hss}}}}
 \newcommand{\ii}{\mathrm{i}}
 \newcommand{\ee}{\mathrm{e}}
-\providecommand{\e}{\ee}
+% \Tord is the time-ordering symbol \mathcal T (used by FreeElectronQuantumOptics).
 \providecommand{\Tord}{\mathcal T}
-\providecommand{\comm}[2]{\left[#1,#2\right]}
-\providecommand{\acomm}[2]{\left\{#1,#2\right\}}
-\providecommand{\veps}{\varepsilon}
-\providecommand{\sgn}{\operatorname{sgn}}
-\providecommand{\ImPart}{\operatorname{Im}}
 
-% ===== Generic math/physics notation (moved from per-book settings.tex) =====
-\providecommand{\Reop}{\operatorname{Re}}
-\providecommand{\Imop}{\operatorname{Im}}
-\providecommand{\imop}{\operatorname{im}}
-\providecommand{\kerop}{\operatorname{ker}}
-\providecommand{\ketbra}[2]{\lvert#1\rangle\langle#2\rvert}
-\providecommand{\vect}[1]{\vb{#1}}
-\providecommand{\mat}[1]{\mathbf{#1}}
-\providecommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+% ===== Generic math/physics notation =====
+% Only the aliases that are actually used by the books are kept here; dead
+% legacy names were removed with the old book settings they came from.
 \providecommand{\norm}[1]{\left\lVert #1\right\rVert}
-\providecommand{\mc}[1]{\mathcal{#1}}
-\providecommand{\mf}[1]{\mathfrak{#1}}
-\providecommand{\ddt}{\frac{\dd}{\dd t}}
-\providecommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
-\providecommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
 \providecommand{\kB}{k_{\mathrm B}}
-\providecommand{\kT}{k_{\mathrm B}T}
 
 % ===== Shared theorem environments =====
 \newtheorem{theorem}{定理}[chapter]
@@ -338,18 +321,96 @@
 \newtheorem{exercise}[theorem]{练习}
 
 % ===== Shared theorem colour palette =====
-% Wrap every semantic theorem environment in a coloured tcolorbox so that
-% definitions, theorems, propositions, lemmas, corollaries and examples are
-% visually distinct across all books.  The palette is owned by the root
-% preamble so that every book compiled through main.tex inherits the same
+% Every semantic theorem environment is wrapped in a coloured tcolorbox so
+% that definitions, theorems, propositions, lemmas, corollaries, examples and
+% remarks are visually distinct across all books.  The palette is owned by the
+% root preamble so that every book compiled through main.tex inherits the same
 % appearance without book-local overrides.
-% The box keys are stated once, so the palette below is data: adding a
-% theorem-like environment costs one line, not another copied block.
+%
+% Adding a theorem-like environment costs one \theoremcolor line below (plus
+% its \crefnamecn).  There must be no unboxed "plain" variant: every statement
+% lives inside one of these frames.
+%
+% A `proof` that IMMEDIATELY follows one of these boxed statements (optionally
+% separated only by blank lines) is rendered as a seamless continuation piece
+% of the SAME coloured frame: the statement box keeps its bottom rule (a thin
+% divider), the proof piece shares the background and the left/right/bottom
+% frame and carries the QED symbol, so statement and proof read as one box.
+% Proofs that do not directly follow a boxed statement -- standalone proofs of
+% prose/equation results, which are common in AdvancedPhysics -- are left
+% untouched and keep the standard amsthm look.
+\makeatletter
+\newif\ifYHW@joinpending
+\newif\ifYHW@incont
+\def\YHW@clearjoin{\global\YHW@joinpendingfalse}
+% Any ordinary paragraph or any non-proof environment that intervenes between
+% a boxed statement and a proof cancels the merge; para/begin is the modern
+% kernel paragraph hook (it survives packages that overwrite \everypar).
+\AddToHook{para/begin}{\YHW@clearjoin}
+\newcommand{\YHW@clearhook}[1]{\AtBeginEnvironment{#1}{\YHW@clearjoin}}
+\forcsvlist{\YHW@clearhook}{%
+  equation,align,gather,multline,flalign,eqnarray,displaymath,%
+  exbox,note,derivation,qmbox,figure,table,center,quote,quotation,%
+  itemize,enumerate,description,list,%
+  theorem,proposition,lemma,corollary,definition,example,remark,exercise}
+% #1 = environment, #2 = background, #3 = frame colour, #4 = rule width
 \newcommand{\theoremcolor}[4]{%
-  \tcolorboxenvironment{#1}{%
-    enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
-    arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-    before skip=7pt,after skip=7pt}}
+  \tcbset{
+    YHW@box@#1/.style={enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
+      arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+      before skip=7pt,after skip=7pt},
+    YHW@cont@#1/.style={enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
+      arc=1.2mm,sharp corners=north,left=8pt,right=8pt,top=4pt,bottom=6pt,
+      before skip=\dimexpr-7pt-#4\relax,after skip=7pt,
+      frame hidden,
+      borderline south={#4}{0pt}{#3},
+      borderline east={#4}{0pt}{#3},
+      borderline west={#4}{0pt}{#3},
+      overlay middle={\draw[#3,line width=#4](frame.north west)--(frame.north east);},
+      overlay last={\draw[#3,line width=#4](frame.north west)--(frame.north east);}}
+  }%
+  \expandafter\let\csname YHW@orig@#1\expandafter\endcsname\csname #1\endcsname
+  \expandafter\let\csname YHW@orig@end#1\expandafter\endcsname\csname end#1\endcsname
+  \renewenvironment{#1}[1][]
+    {%
+      \global\YHW@joinpendingfalse
+      \edef\YHW@thisenv{\@currenvir}%
+      \begin{tcolorbox}[YHW@box@\YHW@thisenv]%
+      \csname YHW@orig@\YHW@thisenv\endcsname[##1]%
+    }
+    {%
+      \csname YHW@orig@end\YHW@thisenv\endcsname
+      \end{tcolorbox}%
+      \xdef\YHW@lastenv{\YHW@thisenv}%
+      \global\YHW@joinpendingtrue
+    }%
+}
+% Preserve the standard amsthm proof for standalone use; when a proof directly
+% follows a boxed statement, open the matching continuation piece and close it
+% (with the QED symbol) at \end{proof}.
+\let\YHW@prooforig\proof
+\let\YHW@endprooforig\endproof
+\RenewDocumentEnvironment{proof}{O{\proofname}}{%
+  \ifYHW@joinpending
+    \global\YHW@joinpendingfalse
+    \global\YHW@inconttrue
+    \edef\YHW@thisenv{\YHW@lastenv}%
+    \begin{tcolorbox}[YHW@cont@\YHW@thisenv]%
+    \noindent\textbf{#1}\enspace\nobreak
+  \else
+    \global\YHW@incontfalse
+    \YHW@prooforig[#1]%
+  \fi
+}{%
+  \ifYHW@incont
+    \par\nobreak\vspace{-2pt}\nobreak\hfill\qed\par\nobreak
+    \end{tcolorbox}%
+    \global\YHW@incontfalse
+  \else
+    \YHW@endprooforig
+  \fi
+}
+\makeatother
 %                   environment    background     frame             rule
 \theoremcolor{definition} {blue!2.5}   {blue!55!black}    {0.55pt}
 \theoremcolor{theorem}    {red!2.2}    {red!58!black}     {0.65pt}
@@ -373,11 +434,6 @@
 % names that are genuinely local to it; it must not redefine anything below.
 %
 %   number systems / spaces
-\providecommand{\R}{\mathbb R}
-\providecommand{\C}{\mathbb C}
-\providecommand{\Z}{\mathbb Z}
-\providecommand{\Q}{\mathbb Q}
-\providecommand{\N}{\mathbb N}
 \providecommand{\RR}{\mathbb R}
 \providecommand{\CC}{\mathbb C}
 \providecommand{\NN}{\mathbb N}

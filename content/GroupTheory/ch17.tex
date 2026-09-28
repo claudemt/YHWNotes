@@ -1,25 +1,72 @@
-\chapter{Lie 群、Lie 代数与指数映射}
+\chapter{\texorpdfstring{Lie 群、根系与 $SU(3)$}{Lie 群、根系与 SU(3)}}
 \label{chap:lie-groups-algebras}
 
-有限群可以逐个列出元素和乘法表，旋转群却含有连续无穷多个元素。若仍试图逐个研究群元，连“从单位元附近稍微转动一下”都无法与有限转动联系起来。连续性提供了更有效的入口：沿群中的一条曲线从单位元出发，只保留它在起点的切向量。有限维的切空间记录了群在单位元附近的全部无穷小方向。
+有限群可以用乘法表记录，但平面旋转有任意实数角度，无法逐个列出。好在一个很小的转角已经告诉我们旋转最初朝哪个方向变化。若能把这个变化率还原成有限旋转，就不必为每个角度重新记一条群的运算规则。我们先在平面上完成这件事，再把同样的计算用于三维旋转和酉矩阵。
 
-无穷小方向本身还不够，因为两个方向依次走一小步通常与反向次序不同。这个二阶差异产生 Lie 括号；把同一方向反复复合则产生指数映射。于是连续群的局部乘法被转化为有限维向量空间、双线性括号和常微分方程。$SO(3)$ 与 $SU(2)$ 会贯穿本章，使每个抽象定义都能立刻落到矩阵运算上。
+\section{Lie 群与 Lie 代数}
 
-\section{从一参数子群到生成元}
+在本节中，$M_n(\mathbb C)$ 表示所有 $n\times n$ 复矩阵组成的向量空间，$GL(n,\mathbb C)$ 表示其中可逆矩阵组成的群。矩阵收敛指每个矩阵元都收敛；因此说矩阵曲线 $g(t)$ 可微，就是说每个矩阵元都是可微函数。例如
+\[
+R(\theta)=\begin{pmatrix}
+\cos\theta&-\sin\theta\\ \sin\theta&\cos\theta
+\end{pmatrix},\qquad
+R(0)=I,\qquad
+R'(0)=\begin{pmatrix}0&-1\\1&0\end{pmatrix}=:J.
+\]
+$R'(0)$ 不是另一个旋转矩阵：它是旋转曲线在单位矩阵处的速度。利用 $J^2=-I$，直接把幂级数分成奇偶两部分，便得 $R(\theta)=\exp(\theta J)$。这个小计算同时给出了本节两个对象：速度 $J$ 称为生成元，把生成元还原成群元的矩阵级数称为指数映射。
 
-先取矩阵 Lie 群 $G\subseteq GL(n,\mathbb C)$。一条经过单位元的光滑曲线写作 $g(t)$，满足 $g(0)=I$。它在 $t=0$ 的速度
+为了谈一般的矩阵群，还需说明“连续变化”允许哪些方向。把复矩阵的实部、虚部分开后，$M_n(\mathbb C)$ 就是一个 $2n^2$ 维实向量空间。我们所说的光滑函数，是指它的矩阵元对这些实坐标可任意次求连续偏导。这里不用复分析中的“全纯”概念；例如取共轭的映射 $z\mapsto\bar z$ 作为实映射是光滑的。
+
+先看单位圆 $S^1=\{(x,y)\in\mathbb R^2:x^2+y^2=1\}$。在右半圆 $x>0$ 上，可以只用 $y\in(-1,1)$ 作坐标，因为点由
+\[
+\phi(y)=(\sqrt{1-y^2},y)
+\]
+唯一确定，反过来只要读取第二个坐标即可找回 $y$。左、上、下半圆也各有类似的坐标；没有一张这样的坐标图能光滑而单值地盖住整个圆。两张图重叠时，从一组坐标算到另一组坐标的函数叫\emph{过渡函数}。这些函数光滑，才保证同一条圆上曲线在不同坐标图里求导得到的是同一个几何速度。
+
+照此，在集合 $G$ 的每一点 $g$ 附近，若能找到实参数开集 $U\subseteq\mathbb R^d$ 和光滑映射 $\phi:U\to M_n(\mathbb C)$，使 $\phi(U)$ 正好是 $G$ 在 $g$ 附近的一片，$\phi$ 单射，逆映射在这片上也光滑，且 $\dd\phi$ 的 $d$ 个列向量线性无关，就称这一片为 $d$ 维光滑坐标图。不同图的过渡函数还须光滑。满足这项局部条件的 $G$ 称为矩阵空间中的 $d$ 维光滑子流形。这里的\emph{局部}很重要：$SO(2)$ 在每个短角度区间都有 $R(\theta)$ 这张图，但角度 $0$ 与 $2\pi$ 给同一个矩阵，故不能把整圈当成一张图。
+
+“逆映射光滑”并不要求它在整个矩阵空间的开集上有定义，只要求它在该片子流形上由光滑函数给出。比如上面的右半圆，逆映射就是 $(x,y)\mapsto y$。坐标图的维数 $d$ 也就是点附近独立可动方向的个数；$SO(2)$ 的 $d=1$，后面将由矩阵方程算出 $SO(3)$ 的 $d=3$。这些条件的目的不是增加术语，而是让“沿曲线求导”能被精确地计算和比较。
+
+\begin{definition}[矩阵 Lie 群]
+本节称 $G\subseteq GL(n,\mathbb C)$ 为矩阵 Lie 群，是指它既是矩阵乘法下的子群，又是矩阵空间中的光滑子流形，且群内收敛到可逆矩阵的序列其极限仍在 $G$ 中。矩阵乘法与求逆在可逆矩阵上光滑，限制到 $G$ 后仍然光滑。
+\end{definition}
+
+这里把光滑性与闭性都列在定义中，因而后面的曲线与极限可以直接使用。一个更一般的闭子群定理表明：若只要求 $G$ 在 $GL(n,\mathbb C)$ 中闭，光滑子流形结构也能自动得到；那是比本节所需更深的定理，不用它代替眼前的计算。闭性不能随意删去。例如正有理数 $\mathbb Q_{>0}$ 在乘法下是 $GL(1,\mathbb R)$ 的子群，取 $\sqrt2$ 的有限位小数截断，便得到一列属于这个子群、却收敛到子群外的正有理数。它既不是闭子群，也不能在 $1$ 的附近用一张实坐标图描出整个子群。这比“凡是子群就自然有无穷小生成元”的想法多了一道必要的几何条件。
+
+现在取矩阵 Lie 群 $G\subseteq GL(n,\mathbb C)$。一条经过单位元的光滑曲线写作 $g(t)$，满足 $g(0)=I$。它在 $t=0$ 的速度
 \[
 X=\left.\frac{\dd g(t)}{\dd t}\right|_{t=0}
 \]
-是矩阵空间中的向量。所有这类速度组成单位元处的切空间 $T_IG$，记为 $\mathfrak g$。例如 $SO(3)$ 的约束 $R^{\mathsf T}R=I$ 对 $t$ 求导给出
+是矩阵空间中的向量。若在一张坐标图中写 $g(t)=\phi(u(t))$，链式法则给出 $g'(0)=\dd\phi_{u(0)}u'(0)$。因此两条曲线在该图中有相同的一阶导数，当且仅当它们在环境矩阵空间里有相同的速度。换用另一张图时，参数速度会乘过渡函数的导数，而矩阵速度仍是同一个 $g'(0)$。我们把这种在一阶上无法区分的曲线归为一个\emph{切向量}；全体切向量组成单位元处的切空间 $T_IG$，记为 $\mathfrak g$。坐标图微分的像是一个 $d$ 维线性空间，所以 $T_IG$ 不是任意曲线速度的杂乱集合，而是一个 $d$ 维实向量空间。
+
+把所有这样的速度收集起来，先应确认它们究竟有哪些。对正交群和特殊酉群，不需要预先掌握一般的隐函数定理，直接对定义方程求导并构造反向曲线即可。
+
+\begin{proposition}[正交群与特殊酉群的切空间]
+在单位元处有
 \[
-X^{\mathsf T}+X=0,
+T_I SO(n)=\{X\in M_n(\mathbb R):X^{\mathsf T}=-X\},\qquad
+T_I SU(n)=\{X\in M_n(\mathbb C):X^\dagger=-X,\ \Tr X=0\}.
 \]
-所以 $\mathfrak{so}(3)$ 恰好由实反对称 $3\times3$ 矩阵组成。类似地，$U(t)^\dagger U(t)=I$ 给出 $X^\dagger=-X$；再加 $\det U=1$，便得到
+因而它们作为实向量空间的维数分别是 $n(n-1)/2$ 和 $n^2-1$。
+\end{proposition}
+
+\begin{proof}
+若 $R(t)\in SO(n)$ 且 $R(0)=I$，对 $R(t)^{\mathsf T}R(t)=I$ 求导，得到 $X^{\mathsf T}+X=0$。反过来，若 $X$ 反对称，则 $R(t)=\ee^{tX}$ 满足
 \[
-\mathfrak{su}(n)=\{X\in M_n(\mathbb C)\mid X^\dagger=-X, \Tr X=0\}.
+R(t)^{\mathsf T}R(t)=\ee^{-tX}\ee^{tX}=I.
 \]
-约束群元素的非线性方程在单位元处因此变成生成元满足的线性条件。
+行列式连续、只可取 $\pm1$，在 $t=0$ 为 $1$，故整条曲线都在 $SO(n)$ 中，且 $R'(0)=X$。反对称矩阵由上三角的 $n(n-1)/2$ 个实数决定。
+
+同理，$U(t)^\dagger U(t)=I$ 导出 $X^\dagger=-X$。在 $U(0)=I$ 处把行列式按列展开到一阶，得到 $\det(I+tX)=1+t\Tr X+O(t^2)$，因此 $\det U(t)=1$ 又要求 $\Tr X=0$。反过来，反厄米且无迹的 $X$ 满足 $\ee^{tX}\in U(n)$，并由 $\det\ee^{tX}=\ee^{t\Tr X}=1$ 落在 $SU(n)$：为核对最后一个恒等式，将复矩阵 $X$ 相似变换成上三角矩阵，其指数的对角元正是原对角元的指数；行列式是这些数的积。反厄米矩阵有 $n^2$ 个实参数，无迹条件去掉一个。
+\end{proof}
+
+例如 $\mathfrak{so}(3)$ 有三个独立方向，可取绕三个坐标轴的无穷小转动作为基。正交约束原本是矩阵元之间的二次方程，在单位元处却化成了反对称这一线性条件。
+
+这些标准矩阵群为什么也符合定义中的“光滑子流形”？在单位矩阵附近，级数
+\[
+\log(I+A)=A-\frac{A^2}{2}+\frac{A^3}{3}-\cdots
+\]
+对足够小的 $\|A\|$ 收敛，并与指数级数互为局部逆。若 $R\in SO(n)$ 充分接近 $I$，则 $\log R$ 是实反对称矩阵；若 $U\in SU(n)$ 充分接近 $I$，则 $\log U$ 反厄米，且 $\Tr\log U=0$，因为 $\ee^{\Tr\log U}=\det U=1$ 而迹在 $I$ 附近连续且趋于零。于是上述切空间中的独立矩阵元就是局部光滑坐标。左乘任意群元便得到其他点附近的坐标图。
 
 若曲线还满足 $g(t+s)=g(t)g(s)$，它是一参数子群。令 $X=g'(0)$，对 $s$ 在零点求导可得
 \[
@@ -30,41 +77,73 @@ g'(t)=g(t)X=Xg(t),\qquad g(0)=I.
 g(t)=\exp(tX)=\sum_{k=0}^{\infty}\frac{t^kX^k}{k!}.
 \label{eq:one-parameter-exponential}
 \end{equation}
-式 \eqnrefs{eq:one-parameter-exponential} 把一个无穷小生成元恢复成有限群变换。指数映射不必在整个群上一一对应，但在单位元附近总能把足够小的切向量送到群元。
+\eqnrefs{eq:one-parameter-exponential} 把一个无穷小生成元恢复成有限群变换。指数映射不必在整个群上一一对应，但在单位元附近总能把足够小的切向量送到群元。
 
-\begin{example}[$SO(2)$ 的指数映射]
-取
+\begin{theorem}[一参数子群与生成元一一对应]
+对矩阵 Lie 群 $G$，每个 $X\in\mathfrak g$ 都唯一决定一参数子群 $t\mapsto\exp(tX)$；反过来，每个光滑一参数子群都有这种形式。
+\end{theorem}
+
+\begin{proof}
+反向结论已经由初值问题 $g'(t)=g(t)X$ 的唯一性得到。还需说明 $X\in\mathfrak g$ 时 $\exp(tX)$ 确实留在 $G$ 中。按切向量定义，可取群内曲线 $c(s)$ 使 $c(0)=I$、$c'(0)=X$。固定 $t$，令
 \[
-J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad J^2=-I.
+g_n(t)=c(t/n)^n\in G.
 \]
-把指数级数的偶次幂与奇次幂分开，得到
+Taylor 展开给出 $c(t/n)=I+tX/n+O(n^{-2})$。用恒等式 $A^n-B^n=\sum_{k=0}^{n-1}A^{n-1-k}(A-B)B^k$（此处 $A,B$ 不必对易）估计，两种 $n$ 次幂之差为 $O(n^{-1})$，从而
 \[
-\exp(\theta J)=I\cos\theta+J\sin\theta
-=\begin{pmatrix}\cos\theta&-\sin\theta\\
-\sin\theta&\cos\theta\end{pmatrix}.
+g_n(t)\longrightarrow \lim_{n\to\infty}
+\left(I+\frac{tX}{n}\right)^n=\exp(tX).
 \]
-生成元 $J$ 决定转动开始时的速度，指数映射则把这条局部方向延伸为任意角度的转动；周期性也说明指数映射不是单射。
-\end{example}
+矩阵 Lie 群是闭集，所以极限仍属于 $G$。矩阵指数满足
+$\exp((t+s)X)=\exp(tX)\exp(sX)$，故它是一参数子群。
+\end{proof}
 
-\section{Lie 括号来自复合次序}
+平面旋转的计算还说明两个必须分开的事实。$\theta$ 很小时，$R(\theta)=I+\theta J+O(\theta^2)$，所以 $J$ 确实是单位元处的切向量；但 $R(\theta+2\pi)=R(\theta)$，所以不同参数可以给同一群元。指数映射在零点的导数是恒等映射，由局部反函数定理可知它在单位元附近一一对应；这一结论不能推广为全局一一对应。
 
-两个生成元 $X,Y$ 的线性组合仍是切向量，但群乘法还留下一个仅靠向量加法看不见的信息。比较两条小变换的不同次序，Baker--Campbell--Hausdorff 展开给出
-\begin{align*}
-\ee^{tX}\ee^{tY}
-&=\exp\!\left[t(X+Y)+\frac{t^2}{2}[X,Y]+O(t^3)\right],\\
-\ee^{tY}\ee^{tX}
-&=\exp\!\left[t(X+Y)-\frac{t^2}{2}[X,Y]+O(t^3)\right].
-\end{align*}
-这里
+\subsection{Lie 括号}
+
+两个生成元 $X,Y$ 的和仍是切向量，但群乘法还留下向量加法看不见的信息。把四个矩阵指数各展开到二阶，并保留乘积中的二阶项，可直接算出
+\[
+\ee^{tX}\ee^{tY}\ee^{-tX}\ee^{-tY}
+=I+t^2(XY-YX)+O(t^3).
+\]
+左边是先沿 $X$、再沿 $Y$、随后各退回一步的群元；若两种顺序完全可交换，它便是 $I$。因此定义
 \begin{equation}
 [X,Y]=XY-YX
 \label{eq:matrix-lie-bracket}
 \end{equation}
-正是次序交换后最先出现的差异。矩阵交换子仍满足群的切空间约束；它是双线性、反对称的，并满足 Jacobi 恒等式
+它是次序交换后最先出现的差异。矩阵交换子对两个变量线性，且 $[X,Y]=-[Y,X]$。利用矩阵乘法的结合律展开三重交换子，每个三字母乘积出现两次、符号相反，因而得到 Jacobi 恒等式
 \[
 [X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0.
 \]
-带有这种括号的向量空间称为 Lie 代数。对一般 Lie 群，括号可由左不变向量场的交换子定义；矩阵群的式 \eqnrefs{eq:matrix-lie-bracket} 是最直接的实现。
+带有这种双线性、反对称且满足 Jacobi 恒等式的括号的向量空间，称为 Lie 代数。还必须核对 $[X,Y]$ 仍是 $T_IG$ 的元素，否则它只是在较大的矩阵空间中有定义。
+
+固定 $X,Y\in\mathfrak g$。由于 $\ee^{tX}$ 在群中，共轭 $h\mapsto\ee^{tX}h\ee^{-tX}$ 把经过单位元的群内曲线仍送到这类曲线，故
+\[
+Y(t)=\ee^{tX}Y\ee^{-tX}
+\]
+始终属于线性空间 $\mathfrak g$。在 $t=0$ 求导，
+\[
+Y'(0)=XY-YX=[X,Y].
+\]
+线性子空间包含其中每条曲线的速度，所以 $[X,Y]\in\mathfrak g$。此处先用共轭证明封闭性；稍后再把共轭本身视为群的一种表示。
+
+矩阵交换子也等于前述左不变向量场的括号。事实上，$X^L(g)=gX$、$Y^L(g)=gY$，沿曲线 $g\ee^{tX}$ 求 $Y^L$ 的变化率得到 $gXY$；交换 $X,Y$ 则得到 $gYX$。按向量场括号的定义，两者相减为
+\[
+[X^L,Y^L](g)=g(XY-YX)=([X,Y])^L(g).
+\]
+这说明即使将来遇到不能方便地嵌入矩阵空间的 Lie 群，也可以用左不变向量场给出同一个抽象定义。
+
+\begin{proposition}[两个指数何时可以直接合并]
+若 $X$ 与 $Y$ 对易，则
+\[
+\ee^X\ee^Y=\ee^{X+Y}.
+\]
+反过来，若等式 $\ee^{sX}\ee^{tY}=\ee^{sX+tY}$ 对原点附近所有 $s,t$ 都成立，则 $[X,Y]=0$。
+\end{proposition}
+
+\begin{proof}
+对易时可在两个指数级数中交换 $X$ 与 $Y$，按总次数整理后由二项式定理得到 $\ee^{X+Y}$。反向对假定的等式先对 $s$、再对 $t$ 求导，并置 $s=t=0$。左边的混合导数是 $XY$；右边只有指数级数的二次项有贡献，混合导数是 $(XY+YX)/2$。因此 $XY=YX$。
+\end{proof}
 
 取一组基 $T_a$，括号可写为
 \begin{equation}
@@ -77,58 +156,188 @@ f_{ab}{}^d f_{dc}{}^e+f_{bc}{}^d f_{da}{}^e+f_{ca}{}^d f_{db}{}^e=0.
 \]
 它保证无穷小复合的结合律与原群的结合律相容。
 
-\begin{derivation}[$SO(3)$ 的交换关系]
-令 $(L_i)_{jk}=-\epsilon_{ijk}$。直接相乘并使用
-$\epsilon_{i\ell m}\epsilon_{jmk}=\delta_{ik}\delta_{\ell j}-\delta_{ij}\delta_{\ell k}$，得到
+把三个独立方向真正写成矩阵，取
 \[
-[L_i,L_j]_{\ell k}
-=\epsilon_{ijm}(L_m)_{\ell k}.
+L_1=\begin{pmatrix}0&0&0\\0&0&-1\\0&1&0\end{pmatrix},\quad
+L_2=\begin{pmatrix}0&0&1\\0&0&0\\-1&0&0\end{pmatrix},\quad
+L_3=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&0\end{pmatrix}.
 \]
-若改用量子力学中常见的厄米生成元 $J_i=\ii L_i$，同一关系写成
+例如直接相乘得到 $L_1L_2-L_2L_1=L_3$；循环置换坐标给出另外两式。若把生成元写成量子力学常用的厄米形式 $J_i=\ii L_i$，三式合为
 \[
 [J_i,J_j]=\ii\epsilon_{ijk}J_k.
 \]
-括号中的 $J_k$ 表明绕两个不同轴的微小转动交换次序后，会多出绕第三个轴的微小转动；结构常数在这里就是 Levi--Civita 符号。
-\end{derivation}
+绕两个不同轴的小转动交换次序后留下第三个轴的转动，这正是前面群交换子的三维实例。若改选生成元的基，系数 $f_{ab}{}^c$ 会改变，但这项几何事实不会改变。
+
+可以把“次序不同”具体算成一个向量的位移。取 $v=(1,0,0)^{\mathsf T}$，记 $R_x(\theta)=\ee^{\theta L_1}$、$R_y(\theta)=\ee^{\theta L_2}$，并设 $c=\cos\theta$、$s=\sin\theta$。把上面的矩阵指数作用在 $v$ 上，得到
+\[
+R_xR_yv=(c,s^2,-sc)^{\mathsf T},\qquad
+R_yR_xv=(c,0,-s)^{\mathsf T}.
+\]
+因此
+\begin{equation}
+(R_xR_y-R_yR_x)v
+=(0,s^2,s(1-c))^{\mathsf T}
+=\theta^2L_3v+O(\theta^3).
+\label{eq:rotation-order-small-angle}
+\end{equation}
+最后一式用 $s=\theta+O(\theta^3)$、$1-c=O(\theta^2)$ 逐项得到，说明交换子的效应从角度的二次阶开始。\figref{fig:rotation-commutator}把两种次序所得向量之差取长度，在双对数坐标中核对其与 $\theta^2$ 的关系。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\linewidth]{rotation_commutator.pdf}
+\caption{同一向量在两种转动次序下的结果相差一个二阶小量；虚线是\eqnrefs{eq:rotation-order-small-angle}给出的 $\theta^2$ 标度。}
+\label{fig:rotation-commutator}
+\end{figure}
+
+\begin{example}[三参数矩阵群的 Lie 代数]
+考虑所有形如
+\[
+H(x,y,z)=\begin{pmatrix}1&x&z\\0&1&y\\0&0&1\end{pmatrix},
+\qquad x,y,z\in\mathbb R
+\]
+的矩阵。矩阵乘法给出
+\[
+H(x,y,z)H(x',y',z')
+=H(x+x',y+y',z+z'+xy'),
+\]
+而 $H(x,y,z)^{-1}=H(-x,-y,xy-z)$。因此这确实是一个群，不只是一个三参数矩阵族。参数可以从矩阵的三个非平凡位置直接读回，所以它也是三维光滑子流形；它在 $GL(3,\mathbb R)$ 中闭，因而满足矩阵 Lie 群的定义。
+
+令 $E_{ij}$ 表示仅在第 $i$ 行第 $j$ 列取 $1$ 的矩阵，并设 $X=E_{12}$、$Y=E_{23}$、$Z=E_{13}$。对 $H(tx,ty,tz)$ 在零点求导，得到 $xX+yY+zZ$，故切空间正是 $\mathfrak h=\operatorname{span}_{\mathbb R}\{X,Y,Z\}$。逐项相乘，$XY=Z$，而 $YX=0$，所以
+\[
+[X,Y]=Z,\qquad [X,Z]=[Y,Z]=0.
+\]
+群乘法中的附加项 $xy'$ 正是 $X$ 与 $Y$ 不可交换的有限表现；$Z$ 与所有生成元对易，称为\emph{中心方向}。
+
+最后设 $A=aX+bY+cZ$。由于 $A^2=abZ$、$A^3=0$，指数级数在二次项终止：
+\[
+\ee^{tA}=I+tA+\frac{t^2}{2}A^2
+=H\!\left(ta,tb,tc+\frac{t^2ab}{2}\right).
+\]
+直接代入上面的群乘法，可检验 $\ee^{sA}\ee^{tA}=\ee^{(s+t)A}$。这个例子说明指数不仅是形式级数：它在具体群中给出一条可逐项核对的一参数子群；同时，指数坐标 $(a,b,c)$ 与原始矩阵坐标 $(x,y,z)$ 并不完全相同。
+\end{example}
 
 \section{平移、伴随表示与 Killing 形式}
 
-切向量最初只位于单位元处。若 $g\in G$，左平移 $L_g(h)=gh$ 把 $T_IG$ 送到 $T_gG$；因此一个 $X\in\mathfrak g$ 决定整个群上的左不变向量场。共轭映射 $C_g(h)=ghg^{-1}$ 保持单位元，对它求微分得到伴随表示
+切向量最初只位于单位元处。若 $g\in G$，左平移 $L_g(h)=gh$ 与右平移 $R_g(h)=hg$ 都把单位元移到 $g$；它们作用在单位元处速度 $X$ 上分别给出 $gX$ 与 $Xg$。所以同一个 $X$ 可在每个 $g$ 处指定向量 $X^L(g)=gX$。它满足 $(L_h)_*X^L(g)=X^L(hg)$，称为左不变向量场。选左而不选右只是约定；两者的矩阵公式不能混用。
+
+现在把左、右平移组合成共轭 $C_g(h)=ghg^{-1}$。它固定单位元，因而其导数把 $T_IG$ 映回自身。这个导数叫伴随作用：
 \begin{equation}
 \operatorname{Ad}_g:T_IG\longrightarrow T_IG.
 \label{eq:group-adjoint}
 \end{equation}
-对矩阵群，$\operatorname{Ad}_gX=gXg^{-1}$。再沿 $g(t)=\ee^{tX}$ 求导，得到 Lie 代数的伴随表示
+对矩阵群，$\operatorname{Ad}_gX=gXg^{-1}$，因为 $g(I+tX+O(t^2))g^{-1}=I+t(gXg^{-1})+O(t^2)$。连续共轭两次给出 $\operatorname{Ad}_{gh}=\operatorname{Ad}_g\operatorname{Ad}_h$，所以 $g\mapsto\operatorname{Ad}_g$ 确实是群在向量空间 $\mathfrak g$ 上的表示。再沿 $g(t)=\ee^{tX}$ 求导，得到该表示的无穷小算符
 \begin{equation}
 \operatorname{ad}_X(Y)=[X,Y].
 \label{eq:algebra-adjoint}
 \end{equation}
-这两个层次不能混淆：$\operatorname{Ad}$ 是群表示，$\operatorname{ad}$ 是其无穷小表示。
+即 $\operatorname{ad}_X(Y)=XY-YX$。例如在上述 $SO(3)$ 基中，$\operatorname{ad}_{L_3}(L_1)=L_2$、$\operatorname{ad}_{L_3}(L_2)=-L_1$：绕第三轴共轭会在由前两轴生成元张成的平面内转动。这也说明伴随表示的向量不是原空间中的位置向量，而是\emph{生成元}。
 
 伴随表示还给出一个不随基变换改变的双线性型，
 \begin{equation}
 B(X,Y)=\Tr\!\left(\operatorname{ad}_X\operatorname{ad}_Y\right),
 \label{eq:killing-form-lie}
 \end{equation}
-称为 Killing 形式。它满足
+称为 Killing 形式。它的两个输入都是 Lie 代数元素，迹则在 $\mathfrak g$ 上取，不是在原来的 $n$ 维矩阵空间上取。利用 $\operatorname{ad}_{[Z,X]}=[\operatorname{ad}_Z,\operatorname{ad}_X]$，并使用迹的循环性，得到
 \[
-B([Z,X],Y)+B(X,[Z,Y])=0,
+B([Z,X],Y)+B(X,[Z,Y])
+=\Tr\bigl([\operatorname{ad}_Z,\operatorname{ad}_X]\operatorname{ad}_Y
++\operatorname{ad}_X[\operatorname{ad}_Z,\operatorname{ad}_Y]\bigr)=0.
 \]
-所以在伴随作用下不变。半单 Lie 代数的 Killing 形式非退化；下一章会用它在 Cartan 子代数的对偶空间上比较根的长度与夹角。
+在 $SO(3)$ 的基 $L_i$ 中，$\operatorname{ad}_{L_i}$ 的矩阵元同样由 $\epsilon_{ijk}$ 给出，直接算得 $B(L_i,L_j)=-2\delta_{ij}$。因此这里的型非退化，而且在旋转生成元空间上为负定。一般有限维 Lie 代数中，“Killing 形式非退化”等价于“半单”需要 Cartan 判别法；我们在下一节使用这一标准结果时会说明适用的是复半单代数，不把这个分类定理伪装成本段的计算结论。
 
-\section{\texorpdfstring{$SU(2)$：局部代数与全局群并不相同}{SU(2)：局部代数与全局群并不相同}}
+\section{\texorpdfstring{$SU(2)$ 与 $SO(3)$}{SU(2) 与 SO(3)}}
 
-取 Pauli 矩阵 $\sigma_i$，并令 $T_i=-\ii\sigma_i/2$。它们反厄米且无迹，满足
+这里 $SU(2)=\{U\in M_2(\mathbb C):U^\dagger U=I,\det U=1\}$，而 $SO(3)=\{R\in M_3(\mathbb R):R^{\mathsf T}R=I,\det R=1\}$。为实际比较两者，取三块 Pauli 矩阵
+\[
+\sigma_1=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad
+\sigma_2=\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix},\quad
+\sigma_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+它们与 $I$ 一起构成全体 $2\times2$ 复矩阵的基。逐项相乘可得 $\sigma_i\sigma_j=\delta_{ij}I+\ii\epsilon_{ijk}\sigma_k$。令 $T_i=-\ii\sigma_i/2$；它们反厄米且无迹，满足
 \[
 [T_i,T_j]=\epsilon_{ijk}T_k.
 \]
-任意 $X\in\mathfrak{su}(2)$ 可写成 $X=-\ii\boldsymbol\theta\cdot\boldsymbol\sigma/2$，利用
-$(\hat{\vb n}\cdot\boldsymbol\sigma)^2=I$ 可把指数算到底：
+任意 $X\in\mathfrak{su}(2)$ 可写成 $X=-\ii\boldsymbol\theta\cdot\boldsymbol\sigma/2$，其中 $\boldsymbol\theta$ 是实三维向量。写 $\boldsymbol\theta=\theta\hat{\mathbf n}$，上述乘法公式给出 $(\hat{\mathbf n}\cdot\boldsymbol\sigma)^2=I$。把指数级数的奇偶幂分开，得到
 \begin{equation}
 \exp\!\left(-\frac{\ii\theta}{2}\hat{\vb n}\cdot\boldsymbol\sigma\right)
 =I\cos\frac\theta2-\ii\hat{\vb n}\cdot\boldsymbol\sigma\sin\frac\theta2.
 \label{eq:su2-axis-angle-exp}
 \end{equation}
-当 $\theta=2\pi$ 时结果为 $-I$，到 $4\pi$ 才回到 $I$。$\mathfrak{su}(2)$ 与 $\mathfrak{so}(3)$ 有相同的局部交换关系，却对应不同的全局群；Lie 代数控制单位元附近的结构，不能单独恢复群的拓扑。
+当 $\theta=2\pi$ 时结果为 $-I$，到 $4\pi$ 才回到 $I$。这还不能单凭符号断定两个群之间的确切关系；需要构造把 $SU(2)$ 元素送到三维转动的映射。
 
-本章把连续群压缩到了生成元、交换关系和指数映射。下一步的困难来自高秩代数：生成元不能全部同时对角化，而表示中的态仍需要一组可同时测量的量子数。为此要在代数中选出最大的可交换部分，并研究其余生成元怎样搬运这些共同本征值。
+把这个二重覆盖写成可计算的映射。对 $\mathbf x\in\mathbb R^3$，用无迹厄米矩阵
+\[
+X(\mathbf x)=\mathbf x\cdot\boldsymbol\sigma
+\]
+表示它。若 $U\in SU(2)$，相似变换保持厄米性、迹和行列式，因此存在唯一向量 $R_U\mathbf x$ 使
+\begin{equation}
+U X(\mathbf x)U^\dagger=X(R_U\mathbf x).
+\label{eq:su2-so3-conjugation}
+\end{equation}
+又因为
+\[
+\frac12\Tr[X(\mathbf x)X(\mathbf y)]
+=\mathbf x\cdot\mathbf y,
+\]
+相似变换保持迹，故 $R_U$ 保持 Euclidean 内积。连续性以及 $R_I=I$ 排除了行列式 $-1$，所以 $R_U\in SO(3)$。
+
+\begin{theorem}[$SU(2)$ 到 $SO(3)$ 的二重覆盖]
+映射 $\pi:SU(2)\to SO(3)$，$\pi(U)=R_U$，是满同态，且
+\[
+\ker\pi=\{I,-I\}.
+\]
+因此 $SO(3)\cong SU(2)/\{\pm I\}$。
+\end{theorem}
+
+\begin{proof}
+由\eqnrefs{eq:su2-so3-conjugation}连续使用两次，
+\[
+X(R_{UV}\mathbf x)
+=UVX(\mathbf x)V^\dagger U^\dagger
+=X(R_U R_V\mathbf x),
+\]
+故 $R_{UV}=R_UR_V$。若 $R_U=I$，则 $U$ 与三个 Pauli 矩阵都对易；它也与所有 $2\times2$ 复矩阵对易，所以 $U=\lambda I$。条件 $U^\dagger U=I$ 与 $\det U=1$ 给出 $\lambda=\pm1$。
+
+最后，任意三维转动都有轴角表示 $(\hat{\mathbf n},\theta)$：实正交 $3\times3$ 矩阵有本征值 $1$，其正交补上是一块平面旋转。取
+\[
+U=\exp\!\left(-\frac{\ii\theta}{2}
+\hat{\mathbf n}\cdot\boldsymbol\sigma\right),
+\]
+记 $N=\hat{\mathbf n}\cdot\boldsymbol\sigma$、$X=\mathbf x\cdot\boldsymbol\sigma$、$c=\cos(\theta/2)$、$s=\sin(\theta/2)$。前面的矩阵乘法给出
+\[
+NXN=\bigl(2(\hat{\mathbf n}\cdot\mathbf x)\hat{\mathbf n}-\mathbf x\bigr)\cdot\boldsymbol\sigma,
+\qquad XN-NX=-2\ii(\hat{\mathbf n}\times\mathbf x)\cdot\boldsymbol\sigma.
+\]
+于是 $(cI-\ii sN)X(cI+\ii sN)$ 对应向量
+\[
+R_U\mathbf x
+=\mathbf x\cos\theta
++(\hat{\mathbf n}\times\mathbf x)\sin\theta
++\hat{\mathbf n}(\hat{\mathbf n}\cdot\mathbf x)(1-\cos\theta).
+\]
+它正是绕 $\hat{\mathbf n}$ 旋转 $\theta$ 的 Rodrigues 公式，故每个 $SO(3)$ 元素都在 $\pi$ 的像中。核已算出是 $\{\pm I\}$，所以每个三维转动恰有两个原像 $U$ 与 $-U$。同一条 $SO(3)$ 中的 $2\pi$ 转动回到单位元，在 $SU(2)$ 中却从 $I$ 走到 $-I$；局部交换关系不能区分这两个终点。
+\end{proof}
+
+\begin{example}[同一次转动对向量与旋量的作用]
+取绕第三轴的转动，令
+\[
+U_z(\theta)=\exp(-\ii\theta\sigma_3/2)
+=\begin{pmatrix}\ee^{-\ii\theta/2}&0\\0&\ee^{\ii\theta/2}\end{pmatrix}.
+\]
+直接相乘，并用
+$\sigma_1=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$、
+$\sigma_2=\bigl(\begin{smallmatrix}0&-\ii\\\ii&0\end{smallmatrix}\bigr)$，得到
+\[
+U_z(\theta)\sigma_1U_z(\theta)^\dagger
+=\begin{pmatrix}0&\ee^{-\ii\theta}\\\ee^{\ii\theta}&0\end{pmatrix}
+=\cos\theta\,\sigma_1+\sin\theta\,\sigma_2.
+\]
+因此对应的 $R_{U_z}$ 把 $(1,0,0)$ 送到
+$(\cos\theta,\sin\theta,0)$。特别地，$U_z(2\pi)=-I$，
+却有 $R_{U_z(2\pi)}=I$。若 $\psi\in\mathbb C^2$ 是旋量，
+同一操作给 $\psi\mapsto-\psi$；而用
+$\psi^\dagger\sigma_i\psi$ 组成的实三维向量不变，因为前后两个负号相消。
+因此同一个 $2\pi$ 转动在向量上已是恒等变换，在旋量上却仍是负恒等变换。
+\end{example}
+
+高秩代数中，生成元不能全部同时对角化，而表示中的态仍需要一组相容量子数。下一章先选出最大的可交换子代数，再计算其余生成元怎样改变这些共同本征值。
