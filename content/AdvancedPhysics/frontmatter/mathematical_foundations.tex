@@ -395,6 +395,29 @@ u(x)=1+\lambda\int_0^x u(y)\dd y.
 \]
 这里 $V^n1=x^n/n!$，故 $u(x)=\sum_{n\ge0}(\lambda x)^n/n!=\ee^{\lambda x}$；直接微分也得到 $u'=\lambda u$、$u(0)=1$。这说明积分方程不仅能求微分方程，初值也已包含在积分下限与非齐次项里。
 
+同一方程还能把梯形求积的误差阶数算到首项。取 $\lambda=2$、$[0,1]$ 上的均匀网格 $x_n=nh$，其中 $h=1/N$。在节点 $x_n$ 使用复合梯形公式，令 $u_n$ 近似 $u(x_n)$，得到
+\[
+u_n=1+2h\left(\frac12u_0+\sum_{j=1}^{n-1}u_j+\frac12u_n\right),
+\qquad u_0=1.
+\]
+把第 $n-1$ 个方程从第 $n$ 个方程中相减，公共的旧节点项全部消去：
+\[
+u_n-u_{n-1}=h(u_n+u_{n-1}),
+\qquad
+u_n=\frac{1+h}{1-h}u_{n-1}.
+\]
+因此数值解有闭式表达
+\[
+u_n=\left(\frac{1+h}{1-h}\right)^n.
+\]
+当 $0<h<1$ 时，利用 $\log\frac{1+h}{1-h}=2(h+h^3/3+h^5/5+\cdots)$，且 $x_n=nh\le1$，可一致地展开为
+\[
+\log u_n=2x_n+\frac23x_nh^2+O(h^4),\qquad
+u_n-\ee^{2x_n}=\frac23x_n\ee^{2x_n}h^2+O(h^4).
+\]
+首项在 $x_n=1$ 取最大，故最大误差为
+$\frac23\ee^2h^2+O(h^4)$；网格步长减半时，误差比趋于 $4$。\figref{fig:advanced-integral-equations} 上图的斜率 $2$ 因而来自离散方程本身，而非仅由有限几组数值点推测。
+
 Fredholm 方程与初值型 Volterra 方程不同：反馈遍及整个区间，某些参数值会出现共振。先看一个无需抽象谱理论便可算完的例子：
 \begin{equation}
 u(x)=1+\lambda\int_0^1 xy\,u(y)\dd y,\qquad 0\le x\le1.
