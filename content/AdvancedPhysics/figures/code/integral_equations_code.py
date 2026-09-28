@@ -33,10 +33,16 @@ sizes = np.array([20, 40, 80, 160, 320])
 errors = []
 for n in sizes:
     x, u = volterra_trapezoid(int(n))
+    h = 1.0 / n
+    discrete_exact = ((1 + h) / (1 - h)) ** np.arange(n + 1)
+    assert np.allclose(u, discrete_exact, rtol=1e-12, atol=1e-12)
     errors.append(np.max(np.abs(u - np.exp(2 * x))))
 errors = np.asarray(errors)
 assert np.all(np.diff(errors) < 0)
 assert np.all((errors[:-1] / errors[1:]) > 3.9)
+h_finest = 1.0 / sizes[-1]
+leading_error = (2 * np.e**2 / 3) * h_finest**2
+assert abs(errors[-1] / leading_error - 1) < 1e-3
 
 nodes, weights = leggauss(24)
 nodes, weights = (nodes + 1) / 2, weights / 2

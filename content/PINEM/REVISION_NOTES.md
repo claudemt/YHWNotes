@@ -1,44 +1,20 @@
-# R16 推导闭环化说明
+# R20 — Single-master-equation application rebuild
 
-## 1. 本轮目标
+## Structural change
+- Main text reduced from five chapters to four.
+- Chapters 1–2 derive and solve the only PINEM interaction equation.
+- Chapter 3 contains only substitutions into beta: longitudinal field profiles, phase matching, evanescent modes, coherent superposition, arrays, polarization, OAM, pulses, multifrequency drive, Maxwell/Mie/Rayleigh interfaces.
+- Chapter 4 contains only downstream operations on c_n and P_n: universal Bessel moments, detector averages, phase-sensitive heterodyne readout, velocity-scan Fourier reconstruction, and free-drift temporal bunching.
+- Full Maxwell/Green/T/Mie/Rayleigh derivations moved out of the main narrative into a technical appendix.
 
-R15 已经完成章节级重构，但部分段落仍存在“从正确结论跳到正确结论”的问题：读者知道前后两式，却看不清中间究竟代入了什么、某个算符为何出现、某项何时可以删除。R16 的目标是把这些连接补成可逐行复算的数学链。
+## New applications derived directly from the master equation
+- Evanescent travelling mode beta(b) with independent impact-parameter and longitudinal phase-matching factors.
+- Exact Bessel characteristic function and energy variance sigma_E = sqrt(2) hbar omega |beta|.
+- Fourth sideband moment as a model-consistency diagnostic.
+- Reference-coupling/heterodyne extraction of complex beta.
+- Electron-velocity scan as direct sampling of the longitudinal spatial Fourier spectrum.
+- Free-drift quadratic spectral phase and dispersion length for conversion of PINEM phase modulation into temporal density modulation.
+- Explicit quasistatic longitudinal dipole result beta proportional to K_0(omega b/v0), connecting Rayleigh polarizability to the electron coupling without introducing a new PINEM model.
 
-## 2. 电子侧核心重写
-
-- 在做 P/Q 投影之前先精确剥离中心四动量载波；
-- 明确写出载波变换后的 Dirac 包络 Hamiltonian，不再用模糊的“包络动量偏移项”；
-- 对该明确算符执行 Feshbach–Schur 消元；
-- 将二阶虚跃迁项直接算成自由正能色散 Hessian，建立
-  `P alpha Q alpha P` 与相对论质量张量之间的联系；
-- 因而横向 `gamma_0 m`、纵向 `gamma_0^3 m` 不再作为孤立结论出现，而是正能有效理论的二阶反馈；
-- 再从二阶规范协变包络方程逐项比较尺度，最后才进入一阶 eikonal/PINEM 方程。
-
-## 3. PINEM 边带链
-
-- 任意外场的一阶输运方程先用特征线精确积分；
-- 单色场只作为后续参数代入；
-- `omega/v_0` 由沿轨迹的 Fourier 相位自然产生；
-- 明确 Jacobi–Anger 展开、边带指标与能量增益符号的对应；
-- 真实反冲通道先由相对论色散定义，再推出无反冲近似及其误差参数。
-
-## 4. 电磁与几何侧
-
-- Maxwell → dyadic Green → Lippmann–Schwinger → T 算符构成一般母链；
-- 球形 Mie 只作为该母链在可分离几何中的精确实现；
-- Rayleigh 只从精确 Mie 的小尺寸参数展开得到；
-- 正文不再并列插入圆柱、椭球等几何支线，这些全部留在附录。
-
-## 5. 有限脉冲与实验谱
-
-- 有限脉冲从已经建立的特征线积分继续，不重复建立电子动力学；
-- 明确 phasor、正频场、慢包络与 pulse-freeze 之间的层次；
-- 谱平移与 Parseval 步骤显式写出；
-- 最终实验谱由单轨迹概率经过到达时间、束流参数和探测器响应的统计平均得到。
-
-## 6. 本轮 QA
-
-- 当前正文为三部七章，另有六个附录；
-- 已双遍 XeLaTeX 编译；
-- 最终构建日志未发现 LaTeX error、undefined reference、重复 label 或 overfull box；
-- 交付 ZIP 清除 `.aux/.log/.out/.toc` 与各轮 build log，仅保留正式工程文件。
+## Editorial rule
+After Eq. beta[E] and c_n/P_n are derived, no section in the main text is allowed to introduce a second PINEM interaction law. Every later result must be identifiable as input construction, free propagation, or readout/averaging.
