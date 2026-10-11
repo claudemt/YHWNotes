@@ -8,6 +8,8 @@
 
 这仍是连续线性泛函：若 \(\varphi_n\to0\)，它们的导数在共同紧集上也一致趋零，所以 \(\langle T,\partial_j\varphi_n\rangle\to0\)。因此每个分布都可反复求导；这不声称导数是普通函数。
 
+连续性还把分布分了阶。若在某紧集上存在整数 \(m\) 与常数 \(C\)，使 \(|\langle T,\varphi\rangle|\le C\max_{|\alpha|\le m}\sup|\partial^\alpha\varphi|\)，就称 \(T\) 是 \(m\) 阶分布。点源 \(\delta_y\) 只用到 \(\varphi(y)\)，是 0 阶；它的分布导数 \(\partial_j\delta_y\) 用到 \(\partial_j\varphi(y)\)，是 1 阶；由局部可积函数给出的正则分布在每个紧集上是 0 阶。\(\delta\) 及其导数就是按阶逐次升高的典型。
+
 设 \(H(x)=0\) 于 \(x<0\)，\(H(x)=1\) 于 \(x>0\)。按定义，
 \[
 \langle H',\varphi\rangle=-\int_0^\infty\varphi'(x)\,\dd x
@@ -21,7 +23,7 @@
 \]
 跳跃的正负号由两侧积分的端点项决定，不能凭图像猜。取 \(f=H\) 时 \([f]_0=1\)，与直接计算一致。
 
-点源也可由普通函数序列逼近，但这种逼近不是它的定义。令 \(\rho_n(x)=n\mathbf1_{[0,1/n]}(x)\)。对每个测试函数 \(\varphi\)，换元 \(s=nx\) 得
+点源也可由普通函数序列逼近，但这种逼近不是它的定义。令 \(\rho_n(x)=n\mathbf1_{[0,1/n]}(x)\)，其中 \(\mathbf1_I\) 在集合 \(I\) 上取 1、其余取 0。对每个测试函数 \(\varphi\)，换元 \(s=nx\) 得
 \[
 \langle T_{\rho_n},\varphi\rangle
 =\int_0^1\varphi(s/n)\,\dd s\longrightarrow\varphi(0)
@@ -29,6 +31,13 @@
 \]
 极限使用的是 \(\varphi\) 在零点连续，而 \(\rho_n\) 在零点的函数值是否选为 \(n\) 不影响结果。故“高度趋无穷”只能作某些近似列的图像说明；不同归一化可能给零、两倍点源或根本没有分布极限。
 
+
+\par
+\begin{workedexample}
+对 \(f(x)=H(x)-H(x-1)\)，不借助普通导数在跳点的值，直接求其分布导数。再用 Fourier 变换验证答案中的两个点源系数。
+\textbf{解.} 由阶跃函数的平移，\(H'(x)=\delta_0\)、\(\partial_xH(x-1)=\delta_1\)，故 \(\partial_x f=\delta_0-\delta_1\)。在约定 \(\widehat T(\xi)=\langle T,e^{-\ii x\xi}\rangle\) 下，导数变换为 \(\ii\xi\widehat f\)，右侧变换为 \(1-e^{-\ii\xi}\)。直接积分得 \(\widehat f=(1-e^{-\ii\xi})/(\ii\xi)\)，乘以 \(\ii\xi\) 即核对两个点源的系数和符号。
+\end{workedexample}
+\par
 \section{Fourier 变换为何要扩大测试函数空间}
 
 紧支测试函数的 Fourier 变换通常不再紧支。为使变换前后仍在同一类探针中，取 Schwartz 空间 \(\mathcal S(\mathbb R^n)\)：其中 \(\varphi\) 光滑，且 \(x^\beta\partial^\alpha\varphi(x)\) 对每组多重指标 \(\alpha,\beta\) 都有界。它的连续对偶称缓增分布。紧支分布和至多多项式增长的函数都在其中，而 \(\ee^{x^2}\) 不属于这一类。
@@ -56,7 +65,7 @@
 \end{equation}
 这就是 Parseval 等式的连续变量版本。\(\mathcal S\) 在 \(L^2\) 中稠密，等式因而把 \((2\pi)^{-n/2}\mathcal F\) 唯一延拓为 \(L^2\) 上的等距满射。对一般 \(L^2\) 波函数，Fourier 变换可以按这个范数极限理解，并不要求它的积分在每一点都绝对收敛。
 
-对缓增分布定义 \(\langle\widehat T,\varphi\rangle=\langle T,\widehat\varphi\rangle\)；在普通函数可积时，交换两次积分便恢复普通 Fourier 积分。对任意 \(\varphi\in\mathcal S\)，由 \(\partial_x\widehat\varphi(x)=\widehat{(-\ii\xi\varphi)}(x)\) 得
+对缓增分布定义 \(\langle\widehat T,\varphi\rangle=\langle T,\widehat\varphi\rangle\)；在普通函数可积时，交换两次积分便恢复普通 Fourier 积分。为推导导数的乘法法则，把 \(\widehat\varphi\) 看作它自变量 \(x\) 的函数：\(\widehat\varphi(x)=\int\ee^{-\ii x\xi}\varphi(\xi)\,\dd\xi\)，对 \(x\) 求导即把因子 \(-\ii\xi\) 从指数里带出来，\(\partial_x\widehat\varphi(x)=\widehat{-\ii\xi\,\varphi}(x)\)。于是
 \[
 \begin{aligned}
 \langle\widehat{\partial_xT},\varphi\rangle
@@ -70,10 +79,7 @@
 \[
 \mathcal F(\partial_jT)=\ii\xi_j\widehat T.
 \]
-例如 \(\widehat{\delta_0}=1\)，故 \(\widehat{\delta_0'}=\ii\xi\)。微分化为乘法后，若符号 \(\ii\xi\) 在 \(\xi=0\) 为零，就不能无条件相除；零频处的困难正对应原方程的常数核。
+例如 \(\widehat{\delta_0}=1\)，故 \(\widehat{\delta_0'}=\ii\xi\)。反过来，常数函数 \(1\) 本身是缓增分布，\(\langle\widehat 1,\varphi\rangle=\langle 1,\widehat\varphi\rangle=\int\widehat\varphi(\xi)\,\dd\xi\)。反变换公式在 \(x=0\) 处恰给出 \(\varphi(0)=(2\pi)^{-1}\int\widehat\varphi(\xi)\,\dd\xi\)，所以 \(\int\widehat\varphi=2\pi\varphi(0)=\langle 2\pi\delta_0,\varphi\rangle\)，即 \(\widehat 1=2\pi\delta_0\)。Fourier 变换把 \(\delta\) 与常数互相对调，这里的 \(2\pi\) 正是反变换归一化带来的因子。微分化为乘法后，若符号 \(\ii\xi\) 在 \(\xi=0\) 为零，就不能无条件相除；零频处的困难正对应原方程的常数核。
 
 分布导数总能定义，并不意味着分布能任意相乘。\(H\delta_0\) 若照普通乘法写成“\(H(0)\delta_0\)”，会依赖任意指定的 \(H(0)\)；而 \(H\) 作为局部可积函数的分布根本不记录这个点值。因此一般分布乘法需要额外正则性，\(\delta_0^2\) 也没有由上述定义自动给出的意义。在线性方程中，先确认每个乘积和卷积都已定义，再进行形式运算。
 
-\begin{exercise}
-对 \(f(x)=H(x)-H(x-1)\)，不借助普通导数在跳点的值，直接求其分布导数。再用 Fourier 变换验证答案中的两个点源系数。
-\end{exercise}

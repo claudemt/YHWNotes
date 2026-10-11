@@ -1,0 +1,91 @@
+% -----------------------------------------------------------------------------
+% Common mathematical tools for generic QFT, proved before first use
+% -----------------------------------------------------------------------------
+
+散射积分反复遇到三个具体困难：能量守恒的 $\delta$ 函数需要在变量变换后给出正确 Jacobian；多个传播子分母需要合并成一个可平移动量的分母；圈动量的张量分子需要利用对称性化成标量积分。这三类工具共同固定散射积分中的 Jacobian、分母组合以及张量约化，并同时给出收敛域与解析延拓条件。
+
+若光滑函数 $f(x)$ 的零点 $x_i$ 都是单根，即 $f(x_i)=0$ 且 $f'(x_i)\neq0$，则复合 $\delta$ 分布满足
+\begin{equation}
+\boxed{
+\delta[f(x)]
+=\sum_i\frac{\delta(x-x_i)}{|f'(x_i)|}.}
+\label{eq:delta-composition-r68}
+\end{equation}
+这个 Jacobian 因子由变量变换唯一确定，并直接进入质量壳积分与末态相空间测度。
+
+圈积分最常见的问题是多个传播子分母相乘。母公式从每个分母的 Schwinger 参数表示开始。若 $\operatorname{Re}A_i>0$、$\operatorname{Re}\nu_i>0$，则
+\begin{equation}
+ \boxed{
+ \frac1{A_i^{\nu_i}}
+ =\frac1{\Gamma(\nu_i)}
+ \int_0^\infty\dd\tau_i\,\tau_i^{\nu_i-1}\ee^{-A_i\tau_i}.}
+ \label{eq:schwinger-parameter-r9}
+\end{equation}
+令 $\nu\equiv\sum_{i=1}^N\nu_i$，并作变量分解 $\tau_i=sx_i$、$x_i\ge0$、$\sum_i x_i=1$。对公共尺度 $s$ 的积分给出 $\Gamma(\nu)$，于是任意 $N$ 个分母满足
+\begin{equation}
+\boxed{
+ \frac1{\prod_{i=1}^N A_i^{\nu_i}}
+ =\frac{\Gamma(\nu)}{\prod_{i=1}^N\Gamma(\nu_i)}
+ \int_{x_i\ge0}\!\left[\prod_{i=1}^N\dd x_i\,x_i^{\nu_i-1}\right]
+ \delta\!\left(1-\sum_{i=1}^N x_i\right)
+ \frac1{\left(\sum_{i=1}^N x_iA_i\right)^{\nu}}.}
+\label{eq:feynman-n-general-dp74}
+\end{equation}
+这就是后续圈图使用的母参数化；参数 $x_i$ 无量纲，Minkowski 传播子的 $\ii0^+$ 处方随线性组合一起保留。对 $N=2$，\eqnrefs{eq:feynman-n-general-dp74} 化为
+\begin{equation}
+\boxed{
+\frac1{A^{\nu_A}B^{\nu_B}}
+=\frac{\Gamma(\nu_A+\nu_B)}{\Gamma(\nu_A)\Gamma(\nu_B)}
+\int_0^1\dd x\,
+\frac{x^{\nu_A-1}(1-x)^{\nu_B-1}}
+{[xA+(1-x)B]^{\nu_A+\nu_B}}.}
+\label{eq:feynman-two-general-r68}
+\end{equation}
+再取 $\nu_A=\nu_B=1$ 才得到常用特例
+\begin{equation}
+ \boxed{
+ \frac1{AB}
+ =\int_0^1\dd x\,
+ \frac1{[xA+(1-x)B]^2}.}
+ \label{eq:feynman-parameter-proof-r9}
+\end{equation}
+对三个一次分母同样只是 $N=3$、$\nu_i=1$ 的特例：
+\begin{equation}
+ \boxed{
+ \frac1{ABC}
+ =2\int_0^1\dd x\dd y\dd z\,
+ \delta(x+y+z-1)
+ \frac1{(xA+yB+zC)^3}.}
+ \label{eq:feynman-three-denominator-r14}
+\end{equation}
+前因子 $2=\Gamma(3)$ 来自母公式中的公共尺度积分，而不是某张三角圈图的组合因子。
+
+完成多个二次分母的合并和平移积分变量后，许多 $d$ 维 Euclidean 动量积分都会归结为高斯矩。对 $a>0$，$d$ 维 Euclidean 向量 $\ell_E$ 满足
+\begin{equation}
+ \boxed{
+ \int\dd^d \ell_E\,\ee^{-a\ell_E^2}
+ =\left(\frac\pi a\right)^{d/2}.}
+ \label{eq:d-dimensional-gaussian-r9}
+\end{equation}
+这里的 $d$ 暂时不要求等于物理时空的整数维数。某些量子场论动量积分在 $d=4$ 时发散，却在一段 $\operatorname{Re}d$ 范围内收敛。\emph{维数正规化}（dimensional regularization）把收敛维数范围内得到的解析表达式作为关于 $d$ 的函数，并将它解析延拓到复维数；物理四维由
+\begin{equation*}
+ d=4-2\epsilon,
+ \qquad \epsilon\to0.
+\end{equation*}
+这样，当积分变量的模 $|\ell|\to\infty$ 时产生的高动量发散会表现为 $1/\epsilon$ 等极点；在量子场论中，这类来自任意大内部动量的发散称为\emph{紫外发散}（ultraviolet divergence）。有限部分仍由同一个解析函数给出。这里的“非整数维”是给发散积分定义解析延拓的调节参数，并不是说物理时空真的具有分数维数。维数正规化之所以特别适合相对论场论，是因为它可以在计算过程中保持 Lorentz 协变的张量结构；真正的四维物理量要在完成参数重定义和取 $\epsilon\to0$ 极限后得到。
+
+若调节方案保持 $d$ 维 Lorentz 对称性，对只依赖 $\ell^2$ 的标量函数 $f$，二阶张量积分只能与度规成正比：
+\begin{equation}
+\int\dd^d \ell\,\ell^\mu\ell^\nu f(\ell^2)
+=C_f\eta^{\mu\nu}.
+\label{eq:rank2-isotropic-ansatz-dp68}
+\end{equation}
+与 $\eta_{\mu\nu}$ 收缩固定 $C_f$ 后得到
+\begin{equation}
+ \boxed{
+ \int\dd^d \ell\,\ell^\mu\ell^\nu f(\ell^2)
+ =\frac{\eta^{\mu\nu}}d
+ \int\dd^d \ell\,\ell^2 f(\ell^2).}
+ \label{eq:tensor-reduction-proof-r9}
+\end{equation}
+这一步依赖调节器保持平移和 Lorentz 对称性；对尚未调节的发散积分不能先做形式上的“对称平均”。

@@ -1,0 +1,1587 @@
+\chapter{大数律、中心极限定理与渐近线性化}\label{chap:math-stat-asymptotics}
+
+统计量的有限样本分布通常依赖整个总体分布，难以写成闭式；渐近理论则把问题分成两个不同尺度。首先，大数律说明经验平均 $P_ng$ 在 $O(1)$ 尺度上趋于确定极限 $Pg$；随后，中心极限定理描述其 $n^{-1/2}$ 量级的随机涨落。连续映射、Slutsky、Δ 方法与渐近线性表示只是把这两个基本极限传递到更复杂的统计量。后面的 $M$-估计、极大似然估计、局部渐近正态、Wald、得分 与 BvM 都依赖这一层，因此本章不仅给结论，也明确哪些条件控制一致性、哪些条件只控制一阶正态近似。
+
+\section{随机变量列的收敛与概率阶}
+
+\begin{definition}[随机变量列的收敛]
+设 $X_n,X$ 定义在同一概率空间。若对任意 $\varepsilon>0$，
+\[
+ \mathbb P(|X_n-X|>\varepsilon)\to0,
+\]
+则记 $X_n\xrightarrow{\mathbb P} X$；若
+\[
+ \mathbb P\{\omega:X_n(\omega)\to X(\omega)\}=1,
+\]
+则记 $X_n\xrightarrow{a.s.} X$。若 $X_n$ 的分布弱收敛到 $X$ 的分布，则记 $X_n\xrightarrow{d} X$。在实线上，弱收敛等价于分布函数在 $F_X$ 的所有连续点收敛；在一般可分度量空间中，也可以用所有有界连续函数 $f$ 的积分
+\[
+ \mathbb E f(X_n)\to\mathbb E f(X)
+\]
+来刻画。
+
+\end{definition}
+\begin{proposition}[收敛方式之间的关系]
+三种收敛满足
+\[
+ X_n\xrightarrow{a.s.} X
+ \quad\Longrightarrow\quad
+ X_n\xrightarrow{\mathbb P} X
+ \quad\Longrightarrow\quad
+ X_n\xrightarrow{d} X,
+\]
+逆向一般不成立。当极限是常数 $c$ 时，$X_n\xrightarrow{d} c$ 与 $X_n\xrightarrow{\mathbb P} c$ 等价，这一点在估计量一致性中经常使用。
+\end{proposition}
+\begin{proof}
+几乎处处收敛时，偏离事件的指标趋于零且有界，控制收敛给其概率趋于零。依概率收敛时，从任意子列可抽取进一步子列几乎处处收敛，故对有界连续测试函数，其期望沿该子列收敛；子列判据得到分布收敛。若极限为常数，选包含该常数的小开区间并用弱收敛的开集不等式，其外概率趋于零，得到依概率收敛。
+\end{proof}
+
+还定义 $L^p$ 收敛：$1\le p<\infty$ 时，$E|X_n-X|^p\to0$。Markov 不等式给 $P(|X_n-X|>\varepsilon)\le\varepsilon^{-p}E|X_n-X|^p$，所以它蕴含依概率收敛。
+
+\begin{workedexample}[收敛方式的区别]
+设 \(P(A_n)=n^{-2}\)，并取 \(X_n=n\mathbf1_{A_n}\)。判断 \(X_n\) 是否在 \(L^1\)、\(L^2\) 以及概率意义下收敛到零。
+
+\textbf{解.} 由定义，\(\mathbb E|X_n|=nP(A_n)=1/n\to0\)，所以 \(X_n\to0\) 于 \(L^1\)。另一方面，\(\mathbb E|X_n|^2=n^2P(A_n)=1\)，故不在 \(L^2\) 收敛。对任意固定 \(\varepsilon>0\)，当 \(n>\varepsilon\) 时 \(P(|X_n|>\varepsilon)=P(A_n)=n^{-2}\to0\)，因此仍依概率收敛。事件之间是否独立对这三个结论没有影响。
+\end{workedexample}
+
+为了记录随机误差的尺度，定义 $O_{\mathbb P}$ 与 $o_{\mathbb P}$。若 $X_n/a_n$ 在概率意义下有界，即对任意 $\varepsilon>0$ 存在 $M<\infty$ 使充分大 $n$ 时
+\[
+ \mathbb P(|X_n|>Ma_n)<\varepsilon,
+\]
+则记 $X_n=O_{\mathbb P}(a_n)$；若 $X_n/a_n\xrightarrow{\mathbb P}0$，则记 $X_n=o_{\mathbb P}(a_n)$。中心极限定理通常给出
+\[
+ \overline X_n-\mu=O_{\mathbb P}(n^{-1/2}),
+\]
+而一个二阶 Taylor 余项若是 $O_{\mathbb P}(\|\widehat\theta-\theta\|^2)$，在 $\sqrt n$ 尺度上往往就是 $o_{\mathbb P}(1)$。
+
+若 $X_n\xrightarrow{d} X$ 且 $g$ 在 $X$ 几乎处处连续，则连续映射定理给出
+\[
+ g(X_n)\xrightarrow{d} g(X).
+\]
+若 $X_n\xrightarrow{d} X$、$Y_n\xrightarrow{\mathbb P} c$，则 Slutsky 定理给出
+\[
+ X_n+Y_n\xrightarrow{d} X+c,
+ \qquad
+ X_nY_n\xrightarrow{d} cX,
+\]
+并在 $c\ne0$ 时有
+\[
+ \frac{X_n}{Y_n}\xrightarrow{d}\frac{X}{c}.
+\]
+它的统计意义非常具体：一个未知尺度若能被一致估计，就可以在一阶渐近分布中用估计值替换；但这只说明渐近等价，并不自动产生有限样本精确分布。
+
+\section{经验平均、大数律与统一收敛}
+
+\begin{proposition}[Markov、Chebyshev 与 Hoeffding 尾界]
+设 $Y\ge0$、$a>0$。Markov 不等式给出：
+\[
+P(Y\ge a)\le\frac{\mathbb E Y}{a}.
+\]
+取 $Y=(X-\mathbb E X)^2$ 得 Chebyshev；取 $Y=\exp(tX)$ 并优化 $t$ 则得到 Chernoff 方法。若 $X_i$ 独立且 $X_i\in[a_i,b_i]$ 几乎处处，则对 $t>0$，Hoeffding 不等式给出
+\begin{equation}
+P\!\left(
+\sum_{i=1}^n(X_i-\mathbb E X_i)\ge t
+\right)
+\le
+\exp\!\left(
+-\frac{2t^2}{\sum_i(b_i-a_i)^2}
+\right).
+\label{eq:math-stat-hoeffding}
+\end{equation}
+\end{proposition}
+\begin{proof}
+由 $Y\ge a\mathds{1}_{\{Y\ge a\}}$ 取期望得 Markov 界；对中心化平方应用它得到 Chebyshev 界。下面逐行证明 Hoeffding 界的指数矩估计与优化。
+
+指数矩界中的中心化项和最优参数如下计算。
+
+对任意 $\lambda>0$，Markov 不等式给出
+\[
+P(S_n\ge t)
+=P(\ee^{\lambda S_n}\ge\ee^{\lambda t})
+\le
+\ee^{-\lambda t}\mathbb E\ee^{\lambda S_n}.
+\]
+若 $S_n=\sum_iY_i$ 且 $Y_i$ 独立中心化，则
+\[
+\mathbb E\ee^{\lambda S_n}
+=\prod_i\mathbb E\ee^{\lambda Y_i}.
+\]
+令 $d_i=b_i-a_i$、$\mu_i=EX_i$。若 $d_i=0$，$Y_i=X_i-\mu_i=0$，不贡献指数矩。否则令 $p_i=(\mu_i-a_i)/d_i\in[0,1]$。由指数函数的凸性弦线估计，
+\begin{align*}
+ Ee^{\lambda(X_i-\mu_i)}
+ &\le(1-p_i)e^{\lambda(a_i-\mu_i)}+p_i e^{\lambda(b_i-\mu_i)}\\
+ &=e^{-p_i z_i}(1-p_i+p_i e^{z_i}),\qquad z_i=\lambda d_i.
+\end{align*}
+中心化的线性项是 $-p_i z_i$，不能省略。对 $p\in(0,1)$ 定义
+\[
+ \psi_p(z)=\log(1-p+pe^z)-pz,
+ \quad p_z=\frac{pe^z}{1-p+pe^z}.
+\]
+直接求导，
+\[
+ \psi_p(0)=\psi_p'(0)=0,\qquad
+ \psi_p''(z)=p_z(1-p_z)\le\frac14.
+\]
+积分形式的二阶 Taylor 公式因而给 $\psi_p(z)\le z^2/8$，对正负 $z$ 均成立。$p=0,1$ 时变量为常数，结论直接成立。所以
+\[
+ \log Ee^{\lambda Y_i}\le\frac{\lambda^2d_i^2}{8}.
+\]
+所以
+\[
+P(S_n\ge t)
+\le
+\exp\!\left[
+-\lambda t
++\frac{\lambda^2}{8}\sum_i(b_i-a_i)^2
+\right].
+\]
+右侧关于 $\lambda$ 最小值在
+\[
+\lambda_*
+=\frac{4t}{\sum_i(b_i-a_i)^2}
+\]
+处取得，代回即得\eqnrefs{eq:math-stat-hoeffding}。所得尾界依次使用了指数矩控制、独立乘积和参数优化。若所有区间长度为零，则 $S_n=0$，$t>0$ 的尾概率直接为零。
+
+若进一步保留方差信息 $v_i=\Var(Y_i)$，Bennett 不等式给出
+\[
+\log\mathbb E\ee^{\lambda Y_i}
+\le
+\frac{v_i}{M^2}\bigl(\ee^{\lambda M}-1-\lambda M\bigr),
+\qquad |Y_i|\le M,
+\]
+对 $0\le u<3$ 使用 $e^u-1-u\le u^2/[2(1-u/3)]$，再取合法的 $\lambda=t/(V_n+Mt/3)$，即得\eqnrefs{eq:math-stat-bernstein}。这把 Hoeffding 中只依赖区间长度的界换成同时依赖方差与截断尺度的界，在稀疏信号或异方差情形下显著更紧。
+\end{proof}
+有界独立和由此获得指数尾界，随后的一阶可积大数律则允许变量无界。
+
+\begin{proposition}[有界独立和的 Bernstein 界]
+设 $X_i$ 相互独立，$|X_i-\mathbb E X_i|\le M$，且总方差
+\[
+V_n=\sum_i\Var(X_i),
+\]
+对 $t>0$，Bernstein 不等式保留方差信息：
+\begin{equation}
+P\!\left(
+\sum_i(X_i-\mathbb E X_i)\ge t
+\right)
+\le
+\exp\!\left(
+-\frac{t^2}{2(V_n+Mt/3)}
+\right).
+\label{eq:math-stat-bernstein}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+令 $Y_i=X_i-EX_i$，满足独立、中心化、$|Y_i|\le M$，$V=\sum_iEY_i^2$。先取 $M>0,V>0$。对 $k\ge2$，有 $|EY_i^k|\le M^{k-2}EY_i^2$；并且 $k!\ge2\cdot3^{k-2}$，由 $k=2$ 基例及后续乘数至少三直接归纳。因此对 $0\le\lambda<3/M$，
+\begin{align*}
+ Ee^{\lambda Y_i}
+ &\le1+EY_i^2\sum_{k\ge2}\frac{\lambda^kM^{k-2}}{k!}\\
+ &\le1+\frac{\lambda^2EY_i^2}{2(1-\lambda M/3)},\\
+ \log Ee^{\lambda Y_i}
+ &\le\frac{\lambda^2EY_i^2}{2(1-\lambda M/3)}.
+\end{align*}
+最后一步用 $\log(1+u)\le u$。变量有界保证指数级数绝对收敛。独立性现在进入：
+\[
+ \log Ee^{\lambda\sum_iY_i}
+ =\sum_i\log Ee^{\lambda Y_i}
+ \le\frac{\lambda^2V}{2(1-\lambda M/3)}.
+\]
+对指数使用 Markov 不等式，
+\[
+ P\!\left(\sum_iY_i\ge t\right)
+ \le\exp\left(-\lambda t+\frac{\lambda^2V}{2(1-\lambda M/3)}\right).
+\]
+选择 $\lambda=t/(V+Mt/3)$ 落在合法区间，代入得到 $\exp[-t^2/(2(V+Mt/3))]$，即正文 Bernstein 界。$V=0$ 时所有 $Y_i=0$ 几乎处处，$t>0$ 的概率为零；无需代入产生端点歧义。对 $-Y_i$ 应用同一计算，再用并集界，可得双侧概率上界为上述指数的两倍。
+\end{proof}
+
+该界由独立变量的指数矩相乘得到；下面从二阶矩和幅度界证明所需的指数矩估计。当 $t\ll V_n/M$ 时，上界指数近似 $\exp(-t^2/2V_n)$；当 $t$ 很大时转为线性的 $-ct/M$。这两段描述的是尾界的尺度，不表示真实尾概率必达到上界。
+
+\begin{exbox}[有界截断中的方差尺度]
+设 $X_i$ 独立同分布且服从 $\mathcal N(0,1)$，取 $M>0$、$Y_i=X_i\mathds{1}_{\{|X_i|\le M\}}$。对称性给 $EY_i=0$，故中心化幅度也不超过 $M$。以 $\phi,\Phi$ 表示标准正态密度及分布函数，分部积分得到
+\[
+ v=EY_i^2=2\int_0^M x^2\phi(x)\dd x
+ =2\Phi(M)-1-2M\phi(M)\le1.
+\]
+代入 Bernstein 界，$S_n=\sum_iY_i$ 满足
+\[
+ P(S_n\ge t)\le\exp\!\left[-\frac{t^2}{2(nv+Mt/3)}\right].
+\]
+例如 $M=2$ 时 $v\approx0.7385$。当 $t\ll nv/M$ 时，指数由 $nv$ 控制；当 $t\gg nv/M$ 时，指数的领先项为 $-3t/(2M)$。两段描述上界的变化，不声称真实尾概率等于该指数。
+\end{exbox}
+
+\begin{definition}[指数矩与 Legendre 变换]
+若 $\Lambda(\lambda)=\log Ee^{\lambda X}$ 在零点邻域有限，定义
+\[
+ I(a)=\sup_{\lambda\in\RR}\{\lambda a-\Lambda(\lambda)\}.
+\]
+它是 $\Lambda$ 的 Legendre--Fenchel 变换。独立和的 Chernoff 上尾使用 $\lambda\ge0$ 的上确界；完整速率函数则同时容许正负 $\lambda$。统计力学中配分函数对共轭场的对数导数和这一凸结构相同，具体符号由能量权重 $e^{-\beta E}$ 的负号决定。
+\end{definition}
+
+\begin{lemma}[Borel--Cantelli]
+对事件列 $A_n$，若 $\sum_nP(A_n)<\infty$，则 $P(A_n\text{ 无穷多次发生})=0$。若事件相互独立且 $\sum_nP(A_n)=\infty$，则该概率为 $1$。
+\end{lemma}
+\begin{proof}
+第一条由
+\[
+ P\!\left(\bigcup_{n\ge N}A_n\right)\le\sum_{n\ge N}P(A_n)\longrightarrow0
+\]
+及概率测度的从上连续性得到。独立情形下，对 $m\ge N$，
+\[
+ P\!\left(\bigcap_{n=N}^m A_n^c\right)
+ =\prod_{n=N}^m(1-P(A_n))
+ \le\exp\!\left[-\sum_{n=N}^mP(A_n)\right]\longrightarrow0.
+\]
+对 $N$ 取可数并集，便知仅发生有限次的事件概率为零。
+\end{proof}
+这一引理把可求和的偏离概率转成样本路径控制。朴素 Chebyshev 界通常为 $O(n^{-1})$，不能直接求和；强大数律因此还需要截断与最大不等式。
+
+设 $X_1,X_2,\ldots\iid P$。对可积函数 $g$，记
+\[
+ Pg=\mathbb E g(X_1),
+ \qquad
+ P_ng=\frac1n\sum_{i=1}^ng(X_i).
+\]
+于是大数律可以统一理解为经验测度 $P_n$ 对固定测试函数 $g$ 的作用趋于总体测度 $P$。
+
+\begin{theorem}[弱大数律：一阶可积版本]
+若 $X_i$ 独立同分布且 $E|g(X_1)|<\infty$，则 $P_ng\to Pg$ 依概率。若另有有限方差，则
+\[
+ P(|P_ng-Pg|>\varepsilon)\le\frac{\Var(g(X_1))}{n\varepsilon^2}.
+\]
+\end{theorem}
+\begin{proof}
+有限方差时，独立性给 $\Var(P_ng)=\Var(g(X_1))/n$，再用 Chebyshev 不等式。只有一阶矩时，使用如下截断。
+
+仅有有限一阶矩时，仍可通过截断控制重尾。这个结论之所以重要，是因为“样本平均稳定”依赖可积性，而不是依赖正态、矩母函数或有限方差。
+
+为简化记号设 $g(X_i)=X_i$ 且 $\mathbb E|X_1|<\infty$。定义随 $n$ 改变的截断变量
+\[
+ Y_{n,i}=X_i\mathds{1}\{|X_i|\le n\},
+ \qquad
+ \overline Y_n=\frac1n\sum_{i=1}^nY_{n,i}.
+\]
+先控制截断事件。由尾部可积性，
+\[
+ \sum_{m=1}^\infty \mathbb P(|X_1|>m)
+ \le \mathbb E|X_1|<\infty,
+\]
+因而 $m\mathbb P(|X_1|>m)\to0$。于是
+\[
+ \mathbb P(\overline X_n\ne\overline Y_n)
+ \le n\mathbb P(|X_1|>n)\to0.
+\]
+同时
+\[
+ |\mathbb E Y_{n,1}-\mathbb E X_1|
+ \le\mathbb E\{|X_1|\mathds{1}(|X_1|>n)\}\to0.
+\]
+对截断平均，
+\[
+ \Var(\overline Y_n)
+ =\frac1n\Var(Y_{n,1})
+ \le\frac1n\mathbb E\{X_1^2\mathds{1}(|X_1|\le n)\}.
+\]
+把最后一个期望按 $|X_1|\le n$ 分层，或用
+\[
+ \frac{X_1^2}{n}\mathds{1}(|X_1|\le n)
+ \le |X_1|
+\]
+并结合逐点收敛到 $0$，由支配收敛定理得到
+\[
+ \Var(\overline Y_n)\to0.
+\]
+所以 Chebyshev 不等式给出
+\[
+ \overline Y_n-\mathbb E Y_{n,1}\xrightarrow{\mathbb P}0.
+\]
+将“原平均与截断平均之差”“截断平均的随机波动”“截断均值与原均值之差”三项相加，即得
+\[
+ \overline X_n\xrightarrow{\mathbb P}\mathbb E X_1.
+\]
+
+\end{proof}
+
+\begin{exbox}[重尾样本平均的两种行为]
+标准 Cauchy 密度为 $1/[\pi(1+x^2)]$，一阶绝对矩发散。其特征函数由上下半平面围道分别给 $\varphi(t)=e^{-|t|}$。对独立同分布样本，
+\[
+ \varphi_{\overline X_n}(t)=\varphi(t/n)^n=e^{-|t|}.
+\]
+所以每个样本均值仍是标准 Cauchy 变量，对任意 $\varepsilon>0$，$P(|\overline X_n|>\varepsilon)$ 为同一个正数，不能依概率趋于零。
+
+Pareto 密度为 $\alpha x^{-\alpha-1}$（$x\ge1,\alpha>0$），当 $\alpha>1$ 时
+\[
+ EX=\alpha\int_1^\infty x^{-\alpha}\dd x=\frac\alpha{\alpha-1},
+\]
+故一阶可积大数律适用；当 $1<\alpha\le2$ 时方差发散，也不妨碍该结论。若 $\alpha\le1$，令 $X^{(M)}=X\wedge M$，则 $EX^{(M)}\uparrow\infty$。对每个整数 $M$ 用有界强大数律，在可数个概率一事件的交上，
+\[
+ \liminf_n\overline X_n\ge EX^{(M)}\quad\text{对所有 }M,
+\]
+所以 $\overline X_n\to+\infty$ 几乎处处。重尾对平均的影响取决于可积性，不能仅由“方差很大”判断。
+\end{exbox}
+
+\subsection{最大不等式与路径上的强大数律}
+\begin{lemma}[Kolmogorov 最大不等式]
+设 $Z_{m+1},\ldots,Z_n$ 独立、均值为零且二阶矩有限，$T_j^{(m)}=\sum_{k=m+1}^jZ_k$。对 $a>0$，
+\begin{equation}\label{eq:math-stat-kolmogorov-maximal}
+ \mathbb P\!\left(
+ \max_{m<j\le n}|T_j^{(m)}|\ge a
+ \right)
+ \le
+ \frac1{a^2}\sum_{k=m+1}^n\Var(Z_k).
+\end{equation}
+\end{lemma}
+\begin{proof}
+对任意独立零均值变量 $Z_{m+1},\ldots,Z_n$ 与 $a>0$，令尾部分和
+\[
+ T_j^{(m)}=\sum_{k=m+1}^jZ_k.
+\]
+定义首次越过阈值的互斥事件
+\[
+ B_j
+ =\left\{
+ |T_\ell^{(m)}|<a\ \text{对所有 }m<\ell<j,
+ \ |T_j^{(m)}|\ge a
+ \right\}.
+\]
+在 $B_j$ 上，$T_j^{(m)}$ 只由 $Z_{m+1},\ldots,Z_j$ 决定，而 $T_n^{(m)}-T_j^{(m)}$ 只由后续独立零均值增量决定，所以交叉项条件期望为零。于是
+\begin{align*}
+ \mathbb E\!\left[(T_n^{(m)})^2\mathds{1}_{B_j}\right]
+ &=\mathbb E\!\left[(T_j^{(m)})^2\mathds{1}_{B_j}\right]
+ +\mathbb E\!\left[(T_n^{(m)}-T_j^{(m)})^2\mathds{1}_{B_j}\right]\\
+ &\ge a^2\mathbb P(B_j).
+\end{align*}
+对互斥的 $B_j$ 求和，并使用
+\[
+ \mathbb E(T_n^{(m)})^2=\sum_{k=m+1}^n\Var(Z_k),
+\]
+便得到上述最大不等式。
+
+\end{proof}
+
+\begin{lemma}[Kronecker 引理]
+若 $b_k>0$ 单调不减且 $b_k\to\infty$，而 $\sum_k a_k/b_k$ 收敛，则
+\[
+ \frac1{b_n}\sum_{k=1}^n a_k\longrightarrow0.
+\]
+\end{lemma}
+\begin{proof}
+置 $R_k=\sum_{j=1}^k a_j/b_j\to R$。分部求和给
+\[
+ \frac1{b_n}\sum_{k=1}^na_k
+ =R_n-\frac1{b_n}\sum_{k=1}^{n-1}(b_{k+1}-b_k)R_k.
+\]
+右侧加权平均的权重非负、总和为 $1-b_1/b_n\to1$。固定 $K$，前 $K$ 项的权重趋零，其余项与 $R$ 的距离可一致任意小，故加权平均趋于 $R$，整个差趋零。
+\end{proof}
+
+弱大数律只要求依概率控制；强大数律必须控制整条样本轨道。
+
+\begin{theorem}[强大数律：一阶可积版本]
+对独立同分布的实随机变量 $X_i$，有限一阶绝对矩保证
+\begin{equation}\label{eq:math-stat-slln-l1}
+ \mathbb E|X_1|<\infty
+ \quad\Longrightarrow\quad
+ \overline X_n\xrightarrow{a.s.}\mathbb E X_1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+不能简单把 Chebyshev 概率界逐项求和，因为在只有一阶矩时方差甚至可能不存在。正确结构是先截去极端观测，再把截断后的随机涨落变成一个可求和的方差级数。
+
+记 $\mu=\mathbb E X_1$，并对每个指标按其自身尺度截断
+\[
+ Y_k=X_k\mathds{1}\{|X_k|\le k\}.
+\]
+由尾积分公式与尾概率的单调性，
+\[
+ \sum_{k=1}^\infty\mathbb P(X_k\ne Y_k)
+ =\sum_{k=1}^\infty\mathbb P(|X_1|>k)
+ \le\mathbb E|X_1|<\infty.
+\]
+Borel--Cantelli 引理因此给出
+\[
+ \mathbb P(X_k\ne Y_k\ \text{无穷多次})=0.
+\]
+所以几乎处处存在随机 $K$，使 $k\ge K$ 后恒有 $X_k=Y_k$；于是
+\[
+ \frac1n\sum_{k=1}^n(X_k-Y_k)\xrightarrow{a.s.}0.
+\]
+
+接下来控制截断变量的中心化涨落。由 $\Var(Y_k)\le\mathbb E(Y_k^2)$，
+\begin{align*}
+ \sum_{k=1}^\infty\frac{\Var(Y_k)}{k^2}
+ &\le
+ \sum_{k=1}^\infty
+ \frac{\mathbb E\{X_1^2\mathds{1}(|X_1|\le k)\}}{k^2}\\
+ &=\mathbb E\!\left[
+ X_1^2
+ \sum_{k\ge \lceil |X_1|\rceil\vee1}\frac1{k^2}
+ \right].
+\end{align*}
+对 $y=|X_1|$，若 $0\le y<1$，括号内乘积至多为 $(\pi^2/6)y^2\le(\pi^2/6)y$；若 $y\ge1$，取 $m=\lceil y\rceil$，则
+\[
+ \sum_{k=m}^\infty\frac1{k^2}
+ \le\frac1{m^2}+\int_m^\infty\frac{\dd x}{x^2}
+ \le\frac2m
+ \le\frac2y.
+\]
+因此存在绝对常数 $C$ 使
+\[
+ \sum_{k=1}^\infty\frac{\Var(Y_k)}{k^2}
+ \le C\mathbb E|X_1|<\infty.
+\]
+令
+\[
+ Z_k=\frac{Y_k-\mathbb E Y_k}{k}.
+\]
+这些变量独立、均值为零，而且 $\sum_k\Var(Z_k)<\infty$。下面由 Kolmogorov 最大不等式推出级数 $\sum_kZ_k$ 几乎处处收敛。
+
+因为方差级数收敛，可以选递增整数 $m_\nu$ 使
+\[
+ \sum_{k>m_\nu}\Var(Z_k)\le2^{-3\nu}.
+\]
+令 $n\to\infty$ 并在\eqnrefs{eq:math-stat-kolmogorov-maximal}中取 $a=2^{-\nu}$，得到
+\[
+ \mathbb P\!\left(
+ \sup_{j>m_\nu}
+ \left|\sum_{k=m_\nu+1}^jZ_k\right|>2^{-\nu}
+ \right)
+ \le2^{-\nu}.
+\]
+右端可求和，再次由 Borel--Cantelli，级数尾部几乎处处成为 Cauchy 列，因此
+\[
+ \sum_{k=1}^\infty\frac{Y_k-\mathbb E Y_k}{k}
+\]
+几乎处处收敛。
+
+最后使用 Kronecker 引理。令
+\[
+ R_n=\sum_{k=1}^n\frac{a_k}{k}.
+\]
+若 $R_n$ 收敛，则分部求和给出
+\[
+ \frac1n\sum_{k=1}^na_k
+ =R_n-\frac1n\sum_{k=1}^{n-1}R_k\longrightarrow0,
+\]
+因为 $R_n$ 与其 Ces\`aro 平均具有同一极限。令 $a_k=Y_k-\mathbb E Y_k$，得到
+\[
+ \frac1n\sum_{k=1}^n(Y_k-\mathbb E Y_k)\xrightarrow{a.s.}0.
+\]
+另一方面 $\mathbb E Y_k\to\mu$，故 Ces\`aro 平均给出
+\[
+ \frac1n\sum_{k=1}^n\mathbb E Y_k\to\mu.
+\]
+再加上最开始已经证明的 $n^{-1}\sum_{k\le n}(X_k-Y_k)\xrightarrow{a.s.}0$，最终得到
+\[
+ \overline X_n\xrightarrow{a.s.}\mu,
+\]
+即\eqnrefs{eq:math-stat-slln-l1}。整个证明中没有使用有限方差；二阶矩只出现在截断变量上，并通过一阶尾部可积性变成可求和的方差级数。
+
+\end{proof}
+
+\begin{corollary}[有限方差强大数律的最大不等式证明]
+若 $X_i$ iid、$EX_1=\mu$、$\Var(X_1)=\sigma^2<\infty$，则 $n^{-1}\sum_{i=1}^nX_i\to\mu$ 几乎处处。这一特例可仅用 Kolmogorov 最大不等式与二进制子序列证明。
+\end{corollary}
+\begin{proof}
+若另有 $\Var(X_i)=\sigma^2<\infty$，可避开随指标截断，直接使用正文已证明的最大不等式。二进制子序列及其间隔中的全部部分和可以同时受到控制。
+
+令 \(Y_i=X_i-\mu\)、\(S_k=\sum_{i=1}^kY_i\)。
+对 \(n=2^m\) 及 \(\lambda=\varepsilon2^m\) 用最大不等式，
+\[
+P\!\left(\max_{k\le2^m}|S_k|\ge\varepsilon2^m\right)
+\le\frac{\sigma^2}{\varepsilon^2\,2^m}.
+\]
+右侧对 \(m\) 求和有限。所用的 Borel--Cantelli 事实可在此直接证明：
+若 \(\sum_mP(A_m)<\infty\)，则
+\(P(\bigcup_{m\ge M}A_m)\le\sum_{m\ge M}P(A_m)\to0\)，
+所以无限多个 \(A_m\) 同时发生的概率为零。
+因此对每个正有理 \(\varepsilon\)，几乎每条路径从某个
+\(m\) 起都满足
+\(\max_{k\le2^m}|S_k|<\varepsilon2^m\)。
+若 \(2^{m-1}<n\le2^m\)，便有
+\(|S_n|/n\le2\max_{k\le2^m}|S_k|/2^m<2\varepsilon\)。
+令有理 \(\varepsilon\downarrow0\)，得 \(S_n/n\to0\)
+几乎处处，亦即所述结论。
+\end{proof}
+
+
+\subsection{经验分布函数的一致收敛}
+\begin{theorem}[Glivenko--Cantelli 定理]
+设 $X_i$ 独立同分布，分布函数为 $F$，经验分布为 $F_n$。不要求 $F$ 连续，有
+\[
+ \sup_{t\in\RR}|F_n(t)-F(t)|\xrightarrow{a.s.}0.
+\]
+\end{theorem}
+\begin{proof}
+经验分布函数给出一个重要而特殊的统一大数律。它对应函数类
+\[
+ \mathcal F_{\rm cdf}
+ =\{x\mapsto\mathds{1}\{x\le t\}:t\in\RR\},
+\]
+这个函数类虽然由不可微的指示函数组成，却仍满足
+\[
+ \sup_{t\in\RR}|(P_n-P)\mathds{1}\{x\le t\}|\xrightarrow{a.s.}0.
+\]
+这就是 \eqnrefs{eq:math-stat-glivenko-cantelli}。证明的关键不是参数连续性，而是分布函数的单调性把无限多个阈值压缩到有限网格。
+
+先证明 $U_i\iid\mathrm{Unif}(0,1)$ 的情形，记经验分布为
+\[
+ G_n(u)=\frac1n\sum_{i=1}^n\mathds{1}\{U_i\le u\}.
+\]
+固定整数 $m\ge1$，取网格
+\[
+ u_j=\frac jm,
+ \qquad j=0,1,\ldots,m.
+\]
+对每个固定 $j$，强大数律给出
+\[
+ G_n(u_j)\xrightarrow{a.s.} u_j.
+\]
+因为网格点只有有限个，所以对每个固定 $m$ 都存在概率为 $1$ 的事件 $\Omega_m$，在其上
+\[
+ \max_{0\le j\le m}|G_n(u_j)-u_j|\to0.
+\]
+真正要让网格宽度随后也趋于零，还必须把这些事件统一起来。令
+\[
+ \Omega_*=\bigcap_{m=1}^{\infty}\Omega_m.
+\]
+这是可数个概率一事件的交，因此 $\mathbb P(\Omega_*)=1$。下面固定任意 $\omega\in\Omega_*$。若 $u_j\le u\le u_{j+1}$，由 $G_n$ 单调不减，
+\[
+ G_n(u_j)\le G_n(u)\le G_n(u_{j+1}).
+\]
+于是
+\begin{align*}
+ G_n(u)-u
+ &\le G_n(u_{j+1})-u_j
+ \\&=\{G_n(u_{j+1})-u_{j+1}\}+\frac1m,
+\end{align*}
+同时
+\begin{align*}
+ u-G_n(u)
+ &\le u_{j+1}-G_n(u_j)
+ \\&=\{u_j-G_n(u_j)\}+\frac1m.
+\end{align*}
+因此
+\[
+ \sup_{0\le u\le1}|G_n(u)-u|
+ \le
+ \max_{0\le j\le m}|G_n(u_j)-u_j|+\frac1m.
+\]
+因此对每个整数 $m\ge1$，在同一个事件 $\Omega_*$ 上都有
+\[
+ \limsup_{n\to\infty}
+ \sup_{0\le u\le1}|G_n(u)-u|
+ \le\frac1m.
+\]
+再令 $m\to\infty$，上确界误差的极限上界只能为 $0$，从而
+\[
+ \sup_{0\le u\le1}|G_n(u)-u|\xrightarrow{a.s.}0.
+\]
+
+现在令一般分布函数为 $F$，取 $U_i\iid\mathrm{Unif}(0,1)$ 并令
+\[
+ X_i=F^{-1}(U_i),
+ \qquad
+ F^{-1}(u)=\inf\{x:F(x)\ge u\}.
+\]
+广义逆满足事件恒等式
+\[
+ \{F^{-1}(U_i)\le x\}
+ =\{U_i\le F(x)\},
+\]
+故相应经验分布满足
+\[
+ F_n(x)=G_n\{F(x)\}.
+\]
+于是
+\[
+ \sup_{x\in\RR}|F_n(x)-F(x)|
+ \le
+ \sup_{0\le u\le1}|G_n(u)-u|
+ \xrightarrow{a.s.}0.
+\]
+这个论证不要求 $F$ 连续；原子分布的跳跃已经由广义逆自动处理。因而 Glivenko--Cantelli 是真正的分布无关一致收敛，而不是逐点 大数律 的形式改写。
+
+\end{proof}
+
+\subsection{适应性数据与参数族的统一平均}
+\begin{definition}[鞅差序列]
+在递增的 $\sigma$-代数列 $(\mathcal F_k)$ 上，$D_k\in L^1$ 为 $\mathcal F_k$-可测且 $E(D_k\mid\mathcal F_{k-1})=0$，则称 $(D_k)$ 为鞅差序列。
+\end{definition}
+\begin{proposition}[鞅差的集中与强平均收敛]
+设 $(D_k)$ 为上述鞅差序列。若 $|D_k|\le c_k$，其中 $c_k$ 为确定常数，则对 $t>0$，Azuma--Hoeffding 不等式给出
+\begin{equation*}P\!\left(
+\left|\sum_{k=1}^nD_k\right|\ge t
+\right)
+\le
+2\exp\!\left(
+-\frac{t^2}{2\sum_{k=1}^nc_k^2}
+\right).\end{equation*}
+所以很多具有适应性依赖的数据仍能保留 iid 和式相似的集中尺度。若更一般地
+\[
+\sum_{k=1}^\infty\frac{\mathbb E D_k^2}{k^2}<\infty,
+\]
+且 $D_k\in L^2$，则鞅收敛与 Kronecker 引理给出
+\[
+\frac1n\sum_{k=1}^nD_k\to0
+\quad\text{a.s.}
+\]
+这提供了一个比 iid 更宽的强大数律模板：关键不是“没有依赖”，而是新信息在给定过去后仍有零条件均值，并且累计二阶涨落受到控制。
+
+\end{proposition}
+\begin{proof}
+有界情形对每一步使用条件 Hoeffding 引理，二阶可求和情形使用 $L^2$ 鞅收敛与 Kronecker 引理；下面分别展开计算。
+
+下面逐项展开上述结论所用的计算。
+
+\textbf{条件指数矩与集中.}
+设 $D_k$ 为鞅差且 $|D_k|\le c_k$，其中 $c_k$ 是确定常数。若 $c_k>0$，把凸性弦线估计对 $\mathcal F_{k-1}$ 取条件期望，零条件均值给
+\[
+ E(e^{\lambda D_k}\mid\mathcal F_{k-1})
+ \le\tfrac12(e^{-\lambda c_k}+e^{\lambda c_k})
+ \le e^{\lambda^2c_k^2/2}.
+\]
+末式亦为前述 Hoeffding 指数矩计算在区间 $[-c_k,c_k]$ 上的结果。$c_k=0$ 时 $D_k=0$，该式仍成立。
+令 $S_k=\sum_{j\le k}D_j$，塔性质与 $S_{k-1}$ 的过去可测性给
+\begin{align*}
+ Ee^{\lambda S_k}
+ &=E\{e^{\lambda S_{k-1}}E(e^{\lambda D_k}\mid\mathcal F_{k-1})\}\\
+ &\le e^{\lambda^2c_k^2/2}Ee^{\lambda S_{k-1}}
+ \le\exp\!\left(\tfrac12\lambda^2\sum_{j\le k}c_j^2\right).
+\end{align*}
+指数 Markov 界后选择 $\lambda=t/\sum_jc_j^2$，再对 $-S_n$ 作相同估计，即得正文双侧上界。独立乘积在这里由逐步条件期望替代；若所有 $c_k=0$，$t>0$ 的偏离概率直接为零。
+
+\textbf{平方可积鞅差的路径平均.}
+设 $(D_k,\mathcal F_k)$ 是 鞅 差，即 $D_k\in L^2$ 为 $\mathcal F_k$-可测且
+\[
+\mathbb E(D_k\mid\mathcal F_{k-1})=0.
+\]
+令
+\[
+M_n=\sum_{k=1}^n\frac{D_k}{k}.
+\]
+先验证 $(M_n,\mathcal F_n)$ 是 鞅。由条件期望的线性，
+\[
+\mathbb E(M_n\mid\mathcal F_{n-1})
+=M_{n-1}+\frac1n\mathbb E(D_n\mid\mathcal F_{n-1})
+=M_{n-1}.
+\]
+再计算 $L^2$ 范数。对 $j<k$，用 塔 性质 与 $D_j$ 的 $\mathcal F_{k-1}$-可测性，
+\[
+\mathbb E(D_jD_k)
+=\mathbb E\bigl[D_j\,\mathbb E(D_k\mid\mathcal F_{k-1})\bigr]
+=0,
+\]
+故 $\{D_k/k\}$ 在 $L^2$ 中两两正交，从而
+\[
+\mathbb E M_n^2
+=\sum_{k=1}^n\frac{\mathbb E D_k^2}{k^2}.
+\]
+由假设 $\sum_{k\ge1}\mathbb E D_k^2/k^2<\infty$，$(M_n)$ 为 $L^2$-有界 鞅。由 鞅 收敛定理，存在 $M_\infty\in L^2$ 使
+\[
+M_n\to M_\infty
+\quad\text{a.s.}
+\]
+即级数 $\sum_{k\ge1}D_k/k$ 几乎处处收敛。应用 Kronecker 引理：若 $b_k\uparrow\infty$ 且 $\sum_{k\ge1}a_k/b_k$ 收敛，则
+\[
+\frac1{b_n}\sum_{k=1}^n a_k\to0.
+\]
+取 $a_k=D_k$，$b_k=k$，得
+\[
+\frac1n\sum_{k=1}^n D_k\to0
+\quad\text{a.s.}
+\]
+这把“方差可求和”转成了路径上的平均收敛。
+\end{proof}
+
+参数估计往往不是对一个固定函数取平均，而是在许多参数值之间比较经验准则。例如
+\[
+ M_n(\theta)=P_nm_\theta,
+ \qquad
+ M(\theta)=Pm_\theta.
+\]
+若只知道对每个固定 $\theta$ 有 $M_n(\theta)\xrightarrow{\mathbb P} M(\theta)$，并不足以保证经验最大点逼近总体最大点，因为最大化操作会在整个参数空间中搜索。因此需要统一大数律
+\begin{equation}\label{eq:math-stat-ulln}
+ \sup_{\theta\in\Theta}|M_n(\theta)-M(\theta)|\xrightarrow{\mathbb P}0.
+\end{equation}
+\begin{theorem}[紧参数空间上的统一强大数律]
+设 $X_i$ 独立同分布，$\Theta\subset\RR^d$ 紧，$x\mapsto m_\theta(x)$ 可测，对几乎每个 $x$，$\theta\mapsto m_\theta(x)$ 连续。若存在可积包络 $G$，则
+\[
+ \sup_{\theta\in\Theta}|P_nm_\theta-Pm_\theta|\xrightarrow{a.s.}0.
+\]
+此处可积包络指 $G$ 满足
+\[
+ \sup_{\theta\in\Theta}|m_\theta(x)|\le G(x),
+ \qquad
+ PG<\infty.
+\]
+\end{theorem}
+\begin{proof}
+取 $\Theta$ 中的可数稠密集。几乎处处的连续性保证各种上确界可由该集上的上确界表示，故以下局部振荡和经验误差可测。
+
+对 $\delta>0$ 定义局部振荡包络
+\[
+ w_\delta(x)
+ =\sup_{\|\theta-\theta'\|<\delta}
+ |m_\theta(x)-m_{\theta'}(x)|.
+\]
+固定 $x$ 后，紧集上的连续函数一致连续，所以
+\[
+ w_\delta(x)\to0
+ \qquad(\delta\downarrow0).
+\]
+又有 $w_\delta\le2G$，且 $PG<\infty$，故支配收敛定理给出
+\[
+ Pw_\delta\to0.
+\]
+给定 $\varepsilon>0$，先取 $\delta$ 使 $Pw_\delta<\varepsilon$。由 $\Theta$ 的紧性，可取有限 $\delta$-网
+\[
+ \theta_1,\ldots,\theta_N,
+\]
+使任意 $\theta$ 都满足某个 $\|\theta-\theta_j\|<\delta$。于是
+\begin{align*}
+ \sup_{\theta\in\Theta}
+ |(P_n-P)m_\theta|
+ &\le
+ \max_{1\le j\le N}|(P_n-P)m_{\theta_j}|
+ +P_nw_\delta+Pw_\delta.
+\end{align*}
+有限个固定函数分别由强大数律 得到
+\[
+ \max_j|(P_n-P)m_{\theta_j}|\xrightarrow{a.s.}0,
+\]
+同时 $P_nw_\delta\xrightarrow{a.s.} Pw_\delta$。在所有有理 $\delta>0$ 的上述强收敛事件的可数交上，
+\[
+ \limsup_{n\to\infty}\sup_{\theta\in\Theta}|(P_n-P)m_\theta|
+ \le2Pw_\delta.
+\]
+令 $\delta\downarrow0$，右侧趋零。这同时建立统一强收敛及\eqnrefs{eq:math-stat-ulln}的依概率结论。
+\end{proof}
+
+经验分布的阈值函数并不满足这一连续参数假设，前面的单调网格证明为它提供了独立依据。另一个常见情形是核密度估计：带宽随样本量改变，函数类也随 $n$ 改变，不能直接套用固定函数族的统一大数律。
+
+\begin{proposition}[核密度估计的逐点一致性]
+设 $X_i$ 独立同分布且具有密度 $f$；$f$ 在 $x$ 连续，并在其邻域有界。设 $K$ 有界、支撑紧且 $\int K=1$，$h_n\downarrow0$、$nh_n\to\infty$。则
+\[
+ \widehat f_n(x)=\frac1{nh_n}\sum_{i=1}^nK\!\left(\frac{x-X_i}{h_n}\right)
+ \xrightarrow{\mathbb P}f(x).
+\]
+\end{proposition}
+\begin{proof}
+变量替换 $u=(x-y)/h_n$ 给
+\[
+ E\widehat f_n(x)=\int K(u)f(x-h_nu)\dd u\longrightarrow f(x).
+\]
+紧支撑、局部有界性和支配收敛控制偏差。独立性控制方差：充分大 $n$ 时有常数 $C_x$ 使
+\[
+ \Var(\widehat f_n(x))\le\frac1{nh_n}\int K(u)^2f(x-h_nu)\dd u
+ \le\frac{C_x\int K^2}{nh_n}\longrightarrow0.
+\]
+再用 Chebyshev 即得结论。对所有 $x$ 的统一收敛还要求额外的全局密度控制与函数族复杂度估计。
+\end{proof}
+
+\begin{theorem}[经验准则的近似极大点一致性]
+设 $\sup_{\theta\in\Theta}|M_n(\theta)-M(\theta)|\xrightarrow{\mathbb P}0$。假设真值 $\theta_0$ 满足：对每个 $\varepsilon>0$，
+\[
+ \Delta_\varepsilon=M(\theta_0)
+ -\sup_{\|\theta-\theta_0\|\ge\varepsilon}M(\theta)>0.
+\]
+若可测估计量 $\widehat\theta_n$ 满足 $M_n(\widehat\theta_n)\ge\sup_\theta M_n(\theta)-r_n$，其中 $r_n\ge0$ 且 $r_n=o_{\mathbb P}(1)$，则 $\widehat\theta_n\xrightarrow{\mathbb P}\theta_0$。
+\end{theorem}
+\begin{proof}
+固定 $\varepsilon>0$。在误差 $\sup_\theta|M_n-M|<\Delta_\varepsilon/4$ 的事件上，对所有外部参数 $\|\theta-\theta_0\|\ge\varepsilon$ 有
+\begin{align*}
+ M_n(\theta_0)-M_n(\theta)
+ &\ge M(\theta_0)-M(\theta)-2\sup_\eta|M_n(\eta)-M(\eta)|\\
+ &>\Delta_\varepsilon/2.
+\end{align*}
+若再有 $r_n<\Delta_\varepsilon/4$，近似极大点不可能位于外部区域。两个事件的概率均趋于 $1$，故
+\[
+ P(\|\widehat\theta_n-\theta_0\|\ge\varepsilon)
+ \le P\!\left(\sup_\theta|M_n-M|\ge\Delta_\varepsilon/4\right)
+ +P(r_n\ge\Delta_\varepsilon/4)\longrightarrow0.
+\]
+\end{proof}
+紧空间上连续函数的唯一极大点自动有该正间隙；非紧空间上的唯一性本身则不够。
+
+\section{有限维中心极限定理与尾部条件}
+
+大数律只说明误差趋于零，没有告诉它以什么速度缩小。
+
+\begin{theorem}[Lindeberg--L\'evy 中心极限定理]
+若 $X_i\iid P$，
+\[
+ \mathbb E X_1=\mu,
+ \qquad
+ 0<\sigma^2=\Var(X_1)<\infty,
+\]
+则 Lindeberg--L\'evy 中心极限定理给出
+\begin{equation}\label{eq:math-stat-iid-clt}
+ \frac{\sqrt n(\overline X_n-\mu)}{\sigma}
+ \xrightarrow{d}\mathcal N(0,1).
+\end{equation}
+\end{theorem}
+因此样本均值误差的自然尺度是 $n^{-1/2}$。这不是说 $\overline X_n$ “变成正态变量”，而是说把趋于零的误差放大 $\sqrt n$ 后出现非退化正态极限。
+
+图~\figref{fig:clt-hist} 数值演示了中心极限定理：即便总体分布远非正态（均匀或指数），$n=12$ 个独立变量标准化求和后，直方图也已逼近标准正态密度。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{clt_hist.pdf}
+\caption{中心极限定理数值演示。左：$\mathrm{Uniform}(0,1)$ 标准化求和；右：$\mathrm{Exp}(1)$ 标准化求和；$n=12$，均已近似 $N(0,1)$（红线）。}
+\label{fig:clt-hist}\label{fig:math-clt-hist}
+\end{figure}
+
+\begin{proof}
+这里还需要说明：为什么特征函数的极限能够决定分布的极限？对下面标准化后的和，其二阶矩恒为一，因此由
+Chebyshev 不等式 \(P(|Y_n|>R)\le R^{-2}\)。这使概率质量不会逃向无穷远，称为\emph{紧性}：任何子列极限分布在 \([-R,R]\) 之外的质量也不超过 \(R^{-2}\)，令 \(R\to\infty\) 便知极限的总质量仍为一，而不是一个缺质量的子概率。任取一个子列，在每个有理数点把分布函数抽子列——有理数可数，而分布函数单调有界，逐点抽出后用对角线法合为一个公共子列——再利用单调性，它在某个右连续单调函数的每个连续点收敛，该极限是一个真正的分布函数。沿这条子列，\(\ee^{\ii tx}\) 是有界连续函数，故特征函数也收敛到该极限分布的特征函数。
+
+最后需用到特征函数的唯一性，它可由一个普通的 Fourier 反演说明。把两个待比较的概率测度分别与方差为 \(\epsilon^2\) 的高斯密度卷积；卷积后的光滑密度的 Fourier 变换是原特征函数乘 \(\ee^{-\epsilon^2t^2/2}\)。这个乘积可积，Fourier 反演表明相同特征函数给出相同卷积密度。令 \(\epsilon\downarrow0\)，高斯核成为近似单位，便得到原概率测度相同。因此，如果一列紧的分布的特征函数趋于某个已知分布的特征函数，所有可能的子列极限都是该分布，整列也就依分布收敛。这是下面所用的特征函数连续性定理在当前情形的证明；其中“紧”不能从任意点态函数极限凭空省去。
+
+
+令
+\[
+ Y_i=\frac{X_i-\mu}{\sigma},
+ \qquad
+ Z_n^{\rm CLT}=\frac1{\sqrt n}\sum_{i=1}^nY_i.
+\]
+这个量就是样本均值误差在中心极限定理尺度上的标准化涨落。因为 $\mathbb E Y_i=0$、$\mathbb E Y_i^2=1$，特征函数在原点满足
+\[
+ \varphi_Y(t)
+ =\mathbb E\ee^{itY_i}
+ =1+it\,\mathbb E Y_i-\frac{t^2}{2}\mathbb E Y_i^2+o(t^2)
+ =1-\frac{t^2}{2}+o(t^2).
+\]
+二阶展开的余项由支配收敛得到：
+\[
+ \frac{e^{ity}-1-ity+(ty)^2/2}{t^2}\longrightarrow0,
+ \qquad
+ \left|e^{iv}-1-iv+v^2/2\right|\le v^2.
+\]
+因而可积控制函数为 $Y_i^2$。若另有 $E|Y_i|^{2+\delta}<\infty$ 且 $0<\delta\le1$，余项可估为 $O(|t|^{2+\delta})$；分布函数的统一误差速率还需独立的平滑不等式。
+独立性给出
+\[
+ \varphi_{Z_n^{\rm CLT}}(t)
+ =\prod_{i=1}^n\varphi_{Y_i/\sqrt n}(t)
+ =\left\{\varphi_Y\!\left(\frac{t}{\sqrt n}\right)\right\}^n
+ =\left\{1-\frac{t^2}{2n}+o(n^{-1})\right\}^n.
+\]
+取对数，并利用 $\log(1+u)=u+O(u^2)$（当 $|u|\to0$），
+\[
+ \log\varphi_{Z_n^{\rm CLT}}(t)
+ =n\log\left\{1-\frac{t^2}{2n}+o(n^{-1})\right\}
+ =n\left\{-\frac{t^2}{2n}+o(n^{-1})\right\}
+ \to-\frac{t^2}{2}.
+\]
+所以
+\[
+ \varphi_{Z_n^{\rm CLT}}(t)\to\ee^{-t^2/2},
+\]
+右端是标准正态特征函数。L\'evy 连续性定理遂给出\eqnrefs{eq:math-stat-iid-clt}。
+
+\end{proof}
+
+\begin{proposition}[归一化尺度的非退化性]
+对于上述方差为一的中心化变量，只有 $\alpha=1/2$ 的 $n^{-\alpha}\sum_iY_i$ 具有非退化概率极限；$\alpha>1/2$ 时依概率趋零，$\alpha<1/2$ 时分布不紧。
+\end{proposition}
+\begin{proof}
+当 $\alpha>1/2$ 时，$\Var(n^{-\alpha}\sum_iY_i)=n^{1-2\alpha}\to0$，Chebyshev 给依概率趋零。$\alpha=1/2$ 时已经由中心极限定理得到标准正态极限。
+
+若 $\alpha<1/2$，记 $Z_n=n^{-1/2}\sum_iY_i\Rightarrow Z\sim N(0,1)$。对任意固定 $R>0$，
+\[
+ P\!\left(\left|n^{-\alpha}\sum_iY_i\right|\le R\right)
+ =P(|Z_n|\le Rn^{\alpha-1/2})\longrightarrow0.
+\]
+末步先将收缩区间包含于任意固定 $[-\delta,\delta]$，用弱收敛及正态分布连续性控制极限上界，再令 $\delta\downarrow0$。因此概率质量离开任意固定有界区间，分布不紧。这一论证也包括 $\alpha\le0$，不需要在已不趋零的特征函数参数处使用 Taylor 展开。
+\end{proof}
+
+\begin{exbox}[Rademacher 之和]
+若 $Y_i=\pm1$ 等概率，则 $\varphi_Y(t)=\cos t$，于是
+\[
+\varphi_{Z_n^{\rm CLT}}(t)=\cos^n\!\left(\frac{t}{\sqrt n}\right)
+=\left\{1-\frac{t^2}{2n}+O(n^{-2})\right\}^n
+\to\ee^{-t^2/2},
+\]
+这是离散到连续的最简例子。Lindeberg 条件
+\[
+\frac1{n}\sum_{i=1}^n\mathbb E\bigl[Y_i^2\mathds{1}_{\{|Y_i|>\varepsilon\sqrt n\}}\bigr]
+\to0
+\]
+在此自动成立，因为当 $n>1/\varepsilon^2$ 时指示函数恒为零；这正是"中心区由二阶矩控制、尾部贡献可忽略"的 Lindeberg 哲学。
+
+\end{exbox}
+
+\begin{theorem}[独立三角阵的 Lindeberg 条件]
+独立同分布不是中心极限定理的必要条件。对三角阵 $\{X_{n,k}:1\le k\le k_n\}$，设每行独立且中心化，记
+\[
+ s_n^2=\sum_{k=1}^{k_n}\Var(X_{n,k})>0.
+\]
+若对每个 $\varepsilon>0$，Lindeberg 条件
+\[
+ \frac1{s_n^2}
+ \sum_{k=1}^{k_n}
+ \mathbb E\!
+ \left[X_{n,k}^2\mathds{1}\{|X_{n,k}|>\varepsilon s_n\}\right]
+ \to0
+\]
+成立，则
+\[
+ \frac1{s_n}\sum_{k=1}^{k_n}X_{n,k}
+ \xrightarrow{d}\mathcal N(0,1).
+\]
+\end{theorem}
+
+\begin{proof}
+令 $Y_{n,k}=X_{n,k}/s_n$，$v_{n,k}=EY_{n,k}^2$，则 $\sum_kv_{n,k}=1$。正文已经由 Lindeberg 条件证明 $\max_kv_{n,k}\to0$。
+
+固定 $t$。对实数 $z$，Taylor 余项满足
+\[
+ |e^{iz}-1-iz+z^2/2|\le C z^2\min(|z|,1)
+\]
+其中 $C$ 为绝对常数。小 $z$ 用三阶余项，大 $z$ 用各项绝对值估计得到。因 $EY_{n,k}=0$，
+\[
+ \varphi_{n,k}(t)=1-\tfrac12t^2v_{n,k}+r_{n,k}(t).
+\]
+按 $|Y_{n,k}|\le\varepsilon$ 与补集拆开，得到
+\begin{align*}
+ \sum_k|r_{n,k}(t)|
+ &\le C t^2\left[|t|\varepsilon\sum_kv_{n,k}
+ +\sum_kE\{Y_{n,k}^2\mathds{1}_{\{|Y_{n,k}|>\varepsilon\}}\}\right].
+\end{align*}
+固定 $\varepsilon$ 后尾项由 Lindeberg 条件趋零，再令 $\varepsilon\downarrow0$，得 $\sum_k|r_{n,k}(t)|\to0$。此外，由 $|e^{iz}-1-iz|\le z^2/2$，记 $a_{n,k}=\varphi_{n,k}(t)-1$，有
+\[
+ \max_k|a_{n,k}|\le\tfrac12t^2\max_kv_{n,k}\to0,
+ \qquad \sum_k|a_{n,k}|\le t^2/2.
+\]
+充分大 $n$ 时所有因子都在 $1$ 附近同一对数分支中，所以
+\begin{align*}
+ \log\prod_k\varphi_{n,k}(t)
+ &=\sum_ka_{n,k}+O\!\left(\sum_k|a_{n,k}|^2\right)\\
+ &=-t^2/2+o(1),
+\end{align*}
+因为 $\sum_k|a_{n,k}|^2\le\max_k|a_{n,k}|\sum_k|a_{n,k}|\to0$。独立性给行和的特征函数为该乘积，极限是 $e^{-t^2/2}$。行和方差恒为一，满足紧性；正文的子列与特征函数唯一性论证遂给出标准正态极限。
+\end{proof}
+
+上述证明用特征函数给出这一三角阵定理。Lindeberg 条件的意义是：归一化总方差不能由少数极端项主导。\begin{corollary}[Lyapunov 充分条件]
+若存在某个 $\delta>0$ 使 Lyapunov 条件
+\[
+ \frac{1}{s_n^{2+\delta}}
+ \sum_{k=1}^{k_n}\mathbb E|X_{n,k}|^{2+\delta}\to0,
+\]
+则它足以推出 Lindeberg 条件。\end{corollary}
+\begin{proof}
+在事件 $|X_{n,k}|>\varepsilon s_n$ 上有
+\[
+ |X_{n,k}|^2
+ \le
+ \frac{|X_{n,k}|^{2+\delta}}
+ {(\varepsilon s_n)^\delta},
+\]
+所以
+\begin{align*}
+ &\frac1{s_n^2}
+ \sum_{k=1}^{k_n}
+ \mathbb E\!\left[
+ X_{n,k}^2\mathds{1}\{|X_{n,k}|>\varepsilon s_n\}
+ \right]\\
+ &\qquad\le
+ \frac1{\varepsilon^\delta s_n^{2+\delta}}
+ \sum_{k=1}^{k_n}\mathbb E|X_{n,k}|^{2+\delta}
+ \longrightarrow0.
+\end{align*}
+因此 Lyapunov 条件只是一个更容易核验、但更强的尾部充分条件。后面的异方差线性模型和独立非同分布得分都可以在这类结构下建立渐近正态性。
+
+\end{proof}
+
+\begin{proposition}[单项方差的无穷小性]
+Lindeberg 条件蕴含
+\[
+\max_{k\le k_n}\frac{\Var(X_{n,k})}{s_n^2}\to0.
+\]
+它排除了任何单个变量占据总方差的有限比例。\end{proposition}
+\begin{proof}
+
+设三角阵满足 Lindeberg 条件且每个 $X_{n,k}$ 已中心化，于是 $\Var(X_{n,k})=\mathbb E X_{n,k}^2$。固定 $\varepsilon>0$，对每个 $k$ 用示性函数把全空间划分成 $|X_{n,k}|\le\varepsilon s_n$ 与 $|X_{n,k}|>\varepsilon s_n$ 两段，方差随之分解为
+\begin{align*}
+\mathbb E X_{n,k}^2
+&=\mathbb E\{X_{n,k}^2\mathds{1}(|X_{n,k}|\le\varepsilon s_n)\}\\
+&\quad+\mathbb E\{X_{n,k}^2\mathds{1}(|X_{n,k}|>\varepsilon s_n)\}.
+\end{align*}
+在第一段的示性集合上处处有 $|X_{n,k}|\le\varepsilon s_n$，从而 $X_{n,k}^2\le\varepsilon^2s_n^2$，取期望不放大上界，故
+\begin{align*}
+\mathbb E\{X_{n,k}^2\mathds{1}(|X_{n,k}|\le\varepsilon s_n)\}
+\le\varepsilon^2s_n^2\,\mathbb E\mathds{1}(|X_{n,k}|\le\varepsilon s_n)
+\le\varepsilon^2s_n^2.
+\end{align*}
+第二段恰是 Lindeberg 尾项在指标 $k$ 处的取值，它不超过把所有 $j$ 的尾项相加后的总和，即
+\begin{align*}
+\mathbb E\{X_{n,k}^2\mathds{1}(|X_{n,k}|>\varepsilon s_n)\}
+\le\sum_{j=1}^{k_n}
+\mathbb E\{X_{n,j}^2\mathds{1}(|X_{n,j}|>\varepsilon s_n)\}.
+\end{align*}
+把两项估计代回方差分解，两端除以 $s_n^2$，得到对每个 $k$ 一致成立的界
+\begin{align*}
+\frac{\Var(X_{n,k})}{s_n^2}
+\le\varepsilon^2
++\frac1{s_n^2}\sum_{j=1}^{k_n}
+\mathbb E\{X_{n,j}^2\mathds{1}(|X_{n,j}|>\varepsilon s_n)\}.
+\end{align*}
+上式右端与 $k$ 无关，因此对左端取 $\max_{k\le k_n}$ 仍保持同一上界：
+\begin{align*}
+\max_{k\le k_n}\frac{\Var(X_{n,k})}{s_n^2}
+\le\varepsilon^2
++\frac1{s_n^2}\sum_{j=1}^{k_n}
+\mathbb E\{X_{n,j}^2\mathds{1}(|X_{n,j}|>\varepsilon s_n)\}.
+\end{align*}
+由 Lindeberg 条件，固定 $\varepsilon>0$ 时右端第二项当 $n\to\infty$ 趋于零，故
+\begin{align*}
+\limsup_{n\to\infty}\max_{k\le k_n}\frac{\Var(X_{n,k})}{s_n^2}
+\le\varepsilon^2.
+\end{align*}
+上式对任意 $\varepsilon>0$ 同时成立，令 $\varepsilon\downarrow0$ 即得
+\begin{align*}
+\lim_{n\to\infty}\max_{k\le k_n}\frac{\Var(X_{n,k})}{s_n^2}=0,
+\end{align*}
+即 Feller infinitesimality：没有任何单项方差能占据总方差的有限比例。
+
+\end{proof}
+
+\begin{corollary}[多元中心极限定理]
+若 $X_i\in\RR^m$ iid，$\mathbb E X_i=\mu$，协方差矩阵 $\Sigma$ 有限，则多元 中心极限定理 为
+\begin{equation*}\sqrt n(\overline X_n-\mu)
+ \xrightarrow{d}\mathcal N_m(0,\Sigma).
+\end{equation*}
+\end{corollary}
+\begin{proof}
+使用 Cram\'er--Wold 投影判据：对任意固定 $a\in\RR^m$，
+\[
+ a^{\mathsf T}\sqrt n(\overline X_n-\mu)
+ \xrightarrow{d}\mathcal N(0,a^{\mathsf T}\Sigma a),
+\]
+而所有线性投影共同确定联合极限分布。
+
+\end{proof}
+
+\begin{theorem}[Berry--Esseen 有限样本界]
+若三阶绝对中心矩 $m_3=\mathbb E|X_1-\mu|^3<\infty$，Berry--Esseen 界进一步给出
+\[
+ \sup_x\left|
+ \mathbb P\!\left\{\frac{\sqrt n(\overline X_n-\mu)}{\sigma}\le x\right\}
+ -\Phi(x)
+ \right|
+ \le C\frac{m_3}{\sigma^3\sqrt n}.
+\]
+其中 $C$ 为不依赖分布及 $n$ 的常数；独立同分布情形可取 $C=0.4748$。这一数值是可用上界，不是最优常数的断言。\footnote{Shevtsova，2011，\url{https://arxiv.org/abs/1111.6554}。该非渐近平滑估计作为外部定理使用。}
+\end{theorem}
+这区分了两个问题：中心极限定理 只回答极限是否正态；有限样本近似有多准确，还依赖偏斜、尾部和所关注的概率区域。
+
+
+\section{光滑变换与渐近线性表示}
+一般统计量可以通过局部展开还原为中心化平均。
+
+\begin{theorem}[有限维 $\Delta$ 方法]
+设
+\[
+ \sqrt n(T_n-\theta)
+ \xrightarrow{d}\mathcal N_d(0,\Sigma),
+\]
+且 $g:\RR^d\to\RR^q$ 在 $\theta$ 可微，Jacobian 为 $Dg(\theta)$。则
+\begin{equation*}\sqrt n\{g(T_n)-g(\theta)\}
+ \xrightarrow{d}
+ \mathcal N_q\!\left(0,
+ Dg(\theta)\Sigma Dg(\theta)^{\mathsf T}\right).
+\end{equation*}
+\end{theorem}
+\begin{proof}
+Taylor 展开给出
+\[
+ g(T_n)-g(\theta)
+ =Dg(\theta)(T_n-\theta)+r_n,
+\]
+其中 $\|r_n\|=o_{\mathbb P}(\|T_n-\theta\|)$。由 $T_n-\theta=O_{\mathbb P}(n^{-1/2})$，可得 $\sqrt n r_n=o_{\mathbb P}(1)$。线性项应用连续映射定理，余项应用 Slutsky 定理，得到所述极限。
+\end{proof}
+
+\begin{corollary}[二阶退化的 $\Delta$ 方法]
+设一维 $g$ 在 $\theta$ 处二阶可微。若 $g'(\theta)=0$、$g''(\theta)\ne0$ 时，若 $\sqrt n(T_n-\theta)\xrightarrow{d} Z$，则
+\[
+ n\{g(T_n)-g(\theta)\}
+ \xrightarrow{d}\frac12g''(\theta)Z^2.
+\]
+\end{corollary}
+\begin{proof}
+假设 $g$ 在 $\theta$ 处有二阶 Taylor 展开，余项为 $o((T_n-\theta)^2)$。因 $\sqrt n(T_n-\theta)=O_{\mathbb P}(1)$，乘以 $n$ 后余项为 $o_{\mathbb P}(1)$，再用连续映射定理。
+\end{proof}
+这说明“先做局部线性化，再对高斯极限取二次函数”会自然产生卡方型极限。Wald 统计量使用的正是后一机制：约束函数先由一阶 Δ 方法得到渐近正态，再把标准化后的高斯向量取平方长度；它并不要求约束函数的一阶导数退化。
+
+\begin{definition}[渐近线性估计量与影响函数]
+渐近线性表示把估计误差表达成中心化平均。若某个 $d$ 维估计量满足
+\begin{equation}\label{eq:math-stat-asymptotically-linear}
+ \sqrt n(\widehat\theta_n-\theta_0)
+ =\frac1{\sqrt n}\sum_{i=1}^n\mathrm{IF}_{\theta_0}(X_i)
+ +o_{\mathbb P}(1),
+ \qquad
+ \mathbb E_{\theta_0}\mathrm{IF}_{\theta_0}(X)=0,
+\end{equation}
+则 $\mathrm{IF}_{\theta_0}$ 称为一阶影响函数。
+\end{definition}
+\begin{proposition}[影响函数确定的渐近协方差]
+若其二阶矩有限，且样本独立同分布，则估计量渐近正态，协方差为 $V_{\rm IF}=E[\mathrm{IF}_{\theta_0}\mathrm{IF}_{\theta_0}^{\mathsf T}]$。
+\end{proposition}
+\begin{proof}
+多元 中心极限定理 给出
+\[
+ \frac1{\sqrt n}\sum_{i=1}^n\mathrm{IF}_{\theta_0}(X_i)
+ \xrightarrow{d}\mathcal N_d(0,V_{\rm IF}).
+\]
+再与\eqnrefs{eq:math-stat-asymptotically-linear}中的 $o_{\mathbb P}(1)$ 余项应用 Slutsky 定理，得到
+\[
+ \sqrt n(\widehat\theta_n-\theta_0)
+ \xrightarrow{d}\mathcal N_d(0,V_{\rm IF}),
+ \qquad
+ V_{\rm IF}=\mathbb E_{\theta_0}[\mathrm{IF}_{\theta_0}\mathrm{IF}_{\theta_0}^{\mathsf T}].
+\]
+\end{proof}
+后面估计方程、极大似然估计 与稳健 三明治 协方差都可以归约到\eqnrefs{eq:math-stat-asymptotically-linear}。
+
+若 $\widehat V_n\xrightarrow{\mathbb P} V_{\rm IF}$，则 Slutsky 定理允许把未知协方差用一致估计替换。例如标量情形令 $V_{\rm IF}=\sigma_{\rm IF}^2>0$，并取 $\widehat\sigma_n^2\xrightarrow{\mathbb P}\sigma_{\rm IF}^2$，则
+\[
+ \frac{\sqrt n(\widehat\theta_n-\theta_0)}{\widehat\sigma_n}
+ \xrightarrow{d}\mathcal N(0,1).
+\]
+这就是 studentization 的一般渐近逻辑。它与正态样本中的精确 $t$ 分布必须区分：一般总体下分母替换只产生渐近标准正态；只有球对称高斯投影提供有限样本下的独立性，才会得到精确 Student $t$。
+
+
+\section{经验过程与泛函线性化}
+
+统一大数律说明 $F_n-F$ 的上确界趋零。置信带则需要研究整个误差函数乘以 $\sqrt n$ 后的联合极限，而不是只对某一个阈值应用中心极限定理。
+
+\begin{definition}[经验过程与 Brown 桥]
+设 $X_i$ 独立同分布且分布函数为 $F$，定义
+\[
+ \alpha_n(x)=\sqrt n\{F_n(x)-F(x)\}.
+\]
+标准 Brown 桥 $B$ 是 $[0,1]$ 上连续的中心 Gaussian 过程，协方差为 $s\wedge t-st$。它可由标准 Brown 运动 $W$ 写为 $B(t)=W(t)-tW(1)$；于是 $B(0)=B(1)=0$。这里 $W$ 指连续的中心 Gaussian 过程，协方差为 $s\wedge t$。
+\end{definition}
+
+\begin{proposition}[经验过程的精确协方差与有限维极限]
+对任意 $n$，有
+\begin{equation}\label{eq:math-stat-brownian-bridge-covariance}
+ K_F(x,y)=\Cov(\alpha_n(x),\alpha_n(y))
+ =F(x\wedge y)-F(x)F(y).
+\end{equation}
+对每个固定的有限阈值组 $(x_1,\ldots,x_m)$，$\{\alpha_n(x_j)\}_{j=1}^m$ 依分布趋于 $\{B(F(x_j))\}_{j=1}^m$。
+\end{proposition}
+\begin{proof}
+不同样本的交叉协方差为零，同一样本的指示函数乘积为 $\mathds{1}_{\{X\le x\wedge y\}}$，所以协方差等于上式。有限维结论对有界指示函数向量应用多元中心极限定理即可。以下保留逐项计算。
+
+协方差核对每个有限样本量已经精确成立，逐项计算如下。
+
+记
+\[
+Y_i(x):=\mathds{1}_{\{X_i\le x\}}.
+\]
+则
+\[
+F_n(x)=\frac1n\sum_{i=1}^nY_i(x),
+\qquad
+\mathbb E Y_i(x)=F(x).
+\]
+因此
+\[
+\alpha_n(x)
+=\sqrt n\{F_n(x)-F(x)\}
+=\frac1{\sqrt n}\sum_{i=1}^n
+\bigl(Y_i(x)-F(x)\bigr).
+\]
+对两个点 $x,y$，独立性使不同 $i$ 的交叉协方差消失：当 $i\neq j$ 时 $Y_i(x)$ 与 $Y_j(y)$ 独立，故
+\[
+\Cov\bigl(Y_i(x)-F(x),Y_j(y)-F(y)\bigr)=0,
+\]
+于是
+\[
+\begin{aligned}
+\Cov(\alpha_n(x),\alpha_n(y))
+&=\frac1n\sum_{i=1}^n\Cov\bigl(Y_i(x),Y_i(y)\bigr)\\
+&=\Cov(Y_1(x),Y_1(y))\\
+&=\mathbb E\bigl[Y_1(x)Y_1(y)\bigr]-F(x)F(y).
+\end{aligned}
+\]
+而指示函数乘积满足
+\[
+Y_1(x)Y_1(y)
+=\mathds{1}_{\{X_1\le x\}}\mathds{1}_{\{X_1\le y\}}
+=\mathds{1}_{\{X_1\le x\wedge y\}},
+\]
+其中 $x\wedge y=\min(x,y)$，这是因为两个不等式 $X_1\le x$、$X_1\le y$ 同时成立等价于 $X_1$ 不超过较小者。取期望得
+\[
+\mathbb E[Y_1(x)Y_1(y)]
+=F(x\wedge y),
+\]
+得到\eqnrefs{eq:math-stat-brownian-bridge-covariance}。这个 协方差 对每个 $n$ 都已经成立；Donsker 定理真正新增的是"整个随机函数的联合极限"而非 协方差 计算本身。
+\end{proof}
+
+\begin{definition}[右连续路径空间与过程弱收敛]
+$D[0,1]$ 由右连续且存在左极限的函数组成。其 Skorokhod $J_1$ 拓扑容许连续严格递增的时间重参数化：$f_n\to f$ 指存在 $\lambda_n:[0,1]\to[0,1]$，固定端点且
+\[
+ \|\lambda_n-\mathrm{id}\|_\infty\to0,
+ \qquad \|f_n-f\circ\lambda_n\|_\infty\to0.
+\]
+若极限 $f$ 连续，这蕴含 $\|f_n-f\|_\infty\to0$。过程弱收敛指相应随机路径的概率分布在此拓扑中弱收敛。
+\end{definition}
+
+\begin{theorem}[均匀经验过程的 Donsker 定理]
+设 $U_i$ 独立同分布于 $(0,1)$，$G_n(t)=n^{-1}\sum_i\mathds{1}_{\{U_i\le t\}}$。则
+\[
+ \beta_n(t)=\sqrt n\{G_n(t)-t\}\Longrightarrow B(t)
+ \quad\text{在 }D[0,1]\text{ 中}.
+\]
+对于一般分布函数，可在广义逆耦合下写 $X_i=F^{-1}(U_i)$、$\alpha_n=\beta_n\circ F$，相应地记
+\begin{equation}\label{eq:math-stat-donsker-cdf}
+ \alpha_n\Longrightarrow B\circ F.
+\end{equation}
+一般分布的上确界结论通过上述均匀路径耦合解释；在 $\ell^\infty(\RR)$ 的表述中需使用经验过程的外期望弱收敛约定，不能默认原始随机路径在非可分上确界空间中 Borel 可测。
+\end{theorem}
+\begin{proof}
+有限维极限已由上一命题确定，还需路径紧性。这里使用 $D[0,1]$ 的两增量紧性判据：若端点增量依概率一致趋零，且存在 $C$ 使
+\[
+ E\{|Z_n(t)-Z_n(s)|^2|Z_n(u)-Z_n(t)|^2\}
+ \le C(u-s)^2\quad(s\le t\le u),
+\]
+则路径分布紧；结合有限维极限及极限路径连续性，得到过程弱收敛。这是路径空间的紧性定理，以下直接核验其概率条件。\footnote{路径空间紧性及经验过程弱收敛的标准框架见 Guntuboyina，\href{https://www.stat.berkeley.edu/~aditya/resources/FullNotes210BSpring2018.pdf}{Theoretical Statistics, Spring 2018} 的经验过程部分；路径空间紧性判据在此作为外部定理使用。}
+
+置 $p=t-s$、$q=u-t$。对单个均匀变量，令 $A=\mathds{1}_{(s,t]}(U)-p$、$C=\mathds{1}_{(t,u]}(U)-q$。因两个区间互斥，
+\begin{align*}
+ EA^2&=p(1-p),\quad EC^2=q(1-q),\quad EAC=-pq,\\
+ EA^2C^2&=pq(p+q-3pq).
+\end{align*}
+将独立样本和的四阶矩展开，只有四个指标相同或两两成对的项非零，因此
+\begin{align*}
+ E\{(\beta_n(t)-\beta_n(s))^2(\beta_n(u)-\beta_n(t))^2\}
+ &=\frac1nEA^2C^2+\frac{n-1}{n}\{EA^2EC^2+2(EAC)^2\}\\
+ &=pq\left[\frac{p+q-3pq}{n}
+ +\frac{n-1}{n}(1-p-q+3pq)\right]\\
+ &\le pq\le\frac{(u-s)^2}{4}.
+\end{align*}
+这里 $p,q\ge0$、$p+q\le1$ 保证中括号两个系数都不超过 $1$。端点处，$\beta_n(0)=\beta_n(1)=0$，且 $E\beta_n(t)^2=t(1-t)$，故靠近任一端点的增量由 Chebyshev 一致趋零。紧性判据的全部条件成立。
+
+最后，广义逆给 $F_n(x)=G_n(F(x))$。由于 $B$ 连续，均匀路径的 $J_1$ 极限可在弱收敛的表示空间上实现为上确界收敛，而复合 $F$ 不增加上确界误差。这给出一般分布的联合极限及其连续泛函结论。
+\end{proof}
+
+\begin{corollary}[Kolmogorov--Smirnov 统计量]
+若 $F$ 连续，则
+\[
+ \sqrt n\sup_x|F_n(x)-F(x)|
+ \Longrightarrow\sup_{0\le t\le1}|B(t)|.
+\]
+\end{corollary}
+\begin{proof}
+连续分布函数的值域覆盖 $(0,1)$；端点取极限。于是均匀耦合下两个上确界相等。极限连续路径上的上确界范数对 $J_1$ 收敛连续，再用连续映射定理。若 $F$ 有原子，值域会略过某些区间，极限为 $\sup_x|B(F(x))|$，不再自动等于完整桥的上确界。
+\end{proof}
+
+\begin{definition}[一般函数类的经验过程]
+对函数类 $\mathcal G\subset L^2(P)$，令 $\mathbb G_ng=\sqrt n(P_ng-Pg)$。若它在 $\ell^\infty(\mathcal G)$ 的经验过程弱收敛意义下趋于紧的中心 Gaussian 过程，则称 $\mathcal G$ 为 $P$-Donsker 类，极限协方差为
+\[
+ \Cov(\mathbb G_Pf,\mathbb G_Pg)=P(fg)-Pf\,Pg.
+\]
+单函数类给普通中心极限定理，有限类给多元中心极限定理；无限类还必须控制覆盖数、熵积分等复杂度。对一般不可分指标空间，外期望 $E^*Z$ 指可测上包络期望的下确界，弱收敛按有界 Lipschitz 测试泛函的外期望及相应渐近可测性解释。
+\end{definition}
+
+\begin{definition}[Hadamard 可微]
+设 $T$ 定义在赋范空间 $E$ 的子集上，取值于赋范空间 $H$。若存在连续线性映射 $\dot T_F:E_0\to H$，其中 $E_0\subset E$ 为线性切空间，使任意 $r_j\downarrow0$、$h_j\to h\in E_0$ 且 $F+r_jh_j$ 在定义域内时都有
+\[
+ \frac{T(F+r_jh_j)-T(F)}{r_j}\longrightarrow\dot T_F(h),
+\]
+则称 $T$ 在 $F$ 处沿 $E_0$ Hadamard 可微。允许方向 $h_j$ 随 $j$ 改变，是这一条件能处理随机方向的原因。
+\end{definition}
+
+\begin{theorem}[泛函 $\Delta$ 方法]
+设 $a_n\to\infty$、$a_n(F_n-F)\Longrightarrow Z$，极限 $Z$ 紧且几乎处处落在切空间 $E_0$。若 $T$ 满足上述可微性，相关随机元素可测且有可分支撑，或按经验过程的外期望框架解释，则
+\[
+ a_n\{T(F_n)-T(F)\}\Longrightarrow\dot T_F(Z).
+\]
+\end{theorem}
+\begin{proof}
+在可分表示空间上将趋于 $Z$ 的方向实现为几乎处处收敛的方向序列。Hadamard 定义可逐条用于 $r_n=1/a_n$，得到变换后的差商趋于 $\dot T_F(Z)$。其分布与原序列一致，故结论成立。等价地，可微性在趋向紧切方向集的序列上给一致余项，再由随机方向的紧性得到 $o_{\mathbb P}(1)$ 余项；连续映射定理处理线性主项。
+\end{proof}
+
+\begin{exbox}[均匀经验过程的积分泛函]
+取 $X_i\sim\mathrm{Unif}(0,1)$。对 $T(F)=\int_0^1F(t)\dd t$，有 $\dot T_F(h)=\int_0^1h(t)\dd t$，所以
+\[
+ \sqrt n\{T(F_n)-1/2\}\Rightarrow\int_0^1B(t)\dd t.
+\]
+该极限为中心正态，其方差直接由桥协方差积分：
+\[
+ \int_0^1\!\int_0^1(s\wedge t-st)\dd s\dd t=\frac13-\frac14=\frac1{12}.
+\]
+另一方面 $T(F_n)=n^{-1}\sum_i(1-X_i)$，普通均值中心极限定理给同样的 $1/12$。整个过程极限与有限维平均在这个例子中完全衔接。分位数泛函的导数则需要正密度条件，下面用计数反演和局部增量证明该结论。
+\end{exbox}
+
+
+\subsection{分位数的计数反演与影响函数}
+\begin{theorem}[样本分位数的渐近正态性]
+样本分位数给出一个非光滑例子：它的渐近正态性并不需要先假定 Bahadur 表示。设
+\[
+ \xi_p=F^{-1}(p),\qquad 0<p<1,
+\]
+并假设 $F$ 在 $\xi_p$ 的某个开邻域内连续可微，且 $f(\xi_p)>0$。该条件保证分位点局部唯一、邻域内无原子，并允许直接使用局部逆映射。令经验分位数
+\[
+ \widehat\xi_p=F_n^{-1}(p).
+\]
+则
+\begin{equation}\label{eq:math-stat-quantile-asymptotic-normal}
+ \sqrt n(\widehat\xi_p-\xi_p)
+ \xrightarrow{d}
+ \mathcal N\!\left(0,
+ \frac{p(1-p)}{f(\xi_p)^2}\right).
+\end{equation}
+\end{theorem}
+密度出现在分母有直接几何意义：若 $F$ 在分位点附近很平，同样大小的概率误差经逆映射会被放大成更大的位置误差。
+
+\begin{proof}
+固定 $t\in\RR$，令
+\[
+ y_n=\xi_p+\frac{t}{\sqrt n},
+ \qquad
+ q_n=F(y_n).
+\]
+由 $F$ 在 $\xi_p$ 处可微，
+\[
+ q_n
+ =p+\frac{f(\xi_p)t}{\sqrt n}
+ +o(n^{-1/2}).
+\]
+广义逆的定义给出事件的精确等价关系
+\[
+ \{\widehat\xi_p\le y_n\}
+ =\{F_n(y_n)\ge p\}.
+\]
+写
+\[
+ N_n(y_n)=\sum_{i=1}^n\mathds{1}(X_i\le y_n),
+\]
+则对每个 $n$，
+\[
+ N_n(y_n)\sim\mathrm{Bin}(n,q_n).
+\]
+若 $k_n=\lceil np\rceil$，便有
+\begin{align*}
+ \mathbb P\!\left\{
+ \sqrt n(\widehat\xi_p-\xi_p)\le t
+ \right\}
+ &=\mathbb P\{N_n(y_n)\ge k_n\}\\
+ &=\mathbb P\!\left\{
+ \frac{N_n(y_n)-nq_n}{\sqrt{nq_n(1-q_n)}}
+ \ge
+ \frac{k_n-nq_n}{\sqrt{nq_n(1-q_n)}}
+ \right\}.
+\end{align*}
+由于 $q_n\to p\in(0,1)$，Bernoulli 三角阵满足 Lindeberg 条件，因此
+\[
+ \frac{N_n(y_n)-nq_n}{\sqrt{nq_n(1-q_n)}}
+ \xrightarrow{d}\mathcal N(0,1).
+\]
+另一方面，$0\le k_n-np<1$，故
+\begin{align*}
+ \frac{k_n-nq_n}{\sqrt{nq_n(1-q_n)}}
+ &=\frac{k_n-np}{\sqrt{nq_n(1-q_n)}}
+ -\frac{\sqrt n(q_n-p)}{\sqrt{q_n(1-q_n)}}\\
+ &\longrightarrow
+ -\frac{f(\xi_p)t}{\sqrt{p(1-p)}}.
+\end{align*}
+于是
+\[
+ \mathbb P\!\left\{
+ \sqrt n(\widehat\xi_p-\xi_p)\le t
+ \right\}
+ \longrightarrow
+ \Phi\!\left(
+ \frac{f(\xi_p)t}{\sqrt{p(1-p)}}
+ \right),
+\]
+这正是\eqnrefs{eq:math-stat-quantile-asymptotic-normal}。关键操作是把“位置小于某点”反演成一个 Bernoulli 计数事件。
+
+\end{proof}
+
+\begin{proposition}[局部经验增量与 Bahadur 表示]
+渐近正态性还可以加强为渐近线性表示，但这一步需要比单点 中心极限定理 更强的\emph{局部经验过程控制}。对每个固定 $M<\infty$，若
+\begin{equation}\label{eq:math-stat-local-empirical-equicontinuity}
+ \sup_{|t|\le M}
+ \sqrt n\left|
+ \{F_n-F\}\!\left(\xi_p+\frac{t}{\sqrt n}\right)
+ -\{F_n-F\}(\xi_p)
+ \right|
+ \xrightarrow{\mathbb P}0,
+\end{equation}
+则由\eqnrefs{eq:math-stat-quantile-asymptotic-normal}先知
+$\sqrt n(\widehat\xi_p-\xi_p)=O_{\mathbb P}(1)$，再在这个随机 $n^{-1/2}$ 邻域内使用\eqnrefs{eq:math-stat-local-empirical-equicontinuity}，得到更强的 Bahadur 表示
+\begin{equation}\label{eq:math-stat-quantile-bahadur}
+ \sqrt n(\widehat\xi_p-\xi_p)
+ =-\frac{\sqrt n\{F_n(\xi_p)-p\}}{f(\xi_p)}
+ +o_{\mathbb P}(1).
+\end{equation}
+在上述局部正密度条件下，下面以符号对称化和部分和最大不等式证明\eqnrefs{eq:math-stat-local-empirical-equicontinuity}，其期望上界为 $O(n^{-1/4})$。再代入随机分位点，即得 Bahadur 表示。
+
+\end{proposition}
+
+\begin{proof}
+\textbf{局部经验增量.}
+设 $f$ 在 $\xi_p$ 附近连续，固定 $M$，令 $h=M/\sqrt n$。对 $0\le u\le h$，定义 $g_u(x)=\mathds{1}_{\{\xi_p<x\le\xi_p+u\}}$，并记 $q_h=P(\xi_p<X\le\xi_p+h)=O(h)$。则
+\[
+ \sqrt n\{(F_n-F)(\xi_p+u)-(F_n-F)(\xi_p)\}
+ =\frac1{\sqrt n}\sum_i\{g_u(X_i)-Pg_u\}.
+\]
+取独立副本 $X_i'$ 与独立等概率符号 $\epsilon_i\in\{-1,1\}$。Jensen 不等式以及交换 $X_i,X_i'$ 的对称性给出标准对称化估计：
+\begin{align*}
+ E\sup_u\left|\sum_i(g_u(X_i)-Pg_u)\right|
+ &\le E\sup_u\left|\sum_i(g_u(X_i)-g_u(X_i'))\right|\\
+ &=E\sup_u\left|\sum_i\epsilon_i(g_u(X_i)-g_u(X_i'))\right|\\
+ &\le2E\sup_u\left|\sum_i\epsilon_i g_u(X_i)\right|.
+\end{align*}
+条件于样本，把落入 $(\xi_p,\xi_p+h]$ 的 $N_h$ 个点按大小排序。随 $u$ 增长，最后的和就是 $N_h$ 个独立符号的部分和；同值点只会减少可取的部分和数。对这一离散鞅用 $L^2$ 最大不等式，
+\[
+ E_\epsilon\max_{j\le N_h}\left|\sum_{i=1}^j\epsilon_i\right|
+ \le\left(E_\epsilon\max_{j\le N_h}\left|\sum_{i=1}^j\epsilon_i\right|^2\right)^{1/2}
+ \le2\sqrt{N_h}.
+\]
+此处最大不等式来自 $P(\max|M_j|>a)\le a^{-1}E[|M_N|\mathds{1}_{\{\max|M_j|>a\}}]$：对 $a$ 积分并用 Cauchy--Schwarz 得 $\|\max|M_j|\|_2\le2\|M_N\|_2$。因此
+\[
+ E\sup_{0\le u\le h}\sqrt n|(P_n-P)g_u|
+ \le\frac4{\sqrt n}E\sqrt{N_h}
+ \le4\sqrt{q_h}=O(n^{-1/4})\longrightarrow0.
+\]
+左邻域 $(\xi_p-h,\xi_p]$ 同理。Markov 不等式将两侧期望界转成依概率界，得到\eqnrefs{eq:math-stat-local-empirical-equicontinuity}。本计算直接证明所需局部输入，不需要先假设完整 Donsker 定理。
+
+\textbf{随机分位点的线性化.}
+由连续性与 $f(\xi_p)>0$，样本分位数以概率趋于 $1$ 落在无原子的局部邻域中。因而
+\[
+ F_n(\widehat\xi_p^- )\le p\le F_n(\widehat\xi_p),
+ \qquad
+ F_n(\widehat\xi_p)-p=O(n^{-1}).
+\]
+把左式第二个误差记为 $r_n=O_{\mathbb P}(n^{-1})$，则
+\begin{align*}
+ r_n
+ &=F_n(\widehat\xi_p)-p\\
+ &=\{F_n(\xi_p)-p\}
+ +\{F(\widehat\xi_p)-F(\xi_p)\}\\
+ &\quad+
+ \Bigl[
+ \{F_n-F\}(\widehat\xi_p)
+ -\{F_n-F\}(\xi_p)
+ \Bigr].
+\end{align*}
+由\eqnrefs{eq:math-stat-quantile-asymptotic-normal}，
+\[
+ \widehat\xi_p-\xi_p=O_{\mathbb P}(n^{-1/2}).
+\]
+因此\eqnrefs{eq:math-stat-local-empirical-equicontinuity}把最后一项控制为
+\[
+ o_{\mathbb P}(n^{-1/2}).
+\]
+同时局部可微性给出
+\[
+ F(\widehat\xi_p)-F(\xi_p)
+ =f(\xi_p)(\widehat\xi_p-\xi_p)
+ +o_{\mathbb P}(n^{-1/2}).
+\]
+代回并注意 $r_n=o_{\mathbb P}(n^{-1/2})$，得到
+\[
+ f(\xi_p)(\widehat\xi_p-\xi_p)
+ =-\{F_n(\xi_p)-p\}
+ +o_{\mathbb P}(n^{-1/2}).
+\]
+乘以 $\sqrt n/f(\xi_p)$ 即得\eqnrefs{eq:math-stat-quantile-bahadur}。由此影响函数可读为
+\[
+ \mathrm{IF}_{\xi_p}(x)
+ =\frac{p-\mathds{1}(x\le\xi_p)}{f(\xi_p)},
+\]
+其方差恰为 $p(1-p)/f(\xi_p)^2$，与\eqnrefs{eq:math-stat-quantile-asymptotic-normal}一致。
+\end{proof}
+
+上述局部增量和 Bahadur 表示的证明它们把随机阈值处的误差控制补全。
+
+统一大数律控制经验准则，中心极限定理描述一阶随机误差，$\Delta$ 方法传播光滑变换，渐近线性表示则把估计量还原为独立同分布平均。下一章暂时离开 $n\to\infty$，研究正态模型中为什么可以在每一个有限 $n$ 下由正交投影得到更强的精确抽样分布。
+
+\section{渐近误差的完整算例}\label{sec:clt-examples}
+
+有限样本的数值应由前面的条件和公式直接计算。以下例题分别计算正态近似上界、非线性变换、相关样本的比值及非光滑分位数。
+
+\begin{exbox}[均匀分布的正态近似上界]
+设 $X_i$ 独立同分布于 $(0,1)$，以 $H_n$ 表示 $Z_n=\sqrt{12n}(\overline X_n-1/2)$ 的分布函数。直接积分得到
+\[
+ \mu=\frac12,\quad \sigma^2=\frac1{12},\quad
+ E|X_1-\mu|^3=2\int_0^{1/2}u^3\dd u=\frac1{32}.
+\]
+Berry--Esseen 界因而给出
+\[
+ \sup_x|H_n(x)-\Phi(x)|
+ \le\frac{0.4748\,12^{3/2}}{32\sqrt n}
+ =\frac{0.61679\ldots}{\sqrt n}.
+\]
+对 $n=10,100$，保证上界分别为 $0.19505,0.06168$。这些数值是定理保证的最大偏差上界。
+
+若要计算真实误差，可从独立和的精确分布出发：$S_n=\sum_iX_i$ 的分布函数为
+\[
+ P(S_n\le s)=\frac1{n!}\sum_{k=0}^n(-1)^k\binom nk(s-k)_+^n.
+\]
+这是在单纯形 $\{x_i\ge0,\sum_ix_i\le s\}$ 中，按 $x_i>1$ 的坐标作容斥得到的体积。代入 $s=n/2+x\sqrt{n/12}$ 后才能比较 $H_n(x)$ 与 $\Phi(x)$；大 $n$ 时交错和存在严重数值抵消，需用高精度计算或稳定的卷积方法。
+\end{exbox}
+
+\begin{exbox}[样本方差与标准差的影响函数]
+设 $X_i$ 独立同分布，$EX_i=\mu$、$\Var(X_i)=\sigma^2>0$，且 $\mu_4=E(X_i-\mu)^4<\infty$。定义无偏样本方差
+\[
+ S_n^2=\frac1{n-1}\sum_i(X_i-\overline X_n)^2.
+\]
+令 $Q_n=n^{-1}\sum_i(X_i-\mu)^2$。平方展开和 $\overline X_n-\mu=O_{\mathbb P}(n^{-1/2})$ 给
+\begin{align*}
+ S_n^2&=\frac n{n-1}\{Q_n-(\overline X_n-\mu)^2\},\\
+ \sqrt n(S_n^2-\sigma^2)
+ &=\frac1{\sqrt n}\sum_i\{(X_i-\mu)^2-\sigma^2\}+o_{\mathbb P}(1).
+\end{align*}
+因此方差的影响函数为 $(x-\mu)^2-\sigma^2$，渐近方差为 $\mu_4-\sigma^4$。对 $S_n=\sqrt{S_n^2}$ 使用 $g'(\sigma^2)=1/(2\sigma)$：
+\[
+ \sqrt n(S_n-\sigma)\Rightarrow
+ N\!\left(0,\frac{\mu_4-\sigma^4}{4\sigma^2}\right).
+\]
+正态样本有 $\mu_4=3\sigma^4$，所以标准差的渐近标准误为 $\sigma/\sqrt{2n}$。取 $\sigma=2,n=50$，结果为 $0.2$；这是大样本误差尺度。
+\end{exbox}
+
+\begin{exbox}[成对观测的比值估计]
+设 $(X_i,Y_i)$ 独立同分布且具有有限协方差，$\mu_Y\ne0$。估计量为 $\widehat\theta_n=\overline X_n/\overline Y_n$，目标 $\theta=\mu_X/\mu_Y$。对 $g(x,y)=x/y$，
+\[
+ Dg(\mu_X,\mu_Y)=\left(\frac1{\mu_Y},-\frac{\mu_X}{\mu_Y^2}\right).
+\]
+多元 $\Delta$ 方法得到
+\[
+ V_\theta=\frac{\sigma_X^2}{\mu_Y^2}
+ -\frac{2\mu_X\sigma_{XY}}{\mu_Y^3}
+ +\frac{\mu_X^2\sigma_Y^2}{\mu_Y^4}.
+\]
+取模型参数 $\mu_X=50000,\mu_Y=2.5,\sigma_X=30000,\sigma_Y=1,\sigma_{XY}=5000$，逐项计算：
+\begin{align*}
+ V_\theta&=144000000-32000000+64000000=176000000,\\
+ \sqrt{V_\theta}&=13266.50\ldots,\qquad
+ \operatorname{se}(\widehat\theta_{1000})\approx419.52.
+\end{align*}
+所以 $95\%$ 渐近区间的半宽为 $1.96\times419.52\approx822.26$。若一次样本给出 $\widehat\theta_n=20000$，用这些模型方差构造的近似区间为 $20000\pm822.26$；未知模型参数时应先用一致估计替换。$13266.50$ 是 $\sqrt n$ 缩放后极限的标准差，$419.52$ 才是估计量在 $n=1000$ 时的标准误。
+\end{exbox}
+
+\begin{exbox}[正态中位数与均值的效率]
+设 $X_i\sim N(\mu,\sigma^2)$ 独立同分布，$\sigma>0$，$p=1/2$。分位数定理给
+\[
+ f(\mu)=\frac1{\sigma\sqrt{2\pi}},\qquad
+ \sqrt n(\widehat\xi_{1/2}-\mu)\Rightarrow N(0,\pi\sigma^2/2).
+\]
+中位数对均值的渐近相对效率为 $\sigma^2/(\pi\sigma^2/2)=2/\pi$。当 $\sigma=1,n=100$ 时，中位数标准误约为 $\sqrt{\pi/200}=0.12533$，均值标准误为 $0.1$。
+
+两者的影响函数分别为
+\[
+ \mathrm{IF}_{\rm med}(x)=\sigma\sqrt{2\pi}\left(\frac12-\mathds{1}_{\{x\le\mu\}}\right),
+ \qquad \mathrm{IF}_{\rm mean}(x)=x-\mu.
+\]
+前者有界，后者无界。因此正态模型下较小的效率与对单点污染较低的局部敏感性，可以由同一影响函数计算区分。
+\end{exbox}
+
+
+\begin{workedexample}
+令 $X_n=n\mathds{1}_{A_n}$、$P(A_n)=n^{-2}$。计算 $L^1,L^2$ 误差，并指出中心极限定理中独立性出现的位置。
+\textbf{解.} $E|X_n|=1/n\to0$，而 $E|X_n|^2=1$，故只有 $L^1$ 收敛。特征函数证明中，独立性用于把和的特征函数写成乘积；方差为各单项方差之和也依赖交叉协方差消失。
+\end{workedexample}
+

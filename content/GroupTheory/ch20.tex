@@ -1,256 +1,393 @@
-\chapter{Lorentz、Poincar\'e 与规范对称}
+\chapter{Lorentz 群、旋量与 Clifford 代数}
 \label{chap:lorentz-fields}
 
-\chapref{chap:rotation-group}讨论的 $SO(3)$ 只改变空间方向，时间仍是独立参数。狭义相对论把时间与空间合成四维时空，允许不同惯性系之间作洛伦兹推动；相应的连续时空对称性由正常正时 Lorentz 群 $SO^+(3,1)$ 描述。它不是紧群，因而场的有限维表示一般不可能同时保持正定内积；这正是把旋转表示论直接照搬过来时首先遇到的困难。
+空间旋转只改变方向。两个惯性观察者若还有相对速度，他们对时间和空间的分解也不同；保持不变的是四维间隔。于是旋转群须扩大为 Lorentz 群。我们仍从实际矩阵和群乘法求生成元，再问这些变换怎样作用在向量、旋量和场上。有限维场分量的变换规律建立以后，下一节才用平移谱和小群分类单粒子态。
 
-以下取 $c=\hbar=1$，度规为 $\eta=\operatorname{diag}(1,-1,-1,-1)$。间隔不变性给出 Lorentz 群条件；在单位元附近展开后得到 Lorentz 代数。它的\emph{复化}分成两个彼此对易的 $\mathfrak{sl}(2,\mathbb C)$ 因子；它们与前章 $\mathfrak{su}(2)$ 的复化同构，但不是两个独立的实紧代数。有限维场表示由 $(j_L,j_R)$ 标记。这个标签说明标量、Weyl 旋量、四矢量和 Dirac 旋量的分量怎样混合，却还不是单粒子的质量与自旋；后者需要把平移加入，研究 Poincar\'e 群在 Hilbert 空间上的幺正表示。
-\section{闵可夫斯基时空与洛伦兹群}
+本章取 $c=\hbar=1$，$\eta=\operatorname{diag}(1,-1,-1,-1)$，$\epsilon^{0123}=1$。空间三维符号取 $\epsilon_{123}=1$。四维指标由 $\eta$ 升降；三维向量分量不再用四维空间指标的升降符号代替。
 
-四矢量写作 $x^\mu=(t,\vb{x})$，闵可夫斯基内积为
+\section{间隔、连通分支与推进}
+
+\begin{definition}[Lorentz 群与正常正时分支]
+四矢量 $x=(x^0,x^1,x^2,x^3)^{\mathsf T}$ 的内积为
 \[
-x\cdot y=\eta_{\mu\nu}x^\mu y^\nu=x^0y^0-\vb{x}\cdot\vb{y} .
+ x\cdot y=x^{\mathsf T}\eta y.
 \]
-洛伦兹群是保持这一双线性型的实线性变换群，
+保持这一型的实线性变换组成
 \[
-O(3,1)=\{\Lambda\in GL(4,\mathbb R)\mid
-\Lambda^{\mathsf T}\eta\Lambda=\eta\}.
+ O(1,3)=\{\Lambda\in GL(4,\mathbb R):\Lambda^{\mathsf T}\eta\Lambda=\eta\}.
 \]
-令 $\Lambda=I+\omega+O(\omega^2)$。代回群条件，
+与 $O(3,1)$ 的记法相比，这里只改变签名书写的次序。包含单位元的分支是
 \[
-(I+\omega^{\mathsf T})\eta(I+\omega)
-=\eta+\omega^{\mathsf T}\eta+\eta\omega+O(\omega^2),
+ SO^+(1,3)=\{\Lambda\in O(1,3):\det\Lambda=1,\ \Lambda^0{}_0\ge1\}.
 \]
-所以无穷小生成矩阵满足
+\end{definition}
+
+\begin{proposition}[四个分支与转动--推进分解]
+令 $P=\operatorname{diag}(1,-1,-1,-1)$、$T=\operatorname{diag}(-1,1,1,1)$。四个连通分支分别是
 \begin{equation}
-\omega^{\mathsf T}\eta+\eta\omega=0.
-\label{eq:lorentz-infinitesimal-condition}
+ SO^+(1,3),\quad P SO^+(1,3),\quad T SO^+(1,3),\quad PT SO^+(1,3).
+ \label{eq:lorentz-components}
 \end{equation}
-把第一个指标用度规降下，$\omega_{\mu\nu}=\eta_{\mu\rho}
-\omega^\rho{}_\nu$，\eqnrefs{eq:lorentz-infinitesimal-condition} 就是
-$\omega_{\mu\nu}=-\omega_{\nu\mu}$。四维反对称矩阵有
-$4\cdot3/2=6$ 个独立分量，其中三个是空间转动，另外三个是推进。
-这个计数不是事先指定的；它直接来自保持闵可夫斯基度规的线性条件。
-
-由行列式和 $\Lambda^0{}_0$ 的符号，$O(3,1)$ 分为四个连通分支。包含单位元的分支满足 $\det\Lambda=1$、$\Lambda^0{}_0\geq1$，记为 $SO^+(3,1)$。空间反演 $P=\operatorname{diag}(1,-1,-1,-1)$ 和时间反演 $T=\operatorname{diag}(-1,1,1,1)$ 不在这个连通分支中，必须作为分立对称另行加入。
-
-沿 $x$ 轴、快度为 $\zeta$ 的推进为
-\[
-\Lambda_x(\zeta)=
-\begin{pmatrix}
-\cosh\zeta&-\sinh\zeta&0&0\\
--\sinh\zeta&\cosh\zeta&0&0\\
-0&0&1&0\\0&0&0&1
-\end{pmatrix},
-\qquad v=\tanh\zeta .
-\]
-转角是周期变量，而 $\zeta\in\mathbb R$ 无界；因此 $SO^+(3,1)$ 非紧。
-场可以处在有限维但非幺正的 Lorentz 表示中；量子态所需的正定
-内积与幺正性将在写出 Lie 代数后得到解释。
-
-\section{洛伦兹代数与有限维场表示}
-
-先在四矢量空间中把六个方向写成可相乘的实矩阵。对 $i=1,2,3$，定义 $4\times4$ 矩阵 $L_i,B_i$：时间行与时间列上的 $L_i$ 都为零，空间块为 $(L_i)^j{}_k=-\epsilon_{ijk}$；$B_i$ 只有 $(B_i)^0{}_i=(B_i)^i{}_0=-1$ 两个非零元。$L_i$ 的指数给空间转动，$B_1$ 的指数正是上一节写出的 $x$ 轴推动矩阵。它们都满足 $X^{\mathsf T}\eta+\eta X=0$，所以确实是 Lorentz 群单位元处的切向量。
-
-矩阵单位的乘法规则 $(E_{ab}E_{cd})=\delta_{bc}E_{ad}$ 使交换关系可以逐项检查。例如 $B_1=-E_{01}-E_{10}$、$B_2=-E_{02}-E_{20}$，故
-\[
-[B_1,B_2]=E_{12}-E_{21}=-L_3.
-\]
-同样相乘并循环置换空间指标，得到
-\[
-[L_i,L_j]=\epsilon_{ijk}L_k,\qquad
-[L_i,B_j]=\epsilon_{ijk}B_k,\qquad
-[B_i,B_j]=-\epsilon_{ijk}L_k.
-\]
-最后一组的负号来自时间方向在度规中的符号与三个空间方向不同，而不是人为加到公式上的约定。
-
-令 $M_{\mu\nu}=-M_{\nu\mu}$ 为生成元，并定义
-\[
-J_i=\frac12\epsilon_{ijk}M_{jk},\qquad K_i=M_{0i}.
-\]
-$J_i$ 生成空间转动，$K_i$ 生成推进。与上面的实矩阵表示相比，厄米生成元记号取 $J_i=\ii L_i$、$K_i=\ii B_i$，有限变换写成 $\ee^{-\ii\theta_iJ_i}$ 或 $\ee^{-\ii\zeta_iK_i}$。将这两个关系代入刚算出的三组实矩阵交换式，得到
-\begin{equation}
-[J_i,J_j]=\ii\epsilon_{ijk}J_k,\qquad
-[J_i,K_j]=\ii\epsilon_{ijk}K_k,\qquad
-[K_i,K_j]=-\ii\epsilon_{ijk}J_k .
-\label{eq:lorentz-algebra}
-\end{equation}
-最后一个负号把双曲推进与欧氏转动区分开来；两个不共线推进的交换子是一个转动生成元。
-
-\begin{theorem}[有限维幺正 Lorentz 表示必为平凡表示]
-正常正时 Lorentz 群的每个有限维连续幺正表示，在连通分支
-$SO^+(3,1)$ 上均为平凡表示。
-\end{theorem}
-
+每个 $\Lambda\in SO^+(1,3)$ 都可唯一写为 $B(\mathbf u)R$，其中 $B(\mathbf u)$ 是把 $e_0$ 送到 $\Lambda e_0$ 的纯推进，$R=\operatorname{diag}(1,R_3)$、$R_3\in SO(3)$。
+\end{proposition}
 \begin{proof}
-若表示幺正，可把无穷小生成元 $J_i,K_i$ 都取为有限维厄米矩阵。
-由\eqnrefs{eq:lorentz-algebra}中的
-$[K_1,K_2]=-\ii J_3$，
+取行列式得 $(\det\Lambda)^2=1$；再取第一列的范数，
 \[
-\Tr([K_1,K_2]J_3)=-\ii\Tr(J_3^2).
+ (\Lambda^0{}_0)^2-\sum_i(\Lambda^i{}_0)^2=1.
 \]
-另一方面，迹的循环性给出
+所以行列式符号与时间取向在连续路径上均不能改变。对未来单位类时向量 $u=\Lambda e_0$，写
 \[
-\Tr([K_1,K_2]J_3)
-=\Tr(K_1[K_2,J_3])
-=\ii\Tr(K_1^2),
+ u=(\cosh\zeta,\sinh\zeta\,\mathbf n),\qquad \zeta\ge0,\quad |\mathbf n|=1.
 \]
-这里用了 $[K_2,J_3]=\ii K_1$。因此
+定义
 \[
-\Tr(J_3^2)+\Tr(K_1^2)=0.
+ B(\zeta,\mathbf n)=
+ \begin{pmatrix}
+ \cosh\zeta&\sinh\zeta\,\mathbf n^{\mathsf T}\\
+ \sinh\zeta\,\mathbf n&I_3+(\cosh\zeta-1)\mathbf n\mathbf n^{\mathsf T}
+ \end{pmatrix}.
 \]
-厄米矩阵平方的迹是其本征值平方和，只能非负，所以
-$J_3=K_1=0$。循环置换指标得到所有 $J_i,K_i$ 都为零。
-连通群由单位元附近的指数生成，故整个表示恒为恒等算符。
+在 $\mathbf n$ 方向它是一块双曲旋转，垂直方向是恒等，故直接代入可得 $B^{\mathsf T}\eta B=\eta$。$B^{-1}\Lambda$ 固定 $e_0$；Lorentz 条件迫使其余三列与 $e_0$ 正交，空间块因此属于 $SO(3)$。$u$ 唯一决定纯推进 $B$，继而唯一决定 $R$。$\zeta=0$ 时 $B=I$，无需选择 $\mathbf n$。缩短 $\zeta$ 并连续缩短 $R$ 的轴角，给出到单位元的路径；其余三类经乘 $P,T,PT$ 化到这一类。因此恰有四个连通分支。
 \end{proof}
 
-场仍可处在有限维但非幺正的 Lorentz 表示中；量子态所需的幺正性
-由下一章的无限维 Poincar\'e 表示实现。
+\begin{workedexample}[沿第一轴的主动推进]
+取 $\mathbf n=(1,0,0)$，得到
+\[
+ \Lambda_x(\zeta)=
+ \begin{pmatrix}\cosh\zeta&\sinh\zeta&0&0\\
+ \sinh\zeta&\cosh\zeta&0&0\\0&0&1&0\\0&0&0&1\end{pmatrix}.
+\]
+它把静止四速度 $(1,0,0,0)$ 送到 $(\cosh\zeta,\sinh\zeta,0,0)$，故速度为 $v=\tanh\zeta$。逆变换把 $\zeta$ 换成 $-\zeta$，就是从运动系读回静止系的被动变换。直接展开
+\[
+ (t\cosh\zeta+x\sinh\zeta)^2
+ -(t\sinh\zeta+x\cosh\zeta)^2=t^2-x^2
+\]
+核对了间隔。快度相加来自双曲函数加法式；它不周期，因而这条子群无界，Lorentz 群非紧。
+\end{workedexample}
 
-在复化代数中引入
+\section{实矩阵生成元与复化分解}
+
+\begin{definition}[Lorentz 代数及生成元约定]
+若 $\Lambda=I+\omega+O(\omega^2)$，群条件的一阶项给出
 \begin{equation}
-A_i\equiv\frac12(J_i+\ii K_i),\qquad
-B_i\equiv\frac12(J_i-\ii K_i).
-\label{eq:complex-rotation-boost}
+ \omega^{\mathsf T}\eta+\eta\omega=0,
+ \qquad \omega_{\mu\nu}:=\eta_{\mu\rho}\omega^\rho{}_\nu=-\omega_{\nu\mu}.
+ \label{eq:lorentz-infinitesimal-condition}
 \end{equation}
-代入\eqnrefs{eq:lorentz-algebra} 得
+其六维实解空间是 $\mathfrak{so}(1,3)$。取实基 $L_i,B_i$：$L_i$ 的时间行列为零，空间块 $(L_i)^j{}_k=-\epsilon_{ijk}$；$B_i=E_{0i}+E_{i0}$。它们的指数分别给主动转动和主动推进。
+
+物理生成元记作 $J_i=\ii L_i$、$K_i=\ii B_i$，有限变换写成 $\exp(-\ii\theta_iJ_i)$ 和 $\exp(-\ii\zeta_iK_i)$。这只是复化代数中的记号；四矢量表示的 $K_i$ 并非正定内积下的厄米矩阵。用反对称生成元 $M_{\mu\nu}$ 时，统一取
+\[
+ J_i=\frac12\epsilon_{ijk}M_{jk},\qquad K_i=M_{i0}=-M_{0i}.
+\]
+这个降指标的负号将在 Poincar\'e 代数和 Pauli--Lubanski 矢量中继续使用。
+\end{definition}
+
+\begin{proposition}[Lorentz 交换关系]
+实生成元满足 $[L_i,L_j]=\epsilon_{ijk}L_k$、$[L_i,B_j]=\epsilon_{ijk}B_k$、$[B_i,B_j]=-\epsilon_{ijk}L_k$。物理记号相应满足
 \begin{equation}
-[A_i,A_j]=\ii\epsilon_{ijk}A_k,\qquad
-[B_i,B_j]=\ii\epsilon_{ijk}B_k,\qquad
-[A_i,B_j]=0,
-\label{eq:so31-complex-decomposition}
+ [J_i,J_j]=\ii\epsilon_{ijk}J_k,\quad
+ [J_i,K_j]=\ii\epsilon_{ijk}K_k,\quad
+ [K_i,K_j]=-\ii\epsilon_{ijk}J_k.
+ \label{eq:lorentz-algebra}
 \end{equation}
-即 $\mathfrak{so}(3,1)_{\mathbb C}\cong\mathfrak{sl}(2,\mathbb C)\oplus\mathfrak{sl}(2,\mathbb C)$。反变换为
-\[
-J_i=A_i+B_i,\qquad K_i=-\ii(A_i-B_i).
-\]
-真实 Lorentz 代数不是两个独立的实 $\mathfrak{su}(2)$；复共轭交换两因子，
-\begin{equation}
-\overline{A_i}=B_i,\qquad \overline{B_i}=A_i,
-\label{eq:real-form-conjugation}
-\end{equation}
-这才指定了 $\mathfrak{so}(3,1)$ 的实形式。
-
-有限维不可约复表示因此由一对半整数 $(j_L,j_R)$ 标记，表示空间为 $V_{j_L}\otimes V_{j_R}$，维数为 $(2j_L+1)(2j_R+1)$。在该空间中
-\[
-\rho(J_i)=J_i^{(j_L)}\otimes I+I\otimes J_i^{(j_R)},\qquad
-\rho(K_i)=-\ii\bigl(J_i^{(j_L)}\otimes I-I\otimes J_i^{(j_R)}\bigr).
-\]
-常用表示包括标量 $(0,0)$、左右 Weyl 旋量 $(\tfrac12,0)$ 与 $(0,\tfrac12)$、四矢量 $(\tfrac12,\tfrac12)$，以及自对偶和反自对偶二形式 $(1,0)$、$(0,1)$。
-
-宇称保持转动而反转推进，时间反演在量子理论中是反幺正算符，作用为
+\end{proposition}
+\begin{proof}
+矩阵单位满足 $E_{ab}E_{cd}=\delta_{bc}E_{ad}$。例如
 \begin{align*}
-P J_iP^{-1}&=J_i,& P K_iP^{-1}&=-K_i,
-\\
-T J_iT^{-1}&=-J_i,& T K_iT^{-1}&=K_i,
-\qquad T\ii T^{-1}=-\ii.
+ [B_1,B_2]&=[E_{01}+E_{10},E_{02}+E_{20}]=E_{12}-E_{21}=-L_3,\\
+ [L_1,B_2]&=[-E_{23}+E_{32},E_{02}+E_{20}]=E_{03}+E_{30}=B_3,\\
+ [L_1,L_2]&=[-E_{23}+E_{32},-E_{31}+E_{13}]=-E_{12}+E_{21}=L_3.
 \end{align*}
-因此宇称交换左右表示，
-\[
-P:(j_L,j_R)\longleftrightarrow(j_R,j_L).
-\]
-若理论要求宇称在单个场多重态内实现，就必须把 $(j_L,j_R)$ 与 $(j_R,j_L)$ 配对；Dirac 旋量正是 $(\tfrac12,0)\oplus(0,\tfrac12)$。
-
-群元素可写成
-\[
-D^{(j_L,j_R)}(\boldsymbol\theta,\boldsymbol\zeta)
-=\exp\!\left[-\ii\boldsymbol\theta\cdot\rho(\vb{J})
--\ii\boldsymbol\zeta\cdot\rho(\vb{K})\right].
-\]
-限制到转动子群时，两个角动量按 Clebsch--Gordan 规则耦合，
-\[
-(j_L,j_R)\big|_{SO(3)}
-\cong\bigoplus_{j=|j_L-j_R|}^{j_L+j_R}j .
-\]
-复共轭与张量积分别满足
-\begin{align*}
-\overline{(j_L,j_R)}&\cong(j_R,j_L),
-\\
-(j_L,j_R)\otimes(k_L,k_R)
-&\cong
-\bigoplus_{a=|j_L-k_L|}^{j_L+k_L}
-\bigoplus_{b=|j_R-k_R|}^{j_R+k_R}(a,b).
-\end{align*}
-这些公式直接决定场的分量怎样组成 Lorentz 标量、矢量和张量。
-
-\begin{proof}[复化分解]
-由\eqnrefs{eq:complex-rotation-boost}与\eqnrefs{eq:lorentz-algebra}，
-\begin{align*}
-4[A_i,A_j]
-&=[J_i,J_j]+\ii[J_i,K_j]+\ii[K_i,J_j]-[K_i,K_j]\\
-&=2\ii\epsilon_{ijk}(J_k+\ii K_k)
-=4\ii\epsilon_{ijk}A_k.
-\end{align*}
-同理 $[B_i,B_j]=\ii\epsilon_{ijk}B_k$，而交叉项逐项抵消，得到\eqnrefs{eq:so31-complex-decomposition}。这一步只在复化后成立；真实形式还需附加\eqnrefs{eq:real-form-conjugation}。
+循环置换给其余式。乘上 $\ii$ 时，$[\ii X,\ii Y]=-[X,Y]$，再用 $L_i=-\ii J_i$、$B_i=-\ii K_i$ 便得正文关系。
 \end{proof}
 
-\section{Clifford 代数与旋量}
+\begin{workedexample}[交换两个小推进留下什么]
+由指数展开，
+\[
+ e^{sB_1}e^{tB_2}e^{-sB_1}e^{-tB_2}
+ =I-stL_3+O\!\bigl(|st|(|s|+|t|)\bigr).
+\]
+作用于 $e_1$ 时，$L_3e_1=e_2$，净变化为 $-st e_2$。所以差异从二阶开始，方向是绕第三轴的转动。它解释了非共线推进组合中的 Wigner 转动；有限转角还须从完整乘积求出，不能把二阶式当作任意速度的答案。
+\end{workedexample}
 
-质量壳关系 $p^2=m^2$ 对四动量是二次的。若要构造对 $p_\mu$ 一阶的相对论波动算符，需要矩阵 $\gamma^\mu$ 满足
+\begin{theorem}[有限维幺正 Lorentz 表示为平凡表示]
+$SO^+(1,3)$ 及其覆盖 $SL(2,\mathbb C)$ 的有限维连续幺正表示均为平凡表示。
+\end{theorem}
+\begin{proof}
+幺正表示中的 $J_i,K_i$ 都厄米。由 $[K_1,K_2]=-\ii J_3$ 和迹循环性，
 \[
-\{\gamma^\mu,\gamma^\nu\}=2\eta^{\mu\nu}I_4 .
+ -\ii\Tr(J_3^2)=\Tr([K_1,K_2]J_3)
+ =\Tr(K_1[K_2,J_3])=\ii\Tr(K_1^2).
 \]
-这是复 Clifford 代数 $\mathrm{Cl}_{1,3}(\mathbb C)$ 的定义关系。它确实能由上一章的 Pauli 矩阵具体实现。令
-\[
-\sigma^\mu=(I_2,\sigma_1,\sigma_2,\sigma_3),\qquad
-\bar\sigma^\mu=(I_2,-\sigma_1,-\sigma_2,-\sigma_3),
-\qquad
-\gamma^\mu=
-\begin{pmatrix}0&\sigma^\mu\\\bar\sigma^\mu&0\end{pmatrix}.
-\]
-这是四块 $2\times2$ 矩阵拼成的 $4\times4$ 矩阵。逐块相乘，
-\[
-\gamma^\mu\gamma^\nu+\gamma^\nu\gamma^\mu
-=\begin{pmatrix}
-\sigma^\mu\bar\sigma^\nu+\sigma^\nu\bar\sigma^\mu&0\\
-0&\bar\sigma^\mu\sigma^\nu+\bar\sigma^\nu\sigma^\mu
-\end{pmatrix}.
-\]
-当 $\mu=\nu=0$ 时每个对角块为 $2I_2$；一个指标为 $0$、另一个为空间指标时两项相消；两个指标都是空间指标时，$\{\sigma_i,\sigma_j\}=2\delta_{ij}I_2$ 给出 $-2\delta_{ij}I_2$。这三种情形恰好是 $2\eta^{\mu\nu}I_4$。再利用 $p_\mu p_\nu$ 的对称性，可得
+所以两项非负数 $\Tr(J_3^2)$、$\Tr(K_1^2)$ 的和为零，两矩阵都为零。循环置换后所有生成元均为零；连通群由局部指数生成，表示因此恒等。证明不需要假定一个实数参数的酉子群必有周期；多个不共振频率可以没有共同周期。
+\end{proof}
+
+\begin{theorem}[复化与真实形式]
+在复化代数中定义
 \begin{equation}
-(\gamma^\mu p_\mu+m)(\gamma^\nu p_\nu-m)
-=(p_\mu p^\mu-m^2)I_4.
-\label{eq:dirac-square-mass-shell}
+ A_i=\frac12(J_i+\ii K_i),\qquad B_i^{\rm c}=\frac12(J_i-\ii K_i).
+ \label{eq:complex-rotation-boost}
 \end{equation}
-因而非零的 Dirac 平面波必满足质量壳关系；反过来，$p^2=m^2$ 还不足以指定旋量的四个分量，仍须求解一阶方程。
-
-现在从这些矩阵构造 Lorentz 生成元。令
-\[
-S^{\mu\nu}=\frac{\ii}{4}[\gamma^\mu,\gamma^\nu],
-\qquad
-S(\Lambda)=\exp\!\left(-\frac{\ii}{2}\omega_{\mu\nu}S^{\mu\nu}\right),
-\]
-其中 $\omega_{\mu\nu}=-\omega_{\nu\mu}$ 是 Lorentz 变换的反对称无穷小参数（共 6 个实参数：3 个转动角与 3 个快度）。Dirac 旋量表示由
-\[
-S(\Lambda)\gamma^\mu S(\Lambda)^{-1}=\Lambda^\mu{}_\nu\gamma^\nu
-\]
-定义；两边左乘 $S^{-1}$、右乘 $S$，Clifford 关系给出
+这里 $B_i^{\rm c}$ 与前面的实推进矩阵 $B_i$ 分开记。则
 \begin{equation}
-S(\Lambda)^{-1}\gamma^\mu S(\Lambda)
-=\Lambda^\mu{}_{\nu}\gamma^\nu.
-\label{eq:gamma-lorentz}
+ [A_i,A_j]=\ii\epsilon_{ijk}A_k,\quad
+ [B_i^{\rm c},B_j^{\rm c}]=\ii\epsilon_{ijk}B_k^{\rm c},\quad
+ [A_i,B_j^{\rm c}]=0.
+ \label{eq:so31-complex-decomposition}
 \end{equation}
-式 \eqnrefs{eq:gamma-lorentz} 即上面相似变换的逆形式。所以 $\slashed p=\gamma^\mu p_\mu$ 按相似变换协变，Dirac 方程 $(\slashed p-m)\Psi=0$ 与 Lorentz 变换相容。
-
-手征算符 $\gamma^5=\ii\gamma^0\gamma^1\gamma^2\gamma^3$ 满足 $(\gamma^5)^2=I$。在刚才的显式矩阵中，逐块相乘得到 $\gamma^5=\operatorname{diag}(-I_2,I_2)$；因此投影 $P_{L,R}=(I\mp\gamma^5)/2$ 分别留下上、下两个分量。写 $\Psi=(\psi_L,\psi_R)^{\mathsf T}$，Dirac 方程逐块等价于
+因此 $\mathfrak{so}(1,3)_{\mathbb C}\cong\mathfrak{sl}_2(\mathbb C)\oplus\mathfrak{sl}_2(\mathbb C)$，逆关系为
 \begin{equation}
-\sigma^\mu p_\mu\psi_R=m\psi_L,
-\qquad
-\bar\sigma^\mu p_\mu\psi_L=m\psi_R.
-\label{eq:weyl-dirac-blocks}
+ J_i=A_i+B_i^{\rm c},\qquad K_i=-\ii(A_i-B_i^{\rm c}).
+ \label{eq:inverse-complexification}
 \end{equation}
-当 $m=0$ 时两式解耦，左右 Weyl 旋量可各自满足一份二分量方程；当 $m\ne0$ 时质量项把它们联结起来。这里的“左、右”是 Lorentz 表示 $(\tfrac12,0)$、$(0,\tfrac12)$ 的名称，不能仅从上、下排布推断物理空间的左、右方向。
+真实形式的共轭 $\tau$ 固定实矩阵 $L_i,B_i$，因而
+\begin{equation}
+ \tau(J_i)=-J_i,\quad \tau(K_i)=-K_i,\quad
+ \tau(A_i)=-B_i^{\rm c},\quad \tau(B_i^{\rm c})=-A_i.
+ \label{eq:real-form-conjugation}
+\end{equation}
+\end{theorem}
+\begin{proof}
+把四个交换子都保留，
+\begin{align*}
+ 4[A_i,A_j]&=[J_i,J_j]+\ii[J_i,K_j]+\ii[K_i,J_j]-[K_i,K_j]\\
+ &=2\ii\epsilon_{ijk}J_k-2\epsilon_{ijk}K_k=4\ii\epsilon_{ijk}A_k,\\
+ 4[A_i,B_j^{\rm c}]&=[J_i,J_j]-\ii[J_i,K_j]+\ii[K_i,J_j]+[K_i,K_j]=0.
+\end{align*}
+另一个因子的式子换 $K\mapsto-K$ 即得。$\tau$ 共轭线性，且 $J_i=\ii L_i$、$K_i=\ii B_i$，故最后四式直接成立。若改用真实基的组合 $a_i=-\ii A_i$、$b_i=-\ii B_i^{\rm c}$，则 $\tau(a_i)=b_i$。这说明“共轭交换两因子”须同时说明所用基；在含 $\ii$ 的物理括号中把 $J_i$ 当成真实基会破坏共轭与括号的相容性。
+\end{proof}
 
-电荷共轭矩阵 $C$ 满足 $C\gamma^\mu C^{-1}=-(\gamma^\mu)^{\mathsf T}$；Majorana 条件要求旋量等于其电荷共轭 $\psi=\psi^c\equiv C\bar\psi^{\mathsf T}$。复 Clifford 代数决定矩阵结构；是否能施加该 Majorana 实条件还取决于实形式和时空签名，不能仅由复维数判断。
+\begin{note}[与欧氏四维旋转的比较]
+$\mathfrak{so}(4)$ 有同一个复化，却有不同的真实形式。其两个三维紧实理想各自保持不变，所以 $\mathfrak{so}(4)\cong\mathfrak{su}(2)\oplus\mathfrak{su}(2)$；Lorentz 实形式的共轭交换两个复理想。不能由复化同构推断真实群同构。按实基，Lorentz Killing 型在转动方向负、推进方向正；欧氏紧实形式则负定。
+\end{note}
 
-$4\times4$ 复矩阵由 $I,\gamma^5,\gamma^\mu,\gamma^\mu\gamma^5,\sigma^{\mu\nu}$ 张成。因此 Dirac 双线性按 Lorentz 表示分解为
+\section{二重覆盖与有限维场表示}
+
+三维旋转可通过 Pauli 矩阵的共轭作用得到。保留单位矩阵分量，就能用相同方法处理时间。
+
+\begin{theorem}[$SL(2,\mathbb C)$ 到 Lorentz 群的二重覆盖]
+令 $X(x)=x^0I+x^i\sigma_i$。对 $g\in SL(2,\mathbb C)$，定义 $\pi(g)$ 使
 \[
+ X(\pi(g)x)=gX(x)g^\dagger.
+\]
+则 $\pi:SL(2,\mathbb C)\to SO^+(1,3)$ 是满同态，核为 $\{I,-I\}$。
+\end{theorem}
+\begin{proof}
+全体厄米 $2\times2$ 矩阵恰由 $I,\sigma_1,\sigma_2,\sigma_3$ 作实基，故 $\pi(g)$ 存在唯一且实线性。又有
+\[
+ \det X(x)=(x^0)^2-|\mathbf x|^2,
+ \qquad \det(gXg^\dagger)=\det X.
+\]
+未来类时向量对应正定 $X$，共轭保持正定。$SL(2,\mathbb C)$ 由极分解 $g=hu$ 连通：$u\in SU(2)$，$h$ 正定、行列式一，沿 $h^t$ 与 $SU(2)$ 中的路径缩到 $I$。因此像也保持定向与时间取向。连续共轭给同态性质。
+
+若 $\pi(g)=I$，令 $X=I$ 得 $gg^\dagger=I$；再令 $X=\sigma_i$ 得 $g$ 与全部 Pauli 矩阵对易，所以 $g=\lambda I$，$\lambda^2=1$。旋转的原像前章已经构造。对推进取
+\[
+ g=\exp(\zeta\,\mathbf n\cdot\boldsymbol\sigma/2).
+\]
+先在 $\mathbf n=e_3$ 时直接计算对角共轭，再用 $SU(2)$ 旋转轴，所得正是 $B(\zeta,\mathbf n)$。转动--推进分解便证明满射。局部微分是六维线性同构，核离散，故这是二重覆盖。
+\end{proof}
+
+\begin{theorem}[有限维不可约表示与下降条件]
+覆盖群的有限维不可约复表示由 $(j_L,j_R)$ 标记，其中两个 $j$ 均为非负半整数。其维数为
+\begin{equation}
+ \dim(j_L,j_R)=(2j_L+1)(2j_R+1).
+ \label{eq:finite-dim-lorentz}
+\end{equation}
+两因子分别作用在 $V_{j_L}\otimes V_{j_R}$ 上，故
+\[
+ J_i=J_i^{(j_L)}\otimes I+I\otimes J_i^{(j_R)},\qquad
+ K_i=-\ii\bigl(J_i^{(j_L)}\otimes I-I\otimes J_i^{(j_R)}\bigr).
+\]
+表示下降到 $SO^+(1,3)$ 当且仅当 $j_L+j_R\in\mathbb Z$。限制到覆盖旋转子群 $SU(2)$ 后，
+\begin{equation}
+ (j_L,j_R)\big|_{SU(2)}=\bigoplus_{j=|j_L-j_R|}^{j_L+j_R}V_j,
+ \qquad j\text{ 的步长为 }1.
+ \label{eq:lorentz-rotation-restriction}
+\end{equation}
+\end{theorem}
+\begin{proof}
+复化的两因子可交换。限制到第一份 $\mathfrak{sl}_2$，由有限维完全可约性分成 $V_j\otimes W_j$，其中 $W_j$ 是重数空间；第二份代数保持每个这类直和项。整体不可约迫使只剩一个 $j_L$，第二份在 $W_{j_L}$ 上也须不可约，故 $W_{j_L}=V_{j_R}$。反过来，两个因子的矩阵代数分别生成各自空间的全体线性算符，合起来生成 $\operatorname{End}(V_{j_L}\otimes V_{j_R})$，所以张量积不可约。单连通覆盖群使这一代数表示积分为群表示。
+
+中心元 $-I$ 是旋转中的 $2\pi$ 路径终点，在两因子上作用为 $(-1)^{2j_L}(-1)^{2j_R}$。它作用平凡恰是所述整数条件。限制旋转时生成元为 $J=A+B^{\rm c}$，故按已经证明的 CG 定理分解，步长一，而非半。
+\end{proof}
+
+\begin{workedexample}[Weyl 推进与四矢量的旋转内容]
+在 $(\tfrac12,0)$ 中 $J_i=\sigma_i/2$、$K_i=-\ii\sigma_i/2$，故
+\[
+ D_L(R_3(\theta))=\operatorname{diag}(e^{-\ii\theta/2},e^{\ii\theta/2}),\qquad
+ D_L(B_3(\zeta))=\operatorname{diag}(e^{-\zeta/2},e^{\zeta/2}).
+\]
+后者行列式一，却有 $D_L^\dagger D_L=\operatorname{diag}(e^{-\zeta},e^\zeta)\ne I$。右手表示推进取逆；旋转相同。
+
+四矢量 $(\tfrac12,\tfrac12)$ 限制旋转为 $0\oplus1$，即时间分量与三个空间分量。$(1,1)$ 限制为 $0\oplus1\oplus2$，维数 $9=1+3+5$。若用四维无迹对称张量实现，三块是 $h_{00}$ 与空间迹的组合、$h_{0i}$、空间无迹对称 $h_{ij}$；中间三维块不是一个四维反对称张量。场分量的这些标签还没有施加波动方程或规范约束，因而不能直接当作粒子的物理极化数。
+\end{workedexample}
+
+\begin{proposition}[共轭、对偶、张量积与宇称]
+复共轭表示与复线性对偶表示分别为
+\begin{equation}
+ \overline{(j_L,j_R)}\cong(j_R,j_L),\qquad (j_L,j_R)^\vee\cong(j_L,j_R).
+ \label{eq:lorentz-conjugate}
+\end{equation}
+二者不能混称。张量积为
+\begin{equation}
+ (j_L,j_R)\otimes(k_L,k_R)
+ =\bigoplus_{a=|j_L-k_L|}^{j_L+k_L}\ \bigoplus_{b=|j_R-k_R|}^{j_R+k_R}(a,b),
+ \label{eq:lorentz-tensor-product}
+\end{equation}
+两求和均步长一。宇称交换两个标签；$j_L\ne j_R$ 时须加入配对表示，才能在同一个场空间中实现宇称。
+\end{proposition}
+\begin{proof}
+自旋 $j$ 中 $C_j|j,m\rangle=(-1)^{j-m}|j,-m\rangle$ 满足 $C_j\overline{J_i^{(j)}}C_j^{-1}=-J_i^{(j)}$。共轭群矩阵的物理生成元是 $-\overline J,-\overline K$。用 $C_{j_L}\otimes C_{j_R}$ 变基后，前者恢复为 $J$，后者变为 $-K$；它交换 $A,B^{\rm c}$，所以标签互换。每个 $\mathfrak{sl}_2$ 的有限维模块由不变双线性配对同构于其线性对偶，故两因子的对偶保持标签。张量积对两因子各用 CG 即得。
+
+几何宇称作用 $J\mapsto J$、$K\mapsto-K$，所以也交换因子。若 $j_L\ne j_R$，两个表示具有不同的最高权，虽维数相同仍不等价。$j_L=j_R=j$ 时，交换两个张量因子给一个可行的宇称算符；它一般不是恒等算符。实结构可取 $\mathcal C=\mathrm{Swap}(C_j\otimes C_j)\mathrm{conj}$，且 $\mathcal C^2=(-1)^{4j}=1$，所以这时确为实型；其实维数是 $(2j+1)^2$。
+\end{proof}
+
+\begin{note}[几何时间反演与量子时间反演]
+几何矩阵 $T$ 和 $P$ 的共轭在实 Lorentz 代数上都保持转动、反转推进，因为 $PT=-I$ 是中心元。量子时间反演 $\mathsf T$ 则反幺正，另有 $\mathsf T\ii\mathsf T^{-1}=-\ii$；物理生成元满足
+\begin{equation}
+ \mathsf P J_i\mathsf P^{-1}=J_i,\quad \mathsf P K_i\mathsf P^{-1}=-K_i,
+ \label{eq:parity-action}
+\end{equation}
+\begin{equation}
+ \mathsf T J_i\mathsf T^{-1}=-J_i,\quad \mathsf T K_i\mathsf T^{-1}=K_i.
+ \label{eq:time-reversal-action}
+\end{equation}
+量子时间反演保持正能量、反转空间动量。不能直接把几何 $t\mapsto-t$ 的负能量变换当成量子算符。Kramers 简并还要求 Hamilton 算符与 $\mathsf T$ 对易且 $\mathsf T^2=-I$；CPT 定理则需要局域量子场论的额外假设，不从四个连通分支的乘法表单独推出。
+\end{note}
+
+\section{Clifford 代数、手征与协变波动方程}
+
+\begin{definition}[Clifford 代数与 Dirac 矩阵]
+对带非退化对称型 $q$ 的向量空间 $V$，Clifford 代数是张量代数 $T(V)$ 关于关系 $v\otimes v=q(v,v)1$ 的商。等价关系为 $uv+vu=2q(u,v)1$。四维复化记为 $\mathrm{Cl}_{1,3}(\mathbb C)$。Weyl 表象取
+\[
+ \sigma^\mu=(I,\sigma_i),\quad \bar\sigma^\mu=(I,-\sigma_i),\qquad
+ \gamma^\mu=\begin{pmatrix}0&\sigma^\mu\\\bar\sigma^\mu&0\end{pmatrix},
+ \qquad \{\gamma^\mu,\gamma^\nu\}=2\eta^{\mu\nu}I.
+\]
+\end{definition}
+
+\begin{proposition}[维数、复矩阵代数与手征分解]
+$n$ 维 Clifford 代数的向量空间维数为 $2^n$。复数域上，
+\[
+ \mathrm{Cl}_{2m}(\mathbb C)\cong M_{2^m}(\mathbb C),\qquad
+ \mathrm{Cl}_{2m+1}(\mathbb C)\cong M_{2^m}(\mathbb C)\oplus M_{2^m}(\mathbb C).
+\]
+因而四维复 Clifford 代数有四维不可约模块；其偶子代数为 $M_2(\mathbb C)\oplus M_2(\mathbb C)$，承载两个 Weyl 模块。上述复分类不能去掉复数标记后当作实签名分类。
+\end{proposition}
+\begin{proof}
+反交换关系把任意单词化为严格递增指标的乘积，故至多有 $2^n$ 个基元。为证明独立，在 $\Lambda V$ 上取 $c(v)=v\wedge+\iota_v$，其中缩并按 $q$ 定义；它满足同一 Clifford 关系。递增单词作用于 $1$ 后，最高外次数项是对应的外积。按次数下降比较，所有系数必须为零，所以维数恰为 $2^n$。
+
+复数域中可将生成元平方全化为 $1$。$\mathrm{Cl}_0=\mathbb C$、$\mathrm{Cl}_1=\mathbb C\oplus\mathbb C$，后者由 $e^2=1$ 的两个中心投影 $(1\pm e)/2$ 得到。添加两个生成元时，将原 $e_i$ 送到 $e_i\otimes\sigma_3$，新生成元送到 $1\otimes\sigma_1,1\otimes\sigma_2$。它们满足关系，且生成整个 $\mathrm{Cl}_n\otimes M_2(\mathbb C)$；两边维数相同，故是同构。归纳便得分类。四维偶代数保持 $\gamma^5$ 的两个二维本征空间，在每块上生成全体矩阵，故给出最后的直和。
+\end{proof}
+
+\begin{proposition}[旋量生成元与 Lorentz 协变性]
+定义
+\[
+ S^{\mu\nu}=\frac{\ii}{4}[\gamma^\mu,\gamma^\nu],\qquad
+ S(\Lambda)=\exp\!\left(-\frac{\ii}{2}\omega_{\mu\nu}S^{\mu\nu}\right),\quad \Lambda=e^\omega.
+\]
+在与单位元相连的路径上选定覆盖的符号，则
+\begin{equation}
+ S(\Lambda)^{-1}\gamma^\mu S(\Lambda)=\Lambda^\mu{}_\nu\gamma^\nu.
+ \label{eq:gamma-lorentz}
+\end{equation}
+逆方向是 $S\gamma^\mu S^{-1}=(\Lambda^{-1})^\mu{}_\nu\gamma^\nu$。旋量场 $\Psi'(x')=S(\Lambda)\Psi(x)$、$x'=\Lambda x$ 的 Dirac 方程因此协变。
+\end{proposition}
+\begin{proof}
+两次用反交换关系得到
+\[
+ [\gamma^\alpha\gamma^\beta,\gamma^\mu]
+ =2(\eta^{\beta\mu}\gamma^\alpha-\eta^{\alpha\mu}\gamma^\beta),\qquad
+ [S^{\alpha\beta},\gamma^\mu]
+ =\ii(\eta^{\beta\mu}\gamma^\alpha-\eta^{\alpha\mu}\gamma^\beta).
+\]
+令 $\Omega=-\ii\omega_{\alpha\beta}S^{\alpha\beta}/2$。反对称缩并后
+$[\Omega,\gamma^\mu]=-\omega^\mu{}_\nu\gamma^\nu$，故 $e^{-t\Omega}\gamma^\mu e^{t\Omega}=(e^{t\omega})^\mu{}_\nu\gamma^\nu$，证明了公式。
+
+变换导数时 $\partial'_\mu=(\Lambda^{-1})^\nu{}_\mu\partial_\nu$，于是
+\[
+ (\ii\gamma^\mu\partial'_\mu-m)\Psi'
+ =S(\ii\gamma^\nu\partial_\nu-m)\Psi.
+\]
+这里用 $\gamma^\mu S=S\Lambda^\mu{}_\rho\gamma^\rho$ 抵消导数中的逆矩阵。相似变换换方向时也须换 $\Lambda$ 为逆，不能在两式中保留同一个矩阵。
+\end{proof}
+
+\begin{workedexample}[手征块及质量壳]
+逐块相乘给出
+\[
+ \gamma^5=\ii\gamma^0\gamma^1\gamma^2\gamma^3
+ =\operatorname{diag}(-I_2,I_2),\quad
+ J_i=\frac12\operatorname{diag}(\sigma_i,\sigma_i),\quad
+ K_i=S^{0i}=\frac{\ii}{2}\operatorname{diag}(-\sigma_i,\sigma_i).
+\]
+所以 $P_{L,R}=(I\mp\gamma^5)/2$ 分别选出 $(\tfrac12,0)$ 与 $(0,\tfrac12)$。设 $\Psi=(\psi_L,\psi_R)^{\mathsf T}$，平面波方程变为
+\begin{equation}
+ \sigma^\mu p_\mu\psi_R=m\psi_L,\qquad
+ \bar\sigma^\mu p_\mu\psi_L=m\psi_R.
+ \label{eq:weyl-dirac-blocks}
+\end{equation}
+零质量时两块独立，有质量时联结。平方用对称的 $p_\mu p_\nu$ 消去反交换部分，得到
+\begin{equation}
+ (\gamma^\mu p_\mu+m)(\gamma^\nu p_\nu-m)=(p^2-m^2)I_4.
+ \label{eq:dirac-square-mass-shell}
+\end{equation}
+Clifford 关系给出一阶线性化所需的代数；仅凭 Lorentz 协变性并不能断言所有相对论波动方程都必须是 Dirac 方程。
+\end{workedexample}
+
+\begin{definition}[Dirac 伴随与 Majorana 条件]
+定义 $\bar\Psi=\Psi^\dagger\gamma^0$，以及 $C=\ii\gamma^2\gamma^0$、$\Psi^c=C\bar\Psi^{\mathsf T}$。显式矩阵满足
+\[
+ S^\dagger\gamma^0S=\gamma^0,\qquad
+ C(\gamma^\mu)^{\mathsf T}C^{-1}=-\gamma^\mu.
+\]
+故 $\bar\Psi' =\bar\Psi S^{-1}$，$\Psi^c$ 按同一个 Dirac 表示变换。Majorana 条件是 $\Psi=\Psi^c$，它把四个复分量限制为四个实自由度；带非零不可自共轭内部荷的场不能同时施加这个实条件。
+\end{definition}
+
+\section{双线性、张量分解与 Fierz 完备性}
+
+\begin{proposition}[Dirac 双线性的表示类型]
+令 $\sigma^{\mu\nu}=\ii[\gamma^\mu,\gamma^\nu]/2=2S^{\mu\nu}$。$I,\gamma^5,\gamma^\mu,\gamma^\mu\gamma^5,\sigma^{\mu\nu}$ 共 $1+1+4+4+6=16$ 个矩阵构成 $M_4(\mathbb C)$ 的基，其双线性类型为
+\begin{equation}
 \begin{array}{c|c}
-\text{双线性}&\text{Lorentz 类型}\\ \hline
-\bar\Psi\Psi&(0,0)\text{ 标量}\\
-\bar\Psi\gamma^5\Psi&(0,0)\text{ 赝标量}\\
-\bar\Psi\gamma^\mu\Psi&(\tfrac12,\tfrac12)\text{ 矢量}\\
-\bar\Psi\gamma^\mu\gamma^5\Psi&(\tfrac12,\tfrac12)\text{ 赝矢量}\\
-\bar\Psi\sigma^{\mu\nu}\Psi&(1,0)\oplus(0,1)
+ \bar\Psi\Psi,\ \bar\Psi\gamma^5\Psi&2(0,0)\\
+ \bar\Psi\gamma^\mu\Psi,\ \bar\Psi\gamma^\mu\gamma^5\Psi&2(\tfrac12,\tfrac12)\\
+ \bar\Psi\sigma^{\mu\nu}\Psi&(1,0)\oplus(0,1).
 \end{array}
+\label{eq:bilinear-classification}
+\end{equation}
+标量/赝标量、矢量/轴矢量的区别在加入宇称后才显现。
+\end{proposition}
+\begin{proof}
+$\bar\Psi'=\bar\Psi S^{-1}$ 与 \eqnrefs{eq:gamma-lorentz} 给出矢量变换；$\gamma^5$ 与全部偶生成元对易，给标量及轴矢量。交换子 $\sigma^{\mu\nu}$ 则带两个反对称 Lorentz 指标。独立性也可由 Clifford 的递增单词基看出：上述五组依次是次数 $0,4,1,3,2$，共有十六项。表示论上同样有
+\[
+ \bigl[(\tfrac12,0)\oplus(0,\tfrac12)\bigr]^\vee
+ \otimes\bigl[(\tfrac12,0)\oplus(0,\tfrac12)\bigr]
+ =2(0,0)\oplus2(\tfrac12,\tfrac12)\oplus(1,0)\oplus(0,1).
 \]
-表中 $1+1+4+4+6=16$，与矩阵空间维数一致。这一完备性是 Fierz 重排的代数来源。
+宇称矩阵 $\gamma^0$ 使 $\gamma^5$ 变号，便区分带“赝”的两类。
+\end{proof}
+
+\begin{workedexample}[两个四矢量的乘积]
+给定 $T_{\mu\nu}=p_\mu q_\nu$，分解为
+\begin{align*}
+ T_{\mu\nu}&=\frac14\eta_{\mu\nu}(p\cdot q)
+ +\frac12(p_\mu q_\nu-p_\nu q_\mu)\\
+ &\quad+\frac12(p_\mu q_\nu+p_\nu q_\mu)-\frac14\eta_{\mu\nu}(p\cdot q).
+\end{align*}
+三项分别有 $1,6,9$ 个独立分量。中间项经 Hodge 星分成两个三维复子空间：Lorentz 签名下二形式满足 $*^2=-1$，故 $F_\pm=(F\mp\ii *F)/2$ 满足 $*F_\pm=\pm\ii F_\pm$。这给出 $(1,0)\oplus(0,1)$；最后一项是 $(1,1)$。实电磁场的两块互为共轭，不能把其中一块当作独立的实三维场。
+\end{workedexample}
+
+\begin{proposition}[Fierz 重排的通用完备性式]
+取上述任一十六元基 $\Gamma_A$，按迹配对定义对偶基 $\Gamma^A$：$\Tr(\Gamma_A\Gamma^B)=4\delta_A{}^B$。则任意矩阵 $M$ 和四个指标满足
+\[
+ M=\frac14\sum_A\Gamma_A\Tr(\Gamma^A M),\qquad
+ \delta_{ij}\delta_{kl}=\frac14\sum_A(\Gamma_A)_{il}(\Gamma^A)_{kj}.
+\]
+这是把两对旋量指标重新配对的精确恒等式。
+\end{proposition}
+\begin{proof}
+迹配对在全体矩阵上非退化：若 $\Tr(MN)=0$ 对全部 $N$ 成立，取 $N=E_{ji}$ 即得 $M_{ij}=0$。因此对偶基存在，矩阵展开公式由逐个取迹得到。对 $M=E_{jk}$ 代入展开式并读出 $(i,l)$ 元，就得到指标恒等式。收缩任意旋量后即可重排双线性；若旋量分量是 Grassmann 变量，重新排列它们时另有反交换负号，不能直接沿用交换数的收缩次序。
+\end{proof}
+
+场的十六种双线性与单粒子的极化数回答不同问题。场可以用有限维非幺正矩阵变换，而概率振幅必须在正定 Hilbert 空间中幺正变换。把平移加入后，动量壳提供这后一种无限维空间，小群则给出其中的有限内部自旋。

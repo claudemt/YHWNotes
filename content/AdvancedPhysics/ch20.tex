@@ -2332,26 +2332,102 @@ Fock 截断 & 顶层布居不可忽略 & 增大 $n_{\max}$ 并做收敛检查\\
 \end{tabularx}
 \end{center}
 
-\begin{proof}[解]
-对初始态 \(|\psi_0\rangle\) 在投影 \(P=|\psi_0\rangle\langle\psi_0|\) 上，\(N\) 次等间隔投影测量（间隔 \(\tau=T/N\)）后的存活概率
-\begin{equation*}
-  P_{\rm surv}(T,N)=\left|\langle\psi_0|(P\ee^{-\ii H\tau/\hbar}P)^N|\psi_0\rangle\right|^2=\left|\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle\right|^{2N}.
-\end{equation*}
-短时展开 \(\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle=1-\frac{\ii\tau}{\hbar}\langle H\rangle-\frac{\tau^2}{2\hbar^2}\langle H^2\rangle+\cdots\)，故
-\begin{equation*}
-  |\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle|^2=1-\frac{\tau^2}{\hbar^2}\Delta H^2+O(\tau^3),
-\end{equation*}
-其中 \(\Delta H^2=\langle H^2\rangle-\langle H\rangle^2\)。因此
-\begin{equation*}
-  P_{\rm surv}(T,N)=\left(1-\frac{T^2\Delta H^2}{N^2\hbar^2}+\cdots\right)^N\to1\quad(N\to\infty),
-\end{equation*}
-即无穷频繁测量完全冻结演化。
+\subsection{频繁投影测量：量子 Zeno 效应与反 Zeno 效应}
+\label{sec:phys-oqs-zeno}
 
-在 \(P\) 支撑上 \(P\ee^{-\ii H\tau/\hbar}P=\ee^{-\ii H_Z\tau/\hbar}\)，其中
-\begin{equation*}
-  H_Z=PHP+\frac{1}{2}\sum_{\alpha}\frac{PHQ_\alpha Q_\alpha HP}{\Delta E_\alpha}+O(\tau),
-\end{equation*}
-\(Q_\alpha=|\phi_\alpha\rangle\langle\phi_\alpha|\) 是补空间投影，\(\Delta E_\alpha\) 为能级差。有限 \(\tau\) 下衰变率 \(\Gamma(\tau)=[1-|\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle|^2]/\tau\) 在 \(\tau\to0\) 时趋于零（Zeno），但在能谱密度宽度 \(\sigma_E\) 对应的 \(\tau^*\sim\hbar/\sigma_E\) 处可能超过自然衰变率（反 Zeno）。
+连续测量可以看成开放系统动力学的一种极限：每次理想投影测量把条件态重置到测量结果对应的子空间，测量之间的自由演化是酉的。直觉上“看得越勤，系统越来不及演化”，本节把这句话变成带误差控制的定理，并给出测量反而加速衰变（反 Zeno）的定量条件。
+
+设定与记号。封闭系统哈密顿量为 \(H\)，初态为归一化纯态 \(|\psi_0\rangle\)，记 \(P=|\psi_0\rangle\langle\psi_0|\)。在总时长 \(T\) 内做 \(N\) 次等间隔理想投影测量，测量间隔 \(\tau=T/N\)，测量频率 \(\nu=1/\tau=N/T\)。每次测量只询问“系统是否仍处于 \(|\psi_0\rangle\)”。定义存活概率 \(P_{\rm surv}(T,N)\) 为全部 \(N\) 次都回答“是”的概率。
+
+\begin{theorem}[量子 Zeno 效应]
+设初态的能量不确定度有限，
+\[
+\Delta H^2=\langle\psi_0|H^2|\psi_0\rangle-\langle\psi_0|H|\psi_0\rangle^2<\infty .
+\]
+则
+\begin{equation}
+P_{\rm surv}(T,N)
+=\left|\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle\right|^{2N}
+=\exp\!\left[-\frac{T^2\Delta H^2}{N\hbar^2}+O(N^{-2})\right],
+\label{eq:phys-oqs-zeno-survival}
+\end{equation}
+从而在 \(T\) 固定、\(N\to\infty\)（即测量频率 \(\nu\to\infty\)）时 \(P_{\rm surv}\to1\)：无穷频繁的投影测量完全冻结演化。定量地，\(\nu\gg T\Delta H^2/\hbar^2\) 时存活概率接近一。
+\end{theorem}
+
+
+\par
+\begin{workedexample}
+对二能级系统 \(H=\frac{\hbar\Omega}{2}\sigma_x\)、初态 \(|0\rangle\)，精确计算 \(P_{\rm surv}(T,N)\) 并验证\eqnrefs{eq:phys-oqs-zeno-survival}。
+
+\textbf{解.} \(|a(\tau)|^2=\cos^2(\Omega\tau/2)\)，故 \(P_{\rm surv}=\cos^{2N}(\Omega T/2N)\)。又 \(\Delta H=\hbar\Omega/2\)，\(\cos^2x=1-x^2+O(x^4)\)，所以 \(\ln P_{\rm surv}=2N\ln\cos(\Omega T/2N)=-\Omega^2T^2/(4N)+O(N^{-3})=-T^2\Delta H^2/(N\hbar^2)+O(N^{-2})\)，与定理一致；\(N\to\infty\) 时 \(P_{\rm surv}\to1\)。
+\end{workedexample}
+\par
+\begin{proof}
+第一步，单间隔存活振幅。每次测量回答“是”后，条件态重置为 \(|\psi_0\rangle\)，各间隔相互独立，故
+\[
+P_{\rm surv}(T,N)
+=\left|\langle\psi_0|\left(P\ee^{-\ii H\tau/\hbar}P\right)^N|\psi_0\rangle\right|^2
+=\left|\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle\right|^{2N}.
+\]
+
+第二步，短时展开。记 \(\langle H^k\rangle=\langle\psi_0|H^k|\psi_0\rangle\)。\(\langle H^2\rangle<\infty\) 保证指数在 \(|\psi_0\rangle\) 上可展开到二阶：
+\[
+a(\tau)\equiv\langle\psi_0|\ee^{-\ii H\tau/\hbar}|\psi_0\rangle
+=1-\frac{\ii\tau}{\hbar}\langle H\rangle-\frac{\tau^2}{2\hbar^2}\langle H^2\rangle+O(\tau^3).
+\]
+取模方，一阶项为纯虚数而相消：
+\[
+|a(\tau)|^2
+=1-\frac{\tau^2}{\hbar^2}\left(\langle H^2\rangle-\langle H\rangle^2\right)+O(\tau^3)
+=1-\frac{\tau^2\Delta H^2}{\hbar^2}+O(\tau^3).
+\]
+单次测量的存活概率偏离一是 \(\tau^2\) 阶而非 \(\tau\) 阶，这是全部 Zeno 物理的源头：酉演化的短时概率流失是二次的，而测量把时钟反复归零。定义 Zeno 时间 \(\tau_Z=\hbar/\Delta H\)，则 \(|a(\tau)|^2=1-(\tau/\tau_Z)^2+O(\tau^3)\)。
+
+第三步，对 \(N\) 个小间隙求积。取对数把乘积化为求和，
+\[
+\ln P_{\rm surv}(T,N)
+=N\ln\!\left(1-\frac{T^2\Delta H^2}{N^2\hbar^2}+O(N^{-3})\right)
+=-\frac{T^2\Delta H^2}{N\hbar^2}+O(N^{-2}),
+\]
+其中用到 \(\ln(1+x)=x+O(x^2)\)。指数化即\eqnrefs{eq:phys-oqs-zeno-survival}；\(N\to\infty\) 时指数趋于零，\(P_{\rm surv}\to1\)。
+\end{proof}
+
+若把 \(P\) 推广到多维子空间，同一极限给出禁闭在子空间内的酉演化。由
+\[
+\left(P\ee^{-\ii H\tau/\hbar}P\right)^N
+=\left(P-\frac{\ii\tau}{\hbar}PHP+O(\tau^2)\right)^N
+\longrightarrow P\,\ee^{-\ii H_ZT/\hbar},
+\qquad H_Z=PHP,
+\]
+（每步误差 \(O(\tau^2)\)，\(N\) 步累积 \(O(T\tau)\to0\)），极限动力学由 Zeno 哈密顿量 \(H_Z=PHP\) 生成：频繁测量不只是冻结，还可以把动力学禁闭在选定子空间中并按 \(PHP\) 重新设计它。
+
+有限频率与反 Zeno 效应。测量不无限频繁时，定义单次间隔的有效衰变率
+\begin{equation}
+\Gamma(\tau)=\frac{1-|a(\tau)|^2}{\tau},
+\qquad
+P_{\rm surv}(T,N)=\ee^{-\Gamma(\tau)T}.
+\label{eq:phys-oqs-zeno-effective-rate}
+\end{equation}
+由短时展开 \(\Gamma(\tau)=\tau\Delta H^2/\hbar^2+O(\tau^2)\to0\)（\(\tau\to0\)），这是 Zeno 端。要判断有限频率下测量加速还是减速衰变，需要初态所耦合连续谱的谱结构。设 \(H=H_0+V\)，\(|\psi_0\rangle\) 为 \(H_0\) 的本征态（能量 \(E_0\)），连续态 \(|E\rangle\) 的态密度为 \(\rho(E)\)，耦合矩阵元 \(g(E)=\langle E|V|\psi_0\rangle\)。一阶含时微扰给出到连续态 \(E\) 的振幅 \(g(E)\bigl(1-\ee^{\ii(E-E_0)\tau/\hbar}\bigr)/(E-E_0)\)，故单间隔概率流失为
+\[
+1-|a(\tau)|^2
+\simeq\int\dd E\,\rho(E)|g(E)|^2\,
+\frac{4\sin^2\!\bigl((E-E_0)\tau/(2\hbar)\bigr)}{(E-E_0)^2},
+\]
+从而
+\begin{equation}
+\Gamma(\tau)
+=\int\dd E\,\rho(E)|g(E)|^2\,
+\frac{4\sin^2\!\bigl((E-E_0)\tau/(2\hbar)\bigr)}{(E-E_0)^2\,\tau}.
+\label{eq:phys-oqs-zeno-filter}
+\end{equation}
+滤波函数 \(K_\tau(x)=4\sin^2(x\tau/2\hbar)/(x^2\tau)\) 以 \(x=0\) 为中心、宽度 \(\sim\hbar/\tau\)，并归一化为 \(\int K_\tau(x)\dd x=2\pi/\hbar\)（由 Dirichlet 积分 \(\int\sin^2(ax)x^{-2}\dd x=\pi a\)）。两个极限：\(\tau\to0\) 时 \(K_\tau(x)\to\tau/\hbar^2\)，得 \(\Gamma(\tau)\to\tau\Delta H^2/\hbar^2\)（Zeno 区）；\(\tau\to\infty\) 时 \(K_\tau(x)\to\frac{2\pi}{\hbar}\delta(x)\)，得
+\[
+\Gamma\longrightarrow\frac{2\pi}{\hbar}\rho(E_0)|g(E_0)|^2\equiv\Gamma_{\rm GR},
+\]
+即 Fermi 黄金规则的自然衰变率，此时测量不再改变动力学。若 \(\rho(E)|g(E)|^2\) 在 \(E_0\) 处随能量上升（例如 \(E_0\) 靠近带边），把滤波函数加宽（减小 \(\tau\)）会采样到更大的谱权重，使 \(\Gamma(\tau)>\Gamma_{\rm GR}\)：测量加速衰变，即反 Zeno 效应。转变间隔由谱权重显著变化的能量尺度 \(\sigma_E\) 决定：\(\tau^*\sim\hbar/\sigma_E\)，\(\tau\ll\tau^*\) 进入 Zeno 区，\(\tau\sim\tau^*\) 附近可出现反 Zeno 窗口。
+
+数值量级。普通光学自发辐射中 \(\Delta H\) 由原子跃迁所耦合的连续谱带宽决定，\(\tau_Z\) 典型为 \(10^{-16}\,\mathrm{s}\) 或更短，远快于任何可实现的测量序列，故自由空间自发辐射观测不到 Zeno 效应；可在受驱系统中观测，例如囚禁离子中把测量频率做到与驱动 Rabi 频率 \(\Omega/2\pi\sim1\,\mathrm{MHz}\) 可比，此时 \(\tau_Z\sim\hbar/(\hbar\Omega)\sim10^{-6}\,\mathrm{s}\)，Zeno 抑制直接可见。
 
 保迹 CP 映射的生成元由 GKS 定理给出：
 \begin{equation}
@@ -2359,4 +2435,6 @@ Fock 截断 & 顶层布居不可忽略 & 增大 $n_{\max}$ 并做收敛检查\\
   \label{eq:phys-oqs-gkls}
 \end{equation}
 其中 \(H=H^\dagger\) 为有效哈密顿量，\(C=(c_{\alpha\beta})\ge0\) 为 Kossakowski 矩阵，其半正定性即 CP 性的代数判据。作 Cholesky 分解 \(C=WW^\dagger\)、定义 \(L_k=\sum_\alpha W_{k\alpha}F_\alpha\)，即得标准 Lindblad 形式。方程自动保迹 \(\operatorname{tr}\dot\rho=0\)，并满足相对熵单调性 \(D(\Phi_t\rho\|\Phi_t\sigma)\le D(\rho\|\sigma)\)。稳态由 \(\{H,L_k\}\) 的代数决定：\(\{L_k\}\) 遍历整个算符代数时稳态唯一。
-\end{proof}
+
+
+

@@ -344,21 +344,127 @@ E_\alpha E_{-\alpha}^{k}v
 若 $\mu=\lambda$ 是全表示的最高权，则 $E_{\alpha_i}V_\lambda=0$。因此在每条简单根的 $\mathfrak{sl}(2)$ 限制中，$V_\lambda$ 只落在升算符消去的最高端，$m=a_i\ge0$。基本权的定义随即给出 $\lambda=\sum_i a_i\omega_i$。
 \end{proof}
 
-紧群的有限维幺正不可约表示还满足 Peter--Weyl 定理：矩阵元在 $L^2(G)$ 中构成正交完备系，
-\[
-L^2(G)\cong\widehat{\bigoplus}_{\pi\in\widehat G}V_\pi\otimes V_\pi^* .
-\]
-这既是有限群正则表示分解的连续版本，也是紧群 Fourier 分析的基础。非紧群一般需要直积分与 Plancherel 测度，不能直接照搬离散直和。
+\subsection{最高权模块为什么存在且唯一}
 
-同一权可能由几个线性无关的态实现；这个维数记作 $m(\mu)=\dim V_\mu$，称为权重数，若 $\mu$ 不是权则约定 $m(\mu)=0$。令 $\rho=\tfrac12\sum_{\alpha>0}\alpha$。计算一般权重数可用 Freudenthal 递推：
+必要的整数条件还没有回答“给定整数是否真有表示”。为完成分类，先把升降算符的乘法次序整理清楚，再构造一个带最高向量的模块。
+
+\begin{lemma}[有序单项式与最高权生成]
+设 $\mathfrak g=\mathfrak n_-\oplus\mathfrak h\oplus\mathfrak n_+$ 为选定正根的三角分解。包络代数
+\[
+ U(\mathfrak g)=T(\mathfrak g)/(X\otimes Y-Y\otimes X-[X,Y])
+\]
+中，按负根、Cartan、正根次序排列的基元单项式组成向量空间基。这是 Poincar\'e--Birkhoff--Witt 定理。若 $v$ 满足 $\mathfrak n_+v=0$、$Hv=\lambda(H)v$，则 $U(\mathfrak g)v=U(\mathfrak n_-)v$，所有权都形如 $\lambda-\sum_i b_i\alpha_i$、$b_i\ge0$。
+\end{lemma}
+\begin{proof}
+将逆序相邻两元用 $YX=XY+[Y,X]$ 调换；逆序数减少，括号项的单词长度也减少，故有限步后得到有序单项式，证明张成性。独立性由同一重排的相容性得到：不相邻的两次交换互不影响；三个相邻逆序元的两条重排路径之差为
+\[
+ [X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0.
+\]
+按单词长度及逆序数归纳，所有重排歧义遂相消，正常形唯一。于是有序单项式无额外线性关系。作用在 $v$ 上时，右侧正根元消去 $v$，Cartan 元给标量，故只剩负根单词；每次作用降低一个正根。
+\end{proof}
+
+\begin{definition}[Verma 模块]
+给定 $\lambda\in\mathfrak h^*$，令
+\[
+ M_\lambda=U(\mathfrak g)\Big/
+ \left(U(\mathfrak g)\mathfrak n_+
+ +\sum_{H\in\mathfrak h}U(\mathfrak g)(H-\lambda(H)1)\right).
+\]
+单位元的像记为 $v_\lambda$。它是最高向量，最高权空间为一维；每个较低权空间有限维。任何由一个最高权为 $\lambda$ 的向量生成的模块，都由 $M_\lambda$ 满射得到。
+\end{definition}
+
+\begin{theorem}[最高权分类的构造与唯一性]
+有限维复半单 Lie 代数 $\mathfrak g$ 的有限维不可约模块，与支配整权 $\lambda=\sum_i a_i\omega_i$、$a_i\in\mathbb Z_{\ge0}$ 一一对应。对应模块记为 $L_\lambda$，其最高权空间一维。积分到全局群时，单连通群容纳全部这些模块；对其他全局群，还须要求覆盖核作用平凡。
+\end{theorem}
+\begin{proof}
+有限维不可约模块的权有限，选一个不能再升高的权，得到最高向量。不可约性使它生成全模块；由有序单项式可知其他权均低于它，最高权空间一维，支配整性已由前面的 $\mathfrak{sl}_2$ 链证明。
+
+反过来，取支配整权及各单根的三元组 $e_i,f_i,h_i$，令
+\[
+ Q_\lambda=M_\lambda\Big/\sum_iU(\mathfrak g)f_i^{a_i+1}v_\lambda.
+\]
+$f_i^{a_i+1}v_\lambda$ 被全部简单升元消去：当 $j\ne i$ 时 $[e_j,f_i]=0$；当 $j=i$ 时
+\[
+ e_i f_i^{a_i+1}v_\lambda
+ =(a_i+1)(a_i-a_i)f_i^{a_i}v_\lambda=0.
+\]
+所以这些生成的子模块只有严格低于 $\lambda$ 的权，不含 $v_\lambda$，$Q_\lambda\ne0$。
+
+每个 $e_i,f_i$ 在 $Q_\lambda$ 上局部幂零。确切地，对 $u\in U(\mathfrak g)$，
+\[
+ x^Nu v=\sum_{r=0}^N\binom Nr(\operatorname{ad}x)^r(u)x^{N-r}v.
+\]
+$\operatorname{ad}e_i,\operatorname{ad}f_i$ 在代数上由有限根串局部幂零，在每个有限 PBW 单词上也如此；而 $e_iv_\lambda=0$、$f_i^{a_i+1}v_\lambda=0$。所以足够大的 $N$ 使上式为零。
+
+有限的指数 $\exp e_i\exp(-f_i)\exp e_i$ 于是可作用在每个向量上，并将权按单根反射搬运。因此权集 Weyl 不变。把任一权 $\mu$ 搬到支配权 $\mu_+$，仍有 $\mu_+=\lambda-\sum_i b_i\alpha_i$。因为 $\mu_+$ 支配，
+\[
+ (\mu_+,\lambda-\mu_+)\ge0,
+ \qquad \|\mu_+\|^2\le(\mu_+,\lambda)\le\|\mu_+\|\|\lambda\|.
+\]
+权格是离散格，所以这给出有限多个权；每个权空间有限维，$Q_\lambda$ 故为有限维。取其不可约商就得到 $L_\lambda$。
+
+最后，$M_\lambda$ 的每个真子模块均不含一维最高权空间；所有真子模块的和仍没有这个权，故是唯一最大真子模块。不可约最高权商因此唯一。全局群的最后一项条件与 $SU(2)$ 到 $SO(3)$ 的下降条件完全同理。
+\end{proof}
+
+\subsection{Casimir 在每个权空间上的迹}
+
+根移动权，却不直接给出每个权有几个态。权重数 $m(\mu)=\dim (L_\lambda)_\mu$ 可以从 Casimir 的一个标量值递推出来；先保留根向量的归一化，才能核对公式中的系数。
+
+\begin{definition}[不变型归一化的二次 Casimir]
+取非退化不变型 $\kappa$，其对偶根内积采用本节的归一化。选 $\mathfrak h$ 的对偶基 $h_a,h^a$，以及根向量 $x_\alpha,y_\alpha$ 满足
+\[
+ \kappa(x_\alpha,y_\alpha)=1,\qquad
+ [x_\alpha,y_\alpha]=t_\alpha,\qquad
+ \kappa(t_\alpha,H)=\alpha(H).
+\]
+此处归一化不同于 $[e_\alpha,f_\alpha]=h_\alpha$ 的 $\mathfrak{sl}_2$ 基；两者相差根长因子。定义
+\[
+ \Omega=\sum_a h_ah^a+\sum_{\alpha>0}(x_\alpha y_\alpha+y_\alpha x_\alpha)
+ =\sum_a h_ah^a+2t_\rho+2\sum_{\alpha>0}y_\alpha x_\alpha,
+ \qquad \rho=\frac12\sum_{\alpha>0}\alpha.
+\]
+\end{definition}
+
+\begin{proposition}[Casimir 的标量值]
+$\Omega$ 与全部生成元对易，在 $L_\lambda$ 上等于
+\[
+ c_\lambda=(\lambda,\lambda+2\rho)=\|\lambda+\rho\|^2-\|\rho\|^2.
+\]
+\end{proposition}
+\begin{proof}
+令 $u_a,u^a$ 为全代数的对偶基。不变性给
+\[
+ \sum_a[Z,u_a]\otimes u^a+u_a\otimes[Z,u^a]=0:
+\]
+它正是对偶坐标中表示矩阵与其负转置相消。对张量两因子作乘法就得 $[Z,\Omega]=0$，Schur 引理使其为标量。在最高向量上全部 $x_\alpha$ 消去，Cartan 部分给 $\sum_a\lambda(h_a)\lambda(h^a)=\|\lambda\|^2$，余下 $2t_\rho$ 给 $2(\lambda,\rho)$，于是得到标量。
+\end{proof}
+
+\begin{theorem}[Freudenthal 权重数递推]
+约定非权的 $m(\mu)=0$，则
 \begin{equation}
-\bigl[(\lambda+\rho,\lambda+\rho)
- -(\mu+\rho,\mu+\rho)\bigr]m(\mu)
-=2\sum_{\alpha>0}\sum_{k\ge1}
- (\mu+k\alpha,\alpha)m(\mu+k\alpha).
-\label{eq:freudenthal-recursion}
+ [\|\lambda+\rho\|^2-\|\mu+\rho\|^2]m(\mu)
+ =2\sum_{\alpha>0}\sum_{k\ge1}(\mu+k\alpha,\alpha)m(\mu+k\alpha).
+ \label{eq:freudenthal-recursion}
 \end{equation}
-对固定 $\mu$，只有有限项非零。这个公式的完整证明须先把二次 Casimir 按 Cartan 与根向量分解，再对权空间取迹；本讲义在此将它作为高级结构定理输入，而不把一句“移动成对项”冒充证明。下面的八重态算例只是检验它的第一步；初学者理解根、权及最高权的整性并不依赖这条递推。
+各内层和有限。最高权重数为一，其余权由更高的权递推。
+\end{theorem}
+\begin{proof}
+在 $V_\mu$ 上对 Casimir 正常序表达式取迹，得到
+\[
+ [c_\lambda-\|\mu\|^2-2(\mu,\rho)]m(\mu)
+ =2\sum_{\alpha>0}T_\alpha(\mu),\quad
+ T_\alpha(\mu):=\Tr_{V_\mu}(y_\alpha x_\alpha).
+\]
+关键是 $x_\alpha:V_\mu\to V_{\mu+\alpha}$、$y_\alpha$ 反向作用。两矩形矩阵乘积的迹相同，且 $x_\alpha y_\alpha=y_\alpha x_\alpha+t_\alpha$，故
+\begin{align*}
+ T_\alpha(\mu)
+ &=\Tr_{V_{\mu+\alpha}}(x_\alpha y_\alpha)\\
+ &=T_\alpha(\mu+\alpha)+(\mu+\alpha,\alpha)m(\mu+\alpha).
+\end{align*}
+向上迭代，有限权集使最后的 $T$ 为零，便得
+$T_\alpha(\mu)=\sum_{k\ge1}(\mu+k\alpha,\alpha)m(\mu+k\alpha)$。代回前式并用 $c_\lambda$ 的表达式就是递推式。证明同时展示了归一化、权空间变换以及非平凡的移项，未把不同权空间的迹当作同一个迹。
+\end{proof}
+
 
 \begin{example}[Freudenthal 递推在 $SU(3)$ 八重态 $(1,1)$ 上走一步]
 取最高权表示 $(1,1)$，其最高权 $\lambda=\omega_1+\omega_2=\rho$，已知 $m(\lambda)=1$。递推第一个要算的是次高权 $\mu=\lambda-\alpha_1=\rho-\alpha_1=\alpha_2$。用上面的归一化 $(\alpha_i,\alpha_i)=1$、$(\rho,\alpha_1)=\tfrac12$。
@@ -376,7 +482,12 @@ L^2(G)\cong\widehat{\bigoplus}_{\pi\in\widehat G}V_\pi\otimes V_\pi^* .
 =2\cdot\tfrac12=1.
 \]
 
-两边相等，$1\cdot m(\mu)=1$，得 $m(\alpha_2)=1$，与八重态（伴随表示）每个根空间一重的事实一致。其余权可同法递推闭合。
+两边相等，得 $m(\alpha_2)=1$。再算零权 $\mu=0$：$\|\rho\|^2=1$，故左侧系数为 $4-1=3$。三个正根各长一、各有权重数一；更高的 $k\alpha$ 均不是权，因此
+\[
+ 3m(0)=2\sum_{\alpha>0}(\alpha,\alpha)m(\alpha)=2\cdot3=6,
+ \qquad m(0)=2.
+\]
+这一步把八重态中央的两个独立 Cartan 态真正从递推中算出，总维数为 $6+2=8$，与先前矩阵构造相符。
 \end{example}
 
 
@@ -399,14 +510,61 @@ s_\alpha(\lambda)=\lambda-
 \]
 故 $s_{\alpha_1}$ 交换 $\varepsilon_1,\varepsilon_2$ 而固定 $\varepsilon_3$；同理 $s_{\alpha_2}$ 交换 $\varepsilon_2,\varepsilon_3$。两次相邻交换可生成三个字母的全部六种置换，所以这里的 Weyl 群是 $S_3$。对角矩阵 $H=\operatorname{diag}(h_1,h_2,h_3)$ 上，相应操作就是交换两个 $h_i$。例如三维定义表示的权集合 $\{\varepsilon_1,\varepsilon_2,\varepsilon_3\}$ 是一条 Weyl 轨道，正是\figref{fig:su3-roots-defining-weights}右侧三个顶点；而六维对称平方的三个纯平方权 $2\varepsilon_i$ 构成另一条轨道，三个混合权 $\varepsilon_i+\varepsilon_j$ 构成第三条轨道。因而“Weyl 群搬运权”并不表示一个不可约表示的全部权必属于同一轨道。
 
-令 $G$ 为单连通紧半单 Lie 群，$H$ 属于其 Cartan 子代数，$V_\lambda$ 为最高权是支配整权 $\lambda$ 的有限维不可约表示，$W$ 为 Weyl 群，$\rho$ 为正根之和的一半。Weyl 特征标公式为
+\begin{lemma}[Weyl 分母恒等式]
+在权格的群代数中，用 $e^\mu e^\nu=e^{\mu+\nu}$ 记形式指数，令 $A_\nu=\sum_{w\in W}\det(w)e^{w\nu}$。则
+\[
+ D:=e^\rho\prod_{\alpha>0}(1-e^{-\alpha})=A_\rho.
+\]
+\end{lemma}
+\begin{proof}
+简单反射 $s_i$ 置换除 $\alpha_i$ 外的全部正根，并有 $s_i\rho=\rho-\alpha_i$，所以
+\[
+ s_iD=e^{\rho-\alpha_i}(1-e^{\alpha_i})
+ \prod_{\alpha>0,\,\alpha\ne\alpha_i}(1-e^{-\alpha})=-D.
+\]
+因此 $D$ 交错。落在反射墙上的指数系数必须为零，其余指数可按 Weyl 轨道写成 $A_\nu$ 的线性组合，$\nu$ 为严格支配整权。$D$ 的所有指数都不高于 $\rho$，而严格支配整权满足 $\nu=\rho+\xi$、$\xi$ 支配。若 $\xi=-\sum_i c_i\alpha_i$、$c_i\ge0$，则
+\[
+ \|\xi\|^2=-\sum_i c_i(\xi,\alpha_i)\le0,
+\]
+故 $\xi=0$。只有 $A_\rho$ 可出现；$e^\rho$ 的系数为一，得到恒等式。
+\end{proof}
+
+\begin{theorem}[Weyl 特征标公式]
+令 $G$ 为单连通紧半单群，$\lambda$ 为支配整最高权。若 $e^H$ 在最大环面中为正则元，则
 \begin{equation}
-\chi_\lambda(\ee^H)=
-\frac{\sum_{w\in W}\det(w)\,
-\ee^{(w(\lambda+\rho),H)}}
-{\sum_{w\in W}\det(w)\,\ee^{(w\rho,H)}}.
-\label{eq:weyl-character}
+ \chi_\lambda(e^H)=
+ \frac{\sum_{w\in W}\det(w)e^{(w(\lambda+\rho))(H)}}
+ {\sum_{w\in W}\det(w)e^{(w\rho)(H)}}.
+ \label{eq:weyl-character}
 \end{equation}
+非正则元处按特征标连续延拓，不能把 $0/0$ 直接当作原公式的定义。
+\end{theorem}
+\begin{proof}
+形式特征标 $\chi=\sum_\mu m(\mu)e^\mu$ 是 Weyl 不变的：每条根的有限升降表示给出实现反射的可逆算符，等维地搬运权空间。故 $D\chi$ 交错，最高指数为 $\lambda+\rho$，系数为一。
+
+定义形式微分 $\partial_v e^\mu=(\mu,v)e^\mu$、$\Delta e^\mu=\|\mu\|^2e^\mu$。将 Freudenthal 式对全部权乘 $e^\mu$ 后求和，变指标 $\nu=\mu+k\alpha$，得到
+\[
+ c_\lambda\chi=\Delta\chi+2\partial_\rho\chi
+ +2\sum_{\alpha>0}\frac{e^{-\alpha}}{1-e^{-\alpha}}\partial_\alpha\chi.
+\]
+几何级数在负根锥的形式完备化中理解，最终 $D\chi$ 仍是有限多项式。另一方面，
+\[
+ D^{-1}\nabla D=\rho+\sum_{\alpha>0}\frac{e^{-\alpha}}{1-e^{-\alpha}}\alpha,
+ \qquad \Delta D=\|\rho\|^2D,
+\]
+第二式来自分母恒等式中各 $w\rho$ 同长。乘法求导因此给
+\[
+ \Delta(D\chi)=(c_\lambda+\|\rho\|^2)D\chi
+ =\|\lambda+\rho\|^2D\chi.
+\]
+把交错多项式展开为 $\sum_\nu b_\nu A_\nu$。每个严格支配 $\nu$ 都满足 $\nu\le\lambda+\rho$。若严格小于，写 $\lambda+\rho-\nu=\sum_i c_i\alpha_i$，至少一个 $c_i>0$，则
+\[
+ \|\lambda+\rho\|^2-\|\nu\|^2
+ =\sum_i c_i(\alpha_i,\lambda+\rho+\nu)>0.
+\]
+这与前述 Laplace 本征值相矛盾。只有 $A_{\lambda+\rho}$ 留下，其最高系数是一。所以 $D\chi=A_{\lambda+\rho}$，除以分母并在环面求值便得公式。
+\end{proof}
+
 
 先用前面已经算过的 $SU(3)$ 伴随表示检查这条公式。令
 $\ee^H=\operatorname{diag}(x_1,x_2,x_3)$，其中
@@ -462,18 +620,26 @@ x_1&x_2&x_3\\
 多项式，因而重合本征值处仍由同一式给出。这样，最高权、半标准盘、矩阵
 本征值和 Weyl 交错和在一个八维表示上得到同一份可逐项核对的特征标。
 
-令 $A_\nu(H)=\sum_{w\in W}\det(w)\ee^{(w\nu,H)}$。为求 $H\to0$ 的比值，固定一个避开反射超平面的 $H_0$，展开 $A_\nu(tH_0)$。把 Taylor 系数看成 $H_0$ 的多项式：因为 $A_\nu(wH)=\det(w)A_\nu(H)$，每个非零系数都在每条根的反射超平面上为零，因而能被 $\prod_{\alpha>0}(\alpha,H_0)$ 整除。设正根数为 $N$，低于 $t^N$ 的系数遂全为零。$t^N$ 的系数又作为 $\nu$ 的多项式在每条反射超平面上为零，且次数恰为 $N$，所以它必是
-\[
-C\prod_{\alpha>0}(\nu,\alpha)
-  \prod_{\alpha>0}(\alpha,H_0),
-\]
-其中常数 $C$ 与 $\nu$ 无关。在特征标公式中分别取 $\nu=\lambda+\rho$ 和 $\nu=\rho$，再令 $t\to0$；共同的 $t^N$、$C$ 与含 $H_0$ 的因子约去，便得到 Weyl 维数公式
+\begin{corollary}[Weyl 维数公式]
+支配整最高权 $\lambda$ 的不可约模块维数为
 \begin{equation}
 \dim V_\lambda=
 \prod_{\alpha>0}
 \frac{(\lambda+\rho,\alpha)}{(\rho,\alpha)}.
 \label{eq:weyl-dimension}
 \end{equation}
+\end{corollary}
+\begin{proof}
+令 $A_\nu(H)=\sum_{w\in W}\det(w)\ee^{(w\nu,H)}$。为求 $H\to0$ 的比值，固定一个避开反射超平面的 $H_0$，展开 $A_\nu(tH_0)$。把 Taylor 系数看成 $H_0$ 的多项式：因为 $A_\nu(wH)=\det(w)A_\nu(H)$，每个非零系数都在每条根的反射超平面上为零，因而能被 $\prod_{\alpha>0}(\alpha,H_0)$ 整除。设正根数为 $N$，低于 $t^N$ 的系数遂全为零。$t^N$ 的系数又作为 $\nu$ 的多项式在每条反射超平面上为零，且次数恰为 $N$，所以它必是
+\[
+C\prod_{\alpha>0}(\nu,\alpha)
+  \prod_{\alpha>0}(\alpha,H_0),
+\]
+其中常数 $C$ 与 $\nu$ 无关。在特征标公式中分别取 $\nu=\lambda+\rho$ 和 $\nu=\rho$，再令 $t\to0$；共同的 $t^N$、$C$ 与含 $H_0$ 的因子约去，便得到所述维数公式。
+
+常数 $C\ne0$ 可由 $A_\rho=e^\rho\prod_{\alpha>0}(1-e^{-\alpha})$ 验证：分母的最低项确为 $t^N\prod_{\alpha>0}\alpha(H_0)$，在正则 $H_0$ 处非零。
+
+\end{proof}
 以 $(p,q)=(1,1)$ 检验：$\lambda+\rho=2\rho$，三个正根的比值分别为 $2,2,2$，乘积 $8$，与八重态维数一致。
 它给出维数，特征标的乘积则给出张量积分解。例如
 \[
@@ -482,3 +648,35 @@ C\prod_{\alpha>0}(\nu,\alpha)
 \oplus\mathbf{10}\oplus\overline{\mathbf{10}}\oplus\mathbf{27},
 \]
 而\eqnrefs{eq:baryon-decomposition}的右边 $\mathbf{10}\oplus\mathbf8\oplus\mathbf8\oplus\mathbf1$ 正是重子十重态、两个八重态与单态。
+
+\subsection{紧群矩阵元的完备性}
+
+\begin{theorem}[Peter--Weyl 的矩阵群形式]
+对紧矩阵群 $G$，取归一化 Haar 测度。不同有限维幺正不可约表示的矩阵元满足
+\[
+ \int_G D^\lambda_{ij}(g)\overline{D^\mu_{k\ell}(g)}\,dg
+ =\frac{\delta_{\lambda\mu}\delta_{ik}\delta_{j\ell}}{\dim V_\lambda}.
+\]
+这些矩阵元在 $L^2(G)$ 中正交完备；对应地
+\[
+ L^2(G)\cong\widehat{\bigoplus}_{\lambda\in\widehat G}V_\lambda\otimes V_\lambda^*.
+\]
+\end{theorem}
+\begin{proof}
+平均任意线性映射 $A:V_\mu\to V_\lambda$，
+\[
+ \mathcal P(A)=\int_G D^\lambda(g)A D^\mu(g)^{-1}\,dg.
+\]
+Haar 不变性使它交织两表示。Schur 引理给不同表示时为零，相同表示时为 $(\Tr A/\dim V_\lambda)I$。对 $A$ 取矩阵单位并比较矩阵元，得到正交式。
+
+定义表示是忠实的，故其矩阵元区分不同群元。由矩阵元及其复共轭、常数生成的代数属于 $C(G)$，含常数、分离点且对共轭封闭；Stone--Weierstrass 定理使它一致稠密。矩阵元的乘积是张量积表示的矩阵元，复共轭来自共轭表示。紧群平均内积使这些有限维表示幺正，不变子空间的正交补仍不变，所以它们完全可约。该稠密代数因而全由不可约矩阵元的有限线性组合构成。在有限 Haar 测度上，$C(G)$ 在 $L^2$ 稠密，于是得到完备性和 Hilbert 直和。
+\end{proof}
+
+\begin{workedexample}[$SU(2)$ 的角色与张量积]
+绕第三轴的群元 $g=e^{-\ii\theta J_3}$ 在自旋 $j$ 中有角色
+\[
+ \chi_j(g)=\sum_{m=-j}^j e^{-\ii m\theta}
+ =\frac{\sin[(2j+1)\theta/2]}{\sin(\theta/2)}.
+\]
+在 $\theta=2\pi k$ 处取连续极限；不要直接除以零。$\chi_{1/2}^2=4\cos^2(\theta/2)=1+(1+2\cos\theta)=\chi_0+\chi_1$，逐项核对 $\tfrac12\otimes\tfrac12=0\oplus1$。角色的乘积是态空间张量积的迹，正交积分则从中抽出各不可约重数。
+\end{workedexample}

@@ -1,0 +1,77 @@
+
+联络已由一般几何定义。为了将它用于场方程，需要把坐标基底的变化、体积因子和真正的曲率分别算出。
+
+
+
+
+
+平直空间的径向量子化从一族同心球面开始。但球面不是量子化的本质：重要的是，能否用一族互不相交的超曲面逐次读取场的数据。对于一般空间，既不能先写 $r=|x|$，也不能默认这些超曲面具有相同的几何。本章从流形本身推出这些问题的正确表述。
+
+\subsection{联络与曲率}
+\label{sec:ghs-connection-curvature}
+
+在平直空间的直角坐标中，我们往往不区分向量的普通导数和协变导数。可是只要在同一个平面上改用极坐标，这种区分就不得不出现。几何上的联络首先解决的是一个朴素问题：\emph{不同位置的向量属于不同的切空间，怎样比较它们的变化？}
+
+考虑二维欧氏平面，先用直角坐标 $(X,Y)$ 写度规 $\dd s^2=\dd X^2+\dd Y^2$。引入 $X=r\cos\theta$、$Y=r\sin\theta$，微分为
+\[
+ \dd X=\cos\theta\,\dd r-r\sin\theta\,\dd\theta,\qquad
+ \dd Y=\sin\theta\,\dd r+r\cos\theta\,\dd\theta.
+\]
+把两式平方相加，混合项相消，得到 $\dd s^2=\dd r^2+r^2\dd\theta^2$。这时 $g_{rr}=1$、$g_{\theta\theta}=r^2$，体积元为 $r\dd r\dd\theta$。$r$ 的因子是坐标面积伸缩，不是曲率：平面仍然是平面。
+
+一般坐标中的切向基底是 $\partial_a$。向量 $V=V^a\partial_a$ 的普通分量导数 $\partial_bV^a$ 不能反映基底 $\partial_a$ 本身的变化。定义联络系数使
+\begin{equation}\label{eq:ghs-bridge-christoffel-definition}
+ \nabla_{\partial_b}\partial_c=\Gamma^a{}_{bc}\partial_a,
+ \qquad\nabla_bV^a=\partial_bV^a+\Gamma^a{}_{bc}V^c.
+\end{equation}
+如果联络不引入新的扭率，并要求平行移动保持向量夹角，那么这两个条件分别写为 $\Gamma^a{}_{bc}=\Gamma^a{}_{cb}$、$\nabla_ag_{bc}=0$。后一条件展开为
+\[
+ \partial_ag_{bc}=\Gamma^d{}_{ab}g_{dc}+\Gamma^d{}_{ac}g_{bd}.
+\]
+将指标 $(a,b,c)$ 的三个循环形式作两次加、一次减，便得到
+\begin{equation}\label{eq:ghs-bridge-Christoffel-metric}
+ \Gamma^a{}_{bc}=\frac12g^{ad}
+ (\partial_bg_{dc}+\partial_cg_{db}-\partial_dg_{bc}).
+\end{equation}
+这个公式不是从某个特殊坐标猜出来的，而是由\emph{度规相容性和零扭率}唯一决定。
+
+对平面的极坐标代入 $\partial_rg_{\theta\theta}=2r$，立即得到
+\[
+ \Gamma^r{}_{\theta\theta}=-r,\qquad
+ \Gamma^\theta{}_{r\theta}=\Gamma^\theta{}_{\theta r}=\frac1r,
+\]
+其余分量为零。由此可见，$\Gamma$ 的某个分量不为零不等于空间弯曲；它可能仅仅反映坐标基底随位置旋转。
+
+矢量场 $V^a$ 的散度可以通过积分定理决定。要求 $\int_U\operatorname{div}V\,\dd\mu_g$ 等于边界的法向通量，会得到
+\[
+ \operatorname{div}_gV=\frac1{\sqrt{g}}\partial_a(\sqrt g\,V^a),
+ \qquad g=\det(g_{ab}).
+\]
+标量函数 $f$ 的梯度满足 $(\operatorname{grad}f)^a=g^{ab}\partial_bf$。先取梯度、再取散度，得到
+\begin{equation}\label{eq:ghs-bridge-laplace-beltrami}
+ \Delta_gf=\frac1{\sqrt g}\partial_a\bigl(\sqrt g\,g^{ab}\partial_bf\bigr).
+\end{equation}
+在二维极坐标中，代入 $\sqrt g=r$、$g^{rr}=1$、$g^{\theta\theta}=r^{-2}$，可逐项算出
+\[
+ \Delta_gf=\frac1r\partial_r(r\partial_rf)
+ +\frac1r\partial_\theta\left(\frac1r\partial_\theta f\right)
+ =\partial_r^2f+\frac1r\partial_rf+\frac1{r^2}\partial_\theta^2f.
+\]
+从 \cref{eq:ghs-bridge-laplace-beltrami} 走到这里的每一个步骤只用链式法则和分部积分。后文的曲空间自由场，无论几何多么复杂，都采用同一个定义；不同之处是 $g_{ab}$ 不再能在整个区域变成欧氏度规。
+
+当向量沿一个无穷小闭合回路平行移动时，比较先沿 $a$ 再沿 $b$ 与相反顺序的结果，会得到
+\[
+ [\nabla_a,\nabla_b]V^c=R^c{}_{dab}V^d,
+\]
+其中曲率可由联络计算：
+\begin{equation}\label{eq:ghs-bridge-Riemann-coordinate}
+ R^a{}_{bcd}=\partial_c\Gamma^a{}_{db}-\partial_d\Gamma^a{}_{cb}
+ +\Gamma^a{}_{ce}\Gamma^e{}_{db}-\Gamma^a{}_{de}\Gamma^e{}_{cb}.
+\end{equation}
+在极坐标平面上，例如 $R^r{}_{\theta r\theta}$ 的导数项为
+$\partial_r(-r)=-1$，而非零二次联络项为
+$-\Gamma^r{}_{\theta\theta}\Gamma^\theta{}_{r\theta}=+1$，两者正好抵消。这个计算显示：真正的曲率要由联络的导数和乘积共同决定，而不能单看 $\Gamma$。
+
+对半径 $R_0$ 的圆球面，度规为 $\dd s^2=R_0^2(\dd\vartheta^2+\sin^2\vartheta\,\dd\phi^2)$。代入 \cref{eq:ghs-bridge-Christoffel-metric}，得到 $\Gamma^\vartheta{}_{\phi\phi}=-\sin\vartheta\cos\vartheta$、$\Gamma^\phi{}_{\vartheta\phi}=\cot\vartheta$。再代入曲率式可得 $R^\vartheta{}_{\phi\vartheta\phi}=\sin^2\vartheta$，于是 $\mathcal R=2/R_0^2$。球面曲率不会像平面的极坐标联络那样完全抵消。这两个算例足以使联络、曲率和坐标效应之间的区别变得可计算，而不需要先背诵抽象微分几何定理。
+
+设 $M$ 是连通的 $d$ 维光滑流形，$d\geq 2$，$g$ 是正定黎曼度规，$\nabla$ 为其 Levi--Civita 联络。在局部坐标 $x^\mu$ 中，体积测度是 $\dd\mu_g=\sqrt{\det g_{\mu\nu}}\,\dd^d x$。坐标的存在是局部事实；是否有整个空间通用的径向坐标是额外的全局问题。

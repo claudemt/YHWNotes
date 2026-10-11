@@ -1,0 +1,83 @@
+\subsection{球体近场的完整损失谱与参数退化}
+
+平面例题将响应分成材料因子与轨迹因子。小球的偶极极限也有同样分解，可用来检验“改变扫描距离就能同时测出几何与介电函数”的说法。关于电子损失与纳米颗粒响应的完整多极理论，参见\cite{GarciaDeAbajo2010RMP}。
+
+\begin{proposition}[非迟滞偶极球的 EELS 谱]
+设半径 $a$ 的均匀非磁性球位于原点，电子沿 $(b,0,vt)$ 运动。假定 $a/b\ll1$、$\omega a/c\ll1$、$|\sqrt\varepsilon|\omega a/c\ll1$、$v/c\ll1$，并采用弱损失线性响应。材料侧的条件控制内部场的准静态约化，不能从真空小尺寸条件直接推出。定义体积量纲极化率
+\[
+\alpha_V=4\pi a^3\frac{\varepsilon-1}{\varepsilon+2},
+\qquad\mathbf p=\varepsilon_0\alpha_V\mathbf E_e,
+\qquad s=\omega b/v.
+\]
+则单电子、单位角频率的偶极损失概率为
+\begin{equation}
+\boxed{\Gamma_{\rm sph}(\omega,b)
+=\frac{q_{\mathrm e}^2\omega^2}{4\pi^3\varepsilon_0\hbar v^4}
+\operatorname{Im}\alpha_V(\omega)
+[K_0^2(s)+K_1^2(s)].}
+\label{eq:feqo-sphere-eels-dipole}
+\end{equation}
+若保留辐射损失到对应精度，极化率还需包含辐射反作用修正；在窄共振邻域，动态去极化和辐射修正还须与小分母 $\varepsilon+2$ 比较。本式的非迟滞近似不宜直接用于高速电子或 $b$ 接近 $a$ 的高多极贡献。
+\end{proposition}
+\begin{proof}
+原点的电子库仑场为
+\[
+E_{e,x}(t)=-\frac{q_{\mathrm e}b}{4\pi\varepsilon_0(b^2+v^2t^2)^{3/2}},
+\qquad
+E_{e,z}(t)=-\frac{q_{\mathrm e}vt}{4\pi\varepsilon_0(b^2+v^2t^2)^{3/2}}.
+\]
+从
+\[
+\int_{-\infty}^{\infty}\frac{\ee^{\ii\omega t}\dd t}{\sqrt{b^2+v^2t^2}}
+=\frac2vK_0(s)
+\]
+分别对 $b$ 求导、对 $t$ 分部积分，得到
+\[
+\widetilde E_{e,x}=-\frac{q_{\mathrm e}\omega}{2\pi\varepsilon_0v^2}K_1(s),
+\qquad
+\widetilde E_{e,z}=-\frac{\ii q_{\mathrm e}\omega}{2\pi\varepsilon_0v^2}K_0(s).
+\]
+偶极吸收的总功为 $W=\int\mathbf E_e\cdot\dot{\mathbf p}\dd t$。实场的正频 Parseval 恒等式给
+\[
+\frac{\dd W}{\dd\omega}
+=\frac{\varepsilon_0\omega}{\pi}
+\operatorname{Im}\alpha_V|\widetilde{\mathbf E}_e|^2.
+\]
+代入两场分量，再除以 $\hbar\omega$ 得到结论。这里两个轨迹因子来自激发场和响应场的双线性，不能用单一源点的场幅替代。
+\end{proof}
+
+\begin{workedexample}[距离标度、Drude 球峰与半径估计]
+当 $s\ll1$ 时，$K_1(s)\sim1/s$、$K_0(s)\sim-\log(s/2)-\gamma_{\rm E}$，故
+\[
+\Gamma_{\rm sph}\sim\frac{q_{\mathrm e}^2}{4\pi^3\varepsilon_0\hbar v^2b^2}
+\operatorname{Im}\alpha_V.
+\]
+距离主标度为 $b^{-2}$。当 $s\gg1$ 时，$K_0^2+K_1^2\sim(\pi/s)\ee^{-2s}$，损失具有指数距离截止。
+
+对 Drude 球，令 $f=(\varepsilon-1)/(\varepsilon+2)$，直接代入得到
+\[
+f=-\frac{\omega_p^2}{3\omega^2+3\ii\Gamma_D\omega-\omega_p^2},
+\qquad
+\operatorname{Im}f=
+\frac{3\Gamma_D\omega\omega_p^2}
+{(3\omega^2-\omega_p^2)^2+9\Gamma_D^2\omega^2}.
+\]
+弱损耗的材料极点在 $\omega_p/\sqrt3$；测得谱峰还受 Bessel 轨迹权重影响。若介电函数已经独立标定，测得 $\operatorname{Im}\alpha_V$ 后可用
+\[
+a=\left[\frac{\operatorname{Im}\alpha_V}{4\pi\operatorname{Im}f}\right]^{1/3}
+\]
+恢复半径。在 $\operatorname{Im}f$ 很小的频段，这一估计对噪声和材料标定误差敏感。
+\end{workedexample}
+
+\begin{proposition}[固定频率的半径--材料退化]
+在同一频率下，未知半径 $a$ 与未知材料因子 $S=\operatorname{Im}f>0$ 只以乘积 $a^3S$ 出现。任意多个距离 $b_j$ 的独立弱损失计数模型 $\mu_j=C_j a^3S$，其关于 $(a,S)$ 的 Fisher 矩阵秩至多为一。
+\end{proposition}
+\begin{proof}
+有 $\partial_a\mu_j=3\mu_j/a$、$\partial_S\mu_j=\mu_j/S$，故 Jacobian 的两列比例相同，方向
+\[
+\delta S=-3S\delta a/a
+\]
+使所有一阶计数变化为零。事实上变换 $a\mapsto ca$、$S\mapsto S/c^3$ 保持全部理想距离扫描数据不变。
+
+因此距离扫描可检验轨迹因子与偶极近似，并估计乘积幅度；分离半径和任意介电函数还需独立几何标定、受约束材料模型、多极响应或额外观测。频率扫描是否解除退化，必须检查具体参数化模型的 Jacobian。
+\end{proof}

@@ -1,6 +1,20 @@
 \section{从时间积分到可分辨的能量宽度}
 \label{chap:feqo-finite-time}
 
+为什么要换一种“绘景”？薛定谔绘景里态随完整的
+\(H=H_0+V(t)\) 演化，自由运动与相互作用搅在一起：
+即使 \(V=0\)，态也在不停地积累相位。微扰论想问的却是
+“相互作用额外造成了什么变化”。相互作用绘景
+（定义见本章开头的\cref{eq:feqo-interaction-evolution} 所在段落）
+正是为此设计的 bookkeeping：把态按
+\(|\Psi(t)\rangle^I=e^{\ii H_0t/\hbar}|\Psi(t)\rangle^S\)
+重新登记，自由演化被吸进算符
+\(V_I(t)=e^{\ii H_0t/\hbar}V(t)e^{-\ii H_0t/\hbar}\) 的
+时间依赖里，态只随 \(V\) 演化。于是“没有相互作用就没有
+任何变化”，\(V\) 的幂次直接组织成 Dyson 级数。
+Heisenberg 绘景则走到另一端：态完全冻结，算符随 \(H\)
+演化；三种绘景的物理预测相同，只是相位放在不同位置。
+
 取 \(H_0|i\rangle=E_i|i\rangle\)、\(H_0|f\rangle=E_f|f\rangle\)，两态都已归一化。设吸收项在薛定谔绘景中为 \(V_{fi}w(t)e^{-\ii\omega t}\)，其中 \(V_{fi}\) 是能量量纲的矩阵元，实包络 \(w\) 无量纲。由相互作用绘景的定义，这个矩阵元还乘 \(e^{\ii(E_f-E_i)t/\hbar}\)。于是从 \(t=-\infty\) 到 \(+\infty\) 的一阶振幅为
 \begin{equation}
 c_f^{(1)}=-\frac{\ii V_{fi}}{\hbar}\int_{-\infty}^{\infty}\dd t\,w(t)e^{\ii\Delta_{fi}t},\qquad
@@ -15,8 +29,29 @@ U_I(t,t_0)=I-\frac{\ii}{\hbar}\int_{t_0}^t V_I(t_1)\dd t_1
 -\frac1{\hbar^2}\int_{t_0}^t\dd t_1\int_{t_0}^{t_1}\dd t_2\,
 V_I(t_1)V_I(t_2)+\cdots.
 \]
-内层上限 \(t_1\) 正是时间排序：先发生的作用排在态的右侧。若有限维模型在整个时间窗内满足
-\(\hbar^{-1}\int\|V_I(t)\|\dd t=\epsilon\ll1\)，将第 \(n\) 项的有序积分域嵌入完整的 \(n\) 维立方体，可得其算符范数不超过 \(\epsilon^n/n!\)。因此从二阶起的总振幅余项不超过 \(e^\epsilon-1-\epsilon\)。连续谱或无界相互作用时，不能机械使用这个范数界；那时需在所选波包和能窗上检验展开。
+内层上限 \(t_1\) 正是时间排序：先发生的作用排在态的右侧。余项界的几何内容值得写全。第 \(n\) 项的积分域是单纯形
+\(t_0<t_n<\cdots<t_1<t\)。把被积算符取范数，
+\(\|V_I(t_1)\cdots V_I(t_n)\|\le\|V_I(t_1)\|\cdots\|V_I(t_n)\|\)，
+各项交换次序后都是同一个函数在不同单纯形上的积分；
+\(n!\) 个单纯形恰好拼满立方体 \([t_0,t]^n\)，所以
+\[
+\Bigl\|\int_{t_0}^t\!\!\dd t_1\cdots\int_{t_0}^{t_{n-1}}\!\!\dd t_n\,
+V_I(t_1)\cdots V_I(t_n)\Bigr\|
+\le\frac1{n!}\left(\int_{t_0}^t\|V_I(s)\|\dd s\right)^{\!n}
+=\frac{(\hbar\epsilon)^n}{n!}.
+\]
+若有限维模型在整个时间窗内满足
+\(\hbar^{-1}\int\|V_I(t)\|\dd t=\epsilon\ll1\)，则从二阶起的总振幅余项不超过
+\(\sum_{n\ge2}\epsilon^n/n!=e^\epsilon-1-\epsilon\)。
+连续谱或无界相互作用时，不能机械使用这个范数界——
+电子—场耦合里的场算符就没有有限范数。
+替代做法不是放弃检验，而是把检验搬到物理态上：
+在给定入射波包与能窗内，直接计算（或估计）二阶振幅
+并与一阶比较；等价地，把 \(\|V_I\|\) 换成
+“耦合能量乘以该能窗内可达末态的谱权重”。
+本书处理的两类极限都因此可控：离散少模情形逐模核对
+（Rabi 型，见下），连续谱情形用黄金律速率核对
+\(\Gamma T\ll1\)。
 
 矩形时间窗 \(w(t)=1\)（\(-T/2<t<T/2\)）可直接积分：
 \begin{align*}
@@ -35,6 +70,19 @@ P_{i\to f}^{(1)}(T)=\frac{|V_{fi}|^2T^2}{\hbar^2}
 首个零点在 \(|\Delta_{fi}|=2\pi/T\)。可分辨的能量尺度因此约为 \(2\pi\hbar/T\)；它由作用时间决定，不是初态能散，也不是谱仪的分辨率。时间窗若从 \(0\) 开始，振幅还乘 \(e^{\ii\Delta T/2}\)，概率不变，但相干叠加时不能丢掉这段相位。
 
 对一般可积包络，定义 \(\widetilde w(\Delta)=\int w(t)e^{\ii\Delta t}\dd t\)。\cref{eq:feqo-finite-time-amplitude} 表明谱线是 \(|\widetilde w|^2\)，并非所有脉冲都具有 sinc 旁瓣。例如 \(w(t)=e^{-t^2/(2\tau^2)}\) 给 \(\widetilde w=\sqrt{2\pi}\tau e^{-\Delta^2\tau^2/2}\)。这一例同时核对：时间宽度 \(\tau\) 越短，频率宽度越大。
+
+包络 \(w(t)\) 的物理身份是相互作用开关的方式。
+矩形窗对应“突开突关”：耦合在 \(-T/2\) 瞬间达到满值，
+频谱因此带有 \(1/\Delta\) 量级的缓慢衰减旁瓣，
+大失谐跃迁仍有不可忽略的振幅——突变本身制造了高频成分。
+另一个极端是绝热开关 \(w(t)=e^{-\epsilon|t|}\)（
+\(\epsilon T\gg1\) 时窗口长达 \(1/\epsilon\)），
+其变换 \(2\epsilon/(\Delta^2+\epsilon^2)\) 是 Lorentz 型，
+\(\epsilon\to0\) 时压向 \(\Delta=0\)：
+开关足够慢，非能量守恒的跃迁就被完全抑制。
+场论中正是用这种绝热开关定义渐近态与 \(S\) 矩阵；
+实验里的 \(w(t)\) 由脉冲包络或电子穿越近场区的轨道决定，
+不是可以随意假定的数学装饰。
 
 这里容易混淆三种宽度。对矩形窗，\(\Delta=0\) 到首个零点的距离是 \(2\pi/T\)，但它不是概率峰的半高宽。对上述高斯窗，概率正比于 \(e^{-\Delta^2\tau^2}\)，半高点满足 \(|\Delta|=\sqrt{\ln2}/\tau\)，所以全半高宽为 \(2\sqrt{\ln2}/\tau\)。最后若入射电子本身有能量分布或谱仪有响应核，实验曲线还要对相应概率分布卷积。只从测得的峰宽倒推作用时间，必须先独立标定后两项。
 
@@ -59,9 +107,54 @@ T\sinc^2(\Delta T/2)\,f(\Delta)=f(0).
 \end{equation}
 这就是黄金律。它要求 \(|V(E)|^2\rho(E)\) 在宽度 \(\hbar/T\) 内几乎不变，同时一阶总概率仍远小于一；若共振跃迁已经反复发生，须回到\cref{eq:feqo-interaction-evolution} 求解。
 
-这两个条件并不矛盾，而是规定一个可能存在的中间时间窗。设末态连续谱的结构变化尺度为 \(E_c\)，黄金律要 \(T\gg\hbar/E_c\)；设\cref{eq:feqo-golden-rule-limit} 的速率为 \(\Gamma\)，一阶理论又要 \(T\ll1/\Gamma\)。只有 \(\hbar/E_c\ll T\ll1/\Gamma\) 时，常速率与低总概率能够同时成立。若连续谱有很窄的共振或带边，\(E_c\) 变小，常速率窗口可能根本不存在。
 
-一个离散二态反例说明为什么不可把黄金律用到任意长时间。若旋转绘景中的矩阵为
+\par
+\begin{workedexample}
+用\cref{eq:feqo-golden-rule-limit} 与本节的平面波矩阵元，
+对真空单模情形写出吸收速率，并指出 \(\rho(E)\)
+在该几何下的来源（提示：把 \(\delta^{(3)}\) 平方换成
+\(V/(2\pi\hbar)^3\)，再对壳层 \(|\vb{k}|=\omega/c\) 积分；
+速率中量子化体积 \(V\) 必须消去）。
+
+\textbf{解.} 黄金律给出 \(\Gamma=(2\pi/\hbar)|V_{\vb k\lambda,\vb p}|^2\rho(E_{\vb p}+\hbar\omega)\)。盒归一化下，\(\sum_{\vb k}\to V(2\pi)^{-3}\int k^2\dd k\,\dd\Omega\)；对能量 delta 函数积分后只在 \(|\vb k|=\omega/c\) 的壳层取值。平面波矩阵元平方含 \(1/V\)，恰与末态态密度中的 \(V\) 抵消，故速率与量子化盒体积无关。
+\end{workedexample}
+\par
+这两个条件并不矛盾，而是规定一个可能存在的中间时间窗。把黄金律的全部适用条件列成一组不等式：
+\begin{itemize}
+\item[(i)] 时间够长，能量分辨率优于连续谱结构：
+\(T\gg\hbar/E_c\)，其中 \(E_c\) 是
+\(|V(E)|^2\rho(E)\) 发生显著变化的能量尺度；
+\item[(ii)] 耦合够弱，一阶总概率仍小：
+\(T\ll1/\Gamma\)，\(\Gamma\) 为
+\cref{eq:feqo-golden-rule-limit} 的速率；
+\item[(iii)] 末态够密，sinc 峰内含有大量末态：
+\(\rho(E_i+\hbar\omega)\cdot(2\pi\hbar/T)\gg1\)，
+把求和换成积分的步骤才有意义。
+\end{itemize}
+只有 \(\hbar/E_c\ll T\ll1/\Gamma\) 时，常速率与低总概率能够同时成立。若连续谱有很窄的共振或带边，\(E_c\) 变小，常速率窗口可能根本不存在。
+
+对电子—光子问题，\(E_c\) 不是抽象参数。真空平面波
+末态的 \(|V|^2\rho\) 在 \(\hbar\omega\) 量级上平滑，
+\(E_c\sim\hbar\omega\)：对 \(800\,\si{\nano\metre}\)
+光子，\(\hbar/E_c\approx0.4\,\si{\femto\second}\)，
+条件 (i) 对任何飞秒以上的脉冲都成立。
+纳米结构的近场则相反：\(|V|^2\rho\) 正比于
+\(\operatorname{Im}\mathbf G\) 的谱结构，
+金属表面等离激元的线宽 \(\hbar\kappa\) 典型为
+\(0.05\)--\(0.3\,\si{\electronvolt}\)，于是
+\(E_c\sim\hbar\kappa\)、\(\hbar/E_c\sim2\)--\(13\,\si{\femto\second}\)；
+高品质的介质微腔模式可把 \(\hbar/E_c\) 推到皮秒，
+那时有限脉冲宽度与共振宽度可比拟，黄金律让位于
+对单个共振模式的直接求解（下一节的单模例子正是这种情形）。
+
+一个离散二态反例说明为什么不可把黄金律用到任意长时间。设二态系统受频率 \(\omega\) 的共振驱动，裸能级间距为
+\(\hbar\omega_0\)。“旋转绘景”指再做一次含时幺正变换
+\(U_{\rm rot}=e^{\ii\omega t\sigma_z/2}\)：
+让两个基矢各以 \(\pm\omega/2\) 的速率获得相位，
+驱动项 \(e^{\pm\ii\omega t}\) 的显式时间依赖恰好被吸走，
+剩下的哈密顿量不含时（这一步同时丢掉了以
+\(\pm2\omega\) 快速振荡的反旋转项，即旋波近似，
+成立条件为 \(|\Omega|\ll\omega\)）。在这个绘景中矩阵为
 \[
 H_{\rm rot}=\frac{\hbar}{2}
 \begin{pmatrix}-\Delta&\Omega\\\Omega^*&\Delta\end{pmatrix},
@@ -73,13 +166,224 @@ P_{1\to2}(T)=\frac{|\Omega|^2}{\Delta^2+|\Omega|^2}
 \]
 在 \(|\Omega|T\ll1\) 时它退化为 \(|\Omega|^2T^2\sinc^2(\Delta T/2)/4\)；再延长时间，概率却振荡而非无限线性增长。黄金律的长期线性增长来自\emph{连续末态的求和及合适的极限顺序}，不是单个离散跃迁的永久性质。
 
-对动量明确的电子，交换 \((\hbar\omega,\hbar\vb{q})\) 后还要检查电子色散。若 \(E(\vb{p})=\sqrt{m^2c^4+c^2|\vb{p}|^2}\)，精确失谐为
+两个表述各有辖区，判据可以直接写出。把耦合强度
+\(\hbar|\Omega|\) 与末态的谱结构比较：若末态离散、
+或耦合强于连续谱的局部宽度（\(\hbar|\Omega|\gtrsim E_c\)），
+粒子在两个态之间往复，必须用 Rabi 型（或更一般的
+有限维）演化；若末态密集且 \(\Gamma T\ll1\)
+在 \(T\gg\hbar/E_c\) 时仍成立，sinc 峰扫过大量末态、
+各末态的振荡互不相同步，求和后恢复线性增长，黄金律适用。
+中间的交叉区（耦合与 \(E_c\) 同量级）两种描述都失效，
+只能回到\cref{eq:feqo-interaction-evolution} 数值求解。
+电子问题里“二态”并非抽象：后文（反冲格一章）将看到，
+PINEM 中电子动量被量子化成间隔 \(\hbar\omega\) 的
+边带梯 \(|\vb{p}+\ell\hbar\vb{q}\rangle\)，相邻两级在
+速度匹配时构成这里的二态系统，\(|\Omega|\) 由近场耦合
+给出；EELS 面对的则是材料连续谱，归黄金律管辖。
+
+对动量明确的电子，交换 \((\hbar\omega,\hbar\vb{q})\) 后还要检查电子色散。这里先固定记号：全书用动量 \(\vb{p}\) 描述电子、
+用波矢 \(\vb{k}\)（或交换波矢 \(\vb{q}\)）描述光子与场的
+空间傅里叶分量，两者的换算永远是
+\(\vb{p}=\hbar\vb{k}\)；能量同理，
+电子能量记 \(E(\vb{p})\)，场的量子能量记 \(\hbar\omega\)。
+若 \(E(\vb{p})=\sqrt{m^2c^4+c^2|\vb{p}|^2}\)，精确失谐为
 \begin{equation}
 \Delta(\vb{p},\vb{q})=\frac{E(\vb{p}+\hbar\vb{q})-E(\vb{p})}{\hbar}-\omega .
 \label{eq:feqo-recoil-detuning}
 \end{equation}
 相互作用时间内 \(|\Delta|T\lesssim1\) 的通道能够获得显著振幅。小的 \(\hbar\omega/E\) 本身不足以保证低反冲：决定能否把多个边带视作等间隔的是这些边的失谐差乘以 \(T\)。
 
-\begin{exercise}
+代入数字确定量级。取 \(200\,\si{\kilo\electronvolt}\)
+电子（\(v_0=0.695\,c\)）与 \(800\,\si{\nano\metre}\)
+光子（\(\hbar\omega=1.55\,\si{\electronvolt}\)、
+自由波矢 \(q=\omega/c\)）：交换一个光子造成的电子能量改变
+按色散一阶近似为 \(\hbar qv_0=\hbar\omega(v_0/c)
+=1.08\,\si{\electronvolt}\)，于是
+\(\Delta\approx\omega(v_0/c-1)=-0.305\,\omega\)，
+即 \(-0.47\,\si{\electronvolt}/\hbar\)——自由空间中
+能量动量无法同时守恒，这与场量子化一章的壳条件论证一致。
+近场提供额外的空间傅里叶分量 \(k_z=\omega/v_0\) 后
+\(\Delta\) 才能归零；残余的反冲修正在二阶为
+\((\hbar q)^2/(2\gamma_0^3m\hbar)\)，对同一组参数约
+\(0.9\,\si{\micro\electronvolt}/\hbar\)，
+只有当 \(T\) 长到纳秒量级才积累出
+单位相位。PINEM 皮秒相互作用内反冲因此可以安全忽略，
+这正是反冲格一章低反冲近似的入口数字。
+
+一阶以上的项也有明确的物理组织方式。二阶振幅含两个
+\(V\) 的时序乘积，描述“先虚跃迁到中间态、再到达末态”
+的过程——例如电子先后与两个光子（或两个等离激元量子）
+交换能量；\(n\) 阶项对应 \(n\) 次交换。
+当阶数升高，逐一追踪所有时间次序会变得繁复，
+量子场论为此提供了系统工具：Wick 定理把算符时序乘积
+化为收缩的组合，Feynman 图则把每一项翻译成图形规则。
+本书涉及的过程到二阶为止，直接用这里的积分表示即可；
+需要更高阶系统处理时（如强场多光子区），可参照
+量子场论教材的相应章节。
+
+
+\par
+\begin{workedexample}
+取例题中的近场参数，但把电子能量改为
+\(300\,\si{\kilo\electronvolt}\)（\(v=0.776\,c\)）。
+重算失配相位 \(\omega d/(2v)\)、\(|\beta|\) 与 \(|g|\)，
+并判断耦合增强还是减弱。
+（提示：\(\omega d/(2v)\) 降到 \(0.51\)，
+\(\sinc\) 因子升到 \(0.96\)；\(|\beta|\approx0.31\)、
+\(|g|\approx7.1\times10^{14}\,\si{\per\second}\)。）
+
+\textbf{解.} 给定近场表达式中失配相位为 \(0.51\)，故 \(\sinc(0.51)\approx0.96\)；代入完整耦合式得 \(|\beta|\approx0.31\)、\(|g|\approx7.1\times10^{14}\,\si{\per\second}\)。与原参数相比失配减小、\(\sinc\) 因子增大，因此该几何下耦合增强。
+\end{workedexample}
+\par
+
+\par
+\begin{workedexample}
 求长度相同的矩形窗与高斯窗在失谐 \(\Delta=2/\tau\) 时的振幅，并说明高斯脉冲为什么没有矩形窗的严格零点。
-\end{exercise}
+（提示：矩形窗振幅正比于 \(\sinc(\Delta T/2)\)，
+零点来自分子 \(\sin\) 的周期零点；高斯窗的变换仍是高斯，
+处处为正——严格的开关截断才产生严格零点。）
+
+\textbf{解.} 矩形时间窗的 Fourier 振幅为 \(A_{\rm rect}(\Delta)=T\,\sinc(\Delta T/2)\)（忽略共同耦合常数）；若 \(T=\tau\)、\(\Delta=2/\tau\)，则 \(A_{\rm rect}=\tau\sinc(1)\)。高斯窗 \(e^{-t^2/(2\tau^2)}\) 的变换正比于 \(\tau e^{-\Delta^2\tau^2/2}\)，在此失谐下因子为 \(e^{-2}\)，没有严格零点。矩形窗零点来自有限支持造成的正负振幅抵消；高斯 Fourier 变换仍为处处非零的高斯。
+\end{workedexample}
+\par
+\section{电子—光子耦合矩阵元：从最小耦合到数值}
+\label{sec:feqo-coupling-matrix-element}
+
+以上各节把 \(V_{fi}\) 当作给定输入。这一节把它从
+\cref{eq:feqo-minimal-coupling} 的最小耦合出发算到底，
+给出两个标准形态：量子化平面波模的矩阵元，
+与经典近场（PINEM 几何）的耦合强度，后者当场代入数值。
+
+由\cref{eq:feqo-minimal-coupling}，相互作用哈密顿量是
+\(H_I=\int\dd^3r\,(\rho^{\rm ch}\phi-\vb{j}^{\rm ch}\cdot\vb{A})\)，
+其中 \(\rho^{\rm ch}=q\Psi^\dagger\Psi\)、
+\(\vb{j}^{\rm ch}=qc\Psi^\dagger\boldsymbol\alpha\Psi\)。
+取辐射规范（\(\phi=0\)）下的单模量子化场
+\[
+\vb{A}(\vb{r},t)=\sqrt{\frac{\hbar}{2\varepsilon_0\omega V}}\,
+\boldsymbol\epsilon\,
+\bigl(a\,e^{\ii(\vb{k}\cdot\vb{r}-\omega t)}
++a^\dagger e^{-\ii(\vb{k}\cdot\vb{r}-\omega t)}\bigr),
+\]
+\(V\) 为量子化体积，\(\boldsymbol\epsilon\) 为线偏振单位矢量
+（模函数归一化见场量子化一章）。初末态取
+\cref{eq:feqo-positive-wavepacket} 归一化的平面波
+\(|\vb{p},s\rangle\)、\(|\vb{p}',s'\rangle\)，初态含一个光子。
+吸收这一项的矩阵元为
+\[
+\langle\vb{p}',s';0|H_I|\vb{p},s;1_{\vb{k}}\rangle
+=-qc\sqrt{\frac{\hbar}{2\varepsilon_0\omega V}}\,
+u_{s'}^\dagger(\vb{p}')(\boldsymbol\alpha\cdot\boldsymbol\epsilon)
+u_s(\vb{p})\,
+\frac{1}{(2\pi\hbar)^3}\!\int\!\dd^3r\,
+e^{\ii(\vb{p}-\vb{p}'+\hbar\vb{k})\cdot\vb{r}/\hbar}.
+\]
+空间积分给出动量守恒
+\(\delta^{(3)}(\vb{p}'-\vb{p}-\hbar\vb{k})\)：
+单模平面波矩阵元只在动量匹配时不为零，这正是自由空间
+无法同时满足能量守恒（\cref{eq:feqo-recoil-detuning} 处已算）
+的另一半表述。剩下的旋量因子可在小交换动量下显式求值：
+把\cref{eq:feqo-positive-spinor} 按块相乘，
+\[
+u_{s'}^\dagger(\vb{p}')\alpha_iu_s(\vb{p})
+=N_{\vb{p}'}N_{\vb{p}}\,\xi_{s'}^\dagger
+\left[\frac{c\,\sigma_i(\boldsymbol\sigma\cdot\vb{p})}
+{E_{\vb{p}}+mc^2}
++\frac{c\,(\boldsymbol\sigma\cdot\vb{p}')\sigma_i}
+{E_{\vb{p}'}+mc^2}\right]\xi_s ,
+\]
+用 \(\sigma_i\sigma_j=\delta_{ij}I_2+\ii\varepsilon_{ijk}\sigma_k\)
+展开，领头项为
+\[
+u_{s'}^\dagger(\vb{p}')\boldsymbol\alpha\,u_s(\vb{p})
+=\frac{\vb{p}+\vb{p}'}{2mc}\,\delta_{ss'}
++O\!\left(\frac{|\vb{p}|^2}{m^2c^2}\right).
+\]
+代回矩阵元：在动量守恒的 support 上
+\(\vb{p}+\vb{p}'=2\vb{p}+\hbar\vb{k}\)，且
+\(\hbar\vb{k}\cdot\boldsymbol\epsilon=0\)（辐射规范的
+横向性），于是
+\[
+\langle\vb{p}',s';0|H_I|\vb{p},s;1_{\vb{k}}\rangle
+\simeq-\frac{q}{m}\sqrt{\frac{\hbar}{2\varepsilon_0\omega V}}\,
+(\boldsymbol\epsilon\cdot\vb{p})\,
+\delta_{ss'}\delta^{(3)}(\vb{p}'-\vb{p}-\hbar\vb{k}).
+\]
+这就是非相对论量子光学的 \(\vb{p}\cdot\vb{A}\) 耦合：
+自旋守恒（\(\delta_{ss'}\)），耦合正比于电子动量在
+偏振方向上的投影。自旋在垂直入射几何中只是旁观者，
+与前章“自旋可作整体标签”的论断一致。
+
+PINEM 面对的是经典强光与\emph{近场}，不需量子化体积，
+但要处理失配。取纯矢势规范中沿 \(z\) 的经典近场
+\(A_z(z,t)=A(z)\cos\omega t\)，电子以 \(z=vt\) 穿越。
+正能旋量的流速恒等式给
+\(c\langle\alpha_z\rangle\simeq v\)，于是一阶振幅
+\[
+c_{\vb{p}+\hbar\vb{q}}
+=-\frac{\ii}{\hbar}\int\dd t\,
+\bigl(-qv\bigr)A(vt,t)\,
+e^{\ii(qv-\omega)t},
+\]
+其中已取能量转移 \(\hbar qv\)（一阶色散）。
+实的 \(A\cos\omega t\) 分解为正负频各半——
+正频振幅是 \(A^{(+)}=A/2\)，漏掉这个 \(1/2\)
+会把耦合放大一倍。由 \(E_z^{(+)}=\ii\omega A^{(+)}\)
+把矢势换成实验直接测量的场，换元 \(z=vt\) 得
+\[
+c_{\vb{p}+\hbar\vb{q}}
+=\frac{q}{\hbar\omega}\int\dd z\,
+E_z^{(+)}(z)\,e^{\ii(q-\omega/v)z}.
+\]
+相位匹配分量 \(q=\omega/v\) 的系数正是全书统一记作
+\(\beta\) 的 PINEM 复耦合：
+\begin{equation}
+\beta=\frac{e}{\hbar\omega}\int\dd z\,
+E_z^{(+)}(z)\,e^{-\ii\omega z/v}
+\qquad(q=-e).
+\label{eq:feqo-pinem-beta-from-matrix-element}
+\end{equation}
+完整的多边带演化（Bessel 函数解）在经典驱动一章建立；
+这里只需要它的强度量级。
+
+\begin{example}[近场耦合的数值估计]
+取 \(200\,\si{\kilo\electronvolt}\) 电子
+（\(v=0.695\,c\)）、\(800\,\si{\nano\metre}\) 驱动
+（\(\hbar\omega=1.55\,\si{\electronvolt}\)、
+\(\omega=2.36\times10^{15}\,\si{\per\second}\)），
+近场在长度 \(d=100\,\si{\nano\metre}\) 上近似均匀，
+峰值场强 \(E_0=10^{7}\,\si{\volt\per\metre}\)
+（金属针尖与粒子表面可达此量级）。
+正频振幅 \(E_0/2\) 是常数，积分给
+\[
+|\beta|=\frac{eE_0d/2}{\hbar\omega}\,
+\Bigl|\sinc\frac{\omega d}{2v}\Bigr|.
+\]
+逐个因子：\(eE_0d=1.0\,\si{\electronvolt}\)，故
+\(eE_0d/(2\hbar\omega)=0.32\)；失配相位
+\(\omega d/(2v)=\pi d/(\lambda)\cdot(c/v)
+=\pi\times0.125\times1.439=0.565\)，
+\(\sinc(0.565)=0.95\)。于是
+\[
+|\beta|\approx0.32\times0.95\approx0.31,\qquad
+2|\beta|\approx0.61 .
+\]
+均方能量交换为 \(2|\beta|^2(\hbar\omega)^2\)，
+电子能谱将出现 \(\ell=\pm1\) 明显边带。
+相互作用时间 \(T=d/v=0.48\,\si{\femto\second}\)，
+对应的 Rabi 角频率
+\(|g|=|\beta|/T\approx6.5\times10^{14}\,\si{\per\second}\)
+（\(\hbar|g|\approx0.43\,\si{\electronvolt}\)）。
+由于 \(|g|T=|\beta|\sim1\) 而非 \(\ll1\)，
+单次穿越已超出本节一阶微扰的辖区，
+必须求和全部阶数——这正是经典驱动一章精确解
+非用不可的定量理由；相反，EELS 的几何里
+\(|\beta|^2\) 的角色由 \(\Gamma_{\rm loss}\ll1\)
+扮演（下一节），一阶公式反而适用。
+\end{example}
+
+
+
+
+
+

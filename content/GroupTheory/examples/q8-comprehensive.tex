@@ -1,0 +1,818 @@
+\section{四元数群：从八个乘法项到完整表示分解}
+\label{sec:q8-comprehensive}
+
+三角形的对称群可以直接作用在三个顶点上。四元数群的困难稍有不同：
+它的所有子群都是正规子群，但它本身并不交换；把中心商掉以后得到的
+交换群，也不能在原群中找到一个同构的补子群。这些现象都可以在八个
+元素上逐项计算。我们沿用前四章的语言，把同一份乘法数据一直计算到
+不可约表示、投影算符和张量积，而不在中途更换例子。
+
+\subsection{用矩阵固定乘法、逆元与生成关系}
+
+\begin{exbox}[八个元素的群结构]
+取集合
+\[
+G=Q_8=\{1,-1,i,-i,j,-j,k,-k\},
+\]
+其中 $i,j,k$ 是群元的名字；复数虚数单位写成 $\mathrm i$。
+规定 $i^2=j^2=k^2=-1$、$ij=k$、$jk=i$、$ki=j$。
+求完整乘法表，验证群公理，并确定所有元素的阶和生成子群。
+\end{exbox}
+
+为了让结合律有可检查的来处，在 $\mathbb C^2$ 上取矩阵
+\[
+A=\begin{pmatrix}\mathrm i&0\\0&-\mathrm i\end{pmatrix},
+\qquad B=\begin{pmatrix}0&1\\-1&0\end{pmatrix},
+\qquad K=\begin{pmatrix}0&\mathrm i\\\mathrm i&0\end{pmatrix}.
+\]
+它们满足
+\[
+A^2=B^2=K^2=-I_2,
+\qquad AB=K,\quad BK=A,\quad KA=B,
+\qquad BA=-K.
+\]
+因此把 $1,-1,i,j,k$ 分别对应到 $I_2,-I_2,A,B,K$，
+再让负号对应矩阵的负号，便得到以下计算结论。
+
+\begin{proposition}[$Q_8$ 的矩阵实现与乘法表]
+\label{prop:q8-concrete-multiplication}
+上述八个矩阵组成 $\operatorname{SU}(2)$ 的一个子群；对应关系给出
+$Q_8$ 的忠实二维表示。表中一项表示行标乘以列标：
+\[
+\begin{array}{c|rrrrrrrr}
+ &1&-1&i&-i&j&-j&k&-k\\\hline
+1&1&-1&i&-i&j&-j&k&-k\\
+-1&-1&1&-i&i&-j&j&-k&k\\
+i&i&-i&-1&1&k&-k&-j&j\\
+-i&-i&i&1&-1&-k&k&j&-j\\
+j&j&-j&-k&k&-1&1&i&-i\\
+-j&-j&j&k&-k&1&-1&-i&i\\
+k&k&-k&j&-j&-i&i&-1&1\\
+-k&-k&k&-j&j&i&-i&1&-1
+\end{array}
+\]
+\end{proposition}
+
+\begin{proof}
+三组矩阵的对角项或非对角项不同，所以八个矩阵两两不同。
+它们均满足 $U^\dagger U=I_2$、$\det U=1$。
+所列矩阵恒等式和负号的交换性给出表中的每一项，故乘法封闭。
+结合律由矩阵乘法继承；$I_2$ 是单位元，且
+\[
+(-1)^{-1}=-1,\qquad i^{-1}=-i,\quad j^{-1}=-j,\quad k^{-1}=-k.
+\]
+负元素的逆元再取相反的符号。因此八个矩阵构成群，
+上述一一对应保持乘法，给出所称实现。
+\end{proof}
+
+这里单位元的唯一性、左右消去律都能实际使用。例如 $ix=iy$ 左乘
+$-i$ 就得到 $x=y$；$(ij)^{-1}=-k=j^{-1}i^{-1}$，
+而 $i^{-1}j^{-1}=k$。逆元公式中的次序不能交换。
+幂的计算给出
+\[
+o(1)=1,\qquad o(-1)=2,\qquad
+o(\pm i)=o(\pm j)=o(\pm k)=4.
+\]
+记
+\[
+Z=\{1,-1\},\qquad I=\langle i\rangle,
+\quad J=\langle j\rangle,\quad L=\langle k\rangle.
+\]
+字母 $I$ 在此表示子群，矩阵单位元始终写作 $I_2$。
+例如 $I=\{1,i,-1,-i\}$，且 $\langle i,j\rangle=G$，
+因为 $ij=k$。群没有阶为八的元素，所以 $G$ 不是循环群。
+
+\begin{proposition}[全部子群与陪集]
+\label{prop:q8-subgroups-cosets}
+$Q_8$ 的子群恰为
+\[
+\{1\},\quad Z,\quad I,\quad J,\quad L,\quad G.
+\]
+不同的四阶子群的交为 $Z$，生成子群为 $G$。
+所有左右陪集相等，且
+\[
+\begin{aligned}
+G/Z&=\{Z,iZ,jZ,kZ\},\\
+G/I&=\{I,jI\},& jI=Ij&=\{j,-j,k,-k\},\\
+G/J&=\{J,iJ\},& iJ=Ji&=\{i,-i,k,-k\},\\
+G/L&=\{L,iL\},& iL=Li&=\{i,-i,j,-j\}.
+\end{aligned}
+\]
+\end{proposition}
+
+\begin{proof}
+任何包含 $\pm i$ 的子群都包含其平方 $-1$ 和逆元，因而包含 $I$。
+对 $j,k$ 同样成立。若子群含有两个不同轴上的元素，
+乘法表给出第三个轴，从而得到全部八个元素。
+若子群不含三个轴上的任何元素，它只能是 $\{1\}$ 或 $Z$。
+这证明列表完备，也计算了交和生成子群。
+逐项相乘给出上面的左右陪集；$Z$ 的陪集就是各对相反的元素。
+$\{1\}$ 的陪集是单元素集，$G$ 只有一个陪集。
+所以所有子群的左右陪集都一致，均为正规子群。
+每个分割的块数乘以块大小都等于八，这也逐一实现了 Lagrange 定理。
+\end{proof}
+
+\subsection{共轭、商群与同构定理在同一张子群图中的计算}
+
+\begin{exbox}[商掉中心以后还剩下什么]
+用 $i,j$ 的共轭作用计算共轭类、中心、中心化子和正规化子。
+再求 $G/Z$ 与三个二阶商群，写出三条同构定理的具体映射。
+\end{exbox}
+
+计算共轭时，先用逆元而不是形式地取消字母。例如
+\[
+jij^{-1}=ji(-j)=(-k)(-j)=-i,
+\qquad iji^{-1}=-j.
+\]
+由此得到
+\[
+\operatorname{Cl}(1)=\{1\},\quad
+\operatorname{Cl}(-1)=\{-1\},\quad
+\operatorname{Cl}(i)=\{i,-i\},\quad
+\operatorname{Cl}(j)=\{j,-j\},\quad
+\operatorname{Cl}(k)=\{k,-k\}.
+\]
+中心因而恰为 $Z$，类方程为 $8=1+1+2+2+2$。
+从 $i$ 的共轭类大小二得到 $[G:C_G(i)]=2$，而乘法表直接给出
+$C_G(i)=I$。完整结果是
+\[
+\begin{array}{c|cccccc}
+H&\{1\}&Z&I&J&L&G\\\hline
+C_G(H)&G&G&I&J&L&Z\\
+N_G(H)&G&G&G&G&G&G
+\end{array}
+\]
+元素中心化子则为 $C_G(\pm1)=G$，$C_G(\pm i)=I$，
+$C_G(\pm j)=J$，$C_G(\pm k)=L$。
+
+\begin{proposition}[商群、阿贝尔化与三条同构定理]
+\label{prop:q8-quotients-isomorphisms}
+有
+\[
+G/Z\cong C_2\times C_2,
+\qquad G/I\cong G/J\cong G/L\cong C_2,
+\qquad [G,G]=Z.
+\]
+$G$ 不存在到 $C_4$ 的满同态。取自然商映射 $\pi:G\to G/Z$，
+三条同构定理分别在此例中给出
+\[
+G/\ker\pi\cong\operatorname{Im}\pi,
+\qquad J/(J\cap I)\cong JI/I,
+\qquad (G/Z)/(I/Z)\cong G/I.
+\]
+第二个同构的两边均为 $C_2$；第三个同构也是 $C_2$。
+\end{proposition}
+
+\begin{proof}
+在商群中令 $\bar i=iZ$、$\bar j=jZ$。它们满足
+\[
+\bar i^2=\bar j^2=Z,\qquad
+\bar i\bar j=kZ=\bar j\bar i,
+\]
+而 $\bar i,\bar j$ 彼此不同且不等于单位元。因此
+$(a,b)\mapsto i^a j^b Z$ 是 $C_2\times C_2$ 到 $G/Z$ 的同构。
+这个四阶群的三个非单位元都为二阶，所以不是 $C_4$。
+三个指数二的商群只能是 $C_2$；例如 $jI$ 的平方为 $I$。
+
+约定换位子为 $[x,y]=xyx^{-1}y^{-1}$，则
+\[
+[i,j]=(ij)(-i)(-j)=k(-i)(-j)=-1.
+\]
+商群 $G/Z$ 交换说明所有换位子落在 $Z$，上式又生成 $Z$，
+所以导群恰为 $Z$。任何到交换群的同态都杀掉换位子，
+故都经由 $G/Z$ 分解。其像的每个元素阶至多为二，
+不可能满射到有四阶元素的 $C_4$。
+
+原映射 $\pi:G\to G/Z$ 的核为 $Z$；第一条诱导映射是
+$gZ\mapsto\pi(g)$，定义域已经是 $G/Z$，其核为平凡子群 $\{Z\}$。
+第二条映射取 $j^aZ\mapsto j^a I$：
+$J\cap I=Z$、$JI=G$，故它保持乘法且双射。
+第三条映射取 $(gZ)(I/Z)\mapsto gI$。
+若代表元改变，恰好乘上 $I$ 中的元素，所以映射良定义，
+而其核已经被商掉。这把抽象的同构定理落实为陪集的实际对应。
+\end{proof}
+
+对应定理在这里也可全部写出。$G/Z$ 的五个子群
+\[
+\{Z\},\quad\langle iZ\rangle,\quad
+\langle jZ\rangle,\quad\langle kZ\rangle,\quad G/Z
+\]
+的原像依次为 $Z,I,J,L,G$。$\{1\}$ 没有出现在此对应中，
+因为对应定理只涉及包含商映射核 $Z$ 的子群。
+这张图同时保留交与生成关系：例如
+$(I/Z)\cap(J/Z)=\{Z\}$，而 $\langle I/Z,J/Z\rangle=G/Z$。
+
+\subsection{从共轭作用到全部自同构}
+
+\begin{exbox}[换名字能产生多少个不同的自同构]
+确定 $\operatorname{Aut}(G)$、$\operatorname{Inn}(G)$、
+$\operatorname{Out}(G)$ 以及全部特征子群。
+把 $N/C$ 定理和 Frattini 论证也代入已求出的子群。
+\end{exbox}
+
+一个自同构必须把四阶元素映到四阶元素。
+选好 $i$ 的像后，$j$ 的像必须在另一个轴上；否则两个像只生成
+一个四阶循环群。于是共有 $6\cdot4=24$ 种候选，
+而 $k=ij$ 的像随之固定。外自同构群记为
+$\operatorname{Out}(G)=\operatorname{Aut}(G)/\operatorname{Inn}(G)$。
+
+\begin{proposition}[$Q_8$ 的自同构群]
+\label{prop:q8-automorphisms}
+上述二十四种候选全部是自同构，并且
+\[
+\operatorname{Aut}(G)\cong S_4,
+\qquad \operatorname{Inn}(G)\cong C_2\times C_2,
+\qquad \operatorname{Out}(G)\cong S_3.
+\]
+$G$ 的特征子群恰为 $\{1\},Z,G$。
+\end{proposition}
+
+\begin{proof}
+把 $i,j,k$ 视为实三维空间的有向正交基。
+任取不同轴上的带符号单位向量 $u,v$，令第三个像为 $uv$；
+四元数乘法给出 $uv=u\times v$。
+因此对应线性变换的三列为 $u,v,u\times v$，
+是行列式为 $+1$ 的带符号置换矩阵。
+反过来，这样的矩阵保持内积和叉积，所以保持
+\[
+(a+u)(b+v)=(ab-u\cdot v)+(av+bu+u\times v).
+\]
+它因而保持八个群元的乘法，并置换八个元素。
+二十四种候选都是自同构。这里共有二十四个保定向矩阵；
+行列式为 $-1$ 的另外二十四个带符号置换矩阵不保持这个乘法。
+
+为识别其抽象群，考虑立方体的四条体对角线，分别取代表向量
+\[
+v_1=(1,1,1),\quad v_2=(1,-1,-1),\quad
+v_3=(-1,1,-1),\quad v_4=(-1,-1,1).
+\]
+这些自同构置换四条无向直线 $\mathbb Rv_r$，给出到 $S_4$ 的同态。
+若矩阵 $R$ 固定四条直线，则 $Rv_r=\varepsilon_rv_r$，
+$\varepsilon_r=\pm1$。不同代表向量的内积均为 $-1$，
+保内积迫使 $\varepsilon_r\varepsilon_s=1$，故四个符号相同。
+这些向量张成三维空间，所以 $R=I_3$ 或 $-I_3$；
+后一矩阵行列式为 $-1$，不在本群中。
+作用的核因此平凡。一个二十四阶群嵌入二十四阶的 $S_4$，必为同构。
+
+内自同构 $c_i$ 固定 $i$，并把 $j,k$ 变号；$c_j,c_k$ 同理。
+它们与恒等变换构成四元群，且共轭映射的核为 $Z$，
+所以 $\operatorname{Inn}(G)\cong G/Z$。
+再考虑自同构对三个四阶子群 $\{I,J,L\}$ 的作用。
+映射 $i\mapsto j,j\mapsto k,k\mapsto i$ 给出三循环，
+$i\mapsto j,j\mapsto i,k\mapsto-k$ 给出对换，故其像为 $S_3$。
+固定三个轴的自同构只能分别变号，且三个符号乘积为 $+1$，
+恰为上述四个内自同构。这证明外自同构群为 $S_3$。
+最后，$Z$ 是中心，必为特征子群；三个四阶子群被自同构互相置换，
+所以它们都不是特征子群。结合完整子群表得到结论。
+\end{proof}
+
+$N/C$ 定理现在给出一个不止于阶数的具体映射。
+对于 $H=I$，有 $N_G(I)=G$、$C_G(I)=I$，所以
+\[
+G/I\longrightarrow\operatorname{Aut}(I),
+\qquad jI\longmapsto(i\mapsto i^{-1}).
+\]
+两边都是二阶群，这是同构。对于 $H=G$，同一构造给出
+$G/Z\cong\operatorname{Inn}(G)\leq\operatorname{Aut}(G)$；
+对于 $H=Z$，商 $N_G(Z)/C_G(Z)$ 为平凡群。
+
+Frattini 论证针对正规子群中的 Sylow 子群。
+在 $Q_8$ 中，任一非平凡正规子群 $N$ 都是二群，
+它唯一的 Sylow $2$-子群就是 $P=N$；
+故 $N_G(P)=G$，公式 $G=N N_G(P)$ 在这里成为 $G=NG$。
+这个例子没有非平凡的 Sylow 共轭修正，因而不能把一个四阶子群
+误称为 $Q_8$ 的 Sylow 子群。
+
+还可以用生成关系解释 $G/Z$ 的另一个作用。
+所有极大真子群正好是 $I,J,L$，它们的交
+\[
+\Phi(G):=I\cap J\cap L=Z
+\]
+称为此群的 Frattini 子群。上文的 Frattini 论证与这个交的定义
+是两个不同的陈述。$G/\Phi(G)$ 是二维的 $\mathbb F_2$ 向量空间，
+$iZ,jZ$ 为一组基。两个元素生成 $G$ 当且仅当它们在这个商中的像
+线性无关：无关意味着来自两个不同轴，乘法表便生成第三轴。
+自同构在这个商上的作用为
+\[
+\operatorname{Aut}(G)\longrightarrow
+\operatorname{GL}(2,\mathbb F_2)\cong S_3,
+\]
+其核还是 $\operatorname{Inn}(G)$。这里三个非零向量正好对应
+三个四阶子群，因而这是前一个 $S_3$ 作用的另一种写法。
+
+\subsection{作用、轨道与计数：为何八个点才足够忠实}
+
+\begin{exbox}[同一个群的三种有限集合动作]
+比较 $G$ 在自身上的左乘作用、共轭作用，以及在 $G/Z$ 上的左乘作用。
+计算轨道、稳定子和核；再计算共轭作用下八个群元的 $q$ 色着色轨道数。
+\end{exbox}
+
+左乘作用 $g\cdot x=gx$ 是传递且自由的，任一点的稳定子为 $\{1\}$，
+轨道大小为八。它给出 Cayley 定理中的具体嵌入 $G\hookrightarrow S_8$。
+在八个符号上，两个生成元作用为
+\[
+\begin{aligned}
+\lambda(i)&=(1\ i\ {-1}\ {-i})(j\ k\ {-j}\ {-k}),\\
+\lambda(j)&=(1\ j\ {-1}\ {-j})(i\ {-k}\ {-i}\ k).
+\end{aligned}
+\]
+每个括号按左乘的结果逐步读取。这些置换满足与 $i,j$ 相同的关系。
+
+共轭作用的轨道则是五个共轭类。
+$1,-1$ 的稳定子为 $G$，$\pm i$ 的稳定子为 $I$，另外两轴同理；
+轨道--稳定子公式分别读作 $1=8/8$ 和 $2=8/4$。
+该作用的核是 $Z$，故它不忠实。
+$G/Z$ 上的左乘作用有一个四点轨道，任一点稳定子均为 $Z$，
+核也为 $Z$。在此作用中，$iZ$ 交换 $Z,iZ$ 并交换 $jZ,kZ$，
+$jZ$ 交换 $Z,jZ$ 并交换 $iZ,kZ$。
+
+\begin{proposition}[忠实置换作用的最小次数与着色计数]
+\label{prop:q8-permutation-coloring}
+$Q_8$ 的忠实有限置换作用至少需要八个点，八点正则作用达到此界。
+在共轭作用下，八个群元的 $q$ 色着色有
+\[
+\frac{2q^8+6q^6}{8}=\frac{q^8+3q^6}{4}
+\]
+个轨道，其中颜色集合固定，群只移动被着色的位置。
+\end{proposition}
+
+\begin{proof}
+将任意有限作用分成轨道 $G/H_r$。由于所有子群正规，
+该轨道作用的核就是 $H_r$，全作用的核为 $\bigcap_rH_r$。
+每个非平凡子群都包含 $-1$；若所有 $H_r$ 非平凡，
+$-1$ 就在全作用的核中。因此忠实作用必须有一个 $H_r=\{1\}$，
+相应轨道有八个点。这也说明加入若干不忠实的小轨道不能降低所需次数。
+
+对着色计数，$1,-1$ 的共轭置换都是恒等置换，各有八个单点循环，
+分别固定 $q^8$ 个着色。由 $i$ 给出的共轭置换固定 $\{1,-1,i,-i\}$，
+并交换 $j,-j$ 和 $k,-k$，共有六个循环，固定 $q^6$ 个着色。
+其余五个非中心元素的循环结构相同。每个不动着色必须在同一循环上同色，
+所以 Burnside 平均给出所列公式。
+\end{proof}
+
+同样的平均还能复核共轭类的数目：恒等和 $-1$ 各固定八个群元，
+其余六个元素各固定四个，于是 $(2\cdot8+6\cdot4)/8=5$。
+二群作用的不动点同余式在共轭作用中读作
+$|G|\equiv|Z|\pmod2$，即 $8\equiv2\pmod2$。
+
+\subsection{结构列、群展示与不能拆开的中央扩张}
+
+\begin{exbox}[全部子群正规是否意味着直积]
+计算 Sylow 子群、合成列、导出列和上下中心列。
+给出 $Q_8$ 的群展示，并判断它能否分解为两个非平凡群的直积
+或非平凡半直积。
+\end{exbox}
+
+Cauchy 定理在此只涉及素数二，唯一的二阶元素是 $-1$。
+Sylow $2$-子群是整个 $G$，数量为一；不存在其他素数的非平凡
+Sylow 子群。三个四阶子群都是真子群，不能代替这个八阶 Sylow 子群。
+合成列可以选为
+\[
+\{1\}\trianglelefteq Z\trianglelefteq I\trianglelefteq G,
+\]
+三个相邻因子均为 $C_2$。把 $I$ 换成 $J$ 或 $L$ 得到另外两条
+合成列，因子的次序和同构类型仍为三个 $C_2$。
+
+\begin{proposition}[二步幂零结构与非分裂性]
+\label{prop:q8-series-extension}
+导出列、下中心列和上中心列分别为
+\[
+\begin{aligned}
+G^{(0)}&=G,&G^{(1)}&=Z,&G^{(2)}&=\{1\},\\
+\gamma_1(G)&=G,&\gamma_2(G)&=Z,&\gamma_3(G)&=\{1\},\\
+Z_0(G)&=\{1\},&Z_1(G)&=Z,&Z_2(G)&=G.
+\end{aligned}
+\]
+因此 $G$ 可解，导出长度为二；也幂零，幂零类为二。
+其群展示可取
+\[
+Q_8\cong\langle a,b\mid a^4=1,\ b^2=a^2,\ bab^{-1}=a^{-1}\rangle.
+\]
+中央扩张
+\[
+1\longrightarrow Z\longrightarrow G\longrightarrow C_2\times C_2
+\longrightarrow1
+\]
+不分裂；$G$ 也不能写成两个非平凡群的内直积或内半直积。
+\end{proposition}
+
+\begin{proof}
+已求得 $[G,G]=Z$，而 $Z$ 交换且居中，所以
+$[Z,Z]=\{1\}$、$[G,Z]=\{1\}$，分别给出导出列与下中心列。
+$G/Z$ 交换，其中心就是整个商群，故上中心列第二步到达 $G$。
+$G$ 自身不交换，所以两种长度都不能缩为一。
+
+取 $a=i,b=j$，三个展示关系均由乘法表满足。
+反过来，展示中的关系把任意字化为 $a^r b^s$，
+$0\le r<4$、$s=0,1$：用 $ba=a^{-1}b$ 把 $b$ 移到右侧，
+再用 $b^2=a^2$ 降低其次数。因此展示群至多有八个元素。
+它向实际八阶的 $Q_8$ 满射，必为同构。
+这也是自由群到 $Q_8$ 的满同态的具体例子：其核为所列关系的正规闭包。
+
+若中央扩张有截面，截面的像应是一个四阶子群，
+与 $Z$ 的交平凡。但每个非平凡子群都包含 $Z$，不可能有这样的像。
+内直积或内半直积也要求两个非平凡因子的交为 $\{1\}$，
+同一事实排除了这两种分解。因而全体子群正规仍不意味着群交换，
+也不意味着它能分解为较小群的直积。
+\end{proof}
+
+\subsection{从阿贝尔化构造全部不可约表示}
+
+\begin{exbox}[把抽象乘法变成态空间上的矩阵]
+求 $Q_8$ 的全部不可约复表示。对二维矩阵表示实际计算不变子空间、
+酉化平均和交织算子，再给出正则表示的完整分解。
+\end{exbox}
+
+一维表示的像必交换，因此杀掉 $[G,G]=Z$。
+取 $a,b\in\{+1,-1\}$，定义
+\[
+\chi_{ab}(i)=a,\qquad\chi_{ab}(j)=b,
+\qquad\chi_{ab}(k)=ab,\qquad\chi_{ab}(-1)=1.
+\]
+这四个表示就是商群 $C_2\times C_2$ 的四个符号表示。
+负元素与对应正元素取同一值，因为其相差中心元素 $-1$。
+另取二维表示 $\rho$，令
+\[
+\rho(i)=A,\qquad\rho(j)=B,\qquad\rho(k)=K,
+\qquad\rho(-1)=-I_2.
+\]
+记其表示空间为 $V$，标准基为 $e_0,e_1$。
+
+\begin{proposition}[全部不可约表示与 Schur 引理的矩阵计算]
+\label{prop:q8-all-irreps}
+四个 $\chi_{ab}$ 与二维表示 $V$ 两两不等价，都是不可约表示，
+且穷尽 $Q_8$ 的不可约复表示。
+二维表示的交换子代数为 $\mathbb C I_2$；任意两种不同
+不可约表示之间的交织算子为零。
+\end{proposition}
+
+\begin{proof}
+一维表示自动不可约，四个生成元取值不同，故彼此不等价。
+若二维表示有不变直线，它必须是 $A$ 的特征直线
+$\mathbb Ce_0$ 或 $\mathbb Ce_1$，因为 $A$ 有两个不同特征值。
+但 $Be_0=-e_1$、$Be_1=e_0$，这两条直线都不对 $B$ 不变。
+故 $V$ 不可约；其维数与一维表示不同，当然不等价。
+维数平方和已达到群阶：$4\cdot1^2+2^2=8$。
+由前章的完备性定理，不可能还有别的不可约表示。
+
+对 Schur 引理作直接计算。若 $T$ 与 $A$ 交换，
+它的两个非对角元为零，故 $T=\operatorname{diag}(u,v)$。
+再令 $TB=BT$，得到 $u=v$，所以 $T$ 为标量。
+两个不同一维表示的交织条件在某个生成元处迫使标量为零。
+从一维表示到 $V$ 的交织像若非零，就是不变直线，已被排除；
+反向映射的核若非零同样给出不变直线，若核为零又受维数限制。
+因此所有这些非等价表示之间的交织空间为零。
+\end{proof}
+
+这里酉化并非只是一条存在性陈述。
+若原来选了任意正定 Hermitian 矩阵 $S$ 作为内积，群平均为
+\[
+S_G=\frac18\sum_{g\in G}\rho(g)^\dagger S\rho(g)
+=\frac12\operatorname{Tr}(S)I_2.
+\]
+负号不影响共轭；先用 $A$ 的共轭消去非对角项，再用 $B$ 的共轭
+交换两个对角项，便得到右端。所得内积仍正定。
+若换基后矩阵为 $\widetilde\rho(g)=P^{-1}\rho(g)P$，
+则 $P^\dagger P$ 就是一个不变正定度量，满足
+$\widetilde\rho(g)^\dagger P^\dagger P\widetilde\rho(g)=P^\dagger P$。
+因此表示等价不必表现为原来坐标中的普通酉矩阵，
+但总能在相应内积中酉化；不变子空间的正交补也随之不变。
+
+\subsection{特征标表、中心投影与正则表示的每个分量}
+
+\begin{exbox}[不用猜测完成分解]
+按已算出的五个共轭类构造特征标表，验证行与列正交关系。
+计算群代数中的中心投影，把正则表示的八个维度实际分到各个不可约类型。
+\end{exbox}
+
+二维矩阵在 $1,-1$ 的迹分别为 $2,-2$，在其余六个元素的迹为零。
+完整表为
+\[
+\begin{array}{c|rrrrr}
+\text{共轭类}&\{1\}&\{-1\}&\{\pm i\}&\{\pm j\}&\{\pm k\}\\
+\text{类大小}&1&1&2&2&2\\\hline
+\chi_{++}&1&1&1&1&1\\
+\chi_{+-}&1&1&1&-1&-1\\
+\chi_{-+}&1&1&-1&1&-1\\
+\chi_{--}&1&1&-1&-1&1\\
+\chi_V&2&-2&0&0&0
+\end{array}
+\]
+这里行内积必须带上类大小。对任意两个符号行，计算得到
+\[
+\langle\chi_{ab},\chi_{a'b'}\rangle
+=\frac{2+2aa'+2bb'+2aa'bb'}8
+=\frac{(1+aa')(1+bb')}4.
+\]
+它恰等于相同行时的一、不同行时的零。
+二维行的模平方内积为 $(4+4)/8=1$，与每个符号行的内积为
+$(2-2)/8=0$。这些都是带权正交关系的完整数值计算。
+列正交同样可复核：$1,-1$ 列的平方和为八，三个轴列的平方和为四，
+分别等于 $8/|\operatorname{Cl}(g)|$；不同列的内积为零。
+例如 $1,-1$ 列给出 $4-4=0$，$i,j$ 列给出 $1-1-1+1=0$。
+五行占满五维类函数空间，所以任意类函数都可在此表中展开。
+
+\begin{proposition}[中心幂等元与正则表示]
+\label{prop:q8-central-projectors}
+在群代数中，把单位群元写成 $\mathbf1$，把中心群元 $-1$ 写成 $z$，
+以区分群元 $z$ 与系数 $-1$。各不可约类型的中心投影为
+\[
+\begin{aligned}
+p_{ab}&=\frac18\bigl[(\mathbf1+z)+a(i+zi)
+ +b(j+zj)+ab(k+zk)\bigr],\\
+p_V&=\frac12(\mathbf1-z).
+\end{aligned}
+\]
+它们满足 $p_\alpha p_\beta=\delta_{\alpha\beta}p_\alpha$、
+$\sum_\alpha p_\alpha=\mathbf1$。正则表示分解为
+\[
+\mathbb C[G]\cong\chi_{++}\oplus\chi_{+-}\oplus\chi_{-+}\oplus\chi_{--}
+\oplus V\oplus V.
+\]
+四个一维同类分量各为一维，$V$ 的同类分量为四维，
+且群代数作为代数有
+$\mathbb C[G]\cong\mathbb C^4\oplus M_2(\mathbb C)$。
+\end{proposition}
+
+\begin{proof}
+将特征标表代入 $p_\alpha=(d_\alpha/8)
+\sum_g\overline{\chi_\alpha(g)}g$，得到所列公式。
+投影正交性由前章投影公式给出，也可在八维乘法表中逐项检验。
+四个符号求和时，$a,b,ab$ 的系数全部抵消，故
+\[
+\sum_{a,b}p_{ab}=\frac12(\mathbf1+z),
+\qquad \sum_{a,b}p_{ab}+p_V=\mathbf1.
+\]
+正则特征标仅在单位元处取八，所以重数为
+$\langle\chi_\alpha,\chi_{\mathrm{reg}}\rangle=d_\alpha$。
+因此一维表示各出现一次，$V$ 出现两次，维数为 $4+4=8$。
+这给出全部分解，而不是仅用维数猜测。
+
+还可以实际看见四维分量。令
+$f_g=(g-zg)/\sqrt2$，$g=1,i,j,k$，则这四个向量
+构成 $p_V\mathbb C[G]$ 的正交基。
+在其中 $\lambda(i)$ 的两个 $\mathrm i$ 特征向量可取
+\[
+w_1=(f_1-\mathrm i f_i)/\sqrt2,
+\qquad w_2=(f_j-\mathrm i f_k)/\sqrt2.
+\]
+对 $r=1,2$，令 $u_r=-\lambda(j)w_r$。
+则 $\lambda(i)w_r=\mathrm i w_r$、
+$\lambda(i)u_r=-\mathrm i u_r$、
+$\lambda(j)w_r=-u_r$、$\lambda(j)u_r=w_r$。
+两个正交空间 $\operatorname{span}\{w_r,u_r\}$ 分别给出矩阵 $A,B$，
+所以这确实是两个 $V$，也具体实现了 Maschke 完全可约性。
+\end{proof}
+
+投影还能直接作用于一个没有对称性适配的态。
+在正则空间的正交群元基中，$p_{ab}\mathbf1=p_{ab}$，其模平方为
+$8(1/8)^2=1/8$；$p_V\mathbf1=(\mathbf1-z)/2$，模平方为 $1/2$。
+四个一维概率与一个四维同类分量概率相加为一。
+这把“投影到对称类型”变成了对一个具体基态的分解。
+
+对于任意函数 $f:G\to\mathbb C$，沿用前章及 $D_3$ 算例的归一化 Haar 测度和逐矩阵元约定：
+\[
+\widehat f(ab)=\frac18\sum_g f(g)\overline{\chi_{ab}(g)},
+\qquad \widehat f(V)_{rs}=\frac18\sum_g f(g)\overline{\rho(g)_{rs}}.
+\]
+Fourier 反演和 Plancherel 公式具体写成
+\[
+\begin{aligned}
+f(g)&=\sum_{a,b}\widehat f(ab)\chi_{ab}(g)
+ +2\sum_{r,s}\widehat f(V)_{rs}\rho(g)_{rs},\\
+\frac18\sum_g|f(g)|^2&=\sum_{a,b}|\widehat f(ab)|^2
+ +2\operatorname{Tr}\bigl(\widehat f(V)^\dagger\widehat f(V)\bigr).
+\end{aligned}
+\]
+例如 $f=\delta_1$ 时，四个标量变换都为 $1/8$，矩阵变换为 $I_2/8$；
+反演给出 $(\sum_{a,b}\chi_{ab}+2\chi_V)/8=\delta_1$，
+范数公式给出 $1/8=(4+2\cdot2)/64$。
+若另用矩阵变换 $\sum_gf(g)\rho(g)^\dagger$，它等于本段 $8\widehat f(V)^{\mathsf T}$，
+不能在反演中漏掉这个转置与群阶因子。
+大正交关系也可在这里直接读取：三个非中心类在标量特征标中相消，
+二维矩阵元的归一化为
+\[
+\frac18\sum_g\overline{\rho(g)_{rs}}\rho(g)_{tu}
+=\frac12\delta_{rt}\delta_{su}.
+\]
+例如 $r=s=t=u=0$ 时，$\rho(g)_{00}$ 只在
+$\{1,-1,i,-i\}$ 上非零且模长为一，左端就是 $4/8$。
+
+\subsection{限制、诱导与四个张量通道}
+
+\begin{exbox}[把子群表示与双粒子态接回同一张表]
+将全部不可约表示限制到 $I=\langle i\rangle$，
+并从 $I$ 的四个一维表示诱导回 $G$。
+再算 $V\otimes V$ 的全部 Clebsch--Gordan 系数和中央投影。
+\end{exbox}
+
+记 $I$ 的字符为 $\theta_m(i)=\mathrm i^m$，$m=0,1,2,3$。
+由 $A$ 的两个特征值直接得到
+\[
+\chi_{+b}\downarrow_I=\theta_0,
+\qquad\chi_{-b}\downarrow_I=\theta_2,
+\qquad V\downarrow_I=\theta_1\oplus\theta_3.
+\]
+Frobenius 互反律随即逐项给出
+\[
+\begin{aligned}
+\operatorname{Ind}_I^G\theta_0&=\chi_{++}\oplus\chi_{+-},\\
+\operatorname{Ind}_I^G\theta_2&=\chi_{-+}\oplus\chi_{--},\\
+\operatorname{Ind}_I^G\theta_1&=V,
+\qquad \operatorname{Ind}_I^G\theta_3=V.
+\end{aligned}
+\]
+每个诱导空间维数为二，与上式一致。取陪集代表 $1,j$，
+在诱导基 $(1\otimes1,j\otimes1)$ 中还可直接算出
+\[
+D_m(i)=\begin{pmatrix}\mathrm i^m&0\\0&\mathrm i^{-m}\end{pmatrix},
+\qquad D_m(j)=\begin{pmatrix}0&(-1)^m\\1&0\end{pmatrix}.
+\]
+这里 $ij=ji^{-1}$ 使第二个陪集块取逆特征值，
+$j^2=-1=i^2$ 则给出非对角项 $(-1)^m$。
+偶数 $m$ 时可对角化 $D_m(j)$，得到两个一维分量；
+奇数 $m$ 时矩阵满足前面的二维不可约判据，故得到 $V$。
+尤其 $\operatorname{Ind}_I^G\theta_0$ 就是两点陪集置换表示：
+它只有一维平凡分量和一维商群符号分量，不含忠实的 $V$。
+
+同一对陪集也给出 Mackey 限制公式的全部项。
+因为 $I$ 正规，双陪集恰为 $I$ 与 $IjI=jI$，
+且两个交子群 $I\cap I$、$I\cap jIj^{-1}$ 都等于 $I$。
+第一个双陪集给出 $\theta_m$，第二个双陪集给出共轭后的字符
+\[
+\theta_m^j(i)=\theta_m(j^{-1}ij)
+=\theta_m(i^{-1})=\mathrm i^{-m}.
+\]
+所以每个双陪集内部的诱导都是从 $I$ 到自身，Mackey 公式化为
+\[
+\left(\operatorname{Ind}_I^G\theta_m\right)\downarrow_I
+=\theta_m\oplus\theta_{-m},
+\qquad -m\text{ 按模四读取}.
+\]
+这恰好是上面 $D_m(i)$ 的两个对角元：$m=0,2$ 时两个字符相同，
+$m=1,3$ 时两个字符互异。再取 $I$ 上的字符内积，得到
+\[
+\dim\operatorname{End}_G(\operatorname{Ind}_I^G\theta_m)
+=\langle\theta_m,\theta_m\oplus\theta_{-m}\rangle_I
+=1+\delta_{m,-m}.
+\]
+奇数 $m$ 时交换子代数维数为一，与诱导表示不可约一致；
+偶数 $m$ 时维数为二，与两个不等价一维表示的直接和一致。
+这里双陪集、共轭字符、Frobenius 互反律和不可约性判据
+不是四个互不相干的公式，而是在同一个两块矩阵上的四种计算。
+
+Clifford 定理的小群也能从这两个对角元实际读出。
+当 $m$ 为奇数，$\theta_m$ 在共轭下的轨道为
+$\{\theta_m,\theta_{-m}\}$，惯性子群恰为 $I$；
+从此小群诱导得到 $V$，限制回去时轨道上的两个字符各出现一次。
+当 $m$ 为偶数，字符不被共轭改变，惯性子群为 $G$。
+它此时有两种一维延拓，分别令 $j$ 取值 $+1$ 或 $-1$；
+$m=0$ 给出 $\chi_{++},\chi_{+-}$，$m=2$ 给出 $\chi_{-+},\chi_{--}$。
+这些延拓相差商群 $G/I\cong C_2$ 的符号表示，
+诱导矩阵也正好由 $j$ 的两个特征直线分成这两块。
+
+若改为正规子群 $Z$，情况又有所不同。
+令 $\eta_-(z)=-1$，则 $V\downarrow_Z=\eta_-\oplus\eta_-$，
+字符 $\eta_-$ 的惯性子群为整个 $G$。
+然而它不能延拓为 $G$ 的一维表示，因为一维表示必须在
+换位子 $z=[i,j]$ 上取一。以 $i,j$ 为商群生成元的提升，
+它们在 $V$ 中满足 $AB=-BA$、$A^2=B^2=-I_2$；
+商群 $C_2\times C_2$ 的两个生成元本身却交换且平方为一。
+这些负号正是中央扩张在商群表示中留下的乘法因子。
+因此小群是整个 $G$ 并不自动保证所选子群字符有一维延拓；
+是否存在延拓必须检验乘法关系。
+
+\begin{proposition}[$V\otimes V$ 的完整耦合基]
+\label{prop:q8-tensor-cg}
+有 $V\otimes V\cong\bigoplus_{a,b=\pm1}\chi_{ab}$。
+取 $|rs\rangle=e_r\otimes e_s$，各一维通道的归一化基为
+\[
+\begin{aligned}
+|++\rangle_{\chi}&=(|01\rangle-|10\rangle)/\sqrt2,\\
+|+-\rangle_{\chi}&=(|01\rangle+|10\rangle)/\sqrt2,\\
+|-+\rangle_{\chi}&=(|00\rangle+|11\rangle)/\sqrt2,\\
+|--\rangle_{\chi}&=(|00\rangle-|11\rangle)/\sqrt2.
+\end{aligned}
+\]
+下标 $\chi$ 表示通道的符号 $a,b$，与原来的单粒子基标记不同。
+反对称平方为平凡表示，且
+\[
+\bigwedge^2 V=\chi_{++},\qquad
+\operatorname{Sym}^2V=\chi_{+-}\oplus\chi_{-+}\oplus\chi_{--}.
+\]
+\end{proposition}
+
+\begin{proof}
+张量积特征标为 $\chi_V^2=(4,4,0,0,0)$。
+与每个一维行的内积是 $(4+4)/8=1$，
+与二维行的内积是 $(8-8)/8=0$，故四个符号通道各出现一次。
+为算出基而不只列重数，逐项作用生成元。
+$A\otimes A$ 在 $|00\rangle,|11\rangle$ 上取 $-1$，
+在 $|01\rangle,|10\rangle$ 上取 $+1$；而
+\[
+\begin{aligned}
+(B\otimes B)|00\rangle&=|11\rangle,&
+(B\otimes B)|11\rangle&=|00\rangle,\\
+(B\otimes B)|01\rangle&=-|10\rangle,&
+(B\otimes B)|10\rangle&=-|01\rangle.
+\end{aligned}
+\]
+因此四个所列向量分别是这两个算符的共同特征向量，
+特征值恰为相应 $a,b$；$K\otimes K$ 的特征值随之为 $ab$。
+四个向量正交归一，给出全部 Clebsch--Gordan 基变换。
+交换两因子时，仅 $|++\rangle_\chi$ 变号，故得到对称与反对称分解。
+\end{proof}
+
+这四个通道的投影不需要再对八个群元逐一求矩阵。
+因为 $\rho(-1)\otimes\rho(-1)=I_4$，张量表示经由 $G/Z$ 分解，
+其两个生成元现在交换且平方为一。故
+\[
+P_{ab}=\frac14\bigl(I_4+aA\otimes A\bigr)
+                 \bigl(I_4+bB\otimes B\bigr)
+=|ab\rangle_\chi\,{}_{\chi}\langle ab|.
+\]
+这是前一节群代数中心投影 $p_{ab}$ 在张量空间中的像；
+$p_V$ 的像为零。对任意态
+$|\psi\rangle=\sum_{r,s=0}^1c_{rs}|rs\rangle$，四个耦合系数为
+\[
+\begin{aligned}
+c_{++}&=(c_{01}-c_{10})/\sqrt2,&
+c_{+-}&=(c_{01}+c_{10})/\sqrt2,\\
+c_{-+}&=(c_{00}+c_{11})/\sqrt2,&
+c_{--}&=(c_{00}-c_{11})/\sqrt2.
+\end{aligned}
+\]
+例如 $|00\rangle=(|-+\rangle_\chi+|--\rangle_\chi)/\sqrt2$，
+它恰有两个各占 $1/2$ 概率的一维通道。
+同时四个符号表示的张量乘法为
+$\chi_{ab}\otimes\chi_{a'b'}=\chi_{aa',bb'}$，
+而 $\chi_{ab}\otimes V\cong V$，因为其特征标仍为 $\chi_V$。
+后一等价也有明确矩阵：对 $(a,b)=(++),(+-),(-+),(--)$，
+分别取 $T=I_2,A,B,K$，则
+\[
+TAT^{-1}=aA,\qquad TBT^{-1}=bB.
+\]
+相应生成元的交换或反交换关系逐项保证了这个换基公式。
+至此所有不可约表示之间的张量乘法都已确定。
+
+四点商群作用的置换空间 $\mathbb C[G/Z]$ 也出现同样的四个通道。
+在四个点 $i^rj^sZ$（$r,s=0,1$）上取归一化函数
+\[
+\varphi_{ab}(i^rj^sZ)=\frac12a^r b^s.
+\]
+按 $[D(g)f](xZ)=f(g^{-1}xZ)$ 作用，
+有 $D(i)\varphi_{ab}=a\varphi_{ab}$、
+$D(j)\varphi_{ab}=b\varphi_{ab}$。
+四个函数正交归一，所以
+$\mathbb C[G/Z]\cong\bigoplus_{a,b}\chi_{ab}\cong V\otimes V$。
+于是此前的四点非忠实作用与这里的双粒子张量作用
+在换到各自耦合基以后成为完全相同的表示；其核都为 $Z$。
+
+把直接和记作加法、张量积记作乘法，便得到此前定义的表示环。
+设 $x=[\chi_{+-}]$、$y=[\chi_{-+}]$、$v=[V]$，则其加法群
+以 $1,x,y,xy,v$ 为一组整数基，乘法完整地由
+\[
+x^2=y^2=1,\qquad xv=yv=v,\qquad v^2=1+x+y+xy
+\]
+确定。维数映射取 $x,y\mapsto1$、$v\mapsto2$，
+最后一个关系在维数上给出 $2^2=1+1+1+1$，
+但它的内容还包括四个具体通道，而不只是这个维数恒等式。
+四个一维表示的对偶就是自身；二维酉表示的对偶与复共轭表示等价，
+下面的计算说明它也与 $V$ 等价。
+
+\begin{proposition}[实特征标与四元数型表示]
+\label{prop:q8-quaternionic-real-structure}
+二维特征标处处实，$V$ 与其复共轭表示等价，但 $V$ 不能在二维实空间上实现。
+反线性算符 $\mathcal Jv=B\overline v$ 与群作用交换，且 $\mathcal J^2=-I_2$。
+\end{proposition}
+
+\begin{proof}
+矩阵 $B$ 为实矩阵，而 $\overline A=-A$、$BA=-AB$，所以
+$B\overline A=AB$；对 $B$ 本身也有 $B\overline B=BB$。
+于是 $\mathcal J$ 与两个生成元的表示交换，也与所有群元交换。
+又有 $\mathcal J^2=B\overline B=B^2=-I_2$。
+任何与 $\rho$ 交换的反线性映射都为 $c\mathcal J$：
+把它与 $\mathcal J^{-1}$ 复合得到线性交织算子，再用已算出的
+Schur 交换子代数。其平方为 $-|c|^2I_2$，不可能等于 $I_2$。
+若全部表示矩阵可同时换成实矩阵，该基中的复共轭便是一个与群交换、
+平方为一的反线性算符，与上述结论矛盾。最后，$B$ 是 $\overline\rho$
+到 $\rho$ 的可逆线性交织矩阵，故二者等价。
+\end{proof}
+
+平方为 $-1$ 的相容反线性算符表达了四元数型表示的具体含义。
+此前的 Frobenius--Schur 指标在此可以直接计算。
+两个中心元素的平方为一，另外六个元素的平方为 $z$，故
+\[
+\nu(\chi_V)=\frac18\sum_{g\in G}\chi_V(g^2)
+=\frac{2\cdot2+6\cdot(-2)}8=-1.
+\]
+四个一维表示在 $1,z$ 上都取一，所以各自的指标为
+$(2\cdot1+6\cdot1)/8=1$，也都已由实矩阵实现。
+这里实值特征标、与共轭表示等价、能否换成实矩阵三个条件的
+关系都能通过同一批八个群元核算。
+
+乘法表中的中心符号最终出现在每一个计算里：
+它决定商群与阿贝尔化，限制忠实置换作用的最小次数，
+区分一维与二维不可约表示，又使两个二维因子的张量积退化为
+四个商群的一维通道。这样，同一套群元、陪集与表示矩阵把
+前四章的语言连成了一次可从头复算的完整应用。

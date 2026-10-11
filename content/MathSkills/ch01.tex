@@ -15,7 +15,7 @@
 整数在加法下是群，单位元为 \(0\)，逆元为相反数。非零实数在乘法下也是群，
 但全体实数在乘法下不是群，因为 \(0\) 没有逆元。
 \(n\) 阶可逆矩阵在矩阵乘法下构成
-\(\operatorname{GL}(n,\mathbb R)\)；矩阵乘法一般不交换。
+\(\operatorname{GL}(n,\RR)\)；矩阵乘法一般不交换。
 例如取
 \(A=\begin{psmallmatrix}1&1\\0&1\end{psmallmatrix}\)、
 \(B=\begin{psmallmatrix}1&0\\1&1\end{psmallmatrix}\)，则
@@ -67,7 +67,7 @@
 \end{proof}
 
 若 \(g\in G\)，反复做它所成的集合
-\(\langle g\rangle=\{g^k:k\in\mathbb Z\}\) 是子群，称为由 \(g\)
+\(\langle g\rangle=\{g^k:k\in\ZZ\}\) 是子群，称为由 \(g\)
 生成的循环子群。有限群中存在最小正整数 \(m\) 使 \(g^m=e\)：
 因为幂 \(e,g,g^2,\ldots\) 总会重复，消去后就有一个正幂等于单位元。
 此时 \(e,g,\ldots,g^{m-1}\) 两两不同，所以
@@ -76,6 +76,31 @@ Lagrange 定理于是推出 \(g^{|G|}=e\)。若 \(|G|\) 是素数，任取
 \(g\ne e\)，其阶既大于一又整除 \(|G|\)，只能等于 \(|G|\)；
 所以任意素数阶群都是循环群。这些结论不要求乘法交换。
 
+
+\par
+\begin{workedexample}
+取 \(D=\operatorname{diag}(1,-1)\)。证明 \(D^2=I\)，并计算
+\(DR(\theta)D^{-1}\)。这个计算说明反射如何改变旋转方向。
+
+
+\textbf{解.} 令
+\(R(\theta)=\begin{psmallmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{psmallmatrix}\)。直接相乘得 \(D^2=I\)，且
+\[
+DR(\theta)D^{-1}=\begin{pmatrix}\cos\theta&\sin\theta\\-\sin\theta&\cos\theta\end{pmatrix}=R(-\theta).
+\]
+反射共轭把旋转角变号，几何上即反转定向。
+\end{workedexample}
+\par
+
+\par
+\begin{workedexample}
+正方形的四个旋转构成 \(C_4=\{e,r,r^2,r^3\}\)，其中 \(r^4=e\)。
+求一个顶点的轨道和稳定子，并核对轨道与稳定子的计数公式。
+
+
+\textbf{解.} 正方形的任一顶点在四个旋转下依次到达四个顶点，所以轨道大小为 \(4\)。只有恒等旋转固定该顶点，故稳定子为 \(\{e\}\)，大小为 \(1\)。于是 \(|C_4|=4=|C_4\cdot x|\,|(C_4)_x|\)，符合轨道—稳定子公式。
+\end{workedexample}
+\par
 \section{把抽象操作作用到具体对象}
 
 知道两个转动怎样复合，还不足以知道它们怎样改变位置、速度或量子态。
@@ -202,10 +227,10 @@ g'h'=gn_1hn_2
 即 \(gN=hN\)，故它也单射。
 \end{proof}
 
-例如加法群 \(\mathbb Z\) 的子群 \(n\mathbb Z\) 正规，
-\(\mathbb Z/n\mathbb Z\) 的元素是整数的余数类，
+例如加法群 \(\ZZ\) 的子群 \(n\ZZ\) 正规，
+\(\ZZ/n\ZZ\) 的元素是整数的余数类，
 而不是任选的 \(0,\ldots,n-1\) 那些代表数。
-取模映射 \(k\mapsto k\bmod n\) 的核正是 \(n\mathbb Z\)；
+取模映射 \(k\mapsto k\bmod n\) 的核正是 \(n\ZZ\)；
 同构定理解释了为什么余数相加能定义一个群。
 下一节的 \(SU(2)\) 与三维转动也会出现完全相同的结构，
 只是核从无限个整数变成 \(\{I,-I\}\)。
@@ -222,12 +247,20 @@ R(\theta+\phi)=R(\theta)R(\phi).
 J=\left.\frac{\dd R(\theta)}{\dd\theta}\right|_{\theta=0}
 =\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad J^2=-I.
 \]
-由矩阵指数的幂级数，把偶次和奇次幂分别相加，就得到
-\(\ee^{\theta J}=I\cos\theta+J\sin\theta=R(\theta)\)。
+由矩阵指数的幂级数 \(\ee^{\theta J}=\sum_{k\ge0}(\theta J)^k/k!\)，
+用 \(J^{2m}=(-1)^m I\) 把偶次幂与奇次幂分开求和：
+\[
+\sum_{m\ge0}\frac{\theta^{2m}J^{2m}}{(2m)!}
+=I\sum_{m\ge0}\frac{(-1)^m\theta^{2m}}{(2m)!}=I\cos\theta,
+\qquad
+\sum_{m\ge0}\frac{\theta^{2m+1}J^{2m+1}}{(2m+1)!}
+=J\sum_{m\ge0}\frac{(-1)^m\theta^{2m+1}}{(2m+1)!}=J\sin\theta.
+\]
+两段相加即得 \(\ee^{\theta J}=I\cos\theta+J\sin\theta=R(\theta)\)。
 连续转动由一个线性算子的指数生成。
 
 量子态的范数要在对称变换下保持，因此矩阵表示通常取酉矩阵。
-记 \(U(n)=\{M\in\mathbb C^{n\times n}:M^\dagger M=I\}\)。
+记 \(U(n)=\{M\in\CC^{n\times n}:M^\dagger M=I\}\)。
 \begin{definition}[有限维酉表示]
 在复内积空间 \(V\) 上，群表示 \(U:G\to\operatorname{GL}(V)\)
 若对每个 \(g\) 满足 \(U(g)^\dagger U(g)=I\)，
@@ -235,9 +268,11 @@ J=\left.\frac{\dd R(\theta)}{\dd\theta}\right|_{\theta=0}
 \end{definition}
 
 \begin{proposition}[单参数酉变换的生成元]
-设 \(U:\mathbb R\to U(n)\) 可微，
+设 \(U:\RR\to U(n)\) 可微，
 \(U(\theta+\phi)=U(\theta)U(\phi)\) 且 \(U(0)=I\)。
-则存在唯一 Hermite 矩阵 \(G=G^\dagger\) 使
+则存在唯一 Hermite 矩阵 \(G=G^\dagger\)（即自伴矩阵，其共轭转置等于自身，
+满足 \(\langle Gv,w\rangle=\langle v,Gw\rangle\)；内积的正式定义见 Hilbert 空间一章）
+使
 \[
 U(\theta)=\exp(-\ii\theta G/\hbar).
 \]
@@ -258,8 +293,8 @@ U(\theta)=\exp(-\ii\theta G/\hbar).
 必须先说明定义域与自伴性，不能直接照搬矩阵幂级数。
 
 \begin{definition}[矩阵 Lie 群及其 Lie 代数]
-若矩阵群 \(G\subseteq\operatorname{GL}(n,\mathbb R)\) 在每个元素附近
-都能由一个开集 \(U\subseteq\mathbb R^d\) 光滑地参数化：存在映射
+若矩阵群 \(G\subseteq\operatorname{GL}(n,\RR)\) 在每个元素附近
+都能由一个开集 \(U\subseteq\RR^d\) 光滑地参数化：存在映射
 \(F:U\to G\)，它一一对应于 \(G\) 的一个局部邻域、逆映射连续，
 而 \(F\) 的 \(d\) 个参数导数线性无关，就称它为矩阵 Lie 群。
 这里“邻域”采用矩阵元的通常距离；所需的局部光滑性只涉及有限个
@@ -289,7 +324,7 @@ g(s)h(t)g(s)^{-1}h(t)^{-1}
 
 把这个定义用到三维转动群会得到熟悉的叉积，而不需要预先知道抽象 Lie 理论。
 设
-\(SO(3)=\{R\in\mathbb R^{3\times3}:R^{\mathsf T}R=I,\det R=1\}\)。
+\(SO(3)=\{R\in\RR^{3\times3}:R^{\mathsf T}R=I,\det R=1\}\)。
 它在单位矩阵附近确有三个光滑局部参数：对充分小的反对称矩阵 \(A\) 取
 \(R=(I-A)(I+A)^{-1}\)。分母在 \(A=0\) 可逆，直接相乘验证
 \(R^{\mathsf T}R=I\)；而 \(R\) 连续接在 \(I\) 上，故 \(\det R=1\)。
@@ -324,12 +359,6 @@ L(\vb{a})\vb{v}=\vb{a}\times\vb{v}.
 \([L_i,L_j]=\epsilon_{ijk}L_k\)。非交换性在这里有可视的含义：
 绕不同轴做两次极小转动，交换顺序后剩下沿第三个方向的转动。
 
-\begin{exercise}
-正方形的四个旋转构成 \(C_4=\{e,r,r^2,r^3\}\)，其中 \(r^4=e\)。
-求一个顶点的轨道和稳定子，并核对轨道与稳定子的计数公式。
-\end{exercise}
 
-\begin{exercise}
-取 \(D=\operatorname{diag}(1,-1)\)。证明 \(D^2=I\)，并计算
-\(DR(\theta)D^{-1}\)。这个计算说明反射如何改变旋转方向。
-\end{exercise}
+
+

@@ -307,25 +307,73 @@ P_m:=\operatorname{Pf}A^{(m)}
 前者只取零同调扇区，后者才是未扭转的全部偶子图和；把两者混为一谈，会在环面配分函数中产生错误的系数。
 
 若要再把每个 \(Z^{\boldsymbol\upsilon}\) 写成 Kac--Ward 行列式或 Pfaffian，情形便比上面的 Fourier 变换精细：必须先在曲面上固定转角约定、二次精化（等价于自旋结构），并一致地选定各平方根的支。不同约定下的四项符号不能从平面公式直接读出。上面的扇区公式已经是有限图恒等式；行列式表示还需曲面 Kac--Ward 定理，不能单靠这四项 Fourier 关系得到。
-另一条可积性路线由星--三角关系组织，并可改写成 Yang--Baxter 型一致性条件。
-星--三角关系（star--triangle 关系）是 Ising 模型可积性的代数核心。下面直接比较星形与三角形对三个外部自旋产生的 Boltzmann 权重，再消去公共归一化因子。
-对三个 Ising 自旋 \(\sigma_1,\sigma_2,\sigma_3\) 在中心自旋 \(\sigma_0\) 处交汇，"星"图（中心 \(\sigma_0\) 连到三个外自旋）与"三角"图（三个外自旋直接两两耦合）的配分函数相等条件给出
-\begin{equation*}
-  \sum_{\sigma_0=\pm1}\ee^{K_1\sigma_0\sigma_1+K_2\sigma_0\sigma_2+K_3\sigma_0\sigma_3}=A\,\ee^{K_1'\sigma_2\sigma_3+K_2'\sigma_1\sigma_3+K_3'\sigma_1\sigma_2},
-\end{equation*}
-对所有 \((\sigma_1,\sigma_2,\sigma_3)\in\{\pm1\}^3\) 成立。展开左端 \(2\cosh(K_1\sigma_1+K_2\sigma_2+K_3\sigma_3)\)，比较 \((+,+,+)\) 和 \((+,+,-)\) 两个独立构型，得到
+\section{星--三角消元与两种格子的对偶}
+
+高温图展开改变了求和的对象；还可以直接消掉一个三价顶点，把它与三个邻点的作用替换成邻点之间的耦合。整体自旋翻转使八个外部构型只剩四种独立权重，恰好确定一个归一化因子与三条新耦合。
+
+\begin{theorem}[零外场星--三角恒等式]
+对任意实数 $K_1,K_2,K_3$，存在唯一的正数 $A$ 和实数 $K'_1,K'_2,K'_3$，使对全部 $\sigma_i=\pm1$ 都有
 \begin{equation}
-  \cosh(K_1+K_2+K_3)=A\cosh(K_1'+K_2'+K_3'),\qquad\cosh(K_1+K_2-K_3)=A\cosh(K_1'+K_2'-K_3').
-  \label{eq:phys-sm-star-triangle}
+ \sum_{\sigma_0=\pm1}e^{\sigma_0(K_1\sigma_1+K_2\sigma_2+K_3\sigma_3)}
+ =A e^{K'_1\sigma_2\sigma_3+K'_2\sigma_1\sigma_3+K'_3\sigma_1\sigma_2}.
+ \label{eq:phys-sm-star-triangle}
 \end{equation}
-消去 \(A\) 并利用双曲恒等式，等价条件化为
-\begin{equation*}
-  \sinh(2K_1)\sinh(2K_2)\sinh(2K_3)=\sinh(2K_1')\sinh(2K_2')\sinh(2K_3'),
-\end{equation*}
-且 \(K_i'\) 由 \(K_j\) 通过 \(\sinh(2K_i')\sinh(2K_j)\sinh(2K_k)=1\)（\(\{i,j,k\}=\{1,2,3\}\)）给出。
-各向同性 \(K_1=K_2=K_3=K\)，\(K_1'=K_2'=K_3'=K'\) 时，星--三角关系化为 \(\sinh^3(2K)=\sinh^3(2K')\)，即 \(K=K'\)。更精确地，各向同性的自对偶条件是 \(\sinh(2K_c)=1\)（Kramers--Wannier），而星--三角给出的可积点满足 \(\sinh(2K)\sinh(2K')\sinh(2K'')=1\)。对三角格 Ising，星--三角关系把三角格映射到六角格（对偶），给出精确临界温度 \(\sinh(2K_c^{\rm tri})=2/\sqrt3\)。
-星--三角关系可重写为 \(R\)-矩阵的 Yang--Baxter 方程。定义 \(R\)-矩阵（作用在 \((\mathbb C^2)^{\otimes3}\) 上）
-\begin{equation*}
-  R_{ijk}(K_1,K_2,K_3)=\sum_{\sigma_0}\ee^{K_1\sigma_0\sigma_i+K_2\sigma_0\sigma_j+K_3\sigma_0\sigma_k}\,|\sigma_i\sigma_j\sigma_k\rangle\langle\sigma_i\sigma_j\sigma_k|,
-\end{equation*}
-星--三角关系 \(R_{123}R_{213}R_{132}=A\cdot R_{231}R_{312}R_{123}\)（适当指标排列）即 Yang--Baxter 方程的 braid 形式。这一代数方程保证转移矩阵的不同构造方式给出相同谱（可积性），是精确可解模型的统一判据。
+令
+\begin{align*}
+ W_0&=2\cosh(K_1+K_2+K_3),&W_1&=2\cosh(-K_1+K_2+K_3),\\
+ W_2&=2\cosh(K_1-K_2+K_3),&W_3&=2\cosh(K_1+K_2-K_3).
+\end{align*}
+则精确解为
+\begin{align*}
+ A&=(W_0W_1W_2W_3)^{1/4},\\
+ K'_1&=\tfrac14\log\frac{W_0W_1}{W_2W_3},\quad
+ K'_2=\tfrac14\log\frac{W_0W_2}{W_1W_3},\quad
+ K'_3=\tfrac14\log\frac{W_0W_3}{W_1W_2}.
+\end{align*}
+\end{theorem}
+\begin{proof}
+对外部构型 $+++,-++,+-+,++-$，左端分别为 $W_0,W_1,W_2,W_3$。取对数后得到
+\[
+ \begin{pmatrix}\log W_0\\\log W_1\\\log W_2\\\log W_3\end{pmatrix}
+ =\begin{pmatrix}1&1&1&1\\1&1&-1&-1\\1&-1&1&-1\\1&-1&-1&1\end{pmatrix}
+ \begin{pmatrix}\log A\\K'_1\\K'_2\\K'_3\end{pmatrix}.
+\]
+这张矩阵的转置乘自身为 $4I$，故可逆且给出上述唯一解。$W_i>0$ 保证实对数存在。其余四个构型与这四个整体翻转配对，左右权重都不变，因此恒等式对全部构型成立。若星的中心带外场，翻转不再对称，消元一般产生一体及三体项，不能只保留这四个参数。
+\end{proof}
+
+\begin{workedexample}[各向同性消元的精确式与小耦合检查]
+取 $K_1=K_2=K_3=K$。则三个新耦合相等，
+\[
+ K'=\frac14\log\frac{\cosh3K}{\cosh K},\qquad
+ A=2(\cosh3K\,\cosh^3K)^{1/4}.
+\]
+全部外部自旋平行时，$Ae^{3K'}=2\cosh3K$；其中一个反向时，$Ae^{-K'}=2\cosh K$，两种权重直接核对了结果。
+
+对 $|K|\ll1$，使用 $\log\cosh x=x^2/2-x^4/12+O(x^6)$ 得
+\[
+ K'=K^2-\frac53K^4+O(K^6).
+\]
+新耦合从二阶开始，因为两邻点须经中心的两条边相互作用。把星形与三角形的耦合写成同一个 $K$ 会在一阶就与原始权重矛盾。
+\end{workedexample}
+
+\begin{proposition}[蜂窝格与三角格的候选临界耦合]
+在无限各向同性铁磁模型具有唯一临界点，并由星--三角消元和对偶把两个临界点互相对应的条件下，
+\[
+ K_c^{\rm hex}=\frac12\log(2+\sqrt3),\qquad
+ K_c^{\rm tri}=\frac14\log3,
+\]
+对应 $\sinh(2K_c^{\rm hex})=\sqrt3$、$\sinh(2K_c^{\rm tri})=1/\sqrt3$。
+\end{proposition}
+\begin{proof}
+蜂窝格是二分图；消掉一子格的所有中心后，另一子格组成三角格。每个中心贡献 $A$，新耦合为上述 $K'$。零外场配分函数因此精确变成 $A^{N_0}$ 乘三角格配分函数，其中 $N_0$ 为消掉的中心数。有限正 $K$ 上 $A$ 解析且非零，不引入新的体自由能奇点。
+
+蜂窝格的对偶也是三角格，且 $e^{-2K^*}=\tanh K$。临界点对应与唯一性条件要求 $K'=K^*$。令 $x=e^{2K}>1$，则
+\[
+ e^{4K'}=x+x^{-1}-1,\qquad e^{4K^*}=\left(\frac{x+1}{x-1}\right)^2.
+\]
+等式乘以 $x(x-1)^2$，化成 $(x^2-4x+1)(x^2+1)=0$。唯一的 $x>1$ 实解为 $2+\sqrt3$，再代入对偶式得到 $K^*=\tfrac14\log3$。这里求出了对偶固定条件的解；唯一临界点与临界点对应的假设仍需独立的热力学论证。
+\end{proof}
+
+\begin{note}[局部消元与 Yang--Baxter 方程]
+上述恒等式允许在固定外部自旋时替换局部图，因此插入任意大图并对剩余自旋求和仍成立。但仅有一个固定耦合的消元式，不自动证明一族转移矩阵彼此对易。可积性论证还须构造带谱参数的权重、规定它们作用的张量因子，并验证相应的 Yang--Baxter 方程及边界条件。将三自旋的对角权重任意排列相乘，不能代替这项验证。
+\end{note}

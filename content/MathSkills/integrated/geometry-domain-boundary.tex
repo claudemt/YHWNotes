@@ -1,0 +1,124 @@
+
+抽象伴随域的条件可以在有限区间上完全算出；同一微分表达式所容许的域决定零模与负谱。
+
+
+
+
+
+
+在任意空间上解场方程，遇到的第一个困难不是求特征函数，而是弄清楚“微分表达式”究竟定义了哪个算子。若存在边界或奇点，两个具有相同微分形式的算子可有不同的谱。只有确定定义域与边界条件之后，才能讨论量子化、传播子和真空态。
+
+\subsection{自伴性与边界条件}
+\label{sec:ghs-self-adjoint-boundary}
+
+设 $(\Sigma,h)$ 是完备黎曼流形，取复 Hilbert 空间 $\Hil=L^2(\Sigma,\dd\mu_h)$，其内积约定为第一个变量线性。
+对实势 $V\in L^2_{\mathrm{loc}}$，考虑微分表达式 $A_0=-\Delta_h+V$，初始定义在 $C_c^\infty(\Sigma)$；这个局部平方可积条件保证 $Vf\in L^2$。若仅知 $V\in L^1_{\mathrm{loc}}$，应先从 $\int V|f|^2$ 定义二次型，并另外证明半有界性与可闭性，不能直接声称所有测试函数都属于该 $L^2$ 算子的域。
+
+\begin{definition}[算子定义域与伴随]
+稠密定义算子 $A:\Dom(A)\subset\Hil\to\Hil$ 的伴随定义域由所有满足
+$\langle\psi, A\phi\rangle=\langle\eta,\phi\rangle$ 对每个 $\phi\in\Dom(A)$ 成立的 $\psi$ 组成；此时 $A^*\psi=\eta$。若 $A=A^*$ 且定义域相同，则称 $A$ 为自伴算子。
+\end{definition}
+
+若 $\Sigma$ 有光滑边界，Green 第一恒等式直接给出
+\begin{equation}\label{eq:ghs-green-boundary-identity}
+ \langle-\Delta_hg, f\rangle-\langle g,-\Delta_hf\rangle
+ =\int_{\partial\Sigma}
+ \left[(\partial_n\overline f)g-\overline f\,\partial_n g\right]\dd\mu_{\partial\Sigma}.
+\end{equation}
+此处法向取外法向。右边是两组边界数据的反对称配对；它一般不等于零。Dirichlet、Neumann 和实 Robin 条件各自使此配对在相应的算子定义域上消失，但仅检查对称性还不足以证明自伴，仍需验证伴随定义域。
+
+\begin{theorem}[正二次型的 Friedrichs 实现]
+\label{thm:ghs-friedrichs}
+若 $A_0$ 在稠密的 $C_c^\infty(\Sigma)$ 上对称并有下界 $\langle A_0f, f\rangle\geq m\norm{f}^2$，则其闭二次型决定唯一的 Friedrichs 自伴扩张 $A_F$，且 $A_F\geq m$。若 $A_F\geq m>0$，则 $A_F^{-1}$ 是有界算子，$\norm{A_F^{-1}}\leq m^{-1}$。
+\end{theorem}
+\begin{proof}
+在测试函数上定义第一变量线性的形式 $q[f,g]=\langle A_0f,g\rangle$。
+取 $c>-m$，则 $q_c[f,g]=q[f,g]+c\langle f,g\rangle$ 正定，并满足
+\[
+ q_c[f,f]\ge(m+c)\norm{f}^2.
+\]
+半有界对称算子所诱导的形式可闭；记闭形式域为 $Q$。取形式范数完成时，必须使用形式可闭性将 $Q$ 识别为 $\Hil$ 中的稠密子空间，而不能把任意抽象完成空间直接当作嵌入。
+
+对 $u\in\Hil$，线性泛函 $f\mapsto\langle f,u\rangle$ 在 $Q$ 上连续，因为
+\[
+ |\langle f,u\rangle|\le\norm{f}\norm{u}
+ \le(m+c)^{-1/2}\norm{f}_{q_c}\norm{u}.
+\]
+Riesz 定理给出唯一 $w\in Q$，使 $q_c[f,w]=\langle f,u\rangle$ 对一切 $f\in Q$ 成立。
+定义 $R_cu=w$。取共轭后有 $q_c[w,f]=\langle u,f\rangle$；这就是闭形式表示定理中的弱方程。
+
+令
+\[
+ \Dom(A_F)=\{w\in Q:\exists v\in\Hil,\ q[w,f]=\langle v,f\rangle\ \text{对全部 }f\in Q\},
+ \qquad A_Fw=v.
+\]
+$Q$ 稠密保证 $v$ 唯一。上面的弱方程给出 $(A_F+c)R_c=I$。形式的共轭对称性说明 $A_F$ 对称；同一方程对 $c\pm\ii$ 的标准闭形式表示（或本章闭形式表示定理）给出 $A_F\pm\ii$ 的满射性，因此 $A_F$ 自伴。
+这里唯一的是所指定闭形式的自伴表示，微分表达式本身还可以有其他边界扩张。
+最后 $q[w,w]\ge m\norm{w}^2$ 给出 $A_F\ge m$；若 $m>0$，谱演算给出 $\norm{A_F^{-1}}\le m^{-1}$。
+\end{proof}
+
+要使一个算子成为量子化所需的空间哈密顿算子，光知道微分表达式还不够。最小的反例就在一维区间上。考虑 $L^2(0,L)$ 上的 $-\partial_x^2$，其内积是 $\langle g, f\rangle=\int_0^L\overline f(x)g(x)\dd x$。两次分部积分给出
+\begin{align*}
+ \langle-g'', f\rangle
+ &=-[\overline f g']_0^L+\int_0^L\overline{f'}g'\dd x,\\
+ \langle g, -f''\rangle
+ &=-[\overline {f'}g]_0^L+\int_0^L\overline{f'}g'\dd x.
+\end{align*}
+两式相减，得到只由端点数据决定的边界形式
+\begin{equation}\label{eq:ghs-bridge-interval-boundary-form}
+ \langle-g'', f\rangle-\langle g,-f''\rangle
+ =[\overline{f'}g-\overline f g']_0^L.
+\end{equation}
+如果所有允许的 $f,g$ 都满足 Dirichlet 条件 $f(0)=f(L)=0$，边界形式消失；Neumann 条件 $f'(0)=f'(L)=0$ 同样如此。周期条件也使两端贡献相互抵消。这说明“算子对称”是定义域上的关系，而不是 $-\partial_x^2$ 这几个符号单独具有的性质。
+
+边界形式为零还只是自伴性的必要条件之一。用一个具体的区间问题可以看到两者的差别。若只把算子定义在 $C_c^\infty(0,L)$，边界形式虽然为零，伴随算子的定义域却包含不满足端点为零条件的 $H^2(0,L)$ 函数，所以原算子并不自伴。相反，指定 Dirichlet 定义域
+\[
+ \Dom(A_D)=H^2(0,L)\cap H_0^1(0,L)
+\]
+以后，任何伴随域中的函数 $g$ 都必须使 \cref{eq:ghs-bridge-interval-boundary-form} 对全部 $f\in\Dom(A_D)$ 消失。因为可以独立选择 $f'(0)$、$f'(L)$，这迫使 $g(0)=g(L)=0$；因而伴随域恰好回到 $\Dom(A_D)$，建立自伴性。这是泛函分析定义域计算的最简单模型。
+
+在 $x=0$ 施加 $f(0)=0$，在 $x=L$ 施加 $f'(L)+hf(L)=0$，其中 $h$ 是实数、量纲为逆长度。正谱 $\lambda=k^2$ 的通解为 $f=A\sin(kx)+B\cos(kx)$。左端条件给 $B=0$；右端条件要求
+\begin{equation}\label{eq:ghs-bridge-robin-quantization}
+ k\cos(kL)+h\sin(kL)=0.
+\end{equation}
+特别地 $h=0$ 给 $kL=(j+\frac12)\pi$，而 $h\to+\infty$ 的有限 $k$ 极限趋向 $kL=j\pi$。可见改变连续的边界参数，离散本征值会连续移动。
+
+\begin{proposition}[有限区间 Robin 负谱阈值]
+对 $f(0)=0$、$f'(L)+hf(L)=0$ 的自伴实现，$h<-1/L$ 当且仅当存在负本征值，并且负本征值恰有一个。$h=-1/L$ 时零模为 $f(x)=Cx$。
+\end{proposition}
+\begin{proof}
+如果允许负谱 $\lambda=-\kappa^2$（$\kappa>0$），由左端条件得到 $f=A\sinh(\kappa x)$，右端条件成为
+\[
+ \kappa\cosh(\kappa L)+h\sinh(\kappa L)=0,
+ \quad h=-\kappa\coth(\kappa L).
+\]
+函数 $\kappa\coth(\kappa L)$ 从 $1/L$ 单调增加到无穷，因此恰在 $h<-1/L$ 时出现唯一负本征值。临界值 $h=-1/L$ 对应零模 $f(x)=Cx$。这一例子告诉我们：有些边界条件不仅改变谱间距，还会让原本非负的算子产生负谱。因此在把算子的平方根叫作自由场频率之前，必须先确认它的正性。
+
+
+
+负谱的唯一性还需检查边界根的严格单调性。令 $x=\kappa L>0$，则
+\[
+ f(\kappa)=\kappa\coth(\kappa L),\qquad
+ f'(\kappa)=\coth x-x\,\operatorname{csch}^2x
+ =\frac{\sinh x\cosh x-x}{\sinh^2x}.
+\]
+分子在 $x=0$ 时为零，其导数是 $2\sinh^2x>0$，故 $f'(\kappa)>0$。又由 $\coth x=x^{-1}+x/3+O(x^3)$ 得 $f(0^+)=1/L$，由 $\coth x\to1$ 得 $f(\kappa)\to\infty$。因此方程 $f(\kappa)=-h$ 在 $h<-1/L$ 时恰有一个正根，而不是仅仅存在某个数值求出的负能级。其本征函数 $\sinh(\kappa x)$ 在有限区间上平方可积，故它确实属于自伴算子的离散谱。
+
+\end{proof}
+
+若某个谱值为 $\lambda=-\kappa^2<0$，对应的欧氏二次作用量包含 $\int[(\dot q)^2-\kappa^2q^2]\dd\tau$，沿着足够缓慢的模态方向可以趋于 $-\infty$；普通实轴高斯路径积分便无法归一化。因此边界谱的数学问题不仅关系到模式是否正交，也直接关系到真空是否稳定。
+
+同一个区间还能给出一个直接比较边界条件的算例。
+在 $(0,L)$ 上令 $A=-\frac{\dd^2}{\dd x^2}$。Dirichlet 条件 $f(0)=f(L)=0$ 给出
+\[
+ \lambda_n^{D}=\left(\frac{n\pi}{L}\right)^2,\qquad n=1,2,\ldots.
+\]
+Neumann 条件 $f'(0)=f'(L)=0$ 给出
+\[
+ \lambda_n^{N}=\left(\frac{n\pi}{L}\right)^2,\qquad n=0,1,\ldots.
+\]
+周期条件 $f(0)=f(L),f'(0)=f'(L)$ 给出
+\[
+ \lambda_k^{P}=\left(\frac{2\pi k}{L}\right)^2,\qquad k\in\ZZ.
+\]
+它们使用同一个微分表达式，却有不同的零模、简并度与传播子。边界条件不是计算后的装饰，而是算子定义的一部分。

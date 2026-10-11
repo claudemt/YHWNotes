@@ -115,6 +115,8 @@ j(0)=\frac\hbar\mu\operatorname{Im}[u(0)^*u'(0)].
 \]
 实 \(\gamma\) 使 \(u'(0)=\gamma u(0)\)，所以 \(j(0)=0\)：概率不会从半直线端点漏走。自伴边界条件的物理含义正是把端点处的概率通量封闭起来。
 
+\input{content/AdvancedPhysics/sections/finite-robin-boundary.tex}
+
 \subsection{短程散射、阈值展开与零程相互作用}
 \label{sec:phys-hdqm-threshold-scattering}
 
@@ -1126,40 +1128,307 @@ J_\nu(z)=\frac{(z/2)^\nu}{\Gamma(\nu+1)}
 \end{equation}
 因此固定 $1/r$ 势与谐振子的 Kummer 解可以看成 Gauss 超几何方程的合流极限，而球阱中的 Bessel 解又可写成进一步的 ${}_0F_1$ 极限。这些合流关系只描述微分方程的解析族；量子物理解仍由算子定义域、端点条件与无穷远边界条件共同选定。
 真实 Maxwell--Poisson 势也不存在跨维数的单一特殊函数模板：$d=1$ 的线性势对应 Airy 方程，$d=3$ 的 $1/r$ 势对应 Kummer 方程，$d=4$ 的 $1/r^2$ 势受逆平方结构控制，而 $d=2$ 的对数势一般没有与三维 Coulomb 谱同构的超几何闭式。
-\begin{proof}[解]
-对径向哈密顿量 \(H=-\frac{\hbar^2}{2m}\frac{\dd^2}{\dd r^2}+V_{\rm eff}(r)\)（\(V_{\rm eff}=V(r)+\frac{\hbar^2\ell(\ell+1)}{2mr^2}\)），定义超位力算符 \(G=r^s\frac{\dd}{\dd r}+\frac{s}{2}r^{s-1}\)（\(s\) 为非负整数）。对束缚态 \(|n\rangle\)，超位力关系来自
-\begin{equation*}
-  0=\langle n|[G,H]|n\rangle.
-\end{equation*}
-逐项计算对易子（利用 \([\frac{\dd}{\dd r},V(r)]=V'(r)\)），
-\begin{equation*}
-  [G,H]=-\frac{\hbar^2}{2m}\left(s r^{s-1}\frac{\dd^2}{\dd r^2}+\frac{s(s-1)}{2}r^{s-2}\frac{\dd}{\dd r}\right)+\frac{s}{2}r^{s-1}V'(r)+r^s V'(r).
-\end{equation*}
-取期望值并由位力定理 \(\langle T\rangle=\frac12\langle rV'(r)\rangle\) 消去动能项，得超位力递推
-\begin{equation}
-  2E_n\langle r^s\rangle=\langle r^s V'(r)\rangle+\frac{s\hbar^2}{4m}\bigl[(2s-1)\langle r^{s-2}\rangle+4\ell(\ell+1)\langle r^{s-2}\rangle\bigr].
-  \label{eq:phys-hdqm-hypervirial-recurrence}
+\subsection{径向矩与 Coulomb 隐对称性}
+
+径向方程除了给出波函数，还能直接约束其矩。
+以下先处理三维归一化约化径向函数 $u(r)$，其测度为 $\dd r$，
+而非原波函数 $R(r)$ 的 $r^2\dd r$。这一区别决定积分分部中的系数。
+
+\begin{proposition}[径向超位力恒等式]
+令 $a=\hbar^2/(2m)$，$H_r=-a\partial_r^2+W(r)$，
+$W=V+a\ell(\ell+1)/r^2$。设 $u$ 是能量为 $E$ 的归一化束缚态，
+且以下各积分收敛、积分分部的端点项为零。对实函数 $f$，有
+\[
+2E\langle f'\rangle
+=\left\langle 2f'W+fW'-\frac a2 f'''\right\rangle,
+\qquad \langle F\rangle=\int_0^\infty |u(r)|^2F(r)\,\dd r.
+\]
+取 $f=r^{s+1}$，得到
+\begin{equation}\label{eq:phys-hdqm-hypervirial-recurrence}
+\begin{aligned}
+2(s+1)E\langle r^s\rangle
+&=\left\langle 2(s+1)r^sV+r^{s+1}V'\right\rangle\\
+&\quad+\frac{\hbar^2s}{4m}
+\bigl[4\ell(\ell+1)-s^2+1\bigr]\langle r^{s-2}\rangle.
+\end{aligned}
 \end{equation}
-对幂律势 \(V(r)=\lambda r^q\)，上式化为
-\begin{equation*}
-  2E_n\langle r^s\rangle=(2q+s)\lambda\langle r^{s+q-1}\rangle+\frac{s\hbar^2}{4m}\bigl[2s-1+4\ell(\ell+1)\bigr]\langle r^{s-2}\rangle.
-\end{equation*}
-即 Kramers--Pasternack 递推：\(\langle r^s\rangle\) 由 \(\langle r^{s+q-1}\rangle\) 与 \(\langle r^{s-2}\rangle\) 决定。对 Coulomb 势（\(q=-1\)，\(\lambda=-e^2\)），递推联系 \(\langle r^s\rangle\)、\(\langle r^{s-1}\rangle\)、\(\langle r^{s-2}\rangle\)，从 \(\langle r^0\rangle=1\) 出发可逐阶算出所有矩阵元。
-代入 Coulomb 势，递推式为
-\begin{equation*}
-  2E_n\langle r^s\rangle=(-2+s)(-e^2)\langle r^{s-2}\rangle+\frac{s\hbar^2}{4m}[2s-1+4\ell(\ell+1)]\langle r^{s-2}\rangle.
-\end{equation*}
-取 \(s=0\) 给位力定理 \(\langle r^{-1}\rangle=1/(n^2a_0)\)；\(s=1\) 给 \(\langle r\rangle=\frac{a_0}{2}[3n^2-\ell(\ell+1)]\)；\(s=2\) 给 \(\langle r^2\rangle=\frac{a_0^2 n^2}{2}[5n^2+1-3\ell(\ell+1)]\)。该递推绕开中间态的显式求和，直接生成 Stark、Zeeman 等微扰所需的径向矩阵元。
-Coulomb 问题还具有推广 Runge--Lenz 向量生成的 \(SO(d+1)\) 隐对称性。\(d\) 维角动量张量 \(L_{ij}=x_i p_j-x_j p_i\)，定义
-\begin{equation*}
-  A_i=\frac{1}{\sqrt{-2mE}}\left(\frac{1}{2}(p_i L_{ij}-L_{ij}p_i)-\frac{me^2 x_i}{r}\right),
-\end{equation*}
-在束缚态能面 \(H=E<0\) 上，归一化后 \(\{A_i,A_j\}=\delta_{ij}\)、\(\{A_i,L_{jk}\}=\delta_{ij}A_k-\delta_{ik}A_j\)，与角动量代数共同生成 \(SO(d+1)\)。
-量子化 \(\{\,\}\to\frac1{\ii\hbar}[\,]\) 后 \([A_i,H]=0\)，即 \(A\) 把每个 \(n\) 简并子空间映射到自身。三维下 \([A_i,A_j]=\ii\hbar\,\epsilon_{ijk}L_k\) 与 \(so(3)\) 角动量代数闭合为 \(so(4)\cong so(3)\oplus so(3)\)。
-\(SO(d+1)\) 的不可约表示 \((n+\frac{d-3}{2},0,\ldots,0)\) 维数即简并度；\(d=3\) 时 \(SO(4)\cong SU(2)\times SU(2)\) 给出 \(n^2\)，\(d=2\) 时 \(SO(3)\) 给出 \(2n-1\)。
+对于正则 Coulomb 束缚态，非负整数 $s$ 满足上述端点要求。
+当系数为零时，应在求导阶段删去相应项，不把它写成零乘一个发散积分。
+\end{proposition}
+\begin{proof}
+取一阶微分表达式 $G=f\partial_r+f'/2$。用乘法算符与微分算符的交换关系，
+\begin{align*}
+[f\partial_r,\partial_r^2]&=-2f'\partial_r^2-f''\partial_r,\\
+[f'/2,\partial_r^2]&=-f''\partial_r-f'''/2,\\
+[G,W]&=fW'.
+\end{align*}
+因此
+\[
+[G,H_r]=a\bigl(2f'\partial_r^2+2f''\partial_r+f'''/2\bigr)+fW'.
+\]
+由 $a u''=(W-E)u$ 消去二阶导数。
+实系数一维束缚态可取 $u$ 为实函数，于是端点项为零时
+\[
+\int_0^\infty u f''u'\,\dd r
+=\frac12[f''u^2]_0^\infty-\frac12\langle f'''\rangle
+=-\frac12\langle f'''\rangle.
+\]
+将其代入 $\langle[G,H_r]\rangle=0$，得到
+\[
+0=\left\langle 2f'(W-E)+fW'-\frac a2 f'''\right\rangle.
+\]
+最后代入 $W$。离心势的两个贡献分别为
+$2(s+1)a\ell(\ell+1)r^{s-2}$ 与 $-2a\ell(\ell+1)r^{s-2}$，
+合为 $2sa\ell(\ell+1)r^{s-2}$；再结合
+$f'''=(s+1)s(s-1)r^{s-2}$，即得所述递推式。
+若端点项不消失，就必须保留它，不能仅凭形式对易子断言期望值为零。
+\end{proof}
+
+\begin{example}[氢样原子的前三个径向矩]
+取 $V=-\kappa/r$，$\kappa=Ze^2/(4\pi\varepsilon_0)$，
+$a_\kappa=\hbar^2/(m\kappa)$，$E_n=-\kappa/(2a_\kappa n^2)$。
+记 $R_s=\langle r^s\rangle$。上面的结果化为 Kramers--Pasternack 递推
+\[
+2(s+1)E_nR_s
+=-(2s+1)\kappa R_{s-1}
++\frac{\hbar^2s}{4m}[4\ell(\ell+1)-s^2+1]R_{s-2}.
+\]
+对幂律势 $V=\lambda r^q$，相应势项为
+$(2s+2+q)\lambda R_{s+q}$；Coulomb 势对应 $q=-1$。
+
+从 $R_0=1$ 开始，分别取 $s=0,1,2$：
+\begin{align*}
+2E_n&=-\kappa R_{-1},\\
+4E_nR_1&=-3\kappa+\frac{\hbar^2}{m}\ell(\ell+1)R_{-1},\\
+6E_nR_2&=-5\kappa R_1
++\frac{\hbar^2}{2m}[4\ell(\ell+1)-3].
+\end{align*}
+逐项代入，得到
+\begin{align*}
+R_{-1}&=\frac1{a_\kappa n^2},\\
+R_1&=\frac{a_\kappa}{2}[3n^2-\ell(\ell+1)],\\
+R_2&=\frac{a_\kappa^2n^2}{2}[5n^2+1-3\ell(\ell+1)].
+\end{align*}
+$n=1,\ell=0$ 时为 $3a_\kappa/2$ 与 $3a_\kappa^2$，
+也可用 $u_{10}=2r a_\kappa^{-3/2}\ee^{-r/a_\kappa}$ 直接积分复核。
+这些是同一态的径向矩；不同态之间的跃迁矩阵元还需波函数或其他递推关系，
+Stark 和 Zeeman 修正也需相应的角向矩阵元。
+负次矩另有原点收敛条件，不能从 $R_0$ 不加条件地递推出全部负次矩。
+\end{example}
+
+\begin{theorem}[固定 $1/r$ 势的束缚谱与隐对称性]
+对 $d\ge2$ 的 Hamilton 算符 $H=\vb p^2/(2m)-\kappa/r$，$\kappa>0$，
+取原点处的正则实现。负能量子空间上的角动量与 Runge--Lenz 算符
+生成 $so(d+1)$，束缚能级为
+\[
+E_N=-\frac{m\kappa^2}{2\hbar^2(N+(d-1)/2)^2},\qquad N=0,1,2,\ldots .
+\]
+第 $N$ 层是 $SO(d+1)$ 的次数为 $N$ 的对称无迹张量表示。
+在三维，它给出主量子数 $n=N+1$ 与简并度 $n^2$。
+此结论针对固定 $1/r$ 势；改变原点处的自伴边界条件可能破坏该对称性。
+\end{theorem}
+\begin{proof}[Runge--Lenz 代数与 Casimir]
+Coulomb 问题还具有推广 Runge--Lenz 向量生成的 \(SO(d+1)\) 隐对称性。下面先在经典泊松括号层面把一般 \(d\) 的代数写清楚，再对 \(d=3\) 完成完整的量子能级推导，最后说明推广到一般 $d$ 时，保留反对称张量 $L_{ij}$。
+
+
+
+先在经典能面上确定代数，再处理量子排序。
+取固定 \(1/r\) 势的哈密顿量
+\[
+H=\frac{\vb p^2}{2m}-\frac{\kappa}{r},\qquad \kappa>0
+\]
+（\(d=3\) 氢样原子取 $\kappa=Ze^2/(4\pi\varepsilon_0)$，即\eqnrefs{eq:phys-hdqm-formal-coulomb} 中的 \(\gamma\)）。角动量张量 \(L_{ij}=x_ip_j-x_jp_i\) 满足
+\begin{equation}
+\{L_{ij},L_{kl}\}
+=\delta_{ik}L_{jl}-\delta_{il}L_{jk}-\delta_{jk}L_{il}+\delta_{jl}L_{ik},
+\label{eq:phys-hdqm-sod-bracket}
+\end{equation}
+即 \(so(d)\) 的李代数（\(\{x_i,p_j\}=\delta_{ij}\)，重复指标求和）。定义未归一化的 Runge--Lenz 向量
+\begin{equation}
+A_i=\frac{1}{2m}\left(p_jL_{ij}+L_{ij}p_j\right)-\kappa\frac{x_i}{r},
+\label{eq:phys-hdqm-runge-lenz-d}
+\end{equation}
+其中对 \(j\) 从 \(1\) 到 \(d\) 求和。\(d=3\) 时 \(p_jL_{ij}=(\vb p\times\vb L)_i\)，上式退化为熟知的
+\(\vb A=(\vb p\times\vb L-\vb L\times\vb p)/(2m)-\kappa\widehat{\vb r}\)。只用\eqnrefs{eq:phys-hdqm-sod-bracket} 与 \(\{x_i,f(r)\}=0\) 逐次展开（计算冗长但每步都是正则括号的 Leibniz 律），得到封闭代数
+\begin{equation}
+\{A_i,H\}=0,\qquad
+\{L_{ij},A_k\}=\delta_{ik}A_j-\delta_{jk}A_i,\qquad
+\{A_i,A_j\}=-\frac{2H}{m}L_{ij}.
+\label{eq:phys-hdqm-runge-lenz-brackets}
+\end{equation}
+关键在第三式：右端只含 \(H\) 与 \(L_{ij}\)，没有跑出 \(\{L_{ij},A_k\}\) 张成空间之外的量。在束缚态能面 \(H=E<0\) 上，把 \(H\) 当常数吸收到归一化中：定义
+\begin{equation}
+D_i=\sqrt{-\frac{m}{2H}}\,A_i,
+\qquad
+J_{ij}=L_{ij},\qquad
+J_{i,d+1}=-J_{d+1,i}=D_i\quad (i,j=1,\ldots,d).
+\label{eq:phys-hdqm-sod1-generators}
+\end{equation}
+由 \(\{A_i,H\}=0\)，在能面上取括号时 \(H\) 可按常数处理，于是
+\[
+\{D_i,D_j\}
+=-\frac{m}{2H}\left(-\frac{2H}{m}\right)L_{ij}=L_{ij},
+\qquad
+\{L_{ij},D_k\}=\delta_{ik}D_j-\delta_{jk}D_i.
+\]
+合并写成
+\begin{equation}
+\{J_{MN},J_{PQ}\}
+=\delta_{MP}J_{NQ}-\delta_{MQ}J_{NP}-\delta_{NP}J_{MQ}+\delta_{NQ}J_{MP},
+\qquad M,N,P,Q=1,\ldots,d+1,
+\label{eq:phys-hdqm-sod1-algebra}
+\end{equation}
+与\eqnrefs{eq:phys-hdqm-sod-bracket} 对照，这正是 \(so(d+1)\) 的李代数：一般 \(d\) 的闭合性由此完全确立，而非只对 \(d=3\) 成立。散射能面 \(E>0\) 时归一化因子换成 \(\sqrt{m/(2H)}\)，\(\{D_i,D_j\}=-L_{ij}\)，代数变为 \(so(d,1)\)。
+
+接着在三维量子问题中计算两个 Casimir。
+
+量子化规则 \(\{\cdot,\cdot\}\to\frac{1}{\ii\hbar}[\cdot,\cdot]\) 下，\eqnrefs{eq:phys-hdqm-runge-lenz-d} 的对称排序保证 \(A_i\) 厄米。算符序唯一需要小心的地方是
+\begin{equation}
+p_jL_{ij}-L_{ij}p_j=[p_j,L_{ij}]=\ii\hbar(d-1)p_i,
+\label{eq:phys-hdqm-runge-lenz-ordering}
+\end{equation}
+即“先 \(p\) 后 \(L\)”与对称序相差一个确定的 \(\hbar\) 项；以下全部计算固定使用对称序。取 \(d=3\)，只用 \([x_i,p_j]=\ii\hbar\delta_{ij}\) 与角动量代数逐次展开，得
+\begin{equation}
+[A_i,H]=0,\qquad
+[L_i,A_j]=\ii\hbar\epsilon_{ijk}A_k,\qquad
+[A_i,A_j]=-\frac{2H}{m}\ii\hbar\,\epsilon_{ijk}L_k.
+\label{eq:phys-hdqm-runge-lenz-quantum-3d}
+\end{equation}
+由 \([A_i,H]=0\)，\(\vb A\) 把每个能量本征子空间映到自身。在 \(H=E<0\) 的束缚本征子空间上令
+\[
+M_i=\sqrt{-\frac{m}{2E}}\,A_i,
+\qquad
+[M_i,M_j]=\ii\hbar\epsilon_{ijk}L_k,
+\qquad
+[L_i,M_j]=\ii\hbar\epsilon_{ijk}M_k.
+\]
+再令
+\[
+\vb J=\frac{\vb L+\vb M}{2},
+\qquad
+\vb K=\frac{\vb L-\vb M}{2},
+\]
+直接代入对易关系得 \([J_i,K_j]=0\)，且 \(\vb J,\vb K\) 各自满足 \(su(2)\) 代数：这是 \(so(4)\cong su(2)\oplus su(2)\) 的显式实现。由 \(\vb L\) 与 \(\vb A\) 的定义可验证 \(\vb L\cdot\vb A=0\)（\(\vb L\) 只含切向微分，\(\vb A\) 的两项分别与之点积为零），故两个 Casimir 不独立：
+\[
+\vb J^2-\vb K^2=\vb L\cdot\vb M=0
+\quad\Longrightarrow\quad
+\vb J^2=\vb K^2=\hbar^2j(j+1),\qquad j=0,\tfrac12,1,\ldots .
+\]
+第二个 Casimir 由量子 Runge--Lenz 恒等式给出：
+\begin{equation}
+\vb A^2=\kappa^2+\frac{2H}{m}\left(\vb L^2+\hbar^2\right).
+\label{eq:phys-hdqm-runge-lenz-casimir-3d}
+\end{equation}
+验证只含两类代数操作。其一，
+\[
+(\vb p\times\vb L-\vb L\times\vb p)^2
+=4\left(\vb p^2\vb L^2+\hbar^2\vb p^2\right),
+\]
+由 \(\vb L\times\vb p=-\vb p\times\vb L+2\ii\hbar\vb p\)（展开 \([L_i,p_j]=\ii\hbar\epsilon_{ijk}p_k\) 即得）、\((\vb p\times\vb L)^2=\vb p^2\vb L^2\)（用 \(\vb p\cdot\vb L=\vb L\cdot\vb p=0\)）以及 \((\vb p\times\vb L)\cdot\vb p=2\ii\hbar\vb p^2\) 逐项展开得到；其二，
+\[
+\frac12\left\{\vb p\times\vb L-\vb L\times\vb p,\,\frac{\vb r}{r}\right\}
+=\frac{2}{r}\left(\vb L^2+\hbar^2\right),
+\]
+同样只用 \([L_i,x_j]=\ii\hbar\epsilon_{ijk}x_k\) 展开。两式合并，并把 \(\vb p^2/(2m)=H+\kappa/r\) 代入，即得\eqnrefs{eq:phys-hdqm-runge-lenz-casimir-3d}。
+
+
+\par
+
+\par
+在 \(H=E\) 的本征态上 \(\vb M^2=-\frac{m}{2E}\vb A^2\)，于是\eqnrefs{eq:phys-hdqm-runge-lenz-casimir-3d} 给出
+\[
+\vb L^2+\vb M^2
+=-\hbar^2-\frac{m\kappa^2}{2E}.
+\]
+左端等于 \(2(\vb J^2+\vb K^2)=4\hbar^2j(j+1)\)，解出
+\begin{equation}
+E=-\frac{m\kappa^2}{2\hbar^2(2j+1)^2}.
+\label{eq:phys-hdqm-so4-energy}
+\end{equation}
+允许值为 \(n\equiv 2j+1=1,2,3,\ldots\)，每个 \(n\) 出现一次，简并度 \((2j+1)^2=n^2\)：这就是氢原子谱 \(E_n=-m\kappa^2/(2\hbar^2n^2)\) 与 \(n^2\) 简并的纯代数推导，全程没有解径向微分方程。给定 \(n\) 后 \(\vb L^2\) 的允许值由 \(\vb J+\vb K\) 的角动量耦合三角定则给出 \(l=0,1,\ldots,n-1\)，与径向解一致。
+
+推广到一般 $d$ 时，保留反对称张量 $L_{ij}$。
+
+对易关系中只有第三式变形：
+\[
+[A_i,A_j]=-\frac{2H}{m}\ii\hbar L_{ij},
+\qquad
+[L_{ij},A_k]=\ii\hbar(\delta_{ik}A_j-\delta_{jk}A_i),
+\qquad
+[A_i,H]=0.
+\]
+束缚壳上 \(M_i=\sqrt{-m/(2E)}A_i\) 与 \(L_{ij}\) 满足\eqnrefs{eq:phys-hdqm-sod1-algebra} 的量子版，即 \(so(d+1)\) 对易代数。Runge--Lenz 恒等式的一般 \(d\) 形式为
+\begin{equation}
+\vb A^2=\kappa^2+\frac{2H}{m}\left(\vb L^2+\frac{(d-1)^2}{4}\hbar^2\right),
+\qquad
+\vb L^2\equiv\frac12L_{ij}L_{ij},
+\label{eq:phys-hdqm-runge-lenz-casimir-d}
+\end{equation}
+其中 \(\hbar^2\) 修正项的系数来自排序恒等式\eqnrefs{eq:phys-hdqm-runge-lenz-ordering}；\(d=3\) 时 \((d-1)^2/4=1\)，回到\eqnrefs{eq:phys-hdqm-runge-lenz-casimir-3d}。注意 \(\vb L^2\) 的本征值为 \(\hbar^2l(l+d-2)\)，与本章前半部分的超球谐分析一致。束缚态占据 \(SO(d+1)\) 的对称无迹张量表示 \((N,0,\ldots,0)\)（\(N=0,1,2,\ldots\)），其二次 Casimir 为 \(\hbar^2N(N+d-1)\)，表示维数
+\begin{equation}
+g_N^{(d+1)}=\frac{(2N+d-1)(N+d-2)!}{N!\,(d-1)!}.
+\label{eq:phys-hdqm-sod1-dimension}
+\end{equation}
+由 Casimir 匹配
+\[
+\vb L^2+\vb M^2
+=-\frac{(d-1)^2}{4}\hbar^2-\frac{m\kappa^2}{2E}
+=\hbar^2N(N+d-1)
+\]
+直接解出
+\begin{equation}
+E_N=-\frac{m\kappa^2}{2\hbar^2\left(N+\frac{d-1}{2}\right)^2},
+\qquad N=0,1,2,\ldots .
+\label{eq:phys-hdqm-coulomb-energy-sod1}
+\end{equation}
+写主量子数 \(n=N+1\)，即 \(E_n=-m\kappa^2\left[2\hbar^2\left(n+\frac{d-3}{2}\right)^2\right]^{-1}\)，与直接求解固定 \(1/r\) 势的\eqnrefs{eq:phys-hdqm-formal-coulomb-energy}（令 \(n_r+l=N\)）完全一致；简并度\eqnrefs{eq:phys-hdqm-sod1-dimension} 在 \(d=3\) 给 \((N+1)^2=n^2\)，在 \(d=2\) 给 \(2N+1=2n-1\)。最后强调边界：这里的 \(SO(d+1)\) 是“固定 \(1/r\) 势”这一数学模型的隐对称性；真实 \(d\) 维 Maxwell--Poisson 势\eqnrefs{eq:phys-hdqm-coulomb-potential-all-d} 只在 \(d=3\) 取 \(1/r\) 形，故该隐对称性不是高维静电学的对称性。
+
+
+\par
+
+\par
+
+\end{proof}
+
+\begin{workedexample}
+在 \(d=3\) 中验证排序恒等式 \(p_jL_{ij}-L_{ij}p_j=2\ii\hbar p_i\)，并由此把 Runge--Lenz 向量写成 \(\vb A=(\vb p\times\vb L-\ii\hbar\vb p)/m-\kappa\widehat{\vb r}\) 的形式。
+
+\textbf{解.} 由 \([p_j,L_{ij}]=[p_j,x_ip_j-x_jp_i]=[p_j,x_i]p_j-[p_j,x_j]p_i=-\ii\hbar p_i+3\ii\hbar p_i=2\ii\hbar p_i\)，即一般 \(d\) 公式\eqnrefs{eq:phys-hdqm-runge-lenz-ordering} 的 \(d=3\) 特例。于是 \(\frac{1}{2m}(p_jL_{ij}+L_{ij}p_j)=\frac1m(p_jL_{ij}-\ii\hbar p_i)=(\vb p\times\vb L-\ii\hbar\vb p)_i/m\)。
+\end{workedexample}
+
+\begin{workedexample}
+用\eqnrefs{eq:phys-hdqm-coulomb-energy-sod1} 计算 \(d=5\) 固定 \(1/r\) 势的基态与前两个激发态能量（以 \(m\kappa^2/\hbar^2\) 为单位），并给出各层简并度。
+
+\textbf{解.} \(d=5\) 时 \(E_N=-\frac{m\kappa^2}{2\hbar^2(N+2)^2}\)：\(E_0=-\frac18\)、\(E_1=-\frac1{18}\)、\(E_2=-\frac1{32}\)（单位 \(m\kappa^2/\hbar^2\)）。简并度由\eqnrefs{eq:phys-hdqm-sod1-dimension} 给出 \(g_N^{(6)}=\frac{(2N+4)(N+3)!}{N!\,24}\)：\(g_0=1\)、\(g_1=6\)、\(g_2=21\)。
+\end{workedexample}
+
+\begin{exbox}[\(d=2\) 氢模型：\(SO(3)\) Casimir 的显式计算]
+二维固定 \(1/r\) 势中，\(so(3)\) 生成元为 \(L\equiv L_{12}\) 与 \(M_1,M_2\)，对易关系为
+\[
+[M_1,M_2]=\ii\hbar L,\qquad
+[L,M_1]=\ii\hbar M_2,\qquad
+[L,M_2]=-\ii\hbar M_1,
+\]
+与角动量代数同构。Casimir \(C_2=L^2+M_1^2+M_2^2\) 在表示 \(N\) 上取 \(\hbar^2N(N+1)\)（对称表示只含整数 \(N=0,1,2,\ldots\)），磁量子数 \(m_l=-N,\ldots,N\) 给出维数 \(2N+1\)。取\eqnrefs{eq:phys-hdqm-runge-lenz-casimir-d} 的 \(d=2\) 情形，Casimir 匹配为
+\[
+L^2+M_1^2+M_2^2=-\frac{\hbar^2}{4}-\frac{m\kappa^2}{2E},
+\]
+解出
+\[
+E_N=-\frac{m\kappa^2}{2\hbar^2\left(N+\frac12\right)^2}
+=-\frac{2m\kappa^2}{\hbar^2(2N+1)^2}.
+\]
+取 \(\kappa=e^2/(4\pi\varepsilon_0)\)，基态 \(N=0\) 为 \(E_0=-4\,\mathrm{Ry}\approx-54.4\,\mathrm{eV}\)，是三维氢基态的四倍；第一激发态 \(N=1\) 三重简并（\(m_l=0,\pm1\)），\(E_1=-\frac49\,\mathrm{Ry}\)。对照径向解\eqnrefs{eq:phys-hdqm-formal-coulomb-energy}：\(d=2\) 时 \(n_r+l+\frac12=N+\frac12\)，逐项一致。二维“氢”因此是一个能级与简并度完全由 \(SO(3)\) 表示论决定的显式例子。
+\end{exbox}
+
+\begin{note}[Stark 分裂与闭合轨道]
 外电场 \(F\) 下取抛物线量子数 \((n_1,n_2,m)\)，线性 Stark 分裂为
 \[
  E_{n,k}=E_n+\frac32\,e a_0\,n\,k\,F,\qquad k=n_1-n_2,\quad |k|\le n-1-|m|.
 \]
-Bertrand 定理进一步指出，唯一使所有束缚轨道闭合的中心势是 Coulomb 与谐振子：闭合轨道恰由隐对称性保证，二者因而精确可解。
-\end{proof}
+Bertrand 定理进一步指出，在满足其光滑性和稳定圆轨道假设的中心势中，使所有束缚轨道闭合的只有 Coulomb 势与各向同性谐振子：闭合轨道恰由隐对称性保证，二者因而精确可解。
+\end{note}
+
+
+
+

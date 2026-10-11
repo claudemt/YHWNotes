@@ -159,22 +159,26 @@
 % small pill straddling the top-left border instead of a cramped inline title
 % bar, matching the open feel of the theorem boxes.  Each box supplies only
 % its own colours; the shared spacing lives here so the three stay in sync.
-\tcbset{qmbox/.style={
-  enhanced,breakable,sharp corners,
-  boxsep=0pt,left=8pt,right=8pt,top=9pt,bottom=8pt,
-  before skip=10pt,after skip=10pt,
-  detach title,fonttitle=\bfseries,
-  boxed title style={sharp corners,boxrule=0.35pt,left=7pt,right=7pt,top=2.5pt,bottom=2.5pt},
-  attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2}
-}}
-\newtcolorbox{derivation}[1][]{
-  qmbox,colback=black!1,colframe=black!45,colbacktitle=black!8,coltitle=black!85,
-  title={\SpecialBoxTitle{推导}{#1}},
-  before upper={\setlength{\parskip}{0pt}%
-    \setlength{\abovedisplayskip}{6pt}\setlength{\belowdisplayskip}{6pt}%
-    \setlength{\abovedisplayshortskip}{4pt}\setlength{\belowdisplayshortskip}{4pt}}}
-\newtcolorbox{exbox}[1][]{qmbox,colback=green!8,colframe=green!48!black,colbacktitle=green!10,coltitle=black!80,title={\SpecialBoxTitle{例}{#1}}}
-\newtcolorbox{note}[1][]{qmbox,colback=yellow!3,colframe=yellow!45!black,colbacktitle=yellow!12,coltitle=black!80,title={\SpecialBoxTitle{注}{#1}}}
+\tcbset{
+  lectureboxbase/.style={
+    enhanced,breakable,boxrule=0.55pt,arc=1.2mm,
+    boxsep=0pt,left=8pt,right=8pt,top=6pt,bottom=6pt,
+    before skip=8pt,after skip=8pt,fontupper=\normalfont,
+    before upper={\setlength{\parskip}{4pt}%
+      \setlength{\abovedisplayskip}{6pt}\setlength{\belowdisplayskip}{6pt}%
+      \setlength{\abovedisplayshortskip}{4pt}\setlength{\belowdisplayshortskip}{4pt}}},
+  qmbox/.style={lectureboxbase,detach title,fonttitle=\bfseries,coltitle=black,
+    before upper={\setlength{\parskip}{4pt}%
+      \setlength{\abovedisplayskip}{6pt}\setlength{\belowdisplayskip}{6pt}%
+      \setlength{\abovedisplayshortskip}{4pt}\setlength{\belowdisplayshortskip}{4pt}%
+      \tcbtitle\par\smallskip}}
+}
+\newtcolorbox{derivation}[1][]{qmbox,colback=black!1,colframe=black!45,
+  title={\SpecialBoxTitle{推导}{#1}}}
+\newtcolorbox{exbox}[1][]{qmbox,colback=green!3,colframe=green!48!black,
+  title={\SpecialBoxTitle{例}{#1}}}
+\newtcolorbox{note}[1][]{qmbox,colback=gray!3,colframe=gray!55!black,
+  title={\SpecialBoxTitle{注}{#1}}}
 
 % ===== References =====
 \usepackage{tabularx,enumitem}
@@ -309,116 +313,60 @@
 \providecommand{\norm}[1]{\left\lVert #1\right\rVert}
 \providecommand{\kB}{k_{\mathrm B}}
 
-% ===== Shared theorem environments =====
+% ===== Shared statement and proof environments =====
+% All mathematical statements use the same upright body, heading and spacing.
+% Theorem/proposition/lemma/corollary share one result palette. Proofs always
+% occupy their own neutral frame, including immediately adjacent proofs.
+% A provable mathematical result belongs in a statement + proof, never in a
+% derivation frame. Proofs must also stay outside the statement environment.
+\newtheoremstyle{lecture}{0pt}{0pt}{\normalfont}{0pt}{\bfseries}{}{0.6em}{}
+\theoremstyle{lecture}
 \newtheorem{theorem}{定理}[chapter]
 \newtheorem{proposition}[theorem]{命题}
 \newtheorem{lemma}[theorem]{引理}
 \newtheorem{corollary}[theorem]{推论}
-\theoremstyle{definition}
 \newtheorem{definition}[theorem]{定义}
 \newtheorem{example}[theorem]{例}
+\newenvironment{workedexample}[1][]{\begin{example}[#1]}{\end{example}}
 \newtheorem{remark}[theorem]{注}
 \newtheorem{exercise}[theorem]{练习}
 
-% ===== Shared theorem colour palette =====
-% Every semantic theorem environment is wrapped in a coloured tcolorbox so
-% that definitions, theorems, propositions, lemmas, corollaries, examples and
-% remarks are visually distinct across all books.  The palette is owned by the
-% root preamble so that every book compiled through main.tex inherits the same
-% appearance without book-local overrides.
-%
-% Adding a theorem-like environment costs one \theoremcolor line below (plus
-% its \crefnamecn).  There must be no unboxed "plain" variant: every statement
-% lives inside one of these frames.
-%
-% A `proof` that IMMEDIATELY follows one of these boxed statements (optionally
-% separated only by blank lines) is rendered as a seamless continuation piece
-% of the SAME coloured frame: the statement box keeps its bottom rule (a thin
-% divider), the proof piece shares the background and the left/right/bottom
-% frame and carries the QED symbol, so statement and proof read as one box.
-% Proofs that do not directly follow a boxed statement -- standalone proofs of
-% prose/equation results, which are common in AdvancedPhysics -- are left
-% untouched and keep the standard amsthm look.
 \makeatletter
-\newif\ifYHW@joinpending
-\newif\ifYHW@incont
-\def\YHW@clearjoin{\global\YHW@joinpendingfalse}
-% Any ordinary paragraph or any non-proof environment that intervenes between
-% a boxed statement and a proof cancels the merge; para/begin is the modern
-% kernel paragraph hook (it survives packages that overwrite \everypar).
-\AddToHook{para/begin}{\YHW@clearjoin}
-\newcommand{\YHW@clearhook}[1]{\AtBeginEnvironment{#1}{\YHW@clearjoin}}
-\forcsvlist{\YHW@clearhook}{%
-  equation,align,gather,multline,flalign,eqnarray,displaymath,%
-  exbox,note,derivation,qmbox,figure,table,center,quote,quotation,%
-  itemize,enumerate,description,list,%
-  theorem,proposition,lemma,corollary,definition,example,remark,exercise}
-% #1 = environment, #2 = background, #3 = frame colour, #4 = rule width
+% #1 environment, #2 background, #3 frame, #4 rule width.
 \newcommand{\theoremcolor}[4]{%
-  \tcbset{
-    YHW@box@#1/.style={enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
-      arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
-      before skip=7pt,after skip=7pt},
-    YHW@cont@#1/.style={enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
-      arc=1.2mm,sharp corners=north,left=8pt,right=8pt,top=4pt,bottom=6pt,
-      before skip=\dimexpr-7pt-#4\relax,after skip=7pt,
-      frame hidden,
-      borderline south={#4}{0pt}{#3},
-      borderline east={#4}{0pt}{#3},
-      borderline west={#4}{0pt}{#3},
-      overlay middle={\draw[#3,line width=#4](frame.north west)--(frame.north east);},
-      overlay last={\draw[#3,line width=#4](frame.north west)--(frame.north east);}}
-  }%
+  \tcbset{YHW@box@#1/.style={lectureboxbase,colback=#2,colframe=#3,boxrule=#4}}%
   \expandafter\let\csname YHW@orig@#1\expandafter\endcsname\csname #1\endcsname
   \expandafter\let\csname YHW@orig@end#1\expandafter\endcsname\csname end#1\endcsname
   \renewenvironment{#1}[1][]
-    {%
-      \global\YHW@joinpendingfalse
-      \edef\YHW@thisenv{\@currenvir}%
-      \begin{tcolorbox}[YHW@box@\YHW@thisenv]%
-      \csname YHW@orig@\YHW@thisenv\endcsname[##1]%
-    }
-    {%
-      \csname YHW@orig@end\YHW@thisenv\endcsname
-      \end{tcolorbox}%
-      \xdef\YHW@lastenv{\YHW@thisenv}%
-      \global\YHW@joinpendingtrue
-    }%
+    {\edef\YHW@thisenv{\@currenvir}%
+     \begin{tcolorbox}[YHW@box@\YHW@thisenv]%
+     \csname YHW@orig@\YHW@thisenv\endcsname[##1]}
+    {\csname YHW@orig@end\YHW@thisenv\endcsname\end{tcolorbox}}%
 }
-% Preserve the standard amsthm proof for standalone use; when a proof directly
-% follows a boxed statement, open the matching continuation piece and close it
-% (with the QED symbol) at \end{proof}.
 \let\YHW@prooforig\proof
 \let\YHW@endprooforig\endproof
+\newif\ifYHW@boxedproof
 \RenewDocumentEnvironment{proof}{O{\proofname}}{%
-  \ifYHW@joinpending
-    \global\YHW@joinpendingfalse
-    \global\YHW@inconttrue
-    \edef\YHW@thisenv{\YHW@lastenv}%
-    \begin{tcolorbox}[YHW@cont@\YHW@thisenv]%
-    \noindent\textbf{#1}\enspace\nobreak
-  \else
-    \global\YHW@incontfalse
-    \YHW@prooforig[#1]%
+  \YHW@boxedprooftrue
+  \ifcsname BookTitle\endcsname
+    \ifdefstring{\BookTitle}{YHWNotes}{\YHW@boxedprooffalse}{}%
   \fi
+  \ifYHW@boxedproof
+    \begin{tcolorbox}[lectureboxbase,colback=black!1,colframe=black!45]%
+  \fi
+  \YHW@prooforig[\normalfont\bfseries #1]%
 }{%
-  \ifYHW@incont
-    \par\nobreak\vspace{-2pt}\nobreak\hfill\qed\par\nobreak
-    \end{tcolorbox}%
-    \global\YHW@incontfalse
-  \else
-    \YHW@endprooforig
-  \fi
+  \YHW@endprooforig
+  \ifYHW@boxedproof\end{tcolorbox}\fi
 }
 \makeatother
-%                   environment    background     frame             rule
-\theoremcolor{definition} {blue!2.5}   {blue!55!black}    {0.55pt}
-\theoremcolor{theorem}    {red!2.2}    {red!58!black}     {0.65pt}
-\theoremcolor{proposition}{orange!3}   {orange!65!black}  {0.55pt}
-\theoremcolor{lemma}      {violet!2.5} {violet!60!black}  {0.55pt}
-\theoremcolor{corollary}  {teal!2.5}   {teal!58!black}    {0.55pt}
-\theoremcolor{example}    {green!3}    {green!48!black}   {0.50pt}
-\theoremcolor{remark}     {gray!4}     {gray!55!black}    {0.50pt}
+\theoremcolor{definition} {blue!2.5}{blue!55!black}{0.55pt}
+\theoremcolor{theorem}    {violet!2.5}{violet!60!black}{0.55pt}
+\theoremcolor{proposition}{violet!2.5}{violet!60!black}{0.55pt}
+\theoremcolor{lemma}      {violet!2.5}{violet!60!black}{0.55pt}
+\theoremcolor{corollary}  {violet!2.5}{violet!60!black}{0.55pt}
+\theoremcolor{example}    {green!3}{green!48!black}{0.55pt}
+\theoremcolor{remark}     {gray!3}{gray!55!black}{0.55pt}
 
 \crefnamecn{theorem}{定理}
 \crefnamecn{proposition}{命题}

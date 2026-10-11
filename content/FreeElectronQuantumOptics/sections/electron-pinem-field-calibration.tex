@@ -1,0 +1,125 @@
+\subsection{把场强、相位匹配和边带概率连成一次计算}
+\label{sec:electron-pinem-field-calibration}
+
+前面已把电子的调制写成沿轨迹的场积分 $\beta$。现在用一个给定近场求可测的边带概率。代入场幅之前，先把实场峰值与复振幅的关系写清楚：本书的 $E_{\omega,z}$ 表示正频分量，因此单频实场为
+\begin{equation}
+ E_z(z,t)=E_{\omega,z}(z)\ee^{-\ii\omega t}
+           +E_{\omega,z}^*(z)\ee^{\ii\omega t}
+ =2|E_{\omega,z}(z)|\cos[\omega t-\arg E_{\omega,z}(z)].
+ \label{eq:electron-real-field-positive-frequency}
+\end{equation}
+因此实场的余弦峰值是 $E_{\rm pk}^{\rm(real)}=2|E_{\omega,z}|$，均方根值是 $\sqrt2|E_{\omega,z}|$。若仿真采用 $E_z=\Re[\mathcal E_{\rm ph}\ee^{-\ii\omega t}]$，应输入 $E_{\omega,z}=\mathcal E_{\rm ph}/2$。漏掉这个二分之一会使 $|\beta|$ 加倍，并使弱边带概率放大四倍。
+
+从\eqnrefs{eq:pinem_standard_beta_pulsed} 出发，先令脉冲包络在电子通过期间近似恒定，再考虑轨迹上长度 $L_{\rm int}$ 内的一个纵向空间谐波：
+\begin{equation*}
+ E_{\omega,z}(z)=E_{\omega,0}\ee^{\ii\kappa_m z},\quad
+ -L_{\rm int}/2<z<L_{\rm int}/2,
+ \qquad \Delta\kappa=\kappa_m-\frac{\omega}{v_0}.
+\end{equation*}
+$E_{\omega,0}$ 是复正频振幅，$\kappa_m$ 是场在轨迹方向的波数；矩形包络是实际场采样的简化模型，其边缘需要由结构或源支持，不能解释为无界真空中的自由平面波。有限长度同步积分给出
+\begin{equation}
+ \beta=\frac{q_{\mathrm e} E_{\omega,0}L_{\rm int}}{\hbar\omega}
+ \sinc\!\left(\frac{\Delta\kappa L_{\rm int}}2\right),\qquad
+ P_\ell=J_\ell^2(2|\beta|).
+ \label{eq:electron-rectangular-nearfield-beta}
+\end{equation}
+每一小段 $\dd z$ 都贡献一个复振幅；失配使这些复数在复平面转动，相加后部分抵消。因此更长的作用区只有在相位匹配时才持续增强耦合。取复数而不只取场强平方，是保留这种相消所必需的。
+
+对 $v_0<c$ 的电子，同步波数 $\omega/v_0$ 大于真空光波数 $\omega/c$。均匀真空中的传播光无法提供这个纵向 Fourier 分量；结构近场、介质或倒格矢可以承担所需动量。对于真空侧沿表面传播、垂直表面衰减的单个谐波，Maxwell 色散给
+\begin{equation*}
+ \kappa_\perp^{\rm(ev)}=\sqrt{\kappa_m^2-\omega^2/c^2},\qquad
+ \ell_{\rm ev}=1/\kappa_\perp^{\rm(ev)}.
+\end{equation*}
+实正的 $\kappa_\perp^{\rm(ev)}$ 表示\emph{倏逝}：场幅随离开表面的距离按指数衰减，而不是形成垂直传播的光线。这也解释电子为什么通常必须靠近纳米结构才能有效采样同步分量。这里的 $\ell_{\rm ev}$ 是\emph{场幅}衰减长度，强度衰减长度是其一半。
+
+\begin{exbox}[由实场峰值解析求边带与能宽]
+给定实场峰值 $E_{\rm pk}^{\rm(real)}$、作用长度 $L_{\rm int}$ 和失配 $\Delta\kappa$，求弱边带权重，并用完整能谱宽度反求场幅。令
+\begin{equation*}
+ b=|\beta|=\frac{eE_{\rm pk}^{\rm(real)}L_{\rm int}}{2\hbar\omega}
+ \left|\sinc\!\left(\frac{\Delta\kappa L_{\rm int}}2\right)\right|.
+\end{equation*}
+用 Bessel 幂级数而不逐阶数值求值：
+\begin{equation*}
+ J_0(2b)=1-b^2+\frac{b^4}{4}+O(b^6),\quad
+ J_1(2b)=b-\frac{b^3}{2}+O(b^5),\quad
+ J_2(2b)=\frac{b^2}{2}+O(b^4).
+\end{equation*}
+平方后得到
+\begin{equation*}
+ P_0=1-2b^2+\frac32b^4+O(b^6),\quad
+ P_{\pm1}=b^2-b^4+O(b^6),\quad
+ P_{\pm2}=\frac{b^4}{4}+O(b^6).
+\end{equation*}
+检查归一化时必须把正负阶都算入：$P_0+2P_1+2P_2=1+O(b^6)$。四阶项恰好抵消，是检查展开是否遗漏系数的简便方法。
+
+若不要求 $b\ll1$，仍可使用完整 Bessel 分布的矩恒等式 $\operatorname{Var}\ell=2b^2$。于是交换导致的能量标准差为
+\begin{equation*}
+ \sigma_{E,\rm ex}=\sqrt2\hbar\omega b
+ =\frac{eE_{\rm pk}^{\rm(real)}L_{\rm int}}{\sqrt2}
+ \left|\sinc\!\left(\frac{\Delta\kappa L_{\rm int}}2\right)\right|.
+\end{equation*}
+已知失配时可直接反解 $E_{\rm pk}^{\rm(real)}$。同步处展宽与场强、长度线性相关；接近 $\sinc$ 零点时反演分母很小，场幅误差被放大。这里使用的是相互作用增加的完整能谱方差；源能宽、仪器展宽与有限窗口的处理见\secref{sec:electron-detector-inversion-worked}。
+\end{exbox}
+
+\figref{fig:electron-field-calibration} 给出同一窗口在不同失配下的耦合及其边带概率。
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.92\linewidth]{electron_field_calibration.pdf}
+ \caption{从有限长度场积分到电子谱。左图为复振幅相加形成的 $\sinc$ 失配响应；右图取 $\SI{200}{\kilo\electronvolt}$ 电子、$\SI{800}{\nano\metre}$ 光、$\SI{2}{\micro\metre}$ 同步作用区和 $\SI{1}{\mega\volt\per\metre}$ 实场峰值，此时 $|\beta|=0.6452$，分别显示增益和损失阶数。实场峰值与正频振幅的二倍关系已纳入计算。}
+ \label{fig:electron-field-calibration}
+\end{figure}
+
+\begin{exbox}[高斯近场、双区域相消与完整边带分布]
+矩形窗口可以换成平滑局域场。取正频分量
+$E_{\omega,z}(z)=E_*\exp[-z^2/(2d^2)]\ee^{\ii k z}$，其中 $d$ 是场幅包络的标准差，
+$E_*$ 是复正频振幅。记 $\Delta k=k-\omega/v_0$，把轨迹积分完成平方：
+\begin{align*}
+ \int_{\mathbb R}\exp[-z^2/(2d^2)+\ii\Delta k z]\dd z
+ &=\exp[-d^2\Delta k^2/2]
+ \int_{\mathbb R}\exp[-(z-\ii d^2\Delta k)^2/(2d^2)]\dd z\\
+ &=\sqrt{2\pi}d\exp[-d^2\Delta k^2/2].
+\end{align*}
+最后一步也可由实高斯的 Fourier 变换得到，不要求对复路径积分作近似。于是
+\begin{equation}
+ \beta_G=\frac{q_{\mathrm e}E_*\sqrt{2\pi}d}{\hbar\omega}
+ \exp[-d^2\Delta k^2/2].
+ \label{eq:feqo-gaussian-near-field-coupling}
+\end{equation}
+能谱只确定这个复耦合的模长；场强、长度与失配不能仅凭一个能谱各自唯一反演。
+
+对两区干涉必须说明空间载波的相位约定。取共享载波 $\ee^{\ii kz}$ 的两个包络，中心 $z_{1,2}=\mp D/2$，
+后一包络多乘 $\ee^{\ii\chi}$。令 $u=z-z_j$ 后每区的积分多乘 $\ee^{\ii\Delta k z_j}$，故
+\begin{equation}
+ \beta_{\rm two}=\beta_G(\ee^{-\ii\Delta k D/2}+\ee^{\ii\chi}\ee^{\ii\Delta k D/2}),\qquad
+ |\beta_{\rm two}|^2=4|\beta_G|^2\cos^2[(\Delta kD+\chi)/2].
+ \label{eq:feqo-two-gaussian-field-interference}
+\end{equation}
+两区的单独耦合非零时，仍可令 $\chi=\pi-\Delta kD$ 使总耦合为零。
+若实际使用各区自身的载波 $\ee^{\ii k(z-z_j)}$，相位参数需相应平移，不能沿用上述 $\chi$ 的定义。
+复数相加还要求区间内已占据边带的相对色散相位可忽略；否则须使用
+$U_2U_{\rm drift}U_1$，而不能把传播作用藏进一个场强平均。
+
+取 $K_0=\SI{200}{\kilo\electronvolt}$、$\lambda=\SI{800}{\nano\metre}$、$k=0$，
+$|E_*|=2\times10^7\,\si{\volt\per\metre}$、$d=\SI{100}{\nano\metre}$。
+相对论速度 $v_0=2.08450\times10^8\,\si{\metre\per\second}$ 给
+$|\Delta k|d=1.12956$、$|\beta_G|=1.70917$。
+这里实场峰值是 $2|E_*|$。弱场近似 $P_{\pm1}\simeq|\beta_G|^2=2.9213$ 已超出概率范围，必须回到
+$P_\ell=J_\ell^2(2|\beta_G|)$：$P_{\pm1}\simeq0.02944$、$P_{\pm2}\simeq0.21893$。
+单光子边带较弱来自 Bessel 振幅相消，并不意味着相互作用弱。
+\end{exbox}
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.76\linewidth]{pinem_gaussian_example.pdf}
+ \caption{上述高斯近场算例的完整边带人口，$|\beta_G|=1.70917$。
+ 场参数表示正频振幅；边带最大人口在 $\ell=\pm2$，弱场单光子近似已失效。}
+ \label{fig:pinem-gaussian-example}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.76\linewidth]{pinem_bessel.pdf}
+ \caption{完整 Bessel 谱在 $2|\beta|=5$ 时的分布。正负阶等人口；$\ell=\pm2$ 接近 $J_2$ 的零点而被压低，
+ $\ell=\pm4$ 的人口最大。各阶的相消与总概率守恒同时成立。}
+ \label{fig:pinem-bessel-sidebands}
+\end{figure}

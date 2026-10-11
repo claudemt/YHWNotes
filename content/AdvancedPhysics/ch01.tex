@@ -4,6 +4,7 @@
 教材常说相变处的自由能不解析：磁化可能跳变，比热也可能发散。可是一盒只有有限个 Ising 自旋时，配分函数不过是有限项指数函数之和，在实温度和实外场下还严格为正。这样的函数取对数怎么会突然产生奇点？有限盒里确实不会；困难发生在盒子越来越大、自由能按体积归一化之后。要判断极限能否改变解析性，先要弄清有限系统的权重怎样定义、对参数求导得到什么，以及哪些结论真正依赖“状态数有限”。
 \section{经典与量子有限 Gibbs 系统}
 
+\begin{definition}[有限体积 Gibbs 系统]
 设有限体积区域为 \(\Lambda\)，其物理体积记为 \(\mathcal V_\Lambda\)。经典体系的微观状态空间记为 \(\Omega_\Lambda\)，参考测度记为 \(\dd\nu_\Lambda(\omega)\)。离散自旋模型中它就是计数测度；连续粒子体系中它可以是相空间 Lebesgue 测度连同适当的统计因子。给定 Hamilton 函数 \(H_\Lambda(\omega;\vartheta)\)，其中 \(\vartheta\) 表示外场、耦合或其他控制参数，逆温度为
 \begin{equation}
  \beta=\frac{1}{\kB T}.
@@ -40,6 +41,9 @@
  F_\Lambda=-\frac{1}{\beta}\log Z_\Lambda.
  \label{eq:phys-sm-finite-free-energy}
 \end{equation}
+\end{definition}
+
+\begin{theorem}[Gibbs 变分原理]
 量子情形还满足 Gibbs 变分原理：对任意密度算符 \(\rho\)，令 von Neumann 熵 \(S(\rho)=-\kB\Tr(\rho\log\rho)\)，则
 \begin{equation}
  F_\Lambda
@@ -49,7 +53,8 @@
  \right\},
  \label{eq:phys-sm-gibbs-variational}
 \end{equation}
-极小值唯一地由 \(\rho_\Lambda\) 取得。这个变分表述把热力学稳定性写成与具体可解模型无关的凸性结论。
+极小值唯一地由 \(\rho_\Lambda\) 取得。在能量和相对熵有限的定义域内，这个变分表述把热力学稳定性写成与具体可解模型无关的凸性结论。
+\end{theorem}
 
 \begin{proof}
 记平衡态为 \(\rho_\beta=Z_\Lambda^{-1}\ee^{-\beta H_\Lambda}\)。先说明下面用到的相对熵不等式。在有限维空间中，若 \(\rho=\sum_i p_i|i\rangle\langle i|\)、\(\sigma=\sum_j q_j|j\rangle\langle j|\) 都严格正且迹为一，则由标量不等式 \(-\log x\ge1-x\) 有
@@ -99,6 +104,39 @@ D(\rho\Vert\sigma)
 
 \section{响应、凸性与 Kubo--Mori 相关}
 
+\begin{lemma}[算符指数的 Duhamel 求导]
+Duhamel 公式给出算符指数关于参数的导数公式
+\begin{equation}
+ \frac{\partial}{\partial\vartheta}\ee^{-\beta H(\vartheta)}
+ =-\beta\int_0^1\ee^{-s\beta H(\vartheta)}
+ \frac{\partial H}{\partial\vartheta}
+ \ee^{-(1-s)\beta H(\vartheta)}\,\dd s,
+ \label{eq:phys-sm-duhamel-formula}
+\end{equation}
+由于 \(H\) 与 \(\partial_\vartheta H\) 一般不对易，不能把导数写成 \(-\beta(\partial_\vartheta H)\ee^{-\beta H}\)。下面在有限维情形证明公式；无界算符的情形还须另外检查定义域和迹类条件。
+
+\end{lemma}
+\begin{proof}
+记 $X=-\beta H(\vartheta)$、$Y=-\beta\partial_\vartheta H$，对 $U(t,\vartheta)=e^{tX(\vartheta)}$ 求导，令 $V=\partial_\vartheta U$。矩阵微分方程给
+\[
+ \partial_tV=XV+YU,\qquad V(0)=0.
+\]
+常数变易法得到 $V(1)=\int_0^1e^{(1-t)X}Ye^{tX}\,\dd t$。这就是一阶公式，矩阵指数对参数光滑保证求导合法。
+
+因此差商极限给出\eqnrefs{eq:phys-sm-duhamel-formula}。
+
+一阶公式已经足以推出上面的 Kubo--Mori 响应。若 \(H(\vartheta)=H_0-\vartheta A\)，再求一次导数时，导数可落在指数的左段或右段；两项在交换积分变量后相同。因此二阶公式中有因子 \(2\)：
+\begin{equation}
+ \frac{\partial^2}{\partial\vartheta^2}\ee^{-\beta H}
+ =2\beta^2\int_0^1\dd s\int_0^s\dd t\,
+ \ee^{-t\beta H}A\,\ee^{-(s-t)\beta H}A\,\ee^{-(1-s)\beta H}
+ .
+ \label{eq:phys-sm-duhamel-second-order}
+\end{equation}
+非线性参数依赖时还需加上含 \(\partial_\vartheta^2H\) 的一阶 Duhamel 项；不能把上式原封不动地用于任意 \(H(\vartheta)\)。
+\end{proof}
+
+\begin{proposition}[线性源的响应与凸性]
 设经典 Hamilton 函数以
 \[
  H_\Lambda(\vartheta)=H_{0,\Lambda}-\vartheta A_\Lambda
@@ -132,9 +170,10 @@ Duhamel 公式给出
  \ge0.
  \label{eq:phys-sm-kubo-mori-response}
 \end{equation}
-右端称为 Kubo--Mori 或 Bogoliubov--Duhamel 协方差。只有在 \([H_\Lambda,A_\Lambda]=0\) 时，它才退化为 \(\beta^2\Var(A_\Lambda)\)。
+右端的积分称为 Kubo--Mori 或 Bogoliubov--Duhamel 协方差。只有在 \([H_\Lambda,A_\Lambda]=0\) 时，整个右端才退化为 \(\beta^2\Var(A_\Lambda)\)。
+\end{proposition}
 
-\begin{proof}[解]
+\begin{proof}
 经典情形直接逐项求导：
 \[
  \partial_\vartheta Z_\Lambda
@@ -188,56 +227,18 @@ Duhamel 公式给出
 当 \(p_m=p_n\) 时连续极限为 \(p_n>0\)。因此整个 Hessian 非负。
 \end{proof}
 
-\begin{proof}[解]
-Duhamel 公式给出算符指数关于参数的导数公式
-\begin{equation}
- \frac{\partial}{\partial\vartheta}\ee^{-\beta H(\vartheta)}
- =-\beta\int_0^1\ee^{-s\beta H(\vartheta)}
- \frac{\partial H}{\partial\vartheta}
- \ee^{-(1-s)\beta H(\vartheta)}\,\dd s,
- \label{eq:phys-sm-duhamel-formula}
-\end{equation}
-由于 \(H\) 与 \(\partial_\vartheta H\) 一般不对易，不能把导数写成 \(-\beta(\partial_\vartheta H)\ee^{-\beta H}\)。下面在有限维情形证明公式；无界算符的情形还须另外检查定义域和迹类条件。
 
-设 \(H(\vartheta+\varepsilon)=H+\varepsilon K+O(\varepsilon^2)\)，其中 \(K=\partial_\vartheta H\)。
-利用 Trotter 乘积公式 \(\ee^{X+Y}=\lim_{n\to\infty}(\ee^{X/n}\ee^{Y/n})^n\)，取 \(X=-\beta H\)、\(Y=-\beta\varepsilon K\)，有
-\begin{equation*}
- \ee^{-\beta(H+\varepsilon K)}
- =\lim_{n\to\infty}\left(\ee^{-\beta H/n}\ee^{-\beta\varepsilon K/n}\right)^n.
-\end{equation*}
-展开 \(\ee^{-\beta\varepsilon K/n}=I-\beta\varepsilon K/n+O(\varepsilon^2/n^2)\)，代入后保留一阶项：
-\begin{equation*}
- \left(\ee^{-\beta H/n}\right)^n
- +\varepsilon\sum_{k=0}^{n-1}
- \left(\ee^{-\beta H/n}\right)^k
- \left(-\frac{\beta K}{n}\right)
- \left(\ee^{-\beta H/n}\right)^{n-k}
- +O(\varepsilon^2).
-\end{equation*}
-第一项是 \(\ee^{-\beta H}\)。第二项中令 \(s=k/n\)，\(\Delta s=1/n\)，取 \(n\to\infty\) 极限后求和化为积分：
-\begin{equation*}
- -\beta\varepsilon\int_0^1\ee^{-s\beta H}K\,\ee^{-(1-s)\beta H}\,\dd s.
-\end{equation*}
-因此差商极限给出\eqnrefs{eq:phys-sm-duhamel-formula}。
 
-一阶公式已经足以推出上面的 Kubo--Mori 响应。若 \(H(\vartheta)=H_0-\vartheta A\)，再求一次导数时，导数可落在指数的左段或右段；两项在交换积分变量后相同。因此二阶公式中有因子 \(2\)：
-\begin{equation}
- \frac{\partial^2}{\partial\vartheta^2}\ee^{-\beta H}
- =2\beta^2\int_0^1\dd s\int_0^s\dd t\,
- \ee^{-t\beta H}A\,\ee^{-(s-t)\beta H}A\,\ee^{-(1-s)\beta H}
- .
- \label{eq:phys-sm-duhamel-second-order}
-\end{equation}
-非线性参数依赖时还需加上含 \(\partial_\vartheta^2H\) 的一阶 Duhamel 项；不能把上式原封不动地用于任意 \(H(\vartheta)\)。
-\end{proof}
-
+\begin{proposition}[有限 Gibbs 态的 KMS 边界关系]
 Gibbs 态 \(\rho=Z^{-1}\ee^{-\beta H}\) 的实时间关联函数还满足一个虚时间边界关系。对有限维系统中的任意算符 \(A,B\)，Kubo--Martin--Schwinger (KMS) 条件为
 \begin{equation}
  \langle A(t)B\rangle_\beta
  =\langle B\,A(t+\ii\beta\hbar)\rangle_\beta,
  \label{eq:phys-sm-kms-condition}
 \end{equation}
-其中 \(A(t)=\ee^{\ii Ht/\hbar}A\ee^{-\ii Ht/\hbar}\)。这里的 \(A(t+\ii\beta\hbar)\) 是有限维矩阵函数的解析延拓。其证明只需展开迹：在 \(H|n\rangle=E_n|n\rangle\) 的本征基中，
+其中 \(A(t)=\ee^{\ii Ht/\hbar}A\ee^{-\ii Ht/\hbar}\)。这里的 \(A(t+\ii\beta\hbar)\) 是有限维矩阵函数的解析延拓。\end{proposition}
+\begin{proof}
+在 \(H|n\rangle=E_n|n\rangle\) 的本征基中，
 \begin{align*}
  \langle A(t)B\rangle
  &= Z^{-1}\sum_{m,n}e^{-\beta E_m}e^{i(E_m-E_n)t/\hbar}A_{mn}B_{nm},\\
@@ -250,18 +251,20 @@ Gibbs 态 \(\rho=Z^{-1}\ee^{-\beta H}\) 的实时间关联函数还满足一个�
     e^{\ii(E_m-E_n)t/\hbar}.
 \end{align*}
 最后一步只是交换求和指标 \(m\leftrightarrow n\)。这就证明了 \eqnrefs{eq:phys-sm-kms-condition}。
+\end{proof}
 
-定义 Kubo--Mori 内积
+\begin{definition}[Kubo--Mori 内积与连通响应]
+对任意复算符，定义 Kubo--Mori 内积
 \begin{equation*}
  \langle\!\langle A,B\rangle\!\rangle_\beta
- :=\int_0^1\Tr(\rho^s A\rho^{1-s}B)\,\dd s.
+ :=\int_0^1\Tr(\rho^s A^\dagger\rho^{1-s}B)\,\dd s.
 \end{equation*}
 由 \(\rho=Z^{-1}\ee^{-\beta H}\) 及迹的循环性，取 \(\tau=\beta(1-s)\) 可得
 \begin{equation*}
  \langle\!\langle A,B\rangle\!\rangle_\beta
- =\frac1\beta\int_0^\beta\langle A(-\ii\tau\hbar)B\rangle\,\dd\tau.
+ =\frac1\beta\int_0^\beta\langle A^\dagger(-\ii\tau\hbar)B\rangle\,\dd\tau.
 \end{equation*}
-因子 \(1/\beta\) 来自区间 \([0,1]\) 到 \([0,\beta]\) 的变量替换；少了它，前面的响应式便会多出一个 \(\beta\)。其对称性也可直接把原积分中的 \(s\) 换成 \(1-s\)，再用迹的循环性验证。
+因子 \(1/\beta\) 来自区间 \([0,1]\) 到 \([0,\beta]\) 的变量替换；少了它，前面的响应式便会多出一个 \(\beta\)。它对第一变量共轭线性、对第二变量线性；共轭对称性由取伴随、迹循环及 $s\mapsto1-s$ 得到。严格正 Gibbs 态下，本征基展开中的对数平均严格正，所以内积正定。若两算符均厄米，它才退化为前面使用的实对称双线性形式。
 
 对 \(H(\vartheta)=H_0-\vartheta A\)，自由能 \(F(\vartheta)=-\beta^{-1}\log Z(\vartheta)\) 的 \(n\) 阶导数为
 \begin{equation}
@@ -281,6 +284,16 @@ Gibbs 态 \(\rho=Z^{-1}\ee^{-\beta H}\) 的实时间关联函数还满足一个�
  \item \(\kappa_3(A,A,A)\) 由同一生成函数的三阶导数定义；算符不对易时，须保留虚时间排序，不能直接写成 \(\langle(\delta A)^3\rangle\)。
 \end{itemize}
 若 \([H,A]=0\)，指数可以拆开，此时 \(\kappa_n\) 才成为通常概率分布的累积量，例如 \(\kappa_2=\langle A^2\rangle-\langle A\rangle^2\)。非对易情形由生成函数而非普通矩定义；这一点在计算高阶响应时不可省略。
+\end{definition}
+
+\begin{workedexample}[非对易二能级系统的静态响应]
+取 $H(h)=-\Delta\sigma_z-h\sigma_x$，$\Delta>0$。能级为 $\pm r$，$r=\sqrt{\Delta^2+h^2}$，故 $F=-\beta^{-1}\log(2\cosh\beta r)$。求导给
+\[
+ \langle\sigma_x\rangle=\frac{h}{r}\tanh(\beta r),\qquad
+ \chi_x(0)=\left.\partial_h\langle\sigma_x\rangle\right|_{h=0}=\frac{\tanh(\beta\Delta)}{\Delta}.
+\]
+然而 $h=0$ 时 $\Var(\sigma_x)=1$，所以普通方差公式会错误地给出 $\beta$。正确 Kubo--Mori 协方差为 $\tanh(\beta\Delta)/(\beta\Delta)$。只有高温 $\beta\Delta\ll1$ 才有 $\chi_x=\beta-\beta^3\Delta^2/3+O(\beta^5\Delta^4)$；零温响应趋于 $1/\Delta$，并不发散。
+\end{workedexample}
 
 \begin{proposition}[有序谱的涨落--耗散关系]
 设 \(A=A^\dagger\)，并约定 \(\widehat f(\omega)=\int_{\mathbb R}e^{\ii\omega t}f(t)\,\dd t\)。定义有序谱
@@ -372,12 +385,15 @@ S_{AA}^{\rm sym}(\omega)
 Morera 定理给出 \(p\) 全纯。Cauchy 积分公式还说明 \(p_\Lambda\) 的各阶导数在更小的紧集上一致收敛到 \(p\) 的相应导数。最后的逆否命题必须同时否定两个假设之一；它不单独推出零点逼近。
 \end{proof}
 
+\begin{theorem}[多项式的 Jensen 公式]
 Jensen 公式在这里有一个直接可用的多项式版本。设 $f(0)\ne0$，且 $f$ 在 $|z|=R$ 上无零点，把圆内零点（按重数）记为 $a_1,\ldots,a_m$。则
 \begin{equation}
  \frac1{2\pi}\int_0^{2\pi}\log|f(Re^{\ii\theta})|\,\dd\theta
  =\log|f(0)|+\sum_{|a_k|<R}\log\frac{R}{|a_k|}.
  \label{eq:phys-sm-jensen-formula}
 \end{equation}
+\end{theorem}
+\begin{proof}
 对配分函数多项式，这个等式可以从因式分解逐项证明。若 $f(z)=f(0)\prod_j(1-z/a_j)$，只需计算一个因子的圆周平均。$|a_j|>R$ 时，$\log(1-z/a_j)$ 在圆盘内全纯，实部的平均等于中心值零；$|a_j|<R$ 时，写成
 \[
  \log|1-Re^{\ii\theta}/a_j|
@@ -385,6 +401,7 @@ Jensen 公式在这里有一个直接可用的多项式版本。设 $f(0)\ne0$�
   +\log|1-(a_j/R)e^{-\ii\theta}|,
 \]
 第二项的平均仍为零。逐项相加便得到 \eqnrefs{eq:phys-sm-jensen-formula}，不需要把多项式推广为亚纯函数。
+\end{proof}
 
 记 $N_\Lambda(r)$ 为 $\Xi_\Lambda$ 在 $|z|\le r<R$ 内的零点数，仍按重数计算。因这些零点各贡献至少 $\log(R/r)$，有
 \begin{equation}
@@ -435,4 +452,144 @@ Jensen 公式在这里有一个直接可用的多项式版本。设 $f(0)\ne0$�
         {2e^{\beta J}+2e^{-\beta J}}
  =\tanh(\beta J)>0.
 \]
-这个计算只证明了两自旋模型中的相关性为正；推广到任意铁磁图的 Griffiths 不等式需要单独的组合证明，不能把两个展开式中“存活的项较多”直接当作不等式的证明。后文研究 Ising 图展开时再处理一般图的结构。
+两自旋的正相关提示了铁磁耦合的共同性质。现在先证明体自由能的存在，再用双副本计算把关联正性推广到一般有限图；图的平面性并不参与这些证明。
+
+\subsection{切开相互作用以后怎样控制自由能}
+
+边界上的相互作用数目相对体积变小，并不能代替极限存在的证明。先量化切开系统造成的误差，再把大盒铺成小盒，才可以比较不同体积。
+
+\begin{lemma}[有限系统自由能的扰动界]
+经典有限状态系统若 $|H(\omega)-H_0(\omega)|\le\varepsilon$，则
+\[
+ |\log Z_H-\log Z_{H_0}|\le\beta\varepsilon,
+ \qquad |F_H-F_{H_0}|\le\varepsilon.
+\]
+有限维量子系统若 $\|H-H_0\|\le\varepsilon$，同样成立。
+\end{lemma}
+\begin{proof}
+经典情形逐配置比较 $e^{-\beta\varepsilon}e^{-\beta H_0}\le e^{-\beta H}\le e^{\beta\varepsilon}e^{-\beta H_0}$，求和、取对数即可。量子情形不能未经证明地对不对易算符使用指数的保序性；改用 Gibbs 变分原理。任意态的自由能泛函之差为 $\Tr\rho(H-H_0)$，绝对值至多 $\varepsilon$。取两泛函的极小值仍满足这个界。
+\end{proof}
+
+\begin{theorem}[有限程格点模型的体自由能极限]
+每个 $\mathbb Z^d$ 格点有 $q<\infty$ 个状态。设相互作用平移不变、作用直径至多 $R$，且每个格点参与的相互作用项的绝对值之和统一有界。对自由边界立方盒 $\Lambda_L=\{1,\ldots,L\}^d$，极限
+\[
+ a(\beta)=\lim_{L\to\infty}\frac{\log Z_{\Lambda_L}}{L^d},
+ \qquad f(\beta)=-\beta^{-1}a(\beta)
+\]
+存在。修改的边界相互作用若总绝对值为 $O(L^{d-1})$，不改变此极限。
+\end{theorem}
+\begin{proof}
+设统一能量界为 $|H_{\Lambda_L}|\le C_0L^d$。比较所有 $q^{L^d}$ 个构型的权重，得到
+\[
+ \log q-\beta C_0\le a_L:=L^{-d}\log Z_{\Lambda_L}
+ \le\log q+\beta C_0.
+\]
+固定整数 $\ell>2R$，在 $\Lambda_L$ 中铺入 $k^d$ 个互不交叠的边长 $\ell$ 小盒，其中 $k=\lfloor L/\ell\rfloor$。未铺满的格点数至多 $d\ell L^{d-1}$。切掉不同小盒间的相互作用，并切掉余下格点参与的相互作用，得到 $H_0$：小盒彼此独立，余下格点自由。
+
+每个小盒边界的 $R$ 邻域有 $O(\ell^{d-1})$ 个格点。每点能量有统一界，故切掉的总能量满足
+\[
+ \|H-H_0\|_\infty\le C_1\frac{L^d}{\ell}+C_2\ell L^{d-1},
+ \qquad Z_{H_0}=Z_{\Lambda_\ell}^{\,k^d}q^{L^d-(k\ell)^d}.
+\]
+应用扰动界并除以 $L^d$；再用 $a_\ell$ 的统一界估计未铺满部分，得到常数与 $L,\ell$ 无关的
+\begin{equation}
+ |a_L-a_\ell|\le\frac{C_3}{\ell}+C_4\frac{\ell}{L}.
+ \label{eq:phys-sm-subadditivity-free-energy}
+\end{equation}
+先固定 $\ell$ 令 $L\to\infty$，便有 $\limsup a_L-\liminf a_L\le2C_3/\ell$。再令 $\ell\to\infty$，两极限相同，证明了完整整数序列的收敛，不仅是边长倍增的子序列。最后，边界修改造成 $|a_L^{(1)}-a_L^{(2)}|=O(L^{-1})$，极限相同。
+\end{proof}
+
+这一定理确立的是体自由能，与不同边界条件是否选择同一个无限体积 Gibbs 态是两个问题。低温时，正、负边界可以产生不同磁化，却仍有相同的体自由能。
+
+\subsection{铁磁关联的正性与条件测度的单调性}
+
+两自旋的正相关已算出，但大图上不能靠“某一展开存活项更多”来比较两个带归一化的期望。下面将归一化同时保留在双副本系统中。
+
+\begin{definition}[自旋乘积与铁磁耦合]
+在有限顶点集 $V$ 上，$\sigma_x\in\{-1,1\}$，记 $\sigma_A=\prod_{x\in A}\sigma_x$，空积为一。取有限系统
+\[
+ H(\sigma)=-\sum_{A\subseteq V}J_A\sigma_A,\qquad J_A\ge0.
+\]
+这里只讨论经典有限自旋；非负一体项是非负外场，非负二体项是通常的铁磁边耦合。允许更高阶项时，下一定理仍成立，但稍后的 FKG 格条件不一定成立。
+\end{definition}
+
+\begin{theorem}[Griffiths--Kelly--Sherman 不等式]
+上述 Gibbs 测度对任意 $B,C\subseteq V$ 满足
+\begin{equation}
+ \langle\sigma_B\rangle\ge0,\qquad
+ \langle\sigma_B\sigma_C\rangle-
+ \langle\sigma_B\rangle\langle\sigma_C\rangle\ge0.
+ \label{eq:phys-sm-griffiths-inequalities}
+\end{equation}
+\end{theorem}
+\begin{proof}
+第一不等式可直接展开 $e^{\beta J_A\sigma_A}$ 的幂级数。所有展开系数非负；对每个格点求和，奇数次幂为零、偶数次幂为二。因此分子是非负项之和，分母严格正。
+
+第二不等式取两套独立构型 $\sigma,\tau$。把差写成
+\[
+ \operatorname{Cov}(\sigma_B,\sigma_C)
+ =\frac1{2Z^2}\sum_{\sigma,\tau}
+ (\sigma_B-\tau_B)(\sigma_C-\tau_C)
+ e^{\beta\sum_AJ_A(\sigma_A+\tau_A)}.
+\]
+每点令 $u_x=(\sigma_x+\tau_x)/2$、$v_x=(\sigma_x-\tau_x)/2$。局部可能值恰为 $(1,0),(-1,0),(0,1),(0,-1)$，与两自旋构型一一对应。展开乘积可得
+\begin{align*}
+ \sigma_A+\tau_A&=2\sum_{I\subseteq A,\ |I|\ \text{为偶数}}u_{A\setminus I}v_I,\\
+ \sigma_B-\tau_B&=2\sum_{I\subseteq B,\ |I|\ \text{为奇数}}u_{B\setminus I}v_I.
+\end{align*}
+这里 $u_D,v_D$ 表示逐点乘积。把指数也作幂级数展开，整个分子成为 $u,v$ 单项式的和，所有系数均非负。每个点的局部求和
+\[
+ \sum_{(u_x,v_x)}u_x^p v_x^q
+\]
+若 $p,q$ 都正则为零；只有一者正且为奇数时也为零；其余情况为二或四。因此每个单项式的全构型和非负，证明协方差非负。有限系统中指数级数绝对收敛，以上重排合法。
+\end{proof}
+
+\begin{corollary}[增加铁磁耦合时关联不减]
+\[
+ \frac{\partial}{\partial J_A}\langle\sigma_B\rangle
+ =\beta\operatorname{Cov}(\sigma_A,\sigma_B)\ge0.
+\]
+\end{corollary}
+\begin{proof}
+对 Gibbs 分子、分母同时求导即得协方差，然后应用第二不等式。结论依赖全部 $J_A\ge0$，不是所有符号外场下任意自旋乘积的单调性。
+\end{proof}
+
+\begin{definition}[格条件与递增函数]
+给构型逐点排序，$-1<1$。记 $\sigma\wedge\tau,\sigma\vee\tau$ 为逐点最小、最大值。严格正权重 $w$ 满足格条件，是指
+\[
+ w(\sigma\wedge\tau)w(\sigma\vee\tau)\ge w(\sigma)w(\tau).
+\]
+函数 $f$ 递增，是指 $\sigma\le\tau$ 时 $f(\sigma)\le f(\tau)$。
+\end{definition}
+
+\begin{theorem}[二元乘积格上的 FKG 不等式]
+若 $\mu=w/\sum w$ 满足上述格条件，则任意两个递增实函数 $f,g$ 满足
+\begin{equation}
+ \operatorname{Cov}_\mu(f,g)\ge0.
+ \label{eq:phys-sm-fkg-inequality}
+\end{equation}
+对二体铁磁 Ising 模型，外场可以是任意实数；权重仍满足格条件。
+\end{theorem}
+\begin{proof}
+对格点数归纳。一个格点时，协方差为 $p(1-p)(f_+-f_-)(g_+-g_-)\ge0$。把 $n$ 点构型写成 $(x,t)$，其中 $t=\pm1$。两条件测度 $\mu_\pm(x)$ 均继承格条件，所以按归纳假设都关联非负。
+
+对 $x\le y$，把格条件用于 $(x,+)$、$(y,-)$，得到 $w(x,+)w(y,-)\le w(x,-)w(y,+)$。因此比值 $r(x)=w(x,+)/w(x,-)$ 递增。对任意递增 $h$，归纳假设给
+\[
+ E_{\mu_+}h-E_{\mu_-}h
+ =\frac{\operatorname{Cov}_{\mu_-}(h,r)}{E_{\mu_-}r}\ge0.
+\]
+由于 $f(x,+)\ge f(x,-)$，且 $f(x,-)$ 对 $x$ 递增，所以 $F(t)=E_{\mu_t}f(x,t)$ 递增；$G(t)$ 同理。全协方差恒等式于是给
+\[
+ \operatorname{Cov}_\mu(f,g)
+ =E_t\operatorname{Cov}_{\mu_t}(f,g)+\operatorname{Cov}_t(F,G)\ge0,
+\]
+第一项用归纳假设，第二项用一格点公式。
+
+最后检查二体 Ising 权重。对 $\log w=\beta\sum_{xy}J_{xy}\sigma_x\sigma_y+\beta\sum_xh_x\sigma_x$，一体项在格条件的两边相消；一条边若两构型在其两端交叉排序，则对数差为 $4\beta J_{xy}\ge0$，其他情况为零。逐边相加即证明格条件。
+\end{proof}
+
+\begin{workedexample}[为什么 GKS 与 FKG 不能互相替代]
+取 $B=\{1,2\}$。函数 $\sigma_1\sigma_2$ 不是递增函数：从 $(-1,-1)$ 只增加第一自旋，函数由 $1$ 变为 $-1$。因此不能直接把自旋乘积代入 FKG 来证明 GKS。反过来，FKG 在负外场也成立，而 GKS 第一不等式在单自旋负外场下已失败：$\langle\sigma\rangle=\tanh(\beta h)<0$。两定理分别控制非负耦合的乘积关联和格条件下的递增观测量。
+\end{workedexample}
+
+这些有限体积不等式可以沿已存在的 Gibbs 态子序列传到极限，提供关联与外场的单调性；它们本身不保证相变。证明低温有序还需 Peierls 轮廓估计，证明高温无序则需独立的展开或唯一性条件。临界点处是否有磁化、临界指数取什么值，均不能只由上述正性断言。

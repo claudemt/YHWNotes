@@ -1,16 +1,357 @@
-\section{固定距离传播的精确相位}
+\section{自由传播：色散、波包展宽与阿秒结构如何从能谱中生长}
 \label{chap:feqo-free-propagation}
 
-一维向前运动的正能电子满足 \(E(p)=\sqrt{m^2c^4+c^2p^2}\)。反解正动量分支，\(p(E)=c^{-1}\sqrt{E^2-m^2c^4}\)。设相互作用后第 \(\ell\) 条边带能量为 \(E_\ell=E_0+\ell\hbar\omega>mc^2\)，振幅为 \(c_\ell\)，且只含向前传播支。下面的相位使用精确色散；将探测面上的各边带写成共同幅度归一化，则还要求 \(\max_\ell|v_\ell-v_0|/v_0\ll1\)，其中 \(v_\ell=\partial_pE[p(E_\ell)]\)。若速度差不可忽略，须保留能量归一化到通量归一化的 \(v_\ell^{-1/2}\) 因子，并以概率流而非单纯 \(|\Psi|^2\) 计算到达时间。在这个窄带条件下，位置 \(z=L\) 的波函数为
+\subsection{自由传播何时重要}
+
+相互作用刚结束时，能谱只告诉我们每条边带有多少概率。两条边带之间的相位也编码在电子态中，却不会出现在单次能量测量里。自由传播不改变各边带的概率，但不同能量对应不同动量，它们在漂移中积累不同的空间相位；这些相位重新叠加后，电子的到达时间可以出现比光学周期短得多的结构。
+
+自由传播必须被显式处理的场景有三类：
+
+\begin{enumerate}
+\item \textbf{漂移空间}：相互作用区与探测区之间、或两个相互作用区之间的距离 $L$ 与 Talbot 长度 $L_T$（\cref{eq:feqo-talbot-length}）可比时，二次色散相位 $\Phi_\ell$ 不可忽略。
+\item \textbf{时间聚焦}：若初始波包带有位置--动量关联（负 $z$--$p$ 协方差），自由色散可先压缩再展宽波包（\cref{fig:gaussian-compression-modern}）。
+\item \textbf{聚束形成}：PINEM 边带在交互区出口的时间密度完全平坦；时间尖峰不是光场直接把电子"切成脉冲"，而是自由色散使原先相消的跨边带项取得不同相位后才出现（\cref{chap:feqo-attosecond}）。
+\end{enumerate}
+
+反之，若 $L$ 远小于所有特征尺度（相干长度 $L_{\rm coh}$、Talbot 长度 $L_T$、波包倍增距离 $v_0 t_*$），则自由传播对后续干涉的影响可以忽略，两个作用算符之间可直接相乘。
+
+\subsection{自由电子色散关系}
+
+一维向前运动的正能电子满足精确的相对论色散关系
+\begin{equation}
+E(p)=\sqrt{m^2c^4+c^2p^2},
+\label{eq:feqo-free-dispersion}
+\end{equation}
+其中 $m$ 为电子静质量，$c$ 为光速，$p$ 为纵向动量。反解正动量分支，
+\begin{equation}
+p(E)=\frac{1}{c}\sqrt{E^2-m^2c^4},\qquad E>mc^2.
+\label{eq:feqo-momentum-from-energy}
+\end{equation}
+
+为了理解各阶色散，对 $p(E)$ 在参考能量 $E_0$ 处做 Taylor 展开。记 $v_0 = (\dd E/\dd p)_{p_0} = c^2p_0/E_0$ 为群速度，$\gamma_0 = E_0/(mc^2)$ 为 Lorentz 因子。逐阶求导：
+\begin{equation}
+p'(E)=\frac{E}{c\sqrt{E^2-m^2c^4}}=\frac{1}{v},
+\label{eq:feqo-p-prime}
+\end{equation}
+\begin{equation}
+p''(E)=-\frac{m^2c^4}{c(E^2-m^2c^4)^{3/2}}=-\frac{1}{\gamma^3 m v^3}.
+\label{eq:feqo-p-double-prime}
+\end{equation}
+\cref{eq:feqo-p-double-prime} 的推导如下：由 $p'(E)=E/[c^2 p(E)]$，
+\[
+p''(E)=\frac{c^2 p - E \cdot c^2 p'}{c^4 p^2}
+=\frac{c^2 p - E^2/(cp)}{c^4 p^2}
+=\frac{c^2 p^2 - E^2}{c^5 p^3}
+=-\frac{m^2c^4}{c(c^2p^2)^{3/2}}
+=-\frac{1}{\gamma^3 mv^3},
+\]
+其中使用了 $E^2 - c^2p^2 = m^2c^4$ 和 $\gamma^3 m^3 v^3 = (E/(mc^2))^3 m^3 v^3 = E^3 v^3/c^6 = c^3 p^3$（最后一步由 $p = \gamma mv$ 得 $c^3p^3 = \gamma^3 m^3 v^3 c^3 = E^3 v^3/c^3 \cdot c^3/E^3 \cdot c^3p^3$，直接验证 $c^2p^2 = E^2 - m^2c^4 = m^2c^4(\gamma^2-1)$，故 $(c^2p^2)^{3/2} = m^3c^6(\gamma^2-1)^{3/2} = m^3c^6\gamma^3 v^3/c^3 = \gamma^3 m^3 v^3 c^3$）。
+
+
+\par
+\begin{workedexample}
+从 $p(E)=c^{-1}\sqrt{E^2-m^2c^4}$ 直接求 $p'(E_0)$ 和 $p''(E_0)$，验证\cref{eq:feqo-p-prime,eq:feqo-p-double-prime}，并核对\cref{eq:feqo-momentum-taylor} 中二次项的量纲。
+\textbf{解.} 微分得 $p'(E)=E/[c\sqrt{E^2-m^2c^4}]=1/v$，$p''(E)=-m^2c^3/(E^2-m^2c^4)^{3/2}=-1/(\gamma^3mv^3)$。二次项 $\delta E^2/(mv^3)$ 的量纲为动量，且其负号对应 $p(E)$ 的负曲率。
+\end{workedexample}
+\par
+因此动量的 Taylor 展开为
+\begin{equation}
+p(E_0+\delta E)=p_0+\frac{\delta E}{v_0}
+-\frac{(\delta E)^2}{2\gamma_0^3mv_0^3}
++R_3(\delta E),
+\label{eq:feqo-momentum-taylor}
+\end{equation}
+其中余项 $|R_3|\leq |\delta E|^3 \max_{E\in\mathcal{B}}|p'''(E)|/6$，$\mathcal{B}$ 为实际占据的能量区间。
+
+\begin{note}[各项的物理意义]
+线性项 $\delta E/v_0$ 决定群延迟：能量偏移 $\delta E$ 的电子以不同于 $v_0$ 的速度传播，在距离 $L$ 上积累时间偏移 $\delta t = -L\delta E/(\gamma_0^3mv_0^3)$。二次项 $-(\delta E)^2/(2\gamma_0^3mv_0^3)$ 是群速度色散（GVD）：它使波包展宽，使不同边带之间的二次相位差改变时间峰形。三阶及更高阶在能带宽度 $|\delta E|\ll \gamma_0^3 mv_0^3/|p'''|$ 时可忽略。
+
+\end{note}
+
+\subsection{自由传播核}
+
+在正能分支、一维向前传播的近似下，能量为 $E$ 的平面波分量在距离 $L$ 上积累相位 $e^{\ii p(E)L/\hbar}$。因此自由传播核（propagation kernel）为
+\begin{equation}
+K(L,t;0,t')=\int_{-\infty}^{\infty}\frac{\dd p}{2\pi\hbar}\,
+\exp\!\left[\frac{\ii}{\hbar}p(L)-\frac{\ii}{\hbar}E(p)(t-t')\right],
+\label{eq:feqo-prop-kernel}
+\end{equation}
+其中 $E(p)$ 取\cref{eq:feqo-free-dispersion}。对窄带波包（动量宽度 $\delta p\ll p_0$），在 $p_0$ 处展开 $E(p)$ 至二阶：
+\begin{equation}
+E(p_0+\delta p)\approx E_0+v_0\,\delta p+\frac{(\delta p)^2}{2\gamma_0^3 m}.
+\label{eq:feqo-energy-taylor-p}
+\end{equation}
+提取共同载波 $e^{\ii(p_0 L - E_0 t)/\hbar}$，包络的传播简化为
+\begin{equation}
+\psi(L,t)=\int_{-\infty}^{\infty}\frac{\dd(\delta p)}{2\pi\hbar}\,
+\widetilde\psi(\delta p)\,
+\exp\!\left[\frac{\ii}{\hbar}\delta p\cdot L
+-\frac{\ii}{\hbar}\left(v_0\delta p+\frac{(\delta p)^2}{2\gamma_0^3 m}\right)t\right],
+\label{eq:feqo-envelope-propagation}
+\end{equation}
+其中 $\widetilde\psi(\delta p)$ 是初始包络的动量空间表示。整理指数中 $\delta p$ 的系数：
+\begin{equation}
+\psi(L,t)=\int_{-\infty}^{\infty}\frac{\dd(\delta p)}{2\pi\hbar}\,
+\widetilde\psi(\delta p)\,
+\exp\!\left[\frac{\ii}{\hbar}\delta p\left(L-v_0 t\right)
+-\frac{\ii(\delta p)^2}{2\gamma_0^3 m\hbar}t\right].
+\label{eq:feqo-envelope-prop-expanded}
+\end{equation}
+引入共动时间 $\tau = t - L/v_0$，则 $L - v_0 t = -v_0\tau$，上式变为
+\begin{equation}
+\psi(\tau;L)=\int_{-\infty}^{\infty}\frac{\dd(\delta p)}{2\pi\hbar}\,
+\widetilde\psi(\delta p)\,
+\exp\!\left[-\frac{\ii}{\hbar}\delta p\cdot v_0\tau
+-\frac{\ii(\delta p)^2}{2\gamma_0^3 m\hbar}\left(\tau+\frac{L}{v_0}\right)\right].
+\label{eq:feqo-envelope-comoving}
+\end{equation}
+注意这里 $L/v_0$ 是参考粒子到达 $L$ 的时间，$\tau$ 是相对于它的偏移。在 $L\gg v_0|\tau|$ 的远场条件下（即传播距离远大于波包在共动系中的位移），二次色散项中的 $\tau$ 可忽略，传播核简化为
+\begin{equation}
+\psi(\tau;L)\approx\int_{-\infty}^{\infty}\frac{\dd(\delta p)}{2\pi\hbar}\,
+\widetilde\psi(\delta p)\,
+\exp\!\left[-\frac{\ii}{\hbar}\delta p\cdot v_0\tau
+-\frac{\ii L(\delta p)^2}{2\gamma_0^3 m\hbar v_0}\right].
+\label{eq:feqo-far-field-kernel}
+\end{equation}
+这是 Fresnel 型积分：自由色散在动量空间引入二次相位 $e^{-\ii L(\delta p)^2/(2\gamma_0^3 m\hbar v_0)}$，然后在共动时间 $\tau$ 上做 Fourier 变换。
+
+\subsection{高斯波包的自由传播}
+
+\subsubsection{初始条件与动量空间表示}
+
+设 $t=0$ 时电子的包络为最小不确定高斯波包：
+\begin{equation}
+\psi(z,0)=\frac{1}{(2\pi\sigma_{z0}^2)^{1/4}}
+\exp\!\left(-\frac{z^2}{4\sigma_{z0}^2}\right),
+\label{eq:feqo-initial-gaussian}
+\end{equation}
+位置标准差为 $\sigma_{z0}$，位置--动量协方差为零（最小不确定态）。其 Fourier 变换为
+\begin{align}
+\widetilde\psi(\delta p)&=\int_{-\infty}^{\infty}\dd z\,\psi(z,0)\,e^{-\ii \delta p\cdot z/\hbar}\notag\\
+&=\frac{1}{(2\pi\sigma_{z0}^2)^{1/4}}
+\int_{-\infty}^{\infty}\dd z\,
+\exp\!\left(-\frac{z^2}{4\sigma_{z0}^2}-\frac{\ii\delta p\cdot z}{\hbar}\right).
+\label{eq:feqo-gaussian-fourier-1}
+\end{align}
+配方：$-\frac{z^2}{4\sigma_{z0}^2}-\frac{\ii\delta p\cdot z}{\hbar}=-\frac{1}{4\sigma_{z0}^2}\left(z+\frac{2\ii\sigma_{z0}^2\delta p}{\hbar}\right)^2-\frac{\sigma_{z0}^2\delta p^2}{\hbar^2}$。代入高斯积分 $\int e^{-az^2}\dd z=\sqrt{\pi/a}$：
+\begin{equation}
+\widetilde\psi(\delta p)=\frac{(8\pi\sigma_{z0}^2)^{1/4}}{\sqrt{2\pi}}\cdot\sqrt{2\pi}\cdot\frac{1}{\sqrt{2\pi}}
+\exp\!\left(-\frac{\sigma_{z0}^2\delta p^2}{\hbar^2}\right)
+=(8\pi\sigma_{z0}^2)^{1/4}\frac{1}{\sqrt{2\pi}}
+\exp\!\left(-\frac{\sigma_{z0}^2\delta p^2}{\hbar^2}\right).
+\label{eq:feqo-gaussian-momentum}
+\end{equation}
+更简洁地，记动量宽度 $\sigma_p=\hbar/(2\sigma_{z0})$，则
+\begin{equation}
+\widetilde\psi(\delta p)=\frac{(2\pi)^{1/4}\sqrt{2\sigma_{z0}}}{\sqrt{2\pi}}
+\exp\!\left(-\frac{\delta p^2}{4\sigma_p^2}\right)
+=\frac{1}{(2\pi\sigma_p^2)^{1/4}}
+\exp\!\left(-\frac{\delta p^2}{4\sigma_p^2}\right),
+\label{eq:feqo-gaussian-momentum-clean}
+\end{equation}
+满足 $\int|\widetilde\psi|^2\dd(\delta p)/(2\pi\hbar)=1$（注意此处动量空间测度为 $\dd(\delta p)/(2\pi\hbar)$）。动量标准差为 $\sigma_p=\hbar/(2\sigma_{z0})$，位置--动量不确定关系取等号：$\sigma_{z0}\sigma_p=\hbar/2$。
+
+\subsubsection{传播积分的显式计算}
+
+将\cref{eq:feqo-gaussian-momentum-clean}代入\cref{eq:feqo-envelope-prop-expanded}，在远场近似下：
+\begin{equation}
+\psi(\tau;L)=\frac{1}{(2\pi\sigma_p^2)^{1/4}}
+\int_{-\infty}^{\infty}\frac{\dd(\delta p)}{2\pi\hbar}\,
+\exp\!\left(-\frac{\delta p^2}{4\sigma_p^2}
+-\frac{\ii}{\hbar}\delta p\cdot v_0\tau
+-\frac{\ii L(\delta p)^2}{2\gamma_0^3 m\hbar v_0}\right).
+\label{eq:feqo-gaussian-prop-integral}
+\end{equation}
+合并 $\delta p^2$ 和 $\delta p$ 的项，定义复参数
+\begin{equation}
+\alpha(L):=\frac{1}{4\sigma_p^2}+\frac{\ii L}{2\gamma_0^3 m\hbar v_0}
+=\frac{\sigma_{z0}^2}{\hbar^2}+\frac{\ii L}{2\gamma_0^3 m\hbar v_0}.
+\label{eq:feqo-alpha-def}
+\end{equation}
+则被积函数的指数为 $-\alpha(\delta p)^2 - \ii\delta p\cdot v_0\tau/\hbar$。配方：
+\begin{equation}
+-\alpha\left(\delta p+\frac{\ii v_0\tau}{2\alpha\hbar}\right)^2
+-\frac{v_0^2\tau^2}{4\alpha\hbar^2}.
+\label{eq:feqo-gaussian-complete-square}
+\end{equation}
+对 $\delta p$ 从高斯积分 $\int_{-\infty}^{\infty}e^{-\alpha x^2}\dd x=\sqrt{\pi/\alpha}$（$\operatorname{Re}\alpha>0$ 保证收敛），得
+\begin{equation}
+\psi(\tau;L)=\frac{1}{(2\pi\sigma_p^2)^{1/4}}\cdot\frac{1}{2\pi\hbar}
+\cdot\sqrt{\frac{\pi}{\alpha}}\cdot
+\exp\!\left(-\frac{v_0^2\tau^2}{4\alpha\hbar^2}\right).
+\label{eq:feqo-gaussian-prop-result}
+\end{equation}
+
+
+\par
+\begin{workedexample}
+对\cref{eq:feqo-gaussian-prop-integral} 不做远场近似，保留完整的 $\alpha(L)$ 表达式，计算 $\sigma_z(L)$ 的精确值，并说明远场近似在什么条件下成立。
+\textbf{解.} 写 $\alpha=a+ib$，其中 $a=\sigma_{z0}^2/\hbar^2$、$b=L/(2\gamma_0^3m\hbar v_0)$。由 $|\psi|^2$ 的高斯指数得 $\sigma_z=\hbar/\sqrt{\operatorname{Re}(1/\alpha)}=\hbar\sqrt{(a^2+b^2)/a}=\sigma_{z0}\sqrt{1+(L/L_*)^2}$，$L_*=2\gamma_0^3mv_0\sigma_{z0}^2/\hbar$。远场线性展宽要求 $L\gg L_*$，即 $|b|\gg a$。
+\end{workedexample}
+\par
+\subsubsection{波包宽度的演化}
+
+概率密度 $|\psi|^2$ 的 $\tau$ 依赖来自 $\exp(-v_0^2\tau^2/(2\hbar^2\operatorname{Re}\alpha))$（因为 $|\exp(-z)|^2=\exp(-2\operatorname{Re}z)$，而 $1/(4\alpha)+1/(4\alpha^*)=(\operatorname{Re}\alpha)/(2|\alpha|^2)$）。因此时间宽度为
+\begin{equation}
+\sigma_t^2(L)=\frac{\hbar^2\operatorname{Re}\alpha}{v_0^2}\cdot 2
+=\frac{\hbar^2}{v_0^2}\cdot 2\operatorname{Re}\alpha.
+\label{eq:feqo-time-width-general}
+\end{equation}
+代入 $\operatorname{Re}\alpha = \sigma_{z0}^2/\hbar^2$：
+等一下，这里需要更仔细。$|\psi|^2\propto|\exp(-v_0^2\tau^2/(4\alpha\hbar^2))|^2=\exp(-v_0^2\tau^2/(2\hbar^2)\cdot\operatorname{Re}(1/\alpha))$。
+
+让我重新计算。$\frac{1}{\alpha}=\frac{\alpha^*}{|\alpha|^2}$，故 $\operatorname{Re}(1/\alpha)=\operatorname{Re}(\alpha^*)/|\alpha|^2=\operatorname{Re}\alpha/|\alpha|^2$。因此
+\begin{equation}
+|\psi(\tau;L)|^2\propto\exp\!\left(-\frac{v_0^2\tau^2}{2\hbar^2}\cdot\frac{\operatorname{Re}\alpha}{|\alpha|^2}\right).
+\label{eq:feqo-gaussian-density}
+\end{equation}
+时间标准差为
+\begin{equation}
+\sigma_t(L)=\frac{\hbar}{v_0}\sqrt{\frac{|\alpha|^2}{\operatorname{Re}\alpha}}.
+\label{eq:feqo-sigma-t-general}
+\end{equation}
+代入 $\alpha=\sigma_{z0}^2/\hbar^2+\ii L/(2\gamma_0^3 m\hbar v_0)$，定义特征时间
+\begin{equation}
+t_*:=\frac{2\gamma_0^3 m\sigma_{z0}^2}{\hbar},
+\label{eq:feqo-t-star}
+\end{equation}
+则 $\alpha=\frac{\sigma_{z0}^2}{\hbar^2}(1+\ii t/t_*)$，其中 $t=L/v_0$ 是传播时间。于是
+\begin{equation}
+|\alpha|^2=\frac{\sigma_{z0}^4}{\hbar^4}\left(1+\frac{t^2}{t_*^2}\right),\qquad
+\operatorname{Re}\alpha=\frac{\sigma_{z0}^2}{\hbar^2}.
+\label{eq:feqo-alpha-modulus}
+\end{equation}
+代入\cref{eq:feqo-sigma-t-general}：
+\begin{equation}
+\sigma_t(L)=\frac{\hbar}{v_0}\cdot\frac{\sigma_{z0}^2}{\hbar^2}\sqrt{\frac{1+t^2/t_*^2}{\sigma_{z0}^2/\hbar^2}}
+=\frac{\sigma_{z0}}{v_0}\sqrt{1+\frac{t^2}{t_*^2}}.
+\label{eq:feqo-sigma-t-final}
+\end{equation}
+等价地，空间宽度 $\sigma_z(L)=v_0\sigma_t(L)$ 为
+\begin{equation}
+\boxed{\sigma_z(L)=\sigma_{z0}\sqrt{1+\frac{L^2}{L_*^2}},\qquad
+L_*:=v_0 t_*=\frac{2\gamma_0^3 m v_0\sigma_{z0}^2}{\hbar}.}
+\label{eq:feqo-gaussian-spreading}
+\end{equation}
+$L\ll L_*$ 时波包几乎不变；$L\gg L_*$ 时线性展宽，$\sigma_z\approx\sigma_{z0}L/L_*$。
+
+
+\par
+\begin{workedexample}
+取 $100\ \si{\kilo\electronvolt}$ 电子（$\gamma_0=1.196$，$v_0=0.548c$），$800\ \si{\nano\metre}$ 激光，$\sigma_E=0.5\ \si{\electronvolt}$，计算 $L_T$ 和 $L_{\rm coh}$，并判断在 $L=L_T/4$ 处相干性是否保持。
+\textbf{解.} $\omega=2\pi c/(800\,\mathrm{nm})\approx2.36\times10^{15}\,\mathrm{s}^{-1}$，故 $L_T\approx0.39\,\mathrm m$。相干长度與能散成反比；本章 $\sigma_E=1$ eV 的数值为 $1.6$ m，故此处 $L_{\rm coh}\approx3.2$ m。于是 $L_T/4\approx0.098$ m，$L/L_{\rm coh}\approx0.031\ll1$，相干性保持良好。
+\end{workedexample}
+\par
+\subsubsection{归一化与 Gouy 相位}
+
+完整的归一化波包为
+\begin{equation}
+\psi(\tau;L)=\frac{1}{(2\pi\sigma_{z0}^2)^{1/4}}
+\frac{1}{\sqrt{1+\ii t/t_*}}\,
+\exp\!\left(-\frac{\tau^2}{4\sigma_{z0}^2(1+\ii t/t_*)}\right),
+\label{eq:feqo-full-gaussian-propagated}
+\end{equation}
+可以验证 $\int|\psi|^2 v_0\dd\tau=1$（因子 $v_0$ 来自 $\dd z=v_0\dd\tau$）。前置因子 $1/\sqrt{1+\ii t/t_*}$ 的模长为 $(1+t^2/t_*^2)^{-1/4}$，恰好补偿宽度展宽带来的振幅下降，保证归一化。其辐角 $-\frac{1}{2}\arctan(t/t_*)$ 是 Gouy 相位——高斯波包在聚焦/散焦过程中获得的额外相位。
+
+\subsubsection{带协方差的压缩}
+
+若初始波包带有负 $z$--$p$ 协方差（即位置与动量负相关），自由色散可以先压缩波包。设初始宽度参数含虚部：$\alpha_0=\sigma_{z0}^2/\hbar^2-\ii C/\hbar^2$（$C>0$ 为协方差），则
+\begin{equation}
+\frac{\sigma_z(t)}{\sigma_z(0)}=\sqrt{1-2Ct/t_*'+(1+C^2)(t/t_*')^2},
+\label{eq:feqo-compression-ratio}
+\end{equation}
+其中 $t_*'=2\gamma_0^3m\sigma_{z0}^2/\hbar$。\cref{fig:gaussian-compression-modern} 显示归一化宽度从 $t/t_*'=-1$ 处的 $1.67$ 单调降到 $t/t_*'=1$ 处的极小 $0.63$，再回升。极小值小于一说明初态的 $z$--$p$ 相关在 $t_*'$ 之前压住了色散引起的展宽；过了 $t_*'$，二次色散项占主导，包络重新变宽。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.76\linewidth]{gaussian_compression.pdf}
+\caption{带负 $z$--$p$ 协方差的高斯电子包在二次色散下先压缩后展宽：$\sigma_z(t)/\sigma_z(0)=\sqrt{1-1.2\,t/t_*+0.6\,(t/t_*)^2}$，在 $t=t_*$ 处压到初值的 $0.63$ 倍。}
+\label{fig:gaussian-compression-modern}
+\end{figure}
+
+\subsubsection{数值示例}
+
+取 $E_0=200\ \si{\kilo\electronvolt}$（$\gamma_0=1.391$，$v_0=0.686c=2.06\times10^8\ \si{\metre\per\second}$），$\sigma_{z0}=10\ \si{\nano\metre}$：
+\begin{align}
+t_*&=\frac{2\times1.391^3\times9.11\times10^{-31}\times(10^{-8})^2}{1.055\times10^{-34}}
+=\frac{2\times2.69\times9.11\times10^{-49}}{1.055\times10^{-34}}
+\approx 0.46\ \si{\femto\second},\\
+L_*&=v_0 t_*=2.06\times10^8\times0.46\times10^{-15}\approx 0.095\ \si{\micro\metre}.
+\end{align}
+波包在不到 $1\ \si{\micro\metre}$ 的漂移内就倍增。这说明高能电子的色散虽然被 $\gamma^3$ 压制，但纳米尺度的初始波包仍然极快地展宽。
+
+若 $\sigma_{z0}=1\ \si{\micro\metre}$（更接近实际束团尺寸），则 $t_*\approx 46\ \si{\femto\second}$，$L_*\approx 9.5\ \si{\milli\metre}$，自由传播在厘米尺度上才变得重要。
+
+\subsection{相干长度与相干时间}
+
+\subsubsection{物理图像}
+
+考虑 PINEM 产生的能量梳：第 $\ell$ 条边带能量 $E_\ell=E_0+\ell\hbar\omega$，振幅 $c_\ell$。每条边带本身带有初始能量展宽 $\sigma_E$（来自入射束的纵向能散）。在漂移距离 $L$ 上，第 $\ell$ 条边带的波包中心以群速度 $v_\ell$ 运动，到达时间偏移 $L/v_\ell$。
+
+由\cref{eq:feqo-momentum-taylor}，$v_\ell^{-1}=p'(E_\ell)\approx 1/v_0-\ell\hbar\omega/(\gamma_0^3mv_0^3)$，故
+\begin{equation}
+\frac{L}{v_\ell}\approx\frac{L}{v_0}-\frac{\ell\hbar\omega L}{\gamma_0^3mv_0^3}.
+\label{eq:feqo-arrival-time-shift}
+\end{equation}
+相邻边带（$\ell$ 与 $\ell+1$）的到达时间差为
+\begin{equation}
+\delta t_{\rm sep}=\frac{\hbar\omega L}{\gamma_0^3mv_0^3}.
+\label{eq:feqo-sideband-separation}
+\end{equation}
+每条边带的时间宽度（由初始能散 $\sigma_E$ 决定）为 $\sigma_t=\hbar/(2\sigma_E)$。
+
+\subsubsection{相干长度的推导}
+
+当 $\delta t_{\rm sep}\ll\sigma_t$ 时，所有边带在同一时刻充分重叠，可以相干叠加形成时间结构。当 $\delta t_{\rm sep}\gtrsim\sigma_t$ 时，相邻边带在时间上分离，相干叠加失效。定义相干长度 $L_{\rm coh}$ 为 $\delta t_{\rm sep}=\sigma_t$ 的距离：
+\begin{equation}
+\frac{\hbar\omega L_{\rm coh}}{\gamma_0^3mv_0^3}=\frac{\hbar}{2\sigma_E},
+\qquad\Longrightarrow\qquad
+\boxed{L_{\rm coh}=\frac{\gamma_0^3mv_0^3}{2\omega\sigma_E}.}
+\label{eq:feqo-coherence-length}
+\end{equation}
+等价地，相干时间为 $\tau_{\rm coh}=L_{\rm coh}/v_0=\gamma_0^3mv_0^2/(2\omega\sigma_E)$。
+
+\begin{note}[另一种理解]
+初始能散 $\sigma_E$ 意味着每条边带的能量不确定度为 $\sigma_E$，对应动量不确定度 $\sigma_p=\sigma_E/v_0$。不同动量分量在漂移中以不同速度传播，导致波包展宽。当展宽后的波包宽度超过边带间距时，相邻边带不再重叠。
+
+\subsubsection{对 PINEM 梳的影响}
+
+在 $L\ll L_{\rm coh}$ 时，所有边带重叠，时间密度呈现周期性结构（\cref{chap:feqo-attosecond}）。在 $L\gg L_{\rm coh}$ 时，边带在时间上分离，时间密度变成一列不重叠的高斯峰，每个峰对应一条边带。中间情况 $L\sim L_{\rm coh}$ 时，只有有限阶的聚束谐波可见：第 $m$ 阶谐波乘以衰减因子
+\begin{equation}
+\exp\!\left[-\frac{1}{2}\left(\frac{m\omega L\sigma_E}{\gamma_0^3mv_0^3}\right)^2\right]
+=\exp\!\left[-\frac{1}{2}m^2\left(\frac{L}{L_{\rm coh}}\right)^2\right].
+\label{eq:feqo-energy-spread-damping}
+\end{equation}
+高阶谐波（大 $m$）先衰减，这与\cref{chap:feqo-decoherence}中的退相干图像一致。
+
+\end{note}
+
+\subsection{物理机制：为什么不同能量分量会退相}
+
+不同能量分量在自由传播中获得不同的空间相位 $p(E_\ell)L/\hbar$。这一相位差有两个来源：
+
+\begin{enumerate}
+\item \textbf{线性项} $\delta E\cdot L/v_0$：它只平移整个时间图样（改变到达时间原点），不改变峰形。
+\item \textbf{二次项} $-(\delta E)^2 L/(2\gamma_0^3mv_0^3)$：它使不同边带之间获得与 $\ell^2$ 成正比的相对相位，从而改变时间峰的形状和高度。这是自由传播产生时间结构的根本原因。
+\item \textbf{三阶及更高阶}：当 $|\ell\hbar\omega|^3 L|p'''|/(6\hbar)\gtrsim 1$ 时变得重要，破坏理想的 Talbot 复现（\cref{eq:feqo-talbot-length}）。
+\end{enumerate}
+
+关键点是：自由传播\emph{不改变}各边带的概率 $|c_\ell|^2$（能谱不变），但通过二次相位改变边带之间的干涉，从而改变时间密度。这就是"能量相干如何在自由飞行中变成到达时间结构"。
+
+\subsection{边带传播的精确相位}
+
+\subsubsection{漂移包络的一般公式}
+
+设相互作用后第 $\ell$ 条边带能量为 $E_\ell=E_0+\ell\hbar\omega>mc^2$，振幅为 $c_\ell$，且只含向前传播支。在窄带条件 $\max_\ell|v_\ell-v_0|/v_0\ll 1$ 下（$v_\ell=\partial_pE[p(E_\ell)]$），位置 $z=L$ 的波函数为
 \begin{equation}
 \Psi(L,t)=\sum_\ell c_\ell
 \exp\!\left[\frac{\ii}{\hbar}p(E_\ell)L
 -\frac{\ii}{\hbar}E_\ell t\right].
 \label{eq:feqo-exact-drift-phase}
 \end{equation}
-每项模长保持 \(|c_\ell|\)，所以能谱不变；干涉项含 \(p(E_\ell)-p(E_{\ell'})\)，所以时间分布会变。
+每项模长保持 $|c_\ell|$，所以能谱不变；干涉项含 $p(E_\ell)-p(E_{\ell'})$，所以时间分布会变。
 
-令 \(v_0=\partial_pE(p_0)\)、\(\tau=t-L/v_0\)，提取共同载波 \(e^{\ii p_0L/\hbar-\ii E_0t/\hbar}\)。留下的包络为
+令 $v_0=\partial_pE(p_0)$、$\tau=t-L/v_0$，提取共同载波 $e^{\ii p_0L/\hbar-\ii E_0t/\hbar}$。留下的包络为
 \begin{equation}
 \psi(\tau;L)=\sum_\ell c_\ell
 e^{-\ii\ell\omega\tau+\ii\Phi_\ell(L)},\qquad
@@ -19,42 +360,93 @@ e^{-\ii\ell\omega\tau+\ii\Phi_\ell(L)},\qquad
 \end{equation}
 这是按距离而非按共同传播时间比较相位；二者若混用，会把群延迟重复计算。
 
-Taylor 定理给 \(p'(E_0)=1/v_0\) 和 \(p''(E_0)=-1/(\gamma_0^3mv_0^3)\)。故 \(\Phi_0=0\)、线性项严格抵消，
+\subsubsection{边带相位的 Taylor 展开}
+
+由\cref{eq:feqo-momentum-taylor}，$p'(E_0)=1/v_0$ 和 $p''(E_0)=-1/(\gamma_0^3mv_0^3)$。故 $\Phi_0=0$、线性项严格抵消，
 \begin{equation}
 \Phi_\ell(L)=-\frac{\hbar\omega^2L}{2\gamma_0^3mv_0^3}\ell^2
 +R_{3,\ell}^{(p)},\qquad
 |R_{3,\ell}^{(p)}|\leq\frac{L|\ell\hbar\omega|^3}{6\hbar}
-\max_{E\in\mathcal B}|p'''(E)|.
+\max_{E\in\mathcal{B}}|p'''(E)|.
 \label{eq:feqo-sideband-phase-expansion}
 \end{equation}
-\(\mathcal B\) 是实际占据的能量区间。整体相位不改概率，线性相位只平移时间原点，二次相位才能改变峰形。二阶近似的控制量是 \(\max|R_{3,\ell}^{(p)}|\ll1\)，传播距离越长越需检查它；窄能散本身不是充分理由。
+$\mathcal{B}$ 是实际占据的能量区间。整体相位不改概率，线性相位只平移时间原点，二次相位才能改变峰形。二阶近似的控制量是 $\max|R_{3,\ell}^{(p)}|\ll 1$，传播距离越长越需检查它；窄能散本身不是充分理由。
 
-若初始波包还有连续能量宽度 \(\sigma_E\)，每一条边带都带着一个邻近能量分布。上述离散式是这些峰足够窄且能量标签可分离时的近似；严格计算应把 \(\sum_\ell\) 外再加上能量积分，并先保持同一电子内部的相干叠加。
+若初始波包还有连续能量宽度 $\sigma_E$，每一条边带都带着一个邻近能量分布。上述离散式是这些峰足够窄且能量标签可分离时的近似；严格计算应把 $\sum_\ell$ 外再加上能量积分，并先保持同一电子内部的相干叠加。
 
-这一积分在高斯例子里可以做完。令入射能量相对 \(E_0\) 的偏移为 \(\epsilon\)，取已归一化的能量振幅
-\(f(\epsilon)=(2\pi\sigma_E^2)^{-1/4}e^{-\epsilon^2/(4\sigma_E^2)}\)，从而 \(\int|f(\epsilon)|^2\dd\epsilon=1\)。假设 \(\sigma_E\ll\hbar\omega\)，不同 \(\ell\) 的能量峰可分开标号，则探测面振幅在共同的通量归一化因子之外为
-\[
-\Psi(L,t)=\sum_\ell c_\ell\int_{-\infty}^{\infty}\dd\epsilon\,
-f(\epsilon)
-e^{\ii p(E_\ell+\epsilon)L/\hbar-\ii(E_\ell+\epsilon)t/\hbar}.
-\]
-在前述各 \(v_\ell\) 相近、通量因子可共用的范围内，对每个 \(\ell\) 保留 \(p(E_\ell+\epsilon)=p(E_\ell)+\epsilon/v_\ell+O(\epsilon^2)\)，并要求 \(L\max_\ell|p''(E_\ell)|\sigma_E^2/\hbar\ll1\)。剩下的 Fourier 高斯积分给第 \(\ell\) 条边带的时间振幅正比于
-\[
-c_\ell e^{\ii p(E_\ell)L/\hbar-\ii E_\ell t/\hbar}
-\exp\!\left[-\frac{\sigma_E^2}{\hbar^2}
-\left(t-\frac{L}{v_\ell}\right)^2\right].
-\]
-单条边带的时间强度标准差是 \(\hbar/(2\sigma_E)\)；不同边带的中心又在 \(L/v_\ell\) 到达。若这些中心相差足以分开，即使能量振幅 \(c_\ell\) 原本相干，它们在同一时刻也不能充分重叠，理想的周期聚束图像就失效。若 \(L|p''|\sigma_E^2/\hbar\) 不小，上面的高斯还会因群速度色散展宽，应返回未展开的能量积分。
+\subsection{算例：PINEM Bessel 梳经过漂移段}
 
-\cref{fig:gaussian-compression} 是这一展宽在有初始负 \(z\)--\(p\) 协方差时的对照：归一化宽度 \(\sigma_z(t)/\sigma_z(0)\) 从 \(t/t_*=-1\) 处的 \(1.67\) 单调降到 \(t/t_*=1\) 处的极小 \(0.63\)，再回升，并在 \(t/t_*=2\) 处回到初值。极小值小于一说明初态的 \(z\)--\(p\) 相关在 \(t_*\) 之前压住了色散引起的展宽；过了 \(t_*\)，二次色散项占主导，包络重新变宽。
+\subsubsection{参数设定}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.76\linewidth]{gaussian_compression.pdf}
-\caption{带负 \(z\)--\(p\) 协方差的高斯电子包在二次色散下先压缩后展宽：\(\sigma_z(t)/\sigma_z(0)=\sqrt{1-1.2\,t/t_*+0.6\,(t/t_*)^2}\)，在 \(t=t_*\) 处压到初值的 \(0.63\) 倍。}
-\label{fig:gaussian-compression}
-\end{figure}
+设 $200\ \si{\kilo\electronvolt}$ 电子经过高斯近场作用（\cref{eq:feqo-gaussian-near-field-coupling}），参数为 $E_*=2\times10^7\ \si{\volt\per\metre}$，$d=100\ \si{\nano\metre}$，激光波长 $\lambda=800\ \si{\nano\metre}$（$\omega=2\pi c/\lambda=2.36\times10^{15}\ \si{\per\second}$）。由\cref{eq:feqo-gaussian-near-field-coupling}，$\Delta k=\omega/v_0$，$|\beta|=1.709$（见\cref{fig:pinem-gaussian-example}）。
 
-\begin{exercise}
-从 \(p(E)=c^{-1}\sqrt{E^2-m^2c^4}\) 直接求 \(p'(E_0),p''(E_0)\)，核对\cref{eq:feqo-sideband-phase-expansion} 的量纲。
-\end{exercise}
+相互作用后电子态为
+\begin{equation}
+|\psi_{\rm out}\rangle=\sum_{\ell=-\infty}^{\infty}J_\ell(2|\beta|)e^{\ii\ell\phi}|\ell\rangle,
+\label{eq:feqo-pinem-comb-state}
+\end{equation}
+其中 $|\ell\rangle$ 表示能量 $E_0+\ell\hbar\omega$ 的边带。
+
+\subsubsection{漂移后的态}
+
+经过漂移距离 $L$，每条边带获得相位 $\Phi_\ell(L)$（\cref{eq:feqo-drift-envelope}）：
+\begin{equation}
+\psi(\tau;L)=\sum_\ell J_\ell(2|\beta|)\exp\!\left[-\ii\ell\omega\tau+\ii\Phi_\ell(L)\right],
+\label{eq:feqo-pinem-after-drift}
+\end{equation}
+其中二次相位（忽略三阶以上）为
+\begin{equation}
+\Phi_\ell(L)=-\frac{\hbar\omega^2 L}{2\gamma_0^3mv_0^3}\ell^2
+=-\frac{\pi L}{L_T}\ell^2,
+\label{eq:feqo-pinem-quadratic-phase}
+\end{equation}
+Talbot 长度为
+\begin{equation}
+L_T=\frac{2\pi\gamma_0^3mv_0^3}{\hbar\omega^2}.
+\label{eq:feqo-talbot-length}
+\end{equation}
+代入数值：$\gamma_0^3=2.69$，$mv_0^3=9.11\times10^{-31}\times(2.06\times10^8)^3=7.97\times10^{-14}\ \si{\kilo\gram\metre\cubed\per\second\cubed}$，
+\begin{equation}
+L_T=\frac{2\pi\times2.69\times7.97\times10^{-14}}{1.055\times10^{-34}\times(2.36\times10^{15})^2}
+=\frac{1.35\times10^{-12}}{5.89\times10^{-4}}
+\approx 0.39\ \si{\metre}.
+\label{eq:feqo-talbot-numerical}
+\end{equation}
+
+\subsubsection{时间密度与聚束}
+
+在一个光学周期内的归一化时间密度为
+\begin{equation}
+T_\omega I(\tau;L)=\left|\sum_\ell J_\ell(2|\beta|)e^{-\ii\ell\omega\tau+\ii\Phi_\ell(L)}\right|^2.
+\label{eq:feqo-pinem-temporal-density}
+\end{equation}
+在 $L=0$ 处，$\Phi_\ell=0$，$u(\theta)=\sum J_\ell(2|\beta|)e^{-\ii\ell\theta}=e^{2\ii|\beta|\sin(\theta-\phi)}$，$|u|^2=1$，时间密度完全平坦。
+
+随 $L$ 增大，二次相位使各边带获得不同的附加相位。以三边带截断（$\ell=-1,0,1$）为例，设 $\Phi_{\pm1}=\Phi_2/2=-\pi L/L_T$：
+\begin{align}
+T_\omega I_3(\tau;L)&=\left|J_0(2|\beta|)-2\ii J_1(2|\beta|)e^{\ii\Phi_2/2}\sin(\omega\tau-\phi)\right|^2\notag\\
+&=J_0^2+4J_1^2\sin^2(\omega\tau-\phi)+4J_0 J_1\sin(\Phi_2/2)\sin(\omega\tau-\phi).
+\label{eq:feqo-three-sideband-density}
+\end{align}
+当 $\Phi_2=-\pi$（即 $L/L_T=1$）时，$\sin(\Phi_2/2)=0$，一阶时间谐波消失；当 $|\Phi_2|=\pi/2$（$L/L_T=1/4$）时，交叉项最大。更精确的最优聚束在 $L/L_T\approx 0.063$ 处（见\cref{chap:feqo-attosecond}）。
+
+\subsubsection{相干长度检验}
+
+设入射束能散 $\sigma_E=1\ \si{\electronvolt}$。由\cref{eq:feqo-coherence-length}：
+\begin{equation}
+L_{\rm coh}=\frac{\gamma_0^3mv_0^3}{2\omega\sigma_E}
+=\frac{2.69\times7.97\times10^{-14}}{2\times2.36\times10^{15}\times1.6\times10^{-19}}
+=\frac{2.14\times10^{-13}}{7.55\times10^{-4}}
+\approx 1.6\ \si{\metre}.
+\label{eq:feqo-lcoh-numerical}
+\end{equation}
+由于 $L_T\approx 0.39\ \si{\metre}\ll L_{\rm coh}$，在第一个 Talbot 长度内相干性保持良好。
+
+\subsection{本章小结}
+
+自由传播通过精确色散关系 $E(p)=\sqrt{m^2c^4+c^2p^2}$ 的二次项改变边带之间的相对相位，但不改变能谱。高斯波包在距离 $L$ 上的展宽由 $\sigma_z(L)=\sigma_{z0}\sqrt{1+L^2/L_*^2}$ 描述，其中 $L_*=2\gamma_0^3mv_0\sigma_{z0}^2/\hbar$。PINEM 梳的相干长度 $L_{\rm coh}=\gamma_0^3mv_0^3/(2\omega\sigma_E)$ 决定了边带间相干叠加的有效距离。当 $L\sim L_T$（Talbot 长度）时，二次相位使时间密度从平坦变为聚束，形成阿秒结构。
+
+
+
+
+

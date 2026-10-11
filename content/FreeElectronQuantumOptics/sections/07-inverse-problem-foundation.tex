@@ -1,0 +1,214 @@
+\section{从响应核到可辨识参数}
+\label{chap:feqo-end-to-end}
+
+前面的谱与收集公式确定了理想信号。实验反演还需要明确未知量、仪器响应和计数模型。下面把这些层次逐一连接，并用可计算的核空间检验哪些参数确实能从数据确定。
+
+\begin{definition}[前向模型与参数层次]
+用 $x$ 表示待估对象，用 $\mathcal F$ 表示给定电子源、几何、频窗和探测器后的前向映射：
+\begin{equation}
+d=\mathcal F(x)+\epsilon.
+\label{eq:feqo-forward-operator}
+\end{equation}
+可以选择响应核、场分布或有限维材料参数作为 $x$，但这几种选择的线性性不同。固定轨迹时，EELS 对响应核 $\operatorname{Im}\mathbf G^R$ 是线性的；响应核对介电函数和几何通常非线性。CL 需要复 Green 张量到收集通道的振幅，PINEM 需要外加相干场。
+\end{definition}
+
+\begin{proposition}[三种读出的前向泛函]
+对于本章的互易介质，沿 $z$ 的匀速电子在适用的弱损失条件下满足
+\begin{equation}
+\Gamma_{\rm EELS}(\omega;\mathbf R)
+=\frac{\mu_0q_{\mathrm e}^2}{\pi\hbar}
+\int\dd z\dd z'\,\ee^{\ii\omega(z-z')/v}
+\operatorname{Im}G^R_{{\rm sc},zz}
+((\mathbf R,z),(\mathbf R,z');\omega).
+\label{eq:feqo-eels-forward-green}
+\end{equation}
+互易情形下对调 $z,z'$ 给出相同实数。固定电子源以后，核的映射为
+\begin{equation}
+\mathcal F_{\rm EELS}:\operatorname{Im}\mathbf G^R_{\rm sc}\longmapsto\Gamma_{\rm EELS}.
+\label{eq:feqo-eels-forward-map}
+\end{equation}
+对于具有通常真空远场展开的有限结构，定义
+\[
+\mathbf G_\infty(\hat{\mathbf n},\mathbf r';\omega)
+=\lim_{r\to\infty}r\ee^{-\ii kr}\mathbf G^R(r\hat{\mathbf n},\mathbf r';\omega),
+\quad
+\mathbf F=\ii\mu_0\omega\int\mathbf G_\infty\widetilde{\mathbf J}_e\dd^3r'.
+\]
+取 $\mathbf E(t)=(2\pi)^{-1}\int\widetilde{\mathbf E}(\omega)\ee^{-\ii\omega t}\dd\omega$。若 $\mathsf Q(\hat{\mathbf n},\omega)$ 是偏振空间中满足 $0\le\mathsf Q\le I$ 的接收效率矩阵，则
+\begin{equation}
+\Gamma_{\rm CL}^{\rm det}
+=\frac{1}{\pi Z_0\hbar\omega}
+\int\dd\Omega\,\mathbf F^\dagger\mathsf Q\mathbf F,
+\qquad Z_0=\sqrt{\mu_0/\varepsilon_0}.
+\label{eq:feqo-cl-forward-collection}
+\end{equation}
+由此
+\begin{equation}
+\mathcal F_{\rm CL}:\mathbf G_\infty\longmapsto\Gamma_{\rm CL}^{\rm det}.
+\label{eq:feqo-cl-forward-map}
+\end{equation}
+只给出 $\operatorname{Im}G_{{\rm sc},zz}$ 不能确定这一通道振幅。对外加场，沿用本书正频复幅定义，有
+\begin{align}
+\beta(\mathbf R)&=\frac{q_{\mathrm e}}{\hbar\omega}
+\int E^{(+)}_z(\mathbf R,z)\ee^{-\ii\omega z/v}\dd z,
+\label{eq:feqo-pinem-forward-beta}\\
+\mathcal F_{\rm PINEM}:E^{(+)}_z&\longmapsto
+\{J_\ell^2(2|\beta|)\}_{\ell\in\mathbb Z}.
+\label{eq:feqo-pinem-forward-map}
+\end{align}
+最后一式使用窄带、无反冲能量格和经典相干驱动条件。
+\end{proposition}
+\begin{proof}
+第一式由电子电流代入\eqnrefs{eq:eels_green_master_dp47}，使用 $\dd z=v\dd t$ 得到。远场功率为 $r^2|\mathbf E|^2/Z_0$，正频 Parseval 公式给系数 $1/\pi$；除以单光子能量 $\hbar\omega$ 并投影接收偏振，得到 CL 式。PINEM 的线积分与边带概率则分别由\eqnrefs{eq:pinem_beta_green_unified_dp47}及经典驱动解得到。
+\end{proof}
+
+\begin{workedexample}[有限窗口核的伴随]
+固定一个频率，将轨迹截在 $[-L/2,L/2]$，未知核取 $H\in L^2([-L/2,L/2]^2)$。记 $C=\mu_0q_{\mathrm e}^2/(\pi\hbar)$，则
+\[
+TH=C\int\dd z\dd z'\,\ee^{\ii\omega(z-z')/v}H(z,z'),
+\qquad |TH|\le |C|L\|H\|_2.
+\]
+取内积 $\langle f,g\rangle=\int f^*g$，有
+\[
+(T^*y)(z,z')=C^*\ee^{-\ii\omega(z-z')/v}y.
+\]
+这才是一个有界算子的伴随。在整个六维体积 $L^2$ 空间中，“把核限制到理想零宽轨迹”并不自动有界；实际束宽、空间正则性或有限维离散化必须进入模型。多位置观测对应多个这样的轨迹核，其伴随为各核的加权和。
+\end{workedexample}
+
+\subsection{参考相位、仪器响应与计数}
+
+\begin{workedexample}[高斯近场的三相位复振幅读取]
+设某条轨迹上的正频场为
+\[
+E_z^{(+)}(z)=E_*\ee^{\ii\phi}\ee^{-z^2/(2d^2)}\ee^{\ii k_z z},
+\qquad\Delta k=k_z-\omega/v.
+\]
+直接完成高斯积分，得到
+\begin{equation}
+\beta_s=\frac{q_{\mathrm e}E_*\sqrt{2\pi}d}{\hbar\omega}
+\ee^{-d^2\Delta k^2/2}\ee^{\ii\phi}
+\equiv A\ee^{\ii\varphi}.
+\label{eq:feqo-imaging-beta}
+\end{equation}
+$A\ge0$；电子电荷 $q_{\mathrm e}=-e$ 的负号并入 $\varphi$。沿同一相干电子轨迹叠加已标定参考耦合 $B\ee^{\ii\theta}$，则 $\beta_\theta=\beta_s+B\ee^{\ii\theta}$。记 $r_\theta=|\beta_\theta|$，弱耦合时
+\begin{equation}
+P_{+1}=P_{-1}=r_\theta^2+O(r_\theta^4),
+\qquad P_0=1-2r_\theta^2+O(r_\theta^4).
+\label{eq:feqo-imaging-weak-forward}
+\end{equation}
+写 $\beta_s=x+\ii y$，理想弱耦合强度 $Y_\theta=r_\theta^2$ 满足
+\[
+Y_\theta=x^2+y^2+B^2+2B(x\cos\theta+y\sin\theta).
+\]
+对 $\theta=0,\pi/2,\pi$，令 $C_0=(Y_0+Y_\pi)/2$，便有
+\[
+x=\frac{Y_0-Y_\pi}{4B},\qquad
+y=\frac{Y_{\pi/2}-C_0}{2B},\qquad B>0.
+\]
+取 $A=B=0.05$、$\varphi=\pi/3$，三次测量的 $Y_\theta$ 为
+\[
+0.0075,\qquad0.005+0.0025\sqrt3\simeq0.00933013,
+\qquad0.0025.
+\]
+每个相位入射 $10^5$ 个电子时，单侧一级边带的弱耦合期望计数约为 $750,933,250$。精确拟合应使用 $J_1^2(2r_\theta)$；相应计数约为 $744,924,249$，体现截断误差已经可见。
+\end{workedexample}
+
+\begin{definition}[归一化探测响应与计数模型]
+若一级边带间距为 $\hbar\omega$，第 $\ell$ 条真实谱线经高斯分辨函数落入像素窗 $\mathcal B_j$ 的概率为
+\[
+R_{j\ell}=\int_{\mathcal B_j}\frac{\dd E}{\sqrt{2\pi}\sigma_E}
+\exp\!\left[-\frac{(E-E_0-\ell\hbar\omega)^2}{2\sigma_E^2}\right].
+\]
+加入未检测结果后，每列满足 $\sum_jR_{j\ell}=1$。相位 $\theta_s$ 下的像素概率与 Poisson 入射模型为
+\begin{equation}
+p_{js}=\sum_\ell R_{j\ell}J_\ell^2(2|\beta_{\theta_s}|),
+\qquad\mu_{js}=\nu_s p_{js}+b_{js},\qquad
+n_{js}\sim\operatorname{Poisson}(\mu_{js}).
+\label{eq:feqo-imaging-detector}
+\end{equation}
+独立 Poisson 计数适用于独立 Poisson 入射经分流的模型。若入射总数固定，各出口计数服从多项分布，有负协方差；不能把固定总数数据直接当作独立 Poisson 样本。
+\end{definition}
+
+\begin{proposition}[局部可辨识性的 Fisher 判据]
+设有限维实参数 $\boldsymbol\vartheta$ 的所有 $\mu_j>0$，导数存在，且采用独立 Poisson 模型。令 $J_{ja}=\partial_a\mu_j$，则
+\begin{equation}
+I=J^{\mathsf T}\operatorname{diag}(\mu_j^{-1})J,
+\qquad\operatorname{Cov}(\widehat{\boldsymbol\vartheta})\succeq I^{-1}.
+\label{eq:feqo-cramer-rao}
+\end{equation}
+后一不等式要求 $I$ 可逆、估计无偏且满足通常微分积分互换条件。$I$ 正定当且仅当加权 Jacobian 满列秩。
+\end{proposition}
+\begin{proof}
+分数函数为 $\partial_a\log\mathcal L=\sum_j(n_j/\mu_j-1)\partial_a\mu_j$。利用 $\operatorname{Var}n_j=\mu_j$ 和独立性得到 Gram 矩阵 $I$。对任意向量 $h$，
+\[
+h^{\mathsf T}Ih=\sum_j\frac{(J_jh)^2}{\mu_j}.
+\]
+因此存在不可辨识的一阶方向当且仅当 $Jh=0$。Cram\'er--Rao 界由估计误差与分数函数的协方差恒等式及矩阵 Cauchy--Schwarz 不等式得到。
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.82\linewidth]{electron_field_calibration.pdf}
+\caption{相位失配压低有效耦合，完整 Bessel 分布决定可见边带。高阶边带显著时，弱耦合近似不能用于定量反演；场幅估计还需校准轨迹积分与仪器响应。}
+\label{fig:electron-field-calibration-modern}
+\end{figure}
+
+\subsection{正则化、噪声放大与空间分辨}
+
+\begin{theorem}[有限维 Tikhonov 解与唯一性]
+对白化并统一量纲后的数据 $d\in\mathbb C^m$、未知系数 $x\in\mathbb C^n$，给定 $A,L$ 和 $\eta>0$，定义
+\begin{equation}
+\widehat x_\eta=\mathop{\rm argmin}_x
+\{\|Ax-d\|_2^2+\eta\|Lx\|_2^2\}.
+\label{eq:feqo-tikhonov-regularization}
+\end{equation}
+解唯一当且仅当 $\ker A\cap\ker L=\{0\}$；此时
+\begin{equation}
+(A^\dagger A+\eta L^\dagger L)\widehat x_\eta=A^\dagger d.
+\label{eq:feqo-tikhonov-normal}
+\end{equation}
+\end{theorem}
+\begin{proof}
+对实部和虚部求变分得到正规方程。二次型满足
+\[
+x^\dagger(A^\dagger A+\eta L^\dagger L)x
+=\|Ax\|_2^2+\eta\|Lx\|_2^2,
+\]
+故正定性等价于公共核仅含零向量；若存在公共零方向，目标函数沿该方向不变。
+\end{proof}
+
+\begin{proposition}[奇异值滤波与误差界]
+取 $L=I$，$A$ 的秩为 $r$，非零奇异值与奇异向量为 $\sigma_j,u_j,v_j$，$1\le j\le r$。真实数据 $d=Ax_*+\epsilon$、$\|\epsilon\|\le\delta$，$P_{\ker A}$ 为未知空间中核的正交投影。则
+\begin{equation}
+\widehat x_\eta=\sum_{j=1}^r\frac{\sigma_j}{\sigma_j^2+\eta}
+\langle u_j,d\rangle v_j,
+\label{eq:feqo-imaging-field-inversion}
+\end{equation}
+并且
+\begin{align}
+\|\widehat x_\eta-x_*\|
+&\le\frac{\delta}{2\sqrt\eta}+\|b_\eta\|,\label{eq:feqo-tikhonov-error-bound}\\
+b_\eta&=P_{\ker A}x_*+
+\sum_{j=1}^r\frac{\eta}{\sigma_j^2+\eta}\langle v_j,x_*\rangle v_j.
+\label{eq:feqo-tikhonov-bias}
+\end{align}
+第一项偏差 $P_{\ker A}x_*$ 完全不可从数据恢复。若额外有源条件 $x_*=A^\dagger z$，该项为零，总偏差不超过 $\sqrt\eta\|z\|/2$。
+\end{proposition}
+\begin{proof}
+逐个奇异向量求正规方程得到滤波式。标量函数 $\sigma/(\sigma^2+\eta)$ 的最大值为 $1/(2\sqrt\eta)$，控制噪声放大；同一函数乘 $\eta$ 控制源条件下的偏差。没有源条件时，偏差必须保留其显式谱分解。
+\end{proof}
+
+\begin{workedexample}[高斯模糊与边带信息的秩]
+一维高斯空间模糊的 Fourier 奇异值为 $\sigma(k)=\ee^{-w^2k^2/2}$。某一空间 Fourier 分量只有在 $\sigma(k)|x_k|\gtrsim\delta_k$ 时可分辨，因此信噪比大于一时满足
+\[
+|k|\lesssim\frac1w\sqrt{2\log(|x_k|/\delta_k)}.
+\]
+这个判据同时依赖仪器宽度和该分量的信噪比。
+
+在固定轨迹、固定频率下，任意多个 PINEM 边带的概率都只通过一个复数 $\beta[E]$ 依赖场。若离散场有 $n$ 个复系数，计数对其 $2n$ 个实坐标的 Jacobian 必须因式分解为
+\[
+J_{\rm counts,field}=J_{\rm counts,\beta}J_{\beta,\rm field},
+\qquad\operatorname{rank}J_{\rm counts,field}\le2.
+\]
+无参考时还只依赖 $|\beta|$，局部秩至多一。高阶边带改善同一耦合的统计估计；增加独立空间核需改变轨迹、频率、入射场或观测通道。
+\end{workedexample}

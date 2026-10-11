@@ -1,0 +1,128 @@
+\begin{definition}[Poisson 与固定总数的计数模型]
+设入射总数服从均值为 $N$ 的 Poisson 分布，$N$ 已知；各电子独立进入互斥的探测通道，
+前向模型给通道概率 $p_x(\boldsymbol\vartheta)$。Poisson 分流使通道计数相互独立，
+均值为 $\lambda_x=Np_x$。其联合概率与对数似然为
+\begin{equation}
+ P(\mathbf n|\boldsymbol\vartheta)=\prod_x\frac{\ee^{-\lambda_x}\lambda_x^{n_x}}{n_x!},\qquad
+ \log L=\sum_x[n_x\log\lambda_x-\lambda_x-\log(n_x!)].
+ \label{eq:feqo-count-likelihood}
+\end{equation}
+得分和信息矩阵是
+\begin{equation}
+ S_a=\partial_a\log L=\sum_x(n_x/\lambda_x-1)\partial_a\lambda_x,
+ \qquad\mathcal F_{ab}=\sum_x\frac{\partial_a\lambda_x\partial_b\lambda_x}{\lambda_x}.
+ \label{eq:feqo-poisson-fisher}
+\end{equation}
+这由 $\mathbb E n_x=\lambda_x$、$\operatorname{Cov}(n_x,n_y)=\delta_{xy}\lambda_x$ 得到。
+若固定总计数为整数 $N_0$ 且完整结果空间 $\sum_xp_x=1$，则
+\begin{equation}
+ P(\mathbf n|\boldsymbol\vartheta,N_0)=\frac{N_0!}{\prod_xn_x!}\prod_xp_x^{n_x},\qquad
+ \sum_xn_x=N_0,\qquad
+ \mathcal F_{ab}=N_0\sum_x\frac{\partial_ap_x\partial_bp_x}{p_x}.
+ \label{eq:feqo-multinomial}
+\end{equation}
+固定入射数、固定探测成功数和仅观察一个不完整窗口，是不同的实验条件。
+计数背景、未知通量和效率应作为前向模型中的参数；若同时估计它们，
+有效信息应消去相应的 nuisance 参数，而不能继续把 $N$ 当作已知。
+\end{definition}
+
+\begin{proposition}[计数实验的 Cram\'er--Rao 界]
+\label{prop:cramer-rao}
+设结果概率 $P_\vartheta(x)>0$ 在参数开区间内可微，
+求和与求导可交换，且得分 $S=\partial_\vartheta\log P_\vartheta$ 有有限二阶矩。
+若 $T(x)$ 在该区间无偏、方差有限，信息 $I=\mathbb E S^2>0$，则
+\begin{equation}
+\operatorname{Var}_\vartheta T\ge I^{-1}.
+\label{eq:feqo-cr-bound}
+\end{equation}
+\end{proposition}
+\begin{proof}
+由归一化求导得 $\mathbb ES=\sum_x\partial_\vartheta P_\vartheta(x)=0$。
+再对 $\mathbb ET=\vartheta$ 求导：
+\[
+1=\sum_x T(x)\partial_\vartheta P_\vartheta(x)
+=\mathbb E[(T-\vartheta)S].
+\]
+Cauchy--Schwarz 给 $1\le\operatorname{Var}(T)\,I$。
+对多参数无偏向量，$\mathbb E[(T-\boldsymbol\vartheta)S^{\mathsf T}]=I_d$。
+信息矩阵 $\mathcal F$ 可逆时，
+$Z=T-\boldsymbol\vartheta-\mathcal F^{-1}S$ 的协方差为
+\begin{equation}
+\operatorname{Cov}(T)-\mathcal F^{-1}=\operatorname{Cov}(Z)\succeq0.
+\label{eq:feqo-cr-matrix}
+\end{equation}
+边界参数、零概率结果和偏差估计不自动满足这些假设。
+\end{proof}
+
+\begin{exbox}[能谱估计耦合：完整窗口、漏计与后选择]
+对理想低反冲 PINEM 能谱 $p_\ell(b)=J_\ell(2b)^2$，取已知平均入射计数 $N$。
+独立 Poisson 通道给信息
+\[
+I_b=N\sum_\ell\frac{(\partial_bp_\ell)^2}{p_\ell}
+=4N\sum_\ell[J_{\ell-1}(2b)-J_{\ell+1}(2b)]^2.
+\]
+用 Fourier 平移正交性 $\sum_\ell J_\ell(x)J_{\ell+q}(x)=\delta_{q0}$，得到
+\begin{equation}
+I_b=8N,\qquad \sigma_{\widehat b}\ge(8N)^{-1/2}.
+\label{eq:feqo-fisher-g-result}
+\end{equation}
+此等式适用于所有相关通道概率非零的正则参数点；孤立 Bessel 零点可取邻近极限，
+但在零点本身必须单独检查统计模型的可微性。$b=0$ 又是模长参数的边界，
+不能直接套用开区间的无偏 Cram\'er--Rao 结论。
+弱耦合时 $p_0=1-2b^2+O(b^4)$、$p_{\pm1}=b^2+O(b^4)$，三者的和才在此阶等于一。
+
+若只记录集合 $\mathcal L$ 中的 Poisson 通道且入射 $N$ 已知，
+\begin{equation}
+I_b^{\rm win}=N\sum_{\ell\in\mathcal L}\frac{(p_\ell')^2}{p_\ell}.
+\label{eq:feqo-fisher-truncated}
+\end{equation}
+如果还能记录窗口外总数，就应另加
+$N(q')^2/(1-q)$，其中 $q=\sum_{\ell\in\mathcal L}p_\ell$。
+若只条件于探测成功后的固定计数 $N_{\rm det}$，则结果概率变成
+$\widetilde p_\ell=p_\ell/q$，信息变为
+\[
+I_b^{\rm cond}=N_{\rm det}\left[
+\frac1q\sum_{\ell\in\mathcal L}\frac{(p_\ell')^2}{p_\ell}
+-\left(\frac{q'}q\right)^2\right].
+\]
+把这些计数协议混用会把漏计率的信息误算成边带形状信息。
+例如 $b=3$、$\mathcal L=\{-2,-1,0,1,2\}$ 时，
+窗口 Poisson 信息是 $3.6896N$，而完整窗口是 $8N$。
+\end{exbox}
+
+\begin{exbox}[相位参考如何把相干转成 Fisher 信息]
+取两通道态
+\begin{equation}
+\rho=\frac12\begin{pmatrix}1&r\ee^{-\ii\phi}\\r\ee^{\ii\phi}&1\end{pmatrix},
+\qquad0<r<1.
+\label{eq:feqo-two-level-state}
+\end{equation}
+两个能量概率恒为 $1/2$，所以能谱对 $r,\phi$ 均无信息。
+投影到 $|+_\theta\rangle=(|0\rangle+\ee^{\ii\theta}|1\rangle)/\sqrt2$ 得
+\begin{equation}
+p_+(\theta)=\frac{1+r\cos(\phi-\theta)}2,
+\qquad p_-=1-p_+.
+\label{eq:feqo-reference-phase-probability}
+\end{equation}
+$\theta=0,\pi/2$ 的两个概率关于 $(r,\phi)$ 的 Jacobian 为
+\begin{equation}
+J=\frac12\begin{pmatrix}\cos\phi&-r\sin\phi\\
+\sin\phi&r\cos\phi\end{pmatrix},\qquad\det J=r/4.
+\label{eq:feqo-jacobian-two-level}
+\end{equation}
+因此两设置可以恢复两个局部参数。$r=0$ 时相位没有物理定义，任何参考都无法恢复它。
+
+纯退相干使 $r\to V=rD$，但不改变能谱人口。
+固定参考相位，$N$ 个二项计数给相位信息
+\begin{equation}
+I_{\phi\phi}(\theta)
+=\frac{NV^2\sin^2(\phi-\theta)}{1-V^2\cos^2(\phi-\theta)}.
+\label{eq:feqo-fisher-phase-decoherence}
+\end{equation}
+这个公式由 $N(\partial_\phi p_+)^2/[p_+(1-p_+)]$ 直接得到。
+最敏感的正交相位点 $\phi-\theta=\pi/2$ 给 $I_{\phi\phi}=Nr^2D^2$；
+同相点在 $V<1$ 时导数为零。
+若 $D=\exp(-\Gamma t)$、$r$ 已知且信号本身不随时间增长，
+最敏感点的方差下界是 $\exp(2\Gamma t)/(Nr^2)$，越早测量越有利。
+若同时估计 $r$，单个设置只有一个独立概率，必须增加参考设置并使用完整信息矩阵。
+\end{exbox}

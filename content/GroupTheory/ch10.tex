@@ -1,9 +1,7 @@
-\section{空间群与 Bloch 定理}
-\label{chap:space-groups-bloch}
+\section{空间群与晶体对称性}
+\label{sec:space-groups-bloch}
 
-点群只问哪些操作把一个有限物体留在原处。晶体还允许把整个结构平移一个晶格矢量，因此对称群变成无限离散群，并可能出现螺旋轴和滑移面这类点操作与分数平移的组合。
-
-平移子群是正规子群，它的一维表示直接给出 Bloch 相位。固定一个波矢后，并非所有空间群元素都仍把它留在同一倒格矢等价类；剩下的元素组成小群，并决定该波矢处能带允许的简并和表示标签。
+点群只问哪些操作把一个有限物体留在原处。晶体还允许把整个结构平移一个晶格矢量，因此对称群变成无限离散群，并可能出现螺旋轴和滑移面这类点操作与分数平移的组合。本节处理空间对称的几何与表示论骨架：晶体制约定理、32 个晶体点群及其特征标表、Seitz 记号、系统消光与 Neumann 原理；平移子群的一维表示（Bloch 相位）、波矢星与小群等量子力学内容则统一放到\chapref{chap:group-theory-quantum}（\secref{sec:translation-bloch} 起）处理。
 
 \subsection{晶体点群与空间群}
 \label{sec:crystallographic-point-space}
@@ -40,8 +38,8 @@ n\in\{1,2,3,4,6\}.
 \end{theorem}
 
 \par\medskip
-\noindent\textbf{晶体制约定理}\quad
-保持晶格的转动在晶格基底下由 $M\in\operatorname{GL}(3,\ZZ)$ 表示，所以 $\tr M\in\ZZ$。它与正交基底下的 $R$ 相似，而三维转动的本征值为 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$，故
+\begin{proof}[晶体制约定理的证明]
+上面已经说明保持晶格的转动在晶格基底下由整数矩阵 $M\in\operatorname{GL}(3,\ZZ)$ 表示，故 $\tr M\in\ZZ$；而 $M$ 与正交基底下的 $R$ 相似，迹相同。三维转动的本征值为 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$，故
 \[
 \tr M=\tr R=1+2\cos\theta\in\ZZ.
 \]
@@ -49,14 +47,32 @@ n\in\{1,2,3,4,6\}.
 \[
 \cos\theta\in\left\{-1,-\frac12,0,\frac12,1\right\}.
 \]
-对有限阶转动取 $0\leq\theta\leq\pi$，相应转角为 $\pi,2\pi/3,\pi/2,\pi/3,0$，也就是 $n=2,3,4,6,1$。
-\par\medskip
+对有限阶转动取 $0\leq\theta\leq\pi$，相应转角为 $\pi,2\pi/3,\pi/2,\pi/3,0$，也就是 $n=2,3,4,6,1$。推论：五重轴（$\cos(2\pi/5)=(\sqrt5-1)/4\notin$ 上表）及一切 $n\ge7$ 的旋转轴在周期晶体中禁戒。
+\end{proof}\par\medskip
+
+\begin{workedexample}
+证明任意 $R\in SO(3)$ 的特征值必可写为 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$。
+
+\textbf{解.} 由 \Cref{thm:rotation-axis}，$1$ 是一个特征值。正交矩阵的复特征值模长为 $1$，且实矩阵的非实特征值成共轭对出现。又因为行列式为 $1$，其余两个特征值乘积为 $1$，故必为 $\ee^{\pm\ii\theta}$。
+\end{workedexample}
+
 
 证明的关键是周期性带来的整数迹，而不是正五边形不能铺满平面的图形直觉。准晶可以具有五重或十重对称，正是因为它没有定理所要求的三维周期平移群；分子也没有这一限制，所以 $I_h$ 可用于描述富勒烯等有限结构。
 
 晶体制约定理排除了五重轴等非晶体学旋转。把允许的旋转阶数 $1,2,3,4,6$ 系统地组合，就得到 32 个晶体点群和 7 个晶系。
 
 “分子点群”允许任意有限阶转轴，但晶体不同。晶体包含平移周期性，一个点群操作不仅要保持局域几何，还必须把整套晶格点重新映回晶格点。这个额外要求会排除五重轴等许多几何上完全合法的旋转。所谓“32 个晶体点群”，就是所有与三维晶格兼容的有限点群，而不是人为选出的 32 个常用例子。
+
+\begin{workedexample}
+为什么五重旋转可以出现在孤立分子或准晶结构中，却不能成为普通三维周期晶格的点群操作？
+
+\textbf{解.} 点群本身只要求是 $O(3)$ 的有限子群，因此 $I$ 群中的五重轴完全允许。周期晶格还要求旋转在晶格基底下由整数矩阵表示，故其迹必须为整数。五重转动的迹为
+\[
+1+2\cos\frac{2\pi}{5},
+\]
+不是整数，违反 \Cref{thm:crystallographic-restriction}，所以普通周期晶格不能有五重轴。
+\end{workedexample}
+
 
 七个晶系则是进一步按最高阶旋转轴和整体轴系结构来组织这 32 个群。初学时不要把“晶系”“点群”“Bravais 晶格”当成同义词：点群只描述保持某一点不动的转动/反射部分；Bravais 晶格描述纯平移周期；晶系则是根据点群对晶格度量的约束形成的分类。把 \Cref{thm:crystallographic-restriction} 应用于上一节的 Schoenflies 家族，就得到三维晶体允许的 $32$ 个点群。它们进一步按照宏观轴系的共同特征归入 $7$ 个晶系。与其把 $32$ 个名字看成一张要背的表，不如把晶系理解成“晶胞度量约束 + 最高阶轴类型”的联合分类。
 
@@ -115,7 +131,6 @@ G=\operatorname{diag}(a^2,b^2,c^2),
 
 点群分类完成以后，还要把平移骨架的可能性组织起来，这就引出十四种 Bravais 晶格。
 
-
 点群描述“允许哪些旋转”，晶格描述“平移骨架怎样重复”。同一个晶系还可能有不同的中心化方式。将七个晶系与允许的中心化方式结合，得到十四种 Bravais 晶格。
 
 \begin{table}[htbp]
@@ -149,13 +164,14 @@ G=\operatorname{diag}(a^2,b^2,c^2),
 \[
 \vb G_{hkl}=h\vb b_1+k\vb b_2+l\vb b_3,
 \]
-其中 $\vb G_{hkl}$ 垂直于晶面，且相邻晶面间距为
+\begin{proposition}[晶面法向与面间距]
+设非零 Miller 指数 $(h,k,l)$ 互素，$\vb a_i\cdot\vb b_j=2\pi\delta_{ij}$。则 $\vb G_{hkl}$ 垂直于晶面，且相邻晶面间距为
 \[
 d_{hkl}=\frac{2\pi}{|\vb G_{hkl}|}.
 \]
+\end{proposition}
 
-\par\medskip
-\noindent\textbf{晶面法向与面间距}\quad
+\begin{proof}
 第 $n$ 张平行晶面上的点 $\vb r=x_1\vb a_1+x_2\vb a_2+x_3\vb a_3$ 满足
 \[
 hx_1+kx_2+lx_3=n,
@@ -165,6 +181,9 @@ hx_1+kx_2+lx_3=n,
 \[
 d_{hkl}|\vb G_{hkl}|=2\pi.
 \]
+\end{proof}
+
+\par\medskip
 \par\medskip
 
 弹性散射保持晶格平移的特征标，因而要求 $\ee^{\ii(\vb k'-\vb k)\cdot\vb R}=1$ 对所有 $\vb R\in\mathcal L$ 成立，即 Laue 条件 $\vb k'-\vb k\in\mathcal L^*$。衍射峰落在倒格点上，不是额外的经验规则，而是平移群特征标的正交性。
@@ -273,21 +292,26 @@ N=\frac1{|P|}\sum_{R\in P}\chi_T(R),
 空间群 $\mathcal G$ 作用下，空间中一般位置 $\vb r$ 的轨道 $|\mathcal G\cdot\vb r|$ 大小等于 $|\mathcal G/T|$（点群阶数）。若 $\vb r$ 位于对称元素上，其稳定子 $G_{\vb r}$ 非平凡，轨道变小。具有相同稳定子共轭类的位置集合称为一个 Wyckoff 位置，用字母 $a,b,c,\dots$ 标记（多重度递增）。
 \end{definition}
 
-\medskip
-\noindent\emph{空间群 $Pm\bar3m$（$O_h^1$，No.221）的 Wyckoff 位置。}
-立方 $Pm\bar3m$ 的部分 Wyckoff 位置：
+\begin{example}[{空间群 $Pm\bar3m$（$O_h^1$，No.221）的 Wyckoff 位置}]
+立方 $Pm\bar3m$ 的部分 Wyckoff 位置（点群 $O_h$ 阶 $48$，每个位置都满足 $|\text{轨道}|\times|\text{稳定子}|=48$）：
 \[
 \begin{array}{c|c|c|l}
 \text{Wyckoff} & \text{多重度} & \text{点对称} & \text{坐标}\\\hline
 a&1&m\bar3m&(0,0,0)\\
 b&1&m\bar3m&(\tfrac12,\tfrac12,\tfrac12)\\
-c&3&4mm&(0,\tfrac12,\tfrac12)\\
-d&6&mmm&(\tfrac12,0,0)\\
-e&12&\bar42m&(\tfrac14,\tfrac14,0)
+c&3&4/mmm&(0,\tfrac12,\tfrac12)\\
+d&3&4/mmm&(\tfrac12,0,0)\\
+e&12&mm2&(\tfrac14,\tfrac14,0)
 \end{array}
 \]
-位置 $a$（角点）和 $b$（体心）具有完整 $O_h$ 对称，适合放完全对称的原子（如 CsCl 中 Cs 在 $a$、Cl 在 $b$）。位置 $c$（面心）有 $C_{4v}$ 对称，适合放面心原子。Wyckoff 位置直接决定原子在晶体中的对称环境和可能的局部模式。
-\par\medskip
+这张表可以直接手算核对。以 $d=(\tfrac12,0,0)$ 为例：$O_h$ 的转动把坐标轴互相置换并改变符号，但 $(-\tfrac12,0,0)$ 与 $(\tfrac12,0,0)$ 只差一个晶格矢量，属同一位置，故轨道只有
+\[
+\left\{(\tfrac12,0,0),\ (0,\tfrac12,0),\ (0,0,\tfrac12)\right\}
+\]
+三个点，多重度为 $3$。保持 $(\tfrac12,0,0)$ 不动的操作是绕 $x$ 轴的全部四方操作加上垂直镜面与反演，即四方群 $D_{4h}$（Hermann--Mauguin 记号 $4/mmm$，阶 $16$），验证 $3\times16=48$。同理 $c=(0,\tfrac12,\tfrac12)$ 的轨道是三个面心 $\{(0,\tfrac12,\tfrac12),(\tfrac12,0,\tfrac12),(\tfrac12,\tfrac12,0)\}$，稳定子也是 $4/mmm$，$3\times16=48$；$e=(\tfrac14,\tfrac14,0)$ 位于对角镜面与过原点的二重轴上，稳定子只有 $4$ 阶的 $mm2$（$C_{2v}$），轨道 $12$ 个点，$12\times4=48$。
+
+位置 $a$（角点）和 $b$（体心）具有完整 $O_h$ 对称，适合放完全对称的原子（如 CsCl 中 Cs 在 $a$、Cl 在 $b$）。位置 $c$（面心）与 $d$（棱心）具有 $D_{4h}$ 四方对称，适合放面心原子。Wyckoff 位置直接决定原子在晶体中的对称环境和可能的局部模式。
+\end{example}
 
 Wyckoff 位置描述了原子在空间群作用下的对称环境，而空间群本身的结构则需要用 Seitz 记号来系统刻画。
 
@@ -345,6 +369,49 @@ Seitz 记号 $\{R\mid\vb t\}$ 只是把这一仿射变换紧凑地记下来。�
 由乘法式知 $R\vb u+\vb t=0$，故 $\vb u=-R^{-1}\vb t$，得到 \eqnrefs{eq:seitz-inverse}。
 \end{proof}
 
+\begin{example}[{二维方格上的一次具体复合与求逆（p4mm）}]
+取二维正方格子（晶格常数 $a$），令 $C_4$ 为绕原点转 $\pi/2$、$\sigma_v$ 为关于 $y$ 轴的镜面，矩阵分别为
+\[
+C_4=\begin{pmatrix}0&-1\\1&0\end{pmatrix},
+\qquad
+\sigma_v=\begin{pmatrix}-1&0\\0&1\end{pmatrix}.
+\]
+计算复合 $\{C_4\mid\vb 0\}\{\sigma_v\mid\tfrac a2\hat{\vb x}\}$。按 \eqnrefs{eq:seitz-product}，线性部分为
+\[
+C_4\sigma_v
+=\begin{pmatrix}0&-1\\1&0\end{pmatrix}
+ \begin{pmatrix}-1&0\\0&1\end{pmatrix}
+=\begin{pmatrix}0&-1\\-1&0\end{pmatrix},
+\]
+这是关于对角线 $y=-x$ 的镜面反射；平移部分为
+\[
+C_4\Bigl(\tfrac a2\hat{\vb x}\Bigr)+\vb 0=\tfrac a2\hat{\vb y}.
+\]
+故
+\[
+\{C_4\mid\vb 0\}\{\sigma_v\mid\tfrac a2\hat{\vb x}\}
+=\left\{\begin{pmatrix}0&-1\\-1&0\end{pmatrix}\,\middle|\,\tfrac a2\hat{\vb y}\right\},
+\]
+即一个带分数平移的对角滑移型操作——注意第二个因子的平移 $\tfrac a2\hat{\vb x}$ 先被 $C_4$ 转成了 $\hat{\vb y}$ 方向。再算逆元：取 $g=\{C_2\mid\tfrac a2\hat{\vb x}\}$，其中 $C_2=-I_2$。由 \eqnrefs{eq:seitz-inverse}，
+\[
+g^{-1}=\{C_2^{-1}\mid-C_2^{-1}\bigl(\tfrac a2\hat{\vb x}\bigr)\}
+=\{C_2\mid\tfrac a2\hat{\vb x}\}=g,
+\]
+即 $g^2=\{I_2\mid\vb 0\}$：它是绕点 $(\tfrac a4,0)$ 的二重转动，阶为 $2$。可与前面的螺旋轴例题 $g=\{C_2\mid\vb a/2\}$（$C_2\vb a=\vb a$，$g^2=\{I_3\mid\vb a\}$）对照：分数平移垂直于转轴时可被吸收、平行于转轴时不可。
+\end{example}
+
+\begin{workedexample}
+设 $g=\{C_2\mid\vb a/2\}$，其中 $C_2\vb a=\vb a$。求 $g^2$。
+
+\textbf{解.} 由 Seitz 乘法
+\[
+g^2=\{C_2^2\mid C_2(\vb a/2)+\vb a/2\}
+=\{I_3\mid\vb a\}.
+\]
+这说明二重螺旋轴的平方不是恒等操作，而是一个整格矢平移。
+\end{workedexample}
+
+
 所有纯平移
 \[
 T=\{\{I_3\mid\vb R\}\mid \vb R\in\mathcal L\}
@@ -359,6 +426,18 @@ T=\{\{I_3\mid\vb R\}\mid \vb R\in\mathcal L\}
 \longrightarrow P\longrightarrow1
 \]
 是理解空间群最干净的代数框架。\chapref{chap:group-theory-quantum}讲 Bloch 定理和小群时会不断使用它。
+
+\begin{workedexample}
+证明空间群中的平移子群 $T$ 是正规子群。
+
+\textbf{解.} 对任意 $\{R\mid\vb t\}\in\mathcal G$ 和平移 $\{I_3\mid\vb R_0\}$，用 Seitz 乘法得
+\begin{align*}
+\{R\mid\vb t\}\{I_3\mid\vb R_0\}\{R\mid\vb t\}^{-1}
+&=\{I_3\mid R\vb R_0\}.
+\end{align*}
+由于点操作 $R$ 保持晶格，$R\vb R_0$ 仍是晶格矢量，所以共轭结果仍属于 $T$，故 $T\mathrel{\trianglelefteq}\mathcal G$。
+\end{workedexample}
+
 
 如果通过选择适当原点，可以让每个点群元素 $R$ 都在空间群中以 $\{R\mid0\}$ 出现，那么空间群可以看成平移群与点群的半直积，称为\textbf{对称型空间群}（symmorphic 空间群；传统教材也常称“简单空间群”）。三维共有 $73$ 个。若某些点操作只能与分数平移绑在一起存在，就得到\textbf{非对称型空间群}（nonsymmorphic 空间群；传统教材也常称“非简单空间群”），共有 $157$ 个。两类合计 $230$ 个空间群。
 
@@ -415,10 +494,9 @@ Seitz 记号中的平移部分依赖原点选择。若把原点从 $O$ 移到 $O
 
 真正的非对称型空间群操作所含的本征分数平移则无法通过任何原点移动消去。例如绕轴的螺旋平移分量沿着旋转轴，而 $(R-I_3)\vb d$ 总垂直于固定轴方向，因此轴向分数平移不可能靠移原点去掉。同理，滑移面中平行镜面的分数平移也具有不可消除部分。这一几何事实正是“非简单空间群不是糟糕原点选择造成的”最直接的解释。
 
-\medskip
-\noindent\emph{一维链上的半格矢滑移类比。}
+\begin{example}[{一维链上的半格矢滑移类比}]
 一维链已能显示分数平移的作用。设两个子晶格 $A_n$ 与 $B_n$ 分别位于 $na$ 与 $na+a/2$。单独平移 $a/2$ 会交换 $A$、$B$；若两者是不同原子，这不是对称操作。若另有一个内部操作同时交换两种原子，组合才可能保持整个结构不变。空间群中的螺旋与滑移同样由点操作和分数平移共同构成。
-\par\medskip
+\end{example}
 
 进入晶体文献以后还会遇到另一套命名体系。Schoenflies 与 Hermann--Mauguin 符号并非互相竞争，而是承担不同的信息任务。
 
@@ -427,7 +505,6 @@ Schoenflies 符号特别适合分子光谱与点群表示，因为它突出主�
 因此，当文献给出一个空间群时，常见工作流是：先从 Hermann--Mauguin 符号或空间群编号确定完整的 $\{R\mid\boldsymbol\tau\}$ 操作；再把平移部分商掉得到点群；最后根据具体 $\vb k$ 取小群并查相应不可约表示。\chapref{chap:group-theory-quantum}的能带部分会沿这条链继续下去。
 
 在实际识别点群时，三维对称元素常用极射赤面投影压缩到二维图上。
-
 
 极射赤面投影并不引入新的群论定理，它的任务是把三维对称元素压缩到二维图上，使我们能够在同一张平面图上同时看见多个旋转轴与镜面。基本方法是：把旋转轴与单位球面的交点看成极点，再从球极向赤道平面作立体投影。上半球与下半球的点用不同符号区分。
 
@@ -459,6 +536,18 @@ Schoenflies 符号特别适合分子光谱与点群表示，因为它突出主�
 \label{sec:crystal-point-group-irreps}
 
 三十二个晶体点群各有特征标表。表中的 $A,B,E,T$ 标记表示的维数与类型，$g/u$ 标记反演奇偶性；这些符号由群的共轭类和表示构造决定。先从循环群与二面体群算起，便能看清表中数据的来源。
+
+\begin{workedexample}
+解释 $O_h$ 中下标 $g/u$ 的来源。
+
+\textbf{解.} 因为 $O_h=O\times C_i$，而 $C_i$ 有两个一维不可约表示，分别把反演 $\mathcal I$ 映到 $+1$ 和 $-1$。将 $O$ 的任一不可约表示与这两个一维表示做张量积，就得到偶宇称 $g$ 与奇宇称 $u$ 两个版本。
+\end{workedexample}
+
+
+本书不逐表列出全部 32 个群，因为其余各表都可由下面的模板推出，无需新工具：
+（i）循环群 $C_n$ 与转动反射群 $S_{2n}$ 都是 Abel 群，全部不可约表示一维，由生成元的 $n$ 次（$2n$ 次）单位根给出，见 \eqnrefs{eq:cn-irreps}；
+（ii）含水平镜面的奇数阶轴向群 $C_{nh}$（$n$ 奇）、$D_{3h}$ 等可写成与镜面群 $C_s=\{E,\sigma_h\}$ 的直积，每个表示复制成对 $\sigma_h$ 为偶（$'$）与奇（$''$）的两个版本；
+（iii）含反演的群（$C_{2h},C_{4h},C_{6h},D_{2h},D_{4h},D_{6h},T_h,O_h$ 等）按 $g/u$ 加倍，机制与本节后文 $O_h=O\times C_i$ 的处理完全相同。掌握这三条，任何未列出的特征标表都能在几分钟内自行重建。
 
 对循环群 $C_n=\langle r\mid r^n=e\rangle$，群是 Abel 的，因此所有不可约复表示都是一维。它们由生成元的像决定：
 \[
@@ -501,8 +590,7 @@ D_m(s)=
 
 循环群与二面体群之后，再看多面体群的不可约表示维数怎样由类数和平方和条件限制。
 
-
-对 $T,O,I$，共轭类数和维数平方和已经把不可约表示的维数强烈限制住。标准结果为
+对 $T,O,I$，共轭类数和维数平方和已经把不可约表示的维数强烈限制住。共轭类数不是新输入：它直接沿用\chapref{chap:point-space-groups}中按轴轨道计数得到的类结构（\cref{tab:polyhedral-axis-count} 及其后的讨论）——$T$ 分 $4$ 类（$E,3C_2,4C_3,4C_3^2$），$O$ 分 $5$ 类（$E,8C_3,3C_2,6C_4,6C_2'$），$I$ 分 $5$ 类（$E,15C_2,10C_3,6C_5,6C_5^2$）。不可约表示个数等于类数，而维数由平方和 $\sum d_\alpha^2=|G|$ 加上“至少含一个一维平凡表示、一维表示个数整除群阶”反解。标准结果为
 \[
 T:\quad 1,1,1,3,
 \]
@@ -517,6 +605,16 @@ I:\quad 1,3,3,4,5.
 1^2+1^2+2^2+3^2+3^2=24.
 \]
 两个三维表示并不是“因为空间是三维所以必然有两个”，而是共轭类结构、正交关系与维数平方和共同决定的。
+
+\begin{workedexample}
+利用维数平方和验证 $I$ 群不可约表示维数 $1,3,3,4,5$ 与群阶 $60$ 相容。
+
+\textbf{解.}
+\[
+1^2+3^2+3^2+4^2+5^2=1+9+9+16+25=60.
+\]
+\end{workedexample}
+
 
 若群包含中心反演且分解成
 \[
@@ -576,6 +674,21 @@ $E$   & $2$&$0$&$-2$&$0$&$0$ & $(x,y);\ (R_x,R_y);\ (xz,yz)$ \\
 \]
 这使得点群特征标表中的矢量基函数 $(x,y,z)$ 一栏可以从几何立刻验证。
 
+\begin{workedexample}
+用双重计数重新推导 \eqnrefs{eq:finite-rotation-counting}。
+
+\textbf{解.} 统计集合
+\[
+\Omega=\{(g,p)\mid g\in G\setminus\{e\},\ p\in P,\ gp=p\}.
+\]
+按 $g$ 计数，每个非恒等转动固定两个极点，故 $|\Omega|=2(N-1)$。按极点轨道计数，第 $i$ 个轨道有 $N/n_i$ 个点，每点被 $n_i-1$ 个非恒等稳定子元素固定，故
+\[
+|\Omega|=\sum_i\frac{N}{n_i}(n_i-1).
+\]
+令二者相等即得。
+\end{workedexample}
+
+
 对原子位移、等价轨道或等价原子构成的置换表示，还有另一条非常实用的规则：\emph{特征标等于在该操作下保持在原位置的基对象数，乘以每个对象内部自由度的迹。} 如果基对象只是标量轨道标签，置换表示的特征标就是固定点数；如果每个固定原子还带三维位移矢量，就再乘相应局域旋转矩阵的迹。\chapref{chap:group-theory-quantum}推导振动表示时会直接使用这一点。
 
 有了置换表示的特征标计算规则，接下来以立方群 $O$ 为范例，看一张完整的特征标表怎样从群结构中自然生长出来，再通过直积扩展到 $O_h$。
@@ -603,7 +716,33 @@ $T_2$ & $3$&$0$&$-1$&$-1$&$1$ & $(xy,yz,zx)$ \\
 \end{tabular}
 \end{table}
 
-这张表并不是凭记忆写出的。$T_1$ 行由三维矢量表示的转角迹公式直接得到；二次函数空间的五维无迹部分是 $l=2$ 球谐表示限制到 $O$ 后的结果，它由基函数直接分成 $E\oplus T_2$；剩余两个一维表示再由正交性补齐。加入反演后，$O_h=O\times C_i$，每一行复制为 $g/u$ 两个宇称版本。这就得到 $O_h$ 的十个不可约表示，而不必从头重算十行。
+这张表并不是凭记忆写出的。$T_1$ 行由三维矢量表示的转角迹公式直接得到；二次函数空间的五维无迹部分是 $l=2$ 球谐表示限制到 $O$ 后的结果，它由基函数直接分成 $E\oplus T_2$；剩余两个一维表示再由正交性补齐。其中 $A_2$ 行不必靠猜：取试探函数 $f=xyz$，它在 $O$ 的每个操作下只可能变到 $\pm xyz$，因此张成一维表示，特征标就是该符号。逐类追踪：$E$ 与 $C_3$（$(x,y,z)\mapsto(z,x,y)$ 型循环置换）给出 $xyz\mapsto xyz$，取 $+1$；$3C_2$（绕坐标轴转 $\pi$，两个坐标变号）也给出 $+1$；$6C_4$（如绕 $z$ 转 $\pi/2$：$(x,y,z)\mapsto(y,-x,z)$）给出 $xyz\mapsto-xyz$，取 $-1$；$6C_2'$（绕面对角线转 $\pi$，如 $(x,y,z)\mapsto(y,x,-z)$）同样给出 $-1$。于是这一维表示的特征标为
+\[
+\chi=(1,\,1,\,1,\,-1,\,-1),
+\qquad
+\langle\chi,\chi\rangle=\frac{1\cdot1+8\cdot1+3\cdot1+6\cdot1+6\cdot1}{24}=1,
+\]
+范数为 $1$ 故不可约，正是表中的 $A_2$ 行。最后一个一维表示 $A_1$ 即平凡表示。加入反演后，$O_h=O\times C_i$，每一行复制为 $g/u$ 两个宇称版本。这就得到 $O_h$ 的十个不可约表示，而不必从头重算十行。
+
+\begin{workedexample}
+写出 $C_{3v}$ 中矢量表示 $(x,y,z)$ 的不可约分解。
+
+\textbf{解.} 由 \Cref{tab:c3v-character}，$z$ 按 $A_1$ 变换，而 $(x,y)$ 共同按二维表示 $E$ 变换，因此
+\[
+\Gamma_{\mathrm{vec}}=A_1\oplus E.
+\]
+\end{workedexample}
+
+
+\begin{workedexample}
+写出 $C_{4v}$ 中二次函数空间 $\operatorname{span}\{x^2+y^2,z^2,x^2-y^2,xy,xz,yz\}$ 的不可约分解。
+
+\textbf{解.} 由 \Cref{tab:c4v-character}，$x^2+y^2$ 与 $z^2$ 各承载 $A_1$，$x^2-y^2$ 承载 $B_1$，$xy$ 承载 $B_2$，$(xz,yz)$ 承载 $E$。故
+\[
+2A_1\oplus B_1\oplus B_2\oplus E.
+\]
+\end{workedexample}
+
 
 最后还要处理一个在循环群与晶体学表格之间经常造成困惑的问题：复数域上的两个共轭一维表示，在实数域上常合并成一个二维表示。
 
@@ -659,15 +798,11 @@ $E$   & $2$&$0$&$-2$&$0$&$0$ & $(x,y),\,(xz,yz)$ \\
 
 \end{table}
 
-
-
 $D_{4h}=D_4\times C_i$，每个表示复制为 $g/u$ 两版，共 10 个不可约表示。
 
 $T_d$ 有五个类，维数平方和给出 $1,1,2,3,3$。其中 $A_2$ 记录不保手性操作的符号，$T_1$ 承载轴矢量，$T_2$ 承载极矢量；$E$ 的特征标由正交关系补齐。这样即可读出表格，而无需把所有行、列正交关系逐对重算。
 
 \begin{table}[htbp]
-
-
 
 \centering
 \caption{$T_d$ 的特征标表}
@@ -686,13 +821,9 @@ $T_2$ & $3$&$0$&$-1$&$-1$&$1$ & $(x,y,z),\,(xy,yz,zx)$ \\
 
 \end{table}
 
-
-
 有了 $T_d$ 的特征标表，转向立方晶系中最重要的 $O_h$。$O_h=O\times C_i$，$O$ 的特征标表已给出（\Cref{tab:o-character}）。每个 $O$ 的不可约表示 $\Gamma$ 产生两个 $O_h$ 表示 $\Gamma_g$（偶宇称）和 $\Gamma_u$（奇宇称），反演 $I$ 在 $g$ 型上取 $+1$，$u$ 型上取 $-1$。
 
 \begin{table}[htbp]
-
-
 
 \centering
 \caption{$O_h$ 的特征标表（$O\times C_i$，10 个不可约表示）}
@@ -717,8 +848,6 @@ $T_{2u}$ & $3$&$0$&$-1$&$-1$&$1$&$-3$&$0$&$1$&$1$&$-1$ \\
 
 \end{table}
 
-
-
 $O_h=O\times C_i$，所以 $O$ 的每个不可约表示只需再标记反演宇称。
 
 对 $O$ 的不可约表示 $\Gamma$，偶、奇两种扩展分别满足
@@ -739,7 +868,6 @@ T_{1g}\otimes T_{1g} &= A_{1g}\oplus E_g\oplus T_{1g}\oplus T_{2g},\\
 E_g\otimes T_{2g} &= T_{1g}\oplus T_{2g},
 \end{align*}
 它们把允许耦合化成直积中是否含有 $A_{1g}$ 的检验。下面再看两个含反演的轴向群，宇称加倍的机制完全相同。
-
 
 $D_{3d}=D_3\times C_i$，因此 $D_3$ 的 $A_1,A_2,E$ 各自产生一对 $g/u$ 表示。六个共轭类为
 \[
@@ -762,8 +890,6 @@ $D_{3d}=D_3\times C_i$，因此 $D_3$ 的 $A_1,A_2,E$ 各自产生一对 $g/u$ �
 
 \begin{table}[htbp]
 
-
-
 \centering
 \caption{$D_{3d}$ 的特征标表}
 \label{tab:d3d-character}
@@ -782,13 +908,9 @@ $E_u$   & $2$&$-1$&$0$&$-2$&$1$&$0$ \\
 
 \end{table}
 
-
-
 $D_{6h}=D_6\times C_i$，$D_6$ 有 12 元素 6 类，不可约表示维数 $1,1,1,1,2,2$，故 $D_{6h}$ 有 12 个不可约表示。
 
 \begin{table}[htbp]
-
-
 
 \centering
 \caption{$D_{6h}$ 的特征标表}
@@ -818,21 +940,30 @@ $E_{2u}$ & $2$&$-1$&$-1$&$2$&$0$&$0$&$-2$&$1$&$1$&$-2$&$0$&$0$ \\
 
 $D_6$ 的四个一维表示由 $r\mapsto\pm1$、$s\mapsto\pm1$ 给出；二维表示 $E_1,E_2$ 在主轴转动 $C_6^k$ 上的特征标分别为 $2\cos(k\pi/3)$ 与 $2\cos(2k\pi/3)$，在横向二重轴上均为零。与 $C_i$ 作直积后得到表中的十二个 $D_{6h}$ 表示，维数平方和为 $24$。这张表主要用于六方体系的轨道、声子与跃迁分类；具体能带模型留到后续应用章节。
 
+\begin{workedexample}
+由基本方程证明三种多面体旋转群的阶分别为 $12,24,60$。
+
+\textbf{解.} 对 $(2,3,m)$，基本方程给出
+\[
+\frac12+\frac13+\frac1m=1+\frac2N.
+\]
+当 $m=3,4,5$ 时分别解得 $N=12,24,60$。
+\end{workedexample}
+
+
 从特征标表的应用转入衍射物理：空间群对称性不仅约束能级和振动模式，还直接决定衍射谱中的系统消光——这是群论在结构分析中最直接的实验后果。
 
 \begin{theorem}[系统消光定理]
 
-
-
-设空间群 $\mathcal G$ 含操作 $\{R|\vb\tau\}$。结构因子
+设空间群 $\mathcal G$ 含操作 $\{R|\vb\tau\}$。若对某倒格矢 $\vb G$，该操作的线性部分保持它不变（$R^{\mathsf T}\vb G=\vb G$）、且操作只把原子映到同类型原子，则当分数平移相位非平凡时结构因子必为零：
 \[
-F(\vb G)=\sum_j f_j\,\ee^{-\ii\vb G\cdot\vb r_j}
+\vb G\cdot\vb\tau\notin2\pi\ZZ
+\ \Longrightarrow\
+F(\vb G)=0.
 \]
-满足：若对某倒格矢 $\vb G$，$\vb G\cdot\vb\tau\notin2\pi\ZZ$ 且 $R$ 不改变原子类型，则 $F(\vb G)=0$。这给出系统消光规则。
+这给出系统消光规则。
 
 \end{theorem}
-
-
 
 结构因子的对称约束如下。若 $\{R|\vb\tau\}\in\mathcal G$ 把原子 $\vb r_j$ 映到同类型原子 $\vb r_{j'}$，则 $f_j=f_{j'}$ 且
 \[
@@ -886,7 +1017,10 @@ $R$（菱心） & $-h+k+l=3n\pm1$ \\
 \end{tabular}
 \end{table}
 
-系统消光从倒空间给出衍射选择定则。宏观响应的对应结论是 Neumann 原理：
+系统消光从倒空间给出衍射选择定则。宏观响应则由点群不变张量刻画。
+
+\begin{proposition}[Neumann 原理与不变张量投影]
+设有限点群 $P\subset O(3)$ 作用在矢量空间 $V$ 上。保持 $P$ 对称的
 晶体物性张量必须在点群的每个操作下不变。若 $T$ 描述线性响应
 $\vb Y=T\vb X$，则
 \begin{equation}
@@ -901,9 +1035,17 @@ T_{i_1\cdots i_n}
 \label{eq:neumann-tensor-invariance}
 \end{equation}
 这些线性约束的解空间就是允许的物性张量空间，其维数给出独立材料常数的数目。
+群平均算符
+\[
+\Pi_T=\frac1{|P|}\sum_{R\in P}R^{\otimes n}
+\]
+是 $V^{\otimes n}$ 到不变张量子空间的正交投影，且
+\[
+\dim(V^{\otimes n})^P=\frac1{|P|}\sum_{R\in P}\chi_V(R)^n.
+\]
+\end{proposition}
 
-\par\medskip
-\noindent\textbf{Neumann 原理的群平均投影}\quad
+\begin{proof}
 输入变为 $R\vb X$ 时，输出一方面应为 $T(R\vb X)$，另一方面应为
 $R(T\vb X)$，故对任意 $\vb X$ 有
 \[
@@ -918,12 +1060,14 @@ T(R\vb X)=R(T\vb X).
 \[
 \Pi_T^2=\frac1{|P|^2}\sum_{R,S}(RS)^{\otimes n}=\frac1{|P|}\sum_{R}R^{\otimes n}=\Pi_T,
 \]
-故 $\Pi_T$ 是投影。不变张量空间即 $\operatorname{im}\Pi_T$，其维数
+又因 $R$ 正交，$\Pi_T^\dagger=|P|^{-1}\sum_R(R^{-1})^{\otimes n}=\Pi_T$，故 $\Pi_T$ 是正交投影。群乘法重排求和给出 $S^{\otimes n}\Pi_T=\Pi_T$；反之不变张量被 $\Pi_T$ 固定。因此不变张量空间即 $\operatorname{im}\Pi_T$，其维数
 \[
 \dim\operatorname{im}\Pi_T=\tr\Pi_T=\frac1{|P|}\sum_{R\in P}(\tr R)^n.
 \]
 对二阶张量（$n=2$），独立分量个数为 $\frac1{|P|}\sum_{R}(\chi_\text{vec}(R))^2$，其中 $\chi_\text{vec}(R)=\tr R$ 是矢量表示的特征标。对称二阶张量（如介电张量 $\epsilon_{ij}$）则需用 $\chi_{\mathrm{Sym}^2}(R)=\frac{\chi_V(R)^2+\chi_V(R^2)}{2}$。
+\end{proof}
 
+\par\medskip
 \par\medskip
 
 空间对称约束还需与时间反演约束结合。Onsager 关系在无磁场时给出
@@ -932,8 +1076,7 @@ $L_{ij}=L_{ji}$，有磁场时给出 $L_{ij}(B)=L_{ji}(-B)$；Neumann 原理则�
 满足晶体对称性。例如一般弹性张量有 21 个独立常数，立方晶体只剩
 $C_{11},C_{12},C_{44}$，各向同性介质进一步只剩两个 Lam\'e 常数。
 
-\medskip
-\noindent\emph{用 Neumann 原理计数：六方晶系 $D_{6h}$ 的对称二阶张量。}
+\begin{example}[{用 Neumann 原理计数：六方晶系 $D_{6h}$ 的对称二阶张量}]
 六方晶系的点群 $D_{6h}=D_6\times C_i$（24 元素）。对称二阶张量在反演下不变（$T_{ij}\to(-1)^2T_{ij}=T_{ij}$），故只需对 $D_6$（12 元素）的纯转动部分求和，结果与 $D_{6h}$ 相同。
 
 $D_6$ 的共轭类、矢量表示特征标 $\chi_V(R)=1+2\cos\theta$（$\theta$ 为绕主轴转角）及 $\chi_{\mathrm{Sym}^2}(R)$：
@@ -972,16 +1115,27 @@ N=\frac{1}{12}\bigl[1\cdot6+2\cdot2+2\cdot0+1\cdot2+3\cdot2+3\cdot2\bigr]
 N=\frac{1}{24}[1\cdot6+8\cdot0+3\cdot2+6\cdot0+6\cdot2]=\frac{6+0+6+0+12}{24}=\frac{24}{24}=1.
 \]
 立方晶系对称二阶张量只有 1 个独立分量 $\epsilon_0 I_3$——光学各向同性。这与已知物理一致：立方晶体在光学上表现为各向同性介质。
+\end{example}
+
+\begin{workedexample}
+证明 $SO(3)$ 是 $O(3)$ 的正规子群，并求商群 $O(3)/SO(3)$。
+
+\textbf{解.} 行列式给出满同态 $\det:O(3)\to\{\pm1\}$，其核为 $SO(3)$。故由第一同构定理
+\[
+O(3)/SO(3)\simeq\{\pm1\}\simeq C_2,
+\]
+从而 $SO(3)\mathrel{\trianglelefteq} O(3)$。
+\end{workedexample}
+
+
 \par\medskip
 
 至此，\chapref{chap:point-space-groups}的几何分类与\chapref{chap:representation-theory}的表示论已经真正接上。后续物理不再需要把特征标表视为独立知识点，而是把它当作对称子空间的坐标表。
 
 当哈密顿量与这些空间对称操作对易时，态空间可分解为点群不可约表示。能级简并由表示维数约束，跃迁矩阵元是否为零由初态、末态与算符表示的张量积决定，红外与 Raman 活性则由相应振动表示和偶极矩、极化率张量共同确定。
 
-
 \subsection{平移不变性与 Bloch 定理}
 \label{sec:translation-bloch}
-
 
 前面的点群都是有限群，而理想晶体还具有无限多个晶格平移。乍看之下，这似乎是完全不同的问题；实际上平移群是 Abel 群，因此它的全部不可约复表示都是一维的。这件事一旦与量子哈密顿量的平移对称性结合，就直接给出 Bloch 定理。
 
@@ -992,7 +1146,6 @@ T_{\vb R}|\psi\rangle=\lambda(\vb R)|\psi\rangle.
 酉性要求 $|\lambda|=1$，群乘法又要求 $\lambda(\vb R_1+\vb R_2)=\lambda(\vb R_1)\lambda(\vb R_2)$，于是这些一维特征标只能写成 $\ee^{-\ii\vb k\cdot\vb R}$。Bloch 波矢 $\vb k$ 就这样从平移群表示中出现。
 
 前五节主要讨论有限点群。晶体还具有无限离散平移群，因此量子态必须同时尊重平移对称性。Bloch 定理应当从平移群的一维不可约表示推出：它不是某个特定微分方程的巧妙解法，而是 Abel 平移群表示理论的必然结论。
-
 
 设 Bravais 晶格
 \[
@@ -1095,10 +1248,8 @@ u_{n\vb k}(\vb r+\vb R)
 \label{thm:bloch}
 \end{theorem}
 
-\par\medskip
-\noindent\textbf{Bloch 定理：从平移群一维表示到平面波×周期函数}\quad
-先同时对角化。
-平移群 $\{T_{\vb R}\}_{\vb R\in\mathcal L}$ 是 Abel 群，且全部 $T_{\vb R}$ 与 $\hat H$ 对易。Abel 群的不可约表示都是一维的，因此可在每个能量本征空间中\emph{同时对角化}所有平移算符。于是可选本征态 $\psi_{n\vb k}$ 满足
+\begin{proof}
+先同时对角化。在有限 Born--von Karman 周期边界条件下，平移群是有限 Abel 群，全部 $T_{\vb R}$ 为两两对易的幺正算符，且与 $\hat H$ 对易。因此每个能量本征空间可按平移群特征标分解；即使能级简并，也可选取同时对角化所有平移的基。在无限晶体中，相应结论是按 $\vb k$ 的直积分分解，Bloch 波一般是广义本征函数；不应声称它们是在整个实空间上平方可积的普通本征态。于是可选本征态 $\psi_{n\vb k}$ 满足
 \[
 T_{\vb R}\psi_{n\vb k}=\ee^{-\ii\vb k\cdot\vb R}\psi_{n\vb k},
 \]
@@ -1132,6 +1283,10 @@ u_{n\vb k}(\vb r+\vb R)
 \qquad u_{n\vb k}(\vb r+\vb R)=u_{n\vb k}(\vb r),
 \]
 即"平面波相位 $\times$ 晶格周期函数"。
+\end{proof}
+
+
+\par\medskip
 \par\medskip
 
 Bloch 函数 $\psi_{n\vb k}$ 满足正交归一，能带 $E_n(\vb k)$ 在非简并处连续。由于 $\vb k$ 与 $\vb k+\vb G$ 标记同一个平移不可约表示，只需在第一 Brillouin 区内取代表。时间反演或空间反演对称还会给出 $E_n(\vb k)=E_n(-\vb k)$，进一步减少独立计算区域。
@@ -1203,7 +1358,6 @@ Born--von Karman 条件把允许 $\vb k$ 离散化为
 \label{sec:brillouin-lattice-symmetry}
 
 平移对称性告诉我们本征态可以用 $\vb k$ 标记，但第一 Brillouin 区仍包含连续无穷多个点。晶体的点操作还会把不同 $\vb k$ 联系起来，从而进一步减少真正独立的区域。下面从空间群操作 $\{R\mid\vb t\}$ 出发推导 $E_n(R\vb k)=E_n(\vb k)$，并同时引出不可约 Brillouin 区、波矢星与小群。
-
 
 设空间群元素
 \[
@@ -1295,7 +1449,6 @@ R\vb k=\vb k+\vb G,
 
 如果空间群含有不可消去的分数平移，上面的点群式小群分析还要多保留一个 Bloch 相位。
 
-
 如果空间群是非对称的，小群表示不能简单退化成点群表示，因为分数平移会带来 Bloch 相位。以二重螺旋轴
 \[
 S=\{C_{2z}\mid \tfrac c2\hat{\vb z}\}
@@ -1316,99 +1469,10 @@ s_\pm(k_z)=\pm\ee^{-\ii k_z c/2}.
 \]
 在 Brillouin 区边界 $k_z=\pi/c$ 时，它们变成 $\pm\ii$。这就是为什么非对称空间群在能带边界上会表现出普通点群表中看不到的结构；再结合时间反演，某些复共轭螺旋本征值还会被迫成对出现。
 
+\begin{workedexample}
+对正四面体完整点群 $T_d$，说明为什么它不是 $T\times C_i$。
 
-\subsection{习题与解答}
-\label{sec:point-space-exercises}
+\textbf{解.} $T_d$ 不包含空间反演 $\mathcal I$，其不保手性操作主要由镜面和 $S_4$ 型操作组成，因此不存在中央的独立 $C_i$ 因子。包含反演并与 $T$ 构成直积的是 $T_h=T\times C_i$，不是 $T_d$。
+\end{workedexample}
 
-下面的习题把点群定义、轨道--稳定子、有限旋转群分类、晶格整数结构、晶体制约和 Schoenflies 识别放进具体计算中。解答紧随题目，便于核对每一步使用的定义。
 
-\begin{enumerate}[label=\arabic*.,leftmargin=2.5em]
-
-\item 证明 $SO(3)$ 是 $O(3)$ 的正规子群，并求商群 $O(3)/SO(3)$。
-
-\emph{解答.} 行列式给出满同态 $\det:O(3)\to\{\pm1\}$，其核为 $SO(3)$。故由第一同构定理
-\[
-O(3)/SO(3)\simeq\{\pm1\}\simeq C_2,
-\]
-从而 $SO(3)\mathrel{\trianglelefteq} O(3)$。
-
-\item 证明任意 $R\in SO(3)$ 的特征值必可写为 $1,\ee^{\ii\theta},\ee^{-\ii\theta}$。
-
-\emph{解答.} 由 \Cref{thm:rotation-axis}，$1$ 是一个特征值。正交矩阵的复特征值模长为 $1$，且实矩阵的非实特征值成共轭对出现。又因为行列式为 $1$，其余两个特征值乘积为 $1$，故必为 $\ee^{\pm\ii\theta}$。
-
-\item 用双重计数重新推导 \eqnrefs{eq:finite-rotation-counting}。
-
-\emph{解答.} 统计集合
-\[
-\Omega=\{(g,p)\mid g\in G\setminus\{e\},\ p\in P,\ gp=p\}.
-\]
-按 $g$ 计数，每个非恒等转动固定两个极点，故 $|\Omega|=2(N-1)$。按极点轨道计数，第 $i$ 个轨道有 $N/n_i$ 个点，每点被 $n_i-1$ 个非恒等稳定子元素固定，故
-\[
-|\Omega|=\sum_i\frac{N}{n_i}(n_i-1).
-\]
-令二者相等即得。
-
-\item 由基本方程证明三种多面体旋转群的阶分别为 $12,24,60$。
-
-\emph{解答.} 对 $(2,3,m)$，基本方程给出
-\[
-\frac12+\frac13+\frac1m=1+\frac2N.
-\]
-当 $m=3,4,5$ 时分别解得 $N=12,24,60$。
-
-\item 为什么五重旋转可以出现在孤立分子或准晶结构中，却不能成为普通三维周期晶格的点群操作？
-
-\emph{解答.} 点群本身只要求是 $O(3)$ 的有限子群，因此 $I$ 群中的五重轴完全允许。周期晶格还要求旋转在晶格基底下由整数矩阵表示，故其迹必须为整数。五重转动的迹为
-\[
-1+2\cos\frac{2\pi}{5},
-\]
-不是整数，违反 \Cref{thm:crystallographic-restriction}，所以普通周期晶格不能有五重轴。
-
-\item 写出 $C_{3v}$ 中矢量表示 $(x,y,z)$ 的不可约分解。
-
-\emph{解答.} 由 \Cref{tab:c3v-character}，$z$ 按 $A_1$ 变换，而 $(x,y)$ 共同按二维表示 $E$ 变换，因此
-\[
-\Gamma_{\mathrm{vec}}=A_1\oplus E.
-\]
-
-\item 写出 $C_{4v}$ 中二次函数空间 $\operatorname{span}\{x^2+y^2,z^2,x^2-y^2,xy,xz,yz\}$ 的不可约分解。
-
-\emph{解答.} 由 \Cref{tab:c4v-character}，$x^2+y^2$ 与 $z^2$ 各承载 $A_1$，$x^2-y^2$ 承载 $B_1$，$xy$ 承载 $B_2$，$(xz,yz)$ 承载 $E$。故
-\[
-2A_1\oplus B_1\oplus B_2\oplus E.
-\]
-
-\item 证明空间群中的平移子群 $T$ 是正规子群。
-
-\emph{解答.} 对任意 $\{R\mid\vb t\}\in\mathcal G$ 和平移 $\{I_3\mid\vb R_0\}$，用 Seitz 乘法得
-\begin{align*}
-\{R\mid\vb t\}\{I_3\mid\vb R_0\}\{R\mid\vb t\}^{-1}
-&=\{I_3\mid R\vb R_0\}.
-\end{align*}
-由于点操作 $R$ 保持晶格，$R\vb R_0$ 仍是晶格矢量，所以共轭结果仍属于 $T$，故 $T\mathrel{\trianglelefteq}\mathcal G$。
-
-\item 设 $g=\{C_2\mid\vb a/2\}$，其中 $C_2\vb a=\vb a$。求 $g^2$。
-
-\emph{解答.} 由 Seitz 乘法
-\[
-g^2=\{C_2^2\mid C_2(\vb a/2)+\vb a/2\}
-=\{I_3\mid\vb a\}.
-\]
-这说明二重螺旋轴的平方不是恒等操作，而是一个整格矢平移。
-
-\item 解释 $O_h$ 中下标 $g/u$ 的来源。
-
-\emph{解答.} 因为 $O_h=O\times C_i$，而 $C_i$ 有两个一维不可约表示，分别把反演 $\mathcal I$ 映到 $+1$ 和 $-1$。将 $O$ 的任一不可约表示与这两个一维表示做张量积，就得到偶宇称 $g$ 与奇宇称 $u$ 两个版本。
-
-\item 利用维数平方和验证 $I$ 群不可约表示维数 $1,3,3,4,5$ 与群阶 $60$ 相容。
-
-\emph{解答.}
-\[
-1^2+3^2+3^2+4^2+5^2=1+9+9+16+25=60.
-\]
-
-\item 对正四面体完整点群 $T_d$，说明为什么它不是 $T\times C_i$。
-
-\emph{解答.} $T_d$ 不包含空间反演 $\mathcal I$，其不保手性操作主要由镜面和 $S_4$ 型操作组成，因此不存在中央的独立 $C_i$ 因子。包含反演并与 $T$ 构成直积的是 $T_h=T\times C_i$，不是 $T_d$。
-
-\end{enumerate}

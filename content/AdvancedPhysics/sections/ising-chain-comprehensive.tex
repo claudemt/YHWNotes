@@ -1,0 +1,168 @@
+\section{综合例题：同一条 Ising 链上的 Gibbs、响应、图展开与复零点}
+\label{sec:phys-ising-chain-comprehensive}
+
+本章的 Gibbs 测度、参数响应、Lee--Yang 零点及图展开，现在都作用于同一个模型。先固定有限体系，算出全部观测量；再比较边界条件并取热力学极限。每一步使用上一步得到的配分函数，不更换系统来回避计算。
+
+\begin{exbox}[统一题目与微观状态]
+取 $N\ge3$ 个周期 Ising 自旋，$s_i=\pm1$、$s_{N+1}=s_1$，并令
+\[
+H_N(s)=-J\sum_{i=1}^Ns_is_{i+1}-h\sum_{i=1}^Ns_i,
+\qquad J\ge0,\quad \beta>0.
+\]
+记 $K=\beta J$、$H=\beta h$，这里无下标的 $H$ 仅为无量纲磁场，不是 Hamilton 函数 $H_N$。求有限 $N$ 的 Gibbs 权重、自由能及响应；在 $h=0$ 时分别作高温和低温图计数，求相关函数与复场零点；最后判断 $N\to\infty$ 时是否出现有限温度相变。
+
+\textbf{解的起点。} 状态空间是 $\Omega_N=\{-1,1\}^N$，参考测度为计数测度。因此
+\[
+Z_N=\sum_{s\in\Omega_N}\ee^{-\beta H_N(s)},
+\qquad
+p_N(s)=Z_N^{-1}\ee^{-\beta H_N(s)},
+\qquad F_N=-\beta^{-1}\log Z_N.
+\]
+共有 $2^N$ 个状态；实参数下每一权重严格为正。有限状态性直接保证 $Z_N$ 有限，并使所有参数导数可逐项计算。
+\end{exbox}
+
+\begin{exbox}[第一步：转移矩阵把同一个 Gibbs 和算成两个本征值]
+将一个格点的场能平均分到左右两条键上，定义
+\[
+T_{ss'}=\exp\!\left[Kss'+\frac H2(s+s')\right],
+\qquad
+T=\begin{pmatrix}\ee^{K+H}&\ee^{-K}\\ \ee^{-K}&\ee^{K-H}\end{pmatrix}.
+\]
+周期乘积的指数恰为 $K\sum s_is_{i+1}+H\sum s_i$，故逐个求和给
+\[
+Z_N=\sum_{s_1,\ldots,s_N}T_{s_1s_2}\cdots T_{s_Ns_1}
+=\operatorname{tr}T^N.
+\]
+由 $\operatorname{tr}T=2\ee^K\cosh H$、$\det T=\ee^{2K}-\ee^{-2K}$ 得
+\[
+\lambda_\pm=\ee^K\cosh H
+\pm\sqrt{\ee^{2K}\sinh^2H+\ee^{-2K}},
+\qquad
+Z_N=\lambda_+^N+\lambda_-^N.
+\]
+实磁场下 $\lambda_+>\lambda_-\ge0$，$K=0$ 时 $\lambda_-=0$。这一步给出后续全部计算的同一母式。
+\end{exbox}
+
+\begin{exbox}[第二步：变分原理与响应在这个有限模型里怎样使用]
+任取概率分布 $q(s)$，其 Shannon 熵为 $S(q)=-\kB\sum_s q(s)\log q(s)$。直接代入已得的 $p_N$：
+\begin{align*}
+\beta\left[\sum_s q(s)H_N(s)-\frac{S(q)}{\kB\beta}-F_N\right]
+&=\sum_s q(s)\log\frac{q(s)}{p_N(s)}\\
+&=D(q\Vert p_N)\ge0.
+\end{align*}
+所以 Gibbs 变分的最小态就是第一步的 $p_N$；不需要另猜一个“平均场平衡态”。
+
+令 $M=\sum_i s_i$、$B=\sum_i s_is_{i+1}$。对有限和逐项求导得
+\begin{align*}
+\partial_H\log Z_N&=\langle M\rangle,&
+\partial_K\log Z_N&=\langle B\rangle,\\
+\partial_H^2\log Z_N&=\operatorname{Var}(M),&
+\partial_K\partial_H\log Z_N&=\operatorname{Cov}(B,M).
+\end{align*}
+完整 Hessian 是 $(B,M)$ 的协方差矩阵，因此半正定。每自旋磁化与磁化率为
+\[
+m_N=\frac1N\partial_H\log Z_N,
+\qquad
+\chi_N=\frac{\beta}{N}\operatorname{Var}(M)\ge0.
+\]
+把经典模型写成 $2^N$ 维空间上的对角 Hamiltonian，$M$ 与它对易；本章的 Kubo--Mori 相关因而退化为同一经典协方差，量子响应公式与上述逐项导数得到相同答案。
+\end{exbox}
+
+\begin{exbox}[第三步：高温展开与低温畴壁计数算出同一个 $Z_N$]
+先令 $H=0$，记 $t=\tanh K$。每条键满足
+\[
+\ee^{Ks_is_{i+1}}=\cosh K(1+ts_is_{i+1}).
+\]
+展开 $N$ 个因子的乘积。对某个自旋求和时，只有该点关联边数为偶数的项保留。环图上的偶子图只有空图与整环，故
+\[
+Z_N=2^N(\cosh K)^N(1+t^N)
+=(2\cosh K)^N+(2\sinh K)^N.
+\]
+这正是第一步在 $H=0$ 的两个本征值 $\lambda_+=2\cosh K$、$\lambda_-=2\sinh K$。
+
+再从低温端计算。设 $m$ 为断键数，即 $s_is_{i+1}=-1$ 的键数。绕环一周必须回到起始自旋，所以 $m$ 必为偶数。给定偶数个断键及一个起始自旋后，所有自旋唯一确定，故
+\begin{align*}
+Z_N
+&=2\ee^{KN}\sum_{\substack{0\le m\le N\\m\equiv0\pmod2}}
+\binom Nm\ee^{-2Km}\\
+&=\ee^{KN}\left[(1+\ee^{-2K})^N+(1-\ee^{-2K})^N\right].
+\end{align*}
+分别用 $\ee^K(1\pm\ee^{-2K})=2\cosh K,2\sinh K$，再次回到同一 $Z_N$。低温偶畴壁与高温偶子图使用不同计数对象，最终必须满足这条精确核对。
+\end{exbox}
+
+\begin{exbox}[第四步：相关函数、能量与一个可逐态枚举的 $N=3$ 实例]
+仍取 $H=0$。对 $0<r<N$，插入 $s_0s_r$ 后，保留的高温子图在两个插入点为奇度、其他点为偶度；环上恰有长度 $r$ 与 $N-r$ 的两条路径。
+端点另由 $s_0^2=1$ 给 $C_N(0)=C_N(N)=1$。统一写成
+\[
+C_N(r)=\langle s_0s_r\rangle
+=\frac{t^r+t^{N-r}}{1+t^N},\qquad 0\le r\le N.
+\]
+取 $r=1$ 即得能量
+\[
+U_N=\langle H_N\rangle=-NJ\frac{t+t^{N-1}}{1+t^N}.
+\]
+另一方面，$-\partial_\beta\log Z_N$ 也给同一式。磁化平均为零，而
+\[
+\operatorname{Var}(M)
+=N\sum_{r=0}^{N-1}C_N(r)
+=N\frac{1+t}{1-t}\frac{1-t^N}{1+t^N}.
+\]
+故 $\chi_N=\beta\ee^{2K}(1-t^N)/(1+t^N)$，有限 $N$ 时始终有限。
+
+特别取 $N=3$。两个全同向态的能量为 $-3J$，其余六个态为 $+J$，所以
+\[
+Z_3=2\ee^{3K}+6\ee^{-K},\qquad
+\langle M^2\rangle
+=\frac{18\ee^{3K}+6\ee^{-K}}{2\ee^{3K}+6\ee^{-K}}.
+\]
+令 $p_g=2\ee^{3K}/Z_3$，则 $U_3=J-4Jp_g$、
+$C_{V,3}=16\kB\beta^2J^2p_g(1-p_g)$。有限枚举、转移矩阵、图展开与涨落公式在同一组八个状态上得到一致结果。
+\end{exbox}
+
+\begin{exbox}[第五步：复场零点及热力学极限的次序]
+令 $z=\ee^{-2H}$，则 $Z_N=\ee^{NH}P_N(z)$，其中 $P_N$ 是次数 $N$ 的多项式。实场下的正权重并不排除复场中出现零点。
+
+当 $K>0$ 时取 $H=\ii\theta$。若
+\[
+\cos\theta=\sqrt{1-\ee^{-4K}}\cos\phi,
+\]
+则转移矩阵两本征值可写为
+$\lambda_\pm=\sqrt{\ee^{2K}-\ee^{-2K}}\,\ee^{\pm\ii\phi}$。由第一步的母式，零点条件为 $\cos(N\phi)=0$。因此全部 $N$ 个零点为
+\[
+\phi_k=\frac{(2k+1)\pi}{2N},\quad
+\theta_k=\arccos\!\left(\sqrt{1-\ee^{-4K}}\cos\phi_k\right),\quad
+z_k=\ee^{-2\ii\theta_k},\quad k=0,\ldots,N-1.
+\]
+它们全部在 $|z|=1$ 上。$K=0$ 时 $P_N(z)=(1+z)^N$，零点合并到 $z=-1$。
+
+固定有限 $K$ 并取 $N\to\infty$，离实磁场 $H=0$ 最近的复场仍有正间隙
+\[
+\theta_{\rm edge}=\arcsin(\ee^{-2K})>0.
+\]
+回到实磁场时有 $|\lambda_-/\lambda_+|<1$，故
+\[
+f=\lim_{N\to\infty}\frac{F_N}{N}=-\beta^{-1}\log\lambda_+,
+\qquad
+m=\frac{\sinh H}{\sqrt{\sinh^2H+\ee^{-4K}}}.
+\]
+有限温度、实磁场邻域中根号严格正，$f$ 解析；$h\to0$ 时 $m\to0$。在 $H=0$，
+\[
+C_\infty(r)=t^r,\qquad
+\xi=-\frac1{\log\tanh K},\qquad
+\chi_\infty=\beta\ee^{2K}.
+\]
+相关长度的对数公式用于 $K>0$；$K=0$ 时不同格点不相关，定义其极限 $\xi=0$。
+只有再取 $K\to\infty$，复零点间隙才闭合，相关长度才发散；不能把这一零温极限误报为有限温度相变。
+\end{exbox}
+
+\begin{exbox}[第六步：边界阶、几何条件与这一模型没有证明的结论]
+把周期链改成开链，保持 $H=0$，端点自旋求和给
+\[
+Z_N^{\rm open}=2(2\cosh K)^{N-1},\qquad
+F_N^{\rm per}-F_N^{\rm open}
+=-\beta^{-1}\log[\cosh K(1+t^N)].
+\]
+固定温度时右端为 $O(1)$，除以 $N$ 后趋零。这就是本章的边界阶在一个可解模型中的实际含义。
+
+环有一条非收缩闭路，高温展开的 $t^N$ 项记录它；开链没有这条闭路。上述偶子图计算没有二维平面对偶的前提，不能直接把环链套入后面二维格子的 Kramers--Wannier 自对偶临界公式。这里的解足以逐项使用有限 Gibbs、变分、响应、转移矩阵、图展开、零点与极限语言；二维临界指数仍需后面的二维模型论证。
+\end{exbox}

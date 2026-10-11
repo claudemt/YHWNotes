@@ -12,21 +12,21 @@
 在有理数中取逐位截断 \(\sqrt2\) 的小数列，它是 Cauchy 列，却没有有理数极限。这说明“项彼此接近”不足以保证极限留在选定的集合。对函数还要指定距离：\(f_n(x)=x^n\) 在 \([0,1]\) 的积分平方距离下趋于零，但 \(\sup_{[0,1]}|f_n|=1\)，因而不一致趋于零。同一个函数列在不同距离下可以有不同结论。
 
 \begin{definition}[范数、内积与 Hilbert 空间]
-复向量空间上的范数 \(\|\cdot\|\) 满足正定、\(\|\lambda x\|=|\lambda|\|x\|\) 和三角不等式。内积 \(\langle x,y\rangle\) 对第二变量线性，满足 \(\langle x,y\rangle=\overline{\langle y,x\rangle}\) 与 \(\langle x,x\rangle>0\)（\(x\ne0\)）。它诱导范数 \(\|x\|=\sqrt{\langle x,x\rangle}\)。对此范数完备的内积空间称 Hilbert 空间。
+复向量空间上的范数 \(\|\cdot\|\) 满足正定、\(\|\lambda x\|=|\lambda|\|x\|\) 和三角不等式。内积 \(\langle y,x\rangle\) 对第一变量线性，满足 \(\langle y,x\rangle=\overline{\langle x,y\rangle}\) 与 \(\langle x,x\rangle>0\)（\(x\ne0\)）。它诱导范数 \(\|x\|=\sqrt{\langle x,x\rangle}\)。对此范数完备的内积空间称 Hilbert 空间。更一般地，完备的赋范空间统称 Banach 空间；Hilbert 空间是带内积的特殊 Banach 空间。
 \end{definition}
 
 内积确实给出范数所需的三角不等式，关键是下一个估计。
 
 \begin{theorem}[Cauchy--Schwarz 不等式]
-在任意实或复内积空间中，\(|\langle x,y\rangle|\le\|x\|\|y\|\)。等号成立当且仅当 \(x,y\) 线性相关。
+在任意实或复内积空间中，\(|\langle y,x\rangle|\le\|x\|\|y\|\)。等号成立当且仅当 \(x,y\) 线性相关。
 \end{theorem}
 \begin{proof}
-若 \(y=0\)，结论成立。否则取 \(\lambda=\langle y,x\rangle/\|y\|^2\)。由范数非负及内积第二变量线性，
+若 \(y=0\)，结论成立。否则取 \(\lambda=\langle x,y\rangle/\|y\|^2\)。由范数非负及内积第一变量线性，
 \[
 0\le\|x-\lambda y\|^2
-=\|x\|^2-\lambda\langle x,y\rangle
--\overline\lambda\langle y,x\rangle+|\lambda|^2\|y\|^2
-=\|x\|^2-\frac{|\langle x,y\rangle|^2}{\|y\|^2}.
+=\|x\|^2-\lambda\langle y,x\rangle
+-\overline\lambda\langle x,y\rangle+|\lambda|^2\|y\|^2
+=\|x\|^2-\frac{|\langle y,x\rangle|^2}{\|y\|^2}.
 \]
 移项得到不等式。等号等价于 \(x-\lambda y=0\)。
 \end{proof}
@@ -51,7 +51,7 @@
 “几乎处处相等”就是除这样的集合外处处相等。
 例如只在一个点上改动函数值不改变其 \(L^2\) 元素。
 其内积写成 \(\langle f,g\rangle=
-\int_0^1\overline{f(x)}g(x)\,\dd x\)，这里的零向量
+\int_0^1f(x)\overline{g(x)}\,\dd x\)，这里的零向量
 是一整个几乎处处为零的函数等价类。只取多项式并沿用这个范数
 则不完备：多项式可在平方平均意义下逼近阶跃函数，而极限不是多项式。
 
@@ -60,7 +60,7 @@
 有限维里解最小二乘方程时，我们把向量投到一列向量张成的子空间。无穷维中，距离的下确界未必由子空间里的元素取得；这里第一次真正用到完备性和闭性。
 
 \begin{definition}[闭子空间与正交补]
-子空间 \(M\subset\mathcal H\) 称为闭的，若 \(M\) 中任意收敛列的极限仍属于 \(M\)。它的正交补为 \(M^\perp=\{z\in\mathcal H:\langle m,z\rangle=0\text{ 对每个 }m\in M\}\)。
+子空间 \(M\subset\mathcal H\) 称为闭的，若 \(M\) 中任意收敛列的极限仍属于 \(M\)。它的正交补为 \(M^\perp=\{z\in\mathcal H:\langle z,m\rangle=0\text{ 对每个 }m\in M\}\)。
 \end{definition}
 
 例如 \(L^2(0,1)\) 中的零均值函数构成闭子空间，因为积分对 \(L^2\) 范数连续。相反，多项式集合不是闭的；点到该集合的距离可能为零，但点不属于集合，这时谈不上最近的多项式。
@@ -78,13 +78,18 @@
 \]
 右端趋于零；这里用到了中点仍在 \(M\)。故 \((m_n)\) 为 Cauchy 列，由 \(\mathcal H\) 完备且 \(M\) 闭，存在 \(p\in M\) 使 \(m_n\to p\)。范数连续，所以 \(\|x-p\|=d\)。
 
-现在任取 \(h\in M\)，实数 \(t\) 的二次式 \(\|x-p-th\|^2\) 在 \(t=0\) 取最小值，故 \(\operatorname{Re}\langle x-p,h\rangle=0\)。将 \(h\) 换成 \(\ii h\) 又得到虚部为零，因此 \(x-p\perp M\)。若 \(q\in M\) 也是最小点，则 \(x-q\perp M\)，从而 \(p-q\in M\cap M^\perp=\{0\}\)。
+现在任取 \(h\in M\)，实数 \(t\) 的二次式 \(\|x-p-th\|^2\) 在 \(t=0\) 取最小值，故 \(\operatorname{Re}\langle h,x-p\rangle=0\)。将 \(h\) 换成 \(\ii h\) 又得到虚部为零，因此 \(x-p\perp M\)。若 \(q\in M\) 也是最小点，则 \(x-q\perp M\)，从而 \(p-q\in M\cap M^\perp=\{0\}\)。
 \end{proof}
 
 记 \(P_Mx=p\)。由正交分解，\(\|x-m\|^2=\|x-P_Mx\|^2+\|P_Mx-m\|^2\)；这个式子既证明最优性，也说明投影把误差分成不能消除的部分与选择 \(m\) 额外造成的部分。对常数函数子空间，\(P_Mf=\int_0^1f(x)\,\dd x\)，因为 \(f-P_Mf\) 与每个常数正交。
 
 \input{content/MathSkills/ch03.tex}
 
-\begin{exercise}
+
+
+\par
+\begin{workedexample}
 设 \(M=\{f\in L^2(0,1):\int_0^1f=0\}\)。求 \(P_Mf\)，检验所得差向量与 \(M\) 正交；再说明若把 \(M\) 换成稠密但非闭的多项式子空间，投影定理哪一步失效。
-\end{exercise}
+\textbf{解.} 令 \(m_f=\int_0^1f(x)\,\dd x\)，则 \(P_Mf=f-m_f\)，且 \(f-P_Mf=m_f\) 为常数。对任意 \(g\in M\)，\(\langle m_f,g\rangle=m_f\overline{\int_0^1g}=0\)，故差向量与 \(M\) 正交。若子空间稠密但非闭，最佳逼近序列仍可能是 Cauchy，却在子空间外收敛；闭性缺失使距离下确界未必由子空间元素取得，投影不一定存在。
+\end{workedexample}
+\par

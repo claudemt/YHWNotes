@@ -6,7 +6,11 @@
 在模型 \(\{P_\theta:\theta\in\Theta\}\) 中，统计量 \(T(X)\) 对参数充分，指给定 \(T(X)\) 后，\(X\) 的条件分布有一个不依赖 \(\theta\) 的版本。有限或可数样本空间中，即对每个概率非零的 \(t\)，条件概率 \(P_\theta(X=x\mid T=t)\) 不依赖 \(\theta\)。
 \end{definition}
 
-例子是两个独立 Bernoulli\((p)\) 观测，\(T=X_1+X_2\)。给定 \(T=1\) 后，两种排列各有条件概率 \(1/2\)，与 \(p\) 无关。反例是只保留 \(X_1\)：给定它以后，\(X_2\) 仍服从 Bernoulli\((p)\)，故 \(X_1\) 不充分。
+这里“给定 \(T\) 后的条件分布”是上一章条件期望的分布版：对每个事件 \(A\)，取指示函数的条件期望
+\(g(A)=\mathbb E[\mathbf1_{\{X\in A\}}\mid T]\)；
+在可数情形下它就是逐点写出的条件概率。
+
+例子是两个独立伯努利\((p)\) 观测，\(T=X_1+X_2\)。给定 \(T=1\) 后，两种排列各有条件概率 \(1/2\)，与 \(p\) 无关。反例是只保留 \(X_1\)：给定它以后，\(X_2\) 仍服从伯努利分布，故 \(X_1\) 不充分。
 
 \begin{theorem}[因子分解准则]
 若样本空间有限或可数，且每个 \(P_\theta\) 都有联合质量函数
@@ -35,14 +39,14 @@ P_\theta(X=x\mid T=t)
 正交旋转不改变密度。这个条件方向分布与 \(\mu,\sigma\) 无关，
 所以 \((\bar X,R^2)\) 在该正态模型中充分。
 
-对独立 Poisson\((\lambda)\) 样本，
+对独立泊松\((\lambda)\) 样本，
 \[
 p_\lambda(x)=e^{-n\lambda}\lambda^{\sum_i x_i}\prod_i(x_i!)^{-1},
 \]
 故 \(T=\sum_iX_i\) 充分。这还可直接检查：给定总数 \(t\) 后，
 \(X\) 的条件分布为参数 \((t;1/n,\ldots,1/n)\) 的多项分布，不依赖 \(\lambda\)。
 
-后一说法可以从质量函数算出，而不必先背多项分布。独立 Poisson
+后一说法可以从质量函数算出，而不必先背多项分布。独立泊松
 变量之和满足 \(P_\lambda(T=t)=e^{-n\lambda}(n\lambda)^t/t!\)。
 对任何非负整数 \(x_1+\cdots+x_n=t\)，相除得到
 \[
@@ -60,7 +64,9 @@ P_\lambda(X_1=x_1,\ldots,X_n=x_n\mid T=t)
 \(a(T)=0\) 在每个 \(P_\theta\) 下几乎处处成立。
 \end{definition}
 
-Poisson 总数 \(T\sim\operatorname{Pois}(n\lambda)\) 在 \(\lambda>0\) 上完备。因为
+白话翻译：完备性排除的是“隐藏修正函数”——一个本身不恒为零、却在每个参数值下均值都为零的 \(a(T)\)。没有这种修正，由 \(T\) 构造的无偏估计才谈得上唯一，这正是上文所缺的条件。
+
+Poisson 总数 \(T\) 服从参数 \(n\lambda\) 的泊松分布，在 \(\lambda>0\) 上完备。因为
 \[
 0=e^{n\lambda}\mathbb E_\lambda a(T)
 =\sum_{t=0}^\infty a(t)\frac{(n\lambda)^t}{t!}
@@ -68,6 +74,15 @@ Poisson 总数 \(T\sim\operatorname{Pois}(n\lambda)\) 在 \(\lambda>0\) 上完�
 \]
 可积性使该幂级数在每个正的 \(\lambda\) 处绝对收敛；幂级数恒等定理给所有系数 \(a(t)=0\)。反例是只取单个 \(N(\mu,1)\) 观测但参数空间限制为 \(\mu=0\)：函数 \(a(T)=T\) 均值为零却非零，故这个单点分布族不完备。
 
-\begin{exercise}
-复算 Poisson 条件分布。再证明独立 Bernoulli\((p)\) 样本的总数 \(T\sim\operatorname{Bin}(n,p)\) 在 \(0<p<1\) 上完备；可把 \(\mathbb E_p a(T)=0\) 化为 \(p/(1-p)\) 的多项式恒等式。
-\end{exercise}
+
+
+\par
+\begin{workedexample}
+复算泊松条件分布。再证明独立伯努利\((p)\) 样本的总数 \(T\)（服从二项分布 \(\mathrm{Bin}(n,p)\)）在 \(0<p<1\) 上完备；可把 \(\mathbb E_p a(T)=0\) 化为 \(p/(1-p)\) 的多项式恒等式。
+\textbf{解.} 对独立泊松观测，给定和 \(T=t\)，任意格点 \(x_1+\cdots+x_n=t\) 的条件概率是 \(\frac{t!}{x_1!\cdots x_n!}n^{-t}\)，参数消去。对二项总数，若 \(\mathbb E_pa(T)=0\)，则
+\[
+0=(1-p)^n\sum_{k=0}^n {n\choose k}a(k)\left(\frac p{1-p}\right)^k.
+\]
+\(p/(1-p)\) 在 \(0<p<1\) 遍历正实数；多项式恒等于零，故每个系数 \({n\choose k}a(k)=0\)，从而 \(a(k)=0\) 对所有 \(k\) 成立，证明完备性。
+\end{workedexample}
+\par

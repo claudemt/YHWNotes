@@ -1,18 +1,86 @@
 \chapter{谱测度、能量形式与边值问题}
 \label{chap:math-spectrum}
 
-自伴性保证时间演化存在，但并未告诉我们怎样算 \(\exp(-\ii tH/\hbar)\)。有限维时把矩阵按本征值对角化即可。自由粒子的平面波却不在 \(L^2(\mathbb R)\) 内；若只依靠可归一化本征向量，连续能量便无从处理。
+自伴性保证时间演化存在，但并未告诉我们怎样算 \(\exp(-\ii tH/\hbar)\)。有限维时把矩阵按本征值对角化即可。自由粒子的平面波却不在 \(L^2(\RR)\) 内；若只依靠可归一化本征向量，连续能量便无从处理。
 
 \section{谱是逆算子不能存在的位置}
 
 \begin{definition}[预解集与谱]
-对 Hilbert 空间中的闭算子 \(A:D(A)\to\mathcal H\)，若 \(A-zI:D(A)\to\mathcal H\) 为双射，且逆算子 \((A-zI)^{-1}:\mathcal H\to\mathcal H\) 有界，称 \(z\) 属于预解集 \(\rho(A)\)。其补集 \(\sigma(A)=\mathbb C\setminus\rho(A)\) 称谱。
+对 Hilbert 空间中的稠密定义闭算子 \(A:D(A)\to\mathcal H\)，若 \(A-zI:D(A)\to\mathcal H\) 为双射，且逆算子 \((A-zI)^{-1}:\mathcal H\to\mathcal H\) 有界，称 \(z\) 属于预解集 \(\rho(A)\)。其补集 \(\sigma(A)=\CC\setminus\rho(A)\) 称谱。
 \end{definition}
 
 非谱点意味着对每个源 \(f\) 都能唯一、稳定地解 \((A-z)u=f\)。失败可能是非唯一、无解，或者形式解对源不稳定。有限维把这些情况压成“行列式为零”，无穷维不再如此。
 
+\begin{definition}[点谱、连续谱与剩余谱]
+\(\sigma(A)\) 按以下顺序分成互不相交的三类：
+\begin{enumerate}
+\item 若 \(\ker(A-zI)\ne\{0\}\)，称 \(z\) 属于点谱 \(\sigma_p(A)\)，即为本征值。
+\item 若 \(A-zI\) 单射，且其值域稠密但不等于全空间，称 \(z\) 属于连续谱 \(\sigma_c(A)\)。此时定义在值域上的逆算子无界。
+\item 若 \(A-zI\) 单射，但其值域不稠密，称 \(z\) 属于剩余谱 \(\sigma_r(A)\)。
+\end{enumerate}
+后两项的单射条件不可省略，否则点谱可能与其他类别重叠。
+对闭算子，若单射且满射，闭图定理保证逆算子有界；因此上述三类覆盖全部谱。
+\end{definition}
+
+有限维自伴矩阵 $\operatorname{diag}(1,3)$ 只有两个点谱。
+下一节的乘法算子 $Mf(x)=xf(x)$ 没有可归一化本征向量，
+整个实轴却都是连续谱。自伴性恰好排除了第三种失败。
+
+\begin{proposition}[自伴算子的实谱与剩余谱]
+若 $A=A^*$，则 $\sigma(A)\subset\RR$ 且 $\sigma_r(A)=\varnothing$。
+\end{proposition}
+\begin{proof}
+对任意稠密定义算子，有
+\[
+\operatorname{Ran}(A-zI)^\perp=\ker(A^*-\overline zI).
+\]
+若 $z$ 实且 $A-zI$ 单射，自伴性即给出值域稠密，排除了剩余谱。
+若 $\operatorname{Im}z\ne0$，对 $u\in D(A)$ 利用
+$\langle Au,u\rangle\in\RR$ 与 Cauchy--Schwarz，得
+\[
+|\operatorname{Im}z|\,\|u\|^2
+=|\operatorname{Im}\langle(A-zI)u,u\rangle|
+\le\|(A-zI)u\|\,\|u\|.
+\]
+因此 $A-zI$ 单射且有界逆估计。
+这也使其值域闭：像中的收敛列对应一列 Cauchy 的原像，
+再由 $A$ 的闭性得到极限仍在像中。
+对 $\overline z$ 使用同一估计，结合上面的正交补等式可知像又稠密，
+故它等于全空间，$z\in\rho(A)$。
+\end{proof}
+
+\begin{workedexample}[单边移位的连续谱与剩余谱]
+在 $\ell^2(\NN)$ 上令 $Se_n=e_{n+1}$，则
+$S(x_1,x_2,\dots)=(0,x_1,x_2,\dots)$，且 $\|Sx\|=\|x\|$。
+逐分量求解 $(S-zI)x=0$ 得 $x=0$，所以它没有点谱。
+
+当 $|z|<1$ 时，$v_z=(1,\overline z,\overline z^2,\dots)\in\ell^2$，
+而 $S^*v_z=\overline z v_z$。
+故 $\operatorname{Ran}(S-zI)^\perp=\operatorname{span}\{v_z\}\ne\{0\}$，
+整个开单位圆盘为剩余谱。只有在 $z=0$ 时，这个值域才恰好是
+“第一分量为零”的空间；一般 $z$ 的正交约束由 $v_z$ 决定。
+
+当 $|z|=1$ 时，上面的形式向量不属于 $\ell^2$，
+$\ker(S^*-\overline zI)=\{0\}$，所以值域稠密。
+取单位向量
+\[
+x^{(N)}=\frac1{\sqrt N}(1,z^{-1},\dots,z^{-(N-1)},0,\dots),
+\qquad \|(S-zI)x^{(N)}\|^2=\frac2N\longrightarrow0.
+\]
+因此逆算子不可能有界；单射闭算子若满射则其逆有界，所以值域不是全空间。
+单位圆恰为连续谱。
+
+最后，$|z|>1$ 时 Neumann 级数按算子范数收敛：
+\[
+(S-zI)^{-1}=-\sum_{k=0}^\infty\frac{S^k}{z^{k+1}},
+\qquad \|(S-zI)^{-1}\|\le\frac1{|z|-1}.
+\]
+圆外属于预解集，故 $\sigma(S)=\{z:|z|\le1\}$。
+这个算例同时展示了稠密性、满射性和稳定性三个不同条件。
+\end{workedexample}
+
 \begin{definition}[投影值测度]
-令 \(\mathcal B(\mathbb R)\) 为由开区间生成、对可数并和补集封闭的集合族。投影值测度 \(E\) 给每个 \(B\in\mathcal B(\mathbb R)\) 一个正交投影 \(E(B)\)，满足 \(E(\varnothing)=0\)、\(E(\mathbb R)=I\) 和
+令 \(\mathcal B(\RR)\) 为由开区间生成、对可数并和补集封闭的集合族。投影值测度 \(E\) 给每个 \(B\in\mathcal B(\RR)\) 一个正交投影 \(E(B)\)，满足 \(E(\varnothing)=0\)、\(E(\RR)=I\) 和
 \[
 E\!\left(\bigcup_{n=1}^\infty B_n\right)x=\sum_{n=1}^\infty E(B_n)x
 \quad\text{对两两不交的 }B_n\text{ 与每个 }x\in\mathcal H,
@@ -20,9 +88,42 @@ E\!\left(\bigcup_{n=1}^\infty B_n\right)x=\sum_{n=1}^\infty E(B_n)x
 右侧按 Hilbert 空间范数收敛。
 \end{definition}
 
-这里的投影彼此兼容，不是任意给每个集合挑一块子空间。若 \(B,C\) 不交，可加性给 \(E(B\cup C)=E(B)+E(C)\)，左侧仍是正交投影。令 \(x\in\operatorname{Ran}E(B)\)；投影恒等式 \((E(B)+E(C))^2=E(B)+E(C)\) 在 \(x\) 上取内积，得到 \(2\|E(C)x\|^2=0\)，故 \(E(C)E(B)=0\)。对一般 \(B,C\)，把它们各自拆成交集和互不相交的剩余部分，便得 \(E(B)E(C)=E(B\cap C)\)。特别地，若把能量轴分成互不相交的几个窗口，投影后的各个态分量两两正交，概率之和等于原态概率；这正是有限维不同本征空间正交性的连续谱版本。
+\begin{proposition}[谱投影的相乘]
+投影值测度满足 $E(B)E(C)=E(B\cap C)$。
+特别地，不交集合对应的投影互相正交。
+\end{proposition}
+\begin{proof}
+这里的投影彼此兼容，不是任意给每个集合挑一块子空间。若 \(B,C\) 不交，可加性给 \(E(B\cup C)=E(B)+E(C)\)，左侧仍是正交投影，故 \((E(B)+E(C))^2=E(B)+E(C)\)，展开即 \(E(B)E(C)+E(C)E(B)=0\)。令 \(x\in\operatorname{Ran}E(B)\)，即 \(E(B)x=x\)，作用在上式得 \(E(B)E(C)x+E(C)x=0\)。再与 \(E(C)x\) 取内积，利用正交投影满足 \(\langle y,E(B)y\rangle=\|E(B)y\|^2\ge0\)，便得
+\[
+\|E(B)E(C)x\|^2+\|E(C)x\|^2=0.
+\]
+两项各非负，故 \(E(C)x=0\)，即 \(E(C)E(B)=0\)。对一般 \(B,C\)，把它们各自拆成交集和互不相交的剩余部分，便得 \(E(B)E(C)=E(B\cap C)\)。
+\end{proof}
+
+特别地，若把能量轴分成互不相交的几个窗口，投影后的各个态分量两两正交，概率之和等于原态概率；这正是有限维不同本征空间正交性的连续谱版本。
 
 有限维自伴矩阵 \(A=\sum_j\lambda_jP_j\) 给出 \(E(B)=\sum_{\lambda_j\in B}P_j\)。于是 \(E(B)x\) 就是态 \(x\) 中能量落在 \(B\) 的分量，\(\|E(B)x\|^2/\|x\|^2\) 是归一化态落在该能量集合的概率。连续谱也保留这层意思，只是投影不再来自有限个本征向量的和。
+
+\begin{workedexample}[含复数矩阵元的谱投影]
+在 $\CC^2$ 中沿用 $\langle u,v\rangle=\sum_j u_j\overline{v_j}$，取
+\[
+A=\begin{pmatrix}2&\ii\\-\ii&2\end{pmatrix},\qquad
+e_1=\frac1{\sqrt2}\binom1\ii,\qquad
+e_3=\frac1{\sqrt2}\binom1{-\ii}.
+\]
+直接相乘得 $Ae_1=e_1$、$Ae_3=3e_3$，且 $\langle e_1,e_3\rangle=0$。
+两个投影为
+\[
+P_1=\frac{3I-A}{2}=\frac12\begin{pmatrix}1&-\ii\\\ii&1\end{pmatrix},
+\qquad
+P_3=\frac{A-I}{2}=\frac12\begin{pmatrix}1&\ii\\-\ii&1\end{pmatrix}.
+\]
+它们满足 $P_1+P_3=I$、$P_1P_3=0$、$A=P_1+3P_3$。
+对 $u=(1,0)^T$，第一变量线性的约定给出
+$P_ju=\langle u,e_j\rangle e_j$，两种能量的概率均为 $1/2$，
+故 $\langle Au,u\rangle=1/2+3/2=2$。
+矩阵元虽含虚数，能量和投影概率仍为实数；这也检验了投影系数的内积次序。
+\end{workedexample}
 
 \input{content/MathSkills/ch06.tex}
 \input{content/MathSkills/ch07.tex}
@@ -30,11 +131,11 @@ E\!\left(\bigcup_{n=1}^\infty B_n\right)x=\sum_{n=1}^\infty E(B_n)x
 
 \section{能量形式怎样决定边界条件}
 
-同一个积分 \(q[u,v]=\int_0^1\overline{u'}v'\,\dd x\) 可以放在不同的形式域上。取 \(D(q)=H_0^1(0,1)\) 时，表示算子 \(A\) 的定义要求对某个 \(f\in L^2\) 有 \(q[u,v]=\langle u,f\rangle\) 对一切 \(u\in H_0^1\) 成立。先取紧支测试函数，得 \(-v''=f\)；再由 \(v\in H_0^1\) 得两个端点值为零。所以 \(D(A)=H^2\cap H_0^1\)，是 Dirichlet 实现。
+同一个积分 \(q[v,u]=\int_0^1\overline{u'}v'\,\dd x\) 可以放在不同的形式域上。取 \(D(q)=H_0^1(0,1)\) 时，表示算子 \(A\) 的定义要求对某个 \(f\in L^2\) 有 \(q[v,u]=\langle f,u\rangle\) 对一切 \(u\in H_0^1\) 成立。先取紧支测试函数，得 \(-v''=f\)；再由 \(v\in H_0^1\) 得两个端点值为零。所以 \(D(A)=H^2\cap H_0^1\)，是 Dirichlet 实现。
 
 若把形式域改成 \(H^1(0,1)\)，相同的内部计算仍给 \(-v''=f\)，但此时 \(u(0),u(1)\) 可任取。分部积分
 \[
-q[u,v]=\langle u,-v''\rangle+[\overline u v']_0^1
+q[v,u]=\langle -v'',u\rangle+[\overline u v']_0^1
 \]
 迫使 \(v'(0)=v'(1)=0\)，得到 Neumann 实现。边界条件不是写在微分式旁边的注释；它进入形式域或算子域，决定了算子本身。
 

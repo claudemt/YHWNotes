@@ -1,0 +1,232 @@
+% -----------------------------------------------------------------------------
+% Absolute SI normalization linking EELS, CL/radiation, absorption, and LDOS
+% -----------------------------------------------------------------------------
+
+线性电磁响应一旦由推迟 Green 张量确定，同一介质便不需要为不同实验重新建立场方程。差别只在于怎样激发这个响应，以及最后读取哪个投影。
+
+电子能量损失谱（EELS）统计电子转移给环境的总能量。阴极发光（CL）从这些通道中只选择最终进入远场辐射的部分。局域态密度（LDOS）则把电子源换成理想局域偶极源，衡量给定位置可耦合的电磁态。
+
+三者共享同一个 Green 张量，区别只在源、投影和探测通道。确定 Fourier 约定和 SI 单位以后，各自的谱密度归一化也随之唯一确定。
+
+全书采用
+\begin{equation*}
+\mathbf E(\mathbf r,t)
+=\int_{-\infty}^{\infty}\frac{\dd\omega}{2\pi}\,
+\widetilde{\mathbf E}(\mathbf r,\omega)\ee^{-\ii\omega t}.
+\end{equation*}
+因此时域电场 $[\mathbf E(t)]={\rm V\,m^{-1}}$ 对应
+\begin{equation*}
+[\widetilde{\mathbf E}(\omega)]={\rm V\,s\,m^{-1}}.
+\end{equation*}
+时域电流密度满足 $[\mathbf J(t)]={\rm A\,m^{-2}}={\rm C\,s^{-1}m^{-2}}$。同一个 Fourier 变换对时间积分提供一个秒，因此
+\begin{equation*}
+[\widetilde{\mathbf J}(\mathbf r,\omega)]
+={\rm C\,m^{-2}}.
+\end{equation*}
+推迟 Green 张量满足 Maxwell 逆算符方程，已经在一般相互作用章固定为
+\begin{equation*}
+[\mathbf G^R]={\rm m^{-1}}.
+\end{equation*}
+这些单位随后唯一固定能量谱与计数谱的归一化。
+
+先定义远场幅度。设探测器位于最终无损真空区域，观察方向为无量纲单位矢量 $\hat{\mathbf n}=\mathbf r/r$，真空波数 $\kappa_0=\omega/c$ 的单位为 ${\rm m^{-1}}$。推迟 Green 张量的 $r\to\infty$ 渐近形式写成
+\begin{equation}
+\boxed{
+\mathbf G^R(\mathbf r,\mathbf r';\omega)
+\xrightarrow[r\to\infty]{}
+\frac{\ee^{\ii\kappa_0 r}}{r}
+\mathbf F_\infty
+(\hat{\mathbf n},\mathbf r';\omega).}
+\label{eq:far_field_green_amplitude_definition}
+\end{equation}
+因为左侧与 $1/r$ 都有 ${\rm m^{-1}}$，远场方向核 $\mathbf F_\infty$ 无量纲。它包含源点 $\mathbf r'$ 到观察方向 $\hat{\mathbf n}$ 的偏振投影、边界散射和材料响应。
+
+对给定频域源电流定义
+\begin{equation}
+\boxed{
+\mathbf A_\infty(\hat{\mathbf n},\omega)
+\equiv
+\int\dd^3 r'\,
+\mathbf F_\infty
+(\hat{\mathbf n},\mathbf r';\omega)
+\cdot\widetilde{\mathbf J}(\mathbf r',\omega).}
+\label{eq:far_field_source_amplitude}
+\end{equation}
+由于 $[\widetilde{\mathbf J}(\omega)]={\rm C\,m^{-2}}$，体积积分给
+\begin{equation*}
+[\mathbf A_\infty]={\rm C\,m}.
+\end{equation*}
+由源--Green 关系，远场频域电场为
+\begin{equation*}
+\widetilde{\mathbf E}_{\rm far}(\mathbf r,\omega)
+=\ii\mu_0\omega\frac{\ee^{\ii\kappa_0 r}}{r}
+\mathbf A_\infty(\hat{\mathbf n},\omega),
+\end{equation*}
+其单位确实是 ${\rm V\,s\,m^{-1}}$。
+
+真空远场的 Fourier 分量满足 $\widetilde{\mathbf H}_{\rm far}=(\mu_0c)^{-1}\hat{\mathbf n}\times\widetilde{\mathbf E}_{\rm far}$。对正频率用 Poynting 通量积分时间，得到每单位角频率、每单位立体角的辐射\emph{能量谱}
+\begin{equation}
+\boxed{
+\frac{\dd^2 W_{\rm rad}}{\dd\omega\,\dd\Omega}
+=
+\frac{\mu_0\omega^2}{\pi c}
+\left|\mathbf A_\infty(\hat{\mathbf n},\omega)\right|^2.}
+\label{eq:far_field_radiated_energy_green_si}
+\end{equation}
+因为 $\dd\omega$ 的单位是 ${\rm s^{-1}}$，该谱的单位为
+\begin{equation*}
+\left[\frac{\dd^2 W_{\rm rad}}{\dd\omega\dd\Omega}\right]
+={\rm J\,s}.
+\end{equation*}
+
+若希望把辐射能量换算成“这一频率区间平均包含多少个光子”，定义平均光子数谱
+\begin{equation}
+\boxed{
+\frac{\dd^2 \bar N_{\rm rad}}{\dd\omega\,\dd\Omega}
+\equiv
+\frac{1}{\hbar\omega}
+\frac{\dd^2 W_{\rm rad}}{\dd\omega\,\dd\Omega}
+=
+\frac{\mu_0\omega}{\pi\hbar c}
+\left|\mathbf A_\infty\right|^2.}
+\label{eq:cl_photon_probability_far_green}
+\end{equation}
+其单位是秒。对经典给定电流，它首先是平均辐射光子数密度；在单电子弱发射区，若相应频带内的总发射概率远小于一，则同一式子就是一阶单光子发射概率密度。
+
+自由空间为这一归一化提供直接检查。真空远场 Green 核为
+\begin{equation*}
+\mathbf F_{\infty,0}
+=\frac{1}{4\pi}
+(\mathbf I-\hat{\mathbf n}\hat{\mathbf n})
+\ee^{-\ii\kappa_0\hat{\mathbf n}\cdot\mathbf r'},
+\end{equation*}
+因此定义空间 Fourier 电流
+\begin{equation*}
+\widetilde{\mathbf J}(\boldsymbol\kappa,\omega)
+\equiv
+\int\dd^3 r\,\widetilde{\mathbf J}(\mathbf r,\omega)
+\ee^{-\ii\boldsymbol\kappa\cdot\mathbf r},
+\qquad
+[\widetilde{\mathbf J}]={\rm C\,m}.
+\end{equation*}
+\eqnrefs{eq:cl_photon_probability_far_green} 退化为
+\begin{equation}
+\boxed{
+\frac{\dd^2 \bar N_{\rm rad}^{(0)}}{\dd\omega\,\dd\Omega}
+=
+\frac{\mu_0\omega}{16\pi^3\hbar c}
+\left|
+(\mathbf I-\hat{\mathbf n}\hat{\mathbf n})
+\widetilde{\mathbf J}(\kappa_0\hat{\mathbf n},\omega)
+\right|^2.}
+\label{eq:free_space_current_radiation_probability}
+\end{equation}
+横向投影子删除沿传播方向的电流分量；只有落在真空光锥 $|\boldsymbol\kappa|=\kappa_0=\omega/c$ 上的横向 Fourier 电流才能把能量输运到无穷远。
+
+远场公式只统计离开控制体的辐射，不能等同于电子的总能量损失。总损失必须从源对自身诱导场所做的功得到；随后再用材料耗散与远场 Poynting 通量把这份总能量分解成互斥去向。频域场先由同一个 Green 张量写成
+\begin{equation}
+\boxed{
+\widetilde{\mathbf E}(\mathbf r,\omega)
+=\ii\mu_0\omega\int\dd^3 r'\,
+\mathbf G^R(\mathbf r,\mathbf r';\omega)\cdot
+\widetilde{\mathbf J}(\mathbf r',\omega).}
+\label{eq:eels_source_field_green_dp68}
+\end{equation}
+采用简写
+\begin{equation*}
+\langle \widetilde J|\operatorname{Im}G^R|\widetilde J\rangle
+\equiv
+\int\dd^3 r\dd^3 r'\,
+\widetilde{\mathbf J}^{*}(\mathbf r,\omega)\cdot
+\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r';\omega)
+\cdot\widetilde{\mathbf J}(\mathbf r',\omega),
+\end{equation*}
+该二次型单位为 ${\rm C^2\,m}$。电子或外部给定电流向电磁环境转移的总能量谱定义为
+\begin{equation}
+\boxed{
+\frac{\dd W_{\rm loss}}{\dd\omega}
+=
+\frac{\mu_0\omega}{\pi}
+\langle \widetilde J|\operatorname{Im}G^R|\widetilde J\rangle.}
+\label{eq:eels_energy_loss_green_si}
+\end{equation}
+其单位同样为 ${\rm J\,s}$。相应的能量归一化平均激发数谱可定义为
+\begin{equation*}
+\frac{\dd\bar N_{\rm loss}}{\dd\omega}
+\equiv
+\frac{1}{\hbar\omega}
+\frac{\dd W_{\rm loss}}{\dd\omega}.
+\end{equation*}
+在弱单电子单量子损失区，$\dd\bar N_{\rm loss}/\dd\omega$ 才可直接解释为 EELS 一阶损失概率密度。
+
+对局域、非磁、被动介质，$\boldsymbol\varepsilon_r(\mathbf r,\omega)$ 是无量纲相对介电张量，其厄米虚部 $\operatorname{Im}\boldsymbol\varepsilon_r\succeq0$ 描述不可逆电耗散。相应极化电流为
+\begin{equation}
+\boxed{
+\widetilde{\mathbf J}_{\rm mat}
+=-\ii\omega\varepsilon_0(\boldsymbol\varepsilon_r-\mathbf I)
+\widetilde{\mathbf E}.}
+\label{eq:material_polarization_current_dp68}
+\end{equation}
+它对局域场所做的不可逆功给出材料吸收能量谱
+\begin{equation}
+\boxed{
+\frac{\dd W_{\rm abs}}{\dd\omega}
+=
+\frac{\omega\varepsilon_0}{\pi}
+\int_{V_{\rm mat}}\dd^3 r\,
+\widetilde{\mathbf E}^{*}(\mathbf r,\omega)\cdot
+\operatorname{Im}\boldsymbol\varepsilon_r(\mathbf r,\omega)
+\cdot\widetilde{\mathbf E}(\mathbf r,\omega).}
+\label{eq:material_absorbed_energy_spectrum_si}
+\end{equation}
+该式的单位也是 ${\rm J\,s}$。若介质存在磁损耗，需要再加入由 $\operatorname{Im}\boldsymbol\mu_r$ 产生的磁耗散项。
+
+取一个包围所有耗散材料、外边界位于无损真空的控制体。频域 Poynting 定理给出逐频能量守恒：
+\begin{equation}
+\boxed{
+\frac{\dd W_{\rm loss}}{\dd\omega}
+=
+\frac{\dd W_{\rm abs}}{\dd\omega}
++
+\int\dd\Omega\,
+\frac{\dd^2 W_{\rm rad}}{\dd\omega\,\dd\Omega}.}
+\label{eq:eels_radiative_absorptive_energy_balance}
+\end{equation}
+因此同一总 Green 问题下，辐射分支比最稳妥地定义为\emph{能量通道比}
+\begin{equation}
+\boxed{
+\mathcal B_{\rm rad}(\omega)
+\equiv
+\frac{\displaystyle
+\int\dd\Omega\,
+\dd^2 W_{\rm rad}/(\dd\omega\dd\Omega)}
+{\displaystyle\dd W_{\rm loss}/\dd\omega},
+\qquad
+0\le\mathcal B_{\rm rad}\le1.}
+\label{eq:radiative_branching_ratio_eels_cl}
+\end{equation}
+$\mathcal B_{\rm rad}$ 无量纲；$1-\mathcal B_{\rm rad}$ 是电吸收分支（若不存在其它能量通道）。若理论先减去自由空间背景或其它参考系统，所得差分谱包含干涉项，可以局部为负；这种差分量不再是独立能量通道，不能套用 $[0,1]$ 的分支比解释。
+
+LDOS 提供一个与电子源无关的同一 Green 归一化检查。\eqnrefs{eq:projected_electric_ldos_definition} 定义的方向投影电学局域态密度单位为
+\begin{equation*}
+[\rho_{\mathbf e_d}]={\rm s\,m^{-3}},
+\end{equation*}
+即“每单位角频率、每单位体积”的态密度。真空重合点 Green 张量的有限虚部为
+\begin{equation*}
+\operatorname{Im}\mathbf G_0^R(\mathbf r,\mathbf r;\omega)
+=\frac{\omega}{6\pi c}\mathbf I,
+\end{equation*}
+因此任意单位方向上的真空投影 LDOS 为
+\begin{equation*}
+\rho_{\mathbf e}^{(0)}(\omega)
+=\frac{\omega^2}{3\pi^2c^3}.
+\end{equation*}
+对偶极矩幅值 $d$（单位 ${\rm C\,m}$），代入偶极衰变母\eqnrefs{eq:dipole_decay_projected_ldos} 得
+\begin{equation}
+\boxed{
+\Gamma_0
+=\frac{\omega^3|d|^2}
+{3\pi\varepsilon_0\hbar c^3}.}
+\label{eq:vacuum_dipole_decay_ldos_check}
+\end{equation}
+$\Gamma_0$ 的单位为 ${\rm s^{-1}}$。因此 EELS 的源做功能量、CL 的远场能流和 LDOS 的偶极衰变率虽然实验读出不同，却共享同一个 Green 张量和同一 SI/Fourier 归一化。

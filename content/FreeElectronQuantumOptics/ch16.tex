@@ -1,70 +1,309 @@
-\section{从边带和式算出阿秒时间密度}
+\section{阿秒聚束：从 Bessel 梳到时间尖峰}
 \label{chap:feqo-attosecond}
 
-光学周期 \(T_\omega=2\pi/\omega\) 内的归一化时间密度定义为 \(I(\tau;L)=|\psi(\tau;L)|^2/T_\omega\)，其中 \(\psi\) 取\cref{eq:feqo-drift-envelope} 且 \(\sum|c_\ell|^2=1\)。这里把绝对到达时刻按模 \(T_\omega\) 折叠；它是一个周期内的相位或到达时间分布，不是宣称无限长的电子波列在整个实时间轴上的概率积分为一。若要预测有限脉冲的绝对到达分布，必须保留前节的连续能量包络。展开模平方，
+\subsection{物理动机：为什么调制后的电子束能自聚束}
+
+\cref{chap:feqo-classical-pinem} 表明，电子经过激光照亮的近场后，能谱裂成间隔 $\hbar\omega$ 的等间距边带，振幅为 Bessel 函数 $c_\ell=J_\ell(2|\beta|)e^{\ii\ell\phi}$。然而，这些边带在交互区出口处的时间密度完全平坦——因为 $|u(\theta)|^2=1$，概率在一个光学周期内均匀分布。
+
+这看似矛盾：既然电子已经获得了多个能量分量，为什么没有形成时间上的脉冲？答案是：时间脉冲不是由相互作用直接"切割"出来的，而是需要后续的\emph{自由传播}来使各边带获得不同的二次相位，从而使它们在时间上重新叠加、相干增强。
+
+这一过程与光学中的 Talbot 效应深度类比：空间光栅经过自由传播后在特定距离上自成像；能量梳经过自由传播后在时间域上形成周期性尖峰。当尖峰宽度远小于光学周期时，就进入了阿秒（attosecond）时间尺度。
+
+\subsection{聚束因子的严格定义}
+
+\subsubsection{从时间密度到聚束因子}
+
+光学周期 $T_\omega=2\pi/\omega$ 内的归一化时间密度定义为
 \begin{equation}
-I(\tau;L)=\frac1{T_\omega}\sum_{\ell,\ell'}c_\ell c_{\ell'}^*
+I(\tau;L)=\frac{1}{T_\omega}|\psi(\tau;L)|^2,
+\label{eq:feqo-temporal-density-def}
+\end{equation}
+其中 $\psi(\tau;L)$ 取\cref{eq:feqo-drift-envelope}，$\sum|c_\ell|^2=1$。这里 $\tau$ 是共动时间（相对于以 $v_0$ 到达 $L$ 的参考粒子），密度按模 $T_\omega$ 折叠——它是一个周期内的相位/到达时间分布，不是整个实时间轴上的概率密度。
+
+展开模平方：
+\begin{equation}
+T_\omega I(\tau;L)=\sum_{\ell,\ell'}c_\ell c_{\ell'}^*
 e^{-\ii(\ell-\ell')\omega\tau}
 e^{\ii(\Phi_\ell-\Phi_{\ell'})}.
 \label{eq:feqo-temporal-density}
 \end{equation}
-周期积分中的 \(e^{-\ii(\ell-\ell')\omega\tau}\) 正交，故 \(\int_0^{T_\omega}I\dd\tau=\sum|c_\ell|^2=1\)。这项检查说明时间峰只是概率在一个周期内重新分配，没有创造电子。
+周期积分中 $e^{-\ii(\ell-\ell')\omega\tau}$ 的正交性保证 $\int_0^{T_\omega}I\dd\tau=\sum|c_\ell|^2=1$。时间峰只是概率在一个周期内重新分配，没有创造电子。
 
-要把能谱与时间图形的差别定量说清，按整数 \(m\) 收集\cref{eq:feqo-temporal-density} 中频率为 \(m\omega\) 的项，定义
+按整数 $m=\ell-\ell'$ 收集频率为 $m\omega$ 的项，定义\emph{聚束因子}（bunching factor）：
 \begin{equation}
-b_m(L):=\sum_{\ell\in\mathbb Z}c_\ell c_{\ell-m}^*
+b_m(L):=\sum_{\ell\in\mathbb{Z}}c_\ell c_{\ell-m}^*
 e^{\ii[\Phi_\ell(L)-\Phi_{\ell-m}(L)]},
 \qquad
-T_\omega I(\tau;L)=\sum_{m\in\mathbb Z}b_m(L)e^{-\ii m\omega\tau}.
+T_\omega I(\tau;L)=\sum_{m\in\mathbb{Z}}b_m(L)e^{-\ii m\omega\tau}.
 \label{eq:feqo-bunching-harmonics}
 \end{equation}
-\(b_0=1\)、\(b_{-m}=b_m^*\)，故密度为实数且已归一。由柯西--施瓦茨不等式，\(|b_m|\leq(\sum|c_\ell|^2)^{1/2}(\sum|c_{\ell-m}|^2)^{1/2}=1\)。它是相邻 \(m\) 格的\emph{相干振幅}之和；只知道 \(P_\ell=|c_\ell|^2\) 不能求它。若任一相关边带相位被随机化，各项在重复实验中互相抵消，\(|b_m|\) 就变小。
 
-对理想 PINEM 相位调制，交互区出口处的周期波函数是模长为一的 \(u(\theta)=e^{\beta e^{-\ii\theta}-\beta^*e^{\ii\theta}}\)。把 \(|u|^2=1\) 作 Fourier 展开，立即得到 \(b_m(0)=0\)（\(m\ne0\)）。因此边带在出口已经存在，时间密度却仍平坦；随后出现的时间尖峰不是光场直接把电子“切成脉冲”，而是自由色散使原先相消的跨边带项取得不同相位。
+\subsubsection{聚束因子的性质}
 
-为看见峰怎样长出来，暂时只保留 \(\ell=-1,0,1\)，设 \(c_0=J_0(2b)\)、\(c_{+1}=J_1(2b)e^{\ii\phi}\)、\(c_{-1}=-J_1(2b)e^{-\ii\phi}\)，其中 \(b=|\beta|\)。在二次色散下令 \(\Phi_{\pm1}=\Phi_2/2\)、\(\Phi_0=0\)，则
-\[
-\psi_3=J_0(2b)-2\ii J_1(2b)e^{\ii\Phi_2/2}
-\sin(\omega\tau-\phi),
-\]
-从而
-\begin{align*}
-T_\omega I_3={}&J_0^2(2b)+4J_1^2(2b)\sin^2(\omega\tau-\phi)\\
-&+4J_0(2b)J_1(2b)\sin(\Phi_2/2)\sin(\omega\tau-\phi).
-\end{align*}
-若 \(\Phi_2=0\)，最后一项消失，弱耦合时密度变化从 \(b^2\) 才开始；传播到 \(|\Phi_2|\simeq\pi\) 时，一阶谐波的幅度达到本三边带模型的最大值。三边带截断的积分是 \(J_0^2+2J_1^2\)，与一的差来自舍弃的 \(|\ell|\geq2\) 人口，量级为 \(O(b^4)\)。强耦合时须恢复完整和式。
+\begin{itemize}
+\item $b_0=\sum|c_\ell|^2=1$（归一化）。
+\item $b_{-m}=b_m^*$（密度为实数）。
+\item 由 Cauchy--Schwarz 不等式：
+\begin{equation}
+|b_m|\leq\left(\sum|c_\ell|^2\right)^{1/2}\left(\sum|c_{\ell-m}|^2\right)^{1/2}=1.
+\label{eq:feqo-bunching-bound}
+\end{equation}
+等号成立当且仅当 $c_\ell\propto c_{\ell-m}$（对所有 $\ell$），即振幅分布具有平移对称性。
+\item $b_m$ 是相邻 $m$ 格的\emph{相干振幅}之和；只知道概率 $P_\ell=|c_\ell|^2$ 不能求它。若任一相关边带的相位被随机化，各项在重复实验中互相抵消，$|b_m|$ 变小。
+\end{itemize}
 
-\cref{fig:electron-bunching-worked} 给出恢复完整求和后的结果。左图三种情形的边带人口完全相同，只差非对角相干：纯态在 \(\theta_\zeta/\pi\simeq1/2\) 附近把密度推到平均值的 \(5.1\) 倍，加入 \(0.50\,\mathrm{fs}\) 到达抖动后峰位不变而高度降到 \(1.6\)，完全相位混合则压成水平线。右图说明这个峰出现在何处：\(\beta=1.20\) 时头三阶聚束因子在 \(L/L_T\approx0.063\) 处分别为 \(0.58,0.47,0.43\)，其中 \(|B_1|\) 恰在此处取到它在 \(0\leq L/L_T\leq1/2\) 上的首个峰值。
+\subsubsection{等价定义：能量--时间关联}
+
+聚束因子也可以从能量--时间关联函数定义。设 $t$ 为电子到达探测面的时间，定义
+\begin{equation}
+b(\omega):=\langle e^{\ii\omega t}\rangle=\int_0^{T_\omega}e^{\ii\omega t}I(t;L)\dd t.
+\label{eq:feqo-bunching-alt}
+\end{equation}
+代入\cref{eq:feqo-temporal-density}并积分，立即恢复\cref{eq:feqo-bunching-harmonics}中 $b_m$ 的定义。因此 $b_m$ 同时编码了能量域（边带振幅 $c_\ell$）和时间域（到达时间分布 $I(\tau)$）的信息。
+
+\subsection{从 PINEM 态推导聚束}
+
+\subsubsection{PINEM 态在出口的聚束}
+
+对理想 PINEM 相位调制，交互区出口处的周期波函数为 $u(\theta)=e^{\beta e^{-\ii\theta}-\beta^*e^{\ii\theta}}$。由于 $|u(\theta)|^2=1$，所有 Fourier 系数 $b_m(0)$（$m\neq0$）为零：
+\begin{equation}
+b_m(0)=\frac{1}{T_\omega}\int_0^{T_\omega}e^{\ii m\omega\tau}|u(\omega\tau)|^2\dd\tau
+=\frac{1}{2\pi}\int_0^{2\pi}e^{\ii m\theta}\dd\theta=0\quad(m\neq0).
+\label{eq:feqo-pinem-flat-bunching}
+\end{equation}
+因此边带在出口已经存在，时间密度却仍平坦。时间尖峰必须由后续的自由传播产生。
+
+\subsubsection{漂移后的聚束因子}
+
+经过漂移距离 $L$，二次相位 $\Phi_\ell\simeq-\pi L\ell^2/L_T$（\cref{eq:feqo-pinem-quadratic-phase}）使聚束因子变为
+\begin{equation}
+b_m(L)=\sum_\ell J_\ell(2|\beta|)J_{\ell-m}(2|\beta|)
+\exp\!\left[-\frac{\ii\pi L}{L_T}(\ell^2-(\ell-m)^2)\right].
+\label{eq:feqo-bunching-after-drift}
+\end{equation}
+指数中的相位差为
+\begin{equation}
+\ell^2-(\ell-m)^2=2\ell m-m^2.
+\label{eq:feqo-phase-difference}
+\end{equation}
+因此
+\begin{equation}
+b_m(L)=e^{\ii\pi L m^2/L_T}\sum_\ell J_\ell(2|\beta|)J_{\ell-m}(2|\beta|)
+e^{-\ii 2\pi L\ell m/L_T}.
+\label{eq:feqo-bunching-drift-explicit}
+\end{equation}
+定义 $s=\pi L/L_T$，则
+\begin{equation}
+b_m(s)=e^{\ii sm^2}\sum_\ell J_\ell(2|\beta|)J_{\ell-m}(2|\beta|)e^{-\ii 2s\ell m}.
+\label{eq:feqo-bunching-s-form}
+\end{equation}
+
+\subsubsection{小漂移极限}
+
+当 $L\ll L_T$（$s\ll 1$）时，$e^{-\ii 2s\ell m}\approx 1-\ii 2s\ell m$。零阶项给出
+\begin{equation}
+\sum_\ell J_\ell(2|\beta|)J_{\ell-m}(2|\beta|)=\delta_{m0}
+\label{eq:feqo-bessel-orthogonality}
+\end{equation}
+（Bessel 函数的正交性），所以 $b_0=1$，$b_{m\neq0}=0$——恢复平坦分布。
+
+一阶项给出
+\begin{equation}
+b_m^{(1)}=-\ii 2sm\cdot e^{\ii sm^2}\sum_\ell\ell\, J_\ell(2|\beta|)J_{\ell-m}(2|\beta|).
+\label{eq:feqo-bunching-first-order}
+\end{equation}
+利用 Bessel 递推关系 $2\ell J_\ell(x)=x(J_{\ell-1}(x)+J_{\ell+1}(x))$，可以计算这个求和。对 $m=1$：
+\begin{equation}
+\sum_\ell\ell\, J_\ell J_{\ell-1}=\frac{2|\beta|}{2}\sum_\ell J_\ell(J_{\ell-2}+J_\ell)
+=|\beta|\sum_\ell J_\ell^2=|\beta|,
+\label{eq:feqo-bessel-sum}
+\end{equation}
+其中使用了 $\sum J_\ell J_{\ell-2}=0$（平移正交性）。因此
+\begin{equation}
+|b_1|\approx 2s|\beta|=\frac{2\pi L|\beta|}{L_T}.
+\label{eq:feqo-bunching-linear}
+\end{equation}
+聚束因子随漂移距离线性增长。
+
+
+\par
+\begin{workedexample}
+对完整 Bessel 梳，证明 $b_m(L=0)=0$（$m\neq0$），并利用 Bessel 递推关系计算 $b_1$ 在 $L\ll L_T$ 时的线性增长系数。
+\textbf{解.} 在 $L=0$ 时，边带振幅来自相位调制 $u(\theta)=e^{2i|\beta|\sin(\theta-\phi)}$，其模恒为一，故强度的 Fourier 系数除 $b_0=1$ 外全为零；等价地对 Bessel 乘积和使用平移正交性。小漂移时按一阶相位展开，递推关系给出 $\sum_\ell\ell J_\ell J_{\ell-1}=|\beta|$，因而 $|b_1|\simeq2s|\beta|=2\pi|\beta|L/L_T$。
+\end{workedexample}
+\par
+\subsection{最优聚束条件}
+
+\subsubsection{三边带模型}
+
+为看清聚束如何达到极大，暂时只保留 $\ell=-1,0,1$。设 $c_0=J_0(2b)$，$c_{+1}=J_1(2b)e^{\ii\phi}$，$c_{-1}=-J_1(2b)e^{-\ii\phi}$，其中 $b=|\beta|$。在二次色散下 $\Phi_{\pm1}=\Phi_2/2$，$\Phi_0=0$，波包络为
+\begin{equation}
+\psi_3=J_0(2b)-2\ii J_1(2b)e^{\ii\Phi_2/2}\sin(\omega\tau-\phi).
+\label{eq:feqo-three-sideband-wave}
+\end{equation}
+时间密度为
+\begin{align}
+T_\omega I_3&=J_0^2(2b)+4J_1^2(2b)\sin^2(\omega\tau-\phi)
++4J_0(2b)J_1(2b)\sin(\Phi_2/2)\sin(\omega\tau-\phi).
+\label{eq:feqo-three-sideband-I}
+\end{align}
+一阶时间谐波的幅度为 $|4J_0(2b)J_1(2b)\sin(\Phi_2/2)|$。它在 $|\Phi_2/2|=\pi/2$（即 $|\Phi_2|=\pi$）时取极大值 $4|J_0(2b)J_1(2b)|$。
+
+
+\par
+\begin{workedexample}
+对三边带公式\cref{eq:feqo-three-sideband-I} 积分一个周期，验证归一化为 $J_0^2+2J_1^2$。计算 $\Phi_2=0$ 与 $\Phi_2=\pi$ 时一阶时间谐波 $b_1$ 的幅度。
+\textbf{解.} 周期平均中 $\langle\sin\rangle=0$、$\langle\sin^2\rangle=1/2$，故平均强度为 $J_0^2+2J_1^2$。一阶谐波幅度为 $|4J_0J_1\sin(\Phi_2/2)|$，所以 $\Phi_2=0$ 时为零，$\Phi_2=\pi$ 时为 $4|J_0(2|\beta|)J_1(2|\beta|)|$。
+\end{workedexample}
+\par
+由 $\Phi_2=-2\pi L/L_T$，$|\Phi_2|=\pi$ 对应 $L/L_T=1/2$。但这是三边带截断的结果；完整求和的最优聚束出现在更短的距离。
+
+\subsubsection{完整求和的最优距离}
+
+对完整的 Bessel 梳，$|b_1(L)|$ 的首个极大出现在 $L/L_T\approx 0.063$（对 $|\beta|=1.20$），此时 $4|\beta|\sin s$ 使 $J_1$ 的自变量接近其首个极大点 $1.84$。更一般地，最优漂移距离满足
+\begin{equation}
+\frac{L_{\rm opt}}{L_T}\approx\frac{1}{4|\beta|}\times 1.84\approx\frac{0.46}{|\beta|}.
+\label{eq:feqo-optimal-drift}
+\end{equation}
+（这是一个估计，精确值依赖于 $|\beta|$。）
+
+\subsection{阿秒脉冲宽度估计}
+
+\subsubsection{有效边带数与脉冲宽度}
+
+聚束后的时间密度在一个周期内有一个主峰。峰的宽度由参与相干叠加的有效边带数 $N_{\rm eff}$ 决定：
+\begin{equation}
+\Delta\tau\sim\frac{T_\omega}{N_{\rm eff}}=\frac{2\pi}{N_{\rm eff}\omega}.
+\label{eq:feqo-pulse-width-estimate}
+\end{equation}
+
+对 PINEM 梳，$P_\ell=J_\ell^2(2|\beta|)$ 的方差为 $\sum\ell^2 P_\ell=2|\beta|^2$（\cref{eq:feqo-bessel-moments}），因此有效边带数 $N_{\rm eff}\sim\sqrt{2}|\beta|$。代入：
+\begin{equation}
+\Delta\tau\sim\frac{2\pi}{\sqrt{2}|\beta|\omega}=\frac{\sqrt{2}\pi}{|\beta|}\cdot\frac{1}{\omega}
+=\frac{\sqrt{2}\pi T_\omega}{2\pi|\beta|}=\frac{T_\omega}{\sqrt{2}|\beta|}.
+\label{eq:feqo-pulse-width-bessel}
+\end{equation}
+定义调制指数 $g:=2|\beta|$（这是相位调制的峰值幅度），则
+\begin{equation}
+\boxed{\Delta\tau\sim\frac{\pi T_\omega}{g}=\frac{2\pi^2}{g\omega}.}
+\label{eq:feqo-pulse-width-g}
+\end{equation}
+有些文献用 $\Delta\tau\sim 1/(g\omega)$ 作为量级估计（略去 $2\pi^2$ 因子），核心结论相同：脉冲宽度反比于调制强度和光频。
+
+\subsubsection{聚束因子与脉冲对比度}
+
+脉冲对比度（峰高与平均密度之比）由聚束因子的衰减速率决定。若 $|b_m|\approx e^{-m^2/(2N_{\rm eff}^2)}$，则
+\begin{equation}
+I_{\rm peak}\approx\frac{1}{T_\omega}\sum_m|b_m|\sim\frac{N_{\rm eff}}{T_\omega}\sim\frac{|\beta|}{T_\omega}.
+\label{eq:feqo-peak-intensity}
+\end{equation}
+对比度 $C=I_{\rm peak}/\langle I\rangle\sim N_{\rm eff}\sim|\beta|$。更强的耦合产生更窄、更高的脉冲。
+
+\subsection{算例：100 keV 电子，2 $\mu$m 激光}
+
+
+\par
+\begin{workedexample}
+取 $50\ \si{\kilo\electronvolt}$ 电子（$\gamma_0=1.098$，$v_0=0.412c$），$400\ \si{\nano\metre}$ 激光，$|\beta|=2$，计算 $L_T$、$L_{\rm opt}$ 和脉冲宽度 $\Delta\tau$，并判断是否达到阿秒尺度。
+\textbf{解.} 以本章 $100$ keV、$800$ nm 的 $L_T\simeq0.39$ m 为基准，$L_T\propto\gamma_0^3v_0^3\lambda^2$，代入后得 $L_T\simeq2.0$ cm。估计 $L_{\rm opt}/L_T\simeq0.46/|\beta|=0.23$，即 $L_{\rm opt}\simeq4.7$ mm。光周期 $T_\omega=\lambda/c\simeq1.33$ fs，故 $\Delta\tau\sim T_\omega/(\sqrt2|\beta|)\simeq0.47$ fs（约 $470$ as）；达到阿秒量级，但系数只是有效边带数估计。
+\end{workedexample}
+\par
+\subsubsection{参数}
+
+\begin{itemize}
+\item 电子能量 $E_0=100\ \si{\kilo\electronvolt}$：$\gamma_0=1.196$，$v_0=0.548c=1.64\times10^8\ \si{\metre\per\second}$
+\item 激光波长 $\lambda=2\ \si{\micro\metre}$：$\omega=2\pi c/\lambda=9.42\times10^{14}\ \si{\per\second}$，$T_\omega=6.67\ \si{\femto\second}$
+\item 调制指数 $g=2|\beta|=2$（$|\beta|=1$）
+\end{itemize}
+
+\subsubsection{Talbot 长度}
+
+\begin{equation}
+L_T=\frac{2\pi\gamma_0^3mv_0^3}{\hbar\omega^2}.
+\end{equation}
+计算各因子：
+\begin{align}
+\gamma_0^3&=1.196^3=1.71,\\
+v_0^3&=(1.64\times10^8)^3=4.41\times10^{24}\ \si{\metre\cubed\per\second\cubed},\\
+mv_0^3&=9.11\times10^{-31}\times4.41\times10^{24}=4.02\times10^{-6},\\
+\gamma_0^3 mv_0^3&=1.71\times4.02\times10^{-6}=6.87\times10^{-6},\\
+\hbar\omega^2&=1.055\times10^{-34}\times(9.42\times10^{14})^2=9.37\times10^{-5}.
+\end{align}
+\begin{equation}
+L_T=\frac{2\pi\times6.87\times10^{-6}}{9.37\times10^{-5}}=\frac{4.32\times10^{-5}}{9.37\times10^{-5}}\approx 0.46\ \si{\metre}.
+\label{eq:feqo-talbot-100keV}
+\end{equation}
+
+\subsubsection{最优漂移距离}
+
+由\cref{eq:feqo-optimal-drift}，$L_{\rm opt}/L_T\approx 0.46/|\beta|=0.46$，故
+\begin{equation}
+L_{\rm opt}\approx 0.46\times0.46\ \si{\metre}\approx 0.21\ \si{\metre}.
+\label{eq:feqo-optimal-100keV}
+\end{equation}
+这是一个实验上可达的漂移距离。
+
+\subsubsection{脉冲宽度}
+
+由\cref{eq:feqo-pulse-width-g}：
+\begin{equation}
+\Delta\tau\sim\frac{\pi T_\omega}{g}=\frac{\pi\times6.67\ \si{\femto\second}}{2}\approx 10.5\ \si{\femto\second}.
+\label{eq:feqo-pulse-width-100keV}
+\end{equation}
+这还不是阿秒尺度。要达到阿秒脉冲，需要更强的耦合或更短的激光波长。
+
+\subsubsection{达到阿秒尺度的条件}
+
+若改用 $800\ \si{\nano\metre}$ 激光（$T_\omega=2.67\ \si{\femto\second}$），$g=4$（$|\beta|=2$）：
+\begin{equation}
+\Delta\tau\sim\frac{\pi\times2.67}{4}\approx 2.1\ \si{\femto\second}.
+\end{equation}
+要进一步压缩到 $\sim 100\ \si{\atto\second}$，需要 $g\sim 60$ 或更高，这远超当前 PINEM 实验的典型值（$|\beta|\lesssim 3$）。另一种途径是使用多周期相互作用或谐波聚束方案。
+
+\subsubsection{聚束因子数值}
+
+在 $L/L_T=0.063$（$|\beta|=1.20$ 的首个最优聚束点），完整求和给出
+\begin{equation}
+|b_1|=0.58,\quad |b_2|=0.47,\quad |b_3|=0.43.
+\label{eq:feqo-bunching-numerical}
+\end{equation}
+时间密度峰高约为平均值的 $5.1$ 倍（见\cref{fig:electron-bunching-worked-modern}）。
+
+\subsection{与超辐射和自由电子激光的联系}
+
+\subsubsection{超辐射}
+
+在自由电子激光（FEL）中，电子束的密度调制（聚束）使电子辐射相干叠加，辐射功率正比于 $N^2$（$N$ 为聚束内的电子数），而非非相干辐射的 $N$。这一增强正是超辐射（superradiance）的核心。
+
+聚束因子 $b_1$ 直接决定了辐射场的相干增强因子。若 $|b_1|=1$（完全聚束），所有电子在一个光学周期内同步辐射，功率增强 $N$ 倍。若 $|b_1|=0$（无聚束），辐射为非相干叠加。
+
+\subsubsection{高增益 FEL 的聚束机制}
+
+在高增益 FEL 中，聚束由电子与辐射场的自洽相互作用产生：初始辐射使电子能量调制，自由传播将能量调制转化为密度调制（即本节的机制），密度调制又增强辐射，形成正反馈。本节的分析给出了这一自洽过程中"自由传播"步骤的精确描述。
+
+\subsubsection{与 PINEM 聚束的区别}
+
+PINEM 聚束由外部激光驱动，是单电子效应（每个电子独立地被调制）。FEL 聚束由电子与辐射场的集体相互作用驱动，是多体效应。但两者的核心物理相同：能量调制通过自由色散转化为密度调制。
+
+\subsection{本章小结}
+
+PINEM 产生的 Bessel 梳在交互区出口的时间密度完全平坦。自由传播通过二次色散相位 $\Phi_\ell=-\pi L\ell^2/L_T$ 使边带获得不同的相对相位，从而在时间域上形成周期性尖峰。聚束因子 $b_m(L)$ 严格量化了时间密度的 Fourier 分量，其最优值在 $L_{\rm opt}\sim L_T/(4|\beta|)$ 处达到。脉冲宽度 $\Delta\tau\sim\pi T_\omega/g$ 反比于调制强度 $g=2|\beta|$。对 $100\ \si{\kilo\electronvolt}$ 电子和 $2\ \si{\micro\metre}$ 激光，Talbot 长度约 $0.46\ \si{\metre}$，最优漂移约 $0.2\ \si{\metre}$。
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.94\linewidth]{electron_bunching_worked.pdf}
-\caption{\(\beta=1.20\) 的 PINEM 边带谱在 \(e^{-\ii s\ell^2}\) 相位下完整求和得到的周期时间密度（\(800\,\mathrm{nm}\) 光学步长）。左图在使 \(4\beta\sin s\) 达到 \(J_1\) 峰值的漂移距离（\(s/\pi\approx0.125\)，即 \(L/L_T\approx0.063\)）上比较纯态、\(0.50\,\mathrm{fs}\) 到达抖动与完全相位混合；右图为前三阶聚束因子 \(|B_d|\) 随 \(L/L_T\) 的变化。}
-\label{fig:electron-bunching-worked}
+\caption{$\beta=1.20$ 的 PINEM 边带谱在 $e^{-\ii s\ell^2}$ 相位下完整求和得到的周期时间密度（$800\ \si{\nano\metre}$ 光学步长）。左图在使 $4\beta\sin s$ 达到 $J_1$ 峰值的漂移距离（$s/\pi\approx0.125$，即 $L/L_T\approx0.063$）上比较纯态、$0.50\ \si{\femto\second}$ 到达抖动与完全相位混合；右图为前三阶聚束因子 $|B_d|$ 随 $L/L_T$ 的变化。}
+\label{fig:electron-bunching-worked-modern}
 \end{figure}
-
-写 \(\Phi_\ell\simeq\tfrac12\ell^2\Phi_2\)，并由\cref{eq:feqo-sideband-phase-expansion} 得 \(\Phi_2=-\hbar\omega^2L/(\gamma_0^3mv_0^3)\)。当 \(|\Phi_2|=2\pi\) 时，因 \(\ell^2\equiv\ell\pmod2\)，二次相位 \(e^{\ii\pi\ell^2}=e^{\ii\pi\ell}\) 只把时间图形平移半个周期。因此时间密度的 Talbot 复现尺度为
-\begin{equation}
-L_T=\frac{2\pi\gamma_0^3mv_0^3}{\hbar\omega^2}.
-\label{eq:feqo-talbot-length}
-\end{equation}
-完整波函数不带时间平移地复现要到 \(2L_T\)。这项结论仍受三阶余项控制；若 \(\max|R_{3,\ell}^{(p)}|\gtrsim1\)，理想复现会被破坏。
-
-\cref{fig:talbot-time-focusing} 把这段复现画在 \((\theta,s)\) 平面上。图上只有 \(s/\pi=0,1,2\) 三条横线处密度沿 \(\theta\) 均匀，中间区域（如 \(s/\pi=0.25\)）才聚成尖峰，峰高约为平均值的 \(3.2\) 倍而谷底降到均值的 \(4\%\) 以下；到 \(s/\pi=2\) 图样又回到与 \(s=0\) 相同的均匀分布，正对应\cref{eq:feqo-talbot-length} 中 \(|\Phi_2|=2\pi\) 的复现条件。
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\linewidth]{talbot_time_focusing.pdf}
-\caption{二次谱相位下的时域 Talbot 结构。取 \(c_\ell=J_\ell(2\beta)\)、\(\beta=3\)，每个边带乘 \(e^{-\ii s\ell^2}\) 后在共动相位 \(\theta\) 上求和；纵轴 \(s/\pi\) 在 \(0\) 到 \(2\) 之间扫过一个 Talbot 周期，颜色为按 \(s=0\) 的均值归一后的密度。}
+\caption{二次谱相位下的时域 Talbot 结构。取 $c_\ell=J_\ell(2\beta)$、$\beta=3$，每个边带乘 $e^{-\ii s\ell^2}$ 后在共动相位 $\theta$ 上求和；纵轴 $s/\pi$ 在 $0$ 到 $2$ 之间扫过一个 Talbot 周期，颜色为按 $s=0$ 的均值归一后的密度。}
 \label{fig:talbot-time-focusing}
 \end{figure}
 
-初始能散、相位抖动与距离抖动要分别进入。若电子中心能量有宽度 \(\sigma_E\) 的窄高斯分布，不同电子的群延迟差一阶为 \(\delta\tau=-L\delta E/(\gamma_0^3mv_0^3)\)；能量较高的电子先到达。对到达时间作经典平均后，第 \(m\) 个时间谐波乘
-\[
-\exp\!\left[-\frac12\left(\frac{m\omega L\sigma_E}{\gamma_0^3mv_0^3}\right)^2\right].
-\]
-若每次制备的光学相位独立地以方差 \(\sigma_\phi^2\) 抖动，另一因子为 \(e^{-m^2\sigma_\phi^2/2}\)。距离分布则需对 \(\Phi_\ell(L)\) 再平均。这三种操作物理来源不同，不能用一个“模糊宽度”代替。
 
-\begin{exercise}
-对三边带公式积分一个周期，并计算 \(\Phi_2=0\) 与 \(\Phi_2=\pi\) 时的一阶时间谐波幅度。
-\end{exercise}
+
+
+

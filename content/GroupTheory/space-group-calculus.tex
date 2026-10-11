@@ -1,0 +1,201 @@
+\chapter{空间群的扩张结构与 Bloch 表示}
+\label{app:space-group-reference}
+
+晶体点群的特征标解决了保持一个点不动的对称操作怎样作用于物理基函数的问题。加入晶格平移以后，对称群变为无限群，有限点群的特征标需要与波矢一起使用。本章承接前面的点群分类与特征标计算，从 Seitz 乘法建立空间群的扩张结构，再说明螺旋轴、滑移面和 Bloch 小群怎样进入表示计算。$230$ 个空间群的共同数学信息由生成元、平移子群、点群商以及非对称平移来组织；具体一般位置则由这些规则生成。
+
+\section{七个晶系、十四种 Bravais 晶格与三十二种晶体点群}
+
+\begin{table}[htbp]
+\centering
+\caption{三维 Bravais 晶格与空间群统计。}
+\label{tab:bravais-space-counts}
+\begin{tabular}{cclcc}
+\toprule
+晶系 & 晶体点群数 & Bravais 类型 & 空间群数 & 对称型空间群数\\
+\midrule
+三斜 &2& $P$ &2&2\\
+单斜 &3& $P,C$ &13&6\\
+正交 &3& $P,C,I,F$ &59&13\\
+四方 &7& $P,I$ &68&16\\
+三方 &5& $P,R$ &25&13\\
+六方 &7& $P$ &27&8\\
+立方 &5& $P,I,F$ &36&15\\
+\midrule
+合计 &32&14 种 &230&73\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{note}[晶系与格系的计数]
+三方晶系可使用六方格系的简单格 $P$，也可使用菱方格系的 $R$；其中三方行的 $P$ 与六方行的 $P$ 是同一种 Bravais 格型。因此逐行把格型名称相加会重复计数一次，去重后仍为十四种。三方的十三个对称型空间群可按点群分为 $2,2,3,3,3$ 个；六方的八个则按七种点群分为 $1,1,1,1,1,2,1$ 个。三方与六方的晶系划分不能直接替换成菱方与六方的格系划分。
+\end{note}
+
+\begin{definition}[对称型与非对称型空间群]
+若存在一个共同的原点选择，使空间群中每个点群操作 $R$ 都有代表 $\{R\mid0\}$，称该空间群为对称型（symmorphic）；否则称为非对称型（nonsymmorphic）。
+\end{definition}
+三维有 $73$ 个对称型空间群和其余 $157$ 个非对称型空间群。后者包含不能通过原点移动同时消去的分数平移，例如螺旋轴和滑移面。最朴素的“每种点群配上各晶系允许的格型”计数给出 $66$，而真正对称型空间群为 $73$；额外的七个来自同一抽象点群相对于同一 Bravais 晶格的非等价嵌入方式。表中的晶格与晶系关系可对照国际晶体学联合会的标准术语说明\footnote{\url{https://dictionary.iucr.org/Lattice_system}}；对称型空间群的完整排列见 Kahr 的空间群分类图\footnote{\url{https://doi.org/10.1107/S2056989023000786}}。
+
+\section{Seitz 代数}
+
+\begin{definition}[Seitz 元素与晶格平移]
+空间群元素统一写成
+\[
+g=\{R\mid\vb t\},
+\qquad
+\vb r\mapsto R\vb r+\vb t.
+\]
+纯平移元素为 $\{I\mid\vb a\}$，其中 $\vb a$ 属于 Bravais 晶格
+\[
+\Lambda=\left\{n_1\vb a_1+n_2\vb a_2+n_3\vb a_3\mid n_i\in\ZZ\right\}.
+\]
+以下 $I$ 表示三维单位矩阵。
+\end{definition}
+
+\begin{proposition}[Seitz 乘法与逆元]
+复合、逆元分别为
+\begin{align}
+\{R\mid\vb t\}\{S\mid\vb s\}
+&=\{RS\mid R\vb s+\vb t\},\label{eq:seitz-product-app}\\
+\{R\mid\vb t\}^{-1}
+&=\{R^{-1}\mid-R^{-1}\vb t\}.
+\label{eq:seitz-inverse-app}
+\end{align}
+\end{proposition}
+\begin{proof}
+将仿射映射连续作用于 $\vb r$，有
+\[
+\vb r\longmapsto S\vb r+\vb s
+\longmapsto R(S\vb r+\vb s)+\vb t
+=RS\vb r+(R\vb s+\vb t),
+\]
+得到乘法。要求乘积为 $\{I\mid0\}$ 时，线性部分必须取 $R^{-1}$，平移部分必须取 $-R^{-1}\vb t$，得到逆元。
+\end{proof}
+这两式足以完成绝大多数空间群生成元计算。
+
+\begin{theorem}[空间群的平移正规子群]
+全部纯平移组成正规 Abel 子群 $T$。若 $P$ 为全部 Seitz 元素的线性部分构成的点群，则
+\[
+\mathcal G/T\cong P
+\]
+就是晶体点群。这条短正合列
+\[
+1\longrightarrow T\longrightarrow\mathcal G
+\longrightarrow P\longrightarrow1
+\]
+为短正合列。
+\end{theorem}
+\begin{proof}
+纯平移的乘法为晶格矢量加法，故 $T$ 为 Abel 群。Seitz 乘法给出
+\[
+\{R\mid\vb t\}\{I\mid\vb a\}\{R\mid\vb t\}^{-1}
+=\{I\mid R\vb a\}\in T,
+\]
+因而 $T$ 正规。映射 $\pi:\mathcal G\to P$，$\{R\mid\vb t\}\mapsto R$ 为满同态，其核恰是 $T$；第一同构定理给出商群与短正合列。
+\end{proof}
+这条正合列是“空间群 = 平移结构 + 点群结构 + 两者如何拼接”的紧凑表述。对称型空间群有保持同一个空间点的点群补群，换到该点为原点后写成 $T\rtimes P$。
+
+\section{原点移动与非对称平移}
+
+空间群符号中的平移部分随原点改变，因此需要区分坐标造成的平移与对称操作本身不可消去的平移。
+\begin{proposition}[原点移动的 Seitz 变换]
+若新原点相对旧原点移动 $\vb d$，即 $\vb r=\vb r'+\vb d$，则同一空间群元素在新坐标中的平移部分为
+\begin{equation}
+\vb t' = \vb t+(R-I)\vb d.
+\label{eq:origin-shift-seitz-app}
+\end{equation}
+所以单个操作的平移可模晶格消去，当且仅当 $\vb t\in(I-R)\vb d+\Lambda$ 对某个 $\vb d$ 成立。整个空间群为对称型，要求所有点群代表可用同一个 $\vb d$ 同时满足这一条件。
+\end{proposition}
+\begin{proof}
+将 $\vb r=\vb r'+\vb d$ 代入仿射变换，得到
+\[
+R\vb r+\vb t
+=R\vb r'+R\vb d+\vb t.
+\]
+输出也减去 $\vb d$，便得到 \eqnrefs{eq:origin-shift-seitz-app}。若 $\vb t'\in\Lambda$，乘以一个晶格平移可改取零平移代表，反之亦然。
+\end{proof}
+因此某个分数平移若能写成 $(I-R)\vb d$ 加晶格矢量，就可以通过选原点消去；不能这样消去的部分才是螺旋轴或滑移面的本质数据。
+
+\subsection{螺旋轴}
+
+\begin{definition}[螺旋轴]
+沿 $n$ 重轴的螺旋操作通常记为 $n_m$，其一次操作包含
+\[
+\theta=\frac{2\pi}{n},
+\qquad
+\vb t_{\parallel}=\frac{m}{n}\vb c,
+\]
+其中 $\vb c$ 是轴方向最小晶格周期。
+\end{definition}
+\begin{proposition}[螺旋操作的整数幂]
+连续作用 $n$ 次得到
+\[
+\{C_n\mid \tfrac{m}{n}\vb c\}^n
+=\{I\mid m\vb c\},
+\]
+且移动原点不能改变轴向平移分量。
+\end{proposition}
+\begin{proof}
+Seitz 乘法归纳给出 $\{R\mid\vb t\}^q=\{R^q\mid\sum_{j=0}^{q-1}R^j\vb t\}$。螺旋轴上 $C_n\vb c=\vb c$，而 $C_n^n=I$，所以 $n$ 项平移之和为 $m\vb c$。若 $\uv n$ 是轴向单位矢量，则 $\uv n\cdot(C_n-I)\vb d=0$，故原点移动不影响轴向分量。
+\end{proof}
+所以分数平移并不破坏群封闭性；它只是把“转一圈回原位”改成“转一圈同时走过整数个晶格周期”。
+
+\subsection{滑移面}
+
+\begin{definition}[滑移面]
+滑移面是镜面反射 $\sigma$ 与平行于镜面的分数平移组合
+\[
+\{\sigma\mid\boldsymbol\tau\}.
+\]
+在国际符号中，$a,b,c$ glide 分别表示沿对应晶轴半格平移，$n$ glide 表示面对角方向半平移，$d$ glide 常与四分之一格的“diamond glide”有关。
+\end{definition}
+\begin{proposition}[滑移操作的平方]
+\[
+\{\sigma\mid\boldsymbol\tau\}^2
+=\{I\mid (I+\sigma)\boldsymbol\tau\}.
+\]
+若 $\boldsymbol\tau$ 位于镜面内，则 $\sigma\boldsymbol\tau=\boldsymbol\tau$，从而平方为 $\{I\mid2\boldsymbol\tau\}$。
+\end{proposition}
+\begin{proof}
+在 Seitz 乘法中取 $R=S=\sigma$，并用 $\sigma^2=I$。对于镜面内的矢量，反射保持它不变；所以两次分数平移直接相加。
+\end{proof}
+
+\section{Hermann--Mauguin 符号}
+
+Schoenflies 符号适合强调点群的抽象类型；Hermann--Mauguin 符号则同时编码晶格中心化与沿若干晶向的旋转、反射、螺旋、滑移信息，因此空间群必须使用后者更方便。读一个三维空间群符号时，可以按下面的逻辑而不是死记名称：
+
+首先看最左侧的大写字母，它给出 Bravais 中心化：$P$ 为简单、$I$ 为体心、$F$ 为面心、$A/B/C$ 为底心、$R$ 为菱方。随后的位置依晶系代表不同的特征方向；数字 $2,3,4,6$ 是纯旋转轴，$2_1,3_1,4_1,6_3$ 等带下标的是螺旋轴，$m$ 是镜面，而 $a,b,c,n,d$ 是不同滑移面。
+
+\begin{example}[单斜空间群 $P2_1/c$ 的符号读取]
+$P2_1/c$ 的第一字符 $P$ 表示简单单斜格子；$2_1$ 表示一条二重螺旋轴；$c$ 表示一个带 $c/2$ 平移的滑移面。真正计算一般位置时，应把这些生成元写成 Seitz 形式，再用 \eqnrefs{eq:seitz-product-app} 闭包，而不是只依据名称想象几何图形。
+\end{example}
+
+\section{从空间群到 Bloch 表示}
+
+平移子群的一维不可约表示为
+\[
+\chi_{\vb k}(\{I\mid\vb a\})=\ee^{-\ii\vb k\cdot\vb a}.
+\]
+\begin{proposition}[波矢轨道与小群]
+空间群元素 $g=\{R\mid\vb t\}$ 把波矢特征标 $\chi_{\vb k}$ 送到 $\chi_{R\vb k}$。因此波矢 $\vb k$ 的小群为
+\[
+\mathcal G_{\vb k}=\{\{R\mid\vb t\}\in\mathcal G:
+R\vb k=\vb k+\vb G,\ \vb G\in\Lambda^*\},
+\]
+其中 $\Lambda^*=\{\vb G:\vb G\cdot\vb a\in2\pi\ZZ\ \forall\vb a\in\Lambda\}$ 为倒易晶格。
+\end{proposition}
+\begin{proof}
+共轭平移满足
+\[
+g\{I\mid\vb a\}g^{-1}=\{I\mid R\vb a\}.
+\]
+在变换后的态 $U(g)\ket{\psi_{\vb k}}$ 上，平移 $\vb a$ 的本征值为
+\[
+\chi_{\vb k}(g^{-1}\{I\mid\vb a\}g)
+=\ee^{-\ii\vb k\cdot R^{-1}\vb a}
+=\ee^{-\ii(R\vb k)\cdot\vb a}.
+\]
+它与原特征标相等，当且仅当 $(R\vb k-\vb k)\cdot\vb a\in2\pi\ZZ$ 对所有 $\vb a\in\Lambda$ 成立，即差矢量属于倒易晶格。
+\end{proof}
+这个结论解释了为什么空间群表示理论不能把点群表直接复制到每个 $\vb k$：一般 $\vb k$ 只保留较小的 little group，而高对称点、线、面才拥有更大的表示结构。非对称型平移还会给表示矩阵附加相位 $\ee^{-\ii\vb k\cdot\boldsymbol\tau}$，在满足相应小群代数关系时可在 Brillouin 区边界产生点群中不存在的强制简并。
+
+这一层结构已经足以读懂现代能带计算中最常见的空间群标签。若需要某个具体空间群全部一般位置、Wyckoff 位置与小群表示，最可靠的实践方式是使用标准晶体学数据库；讲义需要掌握的是这些表背后的代数规则。

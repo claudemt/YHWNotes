@@ -1,17 +1,93 @@
-\section{一个复近场参数的完整测量与反演}
+\section{从近场参数到测量信号的完整前向与反演链条}
 \label{chap:feqo-end-to-end}
 
-本节要走的完整链条是：电子束掠过纳米结构，采样结构附近同步的纵向近场，再由能谱仪读出边带。\cref{fig:pinem-experiment-interface-dp19} 给出这一链条的几何。图中电子束沿水平直线穿过，竖直的纳米结构只在一小段上提供近场，结构右侧的同步近场按指数衰减，末端是记录边带分布的 EELS 读出。关键在几何本身：电子走的是直线，场却只在结构附近存在，所以电子采样到的是位置依赖的场幅与相位，而读出端只回答交换了几个 \(\hbar\omega\)。
+前几章分别算出了电子与光的相互作用、传播和探测。成像实验倒过来问：已知有限计数，能知道样品的哪些场参数？本节把参数逐步送到可观测计数，并检验每一步的归一化与可识别性。
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.88\linewidth]{pinem_experiment_geometry.pdf}
-\caption{PINEM 的基本实验几何：电子束掠过竖直的纳米结构，在结构附近采样随距离衰减的同步纵向近场，随后由能谱仪读出离散的边带分布。电子沿直线运动而近场局域在结构附近，因此一次能谱记录的是场幅与相位沿轨迹的积分耦合。}
-\label{fig:pinem-experiment-interface-dp19}
-\end{figure}
+\subsection{前向问题的定义}
 
-令电子沿 \(+z\) 以速度 \(v_0\) 经过局域近场，未知正频振幅取
-\(E_z^{(+)}(z)=E_*e^{\ii\varphi}e^{-z^2/(2d^2)}e^{\ii kz}\)。其中实振幅 \(E_*>0\) 的单位为 \(\si{\volt\per\metre}\)，\(d\) 是已由几何标定的长度，\(k\) 是已知空间波数，\(\varphi\) 是待求相位。直接代入\cref{eq:feqo-beta}，用高斯积分得到
+成像的前向问题可以抽象为：给定物体的参数化描述 \(x\in\mathcal X\)（例如近场分布、材料函数或几何参数），预测测量数据 \(d\in\mathcal D\)。这定义了一个前向算子
+\begin{equation}
+F:\mathcal X\to\mathcal D,\qquad d=F(x)+\epsilon,
+\label{eq:feqo-forward-operator}
+\end{equation}
+其中 \(\epsilon\) 代表测量噪声。前向算子 \(F\) 通常是非线性的，因为电子--光相互作用涉及 Bessel 函数或位移矩阵元。\
+
+下面针对三种主要成像模式，推导 \(F\) 的显式形式。
+
+\subsection{EELS 成像的前向算子}
+
+在 EELS 成像中，电子束掠过样品，测量电子能量损失谱。物体参数为样品的电磁响应函数，具体为散射 Green 函数的虚部 \(\operatorname{Im}G_{{\rm sc},zz}(\vb{r},\vb{r}';\omega)\)。
+
+由\cref{eq:feqo-trajectory-green-kernel}，电子沿轨迹 \(\vb{r}_e(t)=\vb{R}_0+\vb{v}t\) 的能量损失谱密度为
+\begin{equation}
+\frac{\dd W_{\rm loss}}{\dd\omega}
+=\frac{\mu_0\omega q^2}{\pi}
+\int\dd z\dd z'\,e^{\ii\omega(z'-z)/v}
+\operatorname{Im}G_{{\rm sc},zz}
+\bigl((\vb{R}_0,z),(\vb{R}_0,z');\omega\bigr).
+\label{eq:feqo-eels-forward-green}
+\end{equation}
+定义损失概率密度 \(\Gamma(\omega)=\frac{1}{\hbar\omega}\frac{\dd W_{\rm loss}}{\dd\omega}\)。在弱激发极限下，每个频率 \(\omega\) 的损失概率为 \(\Gamma(\omega)\dd\omega\)。
+
+
+\par
+\begin{workedexample}
+对 EELS 前向算子\cref{eq:feqo-eels-forward-green}，证明它是 \(\operatorname{Im}G_{{\rm sc},zz}\) 的线性泛函，并写出其伴随算子 \(F^*\)。
+\textbf{解.} 固定 \(\omega,\vb R_0\) 后，前向式是对 \(H(z,z')=\operatorname{Im}G_{{\rm sc},zz}\) 以核 \(K=C_\omega e^{i\omega(z'-z)/v}\) 加权积分的线性映射，其中除以 \(\hbar\omega\) 后 \(C_\omega=\mu_0q^2/(\pi\hbar)\)。在复 \(L^2\) 内积下，伴随为 \((F^*y)(z,z')=C_\omega^*e^{-i\omega(z'-z)/v}y(\vb R_0,\omega)\)；多扫描位置、频率时还需对输出指标积分或求和。
+\end{workedexample}
+\par
+对扫描 EELS（STEM-EELS），电子束横向位置 \(\vb{R}_0\) 可变。前向算子将 Green 函数映射到位置依赖的损失谱：
+\begin{equation}
+F_{\rm EELS}:\operatorname{Im}G_{{\rm sc},zz}(\cdot,\cdot;\omega)
+\mapsto\Gamma(\omega;\vb{R}_0).
+\label{eq:feqo-eels-forward-map}
+\end{equation}
+这是一个\emph{线性}算子：\(\Gamma\) 正比于 \(\operatorname{Im}G_{\rm sc}\) 的双重积分。线性性使得 EELS 反演可以用标准线性反演方法处理。
+
+\subsection{CL 成像的前向算子}
+
+在阴极发光（CL）成像中，测量的是远场收集到的光子。物体参数同样是 Green 函数，但前向映射需要经过远场变换。
+
+由\cref{eq:feqo-cl-collection}，收集到的光子产额为
+\begin{equation}
+\Gamma_{\rm CL}(\omega)=\frac{1}{\hbar\omega}
+\sum_\lambda\int_{\Omega_{\rm det}}\dd\Omega\,
+\eta(\omega,\hat{\vb{n}},\lambda)
+\frac{\dd W_{{\rm rad},\lambda}}{\dd\omega\dd\Omega}.
+\label{eq:feqo-cl-forward-collection}
+\end{equation}
+远场辐射 \(\vb{F}(\hat{\vb{n}},\omega)\) 由诱导场通过远场渐近给出：\(\vb{E}_{\rm far}(r\hat{\vb{n}},\omega)=e^{\ii kr}\vb{F}(\hat{\vb{n}},\omega)/r\)。诱导场本身是 \(\mathbf{G}_{\rm sc}\vb{j}_e\) 的结果。因此前向算子为
+\begin{equation}
+F_{\rm CL}:\operatorname{Im}G_{{\rm sc},zz}
+\mapsto\Gamma_{\rm CL}(\omega;\vb{R}_0),
+\label{eq:feqo-cl-forward-map}
+\end{equation}
+与 EELS 不同，CL 的前向算子\emph{不是}简单地正比于 \(\operatorname{Im}G_{\rm sc}\)：它只读取 Green 函数中能辐射到远场的那部分。导波模式、束缚模式和材料吸收通道贡献 EELS 信号但不贡献 CL 信号。
+
+\subsection{PINEM 成像的前向算子}
+
+在 PINEM 成像中，电子束掠过纳米结构，测量电子能量边带分布。物体参数为近场耦合参数 \(\beta(\vb{R}_0)\)。
+
+由\cref{eq:feqo-beta}，复耦合为
+\begin{equation}
+\beta=\frac{q}{\hbar\omega}\int_{-\infty}^{\infty}\dd z\,
+E_z^{(+)}(z)e^{-\ii\omega z/v_0}.
+\label{eq:feqo-pinem-forward-beta}
+\end{equation}
+边带概率为 \(P_\ell=J_\ell^2(2|\beta|)\)。前向算子将近场分布映射到边带谱：
+\begin{equation}
+F_{\rm PINEM}:E_z^{(+)}(z)
+\mapsto\{P_\ell\}_{\ell\in\mathbb Z}.
+\label{eq:feqo-pinem-forward-map}
+\end{equation}
+这个算子是\emph{非线性}的：\(\beta\) 线性依赖于 \(E_z^{(+)}\)，但 \(P_\ell=J_\ell^2(2|\beta|)\) 非线性依赖于 \(\beta\)。
+
+\subsection{完整的前向链条：从场参数到计数}
+
+以 PINEM 为例，完整的前向链条包括以下步骤：
+
+\textbf{步骤 1：场参数到耦合。}设未知正频振幅取
+\(E_z^{(+)}(z)=E_*e^{\ii\varphi}e^{-z^2/(2d^2)}e^{\ii kz}\)。其中实振幅 \(E_*>0\) 的单位为 \(\si{\volt\per\metre}\)，\(d\) 是已由几何标定的长度，\(k\) 是已知空间波数，\(\varphi\) 是待求相位。直接代入\cref{eq:feqo-pinem-forward-beta}，用高斯积分得到
 \begin{equation}
 \beta_{\rm sam}=\frac{qE_*\sqrt{2\pi}d}{\hbar\omega}
 \exp\!\left[-\frac{d^2}{2}(k-\omega/v_0)^2\right]e^{\ii\varphi}.
@@ -19,7 +95,7 @@
 \end{equation}
 指数给相位失配导致的耦合抑制；\(q=-e\) 的负号使 \(\arg\beta_{\rm sam}=\varphi+\pi\)（模 \(2\pi\)）。若 \(k,d,v_0\) 未独立标定，则一次能谱只能求这个积分耦合，不能把 \(E_*\) 与几何参数分别求出。
 
-令 \(\beta_{\rm sam}=A e^{\ii\phi}\)，其中 \(A=|\beta_{\rm sam}|\) 无量纲。加入已知强度 \(B>0\)、可扫描相位 \(\theta_s\) 的第二个参考场，并假设两作用区间的色散可忽略，于是总耦合 \(\beta_s=Ae^{\ii\phi}+Be^{\ii\theta_s}\)。对于每个设置，理想边带概率是 \(P_{\ell s}=J_\ell^2(2|\beta_s|)\)。若 \(r_s:=|\beta_s|\ll1\)，由 Bessel 级数可逐项截断为
+\textbf{步骤 2：耦合到边带概率。}令 \(\beta_{\rm sam}=A e^{\ii\phi}\)，其中 \(A=|\beta_{\rm sam}|\) 无量纲。加入已知强度 \(B>0\)、可扫描相位 \(\theta_s\) 的第二个参考场，并假设两作用区间的色散可忽略，于是总耦合 \(\beta_s=Ae^{\ii\phi}+Be^{\ii\theta_s}\)。对于每个设置，理想边带概率是 \(P_{\ell s}=J_\ell^2(2|\beta_s|)\)。若 \(r_s:=|\beta_s|\ll1\)，由 Bessel 级数可逐项截断为
 \begin{equation}
 P_{+1,s}=P_{-1,s}=r_s^2+O(r_s^4),\quad
 P_{0,s}=1-2r_s^2+O(r_s^4),\quad
@@ -27,6 +103,68 @@ r_s^2=A^2+B^2+2AB\cos(\phi-\theta_s).
 \label{eq:feqo-imaging-weak-forward}
 \end{equation}
 忽略的 \(|\ell|\geq2\) 总人口是 \(O(r_s^4)\)。若 \(r_s\) 不小，必须使用完整 Bessel 分布，不能把截断后的三条概率硬归一化来隐藏误差。
+
+
+\par
+\begin{workedexample}
+令 \(B=0\)，求\cref{eq:feqo-imaging-weak-forward} 对 \((A,\phi)\) 的 Jacobian 并给出秩。再取 \(\theta_s=0,\pi/2,\pi\) 与 \(A,B>0\)，解释为什么三设置能恢复复耦合的两个实分量。
+\textbf{解.} 当 \(B=0\) 时 \(P_{+1}=A^2\)，Jacobian 对 \((A,\phi)\) 为 \((2A,0)\)，\(A>0\) 时秩为 1，相位不可识别。加入参考场后令 \(x=A\cos\phi,y=A\sin\phi\)，则 \(r_s^2=A^2+B^2+2B(x\cos\theta_s+y\sin\theta_s)\)。\(\theta=0,\pi\) 两设置的差给出 \(x\)，与 \(\pi/2\) 设置及已知基线合用给出 \(y\)；于是复耦合的两个实分量可恢复。
+\end{workedexample}
+\par
+\textbf{步骤 3：边带概率到仪器响应。}能谱仪记录读数 \(y\) 的分箱 \(B_j\)，不是理想 \(\ell\)。对高斯能量响应 \(R(y|E)=(2\pi\sigma_D^2)^{-1/2}e^{-(y-E)^2/(2\sigma_D^2)}\)，定义
+\begin{equation}
+R_{j\ell}=\int_{B_j}R(y|E_0+\ell\hbar\omega)\dd y,
+\qquad p_{js}=\sum_\ell R_{j\ell}P_{\ell s}.
+\label{eq:feqo-imaging-detector}
+\end{equation}
+若所有分箱覆盖整个读数轴，\(\sum_jR_{j\ell}=1\)，故 \(\sum_jp_{js}=1\)。若有限视场漏掉部分能量，须增加"视场外"结果或显式建模检出效率，不能在每个设置下任意把已见峰强归一化为一。
+
+\textbf{步骤 4：概率到计数。}设每个设置有期望入射数 \(\nu_s\) 且各箱独立计数，\(N_{js}\sim\operatorname{Pois}(\nu_sp_{js})\)。这便把样品场经\cref{eq:feqo-imaging-beta}、相干作用经\cref{eq:feqo-imaging-weak-forward}、仪器响应经\cref{eq:feqo-imaging-detector} 送入\cref{eq:feqo-count-likelihood}。
+
+\subsection{反问题：从数据恢复参数}
+
+反问题问：给定测量数据 \(d=\{N_{js}\}\)，恢复物体参数 \(x=(A,\phi)\)（或更一般的场分布）。
+
+\subsection{反演的病态性}
+
+反问题通常是\emph{病态的}（ill-posed），原因有三：
+
+\textbf{（1）信息丢失。}前向算子 \(F\) 可能不是单射：不同的 \(x\) 给出相同的 \(F(x)\)。例如，若 \(B=0\)（无参考场），\cref{eq:feqo-imaging-weak-forward} 中 \(P_{+1}=A^2\) 与 \(\phi\) 无关——相位信息完全丢失。此时 \(F\) 的 Jacobian 沿 \(\phi\) 方向为零，反演不可能。
+
+\textbf{（2）噪声放大。}即使 \(F\) 是单射，其逆 \(F^{-1}\) 可能不连续：数据中的小噪声 \(\epsilon\) 导致参数估计的大偏差。这发生在 \(F\) 的 Jacobian 有极小奇异值时。
+
+\textbf{（3）非凸性。}\(F\) 的非线性可能导致目标函数有多个局部极小，使优化算法收敛到错误解。
+
+\subsection{Tikhonov 正则化}
+
+为稳定反演，引入 Tikhonov 正则化：最小化
+\begin{equation}
+\mathcal J(x)=\|F(x)-d\|_W^2+\alpha\|Lx\|^2,
+\label{eq:feqo-tikhonov-regularization}
+\end{equation}
+其中第一项是数据拟合项（\(W\) 为噪声权重矩阵），第二项是正则化项（\(L\) 为正则化算子，\(\alpha>0\) 为正则化参数）。
+
+对线性前向算子 \(F(x)=Ax\)，一阶条件为
+\begin{equation}
+(A^\top WA+\alpha L^\top L)\hat x_\lambda=A^\top Wd.
+\label{eq:feqo-tikhonov-normal}
+\end{equation}
+正则化稳定小奇异值，也引入可计算偏差。在无噪声 \(d=Ax_*\) 下，偏差为
+\[
+\hat x_\lambda-x_*=-\alpha(A^\top WA+\alpha L^\top L)^{-1}L^\top Lx_*.
+\]
+\(\alpha\) 应由独立验证数据、预测风险或明确的先验选择，不能称作物理退相干率。
+
+\subsection{Fisher 信息与 Cram\'er--Rao 下界}
+
+即使反演算法完美，参数估计的精度也有基本限制。设每个设置有期望入射电子数为 \(\nu_s\)，探测通道 \(j\) 的平均计数为 \(\mu_{js}(\vartheta)=\nu_s p_j(\vartheta,s)\)。独立 Poisson 计数的对数似然为\cref{eq:feqo-count-likelihood}，Fisher 信息矩阵为\cref{eq:feqo-poisson-fisher}。对无偏估计量 \(T\)，Cram\'er--Rao 下界给出
+\begin{equation}
+\operatorname{Cov}(T)\succeq I^{-1}(\vartheta).
+\label{eq:feqo-cramer-rao}
+\end{equation}
+这个界只约束满足无偏与正则条件的估计量，绝非保证某个算法必能达到它。
+
+\subsection{具体算例：三设置反演复耦合}
 
 先假想无噪声地得到三个设置的 \(y_0=P_{+1}(0)\)、\(y_{\pi/2}=P_{+1}(\pi/2)\)、\(y_\pi=P_{+1}(\pi)\)。由\cref{eq:feqo-imaging-weak-forward} 直接消元，
 \begin{align*}
@@ -44,6 +182,8 @@ y_0=0.0075,
 \]
 将它们代回刚才的反演式：\((y_0+y_\pi)/2-B^2=0.0025=A^2\)，\((y_0-y_\pi)/(4AB)=1/2\)，\([y_{\pi/2}-(y_0+y_\pi)/2]/(2AB)=\sqrt3/2\)，确实恢复 \(A=0.05\) 与 \(\phi=\pi/3\)。若每设置平均入射 \(10^5\) 个电子且只看理想 \(+1\) 箱，预期计数约为 \(750,933,250\)，各自的 Poisson 标准差约为其平方根。此时最高设置的 \(r_s^2\simeq0.00933\)，弱耦合遗漏的 \(O(r_s^4)\) 概率已在 \(10^{-4}\) 量级；继续提高曝光后，模型截断会先于计数噪声成为限制，必须改用完整 Bessel 前向模型。这里的数是理论算例，不代表某台仪器已经测得这些计数。
 
+\subsection{从耦合到场幅的反解}
+
 若 \(d,k,v_0,\omega\) 均已独立标定，最后还可由 \(A\) 反解实际场幅度：
 \begin{equation}
 E_*=\frac{A\hbar\omega}{e\sqrt{2\pi}d}
@@ -52,27 +192,75 @@ E_*=\frac{A\hbar\omega}{e\sqrt{2\pi}d}
 \end{equation}
 右边单位为 \(\si{\volt\per\metre}\)。相位则由已知 \(q=-e\) 的符号取 \(\varphi=\phi-\pi\)（模 \(2\pi\)）。但这一反解也揭示条件数：设 \(\Delta k=k-\omega/v_0\)，在其他量固定时 \(\partial\ln E_*/\partial k=d^2\Delta k\)。若失配很大，指数使真实耦合 \(A\) 极小，同时对 \(k\) 的标定误差极敏感；即使计数模型无噪声，未知的 \(k\) 仍会与 \(E_*\) 形成退化。
 
-把场幅、相位匹配和边带概率连起来看，反演的脆弱处就在\cref{fig:electron-field-calibration} 的两条曲线之间。左图横轴是失配 \(\Delta\kappa L_{\rm int}\)，纵轴是有效耦合与同步值的比：主瓣宽约 \(2\pi\)，在 \(\Delta\kappa L_{\rm int}=\pm2\pi\) 处过零，所以作用区每偏离同步一个条纹，同样的场幅给出的有效耦合就掉一个量级，而按\cref{eq:feqo-imaging-field-inversion} 反解出的 \(E_*\) 又被同一个因子放大。右图取 200 keV 电子与 800 nm 光，此时 \(|\beta|=0.645\)，边带概率为 \(P_0=J_0^2\simeq0.391\)、\(P_{\pm1}\simeq0.270\)、\(P_{\pm2}\simeq0.033\)。\(\pm2\) 阶已占百分之几，说明在这种耦合下若仍按\cref{eq:feqo-imaging-weak-forward} 只留三条边带，漏掉的概率不是可以忽略的小量。
+\subsection{分辨率极限}
+
+成像的分辨率极限由前向算子的信息容量决定。对 EELS，空间分辨率受限于电子束斑尺寸和近场衰减长度 \(d\)。由\cref{eq:feqo-imaging-beta}，耦合 \(\beta\) 正比于 \(\exp[-d^2\Delta k^2/2]\)，因此空间频率 \(|\Delta k|\gtrsim1/d\) 的信息被指数压制。
+
+更一般地，定义前向算子的奇异值分解 \(F=\sum_k\sigma_k u_k\otimes v_k\)。奇异值 \(\sigma_k\) 随空间频率衰减的速率决定哪些空间频率可以被恢复：
+\begin{itemize}
+\item \(\sigma_k\gg\epsilon\)（\(\epsilon\) 为噪声水平）：该模式可被恢复。
+\item \(\sigma_k\sim\epsilon\)：该模式处于分辨率极限。
+\item \(\sigma_k\ll\epsilon\)：该模式被噪声淹没，不可恢复。
+\end{itemize}
+对 EELS 的线性前向算子，奇异值衰减由 Green 函数的解析性质决定。对 PINEM 的非线性前向算子，分辨率极限还依赖于耦合强度 \(|\beta|\)：弱耦合下只有一阶边带携带信息，强耦合下高阶边带提供额外空间频率通道。
+
+\subsection{算例：从模拟 EELS 数据反演球体}
+
+\begin{workedexample}[球体 EELS 反演]
+考虑半径为 \(R\) 的金属球，电子束沿 \(x\) 轴在撞击参数 \(b\) 处通过。球的介电函数为 \(\varepsilon(\omega)\)。在准静态极限下（\(R\ll\lambda\)），散射 Green 函数的虚部为
+\[
+\operatorname{Im}G_{{\rm sc},zz}\propto
+\operatorname{Im}\!\left[\frac{\varepsilon-1}{\varepsilon+2}\right]
+\frac{R^3}{(b^2+z^2)^{3/2}},
+\]
+其中 \((\varepsilon-1)/(\varepsilon+2)\) 是球体的 Clausius--Mossotti 因子。
+
+代入\cref{eq:feqo-eels-forward-green}，损失概率为
+\[
+\Gamma(\omega;b)\propto
+\operatorname{Im}\!\left[\frac{\varepsilon(\omega)-1}{\varepsilon(\omega)+2}\right]
+\frac{R^3}{b^3}\cdot f(b/R),
+\]
+其中 \(f(b/R)\) 是几何因子，由 \(z\) 积分给出。
+
+反问题：给定 \(\Gamma(\omega;b)\) 在不同 \(b\) 处的测量值，恢复 \(R\) 和 \(\varepsilon(\omega)\)。
+
+\textbf{步骤 1：}对每个 \(b\)，\(\Gamma\) 的频率依赖给出 \(\operatorname{Im}[(\varepsilon-1)/(\varepsilon+2)]\)——这是球体的局域表面等离激元共振（LSPR）。
+
+\textbf{步骤 2：}\(b\) 依赖给出 \(R^3/b^3\cdot f(b/R)\)。拟合 \(b\) 扫描曲线可以同时确定 \(R\) 和球的横向位置。
+
+\textbf{分辨率限制：}若电子束斑 \(\sigma_b\ll R\)，空间分辨率由 \(b\) 扫描步长决定。若 \(\sigma_b\sim R\)，束斑卷积使近场信息模糊，分辨率受限于 \(\sigma_b\)。
+
+\textbf{Fisher 信息：}设测量噪声为 Poisson 计数，对参数 \(\vartheta=(R,\varepsilon')\) 的 Fisher 信息矩阵为
+\[
+I_{ab}=\sum_{j,s}\frac{1}{\mu_{js}}
+\frac{\partial\mu_{js}}{\partial\vartheta_a}
+\frac{\partial\mu_{js}}{\partial\vartheta_b}.
+\]
+Cram\'er--Rao 下界给出 \(\operatorname{Var}(\hat R)\geq(I^{-1})_{RR}\)。
+\end{workedexample}
+
+
+\par
+\begin{workedexample}
+设 PINEM 前向算子在弱耦合下为 \(P_{+1}=|\beta|^2\)，其中 \(\beta=\int E_z^{(+)}(z)e^{-\ii\omega z/v_0}\dd z\)。若 \(E_z^{(+)}(z)\) 参数化为 \(N\) 个分段常数，求 Fisher 信息矩阵关于这 \(N\) 个参数的表达式，并讨论 \(N\) 增大时条件数的变化。
+\textbf{解.} 令第 \(j\) 段复场为 \(c_j=a_j+ib_j\)，并定义 \(w_j=\int_{z_j}^{z_{j+1}}e^{-\ii\omega z/v_0}\,dz\)，则 \(\beta=\sum_jw_jc_j\)。若只计数 \(+1\) 边带、入射数为 \(\nu\)，Poisson Fisher 矩阵为 \(I_{uv}=\nu p^{-1}(\partial_up)(\partial_vp)\)，\(p=|\beta|^2\)，其中 \(\partial_{a_j}p=2\operatorname{Re}(\beta^*w_j)\)、\(\partial_{b_j}p=-2\operatorname{Im}(\beta^*w_j)\)。单个概率给出的矩阵秩至多为 1；增加参数段数而不增加独立相位或空间设置会产生零或很小的特征值，条件数恶化，场细节无法稳定反演。
+\end{workedexample}
+\par
+\subsection{前向模型的验证清单}
+
+反演前应逐项核对：\(\sum_\ell P_{\ell s}=1\)；\(\sum_jR_{j\ell}=1\)；\(qE_*d/(\hbar\omega)\) 无量纲；\(A\to0\) 时恢复参考场谱；\(B\to0\) 时丢失相位灵敏度。还须检查实际占据边带的反冲相位 \(N^2\omega_rT\)、传播相位的三阶余项、弱耦合 \(r_s^4\) 与探测器非线性。若它们不小，反演应使用对应的精确反冲链、完整 Bessel 概率或重新标定的响应，而不应把模型误差塞进 Poisson 误差条。
+
+把场幅、相位匹配和边带概率连起来看，反演的脆弱处就在\cref{fig:electron-field-calibration-modern} 的两条曲线之间。左图横轴是失配 \(\Delta\kappa L_{\rm int}\)，纵轴是有效耦合与同步值的比：主瓣宽约 \(2\pi\)，在 \(\Delta\kappa L_{\rm int}=\pm2\pi\) 处过零，所以作用区每偏离同步一个条纹，同样的场幅给出的有效耦合就掉一个量级，而按\cref{eq:feqo-imaging-field-inversion} 反解出的 \(E_*\) 又被同一个因子放大。右图取 200 keV 电子与 800 nm 光，此时 \(|\beta|=0.645\)，边带概率为 \(P_0=J_0^2\simeq0.391\)、\(P_{\pm1}\simeq0.270\)、\(P_{\pm2}\simeq0.033\)。\(\pm2\) 阶已占百分之几，说明在这种耦合下若仍按\cref{eq:feqo-imaging-weak-forward} 只留三条边带，漏掉的概率不是可以忽略的小量。
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.94\linewidth]{electron_field_calibration.pdf}
 \caption{从有限长度场积分到电子谱。左图纵轴为 \(\beta/\beta_{\rm sync}\)，横轴为失配 \(\Delta\kappa L_{\rm int}\)，给出复振幅相加形成的 \(\sinc\) 响应；右图为电子阶数 \(\ell\) 上的边带概率 \(P_\ell=J_\ell^2(2|\beta|)\)，取 200 keV 电子与 800 nm 光，对应 \(|\beta|=0.645\)。}
-\label{fig:electron-field-calibration}
+\label{fig:electron-field-calibration-modern}
 \end{figure}
 
-能谱仪记录读数 \(y\) 的分箱 \(B_j\)，不是理想 \(\ell\)。对高斯能量响应 \(R(y|E)=(2\pi\sigma_D^2)^{-1/2}e^{-(y-E)^2/(2\sigma_D^2)}\)，定义
-\begin{equation}
-R_{j\ell}=\int_{B_j}R(y|E_0+\ell\hbar\omega)\dd y,
-\qquad p_{js}=\sum_\ell R_{j\ell}P_{\ell s}.
-\label{eq:feqo-imaging-detector}
-\end{equation}
-若所有分箱覆盖整个读数轴，\(\sum_jR_{j\ell}=1\)，故 \(\sum_jp_{js}=1\)。若有限视场漏掉部分能量，须增加“视场外”结果或显式建模检出效率，不能在每个设置下任意把已见峰强归一化为一。
 
-设每个设置有期望入射数 \(\nu_s\) 且各箱独立计数，\(N_{js}\sim\operatorname{Pois}(\nu_sp_{js})\)。这便把样品场经\cref{eq:feqo-imaging-beta}、相干作用经\cref{eq:feqo-imaging-weak-forward}、仪器响应经\cref{eq:feqo-imaging-detector} 送入\cref{eq:feqo-count-likelihood}。对 \((A,\phi)\) 求导并代入\cref{eq:feqo-poisson-fisher}，可得到这次具体实验的 Fisher 信息。它对曝光数 \(\nu_s\) 线性增长，却在无参考场时沿 \(\phi\) 方向严格为零。
 
-反演前应逐项核对：\(\sum_\ell P_{\ell s}=1\)；\(\sum_jR_{j\ell}=1\)；\(qE_*d/(\hbar\omega)\) 无量纲；\(A\to0\) 时恢复参考场谱；\(B\to0\) 时丢失相位灵敏度。还须检查实际占据边带的反冲相位 \(N^2\omega_rT\)、传播相位的三阶余项、弱耦合 \(r_s^4\) 与探测器非线性。若它们不小，反演应使用对应的精确反冲链、完整 Bessel 概率或重新标定的响应，而不应把模型误差塞进 Poisson 误差条。
 
-\begin{exercise}
-令 \(B=0\)，求\cref{eq:feqo-imaging-weak-forward} 对 \((A,\phi)\) 的 Jacobian 并给出秩。再取 \(\theta_s=0,\pi/2,\pi\) 与 \(A,B>0\)，解释为什么三设置能恢复复耦合的两个实分量。
-\end{exercise}
+

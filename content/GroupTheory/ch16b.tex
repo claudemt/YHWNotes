@@ -1,0 +1,906 @@
+\chapter{全同粒子与 Schur--Weyl 对偶}
+\label{chap:identical-particles}
+
+上一章\chapref{chap:permutation-group}把 $S_n$ 的不可约表示用 Young 图构造了出来。这一章回答它们到底用来干什么。
+
+物理上有一个看似简单、实则深刻的事实：两个电子是「全同」的——你不可能给其中一个涂上记号说「这是电子 A、那是电子 B」。于是把 $n$ 个单粒子波函数里的粒子标签重新排一个顺序，得到的要么是同一个物理态（玻色子），要么只相差一个整体负号（费米子）。这个「对置换不变/反不变」的要求，不是我们外加的规则，而是 $n$ 个粒子波函数空间天然承载的那个 $S_n$ 表示的两个极端分量。本章就把这件事从表示结构上一步步推出来：置换算符、对称化与反对称化、Slater 行列式、等价电子的 $L+S$ 奇偶规则、$p^2,p^3$ 的原子项符号，最后收束在 Schur--Weyl 对偶——它把连续对称（$SU(d)$）与离散置换（$S_n$）在张量积空间里配对起来。
+
+\section{全同粒子的置换对称性}
+\label{sec:identical-particles}
+
+现在把组合数学重新翻译回量子力学。设有 $n$ 个同种粒子，每个粒子的单粒子 Hilbert 空间为 $\mathcal H_1$。暂时给粒子编号后，总空间写成
+\[
+\mathcal H_1^{\otimes n}
+=\underbrace{\mathcal H_1\otimes\cdots\otimes\mathcal H_1}_{n\text{ 个因子}}.
+\]
+一个简单张量
+\[
+|\phi_1\rangle\otimes\cdots\otimes|\phi_n\rangle
+\]
+表示“标签为 1 的粒子处在 $\phi_1$，标签为 2 的粒子处在 $\phi_2$，以此类推”。置换 $\pi\in S_n$ 只重新排列这些粒子标签，因此自然得到 $S_n$ 在多体空间上的表示。
+
+全同粒子的关键物理要求是：编号不是可观测量。对玻色子，交换任意两粒子后态不变；对费米子，交换任意两粒子后态变号。用表示论语言说，玻色子选取 $S_n$ 的全对称一维表示 $[n]$，费米子选取全反对称一维表示 $[1^n]$。当空间、自旋、味、色等自由度同时存在时，总波函数只需要整体满足这一要求，各个自由度本身可以承载更一般的 Young 对称类型，而不同部分必须组合成最终所需的总交换对称性。
+
+
+设单粒子 Hilbert 空间为 $\mathcal H$，$n$ 个可区分标签的张量积空间为
+\[
+\mathcal H^{\otimes n}.
+\]
+对任意 $\pi\in S_n$，定义置换算符
+\begin{equation}
+P(\pi)
+\ket{\psi_1}\otimes\cdots\otimes\ket{\psi_n}
+=
+\ket{\psi_{\pi^{-1}(1)}}\otimes\cdots\otimes\ket{\psi_{\pi^{-1}(n)}}.
+\label{eq:particle-permutation-operator}
+\end{equation}
+采用 $\pi^{-1}$ 是为了保证
+\[
+P(\sigma)P(\pi)=P(\sigma\pi),
+\]
+使 $P$ 真正成为 $S_n$ 的表示。
+
+两个最重要的中央投影算符是完全对称化与完全反对称化：
+\begin{align}
+\mathcal S
+&=\frac1{n!}\sum_{\pi\in S_n}P(\pi),\label{eq:symmetrizer}\\
+\mathcal A
+&=\frac1{n!}\sum_{\pi\in S_n}\operatorname{sgn}(\pi)P(\pi).
+\label{eq:antisymmetrizer}
+\end{align}
+
+\begin{proposition}[完全对称化与反对称化确为投影]
+有
+\[
+\mathcal S^2=\mathcal S,
+\qquad
+\mathcal A^2=\mathcal A,
+\qquad
+\mathcal S\mathcal A=0\quad(n\ge2).
+\]
+并且对任意 $\sigma\in S_n$，
+\[
+P(\sigma)\mathcal S=\mathcal S,
+\qquad
+P(\sigma)\mathcal A=\operatorname{sgn}(\sigma)\mathcal A.
+\]
+
+\end{proposition}
+
+\begin{proof}
+对 $\mathcal S$，
+\begin{align*}
+\mathcal S^2
+&=\frac1{(n!)^2}\sum_{\pi,\sigma}P(\pi\sigma).
+\end{align*}
+固定 $\tau=\pi\sigma$ 后，对每个 $\pi$ 都有唯一 $\sigma=\pi^{-1}\tau$，所以每个 $P(\tau)$ 恰出现 $n!$ 次。故
+\[
+\mathcal S^2=\frac1{n!}\sum_\tau P(\tau)=\mathcal S.
+\]
+对 $\mathcal A$ 同理，但使用
+\[
+\operatorname{sgn}(\pi)\operatorname{sgn}(\sigma)=\operatorname{sgn}(\pi\sigma),
+\]
+得到 $\mathcal A^2=\mathcal A$。
+
+左乘固定 $P(\sigma)$ 只是重排求和指标，因此 $P(\sigma)\mathcal S=\mathcal S$。对反对称化，令 $\tau=\sigma\pi$，则
+\[
+P(\sigma)\mathcal A
+=\frac1{n!}\sum_\tau
+\operatorname{sgn}(\sigma^{-1}\tau)P(\tau)
+=\operatorname{sgn}(\sigma)\mathcal A.
+\]
+最后取任意一个奇置换 $\sigma$，有
+\[
+P(\sigma)\mathcal S\mathcal A=\mathcal S\mathcal A,
+\]
+但也有
+\[
+P(\sigma)\mathcal S\mathcal A
+=\mathcal S P(\sigma)\mathcal A
+=-\mathcal S\mathcal A,
+\]
+故 $\mathcal S\mathcal A=0$。
+\end{proof}
+
+归一化因子 $1/n!$ 不是随意选取的。未归一化对称化和
+\[
+A_+=\sum_{\pi\in S_n}P(\pi)
+\]
+平方时，每个固定置换 $\sigma$ 会出现恰好 $n!$ 次：对任意第一因子 $\pi$，第二因子必须取 $\pi^{-1}\sigma$。因此
+\[
+A_+^2=n!\,A_+.
+\]
+除以 $n!$ 后才得到 $\mathcal S^2=\mathcal S$。反对称化同理，因为符号函数是群同态，
+\[
+\operatorname{sgn}(\pi)\operatorname{sgn}(\pi^{-1}\sigma)=\operatorname{sgn}(\sigma).
+\]
+所以 $\mathcal A^2=\mathcal A$。这与 Young 算符“本质幂等”的结构完全平行。
+
+
+玻色子多体态位于 $\operatorname{Im}\mathcal S$，承载 $[n]$ 平凡表示；费米子多体态位于 $\operatorname{Im}\mathcal A$，承载 $[1^n]$ 符号表示。对于含有额外自由度的费米子，空间、自旋、味、色等每个部分本身未必完全反对称，但它们的张量积必须在总置换下落入符号表示。
+
+设 $n$ 个单粒子正交轨道为 $\phi_1,\dots,\phi_n$。对简单张量
+\[
+\Phi(1,\dots,n)=\phi_1(1)\phi_2(2)\cdots\phi_n(n)
+\]
+施加反对称化，得到
+\begin{equation}
+\Psi_F(1,\dots,n)
+=\frac1{\sqrt{n!}}
+\det\!\begin{pmatrix}
+\phi_1(1)&\phi_2(1)&\cdots&\phi_n(1)\\
+\phi_1(2)&\phi_2(2)&\cdots&\phi_n(2)\\
+\vdots&\vdots&\ddots&\vdots\\
+\phi_1(n)&\phi_2(n)&\cdots&\phi_n(n)
+\end{pmatrix}.
+\label{eq:slater-determinant}
+\end{equation}
+这就是 Slater 行列式。
+
+若两个费米子占据完全相同的单粒子态，行列式有两列相同，因此
+\[
+\Psi_F=0.
+\]
+所以 Pauli 不相容原理并不是额外添加的“电子规则”，而是总波函数必须承载 $S_n$ 符号表示的直接代数后果。
+
+多体 Hilbert 空间上的置换表示给出了框架，但真正的物理应用从两电子开始：交换对称性直接决定总自旋，进而给出原子项符号。
+
+两个自旋 $1/2$ 的自旋空间为
+\[
+\CC^2\otimes\CC^2.
+\]
+\chapref{chap:rotation-group}已经由 CG 分解得到
+\[
+\frac12\otimes\frac12=1\oplus0.
+\]
+其三个 $S=1$ 三重态为
+\begin{align*}
+\chi_{1,1}&=\alpha(1)\alpha(2),\\
+\chi_{1,0}&=\frac{\alpha(1)\beta(2)+\beta(1)\alpha(2)}{\sqrt2},\\
+\chi_{1,-1}&=\beta(1)\beta(2),
+\end{align*}
+在 $S_2$ 交换下对称；$S=0$ 单态
+\[
+\chi_{0,0}
+=\frac{\alpha(1)\beta(2)-\beta(1)\alpha(2)}{\sqrt2}
+\]
+交换反对称。
+
+若两个电子占据不同空间轨道 $a,b$，则空间部分也分为
+\begin{align*}
+\Phi_+(1,2)
+&=\frac{\phi_a(1)\phi_b(2)+\phi_b(1)\phi_a(2)}{\sqrt2},\\
+\Phi_-(1,2)
+&=\frac{\phi_a(1)\phi_b(2)-\phi_b(1)\phi_a(2)}{\sqrt2}.
+\end{align*}
+总波函数必须反对称，所以允许组合只有
+\[
+\Phi_+\chi_{0,0}
+\qquad\text{和}\qquad
+\Phi_-\chi_{1,M_S}.
+\]
+这就是“空间对称配自旋单态、空间反对称配自旋三重态”的群论来源。
+
+\begin{workedexample}
+写出两个不同轨道 $a,b$ 上两电子的全部交换反对称自旋--空间态。
+
+\textbf{解.} 空间对称态 $\Phi_+$ 只能乘自旋单态 $\chi_{00}$；空间反对称态 $\Phi_-$ 可乘三个自旋三重态 $\chi_{1M}$。因此共有四个独立总态：
+\[
+\Phi_+\chi_{00},
+\qquad
+\Phi_-\chi_{1,1},
+\quad
+\Phi_-\chi_{1,0},
+\quad
+\Phi_-\chi_{1,-1}.
+\]
+\end{workedexample}
+
+
+当两个电子都具有相同轨道角动量 $\ell$ 时，还可以把空间交换对称性直接写成总轨道角动量 $L$ 的函数。
+
+\begin{proposition}[两个等价轨道角动量态的交换相位]
+两个相同 $\ell$ 的角动量耦合态满足
+\begin{equation}
+P_{12}\ket{(\ell\ell)LM}
+=(-1)^{2\ell-L}\ket{(\ell\ell)LM}.
+\label{eq:exchange-coupled-orbital}
+\end{equation}
+对电子轨道 $\ell\in\NN$，简化为 $(-1)^L$。因此两个等价电子的允许项必须满足
+\begin{equation}
+L+S\ \text{为偶数}.
+\label{eq:equivalent-electron-rule}
+\end{equation}
+
+\end{proposition}
+
+\begin{proof}
+耦合态展开为
+\[
+\ket{(\ell\ell)LM}
+=\sum_{m_1,m_2}
+C^{LM}_{\ell m_1,\ell m_2}
+\ket{\ell m_1}\ket{\ell m_2}.
+\]
+交换两个粒子后得到
+\[
+P_{12}\ket{(\ell\ell)LM}
+=\sum_{m_1,m_2}
+C^{LM}_{\ell m_1,\ell m_2}
+\ket{\ell m_2}\ket{\ell m_1}.
+\]
+把求和指标 $m_1,m_2$ 互换，并使用 CG 系数的交换对称性
+\[
+C^{LM}_{\ell m_2,\ell m_1}
+=(-1)^{2\ell-L}C^{LM}_{\ell m_1,\ell m_2},
+\]
+得到 \eqnrefs{eq:exchange-coupled-orbital}。
+
+自旋耦合态在交换下的相位为 $-1$ 对 $S=0$、$+1$ 对 $S=1$，即 $(-1)^{S+1}$。总费米波函数要求两者乘积为 $-1$：
+\[
+(-1)^L(-1)^{S+1}=-1,
+\]
+等价于 $(-1)^{L+S}=1$，故 $L+S$ 为偶数。
+\end{proof}
+
+在使用原子物理的项符号之前，先把 $^{2S+1}L_J$ 的每一部分读清楚。总自旋量子数为 $S$ 时，$M_S=-S,-S+1,\dots,S$，共有 $2S+1$ 个自旋投影，因此左上角的 $2S+1$ 称为\textbf{自旋多重度}；$1,2,3,4,\dots$ 分别常读作单重态、二重态、三重态、四重态。总轨道角动量量子数 $L=0,1,2,3,\dots$ 按历史约定依次写成
+\[
+S,P,D,F,G,\dots.
+\]
+若进一步考虑自旋--轨道耦合，总角动量
+\[
+\vb J=\vb L+\vb S
+\]
+的量子数 $J$ 写在右下角。因此 $^3P_2$ 的意思不是“三个 $P_2$ 态”，而是“$S=1$ 的三重态、总轨道角动量 $L=1$、总角动量 $J=2$”。本节先关注置换对称性，很多地方暂不写右下角 $J$，于是只用 $^{2S+1}L$。
+
+\begin{example}[{$p^2$ 构型为什么只有 $^1S,^1D,^3P$}]
+\label{ex:p2-config}
+$p$ 电子有 $\ell=1$。两个 $p$ 轨道角动量耦合允许
+\[
+L=0,1,2.
+\]
+两个自旋 $1/2$ 允许 $S=0,1$。若不考虑 Pauli 原理，似乎有六种 $^{2S+1}L$ 组合；但等价电子要求 $L+S$ 为偶数。因此
+\[
+(L,S)=(0,0),(2,0),(1,1)
+\]
+被保留，对应
+\[
+{}^1S,
+\qquad{}^1D,
+\qquad{}^3P.
+\]
+其总微观态数为
+\[
+1\times1+1\times5+3\times3=15.
+\]
+另一方面，单电子 $p$ 壳层含 $3$ 个 $m_\ell$ 与 $2$ 个自旋方向，共 $6$ 个自旋-轨道；放两个电子的 Slater 行列式数为
+\[
+\binom62=15.
+\]
+两种计数完全一致，说明项符号分解既没有遗漏也没有重复。
+\end{example}
+
+三个电子的自旋空间维数为 $2^3=8$。从 $SU(2)$ 角度，逐步耦合给出
+\[
+\frac12\otimes\frac12\otimes\frac12
+=\frac32\oplus\frac12\oplus\frac12.
+\]
+从 $S_3$ 角度，同一空间必须同时承载粒子置换表示。最对称的 $S=3/2$ 四重态在置换下属于 $[3]$；剩余四维由两个 $S=1/2$ 双重态组成，它们的置换结构是二维不可约表示 $[2,1]$。更精确地，作为 $SU(2)\times S_3$ 的表示，
+\begin{equation}
+(\CC^2)^{\otimes3}
+\cong
+V_{3/2}\otimes S^{[3]}
+\oplus
+V_{1/2}\otimes S^{[2,1]},
+\label{eq:three-spin-schur-weyl}
+\end{equation}
+维数检查为
+\[
+4\times1+2\times2=8.
+\]
+这是一类最简单的 Schur--Weyl 对偶现象：总自旋分类和置换对称分类不是互相竞争的两套记号，而是在同一个张量空间中彼此配对。
+
+具体地，$M_S=3/2$ 的态只有
+\[
+\alpha\alpha\alpha,
+\]
+它必属于完全对称 $[3]$。连续作用总降阶算符得到四个完全对称的 $S=3/2$ 态。对 $M_S=1/2$，三维空间由
+\[
+\alpha\alpha\beta,
+\quad\alpha\beta\alpha,
+\quad\beta\alpha\alpha
+\]
+张成，其中对称组合
+\[
+\frac1{\sqrt3}
+(\alpha\alpha\beta+\alpha\beta\alpha+\beta\alpha\alpha)
+\]
+已经属于 $S=3/2$；与它正交的二维子空间就是 $[2,1]$，承载 $S=1/2$。
+
+对三个电子，总波函数必须落在符号表示 $[1,1,1]$。因此若自旋部分具有 $[3]$ 完全对称性，轨道部分必须完全反对称；若自旋部分为 $[2,1]$，轨道部分也要选择能够与它张量后含 $[1^3]$ 的混合对称成分。Young 图提供了比逐个交换波函数更系统的记账工具。
+
+\begin{example}[{为什么 $1s^3$ 禁止而 $1s^22s$ 允许}]
+下面用一次完整的表示计算比较两个三电子构型。若三个电子都占同一空间轨道 $a=1s$，空间波函数
+\[
+\phi_a(1)\phi_a(2)\phi_a(3)
+\]
+在任意置换下都不变，因此空间部分承载 $S_3$ 的 $[3]$ 平凡表示。三个自旋 $1/2$ 的自旋空间由 \eqnrefs{eq:three-spin-schur-weyl} 分成 $[3]$ 与 $[2,1]$，其中没有完全反对称的 $[1^3]$。于是
+\[
+[3]_{\rm space}\otimes
+\bigl([3]_{\rm spin}\oplus[2,1]_{\rm spin}\bigr)
+=[3]\oplus[2,1]
+\]
+不含总费米波函数要求的 $[1^3]$，故 $1s^3$ 构型被 Pauli 原理禁止。
+
+若连自旋也相同，三个完全相同的单粒子自旋轨道因子的乘积属于 $[3]$，
+施加完全反对称化算符后得到零。等价地，Slater 行列式有相同的列，
+所以为零。上面的表示计算还排除了更宽的情形：即使允许自旋不同，
+同一个空间 $1s$ 轨道也只有两个独立自旋态，仍不能容纳三个电子。
+
+
+现在考虑两个电子在 $a=1s$、一个电子在 $b=2s$。忽略自旋时，空间构型由三个基
+\[
+|aab\rangle,
+\qquad |aba\rangle,
+\qquad |baa\rangle
+\]
+张成。它们在 $S_3$ 的三个共轭类 $E$、三个对换、两个三循环上的表示特征标分别为
+\[
+\chi_{\rm orb}=(3,1,0):
+\]
+恒等操作固定三个基；任一对换恰固定一个；三循环不固定任何一个。与 $S_3$ 特征标表取内积，得到
+\[
+\Gamma_{\rm orb}=[3]\oplus[2,1].
+\]
+自旋的 $S=1/2$ 部分具有 $[2,1]$ 对称性。利用
+\[
+[2,1]\otimes[2,1]=[3]\oplus[2,1]\oplus[1^3],
+\]
+可见空间的 $[2,1]$ 分量与自旋的 $[2,1]$ 分量能够组合出唯一的完全反对称 $[1^3]$。因此 $1s^22s$ 构型允许，而且允许态具有 $S=1/2$，即原子项符号中的双重态。这里 Pauli 原理表现为总 $S_3$ 表示必须含符号表示这一精确条件。
+\end{example}
+
+三个自旋 $1/2$ 与 $S_3$ 的 Schur--Weyl 对应如图 \figref{fig:three-spin-s3} 所示。
+\begin{figure}[htbp]
+\centering
+\begin{tikzfig}
+  \node[lecturebox] (tensor) at (0,1.7) {三个自旋 $1/2$\\$2^3=8$ 维};
+  \node[lecturebox] (su2) at (5.0,2.5) {$SU(2)$ 分类\\$4\oplus2\oplus2$};
+  \node[lecturebox] (s3) at (5.0,.7) {$S_3$ 分类\\$4[3]\oplus2[2,1]$};
+  \node[lecturewidebox] (pair) at (11.8,1.6) {$V_{3/2}\otimes[3]\ \oplus\ V_{1/2}\otimes[2,1]$};
+  \draw[lecturearrow] (tensor)--(su2);
+  \draw[lecturearrow] (tensor)--(s3);
+  \draw[lecturearrow] (su2)--(pair);
+  \draw[lecturearrow] (s3)--(pair);
+\end{tikzfig}
+\caption{三个自旋 $1/2$ 的角动量分类与置换分类必须同时满足。}
+\label{fig:three-spin-s3}
+\end{figure}
+
+两、三电子只是最小例子；一般 $n$ 电子时，Young 图继续承担“允许哪些交换对称性”的统一分类。
+
+
+对一般 $n$，直接写所有 $n!$ 个交换项很快就失去可操作性。Young 方法的价值就在这里：一个形状 $\lambda$ 指定某种混合交换对称性，行方向表示对称化，列方向表示反对称化。对电子，最终总波函数必须属于单列图
+\[
+[1^n].
+\]
+若把总波函数因子化成若干自由度，例如
+\[
+\Psi_{\text{total}}
+=\Psi_{\text{space}}\otimes
+\Psi_{\text{spin}}\otimes
+\Psi_{\text{other}},
+\]
+每一部分可以承载不同 Young 对称类型，但它们的 Kronecker 积必须含符号表示 $[1^n]$。这正是多电子原子、核模型以及夸克色自由度中“不同自由度的置换对称性彼此补偿”的统一数学语言。
+
+对于只含自旋 $1/2$ 的 $n$ 个粒子，Young 图最多有两行，因为单粒子自旋空间只有二维；若图中出现三格同列，列完全反对称化会在二维空间中自动为零。若两行长度为
+\[
+\lambda_1\ge\lambda_2,
+\qquad
+\lambda_1+\lambda_2=n,
+\]
+则对应总自旋
+\begin{equation}
+S=\frac{\lambda_1-\lambda_2}{2}.
+\label{eq:young-spin-relation}
+\end{equation}
+这把 Young 图与熟悉的总自旋量子数直接联系起来。例如 $n=3$ 时，[3] 给 $S=3/2$，[2,1] 给 $S=1/2$；$n=4$ 时，[4]、[3,1]、[2,2] 分别给 $S=2,1,0$。
+
+前面用 $L+S$ 偶数规则处理了 $p^2$。现在做两个更实质的例子：三电子 $p^3$ 和二电子 $d^2$。前者需要 $S_3$ 而非 $S_2$，后者展示更高 $\ell$ 时的项符号完整列表。
+
+\begin{example}[{$p^3$ 构型：$S_3$ 约束给出 $^4S,{}^2D,{}^2P$}]
+三个等价 $p$ 电子（$\ell=1$）。单粒子 $p$ 壳层有 $3\times2=6$ 个自旋-轨道（$m_\ell=-1,0,+1$ 各配自旋 $\alpha,\beta$），所以微观态总数为
+\[
+\binom63=20.
+\]
+若暂不考虑 Pauli 原理，$L$ 可取 $0,1,2,3$（三个 $\ell=1$ 耦合），$S$ 可取 $1/2,3/2$，组合远超 20。需要用 $S_3$ 表示论精确筛选。下面分四步完成严格推导：轨道空间的 $S_3$ 特征标计算、$S_3$ 不可约分解、各分量的 $SO(3)$ 内容、与自旋配对。
+
+三个 $p$ 电子的未反对称轨道空间由
+\[
+\ket{m_1,m_2,m_3},\qquad m_i\in\{-1,0,+1\}
+\]
+张成，共 $3^3=27$ 维。$S_3$ 通过置换三个位置自然作用。为求特征标，需计算每个共轭类中元素的不动点数：
+\begin{itemize}
+\item 恒等元 $e$：固定所有 $27$ 个基向量，$\chi_{\rm orb}(e)=27$。
+\item 对换 $(12)$：$\ket{m_1,m_2,m_3}$ 被固定当且仅当 $m_1=m_2$。此时 $m_1=m_2\in\{-1,0,+1\}$（$3$ 种），$m_3\in\{-1,0,+1\}$（$3$ 种），共 $9$ 个不动点，$\chi_{\rm orb}((12))=9$。
+\item 三循环 $(123)$：被固定当且仅当 $m_1=m_2=m_3$，共 $3$ 个不动点，$\chi_{\rm orb}((123))=3$。
+\end{itemize}
+因此
+\[
+\chi_{\rm orb}=(27,\,9,\,3),
+\]
+分别对应 $S_3$ 的三个共轭类 $\{e\}$、$\{(12),(13),(23)\}$、$\{(123),(132)\}$。
+
+利用 $S_3$ 特征标表（\cref{tab:d3-character-table}，通过 $S_3\cong D_3$）作不可约分解，
+\[
+\begin{array}{c|ccc}
+& e & (12) & (123) \\\hline
+\chi_{[3]} & 1 & 1 & 1 \\
+\chi_{[2,1]} & 2 & 0 & -1 \\
+\chi_{[1^3]} & 1 & -1 & 1
+\end{array}
+\]
+现在把轨道表示按 $S_3$ 的不可约分量分解。用的是\chapref{chap:characters-projections}里已经建立的\textbf{按类加权特征标正交}：不可约特征标满足 $\langle\chi^{(\alpha)},\chi^{(\beta)}\rangle_G=\delta_{\alpha\beta}$，而要读出某个不可约表示 $\alpha$ 在给定表示 $\rho$ 里出现的重数，就取内积
+\[
+m_\alpha=\langle\chi^{(\alpha)},\chi\rangle_G
+=\frac1{|G|}\sum_r |C_r|\,\overline{\chi^{(\alpha)}(C_r)}\,\chi(C_r),
+\]
+其中 $|C_r|$ 是第 $r$ 个共轭类的大小（$S_3$ 三类为 $1,3,2$），详见\cref{cor:multiplicity-formula}。对轨道特征标 $\chi_{\rm orb}=(27,9,3)$ 逐分量投影：
+\begin{align*}
+n_{[3]}&=\frac1{6}\bigl(27\cdot1+3\cdot9\cdot1+2\cdot3\cdot1\bigr)=\frac{60}{6}=10,\\
+n_{[2,1]}&=\frac1{6}\bigl(27\cdot2+3\cdot9\cdot0+2\cdot3\cdot(-1)\bigr)=\frac{48}{6}=8,\\
+n_{[1^3]}&=\frac1{6}\bigl(27\cdot1+3\cdot9\cdot(-1)+2\cdot3\cdot1\bigr)=\frac{6}{6}=1.
+\end{align*}
+因此轨道空间在 $S_3$ 下分解为
+\begin{equation}
+V_1^{\otimes3}\big|_{S_3}
+=10\,[3]\;\oplus\;8\,[2,1]\;\oplus\;1\,[1^3],
+\label{eq:p3-orbital-s3-decomp}
+\end{equation}
+维数检查 $10\cdot1+8\cdot2+1\cdot1=27$。这里 $10,8,1$ 是各 $S_3$ 不可约分量的\emph{重数}，也就是对应 Schur 函子 $\mathbb{S}_\lambda(V_1)$ 的维数。
+
+再把各 Schur 函子限制到 $SO(3)$：需要确定 $10$ 维
+$\mathbb{S}_{[3]}(V_1)$、$8$ 维 $\mathbb{S}_{[2,1]}(V_1)$ 与 $1$ 维
+$\mathbb{S}_{[1^3]}(V_1)$ 各自包含哪些 $L$。
+
+先看全对称幂 $\mathbb{S}_{[3]}(V_1)=\operatorname{Sym}^3(V_1)$。若 $\chi_{V_1}(\theta)=1+2\cos\theta$，三阶完全对称幂的特征标由 Newton 恒等式给出
+\[
+\chi_{\operatorname{Sym}^3 V_1}
+=\frac16\bigl(\chi_{V_1}^3+3\chi_{V_1}\chi_{V_1^{(2)}}+2\chi_{V_1^{(3)}}\bigr),
+\]
+其中 $\chi_{V_1^{(k)}}(\theta)=\chi_{V_1}(k\theta)$。令 $c=\cos\theta$，则 $\chi_{V_1}=1+2c$，且 $\chi_{V_1}(2\theta)=1+2\cos 2\theta=1+2(2c^2-1)=4c^2-1$，$\chi_{V_1}(3\theta)=1+2\cos 3\theta=1+2(4c^3-3c)=8c^3-6c+1$。逐项代入：
+\[
+\chi_{V_1}^3=(1+2c)^3=1+6c+12c^2+8c^3,
+\]
+\[
+3\chi_{V_1}\chi_{V_1}(2\theta)=3(1+2c)(4c^2-1)=-3-6c+12c^2+24c^3,
+\]
+\[
+2\chi_{V_1}(3\theta)=16c^3-12c+2.
+\]
+三式相加，合并同类项：
+\[
+\text{分子}=(1-3+2)+(6c-6c-12c)+(12c^2+12c^2)+(8c^3+24c^3+16c^3)
+=-12c+24c^2+48c^3=12c(4c^2+2c-1),
+\]
+除以 $6$ 得
+\[
+\chi_{\operatorname{Sym}^3 V_1}(\theta)=8c^3+4c^2-2c.
+\]
+另一方面，$V_L$ 的特征标是等比数列求和 $\chi_L=\sum_{m=-L}^{L}e^{im\theta}=\frac{\sin\bigl(L+\tfrac12\bigr)\theta}{\sin(\theta/2)}$，对 $L=3,1$ 直接算得
+\[
+\chi_{L=3}(\theta)=1+2\cos\theta+2\cos 2\theta+2\cos 3\theta,\qquad
+\chi_{L=1}(\theta)=1+2\cos\theta.
+\]
+两者相加 $=2+4\cos\theta+2\cos 2\theta+2\cos 3\theta$，利用 $\cos 2\theta=2\cos^2\theta-1$、$\cos 3\theta=4\cos^3\theta-3\cos\theta$ 化简：
+\[
+2+4c+2(2c^2-1)+2(4c^3-3c)=8c^3+4c^2-2c,
+\]
+与上面完全相同。于是
+\[
+\chi_{\operatorname{Sym}^3 V_1}(\theta)=\chi_{L=3}(\theta)+\chi_{L=1}(\theta),
+\]
+即
+\begin{equation}
+\operatorname{Sym}^3(V_1)=V_3\oplus V_1,
+\qquad L=3\oplus L=1,
+\label{eq:sym3-v1-decomp}
+\end{equation}
+维数 $7+3=10$。物理上，$L=3$ 对应三个 $p$ 轨道全对称耦合的最高权态，$L=1$ 是混合对称的较低权成分。
+
+全反对称幂 $\mathbb{S}_{[1^3]}(V_1)=\wedge^3 V_1$ 只有一维，由行列式给出。$SO(3)$ 的行列式表示是平凡的（$\det R=1$），故
+\begin{equation}
+\wedge^3 V_1=V_0,
+\qquad L=0.
+\label{eq:wedge3-v1-decomp}
+\end{equation}
+这个全反对称轨道态就是 $L=0$ 的 $S$ 态，它正是 $p^3$ 中轨道部分全反对称的唯一态。
+
+混合对称部分 $\mathbb{S}_{[2,1]}(V_1)$ 可由总张量积扣除前两部分得到。由 Schur--Weyl 分解 \eqnrefs{eq:schur-weyl}，
+\[
+V_1^{\otimes3}=(V_0\oplus V_1\oplus V_2)\otimes V_1=V_0\oplus 3V_1\oplus 2V_2\oplus V_3,
+\]
+维数 $1+9+10+7=27$。减去 \eqnrefs{eq:sym3-v1-decomp} 和 \eqnrefs{eq:wedge3-v1-decomp} 的贡献：
+\[
+\bigl(V_0\oplus 3V_1\oplus 2V_2\oplus V_3\bigr)
+-\bigl(V_3\oplus V_1\bigr)-V_0
+=2V_1\oplus 2V_2.
+\]
+这是 $\mathbb{S}_{[2,1]}(V_1)\otimes\mathrm{Sp}_{[2,1]}$ 的内容，而 $\mathrm{Sp}_{[2,1]}$ 是 $2$ 维，所以
+\begin{equation}
+\mathbb{S}_{[2,1]}(V_1)=V_2\oplus V_1,
+\qquad L=2\oplus L=1,
+\label{eq:schur21-v1-decomp}
+\end{equation}
+维数 $5+3=8$。
+
+再与自旋配对并施加 Pauli 约束。三个自旋 $1/2$ 的空间由 \eqnrefs{eq:three-spin-schur-weyl} 分解为
+\[
+(\CC^2)^{\otimes3}\big|_{SU(2)\times S_3}
+=V_{3/2}\otimes[3]\;\oplus\;V_{1/2}\otimes[2,1].
+\]
+总波函数必须落在 $S_3$ 的符号表示 $[1^3]$。需要 $S_3$ 的 Clebsch--Gordan 乘法表（见下文 \cref{ex:s3-cg-table} 的推导）：
+\begin{align}
+[3]\otimes[3]&=[3],\notag\\
+[3]\otimes[2,1]&=[2,1],\notag\\
+[3]\otimes[1^3]&=[1^3],\notag\\
+[2,1]\otimes[2,1]&=[3]\oplus[2,1]\oplus[1^3],\label{eq:s3-cg-21-21}\\
+[2,1]\otimes[1^3]&=[2,1],\notag\\
+[1^3]\otimes[1^3]&=[3].\notag
+\end{align}
+从 \eqnrefs{eq:p3-orbital-s3-decomp} 可知轨道部分含 $[3]$、$[2,1]$、$[1^3]$ 三种对称类型。要使轨道 $\otimes$ 自旋含 $[1^3]$，只有两种配对：
+\begin{itemize}
+\item 轨道 $[1^3]$（$L=0$，来自 \eqnrefs{eq:wedge3-v1-decomp}）$\otimes$ 自旋 $[3]$（$S=3/2$）：由 $[3]\otimes[1^3]=[1^3]$ 给出 $^4S$。
+\item 轨道 $[2,1]$（$L=2\oplus L=1$，来自 \eqnrefs{eq:schur21-v1-decomp}）$\otimes$ 自旋 $[2,1]$（$S=1/2$）：由 \eqnrefs{eq:s3-cg-21-21} 中 $[2,1]\otimes[2,1]$ 含 $[1^3]$ 给出 $^2D$ 和 $^2P$。
+\end{itemize}
+轨道 $[3]$ 分量无法与任何自旋分量配出 $[1^3]$（$[3]\otimes[3]=[3]$、$[3]\otimes[2,1]=[2,1]$，都不含 $[1^3]$），故被 Pauli 原理排除。最终
+\[
+p^3:\quad{}^4S,\quad{}^2D,\quad{}^2P.
+\]
+微观态计数验证：
+\[
+\underbrace{4\times1}_{^4S}+\underbrace{2\times5}_{^2D}+\underbrace{2\times3}_{^2P}=4+10+6=20=\binom63.
+\]
+完全吻合。注意 $^4S$ 项的轨道部分全反对称（$[1^3]$），自旋部分全对称（$[3]$），正是氮原子基态 $1s^22s^22p^3\,{}^4S_{3/2}$ 的群论来源。
+\end{example}
+
+\begin{example}[{$S_3$ 的 Clebsch--Gordan 乘法表}]
+\label{ex:s3-cg-table}
+$S_3$ 有三个不可约表示 $[3]$、$[2,1]$、$[1^3]$，维数 $1,2,1$。两个表示 $\lambda,\mu$ 的张量积 $\lambda\otimes\mu$ 仍是一个 $S_3$ 表示，可按特征标乘法分解。逐项计算：
+
+因为 $[3]$ 是平凡表示，所以对任意 $\nu$ 都有 $[3]\otimes[\nu]=[\nu]$，特别地
+\[
+[3]\otimes[3]=[3],\quad[3]\otimes[2,1]=[2,1],\quad[3]\otimes[1^3]=[1^3].
+\]
+
+$[1^3]$ 是符号表示，$\chi_{[1^3]}(\pi)=\operatorname{sgn}(\pi)$。其平方恒为 $1$，所以
+\[
+[1^3]\otimes[1^3]=[3].
+\]
+
+另一方面，$\chi_{[1^3]}\chi_{[2,1]}=(1\cdot1,\,(-1)\cdot0,\,1\cdot(-1))=(1,0,-1)=\chi_{[2,1]}$，故
+\[
+[1^3]\otimes[2,1]=[2,1].
+\]
+
+最后对关键的 $[2,1]\otimes[2,1]$，特征标逐类相乘：
+\[
+\chi_{[2,1]}^2=(2^2,\,0^2,\,(-1)^2)=(4,0,1).
+\]
+用正交投影分解：
+\begin{align*}
+n_{[3]}&=\frac16(4\cdot1+3\cdot0\cdot1+2\cdot1\cdot1)=1,\\
+n_{[2,1]}&=\frac16(4\cdot2+3\cdot0\cdot0+2\cdot1\cdot(-1))=1,\\
+n_{[1^3]}&=\frac16(4\cdot1+3\cdot0\cdot(-1)+2\cdot1\cdot1)=1.
+\end{align*}
+维数检查 $1\cdot1+1\cdot2+1\cdot1=4=2\times2$。因此
+\[
+[2,1]\otimes[2,1]=[3]\oplus[2,1]\oplus[1^3].
+\]
+这正是 \eqnrefs{eq:s3-cg-21-21}。这个分解的物理意义是：两个混合对称表示的张量积恰好包含全部三种对称类型，因此两个 $[2,1]$ 自由度可以组合出完全反对称的总态。
+\end{example}
+
+\begin{example}[{$d^2$ 构型：$L+S$ 偶数规则的完整列表}]
+两个等价 $d$ 电子（$\ell=2$）。单电子 $d$ 壳层有 $5\times2=10$ 个自旋-轨道，微观态总数为
+\[
+\binom{10}{2}=45.
+\]
+两个 $d$ 电子的轨道角动量耦合允许
+\[
+L=0,1,2,3,4,
+\]
+自旋允许 $S=0,1$。等价电子约束 $L+S$ 为偶数（\eqnrefs{eq:equivalent-electron-rule}），逐一筛选：
+\[
+\begin{array}{c|ccccc}
+& L=0&L=1&L=2&L=3&L=4\\\hline
+S=0&\checkmark&\times&\checkmark&\times&\checkmark\\
+S=1&\times&\checkmark&\times&\checkmark&\times
+\end{array}
+\]
+保留的项为
+\[
+d^2:\quad{}^1S,\quad{}^3P,\quad{}^1D,\quad{}^3F,\quad{}^1G.
+\]
+微观态计数：
+\[
+\underbrace{1\times1}_{^1S}+\underbrace{3\times3}_{^3P}+\underbrace{1\times5}_{^1D}+\underbrace{3\times7}_{^3F}+\underbrace{1\times9}_{^1G}=1+9+5+21+9=45.
+\]
+完全吻合。$d^2$ 是过渡金属离子（如 $\text{Ti}^{2+}$）的典型构型，其项符号在晶体场理论中直接决定能级分裂模式：自由离子的 $^3F$ 基态在八面体场中分裂为 $^3A_{2g}$ 和 $^3T_{2g}$、$^3T_{1g}$，这正是 \chapref{chap:point-space-groups} 点群方法在原子物理中的直接应用。
+\end{example}
+
+\begin{workedexample}
+用交换选择规则求 $d^2$ 等价电子允许的 $LS$ 项。
+
+\textbf{解.} $d$ 轨道 $\ell=2$，两轨道耦合允许 $L=0,1,2,3,4$，自旋允许 $S=0,1$。费米条件要求 $L+S$ 为偶数，所以
+\[
+S=0:\ L=0,2,4\Rightarrow {}^1S,{}^1D,{}^1G,
+\]
+\[
+S=1:\ L=1,3\Rightarrow {}^3P,{}^3F.
+\]
+微观态数为
+\[
+1+5+9+9+21=45=\binom{10}{2},
+\]
+因为 $d$ 壳层有 $5\times2=10$ 个自旋-轨道。
+\end{workedexample}
+
+
+因此，对 $n$ 个等价 $\ell$ 电子的构型 $\ell^n$，计算可归纳为：
+\begin{enumerate}[label=(\arabic*),leftmargin=2.5em]
+\item 计算微观态总数 $\binom{2(2\ell+1)}{n}$ 作为校验。
+\item 确定 $n$ 个 $\ell$ 耦合允许的 $L$ 值和 $n$ 个自旋 $1/2$ 耦合允许的 $S$ 值。
+\item 用 $S_n$ 表示论（Young 图）确定哪些 $(L,S)$ 组合满足 Pauli 原理：轨道和自旋的置换对称性张量积必须含 $[1^n]$。
+\item 对 $n=2$，简化为 $L+S$ 偶数规则；对 $n\ge3$，需要完整的 $S_n$ CG 分解。
+\item 用微观态计数验证无遗漏。
+\end{enumerate}
+
+前面在 \eqnrefs{eq:three-spin-schur-weyl} 中已经看到 $(\CC^2)^{\otimes3}$ 同时被 $SU(2)$ 和 $S_3$ 作用，且两者互相决定对方的不可约分量。这不是巧合，而是一个精确的数学结构——Schur--Weyl 对偶。
+
+\begin{theorem}[Schur--Weyl 对偶]
+设 $V=\CC^d$，$n$ 个张量因子的空间 $V^{\otimes n}$ 上同时作用：
+\begin{itemize}
+\item $GL(V)$（或其子群 $SU(V)$、$U(V)$）按\emph{对角作用}：$g\cdot(v_1\otimes\cdots\otimes v_n)=(gv_1)\otimes\cdots\otimes(gv_n)$；
+\item $S_n$ 按\emph{位置置换}：$\pi\cdot(v_1\otimes\cdots\otimes v_n)=v_{\pi^{-1}(1)}\otimes\cdots\otimes v_{\pi^{-1}(n)}$。
+\end{itemize}
+两个作用交换，且互为对方的中心化子。$V^{\otimes n}$ 作为 $GL(V)\times S_n$ 的表示完全约化为
+\begin{equation}
+V^{\otimes n}
+\cong\bigoplus_{\substack{\lambda\vdash n\\\ell(\lambda)\le d}}
+\mathbb{S}_\lambda(V)\otimes\mathrm{Sp}_\lambda,
+\label{eq:schur-weyl}
+\end{equation}
+其中求和遍历 $n$ 的所有分拆 $\lambda$ 且 Young 图行数 $\ell(\lambda)\le d$；$\mathbb{S}_\lambda(V)$ 是 $GL(V)$ 的不可约表示（Schur 函子），$\mathrm{Sp}_\lambda$ 是 $S_n$ 的不可约表示（Specht 模）。
+\label{thm:schur-weyl}
+\end{theorem}
+
+
+Schur--Weyl 对偶的完整证明分三个层次：作用的交换性、双交换子定理、分解的无重数性。下面逐层展开。
+
+先验证两个作用交换。对 $g\in GL(V)$ 和 $\pi\in S_n$，
+\begin{align*}
+g\cdot\pi\cdot(v_1\otimes\cdots\otimes v_n)
+&=g\cdot(v_{\pi^{-1}(1)}\otimes\cdots\otimes v_{\pi^{-1}(n)})\\
+&=(gv_{\pi^{-1}(1)}\otimes\cdots\otimes gv_{\pi^{-1}(n)})\\
+&=\pi\cdot(gv_1\otimes\cdots\otimes gv_n)
+=\pi\cdot g\cdot(v_1\otimes\cdots\otimes v_n).
+\end{align*}
+因此 $GL(V)$ 的像 $\rho_{GL}(GL(V))$ 和 $S_n$ 的像 $\rho_{S}(S_n)$ 在 $\operatorname{End}(V^{\otimes n})$ 中互相交换：
+\[
+\rho_{GL}(g)\rho_S(\pi)=\rho_S(\pi)\rho_{GL}(g).
+\]
+从而 $\rho_S(S_n)\subset\operatorname{Comm}(\rho_{GL}(GL(V)))$，反之亦然。这里 $\operatorname{Comm}(A)=\{B\mid AB=BA,\forall A\in A\}$ 是交换子代数。
+
+令 $A$ 为 $GL(V)$ 的对角作用生成的代数，$B=\rho_S(\CC[S_n])$ 为群代数的置换像。上式说明 $A\subset\operatorname{Comm}(B)$ 和 $B\subset\operatorname{Comm}(A)$。
+
+有限维双交换子定理断言：若 $A$ 是 $\operatorname{End}(V^{\otimes n})$ 的半单子代数，$A$ 在 $V^{\otimes n}$ 上的表示完全约化为 $\bigoplus_i U_i\otimes W_i$，其中 $U_i$ 是 $A$ 的互不等价不可约表示，$W_i$ 是重数空间，则
+\[
+\operatorname{Comm}(A)\cong\bigoplus_i\operatorname{End}(W_i),
+\]
+且 $\operatorname{Comm}(\operatorname{Comm}(A))=A$。特别地，$\operatorname{Comm}(A)$ 在每个重数空间 $W_i$ 上不可约地作用，而 $A$ 在 $U_i$ 上不可约地作用。
+
+对这个证明来说，关键事实是 $\operatorname{End}(V)$ 的对角作用 $A$ 与 $S_n$ 的置换作用 $B$ 恰好互为对方的交换子：
+\begin{equation}
+\operatorname{Comm}(A)=B,
+\qquad
+\operatorname{Comm}(B)=A.
+\label{eq:double-commutant}
+\end{equation}
+第一个等式的证明：$\operatorname{End}(V^{\otimes n})$ 由纯张量算符 $E_{i_1j_1}\otimes\cdots\otimes E_{i_nj_n}$ 张成。一个与 $S_n$ 交换的算符必须对所有置换 $\pi$ 满足 $\pi T\pi^{-1}=T$，因此只能是对各因子"对称化"后的算符，即 $A$ 中元素。更精确地说，$S_n$ 在张量指标上的作用把 $\operatorname{End}(V)^{\otimes n}$ 分成 $S_n$ 轨道，与 $S_n$ 交换的算符在每个轨道上取常系数，而这些恰好是 $\operatorname{End}(V)$ 对角作用的多项式。第二个等式由 $A$ 的半单性和双交换子定理的一般理论给出。
+
+由双中心化子定理，$V^{\otimes n}$ 作为 $A$-模完全约化为
+\[
+V^{\otimes n}\cong\bigoplus_\lambda U_\lambda\otimes W_\lambda,
+\]
+其中 $U_\lambda$ 是 $A\cong\operatorname{End}(V)$ 的不可约表示（因而也是 $GL(V)$ 的不可约表示），$W_\lambda$ 是重数空间。由 \eqnrefs{eq:double-commutant}，$B=\operatorname{Comm}(A)$ 在 $W_\lambda$ 上不可约地作用，且不同 $\lambda$ 给出不等价的 $B$-表示。
+
+现在需要确定哪些 $\lambda$ 出现。$GL(V)$ 的多项式不可约表示由分拆 $\lambda$ 标记，行数 $\ell(\lambda)\le d=\dim V$。在 $V^{\otimes n}$ 中出现的恰好是 $\deg\lambda=n$（即 $|\lambda|=n$）的那些。对应的 Schur 函子 $\mathbb{S}_\lambda(V)$ 可用 Young 对称化算符显式构造：对形状 $\lambda$ 的 Young 盘 $T$，
+\[
+\mathbb{S}_\lambda(V)=\operatorname{Im}(e_T:V^{\otimes n}\to V^{\otimes n}),
+\]
+其中 $e_T=a_Tb_T$ 是 \eqnrefs{eq:young-symmetrizer} 的 Young 对称算符，现在理解为 $V^{\otimes n}$ 上的线性算符。
+
+行数约束 $\ell(\lambda)\le d$ 的来源：若 $\lambda$ 有 $d+1$ 行，则 Young 图含 $d+1$ 格高的列。在 $d$ 维空间 $V$ 上，$d+1$ 个向量的完全反对称化恒为零，故 $\mathbb{S}_\lambda(V)=0$。
+
+最后，$W_\lambda$ 作为 $B=\rho_S(\CC[S_n])$ 的不可约表示，恰好是 Specht 模 $\mathrm{Sp}_\lambda$。这可以通过维数验证：$A$ 在 $U_\lambda=\mathbb{S}_\lambda(V)$ 上的不可约表示维数由钩-内容公式给出
+\begin{equation}
+\dim\mathbb{S}_\lambda(V)=\prod_{(i,j)\in\lambda}\frac{d+j-i}{h(i,j)},
+\label{eq:hook-content-formula}
+\end{equation}
+其中 $h(i,j)$ 是 $(i,j)$ 格的钩长。而 $W_\lambda$ 的维数由
+\[
+\dim W_\lambda=\frac{\dim V^{\otimes n}\text{ 中 }\lambda\text{ 分量的总维数}}{\dim\mathbb{S}_\lambda(V)}
+\]
+确定，恰好等于 $f^\lambda$（标准 Young 盘数），即 Specht 模维数。因此 $W_\lambda\cong\mathrm{Sp}_\lambda$，得到 \eqnrefs{eq:schur-weyl}。
+
+
+\begin{enumerate}[label=(\roman*),leftmargin=3em]
+\item $GL(V)$ 和 $S_n$ 的不可约表示以\emph{同一组分拆} $\lambda$ 为标签，形成精确的一一配对。
+\item 在每个直和项 $\mathbb{S}_\lambda(V)\otimes\mathrm{Sp}_\lambda$ 中，$GL(V)$ 只看到 $\mathbb{S}_\lambda(V)$，$S_n$ 只看到 $\mathrm{Sp}_\lambda$。固定 $GL(V)$ 的一个不可约分量后，$S_n$ 的作用被完全锁定，反之亦然。
+\item 行数约束 $\ell(\lambda)\le d$ 有明确的物理意义：若单粒子空间只有 $d$ 维，则 $d+1$ 个粒子的全反对称态自动为零（列长超过 $d$ 的 Young 图在 $V$ 上消失）。
+\end{enumerate}
+
+\begin{example}[{回到三个自旋 $1/2$}]
+取 $V=\CC^2$（自旋向上/向下），$n=3$。$3$ 的分拆中行数 $\le2$ 的只有 $[3]$ 和 $[2,1]$（$[1^3]$ 有 3 行，被排除）。Schur--Weyl 分解给出
+\[
+(\CC^2)^{\otimes3}
+\cong\mathbb{S}_{[3]}(\CC^2)\otimes\mathrm{Sp}_{[3]}
+\;\oplus\;
+\mathbb{S}_{[2,1]}(\CC^2)\otimes\mathrm{Sp}_{[2,1]}.
+\]
+$\mathbb{S}_{[3]}(\CC^2)=\mathrm{Sym}^3(\CC^2)$ 是 $SU(2)$ 的 $j=3/2$ 表示（4 维），$\mathrm{Sp}_{[3]}$ 是 $S_3$ 的平凡表示（1 维）；$\mathbb{S}_{[2,1]}(\CC^2)$ 是 $SU(2)$ 的 $j=1/2$ 表示（2 维），$\mathrm{Sp}_{[2,1]}$ 是 $S_3$ 的标准表示（2 维）。这正是 \eqnrefs{eq:three-spin-schur-weyl}，现在它不再是孤立的观察，而是 Schur--Weyl 对偶 $d=2,n=3$ 的特例。
+\end{example}
+
+\begin{workedexample}
+对三个自旋 $1/2$，写出 $S=3/2,M=1/2$ 的归一化态，并给出两个与其正交的 $M=1/2$ 态的一组选择。
+
+\textbf{解.}
+\[
+\ket{\tfrac32,\tfrac12}
+=\frac1{\sqrt3}
+(\alpha\alpha\beta+\alpha\beta\alpha+\beta\alpha\alpha).
+\]
+正交补可取
+\[
+\chi_1=\frac1{\sqrt2}(\alpha\beta\alpha-\beta\alpha\alpha),
+\]
+\[
+\chi_2=\frac1{\sqrt6}(2\alpha\alpha\beta-\alpha\beta\alpha-\beta\alpha\alpha).
+\]
+它们共同张成 $S_3$ 的二维 $[2,1]$ 对称类型，同时在 $SU(2)$ 下属于 $S=1/2$。
+\end{workedexample}
+
+
+\begin{example}[{$p^3$ 的 Schur--Weyl 视角}]
+取 $V=\CC^6$（$p$ 壳层的 6 个自旋-轨道），$n=3$。$3$ 的分拆中行数 $\le6$ 的全部保留：$[3]$、$[2,1]$、$[1^3]$。Schur--Weyl 给出
+\[
+(\CC^6)^{\otimes3}
+\cong\mathbb{S}_{[3]}(\CC^6)\otimes\mathrm{Sp}_{[3]}
+\oplus\mathbb{S}_{[2,1]}(\CC^6)\otimes\mathrm{Sp}_{[2,1]}
+\oplus\mathbb{S}_{[1^3]}(\CC^6)\otimes\mathrm{Sp}_{[1^3]}.
+\]
+费米子要求只取 $\mathrm{Sp}_{[1^3]}$（符号表示）分量，即 $\mathbb{S}_{[1^3]}(\CC^6)=\wedge^3\CC^6$，维数 $\binom63=20$，正是 $p^3$ 的微观态总数。在 $\wedge^3\CC^6$ 上进一步分解 $SU(2)\times SO(3)$（自旋--轨道部分），就得到 $^4S\oplus{}^2D\oplus{}^2P$。Schur--Weyl 对偶把“为什么取完全反对称”和“剩下哪些角动量”统一在一个分解中。
+\end{example}
+
+Schur--Weyl 对偶说明，单粒子空间的连续变换与粒子标签的置换并非两套独立分类，而是在张量积空间中按同一 Young 图彼此配对。自旋与交换对称性的配对正是 \eqnrefs{eq:schur-weyl} 在多体量子力学中的直接内容。
+
+Schur--Weyl 对偶中出现的 Schur 函子 $\mathbb{S}_\lambda(V)$ 的维数有一个类似钩长公式的闭式表达，称为钩-内容公式。它在 $p^3$ 推导中已用于验证各分量的维数。
+
+\begin{proposition}[Schur 函子的钩-内容维数公式]
+\label{prop:hook-content}
+设 $V=\CC^d$，$\lambda\vdash n$ 且 $\ell(\lambda)\le d$。Schur 函子 $\mathbb{S}_\lambda(V)$ 的维数为
+\begin{equation}
+\dim\mathbb{S}_\lambda(\CC^d)
+=\prod_{(i,j)\in\lambda}\frac{d+j-i}{h(i,j)},
+\label{eq:hook-content-full}
+\end{equation}
+其中 $(i,j)$ 遍历 Young 图 $\lambda$ 的所有方格（$i$ 为行号、$j$ 为列号），$h(i,j)$ 为该格的钩长。
+
+\end{proposition}
+
+\begin{proof}
+以零补齐 $\lambda$ 到 $d$ 行，令 $a_i=\lambda_i+d-i$。Schur 特征标的交错行列式表达式为
+\[
+s_\lambda(x_1,\dots,x_d)
+=\frac{\det(x_j^{a_i})_{i,j=1}^d}{\det(x_j^{d-i})_{i,j=1}^d}.
+\]
+取互异实数 $u_j$，置 $x_j=\ee^{tu_j}$ 后令 $t\to0$。展开每列的指数幂级数，行列式中最低非零总次数为 $0+1+\cdots+(d-1)$；分子和分母共同的 $t$ 幂、$u_j$ 的 Vandermonde 因子及阶乘因子相消，故
+\[
+\dim\mathbb S_\lambda(\CC^d)=s_\lambda(1,\dots,1)
+=\prod_{i<j}\frac{a_i-a_j}{j-i}.
+\]
+利用移位行长的钩积恒等式（\eqnrefs{eq:hook-product-shifted}）与逐行相乘，分别得到
+\[
+\prod_{(i,j)\in\lambda}h(i,j)
+=\frac{\prod_i a_i!}{\prod_{i<j}(a_i-a_j)},
+\qquad
+\prod_{(i,j)\in\lambda}(d+j-i)
+=\prod_i\frac{a_i!}{(d-i)!}.
+\]
+又因 $\prod_{i<j}(j-i)=\prod_i(d-i)!$，两式相除恰等于上述 Vandermonde 比值，从而得到钩-内容公式。这里先求恒等变换处的特征标，再用钩积恒等式化简；没有把待证维数公式当成半标准盘计数的前提。
+\end{proof}
+
+\begin{example}[{钩-内容公式验证}]
+\label{ex:hook-content-check}
+对 $d=3$（$p$ 轨道）、$n=3$：
+
+对一行图 $\lambda=[3]$，方格 $(1,1),(1,2),(1,3)$ 的 content 为 $0,1,2$，钩长度为 $3,2,1$：
+\[
+\dim\mathbb{S}_{[3]}(\CC^3)=\frac{3}{3}\cdot\frac{4}{2}\cdot\frac{5}{1}=1\cdot2\cdot5=10.
+\]
+这正是 $\dim(V_3\oplus V_1)=7+3=10$，与 \eqnrefs{eq:sym3-v1-decomp} 一致。
+
+对 $\lambda=[2,1]$，三个方格的 content 为 $0,1,-1$，钩长度为 $3,1,1$，因而
+\[
+\dim\mathbb{S}_{[2,1]}(\CC^3)
+=\frac{3}{3}\cdot\frac{4}{1}\cdot\frac{2}{1}=8.
+\]
+这与 \eqnrefs{eq:schur21-v1-decomp} 的 \(V_2\oplus V_1\) 一致。Schur--Weyl 分解中的整个 $[2,1]$ 同型分量还要乘以二维 Specht 模：
+\[
+\dim V_1^{\otimes3}=\sum_\lambda\dim\mathbb{S}_\lambda(V_1)\cdot f^\lambda
+\]
+其中 $f^\lambda$ 是 Specht 模维数。对 $[2,1]$，$f^{[2,1]}=2$，故该同型分量的总维数为 $8\times2=16$。
+
+对一列图 $\lambda=[1^3]$，content 为 $0,-1,-2$，钩长度为 $3,2,1$：
+\[
+\dim\mathbb{S}_{[1^3]}(\CC^3)=\frac{3}{3}\cdot\frac{2}{2}\cdot\frac{1}{1}=1.
+\]
+这正是 $\dim\wedge^3\CC^3=1$。
+\end{example}
+
+\begin{example}[$SU(3)$ 夸克多重态：Schur 函子的物理出口]
+Schur--Weyl 对偶把 $GL(d)$（取 $d=3$）的张量积按 Young 形 $\mathbb{S}_\lambda(\CC^3)$ 分解，这正是夸克模型的群论骨架。用钩-内容公式 \eqnrefs{eq:hook-content-full} 直接数维数，无需更专门的 LR 规则（见\chapref{app:symmetric-functions}）。
+
+\textbf{两个夸克 $\mathbf 3\otimes\mathbf 3$。} $\CC^3\otimes\CC^3$ 按对称化拆成对称与反对称两半：
+\[
+\mathbf 3\otimes\mathbf 3=\underbrace{\mathbb{S}_{[2]}(\CC^3)}_{\mathbf 6}\oplus\underbrace{\mathbb{S}_{[1,1]}(\CC^3)}_{\bar{\mathbf 3}}.
+\]
+用钩-内容公式核对：$[2]$ 维数 $=\frac{3}{2}\cdot\frac{4}{1}=6$（全对称 $\operatorname{Sym}^2\CC^3$，六重态）；$[1,1]$ 维数 $=\frac{3}{2}\cdot\frac{2}{1}=3$（全反对称 $\wedge^2\CC^3$，对 $SU(3)$ 等价于反三重态 $\bar{\mathbf 3}$）。$6+3=9=3\times3$，维数闭合。
+
+\textbf{三个夸克 $\mathbf 3^{\otimes3}$。} 在 $3\otimes3=\mathbf 6\oplus\bar{\mathbf 3}$ 上再作用一个 $\mathbf 3$：$\mathbf 6\otimes\mathbf 3$ 拆成 $\mathbf{10}\oplus\mathbf 8$，$\bar{\mathbf 3}\otimes\mathbf 3$ 拆成 $\mathbf 8\oplus\mathbf 1$，合起来
+\[
+\mathbf 3\otimes\mathbf 3\otimes\mathbf 3=\mathbf{10}\oplus\mathbf 8\oplus\mathbf 8\oplus\mathbf 1.
+\]
+用钩-内容公式逐形核对：$[3]$ 维数 $=\frac{3}{3}\cdot\frac{4}{2}\cdot\frac{5}{1}=10$（全对称十重态，对应 $\Delta,\Sigma^*,\Xi^*,\Omega^-$）；$[2,1]$ 维数 $=\frac{3}{3}\cdot\frac{4}{1}\cdot\frac{2}{1}=8$（混合对称八重态，出现两次，对应 $N,\Sigma,\Lambda,\Xi$）；$[1^3]$ 维数 $=1$（全反对称单态）。$10+8+8+1=27=3^3$，维数闭合。这就是重子十重态与八重态的群论来源。
+\end{example}
+
+Schur--Weyl 对偶还自然导出 $S_n$ 表示的\emph{分支法则}，它描述从 $n$ 粒子到 $n+1$ 粒子时表示如何分裂，在多电子原子中直接对应"添加一个电子"的过程。
+
+\begin{proposition}[$S_n$ 表示的分支法则]
+\label{prop:branching-rule}
+将 $S_n$ 的不可约表示 $\mathrm{Sp}_\lambda$ 限制到子群 $S_{n-1}$（固定第 $n$ 个粒子），其分解为
+\begin{equation}
+\mathrm{Sp}_\lambda\big\downarrow_{S_{n-1}}^{S_n}
+=\bigoplus_{\mu}\mathrm{Sp}_\mu,
+\label{eq:sn-branching-rule}
+\end{equation}
+其中 $\mu$ 遍历从 Young 图 $\lambda$ 删除一个可移去角格得到的所有 Young 图。
+
+\end{proposition}
+
+\begin{proof}
+Specht 模 $S^\lambda=\CC[S_n]e_T$ 的一组基由标准 Young 盘标记（标准盘基定理）。$S_{n-1}$ 作用在标签 $\{1,\dots,n-1\}$ 上，固定标签 $n$。一个标准 $\lambda$-盘中，数字 $n$ 必须出现在某个可移去角格（因为标准性要求 $n$ 右方和下方都没有数字）。删除含 $n$ 的角格后，剩余数字 $1,\dots,n-1$ 仍按标准方式填入一个 $(n-1)$-分拆 $\mu$ 的 Young 图。因此
+\[
+\{\text{标准 }\lambda\text{-盘}\}
+=\bigsqcup_{\mu}\{\text{标准 }\mu\text{-盘}\},
+\]
+其中 $\mu$ 遍历从 $\lambda$ 删除一个角格的所有可能。这给出 \eqnrefs{eq:sn-branching-rule}。
+\end{proof}
+
+\begin{example}[{分支法则的物理应用：$p^2\to p^3$}]
+从 $p^2$ 到 $p^3$ 相当于添加一个 $p$ 电子。$p^2$ 的项符号为 ${}^1S,{}^1D,{}^3P$（\cref{ex:p2-config}），$p^3$ 为 ${}^4S,{}^2D,{}^2P$。
+
+从 $S_2$ 到 $S_3$，我们对每个 $S_3$ 不可约表示用分支法则看它限制到 $S_2$ 后拆成哪些分量。Young 图 $[3]$ 只有右端一个可移去角格，因此限制到 $S_2$ 只得到 $[2]$。各不可约表示分别有如下分支：
+\[
+[3]\big\downarrow_{S_2}^{S_3}=[2],
+\qquad
+[2,1]\big\downarrow_{S_2}^{S_3}=[2]\oplus[1,1],
+\qquad
+[1^3]\big\downarrow_{S_2}^{S_3}=[1,1].
+\]
+$[2,1]$ 有两个可移去角格（第一行右端和第二行末端），删除后分别得到 $[2]$ 和 $[1,1]$。维数检查：$f^{[2,1]}=2=f^{[2]}+f^{[1,1]}=1+1$。
+
+物理上，添加一个 $p$ 电子到 $p^2$ 构型时，新的 $S_3$ 对称类型由分支法则决定：$p^2$ 中 $S_2$ 对称类型 $[2]$（空间对称）可以来自 $S_3$ 的 $[3]$ 或 $[2,1]$；$[1,1]$（空间反对称）可以来自 $[2,1]$ 或 $[1^3]$。这与 $p^3$ 的结果 ${}^4S,{}^2D,{}^2P$ 一致：$^4S$ 的轨道 $[1^3]$ 限制到 $S_2$ 给 $[1,1]$，$^2D$ 和 $^2P$ 的轨道 $[2,1]$ 限制到 $S_2$ 给 $[2]\oplus[1,1]$。
+\end{example}
+
+

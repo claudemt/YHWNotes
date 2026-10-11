@@ -1,59 +1,360 @@
-\section{环境带走相位信息时，哪一项先衰减}
+\section{能量梳中的退相干：哪个机制先破坏边带相干}
 \label{chap:feqo-decoherence}
 
-电子的边带人口与边带相干是不同的矩阵元。设传播中电子边带 \(|\ell\rangle\) 分别把环境初态 \(|\varepsilon_0\rangle\) 变为 \(|\varepsilon_\ell(t)\rangle\)。对联合态求环境偏迹得到
+\subsection{退相干的物理含义}
+
+\cref{chap:feqo-attosecond} 表明，PINEM 边带之间的相位相干性通过自由传播转化为时间域上的阿秒聚束。这一过程要求所有边带保持确定的相对相位。然而，真实传播中电子会经历各种未记录的扰动：它们不一定改变边带概率 $|c_\ell|^2$，却可能随机改变边带之间的相位，从而使时间峰变浅甚至消失。
+
+退相干（decoherence）在此处的含义是：电子密度矩阵的非对角元 $\rho_{\ell\ell'}$（$\ell\neq\ell'$）在传播中衰减。这一衰减不是由某个抽象的"主方程"规定的公理，而是可以从具体的物理机制推导出来的。
+
+\subsection{密度矩阵中的退相干}
+
+\subsubsection{环境诱导的退相干}
+
+设传播中电子边带 $|\ell\rangle$ 分别把环境初态 $|\varepsilon_0\rangle$ 变为 $|\varepsilon_\ell(t)\rangle$。联合态为
 \begin{equation}
-\rho_{\ell\ell'}(t)=\rho_{\ell\ell'}(0)
-e^{-\ii(E_\ell-E_{\ell'})t/\hbar}
-\langle\varepsilon_{\ell'}(t)|\varepsilon_\ell(t)\rangle .
+|\Psi(t)\rangle=\sum_\ell c_\ell|\ell\rangle\otimes|\varepsilon_\ell(t)\rangle.
+\label{eq:feqo-joint-state}
+\end{equation}
+对环境自由度求偏迹（partial trace），得到电子的约化密度矩阵：
+\begin{equation}
+\rho_{\ell\ell'}(t)=\sum_{\varepsilon}\langle\ell,\varepsilon|\Psi(t)\rangle\langle\Psi(t)|\ell',\varepsilon\rangle
+=c_\ell c_{\ell'}^*e^{-\ii(E_\ell-E_{\ell'})t/\hbar}
+\langle\varepsilon_{\ell'}(t)|\varepsilon_\ell(t)\rangle.
 \label{eq:feqo-decoherence-factor}
 \end{equation}
-同一通道的环境态范数是一，所以人口可以不变；不同通道留下可区分的环境记录时，重叠模长小于一，时间密度\cref{eq:feqo-temporal-density} 中的相应拍频就变浅。这一计算已经解释了“退相干”，无需先背主方程名称。
+同一通道（$\ell=\ell'$）的环境态范数为一，故对角元（概率）不变：$\rho_{\ell\ell}(t)=|c_\ell|^2$。不同通道（$\ell\neq\ell'$）的环境态重叠 $\langle\varepsilon_{\ell'}|\varepsilon_\ell\rangle$ 的模长小于一时，非对角元衰减，时间密度\cref{eq:feqo-temporal-density}中的相应拍频变浅。
 
-可直接求解的电子模型是随机相位。令 \(L_e|\ell\rangle=\ell|\ell\rangle\)，噪声哈密顿量为 \(H_{\rm noise}(t)=\hbar\xi(t)L_e\)，其中实随机过程 \(\xi\) 单位为 \(\si{\per\second}\)，平均零，相关函数 \(C(t-s)=\mathbb E[\xi(t)\xi(s)]\)。在每次噪声实现中，\(\rho_{\ell\ell'}\) 多乘 \(e^{-\ii(\ell-\ell')X_t}\)，\(X_t=\int_0^t\xi(s)\dd s\)。若 \(\xi\) 为高斯过程，\(X_t\) 也是零均值高斯变量，特征函数 \(\mathbb E[e^{-\ii kX_t}]=e^{-k^2\mathbb E X_t^2/2}\) 给
+定义退相干因子
+\begin{equation}
+D_{\ell\ell'}(t):=|\langle\varepsilon_{\ell'}(t)|\varepsilon_\ell(t)\rangle|,
+\label{eq:feqo-decoherence-factor-def}
+\end{equation}
+则 $D_{\ell\ell}=1$，$D_{\ell\ell'}\leq 1$。退相干的程度由环境态的可区分度决定：若不同边带把环境推到了正交态（$D_{\ell\ell'}=0$），相干性完全丧失。
+
+\subsubsection{对时间密度的影响}
+
+将退相干因子代入\cref{eq:feqo-temporal-density}，时间密度变为
+\begin{equation}
+T_\omega I(\tau;L)=\sum_{m}b_m(L)\cdot D_m\cdot e^{-\ii m\omega\tau},
+\label{eq:feqo-damped-temporal-density}
+\end{equation}
+其中 $D_m$ 是第 $m$ 阶聚束因子受到的衰减。对高斯型退相干（见下文），$D_m=e^{-m^2\Gamma/2}$，高阶谐波先衰减。
+
+\subsection{机制一：初始能量展宽}
+
+\subsubsection{物理图像}
+
+入射电子束有纵向能量展宽 $\sigma_E$（来自电子枪的热发射或加速电压的纹波）。这一展宽在 PINEM 相互作用前就存在，不是传播中产生的。但它通过以下机制影响边带相干性：不同初始能量的电子获得不同的群速度，在漂移中积累不同的到达时间偏移。
+
+\subsubsection{退相干因子的推导}
+
+设电子中心能量有宽度 $\sigma_E$ 的窄高斯分布 $f(\epsilon)=(2\pi\sigma_E^2)^{-1/4}e^{-\epsilon^2/(4\sigma_E^2)}$，$\int|f|^2\dd\epsilon=1$。对给定边带 $\ell$，能量为 $E_\ell+\epsilon$ 的电子的群速度为
+\begin{equation}
+v_\ell(\epsilon)\approx v_\ell-\frac{\epsilon}{\gamma_\ell^3 mv_\ell^2},
+\label{eq:feqo-energy-dependent-velocity}
+\end{equation}
+其中 $v_\ell$ 是 $\epsilon=0$ 时的群速度。在距离 $L$ 上的到达时间偏移为
+\begin{equation}
+\delta t_\ell(\epsilon)=-\frac{L\epsilon}{\gamma_\ell^3 mv_\ell^3}\approx-\frac{L\epsilon}{\gamma_0^3 mv_0^3}.
+\label{eq:feqo-arrival-time-jitter}
+\end{equation}
+最后一步假设 $|\ell\hbar\omega|\ll E_0$，故 $v_\ell\approx v_0$，$\gamma_\ell\approx\gamma_0$。
+
+第 $m$ 阶聚束因子涉及边带 $\ell$ 与 $\ell-m$ 的干涉。两者的到达时间差为
+\begin{equation}
+\Delta t_m(\epsilon)=\delta t_\ell(\epsilon)-\delta t_{\ell-m}(\epsilon)
+\approx-\frac{L\epsilon}{\gamma_0^3 mv_0^3}+\frac{L\epsilon}{\gamma_0^3 mv_0^3}=0.
+\label{eq:feqo-arrival-difference-zero}
+\end{equation}
+等一下——在窄带近似下，所有边带的速度偏移相同，到达时间差为零。这意味着初始能量展宽不直接导致边带间的退相干？
+
+不完全是。关键在于：初始能量展宽使每条边带的\emph{绝对}到达时间不确定，从而在对多个电子取平均时，时间密度被模糊。对单个电子，边带间的相干性完好；但对系综平均，时间密度的振荡被压低。
+
+具体来说，对到达时间作经典平均后，第 $m$ 个时间谐波乘以
+\begin{equation}
+D_m^{(E)}=\exp\!\left[-\frac{1}{2}(m\omega\cdot\delta t)^2\right]
+=\exp\!\left[-\frac{1}{2}\left(\frac{m\omega L\sigma_E}{\gamma_0^3mv_0^3}\right)^2\right].
+\label{eq:feqo-energy-damping}
+\end{equation}
+推导如下：到达时间偏移 $\delta t=-L\epsilon/(\gamma_0^3mv_0^3)$，$\epsilon$ 服从高斯分布 $e^{-\epsilon^2/(2\sigma_E^2)}$，故 $\delta t$ 也服从高斯分布，方差 $\sigma_t^2=(L\sigma_E/(\gamma_0^3mv_0^3))^2$。第 $m$ 阶谐波 $e^{-\ii m\omega\tau}$ 对 $\tau$ 的平均给出 $\langle e^{-\ii m\omega\delta t}\rangle=e^{-m^2\omega^2\sigma_t^2/2}$。
+
+\subsubsection{特征距离}
+
+定义能量展干的退相干距离 $L_E$ 为 $D_1^{(E)}=e^{-1/2}$ 的距离：
+\begin{equation}
+L_E=\frac{\gamma_0^3mv_0^3}{\omega\sigma_E}.
+\label{eq:feqo-LE-def}
+\end{equation}
+注意 $L_E=2L_{\rm coh}$（\cref{eq:feqo-coherence-length}），两者描述同一物理。
+
+\subsection{机制二：角展宽（横向动量）}
+
+\subsubsection{物理图像}
+
+电子束有有限的横向尺寸和角展宽。横向动量 $p_\perp$ 使电子的实际轨迹偏离 $z$ 轴，路径长度增加，从而改变积累的有效相位。不同电子的 $p_\perp$ 不同，导致相位偏移不同，系综平均后退相干。
+
+\subsubsection{退相干因子的推导}
+
+设电子的纵向动量为 $p_z$，横向动量为 $p_\perp$。精确动量为 $p=\sqrt{p_z^2+p_\perp^2}$。对小角近似（$p_\perp\ll p_z$）：
+\begin{equation}
+p\approx p_z+\frac{p_\perp^2}{2p_z}.
+\label{eq:feqo-transverse-momentum-expansion}
+\end{equation}
+在漂移距离 $L$ 上，横向动量引入的额外相位为
+\begin{equation}
+\delta\phi_\ell=\frac{L}{\hbar}\cdot\frac{p_\perp^2}{2p_{z,\ell}}
+\approx\frac{Lp_\perp^2}{2\hbar p_0}\left(1-\frac{\ell\hbar\omega}{E_0}\right),
+\label{eq:feqo-angular-phase}
+\end{equation}
+其中 $p_{z,\ell}\approx p_0+\ell\hbar\omega/v_0$，并使用了 $1/p_{z,\ell}\approx(1-\ell\hbar\omega/(p_0v_0))/p_0$。
+
+边带 $\ell$ 与 $\ell'$ 之间的相位差为
+\begin{equation}
+\Delta\phi_{\ell\ell'}=\delta\phi_\ell-\delta\phi_{\ell'}
+\approx\frac{Lp_\perp^2}{2\hbar p_0}\cdot\frac{(\ell'-\ell)\hbar\omega}{E_0}
+=-\frac{Lp_\perp^2(\ell-\ell')\omega}{2\hbar v_0 E_0}.
+\label{eq:feqo-angular-phase-diff}
+\end{equation}
+对 $p_\perp$ 的高斯分布 $f(p_\perp)\propto e^{-p_\perp^2/(2\sigma_\perp^2)}$ 取平均，第 $m$ 阶谐波乘以
+\begin{equation}
+D_m^{(\theta)}=\left\langle e^{\ii m\omega Lp_\perp^2/(2\hbar v_0 E_0)}\right\rangle
+=\int\frac{\dd p_\perp}{\sqrt{2\pi}\sigma_\perp}
+e^{-p_\perp^2/(2\sigma_\perp^2)}e^{\ii m\omega Lp_\perp^2/(2\hbar v_0 E_0)}.
+\label{eq:feqo-angular-average}
+\end{equation}
+合并指数：$-p_\perp^2/(2\sigma_\perp^2)+\ii m\omega Lp_\perp^2/(2\hbar v_0 E_0)=-p_\perp^2(1/(2\sigma_\perp^2)-\ii m\omega L/(2\hbar v_0 E_0))$。高斯积分给出
+\begin{equation}
+D_m^{(\theta)}=\frac{1}{\sqrt{1-\ii m\omega L\sigma_\perp^2/(\hbar v_0 E_0)}}.
+\label{eq:feqo-angular-damping}
+\end{equation}
+模长为
+\begin{equation}
+|D_m^{(\theta)}|=\frac{1}{\left[1+(m\omega L\sigma_\perp^2/(\hbar v_0 E_0))^2\right]^{1/4}}.
+\label{eq:feqo-angular-damping-modulus}
+\end{equation}
+定义角展宽的退相干距离 $L_\theta$ 为 $|D_1^{(\theta)}|=1/\sqrt{2}$（即功率衰减一半）的距离：
+\begin{equation}
+L_\theta=\frac{\hbar v_0 E_0}{\omega\sigma_\perp^2}.
+\label{eq:feqo-Ltheta-def}
+\end{equation}
+当 $L\gg L_\theta$ 时，$|D_m^{(\theta)}|\sim(L_\theta/(mL))^{1/2}$，衰减慢于高斯型。
+
+
+\par
+\begin{workedexample}
+对\cref{eq:feqo-angular-damping}，推导角展宽退相干距离 $L_\theta$ 的表达式，并计算 $100\ \si{\kilo\electronvolt}$ 电子、$2\ \si{\micro\metre}$ 激光、$\sigma_\theta=2\ \si{\milli\radian}$ 时的数值。
+\textbf{解.} 令 $|D_1^{(\theta)}|=1/\sqrt2$，由\cref{eq:feqo-angular-damping-modulus} 得 $L_\theta=\hbar v_0E_0/(\omega\sigma_\perp^2)$，其中 $\sigma_\perp=p_0\sigma_\theta$。按相对论动量 $p_0^2=E_0^2/c^2-m^2c^2$ 代入，$100$ keV、$2\,\si{\micro\metre}$、$2$ mrad 给 $L_\theta\approx6.8$ m（约数）；毫米漂移远短于该尺度。
+\end{workedexample}
+\par
+\begin{exbox}[数值估计]
+取 $200\ \si{\kilo\electronvolt}$ 电子（$E_0=200\ \si{\kilo\electronvolt}$，$v_0=0.686c$），$800\ \si{\nano\metre}$ 激光，角展宽 $\sigma_\theta=\sigma_\perp/p_0=1\ \si{\milli\radian}$（$\sigma_\perp=p_0\times10^{-3}$）：
+\begin{equation}
+L_\theta=\frac{\hbar v_0 E_0}{\omega p_0^2\theta^2}
+=\frac{\hbar E_0}{\omega p_0\theta^2}
+=\frac{1.055\times10^{-34}\times3.2\times10^{-14}}{2.36\times10^{15}\times2.5\times10^{-22}\times10^{-6}}
+\approx\frac{3.4\times10^{-48}}{5.9\times10^{-4}}\approx 5.8\ \si{\metre}.
+\end{equation}
+对典型的毫米量级漂移，角展宽的退相干效应远弱于能量展宽。
+
+\end{exbox}
+
+
+\par
+\begin{workedexample}
+设库仑散射导致的能量偏移服从方差 $\sigma_{E,C}^2$ 的高斯分布。推导退相干因子 $D_m^{(C)}$ 的表达式，并估算在什么束流密度下库仑退相干与能量展宽退相干相当。
+\textbf{解.} 高斯平均 $\langle e^{i m\omega L\delta E/(\gamma_0^3mv_0^3)}\rangle$ 直接给出 $D_m^{(C)}=\exp[-\tfrac12(m\omega L\sigma_{E,C}/(\gamma_0^3mv_0^3))^2]$。它与初始能散退相干相当的判据是 $\sigma_{E,C}\simeq\sigma_E$；由本章估算式，临界数密度量级满足 $n\ln\Lambda\,[e^2/(4\pi\varepsilon_0b_{\min})]^2\sim\sigma_E^2$。具体束流密度还依赖碰撞参数与库仑对数，不能从给定方差模型单独定出唯一数值。
+\end{workedexample}
+\par
+\subsection{机制三：束内库仑相互作用}
+
+\subsubsection{物理图像}
+
+电子束包含大量电子，它们之间的库仑排斥使每个电子的能量发生随机偏移。这一偏移随时间（沿漂移路径）积累，导致边带相干性的衰减。与机制一不同，这里的能量偏移是传播中产生的，不是初始就有的。
+
+\subsubsection{退相干因子的推导}
+
+设束内有 $N_e$ 个电子，束的纵向尺寸为 $\sigma_z$，横向尺寸为 $\sigma_r$。两个电子之间的库仑势能为
+\begin{equation}
+U(r)=\frac{e^2}{4\pi\varepsilon_0 r},
+\label{eq:feqo-coulomb-potential}
+\end{equation}
+其中 $r$ 是电子间距。在束内，每个电子感受到的平均库仑势能约为
+\begin{equation}
+\langle U\rangle\sim\frac{e^2}{4\pi\varepsilon_0}\cdot\frac{N_e}{\sigma_z\sigma_r^2}\cdot\frac{1}{n_{\rm eff}},
+\label{eq:feqo-mean-coulomb}
+\end{equation}
+其中 $n_{\rm eff}$ 是有效邻居数。更精确地，库仑散射导致的能量偏移的均方根为
+\begin{equation}
+\sigma_{E,C}^2\sim n\cdot\left(\frac{e^2}{4\pi\varepsilon_0 b_{\min}}\right)^2\cdot\ln\Lambda,
+\label{eq:feqo-coulomb-energy-spread}
+\end{equation}
+其中 $n=N_e/(\sigma_z\pi\sigma_r^2)$ 是数密度，$b_{\min}$ 是最小碰撞参数，$\ln\Lambda$ 是库仑对数。
+
+这一能量偏移在漂移距离 $L$ 上积累。由\cref{eq:feqo-energy-damping}，库仑散射的退相干因子为
+\begin{equation}
+D_m^{(C)}=\exp\!\left[-\frac{1}{2}\left(\frac{m\omega L\sigma_{E,C}}{\gamma_0^3mv_0^3}\right)^2\right].
+\label{eq:feqo-coulomb-damping}
+\end{equation}
+
+\begin{exbox}[数值估计]
+取典型 EELS 参数：$N_e=10^4$（每脉冲），$\sigma_z=10\ \si{\nano\metre}$，$\sigma_r=1\ \si{\nano\metre}$，$200\ \si{\kilo\electronvolt}$ 电子：
+\begin{equation}
+n=\frac{10^4}{10^{-8}\times\pi\times10^{-18}}=\frac{10^4}{3.14\times10^{-26}}\approx 3.2\times10^{31}\ \si{\per\metre\cubed}.
+\end{equation}
+最小碰撞参数 $b_{\min}\sim\hbar/(mv_0)\approx 0.4\ \si{\nano\metre}$（de Broglie 波长），库仑对数 $\ln\Lambda\sim 10$：
+\begin{equation}
+\sigma_{E,C}^2\sim 3.2\times10^{31}\times\left(\frac{(1.6\times10^{-19})^2}{4\pi\times8.85\times10^{-12}\times0.4\times10^{-9}}\right)^2\times 10.
+\end{equation}
+括号内为 $e^2/(4\pi\varepsilon_0 b_{\min})=5.76\times10^{-19}/(4\pi\times8.85\times10^{-12}\times0.4\times10^{-9})\approx 5.2\times10^{-19}\ \si{\joule}\approx 3.2\ \si{\electronvolt}$。
+\begin{equation}
+\sigma_{E,C}^2\sim 3.2\times10^{31}\times(3.2\times1.6\times10^{-19})^2\times 10
+\sim 3.2\times10^{31}\times2.6\times10^{-37}\times 10\sim 8.3\times10^{-5}\ \si{\electronvolt\squared}.
+\end{equation}
+$\sigma_{E,C}\sim 9\ \si{\milli\electronvolt}$。这远小于典型初始能散（$\sim 0.5$--$1\ \si{\electronvolt}$），因此在大多数 EELS 实验中，库仑退相干可以忽略。但在高亮度、低能电子束中（如超冷电子源），库仑效应可能变得重要。
+
+\end{exbox}
+
+\subsection{随机相位噪声模型}
+
+\subsubsection{一般框架}
+
+除上述具体机制外，退相干也可以用一般的随机相位噪声模型描述。设噪声哈密顿量为 $H_{\rm noise}(t)=\hbar\xi(t)L_e$，其中 $L_e|\ell\rangle=\ell|\ell\rangle$，$\xi(t)$ 是实随机过程，平均零，相关函数 $C(t-s)=\mathbb{E}[\xi(t)\xi(s)]$。
+
+在每次噪声实现中，$\rho_{\ell\ell'}$ 多乘 $e^{-\ii(\ell-\ell')X_t}$，$X_t=\int_0^t\xi(s)\dd s$。若 $\xi$ 为高斯过程，$X_t$ 也是零均值高斯变量，特征函数 $\mathbb{E}[e^{-\ii kX_t}]=e^{-k^2\mathbb{E}X_t^2/2}$ 给出
 \begin{equation}
 D_{\ell\ell'}(t)=\exp\!\left[-\frac{(\ell-\ell')^2}{2}
 \int_0^t\dd s\int_0^t\dd s'\,C(s-s')\right].
 \label{eq:feqo-gaussian-dephasing}
 \end{equation}
-指数无量纲，\(D_{\ell\ell}=1\)，且高阶时间谐波因 \(|\ell-\ell'|\) 大而衰减更快。这一通道也可写成对随机酉算符 \(e^{-\ii X_tL_e}\) 的概率平均，因此保持正性和迹。
+指数无量纲，$D_{\ell\ell}=1$，且高阶时间谐波因 $|\ell-\ell'|$ 大而衰减更快。这一计算也可写成对随机酉算符 $e^{-\ii X_tL_e}$ 的概率平均，因此保持正性和迹。
 
-取 \(C(u)=\sigma^2e^{-|u|/\tau_c}\)。把正方形 \([0,t]^2\) 按 \(s>s'\) 对半，积分可手算为
-\[
+\subsubsection{指数相关函数}
+
+取 $C(u)=\sigma^2e^{-|u|/\tau_c}$（Ornstein--Uhlenbeck 噪声）。把正方形 $[0,t]^2$ 按 $s>s'$ 对半，积分可手算：
+\begin{align}
 \int_0^t\dd s\int_0^t\dd s'\,C(s-s')
-=2\sigma^2\bigl[t\tau_c-\tau_c^2(1-e^{-t/\tau_c})\bigr].
-\]
-故 \(t\ll\tau_c\) 时 \(D_{\ell\ell'}\simeq e^{-(\ell-\ell')^2\sigma^2t^2/2}\)，而 \(t\gg\tau_c\) 时衰减率趋向 \((\ell-\ell')^2\sigma^2\tau_c\)。只有相关时间 \(\tau_c\) 远短于观测时间及电子相干变化尺度，才可用常数速率的马尔可夫方程代替原来的双重积分。
+&=2\int_0^t\dd s\int_0^s\dd s'\,\sigma^2 e^{-(s-s')/\tau_c}\notag\\
+&=2\sigma^2\int_0^t\dd s\left[-\tau_c e^{-(s-s')/\tau_c}\right]_{s'=0}^{s'=s}\notag\\
+&=2\sigma^2\int_0^t\dd s\,\tau_c(1-e^{-s/\tau_c})\notag\\
+&=2\sigma^2\left[t\tau_c-\tau_c^2(1-e^{-t/\tau_c})\right].
+\label{eq:feqo-ou-integral}
+\end{align}
 
-在这个后一个时间窗内，令 \(D=\sigma^2\tau_c\)（单位 \(\si{\per\second}\)）。因为对任意矩阵元有 \([L_e,[L_e,\rho]]_{\ell\ell'}=(\ell-\ell')^2\rho_{\ell\ell'}\)，刚才的长时指数等价于
+\subsubsection{Markov 近似}
+
+在长时极限下，令 $D=\sigma^2\tau_c$（单位 $\si{\per\second}$）。因为对任意矩阵元有 $[L_e,[L_e,\rho]]_{\ell\ell'}=(\ell-\ell')^2\rho_{\ell\ell'}$，长时指数衰减等价于主方程
 \begin{equation}
 \frac{\dd\rho_e}{\dd t}
 =-\frac{\ii}{\hbar}[H_0,\rho_e]
 -D[L_e,[L_e,\rho_e]].
 \label{eq:feqo-markov-dephasing}
 \end{equation}
-这里 \(H_0=\sum_\ell E_\ell|\ell\rangle\langle\ell|\)，并假设它与 \(L_e\) 对易。双重对易不改变对角元，却使第 \(m\) 阶拍频以速率 \(Dm^2\) 衰减。这个方程不是任意环境都满足的公理；它是相关时间短、噪声高斯且只耦合 \(L_e\) 时由上面的精确平均得到的极限。若环境能实际交换边带能量，还须增加改变人口的跃迁项。
+这里 $H_0=\sum_\ell E_\ell|\ell\rangle\langle\ell|$，并假设它与 $L_e$ 对易。双重对易子不改变对角元（$[L_e,[L_e,\rho]]_{\ell\ell}=(\ell-\ell)^2\rho_{\ell\ell}=0$），却使第 $m$ 阶拍频以速率 $Dm^2$ 衰减。
 
-\cref{fig:dephasing-coherence} 把\cref{eq:feqo-markov-dephasing} 的速率按 \(|\ell-m|\) 分层画出来，横轴是标度化时间 \(\Gamma_\phi t\)。\(\Gamma_\phi t=1\) 时相邻边带的相干还剩 \(0.61\)，相隔两格只剩 \(0.14\)，相隔四格已掉到 \(3\times10^{-4}\) 以下；三条曲线都是单指数且互不相交，所以先衰减的始终是 \(|\ell-m|\) 最大的那一批副对角元，而不是所有人一起掉。
+\begin{note}[适用范围]
+这个 Markov 方程不是任意环境都满足的公理；它是相关时间短（$\tau_c\ll t$）、噪声高斯且只耦合 $L_e$ 时由\cref{eq:feqo-gaussian-dephasing}的精确平均得到的极限。若环境能实际交换边带能量（非纯退相），还须增加改变对角元的跃迁项（Lindblad 跃迁算符）。
+
+\end{note}
+
+\subsection{各机制的比较与联系}
+
+\subsubsection{退相干距离的比较}
+
+三种机制定义了各自的退相干距离：
+\begin{align}
+L_E&=\frac{\gamma_0^3mv_0^3}{\omega\sigma_E}&\text{（能量展宽）},\label{eq:feqo-LE-compare}\\
+L_\theta&=\frac{\hbar v_0 E_0}{\omega\sigma_\perp^2}&\text{（角展宽）},\label{eq:feqo-Ltheta-compare}\\
+L_C&=\frac{\gamma_0^3mv_0^3}{\omega\sigma_{E,C}}&\text{（库仑）}.\label{eq:feqo-LC-compare}
+\end{align}
+对典型 EELS 参数（$200\ \si{\kilo\electronvolt}$，$800\ \si{\nano\metre}$，$\sigma_E=1\ \si{\electronvolt}$，$\sigma_\theta=1\ \si{\milli\radian}$），$L_E\sim 1.6\ \si{\metre}$，$L_\theta\sim 6\ \si{\metre}$，$L_C\sim 180\ \si{\metre}$。能量展宽是主导的退相干机制。
+
+\subsubsection{与自由传播的联系}
+
+\cref{chap:feqo-free-propagation} 表明，自由传播通过二次色散使不同边带在时间上分离。这一分离本身就是退相干的一种表现：当边带在时间上不可重叠时，它们无法相干叠加形成时间结构。能量展宽的退相干距离 $L_E=2L_{\rm coh}$（\cref{eq:feqo-coherence-length}）正是这一图像的定量表述。
+
+\subsubsection{与阿秒聚束的联系}
+
+\cref{chap:feqo-attosecond} 的聚束要求 $|b_m|\sim 1$。退相干使 $|b_m|$ 乘以 $D_m<1$，从而降低聚束对比度。特别地，高阶谐波（大 $m$）衰减更快，导致时间峰的宽度增加、高度降低。最优聚束距离 $L_{\rm opt}$ 必须满足 $L_{\rm opt}\ll L_E$，否则退相干在聚束形成之前就破坏了相干性。
+
+
+\par
+\begin{workedexample}
+把指数相关函数 $C(u)=\sigma^2 e^{-|u|/\tau_c}$ 的双重积分化为 $2\int_0^t(t-u)C(u)\dd u$，完成积分并核对短时（$t\ll\tau_c$）和长时（$t\gg\tau_c$）两个极限。
+\textbf{解.} 利用相关函数的偶对称性将正方形积分域折成两半，得 $2\int_0^t(t-u)C(u)\,du=2\sigma^2[\tau_ct-\tau_c^2(1-e^{-t/\tau_c})]$。短时展开为 $\sigma^2t^2+O(t^3/\tau_c)$，长时为 $2\sigma^2\tau_ct-2\sigma^2\tau_c^2+o(1)$，分别对应准静态涨落与线性累积扩散。
+\end{workedexample}
+\par
+\subsection{算例：典型 EELS 参数下的退相干时间}
+
+\subsubsection{参数}
+
+\begin{itemize}
+\item $200\ \si{\kilo\electronvolt}$ 电子：$\gamma_0=1.391$，$v_0=0.686c$
+\item $800\ \si{\nano\metre}$ 激光：$\omega=2.36\times10^{15}\ \si{\per\second}$
+\item 初始能散 $\sigma_E=0.7\ \si{\electronvolt}$（典型 Schottky 场发射）
+\item PINEM 耦合 $|\beta|=1.5$
+\end{itemize}
+
+\subsubsection{退相干距离}
+
+\begin{equation}
+L_E=\frac{\gamma_0^3mv_0^3}{\omega\sigma_E}
+=\frac{2.69\times7.97\times10^{-14}}{2.36\times10^{15}\times0.7\times1.6\times10^{-19}}
+=\frac{2.14\times10^{-13}}{2.66\times10^{-4}}
+\approx 0.81\ \si{\metre}.
+\end{equation}
+
+\subsubsection{Talbot 长度}
+
+\begin{equation}
+L_T=\frac{2\pi\gamma_0^3mv_0^3}{\hbar\omega^2}
+=\frac{2\pi\times2.14\times10^{-13}}{1.055\times10^{-34}\times(2.36\times10^{15})^2}
+=\frac{1.35\times10^{-12}}{5.89\times10^{-4}}
+\approx 0.39\ \si{\metre}.
+\end{equation}
+
+\subsubsection{聚束处的退相干}
+
+最优聚束在 $L_{\rm opt}/L_T\approx 0.063$，即 $L_{\rm opt}\approx 0.025\ \si{\metre}$。在此距离，
+\begin{equation}
+D_1^{(E)}=\exp\!\left[-\frac{1}{2}\left(\frac{L_{\rm opt}}{L_E}\right)^2\right]
+=\exp\!\left[-\frac{1}{2}\left(\frac{0.025}{0.81}\right)^2\right]
+=\exp(-4.8\times10^{-4})\approx 0.9995.
+\end{equation}
+退相干效应可以忽略。即使漂移到 $L=L_T/2\approx 0.2\ \si{\metre}$，
+\begin{equation}
+D_1^{(E)}=\exp\!\left[-\frac{1}{2}\left(\frac{0.2}{0.81}\right)^2\right]
+=\exp(-0.031)\approx 0.97.
+\end{equation}
+仍然很小。
+
+\subsubsection{高阶谐波的退相干}
+
+对 $m=6$（相隔 6 格的边带），在 $L=0.2\ \si{\metre}$ 处：
+\begin{equation}
+D_6^{(E)}=\exp\!\left[-\frac{36}{2}\left(\frac{0.2}{0.81}\right)^2\right]
+=\exp(-1.10)\approx 0.33.
+\end{equation}
+高阶谐波已显著衰减。这意味着时间峰的精细结构（由高阶谐波贡献）被抹平，峰变宽变矮。
+
+\subsection{本章小结}
+
+退相干是边带间相位相干性的丧失，表现为密度矩阵非对角元的衰减。三种主要机制为：初始能量展宽（退相干距离 $L_E\sim 0.8$--$1.6\ \si{\metre}$）、角展宽（$L_\theta\sim 6\ \si{\metre}$）和库仑相互作用（$L_C\sim 100\ \si{\metre}$）。对典型 EELS 参数，能量展宽是主导机制。退相干因子 $D_m$ 对高阶谐波（大 $m$）的压制更强，导致时间峰的对比度降低。最优聚束距离通常远小于退相干距离，因此退相干不是聚束的主要限制因素，但它影响高阶谐波和长距离传播。
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\linewidth]{dephasing_coherence.pdf}
-\caption{能量格相位噪声对不同副对角相干的选择性抑制。纵轴为归一化模长 \(|\rho_{\ell m}(t)|/|\rho_{\ell m}(0)|=e^{-(\ell-m)^2\Gamma_\phi t/2}\)（图中 \(\Gamma_\phi=2D\)），三条曲线分别取 \(|\ell-m|=1,2,4\)。}
+\caption{能量格相位噪声对不同副对角相干的选择性抑制。纵轴为归一化模长 $|\rho_{\ell m}(t)|/|\rho_{\ell m}(0)|=e^{-(\ell-m)^2\Gamma_\phi t/2}$（图中 $\Gamma_\phi=2D$），三条曲线分别取 $|\ell-m|=1,2,4$。}
 \label{fig:dephasing-coherence}
 \end{figure}
-
-若噪声只是每次电子入射前已固定、而实验未记录的初始能量，平均也会降低可见对比度，但它属于制备混合；\cref{eq:feqo-gaussian-dephasing} 属于传播中的随机耦合。若保存相关制备或环境记录，两者能够通过条件数据或回波操作区别。探测器分辨率则只在最终测量概率形成后作用，不能再算作这里的退相干率。
-
-\cref{fig:electron-colored-noise} 在 \(\sigma_\varphi\tau_\varphi=0.20\) 下把自由积累、理想回波与常数率近似放在同一时间轴上。左图取 \(|\ell-m|=1\)：自由积累在 \(t\ll\tau_\varphi\) 时平坦起步，常数率近似从一开始就是纯指数，因而在整个窗口内都是三者中最低的；回波始终高于自由积累，两者在长时收敛到同一斜率。右图把 \(|\ell-m|\) 换成 \(3\)，三条曲线被整体压低（\(t=12\tau_\varphi\) 时自由积累只剩 \(0.019\) 而回波还有 \(0.039\)），但排序不变，说明回波抑制的是低频相位噪声，而不是某一阶拍频。
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.94\linewidth]{electron_colored_noise.pdf}
-\caption{指数相关噪声中的自由相干、理想回波与常数率近似，取 \(\sigma_\varphi\tau_\varphi=0.20\)，横轴为 \(t/\tau_\varphi\)。左右两图分别为 \(|\ell-m|=1\) 与 \(|\ell-m|=3\)。}
-\label{fig:electron-colored-noise}
+\caption{指数相关噪声中的自由相干、理想回波与常数率近似，取 $\sigma_\varphi\tau_\varphi=0.20$，横轴为 $t/\tau_\varphi$。左右两图分别为 $|\ell-m|=1$ 与 $|\ell-m|=3$。}
+\label{fig:electron-colored-noise-modern}
 \end{figure}
 
-\begin{exercise}
-把指数相关函数的双重积分化为 \(2\int_0^t(t-u)C(u)\dd u\)，完成积分并核对短时和长时两个极限。
-\end{exercise}
+
+
+

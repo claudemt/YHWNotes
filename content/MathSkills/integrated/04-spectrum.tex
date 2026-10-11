@@ -1,0 +1,79 @@
+\section{谱的失效方式与投影运算}
+自伴性保证时间演化存在，但并未告诉我们怎样算 \(\exp(-\ii tH/\hbar)\)。有限维时把矩阵按本征值对角化即可。自由粒子的平面波却不在 \(L^2(\RR)\) 内；若只依靠可归一化本征向量，连续能量便无从处理。
+
+\subsection{预解集与谱的三种失效方式}
+
+\begin{definition}[预解集与谱]
+对 Hilbert 空间中的稠密定义闭算子 \(A:D(A)\to\mathcal H\)，若 \(A-zI:D(A)\to\mathcal H\) 为双射，且逆算子 \((A-zI)^{-1}:\mathcal H\to\mathcal H\) 有界，称 \(z\) 属于预解集 \(\rho(A)\)。其补集 \(\sigma(A)=\CC\setminus\rho(A)\) 称谱。
+\end{definition}
+
+非谱点意味着对每个源 \(f\) 都能唯一、稳定地解 \((A-z)u=f\)。失败可能是非唯一、无解，或者形式解对源不稳定。有限维把这些情况压成“行列式为零”，无穷维不再如此。
+
+\begin{definition}[点谱、连续谱与剩余谱]
+\(\sigma(A)\) 按以下顺序分成互不相交的三类：
+\begin{enumerate}
+\item 若 \(\ker(A-zI)\ne\{0\}\)，称 \(z\) 属于点谱 \(\sigma_p(A)\)，即为本征值。
+\item 若 \(A-zI\) 单射，且其值域稠密但不等于全空间，称 \(z\) 属于连续谱 \(\sigma_c(A)\)。此时定义在值域上的逆算子无界。
+\item 若 \(A-zI\) 单射，但其值域不稠密，称 \(z\) 属于剩余谱 \(\sigma_r(A)\)。
+\end{enumerate}
+后两项的单射条件不可省略，否则点谱可能与其他类别重叠。
+对闭算子，若单射且满射，闭图定理保证逆算子有界；因此上述三类覆盖全部谱。
+\end{definition}
+
+有限维自伴矩阵 $\operatorname{diag}(1,3)$ 只有两个点谱。
+后面可解模型中的乘法算子 $Mf(x)=xf(x)$ 没有可归一化本征向量，
+整个实轴却都是连续谱。自伴性恰好排除了第三种失败。
+
+\begin{proposition}[自伴算子的实谱与剩余谱]
+若 $A=A^*$，则 $\sigma(A)\subset\RR$ 且 $\sigma_r(A)=\varnothing$。
+\end{proposition}
+\begin{proof}
+对任意稠密定义算子，有
+\[
+\operatorname{Ran}(A-zI)^\perp=\ker(A^*-\overline zI).
+\]
+若 $z$ 实且 $A-zI$ 单射，自伴性即给出值域稠密，排除了剩余谱。
+若 $\operatorname{Im}z\ne0$，对 $u\in D(A)$ 利用
+$\langle Au,u\rangle\in\RR$ 与 Cauchy--Schwarz，得
+\[
+|\operatorname{Im}z|\,\|u\|^2
+=|\operatorname{Im}\langle(A-zI)u,u\rangle|
+\le\|(A-zI)u\|\,\|u\|.
+\]
+因此 $A-zI$ 单射且有界逆估计。
+这也使其值域闭：像中的收敛列对应一列 Cauchy 的原像，
+再由 $A$ 的闭性得到极限仍在像中。
+对 $\overline z$ 使用同一估计，结合上面的正交补等式可知像又稠密，
+故它等于全空间，$z\in\rho(A)$。
+\end{proof}
+
+\begin{workedexample}[单边移位的连续谱与剩余谱]
+在 $\ell^2(\NN)$ 上令 $Se_n=e_{n+1}$，则
+$S(x_1,x_2,\dots)=(0,x_1,x_2,\dots)$，且 $\|Sx\|=\|x\|$。
+逐分量求解 $(S-zI)x=0$ 得 $x=0$，所以它没有点谱。
+
+当 $|z|<1$ 时，$v_z=(1,\overline z,\overline z^2,\dots)\in\ell^2$，
+而 $S^*v_z=\overline z v_z$。
+故 $\operatorname{Ran}(S-zI)^\perp=\operatorname{span}\{v_z\}\ne\{0\}$，
+整个开单位圆盘为剩余谱。只有在 $z=0$ 时，这个值域才恰好是
+“第一分量为零”的空间；一般 $z$ 的正交约束由 $v_z$ 决定。
+
+当 $|z|=1$ 时，上面的形式向量不属于 $\ell^2$，
+$\ker(S^*-\overline zI)=\{0\}$，所以值域稠密。
+取单位向量
+\[
+x^{(N)}=\frac1{\sqrt N}(1,z^{-1},\dots,z^{-(N-1)},0,\dots),
+\qquad \|(S-zI)x^{(N)}\|^2=\frac2N\longrightarrow0.
+\]
+因此逆算子不可能有界；单射闭算子若满射则其逆有界，所以值域不是全空间。
+单位圆恰为连续谱。
+
+最后，$|z|>1$ 时 Neumann 级数按算子范数收敛：
+\[
+(S-zI)^{-1}=-\sum_{k=0}^\infty\frac{S^k}{z^{k+1}},
+\qquad \|(S-zI)^{-1}\|\le\frac1{|z|-1}.
+\]
+圆外属于预解集，故 $\sigma(S)=\{z:|z|\le1\}$。
+这个算例同时展示了稠密性、满射性和稳定性三个不同条件。
+\end{workedexample}
+

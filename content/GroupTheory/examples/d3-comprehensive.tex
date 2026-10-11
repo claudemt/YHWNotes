@@ -1,0 +1,816 @@
+\section{$D_3$：从六个群元到三角形的对称模式}
+\label{sec:d3-comprehensive}
+
+这一节始终使用同一个三角形、同一对生成元以及同一组表示矩阵。
+目标是把前四章的群、子群、作用、表示、特征标和张量积语言接成一条计算链。
+各例题的输出会成为下一例题的输入；六阶的特殊性也会明确限制哪些定理能给出非平凡信息。
+约定置换从右向左复合，$D_3$ 表示\emph{六阶}二面体群。
+
+\begin{workedexample}[从展示得到乘法，而不是先背乘法表]
+\label{ex:d3-comprehensive-multiplication}
+取
+\[
+G=D_3=\langle r,s\mid r^3=e,\ s^2=e,\ srs=r^{-1}\rangle.
+\]
+关系 $sr=r^{-1}s$ 把任意词中的 $s$ 移到右端，再约去 $r^3$ 与 $s^2$，
+所以每个群元均可写成 $r^a s^b$，其中 $a\in\mathbb Z/3\mathbb Z$、$b\in\mathbb Z/2\mathbb Z$。
+令 $r=(123)$、$s=(23)$，六个这样的词在 $S_3$ 中互不相同。
+因此这些正规形恰好给出六个群元，展示所定义的群与 $S_3$ 同构。
+
+把正规形写成 $(a,b)$，乘法成为
+\[
+(a,b)(c,d)=\bigl(a+(-1)^b c,\ b+d\bigr),
+\qquad
+(a,b)^{-1}=\bigl(-(-1)^b a,\ b\bigr).
+\]
+第一个坐标模 $3$、第二个坐标模 $2$。
+这不只是一条记忆公式：左右两种三重乘法的第一个坐标同为
+\[
+a+(-1)^b c+(-1)^{b+d}f,
+\]
+第二个坐标同为 $b+d+h$，从而直接检查了结合律。
+$(0,0)$ 是单位元，给出的逆元与 $(a,b)$ 左右相乘均为 $(0,0)$。
+因此这套六元素运算满足\Cref{def:group}的全部条件。
+
+以下表格每一格均由该公式计算，行元在左、列元在右：
+\[
+\begin{array}{c|rrrrrr}
+ &e&r&r^2&s&rs&r^2s\\\hline
+e&e&r&r^2&s&rs&r^2s\\
+r&r&r^2&e&rs&r^2s&s\\
+r^2&r^2&e&r&r^2s&s&rs\\
+s&s&r^2s&rs&e&r^2&r\\
+rs&rs&s&r^2s&r&e&r^2\\
+r^2s&r^2s&rs&s&r^2&r&e
+\end{array}
+\]
+特别地，$sr=r^2s\ne rs$，故 $G$ 非 Abel。
+元素阶为
+\[
+\operatorname{ord}(e)=1,\quad
+\operatorname{ord}(r)=\operatorname{ord}(r^2)=3,\quad
+\operatorname{ord}(r^a s)=2.
+\]
+没有六阶元，所以六阶的 $G$ 并非循环群；$r,s$ 则确实共同生成整个 $G$。
+\end{workedexample}
+
+\begin{workedexample}[全部子群与子群格中的运算]
+\label{ex:d3-comprehensive-subgroups}
+由\Cref{thm:lagrange}，子群阶只能是 $1,2,3,6$。
+阶为 $2$ 或 $3$ 的群为素数阶循环群；结合刚算出的元素阶，全部子群就是
+\[
+\{e\},\qquad R=\langle r\rangle=\{e,r,r^2\},\qquad
+H_a=\langle r^a s\rangle=\{e,r^a s\}\ (a=0,1,2),\qquad G.
+\]
+这是穷举而非仅列出几个熟悉的子群。
+对 $a\ne b$，不同反射相乘给出非平凡旋转：
+\[
+(r^a s)(r^b s)=r^{a-b}.
+\]
+所以
+\[
+H_a\cap H_b=\{e\},\quad \langle H_a,H_b\rangle=G,
+\qquad R\cap H_a=\{e\},\quad \langle R,H_a\rangle=G.
+\]
+另一方面，集合 $H_0H_1=\{e,s,rs,r^2\}$ 只有四个元素，不是子群。
+例如它包含 $r^2$ 却不包含 $(r^2)^2=r$。
+因此“子群的交仍为子群”不能误改成“子群的集合乘积总是子群”。
+这些交与生成计算已经确定了整个子群格：除顶端 $G$ 和底端 $\{e\}$ 外，
+$R,H_0,H_1,H_2$ 之间没有包含关系，且均为极大子群。
+\end{workedexample}
+
+\begin{workedexample}[左右陪集、指标与不能定义的商群]
+\label{ex:d3-comprehensive-cosets}
+对 $H_0=\{e,s\}$，左陪集与右陪集分别为
+\begin{align*}
+H_0&=\{e,s\},&rH_0&=\{r,rs\},&r^2H_0&=\{r^2,r^2s\},\\
+H_0&=\{e,s\},&H_0r&=\{r,r^2s\},&H_0r^2&=\{r^2,rs\}.
+\end{align*}
+每一行都把六个元素分成三个互不相交的二元素集合，因而
+\[
+[G:H_0]=3,\qquad |G|=|H_0|[G:H_0]=2\cdot3.
+\]
+左右陪集数相等，但 $rH_0\ne H_0r$；相等的是\emph{数目}，不是逐个集合。
+更具体地，$H_0=eH_0=sH_0$，若试图定义左陪集乘法，则
+\[
+(eH_0)(rH_0)=rH_0,\qquad
+(sH_0)(rH_0)=srH_0=r^2H_0.
+\]
+同一陪集更换代表元后得到不同输出，故 $G/H_0$ 只是陪集集合，不能按此定义商群。
+
+对 $R$ 则有
+\[
+G=R\sqcup sR=R\sqcup Rs,\qquad
+sR=Rs=\{s,rs,r^2s\},\qquad [G:R]=2.
+\]
+这里左右陪集相同，下一例题会从共轭直接确认 $R$ 的正规性。
+\end{workedexample}
+
+\begin{workedexample}[共轭类、中心化子与正规化子逐项计算]
+\label{ex:d3-comprehensive-conjugacy}
+由展示关系，$srs^{-1}=r^2$，而
+\[
+r(r^a s)r^{-1}=r^{a+2}s,\qquad
+s(r^a s)s^{-1}=r^{-a}s.
+\]
+因此全部共轭类及类方程为
+\[
+\{e\},\qquad \{r,r^2\},\qquad \{s,rs,r^2s\},
+\qquad 6=1+2+3.
+\]
+非平凡旋转与全部旋转交换，却不与反射交换，故
+\[
+C_G(r)=C_G(r^2)=R.
+\]
+两个不同反射不交换：其两种乘积分别是 $r^{a-b}$ 和 $r^{b-a}$，
+当 $a\ne b$ 时二者不同。因此
+\[
+C_G(r^a s)=H_a,\qquad C_G(e)=G,
+\qquad Z(G)=R\cap H_0=\{e\}.
+\]
+\Cref{thm:class-size}现在逐项给出 $6/3=2$ 与 $6/2=3$，恰与列出的类大小一致。
+
+正规化子要求保持\emph{子群}，不要求固定其中每个元素。
+共轭把 $r$ 变为 $r$ 或 $r^2$，所以 $N_G(R)=G$，而 $C_G(R)=R$。
+对 $H_a$，保持该二阶子群就必须固定其唯一非单位元，故
+\[
+N_G(H_a)=C_G(H_a)=H_a.
+\]
+再加 $N_G(\{e\})=N_G(G)=G$、$C_G(\{e\})=G$、$C_G(G)=Z(G)=\{e\}$，
+全部子群的正规化子与中心化子均已确定。
+特别地，正规子群只有 $\{e\},R,G$；三个反射子群虽然两两共轭同构，却都不正规。
+\end{workedexample}
+
+\begin{workedexample}[从核与像读出第一、第二同构定理]
+\label{ex:d3-comprehensive-isomorphism}
+定义旋转奇偶映射
+\[
+\varepsilon:G\longrightarrow\{1,-1\},\qquad
+\varepsilon(r^a s^b)=(-1)^b.
+\]
+乘法公式给出 $\varepsilon(gh)=\varepsilon(g)\varepsilon(h)$，且
+\[
+\ker\varepsilon=R,\qquad\operatorname{im}\varepsilon=C_2.
+\]
+所以\Cref{thm:first-isomorphism}在这里把两类陪集具体识别为
+\[
+G/R=\{R,sR\}\cong C_2,\qquad R\mapsto1,\quad sR\mapsto-1.
+\]
+顶点置换同态 $G\to S_3$ 则核为 $\{e\}$、像为整个 $S_3$，重新给出 $G\cong S_3$。
+也可以把旋转子群看成 $\mathbb Z\to R$ 的像：$n\mapsto r^n$ 的核是 $3\mathbb Z$，
+故 $R\cong\mathbb Z/3\mathbb Z$。
+
+对第二同构定理，取 $H=H_0$、正规子群 $N=R$。
+因为 $H_0R=G$、$H_0\cap R=\{e\}$，自然映射为
+\[
+H_0\longrightarrow G/R,\qquad e\mapsto R,\quad s\mapsto sR.
+\]
+它是双射同态，因此
+\[
+H_0/(H_0\cap R)=H_0\cong H_0R/R=G/R.
+\]
+同一条二阶群结构在 $G$ 内由反射给出，在商群内由旋转陪集给出；
+两者同构不表示它们是同一个集合。
+\end{workedexample}
+
+\begin{workedexample}[第三同构定理、对应定理与假设边界]
+\label{ex:d3-comprehensive-correspondence}
+要在第三同构定理中得到一个非平凡的中间商群，需要足够长的正规链。
+本例全部正规子群已经穷举为 $\{e\},R,G$，因此唯一严格三级链为
+\[
+\{e\}\lhd R\lhd G.
+\]
+取 $N=\{e\}$、$K=R$，第三同构定理给出
+\[
+(G/N)/(K/N)\cong G/K=G/R\cong C_2.
+\]
+这是合法实例，却没有两个非平凡真正规子群 $N\subsetneq K$。
+不能凭空把某个 $H_a$ 填入该链：它不正规，所需商群本就没有定义。
+
+对应定理应用于投影 $\pi:G\to G/R$ 时尤其容易核查。
+$G/R=C_2$ 只有 $\{R\}$ 和 $G/R$ 两个子群，其逆像分别为
+\[
+\pi^{-1}(\{R\})=R,\qquad \pi^{-1}(G/R)=G.
+\]
+这恰好列出 $G$ 中所有\emph{包含 $R$}的子群。
+$H_a$ 不包含 $R$，所以它们不属于这次对应，而不是被定理遗漏。
+\end{workedexample}
+
+\begin{workedexample}[自同构、内自同构、特征子群与 $N/C$]
+\label{ex:d3-comprehensive-automorphisms}
+自同构保持元素阶，所以必有
+\[
+\alpha_{u,v}(r)=r^u,\qquad\alpha_{u,v}(s)=r^v s,
+\qquad u\in\{1,2\},\quad v\in\mathbb Z/3\mathbb Z.
+\]
+这些像都满足原展示关系，并仍生成 $G$，故全部六个选择均为自同构。
+复合直接算成
+\[
+\alpha_{u,v}\alpha_{w,z}=\alpha_{uw,\,v+uz}.
+\]
+共轭 $c_r$ 对应 $(u,v)=(1,2)$，共轭 $c_s$ 对应 $(2,0)$；
+它们生成这六个自同构。因此
+\[
+\operatorname{Aut}(G)=\operatorname{Inn}(G)\cong G/Z(G)\cong S_3,
+\qquad\operatorname{Out}(G)=\{e\}.
+\]
+所有自同构保持唯一三阶子群 $R$，并置换三个 $H_a$。
+特征子群必须先为正规子群，所以全部特征子群也恰为 $\{e\},R,G$。
+
+把 $N/C$ 定理应用到 $R$，共轭同态为
+\[
+G=N_G(R)\longrightarrow\operatorname{Aut}(R),\qquad
+r\mapsto\operatorname{id},\quad s\mapsto(r\mapsto r^{-1}).
+\]
+核是 $C_G(R)=R$，像是 $\operatorname{Aut}(C_3)=C_2$，所以
+$N_G(R)/C_G(R)\cong C_2$。
+应用到 $H_a$ 则 $N_G(H_a)/C_G(H_a)=\{e\}$，与 $\operatorname{Aut}(C_2)=\{e\}$ 相符。
+可见正规化子商给出的是\emph{由环境群共轭实现}的自同构，不能一般地直接写成全部自同构。
+\end{workedexample}
+
+\begin{workedexample}[Sylow、Frattini 与两种不同的交]
+\label{ex:d3-comprehensive-sylow}
+素因子 $2,3$ 的阶元分别已经由 $s,r$ 给出，实现了 Cauchy 定理的存在结论。
+Sylow 定理给出
+\[
+n_3\mid2,\quad n_3\equiv1\pmod3\ \Longrightarrow n_3=1,
+\]
+唯一 Sylow $3$-子群即 $R$。
+对素数 $2$，$n_2\mid3$、$n_2\equiv1\pmod2$ 允许 $1$ 或 $3$；
+定理的数论约束\emph{本身}尚不能在两者间选择。
+已经列出的 $H_0,H_1,H_2$ 确认 $n_2=3$，共轭公式则直接验证 Sylow 共轭性。
+
+$p$-群不动点定理也能在顶点集合 $X=\{1,2,3\}$ 上检查，仍取 $r=(123)$、$s=(23)$。
+限制到 $R$ 时，唯一轨道大小是 $3$，因此 $|X|\equiv|X^R|=0\pmod3$；
+限制到 $H_0$ 时，轨道是 $\{1\}$ 与 $\{2,3\}$，因此
+$|X|=3\equiv |X^{H_0}|=1\pmod2$。
+但 $G$ 本身不是 $p$-群，故不能用该定理断言 $Z(G)$ 非平凡；
+前面已算出的 $Z(G)=\{e\}$ 恰好提示不能删除这个假设。
+
+Frattini 论证要求 $N\lhd G$ 且 $P$ 为 $N$ 的 Sylow 子群，才能断言
+$G=N N_G(P)$。
+取 $N=R$、$P=R$ 时，确有
+\[
+G=R N_G(R)=RG.
+\]
+这是一个成立但退化的实例。
+若误取 $N=R$、$P=H_0$，则 $P$ 根本不在 $N$ 内，不能套用该定理。
+
+另外，\emph{Frattini 子群}的定义是所有极大子群的交，不能与上述论证混淆。
+本例四个极大子群已经全部列出，故
+\[
+\Phi(G)=R\cap H_0\cap H_1\cap H_2=\{e\}.
+\]
+因此这里并无可隐藏在每个极大子群中的非单位生成元。
+\end{workedexample}
+
+\begin{workedexample}[同一个顶点作用中的轨道、稳定子和 Burnside 计数]
+\label{ex:d3-comprehensive-actions}
+顶点集合取 $X=\{1,2,3\}$，仍令 $r=(123)$、$s=(23)$。
+轨道 $G\cdot1=X$，稳定子为 $G_1=\{e,s\}=H_0$，因此
+\[
+|G\cdot1|=3=6/2=|G|/|G_1|.
+\]
+此作用传递且忠实，但不自由：$s\ne e$ 仍固定顶点 $1$。
+而限制到 $R$ 后，每个非单位旋转都不固定顶点，故 $R$ 对 $X$ 的作用自由、传递且正则。
+
+左陪集作用 $G\curvearrowright G/H_0$ 与这个顶点作用相同：
+\[
+gH_0\longmapsto g\cdot1.
+\]
+其核是三个共轭稳定子的交 $H_0\cap H_1\cap H_2=\{e\}$。
+对比 $G\curvearrowright G/R$：该作用传递，但核为 $R$，因此不忠实也不自由。
+两个作用的差别可从稳定子直接读取，不需更换定义。
+
+给每个顶点赋予 $q$ 种\emph{有名称}的颜色，颜色赋值共有 $q^3$ 个，
+群只移动顶点，不置换颜色名称。
+一个群元固定的赋值必须在其每个顶点循环上颜色相同，所以
+\[
+|\operatorname{Fix}(e)|=q^3,\qquad
+|\operatorname{Fix}(r)|=|\operatorname{Fix}(r^2)|=q,\qquad
+|\operatorname{Fix}(r^a s)|=q^2.
+\]
+Burnside 引理由此给出不计三角形转动或反射的着色数
+\[
+N(q)=\frac{q^3+2q+3q^2}{6}=\binom{q+2}{3}.
+\]
+例如 $q=2$ 时有 $4$ 类：按第一种颜色出现 $0,1,2,3$ 次区分。
+分母是 $6$，但并不是每个着色轨道都有六个元素；单色赋值的稳定子是整个 $G$。
+\end{workedexample}
+
+\begin{workedexample}[Cayley 的六点作用与三点忠实作用的差别]
+\label{ex:d3-comprehensive-cayley}
+将集合 $G$ 的元素按 $(e,r,r^2,s,rs,r^2s)$ 编号为 $1,\ldots,6$。
+左乘作用给出
+\[
+L_r=(123)(456),\qquad L_s=(14)(26)(35).
+\]
+例如 $L_s(r)=sr=r^2s$，对应 $2\mapsto6$，与乘法表一致。
+若 $L_g$ 固定单位元，则 $g=L_g(e)=e$，所以这个作用自由且忠实；
+任意 $a,b\in G$ 之间由 $ba^{-1}$ 左乘连接，所以它也传递，因而正则。
+这就是 Cayley 嵌入 $G\hookrightarrow S_6$ 的具体实现。
+三点作用给出了更小的忠实嵌入 $G\hookrightarrow S_3$，却不正则。
+“忠实”只排除在\emph{所有点上}都恒等的非单位群元，不排除单个点有非平凡稳定子。
+\end{workedexample}
+
+\begin{workedexample}[合成列、可解性与中心列的停滞]
+\label{ex:d3-comprehensive-series}
+链 $G\triangleright R\triangleright\{e\}$ 的因子为
+\[
+G/R\cong C_2,\qquad R/\{e\}\cong C_3.
+\]
+两个因子都是单群，故它是合成列。
+链 $G>H_0>\{e\}$ 虽然每次指标都是素数，却不是次正规列：$H_0\not\lhd G$。
+不能用它另造一套合成因子。
+
+采用交换子 $[a,b]=aba^{-1}b^{-1}$，计算
+\[
+[s,r]=r^{-2}=r.
+\]
+因为 $G/R$ Abel，全部交换子都在 $R$ 内；又有交换子等于 $r$，所以
+\[
+G'=R,\qquad G''=R'=\{e\}.
+\]
+导出列在第二步到单位群，$G$ 因而可解，导出长度为 $2$。
+这也解释了为什么所有一维表示都会杀掉 $R$。
+
+但下中心列为
+\[
+\gamma_1(G)=G,\qquad\gamma_2(G)=[G,G]=R,
+\qquad\gamma_n(G)=R\quad(n\ge2),
+\]
+因为 $[s,r]=r$ 已给出 $[G,R]=R$。
+上中心列则从 $Z_0=\{e\}$ 出发，由 $Z(G)=\{e\}$ 得
+\[
+Z_1=Z_2=\cdots=\{e\}.
+\]
+两种中心列均不能到达相应终点，因此 $G$ 非幂零。
+Sylow $2$-子群不正规也是\Cref{thm:nilpotent-equivalent}的有限群判据中的同一障碍。
+\end{workedexample}
+
+\begin{workedexample}[半直积、非直积与自由群展示的含义]
+\label{ex:d3-comprehensive-semidirect}
+前面已算出 $R\lhd G$、$H_0\cap R=\{e\}$、$RH_0=G$。
+$H_0$ 在 $R$ 上的共轭作用为 $s:r\mapsto r^{-1}$，故
+\[
+G\cong C_3\rtimes C_2,
+\qquad (a,b)(c,d)=(a+(-1)^b c,b+d).
+\]
+这正好是最初得到的乘法公式；半直积在这里不是另一种记号，而是重建了全部运算。
+此作用非平凡，所以该分解不是 $C_3\times C_2$：后者 Abel 且有六阶元，而 $G$ 两者均不具备。
+
+若 $F(x,y)$ 是两个字母的自由群，展示的严格含义是
+\[
+G\cong F(x,y)\big/\langle\!\langle
+x^3,\ y^2,\ yxyx
+\rangle\!\rangle,
+\qquad x\mapsto r,\quad y\mapsto s.
+\]
+双尖括号表示所列关系生成的\emph{正规闭包}，不是普通子群生成。
+商群中词可化为六个正规形，顶点置换又保证这六个像互不相同，
+所以所列关系既足够，也未引入额外塌缩。
+这不表示 $G$ 是自由群；例如非单位元 $r$ 满足 $r^3=e$，而自由群没有这样的有限阶元。
+若改用两个反射 $p=s,q=rs$，则
+\[
+p^2=q^2=e,\qquad pq=r^{-1},\qquad
+G=\langle p,q\mid p^2=q^2=(pq)^3=e\rangle.
+\]
+这与原展示等价：由 $r=qp,s=p$ 可相互恢复生成元。
+因此旋转加反射的展示与两个反射的 Coxeter 展示描述的是同一运算。
+\end{workedexample}
+
+\begin{workedexample}[从生成元矩阵构造全部不可约复表示]
+\label{ex:d3-comprehensive-irreps}
+以下表示空间均在 $\mathbb C$ 上，二维实矩阵也按复线性延拓。
+一维表示中，标量交换，所以 $srs=r^{-1}$ 强迫 $\rho(r)=\rho(r)^{-1}$；
+再与 $\rho(r)^3=1$ 联用，得到 $\rho(r)=1$。
+因 $\rho(s)^2=1$，全部一维表示恰为
+\[
+A_1(r)=A_1(s)=1,\qquad A_2(r)=1,\quad A_2(s)=-1.
+\]
+它们分别是平凡表示与刚才的同态 $\varepsilon$。
+
+在平面 $E$ 的正交基 $x,y$ 上取
+\[
+D_E(r)=\begin{pmatrix}-\frac12&-\frac{\sqrt3}{2}\\
+\frac{\sqrt3}{2}&-\frac12\end{pmatrix},\qquad
+D_E(s)=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+矩阵满足 $D_E(r)^3=D_E(s)^2=I$、$D_E(s)D_E(r)D_E(s)=D_E(r)^{-1}$，
+所以展示保证它们确实定义表示。
+令 $\omega=e^{2\pi i/3}$。$D_E(r)$ 的本征向量
+\[
+x-iy,\quad x+iy
+\]
+分别对应 $\omega,\omega^{-1}$，而 $D_E(s)$ 互换两条本征直线。
+若有一维不变子空间，它必须是其中一条，却不能同时对 $s$ 不变；故 $E$ 在复数域上仍不可约。
+$A_1$ 的核为 $G$，$A_2$ 的核为 $R$，$E$ 的核为 $\{e\}$。
+不可约性与忠实性因此是不同问题：这里两个一维不可约表示均不忠实。
+\end{workedexample}
+
+\begin{workedexample}[酉化与 Schur 引理都化成一个二阶矩阵计算]
+\label{ex:d3-comprehensive-schur}
+$D_E(r),D_E(s)$ 本已正交，所以 $E$ 是酉表示。
+若 $T$ 同时与二者交换，先与 $D_E(s)$ 交换得 $T=\operatorname{diag}(a,b)$；
+再比较 $TD_E(r)$ 与 $D_E(r)T$ 的非对角元，得到 $a=b$。
+因此
+\[
+\operatorname{End}_G(E)=\mathbb C I,
+\]
+直接实现了\Cref{thm:schur-lemma}，而不是只在字符表后写一个定理名。
+从 $A_1$ 或 $A_2$ 到 $E$ 的 intertwiner 若非零，其像将是一维不变子空间；
+从 $E$ 到一维表示的 intertwiner 若非零，其核也将是一维不变子空间。
+两者均与不可约性矛盾，故不同不可约表示之间的 intertwiner 全为零。
+
+也可故意换用不正交基：取 $T_0=\operatorname{diag}(2,1)$，令
+$D'(g)=T_0^{-1}D_E(g)T_0$。
+它仍是同一个表示，却一般不满足 $D'(g)^\dagger D'(g)=I$。
+群平均给出的正定矩阵为
+\[
+Q=\frac16\sum_g D'(g)^\dagger D'(g)
+=\frac58\,T_0^\dagger T_0
+=\begin{pmatrix}5/2&0\\0&5/8\end{pmatrix}.
+\]
+这里使用了 $\frac16\sum_g D_E(g)^\dagger B D_E(g)=\frac{\operatorname{Tr}B}{2}I$
+和 $B=(T_0^{-1})^\dagger T_0^{-1}=\operatorname{diag}(1/4,1)$。
+因而 $D'(g)^\dagger QD'(g)=Q$，以 $Q^{1/2}$ 换基便恢复酉表示。
+这也说明“某组矩阵不酉”不等于“该有限群表示不可酉化”。
+\end{workedexample}
+
+\begin{workedexample}[特征标的行列正交与完整性]
+\label{ex:d3-comprehensive-character}
+由前面实际构造的矩阵取迹，按 $e$、旋转类、反射类的次序得到
+\[
+\begin{array}{c|rrr}
+ &e&r,r^2&s,rs,r^2s\\\hline
+\text{类大小}&1&2&3\\
+\chi_{A_1}&1&1&1\\
+\chi_{A_2}&1&1&-1\\
+\chi_E&2&-1&0
+\end{array}
+\]
+正交内积必须使用类大小：
+\begin{align*}
+\langle\chi_{A_1},\chi_{A_2}\rangle&=(1+2-3)/6=0,\\
+\langle\chi_{A_1},\chi_E\rangle
+=\langle\chi_{A_2},\chi_E\rangle&=(2-2+0)/6=0,\\
+\|\chi_{A_1}\|^2=\|\chi_{A_2}\|^2&=(1+2+3)/6=1,\\
+\|\chi_E\|^2&=(4+2+0)/6=1.
+\end{align*}
+全部共轭类只有三个，\Cref{thm:character-basis}故说明这三个互不等价不可约表示已经穷尽，
+并且 $1^2+1^2+2^2=6$。
+不能仅因矩阵维数小，就宣称没有其他不可约表示；穷尽性用到的是这个理论判据。
+
+列正交也能逐项核对：三列的无权平方和为
+\[
+1+1+4=6=|C_G(e)|,\quad
+1+1+1=3=|C_G(r)|,\quad
+1+1+0=2=|C_G(s)|.
+\]
+不同列的内积分别为 $1+1-2=0$、$1-1+0=0$、$1-1+0=0$。
+这些中心化子大小正是前面从乘法求出的数，因此表示计算回接到了群结构。
+$E$ 的实正交矩阵还给出 $E\cong E^*$：不变双线性形式
+$B(z,w)=z_xw_x+z_yw_y$ 将向量识别为对偶向量。
+这里是双线性形式，不能把复共轭误放进识别 $E\to E^*$ 的复线性映射。
+所有特征标值均为实数也与 $g$ 和 $g^{-1}$ 在同一共轭类相符。
+再实际计算 Frobenius--Schur 指标：两个旋转平方后仍在旋转类，三个反射平方后都是单位元，故
+\[
+\nu(E)=\frac16\sum_g\chi_E(g^2)=\frac{2+2(-1)+3\cdot2}{6}=1,
+\qquad \nu(A_1)=\nu(A_2)=1.
+\]
+这验证三个不可约表示都是实型；它将与后面 $Q_8$ 的二维四元数型指标 $-1$ 形成区别。
+
+最后把 Burnside 证明使用的类和也算出。令
+$K_r=r+r^2$、$K_s=s+rs+r^2s$，它们在三个不可约表示上的标量分别为
+\[
+\begin{array}{c|rrr}
+ &A_1&A_2&E\\\hline
+K_r&2&2&-1\\
+K_s&3&-3&0
+\end{array}
+\]
+例如 $D_E(r)+D_E(r)^2=-I_2$，三面反射矩阵之和为零。
+一般公式 $|C|\chi(g)/d$ 在这里给出整数，因此类和的代数整性已有直接计算的实例。
+\end{workedexample}
+
+\begin{workedexample}[群代数、中央幂等元与六维正则表示]
+\label{ex:d3-comprehensive-regular}
+群代数 $\mathbb C[G]$ 以六个群元为正交基，左乘 $L_g$ 就是 Cayley 例题的置换矩阵。
+故 $\chi_{\mathrm{reg}}=(6,0,0)$；重数公式依次给出 $1,1,2$，于是
+\[
+\mathbb C[G]\cong A_1\oplus A_2\oplus E\oplus E.
+\]
+其中两个 $E$ 是不同副本，不能误写成一个四维不可约表示。
+
+把特征标投影公式写成群代数中央元，得到
+\begin{align*}
+z_{A_1}&=\frac16(e+r+r^2+s+rs+r^2s),\\
+z_{A_2}&=\frac16(e+r+r^2-s-rs-r^2s),\\
+z_E&=\frac13(2e-r-r^2).
+\end{align*}
+例如令 $a=e+r+r^2$、$b=s+rs+r^2s$，乘法表直接给出
+\[
+a^2=3a,\quad ab=ba=3b,\quad b^2=3a.
+\]
+所以 $z_{A_1}^2=z_{A_1}$、$z_{A_2}^2=z_{A_2}$、$z_{A_1}z_{A_2}=0$；
+又 $z_E=e-z_{A_1}-z_{A_2}$，故三个幂等元两两正交且和为单位。
+它们的系数在共轭类上相同，所以都中央。
+
+为把四维 $E$ 等型空间再拆成两个副本，定义六个向量
+\[
+f_{\alpha,ij}=\sqrt{\frac{d_\alpha}{6}}
+\sum_{g\in G}\overline{D_\alpha(g)_{ij}}\,g,
+\quad \alpha\in\{A_1,A_2,E\},\quad1\le i,j\le d_\alpha.
+\]
+大正交关系给出它们标准正交，且换元 $g=hk$ 得
+\[
+L_h f_{\alpha,ij}=\sum_{k=1}^{d_\alpha}
+D_\alpha(h)_{ki}f_{\alpha,kj}.
+\]
+因此固定 $j$ 的子空间是一个 $\alpha$ 副本；$E$ 的 $j=1,2$ 给出两个二维副本。
+这六个向量构成全空间的基，从而给出了正则分解的实际换基，
+而 $L_{z_E}$ 本身只能投到两个副本的\emph{总和}。
+\end{workedexample}
+
+\begin{workedexample}[六点函数的 Fourier 展开与 Plancherel]
+\label{ex:d3-comprehensive-fourier}
+对任意函数 $f:G\to\mathbb C$，沿用特征标内积的归一化，定义
+\[
+\widehat f_{\alpha,ij}=\frac16\sum_{g\in G}
+\overline{D_\alpha(g)_{ij}}f(g).
+\]
+上一例题的大正交关系和六个基向量的完备性直接给出
+\[
+f(g)=\sum_\alpha d_\alpha\sum_{i,j}
+\widehat f_{\alpha,ij}D_\alpha(g)_{ij},\qquad
+\frac16\sum_g|f(g)|^2
+=\sum_\alpha d_\alpha\sum_{i,j}|\widehat f_{\alpha,ij}|^2.
+\]
+本例只用有限求和，不需要调用紧群的一般 Peter--Weyl 定理。
+取 $f=\delta_e$，则 $\widehat f_{\alpha,ij}=\delta_{ij}/6$，因此
+\[
+\delta_e(g)=\frac16\bigl[\chi_{A_1}(g)+\chi_{A_2}(g)+2\chi_E(g)\bigr].
+\]
+右边在三类上分别为 $(1+1+4)/6=1$、$(1+1-2)/6=0$、$(1-1+0)/6=0$，
+正好重建单位元指示函数。
+其 Plancherel 等式为 $1/6=(1^2+1^2+2^2)/36$。
+若 $f$ 是类函数，Schur 引理使各 Fourier 矩阵为标量矩阵；
+因此一般的六点函数需要六个矩阵元系数，而类函数只需要三个特征标系数。
+\end{workedexample}
+
+\begin{workedexample}[三维顶点置换表示的实际投影与基底]
+\label{ex:d3-comprehensive-permutation}
+在 $V=\mathbb C^3$ 中取顶点基 $e_1,e_2,e_3$，令 $P(g)e_i=e_{g\cdot i}$。
+仍使用同一个 $r=(123)$、$s=(23)$，其特征标为不动顶点数：
+\[
+\chi_V=(3,0,1),\qquad
+(m_{A_1},m_{A_2},m_E)=(1,0,1).
+\]
+将上一例题的中央元送入此表示，得到
+\[
+\Pi_{A_1}=\frac13
+\begin{pmatrix}1&1&1\\1&1&1\\1&1&1\end{pmatrix},\qquad
+\Pi_{A_2}=0,\qquad \Pi_E=I-\Pi_{A_1}.
+\]
+所以 $A_1$ 是所有顶点等幅的方向，$E$ 则是分量和为零的平面。
+正交基可明确取为
+\[
+b_0=\frac{e_1+e_2+e_3}{\sqrt3},\quad
+b_x=\frac{2e_1-e_2-e_3}{\sqrt6},\quad
+b_y=\frac{e_2-e_3}{\sqrt2}.
+\]
+直接代入顶点置换得
+\[
+P(r)b_x=-\tfrac12 b_x+\tfrac{\sqrt3}{2}b_y,\qquad
+P(r)b_y=-\tfrac{\sqrt3}{2}b_x-\tfrac12 b_y,
+\]
+而 $P(s)b_x=b_x$、$P(s)b_y=-b_y$。
+故限制到 $\operatorname{span}\{b_x,b_y\}$ 的矩阵恰好是前面构造的 $D_E$，
+不是仅有相同维数的一块。
+
+若初始顶点振幅为 $u=(u_1,u_2,u_3)^T$，其对称与非对称分量分别为
+\[
+\Pi_{A_1}u=\bar u(1,1,1)^T,\qquad
+\Pi_Eu=(u_1-\bar u,u_2-\bar u,u_3-\bar u)^T,
+\quad \bar u=(u_1+u_2+u_3)/3.
+\]
+这一步使抽象的重数、等型空间和投影成为可直接计算的模式幅度。
+例如先选一个未必正交的投影 $Q$ 到 $\mathbb C b_0$，
+$Qw=\ell(w)b_0$、$\ell(b_0)=1$。
+群平均后
+\[
+\frac16\sum_gP(g)QP(g)^{-1}w
+=\left[\frac16\sum_g\ell(P(g)^{-1}w)\right]b_0
+=\Pi_{A_1}w.
+\]
+最后的平均线性泛函对全部顶点置换不变，故必是各坐标等权之和，
+并由 $b_0$ 上取值 $1$ 确定归一化。
+于是 $\ker\Pi_{A_1}=E$ 是不变补空间，具体实现了 Maschke 的平均投影构造。
+\end{workedexample}
+
+\begin{workedexample}[限制、商群提升与两个子群的诱导矩阵]
+\label{ex:d3-comprehensive-induction}
+先从已有矩阵限制到两个子群，而不重新寻找表示。
+记 $R$ 的三个一维表示为 $\sigma_m(r)=\omega^m$，$m=0,1,2$，
+记 $H_0$ 的两个一维表示为 $\tau_\pm(s)=\pm1$。
+旋转本征基与反射本征基分别给出
+\[
+E\downarrow_R=\sigma_1\oplus\sigma_2,\qquad
+E\downarrow_{H_0}=\tau_+\oplus\tau_-.
+\]
+$A_1,A_2$ 限制到 $R$ 均为 $\sigma_0$，限制到 $H_0$ 分别为 $\tau_+,\tau_-$。
+因为 $R$ 位于 $A_1,A_2$ 的核内，它们恰是 $G/R=C_2$ 的两个表示通过商映射提升所得；
+$E$ 在 $R$ 上非平凡，故不能下降为 $G/R$ 的表示。
+
+诱导 $\sigma_m$ 时选左陪集代表 $e,s$，在基
+$(e\otimes1,s\otimes1)$ 中逐项使用 $rs=sr^{-1}$，得到
+\[
+D_{\operatorname{Ind}_R^G\sigma_m}(r)
+=\begin{pmatrix}\omega^m&0\\0&\omega^{-m}\end{pmatrix},\qquad
+D_{\operatorname{Ind}_R^G\sigma_m}(s)
+=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+\]
+当 $m=1$ 时，映射 $e\otimes1\mapsto(x-iy)/\sqrt2$、
+$s\otimes1\mapsto(x+iy)/\sqrt2$ 是到 $E$ 的酉交织映射。
+当 $m=2$ 时交换两基矢即得同一表示。
+当 $m=0$ 时两矩阵分别为 $I$ 与交换矩阵，其对称、反对称方向给出
+\[
+\operatorname{Ind}_R^G\sigma_0=A_1\oplus A_2,\qquad
+\operatorname{Ind}_R^G\sigma_1\cong\operatorname{Ind}_R^G\sigma_2\cong E.
+\]
+
+诱导 $\tau_\pm$ 时选代表 $e,r,r^2$，令 $c_a=r^a\otimes1$。
+生成元的作用为
+\[
+r:c_a\mapsto c_{a+1},\qquad
+s:c_a\mapsto\tau_\pm(s)c_{-a}.
+\]
+所以特征标分别为 $(3,0,1)$ 与 $(3,0,-1)$，并由重数公式得
+\[
+\operatorname{Ind}_{H_0}^G\tau_+=A_1\oplus E,\qquad
+\operatorname{Ind}_{H_0}^G\tau_-=A_2\oplus E.
+\]
+前者就是顶点置换表示；后者在其基础上给反射乘一个负号。
+在二维补空间中，取
+\[
+J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad
+JD_E(g)J^{-1}=\varepsilon(g)D_E(g),
+\]
+因为 $J$ 与旋转交换、与反射反交换。
+这个交织矩阵消去反射负号，故二维成分仍等价于 $E$。
+\end{workedexample}
+
+\begin{workedexample}[Frobenius、Mackey 与 Clifford 的同一组数据]
+\label{ex:d3-comprehensive-clifford}
+Frobenius 互反律在上述计算中成为一组可双向核对的重数。
+例如 $E\downarrow_R$ 含 $\sigma_1$ 一次，对应
+$\operatorname{Ind}_R^G\sigma_1=E$ 中 $E$ 一次；
+$A_1\downarrow_R=A_2\downarrow_R=\sigma_0$，对应
+$\operatorname{Ind}_R^G\sigma_0=A_1\oplus A_2$。
+对 $H_0$，$E$ 的两个反射本征值各出现一次，
+对应两种 $\operatorname{Ind}_{H_0}^G\tau_\pm$ 都含一个 $E$。
+因而这里的互反重数是由矩阵与字符实际算出的整数，不只是套公式后的符号。
+
+正规子群 $R$ 的双陪集为 $R\backslash G/R=\{R,RsR\}$，代表元取 $e,s$。
+两项的交子群都为 $R$，且共轭表示为
+\[
+{}^s\sigma_m(r)=\sigma_m(s^{-1}rs)=\omega^{-m}.
+\]
+Mackey 公式于是变成
+\[
+(\operatorname{Ind}_R^G\sigma_m)\downarrow_R
+\cong\sigma_m\oplus\sigma_{-m},
+\]
+恰好恢复前一例题的两个对角矩阵元。
+对 $H_0$，双陪集代表可取 $e,r$，因为
+\[
+H_0rH_0=\{r,r^2,rs,r^2s\},\qquad
+H_0\cap rH_0r^{-1}=\{e\}.
+\]
+故第二项是从单位子群诱导的 $H_0$ 正则表示，得到
+\[
+(\operatorname{Ind}_{H_0}^G\tau_\pm)\downarrow_{H_0}
+\cong\tau_\pm\oplus\tau_+\oplus\tau_-.
+\]
+其 $s$ 上的迹是 $\pm1+1-1=\pm1$，与三维诱导矩阵完全一致。
+
+Clifford 定理研究\emph{正规}子群限制。
+$G$ 对 $\widehat R=\{\sigma_0,\sigma_1,\sigma_2\}$ 的轨道是
+\[
+\{\sigma_0\},\qquad\{\sigma_1,\sigma_2\}.
+\]
+$\sigma_0$ 的惯性群为 $G$，$\sigma_1,\sigma_2$ 的惯性群为 $R$。
+$A_1,A_2$ 对应第一轨道且限制重数为 $1$，$E$ 对应第二轨道且两项各重数 $1$，
+维数公式分别为 $1=1\cdot1\cdot1$ 与 $2=1\cdot2\cdot1$。
+在半直积的小群语言中，第一轨道的反射稳定子为 $C_2$，其两个表示产生 $A_1,A_2$；
+第二轨道的反射稳定子是单位群，其唯一表示诱导产生 $E$。
+本例无需射影表示障碍，因为两个稳定子上的延拓均已由明确矩阵实现。
+但 $H_0$ 非正规，不能把 $E\downarrow_{H_0}$ 的两项强称为 Clifford 正规子群轨道。
+
+最后，$|G|=2\cdot3$ 满足 Burnside $p^aq^b$ 定理的阶数条件，
+其可解结论与前面独立算出的 $G'=R,G''=\{e\}$ 相符。
+旋转类大小 $2$、反射类大小 $3$ 也都是素数幂；
+本例确实存在非平凡真正规子群 $R$，所以并非非交换单群。
+这些都是一般结论的具体实例，六阶计算并不能代替这些一般定理的证明。
+\end{workedexample}
+
+\begin{workedexample}[张量平方的 Clebsch--Gordan 系数与交换对称性]
+\label{ex:d3-comprehensive-cg}
+在 $E\otimes E$ 的有序基 $(xx,xy,yx,yy)$ 中，$xy$ 表示 $x\otimes y$。
+张量积特征标为 $\chi_{E\otimes E}=\chi_E^2=(4,1,0)$，重数计算给出
+\[
+m_{A_1}=m_{A_2}=(4+2)/6=1,\qquad m_E=(8-2)/6=1,
+\]
+所以 $E\otimes E\cong A_1\oplus A_2\oplus E$。
+其余张量积也能在同一模型内补全：$A_1\otimes\alpha\cong\alpha$、
+$A_2\otimes A_2\cong A_1$，而 $A_2\otimes E\cong E$。
+最后一个等价正由诱导例题中已算出的交织矩阵 $J$ 实现。
+因此表示环以 $1=[A_1]$、$a=[A_2]$、$v=[E]$ 为整数加法基，乘法由
+\[
+a^2=1,\qquad av=v,\qquad v^2=1+a+v
+\]
+完全确定。这里的整数线性组合允许虚表示，例如 $[V]-[A_1]=[E]$；
+实际表示的不可约重数则必须非负，不能把任意环元素直接称为态空间。
+但特征标还没给出耦合基。明确取
+\[
+t=\frac{xx+yy}{\sqrt2},\quad
+a=\frac{xy-yx}{\sqrt2},\quad
+u=\frac{xx-yy}{\sqrt2},\quad
+v=-\frac{xy+yx}{\sqrt2}.
+\]
+四个向量标准正交，其列组成的换基矩阵为
+\[
+C=\frac1{\sqrt2}
+\begin{pmatrix}
+1&0&1&0\\0&1&0&-1\\0&-1&0&-1\\1&0&-1&0
+\end{pmatrix},\qquad C^\dagger C=I_4.
+\]
+二阶正交变换保持 $xx+yy$，故 $t$ 按 $A_1$ 变换；
+反对称张量 $a$ 按行列式变换，故 $r:a\mapsto a$、$s:a\mapsto-a$，是 $A_2$。
+若平面旋转角为 $\theta$，$(u,v)$ 上的矩阵为旋转 $-2\theta$；
+在本例 $\theta=2\pi/3$ 时，$-2\theta\equiv\theta\pmod{2\pi}$。
+反射则仍给出 $u\mapsto u,v\mapsto-v$，因此
+\[
+C^\dagger[D_E(g)\otimes D_E(g)]C
+=\operatorname{diag}\bigl(A_1(g),A_2(g),D_E(g)\bigr)
+\quad(g\in G).
+\]
+检验只需对生成元 $r,s$ 做，因为其余群元都是它们的词。
+
+在这个空间中中央投影于是具体等于
+\[
+\Pi_{A_1}=tt^\dagger,\qquad
+\Pi_{A_2}=aa^\dagger,\qquad
+\Pi_E=uu^\dagger+vv^\dagger.
+\]
+对一般张量 $T=T_{xx}xx+T_{xy}xy+T_{yx}yx+T_{yy}yy$，耦合系数就是
+\[
+\frac1{\sqrt2}(T_{xx}+T_{yy},\ T_{xy}-T_{yx},\ T_{xx}-T_{yy},\ -T_{xy}-T_{yx})^T.
+\]
+交换两因子的算子固定 $t,u,v$ 而使 $a$ 变号，所以
+\[
+\operatorname{Sym}^2 E=A_1\oplus E,\qquad\Lambda^2E=A_2.
+\]
+尤其相同向量的平方 $w\otimes w$ 没有 $A_2$ 分量；这里“未出现”的原因是交换对称性，
+不是因为 $A_2$ 在群中不存在。
+以交织空间的语言说，$\dim\operatorname{Hom}_G(E\otimes E,\alpha)=1$
+对 $\alpha=A_1,A_2,E$ 均成立，三个通道分别由上述迹、反对称和无迹对称分量给出。
+因此仅凭 $D_3$ 对称性不禁止 $E\otimes E\to A_2$；
+增加相同变量的对称交换要求后，该通道才消失。
+\end{workedexample}
+
+\begin{workedexample}[把群结构与耦合语言用于一个完整的动力学模型]
+\label{ex:d3-comprehensive-model}
+考虑三角形三个顶点各一个标量位移 $q_i$，采用刚才的置换表示。
+若实对称刚度矩阵 $K$ 与所有 $P(g)$ 对易，顶点置换迫使三个对角元相等、三个非对角元相等，故
+\[
+K=\begin{pmatrix}a&b&b\\b&a&b\\b&b&a\end{pmatrix}
+=(a+2b)\Pi_{A_1}+(a-b)\Pi_E.
+\]
+在 $(b_0,b_x,b_y)$ 基中，势能与动能分别成为
+\[
+U=\tfrac12(a+2b)Q_0^2+\tfrac12(a-b)(Q_x^2+Q_y^2),\qquad
+T=\tfrac m2(\dot Q_0^2+\dot Q_x^2+\dot Q_y^2).
+\]
+若 $a+2b>0$、$a-b>0$，频率为
+\[
+\omega_{A_1}^2=(a+2b)/m,\qquad
+\omega_E^2=(a-b)/m,
+\]
+后者必二重简并。这是 $E$ 上 Schur 引理的动力学体现。
+若取等强顶点差弹簧
+\[
+U=\frac k2\bigl[(q_1-q_2)^2+(q_2-q_3)^2+(q_3-q_1)^2\bigr],
+\]
+则 $a=2k,b=-k$，$A_1$ 是零频整体位移，$E$ 的两模式均有 $\omega^2=3k/m$。
+这里标量位移模型有三个自由度，并非三个空间矢量位移的九维分子模型，不能混用模式数。
+
+最后，二次模式组合由上一例题直接分类：
+\[
+Q_x^2+Q_y^2\sim A_1,\qquad
+(Q_x^2-Q_y^2,-2Q_xQ_y)\sim E.
+\]
+这给出不变量与非平凡耦合的具体公式。
+至此，从生成关系到陪集、群作用，再到不可约表示、投影、简并和张量耦合，
+所有计算仍围绕同一个 $D_3$ 模型，并可回到最初的六元素乘法表逐步核查。
+\end{workedexample}

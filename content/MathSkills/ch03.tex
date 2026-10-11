@@ -3,34 +3,42 @@
 对波函数取加权积分 \(F(f)=\int_0^1\overline{g(x)}f(x)\,\dd x\)，得到一个复数。它对 \(f\) 线性，且由 Cauchy--Schwarz 不等式有 \(|F(f)|\le\|g\|_2\|f\|_2\)。这类测量称为连续线性泛函；连续性意味着输入的小扰动不会造成有限大小的输出跳变。
 
 \begin{definition}[线性泛函及其范数]
-\(F:\mathcal H\to\mathbb C\) 对加法和复数乘法保持线性，称线性泛函。若存在 \(C<\infty\) 使 \(|F(x)|\le C\|x\|\) 对所有 \(x\) 成立，称它有界，并定义 \(\|F\|=\sup_{\|x\|\le1}|F(x)|\)。
+\(F:\mathcal H\to\CC\) 对加法和复数乘法保持线性，称线性泛函。若存在 \(C<\infty\) 使 \(|F(x)|\le C\|x\|\) 对所有 \(x\) 成立，称它有界，并定义 \(\|F\|=\sup_{\|x\|\le1}|F(x)|\)。
 \end{definition}
 
+先在有限维看这件事，它几乎是显然的。在 \(\CC^n\) 上，任一线性泛函都形如
+\(F(x)=a_1x_1+\cdots+a_nx_n\)。按本书内积对第一个变量线性的约定
+\(\langle x,y\rangle=\overline{y_1}x_1+\cdots+\overline{y_n}x_n\)，
+取系数向量 \(y=(\overline{a_1},\ldots,\overline{a_n})\)，便有 \(F(x)=\langle x,y\rangle\)；
+再由 Cauchy--Schwarz 与取 \(x=y/\|y\|\) 得
+\(\|F\|=\|y\|=\sqrt{|a_1|^2+\cdots+|a_n|^2}\)。
+有限维里 \(y\) 就是泛函的系数向量；无穷维的区别只在系数可数、且必须用完备性保证这个 \(y\) 确实存在于 \(\mathcal H\) 中。
+
 \begin{theorem}[Riesz 表示定理]
-在复 Hilbert 空间 \(\mathcal H\) 上，每个有界线性泛函 \(F\) 都唯一地写成 \(F(x)=\langle y,x\rangle\)，其中 \(y\in\mathcal H\)，并且 \(\|F\|=\|y\|\)。
+在复 Hilbert 空间 \(\mathcal H\) 上，每个有界线性泛函 \(F\) 都唯一地写成 \(F(x)=\langle x,y\rangle\)，其中 \(y\in\mathcal H\)，并且 \(\|F\|=\|y\|\)。
 \end{theorem}
 \begin{proof}
 若 \(F=0\)，取 \(y=0\)。否则 \(N=\ker F\) 是闭子空间：若 \(x_n\in N\) 且 \(x_n\to x\)，则 \(|F(x)|\le\|F\|\|x-x_n\|\to0\)。由投影定理，取 \(v\in N^\perp\) 非零。对任意 \(x\)，\(x-F(x)v/F(v)\in N\)。又 \(N^\perp\) 只有一维：若 \(w\in N^\perp\)，同样的差既属于 \(N\) 又属于 \(N^\perp\)，故为零。于是
 \[
-F(x)=\frac{F(v)}{\|v\|^2}\langle v,x\rangle
-=\left\langle\frac{\overline{F(v)}}{\|v\|^2}v,x\right\rangle.
+F(x)=\frac{F(v)}{\|v\|^2}\langle x,v\rangle
+=\left\langle x,\frac{\overline{F(v)}}{\|v\|^2}v\right\rangle.
 \]
 取括号中的向量为 \(y\)。若两个向量表示同一泛函，取 \(x\) 为其差即知二者相等。Cauchy--Schwarz 给 \(\|F\|\le\|y\|\)；当 \(y\ne0\) 取 \(x=y/\|y\|\) 得反向不等式。
 \end{proof}
 
 这个定理并不是说每个线性规则都由向量表示。例如在 \(L^2(0,1)\) 中“取 \(f(0)\)”对函数的几乎处处等价类根本没有定义；在连续函数上它虽有定义，却对 \(L^2\) 范数不连续。一个尖峰可以保持 \(f(0)=1\)，而平方积分趋于零。连续性是定理不可删的条件。
 
-Riesz 定理告诉我们如何表示单个测量。若有一列两两正交、范数均为一的向量 \(e_1,e_2,\ldots\)，就可以同时记录许多测量 \(\langle e_n,x\rangle\)。但无限个系数是否足以重建 \(x\)，不能照搬有限维的“维数相同”。先对前 \(N\) 个方向作正交投影 \(P_Nx=\sum_{n=1}^N e_n\langle e_n,x\rangle\)。逐项取内积得到 \(x-P_Nx\perp P_Nx\)，所以
+Riesz 定理告诉我们如何表示单个测量。若有一列两两正交、范数均为一的向量 \(e_1,e_2,\ldots\)，就可以同时记录许多测量 \(\langle x,e_n\rangle\)。但无限个系数是否足以重建 \(x\)，不能照搬有限维的“维数相同”。先对前 \(N\) 个方向作正交投影 \(P_Nx=\sum_{n=1}^N e_n\langle x,e_n\rangle\)。逐项取内积得到 \(x-P_Nx\perp P_Nx\)，所以
 \[
- \|x\|^2=\sum_{n=1}^N|\langle e_n,x\rangle|^2+\|x-P_Nx\|^2.
+ \|x\|^2=\sum_{n=1}^N|\langle x,e_n\rangle|^2+\|x-P_Nx\|^2.
 \]
-右端最后一项非负，令 \(N\) 增大便得到 Bessel 不等式 \(\sum_n|\langle e_n,x\rangle|^2\le\|x\|^2\)。特别地，系数的平方和有限，且对 \(M>N\)，\(\|P_Mx-P_Nx\|^2=\sum_{n=N+1}^M|\langle e_n,x\rangle|^2\to0\)。Hilbert 空间完备性使 \(P_Nx\) 收敛到某个 \(p\)。剩余向量 \(x-p\) 与每个 \(e_n\) 正交；它不必为零，除非这些向量的有限线性组合稠密。这后一条件才叫作\emph{完备正交系}。
+右端最后一项非负，令 \(N\) 增大便得到 Bessel 不等式 \(\sum_n|\langle x,e_n\rangle|^2\le\|x\|^2\)。特别地，系数的平方和有限，且对 \(M>N\)，\(\|P_Mx-P_Nx\|^2=\sum_{n=N+1}^M|\langle x,e_n\rangle|^2\to0\)。Hilbert 空间完备性使 \(P_Nx\) 收敛到某个 \(p\)。剩余向量 \(x-p\) 与每个 \(e_n\) 正交；它不必为零，除非这些向量的有限线性组合稠密。这后一条件才叫作\emph{完备正交系}。
 
 \begin{theorem}[正交展开与 Parseval 恒等式]
  对一组标准正交向量 \((e_n)\)，以下三件事等价：其有限线性组合在 \(\mathcal H\) 中稠密；与每个 \(e_n\) 正交的向量只能为零；每个 \(x\in\mathcal H\) 都满足
  \begin{equation}
- x=\sum_{n=1}^\infty e_n\langle e_n,x\rangle,
- \qquad \|x\|^2=\sum_{n=1}^\infty|\langle e_n,x\rangle|^2.
+ x=\sum_{n=1}^\infty e_n\langle x,e_n\rangle,
+ \qquad \|x\|^2=\sum_{n=1}^\infty|\langle x,e_n\rangle|^2.
  \label{eq:math-parseval}
  \end{equation}
  级数在 Hilbert 空间范数下收敛。
@@ -43,11 +51,40 @@ Riesz 定理告诉我们如何表示单个测量。若有一列两两正交、�
 \[
  F_N(t)=\frac1{N+1}\left(\frac{\sin((N+1)\pi t/2)}{\sin(\pi t/2)}\right)^2
 \]
-非负且在一个周期上的积分为 \(2\)。它也等于 \((N+1)^{-1}|\sum_{j=0}^N\ee^{\ii\pi jt}|^2\)，所以积分值由有限项正交性直接算出。若 \(0<\delta<1\)，在 \(\delta\le|t|\le1\) 有 \(F_N(t)\le[(N+1)\sin^2(\pi\delta/2)]^{-1}\)。因此卷积平均 \(\frac12\int_{-1}^1F_N(t)G(x-t)\,\dd t\) 与 \(G(x)\) 的差，可以拆成 \(|t|<\delta\) 上由一致连续性控制的部分，以及余区间上随 \(N\to\infty\) 消失的部分；它一致趋于 \(G\)。该平均是有限三角多项式，且 \(G\) 为奇函数，所以只含正弦项。又 \(C_c(0,1)\) 在 \(L^2(0,1)\) 中稠密：先用连续函数作 \(L^2\) 逼近，再用靠近两端的截断函数乘它，截掉部分的平方积分随截断区间长度趋零。于是 \(\sqrt2\sin(n\pi x)\)、\(n\ge1\)，是 \(L^2(0,1)\) 的完备正交系。后文写 Fourier 正弦展开和 Parseval 时，所需的完备性已经在这里得到证明。
+非负且在一个周期上的积分为 \(2\)。它也等于 \((N+1)^{-1}|\sum_{j=0}^N\ee^{\ii\pi jt}|^2\)。在周期区间 \((-1,1)\) 上，不同频率的复指数正交：
+\(\int_{-1}^1\ee^{\ii\pi(j-k)t}\dd t=2\delta_{jk}\)，故
+\[
+\int_{-1}^1F_N(t)\dd t
+=\frac1{N+1}\sum_{j,k=0}^N\int_{-1}^1\ee^{\ii\pi(j-k)t}\dd t
+=\frac1{N+1}\sum_{j=0}^N2=2.
+\]
+区间长度 \(2\) 决定了这个归一。若 \(0<\delta<1\)，在 \(\delta\le|t|\le1\) 有 \(F_N(t)\le[(N+1)\sin^2(\pi\delta/2)]^{-1}\)。因此卷积平均 \(\frac12\int_{-1}^1F_N(t)G(x-t)\,\dd t\) 与 \(G(x)\) 的差，可以拆成 \(|t|<\delta\) 上由一致连续性控制的部分，以及余区间上随 \(N\to\infty\) 消失的部分；它一致趋于 \(G\)。该平均是有限三角多项式，且 \(G\) 为奇函数，所以只含正弦项。又 \(C_c(0,1)\) 在 \(L^2(0,1)\) 中稠密：先用连续函数作 \(L^2\) 逼近，再用靠近两端的截断函数乘它，截掉部分的平方积分随截断区间长度趋零。于是 \(\sqrt2\sin(n\pi x)\)、\(n\ge1\)，是 \(L^2(0,1)\) 的完备正交系。后文写 Fourier 正弦展开和 Parseval 时，所需的完备性已经在这里得到证明。
 
+
+\par
+\begin{workedexample}
+取 \(f_n(x)=\max(1-nx,0)\) 于 \([0,1]\)。证明 \(f_n(0)=1\) 而 \(\|f_n\|_2\to0\)，由此说明取点值不是 \(L^2\) 上的连续线性泛函。
+
+
+\textbf{解.} 支集为 \([0,1/n]\)，故
+\[
+\|f_n\|_2^2=\int_0^{1/n}(1-nx)^2\,\dd x=\frac1{3n}\longrightarrow0,
+\qquad f_n(0)=1.
+\]
+若取点值是连续泛函，就应有 \(|f_n(0)|\le C\|f_n\|_2\)，与上述两式矛盾；而且在 \(L^2\) 中单点取值本身也不由等价类确定。
+\end{workedexample}
+\par
 \section{有界算子与紧算子}
 
 泛函输出一个数；算子可以输出另一个函数。对 Hilbert 空间间的线性算子 \(T:\mathcal H\to\mathcal K\)，若 \(\|Tx\|\le C\|x\|\) 对所有 \(x\) 成立，称有界，其最小可行 \(C\) 为 \(\|T\|\)。线性算子有界当且仅当它在零点连续：前向由估计直接得出；反向由连续性给出一个 \(\delta>0\)，使 \(\|x\|<\delta\) 时 \(\|Tx\|<1\)，再把任意非零 \(x\) 缩放到 \(\delta/2\) 即得 \(\|Tx\|\le2\|x\|/\delta\)。
+
+算子范数在有限维可以真算。取对角矩阵 \(A=\operatorname{diag}(1,2)\) 作为 \(\RR^2\) 上的算子，则
+\[
+\|Ax\|^2=|x_1|^2+4|x_2|^2\le4(|x_1|^2+|x_2|^2)=4\|x\|^2,
+\]
+而取 \(x=(0,1)\) 时 \(\|Ax\|=2\|x\|\)，故 \(\|A\|=2\)。这不是最大本征值绝对值的巧合：一般 \(\|A\|\) 是最大奇异值，即 \(\sqrt{\|A^\dagger A\|}\)。例如剪切矩阵 \(B(x,y)=(x+y,y)\)，由
+\(B^\dagger B=\begin{psmallmatrix}1&1\\1&2\end{psmallmatrix}\) 的最大本征值
+\((3+\sqrt5)/2\)，得 \(\|B\|=\sqrt{(3+\sqrt5)/2}\approx1.618\)；它介于 \(\|Bx\|/\|x\|\) 在各方向的最小值与最大值之间，不是随便某个方向的比值。
 
 有限维有界集的闭包紧，无穷维不再如此。为了恢复一部分矩阵的谱性质，需要更强条件。
 
@@ -55,22 +92,27 @@ Riesz 定理告诉我们如何表示单个测量。若有一列两两正交、�
 有界线性算子 \(K:\mathcal H\to\mathcal K\) 若把每个有界序列映成含收敛子列的序列，称为紧算子。
 \end{definition}
 
-在 \(\ell^2\) 中，\(K(x_1,x_2,\ldots)=(x_1,x_2/2,\ldots)\) 是紧的。令 \(K_N\) 只保留前 \(N\) 项，则 \(K_N\) 的像在有限维空间中有收敛子列，且 \(\|K-K_N\|\le1/(N+1)\)。依次选子列并用这个一致误差，可得 \(K\) 紧。恒等算子却不紧，因为标准正交列 \((e_n)\) 中任意两项距离都是 \(\sqrt2\)，不存在 Cauchy 子列。
+在 \(\ell^2\) 中，\(K(x_1,x_2,\ldots)=(x_1,x_2/2,\ldots)\) 是紧的。令 \(K_N\) 只保留前 \(N\) 项，则 \(K_N\) 的像在有限维空间中有收敛子列，且 \(\|K-K_N\|\le1/(N+1)\)。对一个有界列 \((x^{(m)})\)，先用 \(K_1\) 的有限维性取子列使 \(K_1x^{(m)}\) 收敛；再在其中取子列使 \(K_2x^{(m)}\) 收敛，如此反复后沿对角子列，每个 \(K_Nx^{(m)}\) 都收敛。最后用夹逼
+\[
+\|Kx^{(m)}-Kx^{(\ell)}\|
+\le\|(K-K_N)x^{(m)}\|+\|K_N(x^{(m)}-x^{(\ell)})\|+\|(K_N-K)x^{(\ell)}\|
+\]
+取 \(N\) 足够大使两端一致误差可忽略，便知 \((Kx^{(m)})\) 是 Cauchy 列，故 \(K\) 紧。恒等算子却不紧，因为标准正交列 \((e_n)\) 中任意两项距离都是 \(\sqrt2\)，不存在 Cauchy 子列。
 
 \begin{theorem}[紧自伴算子的谱结构]
 若 \(K\) 是复 Hilbert 空间上的紧自伴算子，则它的非零谱点均为实本征值，各自具有有限重数，非零本征值只能向零累积；\(\mathcal H\) 有由这些本征向量和 \(\ker K\) 的正交基组成的正交基。
 \end{theorem}
 
 \begin{proof}
-先证 \(K\ne0\) 时存在非零本征值。记 \(r=\|K\|^2>0\)，选单位向量 \(x_j\) 使 \(\|Kx_j\|^2\to r\)。令 \(L=K^2\)。由于 \(K\) 自伴，\(\langle x,Lx\rangle=\|Kx\|^2\)，且
+先证 \(K\ne0\) 时存在非零本征值。记 \(r=\|K\|^2>0\)，选单位向量 \(x_j\) 使 \(\|Kx_j\|^2\to r\)。令 \(L=K^2\)。由于 \(K\) 自伴，\(\langle Lx,x\rangle=\|Kx\|^2\)，且
 \[
-\|Lx\|^2=\|K(Kx)\|^2\le r\|Kx\|^2=r\langle x,Lx\rangle.
+\|Lx\|^2=\|K(Kx)\|^2\le r\|Kx\|^2=r\langle Lx,x\rangle.
 \]
 因此
 \[
 \|(L-rI)x_j\|^2
-=\|Lx_j\|^2-2r\langle x_j,Lx_j\rangle+r^2
-\le r\bigl(r-\langle x_j,Lx_j\rangle\bigr)\longrightarrow0.
+=\|Lx_j\|^2-2r\langle Lx_j,x_j\rangle+r^2
+\le r\bigl(r-\langle Lx_j,x_j\rangle\bigr)\longrightarrow0.
 \]
 紧算子 \(K\) 的平方 \(L\) 仍紧，所以 \((Lx_j)\) 有收敛子列；沿此子列，\(x_j=r^{-1}(Lx_j-(L-rI)x_j)\) 也收敛到单位向量 \(x\)，并有 \(K^2x=rx\)。于是 \(K(x\pm Kx/\sqrt r)=\pm\sqrt r\,(x\pm Kx/\sqrt r)\)。这两个向量至少一个非零，给出实本征值 \(\pm\|K\|\)。
 
@@ -81,6 +123,4 @@ Riesz 定理告诉我们如何表示单个测量。若有一列两两正交、�
 
 在对角例 \(Ke_n=e_n/n\) 中，本征值 \(1/n\) 趋于零；证明里的紧性正是排除其他有限累积点的关键。微分算子通常连有界性都不满足，下一章不能直接套用这个定理。
 
-\begin{exercise}
-取 \(f_n(x)=\max(1-nx,0)\) 于 \([0,1]\)。证明 \(f_n(0)=1\) 而 \(\|f_n\|_2\to0\)，由此说明取点值不是 \(L^2\) 上的连续线性泛函。
-\end{exercise}
+

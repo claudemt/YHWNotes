@@ -1,7 +1,33 @@
 \section{一条电子电流怎样同时激发损失与发光}
 \label{chap:feqo-eels-cl-kernel}
 
-前章的 Green 张量回答给定电流会产生什么场。这里把电流指定为电子轨迹，并追踪电子交出的能量；对应实验分别称电子能量损失谱学（EELS）和阴极发光（CL）。先采用经典直线轨迹 \(\vb{r}_e(t)=\vb{R}_0+\vb{v}t\) 作为窄波包的中心；电子电荷始终记为 \(q=-e\)。相应的电流密度为
+前章的 Green 张量回答给定电流会产生什么场。先把它的定义
+钉在这里：推迟 Green 张量 \(\mathbf G(\vb{r},\vb{r}';\omega)\)
+是满足
+\[
+\nabla\times\nabla\times\mathbf G
+-\frac{\omega^2}{c^2}\,\varepsilon(\vb{r},\omega)\mathbf G
+=\delta^{(3)}(\vb{r}-\vb{r}')\,\mathbf I
+\]
+并带外向辐射条件的并矢场（详见\cref{eq:feqo-green-definition}），
+它把 \(\vb{r}'\) 处的点电流映射成 \(\vb{r}\) 处的电场：
+\[
+\vb{E}(\vb{r},\omega)
+=\ii\mu_0\omega\int\dd^3r', 
+\mathbf G(\vb{r},\vb{r}',\omega)\vb{j}(\vb{r}',\omega).
+\]
+这里把电流指定为电子轨迹，并追踪电子交出的能量；对应实验分别称电子能量损失谱学（EELS）和阴极发光（CL）。这两个通道都有长历史：EELS 的能量分析思想可追溯到 1930 年代、1944 年 Hillier 与 Baker 用电镜测出首批损失谱；CL 的光学收集自 1950 年代起用于半导体与矿物研究。近二十年两者的空间与能量分辨率同时进入纳米与毫电子伏量级，同一次穿越中“电子丢了多少能量”与“远处收到多少个光子”可以被并排测量——这正是需要（也是检验）统一量子理论的原因。
+
+先采用经典直线轨迹 \(\vb{r}_e(t)=\vb{R}_0+\vb{v}t\) 作为窄波包的中心；电子电荷始终记为 \(q=-e\)。把电子当成点电流是一个近似，其判据是波包横向宽度
+\(\sigma_\perp\) 远小于特征长度：撞击参数 \(b\)
+与近场衰减长度 \(L_E\)。电镜束流的横向相干长度典型为
+\(10\)--\(30\,\si{\nano\metre}\)，波包包络可以更宽；
+当 \(\sigma_\perp\ll b\) 且 \(\sigma_\perp\ll L_E\) 时，
+把波包对核 \(\operatorname{Im}\mathbf G\) 的卷积近似为
+在中心轨迹处取值，相对误差为
+\(O(\sigma_\perp^2/b^2)\)。亚纳米撞击参数或波包被
+刻意整形（电子全息、横向相位板）时，必须回到
+\cref{eq:feqo-positive-wavepacket} 的波包二次型。相应的电流密度为
 \begin{equation}
 \vb{j}_e(\vb{r},t)=q\vb{v}\,\delta^{(3)}(\vb{r}-\vb{r}_e(t)).
 \label{eq:feqo-electron-current}
@@ -13,7 +39,27 @@
 \]
 这条沿 \(z\) 延伸的源说明电子读取的是一整段空间响应，而非轨迹上一点的局域态密度。
 
-定义由样品引起的散射 Green 张量 \(\mathbf G_{\rm sc}=\mathbf G-\mathbf G_0\)，并令 \(\vb{E}_{\rm ind}=\ii\mu_0\omega\mathbf G_{\rm sc}\vb{j}_e\)，其中乘积含两点空间积分。电子对诱导场所做的功为 \(W_e=\int\dd t\,\vb{j}_e\cdot\vb{E}_{\rm ind}\)。损失定义为 \(W_{\rm loss}=-W_e\)。把实场写成正负频两项，频率 \(\omega>0\) 的谱密度为
+定义由样品引起的散射 Green 张量 \(\mathbf G_{\rm sc}=\mathbf G-\mathbf G_0\)，并令 \(\vb{E}_{\rm ind}=\ii\mu_0\omega\mathbf G_{\rm sc}\vb{j}_e\)，其中乘积含两点空间积分。电子对诱导场所做的功为 \(W_e=\int\dd t\int\dd^3r\,\vb{j}_e\cdot\vb{E}_{\rm ind}\)。损失定义为 \(W_{\rm loss}=-W_e\)。把功写成频率积分要走三步，这里逐步写出。第一步，Parseval：按全书的 Fourier 约定，对实场有
+\[
+W_e=\int\dd t\!\int\!\dd^3r\,\vb{j}_e\cdot\vb{E}_{\rm ind}
+=\int_{-\infty}^{\infty}\frac{\dd\omega}{2\pi}
+\int\!\dd^3r\,\vb{j}_e(\vb{r},\omega)\cdot
+\vb{E}_{\rm ind}(\vb{r},\omega),
+\]
+注意右端没有时间共轭；实条件
+\(\vb{j}(-\omega)=\vb{j}^*(\omega)\)、
+\(\vb{E}(-\omega)=\vb{E}^*(\omega)\) 使负频项是正频项的
+复共轭，故
+\[
+W_e=\frac1\pi\operatorname{Re}\int_0^\infty\dd\omega
+\int\!\dd^3r\,\vb{j}_e^*(\vb{r},\omega)\cdot
+\vb{E}_{\rm ind}(\vb{r},\omega),
+\]
+\(1/(2\pi)\) 变成 \(1/\pi\) 正是正负频配对给出的因子 \(2\)。
+第二步，代入 \(\vb{E}_{\rm ind}=\ii\mu_0\omega\mathbf G_{\rm sc}\vb{j}_e\)。
+第三步，对任意复数用
+\(\operatorname{Re}(\ii z)=-\operatorname{Im}z\)，
+把实部换成核的虚部。于是频率 \(\omega>0\) 的谱密度为
 \begin{equation}
 \begin{aligned}
 \frac{\dd W_{\rm loss}}{\dd\omega}
@@ -24,14 +70,32 @@
 \end{aligned}
 \label{eq:feqo-eels-work}
 \end{equation}
-第一步用了实场的正负频配对及 Parseval 恒等式，第二步用了 \(\operatorname{Re}(\ii z)=-\operatorname{Im}z\)。二次型的两端各含一个电子电流，并在 \(\vb{r},\vb{r}'\) 上积分。此处的虚部是算符虚部，定义为
+二次型的两端各含一个电子电流，并在 \(\vb{r},\vb{r}'\) 上积分。此处的虚部是算符虚部，定义为
 \[
 \operatorname{Im}\mathbf G
 =\frac{\mathbf G-\mathbf G^\dagger}{2\ii}.
 \]
-对样品额外损失，减去真空项很重要：不能把自由空间核的奇异自场误算作材料信号。
+对样品额外损失，减去真空项很重要：不能把自由空间核的奇异自场误算作材料信号。不减去会怎样？\(\mathbf G_0\)
+在 \(\vb{r}=\vb{r}'\) 处有 \(1/R\) 型奇异（其虚部正则，
+给出的是与材料无关的辐射反作用自能），把它沿无限长
+轨迹积分会得到一个正比于总飞行时间、随轨迹长度发散的
+背景“损失”——它不含任何样品信息，却把真正的材料信号
+淹没。减去 \(\mathbf G_0\) 之后剩下的
+\(\mathbf G_{\rm sc}\) 才是样品存在与否之差，
+这正是一次假想实验的定义：同一电子，一次穿过样品，
+一次穿过真空，两次能量差才是 EELS 信号。
 
-将上面已经求出的直线电流代入二次型，二维横向 \(\delta\) 函数立即完成两个横向积分，剩下
+将上面已经求出的直线电流代入二次型。先把二次型写全：
+\[
+\langle\vb{j}_e,\operatorname{Im}\mathbf G_{\rm sc}\vb{j}_e\rangle
+=\int\dd^3r\dd^3r'\,
+\vb{j}_e^*(\vb{r},\omega)\cdot
+\operatorname{Im}\mathbf G_{\rm sc}(\vb{r},\vb{r}';\omega)\,
+\vb{j}_e(\vb{r}',\omega).
+\]
+代入 \(\vb{j}_e(\vb{r},\omega)=q\hat{\vb{z}}\delta^{(2)}(\vb{R}-\vb{R}_0)e^{\ii\omega z/v}\)：
+两个 \(\delta^{(2)}\) 立即完成 \(\vb{R},\vb{R}'\) 两对横向积分，
+电流只剩 \(z\) 分量，张量只剩 \(zz\) 分量，剩下
 \begin{equation}
 \begin{aligned}
 \frac{\dd W_{\rm loss}}{\dd\omega}
@@ -49,7 +113,34 @@
 \Gamma_{\rm loss}(\omega)=\frac1{\hbar\omega}
 \frac{\dd W_{\rm loss}}{\dd\omega}.
 \]
-这个等同需要单量子、稀事件极限；强激发时平均功仍由\cref{eq:feqo-eels-work} 描述，却不能把平均量直接当成“恰好一次损失”的概率。
+这个等同需要单量子、稀事件极限；强激发时平均功仍由\cref{eq:feqo-eels-work} 描述，却不能把平均量直接当成“恰好一次损失”的概率。把条件写定量：定义平均量子数
+\(\mu=\int_0^\infty\Gamma_{\rm loss}(\omega)\dd\omega\)。
+当 \(\mu\ll1\) 时，两次以上损失的概率为
+\(O(\mu^2)\)，\(\Gamma_{\rm loss}(\omega)\dd\omega\)
+才就是“在 \([\omega,\omega+\dd\omega]\) 内恰好损失一个
+量子”的概率。当 \(\mu\) 接近或超过 \(1\)——
+PINEM 里 \(|\beta|^2\) 扮演的正是 \(\mu\) 的角色，
+例题中可达 \(0.1\) 乃至数——能谱变成多次卷积：
+零损失峰按 \(e^{-\mu}\) 衰减，\(\ell\) 次损失峰
+按 Poisson 权重 \(e^{-\mu}\mu^{|\ell|}/|\ell|!\)
+（独立模）或相应的 Bessel 权重（单模相干驱动）分布，
+那时必须改用经典驱动与量子交换两章的多量子理论，
+而不是强行解释 \(\Gamma_{\rm loss}>1\) 的“概率”。
+
+这个经典电流公式与\cref{chap:feqo-finite-time} 的
+量子跃迁率也不是两套理论。量子处理中，电子从
+\(|\vb{p}\rangle\) 跃迁到 \(|\vb{p}-\hbar\vb{q}\rangle\)
+并把一个量子交给环境，速率由黄金律
+\(|V_{fi}|^2\rho\) 给出；把矩阵元 \(V_{fi}\)（前节已从
+最小耦合算出）代入、对环境的全部末态求和，
+并利用环境响应的涨落—耗散形式
+\(\sum_f|\langle f|\vb{E}|0\rangle|^2\propto
+\operatorname{Im}\mathbf G\)，得到的总功率恰为
+\(\hbar\omega\Gamma_{\rm loss}\) 对频率积分，即
+\cref{eq:feqo-eels-work}。这与场论中“经典外流的
+辐射功率等于各软量子发射率之和”的外源公式是同一条
+恒等式：经典轨迹电流是相干叠加的极限，
+\(\mu\) 正是发射量子的平均数。
 
 \begin{proposition}[被动环境中的正性]
 若环境的完整响应被动，\(\langle\vb{j},\operatorname{Im}\mathbf G\vb{j}\rangle\geq0\) 对任意可容许电流成立；因此总耗散功率非负。
@@ -68,7 +159,67 @@
 \end{equation}
 \(\eta\in[0,1]\) 是收集与探测效率。同一个 \(\mathbf G\vb{j}_e\) 先给总诱导场，再给远场 \(\vb{F}\)。材料吸收、导波和未被收集的辐射都可能增加电子损失，却不会增加此探测器的计数。
 
-这个区别还能用一个单共振响应直接核对。令复模式振幅 \(a(t)\) 的模平方等于储能（单位 \(\si{\joule}\)），并用线性方程 \(\dot a=(-\ii\omega_0-\kappa/2)a+s(t)\) 描述电子电流的驱动；这里 \(s\) 的单位是 \(\si{\joule}^{1/2}\si{\per\second}\)。辐射与材料吸收的能量衰减率分别为 \(\kappa_r,\kappa_a\)，总宽度 \(\kappa=\kappa_r+\kappa_a\)。Fourier 变换给 \(|a(\omega)|^2=|s(\omega)|^2/[(\omega-\omega_0)^2+(\kappa/2)^2]\)。令 \(A(\omega)=|s(\omega)|^2/(2\pi)\)，它的单位是 \(\si{\joule}\)；假设脉冲前后模式储能都回到零，复振幅的全频 Parseval 恒等式便把电子总损失、辐射能量和收集能量的频谱写为
+公式里的几何要落到真实装置上。把 \(\Omega_{\rm det}\)
+参数化为绕收集轴、半角 \(\theta_{\max}\) 的圆锥
+（数值孔径 \(\mathrm{NA}=n\sin\theta_{\max}\)，\(n\)
+为样品侧介质折射率），则
+\(\Omega_{\rm det}=2\pi(1-\cos\theta_{\max})\)；
+效率分解为 \(\eta=\eta_{\rm mirror}\,T_{\rm opt}\,Q\)，
+分别对应收集镜的立体角截获、光路透过率与探测器量子效率。
+两个参考数字：\(\mathrm{NA}=0.5\)
+（\(\theta_{\max}=30^\circ\)）给
+\(\Omega_{\rm det}=0.84\,\si{\steradian}\)，
+约为 \(4\pi\) 的 \(6.7\%\)；抛物面镜方案收集
+\(\theta_{\max}\) 接近 \(60^\circ\) 以上、并配合样品下方的
+反射，可越过 \(2\pi\,\si{\steradian}\)。给定角分布后，
+\cref{eq:feqo-cl-collection} 的计数率对
+\(\theta_{\max}\) 的依赖就是仪器预算的核心数字。
+
+EELS 与 CL 的关系至此可以一句话说清：二者测量的是
+\emph{同一个诱导场在不同投影下的能量流}。EELS 把场沿
+电子轨迹投影（取 \(\operatorname{Im}\mathbf G\) 的
+\(zz\) 分量在轨迹上的双重积分），因此对所有通道——
+吸收、导波、辐射——一视同仁；CL 把同一场投影到远场
+方向集合与偏振上，只数能飞到探测器的部分。
+一个类比：EELS 像串联在电路里的电流表，读出负载消耗的
+总功率；CL 像架在房间一角的照度计，只读到照进
+那个窗口的光。两者相除不是常数，任何“用 CL 峰高除以
+EELS 峰高来标定效率”的做法都要求两个峰来自同一模式、
+且角分布已知。
+
+这个区别还能用一个单共振响应直接核对。令复模式振幅 \(a(t)\) 的模平方等于储能（单位 \(\si{\joule}\)），并用线性方程 \(\dot a=(-\ii\omega_0-\kappa/2)a+s(t)\) 描述电子电流的驱动；这里 \(s\) 的单位是 \(\si{\joule}^{1/2}\si{\per\second}\)。辐射与材料吸收的能量衰减率分别为 \(\kappa_r,\kappa_a\)，总宽度 \(\kappa=\kappa_r+\kappa_a\)。驱动项 \(s\) 不是额外的现象学假设，它由本章已经建立的形式完全确定。从\cref{eq:feqo-green-mode-expansion} 的模展开出发，频率扫过一个孤立共振时，\(\mathbf G\) 的谱和中只剩一项占优：
+\[
+\mathbf G(\vb{r},\vb{r}';\omega)\simeq
+\frac{c^2\,\vb{f}_0(\vb{r})\otimes\vb{f}_0^*(\vb{r}')}
+{\omega_0^2-(\omega+\ii0)^2}
+\;\xrightarrow{\ \omega\to\omega_0\ }\;
+\frac{c^2}{2\omega_0}\,
+\frac{\vb{f}_0(\vb{r})\otimes\vb{f}_0^*(\vb{r}')}
+{\omega_0-\omega-\ii\kappa/2},
+\]
+第二步在共振附近把
+\(\omega_0^2-\omega^2\simeq2\omega_0(\omega_0-\omega)\)
+并写入唯象宽度 \(\kappa\)。
+代入 \(\vb{E}=\ii\mu_0\omega\mathbf G\vb{j}_e\)，
+场的空间形状就是单模 \(\vb{f}_0(\vb{r})\)，
+其复振幅遵循的正是上述单极点方程，驱动为
+\[
+s(\omega)=\eta_0\int\dd^3r\,
+\vb{f}_0^*(\vb{r})\cdot\vb{j}_e(\vb{r},\omega),
+\]
+其中常数 \(\eta_0\) 由模式归一化
+（\(|a|^2\) 等于储能这一约定）唯一固定。
+对直线轨迹，横向 \(\delta^{(2)}\) 完成横向积分，
+\[
+|s(\omega)|^2=|\eta_0|^2q^2
+\left|\int\dd z\,f_{0,z}^*(\vb{R}_0,z)\,
+e^{\ii\omega z/v}\right|^2 ,
+\]
+即驱动强度是模式剖面沿轨迹的傅里叶分量——
+与\cref{eq:feqo-trajectory-green-kernel} 中
+\(\operatorname{Im}G_{{\rm sc},zz}\) 读取轨迹的
+是同一段空间响应，只是这里投影到一个模式上。
+Fourier 变换给 \(|a(\omega)|^2=|s(\omega)|^2/[(\omega-\omega_0)^2+(\kappa/2)^2]\)。令 \(A(\omega)=|s(\omega)|^2/(2\pi)\)，它的单位是 \(\si{\joule}\)；假设脉冲前后模式储能都回到零，复振幅的全频 Parseval 恒等式便把电子总损失、辐射能量和收集能量的频谱写为
 \[
 \frac{A(\omega)\kappa}{(\omega-\omega_0)^2+(\kappa/2)^2},\qquad
 \frac{A(\omega)\kappa_r}{(\omega-\omega_0)^2+(\kappa/2)^2},\qquad
@@ -79,6 +230,17 @@
 
 真空中无限长的匀速轨迹提供一个必要检查。轨迹的 Fourier 支持为 \(k_z=\omega/v\)，自由光子的壳条件为 \(|\vb{k}|=\omega/c\)。因为 \(v<c\) 使 \(|k_z|>\omega/c\)，两者不相交，所以没有真实远场辐射。界面或周期结构能提供额外动量，才可能改变这个结论。
 
-\begin{exercise}
+
+
+\par
+\begin{workedexample}
 用 \(\delta(z-vt)=\delta(t-z/v)/v\) 重新推导电子电流的频域表达，并核对其量纲。
-\end{exercise}
+\textbf{解.} 对 \(j_z=qv\,\delta^{(2)}(\vb R-\vb R_0)\delta(z-vt)\)，
+\[
+\int_{-\infty}^{\infty}j_z e^{\ii\omega t}\,\dd t
+=qv\,\delta^{(2)}(\vb R-\vb R_0)\frac1v e^{\ii\omega z/v}
+=q\,\delta^{(2)}(\vb R-\vb R_0)e^{\ii\omega z/v}.
+\]
+\(\delta^{(2)}\) 的量纲为 \(\mathrm m^{-2}\)，故频域电流量纲为 \(\mathrm{C\,m^{-2}}\)，正是时域面电流密度乘时间的单位。
+\end{workedexample}
+\par

@@ -1,7 +1,130 @@
-\section{不读光与选定光学结果是两种实验}
+\section{电子--光子纠缠的量化与物理后果}
 \label{chap:feqo-conditioning}
 
-\cref{eq:feqo-partial-trace-components} 对所有未记录的光末态求和。如果实验还读出光场，可以只保留特定结果对应的电子。先看投影测量：光场投影 \(P_y=P_y^2=P_y^\dagger\) 代表结果 \(y\)，未归一化的条件电子态为
+前两节建立了联合态并推导了条件光子态。本节进一步追问：电子与光之间的纠缠有多强？它能否用单一数值刻画？纠缠在实验中意味着什么——测量电子能量究竟对光子态造成了什么影响？
+
+\subsection{纠缠的严格定义}
+
+对电子--光子双体系统，联合态 \(|\Psi\rangle\in\mathcal H_e\otimes\mathcal H_\gamma\) 称为\emph{可分态}（separable），若存在 \(|\psi_e\rangle\in\mathcal H_e\) 和 \(|\psi_\gamma\rangle\in\mathcal H_\gamma\) 使得 \(|\Psi\rangle=|\psi_e\rangle\otimes|\psi_\gamma\rangle\)。若做不到，则 \(|\Psi\rangle\) 称为\emph{纠缠态}。
+
+由\cref{eq:feqo-entanglement-column-test}，对纯态 \(|\Psi\rangle=\sum_n|c_n\rangle_e|n\rangle_\gamma\)（其中 \(|c_n\rangle_e=\sum_\ell C_{\ell n}|\ell\rangle\) 是第 \(n\) 列对应的电子向量），可分性等价于所有非零列向量 \(|c_n\rangle\) 彼此共线。这个判据不需要假设有限维。
+
+对混合态 \(\rho_{e\gamma}\)，可分性的定义更严格：\(\rho_{e\gamma}=\sum_k p_k|\psi_e^{(k)}\rangle\langle\psi_e^{(k)}|\otimes|\psi_\gamma^{(k)}\rangle\langle\psi_\gamma^{(k)}|\)，即可以写成积态的经典混合。本节主要讨论纯态情形，此时可分性与纠缠的定义是互补的。
+
+
+\par
+\begin{workedexample}
+设联合态为 \(|\Psi\rangle=\alpha|0,0\rangle+\beta|1,1\rangle+\gamma|-1,-1\rangle\)（后两项中光子数取负值理解为形式标记），其中 \(|\alpha|^2+|\beta|^2+|\gamma|^2=1\)。求 Schmidt 分解和纠缠熵，并指出何时为最大纠缠态。
+\textbf{解.} 三个电子态与三个光子标记态分别正交，原式已是 Schmidt 分解，Schmidt 权重为 \(|\alpha|^2,|\beta|^2,|\gamma|^2\)。故 \(S=-\sum_{c\in\{\alpha,\beta,\gamma\}}|c|^2\ln|c|^2\)，在三个模长都为 \(1/\sqrt3\) 时达到最大值 \(\ln3\)，相位不影响熵。
+\end{workedexample}
+\par
+\subsection{纠缠熵}
+
+对联合纯态 \(|\Psi\rangle\)，定义电子约化密度矩阵 \(\rho_e=\operatorname{Tr}_\gamma|\Psi\rangle\langle\Psi|\)。\emph{纠缠熵}（entanglement entropy）为
+\begin{equation}
+S=-\operatorname{Tr}(\rho_e\log\rho_e)
+=-\sum_k\lambda_k\log\lambda_k,
+\label{eq:feqo-entanglement-entropy}
+\end{equation}
+其中 \(\lambda_k\) 是 \(\rho_e\) 的本征值（也等于 \(|\Psi\rangle\langle\Psi|\) 在任一子系统上的非零本征值）。约定 \(0\log 0=0\)。
+
+纠缠熵的性质：
+\begin{itemize}
+\item \(S\geq0\)，等号成立当且仅当 \(|\Psi\rangle\) 可分（\(\rho_e\) 只有一个本征值为 1，其余为 0）。
+\item 对 \(d\) 维子系统，\(S\leq\log d\)，等号成立当且仅当 \(\rho_e=I/d\)（最大混合态），此时 \(|\Psi\rangle\) 为最大纠缠态。
+\item 对无限维系统，\(S\) 可以发散；此时需用截断或正则化定义。
+\end{itemize}
+
+\subsection{Schmidt 分解}
+
+对任意归一化纯态 \(|\Psi\rangle\in\mathcal H_e\otimes\mathcal H_\gamma\)，存在电子基 \(\{|u_k\rangle\}\) 和光子基 \(\{|v_k\rangle\}\)（各自正交归一），以及非负实数 \(\sqrt{\lambda_k}\)（Schmidt 系数），使得
+\begin{equation}
+|\Psi\rangle=\sum_k\sqrt{\lambda_k}|u_k\rangle_e|v_k\rangle_\gamma,
+\qquad \sum_k\lambda_k=1.
+\label{eq:feqo-schmidt-decomposition}
+\end{equation}
+这就是 Schmidt 分解。Schmidt 系数 \(\lambda_k\) 恰好是 \(\rho_e\)（也是 \(\rho_\gamma\)）的本征值。因此纠缠熵可直接从 Schmidt 系数计算：\(S=-\sum_k\lambda_k\log\lambda_k\)。
+
+\textbf{Schmidt 数}（Schmidt rank）为非零 Schmidt 系数的个数 \(K\)。\(K=1\) 对应可分态；\(K\geq2\) 对应纠缠态。对有限维 \(d_e\times d_\gamma\) 系统，\(K\leq\min(d_e,d_\gamma)\)。
+
+\textbf{证明概要。}将 \(|\Psi\rangle\) 在任意积基上展开为 \(|\Psi\rangle=\sum_{\ell n}C_{\ell n}|\ell,n\rangle\)。系数矩阵 \(C\) 的奇异值分解 \(C=\sum_k\sqrt{\lambda_k}u_kv_k^\dagger\)（如\cref{chap:feqo-quantum-pinem} 所述）直接给出 Schmidt 分解：\(|u_k\rangle=\sum_\ell(u_k)_\ell|\ell\rangle\)，\(|v_k\rangle=\sum_n(v_k^*)_n|n\rangle\)。对无限维，需验证 \(C\) 是 Hilbert--Schmidt 算符（\(\sum|C_{\ell n}|^2<\infty\)），此时奇异值分解仍然成立。
+
+\subsection{PINEM 态的 Schmidt 系数}
+
+对真空输入的 PINEM 态\cref{eq:feqo-vacuum-joint-state}，联合态为
+\[
+|\Psi\rangle=e^{-\mu/2}\sum_{m=0}^\infty\frac{\zeta^m}{\sqrt{m!}}|-m,m\rangle.
+\]
+因为不同 \(m\) 对应不同的电子态 \(|-m\rangle\) 和不同的光子态 \(|m\rangle\)，且两组基各自正交，这已经是 Schmidt 分解的形式。Schmidt 系数为
+\begin{equation}
+\lambda_m=e^{-\mu}\frac{\mu^m}{m!},\qquad m=0,1,2,\ldots
+\label{eq:feqo-vacuum-schmidt}
+\end{equation}
+这正是均值为 \(\mu\) 的泊松分布。纠缠熵为
+\begin{equation}
+S=-\sum_{m=0}^\infty\lambda_m\log\lambda_m
+=\mu(1-\log\mu)+e^{-\mu}\sum_{m=0}^\infty\frac{\mu^m}{m!}\log(m!).
+\label{eq:feqo-vacuum-entropy}
+\end{equation}
+对 \(\mu\ll1\)，\(S\approx-\mu\log\mu+\mu+O(\mu^2)\)；对 \(\mu\gg1\)，利用 Stirling 近似 \(\log(m!)\approx m\log m-m\)，得 \(S\approx\frac{1}{2}\log(2\pi e\mu)\)。纠缠熵随耦合强度单调增长，但增长速率在强耦合下对数饱和。
+
+\subsection{最大纠缠与可分态的条件}
+
+\textbf{可分态条件。}\(|\Psi\rangle\) 可分当且仅当 Schmidt 数为 1。对 PINEM 态，这要求 \(\mu=0\)（无耦合），或联合态被物理截断为单个通道。
+
+\textbf{最大纠缠条件。}在有限截断 \(K\) 维子空间中，最大纠缠要求所有 Schmidt 系数相等：\(\lambda_k=1/K\)。对 PINEM 态，这要求泊松分布在某个范围内近似均匀——实际上不可能精确达到，因为泊松分布总有峰。但在 \(\mu\gg1\) 时，分布集中在 \(m\approx\mu\pm\sqrt{\mu}\) 的范围内，有效 Schmidt 数约为 \(2\sqrt{\mu}\)，纠缠熵约为 \(\frac{1}{2}\log\mu\)。
+
+对二维截断（如 \(|0,1\rangle,|1,0\rangle\) 系统），最大纠缠在 \(gt=\pi/4\) 时达到：\(|\Psi\rangle=(|0,1\rangle-\ii|1,0\rangle)/\sqrt{2}\)，Schmidt 系数为 \(\lambda_1=\lambda_2=1/2\)，\(S=\log 2\)。
+
+\subsection{物理含义：测量电子能量对光子态的影响}
+
+纠缠的直接物理后果是：测量电子能量会改变光子态。具体来说：
+
+\textbf{无测量时}（不读电子），光子态由约化密度矩阵 \(\rho_\gamma=\operatorname{Tr}_e|\Psi\rangle\langle\Psi|\) 描述。对真空 PINEM 态，
+\[
+\rho_\gamma=\sum_m\lambda_m|m\rangle\langle m|
+=\sum_m e^{-\mu}\frac{\mu^m}{m!}|m\rangle\langle m|.
+\]
+这是光子数的经典混合——没有确定的相位关系。
+
+\textbf{测量电子能量后}，若测得电子在第 \(-m\) 条边带，光子坍缩到纯态 \(|m\rangle\)。这个纯态与 \(\rho_\gamma\) 的混合态预测不同的后续实验。例如，若随后对光场做 homodyne 测量（测量正交分量 \(X=(a+a^\dagger)/2\)），混合态给 \(\langle X\rangle=0\)、\(\operatorname{Var}(X)=(2m+1)/4\) 的平均；而纯态 \(|m\rangle\) 给 \(\langle X\rangle=0\)、\(\operatorname{Var}(X)=(2m+1)/4\)——数值相同，但条件测量后的光子态有确定的光子数，其相位完全不确定。
+
+\subsection{Which-path 信息与光子干涉的破坏}
+
+纠缠的另一后果是"which-path"信息。考虑电子经过两个路径（对应两个边带 \(\ell_1,\ell_2\)），每个路径关联不同的光子态 \(|\gamma_1\rangle,|\gamma_2\rangle\)。联合态为
+\[
+|\Psi\rangle=\sqrt{p}\,|\ell_1\rangle_e|\gamma_1\rangle_\gamma
++\sqrt{1-p}\,e^{\ii\phi}|\ell_2\rangle_e|\gamma_2\rangle_\gamma.
+\]
+若对光子求偏迹，电子的相干元为
+\begin{equation}
+(\rho_e)_{\ell_1\ell_2}=\sqrt{p(1-p)}\,e^{-\ii\phi}
+\langle\gamma_2|\gamma_1\rangle.
+\label{eq:feqo-which-path-coherence}
+\end{equation}
+光子态的内积 \(\langle\gamma_2|\gamma_1\rangle\) 直接控制电子相干的大小：
+\begin{itemize}
+\item \(|\gamma_1\rangle=|\gamma_2\rangle\)（光子未记录路径信息）：\(|\langle\gamma_2|\gamma_1\rangle|=1\)，电子相干最大。
+\item \(\langle\gamma_2|\gamma_1\rangle=0\)（光子完全区分两条路径）：电子相干为零，干涉消失。
+\item 中间情况：部分相干，由重叠度 \(|\langle\gamma_2|\gamma_1\rangle|\) 量化。
+\end{itemize}
+
+对一般归一化纯态
+\[
+|\Psi\rangle=\sqrt p\,|0\rangle_e|u\rangle_\gamma
++e^{\ii\phi}\sqrt{1-p}\,|1\rangle_e|v\rangle_\gamma,
+\qquad 0\leq p\leq1,
+\]
+其中 \(s:=\langle v|u\rangle\)，由 \(2\times2\) 矩阵直接相乘求得
+\begin{equation}
+\operatorname{Tr}\rho_e^2=p^2+(1-p)^2+2p(1-p)|s|^2.
+\label{eq:feqo-which-path-overlap}
+\end{equation}
+当 \(|u\rangle=|v\rangle\) 时 \(|s|=1\)，光没有记下电子走哪条能量路径，电子仍纯；当二者正交时 \(s=0\)，路径标签可由光完全区分，电子相干元消失。\(p\) 接近零或一时纯度也接近一，但那是因为电子几乎只走一条路径，不能误说环境"没有取得信息"。这个公式把路径信息、电子相干和纯度之间的关系落实到同一个可计算的内积。
+
+\subsection{条件测量与量子态更新}
+
+如果实验还读出光场，可以只保留特定结果对应的电子。先看投影测量：光场投影 \(P_y=P_y^2=P_y^\dagger\) 代表结果 \(y\)，未归一化的条件电子态为
 \begin{equation}
 \widetilde\rho_{e|y}=\operatorname{Tr}_\gamma
 \bigl[(I_e\otimes P_y)\rho_{e\gamma}(I_e\otimes P_y)\bigr],\qquad
@@ -11,25 +134,64 @@ p_y=\operatorname{Tr}\widetilde\rho_{e|y},\quad
 \end{equation}
 \(p_y=0\) 的结果不会发生，也就没有对应的条件态。把所有互斥结果的未归一化态相加，恢复不读光的 \(\rho_e\)；归一化后再相加则没有意义，必须带各自概率权重。
 
-令前节二维示例在 \(gt=\pi/4\) 时的联合态为 \((|0,1\rangle-\ii|1,0\rangle)/\sqrt2\)。不读光得到 \(\rho_e=(|0\rangle\langle0|+|1\rangle\langle1|)/2\)，纯度 \(1/2\)。若光探测器投影到 \(|+\rangle_\gamma=(|0\rangle+|1\rangle)/\sqrt2\)，得到该结果的概率为 \(1/2\)，归一化的电子条件态为 \((|0\rangle-\ii|1\rangle)/\sqrt2\)，纯度为一。另一正交光学结果给相反的电子相位；忽略结果标签时，两种相位相加又消去。这就是“光场带走哪条路径信息”的可计算版本。
-
-不必要求光学路径态恰好正交，才能量化这件事。考虑归一化纯态
-\[
-|\Psi\rangle=\sqrt p\,|0\rangle_e|u\rangle_\gamma
-+e^{\ii\phi}\sqrt{1-p}\,|1\rangle_e|v\rangle_\gamma,
-\qquad 0\leq p\leq1,
-\]
-其中 \(\langle u|u\rangle=\langle v|v\rangle=1\)，但 \(s:=\langle v|u\rangle\) 可以在零与单位模之间。对光求偏迹得到 \((\rho_e)_{01}=\sqrt{p(1-p)}e^{-\ii\phi}s\)，并由 \(2\times2\) 矩阵直接相乘求得
-\begin{equation}
-\operatorname{Tr}\rho_e^2=p^2+(1-p)^2+2p(1-p)|s|^2.
-\label{eq:feqo-which-path-overlap}
-\end{equation}
-当 \(|u\rangle=|v\rangle\) 时 \(|s|=1\)，光没有记下电子走哪条能量路径，电子仍纯；当二者正交时 \(s=0\)，路径标签可由光完全区分，电子相干元消失。\(p\) 接近零或一时纯度也接近一，但那是因为电子几乎只走一条路径，不能误说环境“没有取得信息”。这个公式把路径信息、电子相干和纯度之间的关系落实到同一个可计算的内积。
+令前节二维示例在 \(gt=\pi/4\) 时的联合态为 \((|0,1\rangle-\ii|1,0\rangle)/\sqrt2\)。不读光得到 \(\rho_e=(|0\rangle\langle0|+|1\rangle\langle1|)/2\)，纯度 \(1/2\)。若光探测器投影到 \(|+\rangle_\gamma=(|0\rangle+|1\rangle)/\sqrt2\)，得到该结果的概率为 \(1/2\)，归一化的电子条件态为 \((|0\rangle-\ii|1\rangle)/\sqrt2\)，纯度为一。另一正交光学结果给相反的电子相位；忽略结果标签时，两种相位相加又消去。这就是"光场带走哪条路径信息"的可计算版本。
 
 光测量未必是正交投影。若结果 \(y\) 由作用于光场的算符 \(K_y\) 表示，则正算符 \(E_y=K_y^\dagger K_y\) 决定概率，\(\sum_yE_y=I\) 保证所有结果概率之和为一。把\cref{eq:feqo-conditional-electron-state} 中的两个 \(P_y\) 分别换成 \(K_y\) 与 \(K_y^\dagger\) 就得到条件更新。结果效应 \(E_y\) 只决定概率；若要预测测量后继续演化的态，还必须给出具体 \(K_y\)。
 
-电子谱变宽本身不证明纠缠：随机强度的经典光束也能混合出宽谱。这里的纠缠结论使用了已知的联合纯态及其约化纯度；实验验证则需要足以排除相应经典混合模型的电子—光相关或条件测量数据。
 
-\begin{exercise}
+\par
+\begin{workedexample}
 对上面的联合态，把光投影改为 \(|-\rangle=(|0\rangle-|1\rangle)/\sqrt2\)，求电子条件态，并以两个结果的概率加权恢复无条件密度算符。
-\end{exercise}
+\textbf{解.} 对前节态 \((|0,1\rangle-i|1,0\rangle)/\sqrt2\)，投影到 \(|-\rangle\) 的概率为 \(1/2\)，归一化电子态为 \((|0\rangle+i|1\rangle)/\sqrt2\)；投影到 \(|+\rangle\) 也有概率 \(1/2\)，电子态为 \((|0\rangle-i|1\rangle)/\sqrt2\)。两条件纯态以各自概率加权，交叉相干项抵消，恢复 \((|0\rangle\langle0|+|1\rangle\langle1|)/2\)。
+\end{workedexample}
+\par
+\subsection{算例：纠缠熵随耦合强度的变化}
+
+\begin{workedexample}[PINEM 纠缠熵]
+对真空输入的 PINEM 态，Schmidt 系数为泊松分布 \(\lambda_m=e^{-\mu}\mu^m/m!\)，\(\mu=|g|^2T^2\)。纠缠熵为
+\[
+S(\mu)=-\sum_{m=0}^\infty\lambda_m\log\lambda_m.
+\]
+数值计算前几个值：
+\begin{itemize}
+\item \(\mu=0\)：\(S=0\)（可分态，无耦合）。
+\item \(\mu=0.5\)：\(\lambda_0=0.607,\lambda_1=0.303,\lambda_2=0.076,\ldots\)，\(S\approx0.56\)。
+\item \(\mu=1\)：\(\lambda_0=0.368,\lambda_1=0.368,\lambda_2=0.184,\lambda_3=0.061,\ldots\)，\(S\approx0.96\)。
+\item \(\mu=4\)：分布集中在 \(m\approx4\pm2\)，有效 Schmidt 数约 4，\(S\approx1.5\)。
+\item \(\mu\gg1\)：\(S\approx\frac{1}{2}\log(2\pi e\mu)\)，对数增长。
+\end{itemize}
+对二维截断（\(|0,1\rangle,|1,0\rangle\)），\(S(gt)=-\cos^2(gt)\log\cos^2(gt)-\sin^2(gt)\log\sin^2(gt)\)，在 \(gt=\pi/4\) 处达到最大值 \(\log 2\approx0.693\)。
+\end{workedexample}
+
+\subsection{与量子信息的联系：电子作为飞行比特}
+
+电子--光子纠缠不仅是基础物理问题，还为量子信息处理提供了资源。在 PINEM 实验中：
+
+\textbf{电子作为飞行比特（flying qubit）。}若将电子的两个边带 \(|\ell_1\rangle,|\ell_2\rangle\) 编码为一个量子比特，电子在飞行过程中与光场纠缠，相当于量子比特与"环境"（光场）发生了受控相互作用。这种相互作用可以：
+
+\begin{itemize}
+\item \textbf{产生纠缠：}初始可分的电子--光子态经过相互作用后变为纠缠态，可作为量子通信的资源。
+\item \textbf{传递量子信息：}通过测量电子能量，可以制备光场的特定量子态（如\cref{eq:feqo-vacuum-conditional} 中的数态）。这提供了一种从电子到光场的量子态转移方案。
+\item \textbf{量子密钥分发：}电子和光子分别发送给 Alice 和 Bob，他们可以通过测量各自粒子来建立共享密钥。电子--光子纠缠的不可分性保证了密钥的安全性。
+\end{itemize}
+
+\textbf{退相干的量化。}在量子计算中，电子作为量子比特飞行时，与光场的纠缠意味着信息泄漏到环境中——这就是退相干。纠缠熵 \(S\) 直接量化了退相干的程度：\(S=0\) 表示无信息泄漏，\(S>0\) 表示部分信息已进入光场。
+
+对 PINEM 态，退相干速率由耦合强度 \(|g|\) 决定。在弱耦合 \(\mu\ll1\) 下，\(S\approx-\mu\log\mu\)，退相干随 \(\mu\) 线性增长（对数修正）。在强耦合 \(\mu\gg1\) 下，\(S\sim\frac{1}{2}\log\mu\)，退相干增长减慢——这是因为泊松分布的宽度 \(\sqrt{\mu}\) 相对均值 \(\mu\) 越来越窄，不同边带对应的光子态越来越相似。
+
+\subsection{纠缠的实验验证}
+
+电子谱变宽本身不证明纠缠：随机强度的经典光束也能混合出宽谱。这里的纠缠结论使用了已知的联合纯态及其约化纯度；实验验证则需要足以排除相应经典混合模型的电子--光子关联或条件测量数据。
+
+具体地，验证纠缠需要：
+\begin{enumerate}
+\item 同时测量电子能量和光子数（或光子存在性）。
+\item 检验关联是否满足守恒律\cref{eq:feqo-exchange-conservation}：\(L_e+N_\gamma=\) 常数。
+\item 排除经典混合模型：若电子--光子关联可以用经典随机变量描述（即 \(\rho_{e\gamma}=\sum_k p_k\rho_e^{(k)}\otimes\rho_\gamma^{(k)}\)），则不是真正的纠缠。
+\end{enumerate}
+在 PINEM 真空输入实验中，若测得电子在第 \(-m\) 条边带时总是恰好有 \(m\) 个光子，且这种关联不能用经典随机模型解释，则验证了纠缠。
+
+
+
+
+

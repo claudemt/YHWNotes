@@ -42,7 +42,7 @@ python main.py build YHWNotes --figures          # 先跑图脚本再编译
 python main.py build --all                       # 编译全部
 ```
 
-产物在 `build/<书名>/main.pdf`，同时复制一份到 `example/<书名>.pdf`。两者都不进版本库。
+产物在 `build/<书名>/main.pdf`，同时复制一份到 `example/<书名>.pdf`。`build/` 中间产物不进版本库，`example/` 成品 PDF 随源码提交。
 
 ## 依赖
 
@@ -51,6 +51,8 @@ XeLaTeX、biber、xdvipdfmx（TeX Live 2024 已验证），Python 3.11+。
 ## 编写规范
 
 讲义的组织方式、数学要求、图形约定与 LaTeX 工程规范见 [SKILL.md](SKILL.md)。
+
+最新有效修改要求、已落实范围和后续任务见 [待后续优化](待后续优化.md)。此次四书大修不包含 PINEM 与 YHWNotes 内容。
 
 ## License
 
