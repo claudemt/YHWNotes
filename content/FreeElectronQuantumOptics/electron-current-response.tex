@@ -1,0 +1,1144 @@
+\chapter{跃迁电流与材料的因果响应}\label{chap:electron-current-response}
+
+有限时间振幅可以逐模求出，但开放结构的辐射态和吸收材料的激发往往形成连续谱。
+与其逐个寻找模式，可以先求一个电流源在材料中产生的场，再把具体电子跃迁的电流代入。
+推迟 Green 张量记录源与响应的空间关系、时间顺序和损耗；电子的初末态决定哪些部分真正进入跃迁概率。
+
+\section{材料响应与电磁 Green 方程}
+
+推迟条件规定响应发生在源的作用之后。量子跃迁使用初末态的电流矩阵元，经典 EELS 使用已给定轨迹的电流；二者的源不同，但可以送入同一个材料响应核。先固定材料的因果性与空间色散，再判断源实际激发了哪些谱通道。
+
+\subsection{跃迁电流与 Green 张量}
+
+在初等电动力学中，线性介质常写成 $\mathbf P=\varepsilon_0\chi\mathbf E$，其中 $\mathbf P$ 是单位体积的电偶极矩，即极化强度。这个写法假定极化立即响应同一位置的电场。真实材料需要一定时间响应，邻近位置的场也可能产生影响。对于线性且性质不随时间改变的介质，应把所有源位置和过去时刻的贡献相加，写成
+\begin{equation}
+\boxed{
+P_i(\mathbf r,t)
+=\varepsilon_0\sum_j
+\int\dd^3r'\int_{-\infty}^{\infty}\dd\tau\,
+\chi_{ij}(\mathbf r,\mathbf r';\tau)
+E_j(\mathbf r',t-\tau).}
+\label{eq:general_nonlocal_causal_susceptibility}
+\end{equation}
+这里 $\chi_{ij}(\mathbf r,\mathbf r';\tau)$ 同时描述时间色散和空间色散；空间局域介质只是
+\[
+\chi_{ij}(\mathbf r,\mathbf r';\tau)
+=\chi_{ij}^{\rm loc}(\mathbf r;\tau)
+\delta^{(3)}(\mathbf r-\mathbf r')
+\]
+这一特例。由于 $[\mathbf P]={\rm C\,m^{-2}}$、$[\varepsilon_0\mathbf E]={\rm C\,m^{-2}}$，双点时域核具有 $[\chi]={\rm m^{-3}s^{-1}}$；局域化以后，$\delta^{(3)}$ 承担 ${\rm m^{-3}}$，所以 $\chi^{\rm loc}$ 的单位退化为 ${\rm s^{-1}}$。
+
+因果性要求时刻 $t$ 的极化不能依赖未来电场，因此对任意 $\mathbf r,\mathbf r'$ 都有
+\begin{equation}
+\boxed{
+\chi_{ij}(\mathbf r,\mathbf r';\tau)=0,
+\qquad \tau<0.}
+\label{eq:causal_material_response_support}
+\end{equation}
+只对时间差作 Fourier 变换，定义
+\[
+\chi_{ij}(\mathbf r,\mathbf r';\omega)
+=\int_{-\infty}^{\infty}\dd\tau\,
+\chi_{ij}(\mathbf r,\mathbf r';\tau)\ee^{\ii\omega\tau},
+\]
+则频域本构关系写成积分算符
+\begin{equation}
+\boxed{
+D_i(\mathbf r,\omega)
+=\varepsilon_0\sum_j\int\dd^3r'\,
+\varepsilon_{ij}(\mathbf r,\mathbf r';\omega)
+E_j(\mathbf r',\omega),
+\qquad
+\boldsymbol\varepsilon=\mathbf I\delta^{(3)}+\boldsymbol\chi.}
+\label{eq:nonlocal_permittivity_kernel}
+\end{equation}
+因此材料响应在最一般层级上是一个频率依赖的积分算符，而不是一个预先假定的局域标量折射率。
+
+由时间因果支撑可知，$\boldsymbol\chi(\omega)$ 作为算符值函数在复频率上半平面解析。对任意固定的试探场 $|F\rangle,|G\rangle$，标量矩阵元
+$\langle F|\boldsymbol\chi(\omega)|G\rangle$ 满足 Kramers--Kronig 色散关系。它是因果性的频域表达：响应函数在上半复频率平面的解析性，使实部与虚部不再是两个可以独立指定的函数，而必须互为 Hilbert 变换；物理上，色散造成的相位/频移与吸收造成的耗散由同一个因果响应共同决定。对算符核的每个矩阵元，这一关系写成
+\begin{equation}
+\boxed{
+\Re\boldsymbol\chi(\omega)
+=\frac1\pi\mathcal P\int_{-\infty}^{\infty}\dd\omega'\,
+\frac{\Im\boldsymbol\chi(\omega')}{\omega'-\omega},
+\qquad
+\Im\boldsymbol\chi(\omega)
+=-\frac1\pi\mathcal P\int_{-\infty}^{\infty}\dd\omega'\,
+\frac{\Re\boldsymbol\chi(\omega')}{\omega'-\omega}.}
+\label{eq:material_kramers_kronig}
+\end{equation}
+若高频极限含非零常数，应先对该常数作减法。这样时间色散、空间色散、耗散和相位延迟都来自同一个因果响应算符；局域介电函数、二维表面电导和流体非局域模型都只是这个母响应算符的不同结构化特例。
+
+\begin{theorem}[因果响应的 Kramers--Kronig 关系]
+设实时间因果响应核可积，其上半平面 Fourier--Laplace 延拓解析，边界值及高频衰减足以令 Cauchy 主值积分与大圆弧极限存在。则实、虚部满足\eqnrefs{eq:material_kramers_kronig}。非衰减响应须先去掉高频常数或采用相应减法色散关系。
+\end{theorem}
+\begin{proof}
+设响应线性且时间平移不变，并采用前文固定的 Fourier 约定。若高频衰减足以使无减法色散积分收敛，以下推导直接成立；若不满足，则对同一解析论证采用相应的减法色散式。因果性给出 $\chi(\tau)=0$（$\tau<0$）。对复频率 $z$ 且 $\operatorname{Im}z>0$，定义
+
+\[
+\chi(z)=\int_0^\infty\dd\tau\,\chi(\tau)\ee^{\ii z\tau}.
+\]
+因为 $\ee^{-\operatorname{Im}z\,\tau}$ 在 $\tau\to\infty$ 抑制积分，只要响应核满足通常的可积条件，$\chi(z)$ 在上半平面解析。取实轴上的 $\omega$，对函数 $\chi(z')/(z'-\omega)$ 沿上半平面闭合轮廓使用 Cauchy 积分公式：
+\[
+\chi(\omega)
+=\frac{1}{2\pi\ii}
+\oint\dd z'\,
+\frac{\chi(z')}{z'-\omega}.
+\]
+把位于实轴上的极点按主值绕开，得到 Sokhotski--Plemelj 关系
+\[
+\chi(\omega)
+=\frac{1}{\pi\ii}\mathcal P
+\int_{-\infty}^{\infty}\dd\omega'\,
+\frac{\chi(\omega')}{\omega'-\omega}.
+\]
+写 $\chi=\chi'+\ii\chi''$ 并分别比较实部、虚部：
+\begin{align*}
+\chi'(\omega)
+&=\frac1\pi\mathcal P
+\int\dd\omega'\,
+\frac{\chi''(\omega')}{\omega'-\omega},\\
+\chi''(\omega)
+&=-\frac1\pi\mathcal P
+\int\dd\omega'\,
+\frac{\chi'(\omega')}{\omega'-\omega},
+\end{align*}
+得到\eqnrefs{eq:material_kramers_kronig}。
+\end{proof}
+
+
+当环境存在吸收、连续谱重叠或开放辐射通道时，离散无损正常模不再能逐个承担完整的响应。更稳健的做法是直接求 Maxwell 材料算符的因果逆核：给定一个频率为 $\omega$ 的源，它返回同一频率上的电场响应。这个逆核就是推迟电场 Green 张量 $\mathbf G^R$。为了提取其中真正能够吸收或辐射能量的部分，定义它的算符虚部
+\[
+\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r';\omega)
+\equiv
+\frac{\mathbf G^R(\mathbf r,\mathbf r';\omega)
+-\mathbf G^{\dagger}(\mathbf r,\mathbf r',\omega)}{2\ii},
+\qquad
+\mathbf G^{\dagger}(\mathbf r,\mathbf r',\omega)
+=\mathbf G^{*\mathsf T}(\mathbf r',\mathbf r,\omega).
+\]
+这个定义不要求介质满足互易性。对于无源介质，$\operatorname{Im}\mathbf G^R$ 在正频率上给出非负的耗散谱权重。把同一个线性介质量子化以后，真空电场涨落恰好由这部分响应决定：
+\begin{equation}
+\boxed{
+\langle0|
+\hat E_i(\mathbf r,\omega)
+\hat E_j^{\dagger}(\mathbf r',\omega')|0\rangle
+=
+\frac{\hbar\mu_0}{\pi}\omega^2
+[\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r';\omega)]_{ij}
+\delta(\omega-\omega').}
+\label{eq:macroscopic_qed_fdt_green_tensor}
+\end{equation}
+对吸收介质，只保留 Maxwell 场会使能量流入未显式表示的材料自由度，电磁子系统因而不能单独维持封闭的正则对易结构。宏观 QED 的做法是把材料耗散对应的连续储库显式量子化，再由 Maxwell 方程把这些储库噪声源传播到观察点。前面已经从一般因果响应得到双点介电算符~\eqnrefs{eq:nonlocal_permittivity_kernel}。宏观 QED 量子化进一步需要区分该算符的厄米与反厄米部分；其伴随核定义为
+\[
+\boldsymbol\varepsilon^{\dagger}(\mathbf r,\mathbf r';\omega)
+\equiv
+\boldsymbol\varepsilon^{*\mathsf T}(\mathbf r',\mathbf r;\omega),
+\]
+而真正决定被动耗散的算符反厄米部分为
+\begin{equation}
+\boxed{
+\boldsymbol\varepsilon_I
+\equiv
+\frac{\boldsymbol\varepsilon-\boldsymbol\varepsilon^\dagger}{2\ii}
+\succeq0
+\qquad (\omega>0).}
+\label{eq:nonlocal_permittivity_dissipative_part}
+\end{equation}
+这里的半正定性理解为对任意平方可积试探场 $|F\rangle$ 都有
+$\langle F|\boldsymbol\varepsilon_I|F\rangle\ge0$。它既不要求互易性，也不要求
+$\boldsymbol\varepsilon$ 在空间坐标上对角。空间局域介质只是
+\[
+\boldsymbol\varepsilon(\mathbf r,\mathbf r';\omega)
+=\boldsymbol\varepsilon_r(\mathbf r,\omega)
+\delta^{(3)}(\mathbf r-\mathbf r')
+\]
+这个特例。
+
+固定正频率以后，Maxwell 算符写成
+\[
+\mathsf L(\omega)
+=\nabla\times\nabla\times
+-\frac{\omega^2}{c^2}\boldsymbol\varepsilon(\omega),
+\qquad
+\mathbf G^R(\omega)=\mathsf L^{-1}(\omega),
+\]
+其中第二项按积分算符作用。由预解式恒等式可得一般非局域 Green 光学恒等式
+\begin{equation}
+\boxed{
+\begin{aligned}
+\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r';\omega)
+={}&\frac{\omega^2}{c^2}
+\int\dd^3s\,\dd^3s'\,
+\mathbf G^R(\mathbf r,\mathbf s;\omega)\\
+&\cdot\boldsymbol\varepsilon_I(\mathbf s,\mathbf s';\omega)
+\cdot\mathbf G^{R\dagger}(\mathbf s',\mathbf r';\omega),
+\end{aligned}}
+\label{eq:nonlocal_green_optical_identity}
+\end{equation}
+若系统还通过无穷远边界向外辐射，右边还要保留相应表面通量，或等价地把那些散射连续通道并入储库。因而“材料吸收”和“开放辐射”都可以产生
+$\operatorname{Im}\mathbf G^R$，但它们在扩大后的 Hamiltonian 中对应不同储库。
+
+由于\eqnrefs{eq:nonlocal_permittivity_dissipative_part} 是半正定算符，可取一个积分算符平方根
+$\mathsf R_\varepsilon$ 使
+\[
+\mathsf R_\varepsilon\mathsf R_\varepsilon^\dagger
+=\boldsymbol\varepsilon_I.
+\]
+在每个正频率引入连续玻色储库
+\begin{equation}
+\boxed{
+[\hat f_i(\mathbf r,\omega),\hat f_j^\dagger(\mathbf r',\omega')]
+=\delta_{ij}\delta^{(3)}(\mathbf r-\mathbf r')\delta(\omega-\omega'),}
+\label{eq:macqed_noise_boson_commutator}
+\end{equation}
+并定义一般非局域噪声电流
+\begin{equation}
+\boxed{
+\hat{\mathbf j}_{N}(\mathbf r,\omega)
+=\omega\sqrt{\frac{\hbar\varepsilon_0}{\pi}}
+\int\dd^3s\,
+\mathsf R_\varepsilon(\mathbf r,\mathbf s;\omega)
+\cdot\hat{\mathbf f}(\mathbf s,\omega).}
+\label{eq:macqed_noise_current_definition}
+\end{equation}
+局域介质时
+$\mathsf R_\varepsilon(\mathbf r,\mathbf s)=
+\mathbf R_\varepsilon(\mathbf r)\delta^{(3)}(\mathbf r-\mathbf s)$，立即恢复熟悉的局域噪声电流。频域 Maxwell 方程的因果解给出正频电场算符
+\begin{equation}
+\boxed{
+\hat{\mathbf E}(\mathbf r,\omega)
+=\ii\mu_0\omega\int\dd^3s\,
+\mathbf G^R(\mathbf r,\mathbf s;\omega)\cdot
+\hat{\mathbf j}_{N}(\mathbf s,\omega).}
+\label{eq:macqed_field_from_noise_current}
+\end{equation}
+因此 Green 张量不仅是经典“源到场”的响应核，也是量子储库噪声进入电场的传播核。把储库正则对易关系与\eqnrefs{eq:nonlocal_green_optical_identity} 组合以后，严格得到\eqnrefs{eq:macroscopic_qed_fdt_green_tensor}；局域、互易、无损等条件都只是在这个算符一般表达式之后再施加的特例。
+
+有限温度时，环境吸收能量的有序相关函数乘 $n_B(\omega)+1$，环境向电子供能的反序相关函数乘 $n_B(\omega)$；二者不能用同一个模糊的“玻色因子”代替。
+
+场涨落对电子跃迁的作用由电子本征态之间的矩阵元决定。取 $|i\rangle,|f\rangle$，并令
+\[
+\omega_{if}=\frac{E_i-E_f}{\hbar}>0,
+\qquad
+\rho_{fi}(\mathbf r)=\langle f|\hat\rho_q(\mathbf r)|i\rangle,
+\qquad
+\mathbf j_{fi}(\mathbf r)=\langle f|\hat{\mathbf j}(\mathbf r)|i\rangle.
+\]
+$\rho_{fi}$ 与 $\mathbf j_{fi}$ 不是经典轨迹密度，而是两个量子电子态之间的跃迁电荷/流。它们由算符连续性方程满足
+\[
+\nabla\cdot\mathbf j_{fi}=\ii\omega_{if}\rho_{fi},
+\]
+因此标势与矢势对最小耦合矩阵元的贡献可以重新组合成规范不变的电场收缩。零温发射率最终只依赖跃迁流与环境谱函数：
+\begin{equation}
+\boxed{
+\Gamma_{i\to f}^{(0)}
+=
+\frac{2\mu_0}{\hbar}
+\int\dd^3 r\,\dd^3 r'\,
+\mathbf j_{fi}^{*}(\mathbf r)\cdot
+\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r',\omega_{if})\cdot
+\mathbf j_{fi}(\mathbf r').}
+\label{eq:quantum_transition_current_green_rate}
+\end{equation}
+这条式子是连续介质中的一般一量子跃迁率：电子波包、横向相干、自旋和反冲全部保留在 $\mathbf j_{fi}$ 中，介质几何、损耗与开放边界全部封装在 $\operatorname{Im}\mathbf G^R$ 中。有限温度的发射支路乘 $n_B(\omega_{if})+1$，反向吸收支路乘 $n_B(\omega_{if})$。对于无源介质，速率非负来自 Green 算符的谱正性，而不是另加概率条件。
+
+一量子跃迁率只是线性电磁环境对电子作用的最低阶可观测量。若希望同时描述虚光子自作用、辐射反作用、材料耗散和电子相干性的衰减，更统一的做法不是逐张图累加，而是把整个高斯电磁环境一次性积分掉。为避免 SI 四流中额外的 $c$ 因子，定义广义源与广义势
+\[
+\mathcal J_a(\mathbf r,t)
+\equiv(\rho, -\mathbf j),
+\qquad
+\mathcal A_a(\mathbf r,t)
+\equiv(\phi,\mathbf A),
+\]
+其中重复指标 $a$ 同时表示标势分量与三个矢势分量，于是最小耦合相互作用就是
+\begin{equation}
+\boxed{
+H_I(t)
+=\int\dd^3r\,
+\mathcal J_a(\mathbf r,t)\mathcal A_a(\mathbf r,t).}
+\label{eq:em_linear_environment_interaction}
+\end{equation}
+考虑两条给定的电子量子历史，而环境场仍保持算符性质。若环境 Hamiltonian 对电磁/材料储库变量是二次的，耦合对 $\mathcal A_a$ 线性，且固定的初始环境态为高斯态，则环境的连通累积量在二阶终止，可由二点核精确消去\cite{FeynmanVernon1963,ScheelBuhmann2008MacQED}。这里还沿用初始电子与环境因子化的制备；若环境初态有非高斯光子统计，二次 Hamiltonian 本身不能替代这一统计条件。
+
+\begin{note}[二次哈密顿量不保证高斯初态]
+单模 $H_X=\hbar\omega(\hat a^\dagger\hat a+1/2)$ 是二次的，但其单光子态 $|1\rangle$ 不是高斯态。定义无量纲正交分量 $\hat X=(\hat a+\hat a^\dagger)/\sqrt2$ 与无量纲源 $u_X$。利用中心对易子和正规排序，
+\begin{align*}
+ \langle1|\ee^{\ii u_X\hat X}|1\rangle
+ &=\ee^{-u_X^2/4}
+ \langle1|\ee^{\ii u_X\hat a^\dagger/\sqrt2}
+ \ee^{\ii u_X\hat a/\sqrt2}|1\rangle\\
+ &=\ee^{-u_X^2/4}(1-u_X^2/2).
+\end{align*}
+最后一步中 $\hat a^2|1\rangle=0$，只留下常数项和一次产生、一次湮灭的配对。对原点附近的特征函数取对数，
+\begin{equation*}
+ \ln\langle\ee^{\ii u_X\hat X}\rangle
+ =-\frac34u_X^2-\frac18u_X^4+\order(u_X^6).
+\end{equation*}
+与 $\sum_{r\geq1}(\ii u_X)^r\mathcal C_r/r!$ 比较，得到 $\mathcal C_2=3/2$、$\mathcal C_4=-3$。非零四阶累积量说明仅保留二点环境核会遗漏单光子统计；即使平均场为零、二点函数已知，也不能将该态当作热态或其他高斯态。
+\end{note}
+
+密度矩阵传播包含 ket 与 bra 两条电子历史，分别记为
+$\mathcal J_+$ 与 $\mathcal J_-$。定义
+\[
+\mathcal J_\Delta=\mathcal J_+-\mathcal J_-,
+\qquad
+\mathcal J_\Sigma=\frac{\mathcal J_++\mathcal J_-}{2},
+\]
+并对零均值环境涨落定义双点核
+\[
+C_{ab}^{\rm sym}(1,2)
+=\frac12\langle\{\delta\mathcal A_a(1),\delta\mathcal A_b(2)\}\rangle,
+\qquad
+C_{ab}^{\rm asym}(1,2)
+=\frac1{2\ii}\langle[\delta\mathcal A_a(1),\delta\mathcal A_b(2)]\rangle,
+\]
+其中 $1\equiv(\mathbf r_1,t_1)$。把环境迹掉后得到电子历史的精确电磁影响泛函
+\begin{equation}
+\boxed{
+\begin{aligned}
+\mathscr I_{\rm em}[\mathcal J_+,\mathcal J_-]
+=\exp\Bigg\{&-\frac1{\hbar^2}
+\int_{t_i}^{t_f}\dd t_1
+\int_{t_i}^{t_1}\dd t_2
+\int\dd^3r_1\dd^3r_2\\
+&\times\mathcal J_{\Delta,a}(1)
+\left[
+C_{ab}^{\rm sym}(1,2)\mathcal J_{\Delta,b}(2)
++2\ii C_{ab}^{\rm asym}(1,2)\mathcal J_{\Sigma,b}(2)
+\right]\Bigg\}.
+\end{aligned}}
+\label{eq:em_gaussian_influence_functional}
+\end{equation}
+这条式子是自由电子线性环境问题的一条统一一般表达式。第一项
+$\mathcal J_\Delta C^{\rm sym}\mathcal J_\Delta$ 是实且非负的噪声泛函，直接抑制两条可区分电子历史之间的相干；第二项
+$\mathcal J_\Delta C^{\rm asym}\mathcal J_\Sigma$ 只改变相位，并给出因果自作用、能级移动和辐射反作用。
+
+这个抽象说法可以直接变成电子干涉可见度。若两条电子路径在环境中对应两个给定守恒流 $\mathcal J_1,\mathcal J_2$，而初始电子只在这两条路径之间叠加，则环境被迹掉以后，路径非对角元正好乘上 $\mathscr I_{\rm em}[\mathcal J_1,\mathcal J_2]$。由于 $C_{ab}^{\rm sym}(1,2)=C_{ba}^{\rm sym}(2,1)$，三角时间积分的实部可改写成全平面的一半，因此环境导致的可见度为
+\begin{equation}
+\boxed{
+\mathcal V_{\rm env}
+=|\mathscr I_{\rm em}|
+=\exp[-\Gamma_{\rm env}],
+\qquad
+\Gamma_{\rm env}
+=\frac1{2\hbar^2}
+\int\dd1\dd2\,
+\mathcal J_{\Delta,a}(1)
+C_{ab}^{\rm sym}(1,2)
+\mathcal J_{\Delta,b}(2).}
+\label{eq:em_environment_visibility_functional}
+\end{equation}
+若环境平稳，把所有空间坐标和广义场指标保留而只对时间差 Fourier 变换，则
+\[
+\Gamma_{\rm env}
+=\frac1{2\hbar^2}
+\int_{-\infty}^{\infty}\frac{\dd\omega}{2\pi}
+\int\dd^3r\dd^3r'\,
+\mathcal J_{\Delta,a}^*(\mathbf r,\omega)
+\widetilde C_{ab}^{\rm sym}(\mathbf r,\mathbf r';\omega)
+\mathcal J_{\Delta,b}(\mathbf r',\omega).
+\]
+因此退相干不是由“电子经过材料”这一事实决定，而只由两条路径在环境可分辨频率--空间通道上的\emph{电流差}决定：若 $\mathcal J_1=\mathcal J_2$，环境获得不了路径信息，$\Gamma_{\rm env}=0$；若两条路径激发了可区分的材料或辐射通道，可见度便按相应噪声谱指数下降。这个结果把自由电子干涉、EELS 中的未观测环境激发和开放系统退相干放到同一个可计算核上。
+
+\begin{proposition}[线性 Gaussian 环境的可见度二次型]
+设 Hermitian 环境变量处于零均值 Gaussian 态，电子两条源历史为实可积数值函数，所用核积分存在。则\eqnrefs{eq:em_gaussian_influence_functional}精确成立，可见度指数为\eqnrefs{eq:em_environment_visibility_functional}的非负对称核二次型。源满足连续性方程且固定边界相位时，纯规范变换不改变物理影响泛函。
+\end{proposition}
+\begin{proof}
+设环境平均场已经吸收到电子的参考 Hamiltonian 中，使
+$\langle\delta\mathcal A_a\rangle=0$。对给定的两条电子源历史，前向支路传播子与后向支路传播子的环境平均给
+\[
+\mathscr I_{\rm em}
+=\left\langle
+\widetilde{\mathcal T}
+\exp\!\left[
++\frac{\ii}{\hbar}\int\dd1\,
+\mathcal J_{-,a}(1)\delta\mathcal A_a(1)
+\right]
+\mathcal T
+\exp\!\left[
+-\frac{\ii}{\hbar}\int\dd1\,
+\mathcal J_{+,a}(1)\delta\mathcal A_a(1)
+\right]
+\right\rangle_B,
+\]
+其中
+$\int\dd1\equiv\int_{t_i}^{t_f}\dd t_1\int\dd^3r_1$，
+$\mathcal T$ 与 $\widetilde{\mathcal T}$ 分别表示时间序与反时间序。把两条支路合并成闭合时间轮廓 $C$，可写为
+\[
+\mathscr I_{\rm em}
+=\left\langle
+\mathcal T_C
+\exp\!\left[
+-\frac{\ii}{\hbar}
+\int_C\dd1\,
+\mathcal J_{C,a}(1)\delta\mathcal A_a(1)
+\right]
+\right\rangle_B.
+\]
+
+Gaussian 环境的所有连通累积量在二阶以后都为零，因此累积量定理精确给
+\begin{equation*}
+\ln\mathscr I_{\rm em}
+=-\frac1{2\hbar^2}
+\int_C\dd1\int_C\dd2\,
+\mathcal J_{C,a}(1)
+C^{C}_{ab}(1,2)
+\mathcal J_{C,b}(2),
+\end{equation*}
+其中
+$C^C_{ab}=\langle\mathcal T_C\delta\mathcal A_a\delta\mathcal A_b\rangle$。
+对高斯环境，任意阶虚过程都被精确重求和到这个二次影响泛函中；该结果不同于只保留耦合二阶的 Born 截断。
+
+现在把轮廓拆成 $+/-$ 两条实时间支路。定义
+\[
+C^>_{ab}(1,2)
+=\langle\delta\mathcal A_a(1)\delta\mathcal A_b(2)\rangle,
+\qquad
+C^<_{ab}(1,2)
+=\langle\delta\mathcal A_b(2)\delta\mathcal A_a(1)\rangle.
+\]
+四个轮廓分量为
+\begin{align*}
+C^{++}(1,2)
+&=\Theta(t_1-t_2)C^>(1,2)
++\Theta(t_2-t_1)C^<(1,2),\\
+C^{--}(1,2)
+&=\Theta(t_2-t_1)C^>(1,2)
++\Theta(t_1-t_2)C^<(1,2),\\
+C^{+-}(1,2)&=C^<(1,2),\\
+C^{-+}(1,2)&=C^>(1,2).
+\end{align*}
+轮廓方向使后向积分带反号，因此
+\begin{align*}
+\ln\mathscr I_{\rm em}
+=-\frac1{2\hbar^2}\int\dd1\dd2\,
+\Big[
+&\mathcal J_+(1)C^{++}(1,2)\mathcal J_+(2)
++\mathcal J_-(1)C^{--}(1,2)\mathcal J_-(2)\\
+&-\mathcal J_+(1)C^{+-}(1,2)\mathcal J_-(2)
+-\mathcal J_-(1)C^{-+}(1,2)\mathcal J_+(2)
+\Big],
+\end{align*}
+其中广义场指标已经省略但仍按矩阵方式收缩。
+
+取 $t_1>t_2$。此时
+$C^{++}=C^>$、$C^{--}=C^<$、$C^{+-}=C^<$、$C^{-+}=C^>$。
+再代入
+\[
+\mathcal J_\pm
+=\mathcal J_\Sigma\pm\frac12\mathcal J_\Delta,
+\]
+四项的代数组合化为
+\begin{align*}
+&\mathcal J_+(1)C^>\mathcal J_+(2)
++\mathcal J_-(1)C^<\mathcal J_-(2)
+-\mathcal J_+(1)C^<\mathcal J_-(2)
+-\mathcal J_-(1)C^>\mathcal J_+(2)\\
+&\qquad=
+\mathcal J_\Delta(1)
+\left[
+\frac{C^>+C^<}{2}\mathcal J_\Delta(2)
++(C^>-C^<)\mathcal J_\Sigma(2)
+\right].
+\end{align*}
+按正文定义
+\[
+C^{\rm sym}=\frac{C^>+C^<}{2},
+\qquad
+C^{\rm asym}=\frac{C^>-C^<}{2\ii},
+\]
+故括号正是
+$C^{\rm sym}\mathcal J_\Delta+2\ii C^{\rm asym}\mathcal J_\Sigma$。
+$t_2>t_1$ 的半平面交换两个哑变量以后给出相同贡献，因此原来的 $1/2$ 与两个时间排序区域相消，最终得到
+\[
+\begin{aligned}
+\mathscr I_{\rm em}
+=\exp\Bigg\{&-\frac1{\hbar^2}
+\int_{t_i}^{t_f}\dd t_1
+\int_{t_i}^{t_1}\dd t_2
+\int\dd^3r_1\dd^3r_2\\
+&\times\mathcal J_{\Delta,a}(1)
+\left[
+C_{ab}^{\rm sym}(1,2)\mathcal J_{\Delta,b}(2)
++2\ii C_{ab}^{\rm asym}(1,2)\mathcal J_{\Sigma,b}(2)
+\right]\Bigg\},
+\end{aligned}
+\]
+即正文\eqnrefs{eq:em_gaussian_influence_functional}。
+
+对两条给定电子路径，$\mathcal J_\Sigma$ 与 $\mathcal J_\Delta$ 都是普通函数。影响泛函指数中含 $C^{\rm asym}$ 的项前面有显式 $\ii$，而 $C^{\rm asym}$ 对厄米环境变量为实核，因此它只贡献相位；取模以后只剩
+\[
+-\ln|\mathscr I_{\rm em}|
+=\frac1{\hbar^2}
+\int_{t_1>t_2}\dd1\dd2\,
+\mathcal J_\Delta(1)C^{\rm sym}(1,2)\mathcal J_\Delta(2).
+\]
+又因为对称核满足
+\[
+C_{ab}^{\rm sym}(1,2)=C_{ba}^{\rm sym}(2,1),
+\]
+交换 $1\leftrightarrow2$ 后，$t_2>t_1$ 区域与 $t_1>t_2$ 区域相等，所以
+\[
+\int_{t_1>t_2}\dd1\dd2\,
+\mathcal J_\Delta(1)C^{\rm sym}(1,2)\mathcal J_\Delta(2)
+=\frac12\int\dd1\dd2\,
+\mathcal J_\Delta(1)C^{\rm sym}(1,2)\mathcal J_\Delta(2).
+\]
+于是得到正文\eqnrefs{eq:em_environment_visibility_functional}。若环境平稳，令
+\[
+C^{\rm sym}(t_1,t_2)=C^{\rm sym}(t_1-t_2),
+\qquad
+\mathcal J_\Delta(t)=\int\frac{\dd\omega}{2\pi}
+\mathcal J_\Delta(\omega)\ee^{-\ii\omega t},
+\]
+再使用卷积定理便得到正文随后写出的频域二次型。由于 $\widetilde C^{\rm sym}(\omega)$ 是对称关联函数的功率谱，它在物理源空间上半正定，因而 $\Gamma_{\rm env}\ge0$，可见度不会由被迹掉的环境自由度“放大”。
+
+最后检查规范依赖。若
+$\phi\to\phi-\partial_t\chi$、
+$\mathbf A\to\mathbf A+\nabla\chi$，则单条历史的相互作用作用量变化为
+\begin{align*}
+\delta S_I
+&=\int\dd t\dd^3r\,
+[-\rho\,\partial_t\chi-\mathbf j\cdot\nabla\chi]\\
+&=-\int\dd t\dd^3r\,
+[\partial_t(\rho\chi)+\nabla\cdot(\mathbf j\chi)]
++\int\dd t\dd^3r\,
+\chi(\partial_t\rho+\nabla\cdot\mathbf j).
+\end{align*}
+守恒流使最后一项为零；固定端点和无穷远边界条件使第一项只留下共同边界相位。因此两条历史的物理影响泛函对纯规范势不敏感。正是这个守恒流条件允许后续把势关联核重新写成正文使用的电流--电场 Green 张量形式。
+\end{proof}
+
+
+对 $t_1>t_2$，有
+\[
+C_{ab}^{\rm asym}(1,2)
+=\frac{\hbar}{2}\mathcal D^R_{ab}(1,2),
+\qquad
+\mathcal D^R_{ab}
+=-\frac{\ii}{\hbar}\Theta(t_1-t_2)
+\langle[\delta\mathcal A_a(1),\delta\mathcal A_b(2)]\rangle,
+\]
+所以同一个推迟 Green 核同时控制经典反作用与量子历史相位。若环境处于热平衡，$C^{\rm sym}$ 与 $\operatorname{Im}\mathcal D^R$ 再由涨落--耗散定理锁定；非平衡 Gaussian 环境仍满足\eqnrefs{eq:em_gaussian_influence_functional}，但噪声谱不再由响应唯一决定。
+
+由于电子四流满足连续性方程，规范变换
+$\phi\to\phi-\partial_t\chi$、$\mathbf A\to\mathbf A+\nabla\chi$
+在\eqnrefs{eq:em_linear_environment_interaction} 中只产生时空边界项；在固定端点或渐近散射条件下，影响泛函只依赖守恒流的物理投影。因此这里虽然用势的 Green 核写得最紧凑，最终一量子速率可以完全改写成电流与电场 Green 张量
+$\operatorname{Im}\mathbf G^R$ 的收缩，即\eqnrefs{eq:quantum_transition_current_green_rate}。反过来，经典给定轨迹 EELS 读取的是同一影响作用量中推迟核产生的平均反作用；量子跃迁、退相干和经典能损不是三套理论，而是同一个 Gaussian 环境核的不同投影与极限。
+
+纵向 Coulomb 相互作用既可以表现为 Coulomb gauge 中的显式瞬时核，也可以包含在完整四维电磁传播子中；这两种写法只是同一物理扇区的不同表示，不能同时相加。在 Coulomb gauge 的微观 QED Hamiltonian 中，Gauss 约束先消去非独立的纵向电磁自由度，电子之间留下显式瞬时 Coulomb 核；可独立量子化的光子场则是横向场。相反，若从协变四流形式出发并把完整电磁传播子一次积分掉，则纵向与横向传播都已经包含在
+\begin{equation}
+\boxed{
+S_{\rm em}^{\rm eff}[J]
+=\frac12\int\dd1\,\dd2\,
+J_\mu(1)D_{\rm full}^{\mu\nu}(1,2)J_\nu(2),
+\qquad
+D_{\rm full}=D_L+D_T .}
+\label{eq:em_full_propagator_longitudinal_transverse_split}
+\end{equation}
+两种表示完全等价，但不能混用成“显式 Coulomb $+$ 完整 $D_{\rm full}$”。因此在涉及两个自由电子的计算中，可以采用下列两种互斥表示之一：
+\begin{equation}
+\boxed{
+\begin{array}{ll}
+\text{方案 A：}&V_C\ \text{显式保留},\quad \text{只让横向/环境修正传播子参与额外交换};\\[1mm]
+\text{方案 B：}&\text{不另写 }V_C,\quad \text{直接用完整 }D_{\rm full}\text{ 生成全部电磁交换}.
+\end{array}}
+\label{eq:em_coulomb_double_counting_rule}
+\end{equation}
+若基准电子 Hamiltonian 已经包含真空 QED 的电子--电子作用，而我们只想加入材料或纳米结构造成的修正，则最安全的做法不是再使用完整材料 Green 核，而是取
+\begin{equation}
+\boxed{
+D_{\rm sc}(\omega)
+\equiv D_{\rm env}(\omega)-D_0(\omega),}
+\label{eq:em_scattering_propagator_environment_correction}
+\end{equation}
+也就是只把环境相对于真空新增的 scattering propagator 放入二体核。这样裸真空 Coulomb/辐射交换由基准 QED 负责，结构诱导的屏蔽、像电荷、极化激元和辐射修正由 $D_{\rm sc}$ 负责，不会重复计算同一个 longitudinal channel。这个区分在亚波长近场中尤其不能忽略，因为此时 Green 张量常由纵向/准静态分量主导\cite{ScheelBuhmann2008MacQED,Feist2021MacQED}。
+
+\begin{proposition}[Gaussian 核消元的基准差分恒等式]
+设给定守恒光滑电流与可积 Gaussian 传播核，基准核 $D_0$ 的作用已计入 Hamiltonian。材料核 $D_{\rm env}=D_0+D_{\rm sc}$ 所新增的二次作用严格为 $JD_{\rm sc}J/2$，即\eqnrefs{eq:em_scattering_propagator_environment_correction}。在真空 Coulomb 规范及衰减边界下，纵向 Gauss 消元给 $\frac12\int\rho\phi$；已显式计入这一项时不能再次计入同一纵向核。
+\end{proposition}
+\begin{proof}
+先在守恒四流空间上把完整电磁传播子分解成纵向约束扇区与横向动力学扇区，
+\[
+D_{\rm full}=D_L+D_T.
+\]
+把电磁场 Gaussian 积分掉以后，二次有效作用量为
+\[
+S_{\rm eff}=\frac12 JD_{\rm full}J
+=\frac12 JD_LJ+\frac12 JD_TJ,
+\]
+其中 $JDJ\equiv\int\dd1\,\dd2\,J_\mu(1)D^{\mu\nu}(1,2)J_\nu(2)$。
+
+在 Coulomb gauge 中，Gauss 定律约束可先显式求解。真空中
+\[
+-\varepsilon_0\nabla^2\phi(\mathbf r,t)=\rho(\mathbf r,t),
+\]
+故
+\[
+\phi(\mathbf r,t)
+=\int\dd^3r'\,
+\frac{\rho(\mathbf r',t)}{4\pi\varepsilon_0|\mathbf r-\mathbf r'|}.
+\]
+代回纵向场能
+\[
+\frac{\varepsilon_0}{2}\int\dd^3r\,|\nabla\phi|^2
+=\frac12\int\dd^3r\,\rho\phi
+\]
+得到
+\[
+V_C
+=\frac12\int\dd^3r\,\dd^3r'\,
+\rho(\mathbf r)
+\frac{1}{4\pi\varepsilon_0|\mathbf r-\mathbf r'|}
+\rho(\mathbf r').
+\]
+这正是 $JD_LJ/2$ 的 Coulomb-gauge 约束表示。因此若 Hamiltonian 已显式含 $V_C$，后续只应再积分横向动力学传播子；若直接使用完整 $D_{\rm full}$，则不能再额外加入同一个 $V_C$。
+
+设 $D_0$ 是已包含在基准真空 QED 中的传播子，$D_{\rm env}$ 是加入材料和边界后的完整传播子。恒等分解
+\[
+D_{\rm env}=D_0+(D_{\rm env}-D_0)\equiv D_0+D_{\rm sc}
+\]
+给出
+\[
+\frac12JD_{\rm env}J
+=\frac12JD_0J+\frac12JD_{\rm sc}J.
+\]
+若第一项已经通过真空 Coulomb、真空辐射或等价的 QED 基准 Hamiltonian 计入，那么结构真正新增的二体作用只能是
+\[
+\Delta S_{\rm env}=\frac12JD_{\rm sc}J.
+\]
+所以正文\eqnrefs{eq:em_scattering_propagator_environment_correction} 是严格的加减恒等式，而不是经验性的“减背景”。材料诱导像电荷、屏蔽和极化激元都进入 $D_{\rm sc}$；裸真空电子--电子作用只在 $D_0$ 或显式 $V_C+D_{0,T}$ 中出现一次。
+\end{proof}
+
+
+同一个影响泛函还回答一个更前沿、但数学上并不需要另起理论的问题：两个自由电子若先后或同时耦合到同一个线性电磁环境，环境能否在它们之间建立量子关联？设电子 $A,B$ 各有两条可分辨路径，用 $a,b\in\{0,1\}$ 标记；联合路径 $|ab\rangle$ 对应总守恒流
+\begin{equation*}
+\mathcal J_{ab}=\mathcal J_A^{(a)}+\mathcal J_B^{(b)}.
+\end{equation*}
+把环境迹掉以后，任意两个联合路径之间的密度矩阵元严格获得
+\begin{equation}
+\boxed{
+\rho_{ab,a'b'}(t_f)
+=\rho_{ab,a'b'}(t_i)
+\exp\!\left[-\Gamma_{ab,a'b'}+\ii\Phi_{ab,a'b'}\right],}
+\label{eq:two_electron_environment_influence_matrix}
+\end{equation}
+其中 $\Gamma$ 与 $\Phi$ 分别来自\eqnrefs{eq:em_gaussian_influence_functional} 的噪声核与推迟响应核。令
+\[
+\Delta\mathcal J_A=\mathcal J_A^{(a)}-\mathcal J_A^{(a')},
+\quad
+\Sigma\mathcal J_A=\frac{\mathcal J_A^{(a)}+\mathcal J_A^{(a')}}2,
+\]
+并对电子 $B$ 同样定义。将
+$\mathcal J_\Delta=\Delta\mathcal J_A+\Delta\mathcal J_B$、
+$\mathcal J_\Sigma=\Sigma\mathcal J_A+\Sigma\mathcal J_B$
+代入以后，噪声指数和响应相位都分成 $A$ 自身、$B$ 自身以及真正连接两个电子的交叉项。噪声交叉项为
+\begin{equation}
+\boxed{
+\Gamma_{AB}
+=\frac1{\hbar^2}
+\int\dd1\,\dd2\,
+\Delta\mathcal J_{A,a}(1)
+C_{ab}^{\rm sym}(1,2)
+\Delta\mathcal J_{B,b}(2),}
+\label{eq:two_electron_cross_decoherence_kernel}
+\end{equation}
+其中利用了 $C_{ab}^{\rm sym}(1,2)=C_{ba}^{\rm sym}(2,1)$；它表示同一个环境噪声通道同时读取两个电子的路径信息，因此产生相关退相干。响应交叉相位则保留因果时间排序：
+\begin{equation}
+\boxed{
+\begin{aligned}
+\Phi_{AB}
+=-\frac1\hbar
+\int_{t_1>t_2}\dd1\,\dd2\,
+\Big[&\Delta\mathcal J_{A,a}(1)
+\mathcal D^R_{ab}(1,2)
+\Sigma\mathcal J_{B,b}(2)\\
++&\Delta\mathcal J_{B,a}(1)
+\mathcal D^R_{ab}(1,2)
+\Sigma\mathcal J_{A,b}(2)\Big].
+\end{aligned}}
+\label{eq:two_electron_retarded_cross_phase}
+\end{equation}
+所以环境介导的电子--电子作用与普通静电库仑相互作用在概念上不同：这里的核是带材料、边界、色散和因果性的完整电磁响应；其耗散部分与相干部分又被涨落--耗散结构联系在一起。
+
+在远离真实环境激发、并且作用结束后环境近似回到同一参考态的色散区，$\Gamma_{ab,a'b'}\ll1$，约化电子动力学近似为联合路径空间上的对角幺正变换
+\[
+U_{AB}^{\rm disp}
+=\sum_{a,b=0}^{1}
+\ee^{\ii\varphi_{ab}}|ab\rangle\langle ab|.
+\]
+四个相位中只有一个组合不能被两个电子各自的局域相位重新定义消去：
+\begin{equation}
+\boxed{
+\Phi_{\rm ent}
+\equiv
+\varphi_{00}+\varphi_{11}-\varphi_{01}-\varphi_{10}
+\pmod{2\pi}.}
+\label{eq:two_electron_entangling_phase_invariant}
+\end{equation}
+若 $\Phi_{\rm ent}=0$，则 $U_{AB}^{\rm disp}$ 可分解成 $U_A\otimes U_B$；若
+$\Phi_{\rm ent}\neq0$，环境诱导的相位不能由两个单电子相位解释。对最简单的入射态
+$|+\rangle_A|+\rangle_B$，忽略噪声后的输出纯态 concurrence 为
+\begin{equation}
+\boxed{
+\mathcal C_{AB}
+=\left|\sin\frac{\Phi_{\rm ent}}2\right|.}
+\label{eq:two_electron_controlled_phase_concurrence}
+\end{equation}
+因此共享纳米光子环境原则上既能提供相干的电子--电子受控相位，也会同时引入由\eqnrefs{eq:two_electron_cross_decoherence_kernel} 控制的相关噪声。实际是否产生可观测纠缠，取决于“交叉相位积累”与“环境可区分信息”之间的竞争，而不能只比较一个耦合常数。两电子层析实验已经能够在同一框架中区分相干、经典关联与纠缠\cite{Tziperman2026TwoElectron}。这里的判据则直接把这些可观测量连接到共享环境的响应核与噪声核。
+
+\begin{proposition}[公共 Gaussian 噪声与对角相位门]
+给定两组数值源路径和正半定 Gaussian 噪声核，联合退相干二次型包含\eqnrefs{eq:two_electron_cross_decoherence_kernel}的交叉项，总型非负而交叉项可负。对两比特对角幺正门，其局域可分解性等价于 $\Phi_{\rm ent}=0\pmod{2\pi}$；作用于 $|+\rangle|+\rangle$ 的纯态 concurrence 为 $|\sin(\Phi_{\rm ent}/2)|$。存在退相干时不能使用此纯态公式。
+\end{proposition}
+\begin{proof}
+对联合路径对 $(ab)$ 与 $(a'b')$，总流之差与平均流分别为
+\[
+\mathcal J_\Delta
+=\Delta\mathcal J_A+\Delta\mathcal J_B,
+\qquad
+\mathcal J_\Sigma
+=\Sigma\mathcal J_A+\Sigma\mathcal J_B.
+\]
+把它们代入影响泛函实部对应的二次型：
+\begin{align*}
+\Gamma
+&=\frac1{2\hbar^2}\int\dd1\dd2\,
+(\Delta J_A+\Delta J_B)_a(1)
+C_{ab}^{\rm sym}(1,2)
+(\Delta J_A+\Delta J_B)_b(2)\\
+&=\Gamma_A+\Gamma_B
++\frac1{2\hbar^2}\int\dd1\dd2\,
+\Big[
+\Delta J_{A,a}(1)C_{ab}^{\rm sym}(1,2)\Delta J_{B,b}(2)
++\Delta J_{B,a}(1)C_{ab}^{\rm sym}(1,2)\Delta J_{A,b}(2)
+\Big].
+\end{align*}
+交换第二个交叉项的哑变量 $1\leftrightarrow2$ 和指标 $a\leftrightarrow b$，再用
+$C_{ab}^{\rm sym}(1,2)=C_{ba}^{\rm sym}(2,1)$，两个交叉项相等，因此
+\[
+\Gamma=\Gamma_A+\Gamma_B+\Gamma_{AB},
+\]
+且 $\Gamma_{AB}$ 正是正文\eqnrefs{eq:two_electron_cross_decoherence_kernel}。注意 $\Gamma_{AB}$ 本身不必为正；总二次型 $\Gamma\ge0$ 才由噪声核的半正定性保证。负的交叉项意味着公共环境噪声对某些联合路径差具有部分抵消，而不是“负退相干率”。
+
+影响泛函的虚部为
+\[
+\Phi
+=-\frac1\hbar
+\int_{t_1>t_2}\dd1\dd2\,
+\mathcal J_{\Delta,a}(1)
+\mathcal D^R_{ab}(1,2)
+\mathcal J_{\Sigma,b}(2).
+\]
+展开后有四项：$A$--$A$、$B$--$B$ 两个自作用项，以及
+\[
+-\frac1\hbar\int_{t_1>t_2}\dd1\dd2\,
+\Delta J_A(1)\mathcal D^R(1,2)\Sigma J_B(2),
+\]
+\[
+-\frac1\hbar\int_{t_1>t_2}\dd1\dd2\,
+\Delta J_B(1)\mathcal D^R(1,2)\Sigma J_A(2),
+\]
+两个交叉项，即正文\eqnrefs{eq:two_electron_retarded_cross_phase}。推导只使用有向 Green 张量本身；在非互易环境中，两个有向交叉项一般具有不同数值，不能互换。
+
+对角相位门能否分解成两个单电子相位门，可由一个相位不变量判定。设
+\[
+U=\operatorname{diag}
+(\ee^{\ii\varphi_{00}},\ee^{\ii\varphi_{01}},
+ \ee^{\ii\varphi_{10}},\ee^{\ii\varphi_{11}}).
+\]
+若它可以写成
+$U_A\otimes U_B$，其中局域对角相位分别为
+$U_A=\operatorname{diag}(\ee^{\ii\alpha_0},\ee^{\ii\alpha_1})$、
+$U_B=\operatorname{diag}(\ee^{\ii\beta_0},\ee^{\ii\beta_1})$，则必须有
+\[
+\varphi_{ab}=\alpha_a+\beta_b+\varphi_g
+\]
+到一个整体相位 $\varphi_g$。于是
+\[
+\varphi_{00}+\varphi_{11}-\varphi_{01}-\varphi_{10}=0\pmod{2\pi}.
+\]
+反过来，若这个组合为零，可取
+\[
+\alpha_0=0,\quad
+\alpha_1=\varphi_{10}-\varphi_{00},\quad
+\beta_0=\varphi_{00},\quad
+\beta_1=\varphi_{01}
+\]
+构造局域分解，所以\eqnrefs{eq:two_electron_entangling_phase_invariant} 是充要判据。
+
+最后取 $|+\rangle_A|+\rangle_B$。输出系数为
+\[
+a_{ab}=\frac12\ee^{\ii\varphi_{ab}}.
+\]
+两比特纯态 concurrence 为
+\[
+\mathcal C=2|a_{00}a_{11}-a_{01}a_{10}|.
+\]
+代入得到
+\begin{align*}
+\mathcal C
+&=\frac12\left|
+\ee^{\ii(\varphi_{00}+\varphi_{11})}
+-\ee^{\ii(\varphi_{01}+\varphi_{10})}
+\right|\\
+&=\left|\sin\frac{\Phi_{\rm ent}}2\right|,
+\end{align*}
+即正文\eqnrefs{eq:two_electron_controlled_phase_concurrence}。若环境噪声不可忽略，必须回到\eqnrefs{eq:two_electron_environment_influence_matrix} 的完整混态并用部分转置、negativity 或 concurrence 的混态定义判断纠缠，不能继续使用纯态闭式。
+\end{proof}
+
+
+点偶极跃迁只是\eqnrefs{eq:quantum_transition_current_green_rate} 的局域极限。若初末态的跃迁电荷密度为 $\rho_{fi}(\mathbf r)$，它对位置的一阶矩定义跃迁电偶极矩
+\begin{equation*}
+\mathbf d_{fi}
+\equiv\int\dd^3 r\,\mathbf r\,\rho_{fi}(\mathbf r).
+\end{equation*}
+$\mathbf d_{fi}$ 的 SI 单位为 ${\rm C\,m}$；它量化这次量子跃迁能够向长波电场提供的最低阶电偶极耦合。若跃迁区域远小于环境场变化尺度，并把局域中心记为 $\mathbf r_0$，连续性方程给出最低阶电流
+\[
+\mathbf j_{fi}(\mathbf r)
+=-\ii\omega_{if}\mathbf d_{fi}\delta^{(3)}(\mathbf r-\mathbf r_0),
+\]
+代入后得到
+\begin{equation}
+\boxed{
+\Gamma_{i\to f}^{(0)}
+=\frac{2\omega_{if}^2}{\hbar\varepsilon_0c^2}
+\mathbf d_{fi}^{*}\cdot
+\operatorname{Im}\mathbf G^R(\mathbf r_0,\mathbf r_0,\omega_{if})\cdot
+\mathbf d_{fi}.}
+\label{eq:dipole_green_decay_rate}
+\end{equation}
+即一般环境中的标准电偶极自发辐射率。这一极限同时校验了\eqnrefs{eq:quantum_transition_current_green_rate} 的系数、量纲和 $\omega^2$ 依赖。
+
+局域 Green 谱权重可以定义成与具体电子源无关的环境量。对位于 $\mathbf r_0$、取向为无量纲单位矢量 $\mathbf e_d$ 的电偶极方向，投影电学局域态密度定义为
+\begin{equation}
+\boxed{
+\rho_{\mathbf e_d}(\mathbf r_0,\omega)
+=\frac{2\omega}{\pi c^2}
+\mathbf e_d\cdot
+\operatorname{Im}\mathbf G^R(\mathbf r_0,\mathbf r_0;\omega)
+\cdot\mathbf e_d.}
+\label{eq:projected_electric_ldos_definition}
+\end{equation}
+因为 $[\mathbf G^R]={\rm m^{-1}}$，有 $[\rho_{\mathbf e_d}]={\rm s\,m^{-3}}$，即每单位角频率、每单位体积的方向投影态密度。若束缚态跃迁偶极矩写成 $\mathbf d_{fi}=d\,\mathbf e_d$，则\eqnrefs{eq:dipole_green_decay_rate} 等价为
+\begin{equation}
+\boxed{
+\Gamma_d
+=\frac{\pi\omega|d|^2}{\hbar\varepsilon_0}
+\rho_{\mathbf e_d}(\mathbf r_0,\omega).}
+\label{eq:dipole_decay_projected_ldos}
+\end{equation}
+其中 $[\Gamma_d]={\rm s^{-1}}$。因此 LDOS 表示局域偶极源通过 Green 张量虚部能够耦合到的在壳电磁谱权重，而不是脱离耦合与归一化的抽象“模式数量”。
+
+\subsection{经典电流与电子能量损失谱}
+
+电子能量损失谱（electron energy-loss spectroscopy, EELS）记录电子穿过或掠过样品以后损失了多少能量；若不分辨环境最终落入哪一个光子、声子或材料激发通道，测到的是这些环境通道的总和。量子跃迁流保留电子初末态信息。只有当电子足够准直、一次相互作用中的反冲不显著改变预设轨迹，而且最终观测对未分辨电子自由度求和时，才进一步把电子替换成给定经典电流。这个步骤不是把“电子是量子粒子”改成一句经典假设，而是对正能 Dirac 波包作半经典窄包约化。
+
+取中心动量为 $\mathbf p_0$、动量宽度为 $\Delta p$ 的正能波包，并令环境 Green 核在电子横纵包络尺度 $\sigma_x$ 上变化的最短空间尺度为 $L_G$。在自由漂移时间内若色散展宽仍可忽略，定义
+\begin{equation*}
+\epsilon_p\equiv\frac{\Delta p}{\max(p_0,m_{\mathrm e} c)},
+\qquad
+\epsilon_x\equiv\frac{\sigma_x}{L_G},
+\qquad
+\epsilon_{\rm disp}\equiv\frac{T\,\|\nabla_{\mathbf p}^2E\|\,(\Delta p)^2}{\hbar}.
+\end{equation*}
+当这些量以及一次交换造成的轨迹偏移都足够小时，Dirac 电流在所有被环境核分辨的尺度上满足
+\begin{equation}
+\boxed{
+\mathbf J_{\rm wp}(\mathbf r,t)
+=q_{\mathrm e}\mathbf v_0\,|\varphi(\mathbf r-\mathbf r_e(t))|^2
++O(\epsilon_p,\epsilon_{\rm disp}),
+\qquad
+\mathbf J_{\rm wp}\Longrightarrow q_{\mathrm e}\mathbf v_0\,\delta^{(3)}[\mathbf r-\mathbf r_e(t)]
+\quad(\epsilon_x\to0).}
+\label{eq:quantum_wavepacket_to_classical_current_control}
+\end{equation}
+第二个箭头只表示在平滑 Green 核下的弱意义收敛，而不是把有限宽量子波包逐点等同于 $\delta$ 函数。若末态电子被分辨、波包不同路径仍保持可见相干，或反冲使不同交换通道可区分，就必须退回量子跃迁流或联合电子--环境振幅，经典给定电流不再保留足够信息。
+
+\begin{proposition}[窄波包的平滑测试核控制]
+设正能自由波包支撑于中心附近有限动量窗，固定自旋极化，色散与自旋子在窗内光滑。线性色散参考传播的态范数误差由非线性谱相位与自旋子变化共同控制。若空间概率已中心化，二阶光滑测试核 $F$ 的点源替换误差至多为 $\frac12\sup\|D^2F\|\langle|\delta\mathbf r|^2\rangle$。因而\eqnrefs{eq:quantum_wavepacket_to_classical_current_control}是这些控制条件下的弱极限，不能当作任意可分辨波包的点态恒等式。
+\end{proposition}
+\begin{proof}
+取自由正能波包
+\[
+\Psi(\mathbf r,t)
+=
+\sum_s\int\dd^3p\,
+f_s(\mathbf p)u_s(\mathbf p)
+\ee^{\ii(\mathbf p\cdot\mathbf r-E_{\mathbf p}t)/\hbar},
+\]
+选取包含所需波包权重的工作动量窗 $\mathcal W_p\equiv\{\mathbf p:|\mathbf p-\mathbf p_0|\le\Delta p\}$，以下误差界均限制在该窗内。为突出轨迹近似，先假设自旋分布集中在一个固定偏振，且该偏振在工作窗内的自旋翻转矩阵元已由前文判据控制。令 $\mathbf q=\mathbf p-\mathbf p_0$，对精确色散展开
+\[
+E_{\mathbf p_0+\mathbf q}
+=E_0+\mathbf v_0\cdot\mathbf q
++\frac12 q_iH_{ij}q_j+R_3(\mathbf q),
+\qquad
+\mathbf v_0=\nabla_{\mathbf p}E|_{\mathbf p_0}.
+\]
+在动量支撑 $|\mathbf q|\le\Delta p$ 上定义非线性色散相位的上界参数
+\[
+\epsilon_{\rm disp}
+\equiv
+\frac{T}{\hbar}
+\left[
+\frac12\|H\|(\Delta p)^2
++\sup_{|\mathbf q|\le\Delta p}|R_3(\mathbf q)|
+\right].
+\]
+由 Taylor 展开可知，括号正是被线性色散遗漏的能量项的统一上界；当 $\epsilon_{\rm disp}\ll1$ 时，二次及更高色散在作用窗内只产生受控的小包络畸变，因此
+\[
+\Psi(\mathbf r,t)
+=
+\ee^{\ii(\mathbf p_0\cdot\mathbf r-E_0t)/\hbar}
+ u(\mathbf p_0)
+\varphi(\mathbf r-\mathbf r_{e0}-\mathbf v_0t)
++O(\epsilon_p,\epsilon_{\rm disp}).
+\]
+在窄动量窗内再把 $u(\mathbf p)$ 展开到中心值；相应误差由 $\epsilon_p$ 控制。
+
+Dirac 电荷和空间电流分别为
+\[
+\rho=q_{\mathrm e}\Psi^\dagger\Psi,
+\qquad
+\mathbf J=q_{\mathrm e} c\,\Psi^\dagger\boldsymbol\alpha\Psi.
+\]
+正能自由自旋子满足速度恒等式
+\[
+\frac{c\,u^\dagger(\mathbf p_0)\boldsymbol\alpha u(\mathbf p_0)}
+{u^\dagger(\mathbf p_0)u(\mathbf p_0)}
+=
+\frac{c^2\mathbf p_0}{E_0}
+\equiv\mathbf v_0.
+\]
+把自旋子归一化吸收到 $\varphi$ 后，得到
+\[
+\rho(\mathbf r,t)
+=q_{\mathrm e}|\varphi(\mathbf r-\mathbf r_e(t))|^2
++O(\epsilon_p,\epsilon_{\rm disp}),
+\]
+\[
+\mathbf J(\mathbf r,t)
+=q_{\mathrm e}\mathbf v_0|\varphi(\mathbf r-\mathbf r_e(t))|^2
++O(\epsilon_p,\epsilon_{\rm disp}).
+\]
+连续性方程在这一阶自动满足，因为包络以群速度刚性平移。
+
+最后说明点轨迹极限的数学含义。设 Green 泛函中出现的测试核 $F(\mathbf r)$ 在波包支持上二阶可微，并以 $L_G$ 表示其最短变化尺度。令波包中心满足
+\[
+\int\dd^3r\,(\mathbf r-\mathbf r_e)|\varphi|^2=0.
+\]
+对 $F$ 在 $\mathbf r_e$ 处 Taylor 展开，
+\begin{align*}
+\int\dd^3r\,|\varphi(\mathbf r-\mathbf r_e)|^2F(\mathbf r)
+&=F(\mathbf r_e)
++\frac12\langle\delta r_i\delta r_j\rangle
+\partial_i\partial_jF(\mathbf r_e)+\cdots .
+\end{align*}
+故对中心对称窄包，刚性点源替换的首个空间误差实际上为 $O[(\sigma_x/L_G)^2]$；对一般未中心化估计，保守地写成 $O(\epsilon_x)$。于是
+\[
+|\varphi(\mathbf r-\mathbf r_e)|^2
+\rightharpoonup
+\delta^{(3)}(\mathbf r-\mathbf r_e)
+\]
+只是在所有环境可分辨的平滑测试核下成立。代回电流就得到正文\eqnrefs{eq:quantum_wavepacket_to_classical_current_control} 的轨迹电流。若环境能够分辨波包内部结构，或者反冲把不同末态变成可区分通道，这个弱极限不成立，必须回到量子跃迁流。
+\end{proof}
+
+
+这个约化完成以后，再固定经典源的 Fourier 归一化：
+\begin{equation*}
+\widetilde{\mathbf J}(\mathbf r,\omega)
+=\int_{-\infty}^{\infty}\!\dd t\,
+\mathbf J(\mathbf r,t)\ee^{\ii\omega t}.
+\end{equation*}
+推迟 Green 张量给出的诱导电场为
+\begin{equation*}
+\widetilde{\mathbf E}_{\rm ind}(\mathbf r,\omega)
+=\ii\mu_0\omega\int\!\dd^3 r'\,
+\mathbf G^R(\mathbf r,\mathbf r';\omega)\cdot\widetilde{\mathbf J}(\mathbf r',\omega).
+\end{equation*}
+因此源对环境所做的耗散功只取 Green 张量的谱部分。把环境吸收的总能量记为 $W_{\rm loss}>0$，并把 $\dd P_{\rm cl}/\dd\omega$ 定义为每单位角频率的平均损失量子数，则两者满足
+\begin{equation*}
+W_{\rm loss}
+=\int_0^\infty\hbar\omega\,
+\frac{\dd P_{\rm cl}}{\dd\omega}\,\dd\omega.
+\end{equation*}
+这里 $P_{\rm cl}$ 是给定经典源所激发的平均量子数计数，而不是电子末态的量子概率。把每个频率通道的能量损失除以单量子能量 $\hbar\omega$，得到给定电流的一般损失数谱
+\begin{equation}
+\boxed{
+\frac{\dd P_{\rm cl}}{\dd\omega}
+=\frac{\mu_0}{\pi\hbar}
+\iint\!\dd^3 r\,\dd^3 r'\,
+\widetilde{\mathbf J}^{*}(\mathbf r,\omega)\cdot
+\operatorname{Im}\mathbf G^R(\mathbf r,\mathbf r';\omega)\cdot
+\widetilde{\mathbf J}(\mathbf r',\omega),
+\qquad \omega>0.}
+\label{eq:prescribed_current_green_loss_master}
+\end{equation}
+该式是经典给定源的做功泛函。若实验分辨电子末态，量子跃迁率应采用\eqnrefs{eq:quantum_transition_current_green_rate}，而涉及电子与环境纠缠的情形则需采用联合振幅层级。
+
+对一条给定电子轨迹 $\mathbf r_e(t)$，刚性点电流是
+\begin{equation*}
+\mathbf J_e(\mathbf r,t)=q_{\mathrm e}\mathbf v(t)\delta^{(3)}[\mathbf r-\mathbf r_e(t)].
+\end{equation*}
+若再取匀速 $\mathbf v(t)=\mathbf v_0$，空间积分可以完全执行，得到 EELS/辐射问题反复使用的轨迹投影式
+\begin{equation}
+\boxed{
+\frac{\dd P}{\dd\omega}
+=\frac{\mu_0q_{\mathrm e}^2}{\pi\hbar}
+\int\!\dd t\,\dd t'\,
+\ee^{\ii\omega(t-t')}
+\mathbf v_0\cdot
+\operatorname{Im}\mathbf G^R[\mathbf r_e(t),\mathbf r_e(t');\omega]
+\cdot\mathbf v_0.}
+\label{eq:green_tensor_eels_master}
+\end{equation}
+$\operatorname{Im}\mathbf G^R$ 同时包含辐射连续谱、材料吸收与表面模；若实验只计结构诱导损耗，则把 $\mathbf G^R$ 换成散射 Green 张量 $\mathbf G_{\rm sc}^R=\mathbf G^R-\mathbf G_0^R$。这改变的是观测通道，不改变响应一般表达式。\cite{RiveraKaminer2020Quasiparticles,GarciaDeAbajoDiGiulio2021}
+
+均匀介质的平移对称性把连续谱一般动力学方程进一步约化为纵向相位匹配核；这一约化只改变运动学表示，不改变相互作用一般动力学方程。
+
+\input{sections/03-green-loss-cumulants-dp84}
+
+\input{sections/03-green-loss-cumulants-derivation-dp88}
+
+\subsection{相位匹配}
+
+所谓\emph{相位匹配}，是在有限作用区域内比较电子源与环境模式的 Fourier 相位：只有二者的纵向或完整波矢失配足够小，来自不同位置的跃迁振幅才能同相积累；失配较大时，这些贡献会因快速相位旋转而相互抵消。无限均匀体系中的动量守恒是这一有限长度干涉条件的极限形式。
+
+Green 张量已经把材料响应与电子源分离。对于三维平移不变的均匀介质，材料部分只依赖坐标差，因此最自然的表示是动量空间；与此同时，匀速电子轨迹会把源限制在特定的 $(\boldsymbol\kappa,\omega)$ 分量上。推迟 Green 张量于是写成
+\begin{equation*}
+\mathbf G^R(\mathbf r-\mathbf r';\omega)
+=\int\frac{\dd^3 k}{(2\pi)^3}\,
+\mathbf G^R(\boldsymbol\kappa;\omega)
+\ee^{\ii\boldsymbol\kappa\cdot(\mathbf r-\mathbf r')}.
+\end{equation*}
+这里 $\boldsymbol\kappa$ 是介质空间 Fourier 波矢，单位 ${\rm m^{-1}}$；$\omega$ 是电子损失或环境激发的角频率。对速度恒定为 $\mathbf v$ 的轨迹，源端只留下运动学超平面 $\omega=\boldsymbol\kappa\cdot\mathbf v$，于是一般 EELS 母\eqnrefs{eq:green_tensor_eels_master} 化为
+\begin{equation}
+\boxed{
+\frac{\dd^2 P}{\dd L\,\dd\omega}
+=\frac{2\mu_0q_{\mathrm e}^2}{\hbar v}
+\int\frac{\dd^3 k}{(2\pi)^3}
+\delta(\omega-\boldsymbol\kappa\cdot\mathbf v)
+\,\mathbf v\cdot\operatorname{Im}\mathbf G^R(\boldsymbol\kappa,\omega)\cdot\mathbf v.}
+\label{eq:homogeneous_green_loss_general}
+\end{equation}
+这条式子是三维均匀线性介质的运动学一般表达式：电子端只提供同步超平面，材料端所有吸收、辐射、纵向/横向极点与空间色散都包含在 $\operatorname{Im}\mathbf G^R$ 中。Frank--Tamm、体等离激元和均匀极化激元都只是对同一一般表达式选择不同 Green 张量后的结果。
+
+同步条件本身直接来自刚性匀速电流。采用
+\begin{equation*}
+f(\boldsymbol\kappa,\omega)=\int\dd^3 r\,\dd t\,
+f(\mathbf r,t)\ee^{\ii(\omega t-\boldsymbol\kappa\cdot\mathbf r)},
+\end{equation*}
+则点电荷源
+\begin{equation*}
+\rho_{\rm ch}(\mathbf r,t)=q_{\mathrm e}\delta^{(3)}(\mathbf r-\mathbf vt),
+\qquad
+\mathbf J_{\rm ch}=\mathbf v\rho_{\rm ch}
+\end{equation*}
+具有 Fourier 支撑
+\begin{equation*}
+\boxed{
+\rho_{\rm ch}(\boldsymbol\kappa,\omega)=2\pi q_{\mathrm e}\delta(\omega-\boldsymbol\kappa\cdot\mathbf v),
+\qquad
+\mathbf J_{\rm ch}(\boldsymbol\kappa,\omega)=2\pi q_{\mathrm e}\mathbf v\delta(\omega-\boldsymbol\kappa\cdot\mathbf v).}
+\end{equation*}
+因此 $\omega=\boldsymbol\kappa\cdot\mathbf v$ 是匀速刚性源 Fourier 支撑的几何条件。有限作用时间 $T$ 时，严格的时间窗 Fourier 核为
+\begin{align*}
+\left|\int_{-T/2}^{T/2}\dd t\,
+\ee^{\ii(\omega-\boldsymbol\kappa\cdot\mathbf v)t}\right|^2
+&=T^2\sinc^2\!\left[\frac{(\omega-\boldsymbol\kappa\cdot\mathbf v)T}{2}\right],\\
+\lim_{T\to\infty}
+T\sinc^2\!\left(\frac{\Omega T}{2}\right)
+&=2\pi\delta(\Omega)
+\qquad\text{（分布意义）}.
+\end{align*}
+因此任何有限长度辐射实验都具有 $O(T^{-1})$ 的同步宽度，而无限作用时间才恢复严格的同步 $\delta$ 平面。
+
+若环境只有离散平移对称性，连续动量守恒被晶格动量守恒取代。对 Maxwell--Bloch 模
+\begin{equation}
+\boxed{
+\mathbf E_{\nu\boldsymbol\kappa}(\mathbf r)
+=\ee^{\ii\boldsymbol\kappa\cdot\mathbf r}
+\sum_{\mathbf G}\mathbf E_{\nu\boldsymbol\kappa,\mathbf G}
+\ee^{\ii\mathbf G\cdot\mathbf r},}
+\label{eq:maxwell_bloch_mode_expansion}
+\end{equation}
+对每个倒格矢 $\mathbf G$ 定义精确有限时长失谐
+\begin{equation*}
+ \Delta_{\nu\boldsymbol\kappa\mathbf G}
+ \equiv\omega_{\nu\boldsymbol\kappa}-\mathbf v\cdot(\boldsymbol\kappa+\mathbf G).
+\end{equation*}
+为了把几何相位匹配与具体量子化归一化分开，定义有限轨迹的场--电流重叠振幅
+\begin{equation*}
+\mathcal A_{\nu\boldsymbol\kappa}(T)
+\equiv
+\int_{-T/2}^{T/2}\dd t\,
+\mathbf v\cdot\mathbf E_{\nu\boldsymbol\kappa}^*(\mathbf r_0+\mathbf vt)
+\ee^{\ii\omega_{\nu\boldsymbol\kappa}t}.
+\end{equation*}
+沿轨迹代入 Bloch 展开后，每个倒格谐波只需一个初等 Fourier 积分，
+\begin{equation*}
+\int_{-T/2}^{T/2}\dd t\,
+\ee^{\ii\Delta_{\nu\boldsymbol\kappa\mathbf G}t}
+=T\sinc\!\left(\frac{\Delta_{\nu\boldsymbol\kappa\mathbf G}T}{2}\right).
+\end{equation*}
+因此
+\begin{equation}
+\boxed{
+\mathcal A_{\nu\boldsymbol\kappa}(T)=
+\sum_{\mathbf G}
+\mathbf v\cdot\mathbf E_{\nu\boldsymbol\kappa,\mathbf G}^*
+\ee^{-\ii(\boldsymbol\kappa+\mathbf G)\cdot\mathbf r_0}
+T\sinc\!\left[
+\frac{(\omega_{\nu\boldsymbol\kappa}-\mathbf v\cdot(\boldsymbol\kappa+\mathbf G))T}{2}
+\right].}
+\label{eq:periodic_finite_time_sync_amplitude}
+\end{equation}
+因此可分辨同步通道由 $|\Delta_{\nu\boldsymbol\kappa\mathbf G}|T\lesssim1$ 选出，分辨宽度为 $O(T^{-1})$；只有在 $T\to\infty$ 的分布极限中峰值条件才收敛为 $\Delta_{\nu\boldsymbol\kappa\mathbf G}=0$。周期结构把连续同步平面复制到一组倒格谐波，Smith--Purcell 与周期极化激元辐射都由这一有限时长相位匹配核给出。
+
+\subsection{激发顶点}
+
+\eqnrefs{eq:general_free_electron_mode_coupling_definition} 已把联合动力学对环境的依赖压缩到单粒子扰动算符 $\delta\hat h_\lambda$。给定一种具体激发后，环境的场型、晶格位移或其它正常模首先决定 $\delta\hat h_\lambda$；再取电子态之间的矩阵元即可得到对应耦合率。不同物理模式因此共享同一联合哈密顿量结构，而差异全部进入 $\delta\hat h_\lambda$ 的空间形状与矩阵元。
+
+若模式主要通过电磁极化场与外部电子耦合，取
+\begin{equation*}
+\delta h_\lambda
+=q_{\mathrm e}\phi_\lambda
+-q_{\mathrm e} c\,\boldsymbol\alpha\cdot\mathbf A_\lambda.
+\end{equation*}
+若模式来自晶格位移并含短程电子--离子势，则把相应的 $\partial V/\partial Q_\lambda$ 加入 $\delta h_\lambda$。两种情形都只改变\eqnrefs{eq:general_free_electron_mode_coupling_definition} 中的模式扰动，不改变自由电子 Hilbert 空间和精确色散。
+
+有限作用时间内，任意单个模式的发射与吸收概率由有限时间跃迁振幅给出。若初态含 $n_\lambda$ 个该模式量子，外部电子由 $i$ 跃迁到 $f$ 的一阶概率分别为
+\begin{equation}
+\boxed{
+\begin{aligned}
+P_{i\to f}^{\rm em}(T)
+&=|\mathcal G_{fi}^{(\lambda)}|^2(n_\lambda+1)T^2
+\sinc^2\!\left[\frac{(E_f-E_i+\hbar\omega_\lambda)T}{2\hbar}\right],\\
+P_{i\to f}^{\rm abs}(T)
+&=|\mathcal G_{fi}^{(\lambda)}|^2n_\lambda T^2
+\sinc^2\!\left[\frac{(E_f-E_i-\hbar\omega_\lambda)T}{2\hbar}\right].
+\end{aligned}}
+\label{eq:mode-emission-absorption-finite-time-dp68}
+\end{equation}
+两个玻色占据因子来自产生、湮灭算符的数态矩阵元：发射含 $n_\lambda+1$，其中即使 $n_\lambda=0$ 仍保留的常数 $1$ 是真空自发发射贡献；吸收含 $n_\lambda$，真空中没有可被吸收的量子。只有在连续末态、弱耗尽和长时间极限同时成立时，才把 sinc 核取成能量 $\delta$ 并称为 Fermi 黄金律速率。因此所有线性玻色正常模共享同一概率结构，而具体物理环境只通过 $\omega_\lambda$ 与 $\delta h_\lambda$ 的参数值进入。
+
+这里还必须区分外部自由电子与晶体内部 Bloch 电子：二者可以耦合到同一材料模，但电子 Hilbert 空间和矩阵元并不相同。
+
+若研究的是材料内部载流子而不是从真空入射的自由电子，令 $\boldsymbol\kappa_e$ 表示电子 Bloch 波矢，$\boldsymbol\kappa$ 表示晶格正常模波矢；二者的 SI 单位均为 ${\rm m^{-1}}$，下标 $e$ 只用于区分两个独立波矢变量。电子本征态写成 $|n\boldsymbol\kappa_e\rangle$。这时谐振近似下的一量子电子--声子哈密顿量常写成
+\begin{equation*}
+H_{e\text{-}ph}^{\rm band}
+=\sum_{mn\boldsymbol\kappa_e\boldsymbol\kappa\nu}
+ g_{mn\nu}(\boldsymbol\kappa_e,\boldsymbol\kappa)
+ c_{m,\boldsymbol\kappa_e+\boldsymbol\kappa}^\dagger c_{n\boldsymbol\kappa_e}
+ (\hat a_{\boldsymbol\kappa\nu}+\hat a_{-\boldsymbol\kappa\nu}^\dagger),
+\end{equation*}
+并有
+\begin{equation*}
+ g_{mn\nu}(\boldsymbol\kappa_e,\boldsymbol\kappa)
+=\sqrt{\frac{\hbar}{2\omega_{\boldsymbol\kappa\nu}}}
+\left\langle m,\boldsymbol\kappa_e+\boldsymbol\kappa\left|
+\frac{\partial V_{\rm scf}}{\partial Q_{\boldsymbol\kappa\nu}}
+\right|n,\boldsymbol\kappa_e\right\rangle.
+\end{equation*}
+形变势、压电与体 Fr\"ohlich 顶点属于这一内部载流子模型。外部 TEM 电子若激发同一晶格正常模，应使用\eqnrefs{eq:general_free_electron_mode_coupling_definition} 对该模产生的外部势场取矩阵元；两者共享同一个声子正常模，但电子态和空间矩阵元一般不同，不能直接把能带顶点当成真空自由电子顶点。
+
+\input{content/FreeElectronQuantumOptics/chapter-end/electron-current-response-calculations.tex}

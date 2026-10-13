@@ -3,7 +3,7 @@
 \end{theorem}
 
 \begin{proof}
-度量相容分别给出
+要判断度量相容与无挠能否唯一确定联络，可以先用前一条件写出三组导数，再用后一条件消去不需要的联络分量。度量相容给出
 \begin{align*}
 Xg(Y,Z)&=g(\nabla_XY,Z)+g(Y,\nabla_XZ),\\
 Yg(Z,X)&=g(\nabla_YZ,X)+g(Z,\nabla_YX),\\
@@ -41,18 +41,30 @@ Zg(X,Y)&=g(\nabla_ZX,Y)+g(X,\nabla_ZY).
 \end{equation}
 右端只含已知的 $g$、向量场与 Lie 括号。由于 $g$ 非退化，\eqnrefs{eq:math-dg-koszul-formula}对每个 $X,Y$ 唯一确定 $\nabla_XY$，故唯一性成立。
 
-反过来，以\eqnrefs{eq:math-dg-koszul-formula}定义 $\nabla_XY$。右端对 $Z$ 是函数线性的，故由非退化性确实唯一对应一个向量场。直接检查 $X,Y$ 上的线性与 Leibniz 规则可知它是仿射联络。将 $X,Y$ 互换并相减，右端化为 $2g([X,Y],Z)$，故 $T=0$；把 Koszul 公式适当置换后相加，则恢复
+反过来，以\eqnrefs{eq:math-dg-koszul-formula}定义 $\nabla_XY$。右端对 $Z$ 是函数线性的，故由非退化性唯一对应一个光滑向量场。
+记右端为 $K(X,Y,Z)$。把函数 $a$ 乘入各槽位，利用 $[aX,Y]=a[X,Y]-Y(a)X$ 和 $[X,aY]=a[X,Y]+X(a)Y$，展开后得到
+\[
+K(aX,Y,Z)=aK(X,Y,Z),\qquad
+K(X,aY,Z)=aK(X,Y,Z)+2X(a)g(Y,Z).
+\]
+所以定义出的导数满足 $\nabla_{aX}Y=a\nabla_XY$ 与 $\nabla_X(aY)=a\nabla_XY+X(a)Y$，确实是仿射联络。
+将 $X,Y$ 互换并相减，右端化为 $2g([X,Y],Z)$，故 $T=0$；把 Koszul 公式适当置换后相加，则恢复
 \[
 Xg(Y,Z)=g(\nabla_XY,Z)+g(Y,\nabla_XZ),
 \]
 故 $\nabla g=0$。存在性也得到证明。
 
-Koszul 公式是唯一性定理：给定度量 $g$，Levi--Civita 联络（无挠+度量相容）被 $g$ 唯一决定，无需选择坐标或标架。
-
-实例：欧氏度量 $g=\delta_{ij}\dd x^i\dd x^j$ 下，所有 $\partial_k g_{ij}=0$，Koszul 公式给出 $\Gamma^k_{ij}=0$（平直联络）。
-
-球面度量 $g=R^2(\dd\theta^2+\sin^2\theta\,\dd\varphi^2)$ 下，代入得 $\Gamma^\theta_{\varphi\varphi}=-\sin\theta\cos\theta$、$\Gamma^\varphi_{\theta\varphi}=\cot\theta$，其余为零——这就是球面测地线方程的联络系数。
+这就从同一公式证明了存在性和唯一性，且整个构造不依赖坐标或标架。
 \end{proof}
+
+\begin{exbox}[用 Koszul 公式求欧氏空间与球面的联络]
+将 Koszul 公式用于欧氏空间和半径 $R$ 的球面，比较两种度量的联络系数。
+
+\textbf{解。} 欧氏度量 $g=\delta_{ij}\dd x^i\otimes\dd x^j$ 的分量恒定，坐标基括号为零，故 $\Gamma^k{}_{ij}=0$。
+球面度量为 $g=R^2(\dd\theta^2+\sin^2\theta\,\dd\varphi^2)$，唯一非零的度量导数是 $\partial_\theta g_{\varphi\varphi}=2R^2\sin\theta\cos\theta$。
+代入坐标联络公式，得到 $\Gamma^\theta{}_{\varphi\varphi}=-\sin\theta\cos\theta$、$\Gamma^\varphi{}_{\theta\varphi}=\Gamma^\varphi{}_{\varphi\theta}=\cot\theta$，其余为零。
+常数因子 $R^2$ 被逆度量消去，所以改变球面半径不改变这些坐标联络系数；曲率还需要把曲率二形式与实际面积元比较。
+\end{exbox}
 
 \begin{lemma}[截面曲率决定代数曲率张量]
 设正定内积空间上的 $R,\widetilde R$ 满足曲率张量的反对称性、配对对称性与第一 Bianchi 恒等式。若每个二维平面的截面曲率相同，则 $R=\widetilde R$。
@@ -67,7 +79,8 @@ A:=R-\widetilde R.
 \begin{equation*}
 A(u,v,v,u)=R(u,v,v,u)-\widetilde R(u,v,v,u)=0.
 \end{equation*}
-由 $A$ 在每个槽位关于度量的双线性，对任意 $u,v$（不必单位正交）也有
+对任意线性无关的 $u,v$，在它们张成的平面内换为正交归一基，四线性与反对称性使 $A(u,v,v,u)$ 等于基上相应数值乘以换基行列式的平方。
+对线性相关的 $u,v$，反对称性直接给出零。因此对所有 $u,v$ 都有
 \begin{equation*}
 A(u,v,v,u)=0.
 \end{equation*}
@@ -103,7 +116,7 @@ A(z,v,w,u)=A(w,u,z,v)=-A(w,u,v,z),
 这一论证是二次齐次函数 $Q(a,b)=A(a,b,b,a)$ 的两次极化；
 $Q$ 分别对 $a,b$ 为二次齐次，而非双线性，不能直接套用双线性型的 $1/4$ 极化公式。
 
-因此在 Riemann 情形，知道每一点所有二维截面的 $K(\sigma)$，就等价于知道完整的 Riemann 曲率张量。所谓"截面曲率是曲率的基本标量"并不是丢掉信息后的口号，而是依靠曲率张量特殊代数对称性的可逆编码。
+因此在 Riemann 情形，每一点所有二维截面的 $K(\sigma)$ 足以恢复完整的曲率张量；这依赖于反对称性、配对对称性和 Bianchi 恒等式同时成立。
 \end{proof}
 
 \begin{proposition}[测地线变分与 Jacobi 方程]
@@ -144,34 +157,38 @@ Levi--Civita 联络无挠，故 $\nabla_TJ-\nabla_JT=[T,J]=0$，即
  \nabla_T\nabla_TJ=-R(J,T)T,
 \end{equation*}
 移项即得\eqnrefs{eq:math-dg-jacobi-equation}。
+这个方程把变分场的二阶协变导数与曲率作用联系起来，因而可以用曲率判断邻近测地线怎样分离。
+\end{proof}
 
-球面与双曲空间中的 Jacobi 场：
+\begin{exbox}[常曲率空间中的横向 Jacobi 场]
+沿单位速测地线取平行单位法向场 $e(s)$，求满足 $J(0)=0$、$\nabla_TJ(0)=e(0)$ 的横向 Jacobi 场。
+
+\textbf{解。} 写成 $J(s)=j(s)e(s)$ 后，平行性使协变导数只作用于 $j$。
+三种曲率分别给出以下标量方程。
 \begin{itemize}
-\item 单位球面 $S^n$（截面曲率 $+1$）：沿大圆测地线取单位正交初始 Jacobi 场 $J(0)=0$、$\nabla_TJ(0)=e$，方程 $\nabla_T^2 J+J=0$，解
+\item 单位球面 $S^n$（截面曲率 $+1$）：方程为 $j''+j=0$，解
 \begin{equation*}
  J(s)=\sin(s)\,e(s),
 \end{equation*}
 $s=\pi$ 处 $J(\pi)=0$，即对径点为共轭点。所有大圆在对径点处汇聚。
-\item 双曲空间 $\HH^n$（截面曲率 $-1$）：方程 $\nabla_T^2 J-J=0$，解
+\item 双曲空间 $\HH^n$（截面曲率 $-1$）：方程为 $j''-j=0$，解
 \begin{equation*}
  J(s)=\sinh(s)\,e(s),
 \end{equation*}
 $\sinh(s)$ 在 $s>0$ 不为零，无共轭点。测地线指数发散，这是 Cartan--Hadamard 定理的典型实例。
-\item $\RR^n$（截面曲率 $0$）：方程 $\nabla_T^2 J=0$，解 $J(s)=s\,e$，线性分离，无共轭点。
+\item $\RR^n$（截面曲率 $0$）：方程为 $j''=0$，解 $J(s)=s\,e(s)$，线性分离，无共轭点。
 \end{itemize}
-三种曲率符号对应汇聚（$\sin$）、发散（$\sinh$）、线性（$s$），是 Rauch 比较定理的微缩版。
+初始分离都为零、初始横向速度相同，正曲率模型在 $s=\pi$ 再次相遇，负曲率模型分离快于平坦模型。这些解给出了曲率比较中的参照函数。
+\end{exbox}
 
-Jacobi 方程描述相邻测地线的相对加速度：$\nabla_T\nabla_TJ$ 是分离加速度，$R(J,T)T$ 是曲率对分离的回复力。正曲率使测地线汇聚（共轭点，如引力聚焦），负曲率使测地线发散（如宇宙膨胀的混沌混合）。在广义相对论中，Jacobi 方程是测地偏离方程，描述相邻自由下落粒子的相对加速度——$R(J,T)T$ 正是潮汐力张量作用于分离矢量。这是引力场探测（如 LIGO 引力波探测）的理论基础：引力波通过改变曲率 $R$，使相邻测地线的分离 $J$ 产生可测振荡。
-\end{proof}
+Jacobi 方程也适用于伪 Riemann 几何。在广义相对论中，它称为测地偏离方程，描述相邻自由下落粒子的相对加速度；曲率作用 $R(J,T)T$ 对应潮汐效应。引力波改变曲率后，分离矢量 $J$ 的变化可以用于探测。这里的 Lorentz 度量不正定，不能直接把 Riemann 情形的截面曲率聚焦结论逐字套用。
 
 \begin{lemma}[指数映射的 Gauss 引理]
 若 $\exp_p$ 在 $v$ 附近有定义，则任意 $w\in T_pM$ 满足\[g_{\exp_p(v)}((d\exp_p)_vv,(d\exp_p)_vw)=g_p(v,w).\]
 \end{lemma}
 
 \begin{proof}
-取从 $p$ 出发的二维测地线变分，沿径向参数 $t$ 求内积 $g(T,J)$ 的导数。利用测地线方程 $\nabla_TT=0$、无挠性 $\nabla_TJ=\nabla_JT$ 与速度平方沿测地线守恒，把导数化为 $\tfrac12 J[g(T,T)]$，再用速度守恒化简并沿径向 $t$ 积分得 Gauss 引理。
-
-取二维变分
+要比较指数映射前后的径向内积，可以改变测地线的初速度，并沿测地线跟踪这一内积。取变分
 \begin{equation*}
 F(t,s)=\exp_p\bigl(t(v+s w)\bigr),
 \qquad 0\le t\le1.
@@ -213,21 +230,26 @@ g(T(1),J(1))-g(T(0),J(0))
 =\int_0^1 g_p(v,w)\,\dd t
 =g_p(v,w).
 \end{equation*}
-又因 $J(0)=0$，左端第一项 $g(T(0),J(0))=0$，得到
+又因 $J(0)=0$，初点项 $g(T(0),J(0))=0$，得到
 \begin{equation*}
 g(T(1),J(1))=g_p(v,w),
 \end{equation*}
 即 \eqnrefs{eq:math-dg-gauss-lemma}。
+取 $w=v$ 时，公式还说明指数映射保持径向长度。这样，曲率比较中的非平凡伸缩都集中在角向方向上。
+\end{proof}
 
-几何意义：
+\begin{exbox}[Gauss 引理怎样给出极坐标的正交性]
+用 Gauss 引理解释欧氏空间与单位球面测地极坐标中的径向、角向正交。
+
+\textbf{解。} 取 $w\perp v$，引理右端为零，所以指数映射把初速度球面的切向量送到与径向方向正交的向量。两种模型具体为：
 \begin{itemize}
 \item $w\perp v$ 时 $g_p(v,w)=0$，故径向方向 $(d\exp_p)_v v$ 与角向方向 $(d\exp_p)_v w$ 在 $\exp_p(v)$ 处正交。这是"测地极坐标 $g=\dd r^2+r^2 h(r,\theta)$"成立的真正原因。
 \item $\RR^n$：$\exp_p(v)=p+v$，$(d\exp_p)_v=\mathrm{id}$，Gauss 引理退化为 $g(v,w)=g(v,w)$，平凡成立。
 \item $S^n$：$\exp_p(v)$ 把 $T_pS^n$ 中向量映到球面，Gauss 引理保证球面测地极坐标 $g=\dd r^2+\sin^2(r)\,d\Omega^2$ 中径向与角向正交。
 \end{itemize}
 
-Gauss 引理是 Rauch 比较定理的局部基石：它保证指数映射在径向方向不改变长度，因此比较定理只需控制角向方向的伸缩。在广义相对论中，Gauss 引理保证正规坐标中径向光锥的几何性质，是因果结构分析的基础工具。
-\end{proof}
+因此径向系数固定为 $1$，而球面的 $\sin^2r$ 记录了角向长度相对平坦情形的缩减。
+\end{exbox}
 
 \begin{proposition}[测地线能量的二阶变分]
 设 $\gamma:[0,L]\to M$ 为仿射参数测地线，$T=\dot\gamma$、$V(0)=V(L)=0$。对 $E=\frac12\int|T|^2\dd s$，\[\delta^2E[V,V]=\int_0^L\bigl(|\nabla_TV|^2-g(R(V,T)T,V)\bigr)\dd s.\]
@@ -289,6 +311,7 @@ V=\partial_rF.
 \label{eq:math-dg-energy-second-variation}
 \end{equation}
 极化后即得到\eqnrefs{eq:math-dg-index-form}。
+\end{proof}
 
 指标形式 $I(V,V)=\int(|\nabla_TV|^2-g(R(V,T)T,V))\,\dd s$ 的两项竞争：协变导数项 $|\nabla_TV|^2\ge0$ 使测地线稳定，曲率项 $-g(R(V,T)T,V)$ 在正曲率方向为负使测地线不稳定。
 
@@ -298,19 +321,27 @@ V=\partial_rF.
 
 反过来，仅有 $I(V,V)=0$ 不能断言 $V$ 为 Jacobi 场，须要求 $I(V,W)=0$ 对所有固定端点场 $W$ 成立；越过首个共轭点后出现负方向，最短性失效。
 
-在 $\mathbb S^n(R)$ 上取赤道测地线 $\gamma(s)$（$0\le s\le\pi R$）。沿 $\gamma$ 取法向变分场 $V=f(s)\vb e_\perp$，其中 $\vb e_\perp$ 平行单位法向量。球面截面曲率 $K=1/R^2$，故
+\begin{exbox}[球面测地线越过对跖点后为何失去最短性]
+在 $\mathbb S^n(R)$ 上取单位速大圆测地线 $\gamma:[0,L]\to\mathbb S^n(R)$，用指标形式判断长度为 $L$ 的曲段何时出现负方向。
+
+\textbf{解。} 沿 $\gamma$ 取法向变分场 $V=f(s)\vb e_\perp$，其中 $\vb e_\perp$ 是平行单位法向量。球面截面曲率 $K=1/R^2$，故
 \[
  I(V,V)=\int_0^L\!\left(|f'|^2-\frac{1}{R^2}|f|^2\right)\dd s.
 \]
-取 $f(s)=\sin(s/R)$（满足 $f(0)=f(\pi R)=0$），则 $I=0$——赤道在 $s=\pi R$（对跖点）处有共轭点。对 $L>\pi R$，取 $f$ 使 $I<0$，测地线不再极小。这就是球面上两点间测地线只在距离 $<\pi R$ 时最短的变分解释。
-\end{proof}
+取 $f(s)=\sin(\pi s/L)$，它对每个 $L$ 都满足固定端点条件。利用正弦、余弦平方在 $[0,L]$ 上的积分均为 $L/2$，得到
+\[
+I(V,V)=\frac L2\left(\frac{\pi^2}{L^2}-\frac1{R^2}\right).
+\]
+当 $L=\pi R$ 时，$V$ 是非零 Jacobi 场，且 $I(V,V)=0$；终点为对跖点，仍有实现距离的大圆半弧，但最短曲线不唯一。
+当 $L>\pi R$ 时，同一个测试场给 $I(V,V)<0$，所以曲段已不再局部最短。
+\end{exbox}
 
 \begin{theorem}[Bonnet--Myers 直径界]
 设 $(M^n,g)$ 连通、完备，$n\ge2$，$\operatorname{Ric}\ge(n-1)kg$、$k>0$。则 $\operatorname{diam}M\le\pi/\sqrt k$，且 $M$ 紧致。
 \end{theorem}
 
 \begin{proof}
-反设存在两点距离
+若两点相距过远，沿它们的最短测地线可以构造一个使能量下降的变分，从而与最短性矛盾。反设两点距离为
 \[
 L>\frac{\pi}{\sqrt k}.
 \]
@@ -380,22 +411,26 @@ K(T,E_i).
 \right).
 \]
 但 $L>\pi/\sqrt k$ 使括号为负，矛盾。因此任何两点距离都不超过 $\pi/\sqrt k$，得到\eqnrefs{eq:math-dg-bonnet-myers-diameter}。
-
-半径 $R$ 的球面 $\mathbb S^n(R)$：截面曲率 $K=1/R^2$，Ricci 曲率 $\operatorname{Ric}=(n-1)/R^2$，Bonnet--Myers 给出直径 $\le\pi R$，恰好等于球面直径——球面是等号情形。
-
-平坦环面 $T^n$：$\operatorname{Ric}=0$，定理不适用（$k=0$），直径确实无上界。
-
-双曲空间 $\mathbb H^n$：$\operatorname{Ric}=-(n-1)<0$，定理也不适用，测地线无限延伸。
-
-正曲率流形有限直径是整体微分几何的核心结论：它把局部曲率信息直接转化为全局紧致性，是 Cheeger--Gromoll 理论的起点。
+固定基点 $p$，整个流形就是闭球 $\overline B_{\pi/\sqrt k}(p)$；由完备性和 Hopf--Rinow，这个闭有界集合紧，故 $M$ 紧致。
+这里使用的是统一的正 Ricci 下界，而没有对每个截面分别要求正下界。
 \end{proof}
+
+\begin{exbox}[Bonnet--Myers 的等号模型与适用范围]
+比较球面、平坦环面与双曲空间能否满足定理的曲率假设。
+
+\textbf{解。} 半径 $R$ 的球面 $\mathbb S^n(R)$ 满足 $\operatorname{Ric}=(n-1)R^{-2}g$。取 $k=R^{-2}$ 得直径 $\le\pi R$；一对对跖点的距离为 $\pi R$，故等号达到。
+
+平坦环面 $T^n$ 满足 $\operatorname{Ric}=0$，不存在定理要求的 $k>0$。它仍是紧致的，但可以通过整体缩放把直径取得任意大，故零下界不能给出统一的直径上界。
+
+单位曲率尺度的双曲空间满足 $\operatorname{Ric}=-(n-1)g$，也不满足正下界假设，且直径无限。这两个模型说明，定理假设失效时不能保留其统一直径界。
+\end{exbox}
 
 \begin{theorem}[Bishop--Gromov 体积单调性]
 设 $(M^n,g)$ 完备，$\operatorname{Ric}\ge(n-1)kg$。对任意 $p$，$\operatorname{Vol}B_p(r)/V_k(r)$ 随 $r$ 单调不增；$k\le0$ 时取 $r>0$，$k>0$ 时取 $0<r<\pi/\sqrt k$。
 \end{theorem}
 
 \begin{proof}
-在指数映射的极坐标中，体积元可写成
+先比较每个径向方向上的体积伸缩，再对方向和半径积分，才能得到球体积比的单调性。在指数映射的极坐标中，体积元可写成
 \[
 \operatorname{vol}_g=J(r,\theta)\,\dd r\,\dd\theta,
 \]
@@ -437,7 +472,11 @@ q(r)=\frac1{a_{n-1}}\int_{S_pM}
 =\frac{\int_0^r q(t)S_k(t)^{n-1}\dd t}
 {\int_0^r S_k(t)^{n-1}\dd t}.
 \]
-由于 $q(r)$ 不超过之前的加权平均，对这个比值求导即可得到非正导数。
+记这个加权平均为 $Q(r)$，且令 $D(r)=\int_0^rS_k(t)^{n-1}\,\dd t$。在几乎处处可微的半径上，商法则给
+\[
+Q'(r)=\frac{S_k(r)^{n-1}}{D(r)}\bigl(q(r)-Q(r)\bigr)\le0.
+\]
+不等号来自 $q$ 单调不增：末端值不超过此前的加权平均。$Q$ 局部绝对连续，故这个导数不等式给出全部允许半径上的单调性。
 这样才从逐方向 Jacobi 比较得到球体积比的单调性，而不只是体积上界。若 $V_k(r)$ 表示常截面曲率 $k$ 的单连通模型空间中半径 $r$ 的球体积，则
 \begin{equation}
 \boxed{

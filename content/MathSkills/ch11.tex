@@ -10,6 +10,7 @@ u+G_0Vu=G_0f.
 若 \(K:\mathcal H\to\mathcal H\) 紧，则 \(T=I-K\) 的核有限维，像闭，且 \(\dim\ker T=\dim\ker T^*\)。方程 \(Tu=f\) 可解当且仅当 \(f\perp\ker T^*\)。特别地，若 \(\ker T=\{0\}\)，则对每个 \(f\) 有唯一解。
 \end{theorem}
 
+\begin{proof}
 先说明紧性在证明中做了什么。若 \(\ker T\) 无限维，可在其中选正交单位列 \(e_n\)。由 \(Te_n=0\) 知 \(Ke_n=e_n\)，但 \((Ke_n)\) 没有收敛子列，矛盾。故核有限维。若像不闭，可在 \((\ker T)^\perp\) 里选 \(\|x_n\|=1\)、\(Tx_n\to0\)。由紧性取子列使 \(Kx_n\) 收敛；于是 \(x_n=Tx_n+Kx_n\) 也收敛到一个核内单位向量，却仍属于核的正交补，矛盾。因此像闭。
 
 对任何有界算子，\((\operatorname{Ran}T)^\perp=\ker T^*\)：\(f\) 与所有 \(Tu\) 正交，恰等于 \(T^*f=0\)。像既闭，便有 \(\operatorname{Ran}T=(\ker T^*)^\perp\)，这证明了可解性的充要条件。还差核与余核维数相等；紧性允许把它严格化为有限维线性代数。
@@ -23,16 +24,54 @@ T=I-K=(I-R)(I-G),\qquad G=(I-R)^{-1}F.
 \begin{pmatrix}I_{M_G}-G_{11}&-G_{12}\\0&I_{M_G^\perp}\end{pmatrix}.
 \]
 其核维数等于有限矩阵 \(I_{M_G}-G_{11}\) 的核维数；像的余维也等于该有限矩阵的像在 \(M_G\) 中的余维。有限维秩零度定理使两者相等。因此 \(\dim\ker T=\dim\ker T^*\)，也证明了定理中“单射便满射”的结论。
+\end{proof}
 
-取 \(\mathcal H=\ell^2\)，\(Kx=\langle x,e_1\rangle e_1\)。则 \(Tu=(0,u_2,u_3,\ldots)\)，齐次解是 \(e_1\) 的任意倍；\(Tu=f\) 当且仅当 \(f_1=0\)，其余分量由 \(u_j=f_j\) 给出。这里条件 \(f\perp\ker T^*\) 就是熟悉的“右端与左零空间正交”。在 Neumann Laplacian 中，它变为 \(\int_0^1f(x)\,\dd x=0\)：区间 \((0,1)\) 上带 Neumann 边界 \(u'(0)=u'(1)=0\) 的 \(-u''\) 允许常数零模，\(-c''=0\) 且两端导数为零，故 \(\ker T=\ker T^*=\operatorname{span}\{1\}\)。可解条件 \(f\perp\ker T^*\) 就是 \(f\) 与常数函数正交，即 \(\int_0^1f(x)\,\dd x=0\)；平均不为零的源连一个稳态解都不存在。
+在积分方程中，零模属于有界算子 $T=I-K$；在边界微分方程中，则必须使用带完整定义域的自伴算子。
+两种情况的正交条件有相同形式，但不能把它们当作同一个算子。
 
-紧性不能删。令 \(S(x_1,x_2,\ldots)=(0,x_1,x_2,\ldots)\) 为 \(\ell^2\) 上的右移算子，它有界但不紧。\((I-S)x=0\) 逐分量迫使 \(x=0\)，可 \((I-S)x=e_1\) 要求每个 \(x_n=1\)，所得序列不在 \(\ell^2\)。所以 \(I-S\) 单射而不满射；有限维直觉恰在缺少紧性的地方失效。
+\begin{workedexample}[Neumann 零模、源的平均值与归一化解]
+在 $L^2(0,1)$ 上令
+\[
+A_Nu=-u'',\qquad
+\Dom(A_N)=\{u\in H^2(0,1):u'(0)=u'(1)=0\}.
+\]
+判断 $A_Nu=f$ 的可解条件，并对 $f(x)=x-1/2$ 求平均值为零的解。
+
+\textbf{解。} 自伴性由两端 Neumann 边界型给出；齐次方程的仿射解在导数条件下只剩常数。
+余弦基给正谱 $n^2\pi^2$，所以 $A_N$ 在常数的正交补上有有界逆。
+若方程有解，对整个区间积分得
+\[
+\int_0^1f(x)\,\dd x=-u'(1)+u'(0)=0.
+\]
+反过来，设 $f\in L^2$ 满足这条条件。从左端导数为零积分，得
+\[
+u'(x)=-\int_0^xf(t)\,\dd t,\qquad
+u(x)=C-\int_0^x(x-t)f(t)\,\dd t.
+\]
+于是 $u\in H^2$，右端导数也为零，确实解原问题。常数 $C$ 任意，反映零模造成的不唯一性。
+对 $f=x-1/2$，代入积分给
+\[
+u(x)=-\frac{x^3}{6}+\frac{x^2}{4}+C.
+\]
+要求 $\int_0^1u=0$ 得 $C=-1/24$，由此选出唯一的最小 $L^2$ 范数解。
+若源改成 $f=1$，其积分为 $1$，与必要条件矛盾，所以没有稳态解。
+\end{workedexample}
+
+\begin{workedexample}[去掉紧性以后单射为何不能保证满射]
+令 $S(x_1,x_2,\ldots)=(0,x_1,x_2,\ldots)$ 为 $\ell^2$ 上的右移算子。判断 $I-S$ 能否对每个右端求逆。
+
+\textbf{解。} $S$ 有界且 $\|S\|=1$，但 $Se_n=e_{n+1}$ 没有收敛子列，所以不紧。
+$(I-S)x=0$ 的第一分量给 $x_1=0$，后续递推给全部 $x_n=0$，因此它单射。
+可是 $(I-S)x=e_1$ 要求 $x_1=1$、$x_n-x_{n-1}=0$，故全部 $x_n=1$。
+这个序列不属于 $\ell^2$，所以 $e_1$ 不在值域中，$I-S$ 不满射。
+紧性在 Fredholm 择一中不可省略。
+\end{workedexample}
 
 
 
 \par
-\begin{workedexample}
+\begin{workedexample}[秩一共振参数与解的存在唯一性]
 令 \(Kx=\lambda\langle x,e_1\rangle e_1\)。分别讨论 \(\lambda=1\) 与 \(\lambda\ne1\) 时 \((I-K)u=f\) 的存在性和唯一性。
-\textbf{解.} 将 \(f=f_1e_1+f_\perp\)、\(u=u_1e_1+u_\perp\) 分解，则 \((I-K)u=(1-\lambda)u_1e_1+u_\perp\)。当 \(\lambda\ne1\) 时唯一解为 \(u=f_\perp+f_1(1-\lambda)^{-1}e_1\)。当 \(\lambda=1\) 时，可解当且仅当 \(f_1=0\)；此时 \(u=f_\perp+ce_1\)，解不唯一。
+\textbf{解。} 将 \(f=f_1e_1+f_\perp\)、\(u=u_1e_1+u_\perp\) 分解，则 \((I-K)u=(1-\lambda)u_1e_1+u_\perp\)。当 \(\lambda\ne1\) 时唯一解为 \(u=f_\perp+f_1(1-\lambda)^{-1}e_1\)。当 \(\lambda=1\) 时，可解当且仅当 \(f_1=0\)；此时 \(u=f_\perp+ce_1\)，解不唯一。
 \end{workedexample}
 \par

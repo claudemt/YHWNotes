@@ -1,7 +1,7 @@
 \section{转移矩阵}
 \label{chap:phys-sm-transfer-matrix-fermionization}
 
-图展开把二维 Ising 的配分函数组织成边集之和；要得到完整自由能和有限尺寸谱，更有效的做法是把一个方向的统计求和改写为线性算子的幂。先建立转移算符的一般有限条带结构：精确矩阵元、Perron--Frobenius 主本征值、谱表示的相关函数以及 Pauli 算符分解。随后再引入费米子化，从而把“转移算子存在”与“方格 Ising 恰好能被 Clifford 代数线性化”分开。
+图展开把二维 Ising 的配分函数组织成边集之和；若要同时求自由能与沿某一方向的关联衰减，可以改为逐行求和。每一行只需记录它与下一行怎样耦合，这个信息组成一个转移矩阵。矩阵的主本征值控制长条带的自由能，其余本征值控制关联衰减。方格 Ising 的特殊之处在于，这个指数维数的谱问题还能借助 Clifford 代数化成线性规模的计算。
 \subsection{逐行配置空间与精确转移算子}
 \label{sec:phys-sm-transfer-matrix-foundations}
 
@@ -33,7 +33,7 @@
  Z_{N,M}=\Tr_{\mathscr R_N}\mathsf T_N^{\,M}.
  \label{eq:phys-sm-transfer-trace-general}
 \end{equation}
-这个恒等式在任意有限 \(M,N\) 成立，尚未取任何热力学极限。
+迹中的每个矩阵元贡献两行之间的全部竖直键及两侧各半份水平键；首尾相接后，每条键恰好计入一次，因此这个表达与有限系统的 Gibbs 求和相同。
 
 \subsection{Perron--Frobenius 与长柱面极限}
 
@@ -55,7 +55,7 @@
 真正的二维自由能还需再取 \(N\to\infty\)。Perron--Frobenius 只控制固定 \(N\) 的有限维谱，并不能单独证明第二个极限。
 
 \begin{proof}
-固定行宽 \(N\)。转移矩阵的每个元素都是正的 Boltzmann 权，故有限维 Perron--Frobenius 定理给出单一正本征值 \(\Lambda_0\)，且其余本征值满足 \(|\Lambda_a|<\Lambda_0\)。矩阵在这里还是实对称的，所以可取一组正交本征向量。由迹公式，
+将有限行宽的谱代入迹公式，主本征值以外的贡献会随柱长增加而衰减。固定 \(N\)，转移矩阵的每个元素都是正的 Boltzmann 权，故有限维 Perron--Frobenius 定理给出单一正本征值 \(\Lambda_0\)，且其余本征值满足 \(|\Lambda_a|<\Lambda_0\)。矩阵在这里还是实对称的，所以可取一组正交本征向量。由迹公式，
 \[
 Z_{N,M}
 =\Tr\mathsf T_N^M
@@ -64,16 +64,29 @@ Z_{N,M}
 \right].
 \]
 因求和项数对固定 \(N\) 有限，括号随 \(M\to\infty\) 趋于 \(1\)，从而
-\(M^{-1}\log Z_{N,M}\to\log\Lambda_0\)，再除以 \(N\) 得式\cref{eq:phys-sm-strip-free-energy}。此证明没有对 \(N\to\infty\) 给出一致估计，故不能把两个极限偷偷合并。
+\(M^{-1}\log Z_{N,M}\to\log\Lambda_0\)，再除以 \(N\) 得\eqnrefs{eq:phys-sm-strip-free-energy}。这里的谱隙依赖宽度 \(N\)；取二维极限时，还需要控制它随 \(N\) 的变化。
 \end{proof}
 
-最小的算例是一维无场链：每行只留一个自旋、行内不加耦合，令相邻行的耦合为 $K=\beta J>0$。此时
+\begin{workedexample}[无场链的主本征值与关联长度]
+每行只留一个自旋、行内不加耦合，令相邻行的耦合为 $K=\beta J>0$。求长链的每点自由能与自旋关联长度。
+
+\textbf{解。}将行配置 $+1,-1$ 作为基，转移矩阵及其本征值为
 \[
 T=\begin{pmatrix}\ee^K&\ee^{-K}\\\ee^{-K}&\ee^K\end{pmatrix},
 \qquad
 \lambda_+=2\cosh K,\quad\lambda_-=2\sinh K.
 \]
-直接以向量 $(1,1)^{\mathsf T}$、$(1,-1)^{\mathsf T}$ 对角化，便有 $Z_M=\lambda_+^M+\lambda_-^M$。固定 $K$ 后取 $M\to\infty$，每点的对数配分函数为 $\log(2\cosh K)$；而自旋算符把两个本征向量互换，所以连通二点函数正比于 $(\lambda_-/\lambda_+)^r=(\tanh K)^r$，相关长度为 $1/\log\coth K$。有限宽度的主本征值计算是严格的；再令宽度趋于无穷并寻找二维临界点是另一个极限，不能靠把有限维 Perron--Frobenius 定理换个名字就自动完成。
+取归一化本征向量 $|+\rangle=2^{-1/2}(1,1)^{\mathsf T}$、$|-\rangle=2^{-1/2}(1,-1)^{\mathsf T}$，迹公式给出 $Z_M=\lambda_+^M+\lambda_-^M$。固定 $K$ 后取 $M\to\infty$，每点自由能为 $-\beta^{-1}\log(2\cosh K)$。
+
+自旋观测算符为 $\widehat\sigma=\operatorname{diag}(1,-1)$，它把上述两个本征向量互换。因此长链中 $\langle\sigma\rangle=\langle+|\widehat\sigma|+\rangle=0$，而相隔 $r$ 个格距的关联为
+\[
+ \langle\sigma_0\sigma_r\rangle
+ =\left(\frac{\lambda_-}{\lambda_+}\right)^r
+ |\langle-|\widehat\sigma|+\rangle|^2
+ =(\tanh K)^r.
+\]
+与 $\ee^{-r/\xi}$ 比较，得到 $\xi=1/\log\coth K$，这里 $\xi$ 以格距为单位。任意有限 $K>0$ 下谱比都小于一，相关长度有限；只有零温极限 $K\to\infty$ 才使它发散。
+\end{workedexample}
 
 \subsection{谱表示与依赖观测量的相关长度}
 
@@ -91,7 +104,7 @@ T=\begin{pmatrix}\ee^K&\ee^{-K}\\\ee^{-K}&\ee^K\end{pmatrix},
  \langle0|\widehat O|a\rangle
  \langle a|\widehat O|0\rangle
 \]
-在 \(\mathsf T_N\) 对称实矩阵时非负。于是相关长度不是“第二大本征值”这一句话就完全决定，而要先看观测算符是否与该谱态有非零矩阵元。定义与 \(O\) 耦合的最低非零谱隙
+在 \(\mathsf T_N\) 为对称实矩阵、$O$ 为实观测量时非负。只有矩阵元不为零的谱态才能贡献关联，所以长距离衰减由与 $O$ 耦合的最大谱比决定。定义相应的倒相关长度
 \begin{equation}
  \xi_O^{-1}(N)
  =\min_{a:C_a(O)\neq0}
@@ -160,7 +173,7 @@ T=\begin{pmatrix}\ee^K&\ee^{-K}\\\ee^{-K}&\ee^K\end{pmatrix},
 \end{equation}
 
 \begin{proof}
-因 \(X^2=I\)，指数级数的奇、偶项分别相加，得到
+先将单点垂直权重表示为翻转算符的指数，再组合各站点与水平权重。因 \(X^2=I\)，指数级数的奇、偶项分别相加，得到
 \(\ee^{K_v^*X}=\cosh K_v^*\,I+\sinh K_v^*\,X\)。
 令 \(\mathsf W_v=A_v\ee^{K_v^*X}\)，比较对角元与非对角元，恰得到
 \[
@@ -179,9 +192,9 @@ A_v\sinh K_v^*=\ee^{-K_v}.
 \(A_v^N\exp(K_v^*\sum_jX_j)\)。最后把对角的水平权重均分在它两侧，便得到对称转移矩阵式\cref{eq:phys-sm-transfer-pauli-factorization}。
 \end{proof}
 
-\eqnrefs{eq:phys-sm-transfer-pauli-factorization} 仍是 \(2^N\) 维谱问题。平移对称只能按总晶格动量分块，并不能把指数维度降到线性规模。真正的可解结构是：沿 $X$ 方向定义 Jordan--Wigner 弦以后，\(\sum X_j\) 与 \(\sum Z_jZ_{j+1}\) 都成为 Majorana 双线性式，而二次 Clifford 算符的共轭作用只在线性 Majorana 空间中演化。因此必须先处理有限环边界项：它决定费米子奇偶与 NS/R 动量网格，不能在取热力学极限之前省略。
+\eqnrefs{eq:phys-sm-transfer-pauli-factorization}仍作用在 \(2^N\) 维空间上。平移对称可以按总晶格动量分块；进一步降低计算规模，要用到两个转移因子的共同代数结构。沿 $X$ 方向定义 Jordan--Wigner 弦以后，\(\sum X_j\) 与 \(\sum Z_jZ_{j+1}\) 都成为 Majorana 双线性式，它们的共轭作用在 $2N$ 维 Majorana 空间中闭合。环的最后一条键还携带宇称因子，决定了周期或反周期的动量网格。
 
-先把弦放在转移矩阵的一次 Pauli 方向上，避免将局域翻转项误写成带弦的一次费米子项。以下假定环上至少有三个自旋，定义
+为使局域翻转项和相邻自旋耦合都变成双线性式，将弦选在 $X$ 方向。以下假定环上至少有三个自旋，定义
 \[
 S_j=\prod_{k<j}X_k,\qquad
 a_j=S_jZ_j,\qquad b_j=S_jY_j,\qquad
@@ -216,7 +229,7 @@ Z_NZ_1=-P\,\ii b_Na_1.
 \(\mathsf V_h=\exp(K_h\sum_jZ_jZ_{j+1})\)
 在固定 \(P\) 的子空间中都成为二次 Majorana 算符的指数。
 
-这里必须分清“单个费米子”与“偶次费米子式”。\(P\) 与每个 \(a_j,b_j\) \emph{反}对易，故与 \(c_j,c_j^\dagger\) 也反对易；它只与式\eqnrefs{eq:phys-sm-majorana-bulk,eq:phys-sm-majorana-boundary}中的双线性算符对易。因此转移矩阵保留两个宇称子空间，却不能在整个 Fock 空间上把 \(P\) 当作无条件的数。固定 \(P=+1\) 时，最后一条键相对于体内键多负号，对应反周期 Majorana 边界；固定 \(P=-1\) 时则对应周期边界。若改变 Majorana 或宇称的定义，NS/R 名称也可能对调，但式\cref{eq:phys-sm-majorana-boundary}的算符符号必须先算清楚。
+\(P\) 与每个 \(a_j,b_j\) 反对易，故单个 \(c_j\) 或 \(c_j^\dagger\) 会改变宇称；含偶数个费米子算符的双线性式则与 $P$ 对易。因此转移矩阵保留两个宇称子空间，可以分别在其中以 $P=+1$ 或 $P=-1$ 代入边界键。按照这里的约定，$P=+1$ 时边界键比体内键多一个负号，对应反周期边界；$P=-1$ 时对应周期边界。两种边界的动量网格将在下一节分别求出。
 
 有限环的转移矩阵仍是两个不对易指数的乘积，必须先在每个宇称扇区作 Fourier 变换，并单独处理动量 \(0,\pi\) 的特殊模式。这样才能得到正确的单粒子快度
 \begin{equation}
@@ -227,7 +240,7 @@ Z_NZ_1=-P\,\ii b_Na_1.
 \end{equation}
 它在 \(k=0\) 的质量是 \(2|K_h-K_v^*|\)，仅当 \(K_h=K_v^*\) 闭合。这里的快度属于两个\emph{不对易指数}的乘积，必须先在 Majorana 空间中复合两次共轭作用，再求本征值。若先把两个指数的生成元相加后对角化，所得是另一个算符的谱，通常不等于此处的转移快度。
 
-转移矩阵与一维量子链的关系要在\emph{各向异性连续极限}中建立，而不能把任意固定耦合下两个不对易指数的乘积直接写成指数之和。将式\cref{eq:phys-sm-transfer-pauli-factorization}中的整体正标量记为 $A_N$，并取
+若将每次转移看成很短的一步，二维经典模型还可以对应一维量子链的虚时间演化。为使两个不对易因子的乘积具有共同的连续极限，将\eqnrefs{eq:phys-sm-transfer-pauli-factorization}中的整体正标量记为 $A_N$，并取
 \[
 K_h=\varepsilon J,\qquad K_v^*=\varepsilon h,
 \qquad \varepsilon\downarrow0,
@@ -246,4 +259,4 @@ A_N^{-1}\mathsf T_N=I-\varepsilon H_{\rm Q}+O(\varepsilon^2),
 H_{\rm Q}=-J\sum_jZ_jZ_{j+1}-h\sum_jX_j.
 \]
 若令转移步数 $M\to\infty$、$M\varepsilon\to t$，矩阵乘积极限或 Trotter 公式给出
-$\lim(A_N^{-1}\mathsf T_N)^M=\ee^{-tH_{\rm Q}}$。这时、也只有在这项受控极限中，二维经典模型的转移方向才变成一维横场 Ising 链的虚时间。二维自对偶条件 $K_h=K_v^*$ 在这个极限中化为 $J=h$。先固定 $N$ 建立矩阵极限，再研究 $N\to\infty$ 的量子临界行为；两个极限不能在未经估计时交换。
+$\lim(A_N^{-1}\mathsf T_N)^M=\ee^{-tH_{\rm Q}}$。每步的 $O(\varepsilon^2)$ 误差在 $M\varepsilon\to t$ 时累计为 $O(t\varepsilon)$，因此固定环长下趋于零。转移方向由此成为一维横场 Ising 链的虚时间，二维自对偶条件 $K_h=K_v^*$ 也化为 $J=h$。这里先固定 $N$ 建立矩阵极限；研究 $N\to\infty$ 的量子临界行为时，还须另外估计误差对 $N$ 的依赖。

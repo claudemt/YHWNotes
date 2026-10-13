@@ -1,18 +1,19 @@
 \section{$D_3$：从六个群元到三角形的对称模式}
 \label{sec:d3-comprehensive}
 
-这一节始终使用同一个三角形、同一对生成元以及同一组表示矩阵。
-目标是把前四章的群、子群、作用、表示、特征标和张量积语言接成一条计算链。
-各例题的输出会成为下一例题的输入；六阶的特殊性也会明确限制哪些定理能给出非平凡信息。
+正三角形的旋转与反射给出六阶群。固定这两个生成元后，可以依次算出乘法、子群、群作用和表示，再用特征标求投影与张量积分解。
+以下例题沿用同一组群元和表示矩阵；使用一般定理时，同时检查其假设在这个六阶群中是否满足。
 约定置换从右向左复合，$D_3$ 表示\emph{六阶}二面体群。
 
-\begin{workedexample}[从展示得到乘法，而不是先背乘法表]
+\begin{workedexample}[由生成元关系计算乘法]
 \label{ex:d3-comprehensive-multiplication}
 取
 \[
 G=D_3=\langle r,s\mid r^3=e,\ s^2=e,\ srs=r^{-1}\rangle.
 \]
-关系 $sr=r^{-1}s$ 把任意词中的 $s$ 移到右端，再约去 $r^3$ 与 $s^2$，
+求群元的正规形、乘法和元素阶，并验证这套运算满足群公理。
+
+\textbf{解。} 关系 $sr=r^{-1}s$ 把任意词中的 $s$ 移到右端，再约去 $r^3$ 与 $s^2$，
 所以每个群元均可写成 $r^a s^b$，其中 $a\in\mathbb Z/3\mathbb Z$、$b\in\mathbb Z/2\mathbb Z$。
 令 $r=(123)$、$s=(23)$，六个这样的词在 $S_3$ 中互不相同。
 因此这些正规形恰好给出六个群元，展示所定义的群与 $S_3$ 同构。
@@ -24,7 +25,7 @@ G=D_3=\langle r,s\mid r^3=e,\ s^2=e,\ srs=r^{-1}\rangle.
 (a,b)^{-1}=\bigl(-(-1)^b a,\ b\bigr).
 \]
 第一个坐标模 $3$、第二个坐标模 $2$。
-这不只是一条记忆公式：左右两种三重乘法的第一个坐标同为
+为检查结合律，取第三个元素 $(f,h)$。左右两种三重乘法的第一个坐标同为
 \[
 a+(-1)^b c+(-1)^{b+d}f,
 \]
@@ -56,13 +57,15 @@ r^2s&r^2s&rs&s&r^2&r&e
 
 \begin{workedexample}[全部子群与子群格中的运算]
 \label{ex:d3-comprehensive-subgroups}
-由\Cref{thm:lagrange}，子群阶只能是 $1,2,3,6$。
+列出全部子群，计算不同子群的交与共同生成的子群。
+
+\textbf{解。} 由\Cref{thm:lagrange}，子群阶只能是 $1,2,3,6$。
 阶为 $2$ 或 $3$ 的群为素数阶循环群；结合刚算出的元素阶，全部子群就是
 \[
 \{e\},\qquad R=\langle r\rangle=\{e,r,r^2\},\qquad
 H_a=\langle r^a s\rangle=\{e,r^a s\}\ (a=0,1,2),\qquad G.
 \]
-这是穷举而非仅列出几个熟悉的子群。
+阶为 $1$ 与 $6$ 的子群已确定，阶为 $2$ 与 $3$ 的子群又必须由相应阶的元素生成，所以此表没有遗漏。
 对 $a\ne b$，不同反射相乘给出非平凡旋转：
 \[
 (r^a s)(r^b s)=r^{a-b}.
@@ -81,7 +84,9 @@ $R,H_0,H_1,H_2$ 之间没有包含关系，且均为极大子群。
 
 \begin{workedexample}[左右陪集、指标与不能定义的商群]
 \label{ex:d3-comprehensive-cosets}
-对 $H_0=\{e,s\}$，左陪集与右陪集分别为
+计算 $H_0$ 与 $R$ 的左右陪集，并检查陪集乘法是否依赖代表元。
+
+\textbf{解。} 对 $H_0=\{e,s\}$，左陪集与右陪集分别为
 \begin{align*}
 H_0&=\{e,s\},&rH_0&=\{r,rs\},&r^2H_0&=\{r^2,r^2s\},\\
 H_0&=\{e,s\},&H_0r&=\{r,r^2s\},&H_0r^2&=\{r^2,rs\}.
@@ -108,7 +113,9 @@ sR=Rs=\{s,rs,r^2s\},\qquad [G:R]=2.
 
 \begin{workedexample}[共轭类、中心化子与正规化子逐项计算]
 \label{ex:d3-comprehensive-conjugacy}
-由展示关系，$srs^{-1}=r^2$，而
+由生成元的共轭作用求共轭类、中心化子和正规化子。
+
+\textbf{解。} 由展示关系，$srs^{-1}=r^2$，而
 \[
 r(r^a s)r^{-1}=r^{a+2}s,\qquad
 s(r^a s)s^{-1}=r^{-a}s.
@@ -143,7 +150,9 @@ N_G(H_a)=C_G(H_a)=H_a.
 
 \begin{workedexample}[从核与像读出第一、第二同构定理]
 \label{ex:d3-comprehensive-isomorphism}
-定义旋转奇偶映射
+构造一个核为旋转子群 $R$ 的满同态，并在 $H_0$ 与 $R$ 上写出第一、第二同构定理的具体对应。
+
+\textbf{解。} 用是否含反射区分两类群元，定义
 \[
 \varepsilon:G\longrightarrow\{1,-1\},\qquad
 \varepsilon(r^a s^b)=(-1)^b.
@@ -175,7 +184,9 @@ H_0/(H_0\cap R)=H_0\cong H_0R/R=G/R.
 
 \begin{workedexample}[第三同构定理、对应定理与假设边界]
 \label{ex:d3-comprehensive-correspondence}
-要在第三同构定理中得到一个非平凡的中间商群，需要足够长的正规链。
+将第三同构定理和对应定理代入 $G$ 的正规子群链，说明本例能得到哪些商群和子群对应。
+
+\textbf{解。} 第三同构定理需要两个嵌套的正规子群。
 本例全部正规子群已经穷举为 $\{e\},R,G$，因此唯一严格三级链为
 \[
 \{e\}\lhd R\lhd G.
@@ -198,7 +209,9 @@ $H_a$ 不包含 $R$，所以它们不属于这次对应，而不是被定理遗�
 
 \begin{workedexample}[自同构、内自同构、特征子群与 $N/C$]
 \label{ex:d3-comprehensive-automorphisms}
-自同构保持元素阶，所以必有
+求全部自同构、内自同构和特征子群，再计算 $N/C$ 定理中的共轭映射。
+
+\textbf{解。} 自同构保持元素阶，所以 $r$ 只能映到两个三阶元之一，$s$ 只能映到三个二阶元之一。于是必有
 \[
 \alpha_{u,v}(r)=r^u,\qquad\alpha_{u,v}(s)=r^v s,
 \qquad u\in\{1,2\},\quad v\in\mathbb Z/3\mathbb Z.
@@ -230,7 +243,9 @@ $N_G(R)/C_G(R)\cong C_2$。
 
 \begin{workedexample}[Sylow、Frattini 与两种不同的交]
 \label{ex:d3-comprehensive-sylow}
-素因子 $2,3$ 的阶元分别已经由 $s,r$ 给出，实现了 Cauchy 定理的存在结论。
+确定全部 Sylow 子群，并检验不动点定理和 Frattini 论证的适用条件；另求所有极大子群的交。
+
+\textbf{解。} 素因子 $2,3$ 的阶元分别已经由 $s,r$ 给出，满足 Cauchy 定理的存在结论。
 Sylow 定理给出
 \[
 n_3\mid2,\quad n_3\equiv1\pmod3\ \Longrightarrow n_3=1,
@@ -266,7 +281,10 @@ G=R N_G(R)=RG.
 
 \begin{workedexample}[同一个顶点作用中的轨道、稳定子和 Burnside 计数]
 \label{ex:d3-comprehensive-actions}
-顶点集合取 $X=\{1,2,3\}$，仍令 $r=(123)$、$s=(23)$。
+在顶点集合 $X=\{1,2,3\}$ 上仍令 $r=(123)$、$s=(23)$。
+求轨道、稳定子和作用的核，并计算 $q$ 种颜色的三角形在旋转、反射下有多少种不同着色。
+
+\textbf{解。} 从顶点 $1$ 出发，旋转可以到达任一顶点。
 轨道 $G\cdot1=X$，稳定子为 $G_1=\{e,s\}=H_0$，因此
 \[
 |G\cdot1|=3=6/2=|G|/|G_1|.
@@ -301,6 +319,9 @@ N(q)=\frac{q^3+2q+3q^2}{6}=\binom{q+2}{3}.
 \begin{workedexample}[Cayley 的六点作用与三点忠实作用的差别]
 \label{ex:d3-comprehensive-cayley}
 将集合 $G$ 的元素按 $(e,r,r^2,s,rs,r^2s)$ 编号为 $1,\ldots,6$。
+写出左乘作用的生成元置换，并与三点顶点作用比较忠实性和自由性。
+
+\textbf{解。} 按乘法表依次左乘每个群元，
 左乘作用给出
 \[
 L_r=(123)(456),\qquad L_s=(14)(26)(35).
@@ -315,7 +336,9 @@ L_r=(123)(456),\qquad L_s=(14)(26)(35).
 
 \begin{workedexample}[合成列、可解性与中心列的停滞]
 \label{ex:d3-comprehensive-series}
-链 $G\triangleright R\triangleright\{e\}$ 的因子为
+求合成列、导出列和上下中心列，判断 $G$ 是否可解、是否幂零。
+
+\textbf{解。} 已知 $R$ 正规，链 $G\triangleright R\triangleright\{e\}$ 的因子为
 \[
 G/R\cong C_2,\qquad R/\{e\}\cong C_3.
 \]
@@ -350,7 +373,9 @@ Sylow $2$-子群不正规也是\Cref{thm:nilpotent-equivalent}的有限群判据
 
 \begin{workedexample}[半直积、非直积与自由群展示的含义]
 \label{ex:d3-comprehensive-semidirect}
-前面已算出 $R\lhd G$、$H_0\cap R=\{e\}$、$RH_0=G$。
+用 $R,H_0$ 把 $G$ 写成半直积，并说明这个分解与原群展示的关系。
+
+\textbf{解。} 前面已算出 $R\lhd G$、$H_0\cap R=\{e\}$、$RH_0=G$。
 $H_0$ 在 $R$ 上的共轭作用为 $s:r\mapsto r^{-1}$，故
 \[
 G\cong C_3\rtimes C_2,
@@ -381,7 +406,9 @@ G=\langle p,q\mid p^2=q^2=(pq)^3=e\rangle.
 
 \begin{workedexample}[从生成元矩阵构造全部不可约复表示]
 \label{ex:d3-comprehensive-irreps}
-以下表示空间均在 $\mathbb C$ 上，二维实矩阵也按复线性延拓。
+求全部一维复表示，构造一个二维复表示并证明其不可约，计算各表示的核。
+
+\textbf{解。} 以下表示空间均在 $\mathbb C$ 上，二维实矩阵也按复线性延拓。
 一维表示中，标量交换，所以 $srs=r^{-1}$ 强迫 $\rho(r)=\rho(r)^{-1}$；
 再与 $\rho(r)^3=1$ 联用，得到 $\rho(r)=1$。
 因 $\rho(s)^2=1$，全部一维表示恰为
@@ -410,17 +437,19 @@ $A_1$ 的核为 $G$，$A_2$ 的核为 $R$，$E$ 的核为 $\{e\}$。
 
 \begin{workedexample}[酉化与 Schur 引理都化成一个二阶矩阵计算]
 \label{ex:d3-comprehensive-schur}
-$D_E(r),D_E(s)$ 本已正交，所以 $E$ 是酉表示。
+求 $E$ 的自交织算子，以及 $E$ 与两个一维表示之间的交织算子；将 $E$ 换到非正交基后，再用群平均求不变内积。
+
+\textbf{解。} $D_E(r),D_E(s)$ 本已正交，所以 $E$ 是酉表示。
 若 $T$ 同时与二者交换，先与 $D_E(s)$ 交换得 $T=\operatorname{diag}(a,b)$；
 再比较 $TD_E(r)$ 与 $D_E(r)T$ 的非对角元，得到 $a=b$。
 因此
 \[
 \operatorname{End}_G(E)=\mathbb C I,
 \]
-直接实现了\Cref{thm:schur-lemma}，而不是只在字符表后写一个定理名。
-从 $A_1$ 或 $A_2$ 到 $E$ 的 intertwiner 若非零，其像将是一维不变子空间；
-从 $E$ 到一维表示的 intertwiner 若非零，其核也将是一维不变子空间。
-两者均与不可约性矛盾，故不同不可约表示之间的 intertwiner 全为零。
+这正是\Cref{thm:schur-lemma}对 $E$ 的结论。
+从 $A_1$ 或 $A_2$ 到 $E$ 的交织算子若非零，其像将是一维不变子空间；
+从 $E$ 到一维表示的交织算子若非零，秩为一，因而其核也将是一维不变子空间。
+两者均与 $E$ 的不可约性矛盾；$A_1$ 与 $A_2$ 之间的交织条件在 $s$ 上又给出 $T=-T$，所以不同不可约表示之间的交织算子全为零。
 
 也可故意换用不正交基：取 $T_0=\operatorname{diag}(2,1)$，令
 $D'(g)=T_0^{-1}D_E(g)T_0$。
@@ -431,15 +460,18 @@ Q=\frac16\sum_g D'(g)^\dagger D'(g)
 =\frac58\,T_0^\dagger T_0
 =\begin{pmatrix}5/2&0\\0&5/8\end{pmatrix}.
 \]
-这里使用了 $\frac16\sum_g D_E(g)^\dagger B D_E(g)=\frac{\operatorname{Tr}B}{2}I$
-和 $B=(T_0^{-1})^\dagger T_0^{-1}=\operatorname{diag}(1/4,1)$。
+这里令 $B=(T_0^{-1})^\dagger T_0^{-1}=\operatorname{diag}(1/4,1)$。
+平均矩阵 $\frac16\sum_gD_E(g)^\dagger B D_E(g)$ 与群作用交换，故由刚求出的交换子代数可写成 $cI$。
+共轭不改变迹，取迹得到 $2c=\operatorname{Tr}B=5/4$，这就确定了上式的 $5/8$。
 因而 $D'(g)^\dagger QD'(g)=Q$，以 $Q^{1/2}$ 换基便恢复酉表示。
 这也说明“某组矩阵不酉”不等于“该有限群表示不可酉化”。
 \end{workedexample}
 
 \begin{workedexample}[特征标的行列正交与完整性]
 \label{ex:d3-comprehensive-character}
-由前面实际构造的矩阵取迹，按 $e$、旋转类、反射类的次序得到
+从已构造的表示求特征标表，检查行列正交和穷尽性，再计算实型指标与共轭类和的作用。
+
+\textbf{解。} 由前面实际构造的矩阵取迹，按 $e$、旋转类、反射类的次序得到
 \[
 \begin{array}{c|rrr}
  &e&r,r^2&s,rs,r^2s\\\hline
@@ -457,7 +489,7 @@ Q=\frac16\sum_g D'(g)^\dagger D'(g)
 \|\chi_{A_1}\|^2=\|\chi_{A_2}\|^2&=(1+2+3)/6=1,\\
 \|\chi_E\|^2&=(4+2+0)/6=1.
 \end{align*}
-全部共轭类只有三个，\Cref{thm:character-basis}故说明这三个互不等价不可约表示已经穷尽，
+全部共轭类只有三个，由\Cref{thm:character-basis}，这三个互不等价不可约表示已经穷尽，
 并且 $1^2+1^2+2^2=6$。
 不能仅因矩阵维数小，就宣称没有其他不可约表示；穷尽性用到的是这个理论判据。
 
@@ -495,7 +527,9 @@ K_s&3&-3&0
 
 \begin{workedexample}[群代数、中央幂等元与六维正则表示]
 \label{ex:d3-comprehensive-regular}
-群代数 $\mathbb C[G]$ 以六个群元为正交基，左乘 $L_g$ 就是 Cayley 例题的置换矩阵。
+分解六维正则表示，求中央幂等元，并为每个不可约副本构造一组实际基向量。
+
+\textbf{解。} 群代数 $\mathbb C[G]$ 以六个群元为正交基，左乘 $L_g$ 就是 Cayley 例题的置换矩阵。
 故 $\chi_{\mathrm{reg}}=(6,0,0)$；重数公式依次给出 $1,1,2$，于是
 \[
 \mathbb C[G]\cong A_1\oplus A_2\oplus E\oplus E.
@@ -522,7 +556,8 @@ f_{\alpha,ij}=\sqrt{\frac{d_\alpha}{6}}
 \sum_{g\in G}\overline{D_\alpha(g)_{ij}}\,g,
 \quad \alpha\in\{A_1,A_2,E\},\quad1\le i,j\le d_\alpha.
 \]
-大正交关系给出它们标准正交，且换元 $g=hk$ 得
+大正交关系给出它们标准正交。左乘 $h$ 后令 $g=h^{-1}k$，再用
+$D_\alpha(h^{-1}k)=D_\alpha(h)^\dagger D_\alpha(k)$ 展开矩阵元，得到
 \[
 L_h f_{\alpha,ij}=\sum_{k=1}^{d_\alpha}
 D_\alpha(h)_{ki}f_{\alpha,kj}.
@@ -534,7 +569,9 @@ D_\alpha(h)_{ki}f_{\alpha,kj}.
 
 \begin{workedexample}[六点函数的 Fourier 展开与 Plancherel]
 \label{ex:d3-comprehensive-fourier}
-对任意函数 $f:G\to\mathbb C$，沿用特征标内积的归一化，定义
+用不可约表示矩阵元展开任意六点函数 $f:G\to\mathbb C$，求反演和范数公式，并以单位元指示函数检验归一化。
+
+\textbf{解。} 沿用特征标内积的归一化，定义
 \[
 \widehat f_{\alpha,ij}=\frac16\sum_{g\in G}
 \overline{D_\alpha(g)_{ij}}f(g).
@@ -561,6 +598,9 @@ f(g)=\sum_\alpha d_\alpha\sum_{i,j}
 \begin{workedexample}[三维顶点置换表示的实际投影与基底]
 \label{ex:d3-comprehensive-permutation}
 在 $V=\mathbb C^3$ 中取顶点基 $e_1,e_2,e_3$，令 $P(g)e_i=e_{g\cdot i}$。
+求不可约分解、投影矩阵和对称适配基，并把任意顶点振幅分到这些模式中。
+
+\textbf{解。} 特征标等于不动顶点数。
 仍使用同一个 $r=(123)$、$s=(23)$，其特征标为不动顶点数：
 \[
 \chi_V=(3,0,1),\qquad
@@ -610,7 +650,9 @@ $Qw=\ell(w)b_0$、$\ell(b_0)=1$。
 
 \begin{workedexample}[限制、商群提升与两个子群的诱导矩阵]
 \label{ex:d3-comprehensive-induction}
-先从已有矩阵限制到两个子群，而不重新寻找表示。
+求三个不可约表示在 $R,H_0$ 上的限制，并从这两个子群的一维表示显式构造诱导矩阵与分解。
+
+\textbf{解。} 先把已有矩阵限制到两个子群。
 记 $R$ 的三个一维表示为 $\sigma_m(r)=\omega^m$，$m=0,1,2$，
 记 $H_0$ 的两个一维表示为 $\tau_\pm(s)=\pm1$。
 旋转本征基与反射本征基分别给出
@@ -662,14 +704,16 @@ JD_E(g)J^{-1}=\varepsilon(g)D_E(g),
 
 \begin{workedexample}[Frobenius、Mackey 与 Clifford 的同一组数据]
 \label{ex:d3-comprehensive-clifford}
-Frobenius 互反律在上述计算中成为一组可双向核对的重数。
+利用上一例题的诱导矩阵，逐项检验 Frobenius 互反律和 Mackey 限制公式，并求正规子群 $R$ 的字符轨道与惯性群。
+
+\textbf{解。} Frobenius 互反律把限制与诱导中的重数对应起来。
 例如 $E\downarrow_R$ 含 $\sigma_1$ 一次，对应
 $\operatorname{Ind}_R^G\sigma_1=E$ 中 $E$ 一次；
 $A_1\downarrow_R=A_2\downarrow_R=\sigma_0$，对应
 $\operatorname{Ind}_R^G\sigma_0=A_1\oplus A_2$。
 对 $H_0$，$E$ 的两个反射本征值各出现一次，
 对应两种 $\operatorname{Ind}_{H_0}^G\tau_\pm$ 都含一个 $E$。
-因而这里的互反重数是由矩阵与字符实际算出的整数，不只是套公式后的符号。
+两边的重数都为一，与限制矩阵的本征直线数一致。
 
 正规子群 $R$ 的双陪集为 $R\backslash G/R=\{R,RsR\}$，代表元取 $e,s$。
 两项的交子群都为 $R$，且共轭表示为
@@ -716,7 +760,9 @@ $A_1,A_2$ 对应第一轨道且限制重数为 $1$，$E$ 对应第二轨道且�
 
 \begin{workedexample}[张量平方的 Clebsch--Gordan 系数与交换对称性]
 \label{ex:d3-comprehensive-cg}
-在 $E\otimes E$ 的有序基 $(xx,xy,yx,yy)$ 中，$xy$ 表示 $x\otimes y$。
+分解 $E\otimes E$，求耦合基、投影和对称平方；据此写出全部不可约类型的张量乘法。
+
+\textbf{解。} 在 $E\otimes E$ 的有序基 $(xx,xy,yx,yy)$ 中，$xy$ 表示 $x\otimes y$。
 张量积特征标为 $\chi_{E\otimes E}=\chi_E^2=(4,1,0)$，重数计算给出
 \[
 m_{A_1}=m_{A_2}=(4+2)/6=1,\qquad m_E=(8-2)/6=1,
@@ -781,7 +827,10 @@ C^\dagger[D_E(g)\otimes D_E(g)]C
 
 \begin{workedexample}[把群结构与耦合语言用于一个完整的动力学模型]
 \label{ex:d3-comprehensive-model}
-考虑三角形三个顶点各一个标量位移 $q_i$，采用刚才的置换表示。
+考虑三角形三个顶点各一个标量位移 $q_i$，每个顶点质量为 $m>0$，采用刚才的置换表示。
+求 $D_3$ 对称的实对称刚度矩阵、正则模式和频率，再代入等强顶点差弹簧模型。
+
+\textbf{解。} 顶点质量相同，动能在原顶点基中为 $\tfrac m2\sum_i\dot q_i^2$。
 若实对称刚度矩阵 $K$ 与所有 $P(g)$ 对易，顶点置换迫使三个对角元相等、三个非对角元相等，故
 \[
 K=\begin{pmatrix}a&b&b\\b&a&b\\b&b&a\end{pmatrix}

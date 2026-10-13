@@ -1,6 +1,9 @@
 \begin{exbox}[窄带高斯波包与三阶相位余项]
 \label{sec:feqo-dispersion-expansion}
-取中心动量 $\mathbf p_0=p_0\mathbf e_z$，正能色散的完整二阶展开为
+取中心动量 $\mathbf p_0=p_0\mathbf e_z$ 的窄带正能电子。
+求高斯纵向包络随时间的展宽，并估计二阶色散在展宽时间上的误差。
+
+\textbf{解。} 正能色散在中心动量附近的完整二阶展开为
 \begin{equation}
 E(\mathbf p)=E_0+v_0\delta p_z+
 \frac{\delta p_x^2+\delta p_y^2}{2\gamma_0m_{\rm e}}
@@ -26,7 +29,16 @@ $\tfrac12\operatorname{erfc}(p_0/(\sqrt2\sigma_p))$ 可忽略。
 \]
 定义 $\sigma_{z0}=\hbar/(2\sigma_p)$、
 $\tau=\hbar t/(2m_\parallel\sigma_{z0}^2)$。
-配方并完成高斯积分，得到归一化包络
+采用幺正 Fourier 系数 $(2\pi\hbar)^{-1/2}$，令
+$A=(1+\ii\tau)/(4\sigma_p^2)$，$B=\ii\xi/\hbar$，则所需积分是
+\[
+\psi(\xi,t)=\frac{(2\pi\sigma_p^2)^{-1/4}}{\sqrt{2\pi\hbar}}
+\int_{-\infty}^{\infty}\ee^{-A\delta p^2+B\delta p}\dd\delta p
+=\frac{(2\pi\sigma_p^2)^{-1/4}}{\sqrt{2\pi\hbar}}
+\sqrt{\frac\pi A}\ee^{B^2/(4A)}.
+\]
+$\operatorname{Re}A>0$ 保证收敛，平方根选从 $t=0$ 连续延拓的分支。
+代入 $A,B$ 得到归一化包络
 \begin{align}
 \psi(\xi,t)&=(2\pi\sigma_{z0}^2)^{-1/4}(1+\ii\tau)^{-1/2}
 \exp\left[-\frac{\xi^2}{4\sigma_{z0}^2(1+\ii\tau)}\right],\label{eq:feqo-gaussian-prop-result}\\
@@ -41,19 +53,45 @@ $\tau=1$ 时方差增至两倍，标准差增至 $\sqrt2$ 倍。
 给此时间 $t_*=\SI{4.65e-14}{\second}$、漂移长度 $v_0t_*=\SI{9.70}{\micro\metre}$；
 初宽增至 $\SI{10}{\nano\metre}$ 时，这两个尺度都增大一百倍。
 
-高斯没有有限支集。实际误差必须同时计入主体内的相位余项和主体外的尾部。
-取 $|\delta p|\le r\sigma_p$，令 $M_3$ 是此窗内 $|E'''|$ 的上界。
-尾概率为 $\eta_r=\operatorname{erfc}(r/\sqrt2)$，则
+高斯没有有限支集，下面的误差界把主体内的相位余项与主体外的尾部一起计入。
+对本题在 $t=t_*$ 取 $r=5$，使用
+$E'''(p)=-3m_{\rm e}^2c^8p/E(p)^5$，
+主体相位上界为 $3.02\times10^{-3}$，尾部振幅界为 $1.52\times10^{-3}$。
+于是精确色散与二阶色散的态范数差不超过 $4.54\times10^{-3}$。
+若改为 $r=6$，尾界虽更小，主体的三阶上界却因 $r^3$ 增长而变大，
+本题总界反而约为 $5.31\times10^{-3}$。
+因此积分窗口应按总误差选取，不能只要求尾概率很小。
+这些数字检验的是固定自旋包络的色散传播；若冻结动量相关的 Dirac 旋量，还需估计相应幅度差。
+\end{exbox}
+
+\Needspace{9\baselineskip}
+\begin{proposition}[有限动量窗上的相位与尾部误差]
+设归一化动量包络的窗外概率为 $\eta_r$，窗内 $|p-p_0|\le r\sigma_p$，
+且精确色散 $E$ 的三阶导数绝对值不超过 $M_3$。
+令 $U_{\rm ex},U_2$ 分别为精确色散与中心二阶 Taylor 色散产生的乘法传播子，则对 $t\ge0$，
 \begin{equation}
 \|(U_{\rm ex}-U_2)\psi_0\|
 \le\frac{tM_3(r\sigma_p)^3}{6\hbar}+2\sqrt{\eta_r}.
 \label{eq:feqo-gaussian-propagation-tail-control}
 \end{equation}
-主体界由 $|\ee^{\ii x}-1|\le|x|$，尾界由两个幺正算符的范数和给出。
-若旋量随动量变化，还需独立加入冻结旋量的幅度误差
-$\sup_{|\delta p|\le r\sigma_p}\|u_s(p)-u_s(p_0)\|$。
-因此窄带模型的适用范围由累计谱相位、尾概率及旋量变化共同确定。
-\end{exbox}
+全实轴高斯的 $\eta_r=\operatorname{erfc}(r/\sqrt2)$；
+若包络精确截断到 $p>0$，则应使用重新归一化后的窗外概率。
+\end{proposition}
+\begin{proof}
+令 $\Pi_r$ 是该动量窗的乘法投影。Taylor 积分余项在窗内满足
+$|E(p)-E_2(p)|\le M_3(r\sigma_p)^3/6$。又因
+\[
+\left|\ee^{-\ii E(p)t/\hbar}-\ee^{-\ii E_2(p)t/\hbar}\right|
+\le\frac{t}{\hbar}|E(p)-E_2(p)|,
+\]
+主体分量的范数差不超过第一项乘 $\|\Pi_r\psi_0\|\le1$。
+窗外两个传播子均为模一乘子，故其差的范数不超过
+$2\|(I-\Pi_r)\psi_0\|=2\sqrt{\eta_r}$。
+用三角不等式合并两部分，便得所述界；不需要在整个无界动量轴上假设一个统一的小余项。
+若归一化旋量 $u_s(p)$ 随动量变化，冻结它的初态误差同样分窗估计，
+不超过窗内的 $\sup\|u_s(p)-u_s(p_0)\|$ 加 $2\sqrt{\eta_r}$。
+由幺正性，这个初态误差不会因精确自由传播自行放大。
+\end{proof}
 
 \begin{figure}[htbp]
 \centering

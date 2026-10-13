@@ -33,7 +33,7 @@ s_\lambda(x_1,\dots,x_d)
 \end{theorem}
 
 \begin{proof}
-第一步，半标准盘与权重。
+先检验定义的生成函数确实对称，再把盘权重与表示特征标联系起来。
 Schur 函数 $s_\lambda$ 是半标准盘的生成函数：
 \[
 s_\lambda(x_1,\dots,x_d)=\sum_{T\in\mathrm{SSYT}(\lambda,d)}x_1^{w_1(T)}\cdots x_d^{w_d(T)},
@@ -47,7 +47,7 @@ $i^b(i+1)^a$，其余数字不动。交换前后均保持半标准性：同列�
 这个操作是自逆的，且交换权重 $w_i,w_{i+1}$。
 所以生成函数在相邻变量交换下不变；这些交换生成 $S_d$，对称性成立。
 
-随后，$GL(d)$ 的特征标。
+有了生成函数，仍须说明它为什么等于表示矩阵的迹。
 取 $g=\operatorname{diag}(x_1,\dots,x_d)\in GL(d)$。
 对固定编号盘 $T_0$，使用上一章的本原幂等元
 \[
@@ -80,12 +80,12 @@ g\cdot v_T
 也就是特征多项式系数的多项式。因此等式延拓到所有 $g\in GL(d)$，
 包括不可对角化的矩阵。
 
-接着，维数公式。
+特征标在单位元处给出维数。
 令 $g=I$（即所有 $x_i=1$），$\chi_{\mathbb{S}_\lambda}(I)=\dim\mathbb{S}_\lambda(\CC^d)$。此时 $s_\lambda(1,\dots,1)$ 等于半标准盘总数。用钩-内容公式计算：
 \[
 s_\lambda(1,\dots,1)=\prod_{(i,j)\in\lambda}\frac{d+j-i}{h(i,j)},
 \]
-其中 $(i,j)$ 遍历 Young 图 $\lambda$ 的所有方格，$h(i,j)=\lambda_i+\lambda_j'-i-j+1$ 为钩长度，$j-i$ 为方格的 content。
+其中 $(i,j)$ 遍历 Young 图 $\lambda$ 的所有方格，$h(i,j)=\lambda_i+\lambda_j'-i-j+1$ 为钩长度，$j-i$ 为方格的内容。
 这个乘积也可以由 Weyl 维数形式直接核对。给 $\lambda$ 补零到 $d$ 行，
 令 $l_i=\lambda_i+d-i$，则
 \[
@@ -158,11 +158,10 @@ s_\lambda=\sum_{\mu\vdash n}\frac{\chi^\lambda(\mu)}{z_\mu}\,p_\mu.
 \end{theorem}
 
 \begin{proof}
-先特征标映射是同构。
+先用共轭类指示函数检查映射是否可逆。
 $S_n$ 的类函数空间维数等于分拆数 $p(n)$，齐次 $n$ 次对称函数空间 $\Lambda_n$ 的维数也等于 $p(n)$（由幂和基 $\{p_\mu\}_{\mu\vdash n}$ 张成）。映射 $\mathrm{ch}$ 把各共轭类的指示函数基 $\{\delta_\mu\}$ 送到 $\{p_\mu/z_\mu\}$，后者是 $\Lambda_n$ 的一组基，故 $\mathrm{ch}$ 是同构。
 
-随后$\mathrm{ch}(\chi^\lambda)=s_\lambda$。
-这是 Frobenius 公式的核心。证明用 Schur--Weyl 对偶：
+要识别不可约特征标的像，可在同一个张量空间中分别计算置换作用和连续群作用的迹。
 
 在 $V^{\otimes n}$ 上，$GL(V)$ 的特征标为
 \[
@@ -201,7 +200,7 @@ p_\mu=\sum_\lambda\chi^\lambda(\mu)\,s_\lambda.
 这直接证明 \eqnrefs{eq:schur-power-sum-expansion}，也证明
 $\mathrm{ch}(\chi^\lambda)=s_\lambda$。
 
-接着，Hall 内积的来源。
+再把特征标内积通过这个同构移到对称函数空间。
 Hall 内积定义为 $\langle p_\lambda,p_\mu\rangle=z_\mu\delta_{\lambda\mu}$，其中 $z_\mu=\prod_k k^{m_k}m_k!$（$m_k$ 为 $\mu$ 中 $k$ 的重数）。在此内积下 Schur 函数正交：$\langle s_\lambda,s_\mu\rangle=\delta_{\lambda\mu}$。这来自 $S_n$ 特征标的正交关系
 \[
 \frac{1}{n!}\sum_{\pi}\chi^\lambda(\pi)\overline{\chi^\mu(\pi)}=\delta_{\lambda\mu}
@@ -328,7 +327,7 @@ s_{\mu_1}s_{\mu_2}\cdots s_\lambda
 \]
 完整 LR 证明还须构造保权双射，把两张半标准盘转化为
 一张形状 $\nu$ 的半标准盘和一张格字记录盘，并证明逆过程唯一。
-可采用 tableau switching 或 jeu de taquin；这里只说明这条证明路线，
+可采用盘交换或盘滑动算法；这里只说明这条证明路线，
 没有把水平条观察冒充完整的 LR 计数证明。
 其完整双射及可逆性见 Marc A. A. van Leeuwen,
 \emph{The Littlewood--Richardson rule, and related combinatorics},
@@ -436,12 +435,12 @@ $G/H$ 与所有大小为 $m$ 的子集 $A\subset\{1,\dots,m+n\}$ 一一对应。
 重复循环长度的二项式计数已经与 $z_\nu$ 抵消。
 这一因子化是 Frobenius 映射成为\emph{环同态}的关键：它把表示的诱导（$S_m\times S_n$ 到 $S_{m+n}$）转化为对称函数的乘法。
 
-随后代入不可约特征标。取 $\chi=\chi^\lambda$（$S_m$ 不可约特征标）、$\psi=\chi^\mu$（$S_n$ 不可约特征标），由 Frobenius 公式 $\mathrm{ch}(\chi^\lambda)=s_\lambda$、$\mathrm{ch}(\chi^\mu)=s_\mu$，故
+对于不可约特征标，取 $\chi=\chi^\lambda$（$S_m$ 不可约特征标）、$\psi=\chi^\mu$（$S_n$ 不可约特征标），由 Frobenius 公式 $\mathrm{ch}(\chi^\lambda)=s_\lambda$、$\mathrm{ch}(\chi^\mu)=s_\mu$，故
 \[
 \mathrm{ch}\bigl(\operatorname{Ind}(\chi^\lambda\boxtimes\chi^\mu)\bigr)=s_\lambda\cdot s_\mu=\sum_\nu c_{\lambda\mu}^\nu s_\nu.
 \]
 
-接着反推表示分解：Frobenius 映射是同构（可逆），故从
+Frobenius 映射已经证明可逆，因而从
 \[
 \mathrm{ch}\bigl(\operatorname{Ind}(\mathrm{Sp}_\lambda\boxtimes\mathrm{Sp}_\mu)\bigr)=\sum_\nu c_{\lambda\mu}^\nu\,\mathrm{ch}(\mathrm{Sp}_\nu)
 \]
@@ -478,12 +477,12 @@ $G/H$ 与所有大小为 $m$ 的子集 $A\subset\{1,\dots,m+n\}$ 一一对应。
 
 \begin{proof}
 良定义性。行插入保持行弱递增、列严格递增：替换的是第一个大于待插数字的位置，
-因此左邻不大于新值、右邻仍大于新值；逐行 bump 的位置弱向左移动，
+因此左邻不大于新值、右邻仍大于新值；逐行向下替换的位置弱向左移动，
 保持新值大于上邻。各数字互异时，行也严格递增。
 每步只在形状的外角添加一格，所以 $P$ 是含已插数字的标准盘，
 而记录新增格次序的 $Q$ 行、列都严格递增。
 
-单射性。给定 $(P,Q)$，可以逆向恢复 $\pi$：$Q$ 中最大数字 $n$ 所在方格是最后插入的位置，从 $P$ 中该方格\textbf{逆向行插入}（reverse 行 bumping）恢复被插入的 $\pi(n)$ 和前一步的 $P$：取出外角数 $y$，在上一行寻找最靠右的小于 $y$ 的数 $x$，用 $y$ 替换 $x$ 并继续向上携带 $x$，直到第一行移出一个数字。每步恰好反演正向插入的“第一个严格较大者”，所以恢复唯一。逐步逆推得到 $\pi(n),\pi(n-1),\dots,\pi(1)$，即 $\pi$。
+单射性。给定 $(P,Q)$，可以逆向恢复 $\pi$：$Q$ 中最大数字 $n$ 所在方格是最后插入的位置，从 $P$ 中该方格\textbf{逆向行插入}恢复被插入的 $\pi(n)$ 和前一步的 $P$：取出外角数 $y$，在上一行寻找最靠右的小于 $y$ 的数 $x$，用 $y$ 替换 $x$ 并继续向上携带 $x$，直到第一行移出一个数字。每步恰好反演正向插入的“第一个严格较大者”，所以恢复唯一。逐步逆推得到 $\pi(n),\pi(n-1),\dots,\pi(1)$，即 $\pi$。
 
 满射性。对任意同形状标准盘对 $(P,Q)$，上述逆过程给出一个置换 $\pi$ 使 $P(\pi)=P$，$Q(\pi)=Q$。
 
@@ -519,7 +518,7 @@ $G/H$ 与所有大小为 $m$ 的子集 $A\subset\{1,\dots,m+n\}$ 一一对应。
 下面把第一行长度的等式直接从行插入规则算出。
 \end{proposition}
 
-\begin{proof}[递增子序列等式的证明]
+\begin{proof}[证明（递增子序列等式）]
 处理前 $k$ 个数后，把插入盘的第一行写成 $r_1<\cdots<r_\ell$。
 归纳证明：$r_j$ 是这些数中长度为 $j$ 的递增子序列的最小可能末项。
 初始只有一个数，结论成立。
@@ -544,7 +543,7 @@ $G/H$ 与所有大小为 $m$ 的子集 $A\subset\{1,\dots,m+n\}$ 一一对应。
 更精确地，若 $n>rs$，则含长度 $r+1$ 的递增子序列，或长度 $s+1$ 的递减子序列。
 \end{theorem}
 
-\begin{proof}[RSK 证明]
+\begin{proof}[证明（RSK 对应）]
 调用前述 Schensted 的递增与递减子序列等式。
 
 先用相对大小把序列标准化为 $\pi\in S_n$，这不改变递增、递减子序列。

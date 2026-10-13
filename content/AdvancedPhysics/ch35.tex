@@ -1,7 +1,7 @@
 \chapter{共振与非绝热跃迁}
 \label{ch:resonance-lz}
 
-离散态若与连续谱耦合，原来的能级会获得位移和有限寿命；两个随时间靠近的能级若彼此耦合，系统又可能在避免交叉处改变绝热分支。前者是定态散射问题，后者是含时演化问题，却共享同一种消元思想：把 Hilbert 空间分成保留子空间 \(P\) 与其余子空间 \(Q\)，解出 \(Q\) 分量，再把它反馈到 \(P\) 中。定态反馈形成能量依赖的自能，含时反馈形成局部二能级耦合。Fano--Feshbach 与 Landau--Zener 模型正是这两种情形最清楚的可解代表。
+离散态若与连续谱耦合，原来的能级会获得位移和有限寿命；两个随时间靠近的能级若彼此耦合，系统又可能在避免交叉处改变绝热分支。前者是定态散射问题，后者是含时演化问题，却都需要区分被直接观测的态和其余状态。投影消元把 Hilbert 空间分成保留子空间 \(P\) 与其余子空间 \(Q\)，解出 \(Q\) 分量，再将它反馈到 \(P\) 中；定态反馈形成能量依赖的自能，含时反馈一般带有记忆。Fano--Feshbach 模型用于计算离散态与连续谱的共振，Landau--Zener 模型则在给定封闭二能级哈密顿量下求避免交叉的含时跃迁。
 \section{Feshbach 投影}
 
 设正交投影算符
@@ -16,7 +16,7 @@ PQ=0,
 P+Q=\mathbb I.
 \]
 
-更一般地，对复谱参数 $z$，完整预解式 $G(z)=(z-H)^{-1}$ 的 $P$ 块满足精确 Schur-补恒等式
+对复谱参数 $z$，先取 $z\in\rho(H)\cap\rho(H_{QQ})$。有限维情形可直接使用分块矩阵；无界算符还要求所选子空间与共同定义域相容，以下连续谱模型的非对角耦合为有界有限秩算符。完整预解式 $G(z)=(z-H)^{-1}$ 的 $P$ 块满足 Schur 补恒等式
 \begin{equation}
 PG(z)P
 =\left[z-H_{PP}-H_{PQ}(z-H_{QQ})^{-1}H_{QP}\right]^{-1}_{P}.
@@ -24,7 +24,7 @@ PG(z)P
 \end{equation}
 这里右端逆只在 $P$ 子空间中取。定态有效哈密顿量、共振极点、能级位移和寿命都只是这一预解式恒等式在不同解析区域与边界条件下的读法。
 
-\begin{proof}[解]
+\begin{proof}
 设 Hilbert 空间分解 \(\mathcal H=\mathcal H_P\oplus\mathcal H_Q\)，正交投影 \(P+Q=I\)。对 \(z\in\rho(H)\)，预解式 \(G(z)=(z-H)^{-1}\) 满足
 \[
  (z-H)|\Psi\rangle=|\eta_P\rangle,
@@ -58,7 +58,7 @@ PG(z)P
  -H_{PQ}(z-H_{QQ})^{-1}H_{QP}\right]|\psi_P\rangle
  =|\eta_P\rangle.
 \]
-方括号中正是 Feshbach 有效哈密顿量
+方括号为 $z-H_{\rm eff}(z)$，其中
 \[
  H_{\rm eff}(z)=H_{PP}+H_{PQ}(z-H_{QQ})^{-1}H_{QP},
 \]
@@ -79,7 +79,12 @@ PG(z)P
  =\operatorname{p.v.}\frac1{E-H_{QQ}}
  \mp\ii\pi\delta(E-H_{QQ}),
 \]
-虚部产生宽度 \(\Gamma=-2\operatorname{Im}\langle\psi_P|H_{PQ}\delta(E-H_{QQ})H_{QP}|\psi_P\rangle\)，即 Fermi 黄金法则中的衰变率。有效哈密顿量的非厄米部分正由这一步产生，把实能级移动到复平面 \(E\to E-\ii\Gamma/2\)，给出指数衰变 \(e^{-\Gamma t/2}\)。
+取出射支，对归一化的保留态 $|\psi_P\rangle$，自能的虚部给出能量宽度
+\[
+ \Gamma_\psi(E)=-2\operatorname{Im}\langle\psi_P|\Sigma(E)|\psi_P\rangle
+ =2\pi\langle\psi_P|H_{PQ}\delta(E-H_{QQ})H_{QP}|\psi_P\rangle\ge0.
+\]
+这里的边界值及 $\delta(E-H_{QQ})$ 先按谱测度分布理解：对能量作非负测试函数积分后，所得二次型非负。若耦合向量的谱测度在所讨论的区间有绝对连续密度，$\Gamma_\psi(E)$ 才是几乎处处定义的非负宽度函数；不能将式中的 $\delta$ 解释成在每个实能量处都有界的算符。只有在自能随能量变化缓慢、单个极点主导的条件下，才以 $E_R-\ii\Gamma/2$ 近似共振极点。其时间振幅为 $\ee^{-\ii E_Rt/\hbar}\ee^{-\Gamma t/(2\hbar)}$，概率衰变率为 $\Gamma/\hbar$；$\Gamma$ 本身具有能量量纲。
 \end{proof}
 
 定态 Schr\"odinger 方程
@@ -105,14 +110,18 @@ G_Q^{(+)}(E)
 \equiv(E+\ii0^+-H_{QQ})^{-1}.
 \]
 
-第二式形式精确地解为
+散射态还含入射的齐次解。设 $|\chi_E\rangle\in\mathcal H_Q$ 是给定入射通道的广义态，满足 $(E-H_{QQ})|\chi_E\rangle=0$。在它之上叠加出射响应，第二式解为
 
 \[
 Q|\Psi\rangle
-=G_Q^{(+)}(E)H_{QP}P|\Psi\rangle.
+=|\chi_E\rangle+G_Q^{(+)}(E)H_{QP}P|\Psi\rangle.
 \]
 
-代回 \(P\) 空间：
+代回 $P$ 空间，得到带入射源的方程
+\[
+ [E-H_{\rm eff}^{(+)}(E)]P|\Psi\rangle=H_{PQ}|\chi_E\rangle,
+\]
+其中
 
 \begin{equation}
 H_{\rm eff}^{(+)}(E)
@@ -128,7 +137,7 @@ H_{\rm eff}^{(+)}(E)
 \equiv H_{PQ}G_Q^{(+)}(E)H_{QP}
 \]
 
-就是能量依赖自能。它的实部移动共振位置，虚部产生有限寿命。只要 \(Q\) 空间包含连续谱，\(H_{\rm eff}^{(+)}\) 一般就是非厄米的；这不是基本哈密顿量失去 Hermiticity，而是出射边界条件和连续谱消元后的有效描述。
+就是能量依赖自能。它的实部移动共振位置，连续谱耦合产生的虚部决定有限寿命。$H_{\rm eff}^{(+)}$ 的非厄米部分来自出射边界条件；完整哈密顿量仍自伴。寻找束缚态或经解析延拓后的共振极点时取零入射源；计算被连续波激发的散射态时，则须保留 $|\chi_E\rangle$。
 
 \section{Fano 共振}
 取
@@ -220,153 +229,134 @@ Z_p=\frac{1}{1-\Sigma'(z_p)}.
 \end{equation}
 $Z_p$ 衡量裸离散态在穿衣共振中的极点权重；宽共振或阈值附近 $\Sigma'(z)$ 较大时，把 $Z_p$ 近似为 1 会丢失重要谱权重信息。
 
-仅知道复极点还不能解释不对称 Fano 线形，因为不对称来自“背景连续路径”和“经离散态再回到连续谱的路径”相干叠加。设固定总能量为 \(E\) 的精确 eigenstate 展开为
-
-\begin{equation}
-|\Psi_E\rangle
-=a_E|\phi\rangle
-+\int\dd E'\,b_E(E')|E'\rangle.
-\label{eq:fano-state-expansion}
-\end{equation}
-
-Schr\"odinger 方程给出
-
-\begin{align*}
-(E-E_\phi)a_E
-&=\int\dd E'\,V_{E'}^*b_E(E'),
-\\
-(E-E')b_E(E')
-&=V_{E'}a_E.
-\end{align*}
-
-第二式在分布意义下的一般解不是普通函数 \(V_{E'}a_E/(E-E')\)，因为在 \(E'=E\) 处还允许 \(\delta\) 函数齐次解。写成
-
-\begin{equation}
-b_E(E')
-=a_EV_{E'}
-\left[
-\mathcal P\frac1{E-E'}
-+Z_E\delta(E-E')
-\right].
-\label{eq:fano-distribution-solution}
-\end{equation}
-
-代回第一式：
-
+复极点确定寿命，但探针同时可以直接激发连续态与间接激发离散态，两条路径的干涉还会改变线型。为分别计算态与探针振幅，先把模型的定义域和归一化固定下来。取
+$\mathcal H=\mathbb C|\phi\rangle\oplus L^2(\mathcal I,\dd E)$，$\langle\phi|\phi\rangle=1$，连续态按 $\langle E|E'\rangle=\delta(E-E')$ 归一化。设 $V_E\in L^2(\mathcal I)$，则
 \[
-E-E_\phi
-=\Delta(E)+Z_E|V_E|^2.
+ V=\int_{\mathcal I}\dd E\,[V_E|E\rangle\langle\phi|+V_E^*|\phi\rangle\langle E|]
 \]
+是有界的厄米有限秩扰动，$H=H_0+V$ 在 $\Dom H_0$ 上自伴。连续态相位可逐能量选定，使 $V_E\ge0$ 在 $\mathcal I$ 上几乎处处成立；零耦合处的相位任意。这种可测相位变换保持能量归一化。以下讨论的能量位于连续谱内部，且 $V_E$ 在附近光滑、严格为正，所用主值边界值存在；因而主值积分中的 $V_{E'}$ 也使用同一个实耦合约定。
 
-引入
-
-\[
-\epsilon
-\equiv\frac{E-E_R}{\Gamma/2},
-\qquad
-\Gamma=2\pi|V_E|^2,
-\]
-
-得到
-
-\[
-Z_E=\pi\epsilon.
-\]
-
-为了按能量 \(\delta\) 函数归一化，可定义散射相移 \(\delta_E\) 使
-
-\[
-Z_E=-\pi\cot\delta_E.
-\]
-
-于是
-
-\begin{equation}
-\tan\delta_E=-\frac1\epsilon.
-\label{eq:fano-phase-shift}
-\end{equation}
-
-由式 \eqnrefs{eq:fano-phase-shift} 定出相移后，同时选择
-
-\[
-a_E=\frac{\sin\delta_E}{\pi V_E}
-\]
-
-（若 \(V_E\) 为复数，相位可吸收到连续态约定中）。定义穿衣 discrete 态
-
-\[
-|\Phi_E\rangle
-=|\phi\rangle
-+\mathcal P\int\dd E'\,
-\frac{V_{E'}}{E-E'}|E'\rangle,
-\]
-
-则精确散射态变为
-
-\begin{equation}
-|\Psi_E\rangle
-=\frac{\sin\delta_E}{\pi V_E}|\Phi_E\rangle
--\cos\delta_E|E\rangle.
-\label{eq:fano-normalized-state}
-\end{equation}
-
-这一步把“连续背景”和“共振 dressing”两条振幅路径显式分开了。
-
-\begin{proof}[解]
-设外部跃迁算符为 \(T\)，初态为 \(|i\rangle\)。由 \eqnrefs{eq:fano-normalized-state}，散射态 $|\Psi_E\rangle$ 已分解为连续背景 $|E\rangle$ 和穿衣离散态 $|\Phi_E\rangle$ 两条路径，跃迁振幅为
-\[
-\mathcal M(E)
-=\langle\Psi_E|T|i\rangle
-=-\cos\delta_E\,\mathcal M_{\rm bg}
-+\frac{\sin\delta_E}{\pi V_E^*}
-\langle\Phi_E|T|i\rangle,
-\]
-其中 \(\mathcal M_{\rm bg}=\langle E|T|i\rangle\) 是纯背景路径的振幅。两条路径的相干叠加是不对称线型的根源。
-
+\begin{proposition}[单离散态与连续谱的散射态]
 定义
 \[
-q(E)
-\equiv
-\frac{\langle\Phi_E|T|i\rangle}
-{\pi V_E^*\mathcal M_{\rm bg}}.
+ x(E)=E-E_\phi-\Delta(E),\qquad
+ \gamma(E)=\pi V_E^2=\Gamma(E)/2,\qquad
+ \epsilon_E=x(E)/\gamma(E).
 \]
-$q$ 是离散路径与背景路径的约化振幅比，包含两条路径的相对相位和强度。于是
+具有单位入射连续振幅的散射态展开为
+\begin{equation}
+ |\Psi_E^{(\pm)}\rangle
+ =a_E^{(\pm)}|\phi\rangle
+ +\int_{\mathcal I}\dd E'\,b_E^{(\pm)}(E')|E'\rangle,
+ \qquad a_E^{(\pm)}=\frac{V_E}{x(E)\pm\ii\gamma(E)},
+ \label{eq:fano-state-expansion}
+\end{equation}
+其中
+\begin{equation}
+ b_E^{(\pm)}(E')
+ =\delta(E-E')+
+ \frac{a_E^{(\pm)}V_{E'}}{E-E'\pm\ii0}.
+ \label{eq:fano-distribution-solution}
+\end{equation}
+将主值尾项合成
 \[
-\frac{\mathcal M}{\mathcal M_{\rm bg}}
-=-\cos\delta_E+q\sin\delta_E.
+ |\Phi_E\rangle=|\phi\rangle+
+ \mathcal P\int_{\mathcal I}\dd E'\,\frac{V_{E'}}{E-E'}|E'\rangle,
 \]
+便得到同一散射态的表达
+\begin{equation}
+ |\Psi_E^{(\pm)}\rangle
+ =\frac{\epsilon_E|E\rangle+(\pi V_E)^{-1}|\Phi_E\rangle}
+        {\epsilon_E\pm\ii}.
+ \label{eq:fano-normalized-state}
+\end{equation}
+这些是能量 $\delta$ 归一化的广义本征态，既不是两个可归一化态的有限线性组合，也不含探针参数。
+\end{proposition}
+\begin{proof}
+把 $H$ 代入 $(E-H)|\Psi_E^{(\pm)}\rangle=0$，分别投影到离散态和连续态，得到
+\[
+ (E-E_\phi)a_E=\int\dd E'\,V_{E'}b_E(E'),
+ \qquad (E-E')b_E(E')=V_{E'}a_E.
+\]
+后一个方程在分布意义下允许 $\delta(E-E')$ 齐次项。单位入射振幅将其系数固定为一，出射或入射边界则固定 $\pm\ii0$，给出\eqnrefs{eq:fano-distribution-solution}。代入离散方程，使用
+$\Sigma(E\pm\ii0)=\Delta(E)\mp\ii\pi V_E^2$，求得 $a_E^{(\pm)}$。
 
-由 \(\tan\delta_E=-1/\epsilon\)，可取
+为得到\eqnrefs{eq:fano-normalized-state}，用 Plemelj 公式拆开连续分量：$|E\rangle$ 的系数变成
 \[
-\cos\delta_E=\frac{\epsilon}{\sqrt{1+\epsilon^2}},
-\qquad
-\sin\delta_E=-\frac1{\sqrt{1+\epsilon^2}},
+ 1\mp\ii\pi V_Ea_E^{(\pm)}
+ =\frac{x(E)}{x(E)\pm\ii\gamma(E)},
 \]
-代入得
-\[
-\frac{\mathcal M}{\mathcal M_{\rm bg}}
-=\frac{q-\epsilon}{\sqrt{1+\epsilon^2}},
-\]
-整体负号不影响截面，因此
-\[
-\frac{|\mathcal M(E)|^2}{|\mathcal M_{\rm bg}(E)|^2}
-=\frac{(q+\epsilon)^2}{1+\epsilon^2}.
-\]
-$|q|\to\infty$ 时，$(q+\epsilon)^2/(1+\epsilon^2)\approx q^2/(1+\epsilon^2)$，退化为以 $\epsilon=0$ 为中心的 Lorentz 峰（离散路径主导，背景可忽略）。$q=0$ 时，$\epsilon^2/(1+\epsilon^2)$ 在 $\epsilon=0$ 处为零、$|\epsilon|\to\infty$ 处趋于 1，共振中心成为反共振零点（完全相消干涉）。$q=\pm1$ 时，$(1+\epsilon)^2/(1+\epsilon^2)$ 在 $\epsilon=-1$ 处为零、$\epsilon=0$ 处为 $1/2$，不对称最显著。
+而主值尾项与离散分量共同组成 $a_E^{(\pm)}|\Phi_E\rangle$。同时除以 $\gamma(E)$ 即得结果。
 
-
+归一化使用有限秩散射的波算符结论：自伴有限秩扰动的波算符在 $H_0$ 的绝对连续子空间上存在并保持内积；作用于 $|E\rangle$ 因而保留 $\delta(E-E')$ 归一化。这是所引用的散射定理输入，上面的计算证明其在本模型中的显式形式。\footnote{有限秩波算符与绝对连续谱等价的定理陈述见 C. Liaw，\href{https://www.math.stonybrook.edu/~dimitriosnt/caft2018/slides/Liaw.pdf}{Finite Rank Perturbations}，第 12 页。}
+离散分量还可由预解式独立核对：
+\[
+ -\frac1\pi\operatorname{Im}\frac1{x(E)+\ii\gamma(E)}
+ =\frac{V_E^2}{x(E)^2+\gamma(E)^2}
+ =|a_E^{(+)}|^2.
+\]
+这给出裸离散态在连续谱中的谱密度；若还存在真正束缚态，其离散权重须另外加入谱和。
 \end{proof}
 
-因此 Fano 线形为
-
+对于单通道弹性散射，由 $S=1-2\pi\ii V_Ea_E^{(+)}$ 得
+\[
+ S_{\rm res}(E)=\frac{x(E)-\ii\gamma(E)}{x(E)+\ii\gamma(E)}
+ =\frac{\epsilon_E-\ii}{\epsilon_E+\ii}.
+\]
+实能量上 $|S_{\rm res}|=1$。设 $S_{\rm res}=\ee^{2\ii\delta_E}$，则
 \begin{equation}
-\sigma(E)
-=\sigma_{\rm bg}(E)
-\frac{(q+\epsilon)^2}{1+\epsilon^2}.
-\label{eq:fano-profile}
+ \tan\delta_E=-1/\epsilon_E,
+ \label{eq:fano-phase-shift}
 \end{equation}
+分支按跨过共振时连续增加的相移选定。
 
-在单通道、时间反演对称且无吸收的常见约定中，可以通过相位选择把 $q$ 取为实数，得到\eqnrefs{eq:fano-profile}。若存在不可消去的多通道相位、吸收或时间反演破缺，$q$ 一般可以是复数，此时线型应保留 $|q+\epsilon|^2/(1+\epsilon^2)$，不能强行用实 $q$ 描述所有不对称性。
+\begin{proposition}[探针振幅与 Fano 线型]
+设 $T$ 为跃迁算符，$|i\rangle$ 为初态，$M_{\rm bg}(E)=\langle E|T|i\rangle\ne0$。定义
+\[
+ \widetilde M_\phi(E)=\langle\Phi_E|T|i\rangle,
+ \qquad q(E)=\frac{\widetilde M_\phi(E)}{\pi V_EM_{\rm bg}(E)}.
+\]
+则以入射归一化的最终散射态计算跃迁，得到
+\[
+ \frac{\langle\Psi_E^{(-)}|T|i\rangle}{M_{\rm bg}(E)}
+ =\frac{\epsilon_E+q(E)}{\epsilon_E+\ii}.
+\]
+在单通道且 $q$ 为实数的条件下，截面为
+\begin{equation}
+ \sigma(E)=\sigma_{\rm bg}(E)
+ \frac{[q(E)+\epsilon_E]^2}{1+\epsilon_E^2}.
+ \label{eq:fano-profile}
+\end{equation}
+复数 $q$ 时，保留振幅的模平方：
+\begin{equation}
+\sigma(E)=\sigma_{\rm bg}(E)\frac{|q(E)+\epsilon_E|^2}{1+\epsilon_E^2}.
+\label{eq:phys-rl-fano-profile}
+\end{equation}
+\end{proposition}
+\begin{proof}
+对\eqnrefs{eq:fano-normalized-state}的负号支取伴随，得到
+\[
+ \langle\Psi_E^{(-)}|T|i\rangle
+ =\frac{\epsilon_EM_{\rm bg}+(\pi V_E)^{-1}\widetilde M_\phi}
+ {\epsilon_E+\ii}.
+\]
+提出 $M_{\rm bg}$ 后即得振幅比。若改用实驻波归一化，两个分量同时乘一个相位，截面仍相同。$q$ 由探针的两个矩阵元之比决定，所以改变探针可以改变线型，却不改变 $H$ 的散射态和共振极点。若 $M_{\rm bg}=0$，应直接使用上面的未约化振幅，$q$ 的比值定义不再适用。
+\end{proof}
+
+实验中常用常数 $q,\Gamma,E_R$ 拟合窄共振。这个近似要求 $V_E$、背景振幅和 $\Delta(E)$ 在一个宽度内变化很小。由
+$x(E)=E-E_R-[\Delta(E)-\Delta(E_R)]$
+可见，$|\Delta'(E_R)|\ll1$ 时才有 $\epsilon_E\simeq(E-E_R)/(\Gamma(E_R)/2)$；阈值附近应保留能量依赖。单通道时间反演对称、探针矩阵元可同时取实的条件给出实 $q$，存在不可消去的相位时则保留复 $q$。
+
+\begin{workedexample}[相同共振极点下的两种探针线型]
+取缓变背景与 $\Gamma>0$，分别令 $q=0$、$q=1$。求截面零点、共振中心值及 $q=1$ 的峰值位置。
+
+\textbf{解。}$q=0$ 时 $\sigma/\sigma_{\rm bg}=\epsilon^2/(1+\epsilon^2)$，在 $E=E_R$ 完全相消。$q=1$ 时零点为 $\epsilon=-1$，即 $E=E_R-\Gamma/2$；中心 $\epsilon=0$ 的截面比为一。对线型求导，
+\[
+ \frac{\dd}{\dd\epsilon}\frac{(1+\epsilon)^2}{1+\epsilon^2}
+ =\frac{2(1+\epsilon)(1-\epsilon)}{(1+\epsilon^2)^2},
+\]
+所以另一极值在 $\epsilon=1$，峰值为二。两种探针的极点都为 $E_R-\ii\Gamma/2$，寿命都为 $\hbar/\Gamma$；变化的是干涉零点及峰值，而不是系统的衰变宽度。
+\end{workedexample}
 
 不同 \(q\) 的线型见\figref{fig:fano-lineshape}。
 
@@ -411,7 +401,7 @@ a(B)
 
 \(a_{\rm bg}\) 吸收所有缓慢变化的开放通道背景，\(\Delta B\) 把耦合强度和磁矩差压缩成实验可测的磁场宽度。\eqnrefs{eq:feshbach-scattering-length} 是“单闭通道束缚态 + 低能 s 波 + 背景缓慢变化”的阈值近似，而不是一般 Feshbach 理论的定义。
 
-\begin{proof}[解]
+\begin{proof}
 磁场通过磁矩差 $\delta\mu=\mu_{\rm closed}-\mu_{\rm open}$ 移动闭通道束缚态，$E_c(B)\approx\delta\mu(B-B_c)$。零能附近单闭通道消元后，共振部分为
 \begin{equation*}
  f_{\rm res}(0,B)
@@ -547,8 +537,8 @@ P_{\rm LZ}
 \label{eq:landau-zener}
 \end{equation}
 
-\begin{proof}[解]
-\eqnrefs{eq:lz-weber} 的解 $D_\nu(z)$（$\nu=-1+\ii\delta$）在不同复 $z$ 扇区有不同的渐近行为。Stokes 现象是指：同一解在不同扇区的渐近展开系数不同，连接公式描述跨扇区时这些系数如何跳变。对 Landau--Zener 问题，入射边界条件在 $t\to-\infty$（$z\to\infty\cdot\ee^{-\ii\pi/4}$）给定，出射在 $t\to+\infty$（$z\to\infty\cdot\ee^{+\ii\pi/4}$），两者位于不同 Stokes 扇区，必须用连接公式把它们联系起来。
+\begin{proof}
+\eqnrefs{eq:lz-weber} 的解 $D_\nu(z)$（$\nu=-1+\ii\delta$）在不同复 $z$ 扇区有不同的渐近行为。Stokes 现象是指：同一解在不同扇区的渐近展开系数不同，连接公式描述跨扇区时这些系数如何跳变。在前面固定的 $z=\ee^{-\ii\pi/4}\sqrt{s_{\rm LZ}/\hbar}\,t$ 约定下，$t\to-\infty$ 位于 $\arg z=3\pi/4$，$t\to+\infty$ 位于 $\arg z=-\pi/4$。两端位于不同扇区，须使用相应的抛物柱函数连接公式。
 
 入射/出射解按单位概率流归一化后，连接矩阵对角振幅模为
 \[
@@ -570,7 +560,14 @@ Stokes 乘子可写成
  |\Gamma(1-\ii\delta)|^2
  =\frac{\pi\delta}{\sinh(\pi\delta)},
 \]
-后者来自 $|\Gamma(1/2+\ii y)|^2=\pi/\cosh(\pi y)$ 经函数方程推广。
+后者可由反射公式直接核对：
+\[
+ \Gamma(\ii\delta)\Gamma(1-\ii\delta)
+ =\frac{\pi}{\sin(\pi\ii\delta)}
+ =-\frac{\ii\pi}{\sinh(\pi\delta)}.
+\]
+再用 $\Gamma(1-\ii\delta)=-\ii\delta\Gamma(-\ii\delta)$ 和共轭关系，得到
+$|\Gamma(-\ii\delta)|^2=\pi/[\delta\sinh(\pi\delta)]$，乘上 $\delta^2$ 即得所用的 $|\Gamma(1-\ii\delta)|^2$。
 
 代入 $|C_\delta|^2$，
 \begin{align*}
@@ -586,7 +583,7 @@ Stokes 乘子可写成
  \qquad
  |S_{21}|^2=1-\ee^{-2\pi\delta}.
 \]
-前者即 \eqnrefs{eq:landau-zener}。$|S_{11}|^2+|S_{21}|^2=1$ 验证幺正性。连接系数的相位整理后得 Stokes 相位 \(\phi_S\)（\eqnrefs{eq:lz-stokes-phase}），在 Stückelberg 干涉中与动力学相位叠加。$\delta=\Delta^2/(4\hbar s)$ 使 $s\to0$ 时 $P_{\rm LZ}\to0$、$s\to\infty$ 时 $P_{\rm LZ}\to1$。
+前者即 \eqnrefs{eq:landau-zener}。$|S_{11}|^2+|S_{21}|^2=1$ 验证幺正性。连接系数的相位整理后得 Stokes 相位 \(\phi_S\)（\eqnrefs{eq:lz-stokes-phase}），在 Stückelberg 干涉中与动力学相位叠加。$\delta=V^2/(\hbar s_{\rm LZ})$ 使 $s_{\rm LZ}\to0$ 时 $P_{\rm LZ}\to0$、$s_{\rm LZ}\to\infty$ 时 $P_{\rm LZ}\to1$。
 \end{proof}
 
 控制参数
@@ -660,8 +657,15 @@ Rydberg 原子 Stark & 0.5--5 & 0.1--0.9 & Gallagher (1980s) \\
 \end{tabular}
 \end{center}
 
-\begin{exbox}[超导量子比特的 Landau--Zener sweep]
-transmon 量子比特在通量偏置扫描中穿越避免交叉。能隙 \(2V/h\approx100\,\mathrm{MHz}\)，sweep 速率 \(|\dot\Delta|/h\approx1\,\mathrm{GHz}/\mathrm{ns}\)，给出 \(\delta_{\rm LZ}=V^2/(\hbar|\dot\Delta|)\approx5\)。绝热跃迁概率 \(P_{\rm LZ}=e^{-2\pi\delta_{\rm LZ}}\approx3\times10^{-14}\approx0\)——系统几乎完全跟随瞬时本征态（绝热极限）。反向快扫 \(\dot\Delta/h\approx100\,\mathrm{GHz}/\mathrm{ns}\) 给出 \(\delta_{\rm LZ}\approx0.05\)，\(P_{\rm LZ}\approx0.73\)——大部分留在初态（突然极限）。
+\begin{exbox}[给定量子比特能隙与扫速的跃迁概率]
+取二能级最小能隙 $2V/h=100\,\mathrm{MHz}$，透热能差扫描速率 $|\dot\Delta|/h=1\,\mathrm{GHz/ns}$。计算留在原透热态的概率，并判断该扫速接近哪一极限。
+
+\textbf{解。}先统一频率与时间单位：$V/h=5.0\times10^7\,\mathrm{s^{-1}}$，$|\dot\Delta|/h=10^{18}\,\mathrm{s^{-2}}$。使用 $h/\hbar=2\pi$，得到
+\[
+ \delta_{\rm LZ}=2\pi\frac{(V/h)^2}{|\dot\Delta|/h}
+ =0.01571,\qquad P_{\rm LZ}=\ee^{-2\pi\delta_{\rm LZ}}\simeq0.9060.
+\]
+因而约 $90.6\%$ 留在原透热态，约 $9.4\%$ 沿绝热分支转移，这组参数靠近快扫极限。将扫速再提高一百倍，$\delta_{\rm LZ}=1.571\times10^{-4}$、$P_{\rm LZ}\simeq0.9990$。要得到强绝热跟随，需降低扫速，使 $V^2/(\hbar|\dot\Delta|)\gg1$。
 \end{exbox}
 
 Fano 共振的散射截面
@@ -683,19 +687,51 @@ He 原子 \(2s2p\,{}^1P\) 自电离 & \(-2.8\) & 0.012 eV \\
 \end{center}
 
 \begin{exbox}[He 自电离共振的 Fano 谱]
-He 的 \(2s2p\,{}^1P\) 自电离共振是负 \(q\) Fano 线型的经典实例。对任意给定的拟合参数，零点位于 \(\epsilon=-q\)，极值位于 \(\epsilon=1/q\)；实际能量与时间尺度必须使用同一实验数据集拟合得到的 \(E_r\)、\(q\) 和 \(\Gamma\)，不能混用不同分辨率或不同通道的参数。
+取负 $q$ 共振的线型模型 $q=-2.8$、$\Gamma=0.012\,\mathrm{eV}$，背景在共振附近为常数。求谱零点、峰值相对 $E_r$ 的位置、峰值与背景的比值，以及该宽度对应的寿命。
+
+\textbf{解。}令 $F(\epsilon)=(q+\epsilon)^2/(1+\epsilon^2)$，则
+\[
+ F'(\epsilon)=\frac{2(q+\epsilon)(1-q\epsilon)}{(1+\epsilon^2)^2}.
+\]
+零点为 $\epsilon_0=-q=2.8$，其能量在共振中心上方：
+\[
+ E_0-E_r=\frac\Gamma2\epsilon_0=0.0168\,\mathrm{eV}.
+\]
+另一驻点为 $\epsilon_{\rm peak}=1/q=-0.3571$，所以
+\[
+ E_{\rm peak}-E_r=\frac\Gamma{2q}\simeq-0.00214\,\mathrm{eV},
+ \qquad F(\epsilon_{\rm peak})=1+q^2=8.84.
+\]
+由于 $F\to1$ 在远离共振时恢复背景，这个非零驻点是峰值。最后由极点 $E_r-\ii\Gamma/2$ 得
+\[
+ \tau=\hbar/\Gamma
+ =\frac{6.5821\times10^{-16}\,\mathrm{eV\,s}}{0.012\,\mathrm{eV}}
+ \simeq54.9\,\mathrm{fs}.
+\]
+峰位、零点和极点的实部分别描述线型最大值、干涉相消和共振中心；同一宽度决定寿命，但峰位与零点还随探针参数 $q$ 改变。
 \end{exbox}
 
-\begin{proof}[解]
+\begin{proposition}[冻结宽度下的共振相位与延迟]
+在单通道弹性散射中，若一个共振宽度内可冻结 $V_E$ 和实自能，令 $\epsilon=(E-E_r)/(\Gamma/2)$，则
+\[
+ S(E)=\ee^{2\ii\delta_{\rm bg}(E)}\frac{\epsilon-\ii}{\epsilon+\ii},
+ \qquad
+ \tau_{\rm res}(E)=\frac{4\hbar}{\Gamma(1+\epsilon^2)}.
+\]
+这里 $\tau_{\rm res}$ 为共振对 Wigner--Smith 延迟的贡献，总延迟另加背景项 $2\hbar\delta_{\rm bg}'(E)$。两者均须由系统的散射矩阵计算，探针参数 $q$ 不进入共振因子。
+\end{proposition}
 
-Feshbach 投影给出离散态 \(|\phi\rangle\) 与连续态 \(|E\rangle\) 的耦合。跃迁截面的不对称参数 \(q\) 描述外部探针通向离散与连续部分的振幅比；它并不移动散射矩阵的共振极点。Fano 对角化可写成
+\begin{proof}[证明（共振相移与时间延迟）]
+
+先由能量归一化散射态求出 $S$ 矩阵，再对相移求导得到延迟。在共振宽度内冻结 $V_E$ 与实自能，将\eqnrefs{eq:fano-normalized-state}的出射支写为
 \begin{equation}
-|\Psi_E\rangle=\frac{q+\epsilon}{\sqrt{\epsilon^2+1}}\,|\phi\rangle+\frac{1}{\sqrt{\epsilon^2+1}}\,|E\rangle,
+|\Psi_E^{(+)}\rangle
+=\frac{\epsilon|E\rangle+(\pi V_E)^{-1}|\Phi_E\rangle}{\epsilon+\ii},
 \qquad
 \epsilon=\frac{E-E_r}{\Gamma/2},
 \label{eq:fano-state-s-matrix}
 \end{equation}
-即\eqnrefs{eq:fano-normalized-state} 的参数化。单个弹性通道、缓变背景下的共振 S 矩阵是 Breit--Wigner 因子
+此处 $|\Phi_E\rangle$ 包含完整主值连续谱尾项。由 $S_{\rm res}=1-2\pi\ii V_Ea_E^{(+)}$，并乘上缓变的背景相位，得到
 \begin{equation}
 S(\epsilon)=\ee^{2\ii\delta_{\rm bg}}\,\frac{\epsilon-\ii}{\epsilon+\ii},
 \label{eq:fano-s-matrix}
@@ -711,7 +747,7 @@ S(\epsilon)=\ee^{2\ii\delta_{\rm bg}}\,\frac{\epsilon-\ii}{\epsilon+\ii},
 
 Wigner--Smith 时间延迟为
 \begin{equation}
-\tau(\epsilon)=2\hbar\,\frac{\dd\delta}{\dd E}
+\tau_{\rm res}(\epsilon)=2\hbar\,\frac{\dd\delta_{\rm res}}{\dd E}
 =\frac{4\hbar}{\Gamma}\,\frac{\dd\delta_{\rm res}}{\dd\epsilon},
 \label{eq:wigner-smith-definition}
 \end{equation}
@@ -722,28 +758,52 @@ Wigner--Smith 时间延迟为
 \end{equation}
 故
 \begin{equation}
-\tau(\epsilon)=\frac{4\hbar}{\Gamma}\,\frac{1}{1+\epsilon^2}.
+\tau_{\rm res}(\epsilon)=\frac{4\hbar}{\Gamma}\,\frac{1}{1+\epsilon^2}.
 \label{eq:fano-wigner-smith-delay}
 \end{equation}
-它在共振中心 \(\epsilon=0\) 取最大值 \(4\hbar/\Gamma\)；Fano 零点由 \(q\) 决定，两者仅在 \(q=0\) 时重合。若背景相移能量依赖 \(\dd\delta_{\rm bg}/\dd E<0\)，总延迟可含负修正项；因果性由 S 矩阵上半平面解析性约束。
+共振贡献在 $\epsilon=0$ 取最大值 $4\hbar/\Gamma$；总延迟还须加上 $2\hbar\,\dd\delta_{\rm bg}/\dd E$。探针的 Fano 零点由 $q$ 决定，两者仅在 $q=0$ 时重合。背景导数为负时，总延迟可含负修正；阈值或宽度随能量显著变化时还须对完整 $S(E)$ 求导。
 
 \end{proof}
 
-离散态与连续谱耦合同时给出共振极点和探针依赖的 Fano 线型。
+\subsection{多离散态的宽度矩阵与暗态}
 
-Fano 模型。哈密顿量 \(H=H_0+V\)，\(H_0|\phi\rangle=E_0|\phi\rangle\)（离散态），\(H_0|E\rangle=E|E\rangle\)（连续态），\(V\) 耦合离散与连续：\(V_\phi(E)=\langle\phi|V|E\rangle\)。Fano 假设 \(V_\phi(E)\) 在共振附近缓变（常数近似），自能 \(\Sigma(E)=\Delta(E)-i\Gamma(E)/2\)，\(\Gamma=2\pi|V_\phi(E_0)|^2\)（衰变率），\(\Delta=\mathcal P\int\frac{|V_\phi(E')|^2}{E_0-E'}\dd E'\)（能移）。
-
-Fano 线型。散射振幅 \(f(E)=\frac{q+\epsilon}{\epsilon+i}\)（\(\epsilon=(E-E_r)/(\Gamma/2)\)，\(E_r=E_0+\Delta\) 共振能，\(q\) 是 Fano 参数）。截面
-\begin{equation}
-  \sigma(E)=\sigma_0\frac{(q+\epsilon)^2}{1+\epsilon^2},
-  \label{eq:phys-rl-fano-profile}
-\end{equation}
-式 \eqnrefs{eq:phys-rl-fano-profile} 中，\(\sigma_0\) 是连续态背景截面。\(q\to\infty\) 给出 Lorentz（纯离散共振）；\(q=0\) 给出反共振（窗口共振，\(\sigma\propto\epsilon^2/(1+\epsilon^2)\)，共振处完全抑制）；一般 \(q\) 给出不对称线型。Fano 参数 \(q=-\frac{\mathcal P\int V_\phi(E')/(E_0-E')\dd E'}{\pi V_\phi(E_0)}\) 是离散态在连续态中的相位移——纯几何量。
-
-Feshbach 共振与磁场调控。在冷原子物理中，Feshbach 共振使散射长度随磁场变化为
+单态模型的宽度是一个非负数。若保留多个离散态 $|\phi_n\rangle$，同一个连续通道可能同时耦合它们，衰变就由矩阵控制。设连续态按
+$\langle E,\alpha|E',\beta\rangle=\delta_{\alpha\beta}\delta(E-E')$
+归一化，并记 $W_{\alpha n}(E)=\langle E,\alpha|V|\phi_n\rangle$。分块消元给出
 \[
-  a(B)=a_{\rm bg}\left(1-\frac{\Delta B}{B-B_0}\right),
+ \Sigma_{nm}(E+\ii0)
+ =\sum_\alpha\int\dd E'\,
+ \frac{W_{\alpha n}(E')^*W_{\alpha m}(E')}{E-E'+\ii0}
+ =\Delta_{nm}(E)-\frac\ii2\Gamma_{nm}(E).
 \]
-其中 \(a_{\rm bg}\) 是背景散射长度，\(B_0\) 是共振磁场，\(\Delta B\) 是共振宽度。开通道中的碰撞态与闭通道中的分子束缚态通过超精细相互作用混合；磁场改变 Zeeman 能移，使闭通道能级穿过开通道阈值。在 \(B=B_0\) 处，\(a\to\infty\)，散射达到幺正极限；随着磁场扫过 \(B_0\)，分子束缚态越过阈值而成为虚态。Feshbach 共振因此给了实验者一只连续调节相互作用强度的“旋钮”。
 
-多通道 Fano--Feshbach 理论。多通道散射中 Fano 共振的推广：开通道 \(\{|\chi_\alpha\rangle\}\) 和闭通道 \(\{|\phi_n\rangle\}\) 的耦合矩阵 \(W_{\alpha n}=\langle\chi_\alpha|V|\phi_n\rangle\)。多通道 Fano 参数 \(\boldsymbol q\) 是向量，截面是各开通道贡献的 Fano 线型叠加。共振位置由闭通道本征值（含自能修正）的零点给出，宽度由耦合矩阵的奇异值给出。多通道理论统一处理冷原子 Feshbach 共振（核-电子超精细耦合）、原子物理自电离共振（电子-连续态耦合）和核物理共振（复合核-散射态耦合），是共振物理的普适框架。
+\begin{proposition}[连续谱产生的宽度矩阵]
+在上述能量归一化下，
+\[
+ \Gamma(E)=2\pi W(E)^\dagger W(E)\succeq0.
+\]
+散射极点由 $\det[z-H_{PP}-\Sigma(z)]=0$ 决定；$\Gamma$ 的零空间只给出零直接衰变方向。若 $v\in\ker W(E)$ 同时受实有效哈密顿量 $H_{PP}+\Delta(E)$ 保持，才可能构成该能量处的稳定暗态。
+\end{proposition}
+\begin{proof}
+对每个矩阵元使用 Plemelj 公式，虚部为 $-\pi\sum_\alpha W_{\alpha n}^*W_{\alpha m}$，故得到 $\Gamma$。对任意系数向量 $v$，
+\[
+ v^\dagger\Gamma v=2\pi\sum_\alpha
+ \left|\sum_nW_{\alpha n}v_n\right|^2\ge0.
+\]
+若 $Wv=0$，该线性组合的直接连续谱耦合相消；若实有效哈密顿量再将它混到亮态中，它仍可间接衰变。因此零宽度方向与真正稳定的本征态须同时检查。多通道探针跃迁还需各通道背景与离散路径的振幅；不可只给每条通道一条互不干涉的标量 Fano 曲线。
+\end{proof}
+
+\begin{workedexample}[两条简并离散态耦合到同一连续通道]
+取 $H_{PP}=E_\phi I_2$，并令两态对所有连续谱能量都有相同实耦合 $W(E)=(v_E,v_E)$。求亮态、暗态与它们的衰变宽度。
+
+\textbf{解。}宽度和实自能都正比于全一矩阵：
+\[
+ \Gamma(E)=2\pi v_E^2\begin{pmatrix}1&1\\1&1\end{pmatrix},\qquad
+ \Delta(E)=\mathcal P\int\frac{v_{E'}^2}{E-E'}\dd E'
+                  \begin{pmatrix}1&1\\1&1\end{pmatrix}.
+\]
+共同本征向量为 $|B\rangle=(|\phi_1\rangle+|\phi_2\rangle)/\sqrt2$ 与
+$|D\rangle=(|\phi_1\rangle-|\phi_2\rangle)/\sqrt2$。前者耦合为 $\sqrt2v_E$，宽度为 $\Gamma_B=4\pi v_E^2$；后者对所有连续能量的耦合均为零，故 $\Gamma_D=0$、$\Delta_D=0$。
+
+$H_{PP}$ 也保持这两条方向，所以 $H|D\rangle=E_\phi|D\rangle$：即使 $E_\phi$ 位于连续谱中，它仍是可归一化的暗本征态。单条离散态的宽度为 $2\pi v_E^2$，亮态宽度正好加倍。若两个裸能量失去简并，$H_{PP}$ 在 $B,D$ 基中产生非对角元，暗态通常获得间接衰变通道。
+\end{workedexample}

@@ -223,66 +223,6 @@ D^\alpha(T*\rho_\varepsilon)
 =T*(D^\alpha\rho_\varepsilon).
 \]
 所以可以先在光滑层面完成积分分部、PDE 估计和极限，再回到分布。这是弱解理论中``先平滑、后估计、再取极限''的标准逻辑。
-奇异支集仍只记录位置，无法区分一个奇点沿哪些共变方向缺乏正则性。Fourier 变换提供了方向信息：若紧支分布 $u$ 实际上是 $C^\infty$ 函数，则其 Fourier 变换在任意方向都比任何幂更快衰减。反过来，某个锥形方向上缺乏快速衰减就意味着存在该方向的高频奇性。
-
-取 $x_0\in\RR^n$、$\xi_0\in\RR^n\setminus\{0\}$。若存在 $\chi\in C_c^\infty$，满足 $\chi(x_0)\neq0$，并存在包含 $\xi_0$ 的开锥 $\Gamma$，使对任意 $N\ge0$ 都存在 $C_N$ 满足
-\[
-\boxed{
-|\widehat{\chi T}(\xi)|
-\le C_N(1+|\xi|)^{-N},
-\qquad \xi\in\Gamma
-},
-\]
-则称 $T$ 在 $(x_0,\xi_0)$ 处 microlocally 光滑。所有不满足这一条件的点组成波前集
-\[
-\operatorname{WF}(T)
-\subset T^*\RR^n\setminus0.
-\]
-这里去掉零截面，是因为 $\xi=0$ 不代表高频方向。波前集在纤维变量中是锥形的：
-\[
-(x,\xi)\in\operatorname{WF}(T)
-\Longrightarrow
-(x,\lambda\xi)\in\operatorname{WF}(T),
-\qquad \lambda>0.
-\]
-并且把所有方向忘掉后正好恢复奇异支集：
-\[
-\boxed{
-\operatorname{singsupp}T
-=
-\pi\bigl(\operatorname{WF}(T)\bigr)
-},
-\]
-其中 $\pi:T^*\RR^n\to\RR^n$ 是余切丛投影。
-
-最简单的例子是 $\delta_0$。因为任取 $\chi(0)\neq0$，有
-\[
-\widehat{\chi\delta_0}(\xi)=\chi(0),
-\]
-在任何非零方向都不衰减，所以
-\[
-\operatorname{WF}(\delta_0)
-=\{(0,\xi):\xi\neq0\}.
-\]
-相比之下，对一维 Heaviside 分布，奇性仍位于 $x=0$，且两个非零共变方向都出现，因此
-\[
-\operatorname{WF}(H)
-=\{(0,\xi):\xi\neq0\}.
-\]
-高维曲面 $\delta$ 分布则更有信息：若 $\Sigma=\{x:F(x)=0\}$ 且 $\dd F\neq0$，则 $\delta(F)$ 的波前方向沿曲面的 conormal 丛，即只出现在法向余切方向，而不是任意切向方向。
-
-波前集最重要的用途之一是判断两个分布何时可以相乘。一般分布乘法并不存在；例如形式上写 $\delta^2$ 没有 正则 意义。Hörmander 的乘积判据给出一个精确充分条件：若不存在 $x$ 和非零 $\xi$ 使
-\[
-(x,\xi)\in\operatorname{WF}(u),
-\qquad
-(x,-\xi)\in\operatorname{WF}(v),
-\]
-则乘积 $uv$ 可以 正则 地定义为分布。直观上，两个因子的高频奇性不能在同一点以相反余切方向正面对撞；否则卷积型 Fourier 表达式会失去可控性。
-
-\begin{note}[为什么本章只建立最低 microlocal 框架]
-波前集真正强大的地方在于研究偏微分算子的奇性传播：椭圆算子不会制造新的波前方向，双曲算子则沿特征流传播奇性。完整理论需要 伪微分 算符、符号 演算 与 Hamilton 流。本书在这里先固定定义和乘积判据；后续若需要传播定理，再从这一母结构继续展开，而不把 microlocal analysis 退化成一张术语表。
-\end{note}
-
 \section{广义函数的基本运算}
 \label{sec:distribution-operations}
 
@@ -534,8 +474,6 @@ J(\mathbf u)=\det\frac{\partial\mathbf x}{\partial\mathbf u},
 
 这就是曲线坐标中 $\delta$ 函数必须带 Jacobian 的原因。
 
-分布还可以取原函数。若存在分布 $G$ 使
-
 另一个反复出现的对象是 Cauchy 主值分布。定义
 
 \begin{equation*}\boxed{
@@ -566,7 +504,9 @@ J(\mathbf u)=\det\frac{\partial\mathbf x}{\partial\mathbf u},
 =-\int_{-\infty}^{\infty}\ln|x|\,\phi'(x)\,\dd x.
 \]
 
-在 $(-\infty,-\varepsilon)$ 与 $(\varepsilon,\infty)$ 上分别分部积分后，边界的 $\ln\varepsilon$ 项正好相消，令 $\varepsilon\downarrow0$ 得
+在 $(-\infty,-\varepsilon)$ 与 $(\varepsilon,\infty)$ 上分别分部积分后，边界项为
+$\ln\varepsilon[\phi(-\varepsilon)-\phi(\varepsilon)]$。
+方括号是 $O(\varepsilon)$，故边界项随 $\varepsilon\downarrow0$ 趋零，而不是在有限 $\varepsilon$ 时精确相消。于是
 
 \[
 \boxed{(\ln|x|)'=\operatorname{pv}\frac1x}.
@@ -574,11 +514,36 @@ J(\mathbf u)=\det\frac{\partial\mathbf x}{\partial\mathbf u},
 
 这就是下面边界值公式中 $1/x$ 必须理解为主值分布的原因。
 
+分布还可以取原函数。若分布 $G$ 满足
+
 \[
 G'=F,
 \]
 
 就称 $G$ 为 $F$ 的一个原函数。它和普通不定积一样，只确定到一个常数分布。
+
+\begin{proposition}[实线上分布原函数的存在与唯一性]
+每个 $F\in\mathcal D'(\RR)$ 都存在 $G\in\mathcal D'(\RR)$ 满足 $G'=F$；两个原函数之差是常数分布。
+\end{proposition}
+\begin{proof}
+取固定 $\rho\in C_c^\infty(\RR)$，使 $\int\rho=1$。对任意检验函数 $\phi$，令
+\[
+P\phi(x)=\int_{-\infty}^x\left[\phi(t)-\rho(t)\int_{\RR}\phi(s)\,\dd s\right]\dd t.
+\]
+被积函数的总积分为零，所以 $P\phi$ 在两端都消失，仍为紧支光滑函数。
+若 $\phi$ 的支集位于固定紧集 $K$，$P\phi$ 的支集位于包含 $K\cup\operatorname{supp}\rho$ 的固定紧区间；各阶导数和函数值均由 $\phi$ 的有限半范数控制。
+因此 $P:\mathcal D\to\mathcal D$ 连续，可以定义 $\langle G,\phi\rangle=-\langle F,P\phi\rangle$。
+因为 $\int\phi'=0$ 且 $P(\phi')=\phi$，
+\[
+\langle G',\phi\rangle=-\langle G,\phi'\rangle
+=\langle F,P\phi'\rangle=\langle F,\phi\rangle.
+\]
+这就构造了一个原函数。
+若 $H'=0$，对积分为零的 $\phi$，函数 $\psi(x)=\int_{-\infty}^x\phi(t)\,\dd t$ 紧支，故
+$\langle H,\phi\rangle=\langle H,\psi'\rangle=-\langle H',\psi\rangle=0$。
+将一般 $\phi$ 分成 $\phi-\rho\int\phi$ 与 $\rho\int\phi$，得到
+$\langle H,\phi\rangle=\langle H,\rho\rangle\int\phi$，即 $H$ 是常数分布。
+\end{proof}
 
 边界值分布经常写成
 
@@ -617,7 +582,10 @@ T_j\to T\qquad\text{于 }\mathcal D'(\mathbb R^n).
 
 这种``弱作用意义''的收敛允许许多普通函数序列以 $\delta$ 或其导数为极限，也为下一节把 Fourier 变换扩充到缓增分布提供了自然语言。
 
-分布连续性的定量形式是后续估计中真正使用的版本。对每个紧集 $K\subset\RR^n$，若 $T\in\mathcal D'(\RR^n)$，则存在常数 $C_K>0$ 与非负整数 $m_K$，使所有满足 $\operatorname{supp}\phi\subset K$ 的检验函数都有
+分布连续性意味着，在每个固定紧集上，只需要控制有限阶导数就能控制分布的作用。
+
+\begin{proposition}[分布在固定紧集上的有限阶估计]
+对每个紧集 $K\subset\RR^n$ 与 $T\in\mathcal D'(\RR^n)$，存在常数 $C_K>0$ 与非负整数 $m_K$，使所有满足 $\operatorname{supp}\phi\subset K$ 的检验函数都有
 \begin{equation}
 |\langle T,\phi\rangle|
 \le
@@ -626,6 +594,17 @@ C_K
 \sup_{x\in K}|D^\alpha\phi(x)|.
 \label{eq:distribution-local-order-bound}
 \end{equation}
+\end{proposition}
+\begin{proof}
+若不存在这样的 $m_K,C_K$，则对每个整数 $j\ge1$，可以选 $\phi_j$ 支持在 $K$ 上，满足
+\[
+|\langle T,\phi_j\rangle|>j\max_{|\alpha|\le j}\sup_K|D^\alpha\phi_j|.
+\]
+除以其非零作用值，得到 $\psi_j=\phi_j/\langle T,\phi_j\rangle$。
+于是 $\langle T,\psi_j\rangle=1$，而每个固定阶数的导数在充分大的 $j$ 时不超过 $1/j$。
+所有支集都在 $K$ 内，所以 $\psi_j\to0$ 于 $\mathcal D$。
+连续性却要求 $\langle T,\psi_j\rangle\to0$，矛盾。
+\end{proof}
 这说明一个 分布 在每个固定紧集上只需要有限阶导数半范数就能控制；$m_K$ 称为该紧集上的一个阶数上界。若可以对所有紧集取同一个 $m$，才称 $T$ 具有全局有限阶。一般 分布 不必有统一的全局阶数。
 
 分布导数不会破坏这一结构。若\eqnrefs{eq:distribution-local-order-bound} 对某个 $m_K$ 成立，则
@@ -717,6 +696,10 @@ Fourier 变换首先在 Schwartz 空间上封闭；这一点来自多项式权�
 \]
 这一事实。它之所以重要，是因为缓增分布的 Fourier 变换正是靠这个闭性定义的。这里把证明中的核心估计写出来。
 
+\begin{proposition}[Fourier 积分保持 Schwartz 空间]
+正、逆 Fourier 积分都把 $\mathcal S(\RR^n)$ 连续映入自身。
+\end{proposition}
+\begin{proof}
 设 $\phi\in\mathcal S(\mathbb R^n)$。由于 $\phi$ 比任意幂次都快地衰减，$x^\beta\phi(x)$ 对任意多重指标 $\beta$ 都属于 $L^1(\mathbb R^n)$。因此可以在积分号下对 $k$ 求导：
 \[
 D_k^\beta\widehat\phi(k)
@@ -731,52 +714,7 @@ D_k^\beta\widehat\phi
 \label{eq:schwartz-fourier-derivative}
 \end{equation}
 
-\begin{proposition}[缓增分布的 Fourier 微分律]
-采用本章 Fourier 约定，对 $T\in\mathcal S'(\RR^n)$ 及多重指标 $\alpha$，$\mathcal F[D^\alpha T]=(\ii k)^\alpha\mathcal FT$，$\mathcal F[x^\alpha T]=\ii^{|\alpha|}D_k^\alpha\mathcal FT$。
-\end{proposition}
-\begin{proof}
-目标是由分布导数定义推出 tempered 分布上的 Fourier 微分律。设 $T\in\mathcal S'(\RR^n)$。按本章约定
-\[
-\langle\mathcal FT,\phi\rangle
-=\langle T,\mathcal F\phi\rangle.
-\]
-对任意 $\phi\in\mathcal S$，先计算
-\[
-D_x^\alpha\mathcal F\phi(x)
-=
-\mathcal F\bigl[(-\ii k)^\alpha\phi(k)\bigr](x).
-\]
-于是
-\[
-\begin{aligned}
-\langle\mathcal F[D^\alpha T],\phi\rangle
-&=\langle D^\alpha T,\mathcal F\phi\rangle\\
-&=(-1)^{|\alpha|}
-\langle T,D_x^\alpha\mathcal F\phi\rangle\\
-&=(-1)^{|\alpha|}
-\langle T,\mathcal F[(-\ii k)^\alpha\phi]\rangle\\
-&=\langle\mathcal FT,(\ii k)^\alpha\phi\rangle.
-\end{aligned}
-\]
-因此作为 tempered 分布，
-\begin{equation}
-\mathcal F[D^\alpha T]
-=(\ii k)^\alpha\mathcal FT.
-\label{eq:tempered-fourier-derivative}
-\end{equation}
-同理，由
-\[
-\mathcal F[k^\alpha\phi](x)
-=\ii^{|\alpha|}D_x^\alpha\mathcal F\phi(x)
-\]
-可得
-\begin{equation}
-\mathcal F[x^\alpha T]
-=\ii^{|\alpha|}D_k^\alpha\mathcal FT.
-\label{eq:tempered-fourier-multiplication}
-\end{equation}
-这两式即 Fourier 方法构造常系数 PDE 基本解的代数核心。
-\end{proof}
+
 
 所以 $\widehat\phi$ 无穷可微。
 
@@ -833,16 +771,83 @@ p_{\alpha\beta}(\widehat\phi)<\infty,
 \begin{equation*}\boxed{\widehat\phi\in\mathcal S(\mathbb R^n).}\end{equation*}
 而且上面的有限半范数估计同时证明了 $\mathcal F$ 在 Schwartz 拓扑下连续。
 
-对逆 Fourier 变换作完全相同的估计可知 $\mathcal F^{-1}$ 也连续地把 $\mathcal S$ 映到自身。结合后面用 Gaussian 核证明的 Fourier 反演，就得到
+把相位的负号换成正号，完全相同的有限半范数估计也适用于逆 Fourier 积分。
+\end{proof}
+
+\begin{theorem}[Schwartz 函数的 Fourier 反演]
+对 $f\in\mathcal S(\RR^n)$，采用本章对称归一化，
+\[
+f(x)=(2\pi)^{-n/2}\int_{\RR^n}\widehat f(k)e^{\ii k\cdot x}\,\dd^n k.
+\]
+\end{theorem}
+\begin{proof}
+直接把 Fourier 定义代回反演式会遇到振荡积分
+\[
+\int_{\mathbb R^n}\ee^{\ii k\cdot(x-y)}\,\dd^n k,
+\]
+它不能作为普通 Lebesgue 积分理解。一个稳妥办法是先加入高斯因子，再令正则化参数趋于零。对 $\epsilon>0$ 定义
+\[
+I_\epsilon(x)
+=\frac1{(2\pi)^{n/2}}
+\int_{\mathbb R^n}
+\widehat f(k)\ee^{\ii k\cdot x}\ee^{-\epsilon|k|^2/2}\,\dd^n k.
+\]
+把 $\widehat f$ 的定义代入，并利用 Schwartz 衰减交换积分次序，得到
+\[
+\begin{aligned}
+I_\epsilon(x)
+&=\frac1{(2\pi)^n}
+\int_{\mathbb R^n}\!\int_{\mathbb R^n}
+ f(y)\ee^{\ii k\cdot(x-y)}\ee^{-\epsilon|k|^2/2}
+\,\dd^n y\,\dd^n k\\
+&=\int_{\mathbb R^n}f(y)G_\epsilon(x-y)\,\dd^n y,
+\end{aligned}
+\]
+其中内层高斯积分给出
+\begin{equation*}G_\epsilon(z)
+=\frac1{(2\pi\epsilon)^{n/2}}
+\exp\!\left(-\frac{|z|^2}{2\epsilon}\right).\end{equation*}
+注意
+\[
+G_\epsilon\ge0,
+\qquad
+\int_{\mathbb R^n}G_\epsilon(z)\,\dd^n z=1,
+\]
+并且任意固定 $\delta>0$ 都有
+\[
+\int_{|z|>\delta}G_\epsilon(z)\,\dd^n z\longrightarrow0,
+\qquad \epsilon\downarrow0.
+\]
+因此 $G_\epsilon$ 是逼近恒等。把积分写成
+\[
+I_\epsilon(x)-f(x)
+=\int G_\epsilon(z)\,[f(x-z)-f(x)]\,\dd^n z,
+\]
+在 $|z|<\delta$ 与 $|z|\ge\delta$ 两部分分别利用 $f$ 的一致连续性和高斯尾部衰减，就得到
+\[
+I_\epsilon(x)\longrightarrow f(x).
+\]
+另一方面，$\ee^{-\epsilon|k|^2/2}\to1$，而 $\widehat f\in\mathcal S\subset L^1$，支配收敛定理又给出
+\[
+I_\epsilon(x)
+\longrightarrow
+\frac1{(2\pi)^{n/2}}
+\int\widehat f(k)\ee^{\ii k\cdot x}\,\dd^n k.
+\]
+比较两个极限便得到 Fourier 反演公式。这里的逻辑很重要：所谓
+\[
+\frac1{(2\pi)^n}\int \ee^{\ii k\cdot(x-y)}\,\dd^n k
+=\delta(x-y)
+\]
+并不是先验的普通积分恒等式，而正可以理解为上述高斯正则化极限的分布写法。
+
+\end{proof}
+
+对逆 Fourier 变换作完全相同的估计可知 $\mathcal F^{-1}$ 也连续地把 $\mathcal S$ 映到自身。结合刚证明的 Fourier 反演，就得到
 \[
 \mathcal F:\mathcal S\longrightarrow\mathcal S
 \]
-是拓扑线性同构。于是对 $T\in\mathcal S'$ 定义
-\[
-\langle\mathcal FT,\phi\rangle
-=\langle T,\mathcal F\phi\rangle
-\]
-时，右端始终有意义；这正是缓增分布 Fourier 理论成立的关键。
+是拓扑线性同构。这使正、逆 Fourier 积分都能作用于同一类检验函数，因而可以继续在它的连续对偶上定义变换。
 
 Schwartz 空间的连续线性泛函称为缓增广义函数，记为
 
@@ -878,6 +883,61 @@ Schwartz 空间的连续线性泛函称为缓增广义函数，记为
 \qquad
 \mathcal F[\delta(x)]=\frac1{(2\pi)^{n/2}}.
 \]
+
+\begin{proposition}[缓增分布的 Fourier 微分律]
+采用本章 Fourier 约定，对 $T\in\mathcal S'(\RR^n)$ 及多重指标 $\alpha$，$\mathcal F[D^\alpha T]=(\ii k)^\alpha\mathcal FT$，$\mathcal F[x^\alpha T]=\ii^{|\alpha|}D_k^\alpha\mathcal FT$。
+\end{proposition}
+\begin{proof}
+将导数转移到检验函数后，再把 Fourier 积分中的相位导数写成乘法，就能推出微分律。对 $T\in\mathcal S'(\RR^n)$，按本章约定
+\[
+\langle\mathcal FT,\phi\rangle
+=\langle T,\mathcal F\phi\rangle.
+\]
+对任意 $\phi\in\mathcal S$，先计算
+\[
+D_x^\alpha\mathcal F\phi(x)
+=
+\mathcal F\bigl[(-\ii k)^\alpha\phi(k)\bigr](x).
+\]
+于是
+\[
+\begin{aligned}
+\langle\mathcal F[D^\alpha T],\phi\rangle
+&=\langle D^\alpha T,\mathcal F\phi\rangle\\
+&=(-1)^{|\alpha|}
+\langle T,D_x^\alpha\mathcal F\phi\rangle\\
+&=(-1)^{|\alpha|}
+\langle T,\mathcal F[(-\ii k)^\alpha\phi]\rangle\\
+&=\langle\mathcal FT,(\ii k)^\alpha\phi\rangle.
+\end{aligned}
+\]
+因此作为缓增分布，
+\begin{equation}
+\mathcal F[D^\alpha T]
+=(\ii k)^\alpha\mathcal FT.
+\label{eq:tempered-fourier-derivative}
+\end{equation}
+乘法律也可直接检验。先取一个坐标 $j$，分部积分给
+\[
+\mathcal F[\partial_{k_j}\phi](x)=\ii x_j\mathcal F\phi(x).
+\]
+因此 $x_j\mathcal F\phi=-\ii\mathcal F[\partial_{k_j}\phi]$，代入对偶定义得
+\[
+\begin{aligned}
+\langle\mathcal F[x_jT],\phi\rangle
+&=\langle T,x_j\mathcal F\phi\rangle
+=-\ii\langle\mathcal FT,\partial_{k_j}\phi\rangle\\
+&=\langle\ii\partial_{k_j}\mathcal FT,\phi\rangle.
+\end{aligned}
+\]
+对各坐标反复应用这条恒等式，得到
+\begin{equation}
+\mathcal F[x^\alpha T]
+=\ii^{|\alpha|}D_k^\alpha\mathcal FT.
+\label{eq:tempered-fourier-multiplication}
+\end{equation}
+这两式即 Fourier 方法构造常系数 PDE 基本解的代数核心。
+\end{proof}
 
 平移、调制与缩放为
 
@@ -958,81 +1018,22 @@ Schwartz 衰减保证可以交换积分次序，而内层积分正是
 
 在固定规范后，Fourier 反演、卷积与不确定性关系可以从同一组积分恒等式逐步推出。
 
-前面已经给出了 Fourier 反演与 Plancherel 关系。这里再把两件常被公式化记忆、却很容易混淆归一化常数的事情完整算一遍：第一，为什么反演积分确实回到原函数；第二，位置宽度与波数宽度为什么不能同时任意小。先取 $f\in\mathcal S(\mathbb R^n)$，最后再利用稠密性进入 $L^2$。
+反演已固定了 Fourier 归一化。卷积中的常数也应由同一约定计算，而不能照抄另一种归一化下的公式。
 
-直接把 Fourier 定义代回反演式会遇到振荡积分
-\[
-\int_{\mathbb R^n}\ee^{\ii k\cdot(x-y)}\,\dd^n k,
-\]
-它不能作为普通 Lebesgue 积分理解。一个稳妥办法是先加入高斯因子，再令正则化参数趋于零。对 $\epsilon>0$ 定义
-\[
-I_\epsilon(x)
-=\frac1{(2\pi)^{n/2}}
-\int_{\mathbb R^n}
-\widehat f(k)\ee^{\ii k\cdot x}\ee^{-\epsilon|k|^2/2}\,\dd^n k.
-\]
-把 $\widehat f$ 的定义代入，并利用 Schwartz 衰减交换积分次序，得到
-\[
-\begin{aligned}
-I_\epsilon(x)
-&=\frac1{(2\pi)^n}
-\int_{\mathbb R^n}\!\int_{\mathbb R^n}
- f(y)\ee^{\ii k\cdot(x-y)}\ee^{-\epsilon|k|^2/2}
-\,\dd^n y\,\dd^n k\\
-&=\int_{\mathbb R^n}f(y)G_\epsilon(x-y)\,\dd^n y,
-\end{aligned}
-\]
-其中内层高斯积分给出
-\begin{equation*}G_\epsilon(z)
-=\frac1{(2\pi\epsilon)^{n/2}}
-\exp\!\left(-\frac{|z|^2}{2\epsilon}\right).\end{equation*}
-注意
-\[
-G_\epsilon\ge0,
-\qquad
-\int_{\mathbb R^n}G_\epsilon(z)\,\dd^n z=1,
-\]
-并且任意固定 $\delta>0$ 都有
-\[
-\int_{|z|>\delta}G_\epsilon(z)\,\dd^n z\longrightarrow0,
-\qquad \epsilon\downarrow0.
-\]
-因此 $G_\epsilon$ 是逼近恒等。把积分写成
-\[
-I_\epsilon(x)-f(x)
-=\int G_\epsilon(z)\,[f(x-z)-f(x)]\,\dd^n z,
-\]
-在 $|z|<\delta$ 与 $|z|\ge\delta$ 两部分分别利用 $f$ 的一致连续性和高斯尾部衰减，就得到
-\[
-I_\epsilon(x)\longrightarrow f(x).
-\]
-另一方面，$\ee^{-\epsilon|k|^2/2}\to1$，而 $\widehat f\in\mathcal S\subset L^1$，支配收敛定理又给出
-\[
-I_\epsilon(x)
-\longrightarrow
-\frac1{(2\pi)^{n/2}}
-\int\widehat f(k)\ee^{\ii k\cdot x}\,\dd^n k.
-\]
-比较两个极限便得到 Fourier 反演公式。这里的逻辑很重要：所谓
-\[
-\frac1{(2\pi)^n}\int \ee^{\ii k\cdot(x-y)}\,\dd^n k
-=\delta(x-y)
-\]
-并不是先验的普通积分恒等式，而正可以理解为上述高斯正则化极限的分布写法。
-
-同样的正则化也能把卷积定理中的归一化常数固定下来。本讲义定义
+对 $f,g\in\mathcal S$，定义普通卷积
 \[
 (f*g)(x)
-=\frac1{(2\pi)^{n/2}}
-\int_{\mathbb R^n}f(y)g(x-y)\,\dd^n y.
+=\int_{\mathbb R^n}f(y)g(x-y)\,\dd^n y.
 \]
+这样 $\delta_0*f=f$，基本解与源的卷积不需要额外常数。
+对称 Fourier 归一化的常数则出现在卷积定理中。
 于是
 \[
 \begin{aligned}
 \widehat{f*g}(k)
 &=\frac1{(2\pi)^{n/2}}
  \int \ee^{-\ii k\cdot x}(f*g)(x)\,\dd^n x\\
-&=\frac1{(2\pi)^n}
+&=\frac1{(2\pi)^{n/2}}
  \int\!\int \ee^{-\ii k\cdot x}f(y)g(x-y)
  \,\dd^n y\,\dd^n x.
 \end{aligned}
@@ -1041,7 +1042,7 @@ I_\epsilon(x)
 \[
 \begin{aligned}
 \widehat{f*g}(k)
-&=\left[
+&=(2\pi)^{n/2}\left[
 \frac1{(2\pi)^{n/2}}
 \int f(y)\ee^{-\ii k\cdot y}\,\dd^n y
 \right]
@@ -1049,12 +1050,12 @@ I_\epsilon(x)
 \frac1{(2\pi)^{n/2}}
 \int g(z)\ee^{-\ii k\cdot z}\,\dd^n z
 \right]\\
-&=\widehat f(k)\widehat g(k).
+&=(2\pi)^{n/2}\widehat f(k)\widehat g(k).
 \end{aligned}
 \]
 反过来，由反演公式可得
 \[
-\mathcal F^{-1}[\widehat f\,\widehat g]=f*g.
+\mathcal F^{-1}[\widehat f\,\widehat g]=(2\pi)^{-n/2}(f*g).
 \]
 这正是常系数线性方程中``Fourier 空间乘法''与``实空间 Green 卷积''互相转换的根源。
 
@@ -1167,6 +1168,71 @@ f(x)=C
 \]
 更一般地，对任意两个自伴算符 $A,B$，同一套 Hilbert 空间论证会导出 Robertson 不确定关系；这里 Fourier 情形的特殊之处在于 $x$ 与 $-\ii\partial_x$ 恰好通过 Fourier 变换互相对角化。
 
+\subsection{用 Fourier 衰减辨认奇性方向}
+
+奇异支集仍只记录位置，无法区分一个奇点沿哪些共变方向缺乏正则性。Fourier 变换提供了方向信息：若紧支分布 $u$ 实际上是 $C^\infty$ 函数，则其 Fourier 变换在任意方向都比任何幂更快衰减。反过来，某个锥形方向上缺乏快速衰减就意味着存在该方向的高频奇性。
+
+取 $x_0\in\RR^n$、$\xi_0\in\RR^n\setminus\{0\}$。若存在 $\chi\in C_c^\infty$，满足 $\chi(x_0)\neq0$，并存在包含 $\xi_0$ 的开锥 $\Gamma$，使对任意 $N\ge0$ 都存在 $C_N$ 满足
+\[
+\boxed{
+|\widehat{\chi T}(\xi)|
+\le C_N(1+|\xi|)^{-N},
+\qquad \xi\in\Gamma
+},
+\]
+则称 $T$ 在 $(x_0,\xi_0)$ 处微局部光滑。所有不满足这一条件的点组成波前集
+\[
+\operatorname{WF}(T)
+\subset T^*\RR^n\setminus0.
+\]
+这里去掉零截面，是因为 $\xi=0$ 不代表高频方向。波前集在纤维变量中是锥形的：
+\[
+(x,\xi)\in\operatorname{WF}(T)
+\Longrightarrow
+(x,\lambda\xi)\in\operatorname{WF}(T),
+\qquad \lambda>0.
+\]
+并且把所有方向忘掉后正好恢复奇异支集：
+\[
+\boxed{
+\operatorname{singsupp}T
+=
+\pi\bigl(\operatorname{WF}(T)\bigr)
+},
+\]
+其中 $\pi:T^*\RR^n\to\RR^n$ 是余切丛投影。
+
+最简单的例子是 $\delta_0$。因为任取 $\chi(0)\neq0$，有
+\[
+\widehat{\chi\delta_0}(\xi)=(2\pi)^{-n/2}\chi(0),
+\]
+在任何非零方向都不衰减，所以
+\[
+\operatorname{WF}(\delta_0)
+=\{(0,\xi):\xi\neq0\}.
+\]
+相比之下，对一维 Heaviside 分布，奇性仍位于 $x=0$，且两个非零共变方向都出现，因此
+\[
+\operatorname{WF}(H)
+=\{(0,\xi):\xi\neq0\}.
+\]
+高维曲面 $\delta$ 分布则更有信息：若 $\Sigma=\{x:F(x)=0\}$ 且 $\dd F\neq0$，则 $\delta(F)$ 的波前方向沿曲面的 conormal 丛，即只出现在法向余切方向，而不是任意切向方向。
+
+波前集最重要的用途之一是判断两个分布何时可以相乘。一般分布乘法并不存在；例如形式上写 $\delta^2$ 没有 正则 意义。Hörmander 的乘积判据给出一个精确充分条件：若不存在 $x$ 和非零 $\xi$ 使
+\[
+(x,\xi)\in\operatorname{WF}(u),
+\qquad
+(x,-\xi)\in\operatorname{WF}(v),
+\]
+则乘积 $uv$ 可以 正则 地定义为分布。直观上，两个因子的高频奇性不能在同一点以相反余切方向正面对撞；否则卷积型 Fourier 表达式会失去可控性。
+
+\begin{note}[波前集与奇性传播的区别]
+波前集记录分布在何处、沿何方向缺乏快速 Fourier 衰减。
+要进一步判断一个微分方程怎样移动这些方向，还需要算子的主符号、特征集合和相应的 Hamilton 流。
+上述定义与乘积判据本身不包含双曲方程的奇性传播定理。
+\end{note}
+
+\subsection{Fourier 权重与 Sobolev 正则性}
 Plancherel 定理还提供了从 Fourier 空间定义 Sobolev 正则性的最直接方式。对任意实数 $s$，定义 Bessel-势 Sobolev 空间
 \begin{equation*}H^s(\RR^n)
 :=\left\{u\in\mathcal S'(\RR^n):
@@ -1247,7 +1313,23 @@ Plancherel 给出
 
 这里 $D^\alpha u$ 按分布导数理解。这个等价性是“广义函数”与“能量空间”真正接上的位置，而不是两个独立定义的巧合。
 
-例：$H^1(\RR)$ 与 $W^{1,2}(\RR)$。对 $u\in H^1(\RR)$，Plancherel 给出 $\|u\|_{H^1}^2=\int(1+k^2)|\widehat u(k)|^2\,\dd k=\|u\|_{L^2}^2+\|u'\|_{L^2}^2$，即 $H^1$ 范数恰是 $L^2$ 范数与导数 $L^2$ 范数的平方和；$u(x)=\ee^{-|x|}$ 时 $\widehat u(k)=2/(1+k^2)$，故 $u\in H^1$ 但 $u\notin H^2$。量子力学中，$H^1(\RR^3)$ 是氢原子 Hamiltonian 的形式域，$\psi\in H^1$ 保证动能 $\int|\nabla\psi|^2$ 有限；Sobolev 嵌入 $H^1(\RR^3)\hookrightarrow L^6(\RR^3)$ 则给出 Hartree 非线性项 $\int|\psi|^4$ 的良定义性，这是多体 Schrödinger 方程能谱分析的基础。
+\begin{workedexample}[尖点函数属于哪一阶能量空间]
+对 $u(x)=e^{-|x|}$ 求 Fourier 变换，并判断它是否属于 $H^1(\RR)$ 与 $H^2(\RR)$。
+
+\textbf{解。} 将积分拆成两个半轴，得到
+\[
+\widehat u(k)=\frac1{\sqrt{2\pi}}
+\left(\frac1{1+\ii k}+\frac1{1-\ii k}\right)
+=\sqrt{\frac2\pi}\frac1{1+k^2}.
+\]
+因此 $(1+k^2)|\widehat u|^2$ 可积，而 $(1+k^2)^2|\widehat u|^2=2/\pi$ 不可积，故 $u\in H^1$、$u\notin H^2$。
+在实空间也能检查：$u'=-\operatorname{sgn}(x)e^{-|x|}$ 平方可积，但 $u'$ 在零点跳跃 $-2$，所以 $u''=u-2\delta_0$ 不是 $L^2$ 函数。
+其 $H^1$ 范数满足 $\|u\|_{H^1}^2=\|u\|_2^2+\|u'\|_2^2=2$。
+\end{workedexample}
+
+对波函数而言，$H^1$ 正则性保证动能积分 $\int|\nabla\psi|^2$ 有限。
+在三维，Sobolev 嵌入给 $\psi\in L^6$，再与 $L^2$ 插值得到 $\psi\in L^4$，因而局域四次项 $\int|\psi|^4$ 有限。
+非局域 Hartree 能量还含相互作用核，不能仅用这个四次积分替代。
 
 Fourier 权重还直接给出最基本的 Sobolev 嵌入。若
 \[
@@ -1303,18 +1385,6 @@ I-\Delta.
 \begin{equation*}\|u\|_{H^{s+m}}
 \le C\bigl(\|P(D)u\|_{H^s}+\|u\|_{H^s}\bigr).\end{equation*}
 低频处附加的 $\|u\|_{H^s}$ 正是可能存在 核 或小频退化时必须保留的项。变系数椭圆理论把这条 Fourier 估计局部化，并用 对易子 与 划分 of unity 控制误差；\chapref{chap:nonlinear-pde} 中的能量估计正是在这一分析接口之上继续发展。
-本讲义取
-
-\[
-(f*g)(x)=\frac1{(2\pi)^{n/2}}\int_{\mathbb R^n}f(y)g(x-y)\,\dd^n y.
-\]
-
-在这个归一化下
-
-\[
-\mathcal F[f*g]=\widehat f\,\widehat g.
-\]
-
 对分布，卷积并非总有定义。一个常用充分条件是：两个分布中至少有一个具有紧支集。此时卷积可通过张量积分严格定义。
 
 \section{奇异核、基本解与逼近恒等}
@@ -1322,7 +1392,7 @@ I-\Delta.
 \begin{workedexample}[二维 Poisson 方程的点源常数]
 在 \(\mathbb R^2\) 令 \(E(x)=-(2\pi)^{-1}\log|x|\)。验证它在原点以外满足 \(\Delta E=0\)，并求围绕原点的小圆的外法向通量。
 
-\textbf{解.} 对径向函数，\(\Delta E=E''(r)+r^{-1}E'(r)\)。由于 \(E'(r)=-(2\pi r)^{-1}\)、\(E''(r)=(2\pi r^2)^{-1}\)，两项在 \(r>0\) 处抵消。半径为 \(\varepsilon\) 的圆长为 \(2\pi\varepsilon\)，故
+\textbf{解。} 对径向函数，\(\Delta E=E''(r)+r^{-1}E'(r)\)。由于 \(E'(r)=-(2\pi r)^{-1}\)、\(E''(r)=(2\pi r^2)^{-1}\)，两项在 \(r>0\) 处抵消。半径为 \(\varepsilon\) 的圆长为 \(2\pi\varepsilon\)，故
 \[
 -\int_{|x|=\varepsilon}\partial_rE\dd s
 =\frac1{2\pi\varepsilon}(2\pi\varepsilon)=1.
@@ -1582,285 +1652,270 @@ u(x)=\int_\Omega G(x,y)f(y)\,\dd y
 \]
 是 $Lu=f$ 的解。若 $L$ 有零模，则这个逆不再存在于整个空间上，此时必须像 Fredholm 择一 那样加入与伴随零模正交的可解条件。\chapref{chap:integral-equations}会从积分算符角度重新得到同一结论。
 
-从全空间常系数基本解继续向变系数问题推进时，普通 Fourier 乘子 已经不够。真正需要的是“允许 乘子 同时依赖位置”的伪微分算子。它把前面的 Sobolev 权重、波前 集合 与椭圆正则性统一到同一套 符号 演算 中。
+从常系数方程转向变系数方程时，单一 Fourier 乘子不能描述不同位置的响应。让乘子同时依赖位置，可以把系数变化与高频增长分开记录。以下先在欧氏坐标中建立这种算子，再用局部截断把结论用于区域内部。
 
-设
+\begin{definition}[符号与伪微分算子]
+记 $\langle\xi\rangle=(1+|\xi|^2)^{1/2}$。实数 $m$ 阶符号类 $S^m_{1,0}$ 由满足
 \[
-\langle\xi\rangle=(1+|\xi|^2)^{1/2}.
-\]
-对实数 $m$，Kohn--Nirenberg 符号类 $S^m_{1,0}(\RR^n_x\times\RR^n_\xi)$ 由所有光滑函数 $a(x,\xi)$ 组成，并满足对任意 multi-指标 $\alpha,\beta$ 都存在 $C_{\alpha\beta}$ 使
-\begin{equation*}\boxed{
 |\partial_x^\alpha\partial_\xi^\beta a(x,\xi)|
-\le C_{\alpha\beta}\langle\xi\rangle^{m-|\beta|}.
-}\end{equation*}
-$x$-导数不降低阶数，而每作一次 $\xi$-导数都降低一个高频阶数。这正是“局部系数变化不改变微分阶，而频率微分会削弱高频增长”的量化版本。
-
-给定 $a\in S^m_{1,0}$，定义伪微分算子
-\begin{equation*}\boxed{
+\le C_{\alpha\beta}\langle\xi\rangle^{m-|\beta|}
+\]
+的光滑函数组成，其中 $\alpha,\beta$ 为多重指标，常数对 $x,\xi$ 一致。区域上的局部符号只要求该估计在每个紧的 $x$ 集合上一致。
+Kohn--Nirenberg 量子化定义为
+\[
 \operatorname{Op}(a)u(x)
-=\frac1{(2\pi)^n}
-\iint
+=\frac1{(2\pi)^n}\iint
+\ee^{\ii(x-y)\cdot\xi}a(x,\xi)u(y)\,\dd y\,\dd\xi.
+\]
+该式先作用于 Schwartz 函数；积分可加光滑频率截断，再按分布极限解释。用 $\Psi^m_{1,0}$ 表示相应算子类。若核的支集向两个位置变量的投影都是适当映射，即每个紧集的逆像仍紧，则称算子适当支撑。
+\end{definition}
+
+适当支撑保证一个紧区域内的输出只依赖某个紧区域内的输入，使算子能作用于任意分布。符号核在 $x\ne y$ 处光滑：在振荡积分中反复用
+\[
 \ee^{\ii(x-y)\cdot\xi}
-a(x,\xi)u(y)
-\,\dd^ny\,\dd^n\xi.
-}\end{equation*}
-对 Schwartz 函数该式可先按振荡积分理解。若 $a$ 与 $x$ 无关，就退化为 Fourier 乘子；若
-\[
-a(x,\xi)=\sum_{|\alpha|\le m}a_\alpha(x)(\ii\xi)^\alpha,
+=\frac{(x-y)\cdot\partial_\xi}{\ii|x-y|^2}
+\ee^{\ii(x-y)\cdot\xi}
 \]
-则 $\operatorname{Op}(a)$ 正是普通微分算子
-\[
-P(x,D)=\sum_{|\alpha|\le m}a_\alpha(x)D^\alpha.
-\]
-因此 differential 算符 只是 符号 在 $\xi$ 上为多项式的特殊伪微分算子。
+分部积分，每次都降低一个频率阶数。因而把核乘以在对角线附近等于 $1$ 的适当支撑截断，只改变一个局部光滑核。以下局部符号等式允许这一光滑核误差；全空间乘子在 Schwartz 空间上的等式则可直接使用原量子化。
 
-若两个 $m$ 阶符号之差属于 $S^{m-1}$，它们具有相同 主符号。于是 主符号 应理解为商类
-\begin{equation*}\sigma_m(P)\in S^m/S^{m-1},\end{equation*}
-而不是依赖某个低阶写法的具体函数。对微分算子，上式正恢复最高阶齐次多项式
+本章已经把 $D^\alpha$ 定义为普通偏导 $\partial_x^\alpha$，所以
 \[
-p_m(x,\xi)
-=\sum_{|\alpha|=m}a_\alpha(x)(\ii\xi)^\alpha.
+P=\sum_{|\alpha|\le m}a_\alpha(x)\partial_x^\alpha,
+\qquad p(x,\xi)=\sum_{|\alpha|\le m}a_\alpha(x)(\ii\xi)^\alpha.
 \]
-高频极限只看 主符号，这正是椭圆性、特征集与奇性传播全部由最高阶部分控制的原因。
+这两个式子确实对应：偏导作用于 $\ee^{\ii x\cdot\xi}$ 时提出 $\ii\xi$。特别地，$-\Delta$ 的符号为 $|\xi|^2$。下文写 $\partial$ 表示位置偏导，不另把 $D$ 改成 $\partial/\ii$。
 
-伪微分算子的第一条基本映射性质是
-\begin{equation*}\boxed{
-P\in\Psi^m
-\quad\Longrightarrow\quad
-P:H^s_{\mathrm{comp}}
-\longrightarrow H^{s-m}_{\mathrm{loc}}
-}\end{equation*}
-在 真-支集 或适当局部化条件下连续。$m>0$ 的算子损失 $m$ 阶 Sobolev 正则性，$m<0$ 的算子则获得 $|m|$ 阶正则性；$S^{-\infty}:=\cap_mS^m$ 对应 光滑化 算符，把任意 分布 局部送到 $C^\infty$。
-
-更重要的是 符号 演算 对复合封闭。若
+\begin{definition}[主符号与椭圆方向]
+一般 $m$ 阶算子的主符号是商类
 \[
-A=\operatorname{Op}(a),
-\qquad
-B=\operatorname{Op}(b),
+\sigma_m(P)\in S^m_{1,0}/S^{m-1}_{1,0}.
 \]
-则 $AB=\operatorname{Op}(a\# b)$，其中有渐近展开
-\begin{equation}
-\boxed{
-a\# b
-\sim
-\sum_{\alpha}
-\frac{1}{\alpha!}\left(\frac1\ii\right)^{|\alpha|}
-(\partial_\xi^\alpha a)
-(\partial_x^\alpha b).
-}
-\label{eq:math-dist-symbol-composition}
-\end{equation}
+若符号还具有逐阶齐次展开 $p\sim p_m+p_{m-1}+\cdots$，其中 $p_{m-j}(x,t\xi)=t^{m-j}p_{m-j}(x,\xi)$ 对大频率和 $t\ge1$ 成立，则称其为经典符号，此时可用领头齐次函数 $p_m$ 表示主符号。
+对一般符号，称 $(x_0,\xi_0)$ 为椭圆方向，是指存在 $x_0$ 的邻域、$\xi_0$ 的锥邻域及 $c,R>0$，使
+\[
+|p(x,\xi)|\ge c\langle\xi\rangle^m\qquad(|\xi|\ge R)
+\]
+在该区域成立。非椭圆方向组成特征集 $\operatorname{Char}(P)$。
+\end{definition}
+
+这个定义不依赖低一阶符号的改动，因为该改动相对于 $\langle\xi\rangle^m$ 趋于零。对经典标量符号，非椭圆方向恰为 $p_m=0$；一般 $S^m_{1,0}$ 符号未必存在齐次领头函数，须保留上述高频下界的定义。对微分算子，$p_m=\sum_{|\alpha|=m}a_\alpha(x)(\ii\xi)^\alpha$ 正是熟悉的最高阶多项式。
+
+算子复合时，位置依赖使符号不能直接相乘。下面的修正项量化了这个影响。
 
 \begin{proposition}[伪微分算子的复合符号]
-设 $a\in S^{m_1}_{1,0}$、$b\in S^{m_2}_{1,0}$，并使相应伪微分算子适当支撑。Kohn--Nirenberg 量子化下 $\operatorname{Op}(a)\operatorname{Op}(b)=\operatorname{Op}(c)$，其中 $c\sim\sum_\alpha\partial_\xi^\alpha a\,\partial_x^\alpha b/(\alpha!\,\ii^{|\alpha|})$；截到 $|\alpha|<N$ 的余项属于 $S^{m_1+m_2-N}_{1,0}$。
+设 $a\in S^{m_1}_{1,0}$、$b\in S^{m_2}_{1,0}$，相应算子适当支撑。局部复合符号 $c$ 满足，对每个正整数 $N$，
+\begin{equation}
+c-\sum_{|\alpha|<N}
+\frac{\partial_\xi^\alpha a\,\partial_x^\alpha b}
+{\alpha!\,\ii^{|\alpha|}}
+\in S^{m_1+m_2-N}_{1,0}.
+\label{eq:math-dist-symbol-composition}
+\end{equation}
+这里是逐阶余项估计，不要求无穷级数收敛。
 \end{proposition}
 \begin{proof}
-把两个算子的核相乘，复合算子的核为
-\begin{align*}
-ABu(x)
-={}&\frac1{(2\pi)^{2n}}
-\iiint\!\int
-\ee^{\ii(x-y)\cdot\xi}
-a(x,\xi)
-\ee^{\ii(y-z)\cdot\eta}
-b(y,\eta)u(z)
-\,\dd z\,\dd\eta\,\dd y\,\dd\xi.
-\end{align*}
-
-令 $\theta=\xi-\eta$（即 $\xi=\eta+\theta$）以分离快相位。总相位变为
+把两个核相乘，并令 $\theta=\xi-\eta$，总相位变为
 \[
-(x-y)\cdot(\eta+\theta)+(y-z)\cdot\eta
+(x-y)\cdot\xi+(y-z)\cdot\eta
 =(x-z)\cdot\eta+(x-y)\cdot\theta.
 \]
-这一步的意图是：$z$ 只出现在 $(x-z)\cdot\eta$ 里，$y$ 只出现在 $(x-y)\cdot\theta$ 里，两者解耦，为后续分别对 $z$、$y$ 积分做准备。
-
-因为 $\ee^{\ii(x-y)\cdot\theta}$ 对 $y$ 快振荡，$y$ 远离 $x$ 时正负相位相消（稳定相位原理），主导贡献来自 $y\approx x$，故把 $b(y,\eta)$ 在 $y=x$ 处展开：
+再写 $v=y-x$，得到复合符号的振荡积分
 \[
-b(y,\eta)
-\sim\sum_\alpha
-\frac{(y-x)^\alpha}{\alpha!}
-\partial_x^\alpha b(x,\eta).
+c(x,\eta)=\frac1{(2\pi)^n}
+\iint\ee^{-\ii v\cdot\theta}
+a(x,\eta+\theta)b(x+v,\eta)\,\dd v\,\dd\theta.
 \]
+核在对角线外光滑，所以在每个紧坐标区域可先把 $v$ 限制在固定紧集；去掉的部分只给光滑化算子。对 $a$ 使用带积分余项的有限 Taylor 公式：
+\begin{align*}
+a(x,\eta+\theta)
+={}&\sum_{|\alpha|<N}\frac{\theta^\alpha}{\alpha!}
+\partial_\eta^\alpha a(x,\eta)\\
+&+N\sum_{|\alpha|=N}\frac{\theta^\alpha}{\alpha!}
+\int_0^1(1-t)^{N-1}
+\partial_\eta^\alpha a(x,\eta+t\theta)\,\dd t.
+\end{align*}
+由 $\theta^\alpha\ee^{-\ii v\cdot\theta}=\ii^{|\alpha|}\partial_v^\alpha\ee^{-\ii v\cdot\theta}$，把位置导数分部积分移到 $b$ 上，每次产生一个负号。随后对 $\theta$ 的 Fourier 积分在 $v=0$ 取值，有限项便给出\eqnrefs{eq:math-dist-symbol-composition}的系数。截断函数在 $v=0$ 附近等于 $1$，其导数所产生的项均位于对角线外，仍为光滑化项。
 
-位置多项式乘上振荡指数可改写为对 $\theta$ 的导数：
+还须证明余项确实降阶。其各项除固定常数外具有形式
 \[
-(y-x)^\alpha\ee^{\ii(x-y)\cdot\theta}
-=\ii^{|\alpha|}
-\partial_\theta^\alpha
-\ee^{\ii(x-y)\cdot\theta},
+\int_0^1(1-t)^{N-1}\iint\ee^{-\ii v\cdot\theta}
+\partial_\eta^\alpha a(x,\eta+t\theta)
+\partial_x^\alpha b(x+v,\eta)\,\dd v\,\dd\theta\,\dd t,
+\qquad |\alpha|=N.
 \]
-因为 $\partial_\theta$ 每作用一次提出一个 $\ii(x-y)$ 因子。
-
-把 $\partial_\theta^\alpha$ 从指数上分部积分移到 $a(x,\eta+\theta)$ 上（先给振荡积分加光滑截断，再分部积分并去掉截断；每次分部积分产生一个负号）：
-\begin{equation*}
- \int a(x,\eta+\theta)\,\partial_\theta^\alpha \ee^{\ii(x-y)\cdot\theta}\,\dd\theta
- =(-1)^{|\alpha|}
- \int \partial_\theta^\alpha a(x,\eta+\theta)\,\ee^{\ii(x-y)\cdot\theta}\,\dd\theta.
-\end{equation*}
-
-对 $z$、$y$ 积分后令 $\theta=0$：对 $z$ 积分给出 $\hat u(\eta)$，对 $y$ 积分给出 $(2\pi)^n\delta(\theta)$，且 $\partial_\theta^\alpha a(x,\eta+\theta)|_{\theta=0}=\partial_\xi^\alpha a(x,\eta)$，于是
+在 $|\theta|\le\langle\eta\rangle/2$ 区域，$\langle\eta+t\theta\rangle$ 与 $\langle\eta\rangle$ 一致可比。对紧支集的 $v$ 振幅使用 $(1-\Delta_v)^L$ 分部积分，得到 $\langle\theta\rangle^{-2L}$，所以当 $2L>n$ 时该部分有界于 $C\langle\eta\rangle^{m_1+m_2-N}$。
+在补区域，记 $h=m_1-N$、$h_+=\max(h,0)$，用
 \[
-\sum_\alpha
-\frac1{\alpha!}
-\left(\frac1\ii\right)^{|\alpha|}
-\partial_\xi^\alpha a(x,\eta)
-\partial_x^\alpha b(x,\eta),
+\langle\eta+t\theta\rangle^h
+\le C\langle\eta\rangle^{h_+}\langle\theta\rangle^{h_+}.
 \]
-即式\eqnrefs{eq:math-dist-symbol-composition}。符号演算的本质，就是振荡相位把位置 Taylor 系数转成频率导数。
-
-取 $|\alpha|=1$，一阶修正为
+同样分部积分后，绝对值上界为
 \[
-\frac1\ii\sum_j \partial_{\xi_j}a\,\partial_{x^j}b,
+C\langle\eta\rangle^{m_2+h_+}
+\int_{|\theta|>\langle\eta\rangle/2}
+\langle\theta\rangle^{h_+-2L}\,\dd\theta
+\le C_L\langle\eta\rangle^{m_2+2h_++n-2L}.
 \]
-即算子复合的领头量子修正由「频率方向导数 × 位置方向导数」给出。这正是下一段交换子中 Poisson 括号\eqnrefs{eq:math-dist-commutator-poisson} 的来源：零阶项 $ab$ 在交换子 $AB-BA$ 中相消，剩下一阶项给出 $\frac1\ii\{a,b\}$。
-
-严谨的渐近意义来自带积分余项的有限 Taylor 公式，而非假设无穷 Taylor 级数收敛。截到 $|\alpha|<N$ 后，余项中的 $N$ 次 $\theta$ 导数落在 $a$ 上，将频率阶降低 $N$；在振荡积分中反复施加 $(1-\Delta_y)/(1+|\theta|^2)$ 和 $(1-\Delta_\theta)/(1+|x-y|^2)$ 后，积分绝对可控。对所有符号半范数同样估计，得到余项属于 $S^{m_1+m_2-N}_{1,0}$。
+选 $2L>2h_++n-h$ 即得到所需阶数。对余项作任意 $x,\eta$ 导数时，Leibniz 公式把它分成同类积分；每个 $\eta$ 导数总共降低一阶，重新选足够大的 $L$ 即得全部符号半范数估计。因此余项属于所述符号类。
 \end{proof}
 
-“渐近”表示截断到 $|\alpha|<N$ 后的余项降低 $N$ 个 符号 阶。零阶项只是 $ab$，因此
-\[
-\sigma_{m_1+m_2}(AB)
-=\sigma_{m_1}(A)\sigma_{m_2}(B).
-\]
-
-交换子的最高阶会自动消去，因为 $ab-ba=0$。若 $A\in\Psi^{m_1}$、$B\in\Psi^{m_2}$ 为标量算子，则
-\begin{equation*}[A,B]\in\Psi^{m_1+m_2-1},\end{equation*}
-而其 主符号 为
+零阶项为 $ab$，所以 $\sigma_{m_1+m_2}(AB)=\sigma_{m_1}(A)\sigma_{m_2}(B)$。对标量算子，交换子中的这一项相消，留下
 \begin{equation}
-\boxed{
 \sigma_{m_1+m_2-1}([A,B])
 =\frac1\ii\{a_{m_1},b_{m_2}\},
-}
 \label{eq:math-dist-commutator-poisson}
 \end{equation}
-其中
+其中写成齐次函数的形式适用于经典符号，且
 \[
-\{a,b\}
-=\sum_j
-\left(
-\partial_{\xi_j}a\,\partial_{x^j}b
--\partial_{x^j}a\,\partial_{\xi_j}b
-\right)
+\{a,b\}=\sum_j
+(\partial_{\xi_j}a\,\partial_{x^j}b
+-\partial_{x^j}a\,\partial_{\xi_j}b).
 \]
-是余切丛上的 正则 Poisson 括号。于是“量子交换子降低一阶并趋向 经典 Poisson 括号”并不是半经典理论里突然出现的类比，而已经内嵌在 寻常 伪微分 符号 演算 中。
+一般符号则把同一公式理解为 $S^{m_1+m_2-1}/S^{m_1+m_2-2}$ 中的等式。频率导数与位置导数共同决定了交换子降低的那一阶；矩阵符号的 $ab-ba$ 未必为零，不能套用标量结论。
 
-现在回到正则性。若 $P\in\Psi^m$ 的 主符号 $p_m(x,\xi)$ 在某个 conic 区域满足
-\begin{equation*}|p_m(x,\xi)|\ge c|\xi|^m
-\qquad(|\xi|\gg1),\end{equation*}
-就称 $P$ 在该区域 microlocally 椭圆。若处处满足，则称 椭圆。其 特征 集合 为
-\begin{equation*}\operatorname{Char}(P)
-:=\{(x,\xi)\in T^*M\setminus0:p_m(x,\xi)=0\}.\end{equation*}
-椭圆算子正是 $\operatorname{Char}(P)=\varnothing$ 的情形。
+要把这些代数式用于解的正则性，还需要算子在 Sobolev 空间上的连续性。
 
-椭圆性的核心不是一个不等式本身，而是可以逐阶构造 拟逆。先取
+\begin{proposition}[局部 Sobolev 映射]
+适当支撑的 $P\in\Psi^m_{1,0}$ 连续映射
 \[
-q_{-m}^{(0)}(x,\xi)
-=\frac{\chi(x,\xi)}{p_m(x,\xi)},
+P:H^s_{\mathrm{comp}}\longrightarrow H^{s-m}_{\mathrm{loc}}
+\qquad(s\in\RR).
 \]
-其中 $\chi$ 在目标 conic 区域的大频率处等于 $1$。则
-\[
-q_{-m}^{(0)}\# p=1+r_{-1},
-\qquad r_{-1}\in S^{-1}.
-\]
-继续递归选择 $q_{-m-j}$ 消去 $r$ 的每一阶，可得到 $q\in S^{-m}$ 使
-\begin{equation*}\boxed{
-QP=I-R,
-\qquad
-PQ=I-S,
-\qquad
-R,S\in\Psi^{-\infty}.
-}\end{equation*}
-这就是 拟逆：它未必是全局精确逆，但误差已经 光滑 到对 波前 集合 完全不可见。
-
-\begin{theorem}[拟逆与椭圆正则性]
-设 $P\in\Psi^m_{1,0}$ 在所论区域椭圆且适当支撑，$Pu=f$。则 $f\in H^s_{\mathrm{loc}}$ 蕴含 $u\in H^{s+m}_{\mathrm{loc}}$，特别地 $f$ 光滑时 $u$ 光滑。一般微局部椭圆区域上 $\operatorname{WF}(u)\setminus\operatorname{Char}(P)=\operatorname{WF}(Pu)\setminus\operatorname{Char}(P)$。
-\end{theorem}
+阶数为 $-\infty$ 的适当支撑算子把任意分布局部映成光滑函数。
+\end{proposition}
 \begin{proof}
-设 $Pu=f$。把 $QP=I-R$ 左作用于方程，得
-\begin{equation*}
-  QPu=QP u = (I-R)u = Qf,
-\end{equation*}
-移项即
-\begin{equation*}
-  u=Qf+Ru.
-\end{equation*}
-这把未知解 $u$ 拆成两项：$Qf$ 由已知数据 $f$ 经拟逆 $Q$ 决定，$Ru$ 是「光滑到不可见」的误差项。
-
-这里先在处处椭圆的情形取 $QP=I-R$，$R$ 光滑化；拟逆属于 $\Psi^{-m}_{1,0}$。局部 Sobolev 映射定理给出 $Q:H^s_{\mathrm{comp}}\to H^{s+m}_{\mathrm{loc}}$。若符号依赖 $x$，不能将 $\widehat{Qu}$ 写成单纯的 $q\widehat u$；必须用该映射定理以及截断后的交换子控制。对频率乘子特例，估计 $\langle\xi\rangle^{s+m}|q(\xi)\widehat u(\xi)|\le C\langle\xi\rangle^s|\widehat u(\xi)|$ 说明相同的导数增益，而一般情形由符号演算推广。
-
-误差算子 $R\in\Psi^{-\infty}$ 把任意分布映成光滑函数，不损失正则性。故若 $f\in H^s_{\mathrm{loc}}$，则
-\begin{equation}
- u=Qf+Ru\in H^{s+m}_{\mathrm{loc}},
- \label{eq:math-dist-elliptic-sobolev-regularity}
-\end{equation}
-此即椭圆区域成立的正则性提升。
-
-若 $f$ 光滑，在每个较小紧支集内先取 $s$ 足够小使截断的 $u\in H^s$（分布局部有限阶），光滑的 $f$ 属于每个局部 $H^r$，所以直接对任意 $r$ 使用已证映射估计，得到 $u\in H^{r+m}_{\mathrm{loc}}$。这种论证也覆盖零阶或负阶椭圆算子，无须假定 $m>0$ 反复迭代。由 Sobolev 嵌入 $H^\infty\subset C^\infty$，最终 $u$ 光滑。
-
-对一般仅微局部椭圆的情形，须在非特征锥内插入截止，而不能把 $QP=I-R$ 当成全空间恒等式。令截止的余项只可能在特征方向不光滑，利用拟逆的伪局部性得到
-\begin{equation*}
-  \operatorname{WF}(u)
-  \subseteq\operatorname{WF}(f)\cup\operatorname{Char}(P),
-\end{equation*}
-右端保留 $\operatorname{Char}(P)$，是因为 $Q$ 只在 $\operatorname{Char}(P)$ 之外才是真正的逆，在特征集上 $Q$ 不再控制 $P$ 的方向。另一方面，伪微分算符不会凭空创造波前方向：
+给输入和输出乘紧支集截断后，符号可取为紧支集于 $x$；光滑核误差另外处理。仅对 $x$ 作 Fourier 变换，分部积分给
 \[
- \operatorname{WF}(Pu)\subseteq\operatorname{WF}(u).
+|\widehat a_x(\zeta,\xi)|
+\le C_L\langle\zeta\rangle^{-L}\langle\xi\rangle^m
 \]
-在 $\operatorname{Char}(P)$ 之外，第一条给出
+对任意 $L$ 成立。用本章对称 Fourier 约定，算子的频率核为
 \[
- \operatorname{WF}(u)\subseteq\operatorname{WF}(Pu),
+\widehat{Pu}(\eta)=(2\pi)^{-n/2}
+\int\widehat a_x(\eta-\xi,\xi)\widehat u(\xi)\,\dd\xi.
 \]
-与上式合并，即在椭圆区域
-\begin{equation}
- \boxed{
- \operatorname{WF}(u)=\operatorname{WF}(Pu).
- }
- \label{eq:math-dist-wavefront-elliptic-regularity}
-\end{equation}
-这把本章波前集的定义闭合成可计算的 PDE 定理：椭圆区域不改变解的奇异方向。
+令 $v(\xi)=\langle\xi\rangle^s\widehat u(\xi)$。由于
+\[
+\frac{\langle\eta\rangle^{s-m}}{\langle\xi\rangle^{s-m}}
+\le C_s\langle\eta-\xi\rangle^{|s-m|},
+\]
+加权核的绝对值不超过 $C_L\langle\eta-\xi\rangle^{-L+|s-m|}$。取 $L>|s-m|+n$，该卷积核可积，Young 不等式便给 $\|Pu\|_{H^{s-m}}\le C\|u\|_{H^s}$。适当支撑保证固定输出区域只需一个紧的输入截断，故得到局部结论。
+紧支集分布属于某个负阶 Sobolev 空间；若符号属于所有负阶类，上述估计使输出属于任意阶 Sobolev 空间，再由 Sobolev 嵌入得光滑性。
 \end{proof}
 
+拟逆的用途是把未知解变为已知源的响应，再加一个不影响奇性的余项。构造时必须把整个区域椭圆与某个锥内椭圆区分开。
 
-例：Laplace 算子。取 $P=-\Delta$（$m=2$），它是处处椭圆算子，$\operatorname{Char}(-\Delta)=\varnothing$，于是 $\operatorname{WF}(u)=\operatorname{WF}(\Delta u)$：若 $\Delta u=f$ 在某区域光滑，则 $u$ 在该区域光滑。这正是位势论中「调和函数必解析、Poisson 方程右端光滑则解光滑」的严格微局域表述；对一般 $m$ 阶椭圆算子，$u$ 比 $f$ 多 $m$ 阶导数，且奇异方向在椭圆区域精确保持。
+\begin{theorem}[拟逆与椭圆正则性]
+设 $P\in\Psi^m_{1,0}$ 适当支撑。在处处椭圆的区域，可构造 $Q\in\Psi^{-m}_{1,0}$，使局部有
+\[
+QP=I-R,\qquad PQ=I-S,\qquad R,S\in\Psi^{-\infty}.
+\]
+若只在一个开锥区域椭圆，则对支撑在该区域内、在较小锥区域等于 $1$ 的零阶截止算子 $B$，可构造 $Q$ 使
+\[
+B(QP-I),\quad B(PQ-I)\in\Psi^{-\infty}.
+\]
+因此对 $u\in\mathcal D'$，$Pu=f\in H^s_{\mathrm{loc}}$ 在椭圆区域蕴含 $u\in H^{s+m}_{\mathrm{loc}}$；在非特征方向有
+\[
+\operatorname{WF}(u)\setminus\operatorname{Char}(P)
+=\operatorname{WF}(Pu)\setminus\operatorname{Char}(P).
+\]
+\end{theorem}
+\begin{proof}
+先在椭圆区域取高频截止 $\chi$，令 $q_0=\chi/p$。下界与对 $1/p$ 反复求导的商法则保证 $q_0\in S^{-m}$。处处椭圆时 $\chi$ 在所有大频率等于 $1$；锥内椭圆时，它只在所需的较小锥内等于 $1$。复合公式给
+\[
+q_0\#p=\chi+r_1,\qquad r_1\in S^{-1}
+\]
+在较小锥内成立。令 $q^{(1)}=q_0-r_1q_0$，则该区域内
+\[
+q^{(1)}\#p=1+S^{-2}.
+\]
+若已得到余项 $r_j\in S^{-j}$，加入 $-r_jq_0\in S^{-m-j}$，点态乘积消去 $r_j$，复合中的导数项至少再降低一阶。如此逐阶得到修正符号。
 
-椭圆正则性由此定量给出：$Pu\in H^s_{\mathrm{loc}}$ 蕴含 $u\in H^{s+m}_{\mathrm{loc}}$（\eqnrefs{eq:math-dist-elliptic-sobolev-regularity}），波前集在椭圆区域满足 $\operatorname{WF}(u)=\operatorname{WF}(Pu)$（\eqnrefs{eq:math-dist-wavefront-elliptic-regularity}）。
+这些修正的形式和未必收敛，但可以渐近求和。对第 $j$ 项乘 $\chi(\xi/R_j)$，令 $R_j$ 逐次增大，使这一项在前 $j$ 个 $S^{-m-j+1}$ 半范数中小于 $2^{-j}$。所得级数在每个有限阶半范数中收敛，并且截去前 $N$ 项后属于 $S^{-m-N}$；有限项的截止改变只有紧频率支集，属于 $S^{-\infty}$。于是获得左拟逆。
+同样构造右拟逆；处处椭圆时若 $Q_LP=I-R$、$PQ_R=I-S$，则
+\[
+Q_L-Q_R=Q_LS-RQ_R\in\Psi^{-\infty},
+\]
+故一个拟逆可兼顾两侧。锥内使用嵌套截止作相同运算，只有截止支撑以外的符号可能保留奇性；乘 $B$ 后两侧余项均光滑化。截止函数 $\chi$ 只在所选方向等于 $1$，支撑外不具有这个逆关系。
 
-当 $P$ 不椭圆时，真正困难只剩在 $\operatorname{Char}(P)$ 上。若 主符号 $p$ 为实值且满足 real-主-型 的非退化条件，则 Hamilton 矢量场
-\begin{equation*}H_p
-=\sum_j
-\left(
+在处处椭圆区域，$Pu=f$ 给 $u=Qf+Ru$。局部映射定理和光滑化性质遂给
+\begin{equation}
+u\in H^{s+m}_{\mathrm{loc}}.
+\label{eq:math-dist-elliptic-sobolev-regularity}
+\end{equation}
+若 $f$ 光滑，可对任意 $s$ 使用这一结论，再由 Sobolev 嵌入得 $u$ 光滑。它也适用于零阶或负阶椭圆算子，无须假定 $m>0$。
+
+还需说明方向性的结论。若 $u$ 在一个方向上没有波前，取较大锥截止 $C$、较小截止 $B$，使 $C=1$ 于 $B$ 的符号支撑附近。波前集的 Fourier 衰减定义给 $Cu$ 光滑；$BP(I-C)$ 的符号各阶为零，故为光滑化算子。于是
+\[
+BPu=BPCu+BP(I-C)u
+\]
+光滑，证明 $\operatorname{WF}(Pu)\subseteq\operatorname{WF}(u)$。反过来，在椭圆方向用锥内拟逆，有 $Bu=BQPu+\text{光滑项}$；若 $Pu$ 在该方向光滑，同样的嵌套截止使 $BQPu$ 光滑。因此
+\begin{equation}
+\operatorname{WF}(u)\setminus\operatorname{Char}(P)
+=\operatorname{WF}(Pu)\setminus\operatorname{Char}(P).
+\label{eq:math-dist-wavefront-elliptic-regularity}
+\end{equation}
+只有非特征方向获得这一双向控制。
+\end{proof}
+
+\begin{exbox}[变系数算子的符号、拟逆与正则性]
+在实线上取 $a(x)=2+\sin x$、$V=1$，考虑
+\[
+Pu=-\partial_x\bigl(a(x)\partial_xu\bigr)+u.
+\]
+求完整符号、与坐标乘法的交换子，以及高频左拟逆的前两阶；再判断 $Pu=f$ 对解的局部正则性有何限制。
+
+\textbf{解。} 展开位置导数得 $P=-a\partial_x^2-a'\partial_x+1$，所以
+\[
+p(x,\xi)=a\xi^2-\ii a'\xi+1,
+\qquad p_2=a\xi^2.
+\]
+因 $a\ge1$，它在所有非零频率方向椭圆。直接作用于 $xu$，得到
+\[
+[P,x]u=-2a\partial_xu-a'u,
+\]
+其完整符号 $-2\ii a\xi-a'$ 也等于 $\partial_\xi p/\ii$，核对了复合公式的相位和次序。坐标乘法不满足全空间有界符号估计，这一运算可在任意固定紧区域内乘截止后解释。
+
+在大频率处先取 $q_{-2}=1/(a\xi^2)$。计算左复合的负一阶误差：
+\begin{align*}
+q_{-2}p-1&=-\ii\frac{a'}a\xi^{-1}+O(\xi^{-2}),\\
+\frac1\ii(\partial_\xi q_{-2})(\partial_xp_2)
+&=2\ii\frac{a'}a\xi^{-1}.
+\end{align*}
+所以两项合起来为 $\ii(a'/a)\xi^{-1}$，须用
+\[
+q_{-3}=-\ii\frac{a'}{a^2}\xi^{-3}
+\]
+消去，而非只保留 $1/p_2$。给这两项乘高频截止 $\chi(\xi)$，令 $Q_1=\operatorname{Op}\bigl(\chi(q_{-2}+q_{-3})\bigr)$，便有
+\[
+Q_1P=I+E_{-2},\qquad E_{-2}\in\Psi^{-2}
+\]
+局部成立。再保留二阶导数项，余项的领头符号为
+\[
+e_{-2}(x,\xi)=\left(\frac1a+\frac{2(a')^2}{a^2}-\frac{a''}a\right)\xi^{-2}.
+\]
+因此加入 $q_{-4}=-e_{-2}/(a\xi^2)$ 可把余项降低到三阶。前述递归继续降低误差阶数，可得到真正的光滑化余项拟逆 $Q$。
+若 $f\in H^s_{\mathrm{loc}}$，则 $u\in H^{s+2}_{\mathrm{loc}}$；若 $f$ 光滑，$u$ 也光滑。拟逆只描述局部高频求解，尚未指定边界条件，因而不能直接把它当作某个边值问题的精确 Green 算子。
+\end{exbox}
+
+对 $-\Delta$，同一结论给 $\operatorname{WF}(u)=\operatorname{WF}(\Delta u)$。光滑右端产生光滑局部解；调和函数的实解析性还需解析系数的更强正则性论证，不能单由光滑波前集结论推出。
+
+非椭圆方程的奇性仍可能留在特征集上。对经典实主型标量算子，实齐次主符号 $p$ 在 $p=0$ 上满足 $\dd p\ne0$，并且 Hamilton 矢量场不沿频率径向退化。该矢量场为
+\[
+H_p=\sum_j\left(
 \frac{\partial p}{\partial\xi_j}\frac{\partial}{\partial x^j}
--\frac{\partial p}{\partial x^j}\frac{\partial}{\partial\xi_j}
-\right)\end{equation*}
-在 特征 集合 上生成 bicharacteristics。propagation of 奇点 定理 的核心结论是：若 $Pu=f$，那么在 $\operatorname{WF}(f)$ 之外，$\operatorname{WF}(u)\cap\operatorname{Char}(P)$ 必沿 $H_p$ 的 积分曲线 传播。椭圆算子没有 特征 directions，所以奇性被完全压制；双曲算子则允许奇性沿特征流传播。
+-\frac{\partial p}{\partial x^j}\frac{\partial}{\partial\xi_j}\right).
+\]
+它的积分曲线称为双特征曲线。奇性传播定理断言：在 $\operatorname{WF}(Pu)$ 之外，$\operatorname{WF}(u)\cap\operatorname{Char}(P)$ 沿这些曲线传播。这是需要正交换子估计的进一步定理，本节的拟逆证明只建立了非特征方向的正则性。
 
-以波算子
+对波算子 $\Box=\partial_t^2-c^2\Delta_x$，主符号为 $p=-\tau^2+c^2|\xi|^2$，特征集满足 $\tau^2=c^2|\xi|^2$。Hamilton 方程给
 \[
-\Box=\partial_t^2-c^2\Delta_x
+\frac{\dd t}{\dd s}=-2\tau,
+\qquad\frac{\dd x}{\dd s}=2c^2\xi,
+\qquad\frac{\dd\tau}{\dd s}=\frac{\dd\xi}{\dd s}=0.
 \]
-为例，主符号 可取
-\[
-p(t,x;\tau,\xi)
-=-\tau^2+c^2|\xi|^2.
-\]
-特征 集合 满足
-\[
-\tau^2=c^2|\xi|^2,
-\]
-正对应有限传播速度的光锥方向。于是“波前沿光线传播”在微局部语言中就是 Hamiltonian 流 of the 主符号；这同时解释了几何光学、经典 Hamilton 流 与双曲 PDE 奇性传播为何共享同一余切丛结构。
+非零特征协向量满足 $\tau\ne0$，故 $\dd x/\dd t=-c^2\xi/\tau$，其速度大小正是 $c$。这把特征方程与波前的有限传播速度接了起来。后续偏微分方程可据此区分椭圆方向的正则性提升与特征方向的传播。
 
-至此，本章的逻辑闭环变成
-\[
-\begin{aligned}
-\text{distribution}
-&\to\text{Fourier/Sobolev regularity}
-\to\text{wavefront set}
-\to\text{symbol calculus},\\
-&\to\text{parametrix}
-\to\text{elliptic regularity / characteristic propagation}.
-\end{aligned}
-\]
-后续 PDE 章节可以直接调用这套母结构，而不必把“弱导数、频率衰减、Green 函数和正则性”当作互不相干的技巧。
 
 高斯核提供了一族完全由普通函数构成的逼近恒等，可用来检验前述分布极限。
 
