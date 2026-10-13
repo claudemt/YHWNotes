@@ -790,7 +790,9 @@ q-p=m'-m.
 因此只有一个独立求和指标。令 $k=p$，则 $q=k+m'-m$；把单项式重新写成归一化基 $\phi_{m'}$ 并整理两个二项式系数，就得到 \eqnrefs{eq:wigner-small-d}（若采用相反的 $y$ 轴主动转动或不同基相位，唯一变化是若干等价的整体符号约定）。所以 Wigner 小 $d$ 矩阵并不是凭空给出的特殊函数，而是 $SU(2)$ 基本二维作用在对称幂空间上的二项式展开系数。
 
 \begin{example}[{$j=\tfrac12$ 与 $j=1$}]
-当 $j=\tfrac12$ 时，基取 $\ket{\frac12,\frac12},\ket{\frac12,-\frac12}$，有
+采用主动 $z$--$y$--$z$ 欧拉角约定，分别求 $j=1/2$ 和 $j=1$ 的转动矩阵，并说明后者怎样还原通常的三维矢量转动。
+
+\textbf{解。} 当 $j=\tfrac12$ 时，基取 $\ket{\frac12,\frac12},\ket{\frac12,-\frac12}$，把 \eqnrefs{eq:wigner-small-d} 中允许的求和项代入，得到
 \[
 D^{(1/2)}(\alpha,\beta,\gamma)=
 \begin{pmatrix}
@@ -802,7 +804,26 @@ D^{(1/2)}(\alpha,\beta,\gamma)=
 \]
 它正是 $SU(2)$ 的定义表示。
 
-当 $j=1$ 时得到三维不可约表示。若改用笛卡尔基，它与通常三维矢量的 $SO(3)$ 转动矩阵等价。也就是说，三维矢量表示并不是额外的一类表示，它就是 $j=1$ 的不可约表示。
+当 $j=1$ 时，取基顺序 $\ket{1,1},\ket{1,0},\ket{1,-1}$，记 $c=\cos(\beta/2)$、$s=\sin(\beta/2)$。在二次齐次多项式基 $z_1^2,\sqrt2z_1z_2,z_2^2$ 上展开两个线性因子的乘积，得到
+\[
+d^{(1)}(\beta)=\begin{pmatrix}
+c^2&-\sqrt2cs&s^2\\
+\sqrt2cs&c^2-s^2&-\sqrt2cs\\
+s^2&\sqrt2cs&c^2
+\end{pmatrix},\qquad
+D^{(1)}=Z(\alpha)d^{(1)}(\beta)Z(\gamma),
+\]
+其中 $Z(\varphi)=\operatorname{diag}(\ee^{-\ii\varphi},1,\ee^{\ii\varphi})$。这个分解给出全部九个矩阵元；例如 $D^{(1)}_{10}=-\ee^{-\ii\alpha}\sin\beta/\sqrt2$、$D^{(1)}_{00}=\cos\beta$。
+
+将球基矢量写成笛卡尔坐标的三列，得到酉矩阵
+\[
+C=\begin{pmatrix}
+-1/\sqrt2&0&1/\sqrt2\\
+-\ii/\sqrt2&0&-\ii/\sqrt2\\
+0&1&0
+\end{pmatrix}.
+\]
+直接相乘可见 $C^\dagger R_z(\varphi)C=Z(\varphi)$、$C^\dagger R_y(\beta)C=d^{(1)}(\beta)$，所以 $D^{(1)}(R)=C^\dagger RC$。三维矢量表示正是 $j=1$；$2\pi$ 转动在此为 $I_3$，而上面的 $j=1/2$ 矩阵给出 $-I_2$。
 \end{example}
 
 \begin{proposition}[$SU(2)$ 自旋表示的转动特征标]
@@ -856,6 +877,73 @@ D^{(\ell)}_{m'm}(R).
 \label{eq:spherical-harmonic-rotation}
 \end{equation}
 因此 $s,p,d,f,\dots$ 轨道的角向部分分别对应 $\ell=0,1,2,3,\dots$ 的 $SO(3)$ 不可约表示。\chapref{chap:point-space-groups}与\chapref{chap:group-theory-quantum}中“原子轨道在晶体场下降低对称性并发生劈裂”的问题，本质上就是把这些 $SO(3)$ 不可约表示限制到某个有限点群后再做分支。
+
+表示的分类还让 \cref{thm:compact-peter-weyl} 中的抽象矩阵元变成了可计算的函数。归一化转动积分在欧拉角下为
+\[
+\dd R=\frac{\sin\beta}{8\pi^2}\,\dd\alpha\,\dd\beta\,\dd\gamma,
+\quad 0\le\alpha,\gamma<2\pi,\quad0\le\beta\le\pi.
+\]
+可以先在球面上均匀选取 $R\hat z$，再均匀选取绕此方向的标架角 $\gamma$。整体左转动保持这两个均匀分布，因此由 Haar 测度的唯一性得到上式；欧拉角在两极的非唯一性发生在零测集上。
+
+\begin{proposition}[$SO(3)$ 展开与球谐展开]
+任意 $f\in L^2(SO(3))$ 都有在 $L^2$ 意义下收敛的展开
+\[
+f(R)=\sum_{\ell=0}^{\infty}(2\ell+1)
+\sum_{m,n=-\ell}^{\ell}\widehat f^{(\ell)}_{mn}D^{(\ell)}_{mn}(R),
+\qquad
+\widehat f^{(\ell)}_{mn}=\int\overline{D^{(\ell)}_{mn}(R)}f(R)\,\dd R.
+\]
+取 \(\dd\Omega=\sin\theta\,\dd\theta\,\dd\phi\)，本书球谐函数的相位与归一化为
+\begin{equation}
+Y_{\ell m}(\theta,\phi)
+=\sqrt{\frac{2\ell+1}{4\pi}}\,
+\overline{D^{(\ell)}_{m0}(\phi,\theta,0)}.
+\label{eq:spherical-harmonic-D-normalization}
+\end{equation}
+它们构成 $L^2(S^2,\dd\Omega)$ 的正交完备系，所以
+\[
+F(\hat r)=\sum_{\ell,m}F_{\ell m}Y_{\ell m}(\hat r),\qquad
+F_{\ell m}=\int_{S^2}\overline{Y_{\ell m}(\hat r)}F(\hat r)\,\dd\Omega.
+\]
+这里球面积分没有除以 $4\pi$，因此 $Y_{00}=1/\sqrt{4\pi}$。
+\label{prop:so3-spherical-peter-weyl}
+\end{proposition}
+
+\begin{proof}
+$SO(3)$ 的全部不可约表示已经确定为整数 $\ell$，维数为 $2\ell+1$，代入 \cref{thm:compact-peter-weyl} 和矩阵元正交关系即得转动群上的展开。
+
+将球面函数提升为 $f(R)=F(R\hat z)$。右乘绕 $z$ 轴的转动不改变 $f$；而 \eqnrefs{eq:wigner-D-factorization} 给出
+\[
+D^{(\ell)}_{mn}(RR_z(\gamma))
+=D^{(\ell)}_{mn}(R)\ee^{-\ii n\gamma}.
+\]
+对 $\gamma$ 积分因此只留下 $n=0$ 的列。这正是商空间 $SO(3)/SO(2)$ 上的函数所需的矩阵元。对这一列，Haar 积分先做 $\gamma$ 积分，给出
+\[
+\int_{S^2}\overline{D^{(\ell)}_{m0}(\phi,\theta,0)}
+D^{(\ell')}_{m'0}(\phi,\theta,0)\,\dd\Omega
+=\frac{4\pi}{2\ell+1}\delta_{\ell\ell'}\delta_{mm'}.
+\]
+乘上 \eqnrefs{eq:spherical-harmonic-D-normalization} 的两个因子得到球谐正交关系。右不变函数的全部 Fourier 分量都在这些列中，故它们完备；取复共轭同样保持完备性。由小 $d$ 矩阵的实系数及其磁量子数反号关系，还得到
+\[
+\overline{Y_{\ell m}}=(-1)^mY_{\ell,-m},\qquad
+Y_{\ell m}(-\hat r)=(-1)^\ell Y_{\ell m}(\hat r).
+\]
+第二式也可在次数为 $\ell$ 的齐次调和多项式实现中直接读出。归一化使球谐展开成为普通球面波函数的正交展开，而群积分中的 $2\ell+1$ 来自同一个表示的矩阵元范数。
+\end{proof}
+
+\begin{example}[同一 $p$ 轨道的转动分量与 Fourier 范数]
+取固定实验室方向 $\hat z$，令 $f(R)=\hat z\cdot R\hat z$。求它在 $SO(3)$ 和球面上的两种展开，并分别核对范数。
+
+\textbf{解。} 欧拉角给出 $f(R)=\cos\beta=D^{(1)}_{00}(R)$，所以只有
+\[
+\widehat f^{(1)}_{00}=\int|D^{(1)}_{00}|^2\,\dd R=\frac13
+\]
+非零。展开的前因子 $2\ell+1=3$ 恢复 $f$ 本身；Plancherel 等式给出 $\|f\|_{L^2(G)}^2=3(1/3)^2=1/3$。直接积分也给出
+\[
+\frac12\int_{-1}^{1}x^2\,\dd x=\frac13.
+\]
+在球面上，同一个函数为 $F(\theta,\phi)=\cos\theta=\sqrt{4\pi/3}\,Y_{10}$，故 $F_{10}=\sqrt{4\pi/3}$，$\|F\|_{L^2(S^2)}^2=4\pi/3$。两种范数相差 $4\pi$，来自群测度归一化为一、球面测度总量为 $4\pi$。计算轨道矩阵元时必须保留这一因子。
+\end{example}
 
 \begin{example}[$j=1$ 表示限制到 $D_3$：从球对称到三重轴]
 \label{ex:j1-restrict-d3}

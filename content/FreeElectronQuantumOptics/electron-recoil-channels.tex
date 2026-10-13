@@ -1,0 +1,680 @@
+\chapter{单模选择与电子反冲通道}\label{chap:electron-recoil-channels}
+
+材料响应与有限时间跃迁已给出一般计算式。若实验只解析一个环境共振和少数电子通道，
+还需判断被舍弃的模式与失谐是否会改变传播相位或概率。
+环境侧的谱分离和电子侧的反冲是两项独立检验；通过它们以后，连续态才可以用离散振幅链描述。
+
+\section{从完整谱到有限通道}
+
+环境侧要求目标共振与其余谱结构的分离大于有限作用时间的谱宽；电子侧要求每次交换后的矩阵元与逐边失谐在显著占据窗口内变化很小。第一项选择模式，第二项检验反冲通道能否近似为均匀能量梯。PINEM 的有效平移算符由这两项检验得到。
+
+\subsection{旋波与单模谱投影}
+
+单模约化选择环境谱中的目标共振，而\emph{旋波近似}（rotating-wave approximation, RWA）进一步舍去同一目标模中的反旋能量交换支路；两步依赖不同的尺度条件。所谓“旋”来自相互作用绘景：每个顶角都带一个时间相位，接近能量守恒的交换支路缓慢旋转，而同时产生两个激发或同时湮灭两个激发的反旋支路通常以约 $\omega_{fi}+\omega_\lambda$ 的高频快速旋转。RWA 的数学判据因此是这些快相位对有限时间传播子的净贡献低于所需精度；相应的 Duhamel 界把这一要求直接量化为传播子误差。对任意电子自由本征态 $|i\rangle,|f\rangle$，正 Bohr 频率定义为
+\begin{equation*}
+\omega_{fi}\equiv\frac{E_f-E_i}{\hbar}>0.
+\end{equation*}
+对频率为 $\omega_\lambda$ 的厄米线性玻色模，相互作用-绘景顶点包含近共振频率 $\omega_{fi}-\omega_\lambda$ 与反旋频率 $\omega_{fi}+\omega_\lambda$。因此 RWA 的小量不是“耦合弱”一个条件，而是快支路相对于所有慢尺度都不可分辨：
+\begin{equation}
+\boxed{
+\epsilon_{\rm RWA}
+\equiv
+\max_{fi,\lambda\in\mathcal W}
+\left\{
+\frac{|g_{fi}^{(\lambda)}|}{\omega_{fi}+\omega_\lambda},
+\frac{T^{-1}}{\omega_{fi}+\omega_\lambda},
+\frac{|\omega_{fi}-\omega_\lambda|}{\omega_{fi}+\omega_\lambda}
+\right\}\ll1 .}
+\label{eq:general_rwa_control_parameter}
+\end{equation}
+这里 $\mathcal W$ 是实际初态、探测窗口和模式谱共同访问的频率集合；三个比值分别控制虚反旋修正、有限脉冲分辨率和近共振慢相位。
+
+若需要直接控制有限时间传播子，则把完整相互作用哈密顿量写成 $\hat H_I=\hat H_{\rm slow}+\hat V_{\rm cr}$，并在实际可访问投影 $\hat\Pi_{\mathcal W,N}$ 上定义反旋包络 $\hat C(t)$。一个更接近传播误差的充分量为
+\begin{equation}
+\boxed{
+\epsilon_{\rm RWA}^{\rm dyn}
+\equiv\max_{fi,\lambda\in\mathcal W}
+\left[
+\frac{C_{fi\lambda}^{\rm bd}+C_{fi\lambda}^{\rm var}}{\omega_{fi}+\omega_\lambda}
++\frac{|g_{fi}^{(\lambda)}|^2T}{\omega_{fi}+\omega_\lambda}
+\right]\ll1,}
+\label{eq:rwa_projected_dynamical_error}
+\end{equation}
+其中 $C^{\rm bd}$ 是反旋包络在时间端点的投影范数之和，$C^{\rm var}=\int\dd t\,\|\dot C\hat\Pi\|$。第一项来自有限时间平均，第二项是二阶虚反旋过程产生的 Bloch--Siegert 型累计尺度。
+
+RWA 成立后仍可能有多个近共振模式，因此环境 Hilbert 空间尚不能直接压缩为单模。单模投影还必须同时受 Duhamel 传播子误差、有限时间谱权重和相邻共振间隔控制。
+
+真正的器件简化来自模式谱和有限作用时间共同产生的\emph{谱投影}，而不是先验指定“单模”。选择候选目标模 $\lambda_0$，把完整哈密顿量分成
+\[
+\hat H(t)=\hat H_{\rm keep}(t)+\hat V_{\rm off}(t),
+\]
+其中 $\hat H_{\rm keep}$ 保留电子、目标模及其耦合，$\hat V_{\rm off}$ 收集所有被删去模式与电子的耦合。令 $\hat U$ 和 $\hat U_{\rm keep}$ 分别由这两个哈密顿量生成；\eqnrefs{eq:duhamel_master_identity} 在这里取 $\hat R=\hat V_{\rm off}$。由于玻色算符在完整 Fock 空间上无界，再令 $\hat\Pi_{\Lambda,\mathbf N}$ 表示实验可访问的有限电子能窗与有限激发扇区。则单模约化的严格投影误差满足
+\begin{equation}
+\boxed{
+\left\|
+[\hat U-\hat U_{\rm keep}]
+\hat\Pi_{\Lambda,\mathbf N}
+\right\|
+\le
+\epsilon_{\rm sm}^{\rm op}
+\equiv
+\frac1\hbar
+\int_{t_i}^{t_f}\dd t\,
+\|
+\hat V_{\rm off}(t)
+\hat U_{\rm keep}(t,t_i)
+\hat\Pi_{\Lambda,\mathbf N}
+\|.}
+\label{eq:single_mode_duhamel_error_bound}
+\end{equation}
+因此 $\epsilon_{\rm sm}^{\rm op}\ll1$ 才是“删去其余模式不会改变实际可访问态”的一般动力学判据。一阶谱权重只是这个一般判据在弱耗尽区的可计算估计。
+
+从\eqnrefs{eq:universal_multiboson_amplitude_hierarchy} 看，每一个候选模式和电子跃迁都带有自己的矩阵元与精确能量失配；按\eqnrefs{eq:universal_boson_finite_time_emission}，任一一量子通道的有限时间谱权重都具有
+\begin{equation*}
+\left|\mathcal G^{(\lambda)}_{fi}\right|^2
+T^2\,\operatorname{sinc}^2\!\left(
+\frac{\Delta^{(\lambda)}_{fi}T}{2}
+\right),
+\end{equation*}
+其中 $\Delta^{(\lambda)}_{fi}$ 由实际初末自由能量差与 $\pm\omega_\lambda$ 按前述定义唯一确定。
+因此在一阶谱筛选足以估计泄漏时，只有当一个目标模式 $\lambda_0$ 在实际电子谱支持上占据主要权重，而其余模式因矩阵元小、频率失谐大或有限时间平均被压低时，才可以把 $\sum_\lambda$ 投影成单个 $\lambda_0$。设 $\mathcal W_e$ 是实际电子初末态支持的能窗，并定义每个模式在作用时间 $T$ 内的一量子最大权重
+\begin{equation*}
+W_\lambda(T)
+\equiv
+\sup_{i,f\in\mathcal W_e}
+\left\{
+|\mathcal G_{fi}^{(\lambda)}|^2T^2
+\sinc^2\!\left(\frac{\Delta_{fi}^{(\lambda)}T}{2}\right)
+\right\}.
+\end{equation*}
+若模式标签含连续变量，求和按已经固定的模式测度理解为积分。对候选目标模 $\lambda_0$ 定义离模泄漏比
+\begin{equation}
+\boxed{
+\epsilon_{\rm sm}(T)
+\equiv
+\frac{\displaystyle\sum_{\lambda\neq\lambda_0}W_\lambda(T)}
+{W_{\lambda_0}(T)}.}
+\label{eq:single_mode_finite_time_leakage}
+\end{equation}
+只有在 $\epsilon_{\rm sm}(T)\ll1$，且目标模自身的谱宽、电子耦合带宽与功率展宽都没有把相邻共振重新混入同一有限时间分辨窗时，单模投影才是受控的。若把相邻可竞争共振与目标模的最小频率间隔记为 $\Delta\omega_{\rm sep}$，把目标模线宽记为 $\kappa_0$，把电子耦合涉及的频率宽度记为 $\Delta\omega_e$，则一个直接的充分尺度条件是
+\begin{equation}
+\boxed{
+\max\!\left(
+\kappa_0,\,T^{-1},\,\Delta\omega_e,\,\Omega_{\rm int}
+\right)
+\ll\Delta\omega_{\rm sep},}
+\label{eq:single_mode_spectral_isolation_condition}
+\end{equation}
+其中 $\Omega_{\rm int}$ 表示实际作用窗口内由耦合产生的特征功率展宽。\eqnrefs{eq:single_mode_finite_time_leakage} 检查所有非目标模式的总泄漏，\eqnrefs{eq:single_mode_spectral_isolation_condition} 检查谱峰是否在动力学时间尺度上真正可分辨；两项条件同时满足时，环境 Hilbert 空间才可限制到目标单模。
+
+模式已经被隔离以后，旋波近似仍是另一项独立近似。对目标跃迁 $i\to f$ 与目标模 $\lambda_0$，在相互作用绘景中先保留共振与反旋两类支路：
+\begin{equation}
+\boxed{
+\begin{aligned}
+\hat H_{I,fi}^{(\lambda_0)}(t)
+={}&\hbar g_{fi}^{(\lambda_0)}|f\rangle\langle i|\hat a_{\lambda_0}
+\ee^{\ii(\omega_{fi}-\omega_{\lambda_0})t}\\
+&+\hbar g_{fi}^{(\lambda_0)}|f\rangle\langle i|\hat a_{\lambda_0}^\dagger
+\ee^{\ii(\omega_{fi}+\omega_{\lambda_0})t}
++\mathrm{H.c.}
+\end{aligned}}
+\label{eq:single_mode_full_four_branch_interaction}
+\end{equation}
+反旋支路以和频 $\Sigma_{fi}=\omega_{fi}+\omega_{\lambda_0}$ 振荡。若相互作用窗口近似常耦合，正文采用两个无量纲控制量
+\begin{equation}
+ \boxed{
+ \epsilon_{\rm RWA}^{(1)}
+ =|g_{fi}^{(\lambda_0)}|
+ \min\!\left(T,\frac{2}{|\Sigma_{fi}|}\right),
+ \qquad
+ \epsilon_{\rm RWA}^{(2)}
+ =\frac{|g_{fi}^{(\lambda_0)}|^2T}{|\Sigma_{fi}|}.}
+ \label{eq:rwa-finite-time-error-scales-dp68}
+\end{equation}
+只有当这两个量在实际有限激发子空间内都远小于一，反旋过程的一阶直接跃迁和二阶虚过程才同时受抑制。它们与单模泄漏参数~\eqnrefs{eq:single_mode_finite_time_leakage} 控制不同误差，不能互相替代。
+
+\begin{lemma}[有限时间振荡积分的两阶界]
+设 $T\ge0$、实失谐 $\Sigma\ne0$、包络 $C$ 绝对连续。则 $|\int_{-T/2}^{T/2}e^{\ii\Sigma t}\dd t|\le\min(T,2/|\Sigma|)$，$|\int C(t)e^{\ii\Sigma t}\dd t|\le(|C(t_i)|+|C(t_f)|+\int|\dot C|)/|\Sigma|$；二阶有序核 $I_2=(\ii\Sigma T-e^{\ii\Sigma T}+1)/\Sigma^2$ 满足 $|I_2|\le T/|\Sigma|+2/\Sigma^2$。这些界控制\eqnrefs{eq:rwa-finite-time-error-scales-dp68}中的阶次尺度，不自动给无限阶 RWA 精确误差。
+\end{lemma}
+\begin{proof}
+把反旋项视为受控余项时，一阶振荡积分衡量真实反旋跃迁，二阶时间排序积分衡量经反旋支路产生的虚过程。二者分别给出正文\eqnrefs{eq:rwa-finite-time-error-scales-dp68} 中的两个无量纲尺度。 反旋支路的有限时间积分满足
+
+\begin{equation*}
+\left|\int_{-T/2}^{T/2}\dd t\,\ee^{\ii\Sigma t}\right|
+=T\left|\sinc\frac{\Sigma T}{2}\right|
+\le\min\!\left(T,\frac{2}{\Sigma}\right),
+\qquad \Sigma=\omega_{fi}+\omega_\lambda.
+\end{equation*}
+若包络缓慢变化，分部积分给
+\begin{equation*}
+\int_{t_i}^{t_f}\dd t\,C(t)\ee^{\ii\Sigma t}
+=\left.\frac{C(t)\ee^{\ii\Sigma t}}{\ii\Sigma}\right|_{t_i}^{t_f}
+-\frac1{\ii\Sigma}\int_{t_i}^{t_f}\dd t\,\dot C(t)\ee^{\ii\Sigma t},
+\end{equation*}
+所以第一阶误差受 $(C^{\rm bd}+C^{\rm var})/\Sigma$ 控制。二阶时间排序核
+\begin{align*}
+I_2(\Sigma,T)
+&=\int_0^T\dd t_1\int_0^{t_1}\dd t_2\,
+\ee^{\ii\Sigma(t_1-t_2)}\\
+&=\frac{\ii\Sigma T-\ee^{\ii\Sigma T}+1}{\Sigma^2}
+\end{align*}
+满足 $|I_2|\le T/\Sigma+2/\Sigma^2$，乘上两个顶点后得到相应的 $|g_{\mathrm Q}|^2T/\Sigma$ 虚过程尺度。单模谱投影的传播子界与有限时间泄漏由同一个 Duhamel 恒等式控制，并与 RWA 的时间平均条件保持独立。
+\end{proof}
+
+
+单模频率隔离之外，模式的空间 Fourier 谱还必须选出一个主导纵向动量交换 $\hbar \kappa_z$；若多个 $\kappa_z$ 分量具有可比权重，就得到带有多种跳跃程的动量图，而不是一维相邻格点链。若材料吸收使模式严重展宽、多个共振在 $1/T$ 内重叠，或连续谱本身不可忽略，则不应定义单个 $\hat a$ 和单个 $g_{\mathrm Q}$，而应继续使用多模振幅层级或 Green 张量表示。
+
+\subsection{反冲格振幅链}
+
+在单模谱隔离和单一主导纵向动量交换都成立以后，连续电子动量空间才被相互作用选择成离散通道链。固定自旋 $s_0$，取有限盒归一化的正交通道
+\begin{equation*}
+|\ell\rangle\equiv|p_\ell,s_0\rangle_V,
+\qquad
+p_\ell=p_0+\ell\hbar \kappa_z,
+\qquad
+\langle\ell|m\rangle=\delta_{\ell m},
+\end{equation*}
+并保留每个通道的真实相对论自由能量
+\begin{equation*}
+\boxed{\mathcal E_\ell=\sqrt{m_{\mathrm e}^2c^4+c^2p_\ell^2}.}
+\end{equation*}
+相邻格点的真实能量间隔为
+\[
+ \Delta\mathcal E_\ell
+ \equiv\mathcal E_{\ell+1}-\mathcal E_\ell,
+\]
+它由于相对论色散的非线性而依赖 $\ell$；这个 $\ell$ 依赖就是离散格中的反冲失谐来源。目标模在相邻边上的耦合定义为普通 Hilbert 空间矩阵元
+\begin{equation}
+\boxed{
+\mathcal G_\ell(t)
+\equiv\frac1\hbar\langle\ell+1|\delta\hat h_{\lambda_0}(t)|\ell\rangle,
+\qquad [\mathcal G_\ell]={\rm s^{-1}}.}
+\label{eq:normalized_discrete_channel_coupling}
+\end{equation}
+于是约化哈密顿量为
+\begin{equation*}
+\hat H_{\rm red}
+=\sum_\ell\mathcal E_\ell|\ell\rangle\langle\ell|
++\hbar\omega\hat a^\dagger\hat a
++\hbar\sum_\ell\!
+\left[\mathcal G_\ell|\ell+1\rangle\langle\ell|\hat a+\mathrm{H.c.}\right].
+\end{equation*}
+
+以真实自由哈密顿量进入相互作用绘景，并定义逐边失谐
+\begin{equation*}
+\boxed{
+\Delta_\ell
+\equiv\frac{\mathcal E_{\ell+1}-\mathcal E_\ell}{\hbar}-\omega,}
+\end{equation*}
+得到
+\begin{equation*}
+\hat H_I(t)=\hbar\sum_\ell
+\left[
+\mathcal G_\ell(t)\ee^{\ii\Delta_\ell t}|\ell+1\rangle\langle\ell|\hat a
++\mathrm{H.c.}
+\right].
+\end{equation*}
+在上述离散结构投影给定、且不附加纯态假设时，封闭联合系统的动力学由密度算符的 Liouville--von Neumann 方程给出
+\begin{equation}
+\boxed{
+\dot\rho_I=-\frac{\ii}{\hbar}[\hat H_I,\rho_I].}
+\label{eq:unified_density_mother}
+\end{equation}
+纯态坐标表示 $|\Psi_I\rangle=\sum_{\ell,n}c_{\ell n}|\ell,n\rangle$ 给出联合反冲链
+\begin{equation}
+\boxed{
+\begin{aligned}
+\ii\dot c_{\ell n}
+={}&\mathcal G_{\ell-1}(t)\sqrt{n+1}\,
+\ee^{\ii\Delta_{\ell-1}t}c_{\ell-1,n+1}\\
+&+\mathcal G_\ell^*(t)\sqrt n\,
+\ee^{-\ii\Delta_\ell t}c_{\ell+1,n-1}.
+\end{aligned}}
+\label{eq:unified_joint_amplitude_chain}
+\end{equation}
+这条链同时保留真实反冲、逐边耦合和光子数涨落；经典 PINEM、均匀双向能量梯与少能级 Bragg 投影都只能从它进一步受控约化。
+
+\begin{proposition}[单模交换格的振幅与守恒扇区]
+设 $H_0=\sum_j\mathcal E_j|j\rangle\langle j|+\hbar\omega a^\dagger a$，交换顶角为 $\hbar\sum_j\mathcal G_j|j+1\rangle\langle j|a+\mathrm{H.c.}$。在共同域上，联合振幅满足\eqnrefs{eq:unified_joint_amplitude_chain}，$\ell+n$ 守恒，且 $n=0$ 的 Fock 下边界由阶梯系数自动实现。
+\end{proposition}
+\begin{proof}
+先把自由 Hamiltonian 与交换顶角分开写成
+\begin{align*}
+ \hat H_0
+ &=\sum_j\mathcal E_j|j\rangle\langle j|
+   +\hbar\omega\hat a^\dagger\hat a,\\
+ \hat V
+ &=\hbar\sum_j\left[
+ \mathcal G_j(t)|j+1\rangle\langle j|\hat a+\mathrm{H.c.}\right].
+\end{align*}
+这里 $|j,n\rangle\equiv|j\rangle\otimes|n\rangle$。相互作用绘景中的单条正向边由
+\begin{align*}
+ \ee^{+\ii\hat H_0t/\hbar}
+ \bigl(|j+1\rangle\langle j|\hat a\bigr)
+ \ee^{-\ii\hat H_0t/\hbar}
+ &={}
+ \ee^{+\ii(\mathcal E_{j+1}-\mathcal E_j)t/\hbar}
+ |j+1\rangle\langle j|\,
+ \ee^{-\ii\omega t}\hat a\\
+ &=\ee^{+\ii\Delta_jt}|j+1\rangle\langle j|\hat a
+\end{align*}
+得到，其中
+\[
+ \Delta_j=\frac{\mathcal E_{j+1}-\mathcal E_j}{\hbar}-\omega.
+\]
+所以相位失谐不是额外指定的量，而是电子相邻通道能差与光子能量之差。
+
+现在把
+\[
+ |\Psi_I(t)\rangle=\sum_{j= -\infty}^{\infty}\sum_{m=0}^{\infty}
+ c_{jm}(t)|j,m\rangle
+\]
+代入 $\ii\hbar\partial_t|\Psi_I\rangle=\hat H_I|\Psi_I\rangle$。正向交换算符对一个基矢的作用为
+\begin{align*}
+ |j+1\rangle\langle j|\hat a\,|k,m\rangle
+ &=\delta_{jk}|j+1\rangle\,\hat a|m\rangle\\
+ &=\delta_{jk}\sqrt m\,|j+1,m-1\rangle,
+\end{align*}
+而其厄米共轭满足
+\begin{align*}
+ \hat a^\dagger|j\rangle\langle j+1|\,|k,m\rangle
+ &=\delta_{j+1,k}\sqrt{m+1}\,|j,m+1\rangle.
+\end{align*}
+因此
+\begin{align*}
+ \hat H_I|\Psi_I\rangle
+ =\hbar\sum_{j,m}\Bigl[&
+ \mathcal G_j\ee^{+\ii\Delta_jt}\sqrt m\,c_{jm}
+ |j+1,m-1\rangle\\
+ &+\mathcal G_j^*\ee^{-\ii\Delta_jt}\sqrt{m+1}\,c_{j+1,m}
+ |j,m+1\rangle\Bigr].
+\end{align*}
+为了读取固定的目标基矢 $|\ell,n\rangle$，第一行令 $j=\ell-1,m=n+1$，第二行令 $j=\ell,m=n-1$。于是
+\begin{align*}
+ \langle\ell,n|\hat H_I|\Psi_I\rangle
+ =\hbar\Bigl[&
+ \mathcal G_{\ell-1}(t)\sqrt{n+1}\,
+ \ee^{+\ii\Delta_{\ell-1}t}c_{\ell-1,n+1}\\
+ &+\mathcal G_\ell^*(t)\sqrt n\,
+ \ee^{-\ii\Delta_\ell t}c_{\ell+1,n-1}\Bigr].
+\end{align*}
+左边的 Schr\"odinger 方程投影为
+$\langle\ell,n|\ii\hbar\partial_t|\Psi_I\rangle
+=\ii\hbar\dot c_{\ell n}$，约去 $\hbar$ 就得到正文
+\eqnrefs{eq:unified_joint_amplitude_chain}。
+
+这个逐项计算还同时给出两个结构性事实。第一，每个顶角都使
+\[
+ (\ell,n)\longrightarrow(\ell+1,n-1)
+ \quad\text{或}\quad
+ (\ell-1,n+1),
+\]
+故 $\ell+n$ 在该单模交换 Hamiltonian 下守恒；联合二维格因而分解成彼此不耦合的守恒扇区。第二，$n=0$ 时第二项自动因 $\sqrt n=0$ 消失，所以光子 Fock 空间的下边界来自玻色产生湮灭代数本身，而不需要另加边界条件。
+\end{proof}
+
+
+\subsection{平移对称与误差控制}
+
+前面得到的通道链中，每条边的耦合 $\mathcal G_\ell$ 和失谐 $\Delta_\ell$ 都可能不同。若把通道编号整体平移一格以后，动力学几乎不变，就可以使用均匀格的解析解。为检查这一点，需要分别比较各条边的耦合差别，以及这些失谐差别在作用时间内积累的相位。若显著占据范围为 $|\ell|\le L_{\rm occ}$，作用时间为 $T$，定义
+\begin{align*}
+\mathcal G_*&=\sup_{0\le t\le T}|\mathcal G_0(t)|,\\
+\epsilon_{\mathcal G}
+&=\frac1{\mathcal G_*}
+\sup_t\max_{|\ell|\le L_{\rm occ}}|\mathcal G_\ell(t)-\mathcal G_0(t)|,\\
+\epsilon_\Delta
+&=T\max_{|\ell|\le L_{\rm occ}}|\Delta_\ell-\Delta_0|.
+\end{align*}
+二者合成局域平移不变性指标
+\begin{equation}
+\boxed{
+\epsilon_{\rm tr}=\max(\epsilon_{\mathcal G},\epsilon_\Delta)\ll1.}
+\label{eq:master_translation_invariance_conditions}
+\end{equation}
+$\epsilon_{\mathcal G}$ 比较不同边的矩阵元，$\epsilon_\Delta$ 比较有限时间能否分辨不同边的反冲失谐；共同失谐 $\Delta_0$ 可以有限。
+
+强作用时还必须控制小差异的累计放大。令 $\hat U_I^{(0)}$ 由把所有 $\mathcal G_\ell,\Delta_\ell$ 替成 $\mathcal G_0,\Delta_0$ 的平移对称哈密顿量生成，并用 $\hat\Pi_{L,N}$ 限制到实际电子格点与光子扇区。若 $\epsilon_{\rm tail}$ 表示该有限窗口对近似演化的尾幅误差，定义
+\begin{equation*}
+\Lambda_0\equiv\int_0^T\dd t\,|\mathcal G_0(t)|,
+\end{equation*}
+则 Duhamel 传播子误差由
+\begin{equation}
+\boxed{
+\epsilon_{\rm tr}^{\rm dyn}(L,N)
+=(\sqrt N+\sqrt{N+1})
+\left[T\mathcal G_*\epsilon_{\mathcal G}+\Lambda_0\epsilon_\Delta\right]\ll1}
+\label{eq:translation_invariance_duhamel_error}
+\end{equation}
+控制，并另需 $\epsilon_{\rm tail}\ll1$。这三个量分别控制局域参数非均匀、动力学累计和 Hilbert 空间截断，不能互相替代。
+
+\begin{proposition}[非均匀量子格的 Duhamel 控制]
+在电子有限工作窗与光子数 $n\le N$ 内，用统一边耦合和失谐代替真实值。若两传播子存在，窗内误差不超过\eqnrefs{eq:translation_invariance_duhamel_error}的累计参数，参考态传播到窗外的余项积分需另加。局部边差小不足以保证任意长时间传播精确。
+\end{proposition}
+\begin{proof}
+令 $\hat H_I^{(0)}(t)$ 表示把所有保留边上的
+$\mathcal G_\ell,\Delta_\ell$ 替换为 $\mathcal G_0,\Delta_0$ 后得到的参考 Hamiltonian，并定义
+\[
+ \hat R_{\rm tr}(t)=\hat H_I(t)-\hat H_I^{(0)}(t).
+\]
+真实传播子与参考传播子满足 Duhamel 恒等式
+\begin{equation*}
+ \hat U_I(T,0)-\hat U_I^{(0)}(T,0)
+ =-\frac{\ii}{\hbar}\int_0^T\dd t\,
+ \hat U_I(T,t)\hat R_{\rm tr}(t)\hat U_I^{(0)}(t,0).
+\end{equation*}
+因此对初态限制在电子窗口 $|\ell|\le L$、光子数 $0\le n\le N$ 的投影
+$\hat\Pi_{L,N}$，传播误差先满足严格范数界
+\begin{align*}
+ \left\|
+ [\hat U_I(T,0)-\hat U_I^{(0)}(T,0)]\hat\Pi_{L,N}
+ \right\|
+ &\le\frac1\hbar\int_0^T\dd t\,
+ \left\|\hat R_{\rm tr}(t)\hat\Pi_{L,N}\right\|,
+\end{align*}
+其中使用了两个传播子的幺正性。
+
+余项的关键是逐边复系数
+\[
+ r_\ell(t)
+ =\mathcal G_\ell(t)\ee^{\ii\Delta_\ell t}
+  -\mathcal G_0(t)\ee^{\ii\Delta_0t}.
+\]
+把“矩阵元变化”和“相位变化”分开：
+\begin{align*}
+ r_\ell
+ &=[\mathcal G_\ell-\mathcal G_0]\ee^{\ii\Delta_\ell t}
+ +\mathcal G_0\ee^{\ii\Delta_0t}
+ \left[\ee^{\ii(\Delta_\ell-\Delta_0)t}-1\right].
+\end{align*}
+由 $|\ee^{\ii x}-1|\le |x|$，对 $0\le t\le T$ 有
+\begin{align*}
+ |r_\ell(t)|
+ &\le |\mathcal G_\ell-\mathcal G_0|
+ +|\mathcal G_0(t)|t|\Delta_\ell-\Delta_0|\\
+ &\le \mathcal G_*\epsilon_{\mathcal G}
+ +|\mathcal G_0(t)|\epsilon_\Delta.
+\end{align*}
+两个小量控制不同的物理效应：$\epsilon_{\mathcal G}$ 控制每个顶角强度，$\epsilon_\Delta$ 控制有限作用时间内积累的相位差。
+
+再定义窗口内的加权电子平移算符
+\[
+ \hat S_r(t)=\sum_{|\ell|\le L}r_\ell(t)|\ell+1\rangle\langle\ell|.
+\]
+对任意电子态 $|\psi\rangle=\sum_\ell\psi_\ell|\ell\rangle$，
+\begin{align*}
+ \|\hat S_r|\psi\rangle\|^2
+ &=\sum_\ell |r_\ell|^2|\psi_\ell|^2
+ \le \left(\max_\ell|r_\ell|^2\right)\|\psi\|^2,
+\end{align*}
+故 $\|\hat S_r\|\le\max_\ell|r_\ell|$。光子截断则给
+\[
+ \|\hat a\hat\Pi_N\|=\sqrt N,
+ \qquad
+ \|\hat a^\dagger\hat\Pi_N\|=\sqrt{N+1}.
+\]
+于是
+\begin{align*}
+ \frac1\hbar\|\hat R_{\rm tr}(t)\hat\Pi_{L,N}\|
+ &\le(\sqrt N+\sqrt{N+1})\max_{|\ell|\le L}|r_\ell(t)|\\
+ &\le(\sqrt N+\sqrt{N+1})
+ \left[\mathcal G_*\epsilon_{\mathcal G}
+ +|\mathcal G_0(t)|\epsilon_\Delta\right].
+\end{align*}
+对时间积分并使用
+$\Lambda_0=\int_0^T\dd t\,|\mathcal G_0(t)|$，得到
+\begin{align*}
+ \left\|
+ [\hat U_I-\hat U_I^{(0)}]\hat\Pi_{L,N}
+ \right\|
+ &\le(\sqrt N+\sqrt{N+1})
+ \left[T\mathcal G_*\epsilon_{\mathcal G}
+ +\Lambda_0\epsilon_\Delta\right],
+\end{align*}
+即正文\eqnrefs{eq:translation_invariance_duhamel_error} 所采用的累计误差控制量。这个界只比较两个有限窗口内的动力学；真实态离开该窗口的概率幅还要由独立的 $\epsilon_{\rm tail}$ 控制，因此“平移近似准确”和“截断窗口足够大”是两个不同命题。
+\end{proof}
+
+
+在这一约化成立后，量子单程交换强度自然定义为
+\begin{equation}
+\boxed{
+g_{\mathrm Q}=-\ii\int_{t_i}^{t_f}\dd t\,\mathcal G_0(t)\ee^{\ii\Delta_0t},}
+\label{eq:single_pass_quantum_coupling_general}
+\end{equation}
+它无量纲，模给出单量子交换尺度，辐角保存完整作用窗中的相干相位。若目标模处于相干态 $\alpha_{\rm coh}(t)$，经典场来自量子单模的受控缩放
+\begin{equation}
+\boxed{
+|A|\to\infty,
+\qquad \mathcal G_\ell\to0,
+\qquad A\mathcal G_\ell\ \text{固定},}
+\label{eq:coherent_classical_limit}
+\end{equation}
+其中 $\alpha_{\rm coh}(t)=Af(t)$。对应经典同步交换参数为
+\begin{equation}
+\boxed{
+\beta=-\ii\int_{t_i}^{t_f}\dd t\,
+\alpha_{\rm coh}(t)\mathcal G_0(t)\ee^{\ii\Delta_0t}.}
+\label{eq:classical_synchronous_coupling_from_quantum}
+\end{equation}
+若希望进一步写成单个常数相干幅乘以量子单程耦合，取参考幅 $\alpha_0$，并令
+\begin{equation*}
+ w(t)=\mathcal G_0(t)\ee^{\ii\Delta_0t},
+ \qquad
+ A_w=\int_{t_i}^{t_f}\dd t\,|w(t)|,
+\end{equation*}
+定义包络变化控制量
+\begin{equation*}
+ \epsilon_\alpha
+ =\frac{\int\dd t\,|w(t)|\,|\alpha_{\rm coh}(t)-\alpha_0|}
+ {|\alpha_0|A_w}\ll1.
+\end{equation*}
+则
+\begin{equation*}
+ \beta=\alpha_0g_{\mathrm Q}+\delta\beta,
+ \qquad
+ |\delta\beta|\le\epsilon_\alpha|\alpha_0|A_w.
+\end{equation*}
+若相位匹配因子 $C_w\equiv|\int w\,\dd t|/A_w$ 不接近零，则相对误差还满足 $|\delta\beta|/|\alpha_0g_{\mathrm Q}|\le\epsilon_\alpha/C_w$。因此 $\beta=\alpha_0g_{\mathrm Q}$ 是包络缓变且不存在强相消时的受控首项，而不是一般恒等式。
+
+在有限反冲仍保留时，经典电子振幅满足
+\begin{equation}
+\boxed{
+\ii\dot c_\ell
+=\alpha_{\rm coh}(t)\mathcal G_{\ell-1}(t)\ee^{\ii\Delta_{\ell-1}t}c_{\ell-1}
++\alpha_{\rm coh}^*(t)\mathcal G_\ell^*(t)\ee^{-\ii\Delta_\ell t}c_{\ell+1}.}
+\label{eq:classical_recoil_chain_from_master}
+\end{equation}
+其平移对称传播误差不再带 $\sqrt n$，而由实际经典幅度直接放大：
+\begin{equation}
+\boxed{
+\epsilon_{\rm tr,cl}^{\rm dyn}
+=2\int_{t_i}^{t_f}\dd t\,
+\max_{|\ell|\le L_{\rm occ}}
+\left|\alpha_{\rm coh}(t)
+[\mathcal G_\ell\ee^{\ii\Delta_\ell t}-\mathcal G_0\ee^{\ii\Delta_0t}]
+\right|\ll1.}
+\label{eq:classical_translation_duhamel_error}
+\end{equation}
+因此量子与经典均匀格共享同一个局域几何判据，但累计误差分别由 Fock 占据数与经典相干幅放大。
+
+\begin{proposition}[经典相干格的均匀化误差]
+设经典场格的实际、参考边系数差在所考察时间窗可积。加权双向位移算符的范数至多为两倍最大边差；Duhamel 积分由此给\eqnrefs{eq:classical_translation_duhamel_error}。有限占据窗之外的边差贡献须另计入。
+\end{proposition}
+\begin{proof}
+量子联合格的一般动力学方程同时含电子格点编号 $\ell$ 与光子数 $n$。对单个目标模式，交换项的典型矩阵元具有
+\[
+\mathcal G_\ell(t)
+\sqrt{n}\,
+|\ell+1,n-1\rangle\langle\ell,n|
+\]
+以及其厄米共轭。若目标模式制备在相干态 $|\alpha_{\rm coh}\rangle$，先在位移绘景中写
+\[
+\hat a
+=
+\alpha_{\rm coh}(t)
++\delta\hat a.
+\]
+保留平均场部分得到电子有效相互作用
+\[
+\hat H_{I,\rm cl}(t)
+=
+\hbar\sum_\ell
+\left[
+\alpha_{\rm coh}(t)
+\mathcal G_\ell(t)
+\ee^{+\ii\Delta_\ell t}
+|\ell+1\rangle\langle\ell|
++\mathrm{H.c.}
+\right].
+\]
+因此经典极限不是把 $\sqrt n$ 人工换成一个常数，而是由位移后的平均场项从完整量子模式中分离出来；涨落项的可忽略条件由前面的相干态经典极限误差界控制。
+
+展开电子态
+\[
+|\psi_e(t)\rangle
+=
+\sum_{\ell\in\mathbb Z}
+c_\ell(t)|\ell\rangle,
+\]
+代入
+\[
+\ii\hbar\partial_t|\psi_e\rangle
+=
+\hat H_{I,\rm cl}|\psi_e\rangle.
+\]
+左乘 $\langle\ell|$。来自左邻边 $\ell-1\to\ell$ 的矩阵元为
+\[
+\hbar
+\alpha_{\rm coh}
+\mathcal G_{\ell-1}
+\ee^{+\ii\Delta_{\ell-1}t}
+c_{\ell-1},
+\]
+来自右邻边 $\ell+1\to\ell$ 的厄米共轭矩阵元为
+\[
+\hbar
+\alpha_{\rm coh}^*
+\mathcal G_\ell^*
+\ee^{-\ii\Delta_\ell t}
+c_{\ell+1}.
+\]
+于是
+\[
+\boxed{
+\ii\dot c_\ell
+=
+\alpha_{\rm coh}\mathcal G_{\ell-1}
+\ee^{+\ii\Delta_{\ell-1}t}c_{\ell-1}
++
+\alpha_{\rm coh}^*\mathcal G_\ell^*
+\ee^{-\ii\Delta_\ell t}c_{\ell+1},
+}
+\]
+这就是正文\eqnrefs{eq:classical_recoil_chain_from_master}。
+
+下一步才讨论均匀平移格。定义参考 Hamiltonian
+\[
+\hat H_{0,\rm cl}(t)
+=
+\hbar\sum_\ell
+\left[
+\alpha_{\rm coh}(t)\mathcal G_0(t)
+\ee^{+\ii\Delta_0 t}
+|\ell+1\rangle\langle\ell|
++\mathrm{H.c.}
+\right]
+\]
+以及余项
+\[
+\hat R_{\rm tr,cl}(t)
+=
+\hat H_{\rm cl}(t)-\hat H_{0,\rm cl}(t).
+\]
+在实际占据窗口 $|\ell|\le L_{\rm occ}$ 中，
+\[
+\hat R_{\rm tr,cl}
+=
+\hbar\sum_\ell
+\left[
+\alpha_{\rm coh}
+\left(
+\mathcal G_\ell\ee^{+\ii\Delta_\ell t}
+-\mathcal G_0\ee^{+\ii\Delta_0t}
+\right)
+|\ell+1\rangle\langle\ell|
++\mathrm{H.c.}
+\right].
+\]
+因此
+\[
+\frac1\hbar
+\|\hat R_{\rm tr,cl}(t)\|
+\le
+2
+\max_{|\ell|\le L_{\rm occ}}
+\left|
+\alpha_{\rm coh}(t)
+\left[
+\mathcal G_\ell(t)\ee^{+\ii\Delta_\ell t}
+-\mathcal G_0(t)\ee^{+\ii\Delta_0t}
+\right]
+\right|.
+\]
+
+令 $\hat U$ 与 $\hat U_0$ 分别由真实格和均匀参考格生成。Duhamel 恒等式给
+\[
+\hat U-\hat U_0
+=
+-\frac{\ii}{\hbar}
+\int_{t_i}^{t_f}\dd t\,
+\hat U(t_f,t)
+\hat R_{\rm tr,cl}(t)
+\hat U_0(t,t_i).
+\]
+利用幺正性，
+\[
+\|\hat U-\hat U_0\|
+\le
+2\int_{t_i}^{t_f}\dd t\,
+\max_{|\ell|\le L_{\rm occ}}
+\left|
+\alpha_{\rm coh}(t)
+\left[
+\mathcal G_\ell(t)\ee^{+\ii\Delta_\ell t}
+-\mathcal G_0(t)\ee^{+\ii\Delta_0t}
+\right]
+\right|.
+\]
+右端就是正文\eqnrefs{eq:classical_translation_duhamel_error} 的有限时间控制量。
+
+再把括号拆成耦合变化与失谐变化，
+\begin{align*}
+\mathcal G_\ell\ee^{+\ii\Delta_\ell t}
+-\mathcal G_0\ee^{+\ii\Delta_0t}
+&=
+(\mathcal G_\ell-\mathcal G_0)\ee^{+\ii\Delta_\ell t}\\
+&\quad+
+\mathcal G_0
+\left[
+\ee^{+\ii(\Delta_\ell-\Delta_0)t}-1
+\right]
+\ee^{+\ii\Delta_0t},
+\end{align*}
+并使用
+\[
+|\ee^{+\ii x}-1|
+\le|x|,
+\]
+便得到更直观的充分条件：
+\[
+\max_\ell
+\left|
+\frac{\mathcal G_\ell-\mathcal G_0}{\mathcal G_0}
+\right|
+\ll1,
+\qquad
+T\max_\ell|\Delta_\ell-\Delta_0|
+\ll1.
+\]
+所以经典均匀格需要同时满足“相邻边耦合近似相同”和“有限作用时间内逐边失谐不可分辨”；二者分别来自矩阵元结构与真实电子色散，不能用一个笼统的“低反冲”条件替代。
+\end{proof}
+
+\input{content/FreeElectronQuantumOptics/chapter-end/electron-recoil-channels-calculations.tex}

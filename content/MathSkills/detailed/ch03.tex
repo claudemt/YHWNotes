@@ -17,7 +17,7 @@
 \begin{workedexample}[\(L^2\) 函数不能按点取值]
 在 \(L^2(0,1)\) 中令 \(f_n(x)=\max(1-nx,0)\)。计算 \(f_n(0)\) 与范数，并判断“取 \(x=0\) 处的值”能否成为 \(L^2\) 上的连续线性泛函。
 
-\textbf{解.} 每个 \(f_n\) 都连续且 \(f_n(0)=1\)，但
+\textbf{解。} 每个 \(f_n\) 都连续且 \(f_n(0)=1\)，但
 \[
 \|f_n\|_2^2=\int_0^{1/n}(1-nx)^2\dd x
 =\frac1{3n}\longrightarrow0.
@@ -943,7 +943,8 @@ K^{-1}y\sim\sum_n\frac{\langle y,v_n\rangle}{\sigma_n}u_n
 设 $K:\mathcal H_1\to\mathcal H_2$ 紧。存在正奇异值 $\sigma_n$ 与正交归一系 $u_n\in\mathcal H_1$、$v_n\in\mathcal H_2$，满足 $Ku_n=\sigma_nv_n$、$K^*v_n=\sigma_nu_n$，且 $Kx=\sum_n\sigma_n\langle x,u_n\rangle v_n$，在向量范数中收敛。
 \end{theorem}
 \begin{proof}
-设 $K:\mathcal H_1\to\mathcal H_2$ 紧。由 $K^*K$ 自伴、正且紧，紧自伴算子的谱定理给出正本征值 $\{\sigma_n^2\}$ 与正交归一本征向量 $\{u_n\}$，
+把 $K$ 的拉伸和方向变化分开，需要先求 $K^*K$ 的本征系。
+这个算子自伴、正且紧，因此紧自伴谱定理给出全部正本征值 $\{\sigma_n^2\}$ 与正交归一本征向量 $\{u_n\}$，
 \begin{equation*}
 K^*Ku_n=\sigma_n^2u_n,
 \qquad
@@ -955,7 +956,7 @@ K^*Ku_n=\sigma_n^2u_n,
 \begin{equation*}
 v_n:=\frac{Ku_n}{\sigma_n}.
 \end{equation*}
-验证 $\{v_n\}$ 正交归一。由定义
+虽然 $K$ 一般不保持内积，按各自奇异值归一化后的像却仍正交。利用伴随的定义和本征方程，得到
 \begin{align*}
 \langle v_m,v_n\rangle
 &=\Bigl\langle\frac{Ku_m}{\sigma_m},\frac{Ku_n}{\sigma_n}\Bigr\rangle\\
@@ -965,7 +966,8 @@ v_n:=\frac{Ku_n}{\sigma_n}.
 &=\frac{\sigma_m}{\sigma_n}\langle u_m,u_n\rangle\\
 &=\delta_{mn}.
 \end{align*}
-第三行用到伴随的定义 $\langle Ku_m,Ku_n\rangle=\langle K^*Ku_m,u_n\rangle$，第四行用到本征方程，最后一行在 $m=n$ 时 $\sigma_m/\sigma_n=1$。验证伴随作用。由 $K^*Ku_n=\sigma_n^2u_n$，
+当 $m\ne n$ 时，本征向量的正交性使内积为零；当 $m=n$ 时，剩下的比值为 $1$。
+同一本征方程还确定了伴随对像向量的作用：
 \begin{align*}
 K^*v_n
 &=K^*\frac{Ku_n}{\sigma_n}
@@ -973,11 +975,20 @@ K^*v_n
 =\frac{1}{\sigma_n}\sigma_n^2u_n
 =\sigma_nu_n.
 \end{align*}
-最后证 $\{u_n\}$ 与 $\ker K$ 给出定义域中相关子空间的正交分解。若 $x$ 与所有 $u_n$ 及 $\ker K$ 正交，由 $\ker K=\ker K^*K$（因 $\|Kx\|^2=\langle K^*Kx,x\rangle$，$Kx=0$ 当且仅当 $K^*Kx=0$），$x$ 落在 $K^*K$ 零空间中，故 $K^*Kx=0$，从而
+还需确认这些向量没有漏掉任何能被 $K$ 作用的方向。
+紧自伴谱定理给出 $\mathcal H_1=\ker(K^*K)\oplus\overline{\operatorname{span}\{u_n\}}$，而
 \begin{equation*}
-\|Kx\|^2=\langle K^*Kx,x\rangle=0,
+\|Kx\|^2=\langle K^*Kx,x\rangle
 \end{equation*}
-即 $Kx=0$，于是 $x\in\ker K$。但 $x$ 已与 $\ker K$ 正交，故 $x=0$。因此 $\{u_n\}\cup\ker K$ 是 $\mathcal H_1$ 中相关子空间的正交基，SVD 由此成立。
+说明 $\ker(K^*K)=\ker K$。所以每个 $x\in\mathcal H_1$ 都可写为
+\[
+x=x_0+\sum_n\langle x,u_n\rangle u_n,\qquad x_0\in\ker K.
+\]
+该级数在 $\mathcal H_1$ 的范数中收敛；$K$ 有界，故可作用于部分和后取极限，得到
+\[
+Kx=\sum_n\sigma_n\langle x,u_n\rangle v_n.
+\]
+这就同时证明了展开式和向量范数收敛。零空间中的分量被 $K$ 消去，其余分量各自按 $\sigma_n$ 缩放后送到 $v_n$ 方向。
 \end{proof}
 
 
@@ -999,26 +1010,26 @@ T=U|T|,
 设 $T:\mathcal H_1\to\mathcal H_2$ 有界，$|T|=(T^*T)^{1/2}$。存在唯一部分等距 $U$，满足 $T=U|T|$、$\ker U=\ker T$；其初始与终止空间分别为 $\overline{\operatorname{Ran}|T|}$ 和 $\overline{\operatorname{Ran}T}$。
 \end{theorem}
 \begin{proof}
-先在 $\operatorname{Ran}|T|$ 上定义
+要构造 $U$，应让它把 $|T|x$ 送到 $Tx$；关键是两个不同的 $x$ 若给出同一个 $|T|x$，不能产生不同的像。因此先在 $\operatorname{Ran}|T|$ 上定义
 \[
 U_0(|T|x):=Tx.
 \]
-需验证此定义良定。若 $|T|x=0$，则由 $|T|^2=T^*T$，
+由 $|T|^2=T^*T$，对任意 $x$ 都有
 \begin{align*}
 \|Tx\|^2
 &=\langle Tx,Tx\rangle
 =\langle T^*Tx,x\rangle
 =\langle |T|^2x,x\rangle\\
 &=\langle |T|x,|T|x\rangle
-=\||T|x\|^2=0,
+=\||T|x\|^2,
 \end{align*}
-故 $Tx=0$。因此若 $|T|x_1=|T|x_2$，则
+所以 $|T|x=0$ 恰好等价于 $Tx=0$。若 $|T|x_1=|T|x_2$，则
 \[
 |T|(x_1-x_2)=0,
 \]
 由上式 $T(x_1-x_2)=0$，即 $Tx_1=Tx_2$，故定义与代表元无关。
 
-再验证等距性。在 $\operatorname{Ran}|T|$ 上，
+同一个范数恒等式还证明了 $U_0$ 的等距性。在 $\operatorname{Ran}|T|$ 上，
 \begin{align*}
 \|U_0(|T|x)\|
 &=\|Tx\|\\
@@ -1038,7 +1049,7 @@ U|T|x=Tx,
 \]
 即 $T=U|T|$，得到\eqnrefs{eq:operator-polar-decomposition}。
 
-最后证唯一性。设 $T=U'|T|$ 是另一极分解，则对任意 $x$，
+构造后还需检查唯一性。设 $T=U'|T|$ 是另一满足同一核条件的极分解，则对任意 $x$，
 \[
 U'|T|x=Tx=U|T|x,
 \]

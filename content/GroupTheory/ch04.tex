@@ -110,17 +110,7 @@ h^{-1}g\cdot x=x,
 即 $h^{-1}g\in\operatorname{Stab}_G(x)$，因此两陪集相同，故单射。有限情形再取集合基数即得\eqnrefs{eq:orbit-stabilizer}。
 \end{proof}
 
-证明中的关键映射是
-\[
-\{g\operatorname{Stab}_G(x)\mid g\in G\}\longrightarrow \operatorname{Orb}_G(x),
-\qquad g\operatorname{Stab}_G(x)\longmapsto g\cdot x.
-\]
-这里再强调一次：斜线记号若偶尔写成 $G/\operatorname{Stab}_G(x)$，只应读作“稳定子的左陪集集合”，除非已经额外证明 $\operatorname{Stab}_G(x)\mathrel{\trianglelefteq} G$，否则不能把它当作商群。
-为什么要用陪集而不是单独的 $g$？因为不同群元可能把 $x$ 送到同一点。若 $g_1\cdot x=g_2\cdot x$，则
-\[
-g_2^{-1}g_1\cdot x=x,
-\]
-所以 $g_2^{-1}g_1\in\operatorname{Stab}_G(x)$，恰好说明 $g_1$ 与 $g_2$ 在同一个左陪集里。也就是说，“所有把 $x$ 送到同一位置的群元”自动聚成一个稳定子陪集。
+陪集记录的是所有把 $x$ 送到同一点的群元；稳定子越大，同一位置就有越多种操作可以实现。
 
 有限群情形于是得到最常用的计数式
 \[
@@ -158,7 +148,7 @@ g_2^{-1}g_1\cdot x=x,
 \[
 L_g(x)=gx.
 \]
-由消去律，$L_g:G\to G$ 为双射，因此 $L_g\in\operatorname{Sym}(G)$。定义
+$L_{g^{-1}}$ 是 $L_g$ 的逆映射，所以 $L_g:G\to G$ 为双射，因此 $L_g\in\operatorname{Sym}(G)$。定义
 \[
 L:G\to\operatorname{Sym}(G),
 \qquad
@@ -175,9 +165,9 @@ G\cong L(G)\leqslant\operatorname{Sym}(G).
 \end{proof}
 
 \begin{workedexample}[Cayley 定理的右正则版本]
-定义右作用 $R_g(x)=xg^{-1}$。证明 $g\mapsto R_g$ 仍给出 $G$ 到 $\operatorname{Sym}(G)$ 的单射同态。解释为什么若直接取 $x\mapsto xg$，乘法次序会反转。
+定义右平移 $R_g(x)=xg^{-1}$，并把 $g\cdot x=R_g(x)$ 视为一个左作用。证明 $g\mapsto R_g$ 仍给出 $G$ 到 $\operatorname{Sym}(G)$ 的单射同态。解释为什么若直接取 $x\mapsto xg$，乘法次序会反转。
 
-\emph{解答.} 定义 $R_g(x)=xg^{-1}$。则
+\textbf{解。} 定义 $R_g(x)=xg^{-1}$。则
 \begin{align*}
 (R_g\circ R_h)(x)
 &=R_g(xh^{-1})\\
@@ -226,13 +216,50 @@ X\cong G/H,\qquad g\cdot x_0\longmapsto gH.
 \end{proposition}
 
 \begin{proof}
-轨道--稳定子定理已给出双射 $G/H\to\operatorname{Orb}(x_0)=X$（传递性使轨道等于全空间）。它是 $G$-等变的：$g'\cdot(gH\mapsto g\cdot x_0)=(g'gH\mapsto g'g\cdot x_0)$。
+取 $x_0\in X$，令 $H=\operatorname{Stab}_G(x_0)$。
+轨道--稳定子双射 $\theta(gH)=g\cdot x_0$ 在传递情形覆盖整个 $X$，而
+$\theta(kgH)=k\cdot\theta(gH)$，所以它同时保持 $G$ 的作用。
+反之，$G$ 左乘作用在 $G/H$ 上总是传递的，因此与它等价的 $X$ 也传递。
 
-等价性：若 $\varphi:G/H_1\to G/H_2$ 是 $G$-等变双射，设 $\varphi(eH_1)=g_0H_2$。则对任意 $g$，
+现在比较 $G/H_1$ 与 $G/H_2$。等变双射保持点稳定子：
+$k$ 固定 $x$ 当且仅当它固定 $\varphi(x)$，反向使用 $\varphi^{-1}$。
+若 $\varphi(H_1)=g_0H_2$，则
 \[
-\varphi(gH_1)=\varphi(g\cdot eH_1)=g\cdot\varphi(eH_1)=g g_0 H_2.
+H_1=\operatorname{Stab}(H_1)=\operatorname{Stab}(g_0H_2)
+=g_0H_2g_0^{-1}.
 \]
-$\varphi$ 良定义要求 $gH_1=eH_1\Rightarrow gg_0H_2=g_0H_2$，即 $H_1\subseteq g_0H_2g_0^{-1}$。由 $\varphi^{-1}$ 同理得反向包含，故 $H_1=g_0H_2g_0^{-1}$。
+反过来，若这个共轭关系成立，定义
+\[
+\varphi(gH_1)=gg_0H_2.
+\]
+若换代表为 $gh$（$h\in H_1$），则
+$ghg_0H_2=gg_0(g_0^{-1}hg_0)H_2=gg_0H_2$，所以良定义。
+其逆为 $kH_2\mapsto kg_0^{-1}H_1$，同样良定义；两映射与左乘作用交换。
+于是共轭子群恰好对应等价的传递作用。
+\end{proof}
+
+
+\begin{proposition}[作用核与陪集作用]
+设 $G$ 作用在 $X$ 上，对应同态为 $\rho:G\to\operatorname{Sym}(X)$。则
+\[
+\operatorname{Ker}\rho=\bigcap_{x\in X}\operatorname{Stab}_G(x)
+\mathrel{\trianglelefteq}G.
+\]
+特别地，左乘陪集作用 $G\curvearrowright G/H$ 的核为
+\[
+\bigcap_{g\in G}gHg^{-1},
+\]
+即包含在 $H$ 中的最大正规子群。陪集作用忠实当且仅当这个交平凡；它自由当且仅当 $H=\{e\}$。
+\label{prop:action-kernel-core}
+\end{proposition}
+
+\begin{proof}
+$k\in\operatorname{Ker}\rho$ 的含义是它固定所有点，正是交集中各个条件同时成立。
+正规性也可直接检查：若 $k$ 固定所有点，则
+$(gkg^{-1})\cdot x=g\cdot(k\cdot(g^{-1}\cdot x))=x$。
+在陪集作用中，$k$ 固定 $gH$ 当且仅当 $g^{-1}kg\in H$，所以该点的稳定子是 $gHg^{-1}$。
+若 $N\mathrel{\trianglelefteq}G$ 且 $N\le H$，则 $N=gNg^{-1}\le gHg^{-1}$ 对每个 $g$ 成立，
+说明 $N$ 包含在上述交中。最后，忠实性由核刻画；自由性要求所有点稳定子平凡，特别是 $H$ 这个点的稳定子 $H$ 平凡。
 \end{proof}
 
 \begin{theorem}[$p$-群作用的不动点定理]
@@ -288,7 +315,15 @@ $|G|=p^2$ 的群是 Abel 群，因而同构于 $C_{p^2}$ 或 $C_p\times C_p$。
 \]
 因 $z,z'\in Z(G)$ 与一切元素交换。故 $G$ Abel，矛盾于 $|Z(G)|=p<p^2$。因此 $|Z(G)|=p$ 不可能，$G$ 必 Abel。
 
-Abel $p^2$ 阶群的结构：取 $G$ 中最大阶元素 $g$。若 $\operatorname{ord}(g)=p^2$，则 $G\cong C_{p^2}$。若 $\operatorname{ord}(g)=p$，取与 $g$ 线性无关（在 $G$ 作为 $\mathbb F_p$-向量空间的意义下）的 $h$，则 $G\cong\langle g\rangle\times\langle h\rangle\cong C_p\times C_p$。
+再确定同构类型。若有 $p^2$ 阶元素，它生成整个群，故 $G\cong C_{p^2}$。
+否则每个非单位元的阶均为 $p$。取 $g\ne e$，再取 $h\notin\langle g\rangle$。
+两个 $p$ 阶循环子群的交只能为平凡群，否则交含一个 $p$ 阶元而使两子群相同。
+由于 $G$ 交换，映射
+\[
+C_p\times C_p\longrightarrow G,\qquad (i,j)\longmapsto g^ih^j
+\]
+是同态；若 $g^ih^j=e$，则 $g^i=h^{-j}$ 属于上述交，所以 $i=j=0$（模 $p$）。
+它因而单射，定义域和值域均有 $p^2$ 个元素，故为同构。
 \end{proof}
 
 \begin{example}[{有限位置集合中的对称不动点}]
@@ -338,42 +373,25 @@ $C_3$ 在三角形顶点上的作用就没有不动点。
 这条公式的含义是：\emph{不等价构型数等于"平均不动点数"。} 每个群元各自数一下它保持不动的元素有多少个，再对所有群元取平均。
 
 \par\medskip
-\begin{proof}[Burnside 引理的证明：双重计数]
-先构造二元组集合。对每个 $x\in X$，设 $r_x$ 为使 $x$ 不动的群元个数，即 $r_x=\lvert\operatorname{Stab}_G(x)\rvert$。考虑二元组集合
+\begin{proof}[证明（双重计数）]
+同一个不动点条件可以从群元和点两侧计数。考虑
 \[
-\mathcal P=\{(g,x)\mid g\in G,\ x\in X,\ g\cdot x=x\}.
+\mathcal P=\{(g,x)\in G\times X\mid g\cdot x=x\}.
 \]
-这是所有"群元固定某元素"的配对。
-
-随后按 $g$ 计数。固定 $g\in G$，满足 $g\cdot x=x$ 的 $x$ 恰有 $\lvert X^g\rvert$ 个（$g$ 的不动点集大小）。对 $g$ 求和：
+固定 $g$ 时有 $|X^g|$ 个点，固定 $x$ 时有 $|\operatorname{Stab}_G(x)|$ 个群元，故
 \[
-\lvert\mathcal P\rvert=\sum_{g\in G}\lvert X^g\rvert.
+\sum_{g\in G}|X^g|=|\mathcal P|=\sum_{x\in X}|\operatorname{Stab}_G(x)|.
 \]
-
-接着按 $x$ 计数。固定 $x\in X$，使 $x$ 不动的 $g$ 恰有 $r_x=\lvert\operatorname{Stab}_G(x)\rvert$ 个（$x$ 的稳定子大小）。对 $x$ 求和：
+将右侧按轨道分组。若 $y=h\cdot x$，则 $k$ 固定 $y$ 当且仅当
+$h^{-1}kh$ 固定 $x$，所以
+$\operatorname{Stab}_G(y)=h\operatorname{Stab}_G(x)h^{-1}$。
+同一轨道中各点稳定子的阶相同，而轨道--稳定子定理给出
 \[
-\lvert\mathcal P\rvert=\sum_{x\in X}r_x=\sum_{x\in X}\lvert\operatorname{Stab}_G(x)\rvert.
+\sum_{y\in\operatorname{Orb}(x)}|\operatorname{Stab}_G(y)|
+=|\operatorname{Orb}(x)|\frac{|G|}{|\operatorname{Orb}(x)|}=|G|.
 \]
-因此
-\[
-\sum_{g\in G}\lvert X^g\rvert=\sum_{x\in X}\lvert\operatorname{Stab}_G(x)\rvert.
-\]
-
-再按轨道分组。对同一轨道中的元素，稳定子大小相同：若 $y=h\cdot x$，则 $\operatorname{Stab}(y)=h\operatorname{Stab}(x)h^{-1}$（共轭子群，同阶）。对轨道 $\operatorname{Orb}(x)$ 中每个元素，由轨道--稳定子定理
-\[
-\lvert\operatorname{Stab}_G(x)\rvert=\frac{\lvert G\rvert}{\lvert\operatorname{Orb}_G(x)\rvert}.
-\]
-故该轨道中所有元素的 $r_x$ 之和为
-\[
-\lvert\operatorname{Orb}_G(x)\rvert\cdot\frac{\lvert G\rvert}{\lvert\operatorname{Orb}_G(x)\rvert}=\lvert G\rvert.
-\]
-关键观察：轨道大小与稳定子大小恰好互消，每个轨道贡献恰好 $\lvert G\rvert$。
-
-再汇总。设轨道总数为 $\lvert X/G\rvert$，每个轨道贡献 $\lvert G\rvert$，所以
-\[
-\sum_{g\in G}\lvert X^g\rvert=\lvert G\rvert\cdot\lvert X/G\rvert.
-\]
-两边除以 $\lvert G\rvert$ 即得 Burnside 公式。
+每个轨道贡献同一个 $|G|$，于是
+$\sum_g|X^g|=|G||X/G|$。除以群阶即得结论。
 \end{proof}\par\medskip
 
 Burnside 引理的加权形式是 Pólya 计数定理。若每个位置可染 $c$ 种颜色，记 $c_i(g)$ 为置换 $g$ 中长度为 $i$ 的循环数，则染色轨道的生成函数为
@@ -384,13 +402,7 @@ Burnside 引理的加权形式是 Pólya 计数定理。若每个位置可染 $c
 \begin{equation*}
 Z_G(t_1,\dots,t_n)=\frac{1}{|G|}\sum_{g\in G}t_1^{c_1(g)}t_2^{c_2(g)}\cdots t_n^{c_n(g)},
 \end{equation*}
-后，任意染色问题都可由代换 $t_i=x_1^i+\cdots+x_c^i$ 读出。另一方面，$\chi_{\mathrm{perm}}(g)=|X^g|$ 是置换表示的特征标，因此 Burnside 引理等价于
-\begin{equation*}
-|X/G|=\langle\chi_{\mathrm{perm}},\chi_{\mathrm{triv}}\rangle=\frac{1}{|G|}\sum_g\chi_{\mathrm{perm}}(g).
-\end{equation*}
-也就是说，轨道数正是置换表示中平凡表示的重数。
-
-\begin{example}[{用 Burnside 引理数正方形染色}]
+后，任意染色问题都可由代换 $t_i=x_1^i+\cdots+x_c^i$ 读出。\begin{example}[{用 Burnside 引理数正方形染色}]
 正方形四个顶点用两种颜色着色，在 $D_4$ 的对称操作下有多少种不等价方案？
 
 不加群作用时共有 $2^4=16$ 种着色。$D_4$ 有 $8$ 个元素，逐个数不动点：
@@ -414,7 +426,7 @@ Burnside 引理给出
 \begin{workedexample}[循环群的子群]
 设 $G=C_n=\left\langle a\right\rangle$。证明：对每个正因子 $d\mid n$，$G$ 恰有一个 $d$ 阶子群，并写出其生成元。
 
-\emph{解答.} 写 $n=dq$。元素 $a^q$ 的阶为
+\textbf{解。} 写 $n=dq$。元素 $a^q$ 的阶为
 \[
 \operatorname{ord}(a^q)=\frac{n}{\gcd(n,q)}=\frac{n}{q}=d,
 \]
@@ -438,7 +450,7 @@ a^r=a^m(a^k)^{-q'}\in H.
 \begin{workedexample}[陪集不是子群]
 设 $H\leqslant G$，$g\notin H$。证明 $gH$ 不含 $H$ 的任何元素，并说明 $gH$ 不可能是子群。
 
-\emph{解答.} 若存在 $x\in H\cap gH$，则可写 $x=gh$，其中 $h\in H$。于是
+\textbf{解。} 若存在 $x\in H\cap gH$，则可写 $x=gh$，其中 $h\in H$。于是
 \[
 g=xh^{-1}\in H,
 \]
@@ -450,7 +462,7 @@ g=xh^{-1}\in H,
 \begin{workedexample}[全为二阶元的群]
 设 $G$ 中每个非单位元都满足 $g^2=e$。证明 $G$ 为 Abel 群。
 
-\emph{解答.} 对任意 $a,b\in G$，若 $ab=e$，则 $b=a^{-1}=a$，当然有 $ab=ba$。若 $ab\neq e$，由条件 $(ab)^2=e$，所以 $(ab)^{-1}=ab$。又
+\textbf{解。} 对任意 $a,b\in G$，若 $ab=e$，则 $b=a^{-1}=a$，当然有 $ab=ba$。若 $ab\neq e$，由条件 $(ab)^2=e$，所以 $(ab)^{-1}=ab$。又
 \[
 (ab)^{-1}=b^{-1}a^{-1}=ba
 \]
@@ -470,50 +482,40 @@ Cauchy 定理是 Sylow 定理的最简单情形：只要素数 $p$ 整除群阶�
 \end{theorem}
 
 \par\medskip
-\begin{proof}[Cauchy 定理的证明：用 $p$ 元组上的 $\ZZ_p$ 作用]
-先构造 $p$ 元组集合。考虑
+\begin{proof}[证明（循环移位计数）]
+要产生 $g^p=e$ 的非单位解，考虑乘积为单位元的 $p$ 元组
 \[
-S=\{(g_1,g_2,\dots,g_p)\mid g_1g_2\cdots g_p=e\}.
+S=\{(g_1,\dots,g_p)\in G^p\mid g_1\cdots g_p=e\}.
 \]
-自由选取 $g_1,\dots,g_{p-1}\in G$（共 $\lvert G\rvert^{p-1}$ 种选择），则 $g_p=(g_1\cdots g_{p-1})^{-1}$ 唯一确定且满足乘积条件。故 $\lvert S\rvert=\lvert G\rvert^{p-1}$。
+前 $p-1$ 项可任意选取，最后一项必须为 $(g_1\cdots g_{p-1})^{-1}$，
+所以 $|S|=|G|^{p-1}$ 被 $p$ 整除。
 
-随后$\ZZ_p$ 在 $S$ 上的循环移位作用。定义循环移位
+让 $C_p$ 的生成元 $\tau$ 将元组循环左移一位。
+即使 $G$ 不交换，这个操作也保持 $S$，因为
 \[
-\tau\cdot(g_1,g_2,\dots,g_p)=(g_2,g_3,\dots,g_p,g_1).
+g_2\cdots g_pg_1=g_1^{-1}(g_1\cdots g_p)g_1=e.
 \]
-这个作用确实保持 $S$：若 $g_1g_2\cdots g_p=e$，则移位后
+又 $\tau^p$ 为恒等，故确实定义了 $C_p$ 的作用。
+它的轨道大小只能为 $1$ 或 $p$；大小为 $1$ 恰好要求
+$g_1=\cdots=g_p=g$，此时乘积条件变成 $g^p=e$。
+若满足该条件的元素数为 $N$，轨道分解便给出
 \[
-g_2g_3\cdots g_p g_1=g_1^{-1}(g_1g_2\cdots g_p)g_1=g_1^{-1}\,e\,g_1=e,
+|S|=N+p\cdot(\text{大小为 }p\text{ 的轨道数}),\qquad N\equiv0\pmod p.
 \]
-故移位后仍在 $S$ 中。循环移位 $p$ 次使每个分量回到原位，即 $\tau^p=\id()$，因此 $\ZZ_p=\langle\tau\rangle$ 作用在 $S$ 上。
-
-接着轨道分析。$\ZZ_p$ 是素数阶群，其轨道大小（即 $\ZZ_p$ 的子群指数）只能是 $1$ 或 $p$。
-\begin{itemize}
-\item \emph{大小为 $1$ 的轨道}：循环移位不变的元组，即 $g_1=g_2=\cdots=g_p=g$，条件 $g^p=e$。设这样的元组共 $N$ 个（含 $g=e$ 给出的全 $e$ 元组）。
-\item \emph{大小为 $p$ 的轨道}：其余元组，每个轨道含 $p$ 个不同元组。
-\end{itemize}
-故
-\[
-\lvert S\rvert = N + p\cdot(\text{非平凡轨道数}).
-\]
-因此 $N\equiv\lvert S\rvert\pmod{p}$。又 $\lvert S\rvert=\lvert G\rvert^{p-1}$ 且 $p\mid\lvert G\rvert$，故 $p\mid\lvert S\rvert$，从而 $p\mid N$。
-
-最后，$N$ 是满足 $g^p=e$ 的元素数。单位元计入其中，且 $p\mid N$，故 $N\ge p$；于是存在非单位元 $g$ 满足 $g^p=e$。因为 $p$ 为素数，$g$ 的阶必为 $p$。
+单位元保证 $N\ge1$，所以实际上 $N\ge p$，至少存在一个非单位解。
+它的阶整除 $p$ 且不为 $1$，只能等于 $p$，从而生成一个 $p$ 阶循环子群。
 \end{proof}\par\medskip
 
-Cauchy 定理把 Lagrange 定理对素数阶部分逆转过来；Sylow 第一定理进一步把结论提升到任意整除 $|G|$ 的素数幂。证明中“群作用加模计数”的结构也会在 Sylow 定理中再次出现。
+Cauchy 定理把 Lagrange 定理对素数阶部分逆转过来；Sylow 第一定理进一步保证与 $|G|$ 中完整 $p$ 因子同阶的子群存在。证明中“群作用加模计数”的结构也会在 Sylow 定理中再次出现。
 
-另一个重要推论是：非平凡 $p$-群 $P$ 的中心必非平凡。类方程给出
-\begin{equation*}
-|P|=|Z(P)|+\sum_{a\notin Z(P)}[P:C_P(a)],
-\end{equation*}
-右端和式中每一项 $[P:C_P(a)]$ 都是 $p$ 的幂且 $>1$（因 $a\notin Z(P)$ 故 $C_P(a)\lneq P$），故每一项都被 $p$ 整除。于是
-\begin{align*}
-|Z(P)|&=|P|-\sum_{a\notin Z(P)}[P:C_P(a)]\\
-&\equiv 0-0 \pmod{p}\\
-&\equiv 0 \pmod{p},
-\end{align*}
-又因 $Z(P)$ 非空，所以 $|Z(P)|\ge p$。这为按群阶归纳研究 $p$-群提供了下降步骤。有限性不可省略；例如无限群 $\ZZ$ 除单位元外没有有限阶元素。
+上述轨道计数也可复算\cref{cor:pgroup-center}：取非中心共轭类的代表 $a_1,\dots,a_t$，类方程为
+\[
+|P|=|Z(P)|+\sum_{i=1}^t[P:C_P(a_i)].
+\]
+每项指数都是大于 $1$ 的 $p$ 的幂，所以 $|Z(P)|\equiv|P|\equiv0\pmod p$。
+这里必须按共轭类取一次代表，不能对所有非中心元素逐个相加。
+中心非平凡给出了研究有限 $p$-群的归纳下降步骤。
+Cauchy 定理同样不能脱离有限性使用；例如无限群 $\ZZ$ 除单位元外没有有限阶元素。
 
 Cauchy 定理只保证 $p$ 阶元存在，但 Sylow 定理给出更强的结果：素数幂阶子群也必然存在，且共轭性和个数都有精确约束。
 
@@ -521,7 +523,7 @@ Cauchy 定理只保证 $p$ 阶元存在，但 Sylow 定理给出更强的结果�
 设 $G$ 为有限群，$\lvert G\rvert=p^a m$，$p$ 为素数，$p\nmid m$。
 \begin{enumerate}[label=(\roman*),leftmargin=3em]
 \item \textbf{存在性：}存在 $p^a$ 阶子群 $P\leqslant G$，称为 Sylow $p$-子群。
-\item \textbf{共轭性：}任意两个 Sylow $p$-子群共轭：若 $P,Q$ 都是 Sylow $p$-子群，则存在 $g\in G$ 使 $Q=gPg^{-1}$。
+\item \textbf{包含性与共轭性：}任意 $p$-子群包含在某个 Sylow $p$-子群中。任意两个 Sylow $p$-子群共轭。
 \item \textbf{个数约束：}Sylow $p$-子群的个数 $n_p$ 满足
 \[
 n_p\equiv1\pmod{p},
@@ -533,12 +535,16 @@ n_p\mid m.
 \end{theorem}
 
 \par\medskip
-\begin{proof}[Sylow 定理的证明]
+\begin{proof}[证明（Sylow 定理）]
 (i) 存在性. 令 $\mathcal X$ 为 $G$ 中所有含 $p^a$ 个元素的子集，$G$ 以左乘作用在 $\mathcal X$ 上：$g\cdot S=gS$。子集总数
 \[
 |\mathcal X|=\binom{p^a m}{p^a}.
 \]
-这里需要同余 $\binom{p^a m}{p^a}\not\equiv0\pmod{p}$。把 $p^a m$ 个元素分成 $m$ 组、每组 $p^a$ 个。选取 $p^a$ 个元素时，若从第 $i$ 组选 $k_i$ 个（$\sum k_i=p^a$），贡献为 $\prod_i\binom{p^a}{k_i}$。模 $p$ 后，$\binom{p^a}{k_i}\equiv0\pmod{p}$ 除非 $k_i=0$ 或 $k_i=p^a$。因此只有从某一组全选的 $m$ 项留下：
+需要先证明 $\binom{p^a m}{p^a}\not\equiv0\pmod p$。
+在模 $p$ 的多项式运算中，$\binom pk$ 对 $0<k<p$ 都被 $p$ 整除，
+因而 $(1+t)^p=1+t^p$；迭代 $a$ 次得到
+$(1+t)^{p^a}=1+t^{p^a}$。
+比较系数可知 $\binom{p^a}{k}\equiv0\pmod p$ 对 $0<k<p^a$ 成立。把 $p^a m$ 个元素分成 $m$ 组、每组 $p^a$ 个。选取 $p^a$ 个元素时，若从第 $i$ 组选 $k_i$ 个（$\sum k_i=p^a$），贡献为 $\prod_i\binom{p^a}{k_i}$。模 $p$ 后，$\binom{p^a}{k_i}\equiv0\pmod{p}$ 除非 $k_i=0$ 或 $k_i=p^a$。因此只有从某一组全选的 $m$ 项留下：
 \[
 \binom{p^a m}{p^a}\equiv m\not\equiv0\pmod{p}.
 \]
@@ -547,11 +553,11 @@ n_p\mid m.
 
 另一方面，取 $s\in S$，映射 $\operatorname{Stab}(S)\to S$，$h\mapsto hs$ 是单射（若 $h_1s=h_2s$ 则 $h_1=h_2$），故 $|\operatorname{Stab}(S)|\le|S|=p^a$。结合两个不等式，$|\operatorname{Stab}(S)|=p^a$，因此 $P=\operatorname{Stab}(S)$ 是 Sylow $p$-子群。
 
-(ii) 共轭性. 设 $P,Q$ 都是 Sylow $p$-子群。让 $Q$ 以共轭作用在左陪集集合 $G/P=\{gP\mid g\in G\}$ 上：$q\cdot(gP)=qgP$。陪集数 $|G/P|=[G:P]=m$，$p\nmid m$。
+(ii) 取已找到的 Sylow 子群 $P$，再取任意 $p$-子群 $Q$。让 $Q$ 以左乘作用在左陪集集合 $G/P=\{gP\mid g\in G\}$ 上：$q\cdot(gP)=qgP$。陪集数 $|G/P|=[G:P]=m$，$p\nmid m$。
 
-由轨道分解 $m=\sum|\operatorname{Orb}(g_iP)|$。每个轨道大小 $|\operatorname{Orb}(g_iP)|=[Q:\operatorname{Stab}_Q(g_iP)]$ 整除 $|Q|=p^a$，故是 $p$ 的幂。但总和 $m$ 不被 $p$ 整除，因此至少有一个轨道大小为 $p^0=1$。设 $|\operatorname{Orb}(gP)|=1$，即对所有 $q\in Q$，$qgP=gP$，等价于 $g^{-1}qg\in P$，即 $g^{-1}Qg\subseteq P$。两边都是 $p^a$ 阶群，故 $g^{-1}Qg=P$，即 $Q=gPg^{-1}$。
+由轨道分解 $m=\sum|\operatorname{Orb}(g_iP)|$。每个轨道大小 $|\operatorname{Orb}(g_iP)|=[Q:\operatorname{Stab}_Q(g_iP)]$ 整除 $|Q|$，故是 $p$ 的幂。但总和 $m$ 不被 $p$ 整除，因此至少有一个轨道大小为 $p^0=1$。设 $|\operatorname{Orb}(gP)|=1$，即对所有 $q\in Q$，$qgP=gP$，等价于 $g^{-1}qg\in P$，即 $g^{-1}Qg\subseteq P$。于是 $Q\le gPg^{-1}$，证明了包含性。当 $Q$ 本身也是 Sylow 子群时，两边阶相同，包含关系成为相等，得到共轭性。
 
-(iii) 个数约束. 由共轭性，所有 Sylow $p$-子群彼此共轭，$n_p$ 是共轭作用的轨道数。让 $P$ 以共轭作用在 Sylow $p$-子群集合 $\{P_1,\dots,P_{n_p}\}$ 上。由轨道--稳定子定理，每个轨道大小整除 $|P|=p^a$，故是 $p$ 的幂。
+(iii) 个数约束. 由共轭性，所有 Sylow $p$-子群彼此共轭，$n_p$ 是 $G$ 的共轭作用中这一个轨道的大小。让 $P$ 以共轭作用在 Sylow $p$-子群集合 $\{P_1,\dots,P_{n_p}\}$ 上。由轨道--稳定子定理，每个轨道大小整除 $|P|=p^a$，故是 $p$ 的幂。
 
 这个作用的不动点只有 $P$ 自身。事实上，若 $Q$ 被 $P$ 固定，则 $P\le N_G(Q)$。此时 $P,Q$ 都是 $N_G(Q)$ 的 Sylow $p$-子群，而 $Q\mathrel{\trianglelefteq} N_G(Q)$；由已证的共轭性，只能有 $P=Q$。
 
@@ -566,6 +572,67 @@ n_p=[G:N_G(P)]\mid[G:P]=m.
 \end{proof}\par\medskip
 
 最常用的推论是：$n_p=1$ 当且仅当 Sylow $p$-子群正规。实际判断有限群结构时，通常把 $n_p\equiv1\pmod p$ 与 $n_p\mid m$ 联立；若迫使某个 $n_p=1$，就立即得到一个非平凡正规子群。
+
+\begin{example}[{$N/C$ 定理应用于 Sylow 子群}]
+设 $G$ 有限且 Sylow $p$-子群 $P\cong C_p$。求共轭在 $P$ 上能产生多少个不同自同构，并在 $S_3$ 中算出这项指数。
+
+\textbf{解。} 将\cref{thm:nc-theorem,thm:cyclic-aut} 代入 $H=P$，共轭作用给出
+\[
+N_G(P)/C_G(P)\hookrightarrow\operatorname{Aut}(C_p)
+\cong(\ZZ/p\ZZ)^\times,
+\qquad [N_G(P):C_G(P)]\mid p-1.
+\]
+因为 $P$ 交换，$P\le C_G(P)$。但这不意味着 $[N_G(P):P]\mid p-1$：
+正规化子还可能含有与 $P$ 交换、却不属于 $P$ 的元素。例如在
+$G=C_p\times C_q$（$q\ne p$ 为素数）中，
+$N_G(P)=C_G(P)=G$，所以前一个指数为 $1$，后一个指数却为 $q$。
+
+取 $G=S_3$、$P=\langle(123)\rangle$。这是唯一的 Sylow $3$-子群，
+故 $N_G(P)=S_3$；与 $(123)$ 交换的元素恰为 $P$，故 $C_G(P)=P$。
+于是 $N_G(P)/C_G(P)\cong C_2$，非平凡陪集由对换代表，作用为
+\[
+(12)(123)(12)=(132)=(123)^{-1}.
+\]
+这个指数 $2$ 恰好等于 $p-1$。因此即使 $P$ 是正规 Sylow 子群，
+它在自身正规化子中也未必居中；是否居中要检验共轭作用的像是否平凡。
+\end{example}
+
+\begin{theorem}[Frattini 论证]
+\label{thm:frattini-argument}
+设 $G$ 是有限群，$N\mathrel{\trianglelefteq} G$，$P$ 是 $N$ 的 Sylow $p$-子群。则
+\[
+G=N\cdot N_G(P)=\{ng\mid n\in N,\,g\in N_G(P)\}.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 $g\in G$，$gPg^{-1}\leqslant gNg^{-1}=N$（因 $N\mathrel{\trianglelefteq} G$），且 $|gPg^{-1}|=|P|$，故 $gPg^{-1}$ 也是 $N$ 的 Sylow $p$-子群。由 Sylow 定理（在 $N$ 中应用），存在 $n\in N$ 使 $n(gPg^{-1})n^{-1}=P$，即 $(ng)P(ng)^{-1}=P$，故 $ng\in N_G(P)$，即 $g=n^{-1}\cdot ng\in N\cdot N_G(P)$。
+\end{proof}
+
+Frattini 论证看似简单，但它是有限群论中最常用的技巧之一。它的典型用法是：若 $N\mathrel{\trianglelefteq} G$ 且 $N$ 的 Sylow 子群 $P$ 的正规化子 $N_G(P)$ 已知（例如 $P$ 是 $N$ 的特征子群，则 $N_G(P)\geqslant N$），则可以分解 $G$ 并推导结构信息。
+
+\begin{example}[{Frattini 论证在 $S_4$ 中的分解}]
+取 $G=S_4$、$N=A_4\mathrel{\trianglelefteq}S_4$，求 $P=\langle(123)\rangle$ 的正规化子，并核对 Frattini 分解的阶数。
+
+\textbf{解。} $N$ 正规是因为它为符号同态的核。因为 $|A_4|=12$，所给 $P$ 是 $A_4$ 的
+Sylow $3$-子群。$P$ 的两个非单位元都恰好固定字母 $4$，所以
+任何正规化 $P$ 的置换都必须固定 $4$。反过来，前三个字母上的
+任意置换都把 $(123)$ 共轭为 $(123)$ 或其逆。因此
+\[
+N_{S_4}(P)=\operatorname{Sym}\{1,2,3\}\cong S_3,
+\qquad A_4\cap N_{S_4}(P)=P.
+\]
+Frattini 论证给出 $S_4=A_4N_{S_4}(P)$。用阶数再核对一次：
+\[
+|A_4N_{S_4}(P)|
+=\frac{|A_4|\,|N_{S_4}(P)|}{|A_4\cap N_{S_4}(P)|}
+=\frac{12\cdot6}{3}=24.
+\]
+这里不是把 $S_4$ 写成直积：两个因子的交有三个元素，
+正规化子也不是正规子群。论证的作用是把任意 $S_4$ 元素分成
+一个 $A_4$ 元素与一个保持所选 Sylow 子群的元素。
+\end{example}
+
 
 \begin{example}[{$D_3$ 的 Sylow 子群}]
 $\lvert D_3\rvert=6=2\times3$。
@@ -633,31 +700,7 @@ S_5\rhd A_5\rhd\{e\},
 
 
 \par
-\begin{workedexample}[$D_4$ 的半直积结构]
-设
-\[
-D_4=\left\langle r,s\mid r^4=s^2=e,\ srs^{-1}=r^{-1}\right\rangle.
-\]
-证明
-\[
-D_4\cong C_4\rtimes C_2,
-\]
-并明确写出 $C_2\to\operatorname{Aut}(C_4)$ 的非平凡作用。
 
-\emph{解答.} 令 $N=\left\langle r\right\rangle\cong C_4$、$H=\left\langle s\right\rangle\cong C_2$。关系
-\[
-srs^{-1}=r^{-1}
-\]
-说明 $N\mathrel{\trianglelefteq} D_4$，而 $N\cap H=\{e\}$、$NH=D_4$。因此内半直积判据给出
-\[
-D_4\cong C_4\rtimes_\varphi C_2.
-\]
-作用由生成元 $s$ 决定：
-\[
-\varphi(s)(r^k)=r^{-k}.
-\]
-它是 $C_4$ 的非平凡二阶自同构。由于该作用不是恒等作用，$D_4$ 不是 $C_4\times C_2$。
-\end{workedexample}
 \par
 
 \par
@@ -670,7 +713,7 @@ D_4\cong C_4\rtimes_\varphi C_2.
 \]
 要求明确写出满同态及其核。
 
-\emph{解答.} 定义投影
+\textbf{解。} 定义投影
 \[
 \pi_H:G\times H\to H,
 \qquad
@@ -701,7 +744,7 @@ k\mapsto a^k,
 \ZZ/n\ZZ\cong C_n.
 \]
 
-\emph{解答.} 因 $a$ 生成 $C_n$，$\varphi$ 为满射，所以 $\operatorname{Im}\varphi=C_n$。又
+\textbf{解。} 因 $a$ 生成 $C_n$，$\varphi$ 为满射，所以 $\operatorname{Im}\varphi=C_n$。又
 \[
 \varphi(k)=e
 \Longleftrightarrow a^k=e
@@ -726,7 +769,7 @@ k\mapsto a^k,
 \begin{workedexample}[核的逆像描述]
 设 $\varphi:G\to H$ 为同态，$K\leqslant H$。证明 $\varphi^{-1}(K)\leqslant G$；若 $K\mathrel{\trianglelefteq} H$，进一步证明 $\varphi^{-1}(K)\mathrel{\trianglelefteq} G$。
 
-\emph{解答.} 因 $e_H\in K$ 且 $\varphi(e_G)=e_H$，所以 $\varphi^{-1}(K)$ 非空。若 $a,b\in\varphi^{-1}(K)$，则
+\textbf{解。} 因 $e_H\in K$ 且 $\varphi(e_G)=e_H$，所以 $\varphi^{-1}(K)$ 非空。若 $a,b\in\varphi^{-1}(K)$，则
 \[
 \varphi(ab^{-1})=\varphi(a)\varphi(b)^{-1}\in K,
 \]
@@ -748,7 +791,7 @@ k\mapsto a^k,
 h\in Z(G).
 \]
 
-\emph{解答.} 对任意 $g\in G$，共轭元 $ghg^{-1}$ 与 $h$ 有相同阶，因此也是二阶元。由二阶元唯一性，
+\textbf{解。} 对任意 $g\in G$，共轭元 $ghg^{-1}$ 与 $h$ 有相同阶，因此也是二阶元。由二阶元唯一性，
 \[
 ghg^{-1}=h.
 \]
@@ -760,7 +803,7 @@ ghg^{-1}=h.
 \begin{workedexample}[共轭保持群元阶]
 证明：若 $x\sim y$，则 $\operatorname{ord}(x)=\operatorname{ord}(y)$。进一步说明为什么同一个共轭类中的群元具有相同的循环型不变量。
 
-\emph{解答.} 若 $y=gxg^{-1}$，则对任意整数 $n\ge1$，
+\textbf{解。} 若 $y=gxg^{-1}$，则对任意整数 $n\ge1$，
 \[
 y^n=(gxg^{-1})^n=gx^ng^{-1}.
 \]
@@ -778,7 +821,7 @@ g x g^{-1}=(g(a_1)\cdots g(a_k)),
 \begin{workedexample}[四阶群]
 证明：任意四阶群都是 Abel 群，并且恰有两种同构类型：$C_4$ 与 $C_2\times C_2$。
 
-\emph{解答.} 设 $|G|=4$。若存在 $a\in G$ 满足 $\operatorname{ord}(a)=4$，则 $G=\left\langle a\right\rangle\cong C_4$。
+\textbf{解。} 设 $|G|=4$。若存在 $a\in G$ 满足 $\operatorname{ord}(a)=4$，则 $G=\left\langle a\right\rangle\cong C_4$。
 
 若不存在四阶元，则由 Lagrange 定理，每个非单位元的阶只能为 $2$。任取 $a,b\in G$，若其中一个为 $e$，由单位元性质二者交换；否则 $a^{-1}=a$、$b^{-1}=b$，且 $ab$ 也满足 $(ab)^{-1}=ab$。另一方面
 \[
@@ -797,7 +840,7 @@ G=\{e,a,b,ab\},
 \begin{workedexample}[唯一的三阶群]
 证明：任意三阶群都同构于 $C_3$。
 
-\emph{解答.} 取任意非单位元 $a\in G$。由 Lagrange 定理，$\operatorname{ord}(a)$ 必整除 $|G|=3$；又因 $a\neq e$，故 $\operatorname{ord}(a)\neq1$，只能有
+\textbf{解。} 取任意非单位元 $a\in G$。由 Lagrange 定理，$\operatorname{ord}(a)$ 必整除 $|G|=3$；又因 $a\neq e$，故 $\operatorname{ord}(a)\neq1$，只能有
 \[
 \operatorname{ord}(a)=3.
 \]
@@ -817,14 +860,24 @@ G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\},
 其中每个 $G_{i+1}$ 是 $G_i$ 的正规子群，且商群 $G_i/G_{i+1}$（称为合成因子）是\emph{单群}（没有非平凡正规子群）。长度 $n$ 称为合成列的长度。
 \end{definition}
 
+\begin{proposition}[有限群的合成列存在]
+每个有限群都有合成列；平凡群对应长度为零的空链。
+\end{proposition}
+
+\begin{proof}
+对群阶归纳。若 $G\ne\{e\}$，有限性保证其真正规子群中存在一个按包含关系极大的 $M$。
+由对应定理，$G/M$ 的真非平凡正规子群会拉回为严格介于 $M$ 与 $G$ 之间的正规子群，
+因此 $G/M$ 为单群。$|M|<|G|$，对 $M$ 使用归纳假设，再在其合成列前加 $G\rhd M$ 即可。
+\end{proof}
+
 \begin{theorem}[Jordan--H\"older]
-设 $G$ 有两个合成列
+设有限群 $G$ 有两个合成列
 \[
 G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\},
 \qquad
 G=H_0\rhd H_1\rhd\cdots\rhd H_m=\{e\}.
 \]
-则 $n=m$，且存在 $\{1,\dots,n\}$ 的置换 $\sigma$，使
+则 $n=m$，且存在 $\{0,\dots,n-1\}$ 的置换 $\sigma$，使
 \[
 G_i/G_{i+1}\cong H_{\sigma(i)}/H_{\sigma(i)+1}.
 \]
@@ -833,7 +886,7 @@ G_i/G_{i+1}\cong H_{\sigma(i)}/H_{\sigma(i)+1}.
 \end{theorem}
 
 \par\medskip
-\begin{proof}[Jordan--H\"older 定理的证明]
+\begin{proof}[证明（Jordan--H\"older 定理）]
 对 $|G|$ 归纳。若两条合成列的首个真子群相同，即 $G_1=H_1$，则对 $G_1$ 使用归纳假设即可。
 
 设 $G_1\ne H_1$，并令 $N=G_1\cap H_1$。由于 $G/G_1$ 与 $G/H_1$ 都是单群，$G_1,H_1$ 是 $G$ 的极大正规子群。因此 $G_1H_1$ 只能是 $G$，而第二同构定理给出交叉同构
@@ -880,21 +933,21 @@ D_4/\left\langle r\right\rangle\cong C_2,
 \[
 G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\},
 \]
-其中每个商群 $G_i/G_{i+1}$ 是 Abel 群。等价地，$G$ 的合成因子全是素数阶循环群 $C_p$。
+其中每个商群 $G_i/G_{i+1}$ 是 Abel 群。当 $G$ 有限时，这等价于它的合成因子全是素数阶循环群 $C_p$。无限群的定义仍使用上述有限长度的 Abel 商链，不要求它有合成列。
 \end{definition}
 
 \begin{proposition}[可解群的基本性质]
 \begin{enumerate}[label=(\roman*),leftmargin=3em]
 \item 可解群的子群和商群可解。
 \item 可解群的可解扩张可解：若 $N\mathrel{\trianglelefteq} G$，$N$ 和 $G/N$ 都可解，则 $G$ 可解。
-\item $p$-群可解（因 $p$-群有中心链，每步商为 $C_p$）。
-\item $S_n$ 对 $n\ge5$ 不可解（因 $A_n$ 是单群且非 Abel）。
+\item 有限 $p$-群可解。
+\item $S_n$ 对 $n\ge5$ 不可解。
 \end{enumerate}
 \end{proposition}
 
 \par\medskip
-\begin{proof}[可解群性质的证明]
-(i) 子群可解. 设 $H\le G$，$G$ 有 Abel 链 $G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\}$。令 $H_i=H\cap G_i$。则
+\begin{proof}[证明（可解群性质）]
+先看子群。 设 $H\le G$，$G$ 有 Abel 链 $G=G_0\rhd G_1\rhd\cdots\rhd G_n=\{e\}$。令 $H_i=H\cap G_i$。则
 \[
 H=H_0\ge H_1\ge\cdots\ge H_n=\{e\}.
 \]
@@ -906,17 +959,18 @@ H=H_0\ge H_1\ge\cdots\ge H_n=\{e\}.
 \]
 $\operatorname{Ker}\psi=H_i\cap G_{i+1}=H\cap G_i\cap G_{i+1}=H\cap G_{i+1}=H_{i+1}$。由第一同构定理 $H_i/H_{i+1}\hookrightarrow G_i/G_{i+1}$，Abel 群的子群 Abel，故 $H$ 可解。
 
-(ii) 商群可解. 设 $N\mathrel{\trianglelefteq} G$，$G$ 有 Abel 链 $G_i$。令 $Q_i=G_iN/N$。由第二同构定理
+对于商群，令 $\pi:G\to G/N$，$Q_i=\pi(G_i)=G_iN/N$。
+它们形成从 $G/N$ 降到平凡群的链。正规性由像保持正规性得出。
+为了证明相邻商交换，考虑满同态
 \[
-G_iN/N\cong G_i/(G_i\cap N),
+G_i\longrightarrow Q_i/Q_{i+1},\qquad g\longmapsto\pi(g)Q_{i+1}.
 \]
-而 $G_i/(G_i\cap N)$ 是 $G_i/G_{i+1}$ 的商（因 $G_i\cap N\ge G_{i+1}$ 当 $N\mathrel{\trianglelefteq} G$ 时不一定成立，需用另一种方法）。更直接地，考虑投影 $\pi:G\to G/N$，令 $Q_i=\pi(G_i)=G_iN/N$。则
-\[
-G/N=Q_0\ge Q_1\ge\cdots\ge Q_n=\{eN\}.
-\]
-$Q_{i+1}\mathrel{\trianglelefteq} Q_i$ 因 $G_{i+1}\mathrel{\trianglelefteq} G_i$。商 $Q_i/Q_{i+1}$ 是 $G_i/G_{i+1}$ 的商群（由对应定理），Abel 群的商群 Abel。故 $G/N$ 可解。
+它的核包含 $G_{i+1}$，所以诱导出 $G_i/G_{i+1}$ 到 $Q_i/Q_{i+1}$ 的满同态。
+后者是 Abel 群的商群，因而也 Abel；删去链中相邻相等的项便得到可解链。
+第二同构定理另外给出 $Q_i\cong G_i/(G_i\cap N)$，
+但这不意味着 $G_i\cap N$ 包含 $G_{i+1}$；相邻商必须用刚才的满同态来比较。
 
-(iii) 扩张可解. 设 $N\mathrel{\trianglelefteq} G$，$N$ 有 Abel 链 $N=N_0\rhd N_1\rhd\cdots\rhd N_k=\{e\}$，$G/N$ 有 Abel 链 $G/N=Q_0\rhd Q_1\rhd\cdots\rhd Q_m=\{eN\}$。令 $G_i=\pi^{-1}(Q_i)$（$\pi:G\to G/N$）。由对应定理 $G_i\mathrel{\trianglelefteq} G_{i-1}$ 且
+对于扩张， 设 $N\mathrel{\trianglelefteq} G$，$N$ 有 Abel 链 $N=N_0\rhd N_1\rhd\cdots\rhd N_k=\{e\}$，$G/N$ 有 Abel 链 $G/N=Q_0\rhd Q_1\rhd\cdots\rhd Q_m=\{eN\}$。令 $G_i=\pi^{-1}(Q_i)$（$\pi:G\to G/N$）。由对应定理 $G_i\mathrel{\trianglelefteq} G_{i-1}$ 且
 \[
 G_{i-1}/G_i\cong Q_{i-1}/Q_i
 \]
@@ -926,21 +980,21 @@ G=G_0\rhd G_1\rhd\cdots\rhd G_m=N\rhd N_1\rhd\cdots\rhd N_k=\{e\},
 \]
 每个商 Abel，故 $G$ 可解。
 
-(iv) $p$-群可解. 设 $|G|=p^a$。由类方程
+再看有限 $p$-群。 设 $|G|=p^a$。由类方程
 \[
 |G|=|Z(G)|+\sum_{i}[G:C_G(g_i)],
 \]
 其中 $g_i$ 跑遍非中心共轭类代表。每个 $[G:C_G(g_i)]>1$ 是 $p$ 的幂，故 $p\mid|Z(G)|$，即中心非平凡。
 
-取 $Z(G)$ 中 $p$ 阶子群 $C_p\le Z(G)$（由 Cauchy 定理，因 $p\mid|Z(G)|$）。因 $C_p\le Z(G)$，$C_p\mathrel{\trianglelefteq} G$。商群 $G/C_p$ 的阶为 $p^{a-1}$，仍是 $p$-群。由归纳假设 $G/C_p$ 可解，$C_p$ 亦可解，再由 (iii) 的扩张性质知 $G$ 可解。
+取 $Z(G)$ 中 $p$ 阶子群 $C_p\le Z(G)$（由 Cauchy 定理，因 $p\mid|Z(G)|$）。因 $C_p\le Z(G)$，$C_p\mathrel{\trianglelefteq} G$。商群 $G/C_p$ 的阶为 $p^{a-1}$，仍是 $p$-群。由归纳假设 $G/C_p$ 可解，$C_p$ 亦可解，再由刚证明的扩张性质知 $G$ 可解。
 
 归纳基础：$|G|=p^0=1$ 时 $G=\{e\}$ 可解（空链）。归纳步骤：$|G|=p^a$ 时，上述论证把问题降到 $p^{a-1}$ 阶，由归纳假设完成。
 
-(v) $S_n$ 不可解（$n\ge5$）. $A_n$（$n\ge5$）是单群且非 Abel（\cref{ex:a5-simplicity} 对 $n=5$ 的证明可推广到一般 $n\ge5$）。若 $S_n$ 可解，则由 (i) 的子群遗传性，$A_n\le S_n$ 也应可解。但 $A_n$ 的合成列只能是
-\[
-A_n\rhd\{e\},
-\]
-因 $A_n$ 单。合成因子 $A_n$ 非 Abel，不满足可解群定义。矛盾，故 $S_n$ 不可解。
+对于 $n\ge5$，将 $A_5$ 的置换延拓为固定其余 $n-5$ 个字母的置换，就得到 $A_5\le S_n$。
+\cref{ex:a5-simplicity} 已证明 $A_5$ 是非交换单群。
+它的任何严格可解链的第一步只能降到 $\{e\}$，但相应商 $A_5$ 不是 Abel 群，
+所以 $A_5$ 不可解。若 $S_n$ 可解，子群遗传性又会使 $A_5$ 可解，矛盾。
+这一步只需要已经证明的 $A_5$ 单性，不依赖一般 $A_n$ 的单性分类。
 \end{proof}\par\medskip
 
 \begin{note}[{可解群与 Galois 理论的关联}]
@@ -959,7 +1013,7 @@ A_n\rhd\{e\},
 \[
 G=G_0\ge G_1\ge\cdots\ge G_n=\{e\},
 \]
-使得 $G_{i-1}/G_i\le Z(G/G_i)$ 对所有 $i$（即 $[G,G_{i-1}]\le G_i$）。这样的链称为\textbf{中心列}，最短长度称为\textbf{幂零类} $c(G)$。
+其中每个 $G_i\mathrel{\trianglelefteq}G$，并使得 $G_{i-1}/G_i\le Z(G/G_i)$ 对所有 $i$（即 $[G,G_{i-1}]\le G_i$）。这样的链称为\textbf{中心列}，最短长度称为\textbf{幂零类} $c(G)$。
 \end{definition}
 
 条件 $G_{i-1}/G_i\le Z(G/G_i)$ 比 $G_{i-1}/G_i$ Abel 更强：它要求 $G_{i-1}/G_i$ 不仅交换，而且与整个 $G/G_i$ 交换。等价地，$[G,G_{i-1}]\le G_i$：换位子 $[g,h]$（$g\in G$，$h\in G_{i-1}$）落入 $G_i$。
@@ -1056,7 +1110,11 @@ Z_j(P_1\times\cdots\times P_k)
 \end{proposition}
 
 \begin{proof}
-(i) 子群：中心列与子群的交给出子群的中心列。商群：中心列取商给出商的中心列。
+若 $H\le G$，将中心列 $G_i$ 与 $H$ 相交，记 $H_i=H\cap G_i$。
+各 $H_i$ 正规于 $H$，且
+$[H,H_{i-1}]\le H\cap[G,G_{i-1}]\le H\cap G_i=H_i$，所以这是 $H$ 的中心列。
+若 $N\mathrel{\trianglelefteq}G$，在 $G/N$ 中取 $\pi(G_i)$，则
+$[G/N,\pi(G_{i-1})]=\pi([G,G_{i-1}])\le\pi(G_i)$，所以商群也有中心列。
 
 (ii) 直积的上中心列 $(Z_i(G\times H))=Z_i(G)\times Z_i(H)$，故 $c(G\times H)=\max(c(G),c(H))$。
 
@@ -1160,7 +1218,7 @@ D_n\cong\langle r,s\mid r^n=s^2=e,\ srs=r^{-1}\rangle
 先从几何到代数。$D_n$ 由 $r$（$2\pi/n$ 转动）和 $s$（某反射）生成。几何关系：
 \begin{itemize}
 \item $r^n=e$：转 $n$ 次回原位；
-\item $s^2=e$：反射幂等；
+\item $s^2=e$：同一反射做两次回到原位；
 \item $srs=r^{-1}$：先转再反射等于反射再反转。
 \end{itemize}
 最后一个关系可从顶点作用直接验证。对 $v_k=\ee^{2\pi\ii k/n}$，取
@@ -1231,7 +1289,7 @@ x\sim y
 \]
 证明这是等价关系，并证明其等价类正是 $G$ 的轨道。
 
-\emph{解答.} 自反性来自 $e\cdot x=x$。若 $y=g\cdot x$，则
+\textbf{解。} 自反性来自 $e\cdot x=x$。若 $y=g\cdot x$，则
 \[
 x=g^{-1}\cdot y,
 \]
@@ -1251,7 +1309,7 @@ z=h\cdot(g\cdot x)=(hg)\cdot x,
 \begin{workedexample}[$S_3$ 的子群与正规子群]
 列出 $S_3$ 的全部子群，判断哪些正规。再直接构造 $S_3/A_3\cong C_2$ 的同构。
 
-\emph{解答.} $S_3$ 的子群为
+\textbf{解。} $S_3$ 的子群为
 \[
 \{e\},\quad
 \left\langle (12)\right\rangle,\quad
@@ -1418,7 +1476,9 @@ N\rtimes_{\varphi}H.
 \label{def:semidirect-product}
 \end{definition}
 
-其单位元为 $(e_N,e_H)$。由\eqnrefs{eq:semidirect-product} 直接解方程可得
+\begin{proposition}[外半直积的群结构]
+
+上述乘法使 $N\times H$ 成为群，其单位元为 $(e_N,e_H)$。由\eqnrefs{eq:semidirect-product} 直接解方程可得
 \[
 (n,h)^{-1}
 =
@@ -1427,7 +1487,10 @@ N\rtimes_{\varphi}H.
 \]
 当 $\varphi$ 为平凡同态，即 $\varphi(h)=\id(N)$ 对所有 $h$ 成立时，半直积退化为普通直积。
 
-定义里把“所得群”三个字写得很短，但初学时不应跳过：必须验证这个乘法确实满足群公理。封闭性来自 $\varphi(h_1)(n_2)\in N$。结合律是唯一真正需要计算的一步。左边先算前两个因子：
+\end{proposition}
+
+\begin{proof}
+封闭性来自 $\varphi(h_1)(n_2)\in N$。结合律是唯一真正需要计算的一步。左边先算前两个因子：
 \begin{align*}
 &\bigl[(n_1,h_1)(n_2,h_2)\bigr](n_3,h_3)\\
 &=\bigl(n_1\varphi(h_1)(n_2),h_1h_2\bigr)(n_3,h_3)\\
@@ -1452,7 +1515,7 @@ N\rtimes_{\varphi}H.
 \[
 (e_N,e_H)(n,h)=(n,h)=(n,h)(e_N,e_H).
 \]
-最后验证逆元而不是只“解方程”。令
+为检验逆元，在乘法中代入候选式。令
 \[
 (n,h)^{-1}=\bigl(\varphi(h^{-1})(n^{-1}),h^{-1}\bigr).
 \]
@@ -1462,7 +1525,12 @@ N\rtimes_{\varphi}H.
 &=\Bigl(n\,\varphi(h)\bigl(\varphi(h^{-1})(n^{-1})\bigr),e_H\Bigr)\\
 &=(nn^{-1},e_H)=(e_N,e_H),
 \end{align*}
-反向相乘同样得到单位元。到这里，外半直积的群结构才真正验证完毕。这个计算也显示了半直积和直积的唯一差别：第二个因子 $h_1$ 在乘进去以前会先通过 $\varphi(h_1)$ “扭动”后面的 $N$ 分量。
+反向相乘的第一分量为
+$\varphi(h^{-1})(n^{-1})\varphi(h^{-1})(n)=e_N$，第二分量为 $e_H$，
+所以它确实是双侧逆元。若 $\varphi$ 平凡，乘法逐分量进行，恢复普通直积。
+\end{proof}
+
+第二个因子 $h_1$ 在乘进去以前先通过 $\varphi(h_1)$ 改变后面的 $N$ 分量，这就是半直积记录的作用。
 
 \begin{theorem}[内半直积判据]
 设 $N\mathrel{\trianglelefteq} G$，$H\leqslant G$，并满足
@@ -1510,6 +1578,32 @@ G\cong N\rtimes_{\varphi}H.
 \end{align*}
 所以 $\Phi$ 为同态。$NH=G$ 给出满射。若 $nh=e$，则 $n=h^{-1}\in N\cap H$，故 $n=h=e$，所以核平凡，$\Phi$ 单射。因此为同构。
 \end{proof}
+
+\begin{workedexample}[$D_4$ 的半直积结构]
+设
+\[
+D_4=\left\langle r,s\mid r^4=s^2=e,\ srs^{-1}=r^{-1}\right\rangle.
+\]
+证明
+\[
+D_4\cong C_4\rtimes C_2,
+\]
+并明确写出 $C_2\to\operatorname{Aut}(C_4)$ 的非平凡作用。
+
+\textbf{解。} 令 $N=\left\langle r\right\rangle\cong C_4$、$H=\left\langle s\right\rangle\cong C_2$。关系
+\[
+srs^{-1}=r^{-1}
+\]
+说明 $N\mathrel{\trianglelefteq} D_4$，而 $N\cap H=\{e\}$、$NH=D_4$。因此内半直积判据给出
+\[
+D_4\cong C_4\rtimes_\varphi C_2.
+\]
+作用由生成元 $s$ 决定：
+\[
+\varphi(s)(r^k)=r^{-k}.
+\]
+它是 $C_4$ 的非平凡二阶自同构。由于该作用不是恒等作用，$D_4$ 不是 $C_4\times C_2$。
+\end{workedexample}
 
 \begin{example}[{$D_3\cong C_3\rtimes C_2$：反射如何"扭转"旋转}]
 回到\cref{sec:group-axioms} 中正三角形 $D_3$ 的系统分析。取旋转子群和一条反射轴生成的子群：
@@ -1563,7 +1657,7 @@ N\times\{e_H\}\mathrel{\trianglelefteq} N\rtimes_\varphi H,
 \]
 并说明 $\{e_N\}\times H$ 何时正规。由此给出半直积退化为直积的一个充要条件。
 
-\emph{解答.} 把 $N$ 识别为 $N\times\{e_H\}$。对任意 $(n,h)$ 与 $(m,e_H)$，利用半直积乘法与逆元公式可得
+\textbf{解。} 把 $N$ 识别为 $N\times\{e_H\}$。对任意 $(n,h)$ 与 $(m,e_H)$，利用半直积乘法与逆元公式可得
 \[
 (n,h)(m,e_H)(n,h)^{-1}
 =\bigl(n\varphi(h)(m)n^{-1},e_H\bigr)\in N\times\{e_H\},

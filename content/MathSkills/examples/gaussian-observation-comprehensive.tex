@@ -2,8 +2,9 @@
 \section{综合例题：从高斯观测的概率空间到回归估计与检验}
 \label{sec:ms-gaussian-observation-comprehensive}
 
-\chapref{chap:math-probability} 至\chapref{chap:math-stat-linear-models} 的概率与统计概念，可以在同一个实验中连续使用。
-我们从一开始就给定固定设计的截距加趋势模型
+一组带噪声的观测既能用来估计趋势，也能用来检验趋势是否为零。
+\chapref{chap:math-probability} 至\chapref{chap:math-stat-linear-models} 的一般结论给出了这些计算所需的概率、投影和似然工具。
+我们固定截距加趋势模型
 \[
  Y_j=\theta+b x_j+\varepsilon_j,\qquad
  \varepsilon_j\overset{\mathrm{iid}}\sim\mathcal N(0,\sigma^2),
@@ -16,13 +17,13 @@
  x=(-2,-1,0,1,2)^{\mathsf T},\qquad
  y=(0,1,1,2,3)^{\mathsf T}.
 \]
-下面先求随机量的分布，再代入这组数值。观测值不是“真正参数”的定义，不能用拟合结果反过来保证实验假设成立。
+各统计量的分布先由模型求出，再代入这组观测计算估计、检验与区间。独立性、正态性和等方差是模型假设，拟合值则是数据给出的结果。
 
-\begin{exbox}[第一步：构造产品测度与联合似然]
+\begin{exbox}[样本空间、乘积测度与联合似然]
 给定模型后，先写出样本点、事件、随机变量和参数决定的概率测度。
 
-\textbf{解.} 可取 $\Omega=\mathbb R^N$、$\mathcal F=\mathcal B(\mathbb R^N)$，令 $Y_j(\omega)=\omega_j$。
-对每个参数三元组，产品测度为
+\textbf{解。} 可取 $\Omega=\mathbb R^N$、$\mathcal F=\mathcal B(\mathbb R^N)$，令 $Y_j(\omega)=\omega_j$。
+对每个参数三元组，独立性把各坐标的正态测度组合为乘积测度：
 \[
  P_{\theta,b,\sigma^2}=\bigotimes_{j=1}^N
  \mathcal N(\theta+b x_j,\sigma^2).
@@ -45,10 +46,10 @@
 这些量随后决定估计、似然和检验，不需要另换一组数据。
 \end{exbox}
 
-\begin{exbox}[第二步：逐个揭示样本，计算条件期望与鞅]
+\begin{exbox}[逐次观测的条件期望与鞅]
 现在按原有顺序观察 $Y_1,Y_2,\ldots$，把已知信息写成滤过 $\mathcal F_k=\sigma(Y_1,\ldots,Y_k)$，$\mathcal F_0$ 为平凡事件域。
 
-\textbf{解.} 参数在每个 $P_{\theta,b,\sigma^2}$ 下是固定常数；因此 $\mathcal F_k=\sigma(\varepsilon_1,\ldots,\varepsilon_k)$。
+\textbf{解。} 参数在每个 $P_{\theta,b,\sigma^2}$ 下是固定常数；因此 $\mathcal F_k=\sigma(\varepsilon_1,\ldots,\varepsilon_k)$。
 独立性给出，对 $j>k$，
 \[
  \mathbb E(Y_j\mid\mathcal F_k)=\theta+b x_j,
@@ -59,7 +60,7 @@
  \mathbb E(M_{k+1}\mid\mathcal F_k)=M_k,\qquad
  \mathbb E M_k^2=k\sigma^2.
 \]
-这给一个平方可积鞅；还可逐项检查
+所以 $M_k$ 是平方可积鞅。把 $M_{k+1}=M_k+\varepsilon_{k+1}$ 平方，交叉项因新误差的条件均值为零而消失，得到
 \[
  \mathbb E(M_{k+1}^2\mid\mathcal F_k)=M_k^2+\sigma^2,
 \]
@@ -77,10 +78,10 @@
 这些条件期望依赖模型中的真参数；将其替换为拟合值是另一个统计步骤，不是条件期望的定义。
 \end{exbox}
 
-\begin{exbox}[第三步：用特征函数求线性统计量，再讨论大样本]
+\begin{exbox}[线性统计量的分布与大样本条件]
 上一段得到 $\overline Y$ 是误差和的平移。现在同时求均值和趋势统计量的分布，并核对可用哪些极限定理。
 
-\textbf{解.} 联合特征函数为
+\textbf{解。} 联合特征函数为
 \[
  \mathbb E e^{\ii t^{\mathsf T}Y}
  =\exp\left(\ii t^{\mathsf T}(\theta\mathbf1+b x)
@@ -101,14 +102,14 @@
 \]
 它们联合正态，所以零协方差进一步给独立。
 
-要让 $N\to\infty$，需明确一族实验。可在同一无限 iid 误差序列上，对每个 $N$ 预先选择中心化设计 $x_{j,N}$。
+要让 $N\to\infty$，需明确一族实验。可在同一无限独立同分布误差序列上，对每个 $N$ 预先选择中心化设计 $x_{j,N}$。
 此时
 \[
  \overline Y_N-\theta=\frac1N\sum_{j=1}^N\varepsilon_j
  \longrightarrow0\quad\text{几乎处处},
  \qquad \frac{\sqrt N(\overline Y_N-\theta)}\sigma\sim\mathcal N(0,1).
 \]
-前式用误差的强大数律；后式在高斯模型下每个 $N$ 都精确成立，在一般有限方差 iid 误差下则由中心极限定理给分布极限。
+前式用误差的强大数律；后式在高斯模型下每个 $N$ 都精确成立，在一般有限方差独立同分布误差下则由中心极限定理给分布极限。
 趋势估计另需要设计信息累积：若 $S_{xx,N}\to\infty$，Chebyshev 不等式给
 \[
  P(|B_N-b|>\delta)\le\frac{\sigma^2}{\delta^2 S_{xx,N}}\to0.
@@ -117,10 +118,10 @@
 不能仅凭样本数增加就断言斜率一致；若所有设计点趋向同一位置，$S_{xx,N}$ 可能不增长。
 \end{exbox}
 
-\begin{exbox}[第四步：用同一设计做投影，并算出拟合与残差]
+\begin{exbox}[最小二乘投影、拟合与残差]
 上一段的两个线性统计量为什么正好成为回归估计？现在从最小二乘的投影问题算出它们。
 
-\textbf{解.} 令 $X=(\mathbf1,x)$、$\beta=(\theta,b)^{\mathsf T}$。
+\textbf{解。} 令 $X=(\mathbf1,x)$、$\beta=(\theta,b)^{\mathsf T}$。
 设计已中心化，所以
 \[
  X^{\mathsf T}X=\begin{pmatrix}N&0\\0&S_{xx}\end{pmatrix},\qquad
@@ -152,13 +153,13 @@
 
 本题噪声协方差为 $\sigma^2I$，因此加权内积 $u^{\mathsf T}(\sigma^2I)^{-1}v$ 只是欧氏内积乘正因子，拟合投影不变。
 一般已知协方差形状 $V$ 时，前章的公式为 $H_V=X(X^{\mathsf T}V^{-1}X)^{-1}X^{\mathsf T}V^{-1}$；代入本题 $V=I$ 恰好回到 $H$。
-这里没有给同一批 iid 观测擅自换权重；任意另加权会改变估计及其方差。
+所以本题的等权拟合来自各误差具有相同方差这一模型条件。改用其他权重，会改变估计及其方差。
 \end{exbox}
 
-\begin{exbox}[第五步：把投影变成 Cochran 分解与充分统计量]
+\begin{exbox}[Cochran 分解与充分统计量]
 上一段已经得到正交的拟合与残差。现在求残差平方和的分布，并判断哪些量保留了关于参数的全部似然信息。
 
-\textbf{解.} 取正交单位向量 $q_0=\mathbf1/\sqrt N$、$q_1=x/\sqrt{S_{xx}}$，补成 $\mathbb R^N$ 的正交基。
+\textbf{解。} 取正交单位向量 $q_0=\mathbf1/\sqrt N$、$q_1=x/\sqrt{S_{xx}}$，补成 $\mathbb R^N$ 的正交基。
 把 $\varepsilon/\sigma$ 变换到该基，各坐标仍是独立标准正态。因此
 \[
  Z_0=\frac{\sqrt N(\widehat\theta-\theta)}\sigma,
@@ -190,13 +191,14 @@
 \[
  \mathrm{RSS}_0-\mathrm{RSS}=S_{xx}\widehat b^2=10(0.7)^2=4.90.
 \]
-当且仅当检验的零假设 $b=0$ 成立时，新增方向的 $4.90/\sigma^2$ 所对应随机量是 $\chi^2_1$；一般参数下则为非中心卡方。
+新增方向的随机平方和为 $S_{xx}\widehat b^2$，本组观测给出其值 $4.90$。
+当 $b=0$ 时，$S_{xx}\widehat b^2/\sigma^2=Z_1^2\sim\chi^2_1$；当 $b\ne0$ 时，它服从非中心卡方分布，非中心参数为 $b^2S_{xx}/\sigma^2$。
 \end{exbox}
 
-\begin{exbox}[第六步：最大似然、无偏方差与 Fisher 信息]
+\begin{exbox}[最大似然、无偏方差与 Fisher 信息]
 第五步已把似然压缩到三个统计量。现在最大化它，并检查方差估计为何有两个不同分母。
 
-\textbf{解.} 记 $v=\sigma^2$。对数似然为
+\textbf{解。} 记 $v=\sigma^2$。对数似然为
 \[
  L(\theta,b,v)=-\frac N2\log(2\pi v)
  -\frac{\mathrm{RSS}+N(\widehat\theta-\theta)^2+S_{xx}(\widehat b-b)^2}{2v}.
@@ -229,7 +231,9 @@
  N/v&0&0\\0&S_{xx}/v&0\\0&0&N/(2v^2)
  \end{pmatrix}.
 \]
-奇数高斯中心矩为零，使交叉信息为零。
+这里 $\mathbb E(\varepsilon\varepsilon^{\mathsf T})=vI$ 给出 $I_{\beta\beta}=X^{\mathsf T}X/v$；
+$\|\varepsilon\|^2/v\sim\chi_N^2$ 的方差为 $2N$，给出 $I_{vv}=N/(2v^2)$。
+得分乘积中的奇数高斯中心矩为零，所以交叉信息为零。
 在上述正则条件下，Cram\'er--Rao 界对无偏估计给
 \[
  \operatorname{Var}(\widetilde\theta)\ge v/N,\qquad
@@ -240,11 +244,11 @@
 界本身不保证每个参数都有能达到它的无偏估计。
 \end{exbox}
 
-\begin{exbox}[第七步：已知方差时实际计算 Neyman--Pearson 检验]
+\begin{exbox}[已知方差下的 Neyman--Pearson 检验]
 现在检验是否需要趋势。先假设 $\sigma$ 已知，比较简单斜率假设 $H_0:b=0$ 与 $H_1:b=b_1>0$。
 两边的截距取同一个固定值；或者只在消去截距后的统计量 $\widehat b$ 上比较这两个分布。
 
-\textbf{解.} 原模型的似然比为
+\textbf{解。} 原模型的似然比为
 \[
  \log\frac{p_{\theta,b_1,v}(y)}{p_{\theta,0,v}(y)}
  =\frac{b_1}{v}x^{\mathsf T}y-\frac{b_1^2S_{xx}}{2v}.
@@ -263,14 +267,14 @@ Neyman--Pearson 规则于是成为
 校准值 $1$ 是这一已知方差情形的额外输入，不能用本组 $s$ 冒充“已知”。
 
 同一模型中的均值检验也能直接计算：比较 $\theta=\theta_0$ 与 $\theta=\theta_1>\theta_0$，保持斜率相同，似然比只依赖 $\overline Y$，标准化为 $\sqrt N(\overline Y-\theta_0)/\sigma$。
-$b=0$ 时这就成为通常的 iid 正态均值检验。
+$b=0$ 时这就成为通常的独立同分布正态均值检验。
 双侧正态检验有两个尾部；不能把它称为所有双侧备择下的 Neyman--Pearson 最强检验。
 \end{exbox}
 
-\begin{exbox}[第八步：方差未知时，用同一残差建立精确 t/F 检验]
+\begin{exbox}[未知方差下的精确 $t/F$ 检验]
 上一步的 $Z$ 不能在未知 $\sigma$ 时直接计算。用第六步的 $s$ 代替后，分布需要重新由第五步的独立性推导。
 
-\textbf{解.} 对斜率零假设 $b=b_0$，
+\textbf{解。} 对斜率零假设 $b=b_0$，
 \[
  T_b=\frac{\widehat b-b_0}{s/\sqrt{S_{xx}}}
  =\frac{Z_1}{\sqrt{(\mathrm{RSS}/\sigma^2)/(N-2)}}
@@ -294,10 +298,10 @@ $b=0$ 时这就成为通常的 iid 正态均值检验。
 若真实 $b\ne0$，$T_b$ 与 $F$ 分别服从非中心 $t/F$ 分布，前面的中心分布只在零假设下用于校准水平。
 \end{exbox}
 
-\begin{exbox}[第九步：从同一枢轴算区间，并区分均值与新观测]
+\begin{exbox}[参数置信区间与新观测预测区间]
 第八步已经得到精确枢轴。现在把检验反演成置信区间，进一步计算设计中心处的平均响应与一次新观测的区间。
 
-\textbf{解.} 参数的 $1-\alpha$ 置信区间为
+\textbf{解。} 参数的 $1-\alpha$ 置信区间为
 \[
  \widehat b\pm t_{N-2,1-\alpha/2}\frac{s}{\sqrt{S_{xx}}},
  \qquad \widehat\theta\pm t_{N-2,1-\alpha/2}\frac{s}{\sqrt N}.
@@ -335,10 +339,10 @@ $b=0$ 时这就成为通常的 iid 正态均值检验。
 这里 $\chi^2_{\nu,q}$ 表示累计概率 $q$ 的分位数。
 \end{exbox}
 
-\begin{exbox}[第十步：同一个拟合为什么满足 Gauss--Markov，哪些结论需要正态性]
+\begin{exbox}[Gauss--Markov 最优性与正态假设的作用]
 上面的精确检验用了高斯分布。现在保留同一个均值和协方差，去掉正态性，检查估计中还能保留什么。
 
-\textbf{解.} 只假设 $\mathbb E\varepsilon=0$、$\operatorname{Cov}(\varepsilon)=\sigma^2I$。
+\textbf{解。} 只假设 $\mathbb E\varepsilon=0$、$\operatorname{Cov}(\varepsilon)=\sigma^2I$。
 令 $L=(X^{\mathsf T}X)^{-1}X^{\mathsf T}$，则 $\widehat\beta=LY$ 仍无偏，协方差仍是
 \[
  \operatorname{Cov}(\widehat\beta)
@@ -358,6 +362,7 @@ $b=0$ 时这就成为通常的 iid 正态均值检验。
 无需正态性，投影恒等式、无偏性、上述协方差和 $\mathbb E\mathrm{RSS}=(N-2)\sigma^2$ 都仍成立。
 但残差平方和的卡方分布、拟合与残差的独立性、有限样本精确 $t/F$ 分布以及正态似然的充分性结论，都不能仅由这两个矩条件推出。
 
-同一批数据从起点到终点只用了一个模型：产品密度确定概率，条件期望描述信息，特征函数给线性统计量，投影把统计量变成估计，Cochran 分解提供独立方差尺度，似然给充分性与最大似然，Fisher 信息比较方差，最后的检验与区间又回到这同一组拟合和残差。
-数值中的 $1.4$、$0.7$、$0.30$、$0.10$、$7$ 和 $49$，各自来自前面已经算出的对象。
+本组数据的拟合值 $1.4$ 和 $0.7$ 由投影决定；残差平方和 $0.30$ 再给出方差尺度 $0.10$。
+在高斯模型下，这个尺度与拟合独立，因而能用于校准统计量 $T_b=7$ 和 $F=49$，并构造精确区间。
+只保留均值与协方差假设时，拟合及其方差仍可计算，但检验和区间的有限样本分布还需要额外条件。
 \end{exbox}

@@ -1,7 +1,7 @@
 \section{综合例题：同一条 Ising 链上的 Gibbs、响应、图展开与复零点}
 \label{sec:phys-ising-chain-comprehensive}
 
-本章的 Gibbs 测度、参数响应、Lee--Yang 零点及图展开，现在都作用于同一个模型。先固定有限体系，算出全部观测量；再比较边界条件并取热力学极限。每一步使用上一步得到的配分函数，不更换系统来回避计算。
+有限链的配分函数可以直接算出，因此适合检验 Gibbs 测度、参数响应、Lee--Yang 零点及图展开之间的关系。以下固定同一条周期链，用转移矩阵求配分函数，再由它计算响应、相关与复零点，最后比较边界条件和热力学极限。
 
 \begin{exbox}[统一题目与微观状态]
 取 $N\ge3$ 个周期 Ising 自旋，$s_i=\pm1$、$s_{N+1}=s_1$，并令
@@ -11,7 +11,7 @@ H_N(s)=-J\sum_{i=1}^Ns_is_{i+1}-h\sum_{i=1}^Ns_i,
 \]
 记 $K=\beta J$、$H=\beta h$，这里无下标的 $H$ 仅为无量纲磁场，不是 Hamilton 函数 $H_N$。求有限 $N$ 的 Gibbs 权重、自由能及响应；在 $h=0$ 时分别作高温和低温图计数，求相关函数与复场零点；最后判断 $N\to\infty$ 时是否出现有限温度相变。
 
-\textbf{解的起点。} 状态空间是 $\Omega_N=\{-1,1\}^N$，参考测度为计数测度。因此
+\textbf{解。} 状态空间是 $\Omega_N=\{-1,1\}^N$，参考测度为计数测度。因此
 \[
 Z_N=\sum_{s\in\Omega_N}\ee^{-\beta H_N(s)},
 \qquad
@@ -22,7 +22,9 @@ p_N(s)=Z_N^{-1}\ee^{-\beta H_N(s)},
 \end{exbox}
 
 \begin{exbox}[第一步：转移矩阵把同一个 Gibbs 和算成两个本征值]
-将一个格点的场能平均分到左右两条键上，定义
+用转移矩阵计算任意有限 $N$ 的配分函数。
+
+\textbf{解。} 将一个格点的场能平均分到左右两条键上，定义
 \[
 T_{ss'}=\exp\!\left[Kss'+\frac H2(s+s')\right],
 \qquad
@@ -40,17 +42,19 @@ Z_N=\sum_{s_1,\ldots,s_N}T_{s_1s_2}\cdots T_{s_Ns_1}
 \qquad
 Z_N=\lambda_+^N+\lambda_-^N.
 \]
-实磁场下 $\lambda_+>\lambda_-\ge0$，$K=0$ 时 $\lambda_-=0$。这一步给出后续全部计算的同一母式。
+实磁场下 $\lambda_+>\lambda_-\ge0$，$K=0$ 时 $\lambda_-=0$。因此有限链的全部参数依赖都由这两个本征值确定，后面的响应和零点计算可以直接从 $Z_N$ 出发。
 \end{exbox}
 
 \begin{exbox}[第二步：变分原理与响应在这个有限模型里怎样使用]
-任取概率分布 $q(s)$，其 Shannon 熵为 $S(q)=-\kB\sum_s q(s)\log q(s)$。直接代入已得的 $p_N$：
+验证已求得的 Gibbs 分布使自由能最小，并计算磁化与键能的响应。
+
+\textbf{解。} 任取概率分布 $q(s)$，其 Shannon 熵为 $S(q)=-\kB\sum_s q(s)\log q(s)$。直接代入已得的 $p_N$：
 \begin{align*}
 \beta\left[\sum_s q(s)H_N(s)-\frac{S(q)}{\kB\beta}-F_N\right]
 &=\sum_s q(s)\log\frac{q(s)}{p_N(s)}\\
 &=D(q\Vert p_N)\ge0.
 \end{align*}
-所以 Gibbs 变分的最小态就是第一步的 $p_N$；不需要另猜一个“平均场平衡态”。
+相对熵非负，且只在 $q=p_N$ 时为零，所以自由能泛函的唯一最小态就是已求得的 $p_N$。
 
 令 $M=\sum_i s_i$、$B=\sum_i s_is_{i+1}$。对有限和逐项求导得
 \begin{align*}
@@ -69,7 +73,9 @@ m_N=\frac1N\partial_H\log Z_N,
 \end{exbox}
 
 \begin{exbox}[第三步：高温展开与低温畴壁计数算出同一个 $Z_N$]
-先令 $H=0$，记 $t=\tanh K$。每条键满足
+在零磁场下，分别用偶子图和畴壁计数计算配分函数，并与转移矩阵结果核对。
+
+\textbf{解。} 令 $H=0$，记 $t=\tanh K$。每条键满足
 \[
 \ee^{Ks_is_{i+1}}=\cosh K(1+ts_is_{i+1}).
 \]
@@ -91,7 +97,9 @@ Z_N
 \end{exbox}
 
 \begin{exbox}[第四步：相关函数、能量与一个可逐态枚举的 $N=3$ 实例]
-仍取 $H=0$。对 $0<r<N$，插入 $s_0s_r$ 后，保留的高温子图在两个插入点为奇度、其他点为偶度；环上恰有长度 $r$ 与 $N-r$ 的两条路径。
+由零场图展开求两点相关、内能和磁化率，再用 $N=3$ 的八个状态核对。
+
+\textbf{解。} 仍取 $H=0$。对 $0<r<N$，插入 $s_0s_r$ 后，保留的高温子图在两个插入点为奇度、其他点为偶度；环上恰有长度 $r$ 与 $N-r$ 的两条路径。
 端点另由 $s_0^2=1$ 给 $C_N(0)=C_N(N)=1$。统一写成
 \[
 C_N(r)=\langle s_0s_r\rangle
@@ -120,14 +128,16 @@ $C_{V,3}=16\kB\beta^2J^2p_g(1-p_g)$。有限枚举、转移矩阵、图展开与
 \end{exbox}
 
 \begin{exbox}[第五步：复场零点及热力学极限的次序]
-令 $z=\ee^{-2H}$，则 $Z_N=\ee^{NH}P_N(z)$，其中 $P_N$ 是次数 $N$ 的多项式。实场下的正权重并不排除复场中出现零点。
+求复磁场中的配分函数零点，判断它们能否在有限温度下逼近零实场。
+
+\textbf{解。} 令 $z=\ee^{-2H}$，则 $Z_N=\ee^{NH}P_N(z)$，其中 $P_N$ 是次数 $N$ 的多项式。实场下的正权重并不排除复场中出现零点。
 
 当 $K>0$ 时取 $H=\ii\theta$。若
 \[
 \cos\theta=\sqrt{1-\ee^{-4K}}\cos\phi,
 \]
 则转移矩阵两本征值可写为
-$\lambda_\pm=\sqrt{\ee^{2K}-\ee^{-2K}}\,\ee^{\pm\ii\phi}$。由第一步的母式，零点条件为 $\cos(N\phi)=0$。因此全部 $N$ 个零点为
+$\lambda_\pm=\sqrt{\ee^{2K}-\ee^{-2K}}\,\ee^{\pm\ii\phi}$。代入 $Z_N=\lambda_+^N+\lambda_-^N$，零点条件成为 $\cos(N\phi)=0$。因此全部 $N$ 个零点为
 \[
 \phi_k=\frac{(2k+1)\pi}{2N},\quad
 \theta_k=\arccos\!\left(\sqrt{1-\ee^{-4K}}\cos\phi_k\right),\quad
@@ -156,7 +166,9 @@ C_\infty(r)=t^r,\qquad
 \end{exbox}
 
 \begin{exbox}[第六步：边界阶、几何条件与这一模型没有证明的结论]
-把周期链改成开链，保持 $H=0$，端点自旋求和给
+比较零磁场下周期链和开链的自由能，确定边界改变是否影响每自旋的热力学极限。
+
+\textbf{解。} 把周期链改成开链，保持 $H=0$，端点自旋求和给
 \[
 Z_N^{\rm open}=2(2\cosh K)^{N-1},\qquad
 F_N^{\rm per}-F_N^{\rm open}

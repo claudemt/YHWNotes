@@ -8,11 +8,10 @@ Schur 引理会把群平均变成特征标正交关系。由此既能用一个�
 \section{特征标理论}
 \label{sec:character-theory}
 
-直接处理整个矩阵 $D(g)$ 往往太重。幸运的是，很多关于不可约分解的信息其实只需要一个数：矩阵的迹。迹有一个关键性质，若 $D'(g)=S^{-1}D(g)S$，则 $\Tr D'(g)=\Tr D(g)$。因此它自动忽略基底选择，只保留表示等价类真正有意义的信息。把每个群元对应的迹收集成一个函数，就得到特征标。
-
-特征标之所以强大，不是因为“迹比较好算”这一点，而是因为不可约特征标在类函数空间中构成正交基。于是一个未知表示的分解重数可以像 Fourier 系数一样通过内积直接取出来。这一节的所有公式都围绕这一点展开。
-
-大正交关系虽然强大，但它依赖于具体矩阵元，因此与基底选取还有关系。为了得到真正与表示等价类相关的不变量，我们把每个表示矩阵的迹取出来。这就是特征标。由于迹在相似变换下不变，特征标自动抹去了基变换的冗余，同时又保留了足够多的结构信息。
+大正交关系处理的是选定基中的矩阵元。若只想判断一个表示包含哪些不可约类型，
+可以把矩阵元对角求和：换基 $D'(g)=S^{-1}D(g)S$ 不改变迹，
+因此 $g\mapsto\Tr D(g)$ 只依赖表示的等价类。
+下面将用大正交关系证明这些迹函数彼此正交，再通过内积求出未知表示的重数。
 
 \begin{definition}[特征标]
 设 $\rho:G\to\operatorname{GL}(V)$ 为有限维表示，$D(g)$ 为任意一组基下的表示矩阵。定义函数
@@ -120,6 +119,75 @@ m_\alpha=\langle \chi^{(\alpha)},\chi\rangle
 \]
 \end{proof}
 
+\begin{proposition}[投影算符的显式公式]
+\label{prop:projection-operator}
+设 $V=\bigoplus_\alpha m_\alpha V_\alpha$ 是 $G$ 的表示 $V$ 的不可约分解。对每个不可约表示 $\alpha$，投影到 $\alpha$-同类分量 $V[\alpha]\cong m_\alpha V_\alpha$ 的 $G$-等变投影算符为
+\begin{equation}
+P_\alpha=\frac{d_\alpha}{|G|}\sum_{g\in G}\overline{\chi_\alpha(g)}\,\rho(g).
+\label{eq:projection-operator}
+\end{equation}
+它满足
+\[
+P_\alpha^2=P_\alpha,\qquad P_\alpha P_\beta=0\ (\alpha\neq\beta),\qquad\sum_\alpha P_\alpha=I_V.
+\]
+
+\end{proposition}
+
+\begin{proof}
+对任意 $h\in G$，共轭只是在求和中重排群元，而特征标在共轭类上常值，因此
+\[
+\rho(h)P_\alpha\rho(h)^{-1}=\frac{d_\alpha}{|G|}\sum_g\overline{\chi_\alpha(g)}\rho(hgh^{-1})
+=\frac{d_\alpha}{|G|}\sum_{g'}\overline{\chi_\alpha(g')}\rho(g')
+=P_\alpha,
+\]
+故 $P_\alpha$ 与表示的作用交换。
+
+将它限制到不可约分量 $V_\beta$ 上。Schur 引理给出
+$P_\alpha|_{V_\beta}=\lambda_\beta I_{V_\beta}$，而取迹可得
+\[
+\Tr_{V_\beta}P_\alpha=\frac{d_\alpha}{|G|}\sum_g\overline{\chi_\alpha(g)}\chi_\beta(g)=d_\alpha\langle\chi_\alpha,\chi_\beta\rangle=d_\alpha\delta_{\alpha\beta}.
+\]
+于是 $\lambda_\beta d_\beta=d_\alpha\delta_{\alpha\beta}$，即
+$\lambda_\beta=\delta_{\alpha\beta}$。所以 $P_\alpha$ 在 $V[\alpha]$ 上为恒等、在其余同类分量上为零；幂等性、相互正交性与 $\sum_\alpha P_\alpha=I$ 随即成立。
+\end{proof}
+
+\begin{example}[投影算符在对称性适配线性组合构造中的应用]
+\label{ex:projection-salc}
+设三个等价位置上的轨道 $\phi_1,\phi_2,\phi_3$ 正交归一，$C_{3v}\cong D_3$ 置换这三个轨道。
+用\eqnrefs{eq:projection-operator} 求 $A_1$ 与 $E$ 的对称性适配线性组合，并判断 $A_2$ 是否出现。
+
+\textbf{解。} 按共轭类 $(e,3\sigma_v,2C_3)$ 的顺序，置换表示特征标为 $(3,1,0)$。
+将 $A_1=(1,1,1)$、$A_2=(1,-1,1)$、$E=(2,0,-1)$ 代入重数公式，得到
+\[
+m_{A_1}=\frac{3+3}6=1,\qquad
+m_{A_2}=\frac{3-3}6=0,\qquad
+m_E=\frac{2\cdot3}6=1.
+\]
+这里二维 $E$ 是三角形平面上的转动与反射表示，其矩阵已在前章构造。
+对平凡表示，群平均投影为
+\[
+P_{A_1}=\frac16\bigl(I+U(r)+U(r^2)+U(s)+U(sr)+U(sr^2)\bigr),
+\]
+每个目标轨道在六项中出现两次，所以
+\[
+P_{A_1}\phi_1=\frac13(\phi_1+\phi_2+\phi_3),\qquad
+\psi_{A_1}=\frac{\phi_1+\phi_2+\phi_3}{\sqrt3}.
+\]
+对二维表示，$\chi_E$ 在反射上为零，因此
+\[
+P_E=\frac13\bigl(2I-U(r)-U(r^2)\bigr),\qquad
+P_E\phi_1=\frac13(2\phi_1-\phi_2-\phi_3).
+\]
+这个向量的范数为 $\sqrt{2/3}$。归一化后，再在分量和为零的空间中取一个正交向量，得到
+\[
+\psi_{E,1}=\frac{2\phi_1-\phi_2-\phi_3}{\sqrt6},\qquad
+\psi_{E,2}=\frac{\phi_2-\phi_3}{\sqrt2}.
+\]
+两者都被 $P_E$ 保持，且与 $\psi_{A_1}$ 正交，完整给出 $A_1\oplus E$ 的适配基。
+若原子轨道存在重叠，最后一步应按实际重叠矩阵计算范数，不能直接沿用这里的归一化系数。
+\end{example}
+
+
 重数公式的使用方式与 Fourier 展开完全一致。若
 \[
 \chi=\sum_\beta m_\beta\chi^{(\beta)},
@@ -163,6 +231,22 @@ a_{hgh^{-1}}=a_g
 K_r=\sum_{g\in C_r}g,
 \]
 那么 $K_1,\dots,K_k$ 构成群代数中心的一组基。于是“类函数空间”和“群代数中心”虽然对象不同，却都由同一批共轭类坐标化。下面证明中把类函数 $f$ 包装成中心元 $z_f$，正是在利用这层一一对应。
+
+\begin{proposition}[置换特征标与轨道数]
+设有限群 $G$ 作用在有限集 $X$ 上，置换表示的特征标为 $\chi_{\mathrm{perm}}$。
+则 $\chi_{\mathrm{perm}}(g)=|X^g|$，且其平凡表示重数等于 $|X/G|$。
+\end{proposition}
+
+\begin{proof}
+置换矩阵的对角元为 $1$ 当且仅当相应基标签被固定，所以迹为 $|X^g|$。
+由重数公式与\cref{thm:burnside}，
+\[
+\langle\chi_{\mathrm{triv}},\chi_{\mathrm{perm}}\rangle
+=\frac1{|G|}\sum_g|X^g|=|X/G|.
+\]
+也可直接构造不变向量：每个轨道上基向量的和不变，不同轨道给出独立向量；
+任何不变向量的系数在各轨道上必须相同，因此它们构成全部不变空间的一组基。
+\end{proof}
 
 \begin{theorem}[不可约特征标构成类函数空间的一组正交基]
 有限群 $G$ 的全部不可约特征标构成类函数空间 $\mathcal C(G)$ 的一组正交基。因而，不等价不可约表示的个数等于 $G$ 的共轭类个数。
@@ -352,7 +436,7 @@ $E$（标准）   & $2$ & $-1$ & $0$ \\
 =\frac{1}{6}\bigl(1\cdot1\cdot2+2\cdot1\cdot(-1)+3\cdot(-1)\cdot0\bigr)=0,
 \]
 确认 $A_2$ 与 $E$ 不含公共不可约成分。其余行对同理。这张表与 $S_3$ 的特征标表\cref{tab:s3-character-table}只差一个同构映射 $r\leftrightarrow(123)$、$s\leftrightarrow(12)$，但几何记号让"旋转类"与"反射类"一目了然，这正是物理中 $C_{3v}$ 特征标表的标准写法。
-特征标表不只是代数对象，它直接预测分子的振动简并结构。以氨分子 $\mathrm{NH_3}$ 为例：它有一个 $C_3$ 主轴（沿 N--H 键方向）和三个 $\sigma_v$ 镜面，对称群恰为 $C_{3v}\cong D_3$。4 个原子各有 3 个位移分量，故\emph{位移表示} $\Gamma_{\mathrm{disp}}$ 是 $3N=12$ 维。它的特征标只需数"在群元作用下不动的原子"，因为只有不动原子才贡献对角元：每个不动原子贡献一个 $3\times3$ 正交矩阵的迹。
+特征标表不只是代数对象，它直接约束分子的振动简并结构。以氨分子 $\mathrm{NH_3}$ 为例：其 $C_3$ 主轴穿过氮原子和三个氢原子所成三角形的中心，另有三个 $\sigma_v$ 镜面，对称群为 $C_{3v}\cong D_3$。4 个原子各有 3 个位移分量，故\emph{位移表示} $\Gamma_{\mathrm{disp}}$ 是 $3N=12$ 维。它的特征标只需数"在群元作用下不动的原子"，因为只有不动原子才贡献对角元：每个不动原子贡献一个 $3\times3$ 正交矩阵的迹。
 \begin{itemize}[leftmargin=3em]
 \item $e$：4 个原子都不动，每个贡献 $\Tr I_3=3$，故 $\chi_{\mathrm{disp}}(e)=12$。
 \item $r$（$C_3$）：3 个 H 原子循环置换、N 不动。N 贡献 $\Tr R_{\uv z}(120^\circ)=1+2\cos120^\circ=0$；被置换的 H 原子不贡献对角元。故 $\chi_{\mathrm{disp}}(r)=0$。
@@ -380,7 +464,16 @@ m_E&=\tfrac16\bigl(1\cdot2\cdot6+2\cdot(-1)\cdot0+3\cdot0\cdot2\bigr)=\tfrac{12}
 \Gamma_{\mathrm{vib}}=2A_1\oplus 2E.
 \label{eq:nh3-vib-decomposition}
 \end{equation}
-$\mathrm{NH_3}$ 的 6 个振动自由度分成 4 个模式：2 个非简并的 $A_1$ 模式（对称伸缩 $\nu_1$ 与对称弯曲 $\nu_2$）和 2 个二重简并的 $E$ 模式（简并伸缩 $\nu_{3a},\nu_{3b}$ 与简并弯曲 $\nu_{4a},\nu_{4b}$）。$A_2$ 不出现，因为振动位移不可能具有赝标量对称性。这个结论完全由对称性决定，不需要求解任何动力学方程；改变力常数只改变频率数值，不改变简并结构。这正是群论在分子物理中的核心价值：\emph{对称性在动力学之前就固定了简并模式数}。
+$\mathrm{NH_3}$ 的 6 个振动自由度包含两份 $A_1$ 和两份 $E$。
+在保持 $C_{3v}$ 对称性的谐振近似中，动力学矩阵可在每种类型的重数空间中继续对角化：
+两份 $A_1$ 给出两个通常不同的频率，两份 $E$ 给出两组各至少二重简并的频率。
+通常将它们分别命名为对称伸缩 $\nu_1$、对称弯曲 $\nu_2$、
+简并伸缩 $\nu_{3a},\nu_{3b}$ 和简并弯曲 $\nu_{4a},\nu_{4b}$；
+伸缩与弯曲的具体混合比例仍由力常数决定。
+本模型不含 $A_2$ 振动，是因为上面的特征标内积为零，
+不能由此推出一般分子的振动位移都排除 $A_2$ 类型。
+群论在求解动力学以前确定这些类型及其重数；保持对称性的力常数变化
+保留 $E$ 型的二重简并，但仍可能使不同类型或不同副本的频率偶然重合。
 特征标表不只给出不可约分解，它本身还有丰富的结构。下面几条性质在物理应用中反复使用。
 \begin{theorem}[特征标的列正交关系]\label{thm:character-column-orthogonality}
 不可约特征标不仅按行正交，也按列正交：对任意 $g,h\in G$，
@@ -392,6 +485,7 @@ $\mathrm{NH_3}$ 的 6 个振动自由度分成 4 个模式：2 个非简并的 $
 \end{cases}
 \]
 \end{theorem}
+\begin{proof}
 大正交关系给出
 \[
 \frac1{\lvert G\rvert}\sum_{g\in G}\chi^{(\alpha)}(g)\overline{\chi^{(\beta)}(g)}=\delta_{\alpha\beta}.
@@ -435,6 +529,7 @@ $\mathrm{NH_3}$ 的 6 个振动自由度分成 4 个模式：2 个非简并的 $
 =\begin{cases}\lvert C_G(g)\rvert,&g\sim h,\\0,&g\not\sim h.\end{cases}
 \]
 这里 $g\sim h$ 表示共轭。当 $g=h$ 时给出 $\sum_\alpha\lvert\chi^{(\alpha)}(g)\rvert^2=\lvert C_G(g)\rvert$；当 $g,h$ 不共轭时特征标向量正交。
+\end{proof}
 因此不同共轭类的特征标向量彼此正交；这既能检验特征标表是否遗漏不可约表示，也使
 $\sum_\alpha\lvert\chi^{(\alpha)}(g)\rvert^2=\lvert C_G(g)\rvert$
 成为从表中读取中心化子阶的直接判据。
@@ -451,6 +546,9 @@ $\sum_\alpha\lvert\chi^{(\alpha)}(g)\rvert^2=\lvert C_G(g)\rvert$
 \end{enumerate}
 \label{prop:character-reality}
 \end{proposition}
+该判据的完整分类及独立证明见\cref{thm:frobenius-schur-classification}；
+那里从群平均的不变张量出发，构造平方为 $+I$ 或 $-I$ 的反酉映射，
+因而区分实矩阵实现与四元数结构。
 这条判据在物理中用于判断表示能否用实矩阵实现——这决定了相应的简并态能否用实波函数描述。$D_3$ 的 $A_1,A_2$ 是实一维表示，二维表示 $E$ 也已由实矩阵实现；三者的指标均为 $\nu=1$，故都可实化。
 \begin{proposition}[正则表示的特征标与投影]
 正则表示的特征标为
@@ -474,27 +572,45 @@ d_\alpha=\dim\rho^{(\alpha)}.
 的表示论翻译：群代数同构于若干个全矩阵代数的直和。这一结构在后续构造投影算符和对称性适配线性组合时直接使用。
 限制和诱导是表示论中两个互相对偶的操作：限制把大群的表示缩小到子群，诱导把子群的表示扩大到大群。Frobenius 互反律说明这两个操作在内积下"伴随"。
 \begin{definition}[限制表示与诱导表示]
-设 $H\leqslant G$，$\rho:G\to\operatorname{GL}(V)$ 为 $G$ 的表示。
+设 $G$ 为有限群、$H\leqslant G$，$\rho:G\to\operatorname{GL}(V)$ 为 $G$ 的表示。
 把 $\rho$ 限制到 $H$ 上，得到 $H$ 的表示 $\rho\downarrow_H^G$；空间仍为 $V$，作用为 $\rho(h)$（$h\in H$），特征标为 $\chi\downarrow_H^G(h)=\chi(h)$。
 反过来，设 $\sigma:H\to\operatorname{GL}(W)$ 为 $H$ 的表示，并取左陪集代表 $g_1,\dots,g_r$（$r=[G:H]$）。诱导表示空间为
 \[
 \operatorname{Ind}_H^G W=\bigoplus_{i=1}^{r}g_i\otimes W,
 \]
-$G$ 的作用通过置换陪集和在每块上作用 $\sigma$ 来定义。维数满足 $\dim\operatorname{Ind}_H^G W=[G:H]\cdot\dim W$。
+把 $g_i\otimes w$ 视为第 $i$ 个 $W$ 副本中的向量。若 $gg_i=g_jh$（$h\in H$），定义
+\[
+g\cdot(g_i\otimes w)=g_j\otimes\sigma(h)w.
+\]
+陪集分解使 $j,h$ 唯一。维数满足 $\dim\operatorname{Ind}_H^G W=[G:H]\cdot\dim W$。
 \label{def:restriction-induction}
 \end{definition}
+\begin{proposition}[诱导作用的相容性]
+上述公式定义一个 $G$ 的表示；不同陪集代表的选择给出等价表示。
+\end{proposition}
+
+\begin{proof}
+若 $bg_i=g_jh_1$、$ag_j=g_kh_2$，则
+$(ab)g_i=g_kh_2h_1$。先作用 $b$ 再作用 $a$，向量在第 $k$ 块变成
+$\sigma(h_2)\sigma(h_1)w=\sigma(h_2h_1)w$，恰与直接作用 $ab$ 相同。
+单位元恒等作用，$g^{-1}$ 给出逆作用，所以这些线性变换可逆。
+若改选代表 $g_i'=g_i h_i$，映射
+$g_i'\otimes w\mapsto g_i\otimes\sigma(h_i)w$ 是可逆的，
+并将两个作用公式联系起来；重排陪集仅重排各直和块。
+\end{proof}
+
 \begin{theorem}[Frobenius 互反律]
-设 $H\leqslant G$，$\sigma$ 为 $H$ 的表示，$\rho$ 为 $G$ 的表示。则
+设 $G$ 为有限群、$H\leqslant G$，$\sigma$ 为 $H$ 的表示，$\rho$ 为 $G$ 的表示。则
 \[
 \left\langle\chi_{\operatorname{Ind}_H^G\sigma},\,\chi_\rho\right\rangle_G
 =
 \left\langle\chi_\sigma,\,\chi_{\rho\downarrow_H^G}\right\rangle_H.
 \]
-即：$\sigma$ 在 $\rho\downarrow_H^G$ 中出现的次数，等于 $\operatorname{Ind}_H^G\sigma$ 在 $\rho$ 中出现的次数。
+当 $\sigma,\rho$ 不可约时，这表示 $\sigma$ 在 $\rho\downarrow_H^G$ 中的重数，等于 $\rho$ 在 $\operatorname{Ind}_H^G\sigma$ 中的重数。对于一般表示，等式给出交织映射空间维数的相等。
 \label{thm:frobenius-reciprocity}
 \end{theorem}
 \par\medskip
-\begin{proof}[Frobenius 互反律]
+\begin{proof}[证明（Frobenius 互反律）]
 诱导特征标可直接由陪集模型求迹。取左陪集代表 \(G=\bigsqcup_i g_iH\)。元素 \(g\) 只在满足 \(g_i^{-1}gg_i\in H\) 的陪集块上留下对角贡献，因此
 \begin{equation}
 \chi_{\operatorname{Ind}_H^G\sigma}(g)
@@ -510,59 +626,117 @@ $G$ 的作用通过置换陪集和在每块上作用 $\sigma$ 来定义。维数
 \left\langle\chi_{\operatorname{Ind}\sigma},\chi_\rho\right\rangle_G
 &=\frac1{|G||H|}
 \sum_{x\in G}\sum_{h\in H}
-\chi_\sigma(h)\overline{\chi_\rho(xhx^{-1})}\\
+\overline{\chi_\sigma(h)}\chi_\rho(xhx^{-1})\\
 &=\frac1{|H|}\sum_{h\in H}
-\chi_\sigma(h)\overline{\chi_\rho(h)}
+\overline{\chi_\sigma(h)}\chi_\rho(h)
 =\left\langle\chi_\sigma,\chi_{\rho\downarrow_H^G}\right\rangle_H .
 \end{align*}
 这里只用了变量替换和 \(\chi_\rho(xhx^{-1})=\chi_\rho(h)\)，故重数等式随即成立。
-\end{proof}\par\medskip
-诱导表示也可以不经特征标显式构造。若 \(gg_i=g_jh\)（\(h\in H\)），就在
+对于一般表示，交织空间之间还存在下面的显式同构。给定
+$T\in\operatorname{Hom}_G(\operatorname{Ind}_H^G W,V)$，取
+$F(w)=T(e\otimes w)$，便得到 $H$-交织映射。
+反过来，给定 $F\in\operatorname{Hom}_H(W,V\downarrow_H)$，定义
 \[
-\operatorname{Ind}_H^GW=\bigoplus_i g_i\otimes W
+T(g_i\otimes w)=\rho(g_i)F(w).
 \]
-上定义
+若 $gg_i=g_jh$，则
+$T(g\cdot(g_i\otimes w))=\rho(g_j)F(\sigma(h)w)
+=\rho(g_jh)F(w)=\rho(g)T(g_i\otimes w)$，所以 $T$ 等变。
+两种构造互逆，证明自然同构
 \[
-g\cdot(g_i\otimes w)=g_j\otimes\sigma(h)w.
+\operatorname{Hom}_G(\operatorname{Ind}_H^G W,V)
+\cong\operatorname{Hom}_H(W,V\downarrow_H).
 \]
-陪集分解保证 \(j,h\) 唯一，群乘法保证该作用满足结合律。其矩阵是分块广义置换矩阵，维数为 \([G:H]\dim W\)；对角块求迹恰好恢复\eqnrefs{eq:induced-char-coset}。因此互反律不仅是特征标恒等式，也等价于自然同构
+\end{proof}
+
+当 $W,V$ 都不可约时，右侧告诉我们 $W$ 在限制表示中出现的次数；
+左侧则在诱导表示中读出 $V$ 的重数。两种计算实际上使用同一组交织映射。
+
+\begin{example}[从 $C_3$ 的相位诱导出 $D_3$ 的二维表示]
+取 $H=C_3=\langle r\rangle\triangleleft D_3$，令
+$\sigma_1(r)=\omega=\ee^{2\pi\ii/3}$。求诱导表示的矩阵及不可约分解。
+
+\textbf{解。} 选陪集代表 $e,s$，基记为 $e\otimes1,s\otimes1$。
+由 $rs=sr^{-1}$，$r$ 在这两个块分别作用为 $\omega$ 与 $\omega^{-1}$；$s$ 交换两块。
+因此
 \[
-\operatorname{Hom}_G(\operatorname{Ind}_H^G\sigma,\rho)
-\cong
-\operatorname{Hom}_H(\sigma,\rho\downarrow_H^G).
+D(r)=\begin{pmatrix}\omega&0\\0&\omega^{-1}\end{pmatrix},\qquad
+D(s)=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
 \]
-当 \(H=C_3\triangleleft D_3\)，取 \(\sigma_1(r)=\ee^{2\pi\ii/3}\) 时，诱导表示的特征标在 \(e,r,s\) 上分别为 \(2,-1,0\)，故
-\[
-\operatorname{Ind}_{C_3}^{D_3}\sigma_1\cong E.
-\]
-互反律同时说明 \(E\downarrow_{C_3}=\sigma_1\oplus\sigma_1^*\)。这个例子把“大群表示限制后的分支重数”与“子群表示诱导后的出现重数”统一起来，晶场劈裂正是同一种计数。
-更一般地，将诱导表示限制到另一个子群 \(K\) 时，\(K\) 在 \(G/H\) 上的轨道由双陪集 \(K\backslash G/H\) 标记。由此得到 Mackey 分解
+特征标在 $e,r,s$ 上为 $2,-1,0$，且
+$\langle\chi,\chi\rangle=(4+2)/6=1$，所以诱导表示不可约，等价于 $E$。
+限制回 $C_3$ 时两条坐标轴分别承载 $\sigma_1,\sigma_1^*$，故
+$E\downarrow_{C_3}=\sigma_1\oplus\sigma_1^*$；互反律两边的相应重数都是 $1$。
+\end{example}
+
+\begin{theorem}[Mackey 限制分解]
+设 $H,K\le G$，$G$ 有限，$\sigma$ 是 $H$ 的表示。取双陪集 $KdH$ 的代表 $d$，则
 \begin{equation}
 \left(\operatorname{Ind}_H^G\sigma\right)\downarrow_K
-\cong
-\bigoplus_{d\in K\backslash G/H}
+\cong\bigoplus_{d\in K\backslash G/H}
 \operatorname{Ind}_{K\cap dHd^{-1}}^K
 \left({}^{d}\sigma\downarrow_{K\cap dHd^{-1}}\right),
 \label{eq:mackey-restriction}
 \end{equation}
-其中 \({}^{d}\sigma(x)=\sigma(d^{-1}xd)\)。Frobenius 互反律作用于每个直和项，便给出两个诱导表示之间的交织重数。这里真正新增的是双陪集对轨道的分类；陪集作用与特征标公式不必再次从头推导。
-接下来把有限群上的离散求和推广到紧群的 Haar 积分。
-\begin{example}[$SO(3)$ 的 Peter--Weyl 展开]
-$SO(3)$ 的不可约表示为 $D^{(j)}$（$j=0,1,2,\dots$），维数 $2j+1$。Peter--Weyl 给出：Wigner $D$ 矩阵元 $\sqrt{2j+1}\,D^{(j)}_{m'm}(R)$ 构成 $L^2(SO(3))$ 的正交完备基。任意函数 $f\in L^2(SO(3))$ 展开为
+其中 ${}^{d}\sigma(x)=\sigma(d^{-1}xd)$，定义域为 $dHd^{-1}$。
+\end{theorem}
+
+\begin{proof}
+$K$ 在陪集集合 $G/H$ 上的轨道恰为双陪集 $KdH$ 中的左陪集。
+诱导空间中由每个轨道的陪集块张成的空间分别 $K$-不变，故按双陪集直和分解。
+固定 $d$，点 $dH$ 的稳定子为 $L=K\cap dHd^{-1}$；
+若 $l\in L$，则 $ld=d(d^{-1}ld)$，所以 $l$ 在 $d\otimes W$ 上作用为 $\sigma(d^{-1}ld)$。
+将此块向整个 $K$-轨道搬运，映射
 \[
-f(R)=\sum_{j=0}^\infty(2j+1)\sum_{m,m'=-j}^j\hat f^{(j)}_{m'm}D^{(j)}_{m'm}(R),
+k\otimes w\longmapsto kd\otimes w
 \]
-其中
+便给出该轨道空间与 $\operatorname{Ind}_L^K({}^{d}\sigma|_L)$ 的同构。
+关系 $kl\otimes w=k\otimes{}^{d}\sigma(l)w$ 在右侧也成立，保证良定义；
+轨道--稳定子双射使陪集块一一对应，故映射双射并保持 $K$ 的作用。
+各轨道相加即得分解。
+\end{proof}
+
+\section{紧群上的平均与完备展开}
+有限群的平均用每个群元相同的权重。若群元连续变化，就需要一种不因整体左移或右移而改变的积分。这里的紧群指紧 Hausdorff 拓扑群：乘法与求逆连续，任意开覆盖有有限子覆盖，且不同点可用不交开集分离。紧矩阵群采用矩阵元素的通常拓扑，连续表示则要求每个矩阵元都是连续函数。
+
+\begin{definition}[归一化 Haar 测度与函数内积]
+紧群 $G$ 的归一化 Haar 测度是一个正规 Borel 概率测度 $\mu$，满足 $\mu(hA)=\mu(Ah)=\mu(A)$。正规性指可由紧集从内、开集从外逼近可测集的测度。记 $\dd g=\dd\mu(g)$，则 $\int_G\dd g=1$。平方可积函数按几乎处处相等识别，组成 Hilbert 空间 $L^2(G)$；本节取
 \[
-\hat f^{(j)}_{m'm}=\int_{SO(3)}\overline{D^{(j)}_{m'm}(R)}f(R)\,dR.
+\langle f,h\rangle_G=\int_G\overline{f(g)}h(g)\,\dd g.
 \]
-这就是 $SO(3)$ 上的 Fourier 变换。与普通 Fourier 级数（$S^1$ 上的 Peter--Weyl）类比：$S^1$ 的不可约表示是一维的 $e^{in\phi}$，$SO(3)$ 的不可约表示是 $(2j+1)$ 维的 $D^{(j)}$ 矩阵。
-取 $R$ 为把参考轴转到方向 $\uv n$ 的转动，则 $D^{(j)}_{m0}(R)$ 正比于球谐函数 $Y_{jm}(\uv n)$。因此球谐展开
+因此内积对第二变量线性。有限群给出 $\int_G f\,\dd g=|G|^{-1}\sum_gf(g)$；圆群 $U(1)=\{\ee^{\ii\phi}\}$ 给出 $\dd g=\dd\phi/(2\pi)$。
+\label{def:compact-haar-normalization}
+\end{definition}
+
+本节采用 Haar 存在唯一性定理作为测度论输入：每个紧 Hausdorff 群存在唯一归一化左不变正规 Borel 测度，它也右不变并在求逆下不变。后两性质可由唯一性检查：右移的推前仍是归一化左不变测度；求逆交换左、右不变性。本节同时采用 Stone--Weierstrass 逼近定理：紧 Hausdorff 空间上的连续复函数子代数，若含常数、对共轭封闭且能分离不同点，则在一致范数下稠密。紧 Lie 群的 Haar 构造及这一逼近定理的表述见\href{https://courses.washington.edu/mnotes/liegroups/notes.pdf}{华盛顿大学紧 Lie 群讲义，第 37--38、61 页}；一般紧群的 Haar 存在性属于测度论，此处不从有限群计数推出。
+
+有了不变积分，有限群的平均证明仍能逐行使用。若 $\rho$ 是有限维连续表示，用 $\int_G\langle\rho(g)v,\rho(g)w\rangle\,\dd g$ 酉化；被积函数对非零 $v$ 严格为正，积分有限且正。群不变子空间的正交补仍群不变，所以表示完全可约。
+
+\begin{proposition}[紧群矩阵元的正交关系]
+对两组不等价有限维连续不可约酉表示 $\pi_\alpha,\pi_\beta$，在正交归一基下有
 \[
-f(\theta,\phi)=\sum_{\ell,m}f_{\ell m}Y_{\ell m}(\theta,\phi)
+\int_G\overline{\pi_\alpha^{ij}(g)}\pi_\beta^{kl}(g)\,\dd g
+=\frac{\delta_{\alpha\beta}\delta_{ik}\delta_{jl}}{d_\alpha}.
+\label{eq:compact-matrix-orthogonality}
 \]
-就是 Peter--Weyl 定理在 $SO(3)/SO(2)\simeq S^2$ 上的版本。
-\end{example}
+\end{proposition}
+
+\begin{proof}
+对任意 $A:V_\alpha\to V_\beta$，令 $T(A)=\int_G\pi_\beta(g)A\pi_\alpha(g)^{-1}\,\dd g$。以 $g\mapsto hg$ 换元可见 $T(A)$ 交织两表示；Schur 引理给出不同类型时 $T(A)=0$，同一类型时 $T(A)=cI$。后一情形取迹得到 $c=\operatorname{Tr}A/d_\alpha$。取仅第 $(l,j)$ 个元素为 $1$ 的 $A$，再读取 $T(A)$ 的 $(k,i)$ 元；酉性使 $[\pi_\alpha(g)^{-1}]_{ji}=\overline{\pi_\alpha^{ij}(g)}$，即得公式。对角矩阵元求和又给出不可约特征标的正交性。
+\end{proof}
+
+\begin{theorem}[Peter--Weyl 完备性]
+对紧群 $G$，全部不等价有限维连续不可约酉表示的函数 $\sqrt{d_\alpha}\,\pi_\alpha^{ij}$ 构成 $L^2(G)$ 的正交完备系。有限矩阵元线性组合还在连续函数空间 $C(G)$ 中一致稠密。
+\label{thm:compact-peter-weyl}
+\end{theorem}
+
+\begin{proof}[证明（紧矩阵群情形）]
+设 $G$ 是某个 $\operatorname{GL}(n,\CC)$ 的紧子群。令 $\mathcal A$ 为所有有限维连续表示矩阵元的线性张成。平凡表示使它含常数；矩阵元的乘积是张量积表示的矩阵元，复共轭是共轭表示的矩阵元，所以它是对共轭封闭的子代数。定义表示 $g\mapsto g$ 已能分离不同矩阵，因而 $\mathcal A$ 分离点。Stone--Weierstrass 定理给出 $\overline{\mathcal A}^{\|\cdot\|_\infty}=C(G)$。
+
+每个有限维表示完全可约，因此 $\mathcal A$ 也由不可约表示矩阵元张成。正规有限测度下，连续函数在 $L^2$ 中稠密；且 $\|f\|_2\le\|f\|_\infty$，所以同一矩阵元张成空间在 $L^2(G)$ 中稠密。结合 \eqnrefs{eq:compact-matrix-orthogonality} 得到完备性。这里的一致稠密是说存在某些有限线性组合逼近连续函数，并未声称任意排列的 Fourier 部分和一致收敛。
+\end{proof}
+
+对不预先给定忠实有限维矩阵实现的一般紧群，矩阵元能否分离点也须证明；这部分采用一般 Peter--Weyl 定理作为输入。紧 Lie 群中从紧自伴卷积算子的谱分解建立分离性的证明见\href{https://ocw.mit.edu/courses/18-755-lie-groups-and-lie-algebras-ii-spring-2024/mit18_755_s24_lec10.pdf}{MIT 18.755 第 10 讲，第 36 节}。上述独立证明已覆盖本书实际使用的紧矩阵群；$SO(3)$ 的具体矩阵元将在角动量分类以后代入 \cref{thm:compact-peter-weyl}。
 记 $\pi_\alpha^{ij}(g)$ 为不可约表示 $\alpha$ 在一组正交归一基下的 $(i,j)$ 矩阵元，Fourier 系数定义为 $\widehat f_\alpha^{ij}=\int_G\overline{\pi_\alpha^{ij}(g)}\,f(g)\,\dd g$，矩阵 $\widehat f_\alpha=(\widehat f_\alpha^{ij})$ 的 Hilbert--Schmidt 范数平方为 $\|\widehat f_\alpha\|_{\mathrm{HS}}^2=\sum_{i,j}|\widehat f_\alpha^{ij}|^2$。
 \begin{proposition}[Plancherel 公式]
 设 $G$ 为紧群，Haar 测度归一化为 $\int_G\dd g=1$，$f\in L^2(G)$。则
@@ -593,19 +767,13 @@ f(g)=\sum_\alpha d_\alpha\sum_{i,j}
 有限部分和在 \(L^2\) 中收敛，故等式延拓到任意 \(f\in L^2(G)\)。
 \end{proof}
 
-\par\medskip
-\par\medskip
-\begin{proposition}[{球谐函数的乘积展开（Gaunt 公式）}]
-两个球谐函数的乘积可用 CG 系数展开：
-\begin{align*}
-Y_{\ell_1 m_1}(\theta,\phi)\,Y_{\ell_2 m_2}(\theta,\phi)
-&=\sum_{L=|\ell_1-\ell_2|}^{\ell_1+\ell_2}
-(-1)^M\sqrt{\frac{(2\ell_1+1)(2\ell_2+1)(2L+1)}{4\pi}}\\
-&\quad\times
-\begin{pmatrix}\ell_1&\ell_2&L\\0&0&0\end{pmatrix}
-\begin{pmatrix}\ell_1&\ell_2&L\\m_1&m_2&-M\end{pmatrix}\\
-&\quad\times Y_{LM}^*(\theta,\phi).
-\end{align*}
-其中 $M=m_1+m_2$。这就是 Clebsch--Gordan 分解在 $L^2(S^2)$ 上的具体实现。选择定则直接从 3j 符号读出：$|m_1|\le\ell_1$，$|m_2|\le\ell_2$，$|M|\le L$，$m_1+m_2=M$，三角形条件 $|\ell_1-\ell_2|\le L\le\ell_1+\ell_2$，以及 $\ell_1+\ell_2+L$ 为偶数（来自 $\begin{pmatrix}\ell_1&\ell_2&L\\0&0&0\end{pmatrix}$ 的非零条件）。
+\begin{example}[圆群上的展开与范数]
+在 $U(1)$ 上取归一化测度 $\dd\phi/(2\pi)$。求 $f(\phi)=1+2\cos\phi+\sin2\phi$ 的全部不可约表示分量，并核对 Plancherel 范数。
 
-\end{proposition}
+\textbf{解。} 连续一维不可约表示是 $\pi_n(\ee^{\ii\phi})=\ee^{\ii n\phi}$（$n\in\mathbb Z$）。将三角函数写成指数，得到
+\[
+f(\phi)=1+\ee^{\ii\phi}+\ee^{-\ii\phi}
+-\frac{\ii}{2}\ee^{2\ii\phi}+\frac{\ii}{2}\ee^{-2\ii\phi}.
+\]
+因此 $\widehat f_0=\widehat f_{1}=\widehat f_{-1}=1$、$\widehat f_2=-\ii/2$、$\widehat f_{-2}=\ii/2$，其余为零。每个表示维数为一，故范数为 $1+1+1+1/4+1/4=7/2$。直接积分时不同频率的交叉项消失，$\cos^2\phi$ 与 $\sin^22\phi$ 的平均均为 $1/2$，也得到 $1+4/2+1/2=7/2$。不可约表示的矩阵元在这里就是熟悉的 Fourier 模式；后面的旋转群应用会把单个整数 $n$ 换成矩阵的两个磁量子数指标。
+\end{example}
