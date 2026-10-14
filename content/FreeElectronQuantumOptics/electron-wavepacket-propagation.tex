@@ -1,0 +1,1419 @@
+\chapter{电子波包传播与时间结构}\label{chap:prop-measure}
+
+前面已经求出电子离开相互作用区时的量子态。实验中的探测器通常位于更远的位置，电子还要传播一段距离才到达探测面。这段自由传播会改变不同动量分量的相对相位，即使能谱没有变化，电子在时间和空间中的分布也可能改变。要由出射态预言探测图样，我们先求传播后的态，再计算探测结果的概率。
+
+记相互作用结束时刻为 $t_+$，其电子密度矩阵元为 $\rho_{\ell\ell'}^{(+)}$。以下自由传播中的 $t$ 是从 $t_+$ 起算的经过时间。若第 $\ell$ 个通道的自由能量为 $\mathcal E_\ell$，态矢振幅获得因子 $\exp(-\ii\mathcal E_\ell t/\hbar)$；密度矩阵由一个振幅和另一个振幅的共轭组成，因而
+\begin{equation}
+\boxed{
+\rho_{\ell\ell'}(t)
+=\rho_{\ell\ell'}^{(+)}
+\exp\!\left[-\frac{\ii t}{\hbar}
+(\mathcal E_\ell-\mathcal E_{\ell'})\right].}
+\label{eq:sideband_coherence_free_propagation_master}
+\end{equation}
+当 $\ell=\ell'$ 时，相位因子等于一，各边带的概率保持不变。当 $\ell\ne\ell'$ 时，相对相位继续演化；在位置表象中把各分量叠加，便会出现随传播距离变化的干涉项。后面讨论的电子脉冲列和时间聚焦都来自这一过程。
+
+传播过程中若还有材料涨落或未探测光子参与，电子就需要用约化密度算符描述。我们将在自由传播之后讨论环境怎样改变相干和涨落，最后引入测量算符，说明能谱、相位读出和条件测量分别能够获得哪些信息。这样，同一个输出信号中的传播变化、环境作用和探测器响应就都有明确的计算位置。
+
+\section{自由传播与相空间}
+
+自由粒子的每个动量分量只积累相位，因此在动量表象中传播最容易计算。位置密度则由所有分量的干涉决定，需要在传播后作 Fourier 叠加。本节先写出这一解，再对窄动量分布展开色散，从而得到波包展宽、纵向聚束和时间透镜的计算公式。
+
+\subsection{自由传播与色散曲率矩阵}
+
+设电子在自由传播开始时的动量振幅为 $f_s(\mathbf p)$，其中 $s$ 是自旋标签，归一化为 $\sum_s\int\dd^3p\,|f_s(\mathbf p)|^2=1$。由能量本征态的时间演化，正能电子波包在时刻 $t$ 为
+\begin{equation*}
+|\Psi(t)\rangle
+=\sum_s\int\dd^3 p\,f_s(\mathbf p)
+\ee^{-\ii E(\mathbf p)t/\hbar}|\mathbf p,s\rangle,
+\qquad
+E(\mathbf p)=\sqrt{m_{\mathrm e}^2c^4+c^2p^2}.
+\end{equation*}
+当实际谱支持足够窄时，局域传播方程由这一精确相位的受控展开得到。
+
+设中心动量 $\mathbf p_0=p_0\mathbf e_z$，记 $\delta\mathbf p=\mathbf p-\mathbf p_0$。对 $E(\mathbf p)$ 作 Taylor 展开。一次导数给出波包中心的群速度；二次导数组成的矩阵称为 Hessian 矩阵，它描述不同动量分量的速度怎样偏离中心速度。保留到二阶，得
+\begin{equation*}
+E_2(\mathbf p)
+=E_0+\mathbf v_0\cdot\delta\mathbf p
++\frac{\delta p_x^2+\delta p_y^2}{2m_\perp}
++\frac{\delta p_z^2}{2m_\parallel},
+\end{equation*}
+其中
+\begin{equation*}
+\mathbf v_0=\frac{c^2\mathbf p_0}{E_0},
+\qquad
+m_\perp=\frac{E_0}{c^2}=\gamma_0m_{\mathrm e},
+\qquad
+m_\parallel=\gamma_0^3m_{\mathrm e}.
+\end{equation*}
+$m_\perp$ 与 $m_\parallel$ 分别是同一相对论色散沿横向和纵向方向的局部曲率尺度。传播误差由被舍弃的谱相位而不是单独的带宽控制。对实际动量支持 $\mathcal W_p$ 定义
+\begin{equation}
+\boxed{
+\epsilon_{\rm disp}^{(\ge3)}(t)
+\equiv
+\sup_{\mathbf p\in\mathcal W_p}
+\left|\frac{t}{\hbar}[E(\mathbf p)-E_2(\mathbf p)]\right|.}
+\label{eq:dispersion_truncation_control}
+\end{equation}
+只有在 $\epsilon_{\rm disp}^{(\ge3)}\ll1$ 时，进入共动坐标 $\zeta=z-v_0t$ 后才得到二阶局域传播方程
+\begin{equation}
+\boxed{
+\ii\hbar\partial_t\psi_2
+=-\frac{\hbar^2}{2m_\perp}\nabla_\perp^2\psi_2
+-\frac{\hbar^2}{2m_\parallel}\partial_\zeta^2\psi_2.}
+\label{eq:quadratic_dispersion_local_propagation}
+\end{equation}
+令 $P_{\mathcal W_p}$ 投影到实际谱支持，精确与二阶传播子的差满足
+\begin{equation}
+\boxed{
+\left\|[U_{\rm ex}(t)-U_2(t)]P_{\mathcal W_p}\right\|
+\le\epsilon_{\rm disp}^{(\ge3)}(t).}
+\label{eq:quadratic_dispersion_propagator_error_bound}
+\end{equation}
+该近似的误差由高阶色散相位随传播时间的累积控制，因此必须用无量纲相位而非孤立的哈密顿量系数判断失效。
+
+\begin{proposition}[实谱乘法传播子的二次截断界]
+设实色散 $E\in C^3$，归一化波包支撑于有界凸动量窗 $\mathcal W_p$，$E_2$ 为中心处二次 Taylor 多项式。则 $\|U_{\rm ex}-U_2\|_{\mathcal W_p}\le\min\{2,|t|\sup_{\mathcal W_p}|E-E_2|/\hbar\}$；若 $\|D^3E\|\le M_3$，后一个量不超过 $|t|M_3\sup|\delta\mathbf p|^3/(6\hbar)$。对相对论色散，二次包络满足\eqnrefs{eq:quadratic_dispersion_local_propagation}。
+\end{proposition}
+\begin{proof}
+其适用条件是初态动量主要支撑在给定带宽内、$E(p)$ 在该区间足够光滑，并且显式传播相位误差小于一。 Taylor 展开写成
+
+\begin{align*}
+E(\mathbf p_0+\delta\mathbf p)
+={}&E_0+DE(\mathbf p_0)[\delta\mathbf p]
++\frac12D^2E(\mathbf p_0)[\delta\mathbf p^{\otimes2}]\\
+&+\frac1{3!}D^3E(\mathbf p_0)[\delta\mathbf p^{\otimes3}]+R_4.
+\end{align*}
+对 $E=\sqrt{m_{\mathrm e}^2c^4+c^2p^2}$，
+\begin{equation*}
+\partial_{p_i}E=\frac{c^2p_i}{E},
+\qquad
+\partial_{p_i}\partial_{p_j}E
+=\frac{c^2}{E}\delta_{ij}-\frac{c^4p_ip_j}{E^3}.
+\end{equation*}
+在 $\mathbf p_0=p_0\mathbf e_z$ 上，横向 Hessian 元素为 $1/m_\perp=c^2/E_0$，纵向元素为
+\begin{align*}
+\frac1{m_\parallel}
+&=\frac{c^2}{E_0}-\frac{c^4p_0^2}{E_0^3}\\
+&=\frac{c^2}{E_0}\left(1-\frac{v_0^2}{c^2}\right)
+=\frac{1}{\gamma_0^3m_{\mathrm e}}.
+\end{align*}
+把载波和群延迟从精确 Fourier 波包中提出。令 $\zeta=z-v_0t$，并写
+\begin{equation*}
+\Psi(\mathbf r,t)
+=\ee^{\ii(p_0z-E_0t)/\hbar}
+\psi_2(\mathbf r_\perp,\zeta,t).
+\end{equation*}
+在二阶色散下，包络为
+\begin{equation*}
+\psi_2
+=\int\frac{\dd^3(\delta p)}{(2\pi\hbar)^3}
+A(\delta\mathbf p)
+\exp\!\left[
+\frac{\ii}{\hbar}(\delta\mathbf p_\perp\cdot\mathbf r_\perp+\delta p_z\zeta)
+-\frac{\ii t}{\hbar}
+\left(\frac{\delta p_\perp^2}{2m_\perp}
++\frac{\delta p_z^2}{2m_\parallel}\right)\right].
+\end{equation*}
+对 $t$ 求导，群速度项已经被 $\zeta=z-v_0t$ 吸收，因此
+\begin{align*}
+\ii\hbar\partial_t\psi_2
+&=\int\frac{\dd^3(\delta p)}{(2\pi\hbar)^3}
+A(\delta\mathbf p)
+\left(\frac{\delta p_\perp^2}{2m_\perp}
++\frac{\delta p_z^2}{2m_\parallel}\right)\ee^{\cdots}\\
+&=-\frac{\hbar^2}{2m_\perp}\nabla_\perp^2\psi_2
+-\frac{\hbar^2}{2m_\parallel}\partial_\zeta^2\psi_2,
+\end{align*}
+其中第二行使用 $\delta p_j \ee^{\ii\delta p_jx_j/\hbar}=-\ii\hbar\partial_{x_j}\ee^{\ii\delta p_jx_j/\hbar}$。这就是\eqnrefs{eq:quadratic_dispersion_local_propagation}。精确传播子与二阶传播子在动量表象都是乘法算符。定义余项相位
+\begin{equation*}
+\delta\varphi(\mathbf p,t)
+=\frac{t}{\hbar}[E(\mathbf p)-E_2(\mathbf p)].
+\end{equation*}
+对任意归一化且支撑在 $\mathcal W_p$ 的波包，
+\begin{align*}
+\|[U_{\rm ex}(t)-U_2(t)]\psi\|^2
+&=\int_{\mathcal W_p}\dd^3 p\,|A(\mathbf p)|^2
+|\ee^{-\ii\delta\varphi}-1|^2\\
+&\le\sup_{\mathbf p\in\mathcal W_p}|\ee^{-\ii\delta\varphi}-1|^2\\
+&\le\sup_{\mathbf p\in\mathcal W_p}|\delta\varphi|^2.
+\end{align*}
+取平方根后得到\eqnrefs{eq:quadratic_dispersion_propagator_error_bound}。若已知三阶导数上界 $M_3=\sup_{\mathcal W_p}\|D^3E\|$，Taylor 余项还给出
+\begin{equation*}
+\epsilon_{\rm disp}^{(\ge3)}(t)
+\le\frac{|t|M_3}{6\hbar}
+\sup_{\mathcal W_p}|\delta\mathbf p|^3+O(|\delta\mathbf p|^4),
+\end{equation*}
+从而把“带宽小”转化为传播时间相关的相位误差界。
+\end{proof}
+
+
+固定总能量、以 $z$ 作为传播坐标时，同一个质量壳给出
+\begin{equation*}
+p_z(\mathbf p_\perp)=\sqrt{p_0^2-p_\perp^2}.
+\end{equation*}
+近轴条件首先要求 $p_\perp^2/p_0^2\ll1$，但长距离传播还要求四阶及以上纵向相位不可分辨。直接定义
+\begin{equation}
+\boxed{
+\epsilon_{\rm par}^{(\ge4)}(z)
+\equiv
+\sup_{\mathbf p_\perp\in\mathcal W_\perp}
+\left|\frac{z}{\hbar}
+\left[\sqrt{p_0^2-p_\perp^2}-p_0+\frac{p_\perp^2}{2p_0}\right]\right|.}
+\label{eq:paraxial_phase_control_parameter}
+\end{equation}
+在 $\epsilon_{\rm par}^{(\ge4)}\ll1$ 时，抽去载波 $\ee^{\ii p_0z/\hbar}$ 得到
+\begin{equation}
+\boxed{
+\ii\hbar\partial_z\psi_{\rm par}
+=-\frac{\hbar^2}{2p_0}\nabla_\perp^2\psi_{\rm par}.}
+\label{eq:relativistic_paraxial_from_mass_shell}
+\end{equation}
+并有传播子误差界
+\begin{equation}
+\boxed{
+\left\|[U_z^{\rm ex}-U_z^{\rm par}]P_{\mathcal W_\perp}\right\|
+\le\epsilon_{\rm par}^{(\ge4)}(z).}
+\label{eq:paraxial_propagator_error_bound}
+\end{equation}
+沿中心轨迹取 $z\simeq v_0t$ 时，$p_0/v_0=\gamma_0m_{\mathrm e}=m_\perp$，因此时间域横向 Hessian 矩阵与定态近轴方程是同一精确色散在不同边值问题下的二阶极限。
+
+\begin{proposition}[正根角谱与抛物传播误差]
+固定 $p_0>0$，设角谱支撑于 $|\mathbf p_\perp|\le a<p_0$，取 $p_z=\sqrt{p_0^2-p_\perp^2}$。精确正向传播和二次抛物传播之差满足\eqnrefs{eq:paraxial_propagator_error_bound}，且主导相位余项为 $-zp_\perp^4/(8\hbar p_0^3)$，高阶余项在此窗上一致有界。
+\end{proposition}
+\begin{proof}
+设电子束以 $+z$ 为中心传播方向，并且横向动量与纵向失谐都小于中心动量。固定总能量时有 $p_z^2+p_\perp^2=p_0^2$；取沿 $+z$ 传播的正根，并把高阶角谱项保留为显式余项，
+
+\begin{align*}
+p_z
+&=p_0\sqrt{1-\frac{p_\perp^2}{p_0^2}}\\
+&=p_0\left[1-\frac12\frac{p_\perp^2}{p_0^2}
+-\frac18\frac{p_\perp^4}{p_0^4}
++O\!\left(\frac{p_\perp^6}{p_0^6}\right)\right]\\
+&=p_0-\frac{p_\perp^2}{2p_0}
+-\frac{p_\perp^4}{8p_0^3}+O(p_\perp^6/p_0^5).
+\end{align*}
+把共同纵向载波抽出，写
+\begin{equation*}
+\Psi(\mathbf r_\perp,z)
+=\ee^{\ii p_0z/\hbar}\psi_{\rm env}(\mathbf r_\perp,z),
+\end{equation*}
+其中包络的精确角谱表示为
+\begin{equation*}
+\psi_{\rm env}(\mathbf r_\perp,z)
+=\int\frac{\dd^2 p_\perp}{(2\pi\hbar)^2}
+\,A(\mathbf p_\perp)
+\exp\!\left[\frac{\ii}{\hbar}
+\mathbf p_\perp\!\cdot\!\mathbf r_\perp
++\frac{\ii}{\hbar}(p_z-p_0)z\right].
+\end{equation*}
+对 $z$ 求导时每个角谱分量给出
+\begin{align*}
+\ii\hbar\,\partial_z\psi_{\rm env}
+&=\int\frac{\dd^2 p_\perp}{(2\pi\hbar)^2}
+A(\mathbf p_\perp)
+\bigl[p_0-p_z(\mathbf p_\perp)\bigr]
+\ee^{\ii\mathbf p_\perp\cdot\mathbf r_\perp/\hbar}
+\ee^{\ii(p_z-p_0)z/\hbar}\\
+&=-\frac{\hbar^2}{2p_0}\nabla_\perp^2\psi_{\rm env}
++\mathcal R_{\rm par}(\mathbf r_\perp,z),
+\end{align*}
+其中残差被精确定义为
+\begin{equation*}
+\mathcal R_{\rm par}
+\equiv
+\int\frac{\dd^2 p_\perp}{(2\pi\hbar)^2}
+A(\mathbf p_\perp)
+\left[p_0-p_z(\mathbf p_\perp)-\frac{p_\perp^2}{2p_0}\right]
+\ee^{\ii\mathbf p_\perp\cdot\mathbf r_\perp/\hbar}
+\ee^{\ii(p_z-p_0)z/\hbar}.
+\end{equation*}
+当 $\mathcal R_{\rm par}$ 相对于保留项低于目标精度时，得到抛物传播方程\eqnrefs{eq:relativistic_paraxial_from_mass_shell}。其适用范围可以直接由精确传播子与抛物传播子的范数差量化。定义
+\begin{equation*}
+\delta\varphi(\mathbf p_\perp;z)
+=\frac{z}{\hbar}
+\left[p_z-p_0+\frac{p_\perp^2}{2p_0}\right].
+\end{equation*}
+两个传播子在角谱表象都为乘法算符，因此对任意支撑在 $\mathcal W_\perp$ 的归一化态，
+\begin{align*}
+\|[U_z^{\rm ex}-U_z^{\rm par}]\psi\|^2
+&=\int_{\mathcal W_\perp}\dd^2 p_\perp\,
+|A(\mathbf p_\perp)|^2
+|\ee^{\ii\delta\varphi}-1|^2\\
+&\le \sup_{\mathcal W_\perp}|\ee^{\ii\delta\varphi}-1|^2
+\le \sup_{\mathcal W_\perp}|\delta\varphi|^2,
+\end{align*}
+其中用了 $|\ee^{\ii x}-1|=2|\sin(x/2)|\le|x|$。取平方根即得到\eqnrefs{eq:paraxial_propagator_error_bound}。由上面的展开还可读出主导误差
+\begin{equation*}
+\delta\varphi
+=-\frac{z\,p_\perp^4}{8\hbar p_0^3}
++O\!\left(\frac{z p_\perp^6}{\hbar p_0^5}\right),
+\end{equation*}
+所以几何小角条件 $p_\perp/p_0\ll1$ 与长距离相位条件 $z p_\perp^4/(8\hbar p_0^3)\ll1$ 必须同时满足。
+\end{proof}
+
+
+\subsection{能量格相干到时间密度的定量映射}\label{subsec:sideband-to-temporal-density-dp46}
+
+\input{sections/electron-fixed-plane-drift-worked}
+
+前面的自由传播一般表达式还可以直接化成实验可读取的纵向密度。对\chapref{chap:external-pinem}定义的单频交换格，在中心同步条件 $v_0\kappa_z=\omega$ 下，相邻电子通道在共动坐标 $\zeta=z-v_0t$ 中相差纵向相位 $\kappa_z\zeta$。若只保留二阶纵向色散，则传播后的约化密度核给出
+\begin{equation}
+\boxed{
+ \mathfrak n_e(\zeta,t)
+ =\sum_{\ell,\ell'}
+ \rho_{\ell\ell'}^{(+)}
+ \exp\!\left[\ii(\ell-\ell')\kappa_z\zeta
+ -\ii(\ell^2-\ell'^2)\omega_{\rm r}t\right].}
+\label{eq:sideband_to_longitudinal_density_dp46}
+\end{equation}
+这里 $\mathfrak n_e$ 是把慢变纵向包络的共同归一化因子抽出后得到的无量纲周期密度；若需要绝对线密度，只需乘入入射包络线密度。\eqnrefs{eq:sideband_to_longitudinal_density_dp46} 显示：对角能谱 $\rho_{\ell\ell}$ 只给常数背景，所有时间结构都来自能量格非对角相干。
+
+把谐波阶数定义为 $\Delta\ell=\ell-\ell'$，可将密度写成
+\begin{equation}
+ \mathfrak n_e(\zeta,t)
+ =\sum_{\Delta\ell\in\mathbb Z}B_{\Delta\ell}(t)\ee^{\ii \Delta\ell\kappa_z\zeta},
+ \qquad B_{-\Delta\ell}=B_{\Delta\ell}^*,
+\label{eq:electron_density_harmonic_expansion_dp46}
+\end{equation}
+其中
+\begin{equation}
+\boxed{
+ B_{\Delta\ell}(t)
+ =\sum_{\ell}
+ \rho_{\ell,\ell-\Delta\ell}^{(+)}
+ \exp\!\left[-\ii(2\ell \Delta\ell-\Delta\ell^2)\omega_{\rm r}t\right].}
+\label{eq:electron_bunching_harmonic_dp46}
+\end{equation}
+$B_{\Delta\ell}$ 是第 $\Delta\ell$ 阶电子聚束因子，也就是归一化密度在该空间频率上的复 Fourier 系数。$|B_{\Delta\ell}|$ 给出这一谐波的幅度，$\arg B_{\Delta\ell}$ 给出它相对于光学相位基准的位置；若密度只含常数项与一对 $\pm\Delta\ell$ 谐波，则对应余弦项的峰值幅度为 $2|B_{\Delta\ell}|$。尤其
+\begin{equation*}
+ B_0=\sum_\ell\rho_{\ell\ell}^{(+)}=1,
+\end{equation*}
+因此归一化由密度矩阵迹自动保证。
+
+二阶反冲相位是 $\ell^2\omega_{\rm r}t$，故所有整数格点相位在
+\begin{equation}
+\boxed{
+ T_{\rm T}=\frac{2\pi}{\omega_{\rm r}},
+ \qquad
+ L_{\rm T}=v_0T_{\rm T}
+ =\frac{2\pi v_0}{\omega_{\rm r}}}
+\label{eq:electron_talbot_time_length_dp46}
+\end{equation}
+后同时复现。$T_{\rm T}$ 与 $L_{\rm T}$ 分别是电子能量格的 Talbot 时间和沿中心轨迹的 Talbot 长度；二者均由同一个纵向色散质量
+$m_\parallel=\gamma_0^3m_{\mathrm e}$ 和动量步长 $\hbar \kappa_z$ 决定：
+\begin{equation*}
+ L_{\rm T}
+ =\frac{4\pi m_\parallel v_0}{\hbar \kappa_z^2}.
+\end{equation*}
+若使用同步关系 $\kappa_z=\omega/v_0$，还可写成
+\begin{equation*}
+ L_{\rm T}
+ =\frac{4\pi m_\parallel v_0^3}{\hbar\omega^2}.
+\end{equation*}
+Talbot 复现还可以直接从整数格的数论相位看出。半个 Talbot 时间 $t=T_{\rm T}/2$ 时，
+\begin{equation*}
+ \ee^{-\ii\ell^2\omega_{\rm r}T_{\rm T}/2}
+ =\ee^{-\ii\pi\ell^2}
+ =\ee^{-\ii\pi\ell},
+\end{equation*}
+因为整数满足 $\ell^2-\ell=\ell(\ell-1)\in2\mathbb Z$。因此每个格点多出的因子 $\ee^{-\ii\pi\ell}$ 可吸收到空间相位中：
+\begin{equation*}
+ \ee^{\ii\ell\kappa_z\zeta}\ee^{-\ii\pi\ell}
+ =\ee^{\ii\ell\kappa_z(\zeta-\pi/\kappa_z)}.
+\end{equation*}
+所以半 Talbot 时间并非原位复现，而是把整个周期密度平移半个空间周期 $\pi/\kappa_z$；到 $T_{\rm T}$ 时该平移再消失，得到原位复现。这个结果来自离散二次谱相位本身，与 PINEM 初始边带振幅的具体形状无关。
+
+\begin{proposition}[整数能量梳的二次相位复现]
+对整数边带 $\ell\in\mathbb Z$，二次传播相位 $e^{-\ii s\ell^2}$ 在 $s=2\pi$ 严格复现，在 $s=\pi$ 等价于 $e^{-\ii\pi\ell}$ 的半周期平移。二次色散系数换算为实验时间与长度后给\eqnrefs{eq:electron_talbot_time_length_dp46}；高阶色散存在时复现仅为受控近似。
+\end{proposition}
+\begin{proof}
+设占据的能量边带由整数 $\ell\in\mathbb Z$ 标记，并先只保留二次色散。第 $\ell$ 个边带在传播长度 $L_z$ 后获得
+\[
+U_\ell^{(2)}(L_z)
+=\exp[-\ii\ell^2\vartheta_2(L_z)],
+\qquad
+\vartheta_2(L_z)=\frac{\hbar\omega^2L_z}{2m_\parallel v_0^3}.
+\]
+若传播前纯态写成
+\[
+|\psi(0)\rangle=\sum_\ell c_\ell|\ell\rangle,
+\]
+传播后为
+\[
+|\psi(L_z)\rangle
+=\sum_\ell c_\ell
+\ee^{-\ii\ell^2\vartheta_2(L_z)}|\ell\rangle.
+\]
+密度矩阵元因此满足
+\begin{align*}
+\rho_{\ell m}(L_z)
+&=c_\ell c_m^*
+\ee^{-\ii\ell^2\vartheta_2}
+\ee^{+\ii m^2\vartheta_2}\\
+&=\rho_{\ell m}(0)
+\ee^{-\ii(\ell^2-m^2)\vartheta_2}.
+\end{align*}
+对混态同样成立，因为自由传播在线性算符层面逐个矩阵元乘上同一相对相位。
+
+完全原位复现要求所有已占据矩阵元同时恢复。若希望得到与具体占据集合无关的整数格复现条件，就要求
+\[
+\ee^{-\ii(\ell^2-m^2)\vartheta_2(L_T)}=1
+\qquad
+\forall\,\ell,m\in\mathbb Z.
+\]
+取 $m=0$，必要条件为
+\[
+\ell^2\vartheta_2(L_T)=2\pi n_\ell,
+\qquad n_\ell\in\mathbb Z.
+\]
+其中 $\ell=1$ 已经要求
+\[
+\vartheta_2(L_T)=2\pi n_1.
+\]
+最小正复现取 $n_1=1$，即
+\[
+\vartheta_2(L_T)=2\pi.
+\]
+反过来，把这个值代回任意整数 $\ell,m$：
+\begin{align*}
+(\ell^2-m^2)\vartheta_2(L_T)
+&=2\pi(\ell^2-m^2),
+\end{align*}
+右端总是 $2\pi$ 的整数倍，所以该条件不仅必要，而且对完整整数能量格充分。于是
+\begin{align*}
+2\pi
+&=\frac{\hbar\omega^2L_T}{2m_\parallel v_0^3},\\
+L_T
+&=\frac{4\pi m_\parallel v_0^3}{\hbar\omega^2},\\
+T_T=\frac{L_T}{v_0}
+&=\frac{4\pi m_\parallel v_0^2}{\hbar\omega^2},
+\end{align*}
+得到正文\eqnrefs{eq:electron_talbot_time_length_dp46}。
+
+半个 Talbot 长度对应
+\[
+\vartheta_2(L_T/2)=\pi.
+\]
+此时单边带相位为
+\begin{align*}
+U_\ell^{(2)}(L_T/2)
+&=\ee^{-\ii\pi\ell^2}\\
+&=(-1)^{\ell^2}\\
+&=(-1)^\ell,
+\end{align*}
+最后一步使用整数 $\ell$ 与 $\ell^2$ 具有相同奇偶性。另一方面，共动坐标平移
+\[
+\Delta\zeta=\frac{\pi}{\kappa_z}
+\]
+会让第 $\ell$ 个空间 Fourier 分量获得
+\[
+\ee^{\ii\ell\kappa_z\Delta\zeta}
+=\ee^{\ii\pi\ell}=(-1)^\ell.
+\]
+因此 $L_T/2$ 的传播与半周期平移具有相同的格点相位作用，而 $L_T$ 才对应原位完全复现。
+\end{proof}
+
+
+实际电子只占据有限边带，并且精确相对论色散还含三阶及更高阶谱相位。若有效占据范围为 $|\ell|\le\ell_{\max}$，把一个 Talbot 长度内所有三阶以上附加相位的最大值定义为
+\begin{equation}
+ \boxed{
+ \epsilon_T^{(\ge3)}
+ \equiv
+ \max_{|\ell|\le\ell_{\max}}
+ \left|\varphi_\ell^{(\ge3)}(L_T)\right|.}
+ \label{eq:electron-talbot-higher-order-control-dp76}
+\end{equation}
+只有 $\epsilon_T^{(\ge3)}\ll1$ 时，二次谱相位给出的整数复现才保持高对比度；否则必须回到完整相对论传播相位逐个边带计算。
+
+由 $m_\parallel=\gamma_0^3m_{\mathrm e}$ 可直接读出：提高中心 Lorentz 因子会增大纵向色散质量，因而在固定 $\kappa_z$ 下减小 $\omega_{\rm r}=\hbar\kappa_z^2/(2m_\parallel)$；形成同一二次谱相位所需的漂移时间与距离随之增加。
+
+对理想经典 PINEM 输出
+\begin{equation*}
+ c_\ell^{(+)}
+ =J_\ell(2|\beta|)
+ \ee^{\ii\ell\varphi_\beta},
+ \qquad
+ \rho_{\ell\ell'}^{(+)}=c_\ell^{(+)}c_{\ell'}^{(+)*},
+\end{equation*}
+在理想双边 PINEM 输出并采用前述二阶纵向色散时，\eqnrefs{eq:electron_bunching_harmonic_dp46} 变为完全可计算的闭式级数
+\begin{equation}
+\boxed{
+ B_{\Delta\ell}^{\rm PINEM}(t)
+ =\ee^{\ii \Delta\ell\varphi_\beta}
+ \sum_{\ell=-\infty}^{\infty}
+ J_\ell(2|\beta|)J_{\ell-\Delta\ell}(2|\beta|)
+ \ee^{-\ii(2\ell \Delta\ell-\Delta\ell^2)\omega_{\rm r}t}.}
+\label{eq:pinem_bunching_exact_series_dp46}
+\end{equation}
+它给出“耦合强度 $|\beta|$、漂移距离 $L\simeq v_0t$、反冲频率 $\omega_{\rm r}$”到任意密度谐波的直接前向映射，不再需要用“压缩点”“最佳聚束”作定性判断。若实验只读取第一谐波，可先定义第一谐波的相对调制幅度
+\begin{equation}
+\boxed{\mathcal M_1(t)=2|B_1(t)|,}
+\label{eq:first_harmonic_visibility_dp46}
+\end{equation}
+它一般不等于限制在 $[0,1]$ 的 Michelson 可见度；只有高阶谐波可忽略时二者才一致。完整密度对比度应直接由\eqnrefs{eq:sideband_to_longitudinal_density_dp46} 的最大、最小值计算。
+
+\begin{proposition}[周期边带态的密度 Fourier 系数]
+设归一化周期包络具有 Fourier 系数 $c_\ell$，$\sum_\ell|c_\ell|^2=1$。其密度的第 $d$ 个 Fourier 系数为 $\sum_\ell c_\ell c_{\ell-d}^*$，该和由 Cauchy--Schwarz 绝对收敛。代入纯正弦相位产生的 Bessel 系数及二次自由传播相位，得到\eqnrefs{eq:pinem_bunching_exact_series_dp46}。
+\end{proposition}
+\begin{proof}
+先把共同的慢变纵向包络抽出，只处理一个同步周期内的离散能量格。取
+\[
+L_\zeta\equiv\frac{2\pi}{\kappa_z},
+\qquad
+\langle\zeta|\ell\rangle
+=\frac{1}{\sqrt{L_\zeta}}
+\ee^{+\ii\ell\kappa_z\zeta},
+\qquad 0\le\zeta<L_\zeta,
+\]
+则 $\{|\ell\rangle\}_{\ell\in\mathbb Z}$ 在该周期盒中正交归一：
+\begin{align*}
+\langle\ell'|\ell\rangle
+&=\frac1{L_\zeta}
+\int_0^{L_\zeta}\dd\zeta\,
+\ee^{+\ii(\ell-\ell')\kappa_z\zeta}\\
+&=\delta_{\ell\ell'}.
+\end{align*}
+盒归一化的位置密度为
+$\langle\zeta|\rho(t)|\zeta\rangle$；正文使用的无量纲周期密度定义为
+\[
+\mathfrak n_e(\zeta,t)
+\equiv L_\zeta\langle\zeta|\rho(t)|\zeta\rangle,
+\]
+所以共同的 $L_\zeta^{-1}$ 因子不会进入最终谐波系数。
+
+在二阶纵向色散下，共动表象已经移除了 $E_0+\ell\hbar\omega$ 的常数与线性相位，只留下反冲项 $\hbar\omega_{\rm r}\ell^2$。因此正文\eqnrefs{eq:sideband_coherence_free_propagation_master} 给
+\[
+\rho_{\ell\ell'}(t)
+=\rho_{\ell\ell'}^{(+)}
+\ee^{-\ii(\ell^2-\ell'^2)\omega_{\rm r}t}.
+\]
+在位置密度中插入两次能量格完备关系：
+\begin{align*}
+\mathfrak n_e(\zeta,t)
+&=L_\zeta
+\sum_{\ell,\ell'}
+\langle\zeta|\ell\rangle
+\rho_{\ell\ell'}(t)
+\langle\ell'|\zeta\rangle\\
+&=\sum_{\ell,\ell'}
+\rho_{\ell\ell'}^{(+)}
+\ee^{+\ii(\ell-\ell')\kappa_z\zeta}
+\ee^{-\ii(\ell^2-\ell'^2)\omega_{\rm r}t},
+\end{align*}
+这就是正文\eqnrefs{eq:sideband_to_longitudinal_density_dp46}。
+
+为了把双重和式按可测空间谐波重新分组，定义
+\[
+r\equiv\Delta\ell=\ell-\ell',
+\qquad
+\ell'=\ell-r.
+\]
+二次相位差逐项化为
+\begin{align*}
+\ell^2-\ell'^2
+&=\ell^2-(\ell-r)^2\\
+&=\ell^2-(\ell^2-2\ell r+r^2)\\
+&=2\ell r-r^2.
+\end{align*}
+因此
+\begin{align*}
+\mathfrak n_e(\zeta,t)
+&=\sum_{r\in\mathbb Z}
+\ee^{+\ii r\kappa_z\zeta}
+\sum_{\ell\in\mathbb Z}
+\rho_{\ell,\ell-r}^{(+)}
+\ee^{-\ii(2\ell r-r^2)\omega_{\rm r}t}\\
+&\equiv
+\sum_{r\in\mathbb Z}B_r(t)
+\ee^{+\ii r\kappa_z\zeta},
+\end{align*}
+从而
+\[
+B_r(t)
+=\sum_\ell
+\rho_{\ell,\ell-r}^{(+)}
+\ee^{-\ii(2\ell r-r^2)\omega_{\rm r}t},
+\]
+即正文\eqnrefs{eq:electron_bunching_harmonic_dp46}。密度矩阵厄米性
+$\rho_{ab}=\rho_{ba}^*$ 再给
+\begin{align*}
+B_{-r}(t)
+&=\sum_\ell
+\rho_{\ell,\ell+r}^{(+)}
+\ee^{+\ii(2\ell r+r^2)\omega_{\rm r}t}\\
+&=\left[
+\sum_j
+\rho_{j,j-r}^{(+)}
+\ee^{-\ii(2jr-r^2)\omega_{\rm r}t}
+\right]^*
+=B_r^*(t),
+\end{align*}
+其中第二行取 $j=\ell+r$。所以 $\mathfrak n_e$ 自动为实函数；而
+\[
+B_0=\sum_\ell\rho_{\ell\ell}^{(+)}
+=\operatorname{Tr}\rho^{(+)}=1
+\]
+保证周期平均密度归一化。
+
+最后代入理想经典 PINEM 纯态振幅
+\[
+c_\ell^{(+)}
+=J_\ell(2|\beta|)\ee^{+\ii\ell\varphi_\beta},
+\]
+有
+\begin{align*}
+\rho_{\ell,\ell-r}^{(+)}
+&=c_\ell^{(+)}c_{\ell-r}^{(+)*}\\
+&=J_\ell(2|\beta|)J_{\ell-r}(2|\beta|)
+\ee^{+\ii r\varphi_\beta}.
+\end{align*}
+代入 $B_r(t)$ 并把与 $\ell$ 无关的相位提出求和号，得到
+\[
+\boxed{
+B_r^{\rm PINEM}(t)
+=\ee^{+\ii r\varphi_\beta}
+\sum_{\ell=-\infty}^{\infty}
+J_\ell(2|\beta|)J_{\ell-r}(2|\beta|)
+\ee^{-\ii(2\ell r-r^2)\omega_{\rm r}t},}
+\]
+即正文\eqnrefs{eq:pinem_bunching_exact_series_dp46}。
+\end{proof}
+
+
+若存在纯退相干而不改变边带占据，可把第 $\Delta\ell$ 条副对角线写成
+\begin{equation*}
+ \rho_{\ell,\ell-\Delta\ell}^{(+)}
+ \longrightarrow
+ \mathsf D_{\Delta\ell}^{\rm coh}\rho_{\ell,\ell-\Delta\ell}^{(+)},
+ \qquad 0\le|\mathsf D_{\Delta\ell}^{\rm coh}|\le1.
+\end{equation*}
+于是
+\begin{equation}
+\boxed{B_{\Delta\ell}(t)\longrightarrow\mathsf D_{\Delta\ell}^{\rm coh} B_{\Delta\ell}(t),}
+\label{eq:bunching_dephasing_transfer_dp46}
+\end{equation}
+而 $B_0$ 不变。这样开放系统中的相干损失直接变成可测密度谐波的乘性衰减，从而把退相干、层析和 Fisher 信息都连接到同一可测密度谐波。
+
+\input{sections/electron-temporal-bunching-worked}
+\input{sections/electron-bunching-closed-form}
+
+\subsection{Wigner--Moyal 输运}
+
+在位置表象中容易看出波包有多宽，在动量表象中容易看出它含有哪些速度分量。若要理解一个带初始啁啾的波包为何先压缩再展宽，就需要同时保留位置与动量的相关。Wigner 表示把密度算符改写为位置 $z$ 和动量 $p$ 的函数，适合描述这种相关。它保留全部密度矩阵信息，但不必处处非负，因此需要从密度矩阵定义，而不能直接假设它是经典联合概率。
+
+在纵向坐标表象中定义密度核
+\[
+\rho(z_1,z_2)\equiv\langle z_1|\hat\rho|z_2\rangle,
+\qquad
+\operatorname{Tr}\hat\rho=\int\dd z\,\rho(z,z)=1.
+\]
+对角元给位置概率，非对角元携带空间相干。为了同时保留平均位置与两点相干距离，引入中心坐标 $z=(z_1+z_2)/2$ 和相对坐标 $s=z_1-z_2$，并对 $s$ 做傅里叶变换：
+\begin{equation}
+\boxed{
+W(z,p)
+\equiv\frac{1}{2\pi\hbar}
+\int_{-\infty}^{\infty}\dd s\,
+\ee^{-\ii ps/\hbar}
+\rho\!\left(z+\frac{s}{2},z-\frac{s}{2}\right).}
+\label{eq:electron_wigner}
+\end{equation}
+其中 $W$ 的 SI 量纲是作用量$^{-1}$，使 $W\,\dd z\,\dd p$ 无量纲。它不是经典联合概率：相干交叉项可以使 $W$ 局部为负。但它的两个边缘严格恢复可测概率，
+\begin{equation}
+\boxed{
+\int\dd p\,W(z,p)=\langle z|\hat\rho|z\rangle,
+\qquad
+\int\dd z\,W(z,p)=\langle p|\hat\rho|p\rangle.}
+\label{eq:wigner_marginals}
+\end{equation}
+因此 Wigner 负值并不意味着“负概率事件”；它记录的是不能由正经典相空间分布表示的非对角相干。
+
+波函数改用 Wigner 表示以后，Hamiltonian 和其他算符也需要相应的函数表示。对算符 $\hat A$，定义它的\emph{Weyl 符号}
+\[
+A_W(z,p)=\int\dd s\,\ee^{-\ii ps/\hbar}
+\left\langle z+\frac{s}{2}\right|\hat A\left|z-\frac{s}{2}\right\rangle.
+\]
+注意此处不含 $1/(2\pi\hbar)$；密度算符的 Weyl 符号因此为 $\rho_W=2\pi\hbar W$。相应地，期待值为 $\langle\hat A\rangle=\int\dd z\,\dd p\,A_W W$。位置和动量算符的符号分别就是 $z$ 和 $p$。
+
+两个算符的乘积一般不能用两个符号的普通乘积代替，因为 $\hat z\hat p$ 与 $\hat p\hat z$ 不同，而普通函数 $zp$ 与 $pz$ 相同。正确的对应乘法称为\emph{Moyal 星积}，定义为
+\begin{equation}
+\boxed{
+(\hat A\hat B)_W=A_W\star B_W
+=A_W\exp\!\left[
+\frac{\ii\hbar}{2}
+\left(
+\overleftarrow\partial_z\overrightarrow\partial_p
+-\overleftarrow\partial_p\overrightarrow\partial_z
+\right)\right]B_W.}
+\label{eq:weyl_star_product_derived}
+\end{equation}
+左箭头导数作用于左侧函数，右箭头导数作用于右侧函数。例如，$z\star p=zp+\ii\hbar/2$，而 $p\star z=pz-\ii\hbar/2$，相减正好恢复 $[\hat z,\hat p]=\ii\hbar$。指数中的高阶导数进一步保留一般算符乘法的量子修正。于是 Liouville--von Neumann 方程
+\[
+\ii\hbar\partial_t\hat\rho=[\hat H,\hat\rho]
+\]
+在相空间中精确等价于
+\begin{equation}
+\boxed{
+\partial_tW=\{H_W,W\}_{\rm M}
+\equiv\frac{1}{\ii\hbar}(H_W\star W-W\star H_W).}
+\label{eq:moyal_general}
+\end{equation}
+当由 $\hbar$ 设置的相空间单元相对于 $H_W$ 与 $W$ 的变化尺度足够小时，星积展开的最低阶给出 Poisson 括号；经典 Liouville 输运因此是\eqnrefs{eq:moyal_general} 的受控长尺度极限。
+
+\begin{theorem}[Weyl 乘积与 Moyal 演化]
+对 Schwartz 符号 $A_W,B_W$，Weyl 量子化的乘积由\eqnrefs{eq:weyl_star_product_derived}的星积给出，指数记号按 Fourier 振荡积分定义；一般光滑符号的导数级数只作渐近解释。Liouville 方程相应变为\eqnrefs{eq:moyal_general}。二次多项式 Hamiltonian 的 Moyal 括号严格等于 Poisson 括号。
+\end{theorem}
+\begin{proof}
+先从 Weyl 符号的 Fourier 表示出发。对足够良性的相空间函数 \(A_W(z,p)\)，写成
+\[
+A_W(z,p)
+=
+\int\frac{\dd\xi_z\,\dd\xi_p}{(2\pi)^2}\,
+\widetilde A(\xi_z,\xi_p)
+\ee^{\ii(\xi_z z+\xi_p p)},
+\]
+相应 Weyl 量子化为
+\[
+\hat A
+=
+\int\frac{\dd\xi_z\,\dd\xi_p}{(2\pi)^2}\,
+\widetilde A(\xi_z,\xi_p)
+\ee^{\ii(\xi_z\hat z+\xi_p\hat p)}.
+\]
+同理
+\[
+\hat B
+=
+\int\frac{\dd\xi_z'\,\dd\xi_p'}{(2\pi)^2}\,
+\widetilde B(\xi_z',\xi_p')
+\ee^{\ii(\xi_z'\hat z+\xi_p'\hat p)}.
+\]
+
+令
+\[
+X=\ii(\xi_z\hat z+\xi_p\hat p),
+\qquad
+Y=\ii(\xi_z'\hat z+\xi_p'\hat p).
+\]
+利用
+\[
+[\hat z,\hat p]=\ii\hbar
+\]
+得到
+\[
+[X,Y]
+=
+-\ii\hbar
+(\xi_z\xi_p'-\xi_p\xi_z')\,I.
+\]
+该对易子是中心元，所以
+\[
+[X,[X,Y]]
+=
+[Y,[X,Y]]
+=0,
+\]
+Baker--Campbell--Hausdorff 级数精确截断为
+\[
+\ee^X\ee^Y
+=
+\ee^{X+Y+\frac12[X,Y]}.
+\]
+于是
+\begin{align*}
+&\ee^{\ii(\xi_z\hat z+\xi_p\hat p)}
+\ee^{\ii(\xi_z'\hat z+\xi_p'\hat p)}\\
+&\qquad=
+\exp\!\left[
+-\frac{\ii\hbar}{2}
+(\xi_z\xi_p'-\xi_p\xi_z')
+\right]
+\ee^{\ii[(\xi_z+\xi_z')\hat z+(\xi_p+\xi_p')\hat p]}.
+\end{align*}
+
+把这一乘法代回 \(\hat A\hat B\)，再取 Weyl 符号，得到
+\begin{align*}
+(\hat A\hat B)_W(z,p)
+&=
+\int
+\frac{\dd\xi_z\,\dd\xi_p\,\dd\xi_z'\,\dd\xi_p'}{(2\pi)^4}\,
+\widetilde A(\xi_z,\xi_p)
+\widetilde B(\xi_z',\xi_p')\\
+&\quad\times
+\ee^{-\frac{\ii\hbar}{2}(\xi_z\xi_p'-\xi_p\xi_z')}
+\ee^{\ii[(\xi_z+\xi_z')z+(\xi_p+\xi_p')p]}.
+\end{align*}
+另一方面，对 Fourier 基函数有
+\[
+\partial_z
+\ee^{\ii(\xi_z z+\xi_p p)}
+=
+\ii\xi_z
+\ee^{\ii(\xi_z z+\xi_p p)},
+\qquad
+\partial_p
+\ee^{\ii(\xi_z z+\xi_p p)}
+=
+\ii\xi_p
+\ee^{\ii(\xi_z z+\xi_p p)}.
+\]
+因此相位因子可以等价写成双向导数算符：
+\[
+\ee^{-\frac{\ii\hbar}{2}(\xi_z\xi_p'-\xi_p\xi_z')}
+\longleftrightarrow
+\exp\!\left[
+\frac{\ii\hbar}{2}
+\left(
+\overleftarrow\partial_z\overrightarrow\partial_p
+-
+\overleftarrow\partial_p\overrightarrow\partial_z
+\right)
+\right].
+\]
+于是
+\[
+\boxed{
+(\hat A\hat B)_W
+=
+A_W
+\exp\!\left[
+\frac{\ii\hbar}{2}
+\left(
+\overleftarrow\partial_z\overrightarrow\partial_p
+-
+\overleftarrow\partial_p\overrightarrow\partial_z
+\right)
+\right]
+B_W
+\equiv A_W\star B_W,
+}
+\]
+即正文\eqnrefs{eq:weyl_star_product_derived}。
+
+现在对 Liouville--von Neumann 方程
+\[
+\ii\hbar\partial_t\hat\rho
+=
+[\hat H,\hat\rho]
+\]
+取 Weyl 符号：
+\[
+\ii\hbar\partial_tW
+=
+H_W\star W-W\star H_W.
+\]
+两边除以 \(\ii\hbar\)，得到
+\[
+\boxed{
+\partial_tW
+=
+\{H_W,W\}_{\rm M}
+\equiv
+\frac1{\ii\hbar}
+(H_W\star W-W\star H_W),
+}
+\]
+即正文\eqnrefs{eq:moyal_general}。
+
+若把星积按 \(\hbar\) 展开，偶数阶在交换子中相消，只保留奇数阶：
+\begin{align*}
+\{H_W,W\}_{\rm M}
+&=
+\left(
+\partial_zH_W\,\partial_pW
+-\partial_pH_W\,\partial_zW
+\right)\\
+&\quad
+-\frac{\hbar^2}{24}
+\left(
+\partial_z^3H_W\,\partial_p^3W
+-3\partial_z^2\partial_pH_W\,
+  \partial_p^2\partial_zW
++3\partial_z\partial_p^2H_W\,
+  \partial_p\partial_z^2W
+-\partial_p^3H_W\,\partial_z^3W
+\right)
++\mathcal O(\hbar^4).
+\end{align*}
+最低阶正是 Poisson 括号，
+\[
+\{H_W,W\}_{\rm M}
+=
+\{H_W,W\}_{\rm PB}
++\mathcal O(\hbar^2).
+\]
+\end{proof}
+
+
+对精确自由相对论电子，哈密顿量只依赖动量，
+\[
+H_W(p)=E(p)=\sqrt{m_{\mathrm e}^2c^4+c^2p^2},
+\qquad
+v(p)=E'(p)=\frac{c^2p}{E(p)}.
+\]
+Moyal 方程于是化成奇数空间导数级数
+\begin{equation}
+\boxed{
+\partial_tW
+=-E'(p)\partial_zW
++\frac{\hbar^2}{24}E'''(p)\partial_z^3W
+-\frac{\hbar^4}{1920}E^{(5)}(p)\partial_z^5W+\cdots.}
+\label{eq:relativistic_free_moyal}
+\end{equation}
+第一项就是沿精确群速度 $v(p)$ 的经典平流；其余项衡量“非二次色散 + 有限量子相空间分辨率”造成的量子修正。若只保留中心动量 $p_0$ 附近的二阶色散
+\[
+E(p_0+\delta p)
+\simeq E_0+v_0\delta p+\frac{\delta p^2}{2m_\parallel},
+\qquad
+m_\parallel\equiv\frac{1}{E''(p_0)}=\gamma_0^3m_{\mathrm e},
+\]
+所有三阶以上动量导数都消失，所以 Moyal 方程在这个二次模型内\emph{精确}退化成相空间剪切：
+\begin{equation}
+\boxed{
+\partial_tW+
+\left(v_0+\frac{p-p_0}{m_\parallel}\right)\partial_zW=0,
+\qquad
+W(z,p,t)=
+W_0\!\left(z-\left[v_0+\frac{p-p_0}{m_\parallel}\right]t,p\right).}
+\label{eq:wigner_shear}
+\end{equation}
+
+自由传播不改变每个动量分量本身，却让不同动量以不同群速度前进。于是相空间分布沿 $z$ 方向剪切；所谓“电子啁啾压缩”就是先制备一张倾斜的相空间分布，再让这张分布被自由剪切到位置投影最窄的时刻。
+
+\begin{proposition}[二次色散的精确 Wigner 剪切]
+在 $E_2(p)=E_0+v_0(p-p_0)+(p-p_0)^2/(2m_\parallel)$ 模型中，Wigner 演化严格为\eqnrefs{eq:wigner_shear}；完整色散的高阶导数不能据此置零。对 Schwartz 初态此式逐点成立，对一般态按分布解释。
+\end{proposition}
+\begin{proof}
+自由电子 Hamiltonian 只依赖动量，$H_W=E(p)$。从 Moyal 方程的星积定义出发，位置导数只能作用在 $W$ 上，因此
+\begin{align*}
+ \partial_tW
+ &=\frac{1}{\ii\hbar}(E\star W-W\star E)\\
+ &=-\sum_{n=0}^{\infty}
+ \frac{(-1)^n}{(2n+1)!}
+ \left(\frac{\hbar}{2}\right)^{2n}
+ E^{(2n+1)}(p)\,\partial_z^{2n+1}W,
+\end{align*}
+这就是正文\eqnrefs{eq:relativistic_free_moyal}。现在在中心动量 $p_0$ 附近定义二次模型
+\begin{equation*}
+ E_2(p)=E_0+v_0(p-p_0)+\frac{(p-p_0)^2}{2m_\parallel}.
+\end{equation*}
+因为 $E_2^{(r)}(p)=0$ 对所有 $r\ge3$ 成立，Moyal 级数不是“近似丢掉量子项”，而是在这个二次 Hamiltonian 内严格终止：
+\begin{equation*}
+ \partial_tW+
+ \left(v_0+\frac{p-p_0}{m_\parallel}\right)\partial_zW=0.
+\end{equation*}
+这是一个一阶线性偏微分方程。令参数 $s$ 沿特征线变化，要求
+\begin{equation*}
+ \frac{\dd}{\dd s}W[z(s),p(s),t(s)]
+ =\partial_tW\,\dot t+
+ \partial_zW\,\dot z+
+ \partial_pW\,\dot p=0.
+\end{equation*}
+与偏微分方程逐项比较，可选
+\begin{equation*}
+ \dot t=1,
+ \qquad
+ \dot p=0,
+ \qquad
+ \dot z=v_0+\frac{p-p_0}{m_\parallel}.
+\end{equation*}
+于是 $p(s)=p(0)$ 保持不变，而
+\begin{equation*}
+ z(t)=z(0)+
+ \left(v_0+\frac{p-p_0}{m_\parallel}\right)t.
+\end{equation*}
+沿同一条特征线 $W$ 为常数，因此把初始位置反解为
+$z(0)=z-[v_0+(p-p_0)/m_\parallel]t$，得到
+\begin{equation*}
+ W(z,p,t)=W_0\!\left(
+ z-\left[v_0+\frac{p-p_0}{m_\parallel}\right]t,
+ p\right),
+\end{equation*}
+即正文\eqnrefs{eq:wigner_shear}。
+
+“剪切”一词现在有精确几何含义：同一 $p$ 水平线上的分布只做刚性平移，但平移距离依赖 $p$，所以原本竖直的相空间线元会倾斜。若使用完整相对论 $E(p)$，三阶及更高导数重新出现，演化不再是这个线性辛剪切；其误差必须由正文给出的高阶累计相位条件控制。
+\end{proof}
+
+
+把这个剪切写成矩阵，就可以直接计算位置、动量方差以及它们的协方差怎样变化。
+
+在随中心电子移动的坐标
+\[
+\zeta\equiv z-v_0t,
+\qquad
+\delta p\equiv p-p_0
+\]
+中，二阶自由哈密顿量的线性漂移已经被消去，留下
+\[
+H_{\rm com}=\frac{\delta p^2}{2m_\parallel}.
+\]
+因此 Heisenberg 演化为
+\begin{equation}
+\boxed{
+\zeta(t)=\zeta(0)+\frac{t}{m_\parallel}\delta p(0),
+\qquad
+\delta p(t)=\delta p(0).}
+\label{eq:electron-shear-heisenberg}
+\end{equation}
+这与\eqnrefs{eq:wigner_shear} 是同一剪切在算符与相空间中的两种写法。
+
+定义中心化二阶矩
+\[
+\sigma_z^2\equiv\langle\zeta^2\rangle,
+\qquad
+\sigma_p^2\equiv\langle\delta p^2\rangle,
+\qquad
+C_{zp}\equiv\frac12\langle\zeta\delta p+\delta p\zeta\rangle.
+\]
+\eqnrefs{eq:electron-shear-heisenberg} 给出
+\begin{equation}
+\boxed{
+\sigma_z^2(t)
+=\sigma_z^2(0)+\frac{2t}{m_\parallel}C_{zp}(0)
++\frac{t^2}{m_\parallel^2}\sigma_p^2.}
+\label{eq:electron_shear_variance}
+\end{equation}
+负协方差 $C_{zp}<0$ 表示“前后位置与动量反相关”，自由剪切会先减小位置宽度。最佳时间与最小宽度为
+\begin{equation}
+\boxed{
+ t_*=-m_\parallel\frac{C_{zp}(0)}{\sigma_p^2},
+\qquad
+\sigma_{z,\min}^2
+=\sigma_z^2(0)-\frac{C_{zp}^2(0)}{\sigma_p^2}
+\ge\frac{\hbar^2}{4\sigma_p^2}.}
+\label{eq:electron_chirp_compression_bound}
+\end{equation}
+所以啁啾不会压缩相空间面积；它只是把已有的相空间椭圆剪切到位置投影最窄。$m_\parallel$ 决定焦点出现的传播时间，却不改变固定 $\sigma_p$ 下的 Heisenberg 极限。
+
+\begin{proposition}[二次剪切的方差极小值]
+设正则共轭对具有有限二阶矩，协方差使用中心化的对称乘积，$\sigma_p^2>0$。二次自由演化满足\eqnrefs{eq:electron_shear_variance}；在全实时间上，$t_*=-m_\parallel C_{zp}/\sigma_p^2$，且 $\sigma_{z,\min}^2=\sigma_z^2-C_{zp}^2/\sigma_p^2\ge\hbar^2/(4\sigma_p^2)$。若只许 $t\ge0$，则需 $t_*\ge0$，否则最小值在 $t=0$。
+\end{proposition}
+\begin{proof}
+设初态二阶矩有限，不要求波包为 Gaussian。共动二次 Hamiltonian 为
+\[
+H_{\rm com}=\frac{\delta p^2}{2m_\parallel},
+\qquad
+[\zeta,\delta p]=\ii\hbar.
+\]
+先在 Heisenberg 绘景计算算符运动。因为
+\begin{align*}
+[\zeta,\delta p^2]
+&=[\zeta,\delta p]\,\delta p
++\delta p\,[\zeta,\delta p]\\
+&=2\ii\hbar\,\delta p,
+\end{align*}
+所以
+\begin{align*}
+\dot\zeta
+&=\frac{1}{\ii\hbar}[\zeta,H_{\rm com}]
+=\frac{\delta p}{m_\parallel},\\
+\dot{\delta p}
+&=\frac{1}{\ii\hbar}[\delta p,H_{\rm com}]=0.
+\end{align*}
+积分得到
+\[
+\zeta(t)=\zeta(0)+\frac{t}{m_\parallel}\delta p(0),
+\qquad
+\delta p(t)=\delta p(0).
+\]
+由于 $[\zeta(0),\delta p(0)]=\ii\hbar$，平方时必须保留交叉项的算符次序：
+\begin{align*}
+\zeta(t)^2
+&=\zeta^2(0)
++\frac{t}{m_\parallel}
+\bigl[\zeta(0)\delta p(0)+\delta p(0)\zeta(0)\bigr]
++\frac{t^2}{m_\parallel^2}\delta p^2(0).
+\end{align*}
+将上面的算符恒等式用于中心化变量 $\Delta\zeta=\zeta-\langle\zeta\rangle$、$\Delta p=\delta p-\langle\delta p\rangle$ 后取期望值，并使用对称协方差定义
+\[
+C_{zp}(0)=\frac12
+\langle\Delta\zeta(0)\Delta p(0)+\Delta p(0)\Delta\zeta(0)\rangle,
+\]
+便得到
+\[
+\sigma_z^2(t)
+=\sigma_z^2(0)
++\frac{2t}{m_\parallel}C_{zp}(0)
++\frac{t^2}{m_\parallel^2}\sigma_p^2,
+\]
+即正文\eqnrefs{eq:electron_shear_variance}。把右端视为关于 $t$ 的二次函数，求导得
+\[
+\frac{\dd\sigma_z^2(t)}{\dd t}
+=\frac{2}{m_\parallel}C_{zp}(0)
++\frac{2t}{m_\parallel^2}\sigma_p^2.
+\]
+若 $\sigma_p^2>0$，驻点唯一且二阶导数
+\[
+\frac{\dd^2\sigma_z^2(t)}{\dd t^2}
+=\frac{2\sigma_p^2}{m_\parallel^2}>0,
+\]
+因此它确为最小值。解得
+\[
+t_*=-m_\parallel\frac{C_{zp}(0)}{\sigma_p^2}.
+\]
+代回二次函数：
+\begin{align*}
+\sigma_{z,\min}^2
+&=\sigma_z^2(0)
+-2\frac{C_{zp}^2(0)}{\sigma_p^2}
++\frac{C_{zp}^2(0)}{\sigma_p^2}\\
+&=\sigma_z^2(0)-\frac{C_{zp}^2(0)}{\sigma_p^2}.
+\end{align*}
+最后对正则共轭对 $(\zeta,\delta p)$ 使用 Robertson--Schr\"odinger 不等式
+\[
+\sigma_z^2(0)\sigma_p^2-C_{zp}^2(0)
+\ge\frac14|\langle[\zeta,\delta p]\rangle|^2
+=\frac{\hbar^2}{4}.
+\]
+由于 $\sigma_p^2>0$，两边除以 $\sigma_p^2$ 得
+\[
+\sigma_z^2(0)-\frac{C_{zp}^2(0)}{\sigma_p^2}
+\ge\frac{\hbar^2}{4\sigma_p^2}.
+\]
+与上式合并即得到正文\eqnrefs{eq:electron_chirp_compression_bound}。
+\end{proof}
+
+
+无初始 $z$--$p$ 相关的最小不确定度高斯波包是最简单的基准。若初始纵向宽度为 $\sigma_{z0}$，则二阶传播保持高斯形状，并有
+\[
+\sigma_z^2(t)
+=\sigma_{z0}^2+
+\left(\frac{\hbar t}{2m_\parallel\sigma_{z0}}\right)^2.
+\]
+横向二次哈密顿量为 $H_\perp=(\delta p_x^2+\delta p_y^2)/(2m_\perp)$。若取其中任一横向方向 $x$，初态同样为无相关最小不确定度高斯，宽度 $\sigma_{x0}$ 与动量宽度满足 $\sigma_{p_x}=\hbar/(2\sigma_{x0})$，则
+\[
+\sigma_x^2(t)
+=\sigma_{x0}^2+
+\left(\frac{\hbar t}{2m_\perp\sigma_{x0}}\right)^2.
+\]
+定义展宽时间为使第二项与初始方差相等的时间，
+\[
+t_{\rm disp,\parallel}
+=\frac{2m_\parallel\sigma_{z0}^2}{\hbar},
+\qquad
+t_{\rm disp,\perp}
+=\frac{2m_\perp\sigma_{x0}^2}{\hbar}.
+\]
+对相同初始空间宽度 $\sigma_{x0}=\sigma_{z0}$，
+\[
+\frac{t_{\rm disp,\parallel}}{t_{\rm disp,\perp}}
+=\frac{m_\parallel}{m_\perp}=\gamma_0^2.
+\]
+对高斯初态，前述二阶色散可以解析求解，并直接给出展宽与压缩条件。
+
+二阶模型的适用域由精确色散中未被 $E_2$ 吸收的余项决定。令 $\delta p=p-p_0$。Taylor 定理给出精确分解
+\[
+E(p_0+\delta p)
+=E_0+v_0\delta p+\frac{\delta p^2}{2m_\parallel}
++\frac{E'''_0}{6}\delta p^3+R_4(\delta p),
+\qquad
+E'''_0=-\frac{3v_0}{\gamma_0^4m_{\mathrm e}^2c^2},
+\]
+其中积分余项定义为
+\[
+R_4(\delta p)
+=\frac{\delta p^4}{6}
+\int_0^1\dd s\,(1-s)^3
+E^{(4)}(p_0+s\delta p).
+\]
+对一标准差工作窗 $|\delta p|\le\sigma_p$ 定义
+\[
+\epsilon_3(t)
+\equiv\frac{|E'''_0|t\sigma_p^3}{6\hbar},
+\qquad
+\epsilon_4(t)
+\equiv
+\frac{t\sigma_p^4}{24\hbar}
+\sup_{|p-p_0|\le\sigma_p}|E^{(4)}(p)|.
+\]
+于是精确色散截断量满足
+\begin{equation}
+\boxed{
+\epsilon_{\rm disp}^{(\ge3)}(t;\sigma_p)
+\equiv
+\sup_{|\delta p|\le\sigma_p}
+\left|\frac{t}{\hbar}[E(p_0+\delta p)-E_2(p_0+\delta p)]\right|
+\le\epsilon_3(t)+\epsilon_4(t).}
+\label{eq:electron_dispersion_cubic_control}
+\end{equation}
+因此 $\epsilon_3$ 只有在同时满足 $\epsilon_4\ll\epsilon_3$ 时才可单独作为“三阶主导”的简化指标；二阶传播本身的受控条件是右端总上界远小于 $1$。一旦这一条件失效，应回到精确传播相位 $\exp[-\ii E(p)t/\hbar]$，而不是引入经验“修正质量”。
+
+\begin{proposition}[相对论色散的三阶相位控制]
+设动量严格支撑于 $|p-p_0|\le\sigma_p$，$t\ge0$。二次 Taylor 传播的相位余项不超过 $|E^{(3)}_0|t\sigma_p^3/(6\hbar)+t\sigma_p^4\sup|E^{(4)}|/(24\hbar)$，即\eqnrefs{eq:electron_dispersion_cubic_control}。仅有均方带宽约束时，应另外保留窗外概率误差。
+\end{proposition}
+\begin{proof}
+取局部工作动量窗 $\mathcal W_{p,1}=\{p:|p-p_0|\le\sigma_p\}$，令 $\delta p=p-p_0$。自由电子的精确正能色散为
+\[
+E(p)=\sqrt{m_{\mathrm e}^2c^4+c^2p^2}.
+\]
+为了把余项界写成可直接计算的量，先从这个一般表达式求高阶导数。一次求导给
+\[
+E'(p)=\frac{c^2p}{E(p)}.
+\]
+再次求导时保留商的两项：
+\begin{align*}
+E''(p)
+&=\frac{c^2}{E(p)}
+-\frac{c^2p}{E^2(p)}E'(p)\\
+&=\frac{c^2}{E(p)}-\frac{c^4p^2}{E^3(p)}\\
+&=\frac{m_{\mathrm e}^2c^6}{E^3(p)}.
+\end{align*}
+因此
+\begin{align*}
+E'''(p)
+&=-3m_{\mathrm e}^2c^6E^{-4}(p)E'(p)\\
+&=-\frac{3m_{\mathrm e}^2c^8p}{E^5(p)},
+\end{align*}
+在 $p=p_0$ 处恢复正文使用的
+\[
+E'''_0=-\frac{3v_0}{\gamma_0^4m_{\mathrm e}^2c^2}.
+\]
+继续求一次导数可得四阶项
+\begin{align*}
+E^{(4)}(p)
+&=-3m_{\mathrm e}^2c^8
+\left[E^{-5}(p)-5pE^{-6}(p)E'(p)\right]\\
+&=-\frac{3m_{\mathrm e}^2c^8}{E^5(p)}
++\frac{15m_{\mathrm e}^2c^{10}p^2}{E^7(p)}\\
+&=\frac{3m_{\mathrm e}^2c^8}{E^7(p)}
+\left(4c^2p^2-m_{\mathrm e}^2c^4\right).
+\end{align*}
+这些导数决定二次传播模型被舍弃的谱相位尺度。
+
+对 $E(p_0+\delta p)$ 在 $p_0$ 处使用三阶 Taylor 公式的积分余项，
+\begin{align*}
+E(p_0+\delta p)-E_2(p_0+\delta p)
+&=\frac{E'''_0}{6}\delta p^3+R_4(\delta p),\\
+R_4(\delta p)
+&=\frac{\delta p^4}{6}
+\int_0^1\dd s\,(1-s)^3
+E^{(4)}(p_0+s\delta p).
+\end{align*}
+积分余项保留了从 $p_0$ 到 $p_0+\delta p$ 整条线段上的四阶导数。因为 $|\delta p|\le\sigma_p$ 且 $0\le s\le1$，积分中的动量始终满足 $|p_0+s\delta p-p_0|\le\sigma_p$。于是
+\begin{align*}
+|R_4(\delta p)|
+&\le\frac{|\delta p|^4}{6}
+\int_0^1\dd s\,(1-s)^3
+\left|E^{(4)}(p_0+s\delta p)\right|\\
+&\le\frac{|\delta p|^4}{6}
+\sup_{|p-p_0|\le\sigma_p}|E^{(4)}(p)|
+\int_0^1\dd s\,(1-s)^3\\
+&=\frac{|\delta p|^4}{24}
+\sup_{|p-p_0|\le\sigma_p}|E^{(4)}(p)|\\
+&\le\frac{\sigma_p^4}{24}
+\sup_{|p-p_0|\le\sigma_p}|E^{(4)}(p)|.
+\end{align*}
+把这个结果代入正文\eqnrefs{eq:dispersion_truncation_control} 的定义，得到
+\begin{align*}
+\epsilon_{\rm disp}^{(\ge3)}(t;\sigma_p)
+&=\frac{t}{\hbar}
+\sup_{|\delta p|\le\sigma_p}
+\left|E(p_0+\delta p)-E_2(p_0+\delta p)\right|\\
+&\le
+\frac{t}{\hbar}
+\sup_{|\delta p|\le\sigma_p}
+\left(\frac{|E'''_0|}{6}|\delta p|^3+|R_4(\delta p)|\right)\\
+&\le
+\frac{|E'''_0|t\sigma_p^3}{6\hbar}
++\frac{t\sigma_p^4}{24\hbar}
+\sup_{|p-p_0|\le\sigma_p}|E^{(4)}(p)|\\
+&=\epsilon_3(t)+\epsilon_4(t),
+\end{align*}
+即正文\eqnrefs{eq:electron_dispersion_cubic_control}。
+\end{proof}
+
+
+对 PINEM/QPINEM 产生的离散相干能量梳，同一剪切可在能量--时间傅里叶对偶中读取。设边带能量为 $E_0+\ell\hbar\omega$，并把随中心电子运动的延迟写成
+\[
+\tau\equiv t-\frac{z}{v_0}.
+\]
+若共同慢包络为 $F(\tau)$，边带振幅为 $c_\ell$，则
+\begin{equation}
+\boxed{
+\Psi(\tau)=F(\tau)\sum_\ell c_\ell\ee^{-\ii\ell\omega\tau},
+\qquad
+I(\tau)=|F(\tau)|^2
+\sum_{\ell,m}c_\ell c_m^*\ee^{-\ii(\ell-m)\omega\tau}.}
+\label{eq:coherent_energy_comb_time_amplitude}
+\end{equation}
+只有非对角相干 $c_\ell c_m^*$ 才产生光学周期或亚周期密度结构；边带概率很宽却彼此无相位关系时，不会自动形成阿秒脉冲列。若相干支持大致延伸到 $|\ell|\le L$，其能量带宽 $\mathcal B_E^{\rm coh}\sim2L\hbar\omega$ 给出傅里叶尺度
+\[
+\Delta t\gtrsim\frac{\hbar}{\mathcal B_E^{\rm coh}},
+\]
+但真正达到这一尺度还要求传播后的二次及更高阶谱相位得到控制。
+
+在固定传播距离 $L_z$ 上，最方便的是展开纵向动量 $p(E)$。由 $\dd p/\dd E=1/v$ 和 $\dd v/\dd p=1/m_\parallel$，中心能量处
+\[
+\left.\frac{\dd^2 p}{\dd E^2}\right|_{E_0}
+=-\frac{1}{m_\parallel v_0^3}.
+\]
+因此第 $\ell$ 个边带在去掉共同相位与线性时间平移后获得二次谱相位
+\begin{equation}
+\boxed{
+\varphi_\ell^{(2)}(L_z)
+=-\ell^2\vartheta_2(L_z),
+\qquad
+\vartheta_2(L_z)
+\equiv\frac{\hbar\omega^2L_z}{2m_\parallel v_0^3}.}
+\label{eq:energy_comb_quadratic_phase}
+\end{equation}
+由 $\dd p/\dd E=1/v$ 与 $\dd v/\dd p=1/m_\parallel$ 逐步展开，二阶 Taylor 系数因此完全由中心群速度和纵向色散质量确定。
+因此 $\vartheta_2(L_z)$ 直接衡量离散能量格的二次传播相位，并决定时间聚焦与 Talbot 相位匹配条件。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.76\linewidth]{gaussian_compression.png}
+\caption{带负 $z$--$p$ 协方差的高斯电子包在二阶相对论色散下先压缩后展宽。焦点由\eqnrefs{eq:electron_chirp_compression_bound} 决定。}
+\label{fig:gaussian-compression}
+\end{figure}
+
+Wigner 边缘性质属于定义层面的 Fourier 代数，不另设推导框。对\eqnrefs{eq:electron_wigner} 积分动量并用
+
+\[
+\int\dd p\,\ee^{-\ii ps/\hbar}=2\pi\hbar\,\delta(s),
+\]
+得到
+\[
+\int\dd p\,W(z,p)
+=\rho(z,z).
+\]
+反过来积分 $z$，作变量变换 $z_1=z+s/2,z_2=z-s/2$，雅可比行列式为一，并使用全文约定
+\[
+\langle z|p\rangle=(2\pi\hbar)^{-1/2}\ee^{\ii pz/\hbar},
+\]
+于是
+\begin{align*}
+\int\dd z\,W(z,p)
+&=\frac{1}{2\pi\hbar}
+\int\dd z_1\dd z_2\,
+\ee^{-\ii p(z_1-z_2)/\hbar}\rho(z_1,z_2)\\
+&=\langle p|\hat\rho|p\rangle.
+\end{align*}
+这同时固定了\eqnrefs{eq:electron_wigner} 前因子 $1/(2\pi\hbar)$。
+
+$\epsilon_3$ 衡量二次模型遗漏的首个谱相位，$\epsilon_4$ 控制继续截断在三阶本身的误差；一般应检查两者之和，而不能只看三阶项。
+
+经典 Liouville 方程是 Moyal 演化的最低阶梯度极限；对至多二次的 Hamiltonian，三阶及更高导数严格为零，因此量子 Wigner 演化与经典相空间平流精确重合。
+
+\subsection{时间透镜与 Talbot 传播}
+
+前面的相空间计算表明，若先让波包不同位置具有不同平均速度，自由传播就可能使它压缩。对纵向电子波包，随到达时间变化的光学相位可以产生这种速度相关，作用类似空间光学中的薄透镜，因此称为\emph{时间透镜}。另一方面，若波包含有等间隔的相干能量边带，各边带的二次传播相位还可能在特定距离重新对齐，使周期时间图样复现；这称为\emph{Talbot 复现}。下面分别由传播相位计算聚焦条件和复现条件。
+
+对经典相干光场，PINEM 章节定义的无量纲耦合 $\beta=|\beta|\ee^{\ii\varphi_\beta}$ 决定电子获得的周期相位。用到达延迟 $\tau=t-z/v_0=-\zeta/v_0$ 表示，能量阶数 $\ell$ 的 Fourier 因子固定为 $\ee^{-\ii\ell\omega\tau}$，因此，单次相位调制写成
+\begin{equation}
+\boxed{
+\Psi(\tau)\longrightarrow
+\exp\!\left[2\ii|\beta|\sin(\varphi_\beta-\omega\tau)\right]\Psi(\tau).}
+\label{eq:electron_periodic_time_phase}
+\end{equation}
+它不是全局抛物线，因此“时间透镜”只在选定光学相位附近成立。若以相位极值 $\varphi_\beta-\omega\tau_0=\pi/2$ 为中心，令 $\delta\tau=\tau-\tau_0$，则局域展开给
+\begin{equation}
+\boxed{
+\varphi_{\rm lens}(\delta\tau)
+=-|\beta|\omega^2\delta\tau^2
++O\!\left(|\beta|\omega^4\delta\tau^4\right).}
+\label{eq:electron_local_time_lens_phase}
+\end{equation}
+常数相位已省略。控制“抛物线透镜”近似的参数是 $|\omega\delta\tau|\ll1$；超出这一时间窗，正弦相位的高阶项会生成周期性焦散/脉冲列，而不是单个理想高斯焦点。
+
+\begin{proposition}[周期相位的局部二次展开]
+设周期相位在指定中心附近三次可微。在半宽 $a$ 的时间窗内，用其二次 Taylor 多项式作局部透镜相位时，点态乘法传播子的误差至多为相位余项的上确界，后者不超过 $a^3\sup|\phi^{(3)}|/6$。本章正弦调制的中心相位、群延迟和二次曲率由\eqnrefs{eq:electron_local_time_lens_phase}给出。
+\end{proposition}
+\begin{proof}
+在相位极值附近对正弦调制做 Taylor 展开，推出\eqnrefs{eq:electron_local_time_lens_phase} 并识别四阶项作为有限孔径误差。 透镜近似要求 $|\omega\delta\tau|\ll1$； 超出这一局域时间窗时应使用完整的正弦相位调制。 定义光学相位
+
+\begin{equation*}
+\theta(\tau)=\varphi_\beta-\omega\tau .
+\end{equation*}
+电子的周期相位调制为 $2|\beta|\sin\theta$。选择相位极值
+\begin{equation*}
+\theta_0=\frac{\pi}{2},
+\qquad
+\varphi_\beta-\omega\tau_0=\frac{\pi}{2},
+\end{equation*}
+并写
+\begin{equation*}
+\delta\tau=\tau-\tau_0,
+\qquad
+\delta\theta=-\omega\delta\tau.
+\end{equation*}
+利用
+\begin{equation*}
+\sin\!\left(\frac\pi2+\delta\theta\right)
+=\cos\delta\theta
+=1-\frac{\delta\theta^2}{2}
++\frac{\delta\theta^4}{24}
++O(\delta\theta^6),
+\end{equation*}
+相位指数的实函数变成
+\begin{align*}
+2|\beta|\sin\theta
+&=2|\beta|
+-|\beta|\delta\theta^2
++\frac{|\beta|}{12}\delta\theta^4
++O(|\beta|\delta\theta^6)\\
+&=2|\beta|
+-|\beta|\omega^2\delta\tau^2
++\frac{|\beta|\omega^4\delta\tau^4}{12}
++O(|\beta|\omega^6\delta\tau^6).
+\end{align*}
+第一项只产生与 $\delta\tau$ 无关的整体相位，去掉它以后得到正文的局域二次相位
+\begin{equation*}
+\varphi_{\rm lens}(\delta\tau)
+=-|\beta|\omega^2\delta\tau^2
++O(|\beta|\omega^4\delta\tau^4).
+\end{equation*}
+四次项相对于二次项的绝对比值为
+\begin{equation*}
+\left|
+\frac{(|\beta|/12)\omega^4\delta\tau^4}
+{|\beta|\omega^2\delta\tau^2}
+\right|
+=\frac{(\omega\delta\tau)^2}{12}.
+\end{equation*}
+\end{proof}
+
+
+局域二次时间相位先建立到达时间与能量的相关；随后自由色散把这种相关转化为实际的到达时间压缩。粗粒化地看，\eqnrefs{eq:classical_energy_mod_from_beta} 给相位 $\theta=\varphi_\beta-\omega\tau$ 上的能量调制
+\[
+\delta E(\theta)=2\hbar\omega|\beta|\cos\theta.
+\]
+经过距离 $L_z$ 后，速度色散把它映射成到达时间偏移。固定传播距离时
+\begin{align*}
+\tau(E)&=\frac{L_z}{v(E)},\\
+\left.\frac{\dd(1/v)}{\dd E}\right|_{E_0}
+&=-\frac1{v_0^2}
+\left.\frac{\dd v/\dd p}{\dd E/\dd p}\right|_{p_0}
+=-\frac{1}{m_\parallel v_0^3},
+\end{align*}
+其中用了 $\dd E/\dd p=v$ 与 $\dd v/\dd p=1/m_\parallel$。因此对小能量调制
+\begin{equation}
+\boxed{
+\delta\tau_{\rm drift}(\theta)
+=
+-\frac{2L_z\hbar\omega|\beta|}{m_\parallel v_0^3}\cos\theta
++O\!\left([\delta E(\theta)]^2\right).}
+\label{eq:electron_classical_bunching_map}
+\end{equation}
+这里的一阶式只要求在实际占据能宽内 $1/v(E)$ 的二阶及更高变化可忽略；若能量调制大到越过这一局域线性区，应直接使用精确飞行时间 $L_z/v(E_0+\delta E)$。当映射 $\tau_{\rm out}(\theta)$ 的雅可比行列式变小时，经典束流图像中出现密度聚束；量子图像中，同一现象由\eqnrefs{eq:coherent_energy_comb_time_amplitude} 的边带交叉项干涉形成。两种语言在边带不可分辨、包络跨越许多光学周期的粗粒化极限相接。
+
+另一种特殊相位匹配不是局域聚焦，而是整个离散能量梳的谱相位复现。\secref{subsec:sideband-to-temporal-density-dp46}已经从完整密度谐波得到唯一的 Talbot 时间和长度~\eqnrefs{eq:electron_talbot_time_length_dp46}。这里用能量表象检验同一结果：由\eqnrefs{eq:energy_comb_quadratic_phase}，当 $\vartheta_2(L_T)=2\pi$ 时，任意整数 $\ell$ 都满足 $\exp[-\ii\ell^2\vartheta_2(L_T)]=1$；代入 $\vartheta_2=\hbar\omega^2L_z/(2m_\parallel v_0^3)$ 恰好恢复\eqnrefs{eq:electron_talbot_time_length_dp46} 在 $\kappa_z=\omega/v_0$ 下的 $L_T$。在 $L_z/L_T$ 为有理数时，$\ell^2$ 的模整数结构产生分数 Talbot 图样。初始能散、有限包络、空间电荷以及\eqnrefs{eq:electron_dispersion_cubic_control} 所衡量的高阶色散都会降低复现对比度。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.82\linewidth]{talbot_time_focusing.png}
+  \caption{周期相位调制后的自由电子在二次谱相位传播下形成的时域 Talbot 结构。图中从 $c_\ell=J_\ell(2|\beta|)$ 出发，对每个边带乘以 $\exp(-\ii s\ell^2)$ 后重新求和；取 $|\beta|=3$。\cite{Feist2015Nature}}
+  \label{fig:talbot_time_focusing}
+\end{figure}
+
+经典纵向束流动力学使用 $(z,\delta E)$ 相空间描述啁啾与微聚束。\cite{Pellegrini2016FEL} 当单电子相干、反冲和负 Wigner 结构不可忽略时，Wigner 表示保留同一几何直觉并补上量子相干。因此二者不是互斥理论，而是不同分辨尺度上的连续描述。
+
+精确相对论色散决定电子闭合传播，相空间表示把同一动力学改写成几何剪切，周期相位与二次谱相位则决定聚焦和复现。未追踪环境会把闭合幺正动力学变成约化量子信道，而探测器进一步把量子态映射为经典数据；二者分别由开放系统动力学与量子测量描述。
+
+上述复现只涉及二次色散。若占据带宽内的三阶及更高谱相位在一个 $L_T$ 上积累到 $O(1)$，不同整数边带不能同时回相；这一偏离由正文\eqnrefs{eq:electron-talbot-higher-order-control-dp76} 的 $\epsilon_T^{(\ge3)}$ 控制。
+
+抛物线时间透镜的局域控制量是 $|\omega\delta\tau|$；它不再远小于一时，应使用完整周期正弦相位。
+
+\input{sections/electron-gaussian-lens-analytic}
+
+\input{content/FreeElectronQuantumOptics/chapter-end/electron-wavepacket-propagation-calculations.tex}

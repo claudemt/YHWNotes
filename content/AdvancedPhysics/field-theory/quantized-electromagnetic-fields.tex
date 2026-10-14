@@ -1,0 +1,889 @@
+\chapter{Dirac 与电磁场的量子化}\label{chap:qed}
+
+量子场论的通用结构现在落实到电子与电磁场：电子由 Dirac 场描述，电磁场由 Maxwell 四势描述，局域 $U(1)$ 对称性通过最小耦合把二者连接。Dirac 场的正、负频分支分别组织电子和正电子自由度；Maxwell 四势的四个分量则受到规范约束，只有两个横向偏振成为独立的物理光子。
+
+量子光学已经在 Coulomb 规范的横向模式上算出原子偶极辐射。这里进一步保留相对论费米子与规范约束，使自由传播子、协变规范和外态归一化可以用于电子、正电子与光子的散射。\cref{chap:electromagnetic-scattering}将从同一电流顶角计算过程和辐射修正；\cref{chap:quantum-electromagnetic-media}再把材料、边界和损耗加入电磁响应。
+
+\section{Dirac 与 Maxwell 场量子化}
+
+一般量子场论已经说明怎样从自由模得到 Fock 空间、传播子和散射振幅。电磁相互作用只需指定两种具体场：带电 Dirac 场承载电子与正电子，Maxwell 四势承载光子；两者由最小耦合连接。Maxwell 四势还含规范冗余，因此量子化时必须同时保留约束结构，最终只让两个横向偏振进入物理光子空间。
+
+\subsection{Dirac 场量子化}
+
+\begin{definition}[自由 Dirac 场的模展开与费米代数]
+自由 Dirac 方程具有正频和负频两支质量壳解。量子理论需要同时满足正定内积、能谱下界和局域等时反对易关系；这三项条件把正频系数解释为电子湮灭算符 $b_s$，把负频系数解释为正能正电子的产生算符 $d_s^\dagger$。采用普通三维 Dirac--$\delta$ 的振子归一化时，场展开系数还必须补偿自旋子的协变归一化，因此
+\begin{equation}
+\boxed{
+\hat\psi(x)
+=\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}\sqrt{\frac{c}{2E_{\mathbf p}}}
+\left[
+\hat b_s(\mathbf p)u_s(\mathbf p)\ee^{-ip\cdot x/\hbar}
++\hat d_s^\dagger(\mathbf p)v_s(\mathbf p)\ee^{+ip\cdot x/\hbar}
+\right].}
+\label{eq:dirac-field-exp-r2}
+\end{equation}
+其中 $p^0=E_{\mathbf p}/c>0$，并采用 $u_s^\dagger u_{s'}=v_s^\dagger v_{s'}=(2E_{\mathbf p}/c)\delta_{ss'}$ 的自旋子归一化。系数 $\sqrt{c/(2E_{\mathbf p})}$ 与普通 $\delta^{(3)}$ 振子代数配合，保证等时场反对易关系具有单位系数。
+
+费米统计由正则反对易代数实现：
+\begin{equation}
+\boxed{
+\{b_r(\mathbf p),b_s^\dagger(\mathbf q)\}
+=\{d_r(\mathbf p),d_s^\dagger(\mathbf q)\}
+=(2\pi\hbar)^3\delta_{rs}\delta^{(3)}(\mathbf p-\mathbf q),}
+\label{eq:fermion-anticomm-normalization-r2}
+\end{equation}
+其余反对易子为零。连续场与振子都是算符分布，算符等式须以测试函数涂抹后理解。
+\end{definition}
+
+\begin{proposition}[Dirac 场的模式 CAR 归一化]
+假设正文的连续旋量完备关系与等时场 CAR；系数由相同动量测度固定。则有以下结论（原式 \eqnrefs{eq:fermion-anticomm-normalization-r2}）：
+\begin{equation*}
+\boxed{
+\{b_r(\mathbf p),b_s^\dagger(\mathbf q)\}
+=\{d_r(\mathbf p),d_s^\dagger(\mathbf q)\}
+=(2\pi\hbar)^3\delta_{rs}\delta^{(3)}(\mathbf p-\mathbf q),}
+\end{equation*}
+\end{proposition}
+\begin{proof}
+先由等时场 CAR 提取模式算符。记固定时刻的空间 Fourier 变换为
+\[
+\widetilde\psi(t,\mathbf p)
+=\int\dd^3x\,\ee^{-\ii\mathbf p\cdot\mathbf x/\hbar}\psi(t,\mathbf x).
+\]
+自由模式展开及 $E_{-\mathbf p}=E_{\mathbf p}$ 给出
+\[
+\widetilde\psi(t,\mathbf p)
+=\sqrt{\frac{c}{2E_{\mathbf p}}}
+\sum_s\left[
+b_s(\mathbf p)u_s(\mathbf p)\ee^{-\ii E_{\mathbf p}t/\hbar}
++d_s^\dagger(-\mathbf p)v_s(-\mathbf p)\ee^{+\ii E_{\mathbf p}t/\hbar}
+\right].
+\]
+同一 Hamiltonian 动量的正负能基满足
+\[
+u_r^\dagger(\mathbf p)u_s(\mathbf p)
+=v_r^\dagger(\mathbf p)v_s(\mathbf p)
+=\frac{2E_{\mathbf p}}c\delta_{rs},
+\qquad
+u_r^\dagger(\mathbf p)v_s(-\mathbf p)=0.
+\]
+因此模式展开有精确逆变换
+\begin{align*}
+b_s(\mathbf p)
+&=\sqrt{\frac{c}{2E_{\mathbf p}}}\,
+\ee^{+\ii E_{\mathbf p}t/\hbar}
+u_s^\dagger(\mathbf p)\widetilde\psi(t,\mathbf p),\\
+d_s^\dagger(\mathbf p)
+&=\sqrt{\frac{c}{2E_{\mathbf p}}}\,
+\ee^{-\ii E_{\mathbf p}t/\hbar}
+v_s^\dagger(\mathbf p)\widetilde\psi(t,-\mathbf p).
+\end{align*}
+等时场 CAR 的 Fourier 变换为
+\begin{align*}
+\{\widetilde\psi_\alpha(t,\mathbf p),
+\widetilde\psi_\beta^\dagger(t,\mathbf q)\}
+&=(2\pi\hbar)^3\delta^{(3)}(\mathbf p-\mathbf q)\delta_{\alpha\beta},\\
+\{\widetilde\psi_\alpha(t,\mathbf p),
+\widetilde\psi_\beta(t,\mathbf q)\}&=0.
+\end{align*}
+把逆变换代入，先保留两个独立动量，得到
+\begin{align*}
+\{b_r(\mathbf p),b_s^\dagger(\mathbf q)\}
+&=\frac{c\,\ee^{\ii(E_{\mathbf p}-E_{\mathbf q})t/\hbar}}
+{2\sqrt{E_{\mathbf p}E_{\mathbf q}}}
+u_r^\dagger(\mathbf p)u_s(\mathbf q)
+(2\pi\hbar)^3\delta^{(3)}(\mathbf p-\mathbf q)\\
+&=(2\pi\hbar)^3\delta_{rs}\delta^{(3)}(\mathbf p-\mathbf q),\\
+\{d_r^\dagger(\mathbf p),d_s(\mathbf q)\}
+&=\frac{c\,\ee^{-\ii(E_{\mathbf p}-E_{\mathbf q})t/\hbar}}
+{2\sqrt{E_{\mathbf p}E_{\mathbf q}}}
+v_r^\dagger(\mathbf p)v_s(\mathbf q)
+(2\pi\hbar)^3\delta^{(3)}(\mathbf p-\mathbf q)\\
+&=(2\pi\hbar)^3\delta_{rs}\delta^{(3)}(\mathbf p-\mathbf q).
+\end{align*}
+第二式利用反对易子的对称性及交换哑指标，即为所述 $\{d_r,d_s^\dagger\}$。
+$\{b,d^\dagger\}$、$\{b,b\}$、$\{d^\dagger,d^\dagger\}$ 由第二条 Fourier CAR 消失；
+$\{b_r(\mathbf p),d_s(\mathbf q)\}$ 则含
+$\delta^{(3)}(\mathbf p+\mathbf q)u_r^\dagger(\mathbf p)v_s(\mathbf q)$，
+由反向动量的正交关系为零。取伴随覆盖其余组合。
+这直接从场 CAR 证明了\eqnrefs{eq:fermion-anticomm-normalization-r2}。
+
+下面完整核对反向关系：由模式 CAR 恢复等时场 CAR，并检查模式测度与旋量归一化的一致性。
+把正文的自由场展开写成
+
+\begin{align*}
+\psi_\alpha(t,\mathbf x)
+&=\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\sqrt{\frac{c}{2E_{\mathbf p}}}
+\left[
+ b_s(\mathbf p)u_{s,\alpha}(\mathbf p)\ee^{-\ii p\cdot x/\hbar}
+ +d_s^\dagger(\mathbf p)v_{s,\alpha}(\mathbf p)\ee^{+\ii p\cdot x/\hbar}
+\right],\\
+\psi_\beta^\dagger(t,\mathbf y)
+&=\sum_{s'}\int\frac{\dd^3 p'}{(2\pi\hbar)^3}
+\sqrt{\frac{c}{2E_{\mathbf p'}}}
+\left[
+ b_{s'}^\dagger(\mathbf p')u_{s',\beta}^\dagger(\mathbf p')\ee^{+\ii p'\cdot y/\hbar}
+ +d_{s'}(\mathbf p')v_{s',\beta}^\dagger(\mathbf p')\ee^{-\ii p'\cdot y/\hbar}
+\right].
+\end{align*}
+只有 $\{b,b^\dagger\}$ 与 $\{d,d^\dagger\}$ 两类项保留。用模算符反对易关系先完成 $\mathbf p'$ 积分，在等时 $x^0=y^0$ 得
+\begin{align*}
+\{\psi_\alpha(t,\mathbf x),\psi_\beta^\dagger(t,\mathbf y)\}
+&=\int\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}
+\sum_s\Bigl[
+ u_{s,\alpha}(\mathbf p)u_{s,\beta}^\dagger(\mathbf p)\ee^{+\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}\\
+&\hspace{7em}+v_{s,\alpha}(\mathbf p)v_{s,\beta}^\dagger(\mathbf p)\ee^{-\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}
+\Bigr].
+\end{align*}
+第二项作变量替换 $\mathbf p\mapsto-\mathbf p$，于是两项具有同一 Fourier 相位：
+\begin{align*}
+\{\psi_\alpha(t,\mathbf x),\psi_\beta^\dagger(t,\mathbf y)\}
+&=\int\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}
+\left[
+\sum_su_s(\mathbf p)u_s^\dagger(\mathbf p)
++\sum_sv_s(-\mathbf p)v_s^\dagger(-\mathbf p)
+\right]_{\alpha\beta}
+ \ee^{+\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}.
+\end{align*}
+正、负能旋量完备关系分别为
+\begin{equation*}
+\sum_su_s(\mathbf p)u_s^\dagger(\mathbf p)=(\slashed p+m_{\mathrm e} c)\gamma^0,
+\qquad
+\sum_sv_s(-\mathbf p)v_s^\dagger(-\mathbf p)=(\slashed p'-m_{\mathrm e} c)\gamma^0,
+\end{equation*}
+其中 $p=(E_{\mathbf p}/c,\mathbf p)$、$p'=(E_{\mathbf p}/c,-\mathbf p)$。两式相加时空间动量项与质量项分别抵消，只剩
+\begin{align*}
+(\slashed p+m_{\mathrm e} c)\gamma^0+(\slashed p'-m_{\mathrm e} c)\gamma^0
+&=(\slashed p+\slashed p')\gamma^0\\
+&=\frac{2E_{\mathbf p}}{c}\,\gamma^0\gamma^0
+=\frac{2E_{\mathbf p}}{c}\,\id(4).
+\end{align*}
+因此展开中的 $c/(2E_{\mathbf p})$ 恰好相消，最后用 Fourier 表示
+\begin{equation*}
+\int\frac{\dd^3 p}{(2\pi\hbar)^3}\ee^{+\ii\mathbf p\cdot(\mathbf x-\mathbf y)/\hbar}
+=\delta^{(3)}(\mathbf x-\mathbf y)
+\end{equation*}
+得到
+\begin{equation*}
+\{\psi_\alpha(t,\mathbf x),\psi_\beta^\dagger(t,\mathbf y)\}
+=\delta_{\alpha\beta}\delta^{(3)}(\mathbf x-\mathbf y),
+\end{equation*}
+这恢复了等时场 CAR；与前面的逆变换计算合并，得到场与模式两组正则关系的等价性。
+\end{proof}
+
+
+\begin{proposition}[正则归一化与正能粒子谱]
+上述模展开和反对易关系给出等时正则关系
+\begin{equation*}
+\{\psi_\alpha(\mathbf x,t),\psi_\beta^\dagger(\mathbf y,t)\}
+=\delta_{\alpha\beta}\delta^{(3)}(\mathbf x-\mathbf y).
+\end{equation*}
+
+正规序后的自由哈密顿量因而为
+\begin{equation}
+\boxed{
+:\!H_D\!:
+=\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}E_{\mathbf p}
+\left[b_s^\dagger(\mathbf p)b_s(\mathbf p)
++d_s^\dagger(\mathbf p)d_s(\mathbf p)\right].}
+\label{eq:dirac-H-positive-r2}
+\end{equation}
+在有限盒的单模记号中，同一反对易代数给 $(b_a^\dagger)^2=(d_a^\dagger)^2=0$；连续表象对应任意同一归一化波包产生算符的平方为零。因此费米 Fock 空间由反对称张量幂构成，Pauli 不相容性与正能谱由同一代数结构共同决定。
+\end{proposition}
+
+\begin{proposition}[自由 Dirac 二次算子的正规序谱]
+采用自由 Dirac 模式完备关系和 CAR，并将真空常数按同一正规序处方消去；结论为自由模式上的算子恒等式。则有以下结论（原式 \eqnrefs{eq:dirac-H-positive-r2}）：
+\begin{equation*}
+\boxed{
+:\!H_D\!:
+=\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}E_{\mathbf p}
+\left[b_s^\dagger(\mathbf p)b_s(\mathbf p)
++d_s^\dagger(\mathbf p)d_s(\mathbf p)\right].}
+\end{equation*}
+\end{proposition}
+\begin{proof}
+自由 Dirac 单粒子 Hamiltonian 为
+\[
+ \hat h_D=-\ii\hbar c\,\boldsymbol\alpha\cdot\boldsymbol\nabla
+ +\beta_Dm_{\mathrm e} c^2.
+\]
+先看场展开中两类空间--时间模本身。正频模
+\[
+ \Phi^{(+)}_{\mathbf p s}(x)
+ =u_s(\mathbf p)\ee^{-\ii p\cdot x/\hbar}
+\]
+满足 $\ii\hbar\partial_t\Phi^{(+)}=+E_{\mathbf p}\Phi^{(+)}$；由自由 Dirac 方程
+$\ii\hbar\partial_t\Phi^{(+)}=\hat h_D\Phi^{(+)}$，所以它是 $\hat h_D$ 的 $+E_{\mathbf p}$ 本征模。负频模
+\[
+ \Phi^{(-)}_{\mathbf p s}(x)
+ =v_s(\mathbf p)\ee^{+\ii p\cdot x/\hbar}
+\]
+则满足
+\[
+ \ii\hbar\partial_t\Phi^{(-)}_{\mathbf p s}
+ =-E_{\mathbf p}\Phi^{(-)}_{\mathbf p s}
+ =\hat h_D\Phi^{(-)}_{\mathbf p s}.
+\]
+因此正文场展开中的 $b_s$ 乘在 $+E$ 单粒子本征模上，而 $d_s^\dagger$ 乘在 $-E$ 单粒子本征模上；后一个负号正是未正规序 Hamiltonian 中
+$-d_sd_s^\dagger$ 的来源。
+
+为避免连续归一化中的 $\delta^{(3)}(\mathbf0)$ 干扰计数，先把体系放在有限盒中。用正交归一的单粒子模记号写
+\[
+ \hat\psi
+ =\sum_a\left(
+ \hat b_a\Phi_a^{(+)}+\hat d_a^\dagger\Phi_a^{(-)}
+ \right),
+\]
+其中 $a=(\mathbf p,s)$。自由 Hamiltonian 是一体算符的二次量子化：
+\begin{align*}
+ \hat H_D
+ &=\int\dd^3x\,\hat\psi^\dagger\hat h_D\hat\psi\\
+ &=\sum_{a,b}\Bigl[
+ b_a^\dagger b_b\langle\Phi_a^{(+)}|\hat h_D|\Phi_b^{(+)}\rangle
+ +b_a^\dagger d_b^\dagger\langle\Phi_a^{(+)}|\hat h_D|\Phi_b^{(-)}\rangle\\
+ &\hspace{30mm}
+ +d_a b_b\langle\Phi_a^{(-)}|\hat h_D|\Phi_b^{(+)}\rangle
+ +d_a d_b^\dagger\langle\Phi_a^{(-)}|\hat h_D|\Phi_b^{(-)}\rangle
+ \Bigr].
+\end{align*}
+由于 $\hat h_D$ 厄米，不同本征值的模正交；同一动量处 $+E_{\mathbf p}$ 与 $-E_{\mathbf p}$ 不同，所以两个交叉矩阵元都为零。其余两个矩阵元为
+\begin{align*}
+ \langle\Phi_a^{(+)}|\hat h_D|\Phi_b^{(+)}\rangle
+ &=+E_a\delta_{ab},\\
+ \langle\Phi_a^{(-)}|\hat h_D|\Phi_b^{(-)}\rangle
+ &=-E_a\delta_{ab}.
+\end{align*}
+于是有限盒中严格得到
+\begin{equation*}
+ \hat H_D=\sum_a E_a
+ \left(b_a^\dagger b_a-d_a d_a^\dagger\right).
+\end{equation*}
+正文的因子 $\sqrt{c/(2E_{\mathbf p})}$ 与
+$u_s^\dagger u_{s'}=v_s^\dagger v_{s'}=(2E_{\mathbf p}/c)\delta_{ss'}$
+恰好把上述模内积化成 Kronecker--$\delta$；取无限体积极限后
+$\sum_{\mathbf p}/V$ 恢复为 $\int\dd^3p/(2\pi\hbar)^3$。
+
+现在才使用费米反对易关系。有限盒中
+$\{d_a,d_b^\dagger\}=\delta_{ab}$，故逐模有
+\[
+ -d_ad_a^\dagger=d_a^\dagger d_a-1.
+\]
+因此
+\begin{align*}
+ \hat H_D
+ &=\sum_aE_a\left(b_a^\dagger b_a+d_a^\dagger d_a\right)
+ -\sum_aE_a.
+\end{align*}
+最后一项与占据态无关，是自由场真空零点常数；正规序把它减去。恢复连续动量归一化后便得到正文
+\eqnrefs{eq:dirac-H-positive-r2}。所以“正电子具有正能量”并不是把经典负能解手工改号：负频模先给出 $-d d^\dagger$，再由费米反对易代数把它重排为 $+d^\dagger d$ 加真空常数。
+\end{proof}
+
+
+正文结果的两个归一化核验都在章末展开：等时反对易子中负频项必须先作 $\mathbf p\mapsto-\mathbf p$，再与正频项合并；Hamiltonian 则先保留 $-d d^\dagger$，再用费米重排得到 $+d^\dagger d$ 与真空常数。\eqnrefs{eq:feqo-hamiltonian-energy-projectors} 的 $\Pi_++\Pi_-=I_4$ 正是第一步计算的有限维内容。
+
+\begin{exbox}[Dirac 场的错误统计]
+量子化规则可以由理论必须同时具有能谱下界与正定态范数来检验。把模展开代入尚未正规序的自由哈密顿量时，电子和正电子部分具有结构
+\begin{equation*}
+ H_D\supset
+ \sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}E_{\mathbf p}
+ \bigl(b_s^\dagger b_s-d_s d_s^\dagger\bigr).
+\end{equation*}
+如果错误地令正电子算符满足玻色关系 $[d,d^\dagger]=+1$，重排第二项得到
+\begin{equation*}
+ -d d^\dagger=-d^\dagger d-1,
+\end{equation*}
+于是每增加一个正电子，正规序后的能量反而减少 $E_{\mathbf p}$；不断增加占据数便使能谱没有下界。若改取 $[d,d^\dagger]=-1$ 试图修复能量符号，则一正电子态 $d^\dagger|0\rangle$ 的范数变为负值。两条路都不可接受。
+
+反对易关系则给
+\begin{equation*}
+ \{d,d^\dagger\}=1
+ \quad\Longrightarrow\quad
+ -d d^\dagger=d^\dagger d-1,
+\end{equation*}
+所以电子和正电子都以 $+E_{\mathbf p}$ 计入激发能，同时 $(d^\dagger)^2=0$。正能谱、正定 Hilbert 空间和 Pauli 不相容性因此是同一反对易代数的三个后果；再结合 Noether 电荷便能同时确定 $d^\dagger$ 所产生激发的电荷符号。
+\end{exbox}
+
+全局 $U(1)$ Noether 电荷在正规序后成为
+\begin{equation}
+\boxed{
+Q=q_{\mathrm e}\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\left[b_s^\dagger b_s-d_s^\dagger d_s\right].}
+\label{eq:dirac-charge-r2}
+\end{equation}
+
+\begin{proposition}[自由 Dirac 电荷在 Fock 基上的作用]
+采用正文电荷定义、模式归一化和正规序；共用稠密有限粒子检验域。则有以下结论（原式 \eqnrefs{eq:dirac-charge-r2}）：
+\begin{equation*}
+\boxed{
+Q=q_{\mathrm e}\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\left[b_s^\dagger b_s-d_s^\dagger d_s\right].}
+\end{equation*}
+\end{proposition}
+\begin{proof}
+从
+
+\begin{equation*}
+Q=q_{\mathrm e}\int\dd^3 x\,\psi^\dagger(t,\mathbf x)\psi(t,\mathbf x)
+\end{equation*}
+出发，把正、负频模展开逐项相乘。空间积分给
+\begin{equation*}
+\int\dd^3 x\,\ee^{\ii(\mathbf p-\mathbf p')\cdot\mathbf x/\hbar}
+=(2\pi\hbar)^3\delta^{(3)}(\mathbf p-\mathbf p'),
+\end{equation*}
+因此同频项先化为
+\begin{align*}
+Q_{bb}
+&=q_{\mathrm e}\sum_{ss'}\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\frac{c}{2E_{\mathbf p}}
+ b_s^\dagger(\mathbf p)b_{s'}(\mathbf p)
+ u_s^\dagger(\mathbf p)u_{s'}(\mathbf p),\\
+Q_{dd}
+&=q_{\mathrm e}\sum_{ss'}\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\frac{c}{2E_{\mathbf p}}
+ d_s(\mathbf p)d_{s'}^\dagger(\mathbf p)
+ v_s^\dagger(\mathbf p)v_{s'}(\mathbf p).
+\end{align*}
+用旋量归一化
+\begin{equation*}
+u_s^\dagger u_{s'}=v_s^\dagger v_{s'}=\frac{2E_{\mathbf p}}{c}\delta_{ss'}
+\end{equation*}
+后，$c/(2E_{\mathbf p})$ 与旋量范数相消。正负频交叉项的空间积分给 $\delta^{(3)}(\mathbf p+\mathbf p')$，因此实际内积是 $u^\dagger(\mathbf p)v(-\mathbf p)$ 及其共轭。它们分别属于同一 $H_0(\mathbf p)$ 的 $+E$ 和 $-E$ 本征空间，由\eqnrefs{eq:feqo-negative-hamiltonian-spinor} 的正交性为零；不能把 $u^\dagger(\mathbf p)v(\mathbf p)$ 无条件设为零。于是
+\begin{equation*}
+Q=q_{\mathrm e}\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\left[b_s^\dagger(\mathbf p)b_s(\mathbf p)+d_s(\mathbf p)d_s^\dagger(\mathbf p)\right].
+\end{equation*}
+再使用反对易关系
+\begin{align*}
+d_s(\mathbf p)d_s^\dagger(\mathbf p)
+&=\{d_s(\mathbf p),d_s^\dagger(\mathbf p)\}-d_s^\dagger(\mathbf p)d_s(\mathbf p)\\
+&=\text{真空常数}-d_s^\dagger(\mathbf p)d_s(\mathbf p).
+\end{align*}
+按正文采用的正规序约定减去真空常数项后，得到
+\begin{equation*}
+:Q:=q_{\mathrm e}\sum_s\int\frac{\dd^3 p}{(2\pi\hbar)^3}
+\left[b_s^\dagger(\mathbf p)b_s(\mathbf p)-d_s^\dagger(\mathbf p)d_s(\mathbf p)\right],
+\end{equation*}
+即\eqnrefs{eq:dirac-charge-r2}。作用在一粒子态上可直接检验
+\begin{equation*}
+:Q:\,b_s^\dagger|0\rangle=q_{\mathrm e}\,b_s^\dagger|0\rangle,
+\qquad
+:Q:\,d_s^\dagger|0\rangle=-q_{\mathrm e}\,d_s^\dagger|0\rangle.
+\end{equation*}
+由于 $q_{\mathrm e}<0$，$d_s^\dagger$ 产生的反粒子携带正电荷 $-q_{\mathrm e}$。
+\end{proof}
+
+因此 $d^\dagger$ 激发携带与电子相反的电荷。负频经典解在量子化后对应正能反粒子产生算符；Dirac 海是这一场论结构的历史单粒子表述。
+
+\subsection{Dirac 传播子与因果性}
+
+\begin{proposition}[Dirac 反对易核的因果支撑]
+自由 Dirac 场的局域性由同一质量壳上的正、负频分支共同保证。为把这一事实与标量场的因果结构直接联系起来，定义标量 Pauli--Jordan 核
+\begin{equation*}
+ \Delta(x-y)
+ \equiv
+ \int\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}
+ \left[
+ \ee^{-\ii p\cdot(x-y)/\hbar}
+ -\ee^{+\ii p\cdot(x-y)/\hbar}
+ \right].
+\end{equation*}
+利用 Dirac 自旋子的完备关系，场反对易子可写成
+\begin{equation}
+ \boxed{
+ \{\hat\psi_\alpha(x),\bar{\hat\psi}_\beta(y)\}
+ =\left(\ii\hbar\slashed\partial_x+m_{\mathrm e} c\right)_{\alpha\beta}
+ \Delta(x-y).}
+ \label{eq:dirac-PJ-factor-r8}
+\end{equation}
+标量场的 Pauli--Jordan 核满足：当 $(x-y)^2<0$ 时，$\Delta(x-y)=0$。有限阶局域微分算符不会扩大分布的支撑，因此\eqnrefs{eq:dirac-PJ-factor-r8} 在类空间隔同样为零。费米场本身不是玻色型可观测量；由偶数个费米场构成的局域可观测量，例如 $\bar\psi\psi$ 与 $j^\mu=q_{\mathrm e} c\bar\psi\gamma^\mu\psi$，由这一反对易结构得到类空间隔处的对易性，从而满足微观因果性。
+
+\end{proposition}
+
+\begin{proposition}[Dirac 对易核的标量因式分解]
+设自由 Dirac 算子与标量质量壳核采用相同 Fourier 和 CAR 约定；恒等式按算符值分布理解。则有以下结论（原式 \eqnrefs{eq:dirac-PJ-factor-r8}）：
+\begin{equation*}
+ \boxed{
+ \{\hat\psi_\alpha(x),\bar{\hat\psi}_\beta(y)\}
+ =\left(\ii\hbar\slashed\partial_x+m_{\mathrm e} c\right)_{\alpha\beta}
+ \Delta(x-y).}
+\end{equation*}
+\end{proposition}
+\begin{proof}
+由\eqnrefs{eq:dirac-field-exp-r2}，$\hat\psi$ 含 $bu$ 与 $d^\dagger v$ 两类项，而 $\bar{\hat\psi}$ 含 $b^\dagger\bar u$ 与 $d\bar v$。四种交叉组合中只有
+
+\begin{equation*}
+ \{b_s(\mathbf p),b_{s'}^\dagger(\mathbf q)\},
+ \qquad
+ \{d_s^\dagger(\mathbf p),d_{s'}(\mathbf q)\}
+\end{equation*}
+非零。完成 $\mathbf q$ 积分并使用自旋完备关系后，得到
+\begin{align*}
+ \{\hat\psi_\alpha(x),\bar{\hat\psi}_\beta(y)\}
+ &=\int\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}
+ \bigg[
+ (\slashed p+m_{\mathrm e} c)_{\alpha\beta}\ee^{-\ii p\cdot(x-y)/\hbar}\\
+ &\hspace{42mm}
+ +(\slashed p-m_{\mathrm e} c)_{\alpha\beta}\ee^{+\ii p\cdot(x-y)/\hbar}
+ \bigg].
+\end{align*}
+另一方面，逐项作用 $\ii\hbar\slashed\partial_x+m_{\mathrm e} c$ 有
+\begin{align*}
+ (\ii\hbar\slashed\partial_x+m_{\mathrm e} c)\ee^{-\ii p\cdot(x-y)/\hbar}
+ &=(\slashed p+m_{\mathrm e} c)\ee^{-\ii p\cdot(x-y)/\hbar},\\
+ (\ii\hbar\slashed\partial_x+m_{\mathrm e} c)
+ \bigl[-\ee^{+\ii p\cdot(x-y)/\hbar}\bigr]
+ &=(\slashed p-m_{\mathrm e} c)\ee^{+\ii p\cdot(x-y)/\hbar}.
+\end{align*}
+把两式与 Pauli--Jordan 核的定义比较，即得到\eqnrefs{eq:dirac-PJ-factor-r8}。
+\end{proof}
+
+
+费米场的时序积在交换两个费米算符时必须带负号：
+\begin{equation}
+ \Tord\hat\psi(x)\bar{\hat\psi}(y)
+ =\Theta(x^0-y^0)\hat\psi(x)\bar{\hat\psi}(y)
+ -\Theta(y^0-x^0)\bar{\hat\psi}(y)\hat\psi(x).
+ \label{eq:fermion-time-order-r2}
+\end{equation}
+由此定义 Dirac 的 Feynman 二点函数
+\begin{equation*}
+ S_F(x-y)
+ \equiv\langle0|\Tord\hat\psi(x)\bar{\hat\psi}(y)|0\rangle.
+\end{equation*}
+对两个时间排序区域分别使用正、负频模，再由 $p^0$ 复平面上的 Feynman 边界条件合并，可得统一的四动量表示
+\begin{equation}
+ \boxed{
+ S_F(x-y)
+ =\int\frac{\dd^4 p}{(2\pi\hbar)^4}
+ \frac{\ii\hbar(\slashed p+m_{\mathrm e} c)}{p^2-m_{\mathrm e}^2c^2+\ii0^+}
+ \ee^{-\ii p\cdot(x-y)/\hbar}.}
+ \label{eq:dirac-prop-struct-r2}
+\end{equation}
+其分子来自 Clifford 代数恒等式
+\begin{equation*}
+ (\slashed p-m_{\mathrm e} c)(\slashed p+m_{\mathrm e} c)=p^2-m_{\mathrm e}^2c^2,
+\end{equation*}
+所以传播子是自由一阶 Dirac 算符在 Feynman 边界条件下的 Green 核：
+\begin{equation}
+ \boxed{
+ (\ii\hbar\slashed\partial_x-m_{\mathrm e} c)S_F(x-y)
+ =\ii\hbar\,\delta^{(4)}(x-y)\id(4).}
+ \label{eq:dirac-green-exact-r2}
+\end{equation}
+
+\begin{proposition}[Dirac Green 核的算符逆]
+采用正文 Feynman 边界值处方与 Clifford 关系；时序微分的等时接触项由 CAR 固定。则有以下结论（原式 \eqnrefs{eq:dirac-green-exact-r2}）：
+\begin{equation*}
+ \boxed{
+ (\ii\hbar\slashed\partial_x-m_{\mathrm e} c)S_F(x-y)
+ =\ii\hbar\,\delta^{(4)}(x-y)\id(4).}
+\end{equation*}
+\end{proposition}
+\begin{proof}
+再计算时序二点函数的两个时间分支。真空条件 $b|0\rangle=d|0\rangle=0$ 使非零的 Wightman 核仅剩
+
+\begin{align*}
+ \langle0|\hat\psi(x)\bar{\hat\psi}(y)|0\rangle
+ &=\int\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}
+ (\slashed p+m_{\mathrm e} c)\ee^{-\ii p\cdot(x-y)/\hbar},\\
+ \langle0|\bar{\hat\psi}(y)\hat\psi(x)|0\rangle
+ &=\int\frac{\dd^3 p}{(2\pi\hbar)^3}\frac{c}{2E_{\mathbf p}}
+ (\slashed p-m_{\mathrm e} c)\ee^{+\ii p\cdot(x-y)/\hbar}.
+\end{align*}
+时序乘积的第二项因为交换两个费米算符多出负号。把第一项解释为 $p^0=+E_{\mathbf p}/c$ 极点的留数，把第二项解释为 $p^0=-E_{\mathbf p}/c$ 极点的留数，并采用 Feynman 处方
+\begin{equation*}
+ p^2-m_{\mathrm e}^2c^2\longrightarrow p^2-m_{\mathrm e}^2c^2+\ii0^+,
+\end{equation*}
+两个三维质量壳积分合并为
+\begin{equation*}
+ S_F(x-y)
+ =\int\frac{\dd^4 p}{(2\pi\hbar)^4}
+ \frac{\ii\hbar(\slashed p+m_{\mathrm e} c)}{p^2-m_{\mathrm e}^2c^2+\ii0^+}
+ \ee^{-\ii p\cdot(x-y)/\hbar},
+\end{equation*}
+即\eqnrefs{eq:dirac-prop-struct-r2}。
+
+最后作用自由 Dirac 算符：
+\begin{align*}
+ (\ii\hbar\slashed\partial_x-m_{\mathrm e} c)S_F(x-y)
+ &=\int\frac{\dd^4 p}{(2\pi\hbar)^4}\ii\hbar\,
+ \frac{(\slashed p-m_{\mathrm e} c)(\slashed p+m_{\mathrm e} c)}{p^2-m_{\mathrm e}^2c^2+\ii0^+}
+ \ee^{-\ii p\cdot(x-y)/\hbar}\\
+ &=\ii\hbar\int\frac{\dd^4 p}{(2\pi\hbar)^4}
+ \ee^{-\ii p\cdot(x-y)/\hbar}\\
+ &=\ii\hbar\,\delta^{(4)}(x-y)\id(4),
+\end{align*}
+从而得到\eqnrefs{eq:dirac-green-exact-r2}。
+\end{proof}
+
+这说明传播子分子并非独立的记忆规则：同一个 $\slashed p+m_{\mathrm e} c$ 既由一阶矩阵算符的代数逆产生，也由自旋完备关系产生。
+
+同一二点函数还可以从费米型高斯积分得到。由于采用 $x^0=ct$，作用量写成 $S=c^{-1}\int\dd^4 x\,\mathcal L$。定义具有能量量纲的自由 Dirac 算符
+\begin{equation}
+ \mathsf D_{0,x}\equiv\ii\hbar c\slashed\partial_x-m_{\mathrm e} c^2,
+ \label{eq:dirac-energy-kernel-dp42}
+\end{equation}
+并以 Feynman 边界条件定义其右逆核
+\begin{equation}
+ \mathsf D_{0,x}\mathsf D_0^{-1}(x,y)
+ =\delta^{(4)}(x-y)\id(4).
+ \label{eq:dirac-energy-kernel-inverse-def-dp42}
+\end{equation}
+这两个 Green 核只差自由 Dirac 算符采用“动量量纲”还是“能量量纲”的归一化。二者的对应关系为
+\begin{equation}
+ \boxed{
+ \mathsf D_0^{-1}(x,y)
+ =\frac{S_F(x-y)}{\ii\hbar c}.}
+ \label{eq:dirac-kernel-propagator-relation-dp42}
+\end{equation}
+这个归一化因子可直接由
+$\mathsf D_{0,x}=c(\ii\hbar\slashed\partial_x-m_{\mathrm e} c)$ 与
+\eqnrefs{eq:dirac-green-exact-r2}，
+\begin{equation*}
+ \mathsf D_{0,x}\!\left[\frac{S_F(x-y)}{\ii\hbar c}\right]
+ =\delta^{(4)}(x-y)\id(4),
+\end{equation*}
+与右逆定义\eqnrefs{eq:dirac-energy-kernel-inverse-def-dp42} 比较即得到
+\eqnrefs{eq:dirac-kernel-propagator-relation-dp42}。
+场量纲满足 $[\psi]=[\bar\psi]=\mathrm{m^{-3/2}}$，而 $[\mathsf D_0^{-1}]=\mathrm{J^{-1}m^{-4}}$。若 Grassmann 外源 $\mathcal J_\psi$ 与 $\overline{\mathcal J}_\psi$ 满足 $[\mathcal J_\psi]=[\overline{\mathcal J}_\psi]=\mathrm{J\,m^{-3/2}}$，则自由生成泛函为
+\begin{equation}
+ \boxed{
+ \frac{Z_0[\mathcal J_\psi,\overline{\mathcal J}_\psi]}{Z_0[0,0]}
+ =\exp\!\left[
+ -\frac{\ii}{\hbar c}
+ \int\dd^4 x\,\dd^4 y\,
+ \overline{\mathcal J}_\psi(x)\mathsf D_0^{-1}(x,y)\mathcal J_\psi(y)
+ \right].}
+ \label{eq:dirac-free-generating-functional-dp42}
+\end{equation}
+
+\begin{proposition}[Grassmann 高斯源的生成泛函]
+设有限模 Grassmann 二次核可逆，采用正文源次序与左右微分约定；连续极限保持同一核和正则化。则有以下结论（原式 \eqnrefs{eq:dirac-free-generating-functional-dp42}）：
+\begin{equation*}
+ \boxed{
+ \frac{Z_0[\mathcal J_\psi,\overline{\mathcal J}_\psi]}{Z_0[0,0]}
+ =\exp\!\left[
+ -\frac{\ii}{\hbar c}
+ \int\dd^4 x\,\dd^4 y\,
+ \overline{\mathcal J}_\psi(x)\mathsf D_0^{-1}(x,y)\mathcal J_\psi(y)
+ \right].}
+\end{equation*}
+\end{proposition}
+\begin{proof}
+含 Grassmann 外源的自由作用量为
+
+\begin{equation*}
+ S_0[\psi,\bar\psi;\mathcal J_\psi,\overline{\mathcal J}_\psi]
+ =\frac1c\int\dd^4 x\,
+ \left[
+ \bar\psi\mathsf D_0\psi+\overline{\mathcal J}_\psi\psi+\bar\psi\mathcal J_\psi
+ \right].
+\end{equation*}
+相应泛函积分是
+\begin{equation*}
+ Z_0[\mathcal J_\psi,\overline{\mathcal J}_\psi]
+ =\int\mathcal D\bar\psi\,\mathcal D\psi\,
+ \exp\!\left\{\frac{\ii}{\hbar c}
+ \int\dd^4 x\,
+ [\bar\psi\mathsf D_0\psi+\overline{\mathcal J}_\psi\psi+\bar\psi\mathcal J_\psi]\right\}.
+\end{equation*}
+连续时空指标下的 Grassmann 高斯积分仍可作平移，取
+\begin{equation*}
+ \psi=\psi'-\mathsf D_0^{-1}\mathcal J_\psi,
+ \qquad
+ \bar\psi=\bar\psi'-\overline{\mathcal J}_\psi\mathsf D_0^{-1}.
+\end{equation*}
+逐项展开二次型：
+\begin{align*}
+ \bar\psi\mathsf D_0\psi
+ +\overline{\mathcal J}_\psi\psi+\bar\psi\mathcal J_\psi
+ ={}&
+ (\bar\psi'-\overline{\mathcal J}_\psi\mathsf D_0^{-1})
+ \mathsf D_0(\psi'-\mathsf D_0^{-1}\mathcal J_\psi)\\
+ &+\overline{\mathcal J}_\psi(\psi'-\mathsf D_0^{-1}\mathcal J_\psi)
+ +(\bar\psi'-\overline{\mathcal J}_\psi\mathsf D_0^{-1})\mathcal J_\psi\\
+ ={}&\bar\psi'\mathsf D_0\psi'
+ -\overline{\mathcal J}_\psi\mathsf D_0^{-1}\mathcal J_\psi.
+\end{align*}
+第二步使用 $\mathsf D_0\mathsf D_0^{-1}=1$，两个线性项分别相消。Grassmann 平移的雅可比行列式为 $1$，所以与外源无关的高斯积分等于 $Z_0[0,0]$，余下外源项给出\eqnrefs{eq:dirac-free-generating-functional-dp42}。
+
+量纲检查为
+\begin{equation*}
+ [\mathcal J_\psi][\overline{\mathcal J}_\psi][\mathsf D_0^{-1}]\,\mathrm{m^8}
+ =(\mathrm{J^2m^{-3}})(\mathrm{J^{-1}m^{-4}})\mathrm{m^8}
+ =\mathrm{J\,m}
+ =[\hbar c].
+\end{equation*}
+因此生成泛函指数无量纲；这也排除了把 $\mathsf D_0^{-1}$ 写成 $S_F/(\ii\hbar)$ 的可能性。
+\end{proof}
+
+因此正则量子化得到的时序二点函数、Grassmann 源泛函的二阶导数，以及自由 Dirac 二次核的 Feynman 逆，都是同一个 Green 核的不同表示。
+
+\subsection{Coulomb 规范}
+
+经典 Maxwell 方程只含两个传播偏振，但四势 \(A^\mu\) 却有四个分量；多出来的自由度不是新粒子，而是同一电磁场的规范冗余。量子化时如果把四个分量都当作独立谐振子，会同时破坏约束和物理态计数。Coulomb 规范的价值在于先把瞬时约束与两个横向传播自由度分开，使物理光子 Hilbert 空间可以直接看见。
+
+Maxwell 场不能像三个独立标量场那样直接量子化，因为四势含有规范冗余。三维势满足
+\begin{equation*}
+\mathbf E=-\nabla\phi-\partial_t\mathbf A,
+\qquad
+\mathbf B=\nabla\times\mathbf A,
+\end{equation*}
+而 Maxwell 拉氏量对 $\dot\phi$ 完全不依赖，所以 $\Pi_\phi=0$ 是初级约束。对 $\phi$ 变分又给出 Gauss 定律；无源区因此只剩横向电磁自由度。Coulomb 规范
+\begin{equation*}
+\nabla\cdot\mathbf A=0
+\end{equation*}
+直接把这一物理相空间显式化。
+
+约束意味着正则括号也必须投影到横向子空间。定义
+\begin{equation*}
+(P_T)_{ij}=\delta_{ij}-\frac{\partial_i\partial_j}{\nabla^2},
+\end{equation*}
+其中 $\nabla^{-2}$ 按给定边界条件定义。物理变量 $A^T=P_TA$、$\Pi^T=P_T\Pi$ 满足
+\begin{equation}
+\boxed{
+[A_i(\mathbf x),\Pi_j(\mathbf y)]
+=\ii\hbar\,\delta^T_{ij}(\mathbf x-\mathbf y),}
+\label{eq:transverse-comm-r2}
+\end{equation}
+其中
+\begin{equation*}
+\delta^T_{ij}(\mathbf r)
+=\int\frac{\dd^3 \kappa}{(2\pi)^3}
+\left(\delta_{ij}-\hat\kappa_i\hat\kappa_j\right)\ee^{i\boldsymbol\kappa\cdot\mathbf r}.
+\end{equation*}
+因此光子的两个偏振并不是从 $A^\mu$ 中“手工删掉”两个分量，而是规范约束后横向物理相空间的两个独立方向。
+
+对每个自由波矢 $\boldsymbol\kappa$ 选两个横向单位矢量 $\boldsymbol\epsilon_\lambda$，$\lambda=1,2$，满足 $\boldsymbol\kappa\cdot\boldsymbol\epsilon_\lambda=0$ 与 $\boldsymbol\epsilon_\lambda^*\cdot\boldsymbol\epsilon_{\lambda'}=\delta_{\lambda\lambda'}$。它们在横向平面上的完备关系为
+\begin{equation*}
+\sum_{\lambda=1}^2\epsilon_{\lambda i}\epsilon_{\lambda j}^*
+=\delta_{ij}-\hat\kappa_i\hat\kappa_j.
+\end{equation*}
+于是矢势的正常模展开为
+\begin{equation}
+\boxed{
+\hat{\mathbf A}(\mathbf r,t)
+=\sum_{\lambda=1}^2\int\frac{\dd^3 \kappa}{(2\pi)^3}
+\sqrt{\frac{\hbar}{2\varepsilon_0\omega_{\boldsymbol\kappa}}}
+\left[
+\boldsymbol\epsilon_\lambda(\boldsymbol\kappa)a_\lambda(\boldsymbol\kappa)
+ \ee^{i\boldsymbol\kappa\cdot\mathbf r-\ii\omega_{\boldsymbol\kappa}t}
++\mathrm{h.c.}\right],}
+\label{eq:maxwell-mode-r2}
+\end{equation}
+其中 $\omega_{\boldsymbol\kappa}=c|\boldsymbol\kappa|$，且
+\begin{equation*}
+[a_\lambda(\boldsymbol\kappa),a_{\lambda'}^\dagger(\boldsymbol\kappa')]
+=(2\pi)^3\delta_{\lambda\lambda'}\delta^{(3)}(\boldsymbol\kappa-\boldsymbol\kappa').
+\end{equation*}
+哈密顿量因而是两个横向谐振子分支的直和：
+\begin{equation*}
+H_{\rm EM}
+=\sum_{\lambda=1}^2\int\frac{\dd^3 \kappa}{(2\pi)^3}
+\hbar\omega_{\boldsymbol\kappa}
+\left(a_\lambda^\dagger a_\lambda+\frac12\right).
+\end{equation*}
+单模相干态 $a|\alpha\rangle=\alpha|\alpha\rangle$ 的 $\langle\mathbf A\rangle$ 满足经典 Maxwell 方程；当相对量子涨落随平均光子数增大而受控减小时，量子辐射场连续过渡到半经典外场描述。
+
+\input{content/AdvancedPhysics/field-theory/sections/mode-energy-and-statistics.tex}
+
+\subsection{协变规范量子化}
+
+Coulomb 规范的优点是物理自由度一眼可见：只量子化两个横向模式。它的代价是 Lorentz 协变性不显式。协变散射论反过来选择“先保留四势的四个分量，再从扩大后的状态空间中筛出物理态”。因此这一小节真正需要回答两个问题：为什么扩大后的空间会出现负范数方向，以及规范条件怎样把这些方向从可观测物理中消掉。答案分别由不定 Minkowski 度规和 Gupta--Bleuler 条件给出。
+
+协变散射论改用规范固定后的 Maxwell 拉氏量
+\begin{equation}
+ \mathcal L_{\rm EM,\xi_{\rm gf}}
+ =-\frac1{4\mu_0}F_{\mu\nu}F^{\mu\nu}
+ -\frac1{2\xi_{\rm gf}\mu_0}(\partial_\mu A^\mu)^2,
+ \label{eq:cov-gauge-lagrangian-r2}
+\end{equation}
+其中无量纲参数 $\xi_{\rm gf}$ 只标记规范固定方式；$\xi_{\rm gf}=1$ 为 Feynman 规范。协变形式先把四势的四个分量都放入扩大后的状态空间，再用约束和零范数等价关系提取两个物理光子自由度。
+
+在 Feynman 规范中，自由方程为 $\Box A^\mu=0$。对四波矢 $\kappa^\mu=(\omega_{\boldsymbol\kappa}/c,\boldsymbol\kappa)$ 选一组 Minkowski 正交基 $\epsilon_\lambda^\mu$，$\lambda=0,1,2,3$，并取
+\begin{equation}
+ \epsilon_\lambda\cdot\epsilon_{\lambda'}^*=\eta_{\lambda\lambda'}.
+ \label{eq:fourpol-orthonormal-r13}
+\end{equation}
+四势可展开为
+\begin{equation}
+ A^\mu(x)=
+ \sum_{\lambda=0}^{3}
+ \int\frac{\dd^3 \kappa}{(2\pi)^3}
+ \sqrt{\frac{\hbar}{2\varepsilon_0\omega_{\boldsymbol\kappa}}}
+ \left[
+ \epsilon_\lambda^\mu a_\lambda \ee^{-\ii\kappa\cdot x}
+ +\epsilon_\lambda^{\mu *}a_\lambda^\dagger \ee^{+\ii\kappa\cdot x}
+ \right].
+ \label{eq:covariant-photon-fourpol-r7}
+\end{equation}
+省略的算符自变量均为 $\boldsymbol\kappa$。基的完备性给
+\begin{equation}
+ \boxed{
+ \sum_{\lambda,\lambda'}
+ \eta^{\lambda\lambda'}
+ \epsilon_\lambda^\mu\epsilon_{\lambda'}^{\nu *}
+ =\eta^{\mu\nu}.}
+ \label{eq:fourpol-completeness-r7}
+\end{equation}
+正则量子化相应要求
+\begin{equation}
+ \boxed{
+ [a_\lambda(\boldsymbol\kappa),a_{\lambda'}^\dagger(\boldsymbol\kappa')]
+ =-\eta_{\lambda\lambda'}(2\pi)^3
+ \delta^{(3)}(\boldsymbol\kappa-\boldsymbol\kappa').}
+ \label{eq:covariant-photon-mode-comm-r7}
+\end{equation}
+时间样模因而具有负范数，
+\begin{equation}
+ \langle0|a_0(\boldsymbol\kappa)a_0^\dagger(\boldsymbol\kappa')|0\rangle
+ =-(2\pi)^3\delta^{(3)}(\boldsymbol\kappa-\boldsymbol\kappa'),
+ \label{eq:timelike-negative-norm-r7}
+\end{equation}
+说明扩大后的协变态空间本身不是物理 Hilbert 空间。
+
+把 $A^\mu=A^{\mu(+)}+A^{\mu(-)}$ 分成正、负频部分后，Gupta--Bleuler 条件选择物理态：
+\begin{equation}
+ \boxed{
+ \partial_\mu A^{\mu(+)}(x)|\Psi_{\rm phys}\rangle=0.}
+ \label{eq:gupta-bleuler-r2}
+\end{equation}
+若光子沿 $z$ 方向传播，并取 $\epsilon_{(0)}^\mu=(1,0,0,0)$、$\epsilon_{(3)}^\mu=(0,0,0,1)$，该条件化为
+\begin{equation}
+ \boxed{(a_3-a_0)|\Psi_{\rm phys}\rangle=0.}
+ \label{eq:GB-mode-condition-r7}
+\end{equation}
+相应组合
+\begin{equation*}
+ |N\rangle=(a_3^\dagger-a_0^\dagger)|0\rangle
+\end{equation*}
+具有
+\begin{equation}
+ \boxed{\langle N|N\rangle=0,}
+ \label{eq:GB-null-state-r7}
+\end{equation}
+所以时间样与纵向激发只产生零范数规范方向。对这些方向取商以后，物理 Hilbert 空间只留下两个横向光子偏振。
+
+规范固定同时使 Maxwell 二次核可逆。对\eqnrefs{eq:cov-gauge-lagrangian-r2} 分部积分可写成
+\begin{equation}
+ S_{\rm EM,\xi_{\rm gf}}^{(2)}
+ =\frac1{2c}\int\dd^4 x\,
+ A_\mu\frac1{\mu_0}
+ \left[
+ \eta^{\mu\nu}\Box
+ -\left(1-\frac1{\xi_{\rm gf}}\right)
+ \partial^\mu\partial^\nu
+ \right]A_\nu.
+ \label{eq:maxwell-gf-quadratic-r6}
+\end{equation}
+在四波矢空间定义纵向和横向投影算符
+\begin{equation*}
+ P_L^{\mu\nu}(\kappa)=\frac{\kappa^\mu\kappa^\nu}{\kappa^2},
+ \qquad
+ P_T^{\mu\nu}(\kappa)=\eta^{\mu\nu}-P_L^{\mu\nu}(\kappa),
+\end{equation*}
+则二次核为
+\begin{equation}
+ \boxed{
+ \mathcal K_{\xi_{\rm gf}}^{\mu\nu}(\kappa)
+ =-\frac{\kappa^2}{\mu_0}
+ \left(P_T^{\mu\nu}+\frac1{\xi_{\rm gf}}P_L^{\mu\nu}\right).}
+ \label{eq:maxwell-kernel-projectors-r6}
+\end{equation}
+投影代数
+\begin{equation}
+ P_T^2=P_T,
+ \qquad
+ P_L^2=P_L,
+ \qquad
+ P_TP_L=P_LP_T=0,
+ \qquad
+ P_T+P_L=I
+ \label{eq:maxwell-projector-algebra-r13}
+\end{equation}
+把四维矢量空间分成两个互补本征子空间，因此核的逆为
+\begin{equation}
+ \boxed{
+ (\mathcal K_{\xi_{\rm gf}}^{-1})^{\mu\nu}(\kappa)
+ =-\frac{\mu_0}{\kappa^2}
+ \left(P_T^{\mu\nu}+\xi_{\rm gf}P_L^{\mu\nu}\right).}
+ \label{eq:maxwell-kernel-inverse-r6}
+\end{equation}
+施加 Feynman 边界值后，真空时序二点函数为
+\begin{equation}
+ \boxed{
+ \widetilde D_F^{\mu\nu}(\kappa)
+ =\frac{-\ii\mu_0\hbar}{\kappa^2+\ii0^+}
+ \left[
+ \eta^{\mu\nu}-(1-\xi_{\rm gf})
+ \frac{\kappa^\mu\kappa^\nu}{\kappa^2+\ii0^+}
+ \right].}
+ \label{eq:photon-prop-xi-r2}
+\end{equation}
+Feynman 规范把它化为
+\begin{equation}
+ \boxed{
+ \widetilde D_F^{\mu\nu}(\kappa)
+ =\frac{-\ii\mu_0\hbar\eta^{\mu\nu}}
+ {\kappa^2+\ii0^+}.}
+ \label{eq:photon-prop-feynman-r2}
+\end{equation}
+物理四动量 $q^\mu=\hbar\kappa^\mu$ 与四波矢表示之间满足
+\begin{equation}
+ \boxed{
+ \begin{aligned}
+ D_F^{\mu\nu}(x-y)
+ &=\int\frac{\dd^4 \kappa}{(2\pi)^4}
+ \frac{-\ii\mu_0\hbar\eta^{\mu\nu}}
+ {\kappa^2+\ii0^+}\ee^{-\ii\kappa\cdot(x-y)},\\
+ &=\int\frac{\dd^4 q}{(2\pi\hbar)^4}
+ \frac{-\ii\mu_0\hbar^3\eta^{\mu\nu}}
+ {q^2+\ii0^+}\ee^{-\ii q\cdot(x-y)/\hbar}.
+ \end{aligned}}
+ \label{eq:photon-prop-kappa-to-q-r13}
+\end{equation}
+因此以物理四动量表示内部光子线时，传播子分子携带 $\hbar^3$。守恒流满足 $q_\mu j^\mu=0$，所以规范依赖的纵向项在规范不变矩阵元中消失。
+
+协变路径积分还必须处理同一规范轨道被重复积分的问题。前一章已经在一般规范群上由规范轨道方向的泛函 Jacobian 建立了 Faddeev--Popov 恒等式；QED 这里只代入阿贝尔 $U(1)$ 的规范变换。取
+\begin{equation*}
+ G[A]=\partial_\mu A^\mu,
+ \qquad
+ A_\mu^\alpha=A_\mu-\partial_\mu\alpha,
+\end{equation*}
+则规范条件沿轨道的线性响应为
+\begin{equation*}
+ \frac{\delta G[A^\alpha](x)}{\delta\alpha(y)}
+ =-\Box_x\delta^{(4)}(x-y).
+\end{equation*}
+因此
+\begin{equation}
+ \boxed{
+ \Delta_{\rm FP}[A]=\det(-\Box),}
+ \label{eq:FP-QED-det-r8}
+\end{equation}
+并且这个行列式与 $A_\mu$ 无关。于是阿贝尔鬼场只给出可吸收入归一化的自由二次行列式，不存在鬼场--光子顶角；非阿贝尔理论中轨道 Jacobian 含规范联络，鬼场相互作用才会出现。
+
+把规范切片值写成 $G[A]=f$，再以宽度 $\xi_{\rm gf}$ 的 Gaussian 权重对辅助函数 $f(x)$ 积分，就得到同一规范轨道上的协变规范族：
+若把与 $A_\mu$ 无关的泛函测度归一化常数记为 $\mathcal N_{\rm gf}$，则
+\begin{equation}
+ \boxed{
+ \begin{aligned}
+ &\int\mathcal Df\,
+ \exp\!\left[-\frac{\ii}{2\hbar c\,\mu_0\xi_{\rm gf}}
+ \int\dd^4 x\,f^2(x)\right]
+ \delta\!\left(\partial_\mu A^\mu-f\right)\\
+ &\qquad=
+ \mathcal N_{\rm gf}
+ \exp\!\left[-\frac{\ii}{2\hbar c\,\mu_0\xi_{\rm gf}}
+ \int\dd^4 x\,(\partial_\mu A^\mu)^2\right].
+ \end{aligned}}
+ \label{eq:FP-gaussian-average-r8}
+\end{equation}
+\eqnrefs{eq:FP-gaussian-average-r8} 正好产生\eqnrefs{eq:cov-gauge-lagrangian-r2} 的规范固定项。$\xi_{\rm gf}$ 因而是规范切片族的参数；规范不变可观测量对它的依赖由 Ward/BRST 恒等式消去。
+
+\input{content/AdvancedPhysics/field-theory/sections/photon-polarization-si.tex}
+\input{content/AdvancedPhysics/field-theory/sections/lsz-dirac-photon.tex}
+\input{content/AdvancedPhysics/field-theory/sections/covariant-gauge-derivations.tex}
+
+\input{content/AdvancedPhysics/field-theory/calculations/quantized-electromagnetic-fields-calculations.tex}

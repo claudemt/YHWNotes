@@ -1,0 +1,562 @@
+\chapter{电子成像、收集与参数反演}\label{chap:electron-imaging-inversion}
+
+源与材料核已经给出理想损失及辐射概率。真实图像还包含收集角、能量分辨率和计数噪声；这些过程进入同一个前向模型以后，才能判断反演参数是否唯一。
+
+\section{成像、反演与收集通道}
+
+前向理论给出的场或末态分布还不是实验数据。实验真正记录的是像素、能量 bin、到达时间或计数事件，因此理论必须再经过收集光学和探测器。把一组物理参数 $\boldsymbol\vartheta$ 映射到数据概率分布 $p(y|\boldsymbol\vartheta)$ 的计算链称为\emph{前向模型}；给定实际数据 $y$，反过来约束或估计 $\boldsymbol\vartheta$ 的问题称为\emph{反演}。反演是否唯一取决于不同参数是否会在前向模型中留下可区分的数据变化，而不只取决于方程能否数值拟合。
+
+有限数值孔径只收集部分辐射通道，谱仪把真实能量与仪器响应卷积，计数噪声再把连续概率分布变成随机样本。若探测器具有空间成像功能，同一思想中的空间条件响应通常称为点扩散函数（point-spread function, PSF）：理想点源经过有限孔径和像差后在探测面形成的归一化强度核；在空间平移不变的近似下，实物像就是理想像与 PSF 的卷积。能谱仪的 $r_E(E_d|E_f)$ 是完全类似的“能量轴 PSF”。因此成像与参数反演必须把“电子源—材料响应—传播—探测”串成同一个概率模型，才能把真实物理响应与仪器模糊区分开。
+
+\subsection{近场能谱成像}\label{subsec:nearfield-spectrum-imaging-dp19}
+
+扫描式 PINEM 在每个横向位置记录一条电子能谱。用 $(x,y)$ 表示扫描坐标，$E_d$ 表示仪器读出的能量，整组记录便写为 $I(x,y,E_d)$。求这组数据时，先给定入射能量分布，再计算该位置的光学近场如何调制电子，最后加入谱仪对能量的响应。这样便可判断观测到的谱宽来自入射源、近场作用还是仪器分辨率。
+
+扫描坐标记为
+\begin{equation*}
+\mathbf R=(x,y),
+\qquad [\mathbf R]={\rm m}.
+\end{equation*}
+对中心速度 $v_0$ 的电子和单频近场，定义位置依赖的无量纲 PINEM 耦合
+\begin{equation}
+\boxed{
+\beta(\mathbf R)
+=\frac{q_{\mathrm e}}{\hbar\omega}
+\int_{-\infty}^{\infty}\dd z\,
+E_{\omega,z}(\mathbf R,z)
+\ee^{-\ii\omega z/v_0}.}
+\label{eq:pinem-spatial-beta-dp19}
+\end{equation}
+这里 $E_{\omega,z}$ 是同步纵向复电场幅度，单位 ${\rm V\,m^{-1}}$。积分中的 $q_{\mathrm e} E_{\omega,z}\dd z$ 是焦耳，除以单光子能量 $\hbar\omega$ 后 $\beta$ 无量纲。指数因子只保留与电子飞行相位 $\omega z/v_0$ 同步的纵向 Fourier 分量，因此 $\beta(\mathbf R)$ 同时携带局域场幅度和相位信息。
+
+在低反冲、双边能量平移模型中，固定 $\mathbf R$ 时的理想边带条件概率为
+\begin{equation*}
+P(\ell|\mathbf R)
+=J_\ell^2(2|\beta(\mathbf R)|),
+\qquad
+\sum_{\ell\in\mathbb Z}P(\ell|\mathbf R)=1.
+\end{equation*}
+$\ell\in\mathbb Z$ 是净交换光量子数；真实末态能量相对入射能量移动 $\ell\hbar\omega$。
+
+电子源具有有限初始能散。定义归一化入射能量概率密度
+\begin{equation*}
+F_0(E)\ge0,
+\qquad
+\int\dd E\,F_0(E)=1,
+\qquad
+[F_0]={\rm J^{-1}}.
+\end{equation*}
+谱仪对真实末态能量 $E_f$ 的读出分成两个物理问题：电子是否被记录，以及被记录后读成哪个能量。前者由探测效率控制，后者由条件线形控制。令
+\begin{equation*}
+r_E(E_d|E_f)\ge0,
+\qquad
+\int\dd E_d\,r_E(E_d|E_f)=1,
+\qquad
+[r_E]={\rm J^{-1}},
+\end{equation*}
+以及无量纲效率
+\begin{equation*}
+0\le\mathcal Q_E^{\rm det}(E_f)\le1.
+\end{equation*}
+于是有量纲点击响应密度为
+\begin{equation*}
+R_E(E_d|E_f)
+\equiv\mathcal Q_E^{\rm det}(E_f)r_E(E_d|E_f),
+\qquad
+\int\dd E_d\,R_E(E_d|E_f)=\mathcal Q_E^{\rm det}(E_f).
+\end{equation*}
+
+在入射电子可由经典能量混合 $F_0(E)$ 描述时，扫描位置 $\mathbf R$ 处的\emph{点击能谱密度}为
+\begin{equation}
+\boxed{
+ p_{\rm click}(E_d|\mathbf R)
+ =\sum_{\ell\in\mathbb Z}\int\dd E\,
+ R_E(E_d|E+\ell\hbar\omega)
+ J_\ell^2\!\left(2|\beta(\mathbf R)|\right)
+ F_0(E).}
+\label{eq:pinem-spatial-detector-forward-dp19}
+\end{equation}
+$[p_{\rm click}]={\rm J^{-1}}$。这个卷积可以直接按条件概率读取：固定真实入射能量 $E$ 与扫描位置 $\mathbf R$ 时，边带量子数和探测读出的联合密度为
+\begin{equation*}
+p_{\rm click}(E_d,\ell|E,\mathbf R)
+=R_E(E_d|E+\ell\hbar\omega)
+J_\ell^2\!\left(2|\beta(\mathbf R)|\right).
+\end{equation*}
+对互斥边带 $\ell$ 求和、再按源分布 $F_0(E)$ 平均，正好得到\eqnrefs{eq:pinem-spatial-detector-forward-dp19}；这一步就是条件概率的边缘化。其积分
+\begin{equation*}
+P_{\rm click}(\mathbf R)
+\equiv\int\dd E_d\,p_{\rm click}(E_d|\mathbf R)
+\le1
+\end{equation*}
+是该扫描点一次电子被记录的总概率。若实验数据已经条件在“发生点击”这一事件上，则用于形状拟合的归一化谱为
+\begin{equation*}
+p(E_d|\mathbf R,{\rm click})
+=\frac{p_{\rm click}(E_d|\mathbf R)}{P_{\rm click}(\mathbf R)}.
+\end{equation*}
+
+\eqnrefs{eq:pinem-spatial-detector-forward-dp19} 把三个实验层次分离：$F_0$ 属于电子源，$\beta(\mathbf R)$ 属于相互作用区，$R_E$ 属于探测器。若入射电子保留能量相干，则 $F_0(E)$ 只给出密度矩阵对角元，不能描述完整初态；此时必须使用量子仪器\eqnrefs{eq:general_indirect_measurement_instrument}，让不同能量路径在振幅层进入同一个探测结果。
+
+若结构还提供可分辨横向动量转移，末态应标记为 $(\ell,\mathbf p_\perp)$。定义联合条件概率密度
+\begin{equation*}
+P_\ell(\mathbf p_\perp|\mathbf R)
+=|\mathcal A_\ell(\mathbf p_\perp;\mathbf R)|^2,
+\end{equation*}
+其中
+$[P_\ell(\mathbf p_\perp|\mathbf R)]={\rm momentum^{-2}}$，所以 $P_\ell\dd^2 p_\perp$ 无量纲。能量轴读取净交换量子数；横向动量轴读取结构承担的平行动量差。二维谱因而同时解析局域同步 Fourier 分量以及横向平移对称性破缺所产生的动量转移。\cite{Vanacore2018Attosecond}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.68\linewidth]{pinem_experiment_geometry.png}
+\caption{PINEM 的基本实验几何。扫描电子在纳米结构附近采样位置依赖的同步纵向近场，产生离散能量平移；入射能散和谱仪响应随后把理想边带映射成\eqnrefs{eq:pinem-spatial-detector-forward-dp19} 的点击能谱。}
+\label{fig:pinem-experiment-interface-dp19}
+\end{figure}
+
+\subsection{实验尺度与反演}\label{subsec:experimental-scales-inversion-dp19}
+
+拟合得到一组参数，并不一定说明数据能够唯一确定它们。例如，源能宽增大与仪器分辨率变差都可能使谱线展宽；如果它们对所有读数的作用完全相同，就无法仅凭这组数据区分二者。将各预测读数对参数求偏导，组成前向模型的 Jacobian 矩阵；不同参数对应的列是否独立，可以判断局部上能否区分这些参数。若还把各读数的计数波动计入，就得到第十章定义的 Fisher 信息，用来估计可辨识参数的统计精度。
+
+模型选择由不同物理层的无量纲尺度共同决定。电子运动学决定中心速度和 de Broglie 波长；有限长度相位失配决定相互作用能否相干积累；反冲非谐性决定等间隔能量格是否可用；探测器分辨率决定相邻边带能否区分。把这些尺度分开可以避免用单一的“电子能量高”或“耦合强”替代真正的近似条件。
+
+设电子中心动能为
+\begin{equation*}
+K_0=E_0-m_{\mathrm e} c^2,
+\qquad [K_0]={\rm J}.
+\end{equation*}
+由质量壳关系
+\begin{equation*}
+\gamma_0=1+\frac{K_0}{m_{\mathrm e} c^2},
+\qquad
+v_0=c\sqrt{1-\gamma_0^{-2}},
+\qquad
+p_0=\gamma_0m_{\mathrm e} v_0
+\end{equation*}
+得到 de Broglie 波长
+\begin{equation*}
+\lambda_{\rm dB}=\frac{2\pi\hbar}{p_0}.
+\end{equation*}
+\tabref{tab:electron_kinematic_scales} 列出常见动能对应的运动学尺度。
+
+电子源的能量标准差记为 $\sigma_{E,{\rm in}}$，单位焦耳。为了比较能量带宽与时间尺度，先定义由带宽构造的特征时间
+\begin{equation*}
+\tau_E\equiv\frac{\hbar}{\sigma_{E,{\rm in}}}.
+\end{equation*}
+$\tau_E$ 本身只是一个严格定义的带宽时间尺度；具体的一阶相干时间还取决于谱线形与所采用的相干宽度定义。例如变换极限高斯波包满足相应的高斯时频宽度乘积，不能把任意谱形的相干时间一律等同于 $\tau_E$。
+逐发电子--光到达时间抖动记为 $\sigma_t$，单位秒；它产生光学相位噪声尺度 $\omega\sigma_t$。$\sigma_{E,{\rm in}}$ 描述单电子或电子系综的谱宽，而 $\sigma_t$ 描述不同实验重复之间的参考时钟不确定性，两者进入密度矩阵的方式不同。
+
+\begin{table}[H]
+\centering
+\caption{若干常用电子动能对应的相对论运动学尺度。}
+\label{tab:electron_kinematic_scales}
+\begin{tabular}{rrrr}
+\toprule
+$K_0$ (keV) & $\gamma_0$ & $v_0/c$ & $\lambda_{\mathrm dB}$ (pm)\\
+\midrule
+10 & 1.0196 & 0.1950 & 12.20\\
+30 & 1.0587 & 0.3284 & 6.98\\
+100 & 1.1957 & 0.5482 & 3.70\\
+200 & 1.3914 & 0.6953 & 2.51\\
+300 & 1.5871 & 0.7765 & 1.97\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+对有限长度 $L$ 的相互作用区，设纵向相位失配为 $\Delta\kappa$，单位 ${\rm m^{-1}}$；定义
+\begin{equation*}
+\epsilon_{\rm sync}\equiv|\Delta\kappa|L.
+\end{equation*}
+$\epsilon_{\rm sync}\ll1$ 时整个长度内相位基本同向积累，$\epsilon_{\rm sync}\gtrsim1$ 时不同位置贡献开始相消。
+
+对本节纵向 PINEM 交换，反冲频率是 $\omega_{\rm r}=\hbar\kappa_z^2/(2m_\parallel)$；驻波横向衍射另用其几何对应的 $\omega_{\rm KD}$，不能直接替换。若相互作用持续时间为 $T$，相邻交换边的反冲非谐性可用
+\begin{equation*}
+\epsilon_{\rm rec}\equiv2\omega_{\rm r}T
+\end{equation*}
+衡量；当该相位达到一阶量级时，平移对称等间隔格不能再忽略相邻边的不同失谐。
+
+定义源能散和仪器分辨率合成后的有效能量宽度 $\sigma_E^{({\rm eff})}$，单位焦耳。相邻 PINEM 边带间隔为 $\hbar\omega$，因此谱分辨判据为
+\begin{equation*}
+\epsilon_{\rm det}
+\equiv\frac{\sigma_E^{({\rm eff})}}{\hbar\omega}.
+\end{equation*}
+$\epsilon_{\rm det}\ll1$ 表示相邻边带在能量轴上可分辨；$\epsilon_{\rm det}\gtrsim1$ 时单个边带结构被卷积成连续展宽，但完整前向模型仍然可以包含这些未分辨贡献。
+
+若只使用总能谱二阶矩估计 $|\beta|$，还需要更强的统计假设。设入射能量、PINEM 边带阶数和谱仪加性读出噪声彼此独立，谱仪噪声零均值；定义它们的标准差分别为 $\sigma_{E,{\rm in}}$、$\sqrt{\operatorname{Var}(\ell)}\hbar\omega$ 与 $\sigma_{E,{\rm inst}}$。在纯相位低反冲 PINEM 中
+\begin{equation*}
+\operatorname{Var}(\ell)=2|\beta|^2,
+\end{equation*}
+因此
+\begin{equation}
+\boxed{
+\sigma_{E,{\rm meas}}^2
+=\sigma_{E,{\rm in}}^2
++\sigma_{E,{\rm inst}}^2
++2(\hbar\omega)^2|\beta|^2.}
+\label{eq:pinem_energy_variance_addition}
+\end{equation}
+反解得到
+\begin{equation}
+\boxed{
+|\beta|
+=
+\frac{\sqrt{
+\sigma_{E,{\rm meas}}^2
+-\sigma_{E,{\rm in}}^2
+-\sigma_{E,{\rm inst}}^2}}
+{\sqrt2\,\hbar\omega}.}
+\label{eq:beta_from_variance_experiment}
+\end{equation}
+根号内必须非负；若实验估计因有限样本出现负值，说明二阶矩误差已大于可辨识 PINEM 展宽，不能把该样本代入实数 $|\beta|$ 公式。
+
+方差估计只使用一个统计量，因而会丢失完整边带线形。定量反演应使用\eqnrefs{eq:pinem-spatial-detector-forward-dp19} 或一般实验前向模型~\eqnrefs{eq:general_experimental_forward_model}。若 Fisher 信息矩阵在某参数方向上有零模，重复同一设置不会增加该方向的信息；改变扫描位置、参考相位、传播距离或耦合强度才会改变前向模型的导数空间。
+
+\input{sections/electron-detector-inversion-worked}
+
+\subsection{相位读出与收集通道}\label{subsec:phase-collection-dp19}
+
+前面利用参考调制读取近场的复相位。另一种常见装置让两条电子路径重新相遇，从路径干涉中读取相位。对于辐射光，还需要计算有限孔径实际收集了多少。这两种读出都可以用前章的测量算符处理：先求干涉端口的概率，再求光子进入收集模式的概率。
+
+\begin{proposition}[二路径偏迹、干涉可见度与参考相位读出]
+先考虑最小电子路径干涉仪。路径 Hilbert 空间由正交基 $|0\rangle_p,|1\rangle_p$ 张成。参考臂对应归一化环境态 $|\xi_0\rangle$，作用臂经过样品后对应 $|\xi_1(\varphi)\rangle$，其中 $\varphi$ 是待估复近场参数所产生的相位。联合态取
+\begin{equation}
+\boxed{
+|\Psi\rangle
+=\frac{|0\rangle_p|\xi_0\rangle
++|1\rangle_p|\xi_1(\varphi)\rangle}{\sqrt2}.}
+\label{eq:path_environment_joint_state_dp68}
+\end{equation}
+在
+\[
+|\pm\rangle_p
+=\frac{|0\rangle_p\pm|1\rangle_p}{\sqrt2}
+\]
+基底读出，得到
+\begin{equation}
+\boxed{
+P_\pm
+=\frac12\left[
+1\pm\operatorname{Re}
+\langle\xi_0|\xi_1(\varphi)\rangle
+\right].}
+\label{eq:path-phase-readout-dp19}
+\end{equation}
+重叠
+\[
+\mathcal V\ee^{\ii\varphi_{01}}
+\equiv\langle\xi_0|\xi_1\rangle,
+\qquad 0\le\mathcal V\le1,
+\]
+该干涉项同时编码可见度 $\mathcal V$ 与相对相位 $\varphi_{01}$。若参考臂再扫描已知相位 $\varphi_R$，令作用臂相对于参考臂额外获得因子 $\ee^{\ii\varphi_R}$，则干涉项严格变为
+\[
+\operatorname{Re}\!\left[\ee^{\ii\varphi_R}\langle\xi_0|\xi_1\rangle\right]
+=\mathcal V\cos(\varphi_{01}+\varphi_R).
+\]
+因此，取相差 $\pi/2$ 的两个参考相位即可分别读取复重叠的两个正交象限。
+
+
+
+任意二路径密度矩阵满足 $p_0+p_1=1$、$|\rho_{01}|^2\le p_0p_1$。采用路径一的参考相位 $e^{+\ii\varphi_R}$，一般无损端口读出由本证明的 Born 二次型给出；对称输入及 $50{:}50$ 端口时，$P_+-P_-=\mathcal V\cos(\varphi_{01}+\varphi_R)$，即\eqnrefs{eq:path-phase-readout-dp19}。混态环境亦由相应偏迹相干元决定。
+\end{proposition}
+\begin{proof}
+先不假定两条路径等幅，也不假定环境末态是纯态。二路径自由度的最一般约化密度矩阵可写成
+\[
+\hat\rho_p
+=
+\begin{pmatrix}
+p_0 & \rho_{01}\\
+\rho_{01}^* & p_1
+\end{pmatrix},
+\qquad
+p_0,p_1\ge0,
+\qquad
+p_0+p_1=1,
+\qquad
+|\rho_{01}|^2\le p_0p_1.
+\]
+其中非对角元 $\rho_{01}$ 同时包含路径间的初始相干以及环境对两条路径的可区分性。若联合态来自
+\[
+|\Psi\rangle
+=
+c_0|0\rangle|\xi_0\rangle
++
+c_1|1\rangle|\xi_1\rangle,
+\]
+对环境取偏迹得到
+\[
+p_0=|c_0|^2,
+\qquad
+p_1=|c_1|^2,
+\qquad
+\rho_{01}
+=
+c_0c_1^*
+\langle\xi_1|\xi_0\rangle.
+\]
+因此环境态越可区分，$|\langle\xi_1|\xi_0\rangle|$ 越小，路径相干就越弱。
+
+在读出前，给路径 $|1\rangle$ 加一个可控参考相位 $+\varphi_R$，
+\[
+\hat U_R
+=
+|0\rangle\langle0|
++
+\ee^{+\ii\varphi_R}|1\rangle\langle1|.
+\]
+相位扫描后的密度矩阵为
+\[
+\hat\rho_p(\varphi_R)
+=
+\hat U_R\hat\rho_p\hat U_R^\dagger
+=
+\begin{pmatrix}
+p_0 & \rho_{01}\ee^{-\ii\varphi_R}\\
+\rho_{01}^*\ee^{+\ii\varphi_R} & p_1
+\end{pmatrix}.
+\]
+
+再通过一个一般无损二端口。若读出态写成
+\[
+|+\rangle
+=
+\cos\frac\theta2\,|0\rangle
++
+\ee^{+\ii\chi}
+\sin\frac\theta2\,|1\rangle,
+\]
+\[
+|-\rangle
+=
+-\ee^{-\ii\chi}
+\sin\frac\theta2\,|0\rangle
++
+\cos\frac\theta2\,|1\rangle,
+\]
+则 Born 概率为
+\begin{align*}
+P_+
+&=
+\langle+|\hat\rho_p(\varphi_R)|+\rangle\\
+&=
+p_0\cos^2\frac\theta2
++
+p_1\sin^2\frac\theta2
++
+\sin\theta\,
+\operatorname{Re}
+\!\left[
+\rho_{01}
+\ee^{+\ii(\chi-\varphi_R)}
+\right],
+\end{align*}
+以及
+\[
+P_-=1-P_+.
+\]
+这个式子已经显示出三个不同实验效应：路径人口不平衡由 $p_0-p_1$ 控制，分束比由 $\theta$ 控制，相干干涉则只由复数 $\rho_{01}$ 决定。
+
+正文采用的是对称输入和 $50{:}50$ 读出，
+\[
+c_0=c_1=\frac1{\sqrt2},
+\qquad
+\theta=\frac\pi2,
+\qquad
+\chi=0.
+\]
+此时
+\[
+\rho_{01}
+=
+\frac12\langle\xi_1|\xi_0\rangle,
+\]
+从而
+\[
+P_\pm
+=
+\frac12
+\left[
+1
+\pm
+\operatorname{Re}
+\!\left(
+\ee^{+\ii\varphi_R}
+\langle\xi_0|\xi_1\rangle
+\right)
+\right].
+\]
+若暂时取 $\varphi_R=0$，便得到正文
+\[
+\boxed{
+P_\pm
+=
+\frac12
+\left[
+1\pm
+\operatorname{Re}
+\langle\xi_0|\xi_1\rangle
+\right].
+}
+\]
+进一步写
+\[
+\langle\xi_0|\xi_1\rangle
+=
+\mathcal V\ee^{+\ii\varphi_{01}},
+\qquad
+0\le\mathcal V\le1,
+\]
+则扫描参考相位给
+\[
+P_+-P_-
+=
+\mathcal V
+\cos(\varphi_{01}+\varphi_R).
+\]
+
+
+在对称纯态的特例中，也可直接验证：路径投影后的环境振幅为 $(|\xi_0\rangle\pm|\xi_1\rangle)/2$。取范数平方即得两个端口的概率；Cauchy--Schwarz 给 $|\langle\xi_0|\xi_1\rangle|\le1$。插入参考相位后，重叠乘以已知单位相位，所以两次正交设置给出其实部和虚部。
+\end{proof}
+
+\begin{definition}[条件单激发的收集投影]
+再考虑电子后选择预示的单光子是否进入实际光路。设后选择后的归一化总单激发态为 $|\psi_1\rangle$。定义由收集数值孔径、偏振选择、频率滤波和空间模式匹配共同确定的正交投影算符
+\begin{equation*}
+\Pi_{\rm col},
+\qquad
+\Pi_{\rm col}^2=\Pi_{\rm col}=\Pi_{\rm col}^\dagger.
+\end{equation*}
+收集效率定义为
+\begin{equation}
+\boxed{
+\mathcal Q_{\rm col}
+\equiv\langle\psi_1|\Pi_{\rm col}|\psi_1\rangle,
+\qquad
+0\le\mathcal Q_{\rm col}\le1.}
+\label{eq:collection-heralding-efficiency-dp19}
+\end{equation}
+这是一个无量纲概率，表示总单激发有多少投影到被收集模式子空间。
+\end{definition}
+
+\begin{proposition}[纯单激发的源匹配亮模与收集约化]
+即使 $\Pi_{\rm col}$ 所张成的收集子空间含有很多正交光学模式，对一个\emph{固定的纯单激发态} $|\psi_1\rangle$ 而言，被收集的分量 $\Pi_{\rm col}|\psi_1\rangle$ 仍只指向这个子空间中的一个确定方向。把这一归一化方向定义成亮模 $c$，再把与它正交的全部方向并入未收集/暗子空间 $u$，便可写
+\[
+|\psi_1\rangle
+=\frac{\mathcal A_{\rm col}^*|1_c,0_u\rangle
++\mathcal A_{\rm unc}^*|0_c,1_u\rangle}
+{\sqrt{|\mathcal A_{\rm col}|^2+|\mathcal A_{\rm unc}|^2}},
+\]
+其中 $\mathcal A_{\rm col},\mathcal A_{\rm unc}$ 是同一条件单激发态在两组正交子空间中的复振幅，只有其比值影响归一化态。此时
+\[
+\mathcal Q_{\rm col}
+=\frac{|\mathcal A_{\rm col}|^2}
+{|\mathcal A_{\rm col}|^2+|\mathcal A_{\rm unc}|^2}.
+\]
+对未收集模式取偏迹后，亮模状态为
+\begin{equation}
+\boxed{
+\rho_c
+=\mathcal Q_{\rm col}|1\rangle\langle1|
++(1-\mathcal Q_{\rm col})|0\rangle\langle0|.}
+\label{eq:collected_bright_mode_state_dp68}
+\end{equation}
+因此电子后选择可以在总光学 Hilbert 空间中预示一个单激发，而特定实验光路中的单光子概率还由 $\Pi_{\rm col}$ 的模式投影决定。
+
+
+
+设 $\psi_1$ 是规范化纯单激发态，$\Pi_{\rm col}$ 是正交收集投影，$0<\mathcal Q_{\rm col}=\|\Pi_{\rm col}\psi_1\|^2\le1$。源匹配方向 $|1_c\rangle=\Pi_{\rm col}\psi_1/\sqrt{\mathcal Q_{\rm col}}$ 唯一，未读取的正交通道取迹后亮模态为\eqnrefs{eq:collected_bright_mode_state_dp68}的真空--单量子混合；收集空间无需一维。$\mathcal Q_{\rm col}=0$ 时只剩真空，亮方向无须定义。
+\end{proposition}
+\begin{proof}
+令 $\Pi_{\rm col}$ 为收集子空间的正交投影，$|\psi_1\rangle$ 为归一化总单激发态，并记
+\[
+\mathcal Q_{\rm col}
+=\langle\psi_1|\Pi_{\rm col}|\psi_1\rangle.
+\]
+在 $0<\mathcal Q_{\rm col}<1$ 时，分别定义归一化的收集与未收集分量
+\[
+|1_c\rangle
+\equiv
+\frac{\Pi_{\rm col}|\psi_1\rangle}{\sqrt{\mathcal Q_{\rm col}}},
+\qquad
+|1_u\rangle
+\equiv
+\frac{(\mathbb I-\Pi_{\rm col})|\psi_1\rangle}
+{\sqrt{1-\mathcal Q_{\rm col}}}.
+\]
+由 $\Pi_{\rm col}^2=\Pi_{\rm col}$ 与
+$\Pi_{\rm col}(\mathbb I-\Pi_{\rm col})=0$，立刻有
+\[
+\langle1_c|1_c\rangle
+=\langle1_u|1_u\rangle=1,
+\qquad
+\langle1_c|1_u\rangle=0.
+\]
+因此原态具有精确正交分解
+\[
+|\psi_1\rangle
+=\sqrt{\mathcal Q_{\rm col}}\,|1_c\rangle
++\sqrt{1-\mathcal Q_{\rm col}}\,|1_u\rangle.
+\]
+
+为了看清“唯一亮模”并不要求收集空间本身是一维，在收集子空间任选一组正交单光子基
+$\{|1_\mu\rangle\}$，写
+\begin{equation*}
+\Pi_{\rm col}|\psi_1\rangle
+=\sum_\mu c_\mu|1_\mu\rangle,
+\qquad
+\sum_\mu|c_\mu|^2=\mathcal Q_{\rm col}.
+\end{equation*}
+若 $a_\mu^\dagger|0\rangle=|1_\mu\rangle$，定义与该条件源匹配的亮模产生算符
+\begin{equation*}
+ c^\dagger
+ \equiv
+ \frac{1}{\sqrt{\mathcal Q_{\rm col}}}
+ \sum_\mu c_\mu a_\mu^\dagger,
+ \qquad
+ [c,c^\dagger]=1.
+\end{equation*}
+于是
+\begin{equation*}
+|1_c\rangle=c^\dagger|0\rangle
+=\frac{1}{\sqrt{\mathcal Q_{\rm col}}}
+\sum_\mu c_\mu|1_\mu\rangle.
+\end{equation*}
+再把收集子空间中的其余正交线性组合补成完备模式基，它们对应的产生算符 $d_\nu^\dagger$ 都满足
+$\langle0|d_\nu|\psi_1\rangle=0$。因此，多模收集空间对这个\emph{给定纯单激发态}只含一个被占据的源匹配方向；“亮模”是由态和投影共同确定的，而不是假定光路只有一个物理模式。
+
+把 Hilbert 空间写成亮模 $c$ 与其余正交通道 $u$ 的 Fock 乘积后，上一式等价于
+\[
+|\psi_1\rangle
+=\sqrt{\mathcal Q_{\rm col}}\,|1_c,0_u\rangle
++\ee^{\ii\varphi}
+\sqrt{1-\mathcal Q_{\rm col}}\,|0_c,1_u\rangle,
+\]
+其中相对相位 $\varphi$ 对随后忽略 $u$ 的探测无影响。形成总密度算符并对 $u$ 偏迹，交叉项包含
+$\operatorname{Tr}_u(|0_u\rangle\langle1_u|)=0$，故
+\begin{align*}
+\rho_c
+&=\operatorname{Tr}_u|\psi_1\rangle\langle\psi_1|\\
+&=\mathcal Q_{\rm col}|1_c\rangle\langle1_c|
++(1-\mathcal Q_{\rm col})|0_c\rangle\langle0_c|,
+\end{align*}
+即正文\eqnrefs{eq:collected_bright_mode_state_dp68}。$\mathcal Q_{\rm col}=0$ 或 $1$ 时由连续极限得到同一结果。
+\end{proof}
+
+\begin{remark}[亮模约化的纯态条件]
+收集投影与其正交补给出两个正交分量。纯态在每个子空间只选出一个矢量方向，
+所以完整证明中的正交分解和偏迹不要求收集空间本身只有一个模式。
+若条件单激发态本身混合，各纯态分量的源匹配方向可能不同，
+多模式收集态一般不能再约化为同一个纯亮模；此时应保留收集子空间上的密度算符。
+\end{remark}
+
+对于均匀折射率 $n_{\rm out}$ 的远场介质，常用数值孔径
+\begin{equation*}
+{\rm NA}\equiv n_{\rm out}\sin\theta_{\max}
+\end{equation*}
+无量纲，只规定角度接受锥；真实 $\Pi_{\rm col}$ 还必须包含偏振、频率滤波和空间模式重叠。因此相同 NA 不一定对应相同 $\mathcal Q_{\rm col}$。
+
+参考臂把 $\rho_{01}$ 的复相位旋转到测量基底的实轴，因此近场相位进入电子计数差；环境可区分性则通过减小 $|\rho_{01}|$ 降低可见度。
+
+约化态中的真空权重来自未收集正交模式被偏迹，而不是另行加入的探测器损耗项。
+
+\input{sections/07-green-forward-closure-dp47}
+\input{sections/07-collection-cone-worked}
+\input{sections/07-inverse-problem-foundation}
+\input{sections/07-sphere-eels-identifiability}
+
+\input{content/FreeElectronQuantumOptics/chapter-end/electron-imaging-inversion-calculations.tex}

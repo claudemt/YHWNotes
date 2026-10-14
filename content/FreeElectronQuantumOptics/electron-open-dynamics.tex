@@ -1,0 +1,2036 @@
+\chapter{电子约化动力学与环境记忆}\label{chap:electron-open-dynamics}
+
+自由传播只改变已有波包的相位。与未记录的环境交换信息以后，电子的约化态还会发生退相干与扩散；偏迹、环境记忆和仪器模糊必须分别计算。
+
+\section{开放系统动力学}
+
+自由传播对应电子与其它自由度已经解耦的阶段。若辐射、材料涨落或未探测模式继续与电子交换能量或相位，就把实验仍要预测和控制的自由度称为\emph{系统} $S$，把不直接读出的其余自由度称为\emph{环境} $B$。系统与环境的总态仍按量子力学幺正演化；实验只读取 $S$ 时，对 $B$ 作偏迹得到约化态。环境在偏迹前保存的相关性可以在稍后反馈，因此约化动力学自然产生记忆。
+
+只知道当前电子态一般不足以预测下一时刻，因为环境可能还保存先前相互作用留下的信息。我们先像消去联立方程中的未知量一样，消去环境相关，得到含历史积分的系统方程；随后再检查什么时候历史积分可以简化为只依赖当前态的演化。
+
+\subsection{约化动力学}
+
+设系统、环境与相互作用 Hamiltonian 分别为 $\hat H_S(t)$、$\hat H_B$ 与 $\hat H_{SB}(t)$，
+\begin{equation}
+\boxed{
+\hat H(t)=\hat H_S(t)+\hat H_B+\hat H_{SB}(t),
+\qquad
+\frac{\dd}{\dd t}\hat\rho_{SB}(t)=\mathcal L(t)\hat\rho_{SB}(t).}
+\label{eq:open_system_joint_liouville_equation}
+\end{equation}
+其中
+\[
+\mathcal L(t)X=-\frac{\ii}{\hbar}[\hat H(t),X]
+\]
+是联合态的 Liouville 生成元。这里 $\mathcal L$ 不是作用在 Hilbert 空间态矢上的普通算符，而是把一个算符 $X$ 映射成另一个算符的\emph{超算符}（superoperator）；Liouville--von Neumann 方程正是把 Schr\"odinger 绘景的幺正演化改写成密度算符空间中的一阶线性方程。以后出现的 $\mathcal P$、$\mathcal Q$、$\mathcal K$ 与 $\Phi$ 都属于同一类对象，因此它们之间的乘法表示超算符复合。
+
+环境偏迹只保留
+$\rho_S(t)=\operatorname{Tr}_B\rho_{SB}(t)$，即所有系统可观测量所需的约化态；但被迹掉的环境仍可能保存先前交换出去的振幅和相位，并在稍后重新作用于系统。约化动力学的核心问题因此是：怎样在不继续显式传播全部环境自由度的情况下，把这部分反馈严格编码进系统方程。
+
+为把保留的系统信息与被消去的相关子空间分开，选定参考环境态 $\rho_B$，并定义投影超算符
+\[
+\mathcal PX=\operatorname{Tr}_B(X)\otimes\rho_B,
+\qquad
+\mathcal Q=1-\mathcal P.
+\]
+$\mathcal P\rho$ 保留“当前系统态 $\otimes$ 参考环境态”，而 $\mathcal Q\rho$ 包含相对于这一参考分解的全部系统--环境相关性。这里“投影”发生在\emph{算符空间}而不是电子的空间波函数上：$\mathcal P$ 选出我们希望显式保留的约化信息，$\mathcal Q$ 收集被暂时消去的相关自由度。先让 $\mathcal Q$ 中的信息从过去时刻 $s$ 演化到当前时刻 $t$，再把它反馈到 $\mathcal P$ 子空间，就得到 Nakajima--Zwanzig 方程
+\begin{equation}
+\boxed{
+\frac{\dd}{\dd t}\mathcal P\rho(t)
+=\mathcal P\mathcal L(t)\mathcal P\rho(t)
++\int_{t_0}^{t}\dd s\,\mathcal K(t,s)\mathcal P\rho(s)
++\mathcal I(t,t_0),}
+\label{eq:exact_nakajima_zwanzig}
+\end{equation}
+其中记忆核与 $\mathcal Q$ 子空间传播子为
+\[
+\mathcal K(t,s)
+=\mathcal P\mathcal L(t)\mathcal U_Q(t,s)\mathcal Q\mathcal L(s)\mathcal P,
+\qquad
+\mathcal U_Q(t,s)=\mathcal T\exp\!\left[\int_s^t\dd\tau\,\mathcal Q\mathcal L(\tau)\mathcal Q\right].
+\]
+这条乘积可以按时间顺序阅读：$\mathcal Q\mathcal L(s)\mathcal P$ 在时刻 $s$ 把系统信息送入被消去的相关子空间，$\mathcal U_Q(t,s)$ 保存并传播这部分信息，$\mathcal P\mathcal L(t)$ 再把它送回系统。因此 $\mathcal K(t,s)$ 就是“时刻 $s$ 的系统状态对时刻 $t$ 的变化率有多大影响”的算符权重，称为\emph{记忆核}。除了这种传播过程中形成的记忆，初态本身若已经含有系统--环境相关，也会产生独立的非齐次源项
+\begin{equation}
+\boxed{
+\mathcal I(t,t_0)
+=\mathcal P\mathcal L(t)\mathcal U_Q(t,t_0)\mathcal Q\rho(t_0).}
+\label{eq:exact_nz_initial_correlation}
+\end{equation}
+因此非 Markov 性有两个不同来源：记忆核使当前导数依赖历史状态，非因子化初态则通过 $\mathcal I$ 产生额外边界源。只有同时控制记忆核与初始相关源项，时间局域主方程才是受控近似。
+
+\begin{theorem}[含初始相关源的精确投影消元]
+设有限维 Liouville 空间中 $\dot\rho=\mathcal L(t)\rho$，$\mathcal L$ 连续，$\mathcal P^2=\mathcal P$ 为固定投影，$\mathcal Q=I-\mathcal P$。则保留分量严格满足\eqnrefs{eq:exact_nakajima_zwanzig}，初始相关源为\eqnrefs{eq:exact_nz_initial_correlation}。$\mathcal Q\rho(t_0)=0$ 只使源消失，不使记忆核消失。
+\end{theorem}
+\begin{proof}
+联合态满足
+\begin{equation*}
+ \dot\rho(t)=\mathcal L(t)\rho(t).
+\end{equation*}
+插入恒等分解 $1=\mathcal P+\mathcal Q$：
+\begin{align*}
+ \dot\rho
+ &=\mathcal L(\mathcal P+\mathcal Q)\rho\\
+ &=\mathcal L\mathcal P\rho+\mathcal L\mathcal Q\rho.
+\end{align*}
+分别左乘 $\mathcal P$ 与 $\mathcal Q$，利用 $\mathcal P^2=\mathcal P$、$\mathcal Q^2=\mathcal Q$、$\mathcal P\mathcal Q=\mathcal Q\mathcal P=0$，得到两条与原 Liouville 方程完全等价的耦合方程：
+\begin{align*}
+ \frac{\dd}{\dd t}\mathcal P\rho(t)
+ &=\mathcal P\mathcal L(t)\mathcal P\rho(t)
+ +\mathcal P\mathcal L(t)\mathcal Q\rho(t),\\
+ \frac{\dd}{\dd t}\mathcal Q\rho(t)
+ &=\mathcal Q\mathcal L(t)\mathcal P\rho(t)
+ +\mathcal Q\mathcal L(t)\mathcal Q\rho(t).
+\end{align*}
+关键是精确解出第二条 $\mathcal Q$ 方程，而不是把 $\mathcal Q\rho$ 直接置零。
+
+定义限制在 $\mathcal Q$ 子空间内的传播子
+\begin{equation*}
+ \mathcal U_Q(t,s)
+ =\mathcal T\exp\!\left[
+ \int_s^t\dd\tau\,
+ \mathcal Q\mathcal L(\tau)\mathcal Q
+ \right].
+\end{equation*}
+由时间有序指数的定义，它满足
+\begin{align*}
+ \partial_t\mathcal U_Q(t,s)
+ &=\mathcal Q\mathcal L(t)\mathcal Q\,\mathcal U_Q(t,s),\\
+ \mathcal U_Q(s,s)&=\mathcal Q,\\
+ \mathcal U_Q(t,s)\mathcal Q
+ &=\mathcal Q\mathcal U_Q(t,s)=\mathcal U_Q(t,s).
+\end{align*}
+为严格推出常数变易公式，定义
+\begin{equation*}
+ Y(t)\equiv\mathcal U_Q(t_0,t)\mathcal Q\rho(t),
+\end{equation*}
+其中 $\mathcal U_Q(t_0,t)=\mathcal U_Q(t,t_0)^{-1}$。逆传播子的导数由
+\begin{equation*}
+ \partial_t\mathcal U_Q(t_0,t)
+ =-\mathcal U_Q(t_0,t)\mathcal Q\mathcal L(t)\mathcal Q
+\end{equation*}
+给出，因此
+\begin{align*}
+ \dot Y(t)
+ ={}&-\mathcal U_Q(t_0,t)
+ \mathcal Q\mathcal L(t)\mathcal Q\rho(t)\\
+ &+\mathcal U_Q(t_0,t)
+ \frac{\dd}{\dd t}\mathcal Q\rho(t).
+\end{align*}
+把第二条耦合方程代入：
+\begin{align*}
+ \dot Y(t)
+ ={}&-\mathcal U_Q(t_0,t)
+ \mathcal Q\mathcal L(t)\mathcal Q\rho(t)\\
+ &+\mathcal U_Q(t_0,t)
+ \left[
+ \mathcal Q\mathcal L(t)\mathcal P\rho(t)
+ +\mathcal Q\mathcal L(t)\mathcal Q\rho(t)
+ \right]\\
+ &=\mathcal U_Q(t_0,t)
+ \mathcal Q\mathcal L(t)\mathcal P\rho(t).
+\end{align*}
+从 $t_0$ 积分到 $t$：
+\begin{equation*}
+ Y(t)-Y(t_0)
+ =\int_{t_0}^{t}\dd s\,
+ \mathcal U_Q(t_0,s)
+ \mathcal Q\mathcal L(s)\mathcal P\rho(s).
+\end{equation*}
+又因为
+\begin{equation*}
+ Y(t_0)=\mathcal Q\rho(t_0),
+\end{equation*}
+左乘 $\mathcal U_Q(t,t_0)$，并利用组合律
+\begin{equation*}
+ \mathcal U_Q(t,t_0)\mathcal U_Q(t_0,s)=\mathcal U_Q(t,s),
+\end{equation*}
+得到精确的 $\mathcal Q$ 分量：
+\begin{equation*}
+ \mathcal Q\rho(t)
+ =\mathcal U_Q(t,t_0)\mathcal Q\rho(t_0)
+ +\int_{t_0}^{t}\dd s\,
+ \mathcal U_Q(t,s)
+ \mathcal Q\mathcal L(s)\mathcal P\rho(s).
+\end{equation*}
+
+将得到的 $\mathcal Q\rho(t)$ 精确解代回第一条 $\mathcal P$ 方程：
+\begin{align*}
+ \frac{\dd}{\dd t}\mathcal P\rho(t)
+ ={}&\mathcal P\mathcal L(t)\mathcal P\rho(t)\\
+ &+\mathcal P\mathcal L(t)
+ \mathcal U_Q(t,t_0)\mathcal Q\rho(t_0)\\
+ &+\int_{t_0}^{t}\dd s\,
+ \mathcal P\mathcal L(t)
+ \mathcal U_Q(t,s)
+ \mathcal Q\mathcal L(s)\mathcal P\rho(s).
+\end{align*}
+正文已经把第二行记作
+\begin{equation*}
+ \mathcal I(t,t_0)
+ \equiv
+ \mathcal P\mathcal L(t)
+ \mathcal U_Q(t,t_0)\mathcal Q\rho(t_0),
+\end{equation*}
+就是正文\eqnrefs{eq:exact_nz_initial_correlation}。正文的积分核记作
+\begin{equation*}
+ \mathcal K(t,s)
+ \equiv
+ \mathcal P\mathcal L(t)
+ \mathcal U_Q(t,s)
+ \mathcal Q\mathcal L(s)\mathcal P,
+\end{equation*}
+便得到正文\eqnrefs{eq:exact_nakajima_zwanzig}：
+\begin{equation*}
+ \frac{\dd}{\dd t}\mathcal P\rho(t)
+ =\mathcal P\mathcal L(t)\mathcal P\rho(t)
+ +\int_{t_0}^{t}\dd s\,
+ \mathcal K(t,s)\mathcal P\rho(s)
+ +\mathcal I(t,t_0).
+\end{equation*}
+
+直接检查 $t=t_0$：积分项消失，且
+\begin{align*}
+ \left.\frac{\dd}{\dd t}\mathcal P\rho(t)\right|_{t_0}
+ &=\mathcal P\mathcal L(t_0)
+ \left[\mathcal P+\mathcal Q\right]\rho(t_0)\\
+ &=\mathcal P\mathcal L(t_0)\rho(t_0),
+\end{align*}
+与原联合 Liouville 方程一致，所以消元没有丢失初始信息。
+
+若 $\mathcal Q\rho(t_0)=0$，仅有 $\mathcal I=0$；记忆积分仍然保留。因而“因子化初态”与“Markov 近似”是两件不同的事：前者只消去非齐次源，后者还必须证明 $\mathcal K(t,s)$ 在 $t-s$ 上足够短程，才能把历史态 $\mathcal P\rho(s)$ 近似成当前态。
+\end{proof}
+
+
+时间平移不变时，$\mathcal K(t,s)=\mathcal K(t-s)$，Laplace 变换把历史卷积转化为频域乘法。与普通量子力学中 $(z-H)^{-1}$ 的预解算符相同，这里在 Liouville 算符空间定义约化预解式
+\begin{equation}
+\boxed{
+\mathcal R_P(z)
+=\left[z-\mathcal P\mathcal L\mathcal P-\widetilde K(z)\right]^{-1},
+\qquad
+\widetilde K(z)
+=\mathcal P\mathcal L\mathcal Q
+(z-\mathcal Q\mathcal L\mathcal Q)^{-1}
+\mathcal Q\mathcal L\mathcal P,}
+\label{eq:nz_reduced_resolvent_definition}
+\end{equation}
+则完整联合预解式投影到 $\mathcal P$ 子空间以后严格满足
+\begin{equation}
+\boxed{
+\mathcal P(z-\mathcal L)^{-1}\mathcal P
+=\mathcal R_P(z).}
+\label{eq:nz_projected_full_resolvent_schur_identity}
+\end{equation}
+这就是 Liouville 空间中的 Feshbach--Schur 消元。$\widetilde K(z)$ 与\chapref{chap:general-interaction}的 Hamiltonian 自能承担同一数学角色：它记录被消去子空间离开再返回以后对保留子空间产生的频率依赖修正，因此称为约化自能。$\mathcal R_P(z)$ 的孤立极点对应指数衰减或振荡模；连续谱造成的支割与其它非解析结构则产生长时间非指数尾。若系统实际采样的频带内 $\widetilde K(z)$ 的频率依赖足够弱，历史反馈可以被一个近似常数的局域生成元表示，这才进入 Markov 极限。
+
+\begin{lemma}[Liouville 投影预解式的 Schur 补]
+设有界、时间无关 $\mathcal L$，固定互补投影 $\mathcal P,\mathcal Q$。当 $z-\mathcal L$ 与 $z-\mathcal Q\mathcal L\mathcal Q$ 均可逆时，\eqnrefs{eq:nz_projected_full_resolvent_schur_identity}成立。将记忆核写成 Laplace 积分时还需 $\operatorname{Re}z$ 位于半群增长界右侧。
+\end{lemma}
+\begin{proof}
+假设 $\mathcal L$ 时间无关，并取 $z$ 位于相应预解集，使随后出现的逆算符存在。首先对 $\mathcal Q$ 子空间传播子作单边 Laplace 变换：
+\begin{align*}
+\int_0^\infty\dd t\,\ee^{-zt}\ee^{t\mathcal Q\mathcal L\mathcal Q}
+&=\int_0^\infty\dd t\,
+\exp[-t(z-\mathcal Q\mathcal L\mathcal Q)]\\
+&=(z-\mathcal Q\mathcal L\mathcal Q)^{-1}.
+\end{align*}
+因此时间域记忆核
+\[
+\mathcal K(t)=\mathcal P\mathcal L\mathcal Q
+\ee^{t\mathcal Q\mathcal L\mathcal Q}
+\mathcal Q\mathcal L\mathcal P
+\]
+的 Laplace 变换为
+\[
+\widetilde K(z)
+=\mathcal P\mathcal L\mathcal Q
+(z-\mathcal Q\mathcal L\mathcal Q)^{-1}
+\mathcal Q\mathcal L\mathcal P.
+\]
+这给出正文\eqnrefs{eq:nz_reduced_resolvent_definition} 中的约化自能。
+
+现在直接从完整预解式验证同一结构。按 $\mathcal P\oplus\mathcal Q$ 分解任意 Liouville 空间向量
+\[
+|X)=|X_P)+|X_Q),
+\qquad
+|X_P)=\mathcal P|X),\quad |X_Q)=\mathcal Q|X),
+\]
+并考虑线性方程
+\[
+(z-\mathcal L)|X)=|Y).
+\]
+左右分别投影到两个子空间：
+\begin{align*}
+(z-\mathcal P\mathcal L\mathcal P)|X_P)
+-\mathcal P\mathcal L\mathcal Q|X_Q)
+&=|Y_P),\\
+-\mathcal Q\mathcal L\mathcal P|X_P)
++(z-\mathcal Q\mathcal L\mathcal Q)|X_Q)
+&=|Y_Q).
+\end{align*}
+从第二式解出被消去分量：
+\[
+|X_Q)
+=(z-\mathcal Q\mathcal L\mathcal Q)^{-1}
+\left[|Y_Q)+\mathcal Q\mathcal L\mathcal P|X_P)\right].
+\]
+代回第一式得到
+\begin{align*}
+\Bigl[&z-\mathcal P\mathcal L\mathcal P
+-\mathcal P\mathcal L\mathcal Q
+(z-\mathcal Q\mathcal L\mathcal Q)^{-1}
+\mathcal Q\mathcal L\mathcal P\Bigr]|X_P)\\
+&=|Y_P)
++\mathcal P\mathcal L\mathcal Q
+(z-\mathcal Q\mathcal L\mathcal Q)^{-1}|Y_Q).
+\end{align*}
+若右端只位于保留子空间，即 $|Y_Q)=0$，则
+\[
+|X_P)=
+\left[z-\mathcal P\mathcal L\mathcal P-\widetilde K(z)\right]^{-1}|Y_P).
+\]
+另一方面，由 $|X)=(z-\mathcal L)^{-1}|Y)$ 且 $|Y)=|Y_P)$，同一个 $|X_P)$ 也等于
+\[
+|X_P)=\mathcal P(z-\mathcal L)^{-1}\mathcal P|Y_P).
+\]
+由于该等式对任意 $|Y_P)$ 成立，得到算符恒等式
+\[
+\mathcal P(z-\mathcal L)^{-1}\mathcal P
+=\left[z-\mathcal P\mathcal L\mathcal P-\widetilde K(z)\right]^{-1},
+\]
+即正文\eqnrefs{eq:nz_projected_full_resolvent_schur_identity}。
+\end{proof}
+
+
+精确记忆方程同时保留系统--环境相关、环境记忆和不同系统跃迁频率之间的相干耦合。若 $H_S|n\rangle=E_n|n\rangle$，任意能级差定义一个\emph{Bohr 频率} $\omega_{mn}=(E_m-E_n)/\hbar$；它就是系统算符在相互作用绘景中出现的基本振荡频率。久期近似所比较的正是不同 Bohr 频率之差与约化动力学弛豫时间的倒数。
+
+下面进行常用的弱耦合推导。先按耦合强度保留二阶项，这一步称为 Born 近似，所得方程仍含历史态 $\rho_S(t-\tau)$。若环境相关衰减得足够快，再在记忆积分中用当前态替代缓慢变化的历史态，作 Markov 近似。最后比较不同 Bohr 频率的拍频与弛豫速度，舍去长期快速振荡的交叉项，作\emph{久期近似}。在相应条件下，将得到 Gorini--Kossakowski--Sudarshan--Lindblad（GKSL）方程，通常简称 Lindblad 方程。为逐步看出这些近似，进入相互作用绘景，写
+\[
+H_I(t)=\lambda\sum_{\alpha}A_\alpha(t)\otimes B_\alpha(t),
+\qquad
+\operatorname{Tr}_B[B_\alpha\rho_B]=0,
+\]
+其中 $\lambda$ 只用于追踪耦合阶数。对精确 von Neumann 方程积分一次再代回自身，得到二次积分恒等式
+\begin{equation}
+\boxed{
+\dot\rho_I(t)
+=-\frac{\ii}{\hbar}[H_I(t),\rho_I(0)]
+-\frac1{\hbar^2}\int_0^t\dd\tau\,
+[H_I(t),[H_I(t-\tau),\rho_I(t-\tau)]].}
+\label{eq:exact_second_order_integral_identity_open_system}
+\end{equation}
+Born 近似只在积分核内部把联合态近似为 $\rho_{S,I}(t-\tau)\otimes\rho_B$。对平稳环境定义相关矩阵
+\[
+C_{\alpha\beta}(\tau)
+=\operatorname{Tr}_B[B_\alpha(\tau)B_\beta(0)\rho_B],
+\]
+得到的是\emph{二阶 Born 时间非局域方程}：耦合阶数已经截断，但历史态 $\rho_{S,I}(t-\tau)$ 和有限积分上限仍完整保留。它可以看成精确 Nakajima--Zwanzig 方程的二阶记忆核近似：
+\begin{equation}
+\boxed{
+\begin{aligned}
+\dot\rho_{S,I}(t)
+={}&-\frac{\lambda^2}{\hbar^2}
+\sum_{\alpha\beta}\int_0^t\dd\tau\,
+\Big\{
+C_{\alpha\beta}(\tau)
+[A_\alpha(t),A_\beta(t-\tau)\rho_{S,I}(t-\tau)]\\
+&\hspace{25mm}+C_{\beta\alpha}(-\tau)
+[\rho_{S,I}(t-\tau)A_\beta(t-\tau),A_\alpha(t)]
+\Big\}+O(\lambda^3).
+\end{aligned}}
+\label{eq:born_nonmarkov_redfield_kernel}
+\end{equation}
+因此 Born 截断只回答“保留到耦合的哪一阶”，还没有把有记忆动力学变成时间局域动力学。
+
+在实际有限工作空间内，取一个非负可积包络 $\mathcal C_*(\tau)$，使约化记忆超算符满足
+$\|\mathcal K(\tau)\|\le\mathcal C_*(\tau)$，并定义它的前两个时间矩
+\[
+M_0\equiv\int_0^\infty\dd\tau\,\mathcal C_*(\tau),
+\qquad
+M_1\equiv\int_0^\infty\dd\tau\,\tau\mathcal C_*(\tau),
+\qquad
+\tau_B\equiv\frac{M_1}{M_0}.
+\]
+对目标时间窗再定义
+$\rho_*(t)\equiv\sup_{0\le s\le t}\|\rho_S(s)\|$ 与
+$\tau_R^{-1}(t)\equiv\sup_{0\le s\le t}\|\dot\rho_S(s)\|/\rho_*(t)$。这样 $\tau_B$ 与 $\tau_R$ 都由实际核和实际约化轨迹确定。用 $g_{SB}$ 表示相互作用产生的典型频率尺度，Born 截断至少要求
+\begin{equation}
+\boxed{
+\epsilon_{\rm B,op}=g_{SB}\tau_B\ll1,}
+\label{eq:open_system_born_control_parameter}
+\end{equation}
+即环境仍保留记忆的时间内，相互作用不足以积累 $O(1)$ 的系统--环境相关性。Markov 近似还要求系统弛豫时间 $\tau_R$ 远大于 $\tau_B$，并且被截去的长时间相关尾足够小：
+\begin{equation}
+\boxed{
+\epsilon_{\rm M}(t)
+=\max\!\left[
+\frac{\tau_B}{\tau_R(t)},
+\frac{\int_t^\infty\dd\tau\,\mathcal C_*(\tau)}
+{\int_0^\infty\dd\tau\,\mathcal C_*(\tau)}
+\right]\ll1.}
+\label{eq:markov_timescale_control_parameter}
+\end{equation}
+第一项给出把 $\rho_S(t-\tau)$ 局域为 $\rho_S(t)$ 时、相对于自然核尺度 $\rho_*(t)M_0$ 的严格上界；第二项给出把积分上限从 $t$ 延伸到 $\infty$ 的同一归一化尾部上界。二者分别检验历史态变化与相关尾，必须独立满足。
+
+\begin{proposition}[记忆核局域化的双重误差界]
+设 $\rho$ 可微，$\|\mathcal K(\tau)\|\le\mathcal C_*(\tau)$，$0<M_0=\int_0^\infty\mathcal C_*<\infty$，$M_1=\int_0^\infty\tau\mathcal C_*<\infty$。历史态替换误差不超过 $M_1\sup_{s\le t}\|\dot\rho(s)\|$，积分尾误差不超过 $\|\rho(t)\|\int_t^\infty\mathcal C_*$。\eqnrefs{eq:markov_timescale_control_parameter}控制二者各自；总误差由两个上界之和控制。
+\end{proposition}
+\begin{proof}
+把正文\eqnrefs{eq:born_nonmarkov_redfield_kernel} 抽象写成
+\[
+\dot\rho_S(t)=\int_0^t\dd\tau\,\mathcal K(\tau)\rho_S(t-\tau),
+\qquad
+\|\mathcal K(\tau)\|\le\mathcal C_*(\tau).
+\]
+Markov 局域化把历史态换成当前态。历史替换造成的差严格为
+\begin{align*}
+\delta\dot\rho_{S,{\rm hist}}(t)
+&\equiv
+\int_0^t\dd\tau\,\mathcal K(\tau)
+[\rho_S(t-\tau)-\rho_S(t)],\\
+\rho_S(t-\tau)-\rho_S(t)
+&=-\int_{t-\tau}^{t}\dd s\,\dot\rho_S(s).
+\end{align*}
+由正文定义
+$\sup_{0\le s\le t}\|\dot\rho_S(s)\|=\rho_*(t)/\tau_R(t)$，逐次使用三角不等式与超算符范数的次乘性，得到
+\begin{align*}
+\|\delta\dot\rho_{S,{\rm hist}}(t)\|
+&\le
+\int_0^t\dd\tau\,\|\mathcal K(\tau)\|
+\int_{t-\tau}^{t}\dd s\,\|\dot\rho_S(s)\|\\
+&\le
+\frac{\rho_*(t)}{\tau_R(t)}
+\int_0^t\dd\tau\,\tau\mathcal C_*(\tau)\\
+&\le
+\frac{\rho_*(t)M_1}{\tau_R(t)}.
+\end{align*}
+用自然核尺度 $\rho_*(t)M_0$ 归一化，便有严格上界
+\begin{equation*}
+\frac{\|\delta\dot\rho_{S,{\rm hist}}(t)\|}{\rho_*(t)M_0}
+\le
+\frac{M_1}{M_0\tau_R(t)}
+=\frac{\tau_B}{\tau_R(t)}.
+\end{equation*}
+第二个误差来自把已经局域化的有限积分上限延伸到 $\infty$。定义
+\[
+\delta\dot\rho_{S,{\rm tail}}(t)
+\equiv
+\int_t^\infty\dd\tau\,\mathcal K(\tau)\rho_S(t),
+\]
+则
+\begin{align*}
+\|\delta\dot\rho_{S,{\rm tail}}(t)\|
+&\le
+\rho_*(t)\int_t^\infty\dd\tau\,\mathcal C_*(\tau),\\
+\frac{\|\delta\dot\rho_{S,{\rm tail}}(t)\|}{\rho_*(t)M_0}
+&\le
+\frac{\int_t^\infty\dd\tau\,\mathcal C_*(\tau)}
+{\int_0^\infty\dd\tau\,\mathcal C_*(\tau)}.
+\end{align*}
+取两个严格上界的最大值，就得到正文\eqnrefs{eq:markov_timescale_control_parameter}。
+\end{proof}
+
+
+当 $\epsilon_{\rm M}(t)\ll1$ 时，在\eqnrefs{eq:born_nonmarkov_redfield_kernel} 中作两步 Markov 局域化：先以当前态 $\rho_{S,I}(t)$ 替换核内的历史态，再把已经衰减完毕的环境相关积分上限延伸到 $\infty$。得到
+\begin{equation}
+\boxed{
+\begin{aligned}
+\dot\rho_{S,I}(t)
+={}&-\frac{\lambda^2}{\hbar^2}
+\sum_{\alpha\beta}\int_0^\infty\dd\tau\,
+\Big\{
+C_{\alpha\beta}(\tau)
+[A_\alpha(t),A_\beta(t-\tau)\rho_{S,I}(t)]\\
+&\hspace{25mm}+C_{\beta\alpha}(-\tau)
+[\rho_{S,I}(t)A_\beta(t-\tau),A_\alpha(t)]
+\Big\}+O(\lambda^3).
+\end{aligned}}
+\label{eq:redfield_markov_nonsecular}
+\end{equation}
+这条二阶、Markov、但尚未做 Bohr 频率久期化的时间局域方程称为\emph{Redfield 方程}。它已经没有历史态，却仍保留不同 Bohr 频率块之间的相干交叉项，因此一般尚不能保证任意初态下的完全正性。下一步的久期近似正是把这些长期快速振荡的交叉块分离开。
+
+完成 Markov 局域化以后，环境通过相关谱进入生成元。定义双边量子噪声谱
+\begin{equation}
+\boxed{
+\Gamma_{\alpha\beta}(\omega)
+=\frac{\lambda^2}{\hbar^2}\int_{-\infty}^{\infty}\dd\tau\,
+\ee^{\ii\omega\tau}C_{\alpha\beta}(\tau),
+\qquad
+\boldsymbol\Gamma(\omega)\succeq0.}
+\label{eq:quantum_bath_noise_spectrum}
+\end{equation}
+其半正定性来自环境密度算符的正性。若 $H_S$ 在目标时间窗内可视为静态，系统耦合算符可按 Bohr 频率分解
+\[
+A_\alpha(t)=\sum_\omega\ee^{-\ii\omega t}A_\alpha(\omega),
+\qquad
+[H_S,A_\alpha(\omega)]=-\hbar\omega A_\alpha(\omega).
+\]
+严格周期驱动时，应把这一分解改写成 Floquet 准能块；一般非周期驱动则不能强行套用固定 Bohr 频率的久期化。
+
+把\eqnrefs{eq:redfield_markov_nonsecular} 中的系统算符按 Bohr 频率展开后，不同 $\omega,\omega'$ 频率块仍通过 $\ee^{\ii(\omega'-\omega)t}$ 相互耦合，因此 Redfield 生成元一般尚不具有 GKSL 形式。若实际参与动力学的最小非零 Bohr 频率间隔为 $\Delta\omega_B$，则需要存在粗粒化时间 $\Delta t$ 满足
+\[
+\tau_B\ll\Delta t\ll\tau_R,
+\qquad
+\Delta\omega_B\Delta t\gg1.
+\]
+等价的必要尺度控制量可写成
+\begin{equation}
+\boxed{
+\epsilon_{\rm sec}=\frac1{\Delta\omega_B\tau_R}\ll1.}
+\label{eq:secular_control_parameter}
+\end{equation}
+只有这一条件独立成立，才可丢弃 $\omega\neq\omega'$ 的交叉频率块。最终得到 Born--Markov--久期近似下的 GKSL 主方程
+\begin{equation}
+\boxed{
+\dot\rho_S
+=-\frac{\ii}{\hbar}[H_S+H_{\rm LS},\rho_S]
++\sum_\omega\sum_{\alpha\beta}\Gamma_{\alpha\beta}(\omega)
+\left[
+A_\beta(\omega)\rho_SA_\alpha^\dagger(\omega)
+-\frac12\{A_\alpha^\dagger(\omega)A_\beta(\omega),\rho_S\}
+\right].}
+\label{eq:born_markov_secular_gksl}
+\end{equation}
+$H_{\rm LS}$ 称为 \emph{Lamb 位移哈密顿量}：环境涨落除了造成不可逆跃迁，还会通过虚交换改变系统能级或共振频率；这一相干频移来自单边环境相关积分的反厄米部分。对每个半正定矩阵 $\boldsymbol\Gamma(\omega)$ 作谱分解，所得非负本征值成为 Lindblad 跃迁率，本征向量给出相应跳跃算符。环境相关谱的正性与久期近似后的频率块分离因而共同保证生成元的完全正结构。
+
+\begin{proposition}[正频率块的 GKSL 结构]
+在有限维系统中，设平稳 Hermitian 环境算符的相关谱存在，各频率矩阵 $\Gamma(\omega)$ 半正定，$S(\omega)$ Hermitian。仅保留相同 Bohr 频率块，则生成元为\eqnrefs{eq:born_markov_secular_gksl}，并产生 CPTP 半群。不同频率块的消去另外要求本文给出的粗粒化 sinc 控制。
+\end{proposition}
+\begin{proof}
+Markov 局域化后的 Redfield 方程仍含不同 Bohr 频率之间的交叉项。先分解系统算符：
+\[
+A_\alpha(t)=\sum_\omega\ee^{-\ii\omega t}A_\alpha(\omega),
+\qquad
+[H_S,A_\alpha(\omega)]=-\hbar\omega A_\alpha(\omega).
+\]
+于是
+\[
+A_\beta(t-\tau)
+=\sum_\omega\ee^{-\ii\omega t}\ee^{+\ii\omega\tau}A_\beta(\omega).
+\]
+定义单边相关积分
+\[
+G_{\alpha\beta}(\omega)
+\equiv\frac{\lambda^2}{\hbar^2}
+\int_0^\infty\dd\tau\,
+\ee^{\ii\omega\tau}C_{\alpha\beta}(\tau).
+\]
+平稳环境满足
+$C_{\beta\alpha}(-\tau)=C_{\alpha\beta}^*(\tau)$，故正文的双边谱可以写成
+\begin{align*}
+\Gamma_{\alpha\beta}(\omega)
+&=\frac{\lambda^2}{\hbar^2}
+\int_{-\infty}^{\infty}\dd\tau\,
+\ee^{\ii\omega\tau}C_{\alpha\beta}(\tau)\\
+&=G_{\alpha\beta}(\omega)+G_{\beta\alpha}^*(\omega).
+\end{align*}
+因此单边积分唯一分解为
+\[
+G_{\alpha\beta}(\omega)
+=\frac12\Gamma_{\alpha\beta}(\omega)
++\ii S_{\alpha\beta}(\omega),
+\qquad
+S_{\alpha\beta}=S_{\beta\alpha}^*.
+\]
+
+将 Bohr 分解代入 Markov--Redfield 生成元后，任意 $\omega,\omega'$ 交叉块都乘有
+$\ee^{\ii(\omega'-\omega)t}$。在粗粒化时间 $\Delta t$ 上，
+\begin{align*}
+\frac1{\Delta t}\int_t^{t+\Delta t}\dd s\,
+\ee^{\ii(\omega'-\omega)s}
+&=\ee^{\ii(\omega'-\omega)(t+\Delta t/2)}
+\frac{2\sin[(\omega'-\omega)\Delta t/2]}
+{(\omega'-\omega)\Delta t}.
+\end{align*}
+当 $\tau_B\ll\Delta t\ll\tau_R$ 且
+$|\omega'-\omega|\Delta t\gg1$ 时，$\omega'\ne\omega$ 的块被 sinc 因子压低，只保留相同 Bohr 频率的块。
+
+对固定 $\omega$，久期化后的生成元为
+\begin{align*}
+\mathcal L_\omega\rho
+={}&\sum_{\alpha\beta}
+G_{\alpha\beta}(\omega)
+[A_\beta(\omega)\rho,A_\alpha^\dagger(\omega)]\\
+&+\sum_{\alpha\beta}
+G_{\beta\alpha}^*(\omega)
+[A_\alpha(\omega),\rho A_\beta^\dagger(\omega)].
+\end{align*}
+代入 $G=\Gamma/2+\ii S$。厄米的 $\Gamma$ 部分逐项展开为
+\begin{align*}
+\mathcal D_\omega\rho
+={}&\sum_{\alpha\beta}\Gamma_{\alpha\beta}(\omega)
+A_\beta(\omega)\rho A_\alpha^\dagger(\omega)\\
+&-\frac12\sum_{\alpha\beta}\Gamma_{\alpha\beta}(\omega)
+A_\alpha^\dagger(\omega)A_\beta(\omega)\rho\\
+&-\frac12\sum_{\alpha\beta}\Gamma_{\alpha\beta}(\omega)
+\rho A_\alpha^\dagger(\omega)A_\beta(\omega)\\
+={}&\sum_{\alpha\beta}\Gamma_{\alpha\beta}(\omega)
+\left[
+A_\beta(\omega)\rho A_\alpha^\dagger(\omega)
+-\frac12\{A_\alpha^\dagger(\omega)A_\beta(\omega),\rho\}
+\right].
+\end{align*}
+反厄米部分定义
+\[
+H_{\rm LS}
+\equiv\hbar\sum_\omega\sum_{\alpha\beta}
+S_{\alpha\beta}(\omega)
+A_\alpha^\dagger(\omega)A_\beta(\omega).
+\]
+由 $S_{\alpha\beta}=S_{\beta\alpha}^*$ 得
+$H_{\rm LS}=H_{\rm LS}^\dagger$，相应项组合为
+\[
+-\frac{\ii}{\hbar}[H_{\rm LS},\rho].
+\]
+恢复 Schr\"odinger 绘景并把所有 Bohr 频率块求和，得到
+\[
+\dot\rho_S
+=-\frac{\ii}{\hbar}[H_S+H_{\rm LS},\rho_S]
++\sum_\omega\sum_{\alpha\beta}\Gamma_{\alpha\beta}(\omega)
+\left[
+A_\beta(\omega)\rho_SA_\alpha^\dagger(\omega)
+-\frac12\{A_\alpha^\dagger(\omega)A_\beta(\omega),\rho_S\}
+\right],
+\]
+即正文\eqnrefs{eq:born_markov_secular_gksl}。
+
+对谱正性，任取系数 $v_\alpha$，令 $B_v=\sum_\alpha v_\alpha B_\alpha$。平稳相关核的二次型为 $\langle X^\dagger X\rangle\ge0$，其 Fourier 谱因而为正测度，绝对连续时 $v^\dagger\Gamma(\omega)v\ge0$。逐频率对角化 $\Gamma=V^\dagger\operatorname{diag}(\gamma_j)V$，将 $\sqrt{\gamma_j}\sum_\alpha V_{j\alpha}A_\alpha$ 作为跳跃算符，即为 GKSL 形式。
+\end{proof}
+
+
+若环境处于温度 $T$ 的 Gibbs 态，$\beta_T=(k_BT)^{-1}$，热平衡还把正频率与负频率过程锁在一起。这个约束称为 Kubo--Martin--Schwinger（KMS）关系；在能量本征态语言中，它就是“上跃迁与下跃迁的热权重必须符合 Boltzmann 因子”的算符形式：
+\begin{equation}
+\boxed{
+\Gamma_{\alpha\beta}(-\omega)
+=\ee^{-\beta_T\hbar\omega}\Gamma_{\beta\alpha}(+\omega).}
+\label{eq:kms_detailed_balance_electron}
+\end{equation}
+因此热平衡中的吸收率与发射率由同一谱密度通过详细平衡关系联结。$\omega=0$ 频率块描述不交换净能量的纯退相干，非零 Bohr 频率块描述系统与环境之间的能量交换；二者统一由矩阵谱 $\boldsymbol\Gamma(\omega)$ 控制。
+
+\begin{proposition}[Gibbs 谱的 KMS 详细平衡]
+设 $H_B$ 的 Gibbs 权重可归一，相关矩阵元求和定义温和谱分布。按本章 Fourier 约定，有 $\Gamma_{\alpha\beta}(-\omega)=e^{-\beta_T\hbar\omega}\Gamma_{\beta\alpha}(\omega)$。连续谱时按谱测度积分解释；无需假设环境为 Gaussian。
+\end{proposition}
+\begin{proof}
+设环境处于 Gibbs 态
+\[
+\rho_B=\frac{\ee^{-\beta_T H_B}}{Z},
+\qquad
+H_B|n\rangle=E_n|n\rangle,
+\qquad
+Z=\sum_n\ee^{-\beta_TE_n}.
+\]
+相互作用绘景环境算符满足
+\[
+B_\alpha(t)=\ee^{+\ii H_Bt/\hbar}B_\alpha\ee^{-\ii H_Bt/\hbar}.
+\]
+在能量本征态间插入完备关系，矩阵元为
+\[
+\langle n|B_\alpha(t)|m\rangle
+=\ee^{+\ii(E_n-E_m)t/\hbar}(B_\alpha)_{nm}.
+\]
+因此平稳二点函数可以写成
+\begin{align*}
+C_{\alpha\beta}(t)
+&=\Tr_B[B_\alpha(t)B_\beta(0)\rho_B]\\
+&=\frac1Z\sum_{n,m}
+\ee^{-\beta_TE_n}
+\ee^{-\ii(E_m-E_n)t/\hbar}
+(B_\alpha)_{nm}(B_\beta)_{mn}.
+\end{align*}
+按正文的双边 Fourier 定义
+\[
+\Gamma_{\alpha\beta}(\omega)
+=\frac{\lambda^2}{\hbar^2}
+\int_{-\infty}^{+\infty}\dd t\,
+\ee^{+\ii\omega t}C_{\alpha\beta}(t),
+\]
+使用
+\[
+\int_{-\infty}^{+\infty}\dd t\,
+\ee^{\ii(\omega-\Omega)t}=2\pi\delta(\omega-\Omega),
+\]
+得到
+\[
+\Gamma_{\alpha\beta}(\omega)
+=\frac{2\pi\lambda^2}{\hbar^2Z}
+\sum_{n,m}\ee^{-\beta_TE_n}
+(B_\alpha)_{nm}(B_\beta)_{mn}
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right).
+\]
+现在将 $\omega$ 换成 $-\omega$：
+\[
+\Gamma_{\alpha\beta}(-\omega)
+=\frac{2\pi\lambda^2}{\hbar^2Z}
+\sum_{n,m}\ee^{-\beta_TE_n}
+(B_\alpha)_{nm}(B_\beta)_{mn}
+\delta\!\left(\omega+\frac{E_m-E_n}{\hbar}\right).
+\]
+交换哑指标 $n\leftrightarrow m$ 后，
+\[
+\Gamma_{\alpha\beta}(-\omega)
+=\frac{2\pi\lambda^2}{\hbar^2Z}
+\sum_{n,m}\ee^{-\beta_TE_m}
+(B_\alpha)_{mn}(B_\beta)_{nm}
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right).
+\]
+在该 $\delta$ 函数的支撑上
+\[
+E_m-E_n=\hbar\omega,
+\]
+所以 Boltzmann 权重严格满足
+\[
+\ee^{-\beta_TE_m}
+=\ee^{-\beta_T(E_m-E_n)}\ee^{-\beta_TE_n}
+=\ee^{-\beta_T\hbar\omega}\ee^{-\beta_TE_n}.
+\]
+将与求和指标无关的热因子提出，并按照 $\Gamma_{\beta\alpha}(+\omega)$ 的定义识别剩余和式，得到
+\[
+\Gamma_{\alpha\beta}(-\omega)
+=\ee^{-\beta_T\hbar\omega}
+\Gamma_{\beta\alpha}(+\omega),
+\]
+即正文\eqnrefs{eq:kms_detailed_balance_electron}。
+\end{proof}
+
+
+对单通道环境，\eqnrefs{eq:kms_detailed_balance_electron} 直接给出相反能量交换方向的速率比；$\omega=0$ 时热因子为一，而非零 Bohr 频率携带明确的能量交换 $\hbar\omega$。
+
+\subsection{高斯环境与涨落--耗散定理（FDT）}
+
+上一节已经把环境的作用写成精确的记忆核，但对任意多体环境而言，这个记忆核本身仍需要知道环境的高阶相关函数，因此通常不能直接求出。这里选择一类既常见又可以完整计算的环境：环境 Hamiltonian 对玻色坐标至多是二次的，系统与环境之间只保留线性耦合，并且环境初态是高斯态。所谓高斯态，是指任意高阶相关函数都可以由二点相关函数组合得到。正因为这一性质，环境自由度可以在这个模型内精确消去；所得二次核来自高斯统计本身，而不是弱耦合 Born 截断。
+
+取单通道耦合
+\[
+\hat H_{SB}=\hat A\otimes\hat B,
+\qquad
+\hat B=\sum_\lambda
+(g_\lambda\hat b_\lambda+g_\lambda^*\hat b_\lambda^\dagger).
+\]
+若环境有非零平均值，先定义
+\[
+\bar B(t)\equiv\langle\hat B(t)\rangle,
+\qquad
+\delta\hat B(t)\equiv\hat B(t)-\bar B(t),
+\]
+并把 $\hat A\bar B(t)$ 吸收到重整化后的系统哈密顿量中。这样，真正需要描述的环境作用只剩下零均值算符 $\delta\hat B$ 的涨落。取可分离初态 $\rho_S(t_i)\otimes\rho_B$ 时可以得到最常用的闭式结果；若系统与环境在初始时刻已经相关，则还必须保留\eqnrefs{eq:exact_nz_initial_correlation} 中的边界源项。
+
+为区分“涨落大小”与“因果响应”，定义较大/较小二点关联函数（greater/lesser correlators）
+\[
+C^>(t,s)=\langle\delta\hat B(t)\delta\hat B(s)\rangle,
+\qquad
+C^<(t,s)=\langle\delta\hat B(s)\delta\hat B(t)\rangle,
+\]
+以及它们的对称/反对称组合
+\begin{equation}
+\boxed{
+C_{\rm sym}(t,s)
+\equiv\frac12\langle\{\delta\hat B(t),\delta\hat B(s)\}\rangle,
+\qquad
+C_{\rm asym}(t,s)
+\equiv\frac{1}{2\ii}\langle[\delta\hat B(t),\delta\hat B(s)]\rangle.}
+\label{eq:noise_dissipation_kernels_general}
+\end{equation}
+$C_{\rm sym}$ 衡量环境涨落的对称部分，$C_{\rm asym}$ 来自算符对易子并决定因果反作用。密度矩阵的演化天然包含两条历史：ket 沿时间向前演化，bra 对应另一条历史。分别把系统变量沿这两条历史的取值记为 $A_+$ 与 $A_-$，并定义
+\[
+A_\Delta=A_+-A_-,
+\qquad
+A_\Sigma=\frac{A_++A_-}{2}.
+\]
+把环境自由度迹掉以后，环境对这两条系统历史的全部影响可以压缩为一个乘法因子，这个对象称为 Feynman--Vernon 影响泛函，全文记为 $\mathscr I_{\rm FV}$。由于环境是高斯的，它由二点函数完全决定：
+\begin{equation}
+\boxed{
+\mathscr I_{\rm FV}[A_+,A_-]
+=\exp\!\left\{-\frac{1}{\hbar^2}
+\int_{t_i}^{t_f}\dd t\int_{t_i}^{t}\dd s\,
+A_\Delta(t)
+\left[C_{\rm sym}(t,s)A_\Delta(s)+2\ii C_{\rm asym}(t,s)A_\Sigma(s)\right]
+\right\}.}
+\label{eq:gaussian_feynman_vernon_influence}
+\end{equation}
+这个影响泛函保留 $t$ 与 $s$ 两个独立时间，因此一般描述有色噪声和非局域记忆。若 $C_{\rm sym}(t,s)$、$C_{\rm asym}(t,s)$ 在相关时间远短于系统时间尺度时收缩成近局域核，才分别产生白噪声、指数型退相干或局域摩擦的 Markov 极限。$C_{\rm sym}$ 抑制两条历史之间的相干，$C_{\rm asym}$ 改变相位并产生因果反作用；二者来自同一个环境二点函数。
+
+\begin{theorem}[Gaussian 轮廓平均的二次泛函]
+设环境为零均值 Gaussian 态，耦合对环境算符线性，$A_\pm(t)$ 是给定的可积数值路径，并且二点核积分存在。则轮廓平均的高阶连通项消失，精确影响泛函为\eqnrefs{eq:gaussian_feynman_vernon_influence}，噪声核乘 $A_\Delta A_\Delta$，响应核乘 $A_\Delta A_\Sigma$。
+\end{theorem}
+\begin{proof}
+环境为 Gaussian 态且系统--环境耦合对环境变量线性时，连通累积量在二阶精确终止。闭时路径的四个支路必须显式重组，才能看出噪声结构 $A_\Delta A_\Delta$ 与响应结构 $A_\Delta A_\Sigma$ 分别从何而来。
+
+从零均值环境算符 $\delta B$ 的轮廓平均出发：
+\begin{equation*}
+\mathscr I_{\rm FV}
+=\left\langle\mathcal T_{\mathcal C}
+\exp\!\left[-\frac{\ii}{\hbar}
+\int_{\mathcal C}\dd z\,A_{\mathcal C}(z)\delta B(z)\right]
+\right\rangle_B.
+\end{equation*}
+高斯累积量定理给
+\begin{equation*}
+\ln\mathscr I_{\rm FV}
+=-\frac{1}{2\hbar^2}
+\int_{\mathcal C}\dd z\int_{\mathcal C}\dd z'\,
+A_{\mathcal C}(z)
+C_{\mathcal C}(z,z')
+A_{\mathcal C}(z'),
+\end{equation*}
+其中
+\begin{equation*}
+C_{\mathcal C}(z,z')
+\equiv\langle\mathcal T_{\mathcal C}\delta B(z)\delta B(z')\rangle.
+\end{equation*}
+
+闭时路径有向前的 $+$ 支和向后的 $-$ 支。把轮廓积分改写成普通实时间积分时，支路方向带来
+\begin{equation*}
+s_+=+1,
+\qquad
+s_-=-1,
+\end{equation*}
+所以
+\begin{equation*}
+\ln\mathscr I_{\rm FV}
+=-\frac{1}{2\hbar^2}
+\sum_{a,b=\pm}s_a s_b
+\int_{t_i}^{t_f}\dd t\int_{t_i}^{t_f}\dd s\,
+A_a(t)C^{ab}(t,s)A_b(s).
+\end{equation*}
+四个实时间相关函数不是四个独立对象，而都由 greater/lesser 两个函数组成：
+\begin{align*}
+C^{++}(t,s)
+&=\Theta(t-s)C^>(t,s)+\Theta(s-t)C^<(t,s),\\
+C^{--}(t,s)
+&=\Theta(s-t)C^>(t,s)+\Theta(t-s)C^<(t,s),\\
+C^{+-}(t,s)&=C^<(t,s),\\
+C^{-+}(t,s)&=C^>(t,s).
+\end{align*}
+这里 $++$ 是普通时间有序，$--$ 是反时间有序，而 $+-$ 与 $-+$ 的次序由闭时路径本身固定。
+
+先只看三角域 $t>s$。四支路之和的被积式为
+\begin{align*}
+\mathcal Q(t,s)
+={}&A_+(t)C^>(t,s)A_+(s)
+-A_+(t)C^<(t,s)A_-(s)\\
+&-A_-(t)C^>(t,s)A_+(s)
++A_-(t)C^<(t,s)A_-(s).
+\end{align*}
+另一半三角域 $s>t$ 交换积分哑变量 $t\leftrightarrow s$ 后给出完全相同的 $\mathcal Q(t,s)$。因此原来正方形积分前的 $1/2$ 与两个三角域的因子 2 恰好抵消：
+\begin{equation*}
+\ln\mathscr I_{\rm FV}
+=-\frac{1}{\hbar^2}
+\int_{t_i}^{t_f}\dd t\int_{t_i}^{t}\dd s\,
+\mathcal Q(t,s).
+\end{equation*}
+
+现在才引入正文的和、差变量
+\begin{equation*}
+A_+=A_\Sigma+\frac{A_\Delta}{2},
+\qquad
+A_-=A_\Sigma-\frac{A_\Delta}{2},
+\end{equation*}
+以及
+\begin{equation*}
+C^>=C_{\rm sym}+\ii C_{\rm asym},
+\qquad
+C^<=C_{\rm sym}-\ii C_{\rm asym}.
+\end{equation*}
+把这四个等式逐项代入 $\mathcal Q$。先收集 $C_{\rm sym}$：
+\begin{align*}
+\mathcal Q_{\rm sym}
+={}&C_{\rm sym}
+\bigl[A_+(t)-A_-(t)\bigr]
+\bigl[A_+(s)-A_-(s)\bigr]\\
+={}&A_\Delta(t)C_{\rm sym}(t,s)A_\Delta(s).
+\end{align*}
+再收集 $\ii C_{\rm asym}$：
+\begin{align*}
+\mathcal Q_{\rm asym}
+={}&\ii C_{\rm asym}
+\bigl[A_+(t)-A_-(t)\bigr]
+\bigl[A_+(s)+A_-(s)\bigr]\\
+={}&2\ii A_\Delta(t)C_{\rm asym}(t,s)A_\Sigma(s).
+\end{align*}
+因此
+\begin{equation*}
+\mathcal Q(t,s)
+=A_\Delta(t)
+\left[
+C_{\rm sym}(t,s)A_\Delta(s)
++2\ii C_{\rm asym}(t,s)A_\Sigma(s)
+\right].
+\end{equation*}
+代回三角域积分，得到
+\begin{equation*}
+\boxed{
+\mathscr I_{\rm FV}[A_+,A_-]
+=\exp\!\left\{-\frac{1}{\hbar^2}
+\int_{t_i}^{t_f}\dd t\int_{t_i}^{t}\dd s\,
+A_\Delta(t)
+\left[
+C_{\rm sym}(t,s)A_\Delta(s)
++2\ii C_{\rm asym}(t,s)A_\Sigma(s)
+\right]
+\right\},}
+\end{equation*}
+即正文\eqnrefs{eq:gaussian_feynman_vernon_influence}。
+\end{proof}
+
+
+只有进一步要求环境平稳且处于 Gibbs 态，噪声与响应才由热平衡约束相互锁定。按全文傅里叶约定定义
+\begin{equation}
+\boxed{
+S_B^{>/<}(\omega)
+\equiv\int_{-\infty}^{\infty}\dd\tau\,
+\ee^{\ii\omega\tau}C^{>/<}(\tau).}
+\label{eq:bath_greater_lesser_spectra}
+\end{equation}
+若 $\rho_B=\ee^{-\beta_T H_B}/Z_B$，其中 $\beta_T=(k_BT)^{-1}$，谱展开直接给出 KMS 细致平衡关系
+\[
+S_B^<(\omega)=\ee^{-\beta_T\hbar\omega}S_B^>(\omega).
+\]
+再定义
+\[
+\widetilde C_{\rm sym}(\omega)
+\equiv\frac12\left[S_B^>(\omega)+S_B^<(\omega)\right],
+\qquad
+\mathscr S_B^{(-)}(\omega)
+\equiv\frac{1}{\hbar}\left[S_B^>(\omega)-S_B^<(\omega)\right],
+\]
+以及推迟响应函数
+\[
+\chi_B^R(\tau)
+\equiv-\frac{\ii}{\hbar}\Theta(\tau)
+\langle[\delta\hat B(\tau),\delta\hat B(0)]\rangle.
+\]
+在上述符号约定下 $\mathscr S_B^{(-)}=-2\operatorname{Im}\chi_B^R$，于是涨落--耗散定理（fluctuation--dissipation 定理）为
+\begin{equation}
+\boxed{
+\widetilde C_{\rm sym}(\omega)
+=-\hbar\coth\!\left(\frac{\beta_T\hbar\omega}{2}\right)
+\operatorname{Im}\chi_B^R(\omega).}
+\label{eq:fdt_from_defined_correlators}
+\end{equation}
+热平衡结构沿“热态 $\to$ KMS 条件 $\to$ 涨落--耗散关系”单向确定；非平衡高斯环境仍满足\eqnrefs{eq:gaussian_feynman_vernon_influence}，却一般不满足\eqnrefs{eq:fdt_from_defined_correlators}。
+
+\begin{proposition}[热谱的和差与涨落耗散恒等式]
+对 Gibbs 平衡中的 Hermitian 环境算符，采用 $\chi_B^R(t)=-\ii\Theta(t)\langle[B(t),B(0)]\rangle/\hbar$，有 $S_B^<(\omega)=e^{-\beta_T\hbar\omega}S_B^>(\omega)$ 及\eqnrefs{eq:fdt_from_defined_correlators}。零频处按谱的连续极限解释，不能直接除以 $1-e^{-\beta_T\hbar\omega}$。
+\end{proposition}
+\begin{proof}
+正文\eqnrefs{eq:bath_greater_lesser_spectra} 已把环境的正、负频率信息分别编码在 $S_B^>$ 与 $S_B^<$ 中。热平衡额外提供的内容是 Gibbs 权重，因此先在能量本征基中比较两种谱的权重，再把它们的和、差分别连接到 $\widetilde C_{\rm sym}$ 与推迟响应。令 $H_B|n\rangle=E_n|n\rangle$。greater 谱为
+\begin{equation*}
+S_B^>(\omega)
+=\frac{2\pi}{Z_B}\sum_{n,m}\ee^{-\beta_TE_n}|B_{nm}|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right).
+\end{equation*}
+lesser 谱写成
+\begin{equation*}
+S_B^<(\omega)
+=\frac{2\pi}{Z_B}\sum_{n,m}\ee^{-\beta_TE_n}|B_{nm}|^2
+\delta\!\left(\omega+\frac{E_m-E_n}{\hbar}\right).
+\end{equation*}
+交换哑指标 $n\leftrightarrow m$ 后，
+\begin{align*}
+S_B^<(\omega)
+&=\frac{2\pi}{Z_B}\sum_{n,m}\ee^{-\beta_TE_m}|B_{nm}|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
+&=\ee^{-\beta_T\hbar\omega}S_B^>(\omega),
+\end{align*}
+因为 $\delta$ 分布只在 $E_m-E_n=\hbar\omega$ 上有支撑。这就是频域 KMS/详细平衡关系。于是
+\begin{align*}
+\widetilde C_{\rm sym}(\omega)
+&=\frac12\big[S_B^>(\omega)+S_B^<(\omega)\big]\\
+&=\frac12S_B^>(\omega)\big(1+\ee^{-\beta_T\hbar\omega}\big),\\
+\mathscr S_B^{(-)}(\omega)
+&=\frac1\hbar\big[S_B^>(\omega)-S_B^<(\omega)\big]\\
+&=\frac1\hbar S_B^>(\omega)\big(1-\ee^{-\beta_T\hbar\omega}\big).
+\end{align*}
+消去 $S_B^>$ 得
+\begin{align*}
+\frac{\widetilde C_{\rm sym}(\omega)}{\mathscr S_B^{(-)}(\omega)}
+&=\frac{\hbar}{2}
+\frac{1+\ee^{-\beta_T\hbar\omega}}{1-\ee^{-\beta_T\hbar\omega}}\\
+&=\frac{\hbar}{2}\coth\!\left(\frac{\beta_T\hbar\omega}{2}\right).
+\end{align*}
+另一方面，由
+\begin{equation*}
+\chi_B^R(t)=-\frac{\ii}{\hbar}\Theta(t)\langle[B(t),B(0)]\rangle
+\end{equation*}
+的 Fourier 变换可得谱函数与推迟响应的关系
+\begin{equation*}
+\mathscr S_B^{(-)}(\omega)=-2\operatorname{Im}\chi_B^R(\omega).
+\end{equation*}
+代入上一比值，得到
+\begin{equation*}
+\widetilde C_{\rm sym}(\omega)
+=-\hbar\coth\!\left(\frac{\beta_T\hbar\omega}{2}\right)
+\operatorname{Im}\chi_B^R(\omega),
+\end{equation*}
+即\eqnrefs{eq:fdt_from_defined_correlators}。只有再取 $\beta_T\hbar\omega\ll1$，才会进一步得到经典高温形式。
+\end{proof}
+
+
+同一组核也可以写成随机力语言。取系统坐标 $x_S$ 线性耦合环境，$A=x_S$。由于 $C_{\rm sym}$ 是半正定协方差核，Hubbard--Stratonovich 变换允许引入零均值高斯随机力 $\xi$，满足
+\[
+\langle\xi(t)\xi(s)\rangle=C_{\rm sym}(t,s).
+\]
+对粗粒化有效作用量在路径差 $x_{S,\Delta}$ 的线性阶取驻值条件，得到广义 Langevin 方程
+\begin{equation}
+\boxed{
+M\ddot x_S(t)+V'[x_S(t)]
++\int_{t_i}^{t}\dd s\,\chi_B^R(t,s)x_S(s)
+=\xi(t),
+\qquad
+\langle\xi(t)\xi(s)\rangle=C_{\rm sym}(t,s).}
+\label{eq:generalized_langevin_from_influence}
+\end{equation}
+因此记忆力与随机力不是两个独立的经验输入；在线性高斯环境中，它们分别读取同一量子关联函数的对易子与反对易子部分。只有环境记忆时间远短于系统时间尺度时，记忆积分才可进一步局域化；再取 $k_BT\gg\hbar\omega$，量子涨落--耗散关系才退化成经典 Einstein 关系。
+
+在同一个厄米耦合 $H_I=\lambda x_S\otimes B$ 下，Born 二阶但仍保留非 Markov 记忆的方程可以写成
+\begin{equation}
+\boxed{
+\begin{aligned}
+\dot\rho_{S,I}(t)
+={}&-\frac{\lambda^2}{\hbar^2}\int_0^t\dd\tau\,
+C_{\rm sym}(\tau)[x_S(t),[x_S(t-\tau),\rho_{S,I}(t-\tau)]]\\
+&-\frac{\ii\lambda^2}{\hbar^2}\int_0^t\dd\tau\,
+C_{\rm asym}(\tau)[x_S(t),\{x_S(t-\tau),\rho_{S,I}(t-\tau)\}]
++O(\lambda^3).
+\end{aligned}}
+\label{eq:born_nonmarkov_noise_dissipation_form}
+\end{equation}
+Born 主方程与影响泛函使用同一组 $C_{\rm sym},C_{\rm asym}$；前者把约化动力学按耦合展开，后者则在高斯环境中对环境收缩精确重求和。
+
+对谐振子系统 $V(x_S)=M\Omega_0^2x_S^2/2$，Langevin 方程在频域定义经过环境修饰的因果响应
+\begin{equation}
+\boxed{
+\mathcal R_{x_S}(\omega)
+\equiv\left[
+M\bigl(\Omega_0^2-(\omega+\ii0^+)^2\bigr)
++\chi_B^R(\omega)
+\right]^{-1},
+\qquad
+x_S(\omega)=\mathcal R_{x_S}(\omega)\xi(\omega).}
+\label{eq:dressed_oscillator_retarded_response}
+\end{equation}
+于是平稳对称坐标谱为
+\begin{equation}
+\boxed{
+S_{x_Sx_S}^{\rm sym}(\omega)
+=|\mathcal R_{x_S}(\omega)|^2\widetilde C_{\rm sym}(\omega).}
+\label{eq:dressed_coordinate_spectrum_dp68}
+\end{equation}
+若环境处于热平衡，把\eqnrefs{eq:fdt_from_defined_correlators} 代入便得到系统可观测量自身的涨落--耗散关系，
+\begin{equation}
+\boxed{
+S_{x_Sx_S}^{\rm sym}(\omega)
+=\hbar\coth\!\left(\frac{\beta_T\hbar\omega}{2}\right)
+[-\operatorname{Im}\chi_{x_S}^R(\omega)],}
+\label{eq:dressed_system_fdt_from_bath_fdt}
+\end{equation}
+按全文符号约定，$\chi_{x_S}^R=-\mathcal R_{x_S}$。因此环境的涨落--耗散关系经过推迟响应修饰后自动传递给系统可观测量。
+
+高斯环境之所以特殊，是因为所有三阶及更高连通相关函数都严格为零；这不是一般线性环境的必然性质。若材料自由度本身非谐、环境被制备在 Fock/cat/squeezed-non-Gaussian 态，或电子耦合到具有明显跳跃统计的离散缺陷，二点函数不足以确定电子动力学。一般情况下仍可以沿闭合时间路径组织环境迹，但影响泛函的对数必须保留完整的连通累积量层级。把两条 Keldysh 支路统一记作轮廓变量 $z\in\mathcal C$，并把支路方向符号吸收到轮廓源 $A_{\mathcal C}(z)$ 中，则
+\begin{equation}
+\boxed{
+\ln\mathscr I[A_+,A_-]
+=\sum_{n=1}^{\infty}
+\frac1{n!}
+\left(-\frac{\ii}{\hbar}\right)^n
+\int_{\mathcal C}\dd z_1\cdots\dd z_n\,
+A_{\mathcal C}(z_1)\cdots A_{\mathcal C}(z_n)
+C_c^{(n)}(z_1,\ldots,z_n),}
+\label{eq:non_gaussian_influence_cumulant_hierarchy}
+\end{equation}
+其中
+\[
+C_c^{(n)}(z_1,\ldots,z_n)
+\equiv
+\left\langle\!\left\langle
+\mathcal T_{\mathcal C}
+\delta B(z_1)\cdots\delta B(z_n)
+\right\rangle\!\right\rangle
+\]
+是环境的轮廓有序 $n$ 点连通累积量。高斯环境正是
+$C_c^{(n>2)}=0$ 的特例，所以\eqnrefs{eq:gaussian_feynman_vernon_influence} 才在二阶终止；非高斯环境不能靠“把 Green 函数换成一个更复杂的 Green 函数”吸收掉，因为 Green 函数只编码二点响应。
+
+一个最直观的可计算极限是纯退相干型耦合：系统路径只通过一个与环境算符对易的累积相位
+\begin{equation*}
+\hat\Phi
+\equiv\frac1\hbar\int_{t_i}^{t_f}\dd t\,f(t)\delta B(t)
+\end{equation*}
+读取环境。此时路径相干因子就是环境相位的特征函数
+\begin{equation}
+\boxed{
+\mathcal V\ee^{\ii\varphi}
+=\left\langle\ee^{-\ii\hat\Phi}\right\rangle
+=\exp\!\left[
+\sum_{n=1}^{\infty}
+\frac{(-\ii)^n}{n!}\mathcal C_n^{(\Phi)}
+\right],}
+\label{eq:non_gaussian_phase_characteristic_cumulants}
+\end{equation}
+其中
+$\mathcal C_n^{(\Phi)}=\langle\!\langle\hat\Phi^n\rangle\!\rangle$。
+若 $\langle\hat\Phi\rangle=0$，前四阶给
+\begin{equation*}
+\ln(\mathcal V\ee^{\ii\varphi})
+=-\frac{\mathcal C_2^{(\Phi)}}{2}
++\frac{\ii\mathcal C_3^{(\Phi)}}{6}
++\frac{\mathcal C_4^{(\Phi)}}{24}+O(\mathcal C_5^{(\Phi)}).
+\end{equation*}
+所以二阶 cumulant 控制 Gaussian 可见度衰减，三阶 cumulant 首先产生由偏斜统计引起的附加相位，四阶 cumulant 则修正 Gaussian 指数包络。为了判断“近似 Gaussian”是否受控，可在实际滤波函数 $f(t)$ 已经固定后定义
+\begin{equation}
+\boxed{
+\epsilon_{\rm NG}^{(3)}
+\equiv
+\frac{|\mathcal C_3^{(\Phi)}|}{[\mathcal C_2^{(\Phi)}]^{3/2}},
+\qquad
+\epsilon_{\rm NG}^{(4)}
+\equiv
+\frac{|\mathcal C_4^{(\Phi)}|}{[\mathcal C_2^{(\Phi)}]^{2}}.}
+\label{eq:non_gaussian_standardized_cumulant_control}
+\end{equation}
+这些量必须连同实际电子时间窗一起计算；环境本身“弱非线性”并不自动保证电子所采样的相位统计接近 Gaussian。
+
+\begin{proposition}[相位特征函数的累积量展开]
+若轮廓生成泛函在零源附近解析且不为零，其对数由连通有序 cumulant 展开。对可交换实相位 $\Phi$，当累积量级数在 $s=-\ii$ 收敛且对应对数支路连续时，\eqnrefs{eq:non_gaussian_phase_characteristic_cumulants}成立。Gaussian 情形高于二阶的 cumulant 严格消失；一般相位不能只因所有矩存在便断言全级数收敛。
+\end{proposition}
+\begin{proof}
+从任意环境平均
+\[
+\mathscr I
+=\left\langle
+\mathcal T_{\mathcal C}
+\exp\!\left[-\frac{\ii}{\hbar}
+\int_{\mathcal C}\dd z\,
+A_{\mathcal C}(z)\delta B(z)
+\right]
+\right\rangle
+\]
+出发。定义轮廓源
+\[
+X\equiv-\frac{\ii}{\hbar}
+\int_{\mathcal C}\dd z\,
+A_{\mathcal C}(z)\delta B(z).
+\]
+普通矩生成函数与连通生成函数的关系是
+\[
+\ln\langle\ee^X\rangle
+=\sum_{n=1}^{\infty}\frac1{n!}
+\langle\!\langle X^n\rangle\!\rangle.
+\]
+由于 $X$ 对环境算符是线性的，第 $n$ 阶连通矩直接成为
+\begin{align*}
+\langle\!\langle X^n\rangle\!\rangle
+={}&\left(-\frac{\ii}{\hbar}\right)^n
+\int_{\mathcal C}\dd z_1\cdots\dd z_n\,
+A_{\mathcal C}(z_1)\cdots A_{\mathcal C}(z_n)\\
+&\times
+\left\langle\!\left\langle
+\mathcal T_{\mathcal C}
+\delta B(z_1)\cdots\delta B(z_n)
+\right\rangle\!\right\rangle.
+\end{align*}
+代回即得到正文\eqnrefs{eq:non_gaussian_influence_cumulant_hierarchy}。若环境是 Gaussian，Wick 定理使所有 $n>2$ 连通 cumulant 消失，因此二阶结果不是“弱耦合截断”，而是在 Gaussian 条件下的精确终止。
+
+纯退相干极限中，系统两条路径只给环境施加一个 c-number 滤波函数 $f(t)$，且相关耦合在不同时刻彼此对易。定义
+\[
+\hat\Phi=\frac1\hbar\int\dd t\,f(t)\delta B(t).
+\]
+此时轮廓有序问题退化为普通特征函数
+\[
+\chi_\Phi(1)=\langle\ee^{-\ii\hat\Phi}\rangle.
+\]
+对随机变量/可交换算符的 cumulant 生成函数
+\[
+K_\Phi(s)
+\equiv\ln\langle\ee^{s\hat\Phi}\rangle
+=\sum_{n=1}^{\infty}\frac{s^n}{n!}\mathcal C_n^{(\Phi)},
+\]
+取 $s=-\ii$，得到
+\[
+\ln\chi_\Phi(1)
+=\sum_{n=1}^{\infty}\frac{(-\ii)^n}{n!}\mathcal C_n^{(\Phi)},
+\]
+即正文\eqnrefs{eq:non_gaussian_phase_characteristic_cumulants}。
+
+若均值已经吸收到确定性相位中，$\mathcal C_1^{(\Phi)}=0$。逐阶展开：
+\[
+(-\ii)^2=-1,
+\qquad
+(-\ii)^3=+\ii,
+\qquad
+(-\ii)^4=+1,
+\]
+因此
+\[
+\ln\chi_\Phi
+=-\frac{\mathcal C_2^{(\Phi)}}{2}
++\frac{\ii\mathcal C_3^{(\Phi)}}{6}
++\frac{\mathcal C_4^{(\Phi)}}{24}+\cdots.
+\]
+模与辐角分别由实部和虚部给出。若只保留 Gaussian 二阶项，误差是否小必须比较被忽略项与二阶项，而不能比较裸环境 Hamiltonian 中某个非线性系数。把 cumulant 按方差标准化便得到正文\eqnrefs{eq:non_gaussian_standardized_cumulant_control}。当 $\mathcal C_2^{(\Phi)}$ 很小时，这些标准化比值可能变大，所以“噪声总体很弱”与“噪声近似 Gaussian”是两个不同命题。
+\end{proof}
+
+
+这条层级对自由电子尤其有用。EELS 或弱 PINEM 的低阶谱通常主要读取环境的二点关联；经过整形的电子相干、重复条件测量和 heralding 则可以把更高连通 cumulant 转换成可观测电子统计。
+
+因此，两个环境即使具有完全相同的二点 Green/FDT 谱，也仍可能因为三点、四点连通函数不同而给出不同的电子输出。只用二点 Green 张量预测全部量子统计时，所依赖的额外条件是“环境动力学线性且相关初态为 Gaussian”，而不是 Green 张量本身自动包含所有高阶统计。
+
+\input{sections/06-nonmarkov-langevin-bridge}
+
+这个代数同时给出两种核的物理角色。若两条系统历史完全相同，$A_\Delta=0$，影响泛函等于 1；对称核总是乘历史之差，因此控制历史可区分性与退相干，而反对称核只在“差变量 $\times$ 平均变量”中出现，因而编码因果反作用而不是独立的随机噪声强度。
+
+\subsection{退相干与扩散}
+
+环境对电子的影响可以从密度矩阵的两类分量看出。若主要改变不同通道的相对相位，非对角元会减小，干涉对比度随之降低；若还交换能量，对角元也会随时间变化，能谱可能逐渐展宽。实验中的到达时间波动也能使多次记录平均后的干涉减弱，但单次电子态未必因此变混。本节分别计算这些效应，并比较它们对相干、布居和能宽的影响。
+
+先看实验参考相位的不确定性。若一发电子相对参考光场有随机延迟 $\delta t$，能量格相干 $\rho_{\ell m}$ 获得相位 $\exp[-\ii(\ell-m)\omega\delta t]$。当 $\delta t$ 是方差 $\sigma_t^2$ 的零均值高斯变量时，对未记录延迟作系综平均得到
+\begin{equation}
+\boxed{
+\rho_{\ell m}\longrightarrow
+\rho_{\ell m}
+\exp\!\left[-\frac12(\ell-m)^2\omega^2\sigma_t^2\right].}
+\label{eq:arrival_jitter_dephasing}
+\end{equation}
+单次电子并未在传播中必然与量子环境纠缠；损失的是实验者对光学相位参考的知识。因此改变定时诊断或后选择原则上可以恢复这类对比度，而真正不可逆的环境偏迹一般不能这样撤销。
+
+为了描述能量格上的动态随机相位，引入无量纲格点指标算符
+\[
+\hat\Lambda_e\equiv\sum_{\ell\in\mathbb Z}\ell|\ell\rangle\langle\ell|.
+\]
+令频率噪声 $\mathfrak n_\varphi(t)$ 以
+\[
+H(t)=H_e+\hbar\mathfrak n_\varphi(t)\hat\Lambda_e
+\]
+耦合，其中 $\langle\mathfrak n_\varphi\rangle=0$，$\mathfrak n_\varphi$ 的 SI 单位为 s$^{-1}$，平稳相关函数为
+\[
+C_\varphi(\tau)
+\equiv\langle\mathfrak n_\varphi(t+\tau)\mathfrak n_\varphi(t)\rangle.
+\]
+若 $H_e$ 在所选能量格基底中对角，则 $[H_e,\hat\Lambda_e]=0$，高斯相位平均可精确完成；这一对易性本身不要求相邻能级等间隔。定义累积相位方差的一半
+\[
+\Xi_\varphi(t)
+\equiv\int_0^t\dd\tau\,(t-\tau)C_\varphi(\tau),
+\]
+则
+\begin{equation}
+\boxed{
+\rho_{\ell m}(t)
+=\rho_{\ell m}(0)\ee^{-\ii\omega_{\ell m}t}
+\exp[-(\ell-m)^2\Xi_\varphi(t)].}
+\label{eq:exact_gaussian_dephasing_electron}
+\end{equation}
+格点距离 $|\ell-m|$ 越大，相干携带的相对光学相位阶数越高，因此同一相位噪声对远副对角元抑制更强。
+
+\begin{proposition}[Gaussian 相位平均的精确退相干]
+设到达抖动是零均值 Gaussian 变量，或者频率噪声是具有可积协方差核的零均值实平稳 Gaussian 过程。随机幺正平均给\eqnrefs{eq:arrival_jitter_dephasing}和\eqnrefs{eq:exact_gaussian_dephasing_electron}，且平均信道完全正、保迹；$\Xi_\varphi(t)$ 等于累积相位方差的一半，始终非负。
+\end{proposition}
+\begin{proof}
+先处理 shot-to-shot 到达时间抖动。若第 $\ell$ 个能量格相对于第 $m$ 个能量格多积累相位
+\[
+\Delta\phi_{\ell m}=(\ell-m)\omega\,\delta t,
+\]
+则一次给定 $\delta t$ 的实验把密度矩阵元乘以
+\[
+\ee^{-\ii\Delta\phi_{\ell m}}
+=\ee^{-\ii(\ell-m)\omega\delta t}.
+\]
+对零均值 Gaussian 分布
+\[
+p(\delta t)=\frac1{\sqrt{2\pi}\sigma_t}
+\exp\!\left(-\frac{\delta t^2}{2\sigma_t^2}\right)
+\]
+求实验平均。令 $k=(\ell-m)\omega$，配方得到
+\begin{align*}
+&-\frac{\delta t^2}{2\sigma_t^2}-\ii k\delta t\\
+&\qquad=-\frac{(\delta t+\ii k\sigma_t^2)^2}{2\sigma_t^2}
+-\frac12k^2\sigma_t^2.
+\end{align*}
+Gaussian 积分归一化因子不变，因此
+\begin{align*}
+\left\langle\ee^{-\ii k\delta t}\right\rangle
+&=\int\dd\delta t\,p(\delta t)\ee^{-\ii k\delta t}\\
+&=\exp\!\left(-\frac12k^2\sigma_t^2\right)\\
+&=\exp\!\left[-\frac12(\ell-m)^2\omega^2\sigma_t^2\right],
+\end{align*}
+即正文\eqnrefs{eq:arrival_jitter_dephasing}。
+
+再处理随时间变化的零均值 Gaussian 频率噪声 $\mathfrak n_\varphi(t)$。定义累积随机相位
+\[
+X_t=\int_0^t\dd s\,\mathfrak n_\varphi(s).
+\]
+给定一条噪声轨迹时，能量格密度矩阵元为
+\[
+\rho_{\ell m}(t|\mathfrak n_\varphi)
+=\rho_{\ell m}(0)\ee^{-\ii\omega_{\ell m}t}
+\ee^{-\ii(\ell-m)X_t}.
+\]
+因为 $X_t$ 是 Gaussian 过程的线性泛函，它自身仍是零均值 Gaussian 变量，所以其特征函数满足
+\[
+\left\langle\ee^{-\ii qX_t}\right\rangle
+=\exp\!\left[-\frac{q^2}{2}\langle X_t^2\rangle\right].
+\]
+取 $q=\ell-m$。由平稳相关函数
+\[
+C_\varphi(s-s')
+=\langle\mathfrak n_\varphi(s)\mathfrak n_\varphi(s')\rangle
+\]
+有
+\begin{align*}
+\langle X_t^2\rangle
+&=\int_0^t\dd s\int_0^t\dd s'\,C_\varphi(s-s')\\
+&=2\int_0^t\dd s\int_0^s\dd s'\,C_\varphi(s-s')\\
+&=2\int_0^t\dd s\int_0^s\dd\tau\,C_\varphi(\tau)\\
+&=2\int_0^t\dd\tau\,(t-\tau)C_\varphi(\tau).
+\end{align*}
+其中第二步利用实平稳噪声相关函数的偶对称性，第三步取 $\tau=s-s'$，最后交换积分次序。因而
+\[
+\frac12\langle X_t^2\rangle
+=\int_0^t\dd\tau\,(t-\tau)C_\varphi(\tau)
+\equiv\Xi_\varphi(t).
+\]
+对噪声平均后得到
+\[
+\rho_{\ell m}(t)
+=\rho_{\ell m}(0)\ee^{-\ii\omega_{\ell m}t}
+\exp[-(\ell-m)^2\Xi_\varphi(t)],
+\]
+即正文\eqnrefs{eq:exact_gaussian_dephasing_electron}。
+\end{proof}
+
+
+\eqnrefs{eq:exact_gaussian_dephasing_electron} 同时区分准静态与短记忆两个极限。若实验窗内可取 $C_\varphi(\tau)\simeq C_\varphi(0)$，则
+\[
+\Xi_\varphi(t)\simeq\frac12C_\varphi(0)t^2,
+\]
+相干呈高斯时间衰减；若环境关联时间 $\tau_B$ 远短于系统时间，定义
+\[
+\Gamma_\varphi\equiv2\int_0^\infty\dd\tau\,C_\varphi(\tau),
+\]
+则 $\Xi_\varphi(t)\simeq\Gamma_\varphi t/2$，并得到
+\begin{equation}
+\boxed{
+\dot\rho_e
+=-\frac{\ii}{\hbar}[H_e,\rho_e]
++\Gamma_\varphi\mathcal D[\Lambda_e]\rho_e,
+\qquad
+\mathcal D[X]\rho=X\rho X^\dagger-\frac12\{X^\dagger X,\rho\}.}
+\label{eq:energy_lattice_pure_dephasing_gksl}
+\end{equation}
+因此 $\mathcal D[\Lambda_e]$ 由能量格相位噪声的短相关时间极限固定。若环境必须量子化，同一结构应从 $\Lambda_e\otimes B$ 的零频噪声谱经 Born--Markov--久期极限得到；经典随机噪声与量子环境偏迹对应不同的物理假设。
+
+\begin{proposition}[有限一阶相关矩的退相干极限]
+设实平稳协方差 $C_\varphi$ 及其一阶绝对矩可积。则 $\Xi_\varphi(t)=tI_0-r_\varphi(t)$，$|r_\varphi(t)|\le t\int_t^\infty|C_\varphi|+\int_0^t\tau|C_\varphi|\le M_1^{(\varphi)}$，且 $I_0\ge0$。以 $\Gamma_\varphi=2I_0$ 取线性极限时，有限格点工作窗上的生成元为\eqnrefs{eq:energy_lattice_pure_dephasing_gksl}。
+\end{proposition}
+\begin{proof}
+设 $C_\varphi(\tau)$ 绝对可积且一阶绝对矩有限，并定义
+\begin{equation*}
+I_0\equiv\int_0^\infty\dd\tau\,C_\varphi(\tau),
+\qquad
+M_1^{(\varphi)}\equiv\int_0^\infty\dd\tau\,\tau|C_\varphi(\tau)|.
+\end{equation*}
+相位耦合算符 $\Lambda_e=\sum_\ell\ell|\ell\rangle\langle\ell|$ 在能量格上对角。对精确退相干指数，直接加减 $tI_0$ 得到恒等式
+\begin{align*}
+\Xi_\varphi(t)
+&=\int_0^t\dd\tau\,(t-\tau)C_\varphi(\tau)\\
+&=tI_0-r_\varphi(t),\\
+r_\varphi(t)
+&\equiv
+t\int_t^\infty\dd\tau\,C_\varphi(\tau)
++\int_0^t\dd\tau\,\tau C_\varphi(\tau).
+\end{align*}
+余项满足严格界
+\begin{equation*}
+|r_\varphi(t)|
+\le
+t\int_t^\infty\dd\tau\,|C_\varphi(\tau)|
++M_1^{(\varphi)}.
+\end{equation*}
+当右端相对于 $t|I_0|$ 很小时，才可用 $\Xi_\varphi(t)=tI_0+r_{\rm M}(t)$ 且 $|r_{\rm M}(t)|\ll t|I_0|$ 的时间局域极限。
+代入正文关系
+\begin{equation*}
+\frac{\Gamma_\varphi}{2}=\int_0^\infty\dd\tau\,C_\varphi(\tau),
+\end{equation*}
+于是主导项为 $\Xi_\varphi(t)=\Gamma_\varphi t/2$。再计算 Lindblad 耗散子。由于
+\begin{equation*}
+\Lambda_e|\ell\rangle=\ell|\ell\rangle,
+\end{equation*}
+有
+\begin{align*}
+\langle\ell|\Lambda_e\rho\Lambda_e|m\rangle&=\ell m\rho_{\ell m},\\
+\langle\ell|\Lambda_e^2\rho|m\rangle&=\ell^2\rho_{\ell m},\\
+\langle\ell|\rho\Lambda_e^2|m\rangle&=m^2\rho_{\ell m}.
+\end{align*}
+因此
+\begin{align*}
+\langle\ell|\mathcal D[\Lambda_e]\rho|m\rangle
+&=\ell m\rho_{\ell m}-\frac12(\ell^2+m^2)\rho_{\ell m}\\
+&=-\frac12(\ell-m)^2\rho_{\ell m}.
+\end{align*}
+对角元 $\ell=m$ 的右端为零，所以人口保持不变；非对角元满足
+\begin{equation*}
+\dot\rho_{\ell m}=-\frac{\Gamma_\varphi}{2}(\ell-m)^2\rho_{\ell m},
+\end{equation*}
+解为
+\begin{equation*}
+\rho_{\ell m}(t)=\rho_{\ell m}(0)\exp[-\Gamma_\varphi t(\ell-m)^2/2],
+\end{equation*}
+与精确高斯退相干律的短记忆极限一致，即\eqnrefs{eq:energy_lattice_pure_dephasing_gksl}。
+\end{proof}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.72\textwidth]{dephasing_coherence.png}
+\caption{能量格相位噪声对不同副对角线的选择性抑制。相隔 $|\ell-m|$ 越远的相干项，对同一相位噪声越敏感。}
+\label{fig:dephasing_coherence}
+\end{figure}
+
+纯退相干只消除相位，不改变理想能量格布居。若环境能够真实吸收或发射一个交换量子，应使用跃迁通道。远离正能谱下界时，可在双边有效格上定义幺正平移算符 $\hat b|\ell\rangle=|\ell-1\rangle$，并取
+\[
+J_\uparrow=\sqrt{\Gamma_\uparrow}\,\hat b^\dagger,
+\qquad
+J_\downarrow=\sqrt{\Gamma_\downarrow}\,\hat b.
+\]
+对 $P_\ell=\langle\ell|\rho|\ell\rangle$ 取 GKSL 方程的对角元，得到生灭主方程
+\begin{equation}
+\boxed{
+\dot P_\ell
+=\Gamma_\uparrow P_{\ell-1}
++\Gamma_\downarrow P_{\ell+1}
+-(\Gamma_\uparrow+\Gamma_\downarrow)P_\ell.}
+\label{eq:bilateral_energy_random_walk_master}
+\end{equation}
+其漂移和方差增长率为
+\begin{equation}
+\boxed{
+\frac{\dd\langle\ell\rangle}{\dd t}
+=\Gamma_\uparrow-\Gamma_\downarrow,
+\qquad
+\frac{\dd\operatorname{Var}(\ell)}{\dd t}
+=\Gamma_\uparrow+\Gamma_\downarrow.}
+\label{eq:energy_random_walk_moments}
+\end{equation}
+因此相干哈密顿量跃迁与非相干量子跳跃的实验标志不同：前者的早期展宽由振幅干涉决定，后者在 Markov 区域产生线性方差增长。
+
+\begin{proposition}[双向格点随机游走的漂移与扩散]
+设格点为完整 $\mathbb Z$，常数跃迁率 $\Gamma_\pm\ge0$，初始布居归一且二阶矩有限。\eqnrefs{eq:bilateral_energy_random_walk_master}保持归一性，均值和方差分别满足 $\dot{\langle\ell\rangle}=\Gamma_+-\Gamma_-$ 与 $\dot{\operatorname{Var}\ell}=\Gamma_++\Gamma_-$。截断格点若不配套处理边界，则这些恒等式不再成立。
+\end{proposition}
+\begin{proof}
+由最近邻 Lindblad 跳跃算符推出双向随机游走主方程~\eqnrefs{eq:bilateral_energy_random_walk_master}，再对 $\ell$ 与 $\ell^2$ 求和得到矩方程~\eqnrefs{eq:energy_random_walk_moments}。 这里跃迁率时间局域且在所取格点范围内平移不变； 边界效应可忽略或单独处理。 双边位移满足 $\hat b^\dagger\hat b=\hat b\hat b^\dagger=I$。 因此
+
+\[
+\langle\ell|\mathcal D[\hat b^\dagger]\rho|\ell\rangle
+=P_{\ell-1}-P_\ell,
+\qquad
+\langle\ell|\mathcal D[\hat b]\rho|\ell\rangle
+=P_{\ell+1}-P_\ell,
+\]
+线性组合即得布居主方程。乘以 $\ell$ 后求和，并分别令 $j=\ell-1$、$j=\ell+1$，有
+\[
+\sum_\ell\ell P_{\ell-1}=\langle\ell\rangle+1,
+\qquad
+\sum_\ell\ell P_{\ell+1}=\langle\ell\rangle-1,
+\]
+从而得到平均漂移。二阶矩需要分别计算两条平移支路。对第一条支路令 $j=\ell-1$，于是 $\ell=j+1$：
+\begin{align*}
+\sum_\ell\ell^2P_{\ell-1}
+&=\sum_j(j+1)^2P_j\\
+&=\sum_j(j^2+2j+1)P_j\\
+&=\langle\ell^2\rangle+2\langle\ell\rangle+1.
+\end{align*}
+对第二条支路令 $j=\ell+1$，于是 $\ell=j-1$：
+\begin{align*}
+\sum_\ell\ell^2P_{\ell+1}
+&=\sum_j(j-1)^2P_j\\
+&=\langle\ell^2\rangle-2\langle\ell\rangle+1.
+\end{align*}
+设向上、向下随机跃迁率分别为 $\Gamma_+$ 与 $\Gamma_-$。代入布居主方程后
+\begin{align*}
+\frac{\dd}{\dd t}\langle\ell^2\rangle
+&=\Gamma_+\left(2\langle\ell\rangle+1\right)
++\Gamma_-\left(-2\langle\ell\rangle+1\right)\\
+&=2(\Gamma_+-\Gamma_-)\langle\ell\rangle
++(\Gamma_++\Gamma_-).
+\end{align*}
+另一方面
+\[
+\frac{\dd}{\dd t}\langle\ell\rangle
+=\Gamma_+-\Gamma_-.
+\]
+因此方差 $\operatorname{Var}(\ell)=\langle\ell^2\rangle-\langle\ell\rangle^2$ 满足
+\begin{align*}
+\frac{\dd}{\dd t}\operatorname{Var}(\ell)
+&=\frac{\dd}{\dd t}\langle\ell^2\rangle
+-2\langle\ell\rangle
+\frac{\dd}{\dd t}\langle\ell\rangle\\
+&=\Gamma_++\Gamma_-.
+\end{align*}
+\end{proof}
+
+
+双边平移只是在远离真实谱底时的有效描述。若使用带最低格点 $\ell_{\min}$ 的单边平移算符 $s$，则向下跳跃在边界被阻塞，平均漂移变为
+\[
+\frac{\dd\langle\ell\rangle}{\dd t}
+=\Gamma_\uparrow
+-\Gamma_\downarrow[1-P_{\ell_{\min}}(t)].
+\]
+只有整个观测窗内 $P_{\ell_{\min}}\ll1$，才可以把\eqnrefs{eq:bilateral_energy_random_walk_master} 当成平移不变的一般动力学方程。
+
+若反冲曲率已先把一条电子跃迁与其余格点谱隔离，才可以把上述开放动力学继续投影到有限维共振子空间。以反冲选出的 Jaynes--Cummings 子空间为例，在 Born、Markov、久期以及谱投影条件都满足后，可写
+\begin{equation}
+\boxed{
+\dot\rho
+=-\frac{\ii}{\hbar}[H_{\rm JC}+H_{\rm LS},\rho]
++\Gamma_{\rm cav}\mathcal D[a]\rho
++\Gamma_1\mathcal D[\sigma_-]\rho
++\frac{\Gamma_\varphi}{2}\mathcal D[\sigma_z]\rho.}
+\label{eq:open_jc_effective_master_equation}
+\end{equation}
+电子相干的总衰减率是 $\Gamma_2=\Gamma_1/2+\Gamma_\varphi$，于是该\emph{低维有效模型内部}可定义协同性
+\begin{equation}
+\boxed{
+\mathscr C_{\rm coop}\equiv\frac{2|g_c|^2}{\Gamma_{\rm cav}\Gamma_2}
+=\frac{4|g_c|^2}{\Gamma_{\rm cav}(\Gamma_1+2\Gamma_\varphi)}.}
+\label{eq:open_jc_cooperativity}
+\end{equation}
+它是耦合强度与腔线宽、电子相干线宽乘积构成的无量纲协同性。在坏腔绝热消去极限，它等于腔介导电子振幅衰减率与 $\Gamma_2$ 的比值；是否出现可振荡的正常模分裂还要独立检查 $g_c$ 与两条振幅线宽之差，因而协同性本身不能替代强耦合、单模谱隔离、反冲/Feshbach 泄漏或非 Markov 记忆判据。
+
+协同性与正常模振荡判据描述不同问题：前者比较坏腔消元后的有效通道与电子退相干，后者由完整 $2\times2$ 非厄米本征值决定。
+
+平均能量格漂移由两方向跃迁率之差控制，而方差增长率由两者之和控制。
+
+\input{sections/electron-colored-noise-applications}
+\input{sections/electron-angular-coulomb-fluctuations}
+
+\subsection{时间局域生成元与非 Markov 动力学}
+
+时间卷积和时间局域是同一约化动力学的两种表示方式。Nakajima--Zwanzig 形式把被环境保存的信息显式写入历史卷积；time-convolutionless（TCL）形式则把这些历史效应重新编码进随时间变化的局域生成元。若从初态到时刻 $t$ 的约化动力学映射 $\Phi_{t,t_0}$ 在所研究算符空间上可逆，就可以直接定义这一精确的 TCL 生成元。令
+\begin{equation}
+\boxed{
+\rho_S(t)=\Phi_{t,t_0}[\rho_S(t_0)],
+\qquad
+\mathcal K_{\rm TCL}(t)
+\equiv
+\dot\Phi_{t,t_0}\,\Phi_{t,t_0}^{-1},}
+\label{eq:exact_tcl_generator_definition}
+\end{equation}
+则恒等地有
+\begin{equation}
+\boxed{
+\dot\rho_S(t)
+=\mathcal K_{\rm TCL}(t)[\rho_S(t)].}
+\label{eq:exact_tcl_master_equation}
+\end{equation}
+TCL 是 time-convolutionless 的缩写。上式表明，生成元在当前时刻只作用于 $\rho_S(t)$，但它的系数已经包含此前系统--环境相关积累下来的全部历史信息。若 $\Phi_{t,t_0}$ 在某时刻失去可逆性，$\mathcal K_{\rm TCL}$ 可以出现奇点，而动力学映射 $\Phi_{t,t_0}$ 仍可保持有限；只有再满足短环境记忆等附加条件，时间依赖生成元才可进一步约化为通常的 Markov 生成元。
+
+对常用的因子化投影
+$\mathcal P X=\operatorname{Tr}_B(X)\otimes\rho_B$，并在相互作用绘景中满足
+$\mathcal P\mathcal L_I(t)\mathcal P=0$ 时，TCL 的二阶生成元为
+\begin{equation}
+\boxed{
+\mathcal K_{\rm TCL}^{(2)}(t)
+=\int_{t_0}^{t}\dd s\,
+\mathcal P\mathcal L_I(t)\mathcal L_I(s)\mathcal P,}
+\label{eq:tcl2_generator_projected_liouvillian}
+\end{equation}
+其中 $\mathcal L_I X\equiv-\ii[H_I/\hbar,X]$。它与 Born--Redfield 历史核具有相同的二阶环境相关函数，但作用在当前态 $\rho_S(t)$ 上，而不是 $\rho_S(s)$。只有进一步把积分上限延长到无穷并用快速衰减相关函数替代有限历史，才进入 Markov 极限；再做 Bohr 频率久期化后，生成元才具有标准 GKSL 结构。
+
+\begin{proposition}[可逆约化映射的 TCL 生成元]
+在有限维算符空间中，若 $\Phi_t$ 可微且可逆，则 $\mathcal K(t)=\dot\Phi_t\Phi_t^{-1}$ 是精确时间局域生成元。若 $\mathcal L_I=\lambda\mathcal L_1$ 有界、初态因子化且 $\mathcal P\mathcal L_I\mathcal P=0$，固定有限时间窗上的二阶展开为\eqnrefs{eq:tcl2_generator_projected_liouvillian}，余项为 $O(\lambda^3)$。可逆性和时间局域性均不蕴含 CP 可分性。
+\end{proposition}
+\begin{proof}
+先证明精确时间局域式。对
+\[
+\rho_S(t)=\Phi_t\rho_S(t_0)
+\]
+求导：
+\[
+\dot\rho_S(t)=\dot\Phi_t\rho_S(t_0).
+\]
+若 $\Phi_t$ 在所考察算符工作窗上可逆，则
+\[
+\rho_S(t_0)=\Phi_t^{-1}\rho_S(t),
+\]
+因此
+\[
+\dot\rho_S(t)
+=\dot\Phi_t\Phi_t^{-1}\rho_S(t)
+\equiv\mathcal K_{\rm TCL}(t)\rho_S(t),
+\]
+得到正文\eqnrefs{eq:exact_tcl_master_equation}。因此 $\mathcal K_{\rm TCL}(t)=\dot\Phi_t\Phi_t^{-1}$ 的定义域只由 $\Phi_t$ 的可逆工作窗决定；环境记忆随后全部进入这个时间依赖生成元。
+
+二阶约化动力学可直接从联合 Liouville 方程迭代一次得到。相互作用绘景中
+\[
+\dot\rho_{SB}(t)=\mathcal L_I(t)\rho_{SB}(t),
+\qquad
+\mathcal L_I(t)X=-\frac{\ii}{\hbar}[H_I(t),X].
+\]
+形式积分一次：
+\[
+\rho_{SB}(t)
+=\rho_{SB}(t_0)
++\int_{t_0}^{t}\dd s\,\mathcal L_I(s)\rho_{SB}(s).
+\]
+再代回微分方程并投影，得到到二阶为止
+\begin{align*}
+\frac{\dd}{\dd t}\mathcal P\rho_{SB}(t)
+&=\mathcal P\mathcal L_I(t)\mathcal P\rho_{SB}(t_0)\\
+&\quad+\int_{t_0}^{t}\dd s\,
+\mathcal P\mathcal L_I(t)\mathcal L_I(s)
+\mathcal P\rho_{SB}(t_0)
++O(H_I^3).
+\end{align*}
+采用因子化投影并令环境平均相互作用已经吸收到 $H_S$ 中，使
+$\mathcal P\mathcal L_I\mathcal P=0$，一阶项消失。为了把右端改写成当前态而不是初态，注意
+\[
+\mathcal P\rho_{SB}(t)
+=\mathcal P\rho_{SB}(t_0)+O(H_I),
+\]
+而二阶积分前面已经含两个 $\mathcal L_I$；用当前投影态替换初态只会产生 $O(H_I^3)$ 误差。因此
+\[
+\frac{\dd}{\dd t}\mathcal P\rho_{SB}(t)
+=\int_{t_0}^{t}\dd s\,
+\mathcal P\mathcal L_I(t)\mathcal L_I(s)\mathcal P
+\rho_{SB}(t)+O(H_I^3),
+\]
+即正文\eqnrefs{eq:tcl2_generator_projected_liouvillian}。
+
+若 $H_I(t)=\sum_\alpha A_\alpha(t)\otimes B_\alpha(t)$，对环境取迹后，TCL2 系数显式由有限时间相关函数
+\[
+C_{\alpha\beta}(t,s)
+=\operatorname{Tr}_B[B_\alpha(t)B_\beta(s)\rho_B]
+\]
+组成。此时积分仍只到当前时刻 $t$，所以环境记忆仍保留在时间依赖系数中。只有当正文\eqnrefs{eq:markov_timescale_control_parameter} 的历史替换上界与相关尾上界都很小，才可把有限历史核替换为时间局域、无限上限的系数；再经过 Bohr 频率分块与久期化，才得到正文前面使用的 Born--Markov--GKSL 链。
+\end{proof}
+
+
+因此需要区分三个逻辑层级。第一，时间局域只是一种表示方式，不等于无记忆；第二，某一时刻的生成元能写成 Lindblad 形状，也不意味着所有瞬时速率都非负；第三，在有限维工作窗中，若时间局域标准形的所有耗散率始终非负，则动力学具有 CP-divisibility，这是比“方程没有记忆积分”更强的 Markov 性条件。自由电子能量格若与窄带腔模或结构共振发生可逆信息回流，TCL 速率可以暂时变负，此时仍应把它理解为非 Markov 约化动力学，而不是负概率。
+
+对于实验拟合，这个区分很重要。若只需要传播一个已知初态，NZ 记忆核和 TCL 时间局域生成元是同一约化动力学的两种表示；若要把主方程参数解释成真正的常数弛豫率，则必须额外验证环境相关时间、系统 Bohr 频率分离以及 CP-divisibility，而不能仅因数值上成功拟合一个时间局域方程就称其为 Markov。
+
+\input{sections/electron-nonmarkov-revival-worked}
+
+单时刻动力学映射还有一个更深的限制。$\Phi_{t,t_0}$ 只回答“给定初态以后，在时刻 $t$ 得到什么状态”；如果实验在 $t_1,t_2,\ldots$ 之间主动插入电子碰撞、脉冲、测量或后选择，而环境在这些时刻之间保留记忆，那么末态一般不能由同一组两时刻映射简单复合得到。自由电子量子光学尤其容易进入这一情形：一列电子可以先后穿过同一个长寿命腔模、声子模或材料极化，前一个电子在环境中留下的量子信息会改变后一个电子看到的输入状态。独立碰撞模型只有在这部分记忆已经被重置或不可分辨时才成立\cite{Ciccarello2022CollisionModels,Pollock2018OperationalMarkov,Keeling2026ProcessTensor}。
+
+为描述真正的多时刻实验，把显式保留的系统记为 $S$，把所有跨时刻保存信息的自由度合并成\emph{记忆空间} $M$。取 $t_0<t_1<\cdots<t_N$；在每个 $t_k$ 允许实验者对 $S$ 施加任意完全正操作 $\mathcal A_k$；它可以表示一次已知电子碰撞、一个控制脉冲、一个带结果的量子仪器分支，或恒等操作。相邻时刻之间，$S+M$ 由 CPTP 映射 $\mathcal U_{k+1:k}$ 演化。于是末态由多线性映射
+\begin{equation}
+\boxed{
+\begin{aligned}
+\rho_S(t_N)
+={}&\mathfrak T_{N:0}
+[\mathcal A_{N-1},\ldots,\mathcal A_0]\\
+\equiv{}&\operatorname{Tr}_M\!\Big[
+\mathcal U_{N:N-1}(\mathcal A_{N-1}\otimes\mathcal I_M)
+\cdots
+\mathcal U_{1:0}(\mathcal A_0\otimes\mathcal I_M)
+\rho_{SM}(t_0)
+\Big]
+\end{aligned}}
+\label{eq:process_tensor_multitime_definition}
+\end{equation}
+给出。这个把一整串中间操作映射到末态及其联合概率的多线性对象称为\emph{过程张量}（process tensor）。普通密度算符回答“在一个时刻测什么会得到什么概率”，普通量子信道回答“给定一次输入操作后状态怎样改变”；过程张量则把问题提升为“在多个时刻依次插入不同操作时，整条记录的概率怎样改变”。因此它具有类似多时刻状态的作用，但并不是一个没有额外约束的普通密度算符：时间槽之间还必须满足因果归一化条件。
+
+为了把这个多线性对象变成可直接做矩阵运算的对象，使用 Choi 表示。线性量子操作虽然以算符为输入，但任意输入都可在线性基 $|i\rangle\langle j|$ 上展开，所以只要保存操作对这些基矩阵的全部输出，就已经保存了整个操作。把输入基指标与输出算符一起排成一个更大的矩阵，得到 Choi 算符。对
+$\mathcal A:L(\mathcal H^{\rm in})\to L(\mathcal H^{\rm out})$，定义
+\[
+A
+=\sum_{ij}|i\rangle\langle j|_{\rm in}
+\otimes
+\mathcal A(|i\rangle\langle j|)_{\rm out}.
+\]
+它作用在输入算符 $X$ 上的恢复公式为
+\[
+\mathcal A(X)
+=\operatorname{Tr}_{\rm in}
+\left[A\,(X^{\mathsf T}\otimes\mathbb I_{\rm out})\right].
+\]
+反复使用这条恒等式，就存在一个正半定多时刻 Choi 算符
+$\Upsilon_{N:0}\succeq0$，使
+\begin{equation}
+\boxed{
+\rho_S(t_N)
+=\Upsilon_{N:0}
+\star A_{N-1}\star\cdots\star A_0,}
+\label{eq:process_tensor_choi_link}
+\end{equation}
+其中 $\star$ 称为 \emph{link product}（连接积）：它不是新的动力学，而是把一个操作的输出指标与下一个操作的输入指标收缩掉的记号；具体运算就是按上一式在共享输入空间取转置并偏迹。这样，多时刻实验网络的“把线接起来”变成普通矩阵指标收缩。过程张量的因果归一化条件保证：若所有 $\mathcal A_k$ 都是保迹信道，则最终态仍归一；若某个 $\mathcal A_k$ 是量子仪器中的一个非保迹分支，则最终迹直接给该整条实验记录的联合概率。
+
+\begin{theorem}[多时刻 CP 网络的 Choi 表示]
+设有限维系统与记忆具有固定联合初态，时段演化完全正且保迹。过程映射对每个插入操作分别线性，并具有正半定的多时刻 Choi 算符，输出由\eqnrefs{eq:process_tensor_choi_link}的连接积给出。递归偏迹条件保证保迹操作的因果归一化；非保迹 CP 分支的输出迹给联合结果概率。
+\end{theorem}
+\begin{proof}
+先证明过程张量对每一个实验操作都是线性的。以两个中间时刻为例，
+\[
+\rho_S(t_2)
+=\operatorname{Tr}_M\!
+\left[
+\mathcal U_{2:1}(\mathcal A_1\otimes\mathcal I_M)
+\mathcal U_{1:0}(\mathcal A_0\otimes\mathcal I_M)
+\rho_{SM}(t_0)
+\right].
+\]
+若
+$\mathcal A_0=\lambda\mathcal A_0^{(1)}+\mu\mathcal A_0^{(2)}$，则逐项代入定义有
+\begin{align*}
+\mathfrak T_{2:0}[\mathcal A_1,\mathcal A_0]
+={}&\operatorname{Tr}_M\!\left[
+\mathcal U_{2:1}(\mathcal A_1\otimes\mathcal I_M)
+\mathcal U_{1:0}((\lambda\mathcal A_0^{(1)}+\mu\mathcal A_0^{(2)})\otimes\mathcal I_M)
+\rho_{SM}(t_0)\right]\\
+={}&\lambda\mathfrak T_{2:0}[\mathcal A_1,\mathcal A_0^{(1)}]
++\mu\mathfrak T_{2:0}[\mathcal A_1,\mathcal A_0^{(2)}].
+\end{align*}
+对每一个槽位同理，因此 $\mathfrak T_{N:0}$ 是多线性的高阶量子映射。
+
+为把量子操作转化成普通正半定算符，取输入基 $\{|i\rangle\}$ 并定义 Choi 算符
+\[
+A
+=\sum_{ij}|i\rangle\langle j|\otimes
+\mathcal A(|i\rangle\langle j|).
+\]
+任意输入算符写成
+$X=\sum_{mn}X_{mn}|m\rangle\langle n|$。于是
+\begin{align*}
+\operatorname{Tr}_{\rm in}
+\left[A(X^{\mathsf T}\otimes\mathbb I)\right]
+&=\sum_{ijmn}X_{nm}
+\operatorname{Tr}
+\left[|i\rangle\langle j|m\rangle\langle n|\right]
+\mathcal A(|i\rangle\langle j|)\\
+&=\sum_{ij}X_{ij}\mathcal A(|i\rangle\langle j|)\\
+&=\mathcal A(X).
+\end{align*}
+因此一个映射的所有输入--输出作用都被压缩进一个正算符 $A$ 中。
+
+现在把这条恢复公式逐次代入正文\eqnrefs{eq:process_tensor_multitime_definition}。每个 $\mathcal A_k$ 都引入一对“输入--输出” Hilbert 空间；联合传播与初态中不属于实验操作的全部张量指标可以预先收缩成一个固定算符 $\Upsilon_{N:0}$。剩余的每个操作只通过
+\[
+\operatorname{Tr}_{k^{\rm in}}
+\left[A_k(X^{\mathsf T}\otimes\mathbb I)\right]
+\]
+与它相连。把“在共享空间取转置并偏迹”定义成 link product $\star$，便得到
+\[
+\rho_S(t_N)
+=\Upsilon_{N:0}\star A_{N-1}\star\cdots\star A_0,
+\]
+即正文\eqnrefs{eq:process_tensor_choi_link}。
+
+$\Upsilon_{N:0}$ 的正性来自完整实验网络是“初态 + CPTP 联合传播”的 Choi 算符偏迹：对任意一组完全正操作，其 link product 都必须给出正的未归一末态。因果归一化可逐时间向后检验。若最后一个操作取任意保迹信道，其 Choi 算符满足
+\[
+\operatorname{Tr}_{\rm out}A_k=\mathbb I_{\rm in},
+\]
+于是对 $\Upsilon_{N:0}$ 最后一个输出空间取迹必须退化成前一个时刻的过程张量乘输入单位算符。递归执行得到一组线性因果约束；它们正保证未来操作不能改变过去记录的概率。
+
+最后看无记忆极限。若每个区间只与一个新鲜辅助系统 $M_k$ 相互作用，且
+\[
+\rho_{M_0M_1\cdots}
+=\rho_{M_0}\otimes\rho_{M_1}\otimes\cdots,
+\]
+每个 $M_k$ 在本步结束后就被迹掉，那么第 $k$ 步产生独立 CPTP 映射
+$\mathscr E_{k+1:k}$。联合网络中不存在连接非相邻时间片的记忆指标，所以 Choi 网络沿时间方向断开成一步映射的链，过程张量退化为普通信道复合。若同一个记忆 $M$ 被连续多步复用，则内部 $M$ 指标贯穿多个时间片，$\Upsilon_{N:0}$ 一般不能这样因子化；这就是重复电子碰撞中环境记忆的多时刻数学来源。
+\end{proof}
+
+
+这一定义也精确说明“Markov 碰撞模型”究竟额外假设了什么。若每个时间步都使用一个与过去无关的新鲜辅助系统，而且旧辅助系统在下一步以前永久丢弃，则记忆空间在每一步都被重置，过程张量的 Choi 算符沿时间方向因子化为独立的一步信道；末态退化为
+\[
+\rho_S(t_N)
+=\mathscr E_{N:N-1}\circ\mathcal A_{N-1}\circ\cdots
+\circ\mathscr E_{1:0}\circ\mathcal A_0[\rho_S(t_0)].
+\]
+若进一步每一周期完全相同，才可以写成前文频闪映射的幂。反之，只要同一个腔模、材料极化或声子在相邻电子之间没有重置，$S$ 与 $M$ 会在第一次碰撞后相关；第二次碰撞的结果不仅取决于当前 $\rho_S$，还取决于过去操作怎样改变了 $M$。这时即使每个固定初态的两时刻动力学都能拟合得很好，也不能据此推出真正的多时刻 Markov 性。
+
+对自由电子实验，这个层级给出一个直接判据。若环境记忆时间 $\tau_M$ 远短于相邻电子间隔 $T_e$，且单次碰撞后残余系统--环境关联在 $T_e$ 内衰减到实验分辨率以下，可以使用独立碰撞/Poisson 信道；若 $\tau_M\gtrsim T_e$，则应把相关环境模式并入显式系统，或直接保留过程张量。因而“电子逐个到达”并不等于“电子作用彼此独立”：真正需要比较的是电子到达间隔与环境保存量子信息的时间尺度。
+
+过程张量在形式上随时间槽数指数增长，因此还需要回答一个计算问题：如果环境记忆只有有限复杂度，能否不用存储整个 $\Upsilon_{N:0}$？这里使用的 Schmidt 分解与双粒子纯态的 Schmidt 分解是同一个线性代数思想，只是现在把\emph{算符本身}视为 Hilbert--Schmidt 空间中的向量。选定一个时间切割以后，左侧指标代表过去，右侧指标代表未来；需要多少个独立乘积项才能连接两侧，就量化了跨过这个切割必须保存多少记忆。把过程 Choi 算符在第 $k$ 个时间槽处划分为“过去”与“未来”两部分，
+\[
+\mathcal H_{\rm proc}
+=
+\mathcal H_{\le k}\otimes\mathcal H_{>k},
+\]
+则总可以写成
+\begin{equation}
+\boxed{
+\Upsilon_{N:0}
+=
+\sum_{r=1}^{R_k}
+s_r^{(k)}
+A_r^{(\le k)}
+\otimes
+B_r^{(>k)},}
+\label{eq:process_tensor_temporal_schmidt}
+\end{equation}
+其中 $s_r^{(k)}\ge0$ 是该时间切割的算符 Schmidt 奇异值，$R_k$ 是非零奇异值个数，即 Schmidt rank。若所有切割的 rank 都受到同一个常数 $D_M$ 控制，就可以把这些逐切割分解串成 matrix-product operator（MPO，矩阵乘积算符）：每个时间槽只保留一个局域张量，相邻张量用内部 \emph{bond} 指标连接。最大 bond dimension $D_M$ 就是跨任意时间切割需要携带的内部算符记忆维数，因此它比单一“相关时间”更细致地刻画记忆复杂度。
+
+对完整操作时间槽作上述切割时，切割还穿过传递系统输出的量子线。设系统工作空间维数为 $d_S$。若所有历史信息都能压缩进一个有限维记忆空间
+$\mathcal H_M$，$\dim\mathcal H_M=d_M$，那么跨切割传递的系统与记忆联合算符空间维数至多为 $(d_Sd_M)^2$，因此
+\begin{equation}
+\boxed{
+R_k\le (d_Sd_M)^2,
+\qquad
+D_M\le (d_Sd_M)^2.}
+\label{eq:process_tensor_memory_bond_bound}
+\end{equation}
+例如只需显式保留一个截断到 $n=0,\ldots,N_M$ 的长寿命腔模时，$d_M=N_M+1$；在固定系统工作空间下，该联合维数上界不随电子总数增长。若将每个独立一步信道作为一个整体块、把系统端口保留为开放指标，额外的内部记忆维数才可由 $d_M^2$ 控制；这与按完整操作槽切割的算符 Schmidt rank 是不同的分组。
+
+\begin{exbox}[无环境的恒等传播也可跨时间槽产生算符 Schmidt 秩]
+取 $d_M=1$、$d_S=d\ge2$，相邻系统端口之间只作恒等传播。
+其未归一化 Choi 算符为
+\[
+|\Omega\rangle\langle\Omega|
+=\sum_{i,j=1}^{d}|i\rangle\langle j|\otimes|i\rangle\langle j|,
+\qquad|\Omega\rangle=\sum_i|i\rangle\otimes|i\rangle.
+\]
+矩阵单位 $|i\rangle\langle j|$ 在 Hilbert--Schmidt 内积下正交，
+所以若时间切割把这个信道的输入、输出放在两侧，算符 Schmidt 秩就是 $d^2$。
+该过程没有环境记忆，却不满足 $R_k\le d_M^2=1$。
+因此必须在声明记忆压缩界时明确哪些系统端口跨过切割。
+\end{exbox}
+
+若 $R_k$ 很大但奇异值快速衰减，可以保留前 $D$ 个 Schmidt 分量。对 Hilbert--Schmidt 范数，单个时间切割的最优截断误差严格为
+\begin{equation}
+\boxed{
+\epsilon_{k,D}^{(2)}
+=
+\left[
+\sum_{r>D}
+\bigl(s_r^{(k)}\bigr)^2
+\right]^{1/2}.}
+\label{eq:process_tensor_schmidt_truncation_error}
+\end{equation}
+这只是算符表示误差，不应自动解释成任意实验概率的统一 diamond-norm 上界；实际可观测误差还要与允许操作集的范数相乘。不过它提供了一个可计算判据：若所有实验相关时间切割都存在小的 $\epsilon_{k,D}^{(2)}$，则有限记忆 MPO 是受控近似，而不是经验性的“只记前几步”。
+
+这个低维结构也改变层析的可辨识条件。若因果和低秩参数化把允许过程限制在 $d_{\rm eff}$ 维局部参数流形，并用矩阵 $B$ 把有效参数 $\boldsymbol\vartheta$ 映射到前文线性系数 $\boldsymbol\theta$，
+\[
+\delta\boldsymbol\theta=B\,\delta\boldsymbol\vartheta,
+\]
+则实验只需要在这一切空间上满秩：
+\begin{equation}
+\boxed{
+\operatorname{rank}(XB)=d_{\rm eff},
+\qquad
+\mathcal F_{\rm eff}
+=
+B^{\mathsf T}X^{\mathsf T}WXB.}
+\label{eq:process_tensor_lowrank_identifiability}
+\end{equation}
+因此有限记忆不是“可以少测一些”的模糊说法，而是把待识别方向从完整过程空间压缩到一个明确的低维切空间。若某个低秩模型拟合很好但 $XB$ 仍有零模，实验仍不能唯一判断对应的环境记忆参数。
+
+\begin{proposition}[时间 Schmidt 截断与一阶可辨识性]
+若跨切割传播的联合系统与记忆维数为 $d_Sd_M$，完整操作时间槽分组的过程 Schmidt 秩满足 $R\le(d_Sd_M)^2$；只切记忆线时上界为 $d_M^2$。截断前 $D$ 项的 Hilbert--Schmidt 最优误差平方为 $\sum_{r>D}s_r^2$。对光滑模型的切空间基 $B$，一阶局部可辨识性等价于 $\operatorname{rank}(XB)=d_{\rm eff}$，正权 Fisher 矩阵为 $B^{\mathsf T}X^{\mathsf T}WXB$。此秩条件只判定一阶信息，不代替全局或高阶非线性可辨识性。
+\end{proposition}
+\begin{proof}
+先证明完整操作时间槽分组下的上界。切割以前的网络保留过去操作的所有 Choi 指标，
+而跨切割传递的是当前系统与记忆的联合算符。若
+\[
+\dim\mathcal H_S=d_S,\qquad\dim\mathcal H_M=d_M,
+\]
+则联合算符空间 $L(\mathcal H_S\otimes\mathcal H_M)$ 的维数为 $(d_Sd_M)^2$。
+取系统矩阵单位 $E_{ij}$ 与记忆正交算符基 $M_\alpha$，把过去网络在切割处展开为
+\[
+X_{SM}
+=
+\sum_{i,j=1}^{d_S}\sum_{\alpha=1}^{d_M^2}
+x_{ij\alpha}\,E_{ij}\otimes M_\alpha.
+\]
+每个系数仍是过去开放指标的线性函数。未来网络对 $E_{ij}\otimes M_\alpha$ 的作用也是线性的，
+因此把两侧各自收缩成算符后有
+\[
+\Upsilon_{N:0}
+=
+\sum_{i,j=1}^{d_S}\sum_{\alpha=1}^{d_M^2}
+A_{ij\alpha}^{(\le k)}
+\otimes
+B_{ij\alpha}^{(>k)}.
+\]
+对这组系数再作奇异值分解，只会降低项数，所以
+\[
+R_k\le (d_Sd_M)^2.
+\]
+对每个时间切割重复这一分解，就得到时间方向的 MPO，最大 bond dimension 满足正文\eqnrefs{eq:process_tensor_memory_bond_bound}。
+这里系统量子线不能凭空消失：无记忆的恒等一步 Choi 算符，若把输入、输出划到两侧，已经有 $d_S^2$ 的算符 Schmidt 秩。
+另一种表示可以把一步系统信道整体放进一个局域张量，保留系统输入、输出为开放端口而只切内部记忆线；
+此时内部线的基只有 $M_\alpha$，得到 $d_M^2$ 的额外记忆维数上界。
+这个结论针对另一分组的内部指标，不能取代完整操作时间槽的上式。
+
+再看截断。把\eqnrefs{eq:process_tensor_temporal_schmidt} 看成 Hilbert--Schmidt 空间中的普通 Schmidt/SVD：
+\[
+\Upsilon
+=
+\sum_r s_r A_r\otimes B_r,
+\]
+并取
+\[
+\Tr(A_r^\dagger A_{r'})=\delta_{rr'},
+\qquad
+\Tr(B_r^\dagger B_{r'})=\delta_{rr'}.
+\]
+保留前 $D$ 项后
+\[
+\Upsilon_D
+=
+\sum_{r\le D}s_r A_r\otimes B_r.
+\]
+正交性给
+\begin{align*}
+\|\Upsilon-\Upsilon_D\|_2^2
+&=
+\Tr[(\Upsilon-\Upsilon_D)^\dagger
+(\Upsilon-\Upsilon_D)]\\
+&=
+\sum_{r>D}s_r^2,
+\end{align*}
+从而得到正文\eqnrefs{eq:process_tensor_schmidt_truncation_error}。Eckart--Young 定理说明，在固定 rank $D$ 的 Hilbert--Schmidt 近似中，这个截断是最优的。
+
+最后考虑层析。前文一般线性模型为
+\[
+\mathbf p=X\boldsymbol\theta.
+\]
+若物理约束和低秩 MPO 参数化只允许
+\[
+\boldsymbol\theta
+=
+\boldsymbol\theta_0
++
+B\boldsymbol\vartheta
++O(\|\boldsymbol\vartheta\|^2),
+\]
+则局部概率变化为
+\[
+\delta\mathbf p
+=
+XB\,\delta\boldsymbol\vartheta.
+\]
+两个不同的微小参数方向在一阶实验数据中可区分，当且仅当它们不落入
+$\ker(XB)$；因此局部可辨识条件正是
+\[
+\operatorname{rank}(XB)=d_{\rm eff}.
+\]
+对独立计数数据，若原参数的 Fisher 权矩阵写成 $W$，链式法则给
+\[
+\mathcal F_{\rm eff}
+=
+\left(\frac{\partial\mathbf p}{\partial\boldsymbol\vartheta}\right)^{\mathsf T}
+W
+\left(\frac{\partial\mathbf p}{\partial\boldsymbol\vartheta}\right)
+=
+B^{\mathsf T}X^{\mathsf T}WXB,
+\]
+得到正文\eqnrefs{eq:process_tensor_lowrank_identifiability}。
+\end{proof}
+
+
+低秩表示还必须回答一个更直接的实验问题：MPO 截断误差究竟会把电子计数概率改多少？固定实验设置 $r$ 和完整记录 $y$ 后，所有“已知的东西”——初始制备、各时刻控制操作以及最终 POVM——可以按与过程张量互补的方式连接成一个正算符。这个算符称为 \emph{过程测试算符}；它在多时刻理论中承担的角色与单时刻 Born 规则中的 POVM 元相同。记为 $T_{r,y}$，则
+\begin{equation}
+\boxed{p_{r,y}=\Tr[T_{r,y}\Upsilon_{N:0}].}
+\label{eq:process_tester_probability_linear_functional}
+\end{equation}
+若用近似过程 $\widetilde\Upsilon$ 代替真过程，Hilbert--Schmidt Cauchy--Schwarz 给
+\begin{equation}
+\boxed{
+|p_{r,y}-\widetilde p_{r,y}|
+\le\|T_{r,y}\|_2\,
+\|\Upsilon-\widetilde\Upsilon\|_2.}
+\label{eq:process_probability_hs_error_bound}
+\end{equation}
+若连续作若干次 SVD 截断，并把第 $k$ 次对当前 MPO 的实际改变量记为 $\epsilon_k$，三角不等式给
+\begin{equation}
+\boxed{
+\|\Upsilon-\widetilde\Upsilon\|_2\le\sum_k\epsilon_k,
+\qquad
+\frac12\sum_y|p_{r,y}-\widetilde p_{r,y}|
+\le
+\frac12\left(\sum_y\|T_{r,y}\|_2\right)\sum_k\epsilon_k.}
+\label{eq:process_mpo_total_variation_error_bound}
+\end{equation}
+同样的 MPO 表示误差，对不同测量设计不一定产生同样大的实验误差；真正相关的是过程测试算符对被舍弃时间相关方向的灵敏度。
+
+\begin{proposition}[过程压缩的可观测误差界]
+设有限维过程算符通过逐步压缩得到 $\widetilde\Upsilon$，每步实际 Hilbert--Schmidt 改变量为 $\epsilon_k$。则 $\|\Upsilon-\widetilde\Upsilon\|_2\le\sum_k\epsilon_k$，固定 tester 的记录误差及半 $\ell^1$ 误差满足\eqnrefs{eq:process_mpo_total_variation_error_bound}。只有近似过程也产生归一化非负概率时，后一个量才是两分布的总变差距离。
+\end{proposition}
+\begin{proof}
+令
+\[
+\Delta\Upsilon\equiv\Upsilon-\widetilde\Upsilon.
+\]
+真实过程与近似过程在同一过程测试算符元 $T_{r,y}$ 上给出的概率之差为
+\begin{align*}
+\delta p_{r,y}
+&=p_{r,y}-\widetilde p_{r,y}\\
+&=\Tr(T_{r,y}\Upsilon)-\Tr(T_{r,y}\widetilde\Upsilon)\\
+&=\Tr(T_{r,y}\Delta\Upsilon).
+\end{align*}
+把最后一式看成 Hilbert--Schmidt 内积。由于
+\[
+\langle A,B\rangle_{\rm HS}=\Tr(A^\dagger B),
+\qquad
+\|A\|_2^2=\Tr(A^\dagger A),
+\]
+而过程测试算符元为厄米正算符，$T_{r,y}^\dagger=T_{r,y}$，Cauchy--Schwarz 不等式逐步给出
+\begin{align*}
+|\delta p_{r,y}|
+&=|\langle T_{r,y},\Delta\Upsilon\rangle_{\rm HS}|\\
+&\le
+\sqrt{\langle T_{r,y},T_{r,y}\rangle_{\rm HS}}
+\sqrt{\langle\Delta\Upsilon,\Delta\Upsilon\rangle_{\rm HS}}\\
+&=\|T_{r,y}\|_2\|\Delta\Upsilon\|_2,
+\end{align*}
+得到正文\eqnrefs{eq:process_probability_hs_error_bound}。
+
+再把多次 MPO 压缩的误差写成望远镜和。若
+\[
+\Upsilon^{(0)}=\Upsilon,
+\qquad
+\Upsilon^{(K)}=\widetilde\Upsilon,
+\]
+则严格恒等式为
+\begin{align*}
+\Delta\Upsilon
+&=\Upsilon^{(0)}-\Upsilon^{(K)}\\
+&=\sum_{k=1}^{K}
+\left(\Upsilon^{(k-1)}-\Upsilon^{(k)}\right).
+\end{align*}
+定义每一次压缩对\emph{当前} MPO 的实际 Hilbert--Schmidt 改变量
+\[
+\epsilon_k
+\equiv
+\|\Upsilon^{(k-1)}-\Upsilon^{(k)}\|_2,
+\]
+连续使用三角不等式便得到
+\begin{align*}
+\|\Delta\Upsilon\|_2
+&\le
+\sum_{k=1}^{K}
+\|\Upsilon^{(k-1)}-\Upsilon^{(k)}\|_2\\
+&=\sum_{k=1}^{K}\epsilon_k.
+\end{align*}
+若第 $k$ 次操作确实是在当前切割上作正交 Schmidt/SVD 截断，设该步当前算符的奇异值为 $s_j^{(k,\mathrm{cur})}$，则正交性还给出
+\[
+\epsilon_k^2
+=\sum_{j>D_k}\bigl(s_j^{(k,\mathrm{cur})}\bigr)^2.
+\]
+这里必须使用每一步\emph{当前} MPO 的尾和；不同切割上对原始过程分别计算的尾和并不组成同一个望远镜分解，因而不能直接相加。
+
+对固定实验设置 $r$，记录 $y$ 互斥。总变差距离定义为
+\[
+D_{\rm TV}^{(r)}
+\equiv
+\frac12\sum_y|p_{r,y}-\widetilde p_{r,y}|.
+\]
+逐项代入单个记录的界，再使用上面的全局 MPO 误差界，得到
+\begin{align*}
+D_{\rm TV}^{(r)}
+&\le\frac12\sum_y
+\|T_{r,y}\|_2\|\Delta\Upsilon\|_2\\
+&=\frac12
+\left(\sum_y\|T_{r,y}\|_2\right)
+\|\Delta\Upsilon\|_2\\
+&\le\frac12
+\left(\sum_y\|T_{r,y}\|_2\right)
+\sum_{k=1}^{K}\epsilon_k,
+\end{align*}
+即正文\eqnrefs{eq:process_mpo_total_variation_error_bound}。
+\end{proof}
+
+
+还要注意，逐切割 SVD 只优化算符距离，并不自动保持 $\widetilde\Upsilon\succeq0$ 和过程张量的递归因果约束。因此实际数值压缩应把低 bond-dimension MPO 当作参数化流形，在压缩后重新施加正性和因果归一化，或直接在这些约束内变分拟合。否则即使算符误差很小，也可能出现负概率或未来影响过去的非物理解。
+
+该界控制的是指定过程测试算符族上的可观测误差；若需要对任意辅助系统和控制操作给最坏情形界，则必须改用更强的 operational process norm。
+
+\input{content/FreeElectronQuantumOptics/chapter-end/electron-open-dynamics-calculations.tex}
