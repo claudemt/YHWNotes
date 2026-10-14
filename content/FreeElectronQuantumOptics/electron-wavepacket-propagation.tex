@@ -76,13 +76,14 @@ $m_\perp$ 与 $m_\parallel$ 分别是同一相对论色散沿横向和纵向方�
 设实色散 $E\in C^3$，归一化波包支撑于有界凸动量窗 $\mathcal W_p$，$E_2$ 为中心处二次 Taylor 多项式。则 $\|U_{\rm ex}-U_2\|_{\mathcal W_p}\le\min\{2,|t|\sup_{\mathcal W_p}|E-E_2|/\hbar\}$；若 $\|D^3E\|\le M_3$，后一个量不超过 $|t|M_3\sup|\delta\mathbf p|^3/(6\hbar)$。对相对论色散，二次包络满足\eqnrefs{eq:quadratic_dispersion_local_propagation}。
 \end{proposition}
 \begin{proof}
-其适用条件是初态动量主要支撑在给定带宽内、$E(p)$ 在该区间足够光滑，并且显式传播相位误差小于一。 Taylor 展开写成
+令 $\delta\mathbf p=\mathbf p-\mathbf p_0$。$C^3$ 条件下，沿连接中心与该动量的线段使用积分余项，得到
 
 \begin{align*}
 E(\mathbf p_0+\delta\mathbf p)
 ={}&E_0+DE(\mathbf p_0)[\delta\mathbf p]
 +\frac12D^2E(\mathbf p_0)[\delta\mathbf p^{\otimes2}]\\
-&+\frac1{3!}D^3E(\mathbf p_0)[\delta\mathbf p^{\otimes3}]+R_4.
+&+\frac12\int_0^1(1-s)^2
+D^3E(\mathbf p_0+s\delta\mathbf p)[\delta\mathbf p^{\otimes3}]\dd s.
 \end{align*}
 对 $E=\sqrt{m_{\mathrm e}^2c^4+c^2p^2}$，
 \begin{equation*}
@@ -104,7 +105,7 @@ E(\mathbf p_0+\delta\mathbf p)
 =\ee^{\ii(p_0z-E_0t)/\hbar}
 \psi_2(\mathbf r_\perp,\zeta,t).
 \end{equation*}
-在二阶色散下，包络为
+固定一个自旋分量，记 $A(\delta\mathbf p)=(2\pi\hbar)^{3/2}f_s(\mathbf p_0+\delta\mathbf p)$，使下面的积分与连续动量态的归一化一致。在二阶色散下，包络为
 \begin{equation*}
 \psi_2
 =\int\frac{\dd^3(\delta p)}{(2\pi\hbar)^3}
@@ -133,7 +134,7 @@ A(\delta\mathbf p)
 对任意归一化且支撑在 $\mathcal W_p$ 的波包，
 \begin{align*}
 \|[U_{\rm ex}(t)-U_2(t)]\psi\|^2
-&=\int_{\mathcal W_p}\dd^3 p\,|A(\mathbf p)|^2
+&=\sum_s\int_{\mathcal W_p}\dd^3 p\,|f_s(\mathbf p)|^2
 |\ee^{-\ii\delta\varphi}-1|^2\\
 &\le\sup_{\mathbf p\in\mathcal W_p}|\ee^{-\ii\delta\varphi}-1|^2\\
 &\le\sup_{\mathbf p\in\mathcal W_p}|\delta\varphi|^2.
@@ -142,9 +143,9 @@ A(\delta\mathbf p)
 \begin{equation*}
 \epsilon_{\rm disp}^{(\ge3)}(t)
 \le\frac{|t|M_3}{6\hbar}
-\sup_{\mathcal W_p}|\delta\mathbf p|^3+O(|\delta\mathbf p|^4),
+\sup_{\mathcal W_p}|\delta\mathbf p|^3,
 \end{equation*}
-从而把“带宽小”转化为传播时间相关的相位误差界。
+其中 $\frac12\int_0^1(1-s)^2\dd s=1/6$，不需要四阶导数。若波包只主要落在窗内，令窗外概率为 $\eta$，两个幺正传播子在尾部的范数差至多为 $2\sqrt\eta$，于是总态误差还应加上这项。
 \end{proof}
 
 
@@ -851,7 +852,33 @@ H_W(p)=E(p)=\sqrt{m_{\mathrm e}^2c^4+c^2p^2},
 \qquad
 v(p)=E'(p)=\frac{c^2p}{E(p)}.
 \]
-Moyal 方程于是化成奇数空间导数级数
+要保留全部相对论色散，先对位置作 Fourier 变换，记
+\[
+\widetilde W(k,p,t)=\int\ee^{-\ii kz}W(z,p,t)\dd z.
+\]
+由密度核的自由传播相位，两个动量分别为 $p+\hbar k/2$ 与 $p-\hbar k/2$，因而
+\begin{equation}
+\widetilde W(k,p,t)=\exp\!\left[-\frac{\ii t}{\hbar}
+\bigl(E(p+\hbar k/2)-E(p-\hbar k/2)\bigr)\right]
+\widetilde W(k,p,0).
+\label{eq:electron-free-wigner-exact-multiplier}
+\end{equation}
+\begin{proposition}[自由 Wigner 输运的有限频率误差]
+自由正能密度算符满足\eqnrefs{eq:electron-free-wigner-exact-multiplier}。若初始 $\widetilde W$ 支撑于 $|k|\le k_*$ 与给定动量窗，且每条线段 $[p-\hbar k/2,p+\hbar k/2]$ 上 $|E'''|\le M_3$，则用精确群速度的经典平流代替完整量子输运时，$L^2$ 相对误差不超过 $\min\{2,|t|M_3\hbar^2k_*^3/24\}$。
+\end{proposition}
+\begin{proof}
+把动量表象的密度核代入\eqnrefs{eq:electron_wigner}，先对相对坐标 $s$ 积分，再对 $z$ 作 Fourier 变换。两个 delta 约束分别固定平均动量为 $p$、动量差为 $\hbar k$；从两个动量到平均与差的变换具有绝对 Jacobian 一，因此
+\[
+\widetilde W(k,p)=\langle p+\hbar k/2|\rho|p-\hbar k/2\rangle.
+\]
+密度核左右的能量相位之差便给出精确乘子。令 $h_k=\hbar k/2$，对 $E(p\pm h_k)$ 各作二次 Taylor 展开。二次项相消，两侧积分余项的和由 $2M_3|h_k|^3/6$ 控制，故
+\[
+\left|E(p+h_k)-E(p-h_k)-2h_kE'(p)\right|
+\le\frac{M_3\hbar^3|k|^3}{24}.
+\]
+经典平流在同一 Fourier 表象中的乘子是 $\exp[-\ii tkE'(p)]$。用 $|\ee^{\ii x}-\ee^{\ii y}|\le\min\{2,|x-y|\}$ 比较两个乘子，再用 Parseval 恒等式，得到所述 $L^2$ 界。这里的范数控制的是 Wigner 函数，而非已经积分过的某个探测概率。
+\end{proof}
+这是一般正能密度算符的精确自由传播形式，按 $L^2$ 或分布解释即可，不要求空间导数级数收敛。为看清局域量子修正，再把两个能量的差按 $\hbar k$ 展开；对应的奇数空间导数级数为
 \begin{equation}
 \boxed{
 \partial_tW
@@ -860,7 +887,12 @@ Moyal 方程于是化成奇数空间导数级数
 -\frac{\hbar^4}{1920}E^{(5)}(p)\partial_z^5W+\cdots.}
 \label{eq:relativistic_free_moyal}
 \end{equation}
-第一项就是沿精确群速度 $v(p)$ 的经典平流；其余项衡量“非二次色散 + 有限量子相空间分辨率”造成的量子修正。若只保留中心动量 $p_0$ 附近的二阶色散
+第一项就是沿精确群速度 $v(p)$ 的经典平流；其余项衡量非二次色散在有限空间分辨率下造成的量子修正。此级数按空间梯度渐近展开理解；一般态的完整演化使用\eqnrefs{eq:electron-free-wigner-exact-multiplier}。对 $|k|\le k_*$ 且动量落在给定窗内的 $W$，若两端之间 $|E'''|\le M_3$，Taylor 积分余项给
+\[
+\frac{|t|}{\hbar}\left|E(p+\hbar k/2)-E(p-\hbar k/2)-\hbar kE'(p)\right|
+\le\frac{|t|M_3\hbar^2k_*^3}{24}.
+\]
+乘法相位的差据此控制 $L^2$ 输运误差；没有动量及空间频率的范围条件，不能只把 $\hbar^2$ 前因子当作小参数。若只保留中心动量 $p_0$ 附近的二阶色散
 \[
 E(p_0+\delta p)
 \simeq E_0+v_0\delta p+\frac{\delta p^2}{2m_\parallel},
@@ -1314,13 +1346,25 @@ $\epsilon_3$ 衡量二次模型遗漏的首个谱相位，$\epsilon_4$ 控制继
 +O\!\left(|\beta|\omega^4\delta\tau^4\right).}
 \label{eq:electron_local_time_lens_phase}
 \end{equation}
-常数相位已省略。控制“抛物线透镜”近似的参数是 $|\omega\delta\tau|\ll1$；超出这一时间窗，正弦相位的高阶项会生成周期性焦散/脉冲列，而不是单个理想高斯焦点。
+常数相位已省略。$|\omega\delta\tau|\ll1$ 控制曲率的相对变化；要把整个波函数的相位作用替换成抛物线，还须控制被舍弃的绝对相位。在半宽 $a$ 的时间窗内，有
+\begin{equation}
+\epsilon_{\rm lens}=\frac{|\beta|\omega^4a^4}{12},\qquad
+\|[M_{\rm per}-M_{\rm quad}]P_a\|
+\le\min\{2,\epsilon_{\rm lens}\},
+\label{eq:electron-time-lens-absolute-error}
+\end{equation}
+$M_{\rm per}$ 与 $M_{\rm quad}$ 分别表示去掉同一常数相位后的完整周期相位与二次相位乘法，$P_a$ 限制到 $|\delta\tau|\le a$。强驱动下，即使局部孔径 $\omega a$ 很小，$|\beta|(\omega a)^4$ 也可能积累到可观测的相位误差。
 
 \begin{proposition}[周期相位的局部二次展开]
 设周期相位在指定中心附近三次可微。在半宽 $a$ 的时间窗内，用其二次 Taylor 多项式作局部透镜相位时，点态乘法传播子的误差至多为相位余项的上确界，后者不超过 $a^3\sup|\phi^{(3)}|/6$。本章正弦调制的中心相位、群延迟和二次曲率由\eqnrefs{eq:electron_local_time_lens_phase}给出。
 \end{proposition}
 \begin{proof}
-在相位极值附近对正弦调制做 Taylor 展开，推出\eqnrefs{eq:electron_local_time_lens_phase} 并识别四阶项作为有限孔径误差。 透镜近似要求 $|\omega\delta\tau|\ll1$； 超出这一局域时间窗时应使用完整的正弦相位调制。 定义光学相位
+设 $\phi_2$ 是 $C^3$ 相位 $\phi$ 在中心的二次 Taylor 多项式。Taylor 积分余项与 $|\ee^{\ii x}-\ee^{\ii y}|\le\min\{2,|x-y|\}$ 给
+\[
+\|(\ee^{\ii\phi}-\ee^{\ii\phi_2})P_a\|
+\le\min\left\{2,\frac{a^3}{6}\sup_{|\delta\tau|\le a}|\phi^{(3)}|\right\}.
+\]
+这先证明命题的一般误差界。对本章的相位极值，奇数阶项消失，四阶余项还能给出更紧的界。定义光学相位
 
 \begin{equation*}
 \theta(\tau)=\varphi_\beta-\omega\tau .
@@ -1371,6 +1415,7 @@ $\epsilon_3$ 衡量二次模型遗漏的首个谱相位，$\epsilon_4$ 控制继
 \right|
 =\frac{(\omega\delta\tau)^2}{12}.
 \end{equation*}
+相对比值描述曲率的变化，绝对误差则由 Taylor 四阶余项控制：$|\cos x-1+x^2/2|\le|x|^4/24$，所以乘以 $2|\beta|$ 后得到\eqnrefs{eq:electron-time-lens-absolute-error}。对并非严格支撑的波包，若窗外概率为 $\eta_a$，态范数误差至多再增加 $2\sqrt{\eta_a}$。
 \end{proof}
 
 

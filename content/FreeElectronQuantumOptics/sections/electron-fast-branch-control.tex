@@ -1,0 +1,86 @@
+要控制整个传播子，需要同时处理真实跃迁与反旋虚过程。把已选工作空间中的哈密顿量除以 $\hbar$，写成
+\[
+ h(t)=h_s(t)+F(t),\qquad
+ F(t)=K(t)\ee^{\ii\Sigma t}+K^\dagger(t)\ee^{-\ii\Sigma t},
+\]
+其中 $h_s=h_s^\dagger$ 是保留的慢生成元，$K$ 是被舍支路的算符系数，二者的单位均为 $\mathrm{s^{-1}}$，$\Sigma\ne0$ 是快速失谐。令 $U$ 与 $U_s$ 分别由 $h$ 与 $h_s$ 生成。下面的界适用于有界算符；有限通道模型若由更大的电子与光子空间截断而来，其截断传播误差需另外控制，不能仅因初态光子数有限就使用全程有限算符范数。
+
+\begin{proposition}[快速支路的有限时间传播界]
+设 $h_s(t)$ 自伴且有界，$K(t)$ 在算符范数中绝对连续，相关范数在 $[t_i,t_f]$ 上可积。记 $k(t)=\|K(t)\|$。则
+\begin{equation}
+\begin{aligned}
+ \|U(t_f,t_i)-U_s(t_f,t_i)\|
+ \le{}&\frac{2[k(t_i)+k(t_f)]}{|\Sigma|}
+ +\frac{2}{|\Sigma|}\int_{t_i}^{t_f}\|\dot K(t)\|\,\dd t\\
+ &+\frac{4}{|\Sigma|}\int_{t_i}^{t_f}
+ \bigl[\|h_s(t)\|k(t)+k(t)^2\bigr]\dd t .
+\end{aligned}
+\label{eq:feqo-fast-branch-propagator-bound}
+\end{equation}
+这是一个充分误差界，不要求把 Dyson 级数截到某一阶。
+\end{proposition}
+\begin{proof}
+为保留振荡造成的抵消，先构造无量纲的自伴算符
+\[
+ C(t)=\frac{K(t)\ee^{\ii\Sigma t}}{\ii\Sigma}
+       -\frac{K^\dagger(t)\ee^{-\ii\Sigma t}}{\ii\Sigma}.
+\]
+对它求导，快速相位给出 $F$，包络导数给出余项 $D$：
+\[
+ \dot C=F+D,\qquad
+ D=\frac{\dot K\ee^{\ii\Sigma t}
+          -\dot K^\dagger\ee^{-\ii\Sigma t}}{\ii\Sigma}.
+\]
+因此 $\|C\|\le2k/|\Sigma|$、$\|D\|\le2\|\dot K\|/|\Sigma|$，并且 $\|F\|\le2k$。
+由两种传播子的 Duhamel 恒等式，
+\[
+ U-U_s=-\ii\int_{t_i}^{t_f}U(t_f,t)F(t)U_s(t,t_i)\dd t.
+\]
+把 $F=\dot C-D$ 代入，再对含 $\dot C$ 的项分部积分。传播子对中间时刻的导数分别满足
+\[
+ \partial_tU(t_f,t)=\ii U(t_f,t)h(t),\qquad
+ \partial_tU_s(t,t_i)=-\ii h_s(t)U_s(t,t_i),
+\]
+从而
+\begin{align*}
+ \int U\dot C U_s\dd t
+ &=[UCU_s]_{t_i}^{t_f}
+   -\ii\int U(hC-Ch_s)U_s\dd t,\\
+ hC-Ch_s&=[h_s,C]+FC.
+\end{align*}
+两个传播子均幺正，所以端点项只留下 $\|C(t_i)\|+\|C(t_f)\|$，积分项至多为
+\[
+ \int\bigl[2\|h_s\|\|C\|+\|F\|\|C\|+\|D\|\bigr]\dd t.
+\]
+代入三个范数界便得到\eqnrefs{eq:feqo-fast-branch-propagator-bound}。
+\end{proof}
+
+这个结果把三种误差分开：脉冲端点带来 $k/|\Sigma|$，包络变化带来 $\int\|\dot K\|/|\Sigma|$，传播中的快慢交叉作用和反旋往返带来累计项。即使端点平滑、一阶 Fourier 积分接近零，仍要检查最后一项。对大致恒定的速率 $k$ 和相近量级的慢生成元，长时控制包含 $k^2T/|\Sigma|\ll1$，不能用 $k/|\Sigma|\ll1$ 单独替代。
+
+\begin{exbox}[一阶快振荡相消以后，剩下什么]
+考虑两个归一化通道 $|+\rangle,|-\rangle$，令 $\sigma_z|\pm\rangle=\pm|\pm\rangle$，$\sigma_+=|+\rangle\langle-|$。只保留一个快速支路，取常数 $\gamma>0$、$\Sigma>0$：
+\[
+ h(t)=\gamma(\sigma_+\ee^{\ii\Sigma t}
+                   +\sigma_-\ee^{-\ii\Sigma t}),\qquad 0\le t\le T.
+\]
+当 $\Sigma T=2\pi m$，$m$ 为正整数，一阶跃迁积分严格为零。求精确传播，并判断能否把这一支路完全删掉。
+
+\textbf{解。} 令 $R(t)=\exp(\ii\Sigma t\sigma_z/2)$，写 $\psi=R\chi$。由 $h=R\gamma\sigma_xR^\dagger$，旋转后的方程为
+\[
+ \ii\dot\chi=(\gamma\sigma_x+\Sigma\sigma_z/2)\chi.
+\]
+因为 $\sigma_x$ 与 $\sigma_z$ 反对易，括号的平方为 $\nu^2 I$，其中 $\nu=\sqrt{\gamma^2+\Sigma^2/4}$。指数遂为
+\[
+ U(t)=R(t)\left[\cos(\nu t)I
+ -\ii\frac{\sin(\nu t)}\nu
+ (\gamma\sigma_x+\Sigma\sigma_z/2)\right].
+\]
+对入射通道 $|-\rangle$，整周期端点 $R(T)=(-1)^mI$ 给
+\[
+ \langle-|U(T)|-\rangle
+ =(-1)^m\left[\cos(\nu T)
+       +\ii\frac{\Sigma}{2\nu}\sin(\nu T)\right],\qquad
+ P_{-\to+}=\frac{\gamma^2}{\nu^2}\sin^2(\nu T).
+\]
+在 $\gamma/\Sigma\ll1$ 时，$\nu=\Sigma/2+\gamma^2/\Sigma+O(\gamma^4/\Sigma^3)$。若同时 $\gamma^4T/\Sigma^3\ll1$，存活振幅含有累计相位 $\gamma^2T/\Sigma$，而真实转移概率始终至多 $4\gamma^2/\Sigma^2$。所以低末态泄漏不等于传播子接近恒等；入射叠加态可通过两通道的相对相位读出这个虚过程。
+\end{exbox}

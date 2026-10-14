@@ -17,7 +17,7 @@
 \qquad
 \sum_j r_{jj}=1.
 \end{equation*}
-$r_{jj'}$ 无量纲；$r_{jj}$ 是电子初始能量格占据概率，$r_{jj'}$ 的非对角元描述电子能量相干。设光场初态为 $\hat\rho_{\rm ph}$，联合散射算符为无量纲幺正算符 $\hat S_Q$。
+$r_{jj'}$ 无量纲；$r_{jj}$ 是电子初始能量格占据概率，$r_{jj'}$ 的非对角元描述电子能量相干。设光场初态为 $\hat\rho_{\rm ph}$，制备时电子与光场因子化为 $\rho_e\otimes\rho_{\rm ph}$，联合散射算符为无量纲幺正算符 $\hat S_Q$。先前已有电子--光场相关时，以下同一个光场仪器不能由光场约化态独自确定。
 
 若电子理想测得末态格点 $\ell$，对每一个初始电子格点 $j$ 定义作用在光场希尔伯特空间上的\emph{条件偏矩阵元}
 \begin{equation*}
@@ -53,6 +53,30 @@ P_\ell=\operatorname{Tr}_{\rm ph}
 \end{equation*}
 因此 $\{\hat\Pi_\ell^{({\rm ph})}\}$ 是作用在光场上的 POVM。这里的 $\hat\Pi_\ell^{({\rm ph})}$ 只是测量效应算符的统一记号，并不要求它满足投影条件 $\hat\Pi^2=\hat\Pi$；只有理想投影测量才具有这一额外性质。
 
+\begin{proposition}[任意电子输入诱导的光场仪器]
+初态因子化、$\rho_e\succeq0$ 且 $\Tr\rho_e=1$ 时，
+\eqnrefs{eq:general_electron_meter_conditional_photon_map}为完全正、迹不增分支，所有理想结果之和保迹。
+\end{proposition}
+\begin{proof}
+把电子态分解为 $\rho_e=\sum_\nu w_\nu|v_\nu\rangle\langle v_\nu|$，
+$w_\nu\ge0$、$\sum_\nu w_\nu=1$，并记 $|v_\nu\rangle=\sum_jv_{\nu j}|j\rangle$。
+电子矩阵元为 $r_{jj'}=\sum_\nu w_\nu v_{\nu j}v_{\nu j'}^*$。代入条件态得到
+\[
+ \widetilde\rho_{{\rm ph}|\ell}
+ =\sum_\nu C_{\ell\nu}\rho_{\rm ph}C_{\ell\nu}^\dagger,\qquad
+ C_{\ell\nu}=\sqrt{w_\nu}\sum_jv_{\nu j}\mathscr M_{\ell j}.
+\]
+每个分支在任意参考系统上仍是正算符的共轭求和，因此完全正。
+电子末态完备性和条件态以 $P_\ell>0$ 为前提。联合幺正性给
+\[
+ \sum_\ell\mathscr M_{\ell j'}^\dagger\mathscr M_{\ell j}
+ ={}_e\!\langle j'|S_Q^\dagger S_Q|j\rangle_e
+ =\delta_{jj'}I_{\rm ph}.
+\]
+所以 $\sum_{\ell,\nu}C_{\ell\nu}^\dagger C_{\ell\nu}=I_{\rm ph}$，单个分支的效应不超过单位，
+总分支保迹。可分无限维空间的求和按迹范数极限理解。
+\end{proof}
+
 QPINEM 单模交换还满足守恒律\eqnrefs{eq:qpinem_conservation}。用已经冻结的总交换量
 \[
 \mathcal N_{\rm ex}=\Lambda_e+N_{\rm ph}
@@ -85,14 +109,29 @@ w_\ell(\mathcal W)
 R_{\rm det}(E_d|\mathcal E_\ell),
 \qquad 0\le w_\ell\le\mathcal Q_\ell^{\rm det},
 \]
-即可得到窗口后选择的条件量子仪器。
+即可得到窗口后选择的未归一化分支
+$\widetilde\rho_{{\rm ph}|\mathcal W}=\sum_\ell w_\ell(\mathcal W)\widetilde\rho_{{\rm ph}|\ell}$。
+其归一化条件态必须再除以窗口成功概率 $P_{\mathcal W}=\Tr\widetilde\rho_{{\rm ph}|\mathcal W}>0$。
+若所有点击能量都被记录，补上无点击分支
+\[
+ \mathcal I_{\varnothing}(\rho_{\rm ph})
+ =\sum_\ell(1-\mathcal Q_\ell^{\rm det})
+ \sum_{jj'}r_{jj'}\mathscr M_{\ell j}\rho_{\rm ph}\mathscr M_{\ell j'}^\dagger,
+\]
+便有 $\mathcal I_{\varnothing}+\int\dd E_d\,\mathcal I_{E_d}$ 保迹。
+未接受的能窗也可一并归入这个分支。
+每个积分区间对应迹不增操作，但点值 $\mathcal I_{E_d}$ 是带 $\mathrm{J^{-1}}$ 的密度，不能对它单独要求无量纲的“迹不超过一”。
 
 \subsection{单模计数核与条件仪器}\label{subsec:single-mode-number-instrument-dp19}
 
 在单模 QPINEM 中，前面已经求出每个光子数输入对应的联合散射振幅。若只统计电子落在哪条边带，对不同的未测光子末态求和即可得到概率。若希望在电子后选择后继续使用光场，则要保留这些振幅的相位，并用 Kraus 算符表示条件更新。下面从同一组散射矩阵元写出这两种结果。
 
 \begin{exbox}[QPINEM 单模数统计]
-联合散射给出每个初始光子数 $n$ 到电子边带 $\ell$ 的振幅。若只读取电子边带而不保留末态光场相位，所需信息只是这些振幅的模平方，因此形成从光子数概率到电子计数概率的随机核；若进一步按某个电子结果后选择，光场振幅本身仍被保留，于是得到作用在光场上的条件算符。二者都由同一联合散射矩阵元导出。
+取单能电子入射，已知单模交换振幅 $\mathcal A_{\ell|n}$。
+求任意光态产生的电子计数核、条件光态和效应算符，并检验归一化；再求弱增益读出与下降阶乘矩的关系。
+
+\textbf{解。}
+电子计数只需振幅的模平方，条件光态则仍需保留振幅的相位。两种结果从同一个联合散射求出。
 
 取入射电子为单一能量格点 $|0\rangle_e$，光场密度算符写成
 \begin{equation*}
@@ -157,7 +196,7 @@ $\mathscr M_\ell$ 无量纲，作用于光场 Hilbert 空间。相应 POVM 效�
 =\frac{\mathscr M_\ell\rho_{\rm ph}\mathscr M_\ell^\dagger}{P_\ell}.}
 \label{eq:single_electron_photon_instrument}
 \end{equation}
-联合幺正性给
+条件态以 $P_\ell>0$ 为前提。联合幺正性给
 \[
 \sum_\ell \hat\Pi_\ell^{({\rm ph})}=\mathbb I_{\rm ph},
 \]
@@ -178,7 +217,7 @@ $F_{r_{\rm ph}}$ 是无量纲第 $r_{\rm ph}$ 阶下降阶乘矩。若平均光�
 g_{\rm ph}^{(r_{\rm ph})}(0)
 \equiv\frac{F_{r_{\rm ph}}}{\bar n^{r_{\rm ph}}}.
 \end{equation*}
-由弱交换展开，电子增益第 $r_{\rm ph}$ 阶边带满足\eqnrefs{eq:qpinem-weak-factorial-moment-dp19}，从而
+对有限光子数支撑，或已满足相应阶乘矩极限所需尾部控制的输入，由弱交换展开，电子增益第 $r_{\rm ph}$ 阶边带满足\eqnrefs{eq:qpinem-weak-factorial-moment-dp19}，从而
 \begin{equation}
 \boxed{
 g_{\rm ph}^{(r_{\rm ph})}(0)
@@ -186,11 +225,11 @@ g_{\rm ph}^{(r_{\rm ph})}(0)
 \frac{(r_{\rm ph}!)^2P_{+r_{\rm ph}}}{P_{+1}^{r_{\rm ph}}}.}
 \label{eq:electron_factorial_correlation_readout}
 \end{equation}
-有限 $|g_{\mathrm Q}|$ 时应直接使用 $\mathsf K_{\ell n}$，因为高阶 $|g_{\mathrm Q}|$ 修正会同时混合多个光子数矩。
+有限 $|g_{\mathrm Q}|$ 时应直接使用 $\mathsf K_{\ell n}$，因为高阶修正会同时混合多个光子数矩。无限支撑的输入不能只凭每个固定 $n$ 的 Taylor 展开交换求和与极限；须检验所用矩的存在和尾部控制。
 
 \medskip
 
-若只读出电子能谱，光场信息通过联合散射后电子结果的条件概率进入。该关系可写成从光子统计到电子计数的随机核。 从联合散射和 Born 规则推出电子谱线性核~\eqnrefs{eq:electron_spectrum_linear_kernel}，并重写为单电子对光场的 instrument~\eqnrefs{eq:single_electron_photon_instrument}。 这里重复电子事件独立；输入光场态在单次事件内固定；核的列归一化由概率守恒保证。对初态 $|0\rangle_e\langle0|\otimes\rho_{\rm ph}$，先展开光场密度算符：
+为验证计数核和条件算符，先从联合态显式取一次偏迹。输入光场态在单次事件内固定；多次事件的独立性还要求每次重新制备光场，而不是由单次散射的幺正性推出。对初态 $|0\rangle_e\langle0|\otimes\rho_{\rm ph}$，先展开光场密度算符：
 \[
 \rho_{\rm ph}=\sum_{n,n'}\rho_{nn'}|n\rangle\langle n'|.
 \]
@@ -258,16 +297,22 @@ P_\ell
 设只需重建有限个光子数概率，电子探测器也只读取有限个能量区间，那么前面的计数关系成为一个有限维矩阵方程。要从电子计数求出光子概率，矩阵的不同列必须提供独立信息；若两列几乎相同，少量计数误差就会造成很大的反演误差。我们先用秩和奇异值检查这一点，再计算选定电子结果后的光场更新。
 
 \begin{exbox}[光子统计反演与电子后选择条件操作]
-\eqnrefs{eq:electron_spectrum_linear_kernel} 把有限单模光子数统计映射为电子边带分布。Fock 态、相干态和热态共享同一个条件响应核 $\mathsf K_{\ell n}$，它们的差异由输入光子数分布 $p_n$ 进入。典型状态的下降阶乘矩为
+给定全阶单模计数核，求 Fock 态、相干态与热态的下降阶乘矩，推导热态的大占据联合标度分布。
+再写出有限窗口的反演条件及电子梳输入的条件光场算符。
+
+\textbf{解。}
+\eqnrefs{eq:electron_spectrum_linear_kernel}把单模光子数统计映射为电子边带分布。Fock 态、相干态和热态共享同一个条件响应核 $\mathsf K_{\ell n}$，它们的差异由输入光子数分布 $p_n$ 进入。典型状态的下降阶乘矩为
 \begin{equation*}
 \begin{array}{c|c|c}
 \text{光态}&F_{r_{\rm ph}}&g_{\rm ph}^{(r_{\rm ph})}(0)\\ \hline
-|N\rangle&N(N-1)\cdots(N-r_{\rm ph}+1)&\dfrac{N!}{(N-r_{\rm ph})!N^{r_{\rm ph}}}\\[4pt]
+|N\rangle\ (N\ge1)&N^{\underline{r_{\rm ph}}}&N^{\underline{r_{\rm ph}}}/N^{r_{\rm ph}}\\[4pt]
 |\alpha_c\rangle&\bar n^{r_{\rm ph}}&1\\[2pt]
 \rho_{\rm th}&r_{\rm ph}!\,\bar n^{r_{\rm ph}}&r_{\rm ph}!
 \end{array}
 \end{equation*}
-这里用 $\alpha_c$ 表示相干态振幅，避免与精细结构常数 $\alpha$ 混用；$\bar n=|\alpha_c|^2$ 或热平均光子数均无量纲。
+这里 $N^{\underline r}=N!/(N-r)!$ 在 $r\le N$ 时成立，$r>N$ 时为零。
+真空的阶乘矩全部为零，但 $\bar n=0$ 时不定义归一化 $g^{(r)}(0)$。
+用 $\alpha_c$ 表示相干态振幅，避免与精细结构常数 $\alpha$ 混用；$\bar n=|\alpha_c|^2$ 或热平均光子数均无量纲。
 
 热态还存在一个受控的经典标度极限。令
 \begin{equation*}
@@ -286,7 +331,7 @@ P_\ell^{({\rm th,cl})}
 \operatorname{Var}(\ell)=2\bar N_{\rm ex}^{(\rm th)}.}
 \label{eq:thermal_skellam}
 \end{equation}
-该分布是对称 Skellam 型离散分布；它描述弱单光子耦合与大热占据联合缩放下的极限，只描述上述联合标度；有限 $g_{\mathrm Q}$ 时应使用单模有效模型的全阶 Laguerre 核。
+该分布是对称 Skellam 型离散分布；它描述弱单光子耦合与大热占据联合缩放下的极限；有限 $g_{\mathrm Q}$ 时应使用单模有效模型的全阶 Laguerre 核。
 
 实验反演只能使用有限电子边带集合 $\mathcal L_{\rm det}$，并通常把待估光子数截断到 $0\le n\le N_{\max}$。把观测边带概率组成向量 $\mathbf P$，把未知光子数分布组成 $\mathbf p$，定义截断后的无量纲设计矩阵
 \begin{equation}
@@ -297,7 +342,7 @@ P_\ell^{({\rm th,cl})}
 \mathbf P=\mathsf K_{\rm inv}\mathbf p.}
 \label{eq:single_mode_kernel_inverse_problem_dp68}
 \end{equation}
-这里 $\mathsf K_{\rm inv}$ 是从单模有效模型的全阶前向核中抽取出的有限数据矩阵。其奇异值分解
+这个等式以输入严格支持于截断内、数据使用每个入射电子的无条件概率为前提。光子数尾不为零时应另加其前向贡献；成功点击后的归一化频率也不能直接代入左端。这里 $\mathsf K_{\rm inv}$ 是从全阶前向核中抽取的有限数据矩阵。其奇异值分解
 \begin{equation}
 \boxed{
 \mathsf K_{\rm inv}
@@ -327,7 +372,7 @@ P_\ell^{({\rm th,cl})}
 
 \medskip
 
-热光场下吸收与发射事件在经典大占据数极限可近似为两个独立 Poisson 过程，其净边带阶数是二者之差。 由两个 Poisson 生成函数的乘积推出 Skellam 分布~\eqnrefs{eq:thermal_skellam}，并给出均值与方差；这里经典标度极限使单次跃迁稀疏而总事件数有限；正负跃迁独立。热态的 Glauber--Sudarshan 表示为
+为求热态的联合标度极限，直接对经典场振幅分布平均单次电子的 Bessel 概率，不另行假设交换过程独立。所得特征函数与两个同均值独立 Poisson 随机变量之差相同，下面由振幅平均验证这一点。热态的 Glauber--Sudarshan 表示为
 \[
 \rho_{\rm th}
 =\int\frac{\dd^2 \alpha_c}{\pi\bar n}
@@ -385,7 +430,7 @@ J_0(2\sqrt{ax})
 \[
 a=4\bar N_{\rm ex}^{(\rm th)}\sin^2\frac{\vartheta}{2}.
 \]
-逐项积分并使用
+对固定有限 $a$，各级数项的绝对积分之和为 $\sum_m |a|^m/m!=\ee^{|a|}<\infty$，因此可交换求和与积分。逐项积分并使用
 \[
 \int_0^\infty\dd x\,\ee^{-x}x^m=m!,
 \]
@@ -482,6 +527,8 @@ a=4\bar N_{\rm ex}^{(\rm th)}\sin^2\frac{\vartheta}{2}.
 \]
 每一项保留 $c_j$ 的复相位，所以能量梳相位会在条件光场振幅层发生相干干涉，而不是在概率层作非相干求和。
 \end{exbox}
+
+\input{sections/electron-count-kernel-identifiability}
 
 \input{sections/06-bunching-decoherence-closure-dp47}
 \input{content/FreeElectronQuantumOptics/examples/nearfield-to-counts-comprehensive.tex}

@@ -1,0 +1,129 @@
+\subsection{探测窗口、光子截断与可辨识方向}
+
+有限窗口不仅减少行数，也可能改变数据的归一化。把第 $a$ 个互斥探测窗对理想边带 $\ell$ 的响应记为
+$d_{a\ell}\ge0$，其中 $\sum_a d_{a\ell}\le1$；效率和能量模糊都包含在这个无量纲条件概率中。
+已知入射总数时，把所有未落入记录窗口的事件归入结果 $a=\varnothing$，令
+$d_{\varnothing\ell}=1-\sum_a d_{a\ell}$。实际光子数计数核因而是
+\begin{equation}
+ D_{an}=\sum_\ell d_{a\ell}\mathsf K_{\ell n},\qquad
+ \sum_aD_{an}=1,\qquad P_a=\sum_{n\ge0}D_{an}p_n.
+ \label{eq:feqo-complete-count-kernel}
+\end{equation}
+漏计结果要求知道哪些电子曾入射；未监测入射数的实验不能把它当作已记录通道。
+只保留成功点击时，概率变为 $P_a/q$，其中 $q=\sum_{a\ne\varnothing}P_a$。
+如果 $q$ 随未知光子统计变化，成功条件化以后的前向关系是归一化的分式，已经不是原来的线性核。
+
+\Needspace{22\baselineskip}
+\begin{proposition}[归一化切空间上的计数核与截断偏差]
+\label{prop:feqo-normalized-count-identifiability}
+设输入严格支持于 $n=0,\ldots,N_{\max}$，$D$ 为上述完整结果核。
+取 $B$ 的列为 $\{v:\mathbf1^{\mathsf T}v=0\}$ 的一组正交实基，写
+$\mathbf p=\mathbf p_*+B\mathbf a$。在概率单纯形的内部，光子统计可唯一辨识当且仅当
+$DB$ 满列秩。若 $\sigma_* =s_{\min}(DB)>0$，无约束最小二乘的参数误差满足
+\begin{equation}
+ \|\widehat{\mathbf a}-\mathbf a\|_2
+ \le\frac{\|\delta\mathbf P\|_2}{\sigma_*},\qquad
+ \mathcal F_{\mathbf a}=N_0 B^{\mathsf T}D^{\mathsf T}
+ \operatorname{diag}(P_a^{-1})DB.
+ \label{eq:feqo-constrained-kernel-information}
+\end{equation}
+信息式适用于已知固定入射数 $N_0$、完整多项计数和全部使用的 $P_a>0$。
+若实际输入有尾概率 $\delta=\sum_{n>N_{\max}}p_n<1$，将保留部分归一化为
+$q_n=p_n/(1-\delta)$，则完整结果概率与截断预测的总变差不超过 $\delta$：
+\begin{equation}
+ \frac12\|\mathbf P-D\mathbf q\|_1\le\delta.
+ \label{eq:feqo-photon-tail-count-bias}
+\end{equation}
+用截断模型作同一无约束反演时，统计误差与模型偏差合起来给
+$\|\widehat{\mathbf a}-\mathbf a_q\|_2
+\le(\|\delta\mathbf P_{\rm stat}\|_2+2\delta)/\sigma_*$。
+\end{proposition}
+\begin{proof}
+两个归一化输入的差可唯一写成 $B\Delta\mathbf a$，对应数据差为 $DB\Delta\mathbf a$。
+满列秩时，数据相同迫使 $\Delta\mathbf a=0$；若存在非零零向量，在内部输入上取足够小的正负扰动仍得到两个合法概率分布，且数据完全相同。
+对最小二乘解，$\Delta\mathbf a=(DB)^+\delta\mathbf P$，伪逆的谱范数为 $\sigma_*^{-1}$，给出误差界。
+正交性还使 $\|B\Delta\mathbf a\|_2=\|\Delta\mathbf a\|_2$，所以该界也控制光子数概率的欧氏误差。
+
+固定总数时，计数得分为
+\[
+ S_j=\sum_a n_a\frac{(DB)_{aj}}{P_a}.
+\]
+列归一化给 $\sum_a(DB)_{aj}=0$，故得分均值为零。
+把多项协方差
+$\operatorname{Cov}(n_a,n_b)=N_0(P_a\delta_{ab}-P_aP_b)$
+代入 $\mathbb E(S_iS_j)$，第二项因上述列和为零而消失，留下\eqnrefs{eq:feqo-constrained-kernel-information}。
+因此信息零空间正是 $\ker(DB)$。
+
+尾部经随机核映射后得到非负向量
+$t_a=\sum_{n>N_{\max}}D_{an}p_n$，且 $\sum_a t_a=\delta$。
+真实概率是 $\mathbf P=(1-\delta)D\mathbf q+\mathbf t$。
+于是
+\[
+ \|\mathbf P-D\mathbf q\|_1
+ =\|\mathbf t-\delta D\mathbf q\|_1
+ \le\|\mathbf t\|_1+\delta\|D\mathbf q\|_1=2\delta.
+\]
+用 $\|v\|_2\le\|v\|_1$ 把这一偏差代入伪逆误差界，即得到最后的联合误差估计。
+\end{proof}
+
+原矩阵 $\mathsf K_{\rm inv}$ 的奇异值仍描述它在完整列空间中的作用，但概率反演应该计算
+$DB$ 的奇异值。位于单纯形边界的输入只有部分扰动可行，须在可行锥上另作判断。
+增大电子计数会减小统计误差，却不会减小光子截断的尾概率；小奇异值会把两种误差同时放大。
+以上误差界针对未施加非负约束的线性最小二乘。实际估计若采用非负约束或正则化，还要分别分析这些操作引入的偏差。
+
+\begin{exbox}[真空与单光子输入的计数、效率及后选择]
+设每次事件前光场都重新制备为
+$\rho_{\rm ph}=(1-\theta)|0\rangle\langle0|+\theta|1\rangle\langle1|$，$0<\theta<1$。
+电子入射格点为 $0$，单模模型取 $s=|g_{\mathrm Q}|^2=1$。
+谱仪分别记录增益 $+1$ 与损失 $-1$，两窗具有相同的已知效率 $0<\eta\le1$，其余结果合并。
+求光子概率 $\theta$ 的前向计数与信息，并说明只记录点击时还能辨识什么。
+再求这两个电子结果分别制备的光态。
+
+\textbf{解。}
+把 $n=0,1$ 代入全阶 Laguerre 核，而不作弱交换展开，得到
+\[
+ \mathsf K_{+1,0}=0,\quad \mathsf K_{+1,1}=\ee^{-1},\qquad
+ \mathsf K_{-1,0}=\ee^{-1},\quad \mathsf K_{-1,1}=\frac{\ee^{-1}}2.
+\]
+记 $k=\ee^{-1}$。三个完整结果的概率为
+\begin{equation}
+ P_+=\eta k\theta,\qquad P_-=\eta k(1-\theta/2),\qquad
+ P_\varnothing=1-\eta k(1+\theta/2).
+ \label{eq:feqo-one-photon-count-model}
+\end{equation}
+三个概率非负且和为一。已知固定入射数 $N_0$ 时，导数平方除以各自概率给
+\[
+ \frac{I_\theta}{N_0}
+ =\frac{\eta k}{\theta}
+ +\frac{\eta k}{4(1-\theta/2)}
+ +\frac{(\eta k)^2}{4[1-\eta k(1+\theta/2)]}.
+\]
+最后一项来自未成功记录的事件；它不能被归入某个光子数的光谱峰。
+
+只保留两个成功窗口时，成功概率为 $q=\eta k(1+\theta/2)$。
+固定成功总数 $N_{\rm det}$ 的条件概率与信息是
+\begin{equation}
+ \pi_+=\frac{\theta}{1+\theta/2},\quad
+ \theta=\frac{\pi_+}{1-\pi_+/2},\qquad
+ \frac{I_\theta^{\rm cond}}{N_{\rm det}}
+ =\frac1{(1+\theta/2)^2\theta(1-\theta/2)}.
+ \label{eq:feqo-one-photon-selected-information}
+\end{equation}
+这里用了 $\partial_\theta\pi_+=(1+\theta/2)^{-2}$ 和二项信息式。
+两个窗口的相对形状仍可确定 $\theta$，共同效率却从条件概率中完全消失。
+如果只保留增益窗口，条件结果恒为增益，形状信息为零；已知入射数时，其成功率仍给出 $\eta k\theta$。
+效率未知而只记录这一成功率时，$\eta$ 与 $\theta$ 无法分别确定。
+
+增益结果要求输入单光子被电子吸收，故 $\mathscr M_{+1}|0\rangle=0$，
+$\mathscr M_{+1}|1\rangle$ 与真空成比例，条件光态就是 $|0\rangle\langle0|$。
+损失结果分别把真空送到 $|1\rangle$、把单光子送到 $|2\rangle$，因此
+\begin{equation}
+ \rho_{{\rm ph}|-1}
+ =\frac{(1-\theta)|1\rangle\langle1|+(\theta/2)|2\rangle\langle2|}{1-\theta/2}.
+ \label{eq:feqo-one-photon-selected-state}
+\end{equation}
+共同效率在这两个归一化条件态中抵消，但在制备成功率中保留。
+若要把 $N_{\rm det}$ 个成功事件折算为实验资源，还需约 $N_{\rm det}/q$ 个入射电子；
+不能把每个成功事件的信息直接当作每个入射电子的信息。
+以上独立计数关系要求光场每次重置。同一光场被连续探测而没有重置时，应使用当前条件态逐次更新，下一次计数不再服从同一个固定核。
+\end{exbox}
