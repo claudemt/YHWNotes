@@ -1,0 +1,494 @@
+\chapter{入射电子、量子态与因果响应}\label{chap:electron-foundations}
+
+一个电子穿过纳米结构以后，探测器可以记录它的能量、到达时间，也可以记录伴随产生的光。
+要从材料和照明条件预测这些结果，需要先描述入射电子怎样制备，随后求电子与环境的联合演化，
+再把没有被探测的自由度迹掉。电子的相对论色散决定传播和反冲，材料的因果响应则决定电流产生的场。
+这些对象共同构成后面各个实验模型的起点。
+
+\section{电子波包与制备的量子态}\label{sec:feqo-primer-states}
+
+确定一个中心能量并不能确定电子的量子态。不同动量分量可以有固定的相对相位，
+也可以来自每次制备都不同的统计混合。两种制备有时给出相同能谱，却在漂移和参考场作用后产生不同的时间密度。
+因此，我们先保留动量振幅和相干信息，再计算探测概率。
+
+\begin{definition}[连续态、波包与完备关系]
+单电子正能态以动量 $\mathbf p$ 和两个自旋标签 $s$ 表示。
+其动量振幅组成 $\mathcal H_e=\bigoplus_{s=1}^{2}L^2(\mathbb R^3,\dd^3p)$，
+内积对第二变量线性。广义基采用
+\begin{equation}
+\langle\mathbf p,s|\mathbf p',s'\rangle
+=\delta_{ss'}\delta^{(3)}(\mathbf p-\mathbf p'),\qquad
+I_e=\sum_s\int\dd^3p\,|\mathbf p,s\rangle\langle\mathbf p,s|.
+\label{eq:feqo-primer-continuum}
+\end{equation}
+归一化纯态写为
+\[
+|\psi\rangle=\sum_s\int\dd^3p\,a_s(\mathbf p)|\mathbf p,s\rangle,
+\qquad \sum_s\int\dd^3p\,|a_s(\mathbf p)|^2=1.
+\]
+平面波的空间 Fourier 因子为 $(2\pi\hbar)^{-3/2}\ee^{\ii\mathbf p\cdot\mathbf r/\hbar}$。
+广义基不是普通单位范数向量；$|a_s|^2\dd^3p$ 才是动量小体积内的概率。
+\end{definition}
+
+\begin{example}[同一纵向高斯波包的动量宽度和空间宽度]
+取固定自旋并把横向态另行归一化。纵向标量包络的动量振幅为
+\[
+a(p)=(2\pi\sigma_p^2)^{-1/4}
+\exp\!\left[-\frac{(p-p_0)^2}{4\sigma_p^2}\right],\qquad \sigma_p>0.
+\]
+求其 Fourier 空间包络及两个表象中的方差。
+
+\textbf{解。} $|a(p)|^2$ 是均值为 $p_0$、方差为 $\sigma_p^2$ 的归一化高斯密度。
+令 $u=p-p_0$，Fourier 变换变成
+\[
+\psi(z)=\frac{(2\pi\sigma_p^2)^{-1/4}}{\sqrt{2\pi\hbar}}
+\ee^{\ii p_0z/\hbar}
+\int\dd u\,\exp\!\left[-\frac{u^2}{4\sigma_p^2}+\frac{\ii uz}{\hbar}\right].
+\]
+对高斯指数配方，积分为 $2\sqrt\pi\sigma_p\exp[-\sigma_p^2z^2/\hbar^2]$，因而
+\[
+\psi(z)=\left(\frac{2\sigma_p^2}{\pi\hbar^2}\right)^{1/4}
+\ee^{-\sigma_p^2z^2/\hbar^2+\ii p_0z/\hbar},\qquad
+\sigma_z^2=\frac{\hbar^2}{4\sigma_p^2}.
+\]
+于是 $\sigma_z\sigma_p=\hbar/2$。中心动量给空间振幅增加载波相位，
+动量宽度则决定包络长度；把中心能量相同的电子都视为同一个平面波，会丢掉这项制备信息。
+\end{example}
+
+实验制备也可能具有随机相位或能量抖动。对每种制备先算纯态，再按发生概率加权，得到密度算符。
+它同时描述纯态、统计混合以及只观测联合系统一部分时留下的状态。
+
+\begin{definition}[密度算符与环境偏迹]
+量子态 $\rho$ 是 Hilbert 空间上的正迹类算符，满足 $\rho\succeq0$、$\Tr\rho=1$。
+纯态对应 $\rho=|\psi\rangle\langle\psi|$；统计制备对应
+$\rho=\sum_jw_j|\psi_j\rangle\langle\psi_j|$，其中 $w_j\ge0$、$\sum_jw_j=1$。
+有界可观测量 $A$ 的平均值为 $\Tr(\rho A)$。
+电子与辅助系统 $X$ 的联合空间为 $\mathcal H_e\otimes\mathcal H_X$。
+电子约化态 $\rho_e=\Tr_X\rho_{eX}$ 由
+\begin{equation}
+\Tr_e(\rho_e A)=\Tr_{eX}[\rho_{eX}(A\otimes I_X)]
+\label{eq:feqo-primer-partial-trace}
+\end{equation}
+定义。取 $X$ 的任意正交完备基 $|\mu\rangle$，其矩阵元为
+$\langle i|\rho_e|j\rangle=\sum_\mu\langle i,\mu|\rho_{eX}|j,\mu\rangle$。
+连续基时，求和改为相应谱测度积分。
+\end{definition}
+
+\begin{proposition}[偏迹保持概率和正性]
+归一化联合态的偏迹仍是归一化正迹类算符。
+联合幺正演化 $\rho_{eX}\mapsto U\rho_{eX}U^\dagger$ 后，
+电子可观测量的概率由 $\rho_{e,f}=\Tr_X(U\rho_{eX}U^\dagger)$ 给出。
+\end{proposition}
+\begin{proof}
+对任意电子向量 $|v\rangle$，正交基表达式给出
+\[
+\langle v|\rho_e|v\rangle
+=\sum_\mu\langle v,\mu|\rho_{eX}|v,\mu\rangle\ge0.
+\]
+每项非负，故正迹类算符的求和与求迹可交换，得到
+$\Tr\rho_e=\sum_{i,\mu}\langle i,\mu|\rho_{eX}|i,\mu\rangle=1$。
+对有界 $A$ 展开其矩阵元，便得到\eqnrefs{eq:feqo-primer-partial-trace}；
+这也说明偏迹不依赖所选环境基。幺正变换保持正性和迹，因而同一结论适用于末态。
+\end{proof}
+
+\begin{example}[相同电子能谱与不同环境记录]
+设 $|0\rangle_e,|1\rangle_e$ 是两个正交电子波包，$|x_0\rangle,|x_1\rangle$ 是归一化环境态。
+联合纯态为
+$|\Psi\rangle=(|0\rangle_e|x_0\rangle+|1\rangle_e|x_1\rangle)/\sqrt2$。
+求电子约化态和相干参考 $|+\rangle=(|0\rangle+|1\rangle)/\sqrt2$ 的投影概率。
+
+\textbf{解。} 令 $\zeta=\langle x_1|x_0\rangle$。展开外积并对环境求迹，得到
+\[
+\rho_e=\frac12
+\begin{pmatrix}1&\zeta\\\zeta^*&1\end{pmatrix},\qquad
+\langle+|\rho_e|+\rangle=\frac{1+\Re\zeta}{2}.
+\]
+Cauchy--Schwarz 不等式给 $|\zeta|\le1$，所以本征值 $(1\pm|\zeta|)/2$ 非负。
+环境态相同时，$\zeta=1$，相干参考概率为一；环境记录正交时，$\zeta=0$，概率变成 $1/2$。
+两种情况下电子的两个能谱通道都各占一半，但环境带走了不同程度的相位信息。
+\end{example}
+
+\section{高速电子的能量、自旋与电流}\label{sec:feqo-primer-electron}
+
+自由电子的色散在高速束流中仍有曲率，因此传播不会只给所有动量分量增加相同相位。
+为了同时保留色散和自旋，用四分量 Dirac 波函数描述电子。
+自旋空间中的矩阵与沿路径积累的 PINEM 耦合是不同对象；这里把质量矩阵记为 $\beta_D$。
+
+\begin{definition}[Dirac 矩阵与自由电子]
+在 Dirac 表象中取
+\[
+\beta_D=\begin{pmatrix}I_2&0\\0&-I_2\end{pmatrix},\qquad
+\alpha_i=\begin{pmatrix}0&\sigma_i\\\sigma_i&0\end{pmatrix},
+\]
+其中
+\[
+\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+\sigma_y=\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix},\qquad
+\sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+\]
+为 Pauli 矩阵。这些 Dirac 矩阵厄米，满足
+\begin{equation}
+\{\alpha_i,\alpha_j\}=2\delta_{ij}I_4,\quad
+\{\alpha_i,\beta_D\}=0,\quad \beta_D^2=I_4,
+\qquad \{\gamma^\mu,\gamma^\nu\}=2\eta^{\mu\nu}I_4,
+\label{eq:feqo-primer-clifford}
+\end{equation}
+其中 $\gamma^0=\beta_D$、$\gamma^i=\beta_D\alpha_i$，
+$\eta=\operatorname{diag}(1,-1,-1,-1)$。自由 Hamiltonian 与协变方程为
+\begin{equation}
+H_0(\mathbf p)=c\boldsymbol\alpha\cdot\mathbf p+\beta_Dm_{\mathrm e}c^2,
+\qquad (\ii\hbar c\gamma^\mu\partial_\mu-m_{\mathrm e}c^2)\Psi=0,
+\label{eq:feqo-primer-dirac-free}
+\end{equation}
+其中 $x^0=ct$。$H_0$ 作用于 $L^2(\mathbb R^3,\dd^3p;\mathbb C^4)$。
+在动量空间，它取乘法算符的最大定义域
+$D(H_0)=\{a:E_{\mathbf p}a\in L^2\}$。
+\end{definition}
+
+\begin{proposition}[正能旋量与概率投影]
+自由能量、谱投影和概率归一化正能旋量分别为
+\begin{align}
+E_{\mathbf p}&=\sqrt{m_{\mathrm e}^2c^4+c^2\mathbf p^2},
+\label{eq:feqo-primer-dispersion}\\
+\Pi_\pm(\mathbf p)&=\frac12\left(I_4\pm\frac{H_0(\mathbf p)}{E_{\mathbf p}}\right),
+\label{eq:feqo-primer-energy-projectors}\\
+U_s(\mathbf p)&=\sqrt{\frac{E_{\mathbf p}+m_{\mathrm e}c^2}{2E_{\mathbf p}}}
+\begin{pmatrix}\xi_s\\
+\displaystyle\frac{c\boldsymbol\sigma\cdot\mathbf p}{E_{\mathbf p}+m_{\mathrm e}c^2}\xi_s
+\end{pmatrix},\qquad \xi_s^\dagger\xi_{s'}=\delta_{ss'}.
+\label{eq:feqo-primer-spinor}
+\end{align}
+在所给最大定义域上 $H_0$ 自伴，且有 $H_0U_s=E_{\mathbf p}U_s$、$U_s^\dagger U_{s'}=\delta_{ss'}$、
+$\sum_sU_sU_s^\dagger=\Pi_+$。
+协变归一化旋量取 $u_s=\sqrt{2E_{\mathbf p}/c}\,U_s$，
+于是 $\bar u_su_{s'}=2m_{\mathrm e}c\delta_{ss'}$，$\bar u=u^\dagger\gamma^0$。
+\end{proposition}
+\begin{proof}
+对紧支撑光滑动量测试函数，厄米矩阵乘法给 $H_0\subset H_0^\dagger$。
+反过来，若 $b\in D(H_0^\dagger)$，伴随定义使分布 $H_0(\mathbf p)b(\mathbf p)$
+代表一个 $L^2$ 向量。反对易关系使交叉项相消，给出
+$H_0^2=(c^2\mathbf p^2+m_{\mathrm e}^2c^4)I_4=E_{\mathbf p}^2I_4$，所以
+$\|H_0b\|^2=\int E_{\mathbf p}^2|b(\mathbf p)|^2\dd^3p$，
+故 $b$ 属于所给最大定义域，且伴随仍为同一乘法算符。这就证明自伴性。
+因此 $h=H_0/E_{\mathbf p}$ 满足 $h=h^\dagger$、$h^2=I_4$，
+直接给出 $\Pi_\pm^2=\Pi_\pm$、$\Pi_+\Pi_-=0$ 和 $\Pi_++\Pi_-=I_4$。
+把旋量写成上下两个二分量块 $(\phi,\chi)^{\mathsf T}$，并记
+$N_{\mathbf p}=\sqrt{(E_{\mathbf p}+m_{\mathrm e}c^2)/(2E_{\mathbf p})}$ 为正能旋量的归一化系数。
+正能本征方程的下块为
+$(E_{\mathbf p}+m_{\mathrm e}c^2)\chi=c\boldsymbol\sigma\cdot\mathbf p\,\phi$。
+取 $\phi=N_{\mathbf p}\xi_s$，便得到\eqnrefs{eq:feqo-primer-spinor}。
+由于 $(\boldsymbol\sigma\cdot\mathbf p)^2=\mathbf p^2I_2$，归一化因子满足
+\[
+N_{\mathbf p}^2\left[1+\frac{c^2\mathbf p^2}{(E_{\mathbf p}+m_{\mathrm e}c^2)^2}\right]=1.
+\]
+两个旋量张成二维正能本征空间，故其外积和为 $\Pi_+$。
+上下块相减又给 $\bar U_sU_{s'}=m_{\mathrm e}c^2\delta_{ss'}/E_{\mathbf p}$，
+乘以 $2E_{\mathbf p}/c$ 即为协变归一化。
+\end{proof}
+
+正能波包的坐标波函数现在具有明确的自旋内容：
+\[
+\Psi(\mathbf r,t)=\sum_s\int\frac{\dd^3p}{(2\pi\hbar)^{3/2}}
+a_s(\mathbf p)U_s(\mathbf p)
+\ee^{\ii\mathbf p\cdot\mathbf r/\hbar-\ii E_{\mathbf p}t/\hbar}.
+\]
+空间积分 $\int\Psi^\dagger\Psi\dd^3r=1$ 由 Fourier 的完备关系和同动量旋量正交性得到。
+若自旋或动量分布较宽，不能把 $U_s(\mathbf p)$ 直接换成固定中心旋量；
+这一替换的误差还需在实际工作窗内检查。
+
+\begin{proposition}[群速度、色散曲率与反冲]
+在中心动量 $\mathbf p_0$ 处令 $E_0=E_{\mathbf p_0}$、
+$\gamma_0=E_0/(m_{\mathrm e}c^2)$，则
+\begin{equation}
+\mathbf v_0=\frac{c^2\mathbf p_0}{E_0},\qquad
+\mathsf M^{-1}=\nabla_{\mathbf p}\nabla_{\mathbf p}E\big|_{\mathbf p_0}
+=\frac{c^2}{E_0}I_3-\frac{c^4}{E_0^3}\mathbf p_0\mathbf p_0^{\mathsf T}.
+\label{eq:feqo-primer-curvature}
+\end{equation}
+平行及垂直束轴的曲率质量为 $m_\parallel=\gamma_0^3m_{\mathrm e}$、
+$m_\perp=\gamma_0m_{\mathrm e}$。
+一次交换的精确运动学写为
+\begin{equation}
+\mathbf p_f=\mathbf p_i+\sigma\hbar\boldsymbol\kappa,\qquad
+E_f=E_i+\sigma\hbar\omega,\qquad
+2\sigma\hbar(E_i\omega-c^2\mathbf p_i\cdot\boldsymbol\kappa)
++\hbar^2(\omega^2-c^2\boldsymbol\kappa^2)=0,
+\label{eq:feqo-primer-recoil}
+\end{equation}
+其中 $\sigma=+1$ 为吸收，$\sigma=-1$ 为发射，$\omega>0$。
+交换波矢由结构或模式给出，不必满足真空光子色散。
+\end{proposition}
+\begin{proof}
+对 $E^2=m_{\mathrm e}^2c^4+c^2\mathbf p^2$ 求一次和两次动量导数，
+分别得到 $\partial_iE=c^2p_i/E$ 和\eqnrefs{eq:feqo-primer-curvature}。
+垂直 $\mathbf p_0$ 的向量使外积项为零；平行方向则给
+$c^2/E_0-c^4p_0^2/E_0^3=m_{\mathrm e}^2c^6/E_0^3$，
+其倒数分别为上述两个质量。
+将交换后的能量和动量代入 $E_f^2-c^2\mathbf p_f^2=m_{\mathrm e}^2c^4$，
+减去初态质量壳，保留交叉项和二次项，即为精确反冲关系。
+\end{proof}
+
+对动量增量 $\delta\mathbf p$，二阶传播模型来自
+\[
+E(\mathbf p_0+\delta\mathbf p)
+=E_0+\mathbf v_0\cdot\delta\mathbf p
++\tfrac12\delta\mathbf p^{\mathsf T}\mathsf M^{-1}\delta\mathbf p+R_3.
+\]
+若工作窗内的三阶导数张量范数上界为 $C_3$，则
+$|R_3|\le C_3|\delta\mathbf p|^3/6$。
+在传播时间 $T$ 内舍去它，须控制实际占据窗中的相位误差
+$T\sup|R_3|/\hbar\ll1$；宽度很小但漂移很长，仍可能积累可见误差。
+后续有限时间章会把这一条件用于具体波包。
+
+给定电磁势后，电子改变的不仅是相位，也可能是动量和自旋。
+SI 四势取 $A^\mu=(\phi/c,\mathbf A)$，电子电荷为 $q_{\mathrm e}=-e$。
+最小耦合方程为
+\begin{equation}
+\ii\hbar\partial_t\Psi=H_D[A]\Psi,\qquad
+H_D[A]=c\boldsymbol\alpha\cdot(-\ii\hbar\nabla-q_{\mathrm e}\mathbf A)
++\beta_Dm_{\mathrm e}c^2+q_{\mathrm e}\phi.
+\label{eq:feqo-primer-dirac-em}
+\end{equation}
+这里的动量算符 $-\ii\hbar\nabla$ 是正则动量，减去 $q_{\mathrm e}\mathbf A$ 后才是动力学动量。
+对外场取实势，并在保证演化存在的自伴实现与共同定义域上使用此方程。
+
+\begin{proposition}[电荷电流与双态跃迁流]
+同一外场中两个可微 Dirac 解 $\Psi_i,\Psi_f$ 定义
+\begin{equation}
+\rho_{fi}=q_{\mathrm e}\Psi_f^\dagger\Psi_i,\qquad
+\mathbf J_{fi}=q_{\mathrm e}c\Psi_f^\dagger\boldsymbol\alpha\Psi_i,
+\qquad \partial_t\rho_{fi}+\nabla\cdot\mathbf J_{fi}=0.
+\label{eq:feqo-primer-current}
+\end{equation}
+$f=i$ 时得到实电荷密度和电流；$f\ne i$ 时得到复跃迁流。
+概率归一化波函数使 $[\rho_{ii}]={\rm C\,m^{-3}}$、
+$[\mathbf J_{ii}]={\rm A\,m^{-2}}$。
+\end{proposition}
+\begin{proof}
+把 Hamiltonian 写成 $H_D=-\ii\hbar c\alpha_j\partial_j+W$，
+其中实电磁势给 $W=W^\dagger$。
+由两个 Dirac 方程及其伴随，
+\[
+\partial_t\Psi_i=-c\alpha_j\partial_j\Psi_i-\frac{\ii}{\hbar}W\Psi_i,
+\qquad
+\partial_t\Psi_f^\dagger=-c(\partial_j\Psi_f^\dagger)\alpha_j
++\frac{\ii}{\hbar}\Psi_f^\dagger W.
+\]
+对 $\Psi_f^\dagger\Psi_i$ 求导，两个 $W$ 项相消，剩下
+$-c\partial_j(\Psi_f^\dagger\alpha_j\Psi_i)$。
+乘以电荷就得到连续性方程。若采用定态 $\Psi_a=\psi_a\ee^{-\ii E_at/\hbar}$，
+相应空间电流满足
+$\nabla\cdot\mathbf J_{fi}=\ii(E_i-E_f)\rho_{fi}/\hbar$。
+\end{proof}
+
+这个双态电流决定电子跃迁对环境的驱动。
+将经典势换成量子势算符，电磁相互作用顶角在一电子扇区写为
+\begin{equation}
+V_{fi}=\int\dd^3r\,\left[\rho_{fi}(\mathbf r)\widehat\phi(\mathbf r)
+-\mathbf J_{fi}(\mathbf r)\cdot\widehat{\mathbf A}(\mathbf r)\right].
+\label{eq:feqo-primer-light-vertex}
+\end{equation}
+例如对某个环境初末态 $|\nu\rangle,|\mu\rangle$，
+取量子势的矩阵元即可得到电子通道耦合 $\langle\mu|V_{fi}|\nu\rangle$，单位为能量。
+连续电子广义态的矩阵元则是相对于动量测度的核，不能直接视为普通耦合率；
+\chapref{chap:general-interaction}会从波包与盒态归一化求其换算。
+规范变换 $\mathbf A\mapsto\mathbf A+\nabla\Lambda$、
+$\phi\mapsto\phi-\partial_t\Lambda$ 给该作用积分增加
+$-\int(\rho\partial_t\Lambda+\mathbf J\cdot\nabla\Lambda)\dd^3r\dd t$。
+使用连续性方程后只剩时空边界项；因此，规范变换也须保持所用入射、出射及空间边界条件。
+
+\section{有限作用时间与联合传播}\label{sec:feqo-primer-dynamics}
+
+电流矩阵元给出了瞬时耦合，实验却读取经过一段作用后的状态。
+电子和环境的空间取张量积，Hamiltonian 写为
+$H=H_e\otimes I_X+I_e\otimes H_X+V(t)$。
+对稳定离散光模，$H_X$ 可用玻色算符表示：
+\[
+[a_\lambda,a_{\lambda'}^\dagger]=\delta_{\lambda\lambda'},\qquad
+a|n\rangle=\sqrt n|n-1\rangle,\qquad
+a^\dagger|n\rangle=\sqrt{n+1}|n+1\rangle.
+\]
+这些式子说明发射和吸收的不同数态因子。开放材料是否能用有限组离散模式描述，
+仍须由它的谱与损耗检查；连续环境在后面的因果响应章处理。
+
+\begin{definition}[传播子与相互作用绘景]
+令 $H_0=H_e\otimes I_X+I_e\otimes H_X$ 自伴，
+$U_0(t,t_i)=\ee^{-\ii H_0(t-t_i)/\hbar}$。
+将演化写为 $U(t,t_i)=U_0(t,t_i)U_I(t,t_i)$，则
+\[
+V_I(t)=U_0(t,t_i)^\dagger V(t)U_0(t,t_i),\qquad
+\ii\hbar\partial_tU_I(t,t_i)=V_I(t)U_I(t,t_i).
+\]
+时间排序 $\mathcal T$ 把较晚时刻的算符放在左边。
+若 $V_I(t)$ 有界、强连续且其范数在有限区间可积，传播子由
+\begin{equation}
+U_I(t_f,t_i)=\mathcal T\exp\!\left[-\frac{\ii}{\hbar}\int_{t_i}^{t_f}\dd t\,V_I(t)\right]
+\label{eq:feqo-primer-dyson}
+\end{equation}
+定义，右端的具体含义是随后给出的收敛有序积分级数。
+这是一组便于核验的充分条件；未受限的场算符需要另行控制定义域，
+或先在具有明确泄漏估计的有限工作窗中构造传播。
+\end{definition}
+
+\begin{theorem}[有序积分、幺正性与有限阶误差]
+在上述条件下，$V_I(t)=V_I(t)^\dagger$ 时传播子幺正，且
+\begin{equation}
+U_I=I+\sum_{n=1}^{\infty}\left(-\frac{\ii}{\hbar}\right)^n
+\int_{t_i}^{t_f}\dd t_1\int_{t_i}^{t_1}\dd t_2\cdots
+\int_{t_i}^{t_{n-1}}\dd t_n\,V_I(t_1)\cdots V_I(t_n).
+\label{eq:feqo-primer-dyson-series}
+\end{equation}
+令 $\epsilon=\hbar^{-1}\int_{t_i}^{t_f}\|V_I(t)\|\dd t$，
+保留到 $n=N$ 的传播子 $U_I^{[N]}$ 满足
+$\|U_I-U_I^{[N]}\|\le\ee^\epsilon\epsilon^{N+1}/(N+1)!$。
+\end{theorem}
+\begin{proof}
+对演化方程积分，得到 Volterra 方程
+\[
+U_I(t,t_i)=I-\frac{\ii}{\hbar}\int_{t_i}^{t}\dd\tau\,V_I(\tau)U_I(\tau,t_i).
+\]
+将右端的 $U_I$ 逐次用同一方程代入，积分上限自然给出时间的有序单纯形。
+第 $n$ 项范数至多为 $\epsilon^n/n!$：其范数上界中的标量乘积对所有时间变量对称，
+有序单纯形占整个积分立方体的 $1/n!$。
+因此级数一致收敛，并可代回 Volterra 方程。
+两个解之差满足同一积分估计，逐次迭代后被 $\epsilon^n/n!$ 压到零，所以解唯一。
+对有限阶余项求和，使用
+$(N+1+k)!\ge(N+1)!k!$，得到所列界。
+最后由厄米性计算
+\[
+\partial_t(U_I^\dagger U_I)
+=\frac{\ii}{\hbar}U_I^\dagger V_IU_I
+-\frac{\ii}{\hbar}U_I^\dagger V_IU_I=0.
+\]
+反向时间的唯一解给逆算符，故 $U_I^\dagger U_I=U_IU_I^\dagger=I$。
+\end{proof}
+
+实际输出态由 $U\rho_{eX,i}U^\dagger$ 给出。
+一阶振幅和二阶概率只有在相应截断误差受控时才可使用；
+长时间中即使瞬时耦合较小，$\epsilon$ 也可能不小。
+有限时间窗口、环境末态求和及 Fermi 黄金律之间的关系，需要在具体连续通道中重新计算。
+这正是\chapref{chap:electron-finite-time}的任务。
+
+\section{从电流源到材料的因果响应}\label{sec:feqo-primer-response}
+
+电子电流穿过结构时，周围介质和边界改变它产生的场。
+对于线性时不变环境，可以先求一次电流到电场的响应，随后代入不同电子轨迹或跃迁电流。
+采用时间 Fourier 因子 $\ee^{-\ii\omega t}$，局域材料以无量纲相对介电率
+$\boldsymbol\varepsilon_r$ 和相对磁导率 $\boldsymbol\mu_r$ 描述。
+磁导率可逆时，两条旋度方程合并为
+\begin{equation}
+\mathsf L_{\rm EM}(\omega)=
+\nabla\times\boldsymbol\mu_r^{-1}\nabla\times
+-\frac{\omega^2}{c^2}\boldsymbol\varepsilon_r,\qquad
+\mathsf L_{\rm EM}\widetilde{\mathbf E}=\ii\mu_0\omega\widetilde{\mathbf J}.
+\label{eq:feqo-primer-maxwell-operator}
+\end{equation}
+$\mathsf L_{\rm EM}$ 的量纲为 ${\rm m^{-2}}$。
+空间非局域材料将本构乘法换为积分算符；该情形及其耗散谱在
+\chapref{chap:electron-current-response}中详细建立。
+
+\begin{definition}[推迟电场 Green 张量]
+在材料、界面和出射边界条件确定以后，电场的推迟逆核定义为
+\begin{equation}
+\mathsf L_{\rm EM}(\omega)\mathbf G^R(\mathbf r,\mathbf r';\omega)
+=I_3\delta^{(3)}(\mathbf r-\mathbf r').
+\label{eq:feqo-primer-green}
+\end{equation}
+有 $[\mathbf G^R]={\rm m^{-1}}$。
+稳定因果系统的实频逆核由 $\omega+\ii\eta$、$\eta\downarrow0$ 的边界值定义；
+开放空间采用出射辐射条件，封闭系统则采用所指定的边界自伴实现。
+\end{definition}
+
+\begin{proposition}[电流响应与互易性]
+在上述推迟逆存在的频率及测试源范围内，
+\begin{equation}
+\widetilde{\mathbf E}(\mathbf r,\omega)=\ii\mu_0\omega
+\int\dd^3r'\,\mathbf G^R(\mathbf r,\mathbf r';\omega)
+\cdot\widetilde{\mathbf J}(\mathbf r',\omega).
+\label{eq:feqo-primer-source-field}
+\end{equation}
+若本构张量满足 $\boldsymbol\varepsilon_r^{\mathsf T}=\boldsymbol\varepsilon_r$、
+$\boldsymbol\mu_r^{\mathsf T}=\boldsymbol\mu_r$，边界也满足 Lorentz 双线性互易条件，
+则
+\begin{equation}
+\mathbf G^R(\mathbf r,\mathbf r';\omega)
+=[\mathbf G^R(\mathbf r',\mathbf r;\omega)]^{\mathsf T}.
+\label{eq:feqo-primer-reciprocity}
+\end{equation}
+互易性不要求材料无损；没有本构及边界互易条件时，不能交换源点和观察点。
+\end{proposition}
+\begin{proof}
+频域 Faraday 方程为 $\nabla\times\mathbf E=\ii\omega\mathbf B$，
+Amp\`ere 方程为 $\nabla\times\mathbf H=\mathbf J-\ii\omega\mathbf D$。
+将 $\mathbf H=\boldsymbol\mu_r^{-1}\mathbf B/\mu_0$ 代入后，对电场取第二次旋度，
+即得\eqnrefs{eq:feqo-primer-maxwell-operator}。
+用逆核作用于源方程，得到\eqnrefs{eq:feqo-primer-source-field}。
+由于 $[\widetilde J]={\rm A\,s\,m^{-2}}$，右端单位为 ${\rm V\,s\,m^{-1}}$，
+与 Fourier 电场一致。
+
+对满足相同边界条件的两个源产生的场，旋度分部积分和本构转置对称性给
+\[
+\int\dd^3r\,\left[\mathbf E_1\cdot\mathsf L_{\rm EM}\mathbf E_2
+-\mathbf E_2\cdot\mathsf L_{\rm EM}\mathbf E_1\right]=0.
+\]
+这里内积不取复共轭；边界条件使 Lorentz 双线性通量为零。
+开放出射场可先取上半平面频率以保证远处衰减，再取存在的边界值。
+用两个不同位置、方向的点源作分布意义的测试，
+源方程使此恒等式变成 $\mathbf e_i\cdot\mathbf G^R(\mathbf r_1,\mathbf r_2)\mathbf e_j
+=\mathbf e_j\cdot\mathbf G^R(\mathbf r_2,\mathbf r_1)\mathbf e_i$，即互易关系。
+\end{proof}
+
+推迟条件也有直接的时间含义：观察点的响应不能早于源的作用。
+实空间的出射边界和频域的上半平面边界值，共同选定这一响应。
+\begin{proposition}[推迟响应的时间支撑]
+对空间测试源和测试场取 Green 核的标量矩阵元 $g_R(z)$。
+若它在上半复频平面解析，具有至多多项式增长，且实轴边界值以温和分布存在，
+则其逆 Fourier 分布支撑于 $t\ge0$。这里增长条件取为
+$|g_R(z)|\le C(1+|z|)^m$ 于闭合轮廓的上半平面；
+若边界附近需要额外涂抹，应先在所指定的测试函数范围内满足同样的轮廓条件。
+\end{proposition}
+\begin{proof}
+取 $a>0$ 和整数 $N>m+1$，令 $h(z)=g_R(z)/(z+\ii a)^N$。
+分母只在下半平面有零点，故 $h$ 在上半平面仍解析，并且大半圆上衰减快于 $1/|z|$。
+对 $t<0$，逆变换指数 $\ee^{-\ii zt}$ 在上半平面衰减。
+闭合轮廓没有内部极点，大圆弧贡献消失，所以 $h(t)=0$。
+边界值不为普通函数时，先对时间测试函数作同样积分，再取分布极限。
+由于 $g_R(z)=(z+\ii a)^Nh(z)$，时域中
+$g_R(t)=(\ii\partial_t+\ii a)^Nh(t)$。
+微分不会扩张分布支撑，因此 $g_R(t)$ 也在负时间为零。
+\end{proof}
+
+\begin{example}[真空中谐振电偶极子的场]
+设频率为 $\omega>0$ 的电偶极子复幅为 $\mathbf d_\omega$，
+位于 $\mathbf r_0$，其正频电流为
+$\mathbf J_\omega(\mathbf r)=-\ii\omega\mathbf d_\omega\delta^{(3)}(\mathbf r-\mathbf r_0)$。
+求离开源点的电场并识别远场的距离依赖。
+
+\textbf{解。} 令 $k=\omega/c$、$R=|\mathbf r-\mathbf r_0|$、
+$\mathbf n=(\mathbf r-\mathbf r_0)/R$。真空的出射逆核为
+\[
+\mathbf G_0^R(\mathbf r,\mathbf r_0;\omega)
+=\left(I_3+\frac{\nabla\nabla}{k^2}\right)\frac{\ee^{\ii kR}}{4\pi R}.
+\]
+这是完整逆核的分布表达；以下只在 $R>0$ 求场，源点接触项不参与计算。
+令 $f(R)=\ee^{\ii kR}/R$，则
+$f'/f=\ii k-1/R$、$f''/f=-k^2-2\ii k/R+2/R^2$，并且
+\[
+\partial_i\partial_jf
+=\frac{f'}R\delta_{ij}
++\left(f''-\frac{f'}R\right)n_in_j.
+\]
+把偶极电流代入响应式，$\ii\mu_0\omega(-\ii\omega)=\mu_0\omega^2$，得到
+\[
+\mathbf E_\omega(\mathbf r)=\frac{\ee^{\ii kR}}{4\pi\varepsilon_0}
+\left\{\frac{k^2}{R}[\mathbf d_\omega-\mathbf n(\mathbf n\cdot\mathbf d_\omega)]
++\left(\frac1{R^3}-\frac{\ii k}{R^2}\right)
+[3\mathbf n(\mathbf n\cdot\mathbf d_\omega)-\mathbf d_\omega]\right\}.
+\]
+近处保留 $R^{-3}$ 和 $R^{-2}$ 项，远处 $kR\gg1$ 时由横向的 $R^{-1}$ 辐射项支配。
+结构的作用是改变这个源到场的 Green 核；后面的近场积分则用改变后的场驱动电子。
+\end{example}
+
+以上制备、传播、电流和响应的约定，使连续电子态和环境谱能够放进同一个联合 Hamiltonian。
+后续先从一般环境求耦合和有限时间振幅，再在受控条件下选取单模、能量边带或少数反冲通道，
+最终将出射态传给测量与计数模型。

@@ -1,4 +1,47 @@
-# 自由电子长章的内容迁移记录
+# 自由电子量子光学内容迁移记录
+
+## 2026-10-13 至 2026-10-14：聚焦电子传播、测量与成像
+
+本轮先将已有四书更改提交为 `8efe635`，并核实 GitHub 主分支 `1beb2ee`。重构以该提交为保留基线。完整 QFT、QED、QCD、标准模型及几何共形量子态理论迁入《高等物理》的十八个正常章节；本册保留独立阅读所需的最小电子前置及连续电子与环境理论，最终三部十七章、379 页。完整逐文件、逐框、逐图哈希及原标签去向见 [高等物理迁移账本](../AdvancedPhysics/field-theory/content-map.json)，说明见 [内容分工记录](../AdvancedPhysics/field-theory/content-map.md)。
+
+### 当前十七章阅读顺序
+
+| 部分 | 章节 | 正文根文件 |
+| --- | --- | --- |
+| 入射电子与量子交换 | 1．入射电子、量子态与因果响应 | electron-foundations.tex |
+| 入射电子与量子交换 | 2．连续电子、辅助系统与模式耦合 | electron-environment.tex |
+| 入射电子与量子交换 | 3．自由电子传播与有限时间跃迁 | electron-finite-time.tex |
+| 入射电子与量子交换 | 4．外场散射与有限脉冲 | external-field-scattering.tex |
+| 入射电子与量子交换 | 5．电子与光子的量子交换 | quantum-electron-photon-exchange.tex |
+| 反冲、束流与波包传播 | 6．单模选择与电子反冲通道 | electron-recoil-channels.tex |
+| 反冲、束流与波包传播 | 7．周期势与电子传播 | periodic-electron-propagation.tex |
+| 反冲、束流与波包传播 | 8．有限反冲与 Bragg 通道 | recoil-bragg-channels.tex |
+| 反冲、束流与波包传播 | 9．电子碰撞、束流统计与费米关联 | electron-collision-dynamics.tex |
+| 反冲、束流与波包传播 | 10．电子波包传播与时间结构 | electron-wavepacket-propagation.tex |
+| 反冲、束流与波包传播 | 11．电子约化动力学与环境记忆 | electron-open-dynamics.tex |
+| 量子测量与辐射成像 | 12．电子量子测量与可辨识性 | electron-quantum-measurement.tex |
+| 量子测量与辐射成像 | 13．条件制备、计数与统计反演 | conditional-electron-inference.tex |
+| 量子测量与辐射成像 | 14．跃迁电流与材料的因果响应 | electron-current-response.tex |
+| 量子测量与辐射成像 | 15．材料响应与辐射运动学 | material-radiation-response.tex |
+| 量子测量与辐射成像 | 16．混合模式与辐射通道 | hybrid-radiation-channels.tex |
+| 量子测量与辐射成像 | 17．电子成像、收集与参数反演 | electron-imaging-inversion.tex |
+
+### 原长章的拆分
+
+| 基线位置 | 当前去向 |
+| --- | --- |
+| detailed/ch08.tex | external-field-scattering.tex；quantum-electron-photon-exchange.tex |
+| detailed/ch09.tex | periodic-electron-propagation.tex；recoil-bragg-channels.tex |
+| detailed/ch10.tex | electron-wavepacket-propagation.tex；electron-open-dynamics.tex；electron-quantum-measurement.tex；conditional-electron-inference.tex |
+| detailed/ch11.tex | material-radiation-response.tex；hybrid-radiation-channels.tex；electron-imaging-inversion.tex |
+
+原 ch07 的五个语义章节保留，材料电流响应调整到辐射成像部分；该章上一轮的详细拆分见下方历史记录。各实际章节末尾放置对应具体物理计算；开放单模线宽与协作参数归入开放动力学章。旧根删除属于移迁，原独有正文、例题和计算均有对应去向。
+
+最小前置章新增量子态、旋量电流、色散反冲、传播与 Maxwell 因果响应，使本册不必以前六章的完整基本相互作用课程开篇。材料响应补本地 Maxwell T 算符与条件，混合辐射补完整 KN 微观输入；一般场论背景通过明确书名和主题连接高等物理。176 个兼容别名均落到本册真实标签，跨章范围引用按实际主题修复。耦合图复用原宏后改用中文节点与共享 TikZ 样式，原完整图宏仍保存在高等物理。
+
+两册拆章审计合计保留 157 个物理计算框和 96 个数学结果/独立证明框原文；55 个移迁图资产字节不变。原公共参考文献字节不变地移至 `references/field-and-electron-physics.bib`。迁入场论的唯一 Dirac 标签改名、原高等物理横向 Green 函数修正及精确部分分式修正均在共同账本明示。最终源稿输入、引用、别名、图片、参考文献和章末位置检查通过；保留审计和选页排版检查不等于本轮逐条重证整书公式。
+
+## 历史记录：2026-10-12 长章拆分
 
 2026-10-12 续修以 GitHub 主分支 `1beb2ee` 为基线，保留工作区已有深化修改。下列原行号对应拆章前的当前详细稿，不是主分支的行号；原 `detailed/ch07.tex` 的 SHA256 为 `47e0ae0e532878f5eb2346ca9df83262d7fb687f1cb79fd23f86fff2e9b19819`。源码只保留新的语义结构，本文件记录内容去向。
 

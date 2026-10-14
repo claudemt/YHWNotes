@@ -1,0 +1,1070 @@
+\chapter{有限反冲与 Bragg 通道}\label{chap:recoil-bragg-channels}
+
+周期传播子保留了全部倒格通道。反冲使不同通道的能量间隔不再等同，谱隙与耦合共同决定哪些通道可以消去，以及 Bragg 共振何时成为受控的低维运动。
+
+\section{反冲与低维子空间}
+
+长时间作用能够区分不同通道的能量差。如果只有一对通道接近共振，而其余通道都远离共振，就可能主要在这两个态之间交换概率。本节从完整反冲格出发，计算这种两态近似所需的能隙，并估计电子离开目标两态的概率。
+
+\subsection{精确反冲格}\label{subsec:exact-recoil-lattice-dp19}
+
+低反冲 PINEM 的平移算符适用于相邻能量边在作用时间内不可分辨的区间。当反冲相位变得可分辨时，每个可达电子格点都必须保留由真实色散决定的独立动力学相位。对单一纵向动量交换 $\hbar \kappa_z$，取精确相对论色散
+\begin{equation*}
+\mathcal E_\ell
+=E(p_0+\ell\hbar \kappa_z)
+=\sqrt{m_{\mathrm e}^2c^4+c^2(p_0+\ell\hbar \kappa_z)^2}.
+\end{equation*}
+驱动频率为 $\omega$ 时，定义相对于等间隔光子梯的在位失谐
+\begin{equation}
+\boxed{
+\delta_\ell
+\equiv\frac{\mathcal E_\ell-E_0}{\hbar}-\ell\omega .}
+\label{eq:exact_onsite_detuning}
+\end{equation}
+它与逐边失谐严格满足 $\Delta_\ell=\delta_{\ell+1}-\delta_\ell$：前者回答“哪条边共振”，后者回答“整个可达能量格的在位势形貌是什么”。
+
+若显著占据窗口内耦合强度的边依赖可忽略，令 $\Omega(t)=2\alpha\mathcal G_0(t)$。把逐边快速相位吸收到格点振幅后，在上述单频、固定动量步长并忽略耦合边依赖的模型内，保留完整电子色散的反冲方程为
+\begin{equation}
+\boxed{
+\ii\dot d_\ell
+=\delta_\ell d_\ell
++\frac{\Omega(t)}2d_{\ell-1}
++\frac{\Omega^*(t)}2d_{\ell+1}.}
+\label{eq:exact_recoil_tight_binding}
+\end{equation}
+指标 $\ell$ 只是连续色散上由固定动量交换选出的可达态编号；所谓“合成维度”只是这种通道排序的表示，并非新增空间维度。
+
+对持续时间 $T$ 的常耦合窗口，令 $\tau=t/T$，并定义
+\begin{equation*}
+\mathscr A_{\rm hop}=\frac{|\Omega|T}{2},
+\qquad
+\epsilon_\ell=\delta_\ell T,
+\qquad
+\Omega=|\Omega|\ee^{\ii\varphi_\Omega}.
+\end{equation*}
+则一般动力学方程化成无量纲形式
+\begin{equation}
+\boxed{
+\ii\frac{\dd d_\ell}{\dd\tau}
+=\epsilon_\ell d_\ell
++\mathscr A_{\rm hop}\ee^{\ii\varphi_\Omega}d_{\ell-1}
++\mathscr A_{\rm hop}\ee^{-\ii\varphi_\Omega}d_{\ell+1}.}
+\label{eq:recoil_dimensionless_exact_lattice}
+\end{equation}
+该格点方程保留实际耦合强度与完整的 $\mathcal E_\ell$。对有限截断 $|\ell|\le L$，定义相应厄米三对角矩阵 $\mathsf H_L$，数值演化为
+\begin{equation}
+\boxed{\mathbf d(1)=\ee^{-\ii\mathsf H_L}\mathbf d(0).}
+\label{eq:recoil_finite_lattice_matrix_exponential}
+\end{equation}
+因此在这一固定通道模型的适用域内，中等反冲、多边带和强耦合的过渡区可由同一格点 Hamiltonian 连续覆盖；对角元始终使用真实色散 $\mathcal E_\ell=E(p_\ell)$。等间隔能量梯只在 $|\mathcal E_\ell-E_0-\ell\hbar\omega|$ 小于动力学分辨尺度时作为后续近似出现。若单元耦合随 $\ell$ 显著变化、出现额外横向通道或单一动量步长不足以封闭动力学，则离散格点不再封闭，应使用连续动量一般动力学方程。
+
+数值截断还必须有误差判据。若 $P_L$ 投影到 $|\ell|\le L$，最近邻跃迁只会从两端漏出，Duhamel 恒等式给出
+\begin{equation}
+\boxed{
+\left\|(U-U_L)|\psi_0\rangle\right\|
+\le
+\epsilon_{\rm edge}^{(L)}
+\equiv
+\mathscr A_{\rm hop}\int_0^1\!\dd\tau\,
+\sqrt{|d_L(\tau)|^2+|d_{-L}(\tau)|^2}.}
+\label{eq:recoil_lattice_truncation_duhamel_bound}
+\end{equation}
+所以“最终时刻边界概率很小”本身不构成截断证明；需要检查整个传播过程中的边界通量随 $L$ 收敛。
+
+\begin{proposition}[最近邻格截断的边界 Duhamel 界]
+设无限格 Hamiltonian 自伴且跨边界跳跃有界，$P_L\psi_0=\psi_0$，$L\ge1$。截断传播在 $P_L\mathcal H$ 内由 $P_LHP_L$ 生成。误差由截断态的两端布居积分控制，严格满足\eqnrefs{eq:recoil_lattice_truncation_duhamel_bound}。$L=0$ 时须单独合并同一初始边界格点，不能直接重复计算端点布居。
+\end{proposition}
+\begin{proof}
+把无限格点 Hilbert 空间分成
+$P_L=\sum_{|\ell|\le L}|\ell\rangle\langle\ell|$ 与 $Q_L=I-P_L$。无量纲完整 Hamiltonian 记为 $\mathsf H$，截断 Hamiltonian 不是简单“删掉数组外元素”，而是严格定义为
+\begin{equation*}
+ \mathsf H_L=P_L\mathsf H P_L,
+ \qquad
+ U(\tau_2,\tau_1)=\ee^{-\ii\mathsf H(\tau_2-\tau_1)},
+ \qquad
+ U_L(\tau_2,\tau_1)=\ee^{-\ii\mathsf H_L(\tau_2-\tau_1)}P_L.
+\end{equation*}
+对初态 $P_L|\psi_0\rangle=|\psi_0\rangle$，定义
+$|\psi_L(\tau)\rangle=U_L(\tau,0)|\psi_0\rangle$。考虑
+\begin{equation*}
+ F(\tau)=U(1,\tau)U_L(\tau,0)|\psi_0\rangle .
+\end{equation*}
+端点分别是 $F(0)=U(1,0)|\psi_0\rangle$ 与
+$F(1)=U_L(1,0)|\psi_0\rangle$。对中间时间求导，使用
+$\partial_\tau U(1,\tau)=+\ii U(1,\tau)\mathsf H$ 和
+$\partial_\tau U_L(\tau,0)=-\ii\mathsf H_LU_L(\tau,0)$，得到
+\begin{align*}
+ \frac{\dd F}{\dd\tau}
+ &=\ii U(1,\tau)(\mathsf H-\mathsf H_L)
+ U_L(\tau,0)|\psi_0\rangle\\
+ &=\ii U(1,\tau)Q_L\mathsf H P_L
+ |\psi_L(\tau)\rangle .
+\end{align*}
+第二步使用了 $U_L|\psi_0\rangle\in P_L\mathcal H$，因此
+$(\mathsf H-\mathsf H_L)P_L=Q_L\mathsf H P_L$。积分端点即得 Duhamel 恒等式
+\begin{equation*}
+ (U-U_L)|\psi_0\rangle
+ =-\ii\int_0^1\dd\tau\,
+ U(1,\tau)Q_L\mathsf H P_L|\psi_L(\tau)\rangle .
+\end{equation*}
+
+现在才使用“最近邻格点”这一模型结构。正文无量纲 Hamiltonian 的跨边界部分只有
+\begin{equation*}
+ Q_L\mathsf H P_L
+ =\mathscr A_{\rm hop}
+ \left(
+ \ee^{+\ii\varphi_\Omega}|L+1\rangle\langle L|
+ +\ee^{-\ii\varphi_\Omega}|-L-1\rangle\langle-L|
+ \right).
+\end{equation*}
+若
+$|\psi_L(\tau)\rangle=\sum_{|\ell|\le L}d_\ell(\tau)|\ell\rangle$，两个泄漏方向彼此正交，因此
+\begin{align*}
+ \|Q_L\mathsf H P_L|\psi_L(\tau)\rangle\|^2
+ &=\mathscr A_{\rm hop}^2
+ \left(|d_L(\tau)|^2+|d_{-L}(\tau)|^2\right),\\
+ \|Q_L\mathsf H P_L|\psi_L(\tau)\rangle\|
+ &=\mathscr A_{\rm hop}
+ \sqrt{|d_L(\tau)|^2+|d_{-L}(\tau)|^2}.
+\end{align*}
+最后利用完整传播子的幺正性
+$\|U(1,\tau)v\|=\|v\|$ 和积分三角不等式，得到
+\begin{equation*}
+ \|(U-U_L)|\psi_0\rangle\|
+ \le\mathscr A_{\rm hop}\int_0^1\dd\tau\,
+ \sqrt{|d_L(\tau)|^2+|d_{-L}(\tau)|^2},
+\end{equation*}
+即正文\eqnrefs{eq:recoil_lattice_truncation_duhamel_bound}。
+\end{proof}
+
+
+这个误差界依赖整个传播历史上的边界振幅，因此只检查末态边界概率并不足以证明截断可靠。
+
+\subsection{反冲尺度与多级动力学}\label{subsec:recoil-scales-multilevel-dp19}
+
+从反冲格方程可以直接求出各通道振幅。为了在求解前判断会出现多条边带还是少数共振态，还需要比较三个频率尺度：相邻边的失谐差、有限脉冲的频谱宽度，以及耦合产生的跃迁频率。先在中心动量附近展开真实色散，求出第一个尺度，再讨论后两者怎样影响可参与的通道数。
+
+精确格点给出计算一般表达式，但物理尺度要从中心动量附近的色散曲率读取。对
+\(E(p)=\sqrt{m_{\mathrm e}^2c^4+c^2p^2}\) 直接求导，
+\begin{equation*}
+E'(p)=\frac{c^2p}{E(p)},
+\qquad
+E''(p)=\frac{c^2}{E(p)}-\frac{c^4p^2}{E^3(p)}
+=\frac{m_{\mathrm e}^2c^6}{E^3(p)}.
+\end{equation*}
+因此在 $p_0$ 处
+\begin{equation*}
+E'(p_0)=v_0,
+\qquad
+E''(p_0)=\frac1{\gamma_0^3m_{\mathrm e}}
+\equiv\frac1{m_\parallel},
+\qquad
+m_\parallel=\gamma_0^3m_{\mathrm e}.
+\end{equation*}
+令 $\delta p=p-p_0$，二阶展开为
+\begin{equation*}
+E(p_0+\delta p)
+=E_0+v_0\delta p+\frac{\delta p^2}{2m_\parallel}+O(\delta p^3).
+\end{equation*}
+若显著占据范围为 $|\ell|\le L_{\rm occ}$，令 $\delta p_{\max}=L_{\rm occ}\hbar|\kappa_z|$，并定义
+\begin{equation*}
+ M_3(\delta p_{\max})
+ =\sup_{|p-p_0|\le \delta p_{\max}}|E^{(3)}(p)|,
+ \qquad
+ \epsilon_{\rm rec}^{(3)}
+ =\frac{m_\parallel M_3(\delta p_{\max})\delta p_{\max}}{3}\ll1.
+\end{equation*}
+该量比较整个实际占据动量窗内三阶 Taylor 余项与二阶反冲能标；因此二阶格点不是由单步 $\hbar \kappa_z/p_0$ 单独控制。对 $\delta p_\ell=\ell\hbar \kappa_z$，定义线性失配与反冲频率
+\begin{equation}
+\boxed{
+\Delta_{\rm lin}=v_0\kappa_z-\omega,
+\qquad
+\omega_{\rm r}=\frac{\hbar \kappa_z^2}{2m_\parallel}
+=\frac{\hbar \kappa_z^2}{2\gamma_0^3m_{\mathrm e}}.}
+\label{eq:recoil_frequency}
+\end{equation}
+于是，在 $|\ell|\le L_{\rm occ}$ 上，
+\begin{equation*}
+\delta_\ell
+= \ell\Delta_{\rm lin}+\ell^2\omega_{\rm r}
++O(\epsilon_{\rm rec}^{(3)}\,\ell^2\omega_{\rm r}),
+\qquad
+\omega_\ell^{(e)}\equiv\frac{\mathcal E_{\ell+1}-\mathcal E_\ell}{\hbar}
+= v_0\kappa_z+(2\ell+1)\omega_{\rm r}
++O(\epsilon_{\rm rec}^{(3)}\,\omega_{\rm r}L_{\rm occ}).
+\end{equation*}
+相邻跃迁间隔的二阶首项因此为 $2\omega_{\rm r}$。它不是原子内部能级结构，而是自由电子相对论色散曲率产生的局部非谐性。
+
+有限脉冲还引入傅里叶分辨率 $1/T$，驱动引入功率展宽 $|\Omega|$。因此多级、过渡区和谱隔离三个区域必须同时比较
+\begin{equation*}
+2\omega_{\rm r}T,
+\qquad |\Omega|T,
+\qquad
+|\delta_\ell|T\ \text{over occupied }\ell .
+\end{equation*}
+若所有显著占据格点满足 $|\delta_\ell|T\ll1$，\eqnrefs{eq:exact_recoil_tight_binding} 退化为平移对称能量格。跃迁面积 $\mathscr A_{\rm hop}=|\Omega|T/2$ 与\eqnrefs{eq:beta_master} 的 $|\beta|$ 对应，因此 $|\Omega|T=2|\beta|$；其传播核随即退化为 Jacobi--Anger 展开给出的 Bessel 权重。
+
+若只保留线性在位势，格点方程为
+\begin{equation}
+\ii\dot d_\ell
+=\ell\Delta_{\rm lin}d_\ell
++\frac\Omega2d_{\ell-1}
++\frac{\Omega^*}{2}d_{\ell+1},
+\label{eq:synthetic_linear_force}
+\end{equation}
+其 Fourier characteristic 在
+\begin{equation*}
+T_B=\frac{2\pi}{|\Delta_{\rm lin}|}
+\end{equation*}
+后恢复，因此相位失配等价于合成维中的恒定力，并产生 Bloch 振荡。
+
+\begin{proposition}[线性在位势的 Fourier 特征线解]
+设双边格的在位势为 $\delta_0(t)+\ell F(t)$，$F$ 实可积，均匀复 hopping $\Omega$ 可积。去掉公共相位后，离散 Fourier 方程为 $(\partial_t+F\partial_\theta)\Psi=-\ii\operatorname{Re}(\Omega e^{\ii\theta})\Psi$，可沿特征线精确积分。常数非零 $F$ 与常数 hopping 给 $2\pi/|F|$ 的 Bloch 复现周期；保留在位曲率时需另估计其余项。
+\end{proposition}
+\begin{proof}
+从最近邻反冲格的一般形式
+\[
+\ii\dot d_\ell
+=
+\delta_\ell(t)d_\ell
++\frac{\Omega(t)}{2}d_{\ell-1}
++\frac{\Omega^*(t)}{2}d_{\ell+1}
+\]
+出发。若在实际占据窗口内，真实在位失谐可以分成
+\[
+\delta_\ell(t)
+=
+\delta_0(t)+\ell F(t)+r_\ell(t),
+\]
+其中 $F(t)$ 是随格点编号线性增长的部分，$r_\ell$ 收集曲率及更高阶非线性。公共项 $\delta_0(t)$ 只产生整体相位，可用
+\[
+d_\ell(t)
+=
+\ee^{-\ii\int^t\delta_0(t')\dd t'}\,c_\ell(t)
+\]
+消去。忽略 $r_\ell$ 后得到
+\[
+\ii\dot c_\ell
+=
+\ell F(t)c_\ell
++\frac{\Omega(t)}2c_{\ell-1}
++\frac{\Omega^*(t)}2c_{\ell+1}.
+\]
+
+为了看清线性在位势的动力学意义，对格点编号作离散 Fourier 变换
+\[
+\Psi(\theta,t)
+=
+\sum_{\ell\in\mathbb Z}
+c_\ell(t)\ee^{+\ii\ell\theta},
+\qquad
+c_\ell(t)
+=
+\int_{-\pi}^{\pi}\frac{\dd\theta}{2\pi}
+\Psi(\theta,t)\ee^{-\ii\ell\theta}.
+\]
+利用
+\[
+\sum_\ell \ell c_\ell\ee^{+\ii\ell\theta}
+=
+-\ii\partial_\theta\Psi,
+\]
+以及
+\[
+\sum_\ell c_{\ell-1}\ee^{+\ii\ell\theta}
+=
+\ee^{+\ii\theta}\Psi,
+\qquad
+\sum_\ell c_{\ell+1}\ee^{+\ii\ell\theta}
+=
+\ee^{-\ii\theta}\Psi,
+\]
+得到一阶偏微分方程
+\[
+\left(
+\partial_t+F(t)\partial_\theta
+\right)\Psi
+=
+-\ii
+\operatorname{Re}
+\!\left[
+\Omega(t)\ee^{+\ii\theta}
+\right]\Psi.
+\]
+由该方程可见，线性格点势并不改变 hopping 的大小，而是在合成准动量 $\theta$ 空间中产生平移。
+
+特征线满足
+\[
+\frac{\dd\theta}{\dd t}
+=
+F(t),
+\qquad
+\theta(t)
+=
+\theta_i+\int_{t_i}^{t}F(t')\dd t'.
+\]
+沿特征线，
+\[
+\frac{\dd}{\dd t}
+\ln\Psi
+=
+-\ii
+\operatorname{Re}
+\!\left[
+\Omega(t)\ee^{+\ii\theta(t)}
+\right],
+\]
+因此一般解为
+\[
+\Psi(\theta,t)
+=
+\Psi\!\left(
+\theta-\int_{t_i}^{t}F(t')\dd t',
+t_i
+\right)
+\exp\!\left[
+-\ii
+\int_{t_i}^{t}\dd t'\,
+\operatorname{Re}
+\!\left(
+\Omega(t')\ee^{+\ii\theta(t')}
+\right)
+\right].
+\]
+
+正文的情形是常数
+\[
+F(t)=\Delta_{\rm lin},
+\qquad
+\Omega(t)=\Omega.
+\]
+于是
+\[
+\theta(t)
+=
+\theta_i+\Delta_{\rm lin}(t-t_i),
+\]
+合成准动量以恒定速度绕第一 Brillouin 区运动。因为 $\theta$ 与 $\theta+2\pi$ 等价，恢复周期为
+\[
+T_B
+=
+\frac{2\pi}{|\Delta_{\rm lin}|}.
+\]
+返回格点表象即得到
+\[
+\boxed{
+\ii\dot d_\ell
+=
+\ell\Delta_{\rm lin}d_\ell
++\frac{\Omega}{2}d_{\ell-1}
++\frac{\Omega^*}{2}d_{\ell+1},
+}
+\]
+即正文\eqnrefs{eq:synthetic_linear_force}。
+\end{proof}
+
+
+\input{sections/electron-bloch-breathing-worked}
+
+为了连接解析尺度和数值过渡区，定义
+\begin{equation*}
+\varphi_{\rm lin}=\Delta_{\rm lin}T,
+\qquad
+\varphi_{\rm r}=\omega_{\rm r}T.
+\end{equation*}
+二阶反冲一般动力学方程写成
+\begin{equation}
+\boxed{
+\ii\partial_\tau d_\ell
+=(\varphi_{\rm lin}\ell+\varphi_{\rm r}\ell^2)d_\ell
++\mathscr A_{\rm hop}\ee^{\ii\varphi_\Omega}d_{\ell-1}
++\mathscr A_{\rm hop}\ee^{-\ii\varphi_\Omega}d_{\ell+1}.}
+\label{eq:quadratic_recoil_dimensionless_lattice}
+\end{equation}
+目标边 $0\leftrightarrow1$ 的二阶共振调谐为 $\varphi_{\rm lin}=-\varphi_{\rm r}$。此时最近的外部两格与目标双态相差 $2|\varphi_{\rm r}|$；随着 $\mathscr A_{\rm hop}$ 增大，实际占据带宽也扩大，所以不能只用单步反冲相位判断 Bessel 近似。
+
+令 $P_\ell^{\rm exact}$ 由\eqnrefs{eq:quadratic_recoil_dimensionless_lattice} 得到，并分别与平移对称 Bessel 分布及目标双态 Rabi 分布比较。使用总变差距离
+\begin{align}
+\epsilon_{\rm B}
+&=\frac12\sum_\ell|P_\ell^{\rm exact}-P_\ell^{\rm B}|,
+\label{eq:recoil_bessel_total_variation_error}\\
+\epsilon_{2}
+&=\frac12\sum_\ell|P_\ell^{\rm exact}-P_\ell^{(2)}|.
+\label{eq:recoil_twolevel_total_variation_error}
+\end{align}
+\figref{fig:recoil_regime_map} 直接显示：小曲率区域回到Bessel 平移极限，大谱隙区域进入低维 Rabi 极限，中间则是真正的有限反冲多能级动力学，而不是“两个近似之间的理论空白”。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.96\textwidth]{recoil_regime_map.png}
+\caption{有限反冲格点的近似误差图。横轴为跃迁面积 $\mathscr A_{\rm hop}$，纵轴为反冲相位 $\varphi_{\rm r}=\omega_{\rm r}T$；目标 edge 取二阶共振。左图比较精确格点与 Bessel 极限，右图比较精确格点与共振二态极限。等高线标出选定的教学误差阈值；其数值仅用于区分近似精度区域。}
+\label{fig:recoil_regime_map}
+\end{figure}
+
+时间重标度以后自然出现的三个独立控制量分别是同步失配相位、反冲非谐相位和跃迁面积。
+
+在 $r_\ell$ 可忽略的线性色散层级，相位失配经过离散 Fourier 变换严格成为合成维中的恒力项；高阶色散会修正这一图像。
+
+\subsection{谱隔离与二态约化}\label{subsec:spectral-isolation-twolevel-dp19}
+
+当一条目标边与其余反冲格点的谱隙同时大于脉冲线宽和跃迁耦合时，才可以把无限格点约化为低维子空间。对常驱动，把\eqnrefs{eq:exact_recoil_tight_binding} 写成 $H=H_0+V$，其中
+\begin{equation*}
+H_0=\sum_\ell\hbar\delta_\ell|\ell\rangle\langle\ell|,
+\end{equation*}
+而
+\begin{equation}
+V=\frac{\hbar}{2}\sum_\ell
+\left(\Omega|\ell+1\rangle\langle\ell|
++\Omega^*|\ell\rangle\langle\ell+1|\right).
+\label{eq:recoil-lattice-transition-convention}
+\end{equation}
+Feshbach--Schur 精确投影母\eqnrefs{eq:free_electron_feshbach_resolvent_mother} 把目标子空间 $\mathsf P$ 与补空间 $\mathsf Q$ 的耦合写成能量依赖自能。对反冲格点，决定约化是否有效的新输入是 $\mathsf Q$ 空间的谱隙和连接两个子空间的矩阵元。
+
+把希望驱动的目标边重新编号为 $0\leftrightarrow1$，精确共振条件是
+\begin{equation}
+\boxed{\omega=\frac{\mathcal E_1-\mathcal E_0}{\hbar}.}
+\label{eq:01_resonance}
+\end{equation}
+在二阶色散中，最近外部格点 $-1,2$ 与目标双态相差约 $2\omega_{\rm r}$；一般情况下，目标双态所在能窗到 $\sigma(\mathsf QH\mathsf Q)$ 的精确距离给出真正的谱隙；$2\omega_{\rm r}$ 只是二阶均匀近似下的最近外部失谐。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.40\linewidth]{recoil_two_level_selection.png}
+\caption{调谐 $0\leftrightarrow1$ 共振后，色散曲率使最近外部格点失谐。图只说明谱选择机制；定量截断应使用完整 $\mathsf Q$ 子空间预解式。}
+\label{fig:recoil-two-level-selection}
+\end{figure}
+
+取 $\mathsf P=|0\rangle\langle0|+|1\rangle\langle1|$，并令 $\mathsf Q=I-\mathsf P$。为使谱隔离条件本身具有确定量纲，先定义目标双态裸能量的中点
+\begin{equation*}
+E_*\equiv\frac{\hbar}{2}(\delta_0+\delta_1),
+\end{equation*}
+以及以角频率表示的外部谱隙和耦合尺度
+\begin{equation}
+\boxed{
+\Delta_B^{(0)}
+\equiv\frac1\hbar\operatorname{dist}\!\left(E_*,\sigma(\mathsf QH_0\mathsf Q)\right),
+\qquad
+v_B\equiv\frac1\hbar
+\max\!\left\{
+\|\mathsf P V\mathsf P\|,
+\|\mathsf P V\mathsf Q\|,
+\|\mathsf Q V\mathsf Q\|
+\right\},
+\qquad
+\epsilon_B\equiv\frac{v_B}{\Delta_B^{(0)}}\ll1.}
+\label{eq:recoil_bragg_spectral_gap_parameter}
+\end{equation}
+$\Delta_B^{(0)}$ 与 $v_B$ 都具有 ${\rm s^{-1}}$ 量纲，因此 $\epsilon_B$ 才是无量纲的谱隔离参数。若进一步用裸 $H_0$ 展开 $\mathsf Q$ 子空间的预解式，还需满足
+\begin{equation}
+\boxed{
+\epsilon_Q(E)
+=\left\|(E-\mathsf QH_0\mathsf Q)^{-1}\mathsf QV\mathsf Q\right\|<1.}
+\label{eq:recoil_q_resolvent_neumann_condition}
+\end{equation}
+这两个条件承担不同任务：$\epsilon_Q<1$ 保证被消去子空间内部的 Neumann 级数收敛，而 $\epsilon_B\ll1$ 保证目标双态与外部谱弱混合；二者不能互相替代。
+
+在二阶有效理论中，被消去格点产生交流 Stark 位移与反冲自能修正。减去共同能量后，目标双态哈密顿量为
+\begin{equation}
+\boxed{
+H_{2\rm L}
+=\frac{\hbar}{2}
+\begin{pmatrix}
+-\Delta_{\rm eff}&\Omega^*\\
+\Omega&\Delta_{\rm eff}
+\end{pmatrix}
++O\!\left(\epsilon_B^3\hbar\Delta_B^{(0)}\right),}
+\label{eq:recoil_effective_two_level}
+\end{equation}
+其中 $\Delta_{\rm eff}$ 包含裸目标边失谐和两个目标态不同的二阶自能修正。高保真共振因此要求 $\Delta_{\rm eff}\simeq0$，而不只是裸失谐为零。
+
+同一投影还给出定态谱子空间泄漏界
+\begin{equation}
+\boxed{
+P_{\rm leak}
+\le\frac{\epsilon_{PQ}^2}{1+\epsilon_{PQ}^2},
+\qquad
+\epsilon_{PQ}
+=\left\|(E-\mathsf QH\mathsf Q)^{-1}\mathsf QH\mathsf P\right\|.}
+\label{eq:feshbach_stationary_leakage_bound}
+\end{equation}
+有限时间强脉冲还必须另行检查包络 Fourier 带宽；静态谱界不能代替时变泄漏分析。
+
+\begin{proposition}[Feshbach 本征态的归一化泄漏概率]
+设自伴分块 Hamiltonian，规范化本征态能量 $E$ 位于 $QHQ$ 预解集。令 $\epsilon_{PQ}=\|(E-QHQ)^{-1}QHP\|$，则泄漏概率 $\|\psi_Q\|^2\le\epsilon_{PQ}^2/(1+\epsilon_{PQ}^2)$，即\eqnrefs{eq:feshbach_stationary_leakage_bound}。二阶有效两态 Hamiltonian 还需本文的 Neumann 小参数与裸谱隔离条件。
+\end{proposition}
+\begin{proof}
+正文的一般 Feshbach--Schur 母\eqnrefs{eq:free_electron_feshbach_resolvent_mother} 同时控制保留子空间中的有效动力学和被消去分量的大小。对反冲格点，把近共振的 $|0\rangle,|1\rangle$ 放入 $\mathsf P$，其余通道归入 $\mathsf Q$，并写
+\begin{equation*}
+ H=H_0+V,
+ \qquad
+ G_Q^{(0)}=(E-\mathsf QH_0\mathsf Q)^{-1}.
+\end{equation*}
+在正文的 $\epsilon_Q<1$ 条件下，先把完整 $Q$ 空间预解式写成
+\begin{align*}
+(E-\mathsf QH\mathsf Q)^{-1}
+&=\left[E-\mathsf QH_0\mathsf Q-\mathsf QV\mathsf Q\right]^{-1}\\
+&=\left[I-G_Q^{(0)}\mathsf QV\mathsf Q\right]^{-1}G_Q^{(0)}\\
+&=G_Q^{(0)}+G_Q^{(0)}\mathsf QV\mathsf QG_Q^{(0)}+O(V^2).
+\end{align*}
+代入 Feshbach 自能
+\begin{equation*}
+ \Sigma_P(E)=\mathsf PH\mathsf Q(E-\mathsf QH\mathsf Q)^{-1}\mathsf QH\mathsf P,
+\end{equation*}
+并利用 $H_0$ 在裸反冲基中对角，最低非零修正为
+\begin{equation*}
+ \Sigma_P^{(2)}
+ =\mathsf PV\mathsf QG_Q^{(0)}\mathsf QV\mathsf P.
+\end{equation*}
+在目标基 $(|0\rangle,|1\rangle)$ 中，其对角元分别给两态的二阶反冲自能，非对角直接目标边给出 $\hbar\Omega/2$。把两个对角元的平均值减去，并把它们的差连同裸失谐一起记入正文已经定义的 $\Delta_{\rm eff}$，得到
+\begin{equation*}
+ H_{2\rm L}
+ =\frac{\hbar}{2}
+ \begin{pmatrix}
+ -\Delta_{\rm eff}&\Omega^*\\
+ \Omega&\Delta_{\rm eff}
+ \end{pmatrix}
+ +O\!\left(\epsilon_B^3\hbar\Delta_B^{(0)}\right),
+\end{equation*}
+即正文\eqnrefs{eq:recoil_effective_two_level}。
+
+同一个分块本征方程的 $\mathsf Q$ 分量为
+\begin{equation*}
+ (E-\mathsf QH\mathsf Q)|\psi_Q\rangle
+ =\mathsf QH\mathsf P|\psi_P\rangle,
+\end{equation*}
+所以
+\begin{equation*}
+ |\psi_Q\rangle
+ =(E-\mathsf QH\mathsf Q)^{-1}\mathsf QH\mathsf P|\psi_P\rangle.
+\end{equation*}
+取 Hilbert 空间范数并使用算符范数的次乘性，
+\begin{align*}
+ \|\psi_Q\|
+ &\le
+ \left\|(E-\mathsf QH\mathsf Q)^{-1}\mathsf QH\mathsf P\right\|
+ \|\psi_P\|\\
+ &=\epsilon_{PQ}\|\psi_P\|.
+\end{align*}
+平方并令 $P_{\rm leak}=\|\psi_Q\|^2$。归一化给出 $\|\psi_P\|^2=1-P_{\rm leak}$，于是
+\begin{equation*}
+ P_{\rm leak}\le\epsilon_{PQ}^2(1-P_{\rm leak}).
+\end{equation*}
+把含 $P_{\rm leak}$ 的项移到同一侧，得到
+\begin{equation*}
+ P_{\rm leak}
+ \le\frac{\epsilon_{PQ}^2}{1+\epsilon_{PQ}^2},
+\end{equation*}
+即正文\eqnrefs{eq:feshbach_stationary_leakage_bound}。
+\end{proof}
+
+
+定义 $\Omega_R=\sqrt{|\Omega|^2+\Delta_{\rm eff}^2}$，则二态跃迁概率为
+\begin{equation}
+\boxed{
+P_{0\to1}(t)
+=\frac{|\Omega|^2}{\Omega_R^2}
+\sin^2\!\left(\frac{\Omega_Rt}{2}\right).}
+\label{eq:recoil-rabi-probability-dp19}
+\end{equation}
+由于 $\widetilde H_{2\rm L}^{\,2}=(\hbar^2\Omega_R^2/4)\mathbb I$，矩阵指数立即分成正弦与余弦两部分，得到标准二能级闭式演化。
+理想共振 Rabi 极限只是进一步令 $\Delta_{\rm eff}\to0$ 且泄漏控制量足够小的末端极限。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\textwidth]{rabi_detuning.png}
+\caption{谱隔离后的失谐 Rabi 振荡。真正的失谐应使用\eqnrefs{eq:recoil_effective_two_level} 中包含外部格点自能修正的 $\Delta_{\rm eff}$。}
+\label{fig:rabi_detuning}
+\end{figure}
+
+谱隔离不仅告诉我们哪些态可以保留，还允许进一步计算被消去通道怎样通过虚跃迁修正保留子空间。二态或少态约化的一般表达式仍是一般 Feshbach--Schur 投影，而不是某个命名衍射极限。对目标子空间 $P$ 与其补空间 $Q=1-P$，精确 Feshbach--Schur 有效哈密顿量为
+\begin{equation*}
+ H_{\rm eff}(E)
+ =PHP+PHQ(E-QHQ)^{-1}QHP.
+\end{equation*}
+为了把“经过哪些虚中间态”变成可计算的路径展开，把 $Q$ 空间内的哈密顿量分成对角或可精确求解部分 $QH_0Q$ 与剩余耦合 $QVQ$，并定义
+\begin{equation}
+ \boxed{
+ G_Q^{(0)}(E)\equiv(E-QH_0Q)^{-1},
+ \qquad
+ \epsilon_Q(E)\equiv\|G_Q^{(0)}(E)QVQ\|.}
+ \label{eq:virtual-path-resolvent-control-dp85}
+\end{equation}
+这里 $\epsilon_Q$ 是无量纲的 $Q$ 子空间内部再散射控制量。在 $\epsilon_Q<1$ 的能区，预解式具有收敛 Neumann 展开
+\begin{equation}
+ \boxed{
+ (E-QHQ)^{-1}
+ =\sum_{r=0}^{\infty}\left(G_Q^{(0)}QVQ\right)^rG_Q^{(0)}.}
+ \label{eq:virtual-path-neumann-dp85}
+\end{equation}
+代入 Feshbach 一般表达式以后，两个保留态 $|a\rangle,|b\rangle\in P$ 之间的有效矩阵元为
+\begin{equation}
+ \boxed{
+ \begin{aligned}
+ \langle b|H_{\rm eff}(E)|a\rangle
+ ={}&\langle b|PHP|a\rangle\\
+ &+\sum_{r=0}^{\infty}
+ \langle b|PHQ
+ (G_Q^{(0)}QVQ)^rG_Q^{(0)}QHP|a\rangle .
+ \end{aligned}}
+ \label{eq:virtual-path-general-series-dp85}
+\end{equation}
+第 $r$ 项枚举了在进入和离开 $Q$ 子空间之间发生 $r$ 次内部再跃迁的全部虚路径。若截断到 $r=R$，余项满足
+\begin{equation}
+ \boxed{
+ \|\delta H_{\rm eff}^{(>R)}\|
+ \le
+ \|PHQ\|\,\|G_Q^{(0)}\|\,\|QHP\|
+ \frac{\epsilon_Q^{R+1}}{1-\epsilon_Q}.}
+ \label{eq:virtual-path-remainder-bound-dp85}
+\end{equation}
+因此少态模型的高阶耦合与误差都来自同一个精确投影一般表达式；具体晶格连边只决定哪些路径实际非零。
+
+\begin{theorem}[Neumann 虚路径展开及余项]
+设 $G_Q^{(0)}=(E-QH_0Q)^{-1}$ 存在，$\epsilon_Q=\|G_Q^{(0)}QVQ\|<1$。则完整 $Q$ 预解式的 Neumann 展开按算符范数收敛，截到 $r=R$ 的预解式余项不超过 $\|G_Q^{(0)}\|\epsilon_Q^{R+1}/(1-\epsilon_Q)$。左右乘跨块耦合即得\eqnrefs{eq:virtual-path-remainder-bound-dp85}的有效算符界。
+\end{theorem}
+\begin{proof}
+在 $Q$ 子空间内写
+\begin{equation*}
+ E-QHQ
+ =E-QH_0Q-QVQ
+ =[G_Q^{(0)}]^{-1}[1-G_Q^{(0)}QVQ].
+\end{equation*}
+因此
+\begin{equation*}
+ (E-QHQ)^{-1}
+ =[1-G_Q^{(0)}QVQ]^{-1}G_Q^{(0)}.
+\end{equation*}
+若 $\epsilon_Q=\|G_Q^{(0)}QVQ\|<1$，Neumann 级数在算符范数下收敛：
+\begin{align*}
+ [1-G_Q^{(0)}QVQ]^{-1}
+ &=\sum_{r=0}^{\infty}(G_Q^{(0)}QVQ)^r,\\
+ (E-QHQ)^{-1}
+ &=\sum_{r=0}^{\infty}(G_Q^{(0)}QVQ)^rG_Q^{(0)},
+\end{align*}
+即正文\eqnrefs{eq:virtual-path-neumann-dp85}。
+
+把该结果代入
+\begin{equation*}
+ H_{\rm eff}(E)=PHP+PHQ(E-QHQ)^{-1}QHP
+\end{equation*}
+并在 $P$ 空间两态之间取矩阵元：
+\begin{align*}
+ \langle b|H_{\rm eff}|a\rangle
+ ={}&\langle b|PHP|a\rangle\\
+ &+\sum_{r=0}^{\infty}
+ \langle b|PHQ
+ (G_Q^{(0)}QVQ)^rG_Q^{(0)}QHP|a\rangle,
+\end{align*}
+得到正文\eqnrefs{eq:virtual-path-general-series-dp85}。
+
+若只保留 $r=0,\ldots,R$，预解式余项为
+\begin{equation*}
+ \delta G_Q^{(>R)}
+ =\sum_{r=R+1}^{\infty}(G_Q^{(0)}QVQ)^rG_Q^{(0)}.
+\end{equation*}
+利用算符范数的次乘性与几何级数，
+\begin{align*}
+ \|\delta G_Q^{(>R)}\|
+ &\le
+ \sum_{r=R+1}^{\infty}\epsilon_Q^r\,\|G_Q^{(0)}\|\\
+ &=\|G_Q^{(0)}\|
+ \frac{\epsilon_Q^{R+1}}{1-\epsilon_Q}.
+\end{align*}
+再在左右乘上 $PHQ$ 与 $QHP$，得到正文\eqnrefs{eq:virtual-path-remainder-bound-dp85}。
+\end{proof}
+
+
+\eqnrefs{eq:virtual-path-general-series-dp85} 对任意 $Q$ 子空间连边成立。若进一步考虑一条一般的最近邻虚链：目标态为 $|0\rangle$ 与 $|N\rangle$，中间态依次为 $|1\rangle,\ldots,|N-1\rangle$，且微观相互作用只连接相邻格点，则最低非零非对角矩阵元可以解析写出。取
+\begin{equation*}
+ P=|0\rangle\langle0|+|N\rangle\langle N|.
+\end{equation*}
+相邻格点耦合写成 $\hbar\Omega_j/2$。取两个目标态近简并能量为 $E_*$，并把中间态的有符号能量分母记为
+\begin{equation*}
+ \Delta_j\equiv\frac{E_*-E_j}{\hbar},
+ \qquad 1\le j\le N-1.
+\end{equation*}
+于是 $G_Q^{(0)}(E_*)|j\rangle=(\hbar\Delta_j)^{-1}|j\rangle$。令
+\begin{equation*}
+ \Omega_*\equiv\max_j|\Omega_j|,
+ \qquad
+ \Delta_*\equiv\min_{1\le j\le N-1}|\Delta_j|,
+ \qquad
+ \epsilon_{\rm chain}^{(N)}\equiv\frac{\Omega_*}{\Delta_*}.
+\end{equation*}
+在 $\epsilon_{\rm chain}^{(N)}\ll1$ 且只存在最近邻连边时，最低非零非对角项来自唯一单调最短路径 $0\to1\to\cdots\to N$，其有效耦合为
+\begin{equation}
+ \boxed{
+ \Omega_{\rm eff}^{(N)}
+ =\frac{\Omega_{N-1}\Omega_{N-2}\cdots\Omega_0}
+ {2^{N-1}\Delta_{N-1}\Delta_{N-2}\cdots\Delta_1}
+ +O\!\left(\frac{\Omega_*^{N+2}}{\Delta_*^{N+1}}\right).}
+ \label{eq:nth-bragg-effective-rabi-dp83}
+\end{equation}
+这里的修正阶数依赖“只允许最近邻跃迁”这一结构：任何比最短路径更长而仍具有净位移 $N$ 的路径至少多一对前进--后退顶角。若 $Q$ 空间存在更远程连边，应改用一般余项界~\eqnrefs{eq:virtual-path-remainder-bound-dp85}。
+
+同一投影的二阶对角路径必须对每个目标态能够直接到达的全部 $Q$ 空间邻态求和。若把从目标态 $|a\rangle$ 到 $Q$ 态 $|m\rangle$ 的矩阵元写成 $\langle m|V|a\rangle=\hbar\Omega_{ma}/2$，并记有符号分母 $\Delta_m^{(a)}=(E_*-E_m)/\hbar$，则
+\begin{equation}
+ \boxed{
+ \delta_a^{\rm AC}
+ \simeq
+ \sum_{m\in Q:\,\langle m|V|a\rangle\ne0}
+ \frac{|\Omega_{ma}|^2}{4\Delta_m^{(a)}},
+ \qquad a\in\{0,N\}.}
+ \label{eq:nth-bragg-ac-stark-dp83}
+\end{equation}
+对真正截断的有限开放链，$|0\rangle$ 与 $|N\rangle$ 分别只有内部邻态 $|1\rangle$ 与 $|N-1\rangle$，上式才约化为 $|\Omega_0|^2/(4\Delta_1)$ 与 $|\Omega_{N-1}|^2/(4\Delta_{N-1})$。无限反冲格中还必须把链外邻态的二阶虚跃迁一并保留。差分频移 $\delta_N^{\rm AC}-\delta_0^{\rm AC}$ 改变两个目标态的有效共振条件；中间态振幅从 $O(\epsilon_{\rm chain}^{(N)})$ 开始，因此泄漏概率从 $O[(\epsilon_{\rm chain}^{(N)})^2]$ 开始。
+
+\begin{exbox}[$N$ 阶 Bragg 跃迁]
+周期反冲格只含最近邻 Fourier 连边时，上述数学链直接对应相隔 $N$ 个反冲格点的高阶 Bragg 通道。把 $E_j$ 取为真实反冲通道能量、$\Omega_j$ 取为相应相邻 Fourier 耦合即可使用\eqnrefs{eq:nth-bragg-effective-rabi-dp83}；谱隔离条件就是 $\epsilon_{\rm chain}^{(N)}\ll1$。实验共振还必须补偿\eqnrefs{eq:nth-bragg-ac-stark-dp83} 的差分自能。
+\end{exbox}
+
+\input{sections/05-high-order-bragg-derivation-dp83}
+
+定失谐 Rabi 振荡给出固定 Hamiltonian 下的相干交换；若实验参数随时间缓慢变化，同一个谱隔离子空间还可以沿瞬时本征态演化。于是需要进一步考察绝热二态控制。
+
+定失谐 Rabi 振荡要求脉冲面积和作用时间精确落在目标值；另一种控制方式是让驱动频率缓慢扫过目标反冲共振，使系统沿瞬时本征态连续演化。这个过程仍以\eqnrefs{eq:recoil_effective_two_level} 为一般表达式，但现在 $\Delta_{\rm eff}$ 和 $\Omega$ 可以随时间变化。吸收 $\Omega$ 的固定相位后，二态哈密顿量写成
+\begin{equation}
+ H_{2\rm L}(t)
+ =\frac{\hbar}{2}
+ \begin{pmatrix}
+ -\Delta_{\rm eff}(t)&|\Omega(t)|\\
+ |\Omega(t)|&\Delta_{\rm eff}(t)
+ \end{pmatrix},
+ \qquad
+ \Omega_R(t)=\sqrt{|\Omega(t)|^2+\Delta_{\rm eff}^2(t)}.
+ \label{eq:recoil-adiabatic-twolevel-dp32}
+\end{equation}
+瞬时本征能量之差为 $\hbar\Omega_R(t)$。定义混合角
+\begin{equation*}
+ \vartheta(t)=\operatorname{atan2}\!\left(|\Omega(t)|,\Delta_{\rm eff}(t)\right),
+\end{equation*}
+则瞬时本征基相对于裸反冲基的旋转角为 $\vartheta/2$。基底本身随时间转动会产生非绝热耦合 $\hbar|\dot\vartheta|/2$；因此二态内部的局域绝热控制量为
+\begin{equation}
+ \boxed{
+ \epsilon_{\rm ad}(t)
+ \equiv\frac{|\dot\vartheta(t)|}{2\Omega_R(t)}\ll1.}
+ \label{eq:recoil-adiabatic-criterion-dp32}
+\end{equation}
+若初态从 $\Delta_{\rm eff}\ll-|\Omega|$ 的一侧进入，并缓慢扫到 $\Delta_{\rm eff}\gg|\Omega|$，同一瞬时本征支就把主要占据从一个反冲通道连续旋转到另一个通道。与共振 $\pi$ 脉冲相比，这种转移对总脉冲面积更不敏感，但要求整个扫频区间都保持有限最小能隙。
+
+\begin{proposition}[二态瞬时本征基的连接项]
+设两态耦合相位恒定，$\Omega_R(t)>0$，混合角连续可微。采用 $U_\vartheta=e^{+\ii\vartheta\sigma_y/2}$，瞬时基中的精确生成元为 $-\hbar\Omega_R\sigma_z/2+\hbar\dot\vartheta\sigma_y/2$，非绝热矩阵元与能隙之比为 $|\dot\vartheta|/(2\Omega_R)$。这一局部比值不是任意长时间全局误差定理；直接 Duhamel 态范数误差另满足 $\frac12\int|\dot\vartheta|\dd t$ 的上界。
+\end{proposition}
+\begin{proof}
+固定耦合的整体复相位以后，两态 Hamiltonian 可写成
+\[
+H_{2\rm L}(t)
+=\frac{\hbar}{2}
+\begin{pmatrix}
+-\Delta_{\rm eff}(t)&|\Omega(t)|\\
+|\Omega(t)|&\Delta_{\rm eff}(t)
+\end{pmatrix}.
+\]
+定义瞬时 Rabi 频率
+\[
+\Omega_R(t)=\sqrt{|\Omega(t)|^2+\Delta_{\rm eff}^2(t)}
+\]
+和混合角
+\[
+\sin\vartheta(t)=\frac{|\Omega(t)|}{\Omega_R(t)},
+\qquad
+\cos\vartheta(t)=\frac{\Delta_{\rm eff}(t)}{\Omega_R(t)}.
+\]
+于是
+\[
+H_{2\rm L}(t)
+=\frac{\hbar\Omega_R}{2}
+\left(\sin\vartheta\,\sigma_x-\cos\vartheta\,\sigma_z\right).
+\]
+取绕 $y$ 轴旋转
+\[
+U_\vartheta(t)=\exp\!\left[+\frac{\ii\vartheta(t)}2\sigma_y\right].
+\]
+利用
+\begin{align*}
+U_\vartheta^\dagger\sigma_zU_\vartheta
+&=\sigma_z\cos\vartheta+\sigma_x\sin\vartheta,\\
+U_\vartheta^\dagger\sigma_xU_\vartheta
+&=\sigma_x\cos\vartheta-\sigma_z\sin\vartheta,
+\end{align*}
+代入并整理得到
+\[
+U_\vartheta^\dagger H_{2\rm L}U_\vartheta
+=-\frac{\hbar\Omega_R}{2}\sigma_z.
+\]
+瞬时本征态之间的能隙因此为 $\hbar\Omega_R$。
+
+令实验室基态矢与瞬时本征基态矢满足
+\[
+|\psi(t)\rangle=U_\vartheta(t)|\widetilde\psi(t)\rangle.
+\]
+代入 Schr\"odinger 方程：
+\begin{align*}
+\ii\hbar\left(\dot U_\vartheta|\widetilde\psi\rangle
++U_\vartheta|\dot{\widetilde\psi}\rangle\right)
+&=H_{2\rm L}U_\vartheta|\widetilde\psi\rangle.
+\end{align*}
+左乘 $U_\vartheta^\dagger$，得到瞬时基中的生成元
+\[
+\widetilde H
+=U_\vartheta^\dagger H_{2\rm L}U_\vartheta
+-\ii\hbar U_\vartheta^\dagger\dot U_\vartheta.
+\]
+由于 $\sigma_y$ 与自身对易，
+\[
+\dot U_\vartheta
+=+\frac{\ii\dot\vartheta}{2}\sigma_yU_\vartheta,
+\qquad
+U_\vartheta^\dagger\dot U_\vartheta
+=+\frac{\ii\dot\vartheta}{2}\sigma_y,
+\]
+所以
+\[
+\widetilde H
+=-\frac{\hbar\Omega_R}{2}\sigma_z
++\frac{\hbar\dot\vartheta}{2}\sigma_y.
+\]
+第一项对角，第二项在瞬时本征态之间产生跃迁。其非对角矩阵元的模为
+$\hbar|\dot\vartheta|/2$，与瞬时能隙比较得到
+\[
+\epsilon_{\rm ad}(t)
+\equiv\frac{|\dot\vartheta(t)|}{2\Omega_R(t)}\ll1,
+\]
+即正文\eqnrefs{eq:recoil-adiabatic-criterion-dp32}。
+
+比较瞬时基精确生成元与仅保留对角项的参考传播，将余项 $\hbar\dot\vartheta\sigma_y/2$ 代入 Duhamel 恒等式，直接得 $\|U_{\rm inst}-U_{\rm diag}\|\le\frac12\int|\dot\vartheta|\dd t$。更紧的绝热界利用谱隙引起的相位振荡及端点、导数条件，而不能只把局部比值逐点判小后当作全时段证明。
+\end{proof}
+
+
+二态内部绝热并不保证无限反冲格点中的截断仍然有效。扫频过程中还必须同时满足
+\begin{equation*}
+ \epsilon_{PQ}(t)\ll1,
+ \qquad
+ \frac{\Delta\omega_{\rm env}}{\Delta_B(t)}\ll1,
+\end{equation*}
+其中 $\epsilon_{PQ}$ 是\eqnrefs{eq:feshbach_stationary_leakage_bound} 的外部子空间混合量，$\Delta_B(t)$ 是目标双态与其余反冲格点的瞬时谱隙，$\Delta\omega_{\rm env}$ 表示包络或扫频引入的有效带宽。增大 $|\Omega|$ 会扩大二态内部最小能隙、改善\eqnrefs{eq:recoil-adiabatic-criterion-dp32}，却也会增强向外部格点的虚跃迁；这两个趋势决定了实际反冲双态扫频存在有限的可用耦合窗口。
+
+当\eqnrefs{eq:recoil_effective_two_level} 中的两个保留态取为周期势的一对近共振反冲通道时，$\Delta_{\rm eff}(t)$ 由瞬时两通道失谐及外部通道自能共同决定，$\Omega(t)$ 由相应倒格 Fourier 分量给出。\eqnrefs{eq:recoil-adiabatic-criterion-dp32} 与 $\epsilon_{PQ}\ll1$ 必须同时成立；前者控制两态内部的非绝热跃迁，后者控制向其余反冲格点的泄漏。只满足其中一个条件时，二态扫频模型都不闭合。
+
+若 $|\Omega|$ 在共振附近近似常数，而 $\Delta_{\rm eff}(t)=\alpha(t-t_0)$ 在足够长的时间区间内线性扫过零点，则\eqnrefs{eq:recoil-adiabatic-twolevel-dp32} 成为 Landau--Zener 两能级避免交叉问题：两个裸能级的失谐以近似常速率穿过零点，有限耦合 $\Omega$ 把真实瞬时本征值打开为避免交叉。所谓“非绝热跃迁概率”就是从一侧远离交叉区的瞬时本征支进入、扫过交叉后落到另一绝热支以外的概率。其无限远初末时刻极限为
+\begin{equation*}
+ P_{\rm LZ}=\exp\!\left[-\frac{\pi|\Omega|^2}{2|\alpha|}\right].
+\end{equation*}
+这个结果要求扫频初末点都远离避免交叉区，并假定二态截断在整个时间轴上受控；因此不能在外部反冲通道已经接近共振时单独使用 Landau--Zener 公式。
+
+\begin{exbox}[恒定耦合线性扫频]
+一般判据\eqnrefs{eq:recoil-adiabatic-criterion-dp32} 可以直接代入具体扫频协议。取 $|\Omega|$ 为常数，并令
+\[
+\Delta_{\rm eff}(t)=\alpha(t-t_0),
+\qquad [\alpha]={\rm s^{-2}}.
+\]
+由
+\[
+\tan\vartheta=\frac{|\Omega|}{\Delta_{\rm eff}}
+\]
+求导：
+\begin{align*}
+\sec^2\vartheta\,\dot\vartheta
+&=-\frac{|\Omega|\dot\Delta_{\rm eff}}{\Delta_{\rm eff}^2},\\
+\sec^2\vartheta
+&=1+\tan^2\vartheta
+=\frac{\Delta_{\rm eff}^2+|\Omega|^2}{\Delta_{\rm eff}^2}.
+\end{align*}
+于是
+\[
+\dot\vartheta
+=-\frac{|\Omega|\alpha}{|\Omega|^2+\Delta_{\rm eff}^2},
+\]
+代入一般绝热参数得到
+\[
+\epsilon_{\rm ad}(t)
+=\frac{|\Omega\alpha|}
+{2(|\Omega|^2+\Delta_{\rm eff}^2)^{3/2}}.
+\]
+该函数在避免交叉中心 $\Delta_{\rm eff}=0$ 取得最大值：
+\[
+\epsilon_{\rm ad}^{\max}
+=\frac{|\alpha|}{2|\Omega|^2}.
+\]
+因此线性扫频的局域绝热窗口要求 $|\alpha|\ll2|\Omega|^2$。这只是一般瞬时本征基判据在恒定耦合协议中的代入；若 $|\Omega|$ 也随时间变化，应直接使用\eqnrefs{eq:recoil-adiabatic-criterion-dp32}。
+\end{exbox}
+
+\input{sections/electron-recoil-bragg-calculation}
+\input{sections/electron-bragg-four-state-schur}
+
+\section{高阶色散与量子模式}\label{subsec:higher-dispersion-quantum-mode-dp19}
+
+以上二阶色散用一个有效质量描述动量变化引起的能量修正。强驱动可以把电子推到更远的通道，使所占据动量范围扩大；这时即使每次交换的步长很小，二阶 Taylor 展开也可能不再准确。我们最后检查整个占据窗口内的高阶余项，再讨论保留光场量子态时的反冲动力学。
+
+二阶反冲只在整个显著占据动量窗内都足够窄时可靠。对精确色散再保留三阶项，得到
+\begin{equation}
+E(p_0+\delta p)
+=E_0+v_0\delta p
++\frac{(\delta p)^2}{2\gamma_0^3m_{\mathrm e}}
+-\frac{v_0(\delta p)^3}{2\gamma_0^4m_{\mathrm e}^2c^2}
++O((\delta p)^4).
+\label{eq:dispersion_to_cubic}
+\end{equation}
+若 $\delta p_{\max}=L_{\rm occ}\hbar|\kappa_z|$，Taylor 余项应按整个占据跨度而不是单步光子反冲检查。一个直接的控制量是
+\begin{equation}
+\boxed{
+\epsilon_{\rm rec}^{(>2)}
+=\frac{m_\parallel|E'''(p_0)|\delta p_{\max}}{3}
++\frac{m_\parallel M_4(\delta p_{\max})(\delta p_{\max})^2}{12}
+\ll1,}
+\label{eq:recoil_taylor_remainder_control}
+\end{equation}
+其中 $M_4$ 是相应动量窗内 $|E^{(4)}|$ 的上界。强驱动时 $L_{\rm occ}$ 会增大，因此“单个 $\hbar \kappa_z/p_0$ 很小”并不足以保证二阶近似。
+
+\begin{proposition}[相对论色散 Taylor 余项的归一化界]
+设中心动量 $p_0$、窗半宽 $\delta p_{\max}>0$，四阶导数在窗上由 $M_4$ 控制。二阶相对论色散的三阶系数及四阶余项按 Taylor 定理给出，归一到窗边二次能标后满足\eqnrefs{eq:recoil_taylor_remainder_control}。该无量纲能量比较不代替长期传播的累计相位条件。
+\end{proposition}
+\begin{proof}
+对
+\begin{equation*}
+E(p)=\sqrt{m_{\mathrm e}^2c^4+p^2c^2},
+\qquad p_0=\gamma_0m_{\mathrm e} v_0,
+\end{equation*}
+逐次求导。第一阶为
+\begin{equation*}
+E'(p)=\frac{pc^2}{E(p)},
+\qquad E'(p_0)=v_0.
+\end{equation*}
+利用 $E_0=\gamma_0m_{\mathrm e} c^2$，
+\begin{align*}
+E''(p)
+&=\frac{c^2}{E}-\frac{p^2c^4}{E^3}
+=\frac{m_{\mathrm e}^2c^6}{E^3},\\
+E''(p_0)&=\frac{1}{\gamma_0^3m_{\mathrm e}},
+\end{align*}
+而
+\begin{align*}
+E'''(p)
+&=-3m_{\mathrm e}^2c^6E^{-4}E'(p),\\
+E'''(p_0)
+&=-\frac{3v_0}{\gamma_0^4m_{\mathrm e}^2c^2}.
+\end{align*}
+因此 Taylor 展开为
+\begin{align*}
+E(p_0+\delta p)
+={}&E_0+v_0\delta p
++\frac{(\delta p)^2}{2\gamma_0^3m_{\mathrm e}}
+-\frac{v_0(\delta p)^3}{2\gamma_0^4m_{\mathrm e}^2c^2}
++R_4(\delta p),\\
+R_4(\delta p)
+={}&\frac{E^{(4)}(\xi_{\delta p})}{24}(\delta p)^4,
+\end{align*}
+其中 $\xi_{\delta p}$ 位于 $p_0$ 与 $p_0+\delta p$ 之间；去掉 $R_4$ 即得到正文\eqnrefs{eq:dispersion_to_cubic}。
+
+在 $|\delta p|\le\delta p_{\max}$ 上令
+\begin{equation*}
+M_4(\delta p_{\max})
+\ge \max_{|\delta p|\le\delta p_{\max}}
+|E^{(4)}(p_0+\delta p)|.
+\end{equation*}
+以二阶能标 $(\delta p_{\max})^2/(2m_\parallel)$ 归一化三阶项的最大绝对值，得到
+\begin{equation*}
+\frac{|E'''(p_0)|(\delta p_{\max})^3/6}
+{(\delta p_{\max})^2/(2m_\parallel)}
+=\frac{m_\parallel|E'''(p_0)|\delta p_{\max}}{3},
+\end{equation*}
+而四阶余项满足
+\begin{equation*}
+\frac{|R_4|_{\max}}
+{(\delta p_{\max})^2/(2m_\parallel)}
+\le
+\frac{m_\parallel M_4(\delta p_{\max})(\delta p_{\max})^2}{12}.
+\end{equation*}
+两项相加即得到正文\eqnrefs{eq:recoil_taylor_remainder_control}。
+\end{proof}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\linewidth]{recoil_exact_vs_quadratic.png}
+\caption{相邻电子跃迁频率的精确相对论结果与二阶反冲近似。中心附近二者重合；占据边带变宽后，高阶色散使局部非谐性逐渐偏离线性趋势。}
+\label{fig:recoil_exact_vs_quadratic}
+\end{figure}
+
+前面的反冲格只需要给电子通道编号 $\ell$。一旦光场也被量子化，每一个电子通道还要再配一个光子数 $n$，所以联合基底变成 $|\ell,n\rangle$，动力学一般发生在一张二维格点网络上。要把这张网络约化成一个 $2\times2$ 问题，必须同时满足两个彼此独立的谱条件：光学带宽内只有一个模式真正参与交换，电子侧也只有一条相邻通道跃迁接近共振。任何一个条件失效，都必须保留更多 $|\ell,n\rangle$ 状态，而不能把它们吸收到一个重新定义的耦合常数中。
+
+\begin{exbox}[反冲选边后的 Jaynes--Cummings 极限]
+用 $\mathsf P$ 表示保留态的投影。若光学侧只留下频率 $\omega_c$ 的一个玻色模式，而电子侧只保留两个相邻通道 $|g\rangle$ 与 $|e\rangle$，那么固定总激发数 $n$ 后，只剩
+\begin{equation*}
+\mathcal H_n=\operatorname{span}\{|e,n-1\rangle,|g,n\rangle\}.
+\end{equation*}
+这时电子的一次上跃必须伴随一个光子的湮灭，反向过程则伴随一个光子的产生。Jaynes--Cummings 模型就是“一个二态跃迁与一个量子化玻色模按一量子交换规则耦合”的最小封闭模型：在总激发数固定的每个子空间中，它只连接 $|e,n\rangle$ 与 $|g,n+1\rangle$ 这一对状态。把其它远失谐电子状态通过前文的投影理论消去，并把它们造成的平滑能移吸收到两个保留态的能量中，二维有效 Hamiltonian 才化为这一形式
+\begin{equation}
+\boxed{
+H_{\rm JC}
+=\frac{\hbar\Delta_{\rm JC}}2\sigma_z
++\hbar\left(g_c\sigma_+a+g_c^*\sigma_-a^\dagger\right).}
+\label{eq:recoil-jc-effective-dp19}
+\end{equation}
+其中 $g_c$ 是频率量纲的腔模耦合率，而\eqnrefs{eq:qpinem_S} 中的 $g_{\mathrm Q}$ 是有限作用时间积分得到的无量纲单程参数。按上述两种 Hamiltonian 的相位约定，若同一投影交换矩阵元在长度为 $T$ 的窗口内严格常量且处于共振，则 $g_c=\ii\upsilon$，从而 $g_{\mathrm Q}=-\ii g_cT$，特别有 $|g_{\mathrm Q}|=|g_c|T$；若耦合包络或失谐随时间变化，则必须保留 $g_{\mathrm Q}=\int\dd t\,\upsilon(t)$，不能用 $g_cT$ 代替。
+
+固定总激发数 $n$ 的子块劈裂为
+\begin{equation*}
+\Omega_n=\sqrt{\Delta_{\rm JC}^2+4|g_c|^2n},
+\end{equation*}
+并给出
+\begin{equation}
+\boxed{
+P_{g,n\to e,n-1}(t)
+=\frac{4|g_c|^2n}{\Omega_n^2}
+\sin^2\frac{\Omega_nt}{2}.}
+\label{eq:recoil-jc-rabi-dp19}
+\end{equation}
+$\sqrt n$ 增强来自 $a|n\rangle=\sqrt n|n-1\rangle$；自由电子的关键条件是反冲谱隔离：它使无限电子能量梯可以受控约化为承载 $\sigma_\pm$ 的双态子空间。若多个模式或多个电子边进入同一带宽，就必须扩大 $\mathsf P$，不能把它们隐藏进一个重新定义的“有效耦合常数”。
+
+\medskip
+
+\eqnrefs{eq:qpinem-single-mode-hamiltonian-dp68} 仍允许电子在整条近同步能量格上平移。只有当反冲失谐把一条电子交换边与其它边谱隔离时，才可以把电子 Hilbert 空间进一步投影到两个相邻通道。设这两个通道记为 $|g\rangle$ 与 $|e\rangle$，并在目标子空间中定义 $\sigma_+=|e\rangle\langle g|$、$\sigma_-=|g\rangle\langle e|$；那么电子平移算符在这一子空间中的唯一非零矩阵元就是这对升降算符。
+
+令 $\mathsf P_{ge}=|g\rangle\langle g|+|e\rangle\langle e|$。在被选中的交换边上，
+\begin{equation*}
+ \mathsf P_{ge}\hat b^\dagger\mathsf P_{ge}=\sigma_+,
+ \qquad
+ \mathsf P_{ge}\hat b\mathsf P_{ge}=\sigma_-.
+\end{equation*}
+因此对\eqnrefs{eq:qpinem-single-mode-hamiltonian-dp68} 作电子子空间投影后，交换部分变为
+\begin{equation*}
+ \mathsf P_{ge}\hat H_Q\mathsf P_{ge}
+ =\ii\hbar\left[\upsilon(t)\sigma_+a
+ -\upsilon^*(t)\sigma_-a^\dagger\right].
+\end{equation*}
+若作用窗内模式包络近似常量，定义相位约定 $g_c\equiv\ii\upsilon$，则交换项写成
+\begin{equation*}
+ \hbar\left(g_c\sigma_+a+g_c^*\sigma_-a^\dagger\right).
+\end{equation*}
+真实电子边频率与腔模频率一般仍有残余失谐。进入以腔模频率旋转的表象后，这一频差只在二态子空间中留下对角项
+\begin{equation*}
+ \frac{\hbar\Delta_{\rm JC}}{2}\sigma_z,
+ \qquad
+ \Delta_{\rm JC}
+ \equiv\frac{\mathcal E_e-\mathcal E_g}{\hbar}-\omega_c.
+\end{equation*}
+把对角失谐与投影后的交换项相加，就得到\eqnrefs{eq:recoil-jc-effective-dp19}。若其它电子边或其它光学模式的失谐不再大于相应耦合带宽，这一二态投影即失效，必须返回多通道完整 Hamiltonian。
+
+\medskip
+
+\eqnrefs{eq:recoil-jc-effective-dp19} 只在光学模式和电子交换边都已谱隔离后成立。固定总激发数 $n$ 时，$\{|e,n-1\rangle,|g,n\rangle\}$ 构成闭合二维子块；由 $a|n\rangle=\sqrt n|n-1\rangle$，
+\[
+H_n=\hbar
+\begin{pmatrix}
+\Delta_{\rm JC}/2&g_c\sqrt n\\
+g_c^*\sqrt n&-\Delta_{\rm JC}/2
+\end{pmatrix}.
+\]
+该矩阵满足
+\[
+H_n^2=\frac{\hbar^2\Omega_n^2}{4}\mathbb I,
+\qquad
+\Omega_n=\sqrt{\Delta_{\rm JC}^2+4|g_c|^2n},
+\]
+所以矩阵指数与失谐二能级问题同形。取 $|g,n\rangle\to|e,n-1\rangle$ 的非对角矩阵元并取模平方，便得到\eqnrefs{eq:recoil-jc-rabi-dp19}。$\sqrt n$ 增强来自玻色梯算符，而不是另行假定的自由电子内部能级。
+\end{exbox}
+
+\input{sections/05-recoil-regime-closure-dp47}
+
+\input{content/FreeElectronQuantumOptics/chapter-end/recoil-bragg-channels-calculations.tex}
