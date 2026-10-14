@@ -8,7 +8,6 @@ P^{(2)}(T)=\int_{\mathbb R}J(\delta)T^2
 \end{equation}
 若 $J$ 有界且在 $\delta=0$ 连续，则
 $P^{(2)}(T)/T\to2\pi J(0)$。
-这个极限只是二阶表达式的谱极限；用于真实动力学还要求该时间窗内初态未显著耗尽。
 \end{proposition}
 \begin{proof}
 令 $K_T(\delta)=T\sinc^2(\delta T/2)/(2\pi)$。
@@ -28,13 +27,18 @@ $\int K_T\dd\delta=1$。对任意 $\Omega>0$，
 这里没有把离散末态变成连续谱：若 $J$ 含孤立 delta 质量，以上连续性条件不成立。
 \end{proof}
 
+该极限只针对二阶谱表达式；实际传播还要求窗内初态未显著耗尽。
+
 \begin{exbox}[从短时二次增长到恒定速率：一个可积谱核]
 设电子投影后的末态失谐谱在共振附近可用
 \[
 J(\delta)=\frac{g_*^2a}{\pi(\delta^2+a^2)},\qquad a>0,
 \]
 表示，其中 $g_*,a$ 都是角频率尺度。失谐变量可正可负；该洛伦兹密度是工作窗模型，
-不是把环境的绝对频率延伸到负值。它的相关核由 Fourier 积分给出
+不是把环境的绝对频率延伸到负值。求有限时间跃迁概率，比较其短时和长时行为，
+再检验黄金律给出的恒定速率何时可用。
+
+\textbf{解。} 相关核由 Fourier 积分给出
 $C(\tau)=\int J(\delta)\ee^{\ii\delta\tau}\dd\delta
 =g_*^2\ee^{-a|\tau|}$。
 将有限时间振幅平方写成两个时间积分，得到
@@ -57,4 +61,50 @@ g_*^2T^2[1-aT/3+O((aT)^2)],&aT\ll1,\\
 例如取 $g_*/a=0.05$、$aT=20$，得到 $P^{(2)}\simeq0.095$，
 黄金律给 $\Gamma_*T=0.100$；两者相差 $0.005$，正是有限建立时间造成的修正。
 若窄共振使 $g_*\gtrsim a$，上述两侧时间尺度不再分离，便应保留环境模的联合动力学。
+
+还可以在同一个谱模型中算出耗尽，检验二阶概率离开弱跃迁区后的行为。
+把入射通道记为 $|i\rangle$，连续通道按失谐归一化为
+$\langle\delta|\delta'\rangle=\delta(\delta-\delta')$，选取
+$|v(\delta)|^2=J(\delta)$。全实轴失谐模型的联合 Hamiltonian 为
+\[
+\frac H\hbar=\int\delta|\delta\rangle\langle\delta|\dd\delta
++\int\bigl[v(\delta)|\delta\rangle\langle i|
++v(\delta)^*|i\rangle\langle\delta|\bigr]\dd\delta.
+\]
+其中 $[v]={\rm s^{-1/2}}$，且 $\int|v|^2\dd\delta=g_*^2$，
+所以离散--连续耦合是有界算符。这个旋转绘景模型延拓的是失谐，
+不声称真实环境的绝对能谱无下界。
+令 $A(t)$ 为入射通道振幅、$c_\delta(t)$ 为连续振幅，
+从 $A(0)=1$、$c_\delta(0)=0$ 出发，联合方程给
+\[
+\ii\dot A=\int v^*c_\delta\dd\delta,\qquad
+\ii\dot c_\delta=\delta c_\delta+vA.
+\]
+先积分第二式，再代回第一式，得到
+\[
+\dot A(t)=-g_*^2\int_0^t\ee^{-a(t-s)}A(s)\dd s.
+\]
+微分时保留积分上限项，便化成
+$\ddot A+a\dot A+g_*^2A=0$，并有 $\dot A(0)=0$。
+令 $d=\sqrt{a^2-4g_*^2}$，二阶常系数方程的解为
+\begin{equation}
+A(t)=\ee^{-at/2}
+\left[\cosh\frac{dt}{2}+\frac a d\sinh\frac{dt}{2}\right],
+\qquad P_{\rm exact}(t)=1-|A(t)|^2.
+\label{eq:feqo-lorentzian-exact-survival}
+\end{equation}
+$d=0$ 时取连续极限，括号为 $1+at/2$；
+$2g_*>a$ 时写 $d=\ii\Omega$，其中
+$\Omega=\sqrt{4g_*^2-a^2}$，双曲函数相应变为正弦、余弦。
+概率由联合归一化确定，始终在零与一之间。
+
+在 $g_*/a\ll1$ 时，慢振幅指数为
+$(-a+d)/2=-g_*^2/a+O(g_*^4/a^3)$。
+过了建立时间 $a^{-1}$ 后，入射概率约按
+$\ee^{-\Gamma_*t}$ 衰减；再要求 $\Gamma_*t\ll1$，
+才可将 $1-\ee^{-\Gamma_*t}$ 展开成黄金律的 $\Gamma_*t$。
+上述数值点的精确概率约为 $0.09083$，
+与二阶 $0.095$ 的差别来自耗尽，
+与黄金律 $0.100$ 的差别还包括有限建立时间。
+当 $g_*/a$ 不小时，联合振幅可出现振荡，恒定速率已不能描述这个模型。
 \end{exbox}

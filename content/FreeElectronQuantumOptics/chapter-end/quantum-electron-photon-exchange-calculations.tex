@@ -1,5 +1,7 @@
 \begin{derivation}[共振单模近场的量子耦合]
 
+这里从电子电流与模式的连续矩阵元求出\eqnrefs{eq:qpinem-single-mode-hamiltonian-dp68}中的速率，逐步检查谱选择、电子通道选择和均匀梯约化各舍去了什么。令 $\tau=t-t_i$，所有相互作用绘景相位以入射时刻为原点。
+
 一般线性电子--玻色相互作用在相互作用绘景中可写成
 \[
 \hat V_I(t)
@@ -17,7 +19,7 @@
 =
 \sum_{ss'}\int\dd p\,\dd p'\,
 \mathcal G_{\lambda;s's}(p',p)\,
-\ee^{+\ii\{[E(p')-E(p)]/\hbar-\omega_\lambda\}t}
+\ee^{+\ii\{[E(p')-E(p)]/\hbar-\omega_\lambda\}\tau}
 |p',s'\rangle\langle p,s|.
 \]
 因此“单模 QPINEM”需要依次做三个投影，而不是一步把完整哈密顿量 改写成升降算符。
@@ -29,16 +31,20 @@
 \inf_{\lambda\neq\lambda_0}
 |\omega_\lambda-\omega_0|.
 \]
-若作用时间 $T$ 和实际耦合带宽满足
+当不同模式共享同一个候选电子共振边时，$\Delta_{\rm spec}T\gg1$ 可使非目标模式的一阶跃迁振荡相消；不同动量转移也可能重新满足电子同步，因而还需用真实电子失谐检查这些通道。为控制被舍模式的总传播修正，定义
 \[
-\Delta_{\rm spec}T\gg1,
-\qquad
-\sup_{\lambda\neq\lambda_0}
-\int_{t_i}^{t_f}\dd t\,
-\|\hat{\mathcal G}_{\lambda,I}(t)\|
-\ll1,
+ R_{\rm spec}(t)=\hbar\sum_{\lambda\ne\lambda_0}
+ [\hat{\mathcal G}_{\lambda,I}(t)a_\lambda
+ +\hat{\mathcal G}_{\lambda,I}^\dagger(t)a_\lambda^\dagger].
 \]
-则有限时间 Fourier 核抑制非目标模式，环境和式可约化为 $\lambda_0$。
+令 $U_{\rm keep}$ 只保留目标模式的耦合，但仍作用在完整联合空间；若输入工作窗为 $\Pi_{\rm in}$，Duhamel 恒等式给出充分条件
+\begin{equation}
+ \epsilon_{\rm spec}^{\rm dyn}
+ =\frac1\hbar\int_{t_i}^{t_f}
+ \|R_{\rm spec}(t)U_{\rm keep}(t,t_i)\Pi_{\rm in}\|\dd t\ll1.
+ \label{eq:feqo-single-mode-total-projection-error}
+\end{equation}
+逐个模式的微小系数不自动控制模式总和；这个判据还包含光子占据产生的玻色增强。若上述范数界因没有保留快振荡抵消而过于保守，可对整个振荡积分分部积分，或显式计入被舍通道的虚过程。模式频率间距、一阶末态泄漏和总传播精度由此分别接受检查。
 
 第二步是电子通道投影。连续谱广义本征态满足 Dirac--$\delta$ 归一化，而离散通道模型需要一组真正 Kronecker 正交的归一态。先在长度 $L_z$ 的周期盒中正则化纵向连续谱，使允许动量间隔为 $2\pi\hbar/L_z$；再选择与主导动量转移 $\hbar\kappa_z$ 相容的一串正交盒归一态。记
 \[
@@ -56,7 +62,7 @@ p_\ell=p_0+\ell\hbar\kappa_z,
 =
 \sum_\ell
 \mathcal G_\ell(t)
-\ee^{+\ii\Delta_\ell t}
+\ee^{+\ii\Delta_\ell\tau}
 |\ell+1\rangle\langle\ell|
 +
 \hat R_{\rm off}(t),
@@ -85,15 +91,15 @@ p_\ell=p_0+\ell\hbar\kappa_z,
 T\max_\ell|\Delta_\ell-\Delta_0|
 \ll1,
 \]
-便可把共同边耦合写成
+则瞬时共同边耦合可写成
 \[
-\mathcal G_\ell(t)\ee^{+\ii\Delta_\ell t}
+\mathcal G_\ell(t)\ee^{+\ii\Delta_\ell\tau}
 =
 \mathcal G(t)
 +
 O\!\left(|\mathcal G_0|(\epsilon_{\mathcal G}+\epsilon_\Delta)\right),
 \]
-并定义双边电子平移算符
+这个式子控制单条边的速率误差；累计输出误差还要用\eqnrefs{eq:feqo-quantum-ladder-propagation-error}检查实际玻色数矩、总作用强度与工作窗尾部。满足传播精度后，定义双边电子平移算符
 \[
 \hat b^\dagger
 =
@@ -126,7 +132,7 @@ O\!\left(|\mathcal G_0|(\epsilon_{\mathcal G}+\epsilon_\Delta)\right),
 +\hat R_{\rm RWA}(t)
 +\hat R_{\rm tr}(t),
 \]
-其中 $\hat R_{\rm tr}$ 收集逐边不均匀和通道投影误差。对一般实线性场，完整相互作用还包含电子上移同时产生光子、电子下移同时湮灭光子的反旋支路；它们在相互作用绘景中带有约 $2\omega_0$ 的快速相位。这些快速支路能否舍弃，不能只由“$\omega_0$ 很大”判断。前章\eqnrefs{eq:rwa_projected_dynamical_error} 已把旋波余项的真实有限时间误差写成 Duhamel 范数；在脉冲包络缓变且反旋相位频率约为 $2\omega_0$ 的常见情形，分部积分才进一步给出\eqnrefs{eq:rwa-finite-time-error-scales-dp68} 那类充分尺度条件。只有该投影传播误差满足
+其中 $\hat R_{\rm tr}$ 收集逐边不均匀和通道投影误差。对一般实线性场，完整相互作用还包含电子上移同时产生光子、电子下移同时湮灭光子的反旋支路；它们在相互作用绘景中带有约 $2\omega_0$ 的快速相位。这些快速支路能否舍弃，不能只由“$\omega_0$ 很大”判断。前章\eqnrefs{eq:feqo-fast-branch-propagator-bound}控制有界工作模型中的全传播误差；\chapref{chap:electron-recoil-channels}的\eqnrefs{eq:rwa_projected_dynamical_error}则用实际被舍耦合与参考态的 Duhamel 积分处理一般工作窗。包络缓变时，\eqnrefs{eq:rwa-finite-time-error-scales-dp68}中的一阶振荡与二阶往返尺度可帮助估计该积分。只有相应传播误差满足
 \[
 \epsilon_{\rm RWA}^{\rm dyn}\ll1
 \]

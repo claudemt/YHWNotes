@@ -73,6 +73,16 @@ $\mathscr U$ 是分布意义下的振幅密度：电子反冲、自旋翻转、�
 \]
 固定同一个 $\hat\rho_X(t_i)$ 后，所得电子演化是\emph{完全正保迹}（completely positive and trace preserving, CPTP）映射。保迹指归一化态演化后总概率仍为一；完全正指即使电子预先与另一个不参与相互作用的参考系统纠缠，只对电子施加此映射，联合态仍保持非负。它们来自联合幺正演化和环境偏迹。若初始电子--环境相关存在，仍使用\eqnrefs{eq:exact_reduced_electron_channel_kernel} 直接传播联合初态，而不把约化动力学强行写成与初始相关无关的量子信道。
 
+实验建模通常还会截断模式、Fock 数或电子边带。令 $\hat P_{\rm keep}$ 投影到准备保留的联合末态子空间，$\hat Q_{\rm keep}=\mathbb I-\hat P_{\rm keep}$；令 $\hat\Pi_{\rm in}$ 投影到实际允许的联合输入工作窗。定义有限时间最坏情形泄漏量
+\begin{equation}
+\boxed{
+\epsilon_{\rm proj}(T)
+\equiv
+\bigl\|\hat Q_{\rm keep}\hat U(t_f,t_i)\hat\Pi_{\rm in}\bigr\|^2.}
+\label{eq:exact_projection_leakage_bound}
+\end{equation}
+对任何支撑在 $\hat\Pi_{\rm in}$ 内的归一化输入态，所有被删通道的总概率都不超过 $\epsilon_{\rm proj}(T)$。这里截取的是完整传播子产生的末态。若实验对 $P_{\rm keep}$ 后选择，重新归一化给条件态，成功概率也必须保留。若要用压缩 Hamiltonian $P_{\rm keep}HP_{\rm keep}$ 代替完整动力学，还需检验被删通道的虚跃迁和累计相位；末态泄漏本身不控制这些效应。这个判据不依赖被保留通道被称为腔模、极化激元、PINEM 边带还是 Bragg 格点。
+
 \begin{theorem}[联合通道核的幺正性、偏迹与泄漏]
 设 $U$ 是联合 Hilbert 空间的幺正算符，初态为归一化正迹类算符。通道核满足\eqnrefs{eq:exact_channel_kernel_unitarity}，约化核为\eqnrefs{eq:exact_reduced_electron_channel_kernel}。对入射窗，最坏末态泄漏概率为 $\|Q_{\rm keep}U\Pi_{\rm in}\|^2$。固定环境且初态因子化时，约化动力学为 CPTP 信道；预先相关初态不能直接定义任意输入态上的同一信道。
 \end{theorem}
@@ -169,24 +179,32 @@ P_{\rm out}
 \left(\hat U\hat\rho_{eX}(t_i)\hat U^\dagger\right)\\
 &=\operatorname{Tr}_{eX}\hat\rho_{eX}(t_i)=1.
 \end{align*}
-若进一步令
-$\hat\rho_{eX}(t_i)=\hat\rho_e\otimes\hat\rho_X$，联合初态核因子化，\eqnrefs{eq:exact_reduced_electron_channel_kernel} 就成为固定环境初态诱导的电子 CPTP 映射；只有在初始电子与环境因子化以后，约化电子动力学才成为固定环境初态诱导的量子通道，Kraus 表示、主方程和具体边带通道也才有确定的对象。
+若进一步令 $\hat\rho_{eX}(t_i)=\hat\rho_e\otimes\hat\rho_X$，
+将固定环境态作谱分解 $\rho_X=\sum_r\lambda_r|r\rangle\langle r|$，
+其中 $\lambda_r\ge0$、$\sum_r\lambda_r=1$。定义电子算符
+\[
+K_{\mu r}=\sqrt{\lambda_r}\,{}_X\langle\mu|U|r\rangle_X.
+\]
+由环境完备关系和 $U^\dagger U=I$，得到
+\[
+\Phi(\rho_e)=\sum_r\int\dd\mu_X(\mu)K_{\mu r}\rho_eK_{\mu r}^\dagger,
+\qquad
+\sum_r\int\dd\mu_X(\mu)K_{\mu r}^\dagger K_{\mu r}=I_e.
+\]
+第二式保证保迹。对任意参考空间 $R$ 及正联合输入，
+第一式中的每项在 $K_{\mu r}\otimes I_R$ 的左右作用后仍为正，
+所以该映射完全正；这就是这里所用的 Kraus 表示。
+连续基时将这些式子理解为弱算符积分，或先用归一化波包离散化再取极限。
+这一构造为任意电子输入态指定了同一个环境初态，因而定义了同一量子信道。
+存在初始相关时，则必须另外说明联合态怎样随电子输入而制备；仅给电子边缘态不能确定输出。
 \end{proof}
 
 
-实验建模通常还会截断模式、Fock 数或电子边带。令 $\hat P_{\rm keep}$ 投影到准备保留的联合末态子空间，$\hat Q_{\rm keep}=\mathbb I-\hat P_{\rm keep}$；令 $\hat\Pi_{\rm in}$ 投影到实际允许的联合输入工作窗。定义有限时间最坏情形泄漏量
-\begin{equation}
-\boxed{
-\epsilon_{\rm proj}(T)
-\equiv
-\bigl\|\hat Q_{\rm keep}\hat U(t_f,t_i)\hat\Pi_{\rm in}\bigr\|^2.}
-\label{eq:exact_projection_leakage_bound}
-\end{equation}
-对任何支撑在 $\hat\Pi_{\rm in}$ 内的归一化输入态，所有被删通道的总概率都不超过 $\epsilon_{\rm proj}(T)$。因此“保留若干模式/边带后再归一化”只有在 $\epsilon_{\rm proj}\ll1$ 时才近似描述无条件动力学；若实验本身对 $P_{\rm keep}$ 后选择，则重新归一化描述的是条件态，必须同时保留成功概率。这个判据不依赖被保留通道被称为腔模、极化激元、PINEM 边带还是 Bragg 格点。
+\input{sections/electron-projection-conditioning-worked}
 
 弱耦合 FGR、离散反冲格、PINEM/QPINEM 边带以及开放系统主方程都从这套有限时间通道结构向下约化：先按实际谱和测量分辨率选择通道并检查\eqnrefs{eq:exact_projection_leakage_bound}，再比较有限时间失谐、矩阵元变化、反冲曲率与环境记忆尺度，最后才实施对应近似。新的材料模式、非 Gaussian 光场或不同电子色散只改变 $\mathscr U$ 的具体矩阵元与谱测度。
 
-这里的 Hilbert 空间分解以正能一电子扇区与辅助系统为对象；若研究条件允许显著的电子--正电子对产生、粒子数改变或必须保留虚粒子多体扇区，则母动力学应回到前文的完整量子场论 Hamiltonian，再把相应多粒子散射振幅投影到实验可见通道。
+这里的 Hilbert 空间分解以正能一电子扇区与辅助系统为对象；若研究条件允许显著的电子--正电子对产生、粒子数改变或必须保留虚粒子多体扇区，则联合动力学应采用《高等物理》相对论量子场部分的完整 Hamiltonian，再把相应多粒子散射振幅投影到实验可见通道。
 
 \input{sections/electron-gaussian-packet-controlled}
 
@@ -216,7 +234,7 @@ $\hat H(t)=\hat H_0(t)+\hat R(t)$，其中 $\hat H_0$ 是待检验的参考动�
 设 $H_0(t)$ 自伴并生成幺正传播子，$R(t)=R(t)^\dagger$ 有界且算符范数可积，$H=H_0+R$。则\eqnrefs{eq:duhamel_master_identity}成立，任意入射投影满足\eqnrefs{eq:duhamel_projected_bound}。若归一化态的传播误差至多 $\epsilon$，任意效应 $0\le E\le I$ 的概率误差至多 $2\epsilon$。无界余项需验证共同域及被积范数可积，单有有限初态投影不充分。
 \end{theorem}
 \begin{proof}
-该估计要求 $H=H_0+R$ 在所考察时间区间生成良定义传播子； 若算符无界，范数估计仅在正文指定的有限投影子空间内使用。 令完整与参考哈密顿量分别为
+先在定理的有界余项条件下计算。若 $H_0$ 无界，以下求导可在共同演化域上理解，再由积分恒等式延拓；有限入射投影本身不能替代定义域条件。令完整与参考 Hamiltonian 分别为
 
 \begin{equation*}
 H(t)=H_0(t)+R(t),
@@ -743,7 +761,49 @@ $\int_{-\infty}^{\infty}\sinc^2x\,\dd x=\pi$，所以
 D_T(\Omega)\xrightarrow{\mathcal D'}2\pi\delta(\Omega).
 \]
 再用 $\Omega=\delta E/\hbar$ 与
-$\delta(\delta E/\hbar)=\hbar\delta(\delta E)$，得到相应的能量形式。连续模式的有限时间概率测度是
+$\delta(\delta E/\hbar)=\hbar\delta(\delta E)$，得到相应的能量形式。分布极限的支配收敛由 $|F(2x/T)\operatorname{sinc}^2x|\le\|F\|_\infty\operatorname{sinc}^2x$ 给出。核归一化也可由矩形脉冲的 Fourier Parseval 直接得到 $\int\operatorname{sinc}^2x\dd x=\pi$。
+\end{proof}
+
+
+\input{sections/electron-golden-rule-window}
+
+\input{sections/electron-continuum-shell-worked}
+
+对连续正常模还必须把归一化约定与模式态密度一起处理。令 $\dd\mu_\nu(\boldsymbol\kappa)$ 是分支 $\nu$ 的模式测度，并定义振幅密度 $\mathfrak g_{\nu\mathbf G}(\boldsymbol\kappa)$，使得
+\[
+|\mathfrak g_{\nu\mathbf G}(\boldsymbol\kappa)|^2\dd\mu_\nu(\boldsymbol\kappa)
+\equiv
+\lim_{V\to\infty}
+\sum_{\boldsymbol\kappa_{\mathbf n}\in\dd\mu_\nu(\boldsymbol\kappa)}
+|\mathcal G_{fi}^{(\nu,V)}(\boldsymbol\kappa_{\mathbf n},\mathbf G)|^2 .
+\]
+$\mathfrak g$ 单独的量纲依赖于测度约定，而组合
+$|\mathfrak g|^2\dd\mu$ 总具有 ${\rm s^{-2}}$ 量纲。对于初始电子动量 $\mathbf p_i$，向模式 $(\nu,\boldsymbol\kappa)$ 发射一个量子并允许倒格矢 $\mathbf G$ 时，末态动量为
+$\mathbf p_f=\mathbf p_i-\hbar(\boldsymbol\kappa+\mathbf G)$，故精确能量失配是
+\[
+\delta E_{\nu\boldsymbol\kappa,\mathbf G}
+=E[\mathbf p_i-\hbar(\boldsymbol\kappa+\mathbf G)]-E(\mathbf p_i)
++\hbar\omega_{\nu\boldsymbol\kappa}.
+\]
+把\eqnrefs{eq:finite_time_sinc_distribution_limit} 用于有限时间概率测度，得到连续正常模的 Fermi 黄金规则速率测度
+\begin{equation}
+\boxed{
+\dd\Gamma_{\nu\mathbf G}^{\rm em}
+=2\pi(n_{\nu\boldsymbol\kappa}+1)
+|\mathfrak g_{\nu\mathbf G}(\boldsymbol\kappa)|^2
+\delta\!\left[
+\frac{E(\mathbf p_i)-E[\mathbf p_i-\hbar(\boldsymbol\kappa+\mathbf G)]}{\hbar}
+-\omega_{\nu\boldsymbol\kappa}
+\right]\dd\mu_\nu(\boldsymbol\kappa).}
+\label{eq:general_free_electron_golden_rule}
+\end{equation}
+\begin{corollary}[连续通道的黄金律速率测度]
+若失谐的零水平集正则，且耦合加权推前密度满足前述连续性与可积条件，
+则一阶概率除以时间的长时间极限为\eqnrefs{eq:general_free_electron_golden_rule}。
+该结论作用于弱跃迁的谱表达式；有限耗尽条件仍须独立检验。
+\end{corollary}
+\begin{proof}
+连续模式的有限时间概率测度是
 \[
 \dd P^{\rm em}
 =(n_{\nu\boldsymbol\kappa}+1)|\mathfrak g_{\nu\mathbf G}|^2T^2
@@ -788,42 +848,8 @@ $|\mathfrak g|^2\dd\mu$ 的量纲为 ${\rm s^{-2}}$，角频率 $\delta$ 分布�
 \]
 这就是能量表象黄金律中相应 $\hbar$ 因子的来源。
 
-分布极限的支配收敛由 $|F(2x/T)\operatorname{sinc}^2x|\le\|F\|_\infty\operatorname{sinc}^2x$ 给出。核归一化也可由矩形脉冲的 Fourier Parseval 直接得到 $\int\operatorname{sinc}^2x\dd x=\pi$。
 \end{proof}
 
-
-\input{sections/electron-golden-rule-window}
-
-\input{sections/electron-continuum-shell-worked}
-
-对连续正常模还必须把归一化约定与模式态密度一起处理。令 $\dd\mu_\nu(\boldsymbol\kappa)$ 是分支 $\nu$ 的模式测度，并定义振幅密度 $\mathfrak g_{\nu\mathbf G}(\boldsymbol\kappa)$，使得
-\[
-|\mathfrak g_{\nu\mathbf G}(\boldsymbol\kappa)|^2\dd\mu_\nu(\boldsymbol\kappa)
-\equiv
-\lim_{V\to\infty}
-\sum_{\boldsymbol\kappa_{\mathbf n}\in\dd\mu_\nu(\boldsymbol\kappa)}
-|\mathcal G_{fi}^{(\nu,V)}(\boldsymbol\kappa_{\mathbf n},\mathbf G)|^2 .
-\]
-$\mathfrak g$ 单独的量纲依赖于测度约定，而组合
-$|\mathfrak g|^2\dd\mu$ 总具有 ${\rm s^{-2}}$ 量纲。对于初始电子动量 $\mathbf p_i$，向模式 $(\nu,\boldsymbol\kappa)$ 发射一个量子并允许倒格矢 $\mathbf G$ 时，末态动量为
-$\mathbf p_f=\mathbf p_i-\hbar(\boldsymbol\kappa+\mathbf G)$，故精确能量失配是
-\[
-\delta E_{\nu\boldsymbol\kappa,\mathbf G}
-=E[\mathbf p_i-\hbar(\boldsymbol\kappa+\mathbf G)]-E(\mathbf p_i)
-+\hbar\omega_{\nu\boldsymbol\kappa}.
-\]
-把\eqnrefs{eq:finite_time_sinc_distribution_limit} 用于有限时间概率测度，得到连续正常模的 Fermi 黄金规则速率测度
-\begin{equation}
-\boxed{
-\dd\Gamma_{\nu\mathbf G}^{\rm em}
-=2\pi(n_{\nu\boldsymbol\kappa}+1)
-|\mathfrak g_{\nu\mathbf G}(\boldsymbol\kappa)|^2
-\delta\!\left[
-\frac{E(\mathbf p_i)-E[\mathbf p_i-\hbar(\boldsymbol\kappa+\mathbf G)]}{\hbar}
--\omega_{\nu\boldsymbol\kappa}
-\right]\dd\mu_\nu(\boldsymbol\kappa).}
-\label{eq:general_free_electron_golden_rule}
-\end{equation}
 只有对实际允许的 $\boldsymbol\kappa$、$\nu$、$\mathbf G$ 和末态自旋积分/求和以后，才得到单位为 ${\rm s^{-1}}$ 的总率。这里始终使用精确相对论色散
 $E(\mathbf p)=\sqrt{m_{\mathrm e}^2c^4+c^2\mathbf p^2}$；低反冲同步关系必须在此之后作为受控展开取得。
 

@@ -8,9 +8,9 @@
 
 \subsection{量子仪器与正算符值测度（POVM）}
 
-回忆投影测量。若一组正交态 $|x\rangle$ 对应可区分的离散结果，投影算符为 $P_x=|x\rangle\langle x|$，结果概率为 $\operatorname{Tr}(P_x\rho_S)$。真实谱仪的一个读数可能来自几个不同能量，因而该结果需要由更一般的正算符 $\Pi_x^{(S)}$ 描述。这里“正”指对任意态 $|\psi\rangle$，都有 $\langle\psi|\Pi_x^{(S)}|\psi\rangle\ge0$。一组和为恒等算符的这种效应算符称为\emph{正算符值测度}（positive-operator-valued measure, POVM）；它们保证各结果概率非负且总和为一。
+回忆投影测量。若一组正交态 $|x\rangle$ 对应可区分的离散结果，投影算符为 $P_x=|x\rangle\langle x|$，结果概率为 $\operatorname{Tr}(P_x\rho_S)$。真实谱仪的一个读数可能来自几个不同能量，因而该结果需要由更一般的正算符 $\Pi_x^{(S)}$ 描述。这里“正”指对任意态 $|\psi\rangle$，都有 $\langle\psi|\Pi_x^{(S)}|\psi\rangle\ge0$。一组和为恒等算符的这种效应算符称为\emph{正算符值测度}（POVM）；它们保证各结果概率非负且总和为一。
 
-如果还要知道读到 $x$ 后系统处于什么态，就需要规定状态更新。用线性映射 $\mathcal I_x$ 表示这个更新，但暂不把输出归一化：它的迹保留结果发生的概率。所有结果对应的一族映射称为\emph{量子仪器}（quantum instrument）。每个 $\mathcal I_x$ 必须完全正，即只对更大纠缠系统中的 $S$ 部分作此更新，联合态仍保持非负；它还必须迹不增，因为单个结果的概率不能超过一。把所有结果加起来则保迹。因此
+如果还要知道读到 $x$ 后系统处于什么态，就需要规定状态更新。用线性映射 $\mathcal I_x$ 表示这个更新，但暂不把输出归一化：它的迹保留结果发生的概率。所有结果对应的一族映射称为\emph{量子仪器}。每个 $\mathcal I_x$ 必须完全正，即只对更大纠缠系统中的 $S$ 部分作此更新，联合态仍保持非负；它还必须迹不增，因为单个结果的概率不能超过一。把所有结果加起来则保迹。因此
 \begin{equation}
 \boxed{
 p(x)=\operatorname{Tr}[\mathcal I_x(\rho_S)],
@@ -223,7 +223,7 @@ U(\rho_S\otimes\rho_M)U^\dagger
 而不是测量仪上的 $\Pi_x^{(M)}$ 本身。
 
 \begin{proposition}[测量仪效应诱导的条件 CP 分支]
-在上述因子化扩张中，令测量仪效应 $\Pi_x^{(M)}\succeq0$ 且和为单位。则\eqnrefs{eq:general_indirect_measurement_instrument}定义 CP、迹不增分支，所有分支之和等于无条件偏迹信道；系统效应为 $\mathcal I_x^*(I_S)$。最终仪器被丢弃时，系统分支只依赖测量仪效应。
+在上述因子化扩张中，令测量仪效应 $\Pi_x^{(M)}\succeq0$ 且和为单位。则\eqnrefs{eq:general_indirect_measurement_instrument}定义 CP、迹不增分支，所有分支之和等于无条件偏迹信道；系统效应为 $\mathcal I_x^*(I_S)$。最终测量仪被丢弃时，系统分支只依赖测量仪效应。
 \end{proposition}
 \begin{proof}
 联合幺正结束以后，系统与测量仪的联合态为
@@ -296,7 +296,21 @@ U(\rho_S\otimes\rho_M)U^\dagger
 \right]\\
 &=\Tr_{SM}\rho'_{SM}=1.
 \end{align*}
-因此每个 $\mathcal I_x$ 是迹不增加的完全正分支，而 $\sum_x\mathcal I_x$ 保迹，正是量子仪器的归一化结构。
+完全正性可直接写成 Kraus 形式：
+\[
+ K_{x\mu\nu}=\sqrt{p_\nu}\langle\mu|(I_S\otimes M_x)U|\nu\rangle,
+ \qquad \mathcal I_x(\rho_S)=\sum_{\mu\nu}K_{x\mu\nu}\rho_SK_{x\mu\nu}^\dagger.
+\]
+若测量仪使用另一组局域更新算符 $M_{x\alpha}$，只要
+$\sum_\alpha M_{x\alpha}^\dagger M_{x\alpha}=\Pi_x^{(M)}$，对任意系统观测量 $O_S$ 都有
+\[
+ \Tr\!\left[O_S\sum_\alpha\Tr_M
+ ((I\otimes M_{x\alpha})\rho'_{SM}(I\otimes M_{x\alpha}^\dagger))\right]
+ =\Tr[(O_S\otimes\Pi_x^{(M)})\rho'_{SM}].
+\]
+右端不依赖局域更新的具体分解。因此测量仪被丢弃后的系统条件分支只依赖效应；
+对结果求和便是 $\Tr_M\rho'_{SM}$，不仅是迹相同。
+每个分支的效应不超过单位，所以迹不增，且所有分支之和就是原无条件偏迹信道。
 \end{proof}
 
 
@@ -310,6 +324,10 @@ U(\rho_S\otimes\rho_M)U^\dagger
 于是 $p(E_d)=\operatorname{Tr}[\Pi_{\rm e}(E_d)\rho_e]$。只有当 $R(E_d|\mathcal E_\ell)$ 还具有平移不变形式时，这个映射才退化为通常的卷积；能量依赖效率、角度分辨或相干混合都应直接进入更一般的 POVM，而不是修改相互作用哈密顿量。
 
 \begin{exbox}[弱测量与弱值]
+取有界无量纲系统可观测量 $\hat A$、居中的实高斯探针及固定的非正交预选、后选态。
+求弱脉冲后的条件位移、成功概率，并说明近正交后选择怎样改变展开条件。
+
+\textbf{解。}
 \eqnrefs{eq:general_indirect_measurement_instrument} 已经给出一般“系统--探针--读出”测量。弱测量只是在其中选择一个特定的脉冲耦合并对耦合强度作受控展开。令系统的无量纲厄米可观测量为 $\hat A$，探针具有正则变量
 \[
 [\hat Q,\hat P]=\ii\hbar,
@@ -341,7 +359,20 @@ A_w\equiv\frac{\langle f|\hat A|i\rangle}{\langle f|i\rangle}.}
 \equiv\frac{g^2\sigma_P^2}{2\hbar^2}
 \left|\frac{\langle f|\hat A^2|i\rangle}{\langle f|i\rangle}\right|\ll1.
 \]
-第二个条件显式检查接近正交后选择时被 $\langle f|i\rangle^{-1}$ 放大的二阶项。对 $\langle Q\rangle_i=\langle P\rangle_i=0$、实且无 $Q$--$P$ 相关的最小不确定 Gaussian 探针，
+第二个条件检查被 $\langle f|i\rangle^{-1}$ 放大的二阶矩，但这两个矩也可能因相消而同时很小。
+对有界 $A$，完整一阶余项还可直接控制。令 $c_{fi}=\langle f|i\rangle$，由自伴算符的积分余项得
+\[
+ \left\|\left(U_w-I+\frac{\ii g}{\hbar}A\otimes P\right)|i,\phi\rangle\right\|
+ \le\frac{g^2\|A\|^2}{2\hbar^2}\sqrt{\langle P^4\rangle_i}.
+\]
+高斯探针有 $\langle P^4\rangle_i=3\sigma_P^4$，因此一个直接检验归一化后选择态的充分条件为
+\[
+ \epsilon_{w,{\rm rem}}=
+ \frac{\sqrt3\,g^2\|A\|^2\sigma_P^2}{2\hbar^2|c_{fi}|}\ll1,
+ \qquad \epsilon_w^{(1)}\ll1.
+\]
+余项范数除以零阶成功振幅，而不是只比较未归一化联合态的误差。
+若 $c_{fi}$ 也随 $g$ 趋零，应重新检验这两个量，不能沿用固定后选态下的 $O(g^2)$ 估计。对 $\langle Q\rangle_i=\langle P\rangle_i=0$、实且无 $Q$--$P$ 相关的最小不确定 高斯 探针，
 $\sigma_P=\hbar/(2\sigma_Q)$，后选择后的平均读数为
 \begin{equation}
 \boxed{
@@ -371,14 +402,25 @@ $\sigma_P=\hbar/(2\sigma_Q)$，后选择后的平均读数为
 &=\langle f|i\rangle
 \left(1-\frac{\ii g}{\hbar}A_w\hat P\right)+O(g^2).
 \end{align*}
-初始探针满足 $\langle P\rangle_i=0$，所以归一化因子在一阶不变。对任意探针算符 $\hat O$，条件平均值的一阶修正为
+这个余项界来自
+$e^{-\ii gX}-I+\ii gX=-\int_0^g\dd s\,(g-s)X^2e^{-\ii sX}$，
+其中 $X=A\otimes P/\hbar$；幺正性及 $X^2$ 与传播子的对易性给出上述范数界。
+初始探针满足 $\langle P\rangle_i=0$，所以归一化因子在一阶不变。
+再保留二阶振幅，记 $A_w^{(2)}=\langle f|A^2|i\rangle/c_{fi}$，成功概率为
+\[
+ P_f=|c_{fi}|^2\left[
+ 1+\frac{g^2\sigma_P^2}{\hbar^2}
+ (|A_w|^2-\operatorname{Re}A_w^{(2)})\right]+O(g^3).
+\]
+这一式由一阶振幅模平方与零阶、二阶振幅交叉项分别得到，
+说明条件位移增大时还必须同步计算成功率。这里及下面的余项均以预选、后选态和探针宽度固定为前提。对任意探针算符 $\hat O$，条件平均值的一阶修正为
 \[
 \delta\langle O\rangle
 =\frac{\ii g}{\hbar}
 \left(A_w^*\langle P O\rangle_i
 -A_w\langle O P\rangle_i\right)+O(g^2).
 \]
-对实、居中的 Gaussian 波包，
+对实、居中的 高斯 波包，
 \[
 \langle\{Q,P\}\rangle_i=0,
 \qquad
@@ -400,7 +442,7 @@ $\sigma_P=\hbar/(2\sigma_Q)$，后选择后的平均读数为
 &=\frac{\ii g}{\hbar}(A_w^*-A_w)\sigma_P^2+O(g^2)\\
 &=\frac{2g\sigma_P^2}{\hbar}\operatorname{Im}A_w+O(g^2).
 \end{align*}
-最小不确定 Gaussian 满足 $\sigma_Q\sigma_P=\hbar/2$，代入即得到\eqnrefs{eq:weak_value_gaussian_meter_shifts} 的最后一个等号。
+最小不确定 高斯 满足 $\sigma_Q\sigma_P=\hbar/2$，代入即得到\eqnrefs{eq:weak_value_gaussian_meter_shifts} 的最后一个等号。
 \end{exbox}
 
 \subsection{前向模型与信息界}
@@ -448,7 +490,7 @@ A_{(y,s),a}=\operatorname{Tr}(E_{y|s}B_a).}
 这只是唯一性条件；实际稳定性由框架算符 $\mathsf F=\mathsf A^{\mathsf T}\mathsf W\mathsf A$ 的小奇异值控制。正则化可以抑制噪声，但不能创造测量从未编码的信息。
 
 \begin{proposition}[有限维量子态的测量算符框架]
-设 $B_a$ 为 Hermitian 算符空间的 Hilbert--Schmidt 正交基，$B_0=I/\sqrt d$。Born 概率满足\eqnrefs{eq:measurement_operator_frame}。固定迹后，测量在所有态上信息完备当且仅当设计矩阵在无迹 Hermitian 子空间上单射；正权框架矩阵的最小特征值控制逆问题稳定性。
+设 $B_a$ 为 厄米 算符空间的 Hilbert--Schmidt 正交基，$B_0=I/\sqrt d$。Born 概率满足\eqnrefs{eq:measurement_operator_frame}。固定迹后，测量在所有态上信息完备当且仅当设计矩阵在无迹 厄米 子空间上单射；正权框架矩阵的最小特征值控制逆问题稳定性。
 \end{proposition}
 \begin{proof}
 设系统 Hilbert 空间维数为 $d$，选取 Hilbert--Schmidt 正交的厄米算符基
@@ -628,7 +670,7 @@ F_C^{(N)}
 第二项非负，因此不知道干扰参数只会降低目标参数的可辨识性。若该 Schur 补为零，即使 $I_{\psi\psi}$ 本身很大，目标参数也会因为与干扰方向局部退化而不可辨识。
 
 \begin{proposition}[干扰得分投影与有效 Fisher 信息]
-设正则多参数 Fisher 矩阵正定，目标参数为标量，干扰块 $\mathsf C$ 可逆。则有效信息为 $a-\mathbf b^{\mathsf T}\mathsf C^{-1}\mathbf b$，等于目标 score 减去干扰 score 正交投影后的平方范数；局部无偏估计的目标方差不低于其倒数除以 $N$，即\eqnrefs{eq:fisher-schur-nuisance-dp31}。
+设正则多参数 Fisher 矩阵正定，目标参数为标量，干扰块 $\mathsf C$ 可逆。则有效信息为 $a-\mathbf b^{\mathsf T}\mathsf C^{-1}\mathbf b$，等于目标得分 减去干扰得分 正交投影后的平方范数；局部无偏估计的目标方差不低于其倒数除以 $N$，即\eqnrefs{eq:fisher-schur-nuisance-dp31}。
 \end{proposition}
 \begin{proof}
 把待估参数拆成目标标量 $\psi$ 与干扰参数向量 $\boldsymbol\theta_{\rm n}$。单次实验的 Fisher 矩阵写成
@@ -688,7 +730,7 @@ I_{\psi\psi}
 \ge\frac1{N I_{\rm eff}(\psi)}}.
 \]
 
-扣除项的来源也可从 score 几何直接看出。记单次数据的目标 score 为 $s_\psi$，干扰 score 向量为 $\mathbf s_{\rm n}$，则
+扣除项的来源也可从 score 几何直接看出。记单次数据的目标得分 为 $s_\psi$，干扰得分 向量为 $\mathbf s_{\rm n}$，则
 \[
 a=\mathbb E[s_\psi^2],\qquad
 \mathbf b=\mathbb E[\mathbf s_{\rm n}s_\psi],\qquad
@@ -706,7 +748,7 @@ a=\mathbb E[s_\psi^2],\qquad
 =a-\mathbf b^{\mathsf T}\mathsf C^{-1}\mathbf b
 =I_{\rm eff}.
 \]
-所以 Schur 补不是抽象的矩阵技巧：它把目标 score 中能够由干扰参数 score 线性模仿的方向投影掉，只保留实验真正能独立归因于 $\psi$ 的信息。若 $\mathsf C$ 奇异，应限制到其可辨识支撑空间或使用 Moore--Penrose 逆；零模对应数据无法区分的真实参数退化。
+所以 Schur 补不是抽象的矩阵技巧：它把目标得分 中能够由干扰参数 score 线性模仿的方向投影掉，只保留实验真正能独立归因于 $\psi$ 的信息。若 $\mathsf C$ 奇异，应限制到其可辨识支撑空间或使用 Moore--Penrose 逆；零模对应数据无法区分的真实参数退化。
 \end{proof}
 
 
@@ -919,7 +961,7 @@ F_Q=4\left(\langle G^2\rangle-\langle G\rangle^2\right)
 
 
 \begin{theorem}[SLD 量子信息对测量信息的上界]
-设有限维可微态族存在 Hermitian SLD $L$，$\partial_\theta\rho=(L\rho+\rho L)/2$。对参数无关 POVM，在参数点的正概率支撑上定义经典 Fisher 信息，则 $F_C\le\Tr(\rho L^2)=F_Q$。常秩正则模型中零概率项按支撑处理；跨秩边界的极限 Fisher 信息须单独分析。
+设有限维可微态族存在 厄米 SLD $L$，$\partial_\theta\rho=(L\rho+\rho L)/2$。对参数无关 POVM，在参数点的正概率支撑上定义经典 Fisher 信息，则 $F_C\le\Tr(\rho L^2)=F_Q$。常秩正则模型中零概率项按支撑处理；跨秩边界的极限 Fisher 信息须单独分析。
 \end{theorem}
 \begin{proof}
 设 POVM 元为 $E_x\ge0$、$\sum_xE_x=I$，测量概率为
@@ -988,16 +1030,18 @@ $\partial_\theta p_x=\operatorname{Re}\operatorname{Tr}(A_x^\dagger B_x)=0$；�
 \end{proof}
 
 
-如果实验目标不是重建单一时刻的电子态，而是识别多电子连续碰撞中的环境记忆，那么未知对象应从密度矩阵升级为前文定义的过程张量 $\Upsilon_{N:0}$。这时“数据足够多”必须有一个精确的线性代数含义。选取满足因果约束的过程算符基 $\{F_\alpha\}_{\alpha=1}^{d_{\rm proc}}$，写
+等号要求 Cauchy--Schwarz 与取实部两步同时饱和；局域测量 SLD 本征投影可满足这一结构。因此 QFI 是对允许 POVM 优化后的局域上界，而不是固定探测器自动达到的灵敏度。
+
+如果实验目标不是重建单一时刻的电子态，而是识别多电子连续碰撞中的环境记忆，那么未知对象应从密度矩阵升级为前文定义的过程张量 $\Upsilon_{N:0}$。这时“数据足够多”必须有一个精确的线性代数含义。因果归一化含有非零恒等项，因此允许过程构成仿射空间。选取一个固定参考过程 $\Upsilon_0$，再取齐次因果约束下的独立厄米方向 $\{F_\alpha\}_{\alpha=1}^{d_{\rm proc}}$，写
 \begin{equation*}
-\Upsilon_{N:0}=\sum_{\alpha=1}^{d_{\rm proc}}\theta_\alpha F_\alpha.
+\Upsilon_{N:0}=\Upsilon_0+\sum_{\alpha=1}^{d_{\rm proc}}\theta_\alpha F_\alpha.
 \end{equation*}
 一次实验设置 $r$ 由各时刻插入的电子制备/控制 Choi 算符
-$A_{r,0},\ldots,A_{r,N-1}$ 和末端 POVM 元 $M_{r,y}$ 决定。link product 对每个槽位都是线性的，因此结果概率必可写成
+$A_{r,0},\ldots,A_{r,N-1}$ 和末端 POVM 元 $M_{r,y}$ 决定。连接积 对每个槽位都是线性的，因此结果概率必可写成
 \begin{equation}
 \boxed{
 p_{r,y}
-=\sum_{\alpha=1}^{d_{\rm proc}}
+=p^{(0)}_{r,y}+\sum_{\alpha=1}^{d_{\rm proc}}
 X_{(r,y),\alpha}\theta_\alpha,
 \qquad
 X_{(r,y),\alpha}
@@ -1008,7 +1052,7 @@ M_{r,y}
 \right].}
 \label{eq:process_tensor_experimental_design_matrix}
 \end{equation}
-所以过程层析能否唯一完成，不取决于重复次数本身，而取决于实验设计矩阵 $X$ 是否覆盖所有允许的过程方向：
+这里 $p^{(0)}_{r,y}$ 是对参考过程实施同一实验得到的概率，$X$ 只描述齐次允许方向。对每个完整结果集合，$\sum_y p^{(0)}_{r,y}=1$ 且 $\sum_yX_{(r,y),\alpha}=0$；过程的正性还限制可行参数。过程层析能否唯一完成，不取决于重复次数本身，而取决于实验设计矩阵 $X$ 是否覆盖所有允许的过程方向：
 \begin{equation}
 \boxed{
 \operatorname{rank}X=d_{\rm proc}.}
@@ -1031,14 +1075,14 @@ X_{(r,y),\alpha}X_{(r,y),\beta},}
 $\mathcal F_{\rm proc}$ 在允许参数空间上正定与 $X$ 满列秩等价。因此“过程可辨识性”和“有限方差估计”由同一个设计矩阵控制；实验优化可以转化为改善 $X$ 的奇异值谱，而不是只追求更多电子计数。
 
 \begin{proposition}[过程设计矩阵的 Fisher 零空间]
-设过程参数采用允许仿射空间的独立实坐标，概率满足 $p=X\theta$，使用的 $p_{r,y}>0$ 且重复数 $N_r>0$。独立多项式计数，或已知曝光 $N_r$ 下均值 $N_rp_{r,y}$ 的独立 Poisson 计数，都给\eqnrefs{eq:process_tensor_fisher_information}，并满足 $\ker\mathcal F_{\rm proc}=\ker X$。物理集合边界上的可行方向须另行限制。
+设过程参数采用允许仿射空间的独立实坐标，概率满足 $p=p^{(0)}+X\theta$，使用的 $p_{r,y}>0$ 且重复数 $N_r>0$。独立多项式计数，或已知曝光 $N_r$ 下均值 $N_rp_{r,y}$ 的独立 Poisson 计数，都给\eqnrefs{eq:process_tensor_fisher_information}，并满足 $\ker\mathcal F_{\rm proc}=\ker X$。物理集合边界上的可行方向须另行限制。
 \end{proposition}
 \begin{proof}
-把因果约束已经吸收到基 $F_\alpha$ 中，过程 Choi 算符展开为
+参考过程承担非齐次归一化，变化方向 $F_\alpha$ 承担齐次因果约束，故过程 Choi 算符展开为
 \[
-\Upsilon=\sum_\alpha\theta_\alpha F_\alpha.
+\Upsilon=\Upsilon_0+\sum_\alpha\theta_\alpha F_\alpha.
 \]
-固定一个实验设置 $r$。多时刻操作的 link product 定义一个从过程算符到末态的线性映射
+固定一个实验设置 $r$。多时刻操作的 连接积 定义一个从过程算符到末态的线性映射
 \[
 \mathcal L_r(F)
 \equiv
@@ -1048,9 +1092,9 @@ F\star A_{r,N-1}\star\cdots\star A_{r,0}.
 \begin{align*}
 p_{r,y}
 &=\Tr[M_{r,y}\mathcal L_r(\Upsilon)]\\
-&=\sum_\alpha\theta_\alpha
-\Tr[M_{r,y}\mathcal L_r(F_\alpha)]\\
-&\equiv\sum_\alpha X_{(r,y),\alpha}\theta_\alpha,
+&=\Tr[M_{r,y}\mathcal L_r(\Upsilon_0)]
++\sum_\alpha\theta_\alpha\Tr[M_{r,y}\mathcal L_r(F_\alpha)]\\
+&\equiv p^{(0)}_{r,y}+\sum_\alpha X_{(r,y),\alpha}\theta_\alpha,
 \end{align*}
 即正文\eqnrefs{eq:process_tensor_experimental_design_matrix}。
 
@@ -1085,7 +1129,6 @@ v^{\mathsf T}\mathcal Fv
 \end{proof}
 
 
-等号要求 Cauchy--Schwarz 与取实部两步同时饱和；局域测量 SLD 本征投影可满足这一结构。因此 QFI 是对允许 POVM 优化后的局域上界，而不是固定探测器自动达到的灵敏度。
 \input{sections/06-measurement-qfi-detail-dp22}
 
 \input{sections/electron-measurement-information-worked}
