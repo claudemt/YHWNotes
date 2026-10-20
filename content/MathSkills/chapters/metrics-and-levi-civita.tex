@@ -1,0 +1,525 @@
+\chapter{度量与 Levi--Civita 联络} \label{chap:math-connections}
+
+一般仿射联络给出了跨点比较向量的规则，却没有规定长度和角度。要测量它们，需要额外指定度量；若再要求平行移动保持度量且没有挠率，联络就不再任意。Levi--Civita 定理说明，一个非退化对称度量唯一决定满足这两个条件的联络。于是同一个度量既能测量距离，又能决定测地线和曲率，后面的对称性、Hodge 理论与几何演化都可使用这一联络。
+
+\section{度量与正交标架}
+
+Riemann 度量是在每点给定正定对称双线性型
+\[
+g_p:T_pM\times T_pM\to\RR
+\]
+且随 $p$ 光滑变化。若只要求非退化而允许固定符号差，则称 伪 Riemann 度量。局部坐标中
+\begin{equation*}g=g_{ij}\,\dd x^i\otimes\dd x^j,
+\qquad
+g_{ij}=g_{ji},
+\end{equation*}
+逆矩阵记为 $g^{ij}$。
+
+度量给出向量与一形式之间的自然同构
+\begin{equation*}X^\flat:=g(X,\cdot),
+\qquad
+\alpha^\sharp\ \text{由}\ g(\alpha^\sharp,\cdot)=\alpha(\cdot)\ \text{定义}.
+\end{equation*}
+这是第一次允许“升降指标”。在此前各章中，上、下指标只表示张量槽位或标架分量，不能借助一个尚未定义的度量互换。
+
+若标架 $\{e_a\}$ 满足
+\[
+g(e_a,e_b)=\eta_{ab}
+\]
+且 $\eta_{ab}$ 为固定对角矩阵，则称为局部正交归一标架。Riemann 情形 $\eta=I$；伪 Riemann 情形 $\eta$ 包含正负号。正交标架并不等于坐标标架：前者是度量条件，后者是 Lie 括号条件。
+
+\section{Levi--Civita 定理与 Koszul 公式}
+
+联络与度量相容指
+\begin{equation*}\nabla g=0,
+\end{equation*}
+也就是
+\[
+X[g(Y,Z)]
+=g(\nabla_XY,Z)+g(Y,\nabla_XZ).
+\]
+无挠条件则是 $T=0$，即
+\[
+\nabla_XY-\nabla_YX=[X,Y].
+\]
+两个条件联合起来足以完全解出 $\nabla_XY$。
+
+\begin{theorem}[Levi--Civita 唯一性与存在性]\label{thm:math-dg-levi-civita}
+给定任意 Riemann 或 伪 Riemann 度量 $g$，存在唯一 仿射 联络 $\nabla$ 同时满足
+$\nabla g=0$ 与 $T=0$。它称为 $g$ 的 Levi--Civita 联络。
+\end{theorem}
+
+在坐标基 $\partial_i$ 中 Lie 括号消失，把
+$\nabla_{\partial_i}\partial_j=\Gamma^k{}_{ij}\partial_k$ 代入 Koszul 公式可得
+\begin{equation*}{
+\Gamma^k{}_{ij}
+=\frac12g^{k\ell}
+\left(
+\partial_i g_{j\ell}
++\partial_j g_{i\ell}
+-\partial_\ell g_{ij}
+\right).}
+\end{equation*}
+这只是 Levi--Civita 联络在坐标基中的表达，不应反过来把 Christoffel 符号当作联络的坐标无关定义。
+
+在一般标架中，Koszul 公式自动包含结构函数。令
+\[
+g_{ab}=g(e_a,e_b),
+\qquad
+[e_a,e_b]=C^c{}_{ab}e_c,
+\qquad
+\Gamma_{abc}:=g(\nabla_{e_a}e_b,e_c).
+\]
+则
+\begin{equation*}\begin{aligned}
+2\Gamma_{abc}
+={}&e_a(g_{bc})+e_b(g_{ca})-e_c(g_{ab})\\
+&+C^d{}_{ab}g_{dc}-C^d{}_{bc}g_{da}+C^d{}_{ca}g_{db}.
+\end{aligned}
+\end{equation*}
+若标架正交归一，$g_{ab}=\eta_{ab}$ 为常数，前三个导数项消失，联络完全由非完整系数决定。
+
+对正交归一标架，度量相容还给出
+\begin{equation}\label{eq:math-dg-orthonormal-connection-skew}
+\omega_{ab}+\omega_{ba}=0,
+\qquad
+\omega_{ab}:=\eta_{ac}\omega^c{}_b.
+\end{equation}
+于是第一结构方程在 Levi--Civita 情形化为
+\[
+\dd\theta^a+\omega^a{}_b\wedge\theta^b=0,
+\]
+常常可以直接从 $\dd\theta^a$ 解出联络一形式。
+
+
+\par
+\begin{workedexample}[旋转对称曲面的联络与曲率]
+对二维度量
+\[
+g=\dd r^2+f(r)^2\dd\phi^2,
+\qquad f(r)>0,
+\]
+取正交余标架 \(\theta^1=\dd r\)、\(\theta^2=f(r)\dd\phi\)。由无挠条件求 Levi--Civita 联络一形式，再由第二结构方程求 Gauss 曲率，验证
+\[
+K=-\frac{f''(r)}{f(r)}.
+\]
+分别代入 \(f(r)=r\)、\(\sin r\)、\(\sinh r\) 检查平面、单位球面与双曲平面的曲率。
+\textbf{解。} 余标架的一阶变化为 \(\dd\theta^1=0\)、\(\dd\theta^2=(f'/f)\theta^1\wedge\theta^2\)。
+把它们代入无挠方程 \(\dd\theta^a+\omega^a{}_b\wedge\theta^b=0\)，同时使用度量相容条件 \(\omega^2{}_1=-\omega^1{}_2\)，便得到 \(\omega^1{}_2=-f'(r)\dd\phi\)。
+二维反对称联络的对角分量为零，因此 \(\Omega^1{}_2\) 中的 \(\omega\wedge\omega\) 项消失。第二结构方程成为
+\[
+\Omega^1{}_2=\dd\omega^1{}_2=-f''(r)\dd r\wedge\dd\phi
+=-\frac{f''(r)}{f(r)}\theta^1\wedge\theta^2,
+\]
+按 \(\Omega^1{}_2=K\theta^1\wedge\theta^2\) 读出 \(K=-f''/f\)。代入 \(f=r,\sin r,\sinh r\) 分别得 \(0,1,-1\)。这些坐标只在 \(f>0\) 的区域使用；球面的极点和极坐标原点需要另一张坐标图。
+\end{workedexample}
+\par
+
+\section{测地线与曲率收缩}
+
+\begin{workedexample}[球面曲率在整体缩放下怎样变化]
+单位球面的度量是 \(g_1=\dd\vartheta^2+\sin^2\vartheta\,\dd\varphi^2\)。令 \(g_a=a^2g_1\)，其中 \(a>0\)。求 Gauss 曲率。
+
+\textbf{解。} 取正交余标架 \(\theta^1=a\dd\vartheta\)、\(\theta^2=a\sin\vartheta\,\dd\varphi\)。Cartan 第一结构方程 \(\dd\theta^i+\omega^i{}_j\wedge\theta^j=0\) 给 \(\omega^1{}_2=-\cos\vartheta\,\dd\varphi\)（符号与取向约定一致）。因二维反对称联络没有 \(\omega\wedge\omega\) 项，
+\[
+\Omega^1{}_2=\dd\omega^1{}_2
+=\sin\vartheta\,\dd\vartheta\wedge\dd\varphi
+=\frac1{a^2}\theta^1\wedge\theta^2.
+\]
+按照 \(\Omega^1{}_2=K\theta^1\wedge\theta^2\) 的定义，\(K=1/a^2\)。连接形式没有随常数 \(a\) 改变，但单位面积变为原来的 \(a^2\) 倍；这正是曲率缩放的来源。
+\end{workedexample}
+
+
+给定 Levi--Civita 联络后，曲线 $\gamma(s)$ 的协变加速度为 $\nabla_{\dot\gamma}\dot\gamma$。若
+\begin{equation*}\nabla_{\dot\gamma}\dot\gamma=0,
+\end{equation*}
+则称 $\gamma$ 为仿射参数测地线。坐标中它成为
+\[
+\frac{\dd^2x^k}{\dd s^2}
++\Gamma^k{}_{ij}
+\frac{\dd x^i}{\dd s}
+\frac{\dd x^j}{\dd s}=0.
+\]
+这个方程来自“切向量沿自身平行”，并不依赖把流形嵌入更大的 欧氏 空间。
+
+采用上一章的曲率约定
+\[
+R(X,Y)Z
+=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z.
+\]
+对 Levi--Civita 联络，四阶协变张量
+\[
+R(X,Y,Z,W):=g(R(X,Y)Z,W)
+\]
+满足
+\begin{align*}
+R(X,Y,Z,W)&=-R(Y,X,Z,W),\\
+R(X,Y,Z,W)&=-R(X,Y,W,Z),\\
+R(X,Y,Z,W)&=R(Z,W,X,Y),
+\end{align*}
+并在无挠条件下满足代数第一 Bianchi 恒等式
+\[
+R(X,Y)Z+R(Y,Z)X+R(Z,X)Y=0.
+\]
+这些对称性大幅减少曲率的独立分量。
+
+Ricci 张量定义为曲率算子的迹：若 $\{e_a\}$ 是局部正交标架，符号记为 $\varepsilon_a=g(e_a,e_a)=\pm1$，则
+\begin{equation}\label{eq:math-dg-ricci-definition}
+\operatorname{Ric}(Y,Z)
+:=\sum_a\varepsilon_a\,g(R(e_a,Y)Z,e_a).
+\end{equation}
+标量曲率再作一次迹：
+\begin{equation*}\mathcal R:=\operatorname{tr}_g\operatorname{Ric}.
+\end{equation*}
+Riemann 曲率保留二维方向之间的完整信息，Ricci 曲率是其一次收缩，标量曲率则只保留总迹。后面 Ricci 流 的母方程会直接使用\eqnrefs{eq:math-dg-ricci-definition}。
+Ricci 与标量曲率都是收缩后的信息；若要保留一张二维切平面本身的弯曲强度，应先定义截面曲率。对点 $p\in M$ 处由线性无关向量 $u,v$ 张成的二维平面 $\sigma\subset T_pM$，定义
+\begin{equation*}K(\sigma)
+:=\frac{R(u,v,v,u)}{g(u,u)g(v,v)-g(u,v)^2}.
+\end{equation*}
+分母正是 Gram 行列式，因此在 Riemann 情形严格为正，并且右端只依赖二维子空间 $\sigma$，与所选基 $u,v$ 无关。若 $u,v$ 正交归一，便简化为
+\[
+K(u,v)=R(u,v,v,u).
+\]
+于是曲率张量可以理解为“所有二维方向上的无穷小偏离平坦程度”的统一编码。
+
+固定内积后，可把 Riemann 曲率等价看作 $\Lambda^2T_pM$ 上的自伴算子。定义 $\mathcal R_p:\Lambda^2T_pM\to\Lambda^2T_pM$ 使
+\begin{equation*}\left\langle \mathcal R_p(u\wedge v),w\wedge z\right\rangle
+:=R(u,v,z,w).
+\end{equation*}
+这里 $\Lambda^2T_pM$ 上的内积由 $g$ 诱导。曲率张量的配对对称性保证 $\mathcal R_p$ 自伴。于是
+\[
+K(\sigma)
+=\frac{\langle \mathcal R_p\xi,\xi\rangle}{\langle\xi,\xi\rangle},
+\qquad
+\xi=u\wedge v,
+\]
+恰是曲率算子在 decomposable 双矢 上的 Rayleigh quotient。这个观点把 比较 几何 与前面谱理论的语言直接接起来：截面曲率上下界就是曲率算子在所有简单二向量方向上的二次型界。
+
+Ricci 曲率可由截面曲率求和恢复。若 $v$ 是单位向量，并取正交归一标架
+\[
+e_1=v,e_2,\ldots,e_n,
+\]
+则
+\begin{equation*}\operatorname{Ric}(v,v)
+=\sum_{a=2}^{n}K(v,e_a).
+\end{equation*}
+所以 Ricci 曲率不是某个单独二维平面的曲率，而是所有包含 $v$ 的正交二维平面的平均型总和；标量曲率则进一步满足
+\begin{equation*}\mathcal R
+=2\sum_{1\le a<b\le n}K(e_a,e_b).
+\end{equation*}
+这解释了为什么 Bonnet--Myers 只需 Ricci 下界，而 Rauch 比较通常需要逐截面曲率界：两者控制的是不同强度的聚焦信息。
+
+若所有点、所有二维截面都有同一常数曲率 $K$，则曲率张量被唯一逼成
+\begin{equation}\label{eq:math-dg-space-form-curvature}
+R(X,Y)Z
+=K\bigl(g(Y,Z)X-g(X,Z)Y\bigr).
+\end{equation}
+反之，\eqnrefs{eq:math-dg-space-form-curvature} 给出常截面曲率 $K$。欧氏 空间、半径 $a$ 的圆球以及常曲率双曲空间分别对应 $K=0$、$K=a^{-2}$ 与 $K=-a^{-2}$。它们不是三个互不相干的例子，而是所有 比较定理 的标准参照模型。
+
+\section{指数映射、Jacobi 场与完备性}
+
+测地线方程是二阶常微分方程，因此对每个 $p\in M$ 和初速度 $v\in T_pM$，局部存在唯一测地线 $\gamma_v$ 满足
+\[
+\gamma_v(0)=p,
+\qquad
+\dot\gamma_v(0)=v.
+\]
+只要该测地线至少存在到参数 $1$，定义指数映射
+\begin{equation*}\exp_p(v):=\gamma_v(1).
+\end{equation*}
+由测地线方程对初值的光滑依赖，$\exp_p$ 在零向量附近光滑，并且
+\[
+(\dd\exp_p)_0=\id(T_pM).
+\]
+所以逆函数定理说明 $\exp_p$ 在零向量附近给出一组 正规 坐标。这里“正规”不是额外坐标假设，而是由所有从 $p$ 发出的测地线同时构造出的坐标。
+
+相邻测地线之间的一阶分离由 Jacobi 场控制。设 $F(s,r)$ 是测地线变分，即对每个固定 $r$，$s\mapsto F(s,r)$ 都是测地线。沿中心测地线 $\gamma(s)=F(s,0)$ 定义
+\[
+T:=\partial_sF\big|_{r=0},
+\qquad
+J:=\partial_rF\big|_{r=0}.
+\]
+则 $[T,J]=0$，且 $J$ 满足
+\begin{equation}\label{eq:math-dg-jacobi-equation}
+{\nabla_T\nabla_TJ+R(J,T)T=0.}
+\end{equation}
+
+若存在非零 Jacobi 场满足 $J(0)=J(s_*)=0$，则 $\gamma(0)$ 与 $\gamma(s_*)$ 沿该测地线互为共轭点；等价地，$(\dd\exp_p)_{s_*v}$ 在相应方向失去可逆性。因而指数映射的局部退化、测地线族聚焦与曲率通过同一 Jacobi 方程联系起来。
+
+完备性把这种局部理论延伸到全局。对连通 Riemann 流形，Hopf--Rinow 定理给出三个等价条件：度量空间 $(M,d_g)$ 完备；所有闭有界子集紧；任意测地线可延拓到全部实参数。这些条件还保证任意两点之间存在实现距离的最短测地线。仅有最短测地线的存在不能反推完备性，例如欧氏空间中的开球。测地完备意味着指数映射 $\exp_p$ 对每个 $p$ 都定义在整个 $T_pM$ 上。
+指数映射不仅给出坐标，还把径向方向与角向方向正交分离。固定 $p\in M$，在 $T_pM$ 的零向量附近考虑
+\[
+\exp_p:T_pM\to M.
+\]
+对 $v\in T_pM$ 与任意 $w\in T_pM$，Gauss 引理断言
+\begin{equation}\label{eq:math-dg-gauss-lemma}
+ g_{\exp_p(v)}\!\left(
+ (d\exp_p)_v v,
+ (d\exp_p)_v w
+ \right)
+ =g_p(v,w).
+\end{equation}
+特别地，若 $w\perp v$，则径向测地线方向与由球面 $|v|=\mathrm{const.}$ 推出的角向方向正交。这一正交性是“测地极坐标”成立的真正原因。
+
+在 $p$ 的 正规 坐标 $(x^1,\ldots,x^n)$ 中，坐标线 $t\mapsto tx$ 是从 $p$ 发出的测地线。由测地线方程在 $t=0$ 对任意初速度成立，得到
+\begin{equation*}g_{ij}(p)=\delta_{ij},
+\qquad
+\Gamma^k{}_{ij}(p)=0,
+\qquad
+\partial_k g_{ij}(p)=0.
+\end{equation*}
+因此 正规 坐标 消去的是度量的一阶变化，而不是曲率。真正的几何信息从二阶 Taylor 系数开始出现。与本书曲率约定相容的展开为
+\begin{equation*}g_{ij}(x)
+ =\delta_{ij}
+ +\frac13 R_{ikj\ell}(p)x^k x^\ell
+ +O(|x|^3),
+\end{equation*}
+这里 $R_{ikj\ell}=g(R(\partial_i,\partial_k)\partial_j,\partial_\ell)$ 沿用前面的四槽位次序，因此 $\delta^{ij}R_{ikj\ell}=-\operatorname{Ric}_{k\ell}$。
+对度量矩阵取行列式及平方根，得到
+\begin{equation}\label{eq:math-dg-normal-volume-expansion}
+ \sqrt{\det g(x)}
+ =1-\frac16\operatorname{Ric}_{k\ell}(p)x^k x^\ell
+ +O(|x|^3).
+\end{equation}
+这两式给出了“曲率是度量偏离 欧氏 形式的二阶障碍”的严格含义。Riemann 张量控制各方向的二阶度量畸变，Ricci 张量则控制小体积元的二阶畸变。
+
+由 \eqnrefs{eq:math-dg-normal-volume-expansion} 对半径 $r$ 的小测地球积分，可得
+\begin{equation*}\operatorname{Vol}_g(B_r(p))
+=\omega_n r^n
+\left[
+1-\frac{\mathcal R(p)}{6(n+2)}r^2+O(r^3)
+\right],
+\end{equation*}
+其中 $\omega_n$ 是 欧氏 单位 $n$-球体积。正标量曲率在最低非平凡阶压缩小球体积，负标量曲率则扩张它。
+正规 坐标 只能在指数映射保持一一且微分可逆的区域内工作。固定 $p$，对单位向量 $v\in T_pM$ 定义 割 time
+\begin{equation*}c(v):=\sup\left\{t>0:
+ d\bigl(p,\exp_p(sv)\bigr)=s
+ \text{ 对每个 }0\le s\le t
+ \right\}.
+\end{equation*}
+若 $c(v)<\infty$，则 $\exp_p(c(v)v)$ 称为沿 $v$ 的 割 point；所有这类点组成 $\operatorname{Cut}(p)$。单射半径 定义为
+\begin{equation*}\operatorname{inj}(p):=\sup\{r>0:
+ \exp_p|_{B_r(0)}\text{ 到其像的微分同胚}\}.
+\end{equation*}
+在完备 Riemann 流形上，$\operatorname{inj}(p)$ 等于从 $p$ 出发最早发生“共轭退化”或“不同最短测地线竞争”时的半径。前者由 $d\exp_p$ 奇异造成，后者即使 $d\exp_p$ 仍可逆也会破坏全局一一性。
+
+在
+\[
+M\setminus\bigl(\{p\}\cup\operatorname{Cut}(p)\bigr)
+\]
+上，距离函数
+\[
+r_p(q):=d(p,q)
+\]
+光滑，并且
+\begin{equation*}|\nabla r_p|=1,
+\qquad
+\nabla r_p(q)=\dot\gamma_{pq}(r_p(q)),
+\end{equation*}
+其中 $\gamma_{pq}$ 是唯一的单位速最短测地线。第一式是 Riemann eikonal 方程。它说明距离函数虽是全局 Lipschitz 对象，但在 割迹 之外服从一阶 Hamilton--Jacobi 方程；奇性恰在最短测地线开始多值或指数映射退化的地方产生。
+
+\begin{theorem}[最短性与 割/conjugate 障碍]\label{thm:math-dg-minimizing-cut-conjugate}
+设 $\gamma:[0,L]\to M$ 为单位速测地线。若在 $(0,L]$ 内出现与 $\gamma(0)$ 共轭的点，则 $\gamma$ 在越过第一个共轭点后不再是局部最短曲线。即使没有共轭点，若 $\gamma(L)\in\operatorname{Cut}(\gamma(0))$，也可能由于存在另一条同长最短测地线而失去唯一最短性。
+\end{theorem}
+
+这一区分非常重要：Jacobi 场和 指标 形式 检测的是指数映射的微分退化，是“局部二阶”障碍；割迹 还记录不同测地线之间的全局竞争。圆球上南极同时是北极的共轭点与 割 point；平坦圆柱上某些 割 point 却可由拓扑导致，而局部曲率仍为零。
+
+测地线还具有一个等价的变分刻画。设 $\gamma:[0,L]\to M$ 为分段光滑曲线，能量泛函定义为
+\begin{equation*}E[\gamma]
+:=\frac12\int_0^L g(\dot\gamma,\dot\gamma)\,\dd s.\end{equation*}
+对固定端点变分 $F(s,r)$，记变分场
+\[
+V(s):=\partial_rF(s,r)|_{r=0},
+\qquad V(0)=V(L)=0.
+\]
+一阶变分公式为
+\begin{equation}
+\delta E[V]
+=-\int_0^L g(V,\nabla_TT)\,\dd s,
+\qquad T=\dot\gamma.
+\label{eq:math-dg-energy-first-variation}
+\end{equation}
+所以固定端点下的能量临界曲线恰好是仿射参数测地线。这个结论解释了为什么测地线方程同时具有“平行运输”与“变分极值”两种来源。
+
+对一条测地线再做一次变分，得到 指标 形式
+\begin{equation}
+I(V,W)
+:=\int_0^L
+\left[
+ g(\nabla_TV,\nabla_TW)
+ -g(R(V,T)T,W)
+\right]\dd s,
+\label{eq:math-dg-index-form}
+\end{equation}
+且固定端点时
+\[
+\delta^2E[V,W]=I(V,W).
+\]
+因此曲率不是只改变“邻近测地线是否聚焦”；它直接进入能量的 Hessian，决定测地线在变分意义下是否稳定。
+
+对固定端点场 $V$，\eqnrefs{eq:math-dg-energy-second-variation} 给出
+$\delta^2E[V,V]=\int_0^L(|\nabla_TV|^2-g(R(V,T)T,V))\,\dd s$。
+第一项衡量变分场沿曲线变化的代价，第二项则由曲率改变这个代价。
+
+Jacobi 场正是 指标 形式 的零模。若 $J(0)=J(L)=0$ 并满足 Jacobi 方程，则对任意固定端点变分场 $W$，分部积分得到
+\[
+I(J,W)
+=-\int_0^L
+ g\bigl(\nabla_T\nabla_TJ+R(J,T)T,W\bigr)\,\dd s=0.
+\]
+因此共轭点出现时，能量 Hessian 退化。更进一步，Morse 指标定理 说明一条测地线段的 指标 形式 负方向数等于区间内共轭点的重数总和。于是“共轭点前局部极小、越过共轭点后出现下降方向”不是几何图像上的猜测，而是二阶变分的谱性质。这里说的是固定端点的局部极小性；全局最短性还会受到 割迹 和不同测地线竞争的影响。
+
+曲率的真正威力来自比较：Jacobi 方程把一个张量不等式转化成测地线会聚速度的不等式。先看常截面曲率 $K$ 的模型空间。若 $J\perp T$ 且沿测地线选平行单位场 $E$ 写成
+\[
+J(r)=j(r)E(r),
+\]
+则 Jacobi 方程化为标量 ODE
+\[
+j''+Kj=0.
+\]
+满足 $j(0)=0$、$j'(0)=1$ 的模型解统一写成
+\begin{equation}
+S_K(r)
+:=
+\begin{cases}
+\dfrac{\sin(\sqrt K\,r)}{\sqrt K},&K>0,\\[7pt]
+r,&K=0,\\[5pt]
+\dfrac{\sinh(\sqrt{-K}\,r)}{\sqrt{-K}},&K<0.
+\end{cases}
+\label{eq:math-dg-model-jacobi}
+\end{equation}
+因此正曲率使径向测地线比 欧氏 情形更快聚焦，负曲率则使其更快分离。$S_K$ 并不只是三个特例的记忆公式；它是 比较 几何 中所有 radial estimate 的母函数。
+
+Rauch 比较定理把这一模型推广到变曲率情形。粗略地说，若两条单位速测地线上的对应二维截面满足
+\[
+K_1\le K_2,
+\]
+并以相同初始横向速度发出 Jacobi 场，则在第一个共轭点以前，较小曲率一侧的 $|J|$ 不小于较大曲率一侧。也就是说，``更正的曲率 $\Rightarrow$ 更强的聚焦''可以被严格比较，而不需要显式求解 Jacobi 方程。
+
+这种比较立刻给出两个方向相反的全局结论。若完整、单连通 Riemann 流形满足
+\[
+K\le0,
+\]
+则 Cartan--Hadamard 定理断言任意 $p\in M$ 的指数映射
+\[
+\exp_p:T_pM\to M
+\]
+是覆盖映射；在单连通情形进一步是全局微分同胚。于是非正曲率消除了共轭点和测地线的局部聚焦障碍，$T_pM$ 本身给出全局坐标模型。
+
+正 Ricci 曲率则产生相反的紧致化效应。设 $\dim M=n$ 且
+\begin{equation*}\operatorname{Ric}(v,v)
+\ge (n-1)k\,g(v,v),
+\qquad k>0.\end{equation*}
+Bonnet--Myers 定理给出
+\begin{equation}
+{
+\operatorname{diam}(M)
+\le\frac{\pi}{\sqrt k}
+},
+\label{eq:math-dg-bonnet-myers-diameter}
+\end{equation}
+并推出完备流形 $M$ 紧致、基本群有限。关键点是：这里不需要每个截面曲率都有正下界，只需所有与测地线方向相交的截面曲率之和，也就是 Ricci 曲率，有统一正下界。
+
+这一证明揭示了 比较 几何 的主线：曲率下界本身并不直接``看见''全局直径；它先进入二阶变分的 指标 形式，再通过所有横向变分方向求和变成 Ricci 曲率，最后与最短性矛盾。局部张量信息由此转化为全局拓扑与度量结论。
+
+Bonnet--Myers 使用的是固定端点二阶变分；体积比较则更适合把 Jacobi 方程改写成一阶矩阵 Riccati 方程。仍固定基点 $p$，在 $M\setminus(\{p\}\cup\operatorname{Cut}(p))$ 上记
+\[
+r(x)=d(p,x),
+\qquad
+\partial_r:=\nabla r.
+\]
+这里把函数上的几何 Laplace--Beltrami 算子显式记为
+\begin{equation*}\Delta_{\mathrm{LB}}f:=\operatorname{tr}_g(\nabla^2f)=\nabla^i\nabla_i f
+=-\Delta_H f.\end{equation*}
+沿一条径向单位速测地线 $\gamma$，在法向空间 $T^\perp\gamma$ 上定义形算子
+\begin{equation*}A_r(X):=\nabla_X\partial_r.\end{equation*}
+它就是测地球面 $\{r=\text{const}\}$ 的第二基本形式所对应的自伴算子。若 $J$ 是满足 $J(0)=0$ 的横向 Jacobi 场，则在没有共轭点的区间内可写成
+\[
+J'(r)=A_rJ(r).
+\]
+把它代入 Jacobi 方程 $J''+R(J,\partial_r)\partial_r=0$，得到矩阵 Riccati 方程
+\begin{equation*}{
+A_r'+A_r^2+R_{\partial_r}=0,
+\qquad
+R_{\partial_r}(X):=R(X,\partial_r)\partial_r.}\end{equation*}
+这一步把“二阶 Jacobi 方程”压缩成“测地球面形状的一阶演化方程”。
+
+取迹并记
+\[
+H(r):=\tr A_r=\Delta_{\mathrm{LB}} r,
+\]
+便得到
+\begin{equation*}H'(r)+|A_r|^2+\operatorname{Ric}(\partial_r,\partial_r)=0.\end{equation*}
+若 $\operatorname{Ric}\ge(n-1)k g$，由 Cauchy--Schwarz
+\[
+|A_r|^2\ge\frac{H(r)^2}{n-1},
+\]
+于是
+\begin{equation*}H'(r)+\frac{H(r)^2}{n-1}+(n-1)k\le0.\end{equation*}
+模型函数 $S_k$ 已在\eqnrefs{eq:math-dg-model-jacobi}定义。令
+\[
+m_k(r):=(n-1)\frac{S_k'(r)}{S_k(r)},
+\]
+则 $m_k$ 满足相应的等号 Riccati 方程，并且 $r\downarrow0$ 时
+\[
+H(r)\sim\frac{n-1}{r},
+\qquad
+m_k(r)\sim\frac{n-1}{r}.
+\]
+标量 Riccati 比较因此给出 拉普拉斯算子 比较：
+\begin{equation}
+{
+\Delta_{\mathrm{LB}} r\le(n-1)\frac{S_k'(r)}{S_k(r)}
+}
+\label{eq:math-dg-laplacian-comparison}
+\end{equation}
+在 割迹 之外逐点成立；在更一般的全局表述中可理解为分布或 屏障 意义的不等式。$k=0$ 时它退化为
+\[
+\Delta_{\mathrm{LB}} r\le\frac{n-1}{r},
+\]
+也就是说 Ricci 非负会使测地球面的平均曲率不超过 欧氏 模型。
+
+横向 Jacobian 的单调性（\eqnrefs{eq:math-dg-jacobian-comparison}）积分即得 Bishop--Gromov 体积比较（\eqnrefs{eq:math-dg-bishop-gromov}）。
+
+从逻辑上看，Rauch、Bonnet--Myers、拉普拉斯算子 比较 与 Bishop--Gromov 并不是四个彼此无关的定理：它们都从同一个 Jacobi 方程出发。Rauch 比较 Jacobi 场的长度；Bonnet--Myers 把 Jacobi 信息送入 指标 形式；拉普拉斯算子 比较 取 Riccati 方程的迹；Bishop--Gromov 再把迹积分为指数映射的 Jacobian。比较几何的“局部曲率 $\Rightarrow$ 全局度量结论”由此形成一条连续的推导链。
+
+\begin{exbox}[极坐标中的平坦欧氏平面]
+在 $\RR^2\setminus\{0\}$ 上取
+\[
+g=\dd r^2+r^2\dd\phi^2,
+\qquad
+\theta^1=\dd r,
+\qquad
+\theta^2=r\dd\phi.
+\]
+求这组余标架的联络和曲率，并判断非零联络是否意味着空间弯曲。
+
+\textbf{解。} 它是一组正交归一余标架，但不是坐标余标架，因为
+\[
+\dd\theta^2
+=\dd r\wedge\dd\phi
+=\frac1r\theta^1\wedge\theta^2.
+\]
+无挠结构方程与\eqnrefs{eq:math-dg-orthonormal-connection-skew}给出
+\[
+\omega^1{}_2=-\frac1r\theta^2,
+\qquad
+\omega^2{}_1=\frac1r\theta^2.
+\]
+再代入第二结构方程，
+\[
+\Omega^1{}_2
+=\dd\omega^1{}_2
++\omega^1{}_a\wedge\omega^a{}_2=0.
+\]
+联络一形式非零而曲率为零，说明“基底随位置转动”与“空间本身弯曲”是不同概念。
+\end{exbox}
+\input{content/MathSkills/integrated/08-connections.tex}
+
+Levi--Civita 定理已固定由度量选出的联络。球面把联络、平行移动、测地线和 Jacobi 场放在同一个可计算模型中，可同时核对符号与曲率尺度。
+
+\input{content/MathSkills/ch19.tex}
+
+\input{content/MathSkills/integrated/geometry-geodesic-volume.tex}
+
+\input{content/MathSkills/chapter-end/metrics-and-levi-civita-calculations.tex}

@@ -1,0 +1,2268 @@
+\chapter{积分方程、Fredholm 理论与逆问题}
+\label{chap:integral-equations}
+
+\section{线性积分方程的分类}
+
+积分方程的未知量是一个函数，而未知函数出现在积分号内。把最常见的一维线性情形写成
+
+\[
+\alpha(x)y(x)
+=\phi(x)+\lambda\int_{a(x)}^{b(x)}K(x,t)y(t)\,\dd t.
+\]
+
+这里 $y$ 是未知函数，$\phi$ 是已知函数，$K(x,t)$ 称为积分核，$\lambda$ 是参数。这个式子先给出一般结构，具体分类只是对 $\alpha$ 和积分区间作特殊化。
+
+若上下限都是固定的，称为 Fredholm 型；若至少有一个积分限随 $x$ 变化，最典型的是 $\int_a^x$，称为 Volterra 型。若 $\alpha(x)\equiv0$，未知函数只出现在积分号内，是第一类方程；若 $\alpha(x)$ 处处不为零，可以同除以 $\alpha(x)$ 化成第二类方程。
+
+因此四种标准形式分别是
+
+\[
+\phi(x)=\int_a^bK(x,t)y(t)\,\dd t
+\qquad\text{(Fredholm 第一类)},
+\]
+
+\[
+y(x)=\phi(x)+\lambda\int_a^bK(x,t)y(t)\,\dd t
+\qquad\text{(Fredholm 第二类)},
+\]
+
+\[
+\phi(x)=\int_a^xK(x,t)y(t)\,\dd t
+\qquad\text{(Volterra 第一类)},
+\]
+
+\[
+y(x)=\phi(x)+\lambda\int_a^xK(x,t)y(t)\,\dd t
+\qquad\text{(Volterra 第二类)}.
+\]
+
+若 $\alpha(x)$ 有孤立零点，就不能简单地处处同除以 $\alpha$，必须单独分析这些零点附近的可解性。
+
+积分方程之所以在数学物理中自然出现，一个重要原因是微分算符的逆常常由 Green 函数给出。设边值问题
+
+\[
+Ly=f
+\]
+
+在给定边界条件下存在逆算符，并令 Green 函数满足
+
+\[
+L_xG(x,t)=\delta(x-t)
+\]
+
+以及相同的齐次边界条件，那么形式精确解为
+
+\[
+{
+y(x)=\int G(x,t)f(t)\,\dd t
+}.
+\]
+
+如果原问题是本征值方程
+
+\[
+Ly=\lambda w(x)y,
+\]
+
+并且 $0$ 不属于 $L$ 在这些边界条件下的谱，使 $L^{-1}$ 确实存在，就得到
+
+\[
+{
+y(x)=\lambda\int G(x,t)w(t)y(t)\,\dd t
+}.
+\]
+
+这说明 Sturm--Liouville 本征值问题可以转化成齐次 Fredholm 第二类方程。若 $L$ 有零模，Green 算符不再是普通意义下的全空间逆，此时必须先投影掉零模或加入相应正交可解条件。
+
+具体地，Sturm--Liouville 算符
+
+\[
+L y=-\frac{\dd}{\dd x}
+\left[p(x)\frac{\dd y}{\dd x}\right]+q(x)y
+\]
+
+在 $a<x<b$ 上配以例如
+
+\[
+y(a)\cos\alpha-y'(a)\sin\alpha=0,
+\]
+
+\[
+y(b)\cos\beta+y'(b)\sin\beta=0.
+\]
+
+若相应 Green 函数存在，就有上面的积分表示。这一表示比先猜具体本征函数更一般，因为它直接把微分算符的边界条件编码进核 $G$ 中。
+
+初值问题则自然产生 Volterra 方程。例如
+
+\[
+y'(x)=f(x,y),\qquad y(x_0)=y_0
+\]
+
+与积分方程
+
+\[
+{
+y(x)=y_0+\int_{x_0}^x f(s,y(s))\,\dd s
+}
+\]
+
+等价。二阶初值问题
+
+\[
+y''(x)=f(x,y),
+\qquad y(x_0)=y_0,
+\qquad y'(x_0)=y_1
+\]
+
+连续积分两次得到
+
+\[
+{
+y(x)=y_0+y_1(x-x_0)
++\int_{x_0}^x(x-s)f(s,y(s))\,\dd s
+}.
+\]
+
+这里核 $x-s$ 是由两次积分精确产生的，并没有做近似。
+
+RC 电路也是同一结构。若 $i(t)$ 为电流，电容电荷满足
+
+\[
+q(t)=q(0)+\int_0^t i(s)\,\dd s,
+\]
+
+因此 Kirchhoff 电压定律可以直接写成关于 $i$ 的 Volterra 积分方程。
+
+第一类方程中另一个经典例子是 Abel 方程
+
+\[
+\int_0^h\frac{u(z)}{\sqrt{h-z}}\,\dd z=f(h),
+\qquad h>0.
+\]
+
+它的核在 $z=h$ 处具有可积奇性，是后面分数积分思想的原型。
+
+热方程也可用 Green 函数表示。对
+
+\[
+u_t-\kappa u_{xx}=0,
+\qquad 0<x<l,
+\]
+
+配以齐次 Dirichlet 边界条件和初值 $u(x,0)=f(x)$，若因果 Green 函数满足
+
+\[
+(\partial_t-\kappa\partial_x^2)G
+=\delta(t-t')\delta(x-x'),
+\qquad G=0\quad(t<t'),
+\]
+
+并满足同样的空间边界条件，则
+
+\[
+{
+u(x,t)=\int_0^lG(x,t;x',0)f(x')\,\dd x'
+}.
+\]
+
+因此积分方程和 Green 函数不是两套彼此独立的方法：Green 函数就是微分算符逆的积分核。下一节将固定在 Fredholm 型方程上，用 Hilbert 空间与紧算符语言讨论其一般可解性。
+Fredholm 方程的 Neumann 级数一般需要 $|\lambda|\|K\|<1$ 才能直接保证收敛，但 Volterra 算符因为积分区域具有三角结构，情况更强。考虑
+\[
+y(x)=f(x)+\lambda\int_a^xK(x,t)y(t)\,\dd t,
+\qquad a\le x\le b,
+\]
+并假设连续核满足
+\[
+|K(x,t)|\le M.
+\]
+记
+\[
+(Vy)(x)=\int_a^xK(x,t)y(t)\,\dd t.
+\]
+第一次作用有
+\[
+|(Vy)(x)|\le M(x-a)\|y\|_\infty.
+\]
+第二次作用为
+\[
+(V^2y)(x)
+=\int_a^x\!K(x,t_1)
+\int_a^{t_1}\!K(t_1,t_2)y(t_2)\,\dd t_2\dd t_1.
+\]
+因此
+\[
+|V^2y(x)|
+\le M^2\|y\|_\infty
+\int_a^x\int_a^{t_1}\dd t_2\dd t_1
+=\frac{M^2(x-a)^2}{2!}\|y\|_\infty.
+\]
+归纳得到
+\begin{equation*}{
+|V^ny(x)|
+\le \frac{M^n(x-a)^n}{n!}\|y\|_\infty
+}.\end{equation*}
+于是
+\[
+\sum_{n=0}^\infty |\lambda|^n\|V^n f\|_\infty
+\le \|f\|_\infty
+\sum_{n=0}^\infty
+\frac{(|\lambda|M(b-a))^n}{n!}
+=\|f\|_\infty \ee^{|\lambda|M(b-a)}.
+\]
+所以 Volterra 第二类方程的 Neumann 级数
+\begin{equation*}{
+y=\sum_{n=0}^\infty \lambda^nV^nf}\end{equation*}
+在有限区间上对任意有限 $\lambda$ 都一致收敛。
+
+这个结论与 Fredholm 情形不同的根源不是 $V$ 的范数特别小，而是迭代积分的有序区域
+\[
+a<t_n<\cdots<t_2<t_1<x
+\]
+在 $n$ 维立方体中的体积只有
+\[
+\frac{(x-a)^n}{n!}.
+\]
+正是这个 $1/n!$ 压倒了任意固定的 $|\lambda|^n$。
+
+唯一性也可直接证明。若 $y_1,y_2$ 是两个解，令 $z=y_1-y_2$，则
+\[
+|z(x)|\le |\lambda|M\int_a^x|z(t)|\,\dd t.
+\]
+由 Gronwall 不等式立刻得到 $z\equiv0$。因此在上述连续核条件下，Volterra 第二类方程不仅存在解，而且解唯一。
+定义迭代核
+\[
+K_1(x,t)=K(x,t),
+\]
+\[
+K_{n+1}(x,t)
+=\int_t^xK(x,s)K_n(s,t)\,\dd s.
+\]
+由 $|K|\le M$ 可归纳得到
+\[
+|K_n(x,t)|
+\le M^n\frac{(x-t)^{n-1}}{(n-1)!},
+\qquad a\le t\le x\le b.
+\]
+因此级数
+\[
+R_\lambda(x,t)
+=\sum_{n=1}^{\infty}\lambda^{n-1}K_n(x,t)
+\]
+对任意有限 $\lambda$ 一致收敛，并满足
+\[
+R_\lambda(x,t)
+=K(x,t)+\lambda\int_t^xK(x,s)R_\lambda(s,t)\,\dd s.
+\]
+于是解可以写成
+\begin{equation*}{
+y(x)=f(x)+\lambda\int_a^xR_\lambda(x,t)f(t)\,\dd t
+}.\end{equation*}
+这与 Fredholm 预解核形式相似，但 Volterra 核的三角结构使其预解对整个复 $\lambda$ 平面都是整函数，不会像 Fredholm 情形那样在离散特征值处出现极点。
+考虑经典 Abel 方程
+\begin{equation}
+{
+f(x)=\int_0^x\frac{u(t)}{\sqrt{x-t}}\,\dd t
+}.
+\label{eq:abel-first-kind}
+\end{equation}
+它是第一类 Volterra 方程。核在 $t=x$ 处发散，但奇性是可积的。关键不是直接对含奇核的式子求导，而是再作用一次同类积分算符。
+
+对 $x>0$，定义
+\[
+I(x)=\int_0^x\frac{f(s)}{\sqrt{x-s}}\,\dd s.
+\]
+代入 \eqnrefs{eq:abel-first-kind}：
+\[
+I(x)=\int_0^x\frac{\dd s}{\sqrt{x-s}}
+\int_0^s\frac{u(t)}{\sqrt{s-t}}\,\dd t.
+\]
+在适当可积条件下交换积分次序，积分区域 $0\le t\le s\le x$ 改写为 $0\le t\le x$、$t\le s\le x$：
+\[
+I(x)=\int_0^xu(t)
+\left[
+\int_t^x\frac{\dd s}{\sqrt{(x-s)(s-t)}}
+\right]\dd t.
+\]
+内层积分通过
+\[
+s=t+(x-t)\sin^2\theta
+\]
+化为
+\[
+\int_0^{\pi/2}2\,\dd\theta=\pi.
+\]
+所以
+\[
+I(x)=\pi\int_0^xu(t)\,\dd t.
+\]
+对 $x$ 求导，得到 Abel 反演公式
+\begin{equation*}{
+u(x)=\frac1\pi\frac{\dd}{\dd x}
+\int_0^x\frac{f(s)}{\sqrt{x-s}}\,\dd s
+}.\end{equation*}
+
+这段推导说明了为什么 Abel 核与 ``半阶积分'' 有关。若定义 Riemann--Liouville 分数积分
+\[
+(I^\alpha f)(x)
+=\frac1{\Gamma(\alpha)}
+\int_0^x(x-t)^{\alpha-1}f(t)\,\dd t,
+\qquad \alpha>0,
+\]
+那么 Abel 算子就是
+\[
+\sqrt\pi\,I^{1/2}.
+\]
+而上面的双重积分恰好体现半群性质
+\[
+I^{1/2}I^{1/2}=I^1.
+\]
+因此 Abel 反演不是孤立技巧，而是分数积分代数的最简单实例。
+考虑
+\[
+-u''(x)=f(x),
+\qquad 0<x<L,
+\]
+配以
+\[
+u(0)=u(L)=0.
+\]
+我们要构造 $G(x,s)$ 使
+\[
+-\partial_x^2G(x,s)=\delta(x-s),
+\qquad
+G(0,s)=G(L,s)=0.
+\]
+在 $x\neq s$ 处，$G$ 关于 $x$ 是线性函数，因此写成
+\[
+G(x,s)=
+\begin{cases}
+A(s)x,&x<s,\\
+B(s)(L-x),&x>s.
+\end{cases}
+\]
+连续性要求
+\[
+A(s)s=B(s)(L-s).
+\]
+在 $s$ 附近积分微分方程：
+\[
+-\bigl[G_x(s^+,s)-G_x(s^-,s)\bigr]=1.
+\]
+因为
+\[
+G_x(s^-,s)=A(s),
+\qquad
+G_x(s^+,s)=-B(s),
+\]
+故
+\[
+A(s)+B(s)=1.
+\]
+联立两式得到
+\[
+A(s)=\frac{L-s}{L},
+\qquad
+B(s)=\frac{s}{L}.
+\]
+所以
+\begin{equation*}{
+G(x,s)=
+\begin{cases}
+\dfrac{x(L-s)}{L},&0\le x\le s,\\[5pt]
+\dfrac{s(L-x)}{L},&s\le x\le L.
+\end{cases}
+}\end{equation*}
+于是
+\[
+u(x)=\int_0^LG(x,s)f(s)\,\dd s.
+\]
+这个例子把 Green 函数的四个构造条件全部展示出来：分段满足齐次方程、满足边界条件、在源点连续、导数具有由 $\delta$ 决定的跳跃。
+
+\section{Fredholm 型方程}
+\label{sec:fredholm}
+
+这一节把第二类 Fredholm 方程写成算符形式
+
+\[
+f=\phi+\lambda Kf,
+\qquad
+(I-\lambda K)f=\phi.
+\]
+
+这样做的好处是：存在性、唯一性、逐次逼近、谱展开和第一类方程的不适定性都能放在同一套 Hilbert 空间语言中讨论。
+在 $L^2(a,b)$ 上定义
+
+\[
+(Kf)(x)=\int_a^b K(x,y)f(y)\,\dd y.
+\]
+
+若
+
+\[
+\|K\|_{\mathrm{HS}}^2
+=\int_a^b\int_a^b|K(x,y)|^2\,\dd x\,\dd y<\infty,
+\]
+
+则 $K$ 是 Hilbert--Schmidt 算符，从而必为紧算符。由 Cauchy--Schwarz 不等式，
+
+\[
+\begin{aligned}
+|(Kf)(x)|^2
+&\le \left(\int_a^b|K(x,y)|^2\,\dd y\right)
+\left(\int_a^b|f(y)|^2\,\dd y\right).
+\end{aligned}
+\]
+
+再对 $x$ 积分，得到
+
+\[
+\|Kf\|_2\le \|K\|_{\mathrm{HS}}\|f\|_2,
+\]
+
+因此
+
+\[
+{\|K\|_{\mathrm{op}}\le\|K\|_{\mathrm{HS}}}.
+\]
+
+一般不能把这里的不等号写成等号。
+
+Hilbert--Schmidt 条件为什么还能推出紧性，可以通过有限秩逼近看清楚。由于
+
+\[
+K(x,y)\in L^2((a,b)\times(a,b)),
+\]
+
+可取有限和
+
+\[
+K_N(x,y)=\sum_{j=1}^{N}a_j(x)b_j^*(y)
+\]
+
+使
+
+\[
+\|K-K_N\|_{L^2((a,b)^2)}\to0.
+\]
+
+相应算符
+
+\[
+(K_Nf)(x)
+=\sum_{j=1}^{N}a_j(x)\langle b_j|f\rangle
+\]
+
+的值域包含在有限维空间 $\operatorname{span}\{a_1,\ldots,a_N\}$ 中，所以 $K_N$ 是有限秩算符，从而紧。又由刚才的估计
+
+\[
+\|K-K_N\|_{\mathrm{op}}
+\le\|K-K_N\|_{\mathrm{HS}}\to0.
+\]
+
+紧算符在算符范数极限下仍为紧算符，因此 $K$ 紧。这里的逻辑是
+
+\[
+\text{平方可积核}
+\Rightarrow\text{有限秩核可控逼近}
+\Rightarrow\text{紧性}.
+\]
+
+伴算符的核为
+
+\[
+K^\dagger(x,y)=K^*(y,x).
+\]
+
+所以当
+
+\[
+K(x,y)=K^*(y,x)
+\]
+
+时，$K$ 是自伴紧算符。
+\begin{proposition}[紧扰动恒等算子的闭值域与正交条件]
+设 $K$ 为 Hilbert 空间上的紧算子，$A=I-\lambda K$。则 $\operatorname{Ran}A$ 闭，且 $Af=\phi$ 可解当且仅当 $\phi\perp\ker A^*$。
+\end{proposition}
+\begin{proof}
+目标是证明 Fredholm 正交条件：$\operatorname{Ran}(A)$ 闭时，$Af=\phi$ 可解等价于 $\phi\perp\ker A^\dagger$。对稠密定义闭算符 $A$，有
+\[
+\operatorname{Ran}(A)^\perp=\ker(A^\dagger).
+\]
+确实，$g\perp\operatorname{Ran}(A)$ 等价于
+\[
+\langle g|Af\rangle=0,
+\qquad \forall f\in D(A),
+\]
+按伴算符定义这恰好说明 $g\in D(A^\dagger)$ 且 $A^\dagger g=0$。因此只要 $\operatorname{Ran}(A)$ 是闭的，就有
+\[
+\operatorname{Ran}(A)=\ker(A^\dagger)^\perp.
+\]
+现在取
+\[
+A=I-\lambda K,
+\]
+其中 $K$ 紧。关键是证明 $A$ 的值域闭。先在 $\ker A$ 的正交补上证明存在常数 $c>0$ 使
+\[
+\|Af\|\ge c\|f\|,
+\qquad f\perp\ker A.
+\]
+若不存在，就能取 $\|f_n\|=1$、$f_n\perp\ker A$ 而 $Af_n\to0$。紧性使 $Kf_n$ 有收敛子列；由
+\[
+f_n=Af_n+\lambda Kf_n
+\]
+可知同一子列的 $f_n$ 也收敛到某个 $f$。极限满足 $Af=0$ 且 $f\perp\ker A$，同时 $\|f\|=1$，矛盾。因此上述下界成立。
+
+若 $Af_n$ 在值域中收敛，把 $f_n$ 分解为 $\ker A$ 分量和正交分量；去掉不影响 $Af_n$ 的核分量后，下界说明剩余部分为 Cauchy 序列，所以极限仍在值域中。故 $\operatorname{Ran}(A)$ 闭。
+
+于是非齐次方程 $Af=\phi$ 的可解性等价于
+\[
+\phi\perp\ker A^\dagger,
+\]
+即前面的 Fredholm 正交条件。余下二择一定理最关键的一步——$\ker A=\{0\}$ 时为何 $\operatorname{Ran}A=\mathcal H$——由紧算符的有限秩逼近在下框证明。
+\end{proof}
+
+
+\begin{proposition}[Fredholm 择一的单射到满射]
+若 $K$ 为 Hilbert 空间上的紧算子且 $I-\lambda K$ 单射，则 $I-\lambda K$ 有有界逆，因而对每个右端均存在唯一解。
+\end{proposition}
+\begin{proof}
+若 $\ker A=\{0\}$，上面已经证明存在 $c>0$ 使
+\[
+\|Af\|=\|(I-\lambda K)f\|\ge c\|f\|,
+\qquad f\in\mathcal H.
+\]
+紧算符 $\lambda K$ 可以在算符范数下由有限秩算符 $F$ 逼近。取 $F$ 使
+\[
+\|\lambda K-F\|<\frac c4.
+\]
+于是
+\[
+\|(I-F)f\|
+\ge \|Af\|-\|(\lambda K-F)f\|
+\ge\frac{3c}{4}\|f\|.
+\]
+所以 $I-F$ 单射。由于 $F$ 只有有限维值域，$I-F$ 的满射性可以完全降到有限维问题。记
+\[
+M=\operatorname{Ran}F.
+\]
+给定任意 $y\in\mathcal H$，尝试寻找形如 $x=y+z$、$z\in M$ 的原像。方程 $ (I-F)x=y$ 等价于
+\[
+(I-F)z=Fy.
+\]
+这里左右两边都属于 $M$。限制算符
+\[
+(I-F)|_M:M\to M
+\]
+是单射，因为若 $z\in M$ 且 $(I-F)z=0$，由 $I-F$ 在整个空间上的单射性就有 $z=0$。有限维空间上单射等价于满射，因此对每个 $Fy\in M$ 都存在唯一 $z\in M$ 解上式。故每个 $y$ 都有原像 $x=y+z$，所以 $I-F$ 在整个 $\mathcal H$ 上双射，而且由上式
+\[
+\|(I-F)^{-1}\|\le\frac{4}{3c}.
+\]
+现在分解
+\[
+A
+=(I-F)\left[I-(I-F)^{-1}(\lambda K-F)\right].
+\]
+第二个括号中的扰动满足
+\[
+\|(I-F)^{-1}(\lambda K-F)\|
+<\frac{4}{3c}\frac c4
+=\frac13<1.
+\]
+因此它可以用 Neumann 级数求逆。两个因子都可逆，所以 $A=I-\lambda K$ 可逆。于是
+\[
+\ker A=\{0\}
+\quad\Longrightarrow\quad
+\operatorname{Ran}A=\mathcal H.
+\]
+这就给出了 Fredholm 二择一定理“齐次解只有零解 $\Rightarrow$ 非齐次问题对任意右端唯一可解”的自包含证明，同时也说明紧性在其中究竟用在何处：它保证了 $\lambda K$ 可以被有限秩算符在算符范数下逼近。
+\end{proof}
+
+
+
+若
+
+\[
+|\lambda|\,\|K\|_{\mathrm{op}}<1,
+\]
+
+则
+
+\[
+(I-\lambda K)^{-1}
+=\sum_{n=0}^{\infty}(\lambda K)^n
+\]
+
+在算符范数下收敛，因此方程有唯一解
+
+\begin{equation*}{f=\sum_{n=0}^{\infty}\lambda^nK^n\phi}.\end{equation*}
+
+这不是形式猜测。令
+
+\[
+S_N=\sum_{n=0}^N(\lambda K)^n,
+\]
+
+则
+
+\[
+(I-\lambda K)S_N=I-(\lambda K)^{N+1}.
+\]
+
+由 $\|\lambda K\|<1$ 可知余项范数
+
+\[
+\|(\lambda K)^{N+1}\|
+\le\|\lambda K\|^{N+1}\to0.
+\]
+
+所以这个展开的控制参数就是 $|\lambda|\|K\|$。当它接近或超过 $1$ 时，Neumann 级数不能作为一般保证，但原 Fredholm 方程仍可能有解；此时要转向谱理论或 Fredholm 二择一定理。
+
+逐次逼近
+
+\[
+f_0=\phi,\qquad f_{n+1}=\phi+\lambda Kf_n
+\]
+
+正是 Neumann 部分和的递推形式。
+
+若把算符幂重新写成积分核，还能得到经典的 Fredholm 预解式 核。定义迭代核
+
+\[
+K_1(x,y)=K(x,y),
+\]
+
+\[
+K_{n+1}(x,y)
+=\int_a^bK(x,z)K_n(z,y)\,\dd z.
+\]
+
+于是
+
+\[
+(K^n\phi)(x)=\int_a^bK_n(x,y)\phi(y)\,\dd y.
+\]
+
+在 Neumann 收敛条件下定义
+
+\[
+R_\lambda(x,y)
+=\sum_{n=1}^{\infty}\lambda^{n-1}K_n(x,y),
+\]
+
+则精确解可写为
+
+\[
+{
+f(x)=\phi(x)+\lambda\int_a^bR_\lambda(x,y)\phi(y)\,\dd y
+}.
+\]
+
+把级数向前错一项还得到 预解恒等式
+
+\[
+R_\lambda=K+\lambda KR_\lambda
+=K+\lambda R_\lambda K.
+\]
+
+因此 Neumann 级数、逐次逼近和 预解式 核 不是三套不同方法，而是同一个逆算符 $(I-\lambda K)^{-1}$ 的三种写法。
+对紧算符 $K$，固定 $\lambda\neq0$。非齐次方程
+
+\[
+(I-\lambda K)f=\phi
+\]
+
+可解，当且仅当 $\phi$ 与伴随齐次方程
+
+\[
+(I-\lambda^*K^\dagger)g=0
+\]
+
+的所有解正交：
+
+\begin{equation*}{\langle g|\phi\rangle=0}.\end{equation*}
+
+特别地，若 $K$ 自伴且 $\lambda$ 为实数，则条件化为：$\phi$ 必须与
+
+\[
+(I-\lambda K)g=0
+\]
+
+的所有齐次解正交。
+
+若齐次方程只有零解，则 $I-\lambda K$ 可逆，因而对每个 $\phi$ 都有唯一解。这就是``二择一''的核心：要么齐次问题出现非零解，要么非齐次问题对任意右端都有唯一解。
+
+要完成 Fredholm 二择一，还需把“齐次方程只有零解”提升为满射性。紧性允许用有限秩算符逼近 $\lambda K$，从而把满射性先化为有限维问题，再用一个小范数扰动恢复原算符的可逆性。
+
+上面的证明属于一个更一般的抽象框架。设 $T:X\to Y$ 是 Banach 空间之间的有界线性算子。若
+\begin{equation*}\dim\ker T<\infty,
+\qquad
+\operatorname{Ran}T\text{ 闭},
+\qquad
+\dim(Y/\operatorname{Ran}T)<\infty,\end{equation*}
+则称 $T$ 为 Fredholm 算子，并定义 指标
+\begin{equation*}{
+\operatorname{ind}T
+:=\dim\ker T-\dim\operatorname{coker}T.
+}\end{equation*}
+在 Hilbert 空间中，闭值域定理给出
+\[
+\operatorname{coker}T
+\cong(\operatorname{Ran}T)^\perp
+=\ker T^\dagger,
+\]
+所以
+\begin{equation*}\operatorname{ind}T
+=\dim\ker T-\dim\ker T^\dagger.\end{equation*}
+Fredholm 择一 的真正本质正是：$I-\lambda K$ 不仅值域闭，而且是 指标 为零的 Fredholm 算子。
+
+为什么“恒等式 + 紧”天然进入 Fredholm 类，由 Atkinson 定理 精确回答。
+
+
+
+\begin{theorem}[Atkinson 定理与 Fredholm 稳定性]\label{thm:math-fredholm-atkinson}
+设 $T:X\to Y$ 为 Banach 空间之间的有界算子。则 $T$ Fredholm 当且仅当存在有界 $S:Y\to X$ 使 $ST-I$、$TS-I$ 均紧。对紧 $C:X\to Y$，$T+C$ 的 Fredholm 性与指标和 $T$ 相同。
+\begin{equation}
+ST-I\in\mathcal K(X),\qquad TS-I\in\mathcal K(Y).
+\label{eq:math-fredholm-parametrix-mod-compact}
+\end{equation}
+\end{theorem}
+\begin{proof}
+先从 Fredholm 算子的有限维缺陷构造一个有界拟逆。因为有限维子空间有闭补空间、有限余维闭子空间也有有限维补空间，可取
+\[
+X=\ker T\oplus X_1,
+\]
+再把值域空间分解为
+\[
+Y=\operatorname{Ran}T\oplus Y_0,
+\]
+其中 $Y_0$ 有限维。限制
+\[
+T_1:=T|_{X_1}:X_1\to\operatorname{Ran}T
+\]
+是有界双射；由有界逆定理，其逆有界。定义 $S:Y\to X$ 为
+\[
+S(y_r+y_0):=T_1^{-1}y_r.
+\]
+于是 $ST$ 在 $X_1$ 上为恒等、在 $\ker T$ 上为零，因此
+\[
+I-ST=P_{\ker T}
+\]
+是有限秩；同理
+\[
+I-TS=P_{Y_0}
+\]
+也是有限秩。于是得到\eqnrefs{eq:math-fredholm-parametrix-mod-compact}。
+
+反过来，设 $ST=I+K_1$、$TS=I+K_2$，其中 $K_1,K_2$ 紧。
+恒等算子加紧算子的核有限维：否则 Riesz 引理可在核中选出两两距离有统一正下界的单位向量列；在这些向量上 $x=-K_1x$，紧性却要求一个收敛子列，矛盾。
+因为 $\ker T\subset\ker(ST)$，所以 $\ker T$ 有限维。
+
+值域闭性还需要一个定量下界。若不存在 $\operatorname{dist}(x,\ker T)\le C\|Tx\|$，则在商空间中归一化并选取范数不超过 $2$ 的代表，可得
+\[
+\operatorname{dist}(x_n,\ker T)=1,\qquad \|x_n\|\le2,
+\qquad Tx_n\to0.
+\]
+由 $x_n=STx_n-K_1x_n$ 与紧性，这列向量有收敛子列，其极限 $x$ 满足 $Tx=0$，但连续的距离函数仍给 $\operatorname{dist}(x,\ker T)=1$，矛盾。
+下界说明商空间到值域的诱导映射的逆有界；商空间完备，故值域闭。
+
+对 Banach 转置应用同一核论证。转置恒等式为
+\[
+T^\prime S^\prime=I+K_1^\prime,\qquad
+S^\prime T^\prime=I+K_2^\prime.
+\]
+Schauder 定理保证紧算子的转置仍紧，故 $\ker T^\prime$ 有限维。
+它正是 $\operatorname{Ran}T$ 的零化子，并与 $(Y/\operatorname{Ran}T)^*$ 同构；若这个商空间无限维，Hahn--Banach 可构造任意多个线性无关的连续泛函，矛盾。
+于是余核也有限维，$T$ 为 Fredholm 算子。
+
+现在若加紧扰动 $C$，同一个 $S$ 满足
+\[
+S(T+C)-I=(ST-I)+SC\in\mathcal K,
+\]
+\[
+(T+C)S-I=(TS-I)+CS\in\mathcal K,
+\]
+所以 $T+C$ 仍 Fredholm。要证明指标不变，还需证明指标对小的算子范数扰动局部不变。
+沿用 $X=X_1\oplus\ker T$、$Y=\operatorname{Ran}T\oplus Y_0$，把足够接近 $T$ 的算子 $Q$ 写成
+\[
+Q=\begin{pmatrix}Q_{11}&Q_{12}\\Q_{21}&Q_{22}\end{pmatrix}.
+\]
+$Q_{11}$ 接近可逆的 $T_1$，故由 Neumann 级数仍可逆。左右乘有界可逆的三角块，消去非对角项，得到
+\[
+\begin{pmatrix}I&0\\-Q_{21}Q_{11}^{-1}&I\end{pmatrix}
+Q
+\begin{pmatrix}I&-Q_{11}^{-1}Q_{12}\\0&I\end{pmatrix}
+=\begin{pmatrix}Q_{11}&0\\0&D_Q\end{pmatrix},
+\quad D_Q=Q_{22}-Q_{21}Q_{11}^{-1}Q_{12}.
+\]
+可逆因子不改变核维数与像余维。有限维块 $D_Q:\ker T\to Y_0$ 因秩零度定理满足
+\[
+\dim\ker D_Q-\dim\operatorname{coker}D_Q
+=\dim\ker T-\dim Y_0=\operatorname{ind}T.
+\]
+因此 $Q$ 仍 Fredholm 且指标与 $T$ 相同。这证明了局部常值性。
+路径 $T+tC$ 对全部 $0\le t\le1$ 都 Fredholm，沿这条连通路径的局部常值整数必须保持不变，故 $\operatorname{ind}(T+C)=\operatorname{ind}T$。
+\end{proof}
+
+
+当 $X=Y$、$T$ 是同一 Banach 空间上的自映射时，上述结论还可以用商代数表达。紧算子构成 $\mathcal B(X)$ 的闭双边理想，因此可以组成 Calkin 代数
+\[
+\mathcal B(X)/\mathcal K(X).
+\]
+算子 $T$ 在这个商代数中的像可逆，当且仅当存在 $S$ 使 $ST-I$、$TS-I$ 都紧，也就当且仅当 $T$ 为 Fredholm 算子。对
+\[
+T=I-K,
+\qquad K\text{ 为紧算子},
+\]
+直接取 $S=I$ 就有
+\[
+ST-I=TS-I=-K\in\mathcal K,
+\]
+故 $I-K$ 自动 Fredholm。
+
+为了确定 $I-\lambda K$ 的指标，把它沿紧扰动路径接到恒等算子：
+\[
+T_t=I-t\lambda K,
+\qquad0\le t\le1.
+\]
+每个 $T_t$ 都为 Fredholm 算子，指标由已证明的紧扰动稳定性保持不变；起点满足
+\[
+\operatorname{ind}T_0=\operatorname{ind}I=0.
+\]
+所以
+\begin{equation*}{
+\operatorname{ind}(I-\lambda K)=0.
+}\end{equation*}
+指标为零把单射性与满射性接了起来。若
+\[
+\ker(I-\lambda K)=\{0\},
+\]
+则指标为零迫使余核维数也为零；又因值域闭，所以值域就是整个空间。
+
+平方可积核提供了具体的紧算子。设 $X,Y$ 为 $\sigma$ 有限测度空间，$K:L^2(X)\to L^2(Y)$ 的核 $k(y,x)$ 满足
+\[
+\|K\|_{\mathrm{HS}}^2=\int_{Y\times X}|k(y,x)|^2\,\dd y\,\dd x<\infty,
+\]
+则本节开始时的 Cauchy--Schwarz 估计与有限秩核逼近仍适用，给出 $\|K\|\le\|K\|_{\mathrm{HS}}$ 和紧性。
+
+对 $T=I+K$，Atkinson 定理给出 $\operatorname{ind}T=0$，即 Fredholm 二择一：$Tx=y$ 可解当且仅当 $y\perp\ker(I+K)^*$。
+
+在紧致、无边界的偶数维自旋流形上，带光滑规范联络的手征 Dirac 算子可实现为 Sobolev 空间之间的椭圆 Fredholm 映射
+\[
+D_A^+:H^1(S^+\otimes E)\longrightarrow L^2(S^-\otimes E),
+\]
+其中 $S^\pm$ 为正、负手征自旋丛，$E$ 为规范场作用的向量丛。固定度量和丛后，改变光滑联络只改变一个零阶项；紧致流形上的紧嵌入 $H^1\hookrightarrow L^2$ 使这个差成为紧算子，所以本节的稳定性保证指标不变。
+
+Atiyah--Singer 定理进一步把指标表示为曲率特征形式的积分；具体积分同时取决于流形与规范丛。椭圆拟逆消去非零作用方向，核与余核仍须单独保留，因而不能把它直接写成不存在的全空间逆 $D_A^{-1}$。在非紧流形或带边界情形，还必须另行规定使算子 Fredholm 的条件。
+
+紧算子的非零谱为什么只有孤立点，还须区分本征向量与广义本征向量。后者在减去本征值以后，可能要反复作用几次才变成零；预解式的高阶极点正记录了这个次数。
+
+\begin{definition}[广义本征空间与重数]
+设 $K$ 为复 Banach 空间 $X$ 上的紧算子，$\mu\ne0$ 为本征值，记 $A=K-\mu I$。定义
+\[
+N_j=\ker A^j,\qquad N_0=\{0\},
+\qquad G_\mu=\bigcup_{j\ge1}N_j.
+\]
+几何重数是 $\dim N_1$。若 $N_j$ 最终不再增大，则最小的 $k\ge1$ 使 $N_k=N_{k+1}$ 称为稳定阶数，代数重数定义为 $\dim G_\mu$。
+\end{definition}
+
+\begin{theorem}[紧算子的非零谱与广义分解]
+紧算子 $K$ 的每个非零谱点 $\mu$ 都是孤立本征值。上述稳定阶数 $k$ 有限，$G_\mu=N_k$ 有限维，并且
+\[
+X=N_k\oplus\operatorname{Ran}(K-\mu I)^k.
+\]
+两项都为闭的 $K$ 不变子空间。$K-\mu I$ 在第二项上有有界逆，在第一项上是幂零阶数为 $k$ 的算子。对任意 $\delta>0$，满足 $|\mu|\ge\delta$ 的谱点只有有限个。
+\end{theorem}
+\begin{proof}
+由 Atkinson 定理，$K-\mu I$ 是指标零的 Fredholm 算子。如果它不可逆，核必须非零，故非零谱点就是本征值。每个幂
+\[
+A^j=(-\mu)^jI+C_j
+\]
+仍是非零标量乘恒等算子加紧算子，所以也为指标零的 Fredholm 算子。因而 $N_j$ 有限维，$R_j=\operatorname{Ran}A^j$ 闭，且
+\[
+\operatorname{codim}R_j=\dim N_j.
+\]
+
+先排除核无限增长。若 $N_j=N_{j+1}$，对 $A^{j+2}x=0$ 有 $Ax\in N_{j+1}=N_j$，所以 $x\in N_{j+1}=N_j$；逐次迭代即知以后所有核相同。因此若不稳定，每一步都严格增加。由 Riesz 引理可取 $x_j\in N_j$，使
+\[
+\|x_j\|=1,\qquad\operatorname{dist}(x_j,N_{j-1})>\tfrac12.
+\]
+因为 $Ax_j\in N_{j-1}$，而当 $i<j$ 时 $Kx_i\in N_{j-1}$，有
+\[
+\|Kx_j-Kx_i\|
+\ge|\mu|\operatorname{dist}(x_j,N_{j-1})>\tfrac{|\mu|}{2}.
+\]
+这与紧性要求存在收敛子列矛盾。故存在有限稳定阶数 $k$，广义空间就是有限维的 $N_k$。
+
+核稳定后，$R_{k+1}\subset R_k$ 的余维相同，所以 $R_{k+1}=R_k$，以后也不再变化。若 $x\in N_k\cap R_k$，写 $x=A^ky$；$A^kx=0$ 蕴含 $y\in N_{2k}=N_k$，于是 $x=0$。又因 $\dim N_k=\operatorname{codim}R_k$，这个平凡交的和必为整个 $X$。$A$ 在 $R_k$ 上单射，因为其核包含于 $N_k$；它也满射，因为 $AR_k=R_{k+1}=R_k$。开映射定理给有界逆。两个子空间都由 $A$ 的核或值域定义，故在 $A$ 和 $K=A+\mu I$ 下不变。
+
+还需排除非零位置的谱聚集。反设有彼此不同的本征值 $\mu_j$ 满足 $|\mu_j|\ge\delta>0$。记 $E_{\mu_j}=\ker(K-\mu_jI)$，令
+\[
+M_j=E_{\mu_1}+\cdots+E_{\mu_j}.
+\]
+不同本征值的本征向量线性无关，故这些有限维闭空间严格递增。取单位向量 $y_j\in M_j$，使 $\operatorname{dist}(y_j,M_{j-1})>1/2$。商空间 $M_j/M_{j-1}$ 上的 $K$ 等于乘以 $\mu_j$，所以
+\[
+Ky_j-\mu_jy_j\in M_{j-1},\qquad
+Ky_i\in M_{j-1}\quad(i<j).
+\]
+于是 $\|Ky_j-Ky_i\|>\delta/2$，再次违背紧性。每个非零谱点因此孤立，非零谱的唯一可能聚点为 $0$。
+\end{proof}
+
+当 $K$ 自伴时，幂零部分必须为零，因而稳定阶数为 $1$；一般紧算子则可以有更长的广义链。仅证明普通本征空间有限维还不能确定链的长度，前面的紧性论证同时控制了这两件事。
+
+\begin{definition}[Riesz 投影]
+取逆时针圆周 $\Gamma$ 包围孤立非零本征值 $\mu$，且其内外附近没有其他谱点。定义有界算子
+\[
+\Pi_\mu=\frac1{2\pi\ii}
+\int_\Gamma(zI-K)^{-1}\,\dd z.
+\]
+这里用的是预解式 $(zI-K)^{-1}$；若改用 $(K-zI)^{-1}$，整体符号也须改变。
+\end{definition}
+
+\begin{proposition}[谱投影与预解式的主部]
+上述 $\Pi_\mu$ 是沿 $R_k$ 投影到 $G_\mu=N_k$ 的有限秩投影，与 $K$ 交换。令 $J_\mu=(K-\mu I)\Pi_\mu$，则
+\[
+\Pi_\mu^2=\Pi_\mu,\qquad J_\mu^k=0,
+\]
+且在 $\mu$ 附近
+\[
+(zI-K)^{-1}
+=\sum_{j=0}^{k-1}\frac{J_\mu^j\Pi_\mu}{(z-\mu)^{j+1}}
++H_\mu(z),
+\]
+其中 $H_\mu$ 解析。预解式极点阶数恰为 $k$，而留数为 $\Pi_\mu$。一般 $\Pi_\mu$ 不必是正交投影。
+\end{proposition}
+\begin{proof}
+利用已证直和，把 $K$ 分成 $N_k$ 与 $R_k$ 上的两个块。在 $N_k$ 上写 $K=\mu I+J$，其中 $J^k=0$，有限几何级数给
+\[
+((z-\mu)I-J)^{-1}
+=\sum_{j=0}^{k-1}\frac{J^j}{(z-\mu)^{j+1}}.
+\]
+在 $R_k$ 上 $K-\mu I$ 可逆，Neumann 级数保证该块的预解式在足够小的圆盘内解析。围道积分只有第一块的 $(z-\mu)^{-1}I_{N_k}$ 项留下，所以 $\Pi_\mu$ 在 $N_k$ 上等于恒等算子，在 $R_k$ 上等于零。投影性、有限秩和交换关系随之成立。
+稳定阶数最小意味着 $J^{k-1}\ne0$，故主部最高项确实存在，极点阶数不是仅有上界。把第二块的解析逆写为 $H_\mu$ 即得所述展开。两块一般不正交，因此围道投影也无需自伴。
+\end{proof}
+
+\begin{exbox}[同一个 Jordan 块的广义链、谱投影与极点]
+在 $X=\CC^3\oplus\ell^2$ 上取紧算子
+\[
+K=B\oplus D,\qquad
+B=\begin{pmatrix}2&1&0\\0&2&1\\0&0&-1\end{pmatrix},
+\qquad (Dw)_n=\frac{w_n}{n+3}.
+\]
+求本征值 $\mu=2$ 的两种重数、稳定阶数、Riesz 投影和预解式主部；再计算 $(I-\lambda K)^{-1}$ 在 $\lambda=1/2$ 附近的奇性。
+
+\textbf{解。} $D$ 是有限秩截断的范数极限，故紧；$B$ 有限维，所以直和 $K$ 紧。对前三个坐标基，有
+\[
+(B-2I)e_1=0,\qquad(B-2I)e_2=e_1.
+\]
+第三个基不在广义空间内，因为 $B$ 的另一本征值为 $-1$。因此
+\[
+N_1=\operatorname{span}\{e_1\},\qquad
+N_2=N_3=\operatorname{span}\{e_1,e_2\}.
+\]
+几何重数为 $1$、代数重数为 $2$、稳定阶数为 $2$。
+解 $(B+I)v=0$ 得 $v=(1/9,-1/3,1)^T$。按第三坐标减去 $v$ 的分量，沿该本征方向投影到前两坐标，得
+\[
+P=\begin{pmatrix}1&0&-1/9\\0&1&1/3\\0&0&0\end{pmatrix},
+\qquad
+J=(B-2I)P=\begin{pmatrix}0&1&1/3\\0&0&0\\0&0&0\end{pmatrix}.
+\]
+直接相乘可核对 $P^2=P$、$BP=PB$、$J^2=0$ 和 $J\ne0$。所以 $\Pi_2=P\oplus0$，且 $P\ne P^*$；这给出一个实际的非正交谱投影。
+在三维块上
+\[
+(zI-B)^{-1}
+=\frac{P}{z-2}+\frac{J}{(z-2)^2}+\frac{I-P}{z+1}.
+\]
+尾部 $(zI-D)^{-1}$ 在 $2$ 附近按算子范数解析。因此留数是 $P\oplus0$，二阶极点系数是 $J\oplus0$，不能只由一个普通本征向量写出整个主部。
+
+第二种参数化给三维块
+\[
+(I-\lambda B)^{-1}
+=\frac{P}{1-2\lambda}
++\frac{\lambda J}{(1-2\lambda)^2}
++\frac{I-P}{1+\lambda}.
+\]
+令 $h=\lambda-1/2$，则主部为
+\[
+\frac{J}{8h^2}
++\frac{-P/2+J/4}{h}.
+\]
+两种预解式的极点阶数相同，但留数不同，因为参数变换同时带入了比例因子。这也是积分方程中的参数极点不能直接写成谱投影的原因。
+\end{exbox}
+
+这种分解把非零谱的局部问题变成有限维幂零块与有界可逆块。无限维紧算子的主要困难仍在 $0$ 附近：它可能是谱聚点，而本节的有限维广义分解只针对 $\mu\ne0$。
+
+
+这个结构还能沿复参数解析延拓。设 $U\subset\CC$ 为连通开集，$K(z)$ 是算子范数解析的紧算子族，并令
+\[
+A(z)=I-K(z).
+\]
+解析 Fredholm 定理 断言：只有两种可能。
+\begin{enumerate}[label=(\roman*)]
+\item 对每个 $z\in U$，$A(z)$ 都不可逆；
+\item 存在至少一个 $z_0$ 使 $A(z_0)$ 可逆，此时不可逆点在 $U$ 中离散，并且
+\begin{equation*}A(z)^{-1}\end{equation*}
+是算子值亚纯函数；每个极点的 Laurent 主部系数都是有限秩算子。
+\end{enumerate}
+
+\begin{theorem}[解析 Fredholm 择一]
+设 $U\subset\CC$ 为连通开集，$K(z)$ 为算子范数解析的紧算子族，$A(z)=I-K(z)$。则要么处处不可逆，要么不可逆点离散，且 $A(z)^{-1}$ 为亚纯算子族，每个极点的 Laurent 主部系数均为有限秩。
+\end{theorem}
+\begin{proof}
+固定 $z_*$，先把 $A(z_*)$ 的核与余核分离出来；只有这两块可能造成不可逆性。
+因 $A(z_*)$ 为指标零的 Fredholm 算子，可作分解
+\[
+X=N\oplus X_1,
+\qquad
+X=R\oplus Y_0,
+\]
+其中
+\[
+N=\ker A(z_*),
+\qquad
+R=\operatorname{Ran}A(z_*),
+\qquad
+\dim N=\dim Y_0<\infty.
+\]
+按定义域顺序 $X_1\oplus N$、值域顺序 $R\oplus Y_0$，写成
+\[
+A(z)=\begin{pmatrix}A_{11}(z)&A_{12}(z)\\A_{21}(z)&A_{22}(z)\end{pmatrix}.
+\]
+$A_{11}(z_*)=A(z_*)|_{X_1}$ 可逆；算子范数解析性和 Neumann 级数保证它在一个小圆盘内仍可逆，且逆解析。
+与前面的三角块消元相同，$A(z)$ 可逆当且仅当有限维块
+\[
+M(z):=A_{22}(z)-A_{21}(z)A_{11}(z)^{-1}A_{12}(z):N\to Y_0
+\]
+可逆。$\dim N=\dim Y_0$，故选定基后 $M(z)$ 是方阵，且矩阵元解析。所以
+\[
+\det M(z)
+\]
+是普通复解析函数。它若不恒为零，其零点只能离散；有限维逆矩阵由伴随矩阵与行列式表示
+\[
+M(z)^{-1}=\frac{\operatorname{adj}M(z)}{\det M(z)},
+\]
+因此只产生有限阶极点。具体地，逆的唯一可能奇异部分来自
+\[
+\binom{-A_{11}^{-1}A_{12}}{I_N}
+M(z)^{-1}
+\begin{pmatrix}-A_{21}A_{11}^{-1}&I_{Y_0}\end{pmatrix};
+\]
+其余部分是由 $A_{11}^{-1}$ 给出的解析块。
+该式通过有限维空间 $N,Y_0$ 因子化。对每个负幂系数，解析因子的 Taylor 展开只参与有限项，因此每个 Laurent 主部系数仍为有限秩。
+
+还需把局部结论接到整个 $U$。
+令 $W$ 为可逆点集合的相对闭包。若 $W$ 为空，则处处不可逆。
+若 $z_*\in W$，上述小圆盘内存在可逆点，所以局部行列式不恒为零；其零点离散，可逆点在整个圆盘中稠密，故这个圆盘都属于 $W$。
+因此 $W$ 同时是开集和闭集。$U$ 连通，非空的 $W$ 只能等于 $U$。
+这时每个点都有行列式不恒为零的邻域，非可逆点局部离散，局部亚纯逆在可逆点上相同，因而拼成全域的亚纯算子族。
+\end{proof}
+
+
+\begin{exbox}[区间 Green 算子的极点与 Volterra 的整函数逆]
+在 $L^2(0,\pi)$ 上取 $H=-\partial_x^2+\omega^2$，$\omega\ge0$，
+$\Dom(H)=H^2(0,\pi)\cap H_0^1(0,\pi)$，并令 $K=H^{-1}$。
+求 $(I-zK)^{-1}$ 的极点及留数，再与 $L^2(0,1)$ 上的 Volterra 算子 $Vf(x)=\int_0^xf(t)\,\dd t$ 比较。
+
+\textbf{解。} 正弦基 $e_n=\sqrt{2/\pi}\sin(nx)$ 给出 $He_n=h_ne_n$、$h_n=n^2+\omega^2$。
+记 $P_n f=\langle f,e_n\rangle e_n$，则
+\[
+(I-zK)^{-1}f=\sum_{n\ge1}\frac{h_n}{h_n-z}P_nf.
+\]
+在 $z=h_j$ 附近，把唯一奇异项写为
+\[
+\frac{h_j}{h_j-z}P_j=-\frac{h_j}{z-h_j}P_j.
+\]
+所以留数是 $-h_jP_j$，不是 $P_j$ 本身。
+其余模态在该点附近一致有界并解析，因为 $h_n\to\infty$。
+同一基还给 $\ee^{-tH}=\sum \ee^{-th_n}P_n$；两种算子函数使用相同的谱投影，但标量权重不同。
+
+对 $V$，迭代积分给
+\[
+V^mf(x)=\frac1{(m-1)!}\int_0^x(x-t)^{m-1}f(t)\,\dd t,
+\qquad m\ge1.
+\]
+把 $f$ 零延拓后使用卷积的 $L^1$–$L^2$ 估计，得 $\|V^m\|\le1/m!$。
+故 $\sum_{m\ge0}z^mV^m$ 在每个有界 $z$ 集合上按算子范数一致收敛，且与 $I-zV$ 相乘得恒等算子。
+因此 $(I-zV)^{-1}$ 在全复平面解析，没有极点；谱半径公式给 $\sigma(V)=\{0\}$。
+\end{exbox}
+
+这里得到的是指定算子族在原参数域中的谱极点。连续谱散射中的共振还需要把响应延拓到原预解集以外的适当空间；仅有紧扰动假设不能直接给出这种延拓。
+
+对固定 紧算子 $K$，取
+\[
+A(z)=I-zK.
+\]
+因为 $A(0)=I$ 可逆，解析 Fredholm 定理 必落在第二种情形。因此
+\begin{equation*}{
+(I-zK)^{-1}
+\text{ 关于 }z\text{ 亚纯},
+}\end{equation*}
+其极点恰位于
+\[
+z=\mu^{-1},
+\qquad
+\mu\in\sigma(K)\setminus\{0\}.
+\]
+这把 Neumann 级数的局部收敛区域升级成全复平面的亚纯 延拓：Neumann 级数只在 $|z|\|K\|<1$ 直接收敛，但 预解式 本身可以越过这一圆盘继续解析，直到遇到由非零本征值决定的离散极点。积分方程里的“共振参数”因此就是 算符-取值 亚纯 预解式 的极点。
+若核可写成有限秩形式
+
+\[
+K(x,y)=\sum_{j=1}^N a_j(x)b_j^*(y),
+\]
+
+则
+
+\[
+(Kf)(x)=\sum_{j=1}^N a_j(x)c_j,
+\qquad
+c_j=\int_a^b b_j^*(y)f(y)\,\dd y.
+\]
+
+把
+
+\[
+f=\phi+\lambda Kf
+\]
+
+代入 $c_i$ 的定义，得到有限维线性方程组
+
+\[
+c_i=d_i+\lambda\sum_{j=1}^N M_{ij}c_j,
+\]
+
+其中
+
+\[
+d_i=\int_a^b b_i^*(x)\phi(x)\,\dd x,
+\qquad
+M_{ij}=\int_a^b b_i^*(x)a_j(x)\,\dd x.
+\]
+
+因此
+
+\[
+(I-\lambda M)\vb{c}=\vb{d}.
+\]
+
+这说明``退化核方法''的本质是把无限维积分方程精确降为有限维矩阵问题，而不是近似。只有当一般核再用有限秩核逼近时，才真正引入截断误差。
+
+若
+
+\[
+\|K-K_N\|_{\mathrm{HS}}\to0,
+\]
+
+则由于 $\|K-K_N\|_{\mathrm{op}}\le\|K-K_N\|_{\mathrm{HS}}$，也得到算符范数控制。这样有限秩逼近才是受控近似。
+
+一个有限秩共振例子可以把 Fredholm 二择一的抽象条件直接化成代数方程。
+
+抽象的 Fredholm 择一 最容易在共振参数处显得难懂。下面用两个可以完全算完的例子，把``齐次解出现''、``非齐次右端必须正交''与``解不唯一''三件事放在同一张计算链上。
+
+先看区间 $[0,1]$ 上的秩一核
+\[
+K(x,y)=1.
+\]
+第二类方程为
+\begin{equation*}f(x)-\lambda\int_0^1 f(y)\,\dd y=\phi(x).\end{equation*}
+记
+\[
+c=\int_0^1f(y)\,\dd y,
+\qquad
+d=\int_0^1\phi(y)\,\dd y.
+\]
+原方程立即给出
+\[
+f(x)=\phi(x)+\lambda c.
+\]
+再对 $x$ 从 $0$ 到 $1$ 积分，得到唯一的标量方程
+\[
+c=d+\lambda c,
+\]
+即
+\[
+(1-\lambda)c=d.
+\]
+因此若 $\lambda\neq1$，
+\[
+c=\frac{d}{1-\lambda},
+\]
+并且
+\begin{equation*}{
+f(x)=\phi(x)+\frac{\lambda}{1-\lambda}
+\int_0^1\phi(y)\,\dd y
+}.\end{equation*}
+这里的预解核甚至可以直接读出：
+\[
+R_\lambda(x,y)=\frac1{1-\lambda}.
+\]
+
+真正有结构的是 $\lambda=1$。此时齐次方程
+\[
+f(x)-\int_0^1f(y)\,\dd y=0
+\]
+要求 $f$ 为任意常数函数，所以
+\[
+\ker(I-K)=\operatorname{span}\{1\}.
+\]
+由于该核是实对称核，$K^\dagger=K$，伴随齐次核也是同一空间。Fredholm 正交条件于是成为
+\[
+\langle1,\phi\rangle
+=\int_0^1\phi(x)\,\dd x=0.
+\]
+这与标量方程在 $\lambda=1$ 时要求 $d=0$ 完全一致。若兼容条件满足，则
+\[
+f(x)=\phi(x)+c,
+\qquad c\in\CC
+\]
+全部都是解；若不满足，则根本无解。一个无限维积分方程在这个退化核上把 Fredholm 择一 的三种情况完整展示出来了。
+
+第二个例子把积分方程和 Sturm--Liouville 共振直接连起来。考虑
+\[
+-u''(x)=g(x),
+\qquad 0<x<\pi,
+\qquad u(0)=u(\pi)=0.
+\]
+对应 Green 函数为
+\[
+G(x,y)=
+\begin{cases}
+\displaystyle \frac{x(\pi-y)}{\pi},&x\le y,\\[1ex]
+\displaystyle \frac{y(\pi-x)}{\pi},&y\le x.
+\end{cases}
+\]
+它满足
+\[
+-\partial_x^2G(x,y)=\delta(x-y),
+\qquad G(0,y)=G(\pi,y)=0.
+\]
+因此逆算符
+\[
+(Kg)(x)=\int_0^\pi G(x,y)g(y)\,\dd y
+\]
+正是 Dirichlet 拉普拉斯算子 $L=-\dd^2/\dd x^2$ 的逆 $K=L^{-1}$。
+
+现在研究带参数的边值问题
+\begin{equation}
+-u''(x)-\lambda u(x)=f(x),
+\qquad u(0)=u(\pi)=0.
+\label{eq:sturm-liouville-resonance}
+\end{equation}
+把它写成
+\[
+Lu=f+\lambda u
+\]
+并作用 $K=L^{-1}$，得到
+\[
+u=Kf+\lambda Ku,
+\]
+也就是
+\[
+(I-\lambda K)u=Kf.
+\]
+所以这里的 Fredholm 参数 $\lambda$ 恰好就是微分算符 $L$ 的谱参数。
+
+Dirichlet 拉普拉斯算子 的正交归一本征函数是
+\[
+\varphi_n(x)=\sqrt{\frac2\pi}\sin nx,
+\qquad n=1,2,\dots,
+\]
+满足
+\[
+L\varphi_n=n^2\varphi_n.
+\]
+因此
+\[
+K\varphi_n=\frac1{n^2}\varphi_n.
+\]
+Green 核也可展开为
+\begin{equation*}G(x,y)
+=\sum_{n=1}^\infty
+\frac{2}{\pi n^2}
+\sin(nx)\sin(ny),\end{equation*}
+这里的每个 $1/n^2$ 都是紧算符 $K$ 的本征值。
+
+若 $\lambda\neq n^2$ 对所有 $n$ 成立，把
+\[
+u=\sum u_n\varphi_n,
+\qquad
+f=\sum f_n\varphi_n
+\]
+代入微分方程，逐模态得到
+\[
+(n^2-\lambda)u_n=f_n,
+\]
+所以
+\begin{equation*}{
+u(x)
+=\sum_{n=1}^\infty
+\frac{f_n}{n^2-\lambda}\varphi_n(x)
+}.\end{equation*}
+当 $\lambda$ 接近某个 $m^2$ 时，第 $m$ 个模态的放大因子 $1/(m^2-\lambda)$ 变大；这就是预解算符在本征值附近出现极点的具体形式。
+
+若恰好 $\lambda=m^2$，齐次问题存在
+\[
+u_h(x)=C\sin(mx).
+\]
+为了得到非齐次问题的兼容条件，不必先引用任何抽象定理。把\eqnrefs{eq:sturm-liouville-resonance} 两边乘以 $\sin(mx)$ 并积分：
+\[
+\int_0^\pi[-u''(x)-m^2u(x)]\sin(mx)\,\dd x
+=\int_0^\pi f(x)\sin(mx)\,\dd x.
+\]
+对第一项分部积分两次，利用 $u(0)=u(\pi)=0$ 以及 $\sin(m\cdot0)=\sin(m\pi)=0$，左边恰好为零。因此必须有
+\begin{equation}
+{
+\int_0^\pi f(x)\sin(mx)\,\dd x=0
+}.
+\label{eq:sturm-liouville-compatibility}
+\end{equation}
+这就是 $f\perp\ker(L-m^2I)$。因为 $L$ 自伴，伴随齐次空间仍由 $\sin(mx)$ 张成，所以它与 Fredholm 正交条件完全相同。
+
+若\eqnrefs{eq:sturm-liouville-compatibility}成立，除第 $m$ 模态外其余系数仍由
+\[
+u_n=\frac{f_n}{n^2-m^2},
+\qquad n\neq m
+\]
+确定，而 $u_m$ 任意。因此通解为
+\[
+u(x)
+=\sum_{n\neq m}
+\frac{f_n}{n^2-m^2}\varphi_n(x)
++C\varphi_m(x).
+\]
+至此可以把抽象 Fredholm 择一 翻译成一句非常具体的话：\textbf{当参数碰到齐次本征频率时，外力不能含有该共振模态；若没有该模态，特解存在，但还可以任意叠加齐次本征函数。}
+
+自伴紧核允许把 Fredholm 方程进一步写成正交谱展开。
+
+若 $K$ 是紧自伴算符，则存在一组正交归一的非零本征函数 $\{\varphi_n\}$，满足
+
+\[
+K\varphi_n=\mu_n\varphi_n,
+\qquad \mu_n\in\RR,
+\]
+
+非零本征值只能以 $0$ 为聚点。把
+
+\[
+f=\sum_n f_n\varphi_n+f_0,
+\qquad
+\phi=\sum_n\phi_n\varphi_n+\phi_0,
+\]
+
+其中 $f_0,\phi_0\in\ker K$，代入第二类方程，逐个模态得到
+
+\[
+(1-\lambda\mu_n)f_n=\phi_n.
+\]
+
+所以当 $1-\lambda\mu_n\neq0$ 时
+
+\[
+{f_n=\frac{\phi_n}{1-\lambda\mu_n}}.
+\]
+
+当 $\lambda=1/\mu_n$ 时分母为零，这正是 Fredholm 择一 中齐次方程出现非零解的谱论版本。
+
+非自伴紧算子则应使用奇异值与 Schmidt 分解，而不是强行套用自伴本征展开。
+
+若 $K$ 不自伴，不能指望本征函数本身给出正交基。此时考虑正算符
+
+\[
+K^\dagger K,\qquad KK^\dagger.
+\]
+
+它们具有相同的非零谱。若
+
+\[
+K^\dagger K\,\psi_n=s_n^2\psi_n,
+\qquad s_n>0,
+\]
+
+定义
+
+\[
+\varphi_n=\frac1{s_n}K\psi_n,
+\]
+
+则
+
+\[
+K\psi_n=s_n\varphi_n,
+\qquad
+K^\dagger\varphi_n=s_n\psi_n.
+\]
+
+这就是紧算符的奇异系统。于是对 $f$ 的有效部分，
+
+\[
+Kf=\sum_n s_n\langle\psi_n|f\rangle\varphi_n.
+\]
+
+第一类方程
+
+\[
+Ky=g
+\]
+
+若写成
+
+\[
+g=\sum_n g_n\varphi_n,
+\]
+
+形式解为
+
+\[
+y=\sum_n\frac{g_n}{s_n}\psi_n.
+\]
+
+因为紧算符的奇异值 $s_n\to0$，小的 $s_n$ 会把数据误差放大成 $1/s_n$。这说明第一类 Fredholm 方程常常不适定，也说明为什么实际反演问题需要截断奇异值、Tikhonov 正则化等额外控制。
+
+奇异系统还给出第一类方程可解性的精确 Picard 判据。若
+
+\[
+g=g_0+\sum_ng_n\varphi_n,
+\qquad g_0\in\ker K^\dagger,
+\]
+
+那么 $Ky=g$ 存在平方可积解，当且仅当
+
+\begin{equation*}{
+g_0=0,
+\qquad
+\sum_n\frac{|g_n|^2}{s_n^2}<\infty
+}.\end{equation*}
+
+这时最小范数解为
+
+\[
+y^\dagger=\sum_n\frac{g_n}{s_n}\psi_n.
+\]
+
+若观测数据含噪声 $g^\delta=g+\eta$，小奇异值方向的噪声系数会被放大为 $\eta_n/s_n$。Tikhonov 正则化不再直接除以 $s_n$，而是解
+
+\[
+(K^\dagger K+\alpha I)y_\alpha=K^\dagger g^\delta,
+\qquad \alpha>0.
+\]
+
+在奇异基上逐模态得到
+
+\[
+{
+y_\alpha
+=\sum_n\frac{s_n}{s_n^2+\alpha}\,g_n^\delta\,\psi_n
+}.
+\]
+
+滤波因子
+
+\[
+\frac{s_n}{s_n^2+\alpha}
+\]
+
+在 $s_n\gg\sqrt\alpha$ 时近似 $1/s_n$，而在 $s_n\ll\sqrt\alpha$ 时不再爆炸。于是 $\alpha$ 明确充当``稳定性与逼近误差之间的控制参数''；令 $\alpha\to0$ 的同时必须与数据噪声水平一起选择，不能机械地把正则化参数直接取零。
+
+非零谱的有限维广义分解已经说明了预解式的高阶极点；第一类方程的不适定性则由趋于零的奇异值决定。
+
+把参数复化后，解析 Fredholm 理论进一步把不可逆点组织成预解算符的孤立极点。
+
+考虑
+\[
+A(\lambda)=I-\lambda K.
+\]
+当 $|\lambda|\|K\|<1$ 时，Neumann 级数给出
+\[
+A(\lambda)^{-1}
+=\sum_{n=0}^{\infty}\lambda^nK^n.
+\]
+但对紧算符，逆算符的存在区间远比这个圆盘更大。只要 $1/\lambda$ 不是 $K$ 的非零本征值，$I-\lambda K$ 就可逆。于是可能的奇点只出现在
+\[
+\lambda_n=\frac1{\mu_n}
+\]
+这些离散点上。
+
+在自伴紧算符情形，这一点可以直接从谱展开看出。若
+\[
+Kf=\sum_n\mu_n\langle e_n|f\rangle e_n,
+\]
+则
+\begin{equation*}{
+(I-\lambda K)^{-1}f
+=P_0f+
+\sum_n\frac{1}{1-\lambda\mu_n}
+\langle e_n|f\rangle e_n
+},\end{equation*}
+其中 $P_0$ 投影到 $\ker K$。每个因子
+\[
+\frac1{1-\lambda\mu_n}
+\]
+在 $\lambda=1/\mu_n$ 处有一阶极点。于是 Fredholm 预解式 的奇异性与齐次方程出现非零解完全对应。
+
+这也说明 $|\lambda|\|K\|<1$ 只是 Neumann 级数的一条方便充分条件，不是方程可解的必要条件。真正的障碍是离散的谱点，而不是整个单位圆外区域。
+
+第一类方程的不适定性可由奇异值方向上的误差放大精确量化。
+
+对紧算符奇异系统
+\[
+K\psi_n=s_n\phi_n,
+\qquad s_n\downarrow0,
+\]
+精确数据
+\[
+g=Ky^\dagger
+\]
+具有系数
+\[
+g_n=s_n y_n^\dagger.
+\]
+若观测数据变为
+\[
+g^\delta=g+\eta,
+\qquad \|\eta\|\le\delta,
+\]
+直接形式反演会给出
+\[
+y_{\mathrm{formal}}^\delta
+=\sum_n\left(y_n^\dagger+\frac{\eta_n}{s_n}\right)\psi_n.
+\]
+即使 $\eta$ 很小，只要噪声在足够小的 $s_n$ 方向上有分量，$\eta_n/s_n$ 仍可任意大。这正是 Hadamard 意义下的不稳定性。
+
+Tikhonov 解为
+\[
+y_\alpha^\delta
+=(K^\dagger K+\alpha I)^{-1}K^\dagger g^\delta
+=\sum_n\frac{s_n}{s_n^2+\alpha}g_n^\delta\psi_n.
+\]
+把 $g_n^\delta=s_ny_n^\dagger+\eta_n$ 代入，得到精确误差分解
+\begin{equation*}{
+y_\alpha^\delta-y^\dagger
+=-\sum_n\frac{\alpha}{s_n^2+\alpha}y_n^\dagger\psi_n
++\sum_n\frac{s_n}{s_n^2+\alpha}\eta_n\psi_n
+}.\end{equation*}
+第一项是正则化偏差，第二项是数据噪声传播。
+
+\begin{proposition}[Tikhonov 正规方程与奇异值滤波]
+设 $K:X\to Y$ 为 Hilbert 空间之间的有界算子，$\alpha>0$。泛函 $\|Ky-g^\delta\|^2+\alpha\|y\|^2$ 有唯一极小点，满足 $(K^*K+\alpha I)y_\alpha=K^*g^\delta$；紧 $K$ 时奇异值滤波因子为 $s_n/(s_n^2+\alpha)$。
+\end{proposition}
+\begin{proof}
+给定噪声数据 $g^\delta$，考虑严格凸泛函
+\[
+J_\alpha(y)
+=\|Ky-g^\delta\|^2
++\alpha\|y\|^2,
+\qquad \alpha>0.
+\]
+令 $h$ 为任意扰动方向。对实参数 $\varepsilon$ 展开
+\[
+J_\alpha(y+\varepsilon h)
+=J_\alpha(y)
++2\varepsilon\operatorname{Re}
+\langle K^*(Ky-g^\delta)+\alpha y,h\rangle
++O(\varepsilon^2).
+\]
+极小点必须使一阶变分对所有 $h$ 为零，因此
+\[
+(K^*K+\alpha I)y_\alpha=K^*g^\delta.
+\]
+由于
+\[
+\langle y,(K^*K+\alpha I)y\rangle
+=\|Ky\|^2+\alpha\|y\|^2
+\ge\alpha\|y\|^2,
+\]
+令 $B=K^*K+\alpha I$。Cauchy--Schwarz 给 $\|By\|\ge\alpha\|y\|$，所以 $B$ 单射且值域闭。
+又因为 $B=B^*$，$\operatorname{Ran}(B)^\perp=\ker B=\{0\}$，其值域同时稠密，因而等于 $X$。
+这证明了正规方程确实有解，并给出 $\|B^{-1}\|\le\alpha^{-1}$。
+设其解为 $y_\alpha$，展开任意扰动 $h$ 的平方并消去正规方程给出的交叉项，得到
+\[
+J_\alpha(y_\alpha+h)-J_\alpha(y_\alpha)=\|Kh\|^2+\alpha\|h\|^2.
+\]
+右端仅在 $h=0$ 时为零，因此正规方程的解正是唯一极小点。严格凸性保证唯一性，而这里的闭值域论证保证存在性。
+
+在奇异系统 $K\psi_n=s_n\varphi_n$ 中写
+\[
+g^\delta=g_0^\delta+\sum_n g_n^\delta\varphi_n,
+\qquad g_0^\delta\in\ker K^*,
+\]
+则正规方程逐模态化为
+\[
+(s_n^2+\alpha)y_n=s_ng_n^\delta.
+\]
+因此
+\[
+y_\alpha
+=\sum_n\frac{s_n}{s_n^2+\alpha}g_n^\delta\psi_n.
+\]
+这个滤波解由极小化泛函得到；参数 $\alpha$ 的作用同时表现为平方范数惩罚和小奇异值抑制。若数据误差满足 $\|g^\delta-g\|\le\delta$，要使重建收敛到固定的最小范数解，还需令 $\alpha=\alpha(\delta)\to0$ 且噪声放大受控，例如典型条件 $\delta/\sqrt{\alpha}\to0$。
+\end{proof}
+
+
+噪声滤波因子满足
+\[
+0\le \frac{s}{s^2+\alpha}\le\frac1{2\sqrt\alpha},
+\]
+因为函数 $s/(s^2+\alpha)$ 在 $s=\sqrt\alpha$ 处取最大值。因此
+\[
+\left\|
+(K^\dagger K+\alpha I)^{-1}K^\dagger\eta
+\right\|
+\le\frac{\delta}{2\sqrt\alpha}.
+\]
+于是 $\alpha$ 不能比噪声水平下降得过快，否则稳定性会再次丧失。
+
+另一方面，若精确解具有额外光滑性，例如满足源条件
+\[
+y^\dagger=(K^\dagger K)^\nu w,
+\qquad 0<\nu\le1,
+\]
+则
+\[
+y_n^\dagger=s_n^{2\nu}w_n.
+\]
+偏差系数变为
+\[
+\frac{\alpha s_n^{2\nu}}{s_n^2+\alpha}w_n.
+\]
+令 $r=s_n^2/\alpha$，可写成
+\[
+\alpha^\nu\frac{r^\nu}{1+r}w_n,
+\]
+而 $r^\nu/(1+r)$ 在 $0<\nu\le1$ 上有界，所以
+\[
+\|y_\alpha-y^\dagger\|
+\le C_\nu\alpha^\nu\|w\|.
+\]
+总误差因此受控于
+\[
+{
+\|y_\alpha^\delta-y^\dagger\|
+\lesssim \alpha^\nu+\frac{\delta}{\sqrt\alpha}
+}.
+\]
+这把“$\alpha$ 是稳定性与逼近误差之间的权衡参数”变成了定量结论，而不是一句定性描述。
+
+截断奇异值与 Tikhonov 正则化只是对同一奇异谱采用不同滤波函数。
+
+另一种直接稳定化方法是只保留
+\[
+s_n\ge\tau
+\]
+的奇异方向，定义
+\[
+y_\tau^\delta
+=\sum_{s_n\ge\tau}\frac{g_n^\delta}{s_n}\psi_n.
+\]
+这称为截断奇异值分解。它的滤波函数是
+\[
+q_\tau(s)=
+\begin{cases}
+1/s,&s\ge\tau,\\
+0,&s<\tau.
+\end{cases}
+\]
+Tikhonov 的滤波函数则是
+\[
+q_\alpha(s)=\frac{s}{s^2+\alpha}.
+\]
+前者是硬截止，后者是平滑衰减。两者都遵循同一原则：不能在 $s\to0$ 时继续使用无控制的 $1/s$。因此不同正则化方法的核心并不是“换一种求逆公式”，而是重新设计小奇异值方向上的频谱滤波。三种滤波函数的差别见\figref{fig:tikhonov-filter}。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.76\textwidth]{tikhonov_filter.pdf}
+\caption{形式逆、Tikhonov 与截断奇异值的滤波函数比较。形式逆 $1/s$ 在 $s\to0$ 时无界；Tikhonov 用平滑方式压制小奇异值，TSVD 则在阈值以下直接截断。}
+\label{fig:tikhonov-filter}
+\end{figure}
+
+\section{不适定反演的统一谱滤波框架}
+
+\begin{workedexample}[Tikhonov 滤波怎样抑制高频]
+在 \(\ell^2\) 上取 \(Ke_n=n^{-1}e_n\)。给定带噪数据 \(y^\delta\)，令 \(x_\alpha=(K^*K+\alpha I)^{-1}K^*y^\delta\)，其中 \(\alpha>0\)。求每个分量，比较它与精确逆的噪声放大。
+
+\textbf{解。} 因为 \(K^*=K\) 且 \(Ke_n=n^{-1}e_n\)，故
+\[
+(x_\alpha)_n=\frac{n}{1+\alpha n^2}\,y_n^\delta.
+\]
+无正则化时形式逆把第 \(n\) 个噪声分量乘 \(n\)；正则化因子在 \(n\gg\alpha^{-1/2}\) 时却近似 \(1/(\alpha n)\)。对无噪数据 \(y=Kx\)，重建的第 \(n\) 个分量是 \(x_n/(1+\alpha n^2)\)，偏差为 \(-\alpha n^2x_n/(1+\alpha n^2)\)。因此较大的 \(\alpha\) 增强稳定性，也更早压低真实高频。
+\end{workedexample}
+
+\label{sec:inverse-spectral-filter}
+
+
+
+
+形式逆在 $s_n\to0$ 的方向上包含无界因子 $1/s_n$。比较不同算法时，可以直接比较它们在各个奇异值上如何替换这一因子。
+
+设 $K:X\to Y$ 为 Hilbert 空间之间的有界算子，$A:=K^*K\ge0$。
+对每个 $\alpha>0$，取有界 Borel 函数 $g_\alpha:[0,\|K\|^2]\to\RR$，定义正则化算子
+\[
+{
+R_\alpha
+:=g_\alpha(A)K^*
+},
+\qquad
+x_\alpha^\delta=R_\alpha y^\delta.
+\]
+若 $K$ 还紧，可用前面的完整奇异系统 $K\psi_n=s_n\varphi_n$ 写成
+\[
+x_\alpha^\delta
+=\sum_n s_ng_\alpha(s_n^2)
+\langle y^\delta,\varphi_n\rangle\psi_n.
+\]
+形式逆对应 $g(\lambda)=1/\lambda$，而正则化的任务正是让 $g_\alpha(\lambda)$ 在 $\lambda\approx0$ 附近保持可控，同时在固定 $\lambda>0$ 上随 $\alpha\to0$ 恢复 $1/\lambda$。
+
+定义 残差 函数
+\[
+r_\alpha(\lambda)
+:=1-\lambda g_\alpha(\lambda).
+\]
+\begin{proposition}[谱滤波误差的偏差与噪声分解]
+设 $K:X\to Y$ 为 Hilbert 空间之间的有界算子，$A=K^*K$，$g_\alpha$ 为有界 Borel 函数。
+精确最小范数解满足 $y=Kx^\dagger$、$x^\dagger\perp\ker K$，噪声满足 $\|y^\delta-y\|\le\delta$。
+定义 $R_\alpha=g_\alpha(A)K^*$、$r_\alpha(\lambda)=1-\lambda g_\alpha(\lambda)$，则
+\[
+x_\alpha^\delta-x^\dagger=R_\alpha(y^\delta-y)-r_\alpha(A)x^\dagger.
+\]
+连续滤波器满足 $\|R_\alpha\|=\sup_{\lambda\in\sigma(A)}\sqrt\lambda|g_\alpha(\lambda)|$；一般 Borel 滤波器改取相对于 $E_A$ 的本质上确界。
+\end{proposition}
+\begin{proof}
+加上再减去精确数据的重建值，可以把数据误差与滤波器造成的误差分开。由 $y=Kx^\dagger$ 且 $A=K^*K$，有
+\[
+\begin{aligned}
+x_\alpha^\delta-x^\dagger
+&=g_\alpha(A)K^*y^\delta-x^\dagger\\
+&=g_\alpha(A)K^*(y^\delta-y)
++g_\alpha(A)K^*Kx^\dagger-x^\dagger\\
+&=g_\alpha(A)K^*(y^\delta-y)
++\bigl(A g_\alpha(A)-I\bigr)x^\dagger\\
+&=R_\alpha(y^\delta-y)
+-r_\alpha(A)x^\dagger,
+\end{aligned}
+\]
+其中 $R_\alpha:=g_\alpha(A)K^*$ 为正则化解算子，$r_\alpha(\lambda):=1-\lambda g_\alpha(\lambda)$ 为残差滤波函数。由于 $K=U A^{1/2}$ 是极分解（$U$ 为部分等距，$\ker U=\ker K$），
+\[
+R_\alpha
+=g_\alpha(A)A^{1/2}U^*,
+\]
+所以
+\[
+\|R_\alpha\|
+\le
+\|g_\alpha(A)A^{1/2}\|
+=
+\operatorname*{ess\,sup}_{\lambda;E_A}
+\sqrt\lambda\,|g_\alpha(\lambda)|.
+\]
+这里的本质上确界指除去 $E_A$ 测度为零的集合后取上确界；当滤波函数连续时，可改为整个实际谱 $\sigma(A)$ 上的上确界。
+令 $M=(\ker K)^\perp$、$N=\overline{\operatorname{Ran}K}$。
+极分解中的 $U:M\to N$ 是等距满射，故 $U^*:N\to M$ 不会漏掉 $g_\alpha(A)A^{1/2}$ 的任何非零作用方向；该算子在 $\ker K$ 上为零。
+因此取 $y=Ux$、$x\in M$ 就能把右边范数的测试向量转回数据空间，证明上述不等式实际取等。
+
+误差分解本身不保证偏差趋零。还需要固定正谱值上的 $r_\alpha(\lambda)\to0$，并用一个统一有界的残差控制谱积分；这正是下文收敛命题中的条件。
+\end{proof}
+
+第一项是噪声传播，第二项是正则化偏差。于是所有参数选择问题都归结为同一个竞争：$\alpha$ 太小会放大噪声，太大则不能充分恢复小奇异值方向。
+
+若
+\[
+\|y^\delta-y\|\le\delta,
+\]
+则噪声项满足
+\[
+\|R_\alpha(y^\delta-y)\|
+\le
+\delta\,\|R_\alpha\|,
+\]
+而谱定理给出
+\[
+{
+\|R_\alpha\|
+=
+\operatorname*{ess\,sup}_{\lambda;E_A}
+\sqrt\lambda\,|g_\alpha(\lambda)|
+}.
+\]
+这里的本质上确界相对于 $A$ 的投影值谱测度 $E_A$ 取；连续滤波器可换成实际谱 $\sigma(A)$ 上的上确界。
+取整个区间 $[0,\|K\|^2]$ 的上确界只给一个方便上界，因为区间内未必每个值都属于实际谱。
+Tikhonov 正则化对应
+\[
+g_\alpha^{\mathrm{Tik}}(\lambda)
+=\frac{1}{\lambda+\alpha},
+\qquad
+r_\alpha^{\mathrm{Tik}}(\lambda)
+=\frac{\alpha}{\lambda+\alpha}.
+\]
+于是
+\[
+\|R_\alpha^{\mathrm{Tik}}\|
+\le\sup_{\lambda\ge0}\frac{\sqrt\lambda}{\lambda+\alpha}
+=\frac{1}{2\sqrt\alpha}.
+\]
+这直接解释了为什么典型噪声项按 $\delta/\sqrt\alpha$ 放大。
+
+截断奇异值（谱 截断）则取
+\[
+g_\alpha^{\mathrm{TSVD}}(\lambda)
+=\begin{cases}
+\lambda^{-1},&\lambda\ge\alpha,\\
+0,&0\le\lambda<\alpha,
+\end{cases}
+\]
+所以
+\[
+r_\alpha^{\mathrm{TSVD}}(\lambda)
+=\mathbf 1_{[0,\alpha)}(\lambda),
+\qquad
+\|R_\alpha^{\mathrm{TSVD}}\|\le\alpha^{-1/2}.
+\]
+每个 $s_n^2\ge\alpha$ 的模态按原奇异值求逆，其他模态则置零。若阈值以下没有待删除模态，或谱不接近阈值，范数还可能严格小于上述上界。
+
+Landweber 迭代从
+\[
+x_{m+1}=x_m+\omega K^*(y^\delta-Kx_m),
+\qquad
+0<\omega<\frac{2}{\|K\|^2}
+\]
+出发。若 $x_0=0$，递推求和得到
+\[
+x_m
+=\omega\sum_{j=0}^{m-1}(I-\omega A)^jK^*y^\delta,
+\]
+故它同样是谱滤波：
+\[
+{
+g_m^{\mathrm{LW}}(\lambda)
+=\frac{1-(1-\omega\lambda)^m}{\lambda}}.
+\]
+在 $\lambda=0$ 处按极限定义 $g_m^{\mathrm{LW}}(0)=m\omega$，故每个有限 $m$ 都给有界滤波器。
+迭代次数本身就是正则化参数：增加 $m$ 会逐渐恢复小奇异值方向，也会逐渐放大这些方向上的噪声，因而必须在噪声尚未被过度拟合时停止。
+
+滤波器在每个固定正谱值上接近形式逆，并不意味着能在固定噪声下直接去掉正则化。
+误差分解把正确的联合极限条件写得很清楚。
+
+\begin{theorem}[谱滤波恢复最小范数解的条件]
+设 $K:X\to Y$ 有界，$y=Kx^\dagger$、$x^\dagger\perp\ker K$。
+假设对 $0<\lambda\le\|K\|^2$，$r_\alpha(\lambda)\to0$，且存在与 $\alpha$ 无关的 $C$ 使 $|r_\alpha(\lambda)|\le C$。
+若 $\|y^\delta-y\|\le\delta$，并选参数满足
+\[
+\alpha(\delta)\longrightarrow0,\qquad
+\delta\|R_{\alpha(\delta)}\|\longrightarrow0,
+\]
+则 $x_{\alpha(\delta)}^\delta\to x^\dagger$ 于 $X$。
+\end{theorem}
+\begin{proof}
+用 $x^\dagger$ 的标量谱测度 $\mu(B)=\langle E_A(B)x^\dagger,x^\dagger\rangle$ 表示偏差范数：
+\[
+\|r_\alpha(A)x^\dagger\|^2
+=\int_{[0,\|K\|^2]}|r_\alpha(\lambda)|^2\,\dd\mu(\lambda).
+\]
+因 $E_A(\{0\})$ 投影到 $\ker A=\ker K$，最小范数条件给 $\mu(\{0\})=0$。
+其余谱值上的被积函数趋零，且由可积常数 $C^2$ 控制，故支配收敛给偏差趋零。
+另一方面，噪声项的范数不超过 $\delta\|R_{\alpha(\delta)}\|$，按假设也趋零。
+把两项代回精确误差分解，得到结论。
+\end{proof}
+
+对 Tikhonov，$0\le r_\alpha\le1$，所以 $\alpha\to0$ 与 $\delta/\sqrt\alpha\to0$ 是一组可用的充分条件。
+谱截断也满足 $0\le r_\alpha\le1$，采用同一充分条件即可。
+这里证明的是每个固定真实解上的收敛；没有源条件时，还不能给出全部真实解共享的收敛速率。
+仅知道 $x^\dagger\in X$ 时，通常只能证明 $x_\alpha^\delta\to x^\dagger$，却不能得到统一收敛速率。要得到 速率，需要描述真实解相对于 $K^*K$ 的光滑性。一个标准 源 条件 是
+\[
+{
+x^\dagger=A^\nu w,
+\qquad \nu>0,
+\quad \|w\|\le C_w}.
+\]
+在奇异基上，这意味着
+\[
+\langle x^\dagger,\psi_n\rangle
+=s_n^{2\nu}\langle w,\psi_n\rangle,
+\]
+即真实解在最不稳定的小奇异值方向上本来就具有额外衰减。
+
+对 Tikhonov，偏差为
+\[
+x_\alpha-x^\dagger
+=-r_\alpha(A)x^\dagger
+=-\alpha(A+\alpha I)^{-1}A^\nu w.
+\]
+因此
+\[
+\|x_\alpha-x^\dagger\|
+\le
+\sup_{\lambda\ge0}
+\frac{\alpha\lambda^\nu}{\lambda+\alpha}\,\|w\|.
+\]
+令 $\lambda=\alpha t$，得到
+\[
+\frac{\alpha\lambda^\nu}{\lambda+\alpha}
+=
+\alpha^\nu\frac{t^\nu}{1+t}.
+\]
+当 $0<\nu\le1$ 时，右侧 sup 有界，因此
+\[
+{
+\|x_\alpha-x^\dagger\|
+\le C_\nu\alpha^\nu\|w\|
+}.
+\]
+与噪声项合并，得到
+\[
+\|x_\alpha^\delta-x^\dagger\|
+\le
+\frac{\delta}{2\sqrt\alpha}
++C_\nu\alpha^\nu\|w\|.
+\]
+平衡两项给出
+\[
+\alpha\asymp\delta^{\frac{2}{2\nu+1}},
+\qquad
+{
+\|x_\alpha^\delta-x^\dagger\|
+=O\!\left(
+\delta^{\frac{2\nu}{2\nu+1}}
+\right)}.
+\]
+该阶数来自偏差上界与噪声上界的平衡；常数还依赖源条件中的 $\|w\|$。它并不自动断言这个方法在所有可能先验类上达到最优误差。
+
+普通 Tikhonov 的上述偏差估计在 $\nu>1$ 时不能继续得到 $\alpha^\nu$ 阶。
+此时利用有界谱区间只能估计为 $\alpha\|A^{\nu-1}w\|$，即该方法最多利用一阶源光滑性；这种限制称为资格。
+迭代 Tikhonov 或谱截断具有更高资格，但需要重新计算各自的残差滤波器，不能直接沿用普通 Tikhonov 的速率公式。
+
+若噪声水平 $\delta$ 已知，可以用重建残差与该水平比较，而不预先指定源条件中的光滑阶数。
+Morozov 差异原则令残差达到 $\tau\delta$，其中固定 $\tau>1$：
+\[
+{
+\|Kx_\alpha^\delta-y^\delta\|
+=\tau\delta,
+\qquad \tau>1
+}.
+\]
+残差远小于噪声水平时，算法可能已经在拟合无法辨认的噪声；远大于噪声水平时，则可能仍丢掉了可辨认的信号。
+这个原则还必须回答一个数学问题：目标残差能否由某个 $\alpha>0$ 达到？
+
+\begin{proposition}[Tikhonov 差异参数的存在与唯一性]
+设 $K:X\to Y$ 有界，$y\in\operatorname{Ran}K$、$\|y^\delta-y\|\le\delta$，$\delta>0$。
+若 $\|y^\delta\|>\tau\delta$、$\tau>1$，则存在唯一 $\alpha>0$ 使
+$\|Kx_\alpha^\delta-y^\delta\|=\tau\delta$。
+若 $\|y^\delta\|\le\tau\delta$，可直接取零重建。
+\end{proposition}
+\begin{proof}
+令 $B=KK^*$、$y_0^\delta=P_{\ker K^*}y^\delta$，并记 $\nu$ 为 $y^\delta$ 的 $B$ 标量谱测度。
+恒等式 $K(K^*K+\alpha I)^{-1}K^*=B(B+\alpha I)^{-1}$ 给出
+\[
+\rho(\alpha)^2:=\|Kx_\alpha^\delta-y^\delta\|^2
+=\|y_0^\delta\|^2+
+\int_{(0,\|K\|^2]}\frac{\alpha^2}{(\lambda+\alpha)^2}\,\dd\nu(\lambda).
+\]
+支配收敛说明 $\rho$ 连续，且
+\[
+\lim_{\alpha\downarrow0}\rho(\alpha)=\|y_0^\delta\|\le\delta,
+\qquad
+\lim_{\alpha\to\infty}\rho(\alpha)=\|y^\delta\|.
+\]
+第一个不等式用到 $P_{\ker K^*}y=0$。
+对每个 $\lambda>0$，$\alpha/(\lambda+\alpha)$ 严格递增；而 $\|y^\delta\|>\tau\delta>\|y_0^\delta\|$ 保证正谱部分非零，故 $\rho$ 严格递增。
+目标值介于两个极限之间，介值定理给出存在性，严格单调给出唯一性。
+若数据本身已经不超过目标水平，零重建的残差就是 $\|y^\delta\|$，无需强行解等式。
+\end{proof}
+
+在谱滤波语言中，残差写成
+\[
+Kx_\alpha^\delta-y^\delta
+=-r_\alpha(KK^*)y^\delta
+\]
+因为 $r_\alpha(0)=1$，这条式子也包含 $\ker K^*$ 中无法拟合的分量。差异原则控制的是残差滤波器对数据谱的作用。
+
+\begin{note}[正则化不等于人为篡改方程]
+原始方程 $Kx=y$ 在噪声数据上可能不存在稳定逆。正则化的目标不是宣称 $K$ 被另一个算子取代，而是构造一族连续近似逆 $R_\alpha$：固定 $\alpha>0$ 时稳定，随着数据误差 $\delta\to0$ 再让 $\alpha(\delta)\to0$，最终恢复最小范数解。两个极限必须联动；先在固定噪声下令 $\alpha\to0$ 通常恰好会重新暴露不适定性。
+\end{note}
+
+\section{Fourier 方法、卷积核与奇异积分}
+\label{sec:integral-fourier}
+
+当积分核具有平移不变性时，Fourier 变换会把积分算符对角化。这是上一节``谱展开''的连续谱版本。
+
+先从一般方程
+
+\[
+y(s)=f(s)+\lambda\int_{-\infty}^{\infty}K(s,t)y(t)\,\dd t
+\]
+
+出发。采用\chapref{chap:distributions-fourier}的对称 Fourier 归一化，记
+
+\[
+Y(k)=\mathcal F[y](k),\qquad F(k)=\mathcal F[f](k).
+\]
+
+把 $y(t)$ 的逆 Fourier 表示代入，得到
+
+\[
+Y(k)=F(k)+\lambda\int_{-\infty}^{\infty}
+\overline K(k,k')Y(k')\,\dd k',
+\]
+
+其中
+
+\[
+{
+\overline K(k,k')
+=\frac1{2\pi}
+\int_{\RR^2}
+ \ee^{-\ii ks}K(s,t)\ee^{\ii k't}\,\dd s\,\dd t
+}.
+\]
+
+这只是把同一个算符改写到 Fourier 表象中。只有在 $\overline K$ 近似或恰好对角时，方程才真正简化。
+
+最重要的精确情形是平移不变核
+
+\[
+K(s,t)=\frac1{\sqrt{2\pi}}v(s-t).
+\]
+
+按照\chapref{chap:distributions-fourier}采用的普通卷积
+
+\[
+(v*y)(s)=\int_{-\infty}^{\infty}v(s-t)y(t)\,\dd t,
+\]
+
+方程就是
+
+\[
+y=f+\frac{\lambda}{\sqrt{2\pi}}(v*y).
+\]
+
+由于
+
+\[
+\mathcal F[v*y]=\sqrt{2\pi}\,VY,
+\qquad V=\mathcal F[v],
+\]
+
+所以
+
+\[
+(1-\lambda V(k))Y(k)=F(k).
+\]
+
+逐频率相除给出候选解
+
+\[
+{
+Y(k)=\frac{F(k)}{1-\lambda V(k)}
+},
+\]
+
+能否逆变换为 $L^2$ 解，还取决于这个商是否平方可积。点态非零只保证相除有意义，不保证小分母不会把数据放大到 $L^2$ 之外。
+
+\begin{proposition}[卷积方程的 $L^2$ 可解性与稳定逆]
+设 $v\in L^1(\RR)$、$f\in L^2(\RR)$，$m(k)=1-\lambda\widehat v(k)$，$Z=\{k:m(k)=0\}$。
+方程 $y=f+\lambda(v*y)/\sqrt{2\pi}$ 在 $L^2$ 中可解，当且仅当
+\[
+\widehat f=0\ \text{几乎处处于 }Z,\qquad
+\mathbf1_{\RR\setminus Z}\frac{\widehat f}{m}\in L^2.
+\]
+全部解是在这个商上加任意支持于 $Z$ 的 $L^2$ Fourier 分量。
+该方程对每个 $f\in L^2$ 都有唯一解且逆有界，当且仅当 $\operatorname*{ess\,inf}_{k\in\RR}|m(k)|>0$。
+\end{proposition}
+\begin{proof}
+卷积的 $L^1$–$L^2$ 估计保证原方程是有界算子方程。对其作幺正 Fourier 变换，就得到乘法方程 $m\widehat y=\widehat f$。
+在 $Z$ 上，左端为零，故源必须为零；在其补集上，解只能等于 $\widehat f/m$。
+这证明了两个可解条件及全部解的形式。
+
+若 $|m|\ge c>0$ 几乎处处，乘子 $1/m$ 有界，逆的范数为 $\operatorname*{ess\,sup}|1/m|$。
+反过来，若逆有界而本质下确界为零，则可在 $\{|m|<1/j\}$ 中选取正测度、有限测度子集 $B_j$，令 $h_j=\mathbf1_{B_j}/|B_j|^{1/2}$。
+这些向量的 $L^2$ 范数为 $1$，而 $\|mh_j\|_2\le1/j$，与有界逆要求的统一下界矛盾。
+\end{proof}
+
+\begin{workedexample}[高斯卷积的非零小分母仍可妨碍求解]
+取 $v(x)=2^{-1/2}\ee^{-x^2/4}$、$\lambda=1$，比较源 $\widehat f_1(k)=\ee^{-k^2}$ 与 $\widehat f_2(k)=(1-\ee^{-k^2})\ee^{-k^2}$。
+
+\textbf{解。} 对称 Fourier 积分给 $\widehat v(k)=\ee^{-k^2}$，所以 $m(k)=1-\ee^{-k^2}$。
+它只在单点 $k=0$ 为零，故 $L^2$ 核为零，解若存在必唯一。
+可是 $m(k)=k^2+O(k^4)$，第一种源的商在零点附近与 $k^{-2}$ 同阶，不平方可积，所以无 $L^2$ 解。
+第二种源则恰有 $\widehat y=\ee^{-k^2}$，逆变换给 $y(x)=2^{-1/2}\ee^{-x^2/4}$。
+两种源都光滑且快速衰减，可解性却由它们在小分母处的消失阶数决定。
+\end{workedexample}
+卷积核的奇点并不总能用普通积分处理。例如 $1/x$ 在原点两侧分别不可积，却可以用对称取极限的主值分布来定义。对 $f\in\mathcal S(\RR)$，令
+\[
+(\mathcal Hf)(x)=\frac1\pi\lim_{\varepsilon\downarrow0}
+\int_{|x-t|>\varepsilon}\frac{f(t)}{x-t}\,\dd t.
+\]
+这就是 Hilbert 变换。把 $u=x-t$ 的正、负两侧合并，等价地写成
+\[
+(\mathcal Hf)(x)=\frac1\pi\int_0^\infty
+\frac{f(x-u)-f(x+u)}u\,\dd u.
+\]
+分子在 $u=0$ 为 $-2uf'(x)+O(u^3)$，所以原点处的奇性被对称差消去；无穷远处则由 $f$ 的快速衰减保证收敛。这个定义使用普通卷积的约定：$\mathcal Hf=h*f$，其中 $h=\pi^{-1}\operatorname{pv}(1/x)$ 是分布。
+
+要判断它在 $L^2$ 中是否稳定，需要算出这个奇异核的 Fourier 变换。指数调节使无穷远积分绝对收敛，同时保留原点两侧的抵消。
+\begin{proposition}[主值核的 Fourier 乘子]
+在本书对称 Fourier 约定下，
+\[
+\widehat h(k)=-\frac{\ii}{\sqrt{2\pi}}\operatorname{sgn}k,
+\qquad
+\widehat{\mathcal Hf}(k)=-\ii\operatorname{sgn}k\,\widehat f(k)
+\quad(f\in\mathcal S(\RR)).
+\]
+第一式在缓增分布意义下成立，第二式也成立于 $L^2$。规定 $\operatorname{sgn}0=0$，其单点取值不影响 $L^2$ 乘法算子。
+\end{proposition}
+\begin{proof}
+取 $a>0$，定义 $h_a=\pi^{-1}\ee^{-a|x|}\operatorname{pv}(1/x)$，其中右边按正、负半轴对称配对定义。利用核的奇性，
+\[
+\widehat h_a(k)
+=-\frac{2\ii}{\pi\sqrt{2\pi}}
+\int_0^\infty \ee^{-au}\frac{\sin(ku)}u\,\dd u.
+\]
+这里的原点极限仍是主值，不能把两侧的发散积分分别变换。记最后一个积分为 $I_a(k)$。指数衰减允许对 $k$ 求导，得到
+\[
+I_a'(k)=\int_0^\infty \ee^{-au}\cos(ku)\,\dd u
+=\frac a{a^2+k^2},\qquad I_a(0)=0.
+\]
+积分后便有 $I_a(k)=\arctan(k/a)$。因此
+\[
+\widehat h_a(k)=-\frac{2\ii}{\pi\sqrt{2\pi}}\arctan(k/a),
+\qquad
+\widehat{h_a*f}(k)=-\frac{2\ii}{\pi}\arctan(k/a)\widehat f(k).
+\]
+第二式用了普通卷积的变换规则 $\mathcal F[h_a*f]=\sqrt{2\pi}\,\widehat h_a\widehat f$；这个 $\sqrt{2\pi}$ 正好消去核变换中的分母。
+
+对 Schwartz 测试函数 $\varphi$，$\langle h_a,\varphi\rangle$ 可写为
+\[
+\frac1\pi\int_0^\infty \ee^{-au}
+\frac{\varphi(u)-\varphi(-u)}u\,\dd u.
+\]
+分式在原点有界、在无穷远可积，所以支配收敛给出 $h_a\to h$ 于 $\mathcal S'$。与此同时，$\arctan(k/a)\to(\pi/2)\operatorname{sgn}k$ 几乎处处且一致有界，故 Fourier 变换的分布极限就是命题的第一式。
+再用 Plancherel 与支配收敛，$h_a*f$ 在 $L^2$ 中趋于乘子 $-\ii\operatorname{sgn}k$ 所定义的函数。正、负半轴合并的积分又给出逐点极限 $\mathcal Hf$，所以两种极限代表同一个 $L^2$ 函数，得到第二式。
+\end{proof}
+
+核在位置空间中有主值奇点，乘子却在几乎处处模长为一。这使 Hilbert 变换能够保持平方可积信号的范数，而不是在奇点附近任意放大它。
+\begin{theorem}[Hilbert 变换的 $L^2$ 结构]
+$\mathcal H$ 唯一连续延拓为 $L^2(\RR)$ 上的算子，且
+\[
+\|\mathcal Hf\|_2=\|f\|_2,\qquad \|\mathcal H\|=1.
+\]
+它满足
+\begin{equation}
+\mathcal H^\dagger=-\mathcal H,
+\label{eq:hilbert-skew-adjoint}
+\end{equation}
+\begin{equation}
+\mathcal H^2=-I.
+\label{eq:hilbert-square}
+\end{equation}
+因此 $\mathcal H$ 是酉算子，$\ii\mathcal H$ 是自伴算子。正、负频率子空间的正交投影分别为
+\[
+P_+=\frac12(I+\ii\mathcal H),\qquad
+P_-=\frac12(I-\ii\mathcal H).
+\]
+它与平移 $\tau_bf(x)=f(x-b)$、正尺度变换 $D_af(x)=f(ax)$（$a>0$）对易，并在 $H^1(\RR)$ 上满足 $\mathcal H\partial_xf=\partial_x\mathcal Hf$。
+\end{theorem}
+\begin{proof}
+由刚求出的乘子及 Plancherel，
+\[
+\|\mathcal Hf\|_2^2
+=\int_{\RR}|-\ii\operatorname{sgn}k\,\widehat f(k)|^2\,\dd k
+=\|f\|_2^2\quad(f\in\mathcal S).
+\]
+$\mathcal S$ 在 $L^2$ 中稠密，等距性保证延拓存在且唯一。延拓后仍用相同的有界乘子表示。
+
+本书内积的第一变量线性。对任意 $f,g\in L^2$，
+\begin{align*}
+\langle\mathcal Hf,g\rangle
+&=\int_{\RR}[-\ii\operatorname{sgn}k\,\widehat f(k)]
+\overline{\widehat g(k)}\,\dd k\\
+&=\int_{\RR}\widehat f(k)
+\overline{\ii\operatorname{sgn}k\,\widehat g(k)}\,\dd k
+=\langle f,-\mathcal Hg\rangle.
+\end{align*}
+所以伴随为 $-\mathcal H$。乘子平方在 $k\ne0$ 时为 $-1$，单点 $k=0$ 对 $L^2$ 无贡献，故 $\mathcal H^2=-I$。这也给出逆 $\mathcal H^{-1}=-\mathcal H=\mathcal H^\dagger$。
+
+$\ii\mathcal H$ 的乘子为实函数 $\operatorname{sgn}k$，所以它自伴。投影 $P_\pm$ 的乘子分别为 $\mathbf1_{(0,\infty)}$、$\mathbf1_{(-\infty,0)}$，于是
+\[
+P_\pm^\dagger=P_\pm,\quad P_\pm^2=P_\pm,
+\quad P_+P_-=0,\quad P_++P_-=I.
+\]
+这同时证明了频率支持的解释。
+
+平移的乘子 $\ee^{-\ii kb}$ 与 $-\ii\operatorname{sgn}k$ 交换。对 $a>0$，
+\[
+\widehat{D_af}(k)=a^{-1}\widehat f(k/a),
+\qquad \operatorname{sgn}(k/a)=\operatorname{sgn}k,
+\]
+故尺度变换也对易。若 $f\in H^1$，$k\widehat f\in L^2$，乘以模长为一的因子不会破坏这个条件；微分与 Hilbert 变换的两个复合乘子都是
+\[
+(-\ii\operatorname{sgn}k)(\ii k)=|k|.
+\]
+因此交换关系在弱导数意义下成立，且 $\mathcal Hf\in H^1$。
+\end{proof}
+
+正频率投影还有一个复分析读法：$\ee^{\ii kz}$ 对 $k>0$ 在上半平面随 $\operatorname{Im}z$ 增大而衰减。因此上半平面解析函数的边界值与 $P_+$ 相联系。对下述充分光滑、衰减的情形，可以直接用围道积分确定实部和虚部之间的符号。
+\begin{proposition}[上半平面边界值的共轭关系]
+设 $F$ 在上半平面解析、在闭上半平面连续，其实轴边界值 $f=F|_{\RR}$ 属于 $C^1(\RR)$，并在闭上半平面大 $|z|$ 时满足 $|F(z)|\le C/(1+|z|)$。
+若 $f=u+\ii v$，则
+\[
+f(x)=\frac1{\ii\pi}\operatorname{pv}\int_{\RR}\frac{f(t)}{t-x}\,\dd t,
+\qquad v=\mathcal Hu,\quad u=-\mathcal Hv.
+\]
+特别地，$P_+f=f$、$P_-f=0$。
+\end{proposition}
+\begin{proof}
+对固定实数 $x$，沿实轴从左向右积分，在 $x$ 处用上半平面的小半圆向右绕行，再用大半圆闭合。小半圆按顺时针方向参数化为 $z=x+\varepsilon \ee^{\ii\theta}$、$\theta:\pi\to0$，所以
+\[
+\int_{\text{小半圆}}\frac{F(z)}{z-x}\,\dd z
+=\ii\int_\pi^0F(x+\varepsilon \ee^{\ii\theta})\,\dd\theta
+\longrightarrow-\ii\pi f(x).
+\]
+大半圆的积分由衰减条件趋零；实轴局部的 $C^1$ 条件保证主值存在。围道内无极点，故 Cauchy 定理给
+\[
+0=\operatorname{pv}\int_{\RR}\frac{f(t)}{t-x}\,\dd t-\ii\pi f(x).
+\]
+这证明边界公式。因为 $\mathcal H$ 的分母是 $x-t$，而上式是 $t-x$，所以它等价于 $f=\ii\mathcal Hf$。比较实、虚部得 $u=-\mathcal Hv$、$v=\mathcal Hu$。
+衰减条件保证 $f\in L^2$。对这个 $C^1$ 边界函数使用前一证明的同一指数调节，正、负半轴合并的积分趋于其主值，而有界乘子在 $L^2$ 中趋于延拓后的 $\mathcal Hf$；两种表示因而一致。代入 $P_\pm$ 即得投影结论。
+\end{proof}
+
+\begin{workedexample}[Lorentz 型信号与正频率投影]
+取 $u(x)=1/(1+x^2)$。求 $\mathcal Hu$，构造只含正频率的复信号，并分别用主值核、解析边界值和 Fourier 乘子核对符号与归一化。
+
+\textbf{解。} 为在主值积分中分离奇点，使用恒等式
+\[
+\frac1{(1+t^2)(x-t)}
+=\frac1{1+x^2}\left[\frac1{x-t}+\frac{t+x}{1+t^2}\right].
+\]
+先在 $[-R,R]$ 上对 $t=x$ 作主值，再令 $R\to\infty$。第一项的积分是端点对数之差，趋于零；$t/(1+t^2)$ 为奇函数，其对称积分为零；剩下 $\int_{\RR}(1+t^2)^{-1}\,\dd t=\pi$。因此
+\[
+v(x):=(\mathcal Hu)(x)=\frac{x}{1+x^2}.
+\]
+由 $\mathcal H^2=-I$，又有 $\mathcal Hv=-u$。
+这两个函数都在 $L^2$ 中，且
+\[
+u(x)+\ii v(x)=\frac{\ii}{x+\ii}.
+\]
+右边唯一的极点在下半平面，故满足刚才的上半平面条件。它的边界值 $f=u+\ii v$ 于是满足 $\ii\mathcal Hf=f$，从而
+\[
+P_+u=\frac{u+\ii v}{2},\qquad P_-u=\frac{u-\ii v}{2}.
+\]
+实信号分成两个共轭的频率部分，正频率复信号为 $2P_+u=f$。
+
+最后直接核对 Fourier 常数。对 $k>0$ 将 $\ee^{-\ii kt}/(1+t^2)$ 的围道闭合到下半平面，顺时针方向与 $t=-\ii$ 处的留数给积分 $\pi \ee^{-k}$；对 $k<0$ 闭合到上半平面，得到 $\pi \ee^k$。除以对称变换的 $\sqrt{2\pi}$ 后，
+\[
+\widehat u(k)=\sqrt{\frac\pi2}\ee^{-|k|},\qquad
+\widehat v(k)=-\ii\operatorname{sgn}k\sqrt{\frac\pi2}\ee^{-|k|}.
+\]
+所以 $\widehat f(k)=\sqrt{2\pi}\,\ee^{-k}\mathbf1_{(0,\infty)}(k)$（几乎处处）。主值核、上半平面和正频率投影三条计算路径给出同一个符号。
+\end{workedexample}
+
+课堂记录还给出了形式
+
+\[
+y(x)=\int_C(x-t)^\mu v(t)\,\dd t.
+\]
+
+仅凭这个式子还不能唯一确定一个具体变换：必须同时指定积分路径 $C$、复幂 $(x-t)^\mu$ 的分支、端点行为以及使积分收敛的参数范围。若 $C$ 取实区间并固定适当分支，这类核与 Abel 积分以及 Riemann--Liouville 型分数积分有直接联系；若 $C$ 是复平面路径，则分支切割和绕行方式会改变结果。因此在这些条件给出之前，只把它保留为一类形式积分变换，而不强行写出不存在唯一依据的逆公式。
+Fredholm 分解说明零模如何妨碍求逆，谱滤波则控制小奇异值。以下计算把相容条件、正则化偏差和噪声放大放在同一个求解问题中。
+
+\input{content/MathSkills/ch11.tex}
+
+\input{content/MathSkills/ch12.tex}
+
+

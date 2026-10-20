@@ -1,0 +1,325 @@
+\begin{proposition}[时间依赖张量的拉回微分]
+设 $\Phi_{t,s}$ 为光滑时间依赖向量场 $V_t$ 的两参数局部流，$T_t$ 为光滑张量族。则\[\frac{\dd}{\dd t}(\Phi_{t,s}^*T_t)=\Phi_{t,s}^*(\partial_tT_t+\mathcal L_{V_t}T_t).\]
+\end{proposition}
+
+\begin{proof}
+利用两参数流的组合律将 $\Phi_{t+\varepsilon,s}^*$ 分解为 $\Phi_{t,s}^*\circ\Phi_{t+\varepsilon,t}^*$，对短时流 $\Phi_{t+\varepsilon,t}^*$ 用 Lie 导数的一阶展开。
+
+组合律分解。固定 $t$，取小量 $\varepsilon$。两参数流的组合律给出
+\begin{equation*}
+ \Phi_{t+\varepsilon,s}
+ =\Phi_{t+\varepsilon,t}\circ\Phi_{t,s}.
+\end{equation*}
+因此拉回分解为
+\begin{equation*}
+ \Phi_{t+\varepsilon,s}^*T_{t+\varepsilon}
+ =\Phi_{t,s}^*
+ \left(\Phi_{t+\varepsilon,t}^*T_{t+\varepsilon}\right).
+\end{equation*}
+
+短时流展开。在时间 $t$ 附近，短时流 $\Phi_{t+\varepsilon,t}$ 由向量场 $V_t$ 生成，其拉回的一阶展开为
+\begin{equation*}
+ \Phi_{t+\varepsilon,t}^*
+ =I+\varepsilon\,\mathcal L_{V_t}+o(\varepsilon),
+\end{equation*}
+而张量场的显式时间变化为
+\begin{equation*}
+ T_{t+\varepsilon}
+ =T_t+\varepsilon\,\partial_tT_t+o(\varepsilon).
+\end{equation*}
+
+相乘并取差商。
+\begin{align*}
+ \Phi_{t+\varepsilon,t}^*T_{t+\varepsilon}
+ &=\bigl(I+\varepsilon\,\mathcal L_{V_t}+o(\varepsilon)\bigr)
+  \bigl(T_t+\varepsilon\,\partial_tT_t+o(\varepsilon)\bigr)\\
+ &=T_t+\varepsilon
+  \bigl(\partial_tT_t+\mathcal L_{V_t}T_t\bigr)+o(\varepsilon).
+\end{align*}
+因此
+\begin{align*}
+ \frac{\dd}{\dd t}\bigl(\Phi_{t,s}^*T_t\bigr)
+ &=\lim_{\varepsilon\to0}\frac{\Phi_{t+\varepsilon,s}^*T_{t+\varepsilon}-\Phi_{t,s}^*T_t}{\varepsilon}\\
+ &=\Phi_{t,s}^*
+ \bigl(\partial_tT_t+\mathcal L_{V_t}T_t\bigr),
+\end{align*}
+即\eqnrefs{eq:math-dg-transport-identity}。
+\end{proof}
+
+\begin{proposition}[Levi--Civita 联络的度量变分]
+设 $g_t$ 为光滑度量族，$h=\dot g$、$\mathcal A=\partial_t\nabla^{g_t}$。则 $\mathcal A$ 为张量，且\[\begin{aligned}2g(\mathcal A(X,Y),Z)={}&(\nabla_Xh)(Y,Z)+(\nabla_Yh)(X,Z)\\&-(\nabla_Zh)(X,Y).\end{aligned}\]
+\end{proposition}
+
+\begin{proof}
+在每个固定 $t$ 上使用 Koszul 公式。向量场和 Lie 括号不随 $t$ 变化，所以对时间求导时只有度量与联络贡献。对
+\[
+2g(\nabla_XY,Z)
+=Xg(Y,Z)+Yg(Z,X)-Zg(X,Y)
++g([X,Y],Z)-g([Y,Z],X)+g([Z,X],Y)
+\]
+求导，左边为
+\[
+2\dot g(\nabla_XY,Z)+2g(\mathcal A(X,Y),Z).
+\]
+右边把每个 $g$ 替换为 $\dot g$。再用当前 Levi--Civita 联络把普通方向导数拆成 $\nabla \dot g$ 与对向量槽位的联络作用；所有含 $\dot g(\nabla_XY,Z)$ 一类的项与左边对应项相消，得到
+\begin{equation}\label{eq:math-dg-connection-variation}
+{
+\begin{aligned}
+2g(\mathcal A(X,Y),Z)
+={}&(\nabla_X\dot g)(Y,Z)
++(\nabla_Y\dot g)(X,Z)\\
+&-(\nabla_Z\dot g)(X,Y).
+\end{aligned}}
+\end{equation}
+坐标中即
+\begin{equation}\label{eq:math-dg-christoffel-variation}
+{
+\partial_t\Gamma^k{}_{ij}
+=\frac12g^{k\ell}
+\left(
+\nabla_i \dot g_{j\ell}
++\nabla_j \dot g_{i\ell}
+-\nabla_\ell \dot g_{ij}
+\right).}
+\end{equation}
+
+逐项消去的细节。对右边第一项 $Xg(Y,Z)$ 求导，先用 $\dot g$ 替换 $g$ 得 $\dot g(Y,Z)$ 的方向导数 $X\dot g(Y,Z)$，再用 Levi--Civita 联络展开
+\begin{equation*}
+X\dot g(Y,Z)
+=(\nabla_X\dot g)(Y,Z)
++\dot g(\nabla_XY,Z)+\dot g(Y,\nabla_XZ).
+\end{equation*}
+对其他两项作类似展开。含 $\dot g(\nabla_XY,Z)$ 的项与左边 $2\dot g(\nabla_XY,Z)$ 部分相消：右边三项给出 $+1+1+0=2$ 倍 $\dot g(\nabla_XY,Z)$（前两项含 $\nabla_XY$，第三项含 $\nabla_ZX$ 不贡献），与左边相消。剩余项整理即得协变导数形式。
+
+张量性的直接验证。要确认 $\mathcal A(X,Y)$ 是张量，需验证它对 $X,Y$ 都是函数线性的。对 $f\in C^\infty(M)$，
+\begin{equation*}
+\mathcal A(fX,Y)=\partial_t(\nabla_{fX}Y)=\partial_t(f\nabla_XY)=f\,\partial_t(\nabla_XY)=f\,\mathcal A(X,Y),
+\end{equation*}
+因 $f$ 与 $t$ 无关。对第二槽须显式保留联络的 Leibniz 项：
+\[
+\mathcal A(X,fY)=\partial_t\bigl(X(f)Y+f\nabla_XY\bigr)
+=f\mathcal A(X,Y),
+\]
+因为 $X(f)Y$ 时间无关。这印证了"两个联络之差是张量"的一般事实。
+
+Ricci 流 $\partial_tg=-2\operatorname{Ric}$ 给出 $\dot g=-2\operatorname{Ric}$，代入\eqnrefs{eq:math-dg-christoffel-variation} 得
+\begin{equation*}
+\partial_t\Gamma^k{}_{ij}
+=-g^{k\ell}\left(
+\nabla_i\operatorname{Ric}_{j\ell}
++\nabla_j\operatorname{Ric}_{i\ell}
+-\nabla_\ell\operatorname{Ric}_{ij}
+\right).
+\end{equation*}
+
+Hodge 星同时依赖 $g^{-1}$ 与体积形式 $\operatorname{vol}_g$，故其变分须合并\eqnrefs{eq:math-dg-inverse-metric-variation}与\eqnrefs{eq:math-dg-volume-variation}，下框给出完整公式。
+\end{proof}
+
+\begin{proposition}[曲率与标量曲率的变分]
+对 $h=\dot g$、$\mathcal A=\dot\nabla$，\[\dot R(X,Y)Z=(\nabla_X\mathcal A)(Y,Z)-(\nabla_Y\mathcal A)(X,Z),\]\[\dot{\mathcal R}=-\langle h,\operatorname{Ric}\rangle_g+\nabla^i\nabla^jh_{ij}-\Delta_{\mathrm{LB}}\operatorname{tr}_gh.\]
+\end{proposition}
+
+\begin{proof}
+从曲率定义
+\[
+R(X,Y)Z
+=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z
+\]
+对时间求导。取 $X,Y,Z$ 为时间无关向量场，且 $\partial_t\nabla=\mathcal A$，得到
+\[
+\begin{aligned}
+\partial_tR(X,Y)Z
+={}&\mathcal A(X,\nabla_YZ)+\nabla_X\mathcal A(Y,Z)\\
+&-\mathcal A(Y,\nabla_XZ)-\nabla_Y\mathcal A(X,Z)
+-\mathcal A([X,Y],Z).
+\end{aligned}
+\]
+另一方面，
+\[
+(\nabla_X\mathcal A)(Y,Z)
+=\nabla_X(\mathcal A(Y,Z))
+-\mathcal A(\nabla_XY,Z)
+-\mathcal A(Y,\nabla_XZ).
+\]
+对 $X,Y$ 两项相减，并使用 Levi--Civita 联络无挠，
+\[
+\nabla_XY-\nabla_YX=[X,Y],
+\]
+便逐项恢复前一展开，从而得到\eqnrefs{eq:math-dg-curvature-variation-abstract}。在坐标基上取迹即得\eqnrefs{eq:math-dg-ricci-variation}。
+
+最后对 $\mathcal R=g^{jk}\operatorname{Ric}_{jk}$ 求导：
+\[
+\partial_t\mathcal R
+=(\partial_tg^{jk})\operatorname{Ric}_{jk}
++g^{jk}\partial_t\operatorname{Ric}_{jk}.
+\]
+第一项由\eqnrefs{eq:math-dg-inverse-metric-variation}给出
+$-\langle\dot g,\operatorname{Ric}\rangle_g$。第二项把\eqnrefs{eq:math-dg-christoffel-variation}代入\eqnrefs{eq:math-dg-ricci-variation}，利用 $\nabla g=0$ 收缩指标，得到
+\[
+g^{jk}\partial_t\operatorname{Ric}_{jk}
+=\nabla^i\nabla^j\dot g_{ij}
+-\Delta_{\mathrm{LB}}(\operatorname{tr}_g\dot g),
+\]
+两项相加即为\eqnrefs{eq:math-dg-scalar-curvature-variation}。
+
+标量曲率变分公式\eqnrefs{eq:math-dg-scalar-curvature-variation} 是几何流理论的基础：代入 Ricci 流 $\dot g=-2\operatorname{Ric}$ 得 $\partial_t\mathcal R=\Delta\mathcal R+2|\operatorname{Ric}|^2$，即标量曲率沿 Ricci 流 的反应--扩散方程。
+
+共形变分 $\dot g=2u\,g$ 下，$\operatorname{tr}_g\dot g=2nu$、$\nabla^i\nabla^j\dot g_{ij}=2\Delta u$，代入得 $\partial_t\mathcal R=-2(n-1)\Delta_{\mathrm{LB}}u-2u\mathcal R$；$n=2$ 时为 $\partial_t\mathcal R=-2\Delta_{\mathrm{LB}}u-2u\mathcal R$，即 Gauss 曲率的共形演化。
+\end{proof}
+
+\begin{theorem}[固定体积的总标量曲率临界点]
+设 $M^n$ 紧致、无边界，$n\ge3$。总标量曲率 $\mathcal S[g]=\int_M\mathcal R_g\operatorname{vol}_g$ 在固定总体积的度量空间上的临界点恰为 Einstein 度量 $\operatorname{Ric}=cg$。二维时该泛函由 Gauss--Bonnet 固定，不能由此推出常曲率。
+\end{theorem}
+
+\begin{proof}
+对体积泛函
+\[
+\mathcal V[g]=\int_M\operatorname{vol}_g
+\]
+有
+\[
+\delta\mathcal V_g[h]
+=\frac12\int_M\operatorname{tr}_g(h)\,\operatorname{vol}_g
+=\frac12\int_M\langle g,h\rangle_g\operatorname{vol}_g.
+\]
+临界条件
+\[
+\delta(\mathcal S+2\lambda\mathcal V)[h]=0
+\quad\forall h
+\]
+给出
+\[
+-\operatorname{Ric}+\frac12\mathcal R g+\lambda g=0.
+\]
+在 $n$ 维中取迹：
+\[
+-\mathcal R+\frac n2\mathcal R+n\lambda=0,
+\]
+$n\ge3$ 时可解出 $\mathcal R=-2n\lambda/(n-2)$，为常数。二维时这个取迹式只有 $\lambda=0$，并不能推出 $\mathcal R$ 恒定。代回原方程，得到
+\[
+\operatorname{Ric}=\left(\frac12\mathcal R+\lambda\right)g=:cg.
+\]
+反过来任何 Einstein 度量 满足带适当乘子的 Euler--Lagrange 方程。
+
+体积变分的显式推导。度量变分 $g_t=g+th$ 下体积形式的变化为
+\begin{equation*}
+\operatorname{vol}_{g_t}
+=\sqrt{\frac{\det(g+th)}{\det g}}\,\operatorname{vol}_g
+=\sqrt{\det(I+tg^{-1}h)}\,\operatorname{vol}_g.
+\end{equation*}
+对 $t$ 在 $t=0$ 求导，用 $\det(I+A)$ 的一阶展开 $\det(I+A)=1+\operatorname{tr}A+O(\|A\|^2)$，
+\begin{equation*}
+\left.\frac{\dd}{\dd t}\operatorname{vol}_{g_t}\right|_{t=0}
+=\frac12\operatorname{tr}(g^{-1}h)\,\operatorname{vol}_g
+=\frac12\operatorname{tr}_g(h)\,\operatorname{vol}_g.
+\end{equation*}
+积分即得体积泛函的变分公式。$\operatorname{tr}_g(h)=g^{ij}h_{ij}$ 是关于 $g$ 的迹，与坐标无关。
+
+常数 $c$ 的符号给出 Ricci 曲率的分类：$c>0$ 为正 Ricci（例如球面），$c=0$ 为 Ricci 平坦，$c<0$ 为负 Ricci（例如双曲空间）。Einstein 条件在维数大于三时不意味着所有截面曲率相同，不能据 $c$ 的符号直接分类全部截面曲率。Einstein 度量还是 Ricci 流 的缩放固定点（$g(t)=(1-2ct)g$），并在广义相对论中对应带宇宙学常数的真空 Einstein 方程。
+\end{proof}
+
+\begin{proposition}[Hodge 星的度量变分]
+设 $g_t$ 为定向流形上的光滑度量族，$\mathcal V=g^{-1}\dot g$，$\alpha$ 为时间无关 $k$-形式。则\[\partial_t(*\alpha)=*\left[\tfrac12\operatorname{tr}_g\dot g\,\alpha-\mathcal V^{[k]}\alpha\right].\]特别地，$\dot g=2ug$ 时 $\partial_t(*\alpha)=(n-2k)u*\alpha$。
+\end{proposition}
+
+\begin{proof}
+Hodge 星由度量通过内积和体积形式隐式定义。对度量变分，分别追踪内积变化和体积变化，再用 Hodge 星定义反读。
+
+Hodge 星的隐式定义。对任意时间无关 $k$-形式 $\alpha,\beta$，Hodge 星由
+\begin{equation*}
+ \alpha\wedge *\beta
+ =\langle\alpha,\beta\rangle_g\,\operatorname{vol}_g
+\end{equation*}
+唯一确定。两边对 $t$ 求导，$\alpha$ 时间无关故只需变分 $*\beta$、$\langle\cdot,\cdot\rangle_g$ 和 $\operatorname{vol}_g$。
+
+内积变分。逆度量变化\eqnrefs{eq:math-dg-inverse-metric-variation}意味着 $k$-形式点态内积满足
+\begin{equation*}
+ \partial_t\langle\alpha,\beta\rangle_g
+ =-\langle \mathcal V^{[k]}\alpha,\beta\rangle_g,
+\end{equation*}
+其中 $\mathcal V^{[k]}$ 是度量变分算子 $\mathcal V=g^{-1}\dot g$ 在 $k$-形式上的自然提升。
+
+体积变分。由\eqnrefs{eq:math-dg-volume-variation}，
+\begin{equation*}
+ \partial_t\operatorname{vol}_g
+ =\frac{1}{2}\operatorname{tr}_g(\dot g)\,\operatorname{vol}_g.
+\end{equation*}
+
+合并。对 Hodge 星的隐式定义等式求导，
+\begin{align*}
+ \alpha\wedge\partial_t(*\beta)
+ &=\left[\partial_t\langle\alpha,\beta\rangle_g\right]\operatorname{vol}_g
+  +\langle\alpha,\beta\rangle_g\,\partial_t\operatorname{vol}_g\\
+ &=\left[
+  -\langle \mathcal V^{[k]}\alpha,\beta\rangle_g
+  +\frac{1}{2}\operatorname{tr}_g(\dot g)
+  \langle\alpha,\beta\rangle_g
+ \right]\operatorname{vol}_g.
+\end{align*}
+
+自伴性。因为 $\mathcal V$ 自伴（$g^{-1}\dot g$ 关于 $g$ 对称），诱导的 $\mathcal V^{[k]}$ 在形式内积下也自伴：
+\begin{equation*}
+ \langle \mathcal V^{[k]}\alpha,\beta\rangle_g
+ =\langle\alpha,\mathcal V^{[k]}\beta\rangle_g.
+\end{equation*}
+
+反读 Hodge 星。将自伴性代入上面合并得到的等式，
+\begin{equation*}
+ \alpha\wedge\partial_t(*\beta)
+ =\left\langle
+  \frac{1}{2}\operatorname{tr}_g(\dot g)\,\alpha
+  -\mathcal V^{[k]}\alpha,\,
+  \beta
+ \right\rangle_g\operatorname{vol}_g
+ =\alpha\wedge *\left[
+  \frac{1}{2}\operatorname{tr}_g(\dot g)\,\beta
+  -\mathcal V^{[k]}\beta
+ \right],
+\end{equation*}
+由 $\alpha$ 任意性即得到\eqnrefs{eq:math-dg-hodge-star-variation}。
+
+共形核对：$\dot g=2ug$ 时 $\mathcal V=2uI$，
+其在 $k$-形式上的提升为 $\mathcal V^{[k]}=2kuI$，故
+\[
+\dot *\alpha=(n-2k)u*\alpha.
+\]
+这与 $g\mapsto \ee^{2f}g$ 时 $*\mapsto \ee^{(n-2k)f}*$ 相容；
+中间次数 $k=n/2$ 的 Hodge 星共形不变。
+\end{proof}
+
+\begin{proposition}[Ricci 孤子产生自相似流]
+若 $\operatorname{Ric}_g+\frac12\mathcal L_Xg=\lambda g$，令 $c(t)=1-2\lambda t>0$，$\phi_t$ 由 $X/c(t)$ 生成。则在流存在的时间区间，$g(t)=c(t)\phi_t^*g$ 精确满足 Ricci 流方程。
+\end{proposition}
+
+\begin{proof}
+设 $(g,X,\lambda)$ 满足\eqnrefs{eq:math-dg-ricci-soliton}，令
+\[
+c(t)=1-2\lambda t.
+\]
+在 $c(t)>0$ 的区间上，令 $\phi_t$ 由时间依赖向量场
+\[
+Y_t=\frac{1}{c(t)}X
+\]
+生成，并定义
+\begin{equation}
+g(t)=c(t)\phi_t^*g.
+\label{eq:math-dg-soliton-selfsimilar-flow}
+\end{equation}
+则
+\begin{align*}
+\partial_tg(t)
+&=c'(t)\phi_t^*g
++c(t)\phi_t^*(\mathcal L_{Y_t}g)\\
+&=\phi_t^*(-2\lambda g+\mathcal L_Xg)\\
+&=-2\phi_t^*\operatorname{Ric}_g.
+\end{align*}
+常数缩放不改变 $(0,2)$ 型 Ricci 张量，而 Ricci 张量 对微分同胚自然，因此
+\[
+\operatorname{Ric}_{g(t)}=\phi_t^*\operatorname{Ric}_g.
+\]
+所以
+\[
+\partial_tg(t)=-2\operatorname{Ric}_{g(t)}.
+\]
+这证明 孤子 不是"近似自相似"，而是 Ricci 流 在缩放与微分同胚作用下的精确固定点。
+\end{proof}

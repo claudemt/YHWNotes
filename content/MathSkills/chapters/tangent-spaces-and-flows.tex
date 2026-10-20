@@ -1,0 +1,499 @@
+\chapter{切空间、流与 Lie 导数} \label{chap:math-manifolds}
+
+上一部分的谱理论始终在一个固定 Hilbert 空间中比较向量、算子与谱投影；进入流形后，这个默认前提首先失效：不同点上的几何对象属于不同的线性空间，不能未经结构选择就直接相减。在 $\RR^n$ 中，平移提供了这种隐含识别，一般流形却没有预先给定的平移结构。因此本章从光滑结构本身出发，依次建立切空间与微分形式、光滑映射的推前与拉回、向量场生成的流，最后把 Lie 导数定义成“沿流搬回同一点以后的一阶变化率”。联络、度量和 Hodge 结构都在这一基础上逐层加入。
+
+\input{content/MathSkills/integrated/07-manifolds.tex}
+
+\section{切空间、余切空间与外微分}
+
+\begin{workedexample}[圆柱面的切向量]
+圆柱面由 \(F(x,y,z)=x^2+y^2-1=0\) 给出。取局部参数化 \(X(\theta,z)=(\cos\theta,\sin\theta,z)\)，求两个坐标切向量并验证它们属于约束的核。
+
+\textbf{解。} 直接求导得
+\[
+X_\theta=(-\sin\theta,\cos\theta,0),\qquad X_z=(0,0,1).
+\]
+由于 \(dF_p(v)=2xv_x+2yv_y\)，代入 \(p=X(\theta,z)\) 可得 \(dF_p(X_\theta)=dF_p(X_z)=0\)。两向量线性无关，而正则约束 \(dF_p\ne0\) 的核维数为二，故它们张成整个切空间。\(\theta\) 只能在局部区域取连续实值：绕圆柱一圈会让角度增加 \(2\pi\)，所以单个实值角坐标不能覆盖整个圆柱。
+\end{workedexample}
+
+设 $M$ 为光滑 $n$ 维流形，$p\in M$。切向量不应依赖某组坐标来定义。把 $p$ 处切向量定义为作用在光滑函数芽上的导子最直接：线性映射
+\[
+v:C^\infty(M)\to\RR
+\]
+若满足 Leibniz 规则
+\[
+v(fg)=v(f)g(p)+f(p)v(g),
+\]
+便称为 $p$ 处切向量。所有切向量组成 $n$ 维向量空间 $T_pM$。若 $(x^1,\ldots,x^n)$ 是 $p$ 附近的局部坐标，则
+\[
+\partial_i\big|_p:=\frac{\partial}{\partial x^i}\Big|_p
+\]
+构成 $T_pM$ 的一组基，每个 $v\in T_pM$ 唯一写成
+\[
+v=v^i\partial_i\big|_p.
+\]
+这里 $v$ 是与坐标无关的几何对象，只有分量 $v^i$ 随坐标选择改变。
+
+切向量还有一个与导子定义等价、在几何直觉上更直接的描述。设 $\gamma:(-\epsilon,\epsilon)\to M$ 是过 $p$ 的光滑曲线，$\gamma(0)=p$。定义其速度对函数的作用
+\[
+v_\gamma(f)
+:=\left.\frac{\dd}{\dd t}\right|_{t=0}f(\gamma(t)).
+\]
+它满足 Leibniz 规则，因此给出 $T_pM$ 中的导子。若两条曲线 $\gamma_1,\gamma_2$ 对所有 $f\in C^\infty(M)$ 都给出同一导子，就称它们在 $p$ 处一阶等价。于是
+\[
+T_pM
+\cong
+\{\text{过 }p\text{ 的光滑曲线}\}/\text{一阶等价}.
+\]
+在坐标 $x=(x^1,\ldots,x^n)$ 中，
+\[
+v_\gamma
+=\dot x^i(0)\,\partial_i|_p,
+\qquad
+\dot x^i(0)=\left.\frac{\dd}{\dd t}\right|_0x^i(\gamma(t)).
+\]
+因此“导子定义”和“曲线速度定义”不是两个不同切空间，而是同一对象的代数与动力学实现。
+
+例：$\RR^n$ 中 $\gamma(t)=p+tv$ 直接给出 $v_\gamma=v^i\partial_i$。由此立得：$T_pM$ 在坐标变换下分量按 Jacobi 矩阵协变变换（$v^a=(\partial y^a/\partial x^i)v^i$），维数恰为 $\dim M=n$；余切空间 $T_p^*M$ 由 $\dd x^i$ 张成并满足 $\dd f(v)=v(f)$；局部平凡化 $TM\cong U\times\RR^n$ 的结构群即 $GL(n,\RR)$。此定义可直接推广到 Banach 流形，场构型 $\phi$ 的变分 $\delta\phi$ 正是构形空间上的切向量。
+
+把各点切空间拼接起来得到切丛
+\[
+TM=\bigsqcup_{p\in M}T_pM,
+\]
+它本身是一个 $2n$ 维光滑流形。局部坐标 $(x^i)$ 诱导纤维坐标 $(x^i,v^i)$。余切丛
+\[
+T^*M=\bigsqcup_{p\in M}T_p^*M
+\]
+同理具有坐标 $(x^i,p_i)$。后续的向量场、微分形式和张量场本质上都是相应向量丛的光滑截面，因此“场”首先是一个 丛-theoretic 对象，而不是一组坐标分量函数。
+
+余切空间 $T_p^*M$ 是 $T_pM$ 的线性对偶。坐标基 $\{\partial_i\}$ 的对偶基记作 $\{\dd x^i\}$，满足
+\[
+\dd x^i(\partial_j)=\delta^i{}_j.
+\]
+对函数 $f\in C^\infty(M)$，它的微分 $\dd f\in T_p^*M$ 由
+\begin{equation}\label{eq:math-dg-differential-function}
+(\dd f)_p(v):=v(f)
+\end{equation}
+定义，所以局部表达为
+\[
+\dd f=\partial_i f\,\dd x^i.
+\]
+这一定义只使用函数对切向量的方向导数，不需要度量把向量与余向量互相识别。
+反对称协变张量组成外代数。记 $\Omega^k(M)=\Gamma(\Lambda^kT^*M)$ 为光滑 $k$-形式空间。若 $\alpha\in\Omega^k(M)$、$\beta\in\Omega^\ell(M)$，外积满足
+\[
+\alpha\wedge\beta=(-1)^{k\ell}\beta\wedge\alpha.
+\]
+外微分是唯一满足下列三条性质的线性算子
+\begin{equation*}\dd:\Omega^k(M)\longrightarrow\Omega^{k+1}(M):
+\qquad
+\dd^2=0,
+\end{equation*}
+并且在函数上与\eqnrefs{eq:math-dg-differential-function}一致，同时满足分次 Leibniz 规则
+\[
+\dd(\alpha\wedge\beta)
+=\dd\alpha\wedge\beta+(-1)^k\alpha\wedge\dd\beta.
+\]
+在局部坐标中，若
+\[
+\alpha=\frac{1}{k!}\alpha_{i_1\cdots i_k}
+\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_k},
+\]
+则
+\[
+\dd\alpha
+=\frac{1}{k!}\partial_j\alpha_{i_1\cdots i_k}
+\dd x^j\wedge\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_k}.
+\]
+
+外微分把所有微分形式组成一个 上链 复
+\begin{equation*}0\longrightarrow\Omega^0(M)
+\overset{\dd}{\longrightarrow}\Omega^1(M)
+\overset{\dd}{\longrightarrow}\cdots
+\overset{\dd}{\longrightarrow}\Omega^n(M)
+\longrightarrow0,\end{equation*}
+因为 $\dd^2=0$。于是可定义 de Rham 上同调
+\begin{equation*}H^k_{\mathrm{dR}}(M)
+:=\frac{\ker(\dd:\Omega^k\to\Omega^{k+1})}
+{\operatorname{im}(\dd:\Omega^{k-1}\to\Omega^k)}.\end{equation*}
+闭形式代表局部守恒约束，恰当形式代表可以由低一阶势产生的对象；二者之差由全局拓扑测量。
+
+在 star-shaped 开集 $U\subset\RR^n$ 上，Poincar\'e 引理说明
+\[
+\dd\alpha=0,
+\quad k\ge1
+\qquad\Longrightarrow\qquad
+\alpha=\dd\beta
+\]
+局部成立。一个显式 同伦 算符 是
+\begin{equation}
+(K\alpha)_x(v_1,\ldots,v_{k-1})
+=\int_0^1 t^{k-1}
+\alpha_{tx}(x,v_1,\ldots,v_{k-1})\,\dd t,
+\label{eq:poincare-homotopy-operator}
+\end{equation}
+这里以 欧氏 坐标识别各点的切空间，收缩向量是固定的 $x$；若用 Euler 场 $\mathcal R_y=y^i\partial_i$，等价公式是 $K\alpha=\int_0^1F_t^*(\iota_{\mathcal R}\alpha)\,\dd t/t$，其中 $F_t(x)=tx$。
+并满足 同伦 恒等式
+\begin{equation}
+\dd K+K\dd=I-\operatorname{ev}_0^*.
+\label{eq:poincare-homotopy-identity}
+\end{equation}
+对正次数形式，$\operatorname{ev}_0^*=0$，所以闭形式自动恰当。
+
+若 $M$ 可定向并带边界，则 Stokes 定理把外微分与边界配对：
+\begin{equation}
+\int_M\dd\alpha=\int_{\partial M}\alpha,
+\qquad
+\alpha\in\Omega_c^{n-1}(M).
+\label{eq:stokes-general}
+\end{equation}
+Green、Gauss 和经典 Stokes 公式都是它在不同次数、不同度量识别下的坐标化版本。\eqnrefs{eq:stokes-general} 本身不需要度量；积分由取向与顶次形式定义。
+
+给定向量场 $X\in\Gamma(TM)$，插入算子
+\begin{equation*}\iota_{X}:\Omega^k(M)\longrightarrow\Omega^{k-1}(M)
+\end{equation*}
+定义为
+\[
+(\iota_{X}\alpha)(X_2,\ldots,X_k)
+=\alpha(X,X_2,\ldots,X_k).
+\]
+它是次数 $-1$ 的反导子：
+\[
+\iota_{X}(\alpha\wedge\beta)
+=(\iota_{X}\alpha)\wedge\beta
++(-1)^k\alpha\wedge(\iota_{X}\beta).
+\]
+外微分与插入算子都是仅由光滑结构和外代数得到的对象；Lie 导数在本章后半部分会由它们重建。
+
+\section{光滑映射、流与 Lie 括号}
+若 $F:M\to N$ 为光滑映射，它把点送到点，因此切向量的自然搬运方向也是从 $M$ 到 $N$。推前
+\begin{equation*}F_{*p}:T_pM\to T_{F(p)}N
+\end{equation*}
+由
+\[
+(F_{*p}v)(\varphi)=v(\varphi\circ F),
+\qquad \varphi\in C^\infty(N),
+\]
+定义。余向量和微分形式则沿相反方向拉回：对 $\alpha\in\Omega^k(N)$，
+\begin{equation*}(F^*\alpha)_p(v_1,\ldots,v_k)
+:=\alpha_{F(p)}(F_{*p}v_1,\ldots,F_{*p}v_k).
+\end{equation*}
+由定义直接可验证
+\begin{equation*}F^*(\dd\alpha)=\dd(F^*\alpha),
+\qquad
+F^*(\alpha\wedge\beta)=F^*\alpha\wedge F^*\beta.
+\end{equation*}
+这两条自然性关系是以后几乎所有外形式计算能够保持坐标无关的原因。
+
+光滑映射的微分不仅给出向量的搬运，还控制局部几何形状。若 $F:M^m\to N^n$ 在 $p$ 附近秩恒为 $r$，constant 秩 定理 保证存在局部坐标，使
+\[
+F(x^1,\ldots,x^m)
+=(x^1,\ldots,x^r,0,\ldots,0).
+\]
+因此三个基本结论统一为同一正规形：
+\begin{itemize}
+\item 若 $m=n=r$，$F$ 局部是微分同胚，这就是 逆 函数 定理；
+\item 若 $r=m\le n$，$F$ 是局部 浸入；
+\item 若 $r=n\le m$，$F$ 是局部 淹没。
+\end{itemize}
+若 $y\in N$ 是 正则 值，即对每个 $p\in F^{-1}(y)$ 都有 $F_{*p}$ 满射，则
+\begin{equation*}F^{-1}(y)\subset M\end{equation*}
+是维数 $m-n$ 的嵌入子流形，而且
+\begin{equation}
+T_pF^{-1}(y)=\ker F_{*p}.
+\label{eq:tangent-regular-level-set}
+\end{equation}
+这给出了“约束方程的切空间”最一般的几何表达。
+
+三个典型 水平集 立即说明此公式。球面 $S^{n-1}=F^{-1}(1)$（$F(x)=|x|^2$，$\dd F_x(v)=2x\cdot v$ 在 $|x|=1$ 时满射），$T_xS^{n-1}=\{v\in\RR^n:x\cdot v=0\}$ 是与位置向量正交的超平面；正交群 $O(n)=F^{-1}(I)$（$F(A)=A^TA$，$\dd F_A(B)=A^TB+B^TA$ 满射），$T_IO(n)=\mathfrak{so}(n)$ 即反对称矩阵 Lie 代数；特殊线性群 $SL(n,\RR)=F^{-1}(1)$（$F(A)=\det A$），$T_ISL(n,\RR)=\mathfrak{sl}(n,\RR)$ 即迹零矩阵 Lie 代数。正则 水平集 定理是约束系统力学的基础：约束 $F(q)=0$（$F:Q\to\RR^k$）在 正则 条件下给出约束子流形 $Q_{\mathrm c}=F^{-1}(0)$，切空间是虚位移空间，Lagrange 乘子正是约束力；微正则系综（$H=E$）与规范约束（$\nabla\cdot E=\rho$）中的'约束即光滑子流形'是同一图景。
+
+例：$F:S^2\to\RR^3$ 为包含映射、$\alpha=x\,\dd y-y\,\dd x$ 时，$\dd\alpha=2\,\dd x\wedge\dd y$，$F^*(\dd\alpha)$ 恰为球面面积形式的 2 倍。拉回与外微分交换是 de Rham 上同调自然性的基础：$F^*$ 诱导同态 $F^*:H^k_{\mathrm{dR}}(N)\to H^k_{\mathrm{dR}}(M)$。它保证坐标不变的物理结论不随拉回改变，例如电磁学中场强 $F=\dd A$ 在规范变换 $A\mapsto A+\dd\chi$ 下不变，正是 $\dd^2=0$ 与拉回交换性的结合。
+
+正则 值 定理 只讨论目标子流形退化为一个点的情形。更一般地，设 $F:M\to N$ 光滑，$S\subset N$ 为嵌入子流形。若对每个 $p\in F^{-1}(S)$ 都有
+\begin{equation}
+{
+\dd F_p(T_pM)+T_{F(p)}S=T_{F(p)}N,
+}
+\label{eq:math-dg-transversality}
+\end{equation}
+则称 $F$ 与 $S$ 横截，记为
+\[
+F\pitchfork S.
+\]
+这个条件允许 $\dd F_p$ 本身不是满射；只要求它缺失的方向由 $S$ 的切空间补齐。
+
+\begin{theorem}[原像定理]\label{thm:math-dg-preimage-transverse}
+若 $F\pitchfork S$，则 $F^{-1}(S)$ 是 $M$ 的嵌入子流形，并且
+\begin{equation}
+\operatorname{codim}_M F^{-1}(S)
+=\operatorname{codim}_N S.
+\label{eq:math-dg-transverse-codimension}
+\end{equation}
+其切空间为
+\begin{equation}
+T_pF^{-1}(S)
+=\{v\in T_pM:\dd F_p(v)\in T_{F(p)}S\}.
+\label{eq:math-dg-transverse-tangent-space}
+\end{equation}
+\end{theorem}
+
+例：$F(t)=(t,t^2)$ 与 $x$ 轴在 $t=0$ 处横截，$F^{-1}(S)=\{0\}$ 为零维子流形；$F(t)=(t,0)$ 非横截，$F^{-1}(S)=\RR$ 为一维，微扰 $F_\varepsilon(t)=(t,\varepsilon)$ 后横截 原像 为空，体现横截性的稳定性。约束力学中 $Q_{\mathrm c}=\{q:F(q)=0\}$（$F:\RR^{3N}\to\RR^k$）在 $\dd F_q$ 满秩时为 $3N-k$ 维子流形；纤维积 $M\times_NP$ 即 $(F,G)$ 与对角 $\Delta_N$ 的横截 原像，维数 $\dim M+\dim P-\dim N$。一般地，两 $a,b$ 维子流形横截相交给出 $\dim(A\cap B)=a+b-n$。横截性也是模空间理论的基础：瞬子模空间 $\mathcal M$ 由自对偶方程 $F_A^+=0$ 定义，横截性保证光滑，维数由 Atiyah--Singer 指标定理给出；其一般形式正是 Sard 定理——横截相交在参数扰动下保持稳定。
+
+横截性之所以特别重要，是因为它是稳定且泛型的几何条件。Sard 定理说明，对光滑映射 $F:M^m\to N^n$，临界值 的集合在 $N$ 中具有测度零。于是“几乎每个” $y\in N$ 都是 正则 值；对这样的 $y$，水平集 $F^{-1}(y)$ 自动是光滑子流形。更强的 横截性 定理 说明，在合适函数空间拓扑下，横截映射形成稠密集合：任意映射通常只需任意小扰动，就能把非横截交会变成横截交会。
+
+这给出“维数计数”的严格来源。设 $A,B\subset N^n$ 是维数分别为 $a,b$ 的嵌入子流形。若它们在交点横截，
+\[
+T_pA+T_pB=T_pN,
+\]
+则
+\begin{equation*}\dim(A\cap B)=a+b-n.\end{equation*}
+若右边为负，泛型情形下交集为空；若为零，泛型交集是离散点。这就是 differential 拓扑 中“未知量维数减独立约束数”的精确版本。
+
+更一般地，给定 $F:M^m\to N^n$ 与 $G:P^p\to N^n$，若映射
+\[
+F\times G:M\times P\to N\times N
+\]
+与对角子流形
+\[
+\Delta_N:=\{(y,y):y\in N\}
+\]
+横截，则 纤维积
+\begin{equation*}M\times_NP
+:=\{(x,z):F(x)=G(z)\}\end{equation*}
+是维数
+\[
+m+p-n
+\]
+的子流形。这个构造以后在 规范 匹配、边界条件拼接、模 空间 和统计约束模型里都会反复出现。
+
+\begin{exbox}[独立约束与 Lagrange 乘子 的几何前提]
+对独立约束 $F=(F^1,\ldots,F^k)=0$，在 $\dd F$ 满秩的假设下求约束流形的切空间，并推出受限极值的 Lagrange 乘子条件。
+
+\textbf{解。} 设
+\[
+F=(F^1,\ldots,F^k):\RR^n\to\RR^k,
+\]
+约束集为
+\[
+\mathcal C=F^{-1}(0).
+\]
+若 $\dd F_x$ 在所有 $x\in\mathcal C$ 上满秩 $k$，则 $0$ 是 正则 值，故 $\mathcal C$ 是 $n-k$ 维子流形，并且
+\[
+T_x\mathcal C=\ker\dd F_x.
+\]
+临界点条件
+\[
+\dd f_x|_{T_x\mathcal C}=0
+\]
+等价于 $\dd f_x$ 落在 $\ker\dd F_x$ 的 annihilator 中，也就是由 $\dd F^1_x,\ldots,\dd F^k_x$ 张成。因此存在 Lagrange 乘子 $\lambda_a$ 使
+\[
+\dd f_x=\sum_{a=1}^k\lambda_a\dd F^a_x.
+\]
+所以 Lagrange 乘子 法成立的核心并不是代数消元，而是约束映射在解集上具有满秩，从而约束集真的是光滑子流形。
+\end{exbox}
+向量场把“静态的切向量”提升为点的运动。设 $X\in\Gamma(TM)$，局部流 $\Phi_t$ 由初值问题
+\begin{equation}\label{eq:math-dg-flow-ode}
+\frac{\dd}{\dd t}\Phi_t(p)=X_{\Phi_t(p)},
+\qquad
+\Phi_0(p)=p
+\end{equation}
+定义。在共同存在的时间区间内，唯一性给出
+\[
+\Phi_{t+s}=\Phi_t\circ\Phi_s,
+\qquad
+\Phi_t^{-1}=\Phi_{-t}.
+\]
+因此流不仅描述点如何运动，还提供了把几何对象从 $\Phi_t(p)$ 搬回 $p$ 的微分同胚。这正是 Lie 导数所需的比较机制。
+
+局部流的存在唯一性直接继承自常微分方程理论：在任一坐标图中，\eqnrefs{eq:math-dg-flow-ode} 是
+\[
+\dot x^i(t)=X^i(x(t)).
+\]
+只要 $X$ 光滑，就在每个初值附近存在唯一 极大 积分曲线。若所有积分曲线都能延伸到全部 $t\in\RR$，则称 $X$ 完全，此时 $\Phi_t$ 对所有时间都定义，并形成真正的一参数微分同胚群
+\[
+\Phi:\RR\times M\to M,
+\qquad
+\Phi_{t+s}=\Phi_t\circ\Phi_s.
+\]
+紧流形上的任意光滑向量场都 完全；非紧流形则可能有限时间逃向无穷远。例如 $\RR$ 上
+\[
+X=x^2\partial_x
+\]
+的积分曲线满足
+\[
+x(t)=\frac{x_0}{1-tx_0},
+\]
+对 $x_0>0$ 在 $t=1/x_0$ 爆破，因此不是 完全。
+
+若 $F:M\to N$ 是微分同胚，向量场自然推前为
+\[
+(F_*X)_{F(p)}=F_{*p}X_p.
+\]
+若 $X$ 与 $Y$ 分别是 $M,N$ 上向量场，并满足
+\[
+F_*X=Y\circ F,
+\]
+则称二者 $F$-related。其流也满足
+\begin{equation}
+F\circ\Phi_t^X=\Phi_t^Y\circ F
+\label{eq:related-flow-naturality}
+\end{equation}
+在共同存在区间内成立。这种自然性将在 Lie 导数、联络拉回与对称性分析中反复使用。
+
+例：$F(x)=Ax$（$A$ 可逆）把径向场 $X=x^i\partial_i$ 推前为同方向径向场，$\ee^{tI}$ 与 $A$ 对易即给出流共轭；极坐标 $F:(r,\theta)\mapsto(r\cos\theta,r\sin\theta)$ 把 $\partial_\theta$ 推前为旋转场 $-y\partial_x+x\partial_y$。此共轭性是对称性约化的基础：$G$ 作用下不变向量场推前到商空间，流的共轭保证约化流与原流相容；Noether 定理即对称流与 Hamilton 流相容 $[X,X_H]=0$ 时给出守恒量。
+
+两个向量场 $X,Y$ 的 Lie 括号定义为导子的交换子
+\begin{equation*}[X,Y](f):=X(Yf)-Y(Xf).
+\end{equation*}
+由于右端仍满足 Leibniz 规则，$[X,Y]$ 确实是向量场。若
+\[
+X=X^i\partial_i,
+\qquad
+Y=Y^i\partial_i,
+\]
+则
+\[
+[X,Y]
+=\bigl(X^j\partial_jY^i-Y^j\partial_jX^i\bigr)\partial_i.
+\]
+这个式子只含一阶导数，但它测量的是两个无穷小流的二阶不交换效应。
+
+例：$X=\partial_x$、$Y=x\partial_y$ 时 $[X,Y]=\partial_y$，群交换子 $\Psi_{-s}\Phi_{-t}\Psi_s\Phi_t(x,y)=(x,y+st)$ 的位移 $st$ 恰为括号的流；Heisenberg 代数 $X=\partial_x-\frac12y\partial_z$、$Y=\partial_y+\frac12x\partial_z$ 给出 $[X,Y]=\partial_z$，量子上对应正则对易 $[\hat x,\hat p]=\ii\hbar$；$SO(3)$ 的两个旋转场括号即交叉积法则，是刚体 Euler 方程的几何来源。左不变向量场在恒等元处的括号给出 $\mathfrak g$，群交换子在恒等元附近展开为 $ts[X,Y]$；Hamilton 向量场满足 $[X_H,X_F]=X_{\{H,F\}}$，同一括号在量子层面对应算子交换子、在规范理论中对应场强的非交换部分 $[A_\mu,A_\nu]$。
+
+\section{Lie 导数与 Cartan 恒等式}
+流已经给出了跨底点搬运对象的方法。对任意张量场 $T$，Lie 导数定义为沿 $X$ 的流先拉回再求变化率：
+\begin{equation}\label{eq:math-dg-synthesis-lie-flow}
+\mathcal L_XT
+:=\left.\frac{\dd}{\dd t}\right|_{t=0}\Phi_t^*T.
+\end{equation}
+这里对反变指标的“拉回”使用 $\Phi_{-t*}$ 把向量从 $\Phi_t(p)$ 搬回 $p$。定义的要点是比较永远发生在同一底点，因此不需要先选联络。
+
+对函数与向量场，\eqnrefs{eq:math-dg-synthesis-lie-flow}分别给出
+\begin{equation*}\mathcal L_Xf=X(f),
+\qquad
+\mathcal L_XY=[X,Y].
+\end{equation*}
+对一形式 $\alpha$，利用配对 $\alpha(Y)$ 的 Leibniz 规则得到
+\[
+(\mathcal L_X\alpha)(Y)
+=X\bigl(\alpha(Y)\bigr)-\alpha([X,Y]).
+\]
+对一般 $(r,s)$ 张量，Lie 导数与张量积和缩并相容；在坐标基中可写成
+\begin{align*}
+(\mathcal L_XT)^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+={}&X^k\partial_kT^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+-\sum_{a=1}^r
+T^{i_1\cdots k\cdots i_r}{}_{j_1\cdots j_s}
+\partial_kX^{i_a}\\
+&+\sum_{b=1}^s
+T^{i_1\cdots i_r}{}_{j_1\cdots k\cdots j_s}
+\partial_{j_b}X^k.
+\end{align*}
+这只是坐标表达，不是定义本身。
+外微分与任意拉回交换，因此对流拉回求导后立即得到
+\begin{equation}\label{eq:math-dg-synthesis-lie-d-commute}
+[\mathcal L_X,\dd]=0.
+\end{equation}
+对微分形式还存在更强的无坐标表达。
+
+对次数齐次算子 $A,B$，定义 分次 对易子
+\[
+[A,B]_{\rm gr}
+:=AB-(-1)^{|A||B|}BA.
+\]
+在微分形式代数上，$\dd$ 的次数为 $+1$，$\iota_X$ 的次数为 $-1$，$\mathcal L_X$ 的次数为 $0$。Cartan 恒等式可以压缩为
+\[
+\mathcal L_X=[\dd,\iota_X]_{\rm gr}.
+\]
+进一步有整套 Cartan 演算：
+\begin{align}
+[\mathcal L_X,\mathcal L_Y]&=\mathcal L_{[X,Y]},
+\label{eq:cartan-lie-lie}\\
+[\mathcal L_X,\iota_Y]&=\iota_{[X,Y]},
+\label{eq:cartan-lie-iota}\\
+[\iota_X,\iota_Y]_{\rm gr}&=0,
+\label{eq:cartan-iota-iota}\\
+[\mathcal L_X,\dd]&=0.
+\label{eq:cartan-lie-d}
+\end{align}
+这些关系说明 $\Omega^\bullet(M)$ 不只是一个微分分次代数，而且携带由向量场 Lie 代数 作用产生的完整微分代数结构。
+
+Cartan 恒等式把“沿流的变化”完全改写为外代数操作。它的优势在于只依赖 $X$、$\dd$ 与插入算子，不需要坐标、度量或联络。后面出现体积形式、联络形式以及几何输运方程时，都将继续使用这一同一公式，而不再重新定义 Lie 导数。
+
+若 $M$ 可定向并选定一个处处非零的体积形式 $\mu\in\Omega^n(M)$，则向量场 $X$ 关于 $\mu$ 的散度由
+\begin{equation*}\mathcal L_X\mu=(\operatorname{div}_\mu X)\mu\end{equation*}
+定义。因为最高次形式自动满足 $\dd\mu=0$，Cartan 公式给出
+\begin{equation*}(\operatorname{div}_\mu X)\mu
+=\dd(\iota_X\mu).\end{equation*}
+于是对紧支撑 $X$，Stokes 定理立即推出
+\[
+\int_M\operatorname{div}_\mu X\,\mu=0
+\]
+在无边界情形成立；有边界时则产生通量项。这是 散度 定理 的坐标无关形式。
+
+若 $\rho_t$ 是随流输运的密度，使总质量形式 $\rho_t\mu$ 满足
+\[
+\partial_t(\rho_t\mu)+\mathcal L_X(\rho_t\mu)=0,
+\]
+则由 Leibniz 规则得到连续性方程
+\begin{equation*}\partial_t\rho+X(\rho)+\rho\operatorname{div}_\mu X=0.\end{equation*}
+在 欧氏 体积形式下就是
+\[
+\partial_t\rho+\nabla\cdot(\rho X)=0.
+\]
+因此守恒律中的“散度结构”首先来自 陀螺-形式 的 Lie 输运，而不依赖笛卡尔坐标。
+
+更一般地，设 $D_t=\Phi_t(D_0)$ 是由 $X$ 的流推动的移动区域，$\alpha_t$ 是时变 $k$-形式。则 Reynolds 输运 定理 的微分形式版本为
+\begin{equation*}\frac{\dd}{\dd t}\int_{D_t}\alpha_t
+=\int_{D_t}(\partial_t\alpha_t+\mathcal L_X\alpha_t).\end{equation*}
+证明只需把积分域拉回固定的 $D_0$：
+\[
+\int_{D_t}\alpha_t
+=\int_{D_0}\Phi_t^*\alpha_t,
+\]
+再对 $t$ 求导。该公式把流体输运、守恒律和 Lie 导数直接连接起来。
+
+\begin{exbox}[旋转流保持径向一形式]
+在平面上取转动向量场 $X=-y\partial_x+x\partial_y$ 与一形式 $\alpha=x\dd x+y\dd y$，求 $\mathcal L_X\alpha$ 并判断转动流是否保持它。
+
+\textbf{解。} 在 $\RR^2$ 上取
+\[
+X=-y\partial_x+x\partial_y,
+\qquad
+\alpha=x\,\dd x+y\,\dd y.
+\]
+因为
+\[
+\dd\alpha=0,
+\qquad
+\iota_{X}\alpha=-xy+xy=0,
+\]
+由\eqnrefs{eq:math-dg-synthesis-cartan}立刻得到
+\[
+\mathcal L_X\alpha=0.
+\]
+这里 $\alpha=\tfrac12\dd(x^2+y^2)$，所以结果表达的正是旋转流保持径向距离函数。
+\end{exbox}
+
+
+切向量、微分形式与流都已具有坐标无关的定义。下面利用参数曲线、球面坐标和闭形式的反例，检验推前、外微分与 Lie 括号的实际含义。
+
+\input{content/MathSkills/ch15.tex}
+
+\input{content/MathSkills/ch16.tex}
+
+
+\section{流与外微分的公式联系}
+流、括号和外微分在张量的输运中同时出现。下面把已经证明的恒等式并列起来，便于辨认它们的作用对象。
+\begin{note}[公式之间的联系]
+\begin{align*}
+\dd^2&=0,\\
+F^*\dd&=\dd F^*,\\
+[X,Y](f)&=X(Yf)-Y(Xf),\\
+\mathcal L_Xf&=X(f),\\
+\mathcal L_XY&=[X,Y],\\
+\mathcal L_X\alpha&=\iota_{X}\dd\alpha+\dd\iota_{X}\alpha.
+\end{align*}
+主要定义与公式见\eqnrefs{eq:math-dg-differential-function}、\eqnrefs{eq:cartan-lie-lie}、\eqnrefs{eq:math-dg-synthesis-lie-flow}与\eqnrefs{eq:math-dg-synthesis-cartan}。
+\end{note}
+
+\input{content/MathSkills/chapter-end/tangent-spaces-and-flows-calculations.tex}
