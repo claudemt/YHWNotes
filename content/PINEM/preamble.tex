@@ -1,43 +1,489 @@
-\usepackage[a4paper,margin=2.05cm]{geometry}
-\usepackage{amsmath,amssymb,mathtools,bm}
-\usepackage{array,tabularx,booktabs,longtable}
-\usepackage{siunitx}
-\usepackage{xcolor}
-\usepackage{hyperref}
-\usepackage{microtype}
-\usepackage{setspace}
-\usepackage{fancyhdr}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathmorphing}
+% ================================================================
+% 0. Unified multi-book loader
+% Inspired by the structure of claudemt/Publication:
+% main.tex chooses one content/<book>/<book>.tex file; the file is read
+% once in the preamble to load metadata plus book-local settings (which
+% live inline in the book file, guarded by \BookSettingsProcessed) and
+% again in the document body to typeset the actual book.
+% ================================================================
+\usepackage{iftex}
+\ifXeTeX\else
+  \errmessage{This repository must be compiled with XeLaTeX}
+\fi
 
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue!55!black,
-  citecolor=blue!55!black,
-  urlcolor=blue!55!black,
-  pdftitle={PINEM：从相对论单电子动力学到一个主方程及其应用}
+\ExplSyntaxOn
+\cs_new_protected:Npn \physicsnotes_load_book_settings:n #1 { \input{#1} }
+\NewDocumentCommand{\BookLoadSettings}{m}
+  { \physicsnotes_load_book_settings:n {#1} }
+\ExplSyntaxOff
+
+\newcommand{\BookMetadata}[3]{%
+  \ifdefined\BookSettingsProcessed\else
+    \gdef\BookTitle{#1}%
+    \gdef\BookAuthor{#2}%
+    \title{\BookTitle}%
+    \author{\BookAuthor}%
+    \graphicspath{#3}%
+    \global\let\BookSettingsProcessed\relax
+    \expandafter\endinput
+  \fi
 }
-\setstretch{1.07}
-\setlength{\parindent}{2em}
-\setlength{\parskip}{0.16em}
-\setlength{\emergencystretch}{2em}
+
+\usepackage{
+  amsmath,amssymb,amsthm,mathrsfs,graphicx,booktabs,array,siunitx,slashed,
+  physics,mathtools,caption,subcaption,float,
+  fancyhdr,lastpage,adjustbox,longtable,bm,diagbox,
+  makecell,multirow,braket,import,
+  tcolorbox,placeins,needspace,etoolbox,environ,tikz
+}
+\tcbuselibrary{breakable,skins,theorems}
+\usetikzlibrary{arrows.meta,decorations.pathmorphing,decorations.markings,decorations.pathreplacing,positioning,calc,shapes.geometric}
+
+\usepackage[top=1.7cm,bottom=1.5cm,left=1.5cm,right=1.8cm]{geometry}
+\usepackage[unicode]{hyperref}
+\usepackage{bookmark}
+\usepackage{dsfont,microtype,emptypage,upgreek,tikz-cd,setspace}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,filecolor=magenta,urlcolor=blue,bookmarksnumbered=true}
+
+% ===== PDF bookmarks =====
+% bookmarksnumbered makes each bookmark carry the number its \addcontentsline
+% text already has, so chapters read "第一章 群的基本概念" and sections read
+% "1.1 群、群元与循环结构" -- the same strings the printed TOC uses. Without
+% it hyperref \lets \numberline to \@gobble and every number is dropped.
+%
+% The default \Hy@numberline appends a space so that "1.1" does not run into
+% the section title. ctex's chapter/part numberline text already ends in
+% \hspace{.3em}, which \pdfstringdef renders as a space of its own, so those
+% would come out with two. Absorb a trailing \hspace and add the single space
+% ourselves; the appended \hspace\YHW@bm@end also terminates the match when
+% there is nothing to absorb.
+\makeatletter
+\AtBeginDocument{%
+  \def\Hy@numberline#1{\YHW@bm@numberline#1\hspace\YHW@bm@end}%
+  \def\YHW@bm@numberline#1\hspace#2\YHW@bm@end{#1 }%
+}
+\makeatother
+
+% ===== Numbering =====
+\renewcommand{\thechapter}{\arabic{chapter}}
+\numberwithin{equation}{chapter}
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{3}
+
+% ===== Page and paragraph layout =====
+\raggedbottom
 \allowdisplaybreaks[3]
-\setlength{\headheight}{15pt}
+\emergencystretch=2em
+\setlength{\headheight}{13pt}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+
+% ===== Chapter title (one line: 第N章 Title) =====
+% 三号 (16pt) keeps "第13章 辐射反作用" on a single line; chapter titles are
+% held to <=7 Chinese characters (foreign terms count as one word). Body text
+% on a two-line chapter head would need a shorter line length than a4 gives.
+\makeatletter
+\def\@makechapterhead#1{%
+  \thispagestyle{fancy}%
+  {\centering\zihao{3}\bfseries 第\thechapter 章\quad #1\par}%
+  \vspace{2em}%
+}
+\def\@makeschapterhead#1{%
+  \thispagestyle{fancy}%
+  {\centering\zihao{3}\bfseries #1\par}%
+  \vspace{2em}%
+}
+\makeatother
+
+% ===== Part title (own page, two lines) =====
+% "第N部分" sits on its own line at 二号 (22pt); the part title follows at
+% 一号 (26pt). part/break keeps the page break and \@endpart pushes the first
+% chapter to the next page, so the heading keeps a page to itself.
+\ctexset{
+  part/break      = \clearpage,
+  part/format     = \centering\normalfont,
+  part/hang       = false,
+  part/nameformat = \zihao{2}\bfseries,
+  part/aftername  = \par\vspace{1.2em},
+  part/titleformat = \zihao{1}\bfseries,
+}
+
+% ===== Headers and footers =====
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{PINEM}
-\fancyhead[R]{从单电子动力学到可观测能谱}
-\fancyfoot[C]{\thepage}
-\renewcommand{\chaptermark}[1]{\markboth{第\,\thechapter\,章\quad #1}{}}
+\fancyhead[LE,RO]{\thepage/\pageref{LastPage}}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\chaptermark}[1]{\markboth{第\thechapter 章\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+% Chapter-opening and other "plain" pages reuse the running style verbatim.
+\fancypagestyle{plain}[fancy]{}
 
+% ===== Floats =====
+\floatplacement{figure}{htbp}
+\floatplacement{table}{htbp}
+\captionsetup{labelfont=bf}
+\setcounter{topnumber}{5}
+\setcounter{bottomnumber}{3}
+\setcounter{totalnumber}{8}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.82}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.78}
+\setlength{\textfloatsep}{10pt plus 2pt minus 3pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\interdisplaylinepenalty=100
+\predisplaypenalty=0
+\postdisplaypenalty=0
+\pretocmd{\section}{\FloatBarrier\Needspace{10\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{7\baselineskip}}{}{}
+
+% ===== Boxes =====
+\tcbset{mybox/.style={
+  enhanced,breakable,sharp corners,boxrule=0.1pt,width=\dimexpr\linewidth-28pt\relax,
+  enlarge left by=14pt,enlarge right by=14pt,
+  boxsep=0pt,left=12pt,right=12pt,top=10pt,bottom=8pt,before skip=8pt,after skip=8pt,
+  detach title,fonttitle=\bfseries,
+  boxed title style={sharp corners,boxrule=0.35pt,left=8pt,right=8pt,top=2.5pt,bottom=2.5pt},
+  attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2},
+  before upper={\setlength{\parindent}{2em}\setlength{\parskip}{0pt}\indent\ignorespaces}
+}}
+\newcommand{\SpecialBoxTitle}[2]{#1\ifstrempty{#2}{}{：#2}}
+% Shared detach-title grammar for derivation / exbox / note: the title is a
+% small pill straddling the top-left border instead of a cramped inline title
+% bar, matching the open feel of the theorem boxes.  Each box supplies only
+% its own colours; the shared spacing lives here so the three stay in sync.
+\tcbset{qmbox/.style={
+  enhanced,breakable,sharp corners,
+  boxsep=0pt,left=8pt,right=8pt,top=9pt,bottom=8pt,
+  before skip=10pt,after skip=10pt,
+  detach title,fonttitle=\bfseries,
+  boxed title style={sharp corners,boxrule=0.35pt,left=7pt,right=7pt,top=2.5pt,bottom=2.5pt},
+  attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2}
+}}
+\newtcolorbox{derivation}[1][]{
+  qmbox,colback=black!1,colframe=black!45,colbacktitle=black!8,coltitle=black!85,
+  title={\SpecialBoxTitle{推导}{#1}},
+  before upper={\setlength{\parskip}{0pt}%
+    \setlength{\abovedisplayskip}{6pt}\setlength{\belowdisplayskip}{6pt}%
+    \setlength{\abovedisplayshortskip}{4pt}\setlength{\belowdisplayshortskip}{4pt}}}
+\newtcolorbox{exbox}[1][]{qmbox,colback=green!8,colframe=green!48!black,colbacktitle=green!10,coltitle=black!80,title={\SpecialBoxTitle{例}{#1}}}
+\newtcolorbox{note}[1][]{qmbox,colback=yellow!3,colframe=yellow!45!black,colbacktitle=yellow!12,coltitle=black!80,title={\SpecialBoxTitle{注}{#1}}}
+
+% ===== References =====
+\usepackage{tabularx,enumitem}
+\usepackage[backend=biber,style=numeric,sorting=none,maxnames=6]{biblatex}
+\usepackage[nameinlink,noabbrev]{cleveref}
+% Chinese has no case distinction, so one name per counter serves both the
+% lowercase \cref and the sentence-initial \Cref.
+\newcommand{\crefnamecn}[2]{\crefname{#1}{#2}{#2}\Crefname{#1}{#2}{#2}}
+\crefnamecn{equation}{式}
+\crefnamecn{figure}{图}
+\crefnamecn{table}{表}
+\crefnamecn{chapter}{章}
+\crefnamecn{section}{节}
+% \eqnrefs and \eqnrange mix linked numbers with unlinked punctuation
+% ("式", "--"), so they carry their own colour; they intentionally keep it
+% instead of inheriting linkcolor the way the single-target macros above do.
+\ExplSyntaxOn
+\NewDocumentCommand{\eqnrefs}{m}
+ {\group_begin:\color{blue}式~\clist_map_inline:nn {#1} { \hyperref[##1]{(\ref*{##1})} }\group_end:}
+\NewDocumentCommand{\eqnrange}{m m}
+ {\textcolor{blue}{式~\hyperref[#1]{(\ref*{#1})}--\hyperref[#2]{(\ref*{#2})}}}
+% The label word lives inside \hyperref so that the whole "图 3.1" is one
+% clickable link; its blue comes from \hypersetup{linkcolor}, not from a
+% hard-coded \textcolor, so restyling links restyles every reference at once.
+\NewDocumentCommand{\figref}{m}
+ {\hyperref[#1]{图~\ref*{#1}}}
+\NewDocumentCommand{\tabref}{m}
+ {\hyperref[#1]{表~\ref*{#1}}}
+\NewDocumentCommand{\secref}{m}
+ {\hyperref[#1]{第~\ref*{#1}~节}}
+\NewDocumentCommand{\chapref}{m}
+ {\hyperref[#1]{第~\ref*{#1}~章}}
+\NewDocumentCommand{\appref}{m}
+ {\hyperref[#1]{附录~\ref*{#1}}}
+\ExplSyntaxOff
+\sisetup{per-mode=symbol,range-phrase=--,separate-uncertainty=true}
+\DeclareSIUnit{\fm}{fm}
+\DeclareSIUnit{\barn}{barn}
+
+% ===== Feynman/TikZ styles =====
+\tikzset{
+  fermion/.style={draw,line width=0.75pt,postaction={decorate},decoration={markings,mark=at position 0.56 with {\arrow{Stealth[length=2.0mm,width=1.4mm]}}}},
+  antifermion/.style={draw,line width=0.75pt,postaction={decorate},decoration={markings,mark=at position 0.44 with {\arrowreversed{Stealth[length=2.0mm,width=1.4mm]}}}},
+  photon/.style={draw,line width=0.75pt,decorate,decoration={snake,amplitude=1.05pt,segment length=5.0pt}},
+  fvertex/.style={circle,fill,inner sep=1.15pt},
+  momentumlabel/.style={font=\small,inner sep=1.5pt},
+  lecturearrow/.style={-{Stealth[length=2mm,width=1.4mm]},line width=0.75pt},
+  lecturebox/.style={draw,rounded corners=2pt,inner xsep=7pt,inner ysep=4pt,align=center,line width=.75pt,font=\small},
+  lecturewidebox/.style={draw,rounded corners=2pt,inner xsep=7pt,inner ysep=4pt,align=center,line width=.75pt,font=\small,text width=74mm},
+  lecturelabel/.style={font=\small,align=center},
+  line-label/.style={fill=white,fill opacity=.96,text opacity=1,inner sep=1.2pt,font=\small},
+  % --- block-logic diagram grammar (grid / map / flow schematics) ---
+  % Reuse lecturebox look; a figure passes a uniform `minimum width=<w>mm`
+  % to every box in one layer so same-row boxes are identical size.
+  blockbox/.style={lecturebox,minimum height=10mm},
+  % Orthogonal-only arrow: same Stealth tip as lecturearrow.  Route paths with
+  % straight horizontal/vertical segments or the `-|` / `|-` operators; never
+  % use out=/in= curves between layers.
+  layerarrow/.style={lecturearrow},
+  % White-backed label for any arrow in a block-logic diagram (alias of line-label).
+  blocklabel/.style={line-label},
+  % Ready-made `matrix of nodes` grid: same-size boxes, uniform column/row gap.
+  blockmatrix/.style={matrix of nodes,nodes=blockbox,column sep=10mm,row sep=10mm}
+}
+
+
+% ===== Shared textbook TikZ environments =====
+% One visual grammar for geometry, circuits, optics, and 3D schematics.
+\usepackage{tikz-3dplot,circuitikz}
+\tikzset{
+  mid arrow/.style={
+    decoration={markings,mark=at position 0.5 with {\arrow{Stealth[length=2mm,width=1.4mm]}}},
+    postaction={decorate},line width=0.75pt
+  },
+  lens/.style={draw,fill=blue!5,minimum width=0.1cm,minimum height=2cm,line width=0.75pt},
+  plane/.style={draw,fill=gray!5,minimum width=0.1cm,minimum height=2.5cm,line width=0.75pt},
+  filter/.style={draw,fill=red!10,minimum width=0.1cm,minimum height=2.5cm,line width=0.75pt},
+  axes/.style={-{Stealth[length=2mm,width=1.4mm]},line width=0.75pt},
+  wfA/.style={line width=0.75pt},
+  wfB/.style={line width=0.75pt},
+  wfC/.style={line width=0.75pt},
+  lab/.style={font=\small,fill=white,fill opacity=0.88,text opacity=1,inner sep=1.2pt}
+}
+\newenvironment{circuitfig}[1][]{%
+  \begin{circuitikz}[line width=0.75pt,>=Stealth,every node/.style={font=\small},line cap=round,line join=round,#1]
+}{%
+  \end{circuitikz}
+}
+\newenvironment{tikzfig}[1][]{%
+  \begin{tikzpicture}[line width=0.75pt,>=Stealth,every node/.style={font=\small},line cap=round,line join=round,#1]
+}{%
+  \path[use as bounding box] (current bounding box.south west) rectangle (current bounding box.north east);
+  \end{tikzpicture}
+}
+\newenvironment{tdplot}[1][]{%
+  \begin{tikzpicture}[tdplot_main_coords,line width=0.75pt,>=Stealth,every node/.style={font=\small},line cap=round,line join=round,#1]
+}{%
+  \path[use as bounding box] (current bounding box.south west) rectangle (current bounding box.north east);
+  \end{tikzpicture}
+}
+
+% ===== Common mathematical notation =====
+\newcommand{\PhysicsNotesBoldVector}[1]{%
+  \ifcat\noexpand#1\relax
+    \boldsymbol{#1}% Greek/control-sequence symbols require a math-symbol bold face
+  \else
+    \mathbf{#1}% Latin vectors and tensors use the book-wide upright bold alphabet
+  \fi}
+\ExplSyntaxOn
+\cs_if_exist:NTF \vb
+  {\RenewDocumentCommand{\vb}{m}{\PhysicsNotesBoldVector{#1}}}
+  {\NewDocumentCommand{\vb}{m}{\PhysicsNotesBoldVector{#1}}}
+\cs_if_exist:NTF \uv
+  {\RenewDocumentCommand{\uv}{m}{\hat{\PhysicsNotesBoldVector{#1}}}}
+  {\NewDocumentCommand{\uv}{m}{\hat{\PhysicsNotesBoldVector{#1}}}}
+\ExplSyntaxOff
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator{\arcosh}{arcosh}
+\DeclareMathOperator{\artanh}{artanh}
+\newcommand{\crossdot}{\mathbin{\vcenter{\offinterlineskip\hbox to 6pt{\hss$\times$\hss}\hbox to 6pt{\hss$\cdot$\hss}}}}
+\newcommand{\dotdotdot}{\mathbin{\vcenter{\offinterlineskip\hbox to 4pt{\hss$\cdot$\hss}\hbox to 4pt{\hss$\cdot$\hss}\hbox to 4pt{\hss$\cdot$\hss}}}}
 \newcommand{\ii}{\mathrm{i}}
 \newcommand{\ee}{\mathrm{e}}
-\newcommand{\dd}{\mathrm{d}}
-\newcommand{\FT}{\mathcal{F}}
-\newcommand{\Ftilde}{\mathcal F_{\parallel}}
-\newcommand{\Etilde}{E_{\omega,z}}
-\newcommand{\up}{\widehat u^{+}}
-\newcommand{\um}{\widehat u^{-}}
-\newcommand{\ketv}[2]{\begin{pmatrix}#1\\#2\end{pmatrix}}
+% \Tord is the time-ordering symbol \mathcal T (used by FreeElectronQuantumOptics).
+\providecommand{\Tord}{\mathcal T}
 
-\newcommand{\logicarrow}{\;\longrightarrow\;}
+% ===== Generic math/physics notation =====
+% Only the aliases that are actually used by the books are kept here; dead
+% legacy names were removed with the old book settings they came from.
+\providecommand{\norm}[1]{\left\lVert #1\right\rVert}
+\providecommand{\kB}{k_{\mathrm B}}
+
+% ===== Shared theorem environments =====
+\newtheorem{theorem}{定理}[chapter]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{remark}[theorem]{注}
+\newtheorem{exercise}[theorem]{练习}
+
+% ===== Shared theorem colour palette =====
+% Every semantic theorem environment is wrapped in a coloured tcolorbox so
+% that definitions, theorems, propositions, lemmas, corollaries, examples and
+% remarks are visually distinct across all books.  The palette is owned by the
+% root preamble so that every book compiled through main.tex inherits the same
+% appearance without book-local overrides.
+%
+% Adding a theorem-like environment costs one \theoremcolor line below (plus
+% its \crefnamecn).  There must be no unboxed "plain" variant: every statement
+% lives inside one of these frames.
+%
+% A `proof` that IMMEDIATELY follows one of these boxed statements (optionally
+% separated only by blank lines) is rendered as a seamless continuation piece
+% of the SAME coloured frame: the statement box keeps its bottom rule (a thin
+% divider), the proof piece shares the background and the left/right/bottom
+% frame and carries the QED symbol, so statement and proof read as one box.
+% Proofs that do not directly follow a boxed statement -- standalone proofs of
+% prose/equation results, which are common in AdvancedPhysics -- are left
+% untouched and keep the standard amsthm look.
+\makeatletter
+\newif\ifYHW@joinpending
+\newif\ifYHW@incont
+\def\YHW@clearjoin{\global\YHW@joinpendingfalse}
+% Any ordinary paragraph or any non-proof environment that intervenes between
+% a boxed statement and a proof cancels the merge; para/begin is the modern
+% kernel paragraph hook (it survives packages that overwrite \everypar).
+\AddToHook{para/begin}{\YHW@clearjoin}
+\newcommand{\YHW@clearhook}[1]{\AtBeginEnvironment{#1}{\YHW@clearjoin}}
+\forcsvlist{\YHW@clearhook}{%
+  equation,align,gather,multline,flalign,eqnarray,displaymath,%
+  exbox,note,derivation,qmbox,figure,table,center,quote,quotation,%
+  itemize,enumerate,description,list,%
+  theorem,proposition,lemma,corollary,definition,example,remark,exercise}
+% #1 = environment, #2 = background, #3 = frame colour, #4 = rule width
+\newcommand{\theoremcolor}[4]{%
+  \tcbset{
+    YHW@box@#1/.style={enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
+      arc=1.2mm,left=8pt,right=8pt,top=6pt,bottom=6pt,
+      before skip=7pt,after skip=7pt},
+    YHW@cont@#1/.style={enhanced,breakable,colback=#2,colframe=#3,boxrule=#4,
+      arc=1.2mm,sharp corners=north,left=8pt,right=8pt,top=4pt,bottom=6pt,
+      before skip=\dimexpr-7pt-#4\relax,after skip=7pt,
+      frame hidden,
+      borderline south={#4}{0pt}{#3},
+      borderline east={#4}{0pt}{#3},
+      borderline west={#4}{0pt}{#3},
+      overlay middle={\draw[#3,line width=#4](frame.north west)--(frame.north east);},
+      overlay last={\draw[#3,line width=#4](frame.north west)--(frame.north east);}}
+  }%
+  \expandafter\let\csname YHW@orig@#1\expandafter\endcsname\csname #1\endcsname
+  \expandafter\let\csname YHW@orig@end#1\expandafter\endcsname\csname end#1\endcsname
+  \renewenvironment{#1}[1][]
+    {%
+      \global\YHW@joinpendingfalse
+      \edef\YHW@thisenv{\@currenvir}%
+      \begin{tcolorbox}[YHW@box@\YHW@thisenv]%
+      \csname YHW@orig@\YHW@thisenv\endcsname[##1]%
+    }
+    {%
+      \csname YHW@orig@end\YHW@thisenv\endcsname
+      \end{tcolorbox}%
+      \xdef\YHW@lastenv{\YHW@thisenv}%
+      \global\YHW@joinpendingtrue
+    }%
+}
+% Preserve the standard amsthm proof for standalone use; when a proof directly
+% follows a boxed statement, open the matching continuation piece and close it
+% (with the QED symbol) at \end{proof}.
+\let\YHW@prooforig\proof
+\let\YHW@endprooforig\endproof
+\RenewDocumentEnvironment{proof}{O{\proofname}}{%
+  \ifYHW@joinpending
+    \global\YHW@joinpendingfalse
+    \global\YHW@inconttrue
+    \edef\YHW@thisenv{\YHW@lastenv}%
+    \begin{tcolorbox}[YHW@cont@\YHW@thisenv]%
+    \noindent\textbf{#1}\enspace\nobreak
+  \else
+    \global\YHW@incontfalse
+    \YHW@prooforig[#1]%
+  \fi
+}{%
+  \ifYHW@incont
+    \par\nobreak\vspace{-2pt}\nobreak\hfill\qed\par\nobreak
+    \end{tcolorbox}%
+    \global\YHW@incontfalse
+  \else
+    \YHW@endprooforig
+  \fi
+}
+\makeatother
+%                   environment    background     frame             rule
+\theoremcolor{definition} {blue!2.5}   {blue!55!black}    {0.55pt}
+\theoremcolor{theorem}    {red!2.2}    {red!58!black}     {0.65pt}
+\theoremcolor{proposition}{orange!3}   {orange!65!black}  {0.55pt}
+\theoremcolor{lemma}      {violet!2.5} {violet!60!black}  {0.55pt}
+\theoremcolor{corollary}  {teal!2.5}   {teal!58!black}    {0.55pt}
+\theoremcolor{example}    {green!3}    {green!48!black}   {0.50pt}
+\theoremcolor{remark}     {gray!4}     {gray!55!black}    {0.50pt}
+
+\crefnamecn{theorem}{定理}
+\crefnamecn{proposition}{命题}
+\crefnamecn{lemma}{引理}
+\crefnamecn{corollary}{推论}
+\crefnamecn{definition}{定义}
+\crefnamecn{example}{例}
+\crefnamecn{remark}{注}
+
+% ===== Shared symbol registry =====
+% Every symbol that is used by more than one book lives here so that a
+% derivation copied between books keeps its meaning.  A book may only add
+% names that are genuinely local to it; it must not redefine anything below.
+%
+%   number systems / spaces
+\providecommand{\RR}{\mathbb R}
+\providecommand{\CC}{\mathbb C}
+\providecommand{\NN}{\mathbb N}
+\providecommand{\QQ}{\mathbb Q}
+\providecommand{\ZZ}{\mathbb Z}
+%   \HH is the quaternion algebra / the hyperbolic space H^n -- never a
+%   Hilbert space.  Hilbert spaces are \Hil or \Ham.
+\providecommand{\HH}{\mathbb{H}}
+\providecommand{\CP}{\mathbb{CP}}
+\providecommand{\Hil}{\mathcal H}
+\providecommand{\Ham}{\mathcal H}
+\providecommand{\Lag}{\mathcal L}
+%   identity: \id is the identity map, \id(d) the d-dimensional unit matrix.
+%   The argument goes in parentheses because \mathbb{I}_2 sets far too small.
+\NewDocumentCommand{\id}{o}{\mathbb{I}\IfValueT{#1}{\,(#1)}}
+%   operators
+\providecommand{\Span}{\operatorname{span}}
+\providecommand{\supp}{\operatorname{supp}}
+\providecommand{\dist}{\operatorname{dist}}
+\providecommand{\Tr}{\operatorname{Tr}}
+\providecommand{\tr}{\operatorname{tr}}
+\providecommand{\PV}{\operatorname{PV}}
+\providecommand{\rank}{\operatorname{rank}}
+\providecommand{\Res}{\operatorname*{Res}}
+\providecommand{\Dom}{\operatorname{Dom}}
+\providecommand{\Ran}{\operatorname{Ran}}
+\providecommand{\End}{\operatorname{End}}
+\providecommand{\Spin}{\operatorname{Spin}}
+\providecommand{\Pin}{\operatorname{Pin}}
+\providecommand{\Cl}{\operatorname{Cl}}
+\providecommand{\Var}{\operatorname{Var}}
+\providecommand{\Cov}{\operatorname{Cov}}
+\providecommand{\Corr}{\operatorname{Corr}}
+\providecommand{\argmax}{\operatorname*{arg\,max}}
+\providecommand{\argmin}{\operatorname*{arg\,min}}
+\providecommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+%   \order takes the parentheses itself: write \order(\omega^2).  This
+%   overrides the physics package, whose \order{...} adds them for you.
+\renewcommand{\order}{\mathcal O}
+%   open quantum systems: Lindblad dissipator, one tensor argument per call
+\providecommand{\Diss}[1]{\mathcal D[#1]}
+
+% ================================================================
+% Book-local extension policy
+% ================================================================
+% The root preamble owns page layout, numbering, typography, boxes,
+% references, generic physics/TikZ styles, the shared theorem
+% environments and the coloured theorem palette.  A book may extend
+% TikZ or define specialized notation only inline in its own
+% content/<book>/<book>.tex (inside the \BookSettingsProcessed guard).
+% Do not redefine geometry, headers, captions, hyperlink policy, the
+% derivation/exbox/note environments, the theorem environments or
+% their colour boxes, or the shared figure styles there.
